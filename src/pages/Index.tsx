@@ -1,19 +1,17 @@
-import Hero from "@/components/Hero";
-import Services from "@/components/Services";
-import Process from "@/components/Process";
-import WhyChooseUs from "@/components/WhyChooseUs";
-import ContactForm from "@/components/ContactForm";
-import Footer from "@/components/Footer";
+import HeroWeb3 from "@/components/HeroWeb3";
+import ServicesWeb3 from "@/components/ServicesWeb3";
+import ProcessWeb3 from "@/components/ProcessWeb3";
+import ContactFormWeb3 from "@/components/ContactFormWeb3";
+import FooterWeb3 from "@/components/FooterWeb3";
 
 const Index = () => {
   return (
-    <div className="min-h-screen">
-      <Hero />
-      <Services />
-      <Process />
-      <WhyChooseUs />
-      <ContactForm />
-      <Footer />
+    <div className="min-h-screen overflow-x-hidden">
+      <HeroWeb3 />
+      <ServicesWeb3 />
+      <ProcessWeb3 />
+      <ContactFormWeb3 />
+      <FooterWeb3 />
     </div>
   );
 };
