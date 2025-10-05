@@ -242,7 +242,7 @@ const Cases = () => {
                 const rotateY = angle;
                 const translateZ = -radius;
                 const scale = isFront ? 1.5 : 0.7;
-                const opacity = isFront ? 1 : 0.3;
+                const opacity = isFront ? 0.9 : 0.3;
                 const zIndex = isFront ? 10 : 1;
                 
                 return (
