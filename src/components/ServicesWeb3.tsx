@@ -68,19 +68,21 @@ const ServicesWeb3 = () => {
             return (
               <div 
                 key={index} 
-                className="glass-card p-8 rounded-3xl hover-glow group relative overflow-hidden"
+                className="glass-card p-8 rounded-lg hover-glow group relative overflow-hidden"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 {/* Gradient Background on Hover */}
                 <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
                 
                 <div className="relative z-10">
-                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${service.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                    <Icon className="h-8 w-8 text-white" />
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className={`w-12 h-12 rounded bg-gradient-to-br ${service.color} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                      <Icon className="h-6 w-6 text-white" />
+                    </div>
+                    <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">
+                      {service.title}
+                    </h3>
                   </div>
-                  <h3 className="text-2xl font-bold mb-4 text-foreground group-hover:text-primary transition-colors">
-                    {service.title}
-                  </h3>
                   <p className="text-muted-foreground leading-relaxed">
                     {service.description}
                   </p>

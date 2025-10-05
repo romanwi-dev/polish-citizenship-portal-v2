@@ -242,7 +242,7 @@ export default function TimelineProcessEnhanced() {
                 <motion.div
                   whileHover={{ scale: 1.02 }}
                   transition={{ duration: 0.3 }}
-                  className="glass-card p-6 rounded-2xl hover-glow group"
+                  className="glass-card p-6 rounded-lg hover-glow group"
                 >
                   <div className="flex flex-col gap-3">
                     <div className="flex items-center gap-2 mb-1">
@@ -261,7 +261,7 @@ export default function TimelineProcessEnhanced() {
                         stiffness: 120
                       }}
                       viewport={{ once: true }}
-                      className="text-2xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-lg"
+                      className="text-2xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-lg animate-slow-blink"
                     >
                       {step.title}
                     </motion.h3>
@@ -311,7 +311,7 @@ export default function TimelineProcessEnhanced() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="mt-16 glass-card p-8 rounded-2xl max-w-3xl mx-auto"
+          className="mt-16 glass-card p-8 rounded-lg max-w-3xl mx-auto"
         >
           <div className="flex items-start gap-4">
             <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">

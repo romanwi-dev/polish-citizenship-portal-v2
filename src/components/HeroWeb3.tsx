@@ -39,21 +39,14 @@ const HeroWeb3 = () => {
             Expert legal guidance for people of Polish and Polish-Jewish descent from around the world for obtaining Polish citizenship and EU passports through Polish ancestry - unmatched 100% success rate, true realist timeline 1,5 - 4 years, transparent pricing €3,500 - €12,500+
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in">
+          <div className="flex justify-center animate-fade-in">
             <Button 
               size="lg" 
-              className="text-lg px-8 py-6 glass-card border-primary/50 text-foreground hover:bg-primary/10 hover-glow"
-              onClick={() => window.open('https://polishcitizenshippl-20-8pfm8wc5m6.replit.app/family-tree', '_blank')}
-            >
-              Fill Your Family Tree
-            </Button>
-            <Button 
-              size="lg" 
-              className="text-lg px-8 py-6 bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white shadow-glow hover-glow group relative overflow-hidden"
+              className="text-lg px-10 py-8 h-auto rounded-md bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white shadow-glow hover-glow group relative overflow-hidden"
               onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
             >
               <span className="relative z-10 flex items-center">
-                Take Full Polish Citizenship Test
+                Polish Citizenship Test
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover:opacity-100 transition-opacity" />
