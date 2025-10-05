@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { ChevronLeft, ChevronRight, User, Calendar, FileText, CheckCircle2 } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
@@ -79,14 +79,28 @@ const mockCases: ClientCase[] = [
 
 const Cases = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const totalCards = mockCases.length;
 
+  const scrollToIndex = (index: number) => {
+    if (scrollContainerRef.current) {
+      const cardWidth = scrollContainerRef.current.scrollWidth / totalCards;
+      scrollContainerRef.current.scrollTo({
+        left: cardWidth * index,
+        behavior: 'smooth'
+      });
+      setCurrentIndex(index);
+    }
+  };
+
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % totalCards);
+    const newIndex = (currentIndex + 1) % totalCards;
+    scrollToIndex(newIndex);
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + totalCards) % totalCards);
+    const newIndex = (currentIndex - 1 + totalCards) % totalCards;
+    scrollToIndex(newIndex);
   };
 
   const getStatusColor = (status: string) => {
@@ -168,18 +182,29 @@ const Cases = () => {
             </Button>
           </div>
 
-          {/* Horizontal Rolling Tape Carousel */}
-          <div className="relative max-w-6xl mx-auto overflow-hidden">
-            <div 
-              className="flex transition-transform duration-700 ease-out gap-4 md:gap-6"
-              style={{ 
-                transform: `translateX(-${currentIndex * 100}%)`,
+          {/* Horizontal Scrollable Tape Carousel */}
+          <div className="relative max-w-6xl mx-auto">
+            <div
+              ref={scrollContainerRef}
+              className="flex overflow-x-auto gap-4 md:gap-6 pb-4 snap-x snap-mandatory scrollbar-hide scroll-smooth"
+              style={{
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none',
+                WebkitOverflowScrolling: 'touch'
+              }}
+              onScroll={(e) => {
+                const scrollLeft = e.currentTarget.scrollLeft;
+                const cardWidth = e.currentTarget.scrollWidth / totalCards;
+                const newIndex = Math.round(scrollLeft / cardWidth);
+                if (newIndex !== currentIndex) {
+                  setCurrentIndex(newIndex);
+                }
               }}
             >
               {mockCases.map((clientCase) => (
                 <div
                   key={clientCase.id}
-                  className="min-w-full md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] flex-shrink-0"
+                  className="min-w-full md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] flex-shrink-0 snap-start"
                 >
                   <div className={`glass-card rounded-2xl p-4 md:p-6 h-full bg-gradient-to-br ${getStatusColor(clientCase.status)} border hover-glow transition-all duration-300 hover:scale-[1.02]`}>
                     {/* Header */}
@@ -254,7 +279,7 @@ const Cases = () => {
             {mockCases.map((_, index) => (
               <button
                 key={index}
-                onClick={() => setCurrentIndex(index)}
+                onClick={() => scrollToIndex(index)}
                 className={`h-2 rounded-full transition-all duration-300 ${
                   index === currentIndex 
                     ? "w-6 md:w-8 bg-gradient-to-r from-primary to-accent" 
