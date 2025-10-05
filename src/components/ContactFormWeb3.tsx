@@ -77,38 +77,38 @@ const ContactFormWeb3 = () => {
             {/* Background Gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5" />
             
-            <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="name" className="text-foreground">Full Name *</Label>
+            <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
+              <div className="grid md:grid-cols-2 gap-8">
+                <div className="space-y-3 animate-fade-in">
+                  <Label htmlFor="name" className="text-foreground text-lg font-semibold">Full Name *</Label>
                   <Input
                     id="name"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder="Jan Kowalski"
+                    placeholder="Enter your full name"
                     required
-                    className="glass-card border-border/50 focus:border-primary transition-all"
+                    className="glass-card border-border/50 focus:border-primary focus:scale-[1.02] transition-all duration-300 h-14 text-lg placeholder:text-muted-foreground/50 hover:border-primary/50"
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-foreground">Email *</Label>
+                <div className="space-y-3 animate-fade-in" style={{ animationDelay: '0.1s' }}>
+                  <Label htmlFor="email" className="text-foreground text-lg font-semibold">Email Address *</Label>
                   <Input
                     id="email"
                     name="email"
                     type="email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="jan@example.com"
+                    placeholder="your.email@example.com"
                     required
-                    className="glass-card border-border/50 focus:border-primary transition-all"
+                    className="glass-card border-border/50 focus:border-primary focus:scale-[1.02] transition-all duration-300 h-14 text-lg placeholder:text-muted-foreground/50 hover:border-primary/50"
                   />
                 </div>
               </div>
               
-              <div className="space-y-2">
-                <Label htmlFor="wallet" className="text-foreground flex items-center gap-2">
-                  <Shield className="w-4 h-4" />
+              <div className="space-y-3 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+                <Label htmlFor="wallet" className="text-foreground text-lg font-semibold flex items-center gap-2">
+                  <Shield className="w-5 h-5" />
                   Wallet Address (Optional)
                 </Label>
                 <Input
@@ -116,14 +116,13 @@ const ContactFormWeb3 = () => {
                   name="wallet"
                   value={formData.wallet}
                   onChange={handleChange}
-                  placeholder="0x..."
-                  className="glass-card border-border/50 focus:border-primary transition-all font-mono"
+                  placeholder="0x... (for blockchain-verified document storage)"
+                  className="glass-card border-border/50 focus:border-primary focus:scale-[1.02] transition-all duration-300 h-14 text-lg font-mono placeholder:text-muted-foreground/50 hover:border-primary/50"
                 />
-                <p className="text-xs text-muted-foreground">For blockchain-verified document storage</p>
               </div>
               
-              <div className="space-y-2">
-                <Label htmlFor="message" className="text-foreground">Tell Us About Your Polish Heritage *</Label>
+              <div className="space-y-3 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+                <Label htmlFor="message" className="text-foreground text-lg font-semibold">Tell Us About Your Polish Heritage *</Label>
                 <Textarea
                   id="message"
                   name="message"
@@ -131,7 +130,7 @@ const ContactFormWeb3 = () => {
                   onChange={handleChange}
                   placeholder="Describe your Polish ancestry, available documents, and citizenship goals..."
                   required
-                  className="min-h-[150px] glass-card border-border/50 focus:border-primary transition-all"
+                  className="min-h-[200px] glass-card border-border/50 focus:border-primary focus:scale-[1.01] transition-all duration-300 text-lg placeholder:text-muted-foreground/50 hover:border-primary/50 resize-none"
                 />
               </div>
 
