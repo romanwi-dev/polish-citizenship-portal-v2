@@ -1,43 +1,79 @@
 import { motion } from "framer-motion";
-import { UserPlus, Calendar, FileCheck, Rocket } from "lucide-react";
+import { MessageSquare, ClipboardCheck, FileSearch, Scale, Send, Brain, FileCheck2, Globe } from "lucide-react";
 import { Button } from "./ui/button";
-import onboardingStep1 from "@/assets/onboarding-step1.png";
-import onboardingStep2 from "@/assets/onboarding-step2.png";
-import onboardingStep3 from "@/assets/onboarding-step3.png";
-import onboardingStep4 from "@/assets/onboarding-step4.png";
 
 const onboardingSteps = [
   {
     number: "01",
-    title: "Initial Contact & Assessment",
-    description: "Fill out our quick eligibility questionnaire. We'll review your family history and determine if you qualify for Polish citizenship by descent.",
-    icon: UserPlus,
-    illustration: onboardingStep1,
+    title: "First Contact",
+    description: "Reach out through our website, email, WhatsApp, or by recommendation to start your journey.",
+    icon: MessageSquare,
     gradient: "from-primary to-secondary",
+    cta: "Contact Form",
+    link: "#contact"
   },
   {
     number: "02",
-    title: "Expert Consultation Call",
-    description: "Schedule a free consultation with our experienced legal team. We'll discuss your case, answer questions, and outline the complete process and timeline.",
-    icon: Calendar,
-    illustration: onboardingStep2,
+    title: "Eligibility Check",
+    description: "Take our Polish citizenship test and fill the family tree so we can determine your eligibility. If eligible, we move to the next stage.",
+    icon: ClipboardCheck,
     gradient: "from-secondary to-accent",
+    cta: "Take Test",
+    link: "https://polishcitizenship.typeform.com/to/PS5ecU"
   },
   {
     number: "03",
-    title: "Document Preparation",
-    description: "We'll guide you through gathering necessary documents. Our team handles translations, archival research, and all Polish bureaucratic requirements.",
-    icon: FileCheck,
-    illustration: onboardingStep3,
+    title: "Document Examination",
+    description: "We carefully examine your documents, especially Polish documents of ancestors and naturalization/military service documents.",
+    icon: FileSearch,
     gradient: "from-accent to-primary",
+    cta: "Dashboard",
+    link: "#"
   },
   {
     number: "04",
-    title: "Application & Success",
-    description: "We submit your application and manage the entire process. Track your progress through our client portal until you receive your Polish citizenship confirmation.",
-    icon: Rocket,
-    illustration: onboardingStep4,
+    title: "Case Assessment",
+    description: "We analyze your case and provide comprehensive assessment of chances, timeline, and costs involved.",
+    icon: Scale,
     gradient: "from-primary to-secondary",
+    cta: "Schedule Consultation",
+    link: "#contact"
+  },
+  {
+    number: "05",
+    title: "Send Documents",
+    description: "Send by FedEx to our Warsaw office all required documents for processing.",
+    icon: Send,
+    gradient: "from-secondary to-accent",
+    cta: "Dashboard",
+    link: "#"
+  },
+  {
+    number: "06",
+    title: "AI Document Processing",
+    description: "All documents are processed by our AI Documents System to generate Powers of Attorney and the Polish citizenship application.",
+    icon: Brain,
+    gradient: "from-accent to-primary",
+    cta: "Dashboard",
+    link: "#"
+  },
+  {
+    number: "07",
+    title: "Application Filing",
+    description: "Send Powers of Attorney by FedEx to our Warsaw office. We file your citizenship application with Polish authorities.",
+    icon: FileCheck2,
+    gradient: "from-primary to-secondary",
+    cta: "Application Generation",
+    link: "#"
+  },
+  {
+    number: "08",
+    title: "Comprehensive Processing",
+    description: "We handle all procedures simultaneously: sworn translations, archives search, Polish civil acts, and passport preparation. After about 12 months, we receive initial response from authorities.",
+    icon: Globe,
+    gradient: "from-secondary to-accent",
+    cta: "Schedule Consultation",
+    link: "#contact"
   },
 ];
 
@@ -73,7 +109,7 @@ export default function ClientOnboardingSection() {
             className="text-5xl md:text-8xl font-heading font-black mb-6 tracking-tight"
           >
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-primary animate-fade-in-up glow-text drop-shadow-2xl">
-              How to Start Your Case
+              How to Become Our Client
             </span>
           </motion.h2>
           <motion.p 
@@ -83,7 +119,7 @@ export default function ClientOnboardingSection() {
             viewport={{ once: true }}
             className="text-xl text-muted-foreground max-w-3xl mx-auto"
           >
-            Join thousands of successful clients who achieved Polish citizenship with our expert legal guidance
+            Follow these 8 clear steps to become our registered client and start your citizenship case
           </motion.p>
         </motion.div>
 
@@ -102,16 +138,12 @@ export default function ClientOnboardingSection() {
                 transition={{ duration: 0.3 }}
                 className="glass-card p-8 rounded-2xl h-full hover-glow group"
               >
-                {/* Illustration */}
+                {/* Icon and Number */}
                 <div className="mb-6 relative">
-                  <div className="w-full h-48 rounded-xl overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/5 flex items-center justify-center">
-                    <img 
-                      src={step.illustration} 
-                      alt={step.title}
-                      className="w-40 h-40 object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-300"
-                    />
+                  <div className="w-full h-32 rounded-xl overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/5 flex items-center justify-center">
+                    <step.icon className="w-16 h-16 text-primary opacity-80 group-hover:opacity-100 transition-opacity duration-300" />
                   </div>
-                  <div className={`absolute top-4 left-4 text-6xl font-heading font-black bg-gradient-to-r ${step.gradient} bg-clip-text text-transparent opacity-20`}>
+                  <div className={`absolute top-4 left-4 text-5xl font-heading font-black bg-gradient-to-r ${step.gradient} bg-clip-text text-transparent opacity-20`}>
                     {step.number}
                   </div>
                 </div>
@@ -127,9 +159,23 @@ export default function ClientOnboardingSection() {
                   >
                     {step.title}
                   </motion.h3>
-                  <p className="text-muted-foreground leading-relaxed">
+                  <p className="text-muted-foreground leading-relaxed mb-4">
                     {step.description}
                   </p>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                    onClick={() => {
+                      if (step.link.startsWith('#')) {
+                        document.querySelector(step.link)?.scrollIntoView({ behavior: 'smooth' });
+                      } else if (step.link.startsWith('http')) {
+                        window.open(step.link, '_blank');
+                      }
+                    }}
+                  >
+                    {step.cta} →
+                  </Button>
                 </div>
               </motion.div>
             </motion.div>
@@ -147,9 +193,17 @@ export default function ClientOnboardingSection() {
           <Button
             size="lg"
             className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-all duration-300 text-lg px-8 py-6 font-heading font-bold"
+            onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU', '_blank')}
+          >
+            Take Full Polish Citizenship Test
+          </Button>
+          <Button
+            size="lg"
+            variant="outline"
+            className="ml-4 text-lg px-8 py-6 font-heading font-bold"
             onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
           >
-            Start Your Journey Today
+            Contact Us Now
           </Button>
         </motion.div>
       </div>
