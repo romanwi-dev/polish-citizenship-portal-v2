@@ -82,6 +82,7 @@ const Cases = () => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const totalCards = mockCases.length;
 
   const nextSlide = () => {
@@ -114,6 +115,13 @@ const Cases = () => {
       if (isFullscreen) return;
       
       e.preventDefault();
+      
+      // Debounce scroll events for slower navigation
+      if (scrollTimeoutRef.current) return;
+      
+      scrollTimeoutRef.current = setTimeout(() => {
+        scrollTimeoutRef.current = null;
+      }, 500); // 500ms delay between scrolls
       
       if (e.deltaY > 0) {
         // Scroll down - next card
@@ -220,8 +228,8 @@ const Cases = () => {
           {/* 3D Circular Carousel */}
           <div 
             ref={scrollContainerRef}
-            className="relative max-w-4xl mx-auto h-[600px] md:h-[700px] flex items-center justify-center" 
-            style={{ perspective: '2000px' }}
+            className="relative max-w-6xl mx-auto h-[600px] md:h-[800px] flex items-center justify-center" 
+            style={{ perspective: '2500px' }}
           >
             <div className="relative w-full h-full" style={{ transformStyle: 'preserve-3d' }}>
               {mockCases.map((clientCase, index) => {
@@ -233,14 +241,14 @@ const Cases = () => {
                 // Calculate 3D position
                 const rotateY = angle;
                 const translateZ = -radius;
-                const scale = isFront ? 1.2 : 0.8;
+                const scale = isFront ? 1.5 : 0.7;
                 const opacity = isFront ? 1 : 0.3;
                 const zIndex = isFront ? 10 : 1;
                 
                 return (
                   <div
                     key={clientCase.id}
-                    className="absolute top-1/2 left-1/2 w-full max-w-md transition-all duration-700 ease-out"
+                    className="absolute top-1/2 left-1/2 w-full max-w-lg transition-all duration-700 ease-out"
                     style={{
                       transform: `translate(-50%, -50%) rotateY(${rotateY}deg) translateZ(${translateZ}px) scale(${scale})`,
                       transformStyle: 'preserve-3d',
