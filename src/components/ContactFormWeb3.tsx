@@ -4,13 +4,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Send, Shield, Zap } from "lucide-react";
+import { Send, Zap } from "lucide-react";
 import { z } from "zod";
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, { message: "Name is required" }).max(100),
   email: z.string().trim().email({ message: "Invalid email address" }).max(255),
-  wallet: z.string().trim().max(100),
   message: z.string().trim().min(1, { message: "Message is required" }).max(1000),
 });
 
@@ -19,7 +18,6 @@ const ContactFormWeb3 = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    wallet: "",
     message: "",
   });
 
@@ -34,7 +32,7 @@ const ContactFormWeb3 = () => {
         description: "Our AI will analyze your case within 24 hours.",
       });
       
-      setFormData({ name: "", email: "", wallet: "", message: "" });
+      setFormData({ name: "", email: "", message: "" });
     } catch (error) {
       if (error instanceof z.ZodError) {
         toast({
@@ -78,60 +76,55 @@ const ContactFormWeb3 = () => {
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5" />
             
             <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="space-y-3 animate-fade-in">
-                  <Label htmlFor="name" className="text-foreground text-lg font-semibold">Full Name *</Label>
-                  <Input
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder="Enter your full name"
-                    required
-                    className="glass-card border-border/50 focus:border-primary focus:scale-[1.02] transition-all duration-300 h-14 text-lg placeholder:text-muted-foreground/50 hover:border-primary/50"
-                  />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-3 animate-fade-in group">
+                  <Label htmlFor="name" className="text-foreground text-lg font-semibold">Name *</Label>
+                  <div className="relative overflow-hidden rounded-xl">
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary to-accent opacity-0 group-hover:opacity-10 transition-opacity duration-500" />
+                    <Input
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      placeholder="Enter your full name"
+                      required
+                      className="glass-card border-border/50 focus:border-primary hover:scale-[1.02] focus:scale-[1.02] transition-all duration-300 h-16 text-lg placeholder:text-muted-foreground/50 hover:border-primary/50 w-full relative z-10"
+                    />
+                  </div>
                 </div>
-                <div className="space-y-3 animate-fade-in" style={{ animationDelay: '0.1s' }}>
-                  <Label htmlFor="email" className="text-foreground text-lg font-semibold">Email Address *</Label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="your.email@example.com"
-                    required
-                    className="glass-card border-border/50 focus:border-primary focus:scale-[1.02] transition-all duration-300 h-14 text-lg placeholder:text-muted-foreground/50 hover:border-primary/50"
-                  />
+                <div className="space-y-3 animate-fade-in group" style={{ animationDelay: '0.1s' }}>
+                  <Label htmlFor="email" className="text-foreground text-lg font-semibold">Email *</Label>
+                  <div className="relative overflow-hidden rounded-xl">
+                    <div className="absolute inset-0 bg-gradient-to-br from-secondary to-primary opacity-0 group-hover:opacity-10 transition-opacity duration-500" />
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="your.email@example.com"
+                      required
+                      className="glass-card border-border/50 focus:border-primary hover:scale-[1.02] focus:scale-[1.02] transition-all duration-300 h-16 text-lg placeholder:text-muted-foreground/50 hover:border-primary/50 w-full relative z-10"
+                    />
+                  </div>
                 </div>
               </div>
               
-              <div className="space-y-3 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-                <Label htmlFor="wallet" className="text-foreground text-lg font-semibold flex items-center gap-2">
-                  <Shield className="w-5 h-5" />
-                  Wallet Address (Optional)
-                </Label>
-                <Input
-                  id="wallet"
-                  name="wallet"
-                  value={formData.wallet}
-                  onChange={handleChange}
-                  placeholder="0x... (for blockchain-verified document storage)"
-                  className="glass-card border-border/50 focus:border-primary focus:scale-[1.02] transition-all duration-300 h-14 text-lg font-mono placeholder:text-muted-foreground/50 hover:border-primary/50"
-                />
-              </div>
-              
-              <div className="space-y-3 animate-fade-in" style={{ animationDelay: '0.3s' }}>
-                <Label htmlFor="message" className="text-foreground text-lg font-semibold">Tell Us About Your Polish Heritage *</Label>
-                <Textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  placeholder="Describe your Polish ancestry, available documents, and citizenship goals..."
-                  required
-                  className="min-h-[200px] glass-card border-border/50 focus:border-primary focus:scale-[1.01] transition-all duration-300 text-lg placeholder:text-muted-foreground/50 hover:border-primary/50 resize-none"
-                />
+              <div className="space-y-3 animate-fade-in group" style={{ animationDelay: '0.2s' }}>
+                <Label htmlFor="message" className="text-foreground text-lg font-semibold">Your Polish family history... *</Label>
+                <div className="relative overflow-hidden rounded-xl">
+                  <div className="absolute inset-0 bg-gradient-to-br from-accent to-secondary opacity-0 group-hover:opacity-10 transition-opacity duration-500" />
+                  <div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-accent to-secondary opacity-20 blur-3xl rounded-full group-hover:opacity-30 transition-opacity" />
+                  <Textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    placeholder="Describe your Polish ancestry, available documents, and citizenship goals..."
+                    required
+                    className="min-h-[240px] glass-card border-border/50 focus:border-primary hover:scale-[1.01] focus:scale-[1.01] transition-all duration-300 text-lg placeholder:text-muted-foreground/50 hover:border-primary/50 resize-none w-full relative z-10"
+                  />
+                </div>
               </div>
 
               <Button 
@@ -152,8 +145,8 @@ const ContactFormWeb3 = () => {
             <div className="grid md:grid-cols-3 gap-6 mt-12 pt-12 border-t border-border/30">
               {[
                 { icon: Zap, text: "Instant AI Response" },
-                { icon: Shield, text: "Blockchain Secured" },
-                { icon: Send, text: "24/7 Availability" }
+                { icon: Send, text: "Secure Processing" },
+                { icon: Zap, text: "24/7 Availability" }
               ].map((feature, i) => {
                 const Icon = feature.icon;
                 return (
@@ -169,11 +162,12 @@ const ContactFormWeb3 = () => {
           </div>
 
           {/* Trust Indicators */}
-          <div className="grid md:grid-cols-3 gap-6 mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-12">
             {[
-              { label: "Average Response", value: "< 2 hours" },
-              { label: "AI Accuracy", value: "99.7%" },
-              { label: "Cases Processed", value: "10,000+" }
+              { label: "Average Response", value: "< 3 hours" },
+              { label: "True Success Rate", value: "100%" },
+              { label: "Cases Processed", value: "25,000+" },
+              { label: "Experience", value: "20+ Years" }
             ].map((stat, i) => (
               <div key={i} className="glass-card p-6 rounded-2xl text-center hover-glow">
                 <div className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
