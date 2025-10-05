@@ -129,14 +129,12 @@ const ContactFormWeb3 = () => {
               <Button 
                 type="submit" 
                 size="lg" 
-                className="w-full bg-gradient-to-r from-primary via-secondary to-accent hover:opacity-90 text-white text-lg py-6 hover-glow group relative overflow-hidden"
+                className="text-2xl font-bold px-20 py-6 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 w-full"
               >
-                <span className="relative z-10 flex items-center justify-center">
-                  <Zap className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform" />
-                  Launch AI Analysis
-                  <Send className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                  Send Your Info
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               </Button>
             </form>
 
