@@ -62,11 +62,11 @@ const ContactFormWeb3 = () => {
           </div>
           <h2 className="text-5xl md:text-6xl font-bold mb-6">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              Polish Citizenship by Descent
+              Start Your Journey
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Get instant AI-powered eligibility assessment. Changing a boring and complex paperwork into a pleasant online experience.
+            Get instant AI-powered eligibility assessment. Our experts will guide you through the entire process.
           </p>
         </div>
 

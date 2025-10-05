@@ -33,13 +33,10 @@ const HeroWeb3 = () => {
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
               Polish Citizenship by Descent
             </span>
-            <br />
-            <span className="text-foreground">Reimagined</span>
           </h1>
           
           <p className="text-xl md:text-2xl text-muted-foreground mb-12 leading-relaxed max-w-2xl mx-auto animate-fade-in">
-            Experience the future of citizenship services. 
-            Blockchain-verified documents, AI-powered eligibility checks, and seamless EU integration. Changing a boring and complex paperwork into a pleasant online experience.
+            Experience the future of citizenship services. Blockchain-verified documents, AI-powered eligibility checks, and seamless EU integration. Changing a boring and complex paperwork into a pleasant online experience.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in">
