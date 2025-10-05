@@ -57,7 +57,7 @@ const AboutSection = () => {
             </div>
             <h3 className="text-xl font-bold mb-3">The Benefits of Polish European Citizenship</h3>
             <p className="text-muted-foreground">
-              The education system in Europe is outstanding and offers the best elementary schools, top high schools, and some of the world's best universities. The latest medical technology and the best pharmaceutical developments ensure that your health is in good hands in Europe. With a Polish European passport you can freely move, travel, live, and work in any of the 28 member states of the EU. Businesses enjoy the benefits of duty-free imports and exports across country borders within the member states of the European Union.
+              The education system in Europe is outstanding and offers the best elementary schools, top high schools, and some of the world's best universities. The latest medical technology and the best pharmaceutical developments ensure that your health is in good hands in Europe. With a Polish European passport you can freely move, travel, live, and work in any of the 28 member states of the EU.
             </p>
           </div>
         </div>
