@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { CheckCircle2, FileText, Scale, Users, Building2, Award, Clock, AlertCircle, Shield, FileCheck, Stamp, Globe } from "lucide-react";
+import { FileText, CheckCircle, CreditCard, FileCheck, Send, FolderSearch, Archive, Languages, Upload, Stamp, Clock, Zap, Award, Book, Users, Shield } from "lucide-react";
 import { Button } from "./ui/button";
 import timelineDocument from "@/assets/timeline-document.png";
 import timelineStamp from "@/assets/timeline-stamp.png";
@@ -9,104 +9,170 @@ import timelinePassport from "@/assets/timeline-passport.png";
 
 const timelineSteps = [
   {
-    number: 1,
-    title: "Initial Case Assessment",
-    description: "Comprehensive evaluation of your eligibility for Polish citizenship by descent.",
-    duration: "1-2 weeks",
-    keyAction: "Document collection begins",
-    priority: "Critical",
+    number: "1",
+    title: "PART 1 - FIRST STEPS",
+    description: "First contact, citizenship test, family tree, eligibility examination, and eligibility call",
+    duration: "Week 1",
+    keyAction: "Initial Setup & Payment",
+    priority: "Major Milestone",
     icon: FileText,
-    gradient: "from-blue-500 to-blue-600",
+    gradient: "from-blue-500 to-cyan-500",
     illustration: timelineDocument,
   },
   {
-    number: 2,
-    title: "Genealogical Research",
-    description: "Detailed ancestry verification and family tree documentation from Polish archives.",
-    duration: "4-8 weeks",
-    keyAction: "Archive requests submitted",
-    priority: "Essential",
-    icon: Users,
-    gradient: "from-blue-600 to-cyan-500",
+    number: "2",
+    title: "PART 2 - TERMS & PRICING",
+    description: "Initial assessment, full process info with pricing, client confirmation, and document list",
+    duration: "Week 1-2",
+    keyAction: "Initial Setup & Payment",
+    priority: "Foundation Building",
+    icon: CreditCard,
+    gradient: "from-cyan-500 to-blue-500",
+    illustration: timelineDocument,
+  },
+  {
+    number: "3",
+    title: "PART 3 - ADVANCE & ACCOUNT",
+    description: "Advance payment processing and opening client portal account",
+    duration: "Week 2",
+    keyAction: "Initial Setup & Payment",
+    priority: "Major Milestone",
+    icon: CheckCircle,
+    gradient: "from-blue-500 to-indigo-500",
+    illustration: timelineStamp,
+  },
+  {
+    number: "4",
+    title: "PART 4 - DETAILS & POAs",
+    description: "Client provides basic details, POA preparation, and signed documents via FedEx",
+    duration: "Week 2-3",
+    keyAction: "Details & Application",
+    priority: "Foundation Building",
+    icon: FileCheck,
+    gradient: "from-indigo-500 to-purple-500",
+    illustration: timelineDocument,
+  },
+  {
+    number: "5",
+    title: "PART 5 - DATA & APPLICATION",
+    description: "Master form completion, AI paperwork generation, and official citizenship application submission",
+    duration: "Week 3-4",
+    keyAction: "Details & Application",
+    priority: "Major Milestone",
+    icon: Send,
+    gradient: "from-purple-500 to-pink-500",
+    illustration: timelineDocument,
+  },
+  {
+    number: "6",
+    title: "PART 6 - LOCAL DOCUMENTS",
+    description: "Document clarification, gathering local documents, and partner collaboration for collection",
+    duration: "Week 4-8",
+    keyAction: "Documentation & Translation",
+    priority: "Major Milestone",
+    icon: FolderSearch,
+    gradient: "from-pink-500 to-rose-500",
+    illustration: timelineDocument,
+  },
+  {
+    number: "7",
+    title: "PART 7 - POLISH DOCUMENTS",
+    description: "Polish archives search, international search, and partner processing for archival documents",
+    duration: "Week 4-12",
+    keyAction: "Documentation & Translation",
+    priority: "Major Milestone",
+    icon: Archive,
+    gradient: "from-rose-500 to-red-500",
     illustration: timelineFamily,
   },
   {
-    number: 3,
-    title: "Document Acquisition",
-    description: "Obtaining vital records (birth, marriage, death certificates) from Polish authorities.",
-    duration: "6-12 weeks",
-    keyAction: "Official certificates obtained",
-    priority: "Critical",
-    icon: FileCheck,
-    gradient: "from-cyan-500 to-blue-500",
+    number: "8",
+    title: "PART 8 - TRANSLATIONS",
+    description: "AI translation service, certified sworn translator certification, and translation agent supervision",
+    duration: "Week 8-16",
+    keyAction: "Documentation & Translation",
+    priority: "Major Milestone",
+    icon: Languages,
+    gradient: "from-red-500 to-orange-500",
     illustration: timelineDocument,
   },
   {
-    number: 4,
-    title: "Legal Document Preparation",
-    description: "Professional translation and apostille certification of all required documents.",
-    duration: "2-4 weeks",
-    keyAction: "Translations & apostilles",
-    priority: "Required",
-    icon: Scale,
-    gradient: "from-blue-500 to-indigo-600",
+    number: "9",
+    title: "PART 9 - FILING DOCUMENTS",
+    description: "Submitting local documents and detailed family information before initial response",
+    duration: "Week 12-18",
+    keyAction: "Filing & Civil Acts",
+    priority: "Active Processing",
+    icon: Upload,
+    gradient: "from-orange-500 to-amber-500",
+    illustration: timelineDocument,
+  },
+  {
+    number: "10",
+    title: "PART 10 - CIVIL ACTS",
+    description: "Polish civil acts applications, payment processing, and dedicated civil acts agent supervision",
+    duration: "Week 16-20",
+    keyAction: "Filing & Civil Acts",
+    priority: "Major Milestone",
+    icon: Stamp,
+    gradient: "from-amber-500 to-yellow-500",
     illustration: timelineStamp,
   },
   {
-    number: 5,
-    title: "Application Compilation",
-    description: "Complete citizenship application assembly with all supporting documentation.",
-    duration: "1-2 weeks",
-    keyAction: "Final review completed",
-    priority: "Critical",
-    icon: FileText,
-    gradient: "from-indigo-600 to-blue-600",
-    illustration: timelineDocument,
-  },
-  {
-    number: 6,
-    title: "Submission to Polish Authorities",
-    description: "Official filing of citizenship application to the appropriate voivodeship office.",
-    duration: "1 week",
-    keyAction: "Application submitted",
-    priority: "Milestone",
-    icon: Building2,
-    gradient: "from-blue-600 to-cyan-500",
-    illustration: timelineCourthouse,
-  },
-  {
-    number: 7,
-    title: "Administrative Processing",
-    description: "Polish authorities review and verify all submitted documentation and claims.",
-    duration: "12-24 months",
-    keyAction: "Awaiting decision",
-    priority: "Patience Required",
+    number: "11",
+    title: "PART 11 - INITIAL RESPONSE",
+    description: "Receiving initial response from Masovian Voivoda's office and extending procedure term",
+    duration: "Month 10-18",
+    keyAction: "Government Processing",
+    priority: "Major Milestone",
     icon: Clock,
-    gradient: "from-cyan-500 to-blue-500",
+    gradient: "from-yellow-500 to-lime-500",
     illustration: timelineCourthouse,
   },
   {
-    number: 8,
-    title: "Citizenship Confirmation",
-    description: "Receipt of official Polish citizenship decision and confirmation certificate.",
-    duration: "Varies",
-    keyAction: "Decision received",
-    priority: "Final Step",
+    number: "12",
+    title: "PART 12 - PUSH SCHEMES",
+    description: "Offering push schemes (PUSH, NUDGE, SIT-DOWN) and implementing strategies in practice",
+    duration: "Month 12-20",
+    keyAction: "Government Processing",
+    priority: "Major Milestone",
+    icon: Zap,
+    gradient: "from-lime-500 to-green-500",
+    illustration: timelineCourthouse,
+  },
+  {
+    number: "13",
+    title: "PART 13 - CITIZENSHIP DECISION",
+    description: "Polish citizenship confirmation decision received and added to client portal account",
+    duration: "Month 18-24",
+    keyAction: "Citizenship Confirmation",
+    priority: "Critical Milestone",
     icon: Award,
-    gradient: "from-blue-500 to-indigo-600",
+    gradient: "from-green-500 to-emerald-500",
     illustration: timelineStamp,
   },
   {
-    number: 9,
-    title: "Polish Passport Application",
-    description: "Application for Polish passport and national ID card.",
-    duration: "4-6 weeks",
-    keyAction: "Identity documents",
-    priority: "Post-Citizenship",
-    icon: Globe,
-    gradient: "from-indigo-600 to-blue-600",
+    number: "14",
+    title: "PART 14 - POLISH PASSPORT",
+    description: "Document preparation, final payment, FedEx delivery, consulate visit, and passport application",
+    duration: "Month 20-26",
+    keyAction: "Passport & Extended Services",
+    priority: "Major Milestone",
+    icon: Book,
+    gradient: "from-emerald-500 to-teal-500",
     illustration: timelinePassport,
   },
+  {
+    number: "15",
+    title: "PART 15 - EXTENDED SERVICES",
+    description: "Extended family legal services for comprehensive ongoing support",
+    duration: "Ongoing",
+    keyAction: "Passport & Extended Services",
+    priority: "Final Achievement",
+    icon: Users,
+    gradient: "from-teal-500 to-cyan-500",
+    illustration: timelineFamily,
+  }
 ];
 
 export default function TimelineProcessEnhanced() {
@@ -127,12 +193,26 @@ export default function TimelineProcessEnhanced() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-primary">
-            Your Journey to Polish Citizenship
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            A transparent, step-by-step process designed with 20+ years of expertise in Polish citizenship law
-          </p>
+          <motion.h2 
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="text-5xl md:text-7xl font-black mb-6 tracking-tight"
+          >
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-primary animate-fade-in-up glow-text">
+              Complete Legal Process Timeline
+            </span>
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="text-xl text-muted-foreground max-w-3xl mx-auto"
+          >
+            Your journey to Polish citizenship through our comprehensive 15-part process. Many parts are processed SIMULTANEOUSLY to save time.
+          </motion.p>
         </motion.div>
 
         {/* Timeline */}
@@ -154,37 +234,36 @@ export default function TimelineProcessEnhanced() {
               {/* Content Card */}
               <div className="w-full md:w-5/12">
                 <motion.div
-                  whileHover={{ scale: 1.02, rotateY: 5 }}
+                  whileHover={{ scale: 1.02 }}
                   transition={{ duration: 0.3 }}
                   className="glass-card p-6 rounded-2xl hover-glow group"
-                  style={{
-                    transformStyle: 'preserve-3d',
-                  }}
                 >
-                  <div className="flex items-start gap-4">
-                    <div className={`flex-shrink-0 w-16 h-16 rounded-xl bg-gradient-to-br ${step.gradient} flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300`}>
-                      <step.icon className="w-8 h-8 text-white" />
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className={`text-xs font-bold px-2 py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
+                        {step.number}
+                      </span>
+                      <span className="text-xs text-muted-foreground">{step.duration}</span>
                     </div>
-                    <div className="flex-grow">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-sm font-bold text-primary">Step {step.number}</span>
-                        <span className="text-xs px-2 py-1 rounded-full bg-primary/20 text-primary border border-primary/30">
-                          {step.priority}
-                        </span>
-                      </div>
-                      <h3 className="text-xl font-bold mb-2 text-card-foreground">{step.title}</h3>
-                      <p className="text-sm text-muted-foreground mb-4">{step.description}</p>
-                      
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2 text-sm">
-                          <Clock className="w-4 h-4 text-secondary" />
-                          <span className="text-muted-foreground">Duration: <strong className="text-card-foreground">{step.duration}</strong></span>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm">
-                          <CheckCircle2 className="w-4 h-4 text-green-500" />
-                          <span className="text-muted-foreground">Key Action: <strong className="text-card-foreground">{step.keyAction}</strong></span>
-                        </div>
-                      </div>
+                    <motion.h3 
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.05 }}
+                      viewport={{ once: true }}
+                      className="text-2xl font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300"
+                    >
+                      {step.title}
+                    </motion.h3>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      {step.description}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
+                        {step.keyAction}
+                      </span>
+                      <span className="text-xs px-3 py-1 rounded-full bg-secondary/10 text-secondary border border-secondary/20">
+                        {step.priority}
+                      </span>
                     </div>
                   </div>
                 </motion.div>
