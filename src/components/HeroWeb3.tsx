@@ -29,11 +29,63 @@ const HeroWeb3 = () => {
             <span className="text-sm font-medium">Web3 Legal Services</span>
           </div>
           
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight animate-fade-in">
-            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent text-3d-forward text-framed">
-              Polish Citizenship by Descent
-            </span>
-          </h1>
+          
+          {/* Font Comparison */}
+          <div className="space-y-8 mb-12">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground mb-2">1. Bebas Neue (Current)</p>
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>
+                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent text-3d-forward text-framed">
+                  Polish Citizenship by Descent
+                </span>
+              </h1>
+            </div>
+
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground mb-2">2. Playfair Display</p>
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
+                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent text-3d-forward text-framed">
+                  Polish Citizenship by Descent
+                </span>
+              </h1>
+            </div>
+
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground mb-2">3. Oswald</p>
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight" style={{ fontFamily: 'Oswald, sans-serif' }}>
+                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent text-3d-forward text-framed">
+                  Polish Citizenship by Descent
+                </span>
+              </h1>
+            </div>
+
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground mb-2">4. Raleway</p>
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight" style={{ fontFamily: 'Raleway, sans-serif' }}>
+                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent text-3d-forward text-framed">
+                  Polish Citizenship by Descent
+                </span>
+              </h1>
+            </div>
+
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground mb-2">5. Montserrat</p>
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent text-3d-forward text-framed">
+                  Polish Citizenship by Descent
+                </span>
+              </h1>
+            </div>
+
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground mb-2">6. Cinzel (Legal/Classical)</p>
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight" style={{ fontFamily: 'Cinzel, serif' }}>
+                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent text-3d-forward text-framed">
+                  Polish Citizenship by Descent
+                </span>
+              </h1>
+            </div>
+          </div>
           
           <p className="text-xl md:text-2xl text-muted-foreground mb-8 leading-relaxed max-w-3xl mx-auto animate-fade-in">
             Expert legal guidance for people of Polish and Polish-Jewish descent from around the world for obtaining Polish citizenship and EU passports through Polish ancestry - unmatched 100% success rate, true realist timeline 1,5 - 4 years, transparent pricing €3,500 - €12,500+
