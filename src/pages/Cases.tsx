@@ -74,6 +74,66 @@ const mockCases: ClientCase[] = [
     documents: 20,
     progress: 100,
     ancestry: "Great-grandmother from Lublin"
+  },
+  {
+    id: 7,
+    name: "Maria Rodriguez",
+    country: "Spain",
+    status: "active",
+    startDate: "2024-04-12",
+    documents: 10,
+    progress: 55,
+    ancestry: "Grandfather from Szczecin"
+  },
+  {
+    id: 8,
+    name: "John Smith",
+    country: "Australia",
+    status: "pending",
+    startDate: "2024-07-08",
+    documents: 6,
+    progress: 30,
+    ancestry: "Great-grandfather from Łódź"
+  },
+  {
+    id: 9,
+    name: "Sophie Dubois",
+    country: "France",
+    status: "active",
+    startDate: "2024-02-20",
+    documents: 14,
+    progress: 70,
+    ancestry: "Grandmother from Białystok"
+  },
+  {
+    id: 10,
+    name: "Lars Anderson",
+    country: "Sweden",
+    status: "completed",
+    startDate: "2023-09-15",
+    documents: 22,
+    progress: 100,
+    ancestry: "Mother from Katowice"
+  },
+  {
+    id: 11,
+    name: "Chen Wei",
+    country: "Singapore",
+    status: "active",
+    startDate: "2024-05-03",
+    documents: 9,
+    progress: 40,
+    ancestry: "Great-grandmother from Toruń"
+  },
+  {
+    id: 12,
+    name: "Isabella Costa",
+    country: "Brazil",
+    status: "pending",
+    startDate: "2024-08-01",
+    documents: 7,
+    progress: 25,
+    ancestry: "Grandfather from Opole"
   }
 ];
 
@@ -97,15 +157,18 @@ const Cases = () => {
     setIsFullscreen(false);
   };
 
-  const handleCardClick = (e: React.MouseEvent) => {
+  const handleCardClick = (e: React.MouseEvent, isFront: boolean) => {
+    if (!isFront) return;
     e.stopPropagation();
-    if (!isFullscreen) {
-      setIsFlipped(!isFlipped);
-    }
+    console.log('Card clicked, flipping');
+    setIsFlipped(!isFlipped);
   };
 
-  const handleCardDoubleClick = (e: React.MouseEvent) => {
+  const handleCardDoubleClick = (e: React.MouseEvent, isFront: boolean) => {
+    if (!isFront) return;
     e.stopPropagation();
+    e.preventDefault();
+    console.log('Card double-clicked, going fullscreen');
     setIsFullscreen(true);
     setIsFlipped(false);
   };
@@ -228,21 +291,21 @@ const Cases = () => {
           {/* 3D Circular Carousel */}
           <div 
             ref={scrollContainerRef}
-            className="relative max-w-6xl mx-auto h-[600px] md:h-[800px] flex items-center justify-center" 
-            style={{ perspective: '2500px' }}
+            className="relative w-full mx-auto h-[600px] md:h-[800px] flex items-center justify-center overflow-visible" 
+            style={{ perspective: '3000px' }}
           >
             <div className="relative w-full h-full" style={{ transformStyle: 'preserve-3d' }}>
               {mockCases.map((clientCase, index) => {
                 const offset = index - currentIndex;
                 const angle = (360 / totalCards) * offset;
                 const isFront = offset === 0;
-                const radius = 400;
+                const radius = 800; // Much larger radius for wider circle
                 
                 // Calculate 3D position
                 const rotateY = angle;
                 const translateZ = -radius;
                 const scale = isFront ? 1.5 : 0.7;
-                const opacity = isFront ? 0.9 : 0.3;
+                const opacity = isFront ? 1 : 0.25; // Main card fully opaque
                 const zIndex = isFront ? 10 : 1;
                 
                 return (
@@ -265,8 +328,8 @@ const Cases = () => {
                         transform: isFront && isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
                         cursor: isFront ? 'pointer' : 'default',
                       }}
-                      onClick={isFront ? handleCardClick : undefined}
-                      onDoubleClick={isFront ? handleCardDoubleClick : undefined}
+                      onClick={(e) => handleCardClick(e, isFront)}
+                      onDoubleClick={(e) => handleCardDoubleClick(e, isFront)}
                     >
                       {/* Front of Card */}
                       <div
