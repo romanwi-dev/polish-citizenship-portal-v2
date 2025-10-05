@@ -42,10 +42,10 @@ const HeroWeb3 = () => {
           <div className="flex justify-center animate-fade-in">
             <Button 
               size="lg" 
-              className="text-lg px-20 py-6 h-auto rounded-lg bg-white/10 hover:bg-white/20 text-white shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30"
+              className="text-2xl font-bold px-20 py-6 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30"
               onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
             >
-              <span className="relative z-10">
+              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 Polish Citizenship Test
               </span>
               <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
