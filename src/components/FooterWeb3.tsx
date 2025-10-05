@@ -12,7 +12,7 @@ const FooterWeb3 = () => {
         <div className="grid md:grid-cols-4 gap-12 mb-16">
           <div className="md:col-span-2">
             <div className="mb-6">
-              <img src={logo} alt="PolishCitizenship.pl" className="h-12 w-auto" />
+              <img src={logo} alt="PolishCitizenship.pl" className="h-8 w-auto" />
             </div>
             <p className="text-muted-foreground leading-relaxed mb-6">
               Expert legal guidance for people of Polish and Polish-Jewish descent from around the world. 
