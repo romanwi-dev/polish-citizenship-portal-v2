@@ -11,7 +11,7 @@ import timelineGraphic from "@/assets/timeline-graphic.png";
 const timelineSteps = [
   {
     number: "1",
-    title: "PART 1 - FIRST STEPS",
+    title: "FIRST STEPS",
     description: "First contact, citizenship test, family tree, eligibility examination, and eligibility call",
     duration: "Week 1",
     keyAction: "Initial Setup & Payment",
@@ -22,7 +22,7 @@ const timelineSteps = [
   },
   {
     number: "2",
-    title: "PART 2 - TERMS & PRICING",
+    title: "TERMS & PRICING",
     description: "Initial assessment, full process info with pricing, client confirmation, and document list",
     duration: "Week 1-2",
     keyAction: "Initial Setup & Payment",
@@ -33,7 +33,7 @@ const timelineSteps = [
   },
   {
     number: "3",
-    title: "PART 3 - ADVANCE & ACCOUNT",
+    title: "ADVANCE & ACCOUNT",
     description: "Advance payment processing and opening client portal account",
     duration: "Week 2",
     keyAction: "Initial Setup & Payment",
@@ -44,7 +44,7 @@ const timelineSteps = [
   },
   {
     number: "4",
-    title: "PART 4 - DETAILS & POAs",
+    title: "DETAILS & POAs",
     description: "Client provides basic details, POA preparation, and signed documents via FedEx",
     duration: "Week 2-3",
     keyAction: "Details & Application",
@@ -55,7 +55,7 @@ const timelineSteps = [
   },
   {
     number: "5",
-    title: "PART 5 - DATA & APPLICATION",
+    title: "DATA & APPLICATION",
     description: "Master form completion, AI paperwork generation, and official citizenship application submission",
     duration: "Week 3-4",
     keyAction: "Details & Application",
@@ -66,7 +66,7 @@ const timelineSteps = [
   },
   {
     number: "6",
-    title: "PART 6 - LOCAL DOCUMENTS",
+    title: "LOCAL DOCUMENTS",
     description: "Document clarification, gathering local documents, and partner collaboration for collection",
     duration: "Week 4-8",
     keyAction: "Documentation & Translation",
@@ -77,7 +77,7 @@ const timelineSteps = [
   },
   {
     number: "7",
-    title: "PART 7 - POLISH DOCUMENTS",
+    title: "POLISH DOCUMENTS",
     description: "Polish archives search, international search, and partner processing for archival documents",
     duration: "Week 4-12",
     keyAction: "Documentation & Translation",
@@ -88,7 +88,7 @@ const timelineSteps = [
   },
   {
     number: "8",
-    title: "PART 8 - TRANSLATIONS",
+    title: "TRANSLATIONS",
     description: "AI translation service, certified sworn translator certification, and translation agent supervision",
     duration: "Week 8-16",
     keyAction: "Documentation & Translation",
@@ -99,7 +99,7 @@ const timelineSteps = [
   },
   {
     number: "9",
-    title: "PART 9 - FILING DOCUMENTS",
+    title: "FILING DOCUMENTS",
     description: "Submitting local documents and detailed family information before initial response",
     duration: "Week 12-18",
     keyAction: "Filing & Civil Acts",
@@ -110,7 +110,7 @@ const timelineSteps = [
   },
   {
     number: "10",
-    title: "PART 10 - CIVIL ACTS",
+    title: "CIVIL ACTS",
     description: "Polish civil acts applications, payment processing, and dedicated civil acts agent supervision",
     duration: "Week 16-20",
     keyAction: "Filing & Civil Acts",
@@ -121,7 +121,7 @@ const timelineSteps = [
   },
   {
     number: "11",
-    title: "PART 11 - INITIAL RESPONSE",
+    title: "INITIAL RESPONSE",
     description: "Receiving initial response from Masovian Voivoda's office and extending procedure term",
     duration: "Month 10-18",
     keyAction: "Government Processing",
@@ -132,7 +132,7 @@ const timelineSteps = [
   },
   {
     number: "12",
-    title: "PART 12 - PUSH SCHEMES",
+    title: "PUSH SCHEMES",
     description: "Offering push schemes (PUSH, NUDGE, SIT-DOWN) and implementing strategies in practice",
     duration: "Month 12-20",
     keyAction: "Government Processing",
@@ -143,7 +143,7 @@ const timelineSteps = [
   },
   {
     number: "13",
-    title: "PART 13 - CITIZENSHIP DECISION",
+    title: "CITIZENSHIP DECISION",
     description: "Polish citizenship confirmation decision received and added to client portal account",
     duration: "Month 18-24",
     keyAction: "Citizenship Confirmation",
@@ -154,7 +154,7 @@ const timelineSteps = [
   },
   {
     number: "14",
-    title: "PART 14 - POLISH PASSPORT",
+    title: "POLISH PASSPORT",
     description: "Document preparation, final payment, FedEx delivery, consulate visit, and passport application",
     duration: "Month 20-26",
     keyAction: "Passport & Extended Services",
@@ -165,7 +165,7 @@ const timelineSteps = [
   },
   {
     number: "15",
-    title: "PART 15 - EXTENDED SERVICES",
+    title: "EXTENDED SERVICES",
     description: "Extended family legal services for comprehensive ongoing support",
     duration: "Ongoing",
     keyAction: "Passport & Extended Services",
@@ -297,7 +297,7 @@ export default function TimelineProcessEnhanced() {
                 </motion.div>
               </div>
 
-              {/* Center Circle with Illustration */}
+              {/* Center Circle with Number */}
               <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:block">
                 <motion.div
                   initial={{ scale: 0 }}
@@ -307,12 +307,10 @@ export default function TimelineProcessEnhanced() {
                   className="relative w-24 h-24 rounded-full bg-gradient-to-br from-primary to-secondary p-1 animate-float"
                   style={{ animationDelay: `${index * 0.2}s` }}
                 >
-                  <div className="w-full h-full rounded-full bg-card flex items-center justify-center overflow-hidden">
-                    <img 
-                      src={step.illustration} 
-                      alt={step.title}
-                      className="w-16 h-16 object-contain opacity-90"
-                    />
+                  <div className="w-full h-full rounded-full bg-card flex items-center justify-center">
+                    <span className="text-4xl font-heading font-black bg-gradient-to-br from-primary to-secondary bg-clip-text text-transparent">
+                      {step.number}
+                    </span>
                   </div>
                   <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 blur-xl -z-10" />
                 </motion.div>

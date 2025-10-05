@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, User } from "lucide-react";
+import { Menu, User } from "lucide-react";
 import logo from "@/assets/logo.png";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -20,112 +26,89 @@ const Navigation = () => {
             <img src={logo} alt="PolishCitizenship.pl" className="h-10 w-auto" />
           </a>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
-            <button 
-              onClick={() => scrollToSection('services')}
-              className="text-foreground hover:text-primary transition-colors"
-            >
-              Services
-            </button>
-            <button 
-              onClick={() => scrollToSection('process')}
-              className="text-foreground hover:text-primary transition-colors"
-            >
-              Process
-            </button>
-            <button 
-              onClick={() => scrollToSection('pricing')}
-              className="text-foreground hover:text-primary transition-colors"
-            >
-              Pricing
-            </button>
-            <button 
-              onClick={() => scrollToSection('faq')}
-              className="text-foreground hover:text-primary transition-colors"
-            >
-              FAQ
-            </button>
-            <button 
-              onClick={() => scrollToSection('contact')}
-              className="text-foreground hover:text-primary transition-colors"
-            >
-              Contact
-            </button>
-            <a 
-              href="/admin/cases" 
-              className="text-foreground hover:text-primary transition-colors flex items-center gap-2"
-            >
-              <User className="w-4 h-4" />
-              Cases Management
-            </a>
-            <Button 
-              onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
-              className="bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white"
-            >
-              Take Full Test
-            </Button>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden text-foreground"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
-        </div>
-
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-primary/10">
-            <div className="flex flex-col gap-4">
-              <button 
-                onClick={() => scrollToSection('services')}
-                className="text-foreground hover:text-primary transition-colors text-left"
-              >
-                Services
-              </button>
-              <button 
-                onClick={() => scrollToSection('process')}
-                className="text-foreground hover:text-primary transition-colors text-left"
-              >
-                Process
-              </button>
-              <button 
-                onClick={() => scrollToSection('pricing')}
-                className="text-foreground hover:text-primary transition-colors text-left"
-              >
-                Pricing
-              </button>
-              <button 
-                onClick={() => scrollToSection('faq')}
-                className="text-foreground hover:text-primary transition-colors text-left"
-              >
-                FAQ
-              </button>
-              <button 
-                onClick={() => scrollToSection('contact')}
-                className="text-foreground hover:text-primary transition-colors text-left"
-              >
-                Contact
-              </button>
-              <a 
-                href="/admin/cases" 
-                className="text-foreground hover:text-primary transition-colors flex items-center gap-2"
-              >
-                <User className="w-4 h-4" />
-                Cases Management
-              </a>
+          {/* Desktop & Mobile Menu */}
+          <DropdownMenu open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+            <DropdownMenuTrigger asChild>
               <Button 
-                onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
-                className="bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white w-full"
+                variant="ghost" 
+                size="icon"
+                className="text-foreground hover:text-primary"
               >
-                Take Full Test
+                <Menu className="h-6 w-6" />
               </Button>
-            </div>
-          </div>
-        )}
+            </DropdownMenuTrigger>
+            <DropdownMenuContent 
+              align="end" 
+              className="w-64 p-3 bg-background/95 backdrop-blur-xl border border-primary/20 z-[100]"
+            >
+              <div className="flex flex-col gap-2">
+                <DropdownMenuItem asChild>
+                  <Button
+                    onClick={() => scrollToSection('services')}
+                    variant="ghost"
+                    className="w-full justify-start text-base font-medium rounded-md hover:bg-primary/10 transition-colors"
+                  >
+                    Services
+                  </Button>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Button
+                    onClick={() => scrollToSection('process')}
+                    variant="ghost"
+                    className="w-full justify-start text-base font-medium rounded-md hover:bg-primary/10 transition-colors"
+                  >
+                    Process
+                  </Button>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Button
+                    onClick={() => scrollToSection('pricing')}
+                    variant="ghost"
+                    className="w-full justify-start text-base font-medium rounded-md hover:bg-primary/10 transition-colors"
+                  >
+                    Pricing
+                  </Button>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Button
+                    onClick={() => scrollToSection('faq')}
+                    variant="ghost"
+                    className="w-full justify-start text-base font-medium rounded-md hover:bg-primary/10 transition-colors"
+                  >
+                    FAQ
+                  </Button>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Button
+                    onClick={() => scrollToSection('contact')}
+                    variant="ghost"
+                    className="w-full justify-start text-base font-medium rounded-md hover:bg-primary/10 transition-colors"
+                  >
+                    Contact
+                  </Button>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Button
+                    onClick={() => window.location.href = '/admin/cases'}
+                    variant="ghost"
+                    className="w-full justify-start text-base font-medium rounded-md hover:bg-primary/10 transition-colors"
+                  >
+                    <User className="w-4 h-4 mr-2" />
+                    Cases Management
+                  </Button>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Button 
+                    onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
+                    className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white rounded-md mt-2"
+                  >
+                    Take Full Test
+                  </Button>
+                </DropdownMenuItem>
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
     </nav>
   );
