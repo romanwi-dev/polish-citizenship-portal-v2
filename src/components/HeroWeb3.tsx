@@ -30,7 +30,7 @@ const HeroWeb3 = () => {
           </div>
           
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight animate-fade-in">
-            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent text-3d-forward text-framed">
               Polish Citizenship by Descent
             </span>
           </h1>

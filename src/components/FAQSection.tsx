@@ -171,7 +171,7 @@ const FAQSection = () => {
           <div className="text-center mb-12 space-y-4">
             <h2 className="text-4xl md:text-5xl font-bold">
               Find Answers{" "}
-              <span className="bg-gradient-to-r from-primary via-purple-400 to-primary bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-primary via-purple-400 to-primary bg-clip-text text-transparent text-3d-forward text-framed">
                 Instantly
               </span>
             </h2>

@@ -61,7 +61,7 @@ const ContactFormWeb3 = () => {
             </span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent text-3d-forward text-framed">
               Ready to Check Your Eligibility?
             </span>
           </h2>
