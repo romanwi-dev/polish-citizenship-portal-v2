@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { Scene3D } from "./Scene3D";
+import { Enhanced3DScene } from "./Enhanced3DScene";
 
 const HeroWeb3 = () => {
   const scrollToContact = () => {
@@ -11,7 +11,7 @@ const HeroWeb3 = () => {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* 3D Background */}
       <div className="absolute inset-0 z-0">
-        <Scene3D />
+        <Enhanced3DScene />
       </div>
 
       {/* Gradient Overlays */}
