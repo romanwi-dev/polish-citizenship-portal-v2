@@ -34,7 +34,7 @@ const Navigation = () => {
               className="text-foreground hover:text-primary"
               onClick={() => window.location.href = '/auth'}
             >
-              <User className="h-10 w-10" />
+              <User className="h-14 w-14" />
             </Button>
             <DropdownMenu open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <DropdownMenuTrigger asChild>
@@ -43,7 +43,7 @@ const Navigation = () => {
                   size="icon"
                   className="text-foreground hover:text-primary"
                 >
-                  <Menu className="h-10 w-10" />
+                  <Menu className="h-14 w-14" />
                 </Button>
               </DropdownMenuTrigger>
             <DropdownMenuContent 
