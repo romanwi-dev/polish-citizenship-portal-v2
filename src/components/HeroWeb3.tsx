@@ -22,7 +22,7 @@ const HeroWeb3 = () => {
       <div className="absolute bottom-20 right-20 w-96 h-96 bg-secondary/20 rounded-full blur-[120px] animate-pulse delay-700 z-[1]" />
 
       {/* Content */}
-      <div className="container relative z-10 px-4 pt-40 pb-20 mx-auto">
+      <div className="container relative z-10 px-4 pt-24 pb-20 mx-auto">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-12 animate-fade-in">
             <Sparkles className="w-4 h-4 text-primary" />
