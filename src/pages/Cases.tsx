@@ -197,15 +197,23 @@ const Cases = () => {
       setIsFlipped(false);
     };
 
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isFullscreen) {
+        setIsFullscreen(false);
+      }
+    };
+
     const container = scrollContainerRef.current;
     if (container) {
       container.addEventListener('wheel', handleWheel, { passive: false });
     }
+    window.addEventListener('keydown', handleKeyDown);
 
     return () => {
       if (container) {
         container.removeEventListener('wheel', handleWheel);
       }
+      window.removeEventListener('keydown', handleKeyDown);
     };
   }, [totalCards, isFullscreen]);
 
@@ -305,7 +313,7 @@ const Cases = () => {
                 const rotateY = angle;
                 const translateZ = -radius;
                 const scale = isFront ? 1.5 : 0.7;
-                const opacity = isFront ? 1 : 0.25; // Main card fully opaque
+                const opacity = isFront ? 1 : 0.3; // Main card fully opaque, others dimmed
                 const zIndex = isFront ? 10 : 1;
                 
                 return (
