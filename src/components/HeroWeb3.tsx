@@ -36,40 +36,36 @@ const HeroWeb3 = () => {
           </h1>
           
           <p className="text-xl md:text-2xl text-muted-foreground mb-8 leading-relaxed max-w-3xl mx-auto animate-fade-in">
-            Expert legal guidance for people of Polish and Polish-Jewish descent from around the world for obtaining Polish citizenship and EU passports through Polish ancestry - unmatched 100% success rate, true realistic timeline 1.5 - 4 years, transparent pricing €3,500 - €12,500+
+            Expert legal guidance for people of Polish and Polish-Jewish descent from around the world for obtaining Polish citizenship and EU passports through Polish ancestry - unmatched 100% success rate, true realist timeline 1,5 - 4 years, transparent pricing €3,500 - €12,500+
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in">
             <Button 
               size="lg" 
-              className="text-lg px-8 py-6 bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white shadow-glow hover-glow group relative overflow-hidden"
-              onClick={scrollToContact}
+              className="text-lg px-8 py-6 glass-card border-primary/50 text-foreground hover:bg-primary/10 hover-glow"
+              onClick={() => window.open('https://polishcitizenshippl-20-8pfm8wc5m6.replit.app/family-tree', '_blank')}
             >
-              <span className="relative z-10 flex items-center">
-                Begin Journey
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+              Fill Your Family Tree
             </Button>
             <Button 
               size="lg" 
-              variant="outline" 
-              className="text-lg px-8 py-6 glass-card border-primary/50 text-foreground hover:bg-primary/10 hover-glow"
-              onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
+              className="text-lg px-8 py-6 bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white shadow-glow hover-glow group relative overflow-hidden"
+              onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
             >
-              Explore Features
+              <span className="relative z-10 flex items-center">
+                Take Full Polish Citizenship Test
+                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover:opacity-100 transition-opacity" />
             </Button>
           </div>
 
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mt-16 max-w-4xl mx-auto">
             {[
-              { value: "22+", label: "Years Experience" },
-              { value: "5,000+", label: "Cases Processed" },
-              { value: "100%", label: "True Success Rate" },
               { value: "2+ Years", label: "Realistic Timeline" },
-              { value: "€3,500+", label: "Transparent Pricing" },
-              { value: "24/7", label: "AI Support" }
+              { value: "€3,500+", label: "Transparent Real Pricing" },
+              { value: "100%", label: "True Success Rate" }
             ].map((stat, i) => (
               <div key={i} className="glass-card p-6 rounded-2xl hover-glow">
                 <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
