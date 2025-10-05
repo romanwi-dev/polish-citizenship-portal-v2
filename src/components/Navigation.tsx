@@ -26,17 +26,26 @@ const Navigation = () => {
             <img src={logo} alt="PolishCitizenship.pl" className="h-10 w-auto" />
           </a>
 
-          {/* Desktop & Mobile Menu */}
-          <DropdownMenu open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-            <DropdownMenuTrigger asChild>
-              <Button 
-                variant="ghost" 
-                size="icon"
-                className="text-foreground hover:text-primary"
-              >
-                <Menu className="h-6 w-6" />
-              </Button>
-            </DropdownMenuTrigger>
+          {/* User Icon & Mobile Menu */}
+          <div className="flex items-center gap-2">
+            <Button 
+              variant="ghost" 
+              size="icon"
+              className="text-foreground hover:text-primary"
+              onClick={() => window.location.href = '/auth'}
+            >
+              <User className="h-7 w-7" />
+            </Button>
+            <DropdownMenu open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+              <DropdownMenuTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  className="text-foreground hover:text-primary"
+                >
+                  <Menu className="h-8 w-8" />
+                </Button>
+              </DropdownMenuTrigger>
             <DropdownMenuContent 
               align="end" 
               className="w-64 p-3 bg-background/95 backdrop-blur-xl border border-primary/20 z-[100]"
@@ -108,6 +117,7 @@ const Navigation = () => {
               </div>
             </DropdownMenuContent>
           </DropdownMenu>
+          </div>
         </div>
       </div>
     </nav>
