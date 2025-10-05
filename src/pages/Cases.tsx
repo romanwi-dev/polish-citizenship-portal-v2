@@ -79,15 +79,15 @@ const mockCases: ClientCase[] = [
 
 const Cases = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const cardsPerView = 3;
-  const maxIndex = Math.max(0, mockCases.length - cardsPerView);
+  const totalCards = mockCases.length;
+  const anglePerCard = 360 / totalCards;
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => Math.min(prev + 1, maxIndex));
+    setCurrentIndex((prev) => (prev + 1) % totalCards);
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => Math.max(prev - 1, 0));
+    setCurrentIndex((prev) => (prev - 1 + totalCards) % totalCards);
   };
 
   const getStatusColor = (status: string) => {
@@ -145,10 +145,9 @@ const Cases = () => {
           </div>
 
           {/* Carousel Controls */}
-          <div className="flex justify-between items-center mb-8 max-w-7xl mx-auto">
+          <div className="flex justify-between items-center mb-8 max-w-4xl mx-auto">
             <Button
               onClick={prevSlide}
-              disabled={currentIndex === 0}
               size="icon"
               className="glass-card hover-glow h-12 w-12 rounded-full"
               variant="ghost"
@@ -157,12 +156,11 @@ const Cases = () => {
             </Button>
             
             <div className="text-sm text-muted-foreground">
-              {currentIndex + 1} - {Math.min(currentIndex + cardsPerView, mockCases.length)} of {mockCases.length}
+              Case {currentIndex + 1} of {totalCards}
             </div>
             
             <Button
               onClick={nextSlide}
-              disabled={currentIndex === maxIndex}
               size="icon"
               className="glass-card hover-glow h-12 w-12 rounded-full"
               variant="ghost"
@@ -171,91 +169,102 @@ const Cases = () => {
             </Button>
           </div>
 
-          {/* Carousel */}
-          <div className="relative max-w-7xl mx-auto overflow-hidden">
+          {/* 3D Circular Carousel */}
+          <div className="relative max-w-4xl mx-auto h-[600px] flex items-center justify-center" style={{ perspective: "2000px" }}>
             <div 
-              className="flex gap-6 transition-transform duration-700 ease-out"
+              className="relative w-full h-full transition-transform duration-700 ease-out"
               style={{ 
-                transform: `translateX(-${currentIndex * (100 / cardsPerView)}%)`,
+                transformStyle: "preserve-3d",
+                transform: `rotateY(${-currentIndex * anglePerCard}deg)`,
               }}
             >
-              {mockCases.map((clientCase) => (
-                <div
-                  key={clientCase.id}
-                  className="min-w-[calc(33.333%-1rem)] flex-shrink-0"
-                  style={{ flexBasis: `calc(${100 / cardsPerView}% - 1rem)` }}
-                >
-                  <div className={`glass-card rounded-2xl p-6 h-full bg-gradient-to-br ${getStatusColor(clientCase.status)} border hover-glow transition-all duration-300 hover:scale-105`}>
-                    {/* Header */}
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-                          <User className="w-6 h-6 text-white" />
+              {mockCases.map((clientCase, index) => {
+                const angle = index * anglePerCard;
+                const isActive = index === currentIndex;
+                
+                return (
+                  <div
+                    key={clientCase.id}
+                    className="absolute top-1/2 left-1/2 w-[400px] -ml-[200px] -mt-[250px] transition-all duration-700"
+                    style={{ 
+                      transform: `rotateY(${angle}deg) translateZ(600px)`,
+                      transformStyle: "preserve-3d",
+                      opacity: isActive ? 1 : 0.4,
+                      filter: isActive ? "blur(0px)" : "blur(2px)",
+                    }}
+                  >
+                    <div className={`glass-card rounded-2xl p-6 h-full bg-gradient-to-br ${getStatusColor(clientCase.status)} border hover-glow transition-all duration-300 ${isActive ? "scale-110" : "scale-100"}`}>
+                      {/* Header */}
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+                            <User className="w-6 h-6 text-white" />
+                          </div>
+                          <div>
+                            <h3 className="font-bold text-lg">{clientCase.name}</h3>
+                            <p className="text-sm text-muted-foreground">{clientCase.country}</p>
+                          </div>
                         </div>
-                        <div>
-                          <h3 className="font-bold text-lg">{clientCase.name}</h3>
-                          <p className="text-sm text-muted-foreground">{clientCase.country}</p>
+                        <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusBadge(clientCase.status)} capitalize`}>
+                          {clientCase.status}
+                        </span>
+                      </div>
+
+                      {/* Ancestry Info */}
+                      <div className="mb-4 p-3 rounded-lg bg-background/50 backdrop-blur-sm">
+                        <p className="text-sm text-muted-foreground mb-1">Polish Ancestry</p>
+                        <p className="text-sm font-medium">{clientCase.ancestry}</p>
+                      </div>
+
+                      {/* Stats */}
+                      <div className="grid grid-cols-2 gap-3 mb-4">
+                        <div className="flex items-center gap-2 p-2 rounded-lg bg-background/30">
+                          <Calendar className="w-4 h-4 text-primary" />
+                          <div>
+                            <p className="text-xs text-muted-foreground">Started</p>
+                            <p className="text-sm font-medium">{new Date(clientCase.startDate).toLocaleDateString()}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 p-2 rounded-lg bg-background/30">
+                          <FileText className="w-4 h-4 text-secondary" />
+                          <div>
+                            <p className="text-xs text-muted-foreground">Documents</p>
+                            <p className="text-sm font-medium">{clientCase.documents}</p>
+                          </div>
                         </div>
                       </div>
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusBadge(clientCase.status)} capitalize`}>
-                        {clientCase.status}
-                      </span>
-                    </div>
 
-                    {/* Ancestry Info */}
-                    <div className="mb-4 p-3 rounded-lg bg-background/50 backdrop-blur-sm">
-                      <p className="text-sm text-muted-foreground mb-1">Polish Ancestry</p>
-                      <p className="text-sm font-medium">{clientCase.ancestry}</p>
-                    </div>
-
-                    {/* Stats */}
-                    <div className="grid grid-cols-2 gap-3 mb-4">
-                      <div className="flex items-center gap-2 p-2 rounded-lg bg-background/30">
-                        <Calendar className="w-4 h-4 text-primary" />
-                        <div>
-                          <p className="text-xs text-muted-foreground">Started</p>
-                          <p className="text-sm font-medium">{new Date(clientCase.startDate).toLocaleDateString()}</p>
+                      {/* Progress */}
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-muted-foreground">Progress</span>
+                          <span className="font-bold">{clientCase.progress}%</span>
+                        </div>
+                        <div className="h-2 bg-background/50 rounded-full overflow-hidden">
+                          <div 
+                            className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-500 rounded-full"
+                            style={{ width: `${clientCase.progress}%` }}
+                          />
                         </div>
                       </div>
-                      <div className="flex items-center gap-2 p-2 rounded-lg bg-background/30">
-                        <FileText className="w-4 h-4 text-secondary" />
-                        <div>
-                          <p className="text-xs text-muted-foreground">Documents</p>
-                          <p className="text-sm font-medium">{clientCase.documents}</p>
+
+                      {/* Completion Badge */}
+                      {clientCase.status === "completed" && (
+                        <div className="mt-4 flex items-center justify-center gap-2 p-2 rounded-lg bg-green-500/10 border border-green-500/30">
+                          <CheckCircle2 className="w-4 h-4 text-green-400" />
+                          <span className="text-sm font-medium text-green-400">Application Approved</span>
                         </div>
-                      </div>
+                      )}
                     </div>
-
-                    {/* Progress */}
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">Progress</span>
-                        <span className="font-bold">{clientCase.progress}%</span>
-                      </div>
-                      <div className="h-2 bg-background/50 rounded-full overflow-hidden">
-                        <div 
-                          className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-500 rounded-full"
-                          style={{ width: `${clientCase.progress}%` }}
-                        />
-                      </div>
-                    </div>
-
-                    {/* Completion Badge */}
-                    {clientCase.status === "completed" && (
-                      <div className="mt-4 flex items-center justify-center gap-2 p-2 rounded-lg bg-green-500/10 border border-green-500/30">
-                        <CheckCircle2 className="w-4 h-4 text-green-400" />
-                        <span className="text-sm font-medium text-green-400">Application Approved</span>
-                      </div>
-                    )}
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
           {/* Navigation Dots */}
           <div className="flex justify-center gap-2 mt-8">
-            {Array.from({ length: maxIndex + 1 }).map((_, index) => (
+            {mockCases.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
