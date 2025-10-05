@@ -80,16 +80,32 @@ const mockCases: ClientCase[] = [
 const Cases = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const totalCards = mockCases.length;
 
   const nextSlide = () => {
     setCurrentIndex((prev) => (prev + 1) % totalCards);
     setIsFlipped(false);
+    setIsFullscreen(false);
   };
 
   const prevSlide = () => {
     setCurrentIndex((prev) => (prev - 1 + totalCards) % totalCards);
     setIsFlipped(false);
+    setIsFullscreen(false);
+  };
+
+  const handleCardClick = (isFront: boolean) => {
+    if (isFront && !isFullscreen) {
+      setIsFlipped(!isFlipped);
+    }
+  };
+
+  const handleCardDoubleClick = (isFront: boolean) => {
+    if (isFront) {
+      setIsFullscreen(!isFullscreen);
+      setIsFlipped(false);
+    }
   };
 
   const getStatusColor = (status: string) => {
@@ -184,7 +200,7 @@ const Cases = () => {
                 const rotateY = angle;
                 const translateZ = -radius;
                 const scale = isFront ? 1.2 : 0.8;
-                const opacity = isFront ? 1 : 0.4;
+                const opacity = isFront ? 1 : 0.3;
                 const zIndex = isFront ? 10 : 1;
                 
                 return (
@@ -206,7 +222,8 @@ const Cases = () => {
                         transformStyle: 'preserve-3d',
                         transform: isFront && isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
                       }}
-                      onClick={() => isFront && setIsFlipped(!isFlipped)}
+                      onClick={() => handleCardClick(isFront)}
+                      onDoubleClick={() => handleCardDoubleClick(isFront)}
                     >
                       {/* Front of Card */}
                       <div
@@ -281,7 +298,7 @@ const Cases = () => {
 
                           {isFront && (
                             <div className="mt-3 text-center text-xs text-muted-foreground">
-                              Click to flip
+                              Click to flip • Double-click for fullscreen
                             </div>
                           )}
                         </div>
@@ -319,7 +336,7 @@ const Cases = () => {
                           </div>
                           {isFront && (
                             <div className="mt-4 text-center text-xs text-muted-foreground">
-                              Click to flip back
+                              Click to flip back • Double-click for fullscreen
                             </div>
                           )}
                         </div>
@@ -330,6 +347,85 @@ const Cases = () => {
               })}
             </div>
           </div>
+
+          {/* Fullscreen Modal */}
+          {isFullscreen && (
+            <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-xl flex items-center justify-center p-4" onClick={() => setIsFullscreen(false)}>
+              <div className="relative w-full max-w-4xl" onClick={(e) => e.stopPropagation()}>
+                <Button
+                  onClick={() => setIsFullscreen(false)}
+                  size="icon"
+                  variant="ghost"
+                  className="absolute -top-12 right-0 h-10 w-10 rounded-full glass-card hover-glow"
+                >
+                  <span className="text-2xl">×</span>
+                </Button>
+                <div className={`glass-card rounded-2xl p-6 md:p-8 bg-gradient-to-br ${getStatusColor(mockCases[currentIndex].status)} border shadow-2xl`}>
+                  {/* Header */}
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="flex items-center gap-4">
+                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+                        <User className="w-8 h-8 text-white" />
+                      </div>
+                      <div>
+                        <h2 className="font-bold text-2xl md:text-3xl">{mockCases[currentIndex].name}</h2>
+                        <p className="text-lg text-muted-foreground">{mockCases[currentIndex].country}</p>
+                      </div>
+                    </div>
+                    <span className={`px-4 py-2 rounded-full text-sm font-medium border ${getStatusBadge(mockCases[currentIndex].status)} capitalize`}>
+                      {mockCases[currentIndex].status}
+                    </span>
+                  </div>
+
+                  {/* Ancestry Info */}
+                  <div className="mb-6 p-4 rounded-lg bg-background/50 backdrop-blur-sm">
+                    <p className="text-sm text-muted-foreground mb-2">Polish Ancestry</p>
+                    <p className="text-lg font-medium">{mockCases[currentIndex].ancestry}</p>
+                  </div>
+
+                  {/* Stats Grid */}
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className="p-4 rounded-lg bg-background/30">
+                      <Calendar className="w-6 h-6 text-primary mb-2" />
+                      <p className="text-sm text-muted-foreground">Started</p>
+                      <p className="text-lg font-medium">{new Date(mockCases[currentIndex].startDate).toLocaleDateString()}</p>
+                    </div>
+                    <div className="p-4 rounded-lg bg-background/30">
+                      <FileText className="w-6 h-6 text-secondary mb-2" />
+                      <p className="text-sm text-muted-foreground">Documents</p>
+                      <p className="text-lg font-medium">{mockCases[currentIndex].documents}</p>
+                    </div>
+                  </div>
+
+                  {/* Progress */}
+                  <div className="space-y-3 mb-6">
+                    <div className="flex items-center justify-between text-lg">
+                      <span className="text-muted-foreground">Progress</span>
+                      <span className="font-bold text-2xl">{mockCases[currentIndex].progress}%</span>
+                    </div>
+                    <div className="h-3 bg-background/50 rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-500 rounded-full"
+                        style={{ width: `${mockCases[currentIndex].progress}%` }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Completion Badge */}
+                  {mockCases[currentIndex].status === "completed" && (
+                    <div className="flex items-center justify-center gap-3 p-4 rounded-lg bg-green-500/10 border border-green-500/30">
+                      <CheckCircle2 className="w-6 h-6 text-green-400" />
+                      <span className="text-lg font-medium text-green-400">Application Approved</span>
+                    </div>
+                  )}
+
+                  <div className="mt-6 text-center text-sm text-muted-foreground">
+                    Click outside or press × to close
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Navigation Dots */}
           <div className="flex justify-center gap-2 mt-8">
