@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { ChevronLeft, ChevronRight, User, Calendar, FileText, CheckCircle2 } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
@@ -79,28 +79,14 @@ const mockCases: ClientCase[] = [
 
 const Cases = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const totalCards = mockCases.length;
 
-  const scrollToIndex = (index: number) => {
-    if (scrollContainerRef.current) {
-      const cardWidth = scrollContainerRef.current.scrollWidth / totalCards;
-      scrollContainerRef.current.scrollTo({
-        left: cardWidth * index,
-        behavior: 'smooth'
-      });
-      setCurrentIndex(index);
-    }
-  };
-
   const nextSlide = () => {
-    const newIndex = (currentIndex + 1) % totalCards;
-    scrollToIndex(newIndex);
+    setCurrentIndex((prev) => (prev + 1) % totalCards);
   };
 
   const prevSlide = () => {
-    const newIndex = (currentIndex - 1 + totalCards) % totalCards;
-    scrollToIndex(newIndex);
+    setCurrentIndex((prev) => (prev - 1 + totalCards) % totalCards);
   };
 
   const getStatusColor = (status: string) => {
@@ -182,31 +168,33 @@ const Cases = () => {
             </Button>
           </div>
 
-          {/* Horizontal Scrollable Tape Carousel */}
-          <div className="relative max-w-6xl mx-auto">
-            <div
-              ref={scrollContainerRef}
-              className="flex overflow-x-auto gap-4 md:gap-6 pb-4 snap-x snap-mandatory scrollbar-hide scroll-smooth"
-              style={{
-                scrollbarWidth: 'none',
-                msOverflowStyle: 'none',
-                WebkitOverflowScrolling: 'touch'
-              }}
-              onScroll={(e) => {
-                const scrollLeft = e.currentTarget.scrollLeft;
-                const cardWidth = e.currentTarget.scrollWidth / totalCards;
-                const newIndex = Math.round(scrollLeft / cardWidth);
-                if (newIndex !== currentIndex) {
-                  setCurrentIndex(newIndex);
-                }
-              }}
-            >
-              {mockCases.map((clientCase) => (
+          {/* Stacked Cards Carousel */}
+          <div className="relative max-w-2xl mx-auto h-[500px] md:h-[600px] flex items-center justify-center">
+            {mockCases.map((clientCase, index) => {
+              const offset = index - currentIndex;
+              const absOffset = Math.abs(offset);
+              const isVisible = absOffset <= 2;
+              
+              // Calculate stacking position
+              const zIndex = totalCards - absOffset;
+              const scale = 1 - (absOffset * 0.05);
+              const yOffset = absOffset * 20;
+              const opacity = absOffset === 0 ? 1 : absOffset === 1 ? 0.7 : 0.4;
+              
+              if (!isVisible) return null;
+              
+              return (
                 <div
                   key={clientCase.id}
-                  className="min-w-full md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] flex-shrink-0 snap-start"
+                  className="absolute w-full max-w-md px-4 transition-all duration-500 ease-out"
+                  style={{
+                    zIndex,
+                    transform: `translateY(${yOffset}px) scale(${scale})`,
+                    opacity,
+                    pointerEvents: absOffset === 0 ? 'auto' : 'none',
+                  }}
                 >
-                  <div className={`glass-card rounded-2xl p-4 md:p-6 h-full bg-gradient-to-br ${getStatusColor(clientCase.status)} border hover-glow transition-all duration-300 hover:scale-[1.02]`}>
+                  <div className={`glass-card rounded-2xl p-4 md:p-6 bg-gradient-to-br ${getStatusColor(clientCase.status)} border hover-glow shadow-2xl`}>
                     {/* Header */}
                     <div className="flex items-start justify-between mb-3 md:mb-4">
                       <div className="flex items-center gap-2 md:gap-3">
@@ -214,7 +202,7 @@ const Cases = () => {
                           <User className="w-5 h-5 md:w-6 md:h-6 text-white" />
                         </div>
                         <div className="min-w-0">
-                          <h3 className="font-bold text-base md:text-lg truncate">{clientCase.name}</h3>
+                          <h3 className="font-bold text-base md:text-lg">{clientCase.name}</h3>
                           <p className="text-xs md:text-sm text-muted-foreground">{clientCase.country}</p>
                         </div>
                       </div>
@@ -235,7 +223,7 @@ const Cases = () => {
                         <Calendar className="w-4 h-4 text-primary flex-shrink-0" />
                         <div className="min-w-0">
                           <p className="text-xs text-muted-foreground">Started</p>
-                          <p className="text-xs md:text-sm font-medium truncate">{new Date(clientCase.startDate).toLocaleDateString()}</p>
+                          <p className="text-xs md:text-sm font-medium">{new Date(clientCase.startDate).toLocaleDateString()}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2 p-2 rounded-lg bg-background/30">
@@ -270,16 +258,16 @@ const Cases = () => {
                     )}
                   </div>
                 </div>
-              ))}
-            </div>
+              );
+            })}
           </div>
 
           {/* Navigation Dots */}
-          <div className="flex justify-center gap-2 mt-6 md:mt-8">
+          <div className="flex justify-center gap-2 mt-8">
             {mockCases.map((_, index) => (
               <button
                 key={index}
-                onClick={() => scrollToIndex(index)}
+                onClick={() => setCurrentIndex(index)}
                 className={`h-2 rounded-full transition-all duration-300 ${
                   index === currentIndex 
                     ? "w-6 md:w-8 bg-gradient-to-r from-primary to-accent" 
