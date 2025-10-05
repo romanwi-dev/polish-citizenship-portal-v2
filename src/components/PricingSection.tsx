@@ -15,18 +15,18 @@ const PricingSection = () => {
       <div className="container relative z-10 px-4 mx-auto">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16">
               <Zap className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium">Transparent Real Pricing</span>
             </div>
             
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold mb-14">
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 Choose Your Path
               </span>
             </h2>
             
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-16">
               Professional Polish citizenship by descent application services. The process involves complex legal requirements and requires expert guidance.
             </p>
           </div>

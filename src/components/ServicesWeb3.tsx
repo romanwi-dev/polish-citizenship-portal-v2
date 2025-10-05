@@ -47,17 +47,17 @@ const ServicesWeb3 = () => {
       
       <div className="container px-4 mx-auto relative z-10">
         <div className="text-center mb-20">
-          <div className="inline-block px-4 py-2 rounded-full glass-card mb-6">
+          <div className="inline-block px-4 py-2 rounded-full glass-card mb-16">
             <span className="text-sm font-medium bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
               Next-Gen Services
             </span>
           </div>
-          <h2 className="text-5xl md:text-6xl font-bold mb-6">
+          <h2 className="text-5xl md:text-6xl font-bold mb-14">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               Powered by Innovation
             </span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-16">
             Professional legal expertise combined with cutting-edge AI technology
           </p>
         </div>

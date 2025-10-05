@@ -192,8 +192,13 @@ export default function TimelineProcessEnhanced() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-20"
         >
+          <div className="inline-block px-4 py-2 rounded-full glass-card mb-16">
+            <span className="text-sm font-medium bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              Process Timeline
+            </span>
+          </div>
           <motion.h2 
             initial={{ opacity: 0, scale: 0.9, y: 30 }}
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
@@ -204,7 +209,7 @@ export default function TimelineProcessEnhanced() {
               stiffness: 100
             }}
             viewport={{ once: true }}
-            className="text-5xl md:text-8xl font-heading font-black mb-6 tracking-tight"
+            className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight"
           >
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-primary animate-fade-in-up glow-text drop-shadow-2xl">
               Complete Legal Process Timeline
@@ -215,7 +220,7 @@ export default function TimelineProcessEnhanced() {
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
             viewport={{ once: true }}
-            className="text-xl text-muted-foreground max-w-3xl mx-auto"
+            className="text-xl text-muted-foreground max-w-3xl mx-auto mb-16"
           >
             Your journey to Polish citizenship through our comprehensive 15-part process. Many parts are processed SIMULTANEOUSLY to save time.
           </motion.p>
