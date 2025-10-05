@@ -100,10 +100,11 @@ export default function ClientOnboardingSection() {
             initial={{ opacity: 0, scale: 0.9, y: 30 }}
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ 
-              duration: 1, 
+              duration: 2.5, 
               delay: 0.2,
               type: "spring",
-              stiffness: 100
+              stiffness: 50,
+              damping: 15
             }}
             viewport={{ once: true }}
             className="text-5xl md:text-8xl font-heading font-black mb-6 tracking-tight"

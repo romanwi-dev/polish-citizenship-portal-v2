@@ -255,10 +255,11 @@ export default function TimelineProcessEnhanced() {
                       initial={{ opacity: 0, x: -20, scale: 0.95 }}
                       whileInView={{ opacity: 1, x: 0, scale: 1 }}
                       transition={{ 
-                        duration: 0.7, 
+                        duration: 2, 
                         delay: index * 0.08,
                         type: "spring",
-                        stiffness: 120
+                        stiffness: 60,
+                        damping: 15
                       }}
                       viewport={{ once: true }}
                       className="text-2xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-lg"
