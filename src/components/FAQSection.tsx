@@ -175,28 +175,24 @@ const FAQSection = () => {
                 Instantly
               </span>
             </h2>
-            <div className="max-w-2xl mx-auto mt-8 mb-8 p-6 glass-card border border-primary/20 rounded-lg">
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                <span className="font-semibold text-foreground">Important:</span> Polish citizenship by descent is complex, document-heavy, and time-intensive. We <em className="italic">specialize</em> in difficult cases—especially pre-1920 emigration from territories that later became Poland. Legal representation requires two core rules: follow our advice and cooperate properly.
-              </p>
-            </div>
           </div>
 
           {/* Search Bar */}
           <div className="mb-8 relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground pointer-events-none" />
             <Input
               type="text"
               placeholder="Type to filter questions (e.g., pre-1920, naturalization, translations)..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-12 h-14 text-base glass-card border-primary/20 focus:border-primary/40"
+              className="pl-12 h-14 text-base glass-card border-primary/20 focus:border-primary/40 relative z-10"
             />
           </div>
 
           {/* FAQ Tabs */}
           <Tabs defaultValue="eligibility" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 gap-2 h-auto p-2 bg-background/50 backdrop-blur-sm border border-primary/10 mb-8">
+            <div className="mb-8 overflow-x-auto">
+              <TabsList className="inline-flex w-auto min-w-full lg:grid lg:grid-cols-5 gap-2 h-auto p-2 bg-background/50 backdrop-blur-sm border border-primary/10">
               {faqCategories.map((category) => {
                 const Icon = category.icon;
                 return (
@@ -210,7 +206,8 @@ const FAQSection = () => {
                   </TabsTrigger>
                 );
               })}
-            </TabsList>
+              </TabsList>
+            </div>
 
             {filteredCategories.map((category) => {
               const Icon = category.icon;
@@ -229,9 +226,9 @@ const FAQSection = () => {
                         className="glass-card border border-primary/10 rounded-lg px-6 hover:border-primary/30 transition-all"
                       >
                         <AccordionTrigger className="text-left hover:no-underline py-6">
-                          <span className="text-base font-semibold pr-4">{faq.question}</span>
+                          <span className="text-lg font-semibold pr-4">{faq.question}</span>
                         </AccordionTrigger>
-                        <AccordionContent className="text-muted-foreground pb-6 leading-relaxed">
+                        <AccordionContent className="text-muted-foreground pb-6 leading-relaxed text-base">
                           {faq.answer}
                         </AccordionContent>
                       </AccordionItem>

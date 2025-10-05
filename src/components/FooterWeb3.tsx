@@ -1,4 +1,5 @@
-import { Globe, Shield, Zap } from "lucide-react";
+import { Shield, Zap, Globe } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 const FooterWeb3 = () => {
   return (
@@ -10,13 +11,8 @@ const FooterWeb3 = () => {
       <div className="container px-4 mx-auto relative z-10">
         <div className="grid md:grid-cols-4 gap-12 mb-16">
           <div className="md:col-span-2">
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-                <Globe className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                Polish Citizenship
-              </h3>
+            <div className="mb-6">
+              <img src={logo} alt="PolishCitizenship.pl" className="h-12 w-auto" />
             </div>
             <p className="text-muted-foreground leading-relaxed mb-6">
               Expert legal guidance for people of Polish and Polish-Jewish descent from around the world. 

@@ -23,7 +23,7 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <a href="/" className="flex items-center">
-            <img src={logo} alt="PolishCitizenship.pl" className="h-10 w-auto" />
+            <img src={logo} alt="PolishCitizenship.pl" className="h-8 w-auto" />
           </a>
 
           {/* User Icon & Mobile Menu */}
