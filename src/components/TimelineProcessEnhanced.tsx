@@ -194,23 +194,6 @@ export default function TimelineProcessEnhanced() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          {/* Header Graphic */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            viewport={{ once: true }}
-            className="mb-8 max-w-4xl mx-auto"
-          >
-            <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/5 p-8">
-              <img 
-                src={timelineGraphic} 
-                alt="Timeline Process Visualization"
-                className="w-full h-auto opacity-70"
-              />
-            </div>
-          </motion.div>
-
           <motion.h2 
             initial={{ opacity: 0, scale: 0.9, y: 30 }}
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
