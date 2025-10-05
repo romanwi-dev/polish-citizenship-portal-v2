@@ -62,16 +62,16 @@ const ContactFormWeb3 = () => {
           </div>
           <h2 className="text-5xl md:text-6xl font-bold mb-6">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              Start Your Journey
+              Polish Citizenship by Descent
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Get instant AI-powered eligibility assessment
+            Get instant AI-powered eligibility assessment. Changing a boring and complex paperwork into a pleasant online experience.
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto">
-          <div className="glass-card p-12 rounded-3xl relative overflow-hidden">
+        <div className="max-w-5xl mx-auto px-2">
+          <div className="glass-card p-4 md:p-12 rounded-3xl relative overflow-hidden">
             {/* Background Gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5" />
             

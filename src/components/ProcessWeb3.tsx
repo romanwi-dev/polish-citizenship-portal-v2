@@ -105,11 +105,11 @@ const ProcessWeb3 = () => {
             <div className="relative z-10">
               <h3 className="text-3xl font-bold mb-4">
                 <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                  Average Processing Time
+                  True Realistic Time of Processing
                 </span>
               </h3>
-              <div className="text-6xl font-bold text-foreground mb-2">3-6 months</div>
-              <p className="text-muted-foreground text-lg">vs. traditional 12-24 months</p>
+              <div className="text-6xl font-bold text-foreground mb-2">18 - 36 months</div>
+              <p className="text-muted-foreground text-lg">vs. false promises of 'fast and easy' process!</p>
             </div>
           </div>
         </div>
