@@ -2,7 +2,7 @@ import { useRef, useMemo } from 'react';
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import { Float, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
-import heroPoland from '@/assets/hero-poland.jpg';
+import heroEuFlag from '@/assets/hero-eu-flag.jpg';
 
 function FloatingStars() {
   const starsRef = useRef<THREE.Group>(null);
@@ -67,7 +67,7 @@ function FloatingStars() {
 
 function MapPlane() {
   const meshRef = useRef<THREE.Mesh>(null);
-  const texture = useLoader(THREE.TextureLoader, heroPoland);
+  const texture = useLoader(THREE.TextureLoader, heroEuFlag);
 
   useFrame((state) => {
     if (meshRef.current) {

@@ -35,7 +35,7 @@ const AboutSection = () => {
 
         {/* Features Grid */}
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          <div className="glass-card p-8 rounded-2xl hover-glow text-center">
+          <div className="glass-card p-8 rounded-lg hover-glow text-center">
             <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
               <Users className="w-8 h-8 text-primary" />
             </div>
@@ -45,7 +45,7 @@ const AboutSection = () => {
             </p>
           </div>
 
-          <div className="glass-card p-8 rounded-2xl hover-glow text-center">
+          <div className="glass-card p-8 rounded-lg hover-glow text-center">
             <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-secondary/20 to-accent/20 flex items-center justify-center">
               <Globe className="w-8 h-8 text-secondary" />
             </div>
@@ -55,7 +55,7 @@ const AboutSection = () => {
             </p>
           </div>
 
-          <div className="glass-card p-8 rounded-2xl hover-glow text-center">
+          <div className="glass-card p-8 rounded-lg hover-glow text-center">
             <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-accent/20 to-primary/20 flex items-center justify-center">
               <Shield className="w-8 h-8 text-accent" />
             </div>

@@ -79,7 +79,7 @@ const ContactFormWeb3 = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-3 animate-fade-in group">
                   <Label htmlFor="name" className="text-foreground text-lg font-semibold">Name *</Label>
-                  <div className="relative overflow-hidden rounded-xl">
+                  <div className="relative overflow-hidden rounded-lg">
                     <div className="absolute inset-0 bg-gradient-to-br from-primary to-accent opacity-0 group-hover:opacity-10 transition-opacity duration-500" />
                     <Input
                       id="name"
@@ -94,7 +94,7 @@ const ContactFormWeb3 = () => {
                 </div>
                 <div className="space-y-3 animate-fade-in group" style={{ animationDelay: '0.1s' }}>
                   <Label htmlFor="email" className="text-foreground text-lg font-semibold">Email *</Label>
-                  <div className="relative overflow-hidden rounded-xl">
+                  <div className="relative overflow-hidden rounded-lg">
                     <div className="absolute inset-0 bg-gradient-to-br from-secondary to-primary opacity-0 group-hover:opacity-10 transition-opacity duration-500" />
                     <Input
                       id="email"
@@ -112,7 +112,7 @@ const ContactFormWeb3 = () => {
               
               <div className="space-y-3 animate-fade-in group" style={{ animationDelay: '0.2s' }}>
                 <Label htmlFor="message" className="text-foreground text-lg font-semibold">Your Polish family history... *</Label>
-                <div className="relative overflow-hidden rounded-xl">
+                <div className="relative overflow-hidden rounded-lg">
                   <div className="absolute inset-0 bg-gradient-to-br from-accent to-secondary opacity-0 group-hover:opacity-10 transition-opacity duration-500" />
                   <div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-accent to-secondary opacity-20 blur-3xl rounded-full group-hover:opacity-30 transition-opacity" />
                   <Textarea
@@ -169,7 +169,7 @@ const ContactFormWeb3 = () => {
               { label: "Cases Processed", value: "25,000+" },
               { label: "Experience", value: "20+ Years" }
             ].map((stat, i) => (
-              <div key={i} className="glass-card p-6 rounded-2xl text-center hover-glow">
+              <div key={i} className="glass-card p-6 rounded-lg text-center hover-glow">
                 <div className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
                   {stat.value}
                 </div>

@@ -37,7 +37,7 @@ const AIAnalysisSection = () => {
 
           {/* Features Grid */}
           <div className="grid md:grid-cols-3 gap-8 mb-16">
-            <div className="glass-card p-8 rounded-2xl hover-glow">
+            <div className="glass-card p-8 rounded-lg hover-glow">
               <div className="w-14 h-14 mb-4 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
                 <TrendingUp className="w-7 h-7 text-primary" />
               </div>
@@ -47,7 +47,7 @@ const AIAnalysisSection = () => {
               </p>
             </div>
 
-            <div className="glass-card p-8 rounded-2xl hover-glow">
+            <div className="glass-card p-8 rounded-lg hover-glow">
               <div className="w-14 h-14 mb-4 rounded-full bg-gradient-to-br from-secondary/20 to-accent/20 flex items-center justify-center">
                 <Clock className="w-7 h-7 text-secondary" />
               </div>
@@ -57,7 +57,7 @@ const AIAnalysisSection = () => {
               </p>
             </div>
 
-            <div className="glass-card p-8 rounded-2xl hover-glow">
+            <div className="glass-card p-8 rounded-lg hover-glow">
               <div className="w-14 h-14 mb-4 rounded-full bg-gradient-to-br from-accent/20 to-primary/20 flex items-center justify-center">
                 <AlertTriangle className="w-7 h-7 text-accent" />
               </div>

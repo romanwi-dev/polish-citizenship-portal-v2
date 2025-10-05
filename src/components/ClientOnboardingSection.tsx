@@ -136,11 +136,11 @@ export default function ClientOnboardingSection() {
               <motion.div
                 whileHover={{ scale: 1.03, y: -5 }}
                 transition={{ duration: 0.3 }}
-                className="glass-card p-8 rounded-2xl h-full hover-glow group"
+                className="glass-card p-8 rounded-lg h-full hover-glow group"
               >
                 {/* Icon and Number */}
                 <div className="mb-6 relative">
-                  <div className="w-full h-32 rounded-xl overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/5 flex items-center justify-center">
+                  <div className="w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/5 flex items-center justify-center">
                     <step.icon className="w-16 h-16 text-primary opacity-80 group-hover:opacity-100 transition-opacity duration-300" />
                   </div>
                   <div className={`absolute top-4 left-4 text-5xl font-heading font-black bg-gradient-to-r ${step.gradient} bg-clip-text text-transparent opacity-20`}>

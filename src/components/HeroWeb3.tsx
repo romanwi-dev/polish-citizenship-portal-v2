@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { Hero3DMap } from "./Hero3DMap";
 
 const HeroWeb3 = () => {
@@ -42,12 +42,11 @@ const HeroWeb3 = () => {
           <div className="flex justify-center animate-fade-in">
             <Button 
               size="lg" 
-              className="text-lg px-16 py-6 h-auto rounded-lg bg-gradient-to-r from-primary/60 to-accent/60 hover:from-primary/70 hover:to-accent/70 text-white shadow-glow hover-glow group relative overflow-hidden backdrop-blur-sm border border-white/20"
+              className="text-lg px-20 py-6 h-auto rounded-lg bg-gradient-to-r from-primary/30 to-accent/30 hover:from-primary/40 hover:to-accent/40 text-white shadow-glow hover-glow group relative overflow-hidden backdrop-blur-sm border border-white/20"
               onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
             >
-              <span className="relative z-10 flex items-center">
+              <span className="relative z-10">
                 Polish Citizenship Test
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-accent/40 to-primary/40 opacity-0 group-hover:opacity-100 transition-opacity" />
             </Button>
@@ -60,7 +59,7 @@ const HeroWeb3 = () => {
               { value: "€3,500+", label: "Transparent Real Pricing" },
               { value: "100%", label: "True Success Rate" }
             ].map((stat, i) => (
-              <div key={i} className="glass-card p-6 rounded-2xl hover-glow">
+              <div key={i} className="glass-card p-6 rounded-lg hover-glow">
                 <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
                   {stat.value}
                 </div>

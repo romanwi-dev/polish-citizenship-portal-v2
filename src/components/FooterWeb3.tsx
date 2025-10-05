@@ -11,7 +11,7 @@ const FooterWeb3 = () => {
         <div className="grid md:grid-cols-4 gap-12 mb-16">
           <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-6">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
                 <Globe className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
@@ -26,7 +26,7 @@ const FooterWeb3 = () => {
               {[Shield, Zap, Globe].map((Icon, i) => (
                 <div 
                   key={i}
-                  className="w-12 h-12 rounded-xl glass-card hover-glow flex items-center justify-center cursor-pointer group"
+                  className="w-12 h-12 rounded-lg glass-card hover-glow flex items-center justify-center cursor-pointer group"
                 >
                   <Icon className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
                 </div>
@@ -74,7 +74,7 @@ const FooterWeb3 = () => {
           </div>
         </div>
         
-        <div className="glass-card p-6 rounded-2xl">
+        <div className="glass-card p-6 rounded-lg">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-muted-foreground text-sm">
               © {new Date().getFullYear()} PolishCitizenship.pl - Expert Legal Services Since 2003

@@ -186,9 +186,9 @@ const TimelineProcess = () => {
                 <div key={index} className={`relative flex items-center ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
                   {/* Content Card */}
                   <div className={`w-full md:w-5/12 ${isEven ? 'md:pr-12' : 'md:pl-12'}`}>
-                    <div className="glass-card p-6 rounded-2xl hover-glow group cursor-pointer">
+                    <div className="glass-card p-6 rounded-lg hover-glow group cursor-pointer">
                       <div className="flex items-start gap-4">
-                        <div className={`p-3 rounded-xl bg-gradient-to-br ${step.gradient} shrink-0`}>
+                        <div className={`p-3 rounded-lg bg-gradient-to-br ${step.gradient} shrink-0`}>
                           <Icon className="w-6 h-6 text-white" />
                         </div>
                         <div className="flex-1">
@@ -234,9 +234,9 @@ const TimelineProcess = () => {
 
         {/* Expert Tip */}
         <div className="mt-16 max-w-3xl mx-auto">
-          <div className="glass-card p-8 rounded-2xl border-2 border-primary/20">
+          <div className="glass-card p-8 rounded-lg border-2 border-primary/20">
             <div className="flex items-start gap-4">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-primary to-secondary shrink-0">
+              <div className="p-3 rounded-lg bg-gradient-to-br from-primary to-secondary shrink-0">
                 <Award className="w-6 h-6 text-white" />
               </div>
               <div>

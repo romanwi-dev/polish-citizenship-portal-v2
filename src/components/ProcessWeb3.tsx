@@ -142,14 +142,14 @@ const ProcessWeb3 = () => {
                 key={index} 
                 className="relative group"
               >
-                <div className="glass-card p-6 rounded-2xl hover-glow relative overflow-hidden h-full">
+                <div className="glass-card p-6 rounded-lg hover-glow relative overflow-hidden h-full">
                   {/* Background Gradient */}
                   <div className={`absolute inset-0 bg-gradient-to-br ${step.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
                   
                   <div className="relative z-10">
                     {/* Icon & Number */}
                     <div className="flex items-center gap-4 mb-4">
-                      <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${step.gradient} flex items-center justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0`}>
+                      <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${step.gradient} flex items-center justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0`}>
                         <Icon className="h-6 w-6 text-white" />
                       </div>
                       <div className={`text-4xl font-bold bg-gradient-to-br ${step.gradient} bg-clip-text text-transparent opacity-40`}>
