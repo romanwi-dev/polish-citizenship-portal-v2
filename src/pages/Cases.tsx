@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight, User, Calendar, FileText, CheckCircle2 } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
@@ -81,6 +81,7 @@ const Cases = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const totalCards = mockCases.length;
 
   const nextSlide = () => {
@@ -107,6 +108,35 @@ const Cases = () => {
       setIsFlipped(false);
     }
   };
+
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      if (isFullscreen) return;
+      
+      e.preventDefault();
+      
+      if (e.deltaY > 0) {
+        // Scroll down - next card
+        setCurrentIndex((prev) => (prev + 1) % totalCards);
+      } else if (e.deltaY < 0) {
+        // Scroll up - previous card
+        setCurrentIndex((prev) => (prev - 1 + totalCards) % totalCards);
+      }
+      
+      setIsFlipped(false);
+    };
+
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.addEventListener('wheel', handleWheel, { passive: false });
+    }
+
+    return () => {
+      if (container) {
+        container.removeEventListener('wheel', handleWheel);
+      }
+    };
+  }, [totalCards, isFullscreen]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -188,7 +218,11 @@ const Cases = () => {
           </div>
 
           {/* 3D Circular Carousel */}
-          <div className="relative max-w-4xl mx-auto h-[600px] md:h-[700px] flex items-center justify-center" style={{ perspective: '2000px' }}>
+          <div 
+            ref={scrollContainerRef}
+            className="relative max-w-4xl mx-auto h-[600px] md:h-[700px] flex items-center justify-center" 
+            style={{ perspective: '2000px' }}
+          >
             <div className="relative w-full h-full" style={{ transformStyle: 'preserve-3d' }}>
               {mockCases.map((clientCase, index) => {
                 const offset = index - currentIndex;
