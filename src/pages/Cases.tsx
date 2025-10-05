@@ -168,33 +168,15 @@ const Cases = () => {
             </Button>
           </div>
 
-          {/* Stacked Cards Carousel */}
-          <div className="relative max-w-2xl mx-auto h-[500px] md:h-[600px] flex items-center justify-center">
-            {mockCases.map((clientCase, index) => {
-              const offset = index - currentIndex;
-              const absOffset = Math.abs(offset);
-              const isVisible = absOffset <= 2;
-              
-              // Calculate stacking position
-              const zIndex = totalCards - absOffset;
-              const scale = 1 - (absOffset * 0.05);
-              const yOffset = absOffset * 20;
-              const opacity = absOffset === 0 ? 1 : absOffset === 1 ? 0.7 : 0.4;
-              
-              if (!isVisible) return null;
-              
-              return (
+          {/* Horizontal Scrollable Tape */}
+          <div className="relative max-w-6xl mx-auto">
+            <div className="flex overflow-x-auto gap-4 md:gap-6 pb-4 snap-x snap-mandatory scroll-smooth scrollbar-hide">
+              {mockCases.map((clientCase) => (
                 <div
                   key={clientCase.id}
-                  className="absolute w-full max-w-md px-4 transition-all duration-500 ease-out"
-                  style={{
-                    zIndex,
-                    transform: `translateY(${yOffset}px) scale(${scale})`,
-                    opacity,
-                    pointerEvents: absOffset === 0 ? 'auto' : 'none',
-                  }}
+                  className="min-w-[85%] md:min-w-[400px] flex-shrink-0 snap-center"
                 >
-                  <div className={`glass-card rounded-2xl p-4 md:p-6 bg-gradient-to-br ${getStatusColor(clientCase.status)} border hover-glow shadow-2xl`}>
+                  <div className={`glass-card rounded-2xl p-4 md:p-6 bg-gradient-to-br ${getStatusColor(clientCase.status)} border hover-glow transition-all duration-300 hover:scale-[1.02]`}>
                     {/* Header */}
                     <div className="flex items-start justify-between mb-3 md:mb-4">
                       <div className="flex items-center gap-2 md:gap-3">
@@ -258,8 +240,8 @@ const Cases = () => {
                     )}
                   </div>
                 </div>
-              );
-            })}
+              ))}
+            </div>
           </div>
 
           {/* Navigation Dots */}
