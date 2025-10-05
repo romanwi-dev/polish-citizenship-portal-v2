@@ -168,15 +168,34 @@ const Cases = () => {
             </Button>
           </div>
 
-          {/* Horizontal Scrollable Tape */}
-          <div className="relative max-w-6xl mx-auto">
-            <div className="flex overflow-x-auto gap-4 md:gap-6 pb-4 snap-x snap-mandatory scroll-smooth scrollbar-hide">
-              {mockCases.map((clientCase) => (
+          {/* Stacked Cards Carousel */}
+          <div className="relative max-w-2xl mx-auto h-[550px] md:h-[650px] flex items-center justify-center perspective-1000">
+            {mockCases.map((clientCase, index) => {
+              const offset = index - currentIndex;
+              const absOffset = Math.abs(offset);
+              
+              // Only show cards within range
+              if (absOffset > 2) return null;
+              
+              // Calculate positioning for circular stack effect
+              const zIndex = totalCards - absOffset;
+              const scale = offset === 0 ? 1 : 1 - (absOffset * 0.1);
+              const yOffset = absOffset * 30;
+              const rotateY = offset * 5;
+              const opacity = offset === 0 ? 1 : 0.6 - (absOffset * 0.15);
+              
+              return (
                 <div
                   key={clientCase.id}
-                  className="min-w-[85%] md:min-w-[400px] flex-shrink-0 snap-center"
+                  className="absolute w-full max-w-md px-4 transition-all duration-700 ease-out"
+                  style={{
+                    zIndex,
+                    transform: `translateY(${yOffset}px) scale(${scale}) rotateY(${rotateY}deg)`,
+                    opacity,
+                    transformStyle: 'preserve-3d',
+                  }}
                 >
-                  <div className={`glass-card rounded-2xl p-4 md:p-6 bg-gradient-to-br ${getStatusColor(clientCase.status)} border hover-glow transition-all duration-300 hover:scale-[1.02]`}>
+                  <div className={`glass-card rounded-2xl p-4 md:p-6 bg-gradient-to-br ${getStatusColor(clientCase.status)} border shadow-2xl backdrop-blur-xl`}>
                     {/* Header */}
                     <div className="flex items-start justify-between mb-3 md:mb-4">
                       <div className="flex items-center gap-2 md:gap-3">
@@ -240,8 +259,8 @@ const Cases = () => {
                     )}
                   </div>
                 </div>
-              ))}
-            </div>
+              );
+            })}
           </div>
 
           {/* Navigation Dots */}
