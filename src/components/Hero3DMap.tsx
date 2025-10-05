@@ -79,14 +79,14 @@ function MapPlane() {
   return (
     <Float speed={1} rotationIntensity={0.3} floatIntensity={0.5}>
       <mesh ref={meshRef} position={[0, 0, 0]}>
-        <planeGeometry args={[6, 4]} />
+        <planeGeometry args={[20, 12]} />
         <meshStandardMaterial 
           map={texture} 
           transparent
-          opacity={0.9}
+          opacity={0.95}
           side={THREE.DoubleSide}
-          metalness={0.3}
-          roughness={0.4}
+          metalness={0.2}
+          roughness={0.5}
         />
       </mesh>
     </Float>
@@ -138,29 +138,20 @@ function ParticleField() {
 export const Hero3DMap = () => {
   return (
     <div className="w-full h-full">
-      <Canvas camera={{ position: [0, 0, 8], fov: 60 }}>
-        <ambientLight intensity={0.6} />
-        <pointLight position={[10, 10, 10]} intensity={1.2} color="#ffffff" />
-        <pointLight position={[-10, -10, -10]} intensity={0.8} color="#5b8dce" />
-        <spotLight 
-          position={[0, 5, 5]} 
-          intensity={1} 
-          angle={0.5} 
-          penumbra={1} 
-          color="#ffd700" 
-        />
+      <Canvas camera={{ position: [0, 0, 8], fov: 75 }}>
+        <ambientLight intensity={0.8} />
+        <pointLight position={[10, 10, 10]} intensity={1} color="#ffffff" />
+        <pointLight position={[-10, -10, -10]} intensity={0.6} color="#5b8dce" />
         
         <MapPlane />
-        <FloatingStars />
-        <ParticleField />
         
         <OrbitControls 
           enableZoom={false} 
           enablePan={false} 
           autoRotate
-          autoRotateSpeed={0.3}
-          maxPolarAngle={Math.PI / 1.5} 
-          minPolarAngle={Math.PI / 2.5} 
+          autoRotateSpeed={0.2}
+          maxPolarAngle={Math.PI / 1.8} 
+          minPolarAngle={Math.PI / 2.2} 
         />
       </Canvas>
     </div>
