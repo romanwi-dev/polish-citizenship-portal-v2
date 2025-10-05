@@ -3,6 +3,7 @@ import HeroWeb3 from "@/components/HeroWeb3";
 import AboutSection from "@/components/AboutSection";
 import AIAnalysisSection from "@/components/AIAnalysisSection";
 import ServicesWeb3 from "@/components/ServicesWeb3";
+import ClientOnboardingSection from "@/components/ClientOnboardingSection";
 import TimelineProcessEnhanced from "@/components/TimelineProcessEnhanced";
 import PricingSection from "@/components/PricingSection";
 import FAQSection from "@/components/FAQSection";
@@ -17,6 +18,7 @@ const Index = () => {
       <AboutSection />
       <AIAnalysisSection />
       <ServicesWeb3 />
+      <ClientOnboardingSection />
       <TimelineProcessEnhanced />
       <PricingSection />
       <FAQSection />
