@@ -14,13 +14,13 @@ const AboutSection = () => {
             <span className="text-sm font-medium">Legal Expertise Since 2003</span>
           </div>
           
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-12">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               The Most Comprehensive Online Legal Service for Polish Citizenship and Polish European Passport
             </span>
           </h2>
           
-          <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+          <p className="text-lg text-muted-foreground leading-relaxed mb-6 text-left">
             Since 2003, we have been advising people of Polish ancestry in confirming Polish citizenship by descent, obtaining a European Polish passport, and navigating all related matters. For almost 20 years, we have been working to help people of Polish descent from various countries in receiving Polish citizenship and a Polish European passport. Our excellent legal assistance is provided by independent experts in the field of Polish citizenship, lawyers of various specializations, experienced representatives, and documents researchers, as well as the use of advice and consultations provided by the staff of the relevant Polish government offices.
           </p>
           
