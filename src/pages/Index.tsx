@@ -5,6 +5,7 @@ import AIAnalysisSection from "@/components/AIAnalysisSection";
 import ServicesWeb3 from "@/components/ServicesWeb3";
 import TimelineProcess from "@/components/TimelineProcess";
 import PricingSection from "@/components/PricingSection";
+import FAQSection from "@/components/FAQSection";
 import ContactFormWeb3 from "@/components/ContactFormWeb3";
 import FooterWeb3 from "@/components/FooterWeb3";
 
@@ -18,6 +19,7 @@ const Index = () => {
       <ServicesWeb3 />
       <TimelineProcess />
       <PricingSection />
+      <FAQSection />
       <ContactFormWeb3 />
       <FooterWeb3 />
     </div>
