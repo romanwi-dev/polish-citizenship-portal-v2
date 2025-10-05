@@ -31,7 +31,7 @@ const FooterWeb3 = () => {
           </div>
           
           <div>
-            <h4 className="font-semibold text-foreground mb-6 text-lg">Services</h4>
+            <h4 className="font-semibold mb-6 text-lg bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Services</h4>
             <ul className="space-y-3">
               {['AI Analysis', 'Legal Guidance', 'Document Processing', 'Pricing'].map((item, idx) => (
                 <li key={item}>
@@ -47,7 +47,7 @@ const FooterWeb3 = () => {
           </div>
           
           <div>
-            <h4 className="font-semibold text-foreground mb-6 text-lg">Resources</h4>
+            <h4 className="font-semibold mb-6 text-lg bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Resources</h4>
             <ul className="space-y-3">
               {[
                 { label: 'Take Test', url: 'https://polishcitizenship.typeform.com/to/PS5ecU' },
