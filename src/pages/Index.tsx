@@ -9,6 +9,7 @@ import PricingSection from "@/components/PricingSection";
 import FAQSection from "@/components/FAQSection";
 import ContactFormWeb3 from "@/components/ContactFormWeb3";
 import FooterWeb3 from "@/components/FooterWeb3";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const Index = () => {
   return (
@@ -24,6 +25,7 @@ const Index = () => {
       <FAQSection />
       <ContactFormWeb3 />
       <FooterWeb3 />
+      <ScrollToTop />
     </div>
   );
 };
