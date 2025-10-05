@@ -22,24 +22,24 @@ const HeroWeb3 = () => {
       <div className="absolute bottom-20 right-20 w-96 h-96 bg-secondary/20 rounded-full blur-[120px] animate-pulse delay-700 z-[1]" />
 
       {/* Content */}
-      <div className="container relative z-10 px-4 pt-24 pb-20 mx-auto">
+      <div className="container relative z-10 px-4 pt-32 pb-20 mx-auto">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-12 animate-fade-in">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16 animate-fade-in">
             <Sparkles className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium">Web3 Legal Services</span>
           </div>
           
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-10 leading-tight animate-fade-in">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-14 leading-tight animate-fade-in">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
               Polish Citizenship by Descent
             </span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-muted-foreground mb-12 leading-relaxed max-w-3xl mx-auto animate-fade-in">
+          <p className="text-xl md:text-2xl text-muted-foreground mb-16 leading-relaxed max-w-3xl mx-auto animate-fade-in">
             Expert legal guidance for people of Polish and Polish-Jewish descent from around the world for obtaining Polish citizenship and EU passports through Polish ancestry - unmatched 100% success rate, true realist timeline 1,5 - 4 years, transparent pricing €3,500 - €12,500+
           </p>
           
-          <div className="flex justify-center animate-fade-in mb-16">
+          <div className="flex justify-center animate-fade-in mb-20">
             <Button 
               size="lg" 
               className="text-2xl font-bold px-20 py-6 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30"
