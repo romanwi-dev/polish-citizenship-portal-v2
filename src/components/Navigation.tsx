@@ -98,7 +98,7 @@ const Navigation = () => {
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Button
-                    onClick={() => window.location.href = '/admin/cases'}
+                    onClick={() => window.location.href = '/cases'}
                     variant="ghost"
                     className="w-full justify-start text-base font-medium rounded-md hover:bg-primary/10 transition-colors"
                   >
