@@ -158,17 +158,25 @@ const Cases = () => {
   };
 
   const handleCardClick = (e: React.MouseEvent, isFront: boolean) => {
-    if (!isFront) return;
+    console.log('handleCardClick called, isFront:', isFront, 'isFlipped:', isFlipped);
+    if (!isFront) {
+      console.log('Not front card, ignoring click');
+      return;
+    }
     e.stopPropagation();
-    console.log('Card clicked, flipping');
+    console.log('Flipping card');
     setIsFlipped(!isFlipped);
   };
 
   const handleCardDoubleClick = (e: React.MouseEvent, isFront: boolean) => {
-    if (!isFront) return;
+    console.log('handleCardDoubleClick called, isFront:', isFront);
+    if (!isFront) {
+      console.log('Not front card, ignoring double-click');
+      return;
+    }
     e.stopPropagation();
     e.preventDefault();
-    console.log('Card double-clicked, going fullscreen');
+    console.log('Opening fullscreen');
     setIsFullscreen(true);
     setIsFlipped(false);
   };
@@ -336,8 +344,14 @@ const Cases = () => {
                         transform: isFront && isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
                         cursor: isFront ? 'pointer' : 'default',
                       }}
-                      onClick={(e) => handleCardClick(e, isFront)}
-                      onDoubleClick={(e) => handleCardDoubleClick(e, isFront)}
+                      onClick={(e) => {
+                        console.log('Div clicked, isFront:', isFront);
+                        handleCardClick(e, isFront);
+                      }}
+                      onDoubleClick={(e) => {
+                        console.log('Div double-clicked, isFront:', isFront);
+                        handleCardDoubleClick(e, isFront);
+                      }}
                     >
                       {/* Front of Card */}
                       <div
