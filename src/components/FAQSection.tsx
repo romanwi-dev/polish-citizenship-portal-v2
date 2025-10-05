@@ -191,21 +191,21 @@ const FAQSection = () => {
 
           {/* FAQ Tabs */}
           <Tabs defaultValue="eligibility" className="w-full">
-            <div className="mb-8 overflow-x-auto">
-              <TabsList className="inline-flex w-auto min-w-full lg:grid lg:grid-cols-5 gap-2 h-auto p-2 bg-background/50 backdrop-blur-sm border border-primary/10">
-              {faqCategories.map((category) => {
-                const Icon = category.icon;
-                return (
-                  <TabsTrigger
-                    key={category.id}
-                    value={category.id}
-                    className="flex flex-col items-center gap-2 py-3 px-2 data-[state=active]:bg-primary/10 data-[state=active]:text-primary text-xs font-medium"
-                  >
-                    <Icon className="w-5 h-5" />
-                    <span className="text-center leading-tight">{category.title}</span>
-                  </TabsTrigger>
-                );
-              })}
+            <div className="overflow-x-auto lg:overflow-visible mb-8">
+              <TabsList className="inline-flex lg:grid w-max lg:w-full grid-cols-2 lg:grid-cols-5 gap-2 h-auto p-2 bg-background/50 backdrop-blur-sm border border-primary/10">
+                {faqCategories.map((category) => {
+                  const Icon = category.icon;
+                  return (
+                    <TabsTrigger
+                      key={category.id}
+                      value={category.id}
+                      className="flex flex-col items-center gap-2 py-3 px-4 min-w-[140px] lg:min-w-0 data-[state=active]:bg-primary/10 data-[state=active]:text-primary text-xs font-medium whitespace-nowrap"
+                    >
+                      <Icon className="w-5 h-5" />
+                      <span className="text-center leading-tight">{category.title}</span>
+                    </TabsTrigger>
+                  );
+                })}
               </TabsList>
             </div>
 
