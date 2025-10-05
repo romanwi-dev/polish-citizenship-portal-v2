@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Enhanced3DScene } from "./Enhanced3DScene";
+import FramedTitle from "./FramedTitle";
 
 const HeroWeb3 = () => {
   const scrollToContact = () => {
@@ -30,62 +31,12 @@ const HeroWeb3 = () => {
           </div>
           
           
-          {/* Font Comparison */}
-          <div className="space-y-8 mb-12">
-            <div className="text-center">
-              <p className="text-sm text-muted-foreground mb-2">1. Bebas Neue (Current)</p>
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>
-                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent text-3d-forward text-framed">
-                  Polish Citizenship by Descent
-                </span>
-              </h1>
-            </div>
-
-            <div className="text-center">
-              <p className="text-sm text-muted-foreground mb-2">2. Playfair Display</p>
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
-                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent text-3d-forward text-framed">
-                  Polish Citizenship by Descent
-                </span>
-              </h1>
-            </div>
-
-            <div className="text-center">
-              <p className="text-sm text-muted-foreground mb-2">3. Oswald</p>
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight" style={{ fontFamily: 'Oswald, sans-serif' }}>
-                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent text-3d-forward text-framed">
-                  Polish Citizenship by Descent
-                </span>
-              </h1>
-            </div>
-
-            <div className="text-center">
-              <p className="text-sm text-muted-foreground mb-2">4. Raleway</p>
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight" style={{ fontFamily: 'Raleway, sans-serif' }}>
-                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent text-3d-forward text-framed">
-                  Polish Citizenship by Descent
-                </span>
-              </h1>
-            </div>
-
-            <div className="text-center">
-              <p className="text-sm text-muted-foreground mb-2">5. Montserrat</p>
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight" style={{ fontFamily: 'Montserrat, sans-serif' }}>
-                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent text-3d-forward text-framed">
-                  Polish Citizenship by Descent
-                </span>
-              </h1>
-            </div>
-
-            <div className="text-center">
-              <p className="text-sm text-muted-foreground mb-2">6. Cinzel (Legal/Classical)</p>
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight" style={{ fontFamily: 'Cinzel, serif' }}>
-                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent text-3d-forward text-framed">
-                  Polish Citizenship by Descent
-                </span>
-              </h1>
-            </div>
-          </div>
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold mb-6 leading-tight animate-fade-in">
+            <FramedTitle 
+              text="Polish Citizenship by Descent"
+              className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent text-3d-forward"
+            />
+          </h1>
           
           <p className="text-xl md:text-2xl text-muted-foreground mb-8 leading-relaxed max-w-3xl mx-auto animate-fade-in">
             Expert legal guidance for people of Polish and Polish-Jewish descent from around the world for obtaining Polish citizenship and EU passports through Polish ancestry - unmatched 100% success rate, true realist timeline 1,5 - 4 years, transparent pricing €3,500 - €12,500+
