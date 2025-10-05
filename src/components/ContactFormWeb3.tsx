@@ -10,7 +10,7 @@ import { z } from "zod";
 const contactSchema = z.object({
   name: z.string().trim().min(1, { message: "Name is required" }).max(100),
   email: z.string().trim().email({ message: "Invalid email address" }).max(255),
-  message: z.string().trim().min(1, { message: "Message is required" }).max(1000),
+  message: z.string().trim().max(1000).optional(),
 });
 
 const ContactFormWeb3 = () => {
@@ -111,7 +111,7 @@ const ContactFormWeb3 = () => {
               </div>
               
               <div className="space-y-3 animate-fade-in group" style={{ animationDelay: '0.2s' }}>
-                <Label htmlFor="message" className="text-foreground text-lg font-semibold">Your Polish family history... *</Label>
+                <Label htmlFor="message" className="text-foreground text-lg font-semibold">Message</Label>
                 <div className="relative overflow-hidden rounded-lg">
                   <div className="absolute inset-0 bg-gradient-to-br from-accent to-secondary opacity-0 group-hover:opacity-10 transition-opacity duration-500" />
                   <div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-accent to-secondary opacity-20 blur-3xl rounded-full group-hover:opacity-30 transition-opacity" />
@@ -121,7 +121,6 @@ const ContactFormWeb3 = () => {
                     value={formData.message}
                     onChange={handleChange}
                     placeholder="Describe your Polish ancestry, available documents, and citizenship goals..."
-                    required
                     className="min-h-[240px] glass-card border-border/50 focus:border-primary hover:scale-[1.01] focus:scale-[1.01] transition-all duration-300 text-lg placeholder:text-muted-foreground/50 hover:border-primary/50 resize-none w-full relative z-10"
                   />
                 </div>
