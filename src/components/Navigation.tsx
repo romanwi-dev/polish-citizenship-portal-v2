@@ -32,7 +32,7 @@ const Navigation = () => {
               variant="ghost" 
               size="icon"
               className="text-foreground hover:text-primary"
-              onClick={() => window.location.href = '/auth'}
+              onClick={() => window.location.href = '/cases'}
             >
               <User className="h-14 w-14" />
             </Button>
