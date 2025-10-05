@@ -3,38 +3,38 @@ import { FileText, Users, CheckCircle, Globe, Cpu, Shield } from "lucide-react";
 const services = [
   {
     icon: Cpu,
-    title: "AI Eligibility Check",
-    description: "Advanced AI analyzes your ancestry in seconds, providing instant eligibility assessment.",
+    title: "AI Deep Case Analysis",
+    description: "Predict success probability and timeline with high accuracy based on 20+ years of case history and 180+ data points.",
     color: "from-primary to-accent",
   },
   {
     icon: Shield,
-    title: "Blockchain Verification",
-    description: "Secure, immutable document verification on the blockchain for maximum trust.",
+    title: "Bank-Level Security",
+    description: "256-bit SSL encryption and certified legal professionals ensure your data and documents are secure.",
     color: "from-secondary to-primary",
   },
   {
     icon: Users,
-    title: "Smart Genealogy",
-    description: "AI-powered research across global databases to trace your Polish heritage.",
+    title: "Expert Legal Guidance",
+    description: "Independent experts, specialized lawyers, and experienced representatives guide you through every step.",
     color: "from-accent to-secondary",
   },
   {
     icon: FileText,
-    title: "Digital Application",
-    description: "Fully digital, paperless application process with real-time status tracking.",
+    title: "Complete Document Processing",
+    description: "Systematic research through Polish, Ukrainian, and Lithuanian archives with professional authentication.",
     color: "from-primary to-secondary",
   },
   {
     icon: CheckCircle,
-    title: "Auto-Compliance",
-    description: "Automated compliance checks ensure your application meets all requirements.",
+    title: "100% Success Rate",
+    description: "Proven track record with 5,000+ successfully processed cases since 2003.",
     color: "from-secondary to-accent",
   },
   {
     icon: Globe,
-    title: "Global Network",
-    description: "Connected to consulates worldwide via our secure diplomatic network.",
+    title: "24/7 Case Monitoring",
+    description: "Always here to help with continuous case monitoring and support throughout the entire process.",
     color: "from-accent to-primary",
   },
 ];
@@ -58,7 +58,7 @@ const ServicesWeb3 = () => {
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Cutting-edge technology meets legal expertise
+            Professional legal expertise combined with cutting-edge AI technology
           </p>
         </div>
 

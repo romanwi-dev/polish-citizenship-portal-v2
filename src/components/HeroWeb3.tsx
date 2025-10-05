@@ -29,14 +29,14 @@ const HeroWeb3 = () => {
             <span className="text-sm font-medium">Web3 Legal Services</span>
           </div>
           
-          <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight animate-fade-in">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight animate-fade-in">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
               Polish Citizenship by Descent
             </span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-muted-foreground mb-12 leading-relaxed max-w-2xl mx-auto animate-fade-in">
-            Experience the future of citizenship services. Blockchain-verified documents, AI-powered eligibility checks, and seamless EU integration. Changing a boring and complex paperwork into a pleasant online experience.
+          <p className="text-xl md:text-2xl text-muted-foreground mb-8 leading-relaxed max-w-3xl mx-auto animate-fade-in">
+            Expert legal guidance for people of Polish and Polish-Jewish descent from around the world for obtaining Polish citizenship and EU passports through Polish ancestry - unmatched 100% success rate, true realistic timeline 1.5 - 4 years, transparent pricing €3,500 - €12,500+
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in">
@@ -62,10 +62,13 @@ const HeroWeb3 = () => {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-3 gap-8 mt-20 max-w-3xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mt-16 max-w-4xl mx-auto">
             {[
-              { value: "10K+", label: "Citizens Helped" },
-              { value: "98%", label: "Success Rate" },
+              { value: "22+", label: "Years Experience" },
+              { value: "5,000+", label: "Cases Processed" },
+              { value: "100%", label: "True Success Rate" },
+              { value: "2+ Years", label: "Realistic Timeline" },
+              { value: "€3,500+", label: "Transparent Pricing" },
               { value: "24/7", label: "AI Support" }
             ].map((stat, i) => (
               <div key={i} className="glass-card p-6 rounded-2xl hover-glow">

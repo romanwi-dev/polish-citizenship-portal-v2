@@ -60,13 +60,13 @@ const ContactFormWeb3 = () => {
               Connect With Us
             </span>
           </div>
-          <h2 className="text-5xl md:text-6xl font-bold mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              Start Your Journey
+              Ready to Check Your Eligibility?
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Get instant AI-powered eligibility assessment. Our experts will guide you through the entire process.
+            Take the most comprehensive Polish citizenship by descent test available online
           </p>
         </div>
 

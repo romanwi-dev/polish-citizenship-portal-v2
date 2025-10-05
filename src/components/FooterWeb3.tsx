@@ -19,8 +19,8 @@ const FooterWeb3 = () => {
               </h3>
             </div>
             <p className="text-muted-foreground leading-relaxed mb-6">
-              Revolutionary citizenship services powered by blockchain verification, 
-              AI processing, and global diplomatic networks. Your heritage, reimagined.
+              Expert legal guidance for people of Polish and Polish-Jewish descent from around the world. 
+              Unmatched 100% success rate, realistic timelines, transparent pricing. Since 2003.
             </p>
             <div className="flex gap-4">
               {[Shield, Zap, Globe].map((Icon, i) => (
@@ -37,9 +37,12 @@ const FooterWeb3 = () => {
           <div>
             <h4 className="font-semibold text-foreground mb-6 text-lg">Services</h4>
             <ul className="space-y-3">
-              {['AI Eligibility', 'Blockchain Verify', 'Smart Processing', 'Fast-Track'].map((item) => (
+              {['AI Analysis', 'Legal Guidance', 'Document Processing', 'Pricing'].map((item, idx) => (
                 <li key={item}>
-                  <a href="#services" className="text-muted-foreground hover:text-primary transition-colors">
+                  <a 
+                    href={idx === 3 ? "#pricing" : "#services"} 
+                    className="text-muted-foreground hover:text-primary transition-colors"
+                  >
                     {item}
                   </a>
                 </li>
@@ -50,10 +53,20 @@ const FooterWeb3 = () => {
           <div>
             <h4 className="font-semibold text-foreground mb-6 text-lg">Resources</h4>
             <ul className="space-y-3">
-              {['Documentation', 'API Access', 'Smart Contracts', 'Community'].map((item) => (
-                <li key={item}>
-                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                    {item}
+              {[
+                { label: 'Take Test', url: 'https://polishcitizenship.typeform.com/to/PS5ecU' },
+                { label: 'Family Tree', url: 'https://polishcitizenshippl-20-8pfm8wc5m6.replit.app/family-tree' },
+                { label: 'About Process', url: '#' },
+                { label: 'Contact', url: '#contact' }
+              ].map((item) => (
+                <li key={item.label}>
+                  <a 
+                    href={item.url} 
+                    className="text-muted-foreground hover:text-primary transition-colors"
+                    target={item.url.startsWith('http') ? '_blank' : undefined}
+                    rel={item.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  >
+                    {item.label}
                   </a>
                 </li>
               ))}
@@ -64,7 +77,7 @@ const FooterWeb3 = () => {
         <div className="glass-card p-6 rounded-2xl">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-muted-foreground text-sm">
-              © {new Date().getFullYear()} Polish Citizenship Services. Powered by Web3 Technology.
+              © {new Date().getFullYear()} PolishCitizenship.pl - Expert Legal Services Since 2003
             </p>
             <div className="flex gap-6 text-sm">
               <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
@@ -73,8 +86,8 @@ const FooterWeb3 = () => {
               <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
                 Terms of Service
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                Smart Contracts
+              <a href="#contact" className="text-muted-foreground hover:text-primary transition-colors">
+                Contact Us
               </a>
             </div>
           </div>
