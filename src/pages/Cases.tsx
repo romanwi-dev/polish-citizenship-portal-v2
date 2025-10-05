@@ -97,17 +97,17 @@ const Cases = () => {
     setIsFullscreen(false);
   };
 
-  const handleCardClick = (isFront: boolean) => {
-    if (isFront && !isFullscreen) {
+  const handleCardClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!isFullscreen) {
       setIsFlipped(!isFlipped);
     }
   };
 
-  const handleCardDoubleClick = (isFront: boolean) => {
-    if (isFront) {
-      setIsFullscreen(!isFullscreen);
-      setIsFlipped(false);
-    }
+  const handleCardDoubleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsFullscreen(true);
+    setIsFlipped(false);
   };
 
   useEffect(() => {
@@ -259,13 +259,14 @@ const Cases = () => {
                   >
                     {/* Flippable Card Container */}
                     <div
-                      className="relative w-full cursor-pointer transition-transform duration-700"
+                      className="relative w-full transition-transform duration-700"
                       style={{
                         transformStyle: 'preserve-3d',
                         transform: isFront && isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                        cursor: isFront ? 'pointer' : 'default',
                       }}
-                      onClick={() => handleCardClick(isFront)}
-                      onDoubleClick={() => handleCardDoubleClick(isFront)}
+                      onClick={isFront ? handleCardClick : undefined}
+                      onDoubleClick={isFront ? handleCardDoubleClick : undefined}
                     >
                       {/* Front of Card */}
                       <div
