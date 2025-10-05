@@ -261,7 +261,7 @@ export default function TimelineProcessEnhanced() {
                         stiffness: 120
                       }}
                       viewport={{ once: true }}
-                      className="text-2xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-lg animate-slow-blink"
+                      className="text-2xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-lg"
                     >
                       {step.title}
                     </motion.h3>

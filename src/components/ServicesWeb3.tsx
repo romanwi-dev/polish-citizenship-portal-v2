@@ -28,7 +28,7 @@ const services = [
   {
     icon: CheckCircle,
     title: "100% Success Rate",
-    description: "Proven track record with 5,000+ successfully processed cases since 2003.",
+    description: "Proven track record with 25,000+ successfully processed cases since 2003.",
     color: "from-secondary to-accent",
   },
   {
