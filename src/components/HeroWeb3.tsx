@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { Enhanced3DScene } from "./Enhanced3DScene";
+import { Hero3DMap } from "./Hero3DMap";
 
 const HeroWeb3 = () => {
   const scrollToContact = () => {
@@ -11,7 +11,7 @@ const HeroWeb3 = () => {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* 3D Background */}
       <div className="absolute inset-0 z-0">
-        <Enhanced3DScene />
+        <Hero3DMap />
       </div>
 
       {/* Gradient Overlays */}
@@ -42,14 +42,14 @@ const HeroWeb3 = () => {
           <div className="flex justify-center animate-fade-in">
             <Button 
               size="lg" 
-              className="text-lg px-10 py-8 h-auto rounded-md bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white shadow-glow hover-glow group relative overflow-hidden"
+              className="text-lg px-16 py-6 h-auto rounded-lg bg-gradient-to-r from-primary/60 to-accent/60 hover:from-primary/70 hover:to-accent/70 text-white shadow-glow hover-glow group relative overflow-hidden backdrop-blur-sm border border-white/20"
               onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
             >
               <span className="relative z-10 flex items-center">
                 Polish Citizenship Test
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute inset-0 bg-gradient-to-r from-accent/40 to-primary/40 opacity-0 group-hover:opacity-100 transition-opacity" />
             </Button>
           </div>
 
