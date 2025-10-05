@@ -162,7 +162,7 @@ const ContactFormWeb3 = () => {
           </div>
 
           {/* Trust Indicators */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-12 justify-items-center">
             {[
               { label: "Average Response", value: "< 3 hours" },
               { label: "True Success Rate", value: "100%" },
