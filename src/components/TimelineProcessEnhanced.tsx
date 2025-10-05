@@ -194,13 +194,18 @@ export default function TimelineProcessEnhanced() {
           className="text-center mb-16"
         >
           <motion.h2 
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            initial={{ opacity: 0, scale: 0.9, y: 30 }}
+            whileInView={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ 
+              duration: 1, 
+              delay: 0.2,
+              type: "spring",
+              stiffness: 100
+            }}
             viewport={{ once: true }}
-            className="text-5xl md:text-7xl font-black mb-6 tracking-tight"
+            className="text-5xl md:text-8xl font-heading font-black mb-6 tracking-tight"
           >
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-primary animate-fade-in-up glow-text">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-primary animate-fade-in-up glow-text drop-shadow-2xl">
               Complete Legal Process Timeline
             </span>
           </motion.h2>
@@ -246,11 +251,16 @@ export default function TimelineProcessEnhanced() {
                       <span className="text-xs text-muted-foreground">{step.duration}</span>
                     </div>
                     <motion.h3 
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: index * 0.05 }}
+                      initial={{ opacity: 0, x: -20, scale: 0.95 }}
+                      whileInView={{ opacity: 1, x: 0, scale: 1 }}
+                      transition={{ 
+                        duration: 0.7, 
+                        delay: index * 0.08,
+                        type: "spring",
+                        stiffness: 120
+                      }}
                       viewport={{ once: true }}
-                      className="text-2xl font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300"
+                      className="text-2xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-lg"
                     >
                       {step.title}
                     </motion.h3>
