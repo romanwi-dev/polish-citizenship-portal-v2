@@ -96,7 +96,7 @@ const FAQSection = () => {
     },
     {
       id: "documents",
-      title: "DOCUMENTS & LEGAL REQUIREMENTS",
+      title: "DOCUMENTS & REQUIREMENTS",
       icon: FileText,
       questions: [
         {
@@ -123,7 +123,7 @@ const FAQSection = () => {
     },
     {
       id: "common-issues",
-      title: "COMMON ISSUES & SOLUTIONS",
+      title: "ISSUES & SOLUTIONS",
       icon: AlertCircle,
       questions: [
         {
