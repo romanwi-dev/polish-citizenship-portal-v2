@@ -15,11 +15,11 @@ const AboutSection = () => {
           </div>
           
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent text-3d-forward text-framed">
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               The Most Comprehensive Online Legal Service
             </span>
             <br />
-            <span className="text-3xl md:text-4xl bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent text-3d-forward text-framed">
+            <span className="text-3xl md:text-4xl bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent">
               for Polish Citizenship and Polish European Passport
             </span>
           </h2>

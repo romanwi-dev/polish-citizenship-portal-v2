@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Enhanced3DScene } from "./Enhanced3DScene";
-import FramedTitle from "./FramedTitle";
 
 const HeroWeb3 = () => {
   const scrollToContact = () => {
@@ -30,12 +29,10 @@ const HeroWeb3 = () => {
             <span className="text-sm font-medium">Web3 Legal Services</span>
           </div>
           
-          
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold mb-6 leading-tight animate-fade-in">
-            <FramedTitle 
-              text="Polish Citizenship by Descent"
-              className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent text-3d-forward"
-            />
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight animate-fade-in">
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
+              Polish Citizenship by Descent
+            </span>
           </h1>
           
           <p className="text-xl md:text-2xl text-muted-foreground mb-8 leading-relaxed max-w-3xl mx-auto animate-fade-in">

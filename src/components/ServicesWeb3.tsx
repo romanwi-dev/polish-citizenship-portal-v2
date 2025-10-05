@@ -53,7 +53,7 @@ const ServicesWeb3 = () => {
             </span>
           </div>
           <h2 className="text-5xl md:text-6xl font-bold mb-6">
-            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent text-3d-forward text-framed">
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               Powered by Innovation
             </span>
           </h2>

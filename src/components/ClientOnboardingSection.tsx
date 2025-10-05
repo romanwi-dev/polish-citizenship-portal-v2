@@ -72,7 +72,7 @@ export default function ClientOnboardingSection() {
             viewport={{ once: true }}
             className="text-5xl md:text-8xl font-heading font-black mb-6 tracking-tight"
           >
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-primary animate-fade-in-up glow-text drop-shadow-2xl text-3d-forward text-framed">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-primary animate-fade-in-up glow-text drop-shadow-2xl">
               How to Start Your Case
             </span>
           </motion.h2>

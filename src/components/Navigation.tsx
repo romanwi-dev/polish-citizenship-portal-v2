@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, User, Sun, Moon } from "lucide-react";
+import { Menu, User } from "lucide-react";
 import logo from "@/assets/logo.png";
 import {
   DropdownMenu,
@@ -11,15 +11,6 @@ import {
 
 const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isDark, setIsDark] = useState(true);
-
-  useEffect(() => {
-    if (isDark) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [isDark]);
 
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -35,27 +26,17 @@ const Navigation = () => {
             <img src={logo} alt="PolishCitizenship.pl" className="h-10 w-auto" />
           </a>
 
-          {/* Theme Switcher & Menu */}
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsDark(!isDark)}
-              className="text-foreground hover:text-primary"
-            >
-              {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-            </Button>
-
-            <DropdownMenu open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-              <DropdownMenuTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  size="icon"
-                  className="text-foreground hover:text-primary"
-                >
-                  <Menu className="h-8 w-8" />
-                </Button>
-              </DropdownMenuTrigger>
+          {/* Desktop & Mobile Menu */}
+          <DropdownMenu open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+            <DropdownMenuTrigger asChild>
+              <Button 
+                variant="ghost" 
+                size="icon"
+                className="text-foreground hover:text-primary"
+              >
+                <Menu className="h-6 w-6" />
+              </Button>
+            </DropdownMenuTrigger>
             <DropdownMenuContent 
               align="end" 
               className="w-64 p-3 bg-background/95 backdrop-blur-xl border border-primary/20 z-[100]"
@@ -127,7 +108,6 @@ const Navigation = () => {
               </div>
             </DropdownMenuContent>
           </DropdownMenu>
-          </div>
         </div>
       </div>
     </nav>
