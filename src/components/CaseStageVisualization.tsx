@@ -54,7 +54,11 @@ export function CaseStageVisualization({
   const getStageCardColor = (status: string, priority: string) => {
     if (status === 'completed') return 'bg-green-500/20 border-green-500/50';
     if (status === 'active') return 'bg-blue-500/20 border-blue-500/50';
+    // Pending stages colored by priority
     if (priority === 'critical') return 'bg-red-500/10 border-red-500/30';
+    if (priority === 'high') return 'bg-cyan-400/10 border-cyan-400/30';
+    if (priority === 'medium') return 'bg-blue-400/10 border-blue-400/30';
+    if (priority === 'low') return 'bg-muted/10 border-muted/30';
     return 'bg-card border-border/30';
   };
 
@@ -145,8 +149,10 @@ export function CaseStageVisualization({
                       partCompleted === partTotal 
                         ? "bg-green-500/20 text-green-500 border-2 border-green-500/50"
                         : isActive 
-                        ? "bg-blue-500/20 text-blue-400 border-2 border-blue-500/50"
-                        : "bg-card border border-border/30"
+                        ? "bg-cyan-400/20 text-cyan-400 border-2 border-cyan-400/50"
+                        : partCompleted > 0
+                        ? "bg-blue-400/20 text-blue-400 border-2 border-blue-400/50"
+                        : "bg-muted/20 text-muted-foreground border border-muted/30"
                     )}
                   >
                     {partNum}
