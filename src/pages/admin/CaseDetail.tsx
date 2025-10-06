@@ -347,24 +347,17 @@ export default function CaseDetail() {
 
           {/* DOCUMENTS TAB */}
           <TabsContent value="documents">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {['Family Tree Template', 'POA Citizenship (Married)', 'POA Citizenship (Single)', 'POA Citizenship (Minor)', 
-                'Citizenship Application Form', 'Citizenship Application (Alt)', 'Foreign Act Registration', 'Civil Records Completion',
-                'Civil Records Correction', 'Civil Records Copy Request', 'Passport & ID Documents', 'Supporting Documents'].map((doc) => (
-                <Card key={doc} className="p-4 bg-card/50 hover:bg-card transition-colors">
-                  <div className="flex items-center justify-between mb-3">
-                    <h4 className="font-semibold text-sm line-clamp-2">{doc}</h4>
-                    <Button size="sm" variant="ghost" className="h-8 w-8 p-0 flex-shrink-0">
-                      <Upload className="h-4 w-4" />
-                    </Button>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-red-500" />
-                    <span className="text-xs text-muted-foreground">Pending</span>
-                  </div>
-                </Card>
-              ))}
-            </div>
+            <Card>
+              <CardHeader>
+                <CardTitle>Documents</CardTitle>
+                <CardDescription>Document management - to be redesigned</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center py-12 text-muted-foreground">
+                  <p>Documents section will be redesigned</p>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           {/* PAYMENTS TAB */}
@@ -416,55 +409,16 @@ export default function CaseDetail() {
 
           {/* AUTHORITY TAB */}
           <TabsContent value="authority">
-            <Card className="p-6 bg-card/50">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-2">
-                  <AlertCircle className="h-5 w-5" />
-                  <h3 className="text-lg font-semibold">Checks Authority Panel (CAP)</h3>
+            <Card>
+              <CardHeader>
+                <CardTitle>Authority Panel</CardTitle>
+                <CardDescription>Authority checks and compliance - to be redesigned</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center py-12 text-muted-foreground">
+                  <p>Authority panel will be redesigned</p>
                 </div>
-                <Button className="bg-blue-500 hover:bg-blue-600">
-                  <CheckSquare className="h-4 w-4 mr-2" />
-                  Re-run Checks
-                </Button>
-              </div>
-
-              <div className="mb-6 p-4 bg-card rounded-lg">
-                <div className="text-sm text-muted-foreground mb-2">
-                  Rules: 6 • Warnings: 0 • Blockers: 1 • Can proceed: No
-                </div>
-                <div className="text-xs text-muted-foreground">
-                  Last evaluated: {new Date().toLocaleString()}
-                </div>
-              </div>
-
-              <Card className="bg-red-500/10 border-red-500/30">
-                <CardContent className="p-4">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start gap-3">
-                      <AlertCircle className="h-5 w-5 text-red-500 mt-1" />
-                      <div>
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge className="bg-red-500 text-white">BLOCKER</Badge>
-                        </div>
-                        <h4 className="font-semibold mb-1">Family tree data missing</h4>
-                        <p className="text-sm text-muted-foreground">
-                          Complete family tree is required for Polish citizenship application
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button size="sm" className="bg-blue-500 hover:bg-blue-600">
-                        <AlertCircle className="h-3 w-3 mr-1" />
-                        Fix
-                      </Button>
-                      <Button size="sm" variant="outline" className="border-orange-500 text-orange-500 hover:bg-orange-500/10">
-                        <CheckSquare className="h-3 w-3 mr-1" />
-                        Override
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              </CardContent>
             </Card>
           </TabsContent>
 
