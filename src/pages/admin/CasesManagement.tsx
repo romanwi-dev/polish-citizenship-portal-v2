@@ -169,6 +169,13 @@ export default function CasesManagement() {
         if (a.status === 'bad' && b.status !== 'bad') return 1;
         if (a.status !== 'bad' && b.status === 'bad') return -1;
         
+        // ON_HOLD, NAME_CHANGE, and SUSPENDED cases go below active cases
+        const lowerPriorityStatuses = ['on_hold', 'name_change', 'suspended'];
+        const aIsLower = lowerPriorityStatuses.includes(a.status);
+        const bIsLower = lowerPriorityStatuses.includes(b.status);
+        if (aIsLower && !bIsLower) return 1;
+        if (!aIsLower && bIsLower) return -1;
+        
         // VIP cases first
         if (a.is_vip && !b.is_vip) return -1;
         if (!a.is_vip && b.is_vip) return 1;
