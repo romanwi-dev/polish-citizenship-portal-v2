@@ -229,11 +229,9 @@ const Cases = () => {
             opts={{
               align: "start",
               loop: false,
-              dragFree: true,
-              containScroll: "trimSnaps",
             }}
             setApi={setApi}
-            className="w-full max-w-7xl mx-auto relative z-20"
+            className="w-full max-w-7xl mx-auto"
           >
             <CarouselContent className="-ml-4">
               {mockCases.map((clientCase, index) => {
@@ -244,10 +242,16 @@ const Cases = () => {
                   <CarouselItem key={clientCase.id} className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
                     {/* Flippable Card Container with hover effects */}
                     <div
-                      className="glass-card hover-glow group relative w-full h-[500px] rounded-2xl overflow-visible transition-all duration-700"
+                      className="glass-card p-6 rounded-lg hover-glow group h-[500px] transition-all duration-700 relative"
                       style={{
                         transformStyle: 'preserve-3d',
                         transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = isFlipped ? 'rotateY(180deg) scale(1.03) translateY(-5px)' : 'scale(1.03) translateY(-5px)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
                       }}
                     >
                       {/* Front of Card */}
@@ -267,7 +271,7 @@ const Cases = () => {
                           setFlippedCard(null);
                         }}
                       >
-                        <div className={`h-full rounded-2xl p-6 bg-gradient-to-br ${getStatusColor(clientCase.status)} border shadow-2xl backdrop-blur-xl flex flex-col`}>
+                        <div className="h-full rounded-lg p-6 bg-gradient-to-br from-primary/5 to-secondary/5 border border-border flex flex-col">
                           {/* Header */}
                           <div className="flex items-start justify-between mb-4">
                             <div className="flex items-center gap-3">
@@ -275,7 +279,7 @@ const Cases = () => {
                                 <User className="w-6 h-6 text-white" />
                               </div>
                               <div className="min-w-0">
-                                <h3 className="font-bold text-lg">{clientCase.name}</h3>
+                                <h3 className="font-bold text-lg bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{clientCase.name}</h3>
                                 <p className="text-sm text-muted-foreground">{clientCase.country}</p>
                               </div>
                             </div>
@@ -349,7 +353,7 @@ const Cases = () => {
                           setFlippedCard(null);
                         }}
                       >
-                        <div className={`h-full rounded-2xl p-6 bg-gradient-to-br ${getStatusColor(clientCase.status)} border shadow-2xl backdrop-blur-xl flex flex-col justify-center`}>
+                        <div className="h-full rounded-lg p-6 bg-gradient-to-br from-primary/5 to-secondary/5 border border-border flex flex-col justify-center">
                           <h3 className="text-2xl font-bold mb-4 text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                             Case Details
                           </h3>
