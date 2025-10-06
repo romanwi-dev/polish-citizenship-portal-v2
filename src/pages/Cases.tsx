@@ -229,6 +229,8 @@ const Cases = () => {
             opts={{
               align: "start",
               loop: false,
+              dragFree: true,
+              containScroll: "trimSnaps",
             }}
             setApi={setApi}
             className="w-full max-w-7xl mx-auto cursor-grab active:cursor-grabbing"
