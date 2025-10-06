@@ -6,17 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { CaseStageVisualization } from "@/components/CaseStageVisualization";
 import { 
-  FileText, 
   CheckSquare, 
-  Mail, 
   AlertCircle, 
   ArrowLeft,
   Upload,
-  Download,
-  Eye,
   Edit
 } from "lucide-react";
 import { toast } from "sonner";
@@ -35,6 +31,10 @@ interface CaseData {
   poa_approved: boolean;
   oby_filed: boolean;
   wsc_received: boolean;
+  processing_mode: string;
+  client_score: number;
+  created_at: string;
+  updated_at: string;
 }
 
 export default function CaseDetail() {
@@ -74,18 +74,19 @@ export default function CaseDetail() {
     }
   };
 
-  const handleGeneratePOA = async (poaType: 'adult' | 'minor' | 'spouse') => {
+  const handleStageActivate = async (stageId: string) => {
     try {
-      const { data, error } = await supabase.functions.invoke('generate-poa', {
-        body: { caseId: id, poaType }
-      });
-
+      const { error } = await supabase
+        .from("cases")
+        .update({ current_stage: stageId })
+        .eq("id", id);
+      
       if (error) throw error;
-      toast.success("POA generated successfully");
+      toast.success("Stage activated");
       loadCaseData();
     } catch (error) {
-      console.error("Error generating POA:", error);
-      toast.error("Failed to generate POA");
+      console.error("Error activating stage:", error);
+      toast.error("Failed to activate stage");
     }
   };
 
@@ -109,32 +110,17 @@ export default function CaseDetail() {
     );
   }
 
-  const handleStageActivate = async (stageId: string) => {
-    try {
-      const { error } = await supabase
-        .from("cases")
-        .update({ current_stage: stageId })
-        .eq("id", id);
-      
-      if (error) throw error;
-      toast.success("Stage activated");
-      loadCaseData();
-    } catch (error) {
-      console.error("Error activating stage:", error);
-      toast.error("Failed to activate stage");
-    }
-  };
-
   return (
     <AdminLayout>
-      <div className="p-6">
+      <div className="p-6 max-w-[1600px] mx-auto">
+        {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <Button
             variant="ghost"
             onClick={() => navigate("/admin/cases")}
+            className="h-10 w-10 p-0"
           >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back
+            <ArrowLeft className="h-5 w-5" />
           </Button>
           <Button variant="outline">
             <Edit className="h-4 w-4 mr-2" />
@@ -142,42 +128,69 @@ export default function CaseDetail() {
           </Button>
         </div>
 
+        {/* Client Info Header */}
         <div className="mb-6">
-          <h1 className="text-2xl font-bold mb-1">{caseData.client_name}</h1>
+          <h1 className="text-3xl font-bold mb-2">{caseData.client_name}</h1>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <span>Email: test@example.com</span>
+            <span>Email: {intakeData?.email || 'test@example.com'}</span>
             <span>•</span>
-            <span>Updated: {new Date().toLocaleDateString()}</span>
+            <span>Updated: {new Date(caseData.updated_at).toLocaleDateString()}</span>
           </div>
         </div>
 
+        {/* Tabs */}
         <Tabs defaultValue={defaultTab} className="space-y-6">
-          <TabsList className="bg-card/50 p-1 h-auto">
-            <TabsTrigger value="overview" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-              Overview
-            </TabsTrigger>
-            <TabsTrigger value="stage" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-              Stage
-            </TabsTrigger>
-            <TabsTrigger value="documents" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-              Documents
-            </TabsTrigger>
-            <TabsTrigger value="payments" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-              Payments
-            </TabsTrigger>
-            <TabsTrigger value="tasks" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-              Tasks
-            </TabsTrigger>
-            <TabsTrigger value="authority" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-              Authority
-            </TabsTrigger>
-            <TabsTrigger value="tree" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-              Tree
-            </TabsTrigger>
-          </TabsList>
+          <ScrollArea className="w-full">
+            <TabsList className="inline-flex h-12 items-center justify-start bg-transparent border-b border-border w-full">
+              <TabsTrigger 
+                value="overview"
+                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-md px-6"
+              >
+                Overview
+              </TabsTrigger>
+              <TabsTrigger 
+                value="stage"
+                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-md px-6"
+              >
+                Stage
+              </TabsTrigger>
+              <TabsTrigger 
+                value="documents"
+                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-md px-6"
+              >
+                Documents
+              </TabsTrigger>
+              <TabsTrigger 
+                value="payments"
+                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-md px-6"
+              >
+                Payments
+              </TabsTrigger>
+              <TabsTrigger 
+                value="tasks"
+                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-md px-6"
+              >
+                Tasks
+              </TabsTrigger>
+              <TabsTrigger 
+                value="authority"
+                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-md px-6"
+              >
+                Authority
+              </TabsTrigger>
+              <TabsTrigger 
+                value="tree"
+                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-md px-6"
+              >
+                Tree
+              </TabsTrigger>
+            </TabsList>
+          </ScrollArea>
 
+          {/* OVERVIEW TAB - Finalized from Replit */}
           <TabsContent value="overview" className="space-y-6">
-            <Card>
+            {/* Case Information */}
+            <Card className="bg-card/50 backdrop-blur">
               <CardHeader>
                 <CardTitle>Case Information</CardTitle>
               </CardHeader>
@@ -189,89 +202,94 @@ export default function CaseDetail() {
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground mb-1">Email</p>
-                    <p className="font-semibold">test@example.com</p>
+                    <p className="font-semibold">{intakeData?.email || 'test@example.com'}</p>
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground mb-1">Current Stage</p>
-                    <p className="font-semibold">Pending</p>
+                    <p className="font-semibold">{caseData.current_stage?.replace('_', ' ') || 'Pending'}</p>
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground mb-1">Processing Tier</p>
-                    <p className="font-semibold">STANDARD</p>
+                    <p className="font-semibold">{caseData.processing_mode?.toUpperCase() || 'STANDARD'}</p>
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground mb-1">Score</p>
-                    <p className="font-semibold">85%</p>
+                    <p className="font-semibold">{caseData.client_score || 85}%</p>
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground mb-1">Age</p>
-                    <p className="font-semibold">1 months</p>
+                    <p className="font-semibold">
+                      {Math.floor((Date.now() - new Date(caseData.created_at).getTime()) / (1000 * 60 * 60 * 24 * 30))} months
+                    </p>
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground mb-1">Created</p>
-                    <p className="font-semibold">{new Date().toLocaleDateString()}</p>
+                    <p className="font-semibold">{new Date(caseData.created_at).toLocaleDateString()}</p>
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground mb-1">Last Updated</p>
-                    <p className="font-semibold">{new Date().toLocaleDateString()}</p>
+                    <p className="font-semibold">{new Date(caseData.updated_at).toLocaleDateString()}</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card>
+            {/* Stage Progress */}
+            <Card className="bg-card/50 backdrop-blur">
               <CardHeader>
                 <CardTitle>Stage Progress</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-4 gap-4">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-blue-400">0</div>
+                <div className="grid grid-cols-4 gap-6 text-center">
+                  <div>
+                    <div className="text-3xl font-bold text-blue-400 mb-2">0</div>
                     <div className="text-sm text-muted-foreground">Active</div>
                   </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-green-500">0</div>
+                  <div>
+                    <div className="text-3xl font-bold text-green-500 mb-2">0</div>
                     <div className="text-sm text-muted-foreground">Completed</div>
                   </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold">0</div>
+                  <div>
+                    <div className="text-3xl font-bold mb-2">0</div>
                     <div className="text-sm text-muted-foreground">Remaining</div>
                   </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold">0</div>
+                  <div>
+                    <div className="text-3xl font-bold mb-2">0</div>
                     <div className="text-sm text-muted-foreground">Total</div>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card>
+            {/* Documents Status */}
+            <Card className="bg-card/50 backdrop-blur">
               <CardHeader>
                 <CardTitle>Documents Status</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-4 gap-4">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold">12</div>
+                <div className="grid grid-cols-4 gap-6 text-center">
+                  <div>
+                    <div className="text-3xl font-bold mb-2">12</div>
                     <div className="text-sm text-muted-foreground">Total</div>
                   </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-red-500">12</div>
+                  <div>
+                    <div className="text-3xl font-bold text-red-500 mb-2">12</div>
                     <div className="text-sm text-muted-foreground">Pending</div>
                   </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-yellow-500">0</div>
+                  <div>
+                    <div className="text-3xl font-bold text-yellow-500 mb-2">0</div>
                     <div className="text-sm text-muted-foreground">Uploaded</div>
                   </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-green-500">0</div>
+                  <div>
+                    <div className="text-3xl font-bold text-green-500 mb-2">0</div>
                     <div className="text-sm text-muted-foreground">Completed</div>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card>
+            {/* Payment Status */}
+            <Card className="bg-card/50 backdrop-blur">
               <CardHeader>
                 <CardTitle>Payment Status</CardTitle>
               </CardHeader>
@@ -304,6 +322,7 @@ export default function CaseDetail() {
             </Card>
           </TabsContent>
 
+          {/* STAGE TAB - Finalized from Replit */}
           <TabsContent value="stage">
             <CaseStageVisualization
               completedStages={[]}
@@ -312,15 +331,16 @@ export default function CaseDetail() {
             />
           </TabsContent>
 
+          {/* DOCUMENTS TAB */}
           <TabsContent value="documents">
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {['Family Tree Template', 'POA Citizenship (Married)', 'POA Citizenship (Single)', 'POA Citizenship (Minor)', 
                 'Citizenship Application Form', 'Citizenship Application (Alt)', 'Foreign Act Registration', 'Civil Records Completion',
                 'Civil Records Correction', 'Civil Records Copy Request', 'Passport & ID Documents', 'Supporting Documents'].map((doc) => (
-                <Card key={doc} className="p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-semibold text-sm">{doc}</h4>
-                    <Button size="sm" variant="ghost">
+                <Card key={doc} className="p-4 bg-card/50 hover:bg-card transition-colors">
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="font-semibold text-sm line-clamp-2">{doc}</h4>
+                    <Button size="sm" variant="ghost" className="h-8 w-8 p-0 flex-shrink-0">
                       <Upload className="h-4 w-4" />
                     </Button>
                   </div>
@@ -333,6 +353,7 @@ export default function CaseDetail() {
             </div>
           </TabsContent>
 
+          {/* PAYMENTS TAB */}
           <TabsContent value="payments">
             <Card>
               <CardHeader>
@@ -347,6 +368,7 @@ export default function CaseDetail() {
             </Card>
           </TabsContent>
 
+          {/* TASKS TAB */}
           <TabsContent value="tasks">
             <Card>
               <CardHeader>
@@ -378,6 +400,7 @@ export default function CaseDetail() {
             </Card>
           </TabsContent>
 
+          {/* AUTHORITY TAB */}
           <TabsContent value="authority">
             <Card className="p-6 bg-card/50">
               <div className="flex items-center justify-between mb-6">
@@ -420,7 +443,7 @@ export default function CaseDetail() {
                         <AlertCircle className="h-3 w-3 mr-1" />
                         Fix
                       </Button>
-                      <Button size="sm" variant="outline" className="border-orange-500 text-orange-500">
+                      <Button size="sm" variant="outline" className="border-orange-500 text-orange-500 hover:bg-orange-500/10">
                         <CheckSquare className="h-3 w-3 mr-1" />
                         Override
                       </Button>
@@ -431,6 +454,7 @@ export default function CaseDetail() {
             </Card>
           </TabsContent>
 
+          {/* TREE TAB */}
           <TabsContent value="tree">
             <Card>
               <CardHeader>
@@ -440,209 +464,6 @@ export default function CaseDetail() {
               <CardContent>
                 <div className="text-center py-12 text-muted-foreground">
                   <p>Family tree visualization coming soon</p>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="intake">
-            <Card>
-              <CardHeader>
-                <CardTitle>Intake Information</CardTitle>
-                <CardDescription>
-                  Client information collected during intake
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {intakeData ? (
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-sm font-medium text-muted-foreground">Full Name</p>
-                      <p className="text-sm">{intakeData.first_name} {intakeData.last_name}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-muted-foreground">Date of Birth</p>
-                      <p className="text-sm">{intakeData.date_of_birth || "N/A"}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-muted-foreground">Passport Number</p>
-                      <p className="text-sm">{intakeData.passport_number || "N/A"}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-muted-foreground">Email</p>
-                      <p className="text-sm">{intakeData.email || "N/A"}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-muted-foreground">Completion</p>
-                      <Progress value={intakeData.completion_percentage || 0} className="mt-2" />
-                    </div>
-                  </div>
-                ) : (
-                  <div className="text-center py-12 text-muted-foreground">
-                    <p>No intake data yet</p>
-                    <Button className="mt-4" onClick={() => navigate(`/admin/cases/${id}/intake`)}>
-                      Start Intake
-                    </Button>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="documents">
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle>Documents</CardTitle>
-                    <CardDescription>Case documents and files</CardDescription>
-                  </div>
-                  <Button>
-                    <Upload className="h-4 w-4 mr-2" />
-                    Upload
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent>
-                {documents.length > 0 ? (
-                  <div className="space-y-2">
-                    {documents.map((doc) => (
-                      <div key={doc.id} className="flex items-center justify-between p-3 border rounded-lg">
-                        <div className="flex items-center gap-3">
-                          <FileText className="h-5 w-5 text-muted-foreground" />
-                          <div>
-                            <p className="font-medium">{doc.name}</p>
-                            <p className="text-xs text-muted-foreground">{doc.category || "Uncategorized"}</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Button size="sm" variant="ghost">
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                          <Button size="sm" variant="ghost">
-                            <Download className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-12 text-muted-foreground">
-                    <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <p>No documents uploaded yet</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="tasks">
-            <Card>
-              <CardHeader>
-                <CardTitle>Tasks</CardTitle>
-                <CardDescription>Action items for this case</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {tasks.length > 0 ? (
-                  <div className="space-y-2">
-                    {tasks.map((task) => (
-                      <div key={task.id} className="flex items-center justify-between p-3 border rounded-lg">
-                        <div>
-                          <p className="font-medium">{task.title}</p>
-                          <p className="text-sm text-muted-foreground">{task.description}</p>
-                        </div>
-                        <Badge variant={task.status === "completed" ? "default" : "secondary"}>
-                          {task.status}
-                        </Badge>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-12 text-muted-foreground">
-                    <CheckSquare className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <p>No tasks yet</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="poa">
-            <Card>
-              <CardHeader>
-                <CardTitle>Power of Attorney</CardTitle>
-                <CardDescription>Generate and manage POA documents</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="grid grid-cols-3 gap-4">
-                    <Button onClick={() => handleGeneratePOA('adult')}>
-                      <FileText className="h-4 w-4 mr-2" />
-                      Adult POA
-                    </Button>
-                    <Button onClick={() => handleGeneratePOA('minor')}>
-                      <FileText className="h-4 w-4 mr-2" />
-                      Minor POA
-                    </Button>
-                    <Button onClick={() => handleGeneratePOA('spouse')}>
-                      <FileText className="h-4 w-4 mr-2" />
-                      Spouse POA
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="oby">
-            <Card>
-              <CardHeader>
-                <CardTitle>OBY Form (156 Fields)</CardTitle>
-                <CardDescription>Polish citizenship application</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-12 text-muted-foreground">
-                  <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <p>OBY form management coming soon</p>
-                  <p className="text-sm mt-2">156 fields auto-populated from intake data</p>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="timeline">
-            <Card>
-              <CardHeader>
-                <CardTitle>Case Timeline</CardTitle>
-                <CardDescription>Case progress and milestones</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-start gap-4">
-                    <div className="w-3 h-3 rounded-full bg-primary mt-1" />
-                    <div>
-                      <p className="font-medium">Case Created</p>
-                      <p className="text-sm text-muted-foreground">Lead status</p>
-                    </div>
-                  </div>
-                  {caseData.intake_completed && (
-                    <div className="flex items-start gap-4">
-                      <div className="w-3 h-3 rounded-full bg-primary mt-1" />
-                      <div>
-                        <p className="font-medium">Intake Completed</p>
-                        <p className="text-sm text-muted-foreground">All client data collected</p>
-                      </div>
-                    </div>
-                  )}
-                  {caseData.poa_approved && (
-                    <div className="flex items-start gap-4">
-                      <div className="w-3 h-3 rounded-full bg-primary mt-1" />
-                      <div>
-                        <p className="font-medium">POA Approved</p>
-                        <p className="text-sm text-muted-foreground">HAC approved power of attorney</p>
-                      </div>
-                    </div>
-                  )}
                 </div>
               </CardContent>
             </Card>
