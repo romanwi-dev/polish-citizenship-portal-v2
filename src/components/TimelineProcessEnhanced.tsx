@@ -254,91 +254,95 @@ export default function TimelineProcessEnhanced() {
               }`}
             >
               {/* Content Card */}
-              <div className="w-full md:w-5/12" style={{ perspective: '1000px' }}>
-                <motion.div
-                  onClick={() => toggleFlip(step.number)}
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ duration: 0.3 }}
-                  className="relative cursor-pointer"
-                  style={{
-                    transformStyle: 'preserve-3d',
-                    transition: 'transform 0.6s',
-                    transform: flippedCards[step.number] ? 'rotateY(180deg)' : 'rotateY(0deg)',
-                  }}
+              <div className="w-full md:w-5/12">
+                <div 
+                  className="relative h-[400px]"
+                  style={{ perspective: '1000px' }}
                 >
-                  {/* Front Side */}
-                  <div 
-                    className="glass-card p-6 rounded-lg hover-glow group"
+                  <div
+                    onClick={() => toggleFlip(step.number)}
+                    className="absolute inset-0 cursor-pointer transition-transform duration-700"
                     style={{
-                      backfaceVisibility: 'hidden',
-                      WebkitBackfaceVisibility: 'hidden',
+                      transformStyle: 'preserve-3d',
+                      transform: flippedCards[step.number] ? 'rotateY(180deg)' : 'rotateY(0deg)',
                     }}
                   >
-                    <div className="flex flex-col gap-3">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className={`text-xs font-bold px-2 py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
-                          {step.number}
-                        </span>
-                        <span className="text-xs text-muted-foreground">{step.duration}</span>
+                    {/* Front Side */}
+                    <motion.div
+                      whileHover={{ scale: 1.02 }}
+                      transition={{ duration: 0.3 }}
+                      className="absolute inset-0 glass-card p-6 rounded-lg hover-glow group"
+                      style={{
+                        backfaceVisibility: 'hidden',
+                        WebkitBackfaceVisibility: 'hidden',
+                      }}
+                    >
+                      <div className="flex flex-col gap-3 h-full">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className={`text-xs font-bold px-2 py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
+                            {step.number}
+                          </span>
+                          <span className="text-xs text-muted-foreground">{step.duration}</span>
+                        </div>
+                        <motion.h3 
+                          initial={{ opacity: 0, x: -20, scale: 0.95 }}
+                          whileInView={{ opacity: 1, x: 0, scale: 1 }}
+                          transition={{ 
+                            duration: 2, 
+                            delay: index * 0.08,
+                            type: "spring",
+                            stiffness: 60,
+                            damping: 15
+                          }}
+                          viewport={{ once: true }}
+                          className="text-2xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-lg"
+                        >
+                          {step.title}
+                        </motion.h3>
+                        <p className="text-sm text-muted-foreground mb-3 flex-1">
+                          {step.description}
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
+                            {step.keyAction}
+                          </span>
+                          <span className="text-xs px-3 py-1 rounded-full bg-secondary/10 text-secondary border border-secondary/20">
+                            {step.priority}
+                          </span>
+                        </div>
+                        <p className="text-xs text-muted-foreground/60 mt-2 text-center">Tap to see details</p>
                       </div>
-                      <motion.h3 
-                        initial={{ opacity: 0, x: -20, scale: 0.95 }}
-                        whileInView={{ opacity: 1, x: 0, scale: 1 }}
-                        transition={{ 
-                          duration: 2, 
-                          delay: index * 0.08,
-                          type: "spring",
-                          stiffness: 60,
-                          damping: 15
-                        }}
-                        viewport={{ once: true }}
-                        className="text-2xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-lg"
-                      >
-                        {step.title}
-                      </motion.h3>
-                      <p className="text-sm text-muted-foreground mb-3">
-                        {step.description}
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
-                          {step.keyAction}
-                        </span>
-                        <span className="text-xs px-3 py-1 rounded-full bg-secondary/10 text-secondary border border-secondary/20">
-                          {step.priority}
-                        </span>
-                      </div>
-                      <p className="text-xs text-muted-foreground/60 mt-2 text-center">Click to flip</p>
-                    </div>
-                  </div>
+                    </motion.div>
 
-                  {/* Back Side */}
-                  <div 
-                    className="glass-card p-6 rounded-lg hover-glow absolute inset-0"
-                    style={{
-                      backfaceVisibility: 'hidden',
-                      WebkitBackfaceVisibility: 'hidden',
-                      transform: 'rotateY(180deg)',
-                    }}
-                  >
-                    <div className="flex flex-col gap-3 h-full">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className={`text-xs font-bold px-2 py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
-                          {step.number}
-                        </span>
-                        <span className="text-xs text-primary/60">Additional Details</span>
-                      </div>
-                      <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground mb-2">
-                        More Information
-                      </h3>
-                      <p className="text-sm text-muted-foreground italic mb-4">
-                        [Admin: Add detailed information about this step here. This content will be customized for each timeline step to provide additional context, requirements, or important notes for clients.]
-                      </p>
-                      <div className="mt-auto">
-                        <p className="text-xs text-muted-foreground/60 text-center">Click to flip back</p>
+                    {/* Back Side */}
+                    <div 
+                      className="absolute inset-0 glass-card p-6 rounded-lg hover-glow"
+                      style={{
+                        backfaceVisibility: 'hidden',
+                        WebkitBackfaceVisibility: 'hidden',
+                        transform: 'rotateY(180deg)',
+                      }}
+                    >
+                      <div className="flex flex-col gap-3 h-full">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className={`text-xs font-bold px-2 py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
+                            {step.number}
+                          </span>
+                          <span className="text-xs text-primary/60">Details</span>
+                        </div>
+                        <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground mb-2">
+                          More Information
+                        </h3>
+                        <div className="flex-1 overflow-auto">
+                          <p className="text-sm text-muted-foreground italic">
+                            [Admin: Add detailed information about this step here. This content will be customized for each timeline step to provide additional context, requirements, or important notes for clients.]
+                          </p>
+                        </div>
+                        <p className="text-xs text-muted-foreground/60 text-center mt-2">Tap to flip back</p>
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               </div>
 
               {/* Center Circle with Number */}
