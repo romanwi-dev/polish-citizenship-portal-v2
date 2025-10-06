@@ -227,30 +227,31 @@ const Cases = () => {
           {/* Carousel */}
           <Carousel
             opts={{
-              align: "center",
-              loop: true,
-              dragFree: true,
+              align: "start",
+              loop: false,
+              dragFree: false,
+              skipSnaps: false,
             }}
             setApi={setApi}
-            className="w-full max-w-6xl mx-auto"
+            className="w-full max-w-7xl mx-auto"
           >
-            <CarouselContent className="-ml-2 md:-ml-4">
+            <CarouselContent className="-ml-4">
               {mockCases.map((clientCase, index) => {
                 const isFlipped = flippedCard === clientCase.id;
                 const isCenterCard = index === currentIndex;
                 
                 return (
-                  <CarouselItem key={clientCase.id} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
+                  <CarouselItem key={clientCase.id} className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
                     <div 
-                      className="p-2 transition-all duration-500 ease-out"
+                      className="transition-all duration-500 ease-out group"
                       style={{
-                        transform: isCenterCard ? 'scale(1.05)' : 'scale(0.95)',
+                        transform: isCenterCard ? 'scale(1.05)' : 'scale(1)',
                         zIndex: isCenterCard ? 20 : 10,
                       }}
                     >
                       {/* Flippable Card */}
                       <div
-                        className="relative w-full h-[500px] cursor-pointer transition-all duration-700 ease-out hover:scale-105"
+                        className="relative w-full h-[500px] cursor-pointer transition-all duration-700 ease-out group-hover:scale-105"
                         style={{
                           transformStyle: 'preserve-3d',
                           transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
