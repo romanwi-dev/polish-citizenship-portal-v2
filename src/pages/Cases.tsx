@@ -262,16 +262,16 @@ const Cases = () => {
   const [cases, setCases] = useState<ClientCase[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Check authentication
-  useEffect(() => {
-    const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        navigate("/login");
-      }
-    };
-    checkAuth();
-  }, [navigate]);
+  // Skip authentication in dev mode
+  // useEffect(() => {
+  //   const checkAuth = async () => {
+  //     const { data: { session } } = await supabase.auth.getSession();
+  //     if (!session) {
+  //       navigate("/login");
+  //     }
+  //   };
+  //   checkAuth();
+  // }, [navigate]);
 
   // Load cases from database
   useEffect(() => {

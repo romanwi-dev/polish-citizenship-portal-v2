@@ -19,28 +19,30 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    checkAuth();
+    // Skip auth check in dev mode
+    // checkAuth();
     loadStats();
   }, []);
 
-  const checkAuth = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-      navigate("/login");
-      return;
-    }
+  // Commented out for dev mode
+  // const checkAuth = async () => {
+  //   const { data: { session } } = await supabase.auth.getSession();
+  //   if (!session) {
+  //     navigate("/login");
+  //     return;
+  //   }
 
-    const { data: roles } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", session.user.id)
-      .single();
+  //   const { data: roles } = await supabase
+  //     .from("user_roles")
+  //     .select("role")
+  //     .eq("user_id", session.user.id)
+  //     .single();
 
-    if (!roles || (roles.role !== "admin" && roles.role !== "assistant")) {
-      toast.error("Access denied");
-      navigate("/");
-    }
-  };
+  //   if (!roles || (roles.role !== "admin" && roles.role !== "assistant")) {
+  //     toast.error("Access denied");
+  //     navigate("/");
+  //   }
+  // };
 
   const loadStats = async () => {
     try {

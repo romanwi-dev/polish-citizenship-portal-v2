@@ -30,16 +30,18 @@ export default function CasesManagement() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    checkAuth();
+    // Skip auth check in dev mode
+    // checkAuth();
     loadCases();
   }, []);
 
-  const checkAuth = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-      navigate("/login");
-    }
-  };
+  // Commented out for dev mode
+  // const checkAuth = async () => {
+  //   const { data: { session } } = await supabase.auth.getSession();
+  //   if (!session) {
+  //     navigate("/login");
+  //   }
+  // };
 
   const loadCases = async () => {
     try {
