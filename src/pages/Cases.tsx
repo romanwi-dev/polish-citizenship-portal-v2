@@ -231,7 +231,7 @@ const Cases = () => {
               loop: false,
             }}
             setApi={setApi}
-            className="w-full max-w-7xl mx-auto"
+            className="w-full max-w-7xl mx-auto cursor-grab active:cursor-grabbing"
           >
             <CarouselContent className="-ml-4">
               {mockCases.map((clientCase, index) => {
@@ -242,13 +242,13 @@ const Cases = () => {
                   <CarouselItem key={clientCase.id} className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
                     {/* Flippable Card Container with hover effects */}
                     <div
-                      className="glass-card p-6 rounded-lg hover-glow group h-[500px] transition-all duration-700 relative"
+                      className="glass-card p-6 rounded-lg hover-glow group h-[500px] transition-all duration-700 relative hover:z-10"
                       style={{
                         transformStyle: 'preserve-3d',
                         transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = isFlipped ? 'rotateY(180deg) scale(1.03) translateY(-5px)' : 'scale(1.03) translateY(-5px)';
+                        e.currentTarget.style.transform = isFlipped ? 'rotateY(180deg) scale(1.03) translateZ(50px)' : 'scale(1.03) translateZ(50px)';
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.transform = isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
@@ -353,30 +353,64 @@ const Cases = () => {
                           setFlippedCard(null);
                         }}
                       >
-                        <div className="h-full rounded-lg p-6 bg-gradient-to-br from-primary/5 to-secondary/5 border border-border flex flex-col justify-center">
-                          <h3 className="text-2xl font-bold mb-4 text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                            Case Details
+                        <div className="h-full rounded-lg p-6 bg-gradient-to-br from-primary/5 to-secondary/5 border border-border flex flex-col">
+                          <h3 className="text-xl font-bold mb-6 text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                            Additional Details
                           </h3>
-                          <div className="space-y-3">
-                            <div className="p-3 rounded-lg bg-background/50">
-                              <p className="text-xs text-muted-foreground">Client ID</p>
-                              <p className="font-medium">#{clientCase.id.toString().padStart(6, '0')}</p>
+                          
+                          <div className="space-y-4 flex-1">
+                            <div className="p-4 rounded-lg bg-background/50 backdrop-blur-sm">
+                              <p className="text-xs text-muted-foreground mb-1">Case Number</p>
+                              <p className="font-bold text-lg">#{clientCase.id.toString().padStart(6, '0')}</p>
                             </div>
-                            <div className="p-3 rounded-lg bg-background/50">
-                              <p className="text-xs text-muted-foreground">Total Documents</p>
-                              <p className="font-medium">{clientCase.documents} files uploaded</p>
+
+                            <div className="p-4 rounded-lg bg-background/50 backdrop-blur-sm">
+                              <p className="text-xs text-muted-foreground mb-2">Application Timeline</p>
+                              <div className="space-y-2">
+                                <div className="flex justify-between items-center">
+                                  <span className="text-sm">Start Date</span>
+                                  <span className="text-sm font-medium">{new Date(clientCase.startDate).toLocaleDateString()}</span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                  <span className="text-sm">Duration</span>
+                                  <span className="text-sm font-medium">
+                                    {Math.floor((Date.now() - new Date(clientCase.startDate).getTime()) / (1000 * 60 * 60 * 24))} days
+                                  </span>
+                                </div>
+                              </div>
                             </div>
-                            <div className="p-3 rounded-lg bg-background/50">
-                              <p className="text-xs text-muted-foreground">Application Status</p>
-                              <p className="font-medium capitalize">{clientCase.status}</p>
+
+                            <div className="p-4 rounded-lg bg-background/50 backdrop-blur-sm">
+                              <p className="text-xs text-muted-foreground mb-2">Document Collection</p>
+                              <div className="space-y-2">
+                                <div className="flex justify-between items-center">
+                                  <span className="text-sm">Total Files</span>
+                                  <span className="text-sm font-medium">{clientCase.documents}</span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                  <span className="text-sm">Completion</span>
+                                  <span className="text-sm font-medium">{clientCase.progress}%</span>
+                                </div>
+                              </div>
                             </div>
-                            <div className="p-3 rounded-lg bg-background/50">
-                              <p className="text-xs text-muted-foreground">Origin Country</p>
+
+                            <div className="p-4 rounded-lg bg-background/50 backdrop-blur-sm">
+                              <p className="text-xs text-muted-foreground mb-1">Residing In</p>
                               <p className="font-medium">{clientCase.country}</p>
                             </div>
+
+                            {clientCase.status === "completed" && (
+                              <div className="p-3 rounded-lg bg-green-500/10 border border-green-500/30">
+                                <div className="flex items-center justify-center gap-2">
+                                  <CheckCircle2 className="w-4 h-4 text-green-400" />
+                                  <span className="text-sm font-medium text-green-400">Citizenship Granted</span>
+                                </div>
+                              </div>
+                            )}
                           </div>
+
                           <div className="mt-4 text-center text-xs text-muted-foreground">
-                            Click to flip back
+                            Click to flip back • Double-click for fullscreen
                           </div>
                         </div>
                       </div>
