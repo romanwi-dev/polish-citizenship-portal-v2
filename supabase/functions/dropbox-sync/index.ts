@@ -186,6 +186,16 @@ serve(async (req) => {
       "V I P"
     ];
 
+    // Exclude non-client folders
+    const nonClientFolders = [
+      "TRANSLATIONS",
+      "SEARCH",
+      "NAME CHANGE",
+      "WSC",
+      "USC",
+      "POA"
+    ];
+
     // List classification folders in /CASES
     const classificationFolders = await listDropboxFolder(
       currentAccessToken!,
@@ -224,6 +234,16 @@ serve(async (req) => {
         
         for (const clientFolder of clientFolders) {
           if (clientFolder[".tag"] !== "folder") continue;
+
+          // Skip non-client folders
+          const isNonClientFolder = nonClientFolders.some(nonClient =>
+            clientFolder.name.toUpperCase().includes(nonClient.toUpperCase())
+          );
+
+          if (isNonClientFolder) {
+            console.log(`Skipping non-client folder: ${clientFolder.name}`);
+            continue;
+          }
 
           try {
             const clientName = cleanClientName(clientFolder.name);
