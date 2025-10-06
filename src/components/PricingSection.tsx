@@ -156,7 +156,7 @@ const PricingSection = () => {
 
             {/* VIP */}
             <div className="glass-card p-8 rounded-3xl hover-glow relative">
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-accent/80 to-primary/80 text-white text-sm font-semibold">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-accent/80 to-primary/80 text-white text-sm font-semibold whitespace-nowrap">
                 Waitlist...
               </div>
               
