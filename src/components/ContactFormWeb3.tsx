@@ -140,12 +140,11 @@ const ContactFormWeb3 = () => {
           </div>
 
           {/* Trust Indicators */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
             {[
-              { label: "Average Response", value: "< 3 hours" },
-              { label: "True Success Rate", value: "100%" },
-              { label: "Cases Processed", value: "25,000+" },
-              { label: "Experience", value: "20+ Years" }
+              { label: "AI Accurate Response", value: "< 5 mins" },
+              { label: "Human Detailed Response", value: "< 1 hour" },
+              { label: "Consultation Availability", value: "24/7" }
             ].map((stat, i) => (
               <div key={i} className="glass-card p-8 rounded-lg text-center hover-glow w-full">
                 <div className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">

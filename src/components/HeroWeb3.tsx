@@ -71,7 +71,7 @@ const HeroWeb3 = () => {
             {[
               { value: "2+ Years", label: "Realistic Timeline" },
               { value: "€3,500+", label: "Transparent Real Pricing" },
-              { value: "100%", label: "True Success Rate" }
+              { value: "25,000+", label: "Cases Processed" }
             ].map((stat, i) => (
               <div key={i} className="glass-card p-6 rounded-lg hover-glow w-full max-w-[280px] mx-auto md:max-w-none">
                 <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
