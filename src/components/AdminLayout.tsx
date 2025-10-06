@@ -51,13 +51,13 @@ function AppSidebar() {
   };
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" className="bg-background border-r">
       <div className="flex items-center justify-between p-4 border-b">
         {open && (
           <img 
             src={logo} 
             alt="PL Citizenship" 
-            className="h-8 w-auto object-contain"
+            className="h-6 w-auto object-contain"
           />
         )}
         <SidebarTrigger />
