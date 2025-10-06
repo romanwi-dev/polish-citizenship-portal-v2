@@ -461,10 +461,7 @@ export default function CasesManagement() {
             }}
             open={!!editCase}
             onOpenChange={(open) => !open && setEditCase(null)}
-            onUpdate={() => {
-              refetch();
-              setEditCase(null);
-            }}
+            onUpdate={() => setEditCase(null)}
           />
         )}
       </div>
