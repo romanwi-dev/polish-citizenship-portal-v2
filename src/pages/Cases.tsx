@@ -214,18 +214,12 @@ const Cases = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
-                  <motion.div
-                    whileHover={{ scale: 1.03, y: -5 }}
-                    animate={{ 
-                      rotateY: isFlipped ? 180 : 0 
-                    }}
-                    transition={{ 
-                      scale: { duration: 0.3 },
-                      rotateY: { duration: 0.7 }
-                    }}
+                  <div
                     className="glass-card rounded-lg h-[520px] hover-glow group relative cursor-pointer"
                     style={{
                       transformStyle: 'preserve-3d',
+                      transform: `rotateY(${isFlipped ? 180 : 0}deg)`,
+                      transition: 'transform 0.7s',
                     }}
                     onClick={(e) => {
                       e.preventDefault();
@@ -241,7 +235,7 @@ const Cases = () => {
                   >
                     {/* Front of Card */}
                     <div
-                      className="absolute inset-0 w-full h-full p-6 rounded-lg bg-gradient-to-br from-background to-background/80 pointer-events-none"
+                      className="absolute inset-0 w-full h-full p-6 rounded-lg bg-gradient-to-br from-background to-background/80"
                       style={{
                         backfaceVisibility: 'hidden',
                         WebkitBackfaceVisibility: 'hidden',
@@ -324,7 +318,7 @@ const Cases = () => {
 
                     {/* Back of Card */}
                     <div
-                      className="absolute inset-0 w-full h-full p-6 rounded-lg bg-gradient-to-br from-primary/10 to-secondary/10 backdrop-blur-sm pointer-events-none"
+                      className="absolute inset-0 w-full h-full p-6 rounded-lg bg-gradient-to-br from-primary/10 to-secondary/10 backdrop-blur-sm"
                       style={{
                         backfaceVisibility: 'hidden',
                         WebkitBackfaceVisibility: 'hidden',
@@ -408,7 +402,7 @@ const Cases = () => {
                         </div>
                       </div>
                     </div>
-                  </motion.div>
+                  </div>
                 </motion.div>
               );
             })}
