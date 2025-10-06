@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { motion } from "framer-motion";
 import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock } from "lucide-react";
 import Navigation from "@/components/Navigation";
