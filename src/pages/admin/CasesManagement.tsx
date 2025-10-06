@@ -116,7 +116,12 @@ export default function CasesManagement() {
   }, [statusFilter, processingModeFilter, ageFilter, scoreFilter, progressFilter]);
 
   const filteredCases = useMemo(() => {
-    return cases
+    // Deduplicate cases by ID first
+    const uniqueCases = Array.from(
+      new Map(cases.map(c => [c.id, c])).values()
+    );
+    
+    return uniqueCases
       .filter(c => {
         // Search filter
         const matchesSearch = c.client_name.toLowerCase().includes(searchTerm.toLowerCase()) ||

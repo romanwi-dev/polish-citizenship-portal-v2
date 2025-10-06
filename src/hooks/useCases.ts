@@ -75,8 +75,11 @@ export const useUpdateCase = () => {
       
       if (error) throw error;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cases"] });
+    onSuccess: async () => {
+      // Wait a bit for DB to update, then invalidate and refetch
+      await new Promise(resolve => setTimeout(resolve, 100));
+      await queryClient.invalidateQueries({ queryKey: ["cases"] });
+      await queryClient.refetchQueries({ queryKey: ["cases"] });
       toast.success("Case updated successfully");
     },
     onError: (error: any) => {
