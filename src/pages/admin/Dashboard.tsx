@@ -199,7 +199,7 @@ export default function Dashboard() {
           <Card>
             <CardHeader>
               <CardTitle>By Status</CardTitle>
-              <CardDescription>Cases breakdown by status</CardDescription>
+              <CardDescription>Cases breakdown by status ({stats.vipCases} VIPs)</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
