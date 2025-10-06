@@ -118,11 +118,15 @@ const Cases = () => {
                matchesScore && matchesAge && matchesProgress;
       })
       .sort((a, b) => {
+        // Bad status cases always go to the bottom
+        if (a.status === 'bad' && b.status !== 'bad') return 1;
+        if (a.status !== 'bad' && b.status === 'bad') return -1;
+        
         // VIP cases first
         if (a.is_vip && !b.is_vip) return -1;
         if (!a.is_vip && b.is_vip) return 1;
         
-        // Then sort by client score (higher scores first, bad cases with low scores go to bottom)
+        // Then sort by client score (higher scores first)
         const scoreA = a.client_score || 0;
         const scoreB = b.client_score || 0;
         return scoreB - scoreA;
