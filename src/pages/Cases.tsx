@@ -86,7 +86,23 @@ const Cases = () => {
 
   // Filter cases based on all criteria
   const filteredCases = useMemo(() => {
-    return cases
+    console.log("📊 Cases in /cases page:", cases);
+    console.log("📊 Cases count:", cases.length);
+    
+    // Check for duplicates
+    const caseIds = cases.map(c => c.id);
+    const duplicates = caseIds.filter((id, index) => caseIds.indexOf(id) !== index);
+    if (duplicates.length > 0) {
+      console.error("⚠️ DUPLICATES detected in /cases page:", duplicates);
+      console.error("⚠️ Duplicate cases:", cases.filter(c => duplicates.includes(c.id)));
+    }
+    
+    // Deduplicate here as well
+    const uniqueCases = Array.from(
+      new Map(cases.map(c => [c.id, c])).values()
+    );
+    
+    return uniqueCases
       .filter(c => {
         // Search filter
         const matchesSearch = searchTerm === "" || 

@@ -34,10 +34,23 @@ export const useCases = () => {
         throw error;
       }
       
+      console.log("🔍 RAW data from RPC:", data);
+      console.log("🔍 Total records:", data?.length);
+      
+      // Check for duplicates
+      const ids = (data || []).map((item: CaseData) => item.id);
+      const duplicateIds = ids.filter((id, index) => ids.indexOf(id) !== index);
+      if (duplicateIds.length > 0) {
+        console.error("⚠️ DUPLICATE IDs found in RPC response:", duplicateIds);
+      }
+      
       // Deduplicate by ID in case the RPC returns duplicates
       const uniqueData = Array.from(
         new Map((data || []).map((item: CaseData) => [item.id, item])).values()
       );
+      
+      console.log("✅ UNIQUE data after deduplication:", uniqueData);
+      console.log("✅ Unique records:", uniqueData.length);
       
       return uniqueData as CaseData[];
     },
