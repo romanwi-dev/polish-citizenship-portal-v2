@@ -98,10 +98,12 @@ const CaseCard = memo(({ clientCase, onOpenFullscreen, onEdit }: { clientCase: C
             </div>
           </div>
 
-          <div className="mb-4 p-3 rounded-lg bg-background/50 backdrop-blur-sm">
-            <p className="text-xs text-muted-foreground mb-1">Polish Ancestry</p>
-            <p className="text-sm font-medium">{clientCase.ancestry || "No ancestry info"}</p>
-          </div>
+          {clientCase.generation && (
+            <div className="mb-4 p-3 rounded-lg bg-background/50 backdrop-blur-sm">
+              <p className="text-xs text-muted-foreground mb-1">Generation</p>
+              <p className="text-sm font-medium capitalize">{clientCase.generation}</p>
+            </div>
+          )}
 
           {clientCase.client_code && (
             <div className="mb-4 p-2 rounded-lg bg-background/30">
@@ -300,18 +302,18 @@ const Cases = () => {
               id: caseData.id,
               name: caseData.client_name,
               client_code: caseData.client_code || undefined,
-              country: caseData.country || "Poland",
+              country: caseData.country || "Unknown",
               status: caseData.status,
               generation: caseData.generation || undefined,
               is_vip: caseData.is_vip,
-              startDate: caseData.start_date || caseData.created_at,
+              startDate: caseData.start_date || caseData.created_at || new Date().toISOString(),
               documents: count || 0,
               progress: caseData.progress,
               dropbox_path: caseData.dropbox_path,
               notes: caseData.notes || undefined,
-              ancestry: typeof caseData.ancestry === 'object' && caseData.ancestry && caseData.ancestry !== null
+              ancestry: typeof caseData.ancestry === 'object' && caseData.ancestry && Object.keys(caseData.ancestry).length > 0
                 ? JSON.stringify(caseData.ancestry) 
-                : (typeof caseData.ancestry === 'string' ? caseData.ancestry : "No ancestry info"),
+                : (typeof caseData.ancestry === 'string' && caseData.ancestry ? caseData.ancestry : ""),
             } as ClientCase;
           })
         );
