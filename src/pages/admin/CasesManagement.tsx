@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 import { AdminLayout } from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,57 +31,24 @@ import {
   Settings
 } from "lucide-react";
 import { toast } from "sonner";
-
-interface Case {
-  id: string;
-  client_name: string;
-  client_code: string;
-  status: string;
-  current_stage: string;
-  country: string;
-  progress: number;
-  kpi_docs_percentage: number;
-  kpi_tasks_completed: number;
-  kpi_tasks_total: number;
-  created_at: string;
-}
+import { useAuth } from "@/hooks/useAuth";
+import { useIsStaff } from "@/hooks/useUserRole";
+import { useCases, useUpdateCaseStatus, useDeleteCase } from "@/hooks/useCases";
 
 export default function CasesManagement() {
   const navigate = useNavigate();
-  const [cases, setCases] = useState<Case[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [loading, setLoading] = useState(true);
+  
+  // Authentication and authorization
+  const { user, loading: authLoading } = useAuth(true);
+  const { data: isStaff, isLoading: roleLoading } = useIsStaff(user?.id);
+  
+  // Data fetching with optimized hooks
+  const { data: cases = [], isLoading: casesLoading } = useCases();
+  const updateStatusMutation = useUpdateCaseStatus();
+  const deleteMutation = useDeleteCase();
 
-  useEffect(() => {
-    // Skip auth check in dev mode
-    // checkAuth();
-    loadCases();
-  }, []);
-
-  // Commented out for dev mode
-  // const checkAuth = async () => {
-  //   const { data: { session } } = await supabase.auth.getSession();
-  //   if (!session) {
-  //     navigate("/login");
-  //   }
-  // };
-
-  const loadCases = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("cases")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (error) throw error;
-      setCases(data || []);
-    } catch (error) {
-      console.error("Error loading cases:", error);
-      toast.error("Failed to load cases");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const loading = authLoading || roleLoading || casesLoading;
 
   const handleCopyId = (caseId: string) => {
     navigator.clipboard.writeText(caseId);
@@ -94,82 +60,25 @@ export default function CasesManagement() {
     // TODO: Implement export functionality
   };
 
-  const handlePostpone = async (caseId: string) => {
-    try {
-      const { error } = await supabase
-        .from("cases")
-        .update({ status: "on_hold" })
-        .eq("id", caseId);
-      
-      if (error) throw error;
-      toast.success("Case postponed");
-      loadCases();
-    } catch (error) {
-      toast.error("Failed to postpone case");
-    }
+  const handlePostpone = (caseId: string) => {
+    updateStatusMutation.mutate({ caseId, status: "on_hold" });
   };
 
-  const handleSuspend = async (caseId: string) => {
-    try {
-      const { error } = await supabase
-        .from("cases")
-        .update({ status: "suspended" })
-        .eq("id", caseId);
-      
-      if (error) throw error;
-      toast.success("Case suspended");
-      loadCases();
-    } catch (error) {
-      toast.error("Failed to suspend case");
-    }
+  const handleSuspend = (caseId: string) => {
+    updateStatusMutation.mutate({ caseId, status: "suspended" });
   };
 
-  const handleCancel = async (caseId: string) => {
-    try {
-      const { error } = await supabase
-        .from("cases")
-        .update({ status: "failed" })
-        .eq("id", caseId);
-      
-      if (error) throw error;
-      toast.success("Case cancelled");
-      loadCases();
-    } catch (error) {
-      toast.error("Failed to cancel case");
-    }
+  const handleCancel = (caseId: string) => {
+    updateStatusMutation.mutate({ caseId, status: "failed" });
   };
 
-  const handleArchive = async (caseId: string) => {
-    try {
-      const { error } = await supabase
-        .from("cases")
-        .update({ status: "finished" })
-        .eq("id", caseId);
-      
-      if (error) throw error;
-      toast.success("Case archived");
-      loadCases();
-    } catch (error) {
-      toast.error("Failed to archive case");
-    }
+  const handleArchive = (caseId: string) => {
+    updateStatusMutation.mutate({ caseId, status: "finished" });
   };
 
-  const handleDelete = async (caseId: string) => {
-    if (!confirm("Are you sure you want to delete this case? This action cannot be undone.")) {
-      return;
-    }
-    
-    try {
-      const { error } = await supabase
-        .from("cases")
-        .delete()
-        .eq("id", caseId);
-      
-      if (error) throw error;
-      toast.success("Case deleted");
-      loadCases();
-    } catch (error) {
-      toast.error("Failed to delete case");
+  const handleDelete = (caseId: string) => {
+    if (confirm("Are you sure you want to delete this case? This action cannot be undone.")) {
+      deleteMutation.mutate(caseId);
     }
   };
 
@@ -190,7 +99,7 @@ export default function CasesManagement() {
 
   const filteredCases = cases.filter(c =>
     c.client_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    c.client_code?.toLowerCase().includes(searchTerm.toLowerCase())
+    (c.client_code && c.client_code.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   if (loading) {
@@ -245,19 +154,19 @@ export default function CasesManagement() {
                     {caseItem.client_code && (
                       <Badge variant="outline">{caseItem.client_code}</Badge>
                     )}
-                    <Badge className={getStageColor(caseItem.current_stage)}>
-                      {caseItem.current_stage.replace("_", " ").toUpperCase()}
+                    <Badge className="bg-primary">
+                      {caseItem.status.replace("_", " ").toUpperCase()}
                     </Badge>
                   </div>
                   
                   <div className="flex items-center gap-6 text-sm text-muted-foreground mb-3">
                     <span className="flex items-center gap-1">
                       <FileText className="h-4 w-4" />
-                      Docs: {caseItem.kpi_docs_percentage}%
+                      Docs: {caseItem.document_count}
                     </span>
                     <span className="flex items-center gap-1">
                       <CheckCircle className="h-4 w-4" />
-                      Tasks: {caseItem.kpi_tasks_completed}/{caseItem.kpi_tasks_total}
+                      Progress: {caseItem.progress || 0}%
                     </span>
                     <span className="flex items-center gap-1">
                       <Clock className="h-4 w-4" />

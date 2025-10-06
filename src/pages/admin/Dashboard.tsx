@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminLayout } from "@/components/AdminLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, FileText, CheckSquare, AlertCircle, TrendingUp, Clock } from "lucide-react";
 import { toast } from "sonner";
+import { useAuth } from "@/hooks/useAuth";
+import { useIsStaff } from "@/hooks/useUserRole";
 
 export default function Dashboard() {
-  const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth(true);
+  const { data: isStaff, isLoading: roleLoading } = useIsStaff(user?.id);
+  
   const [stats, setStats] = useState({
     totalCases: 0,
     activeCases: 0,
@@ -19,30 +22,10 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Skip auth check in dev mode
-    // checkAuth();
-    loadStats();
-  }, []);
-
-  // Commented out for dev mode
-  // const checkAuth = async () => {
-  //   const { data: { session } } = await supabase.auth.getSession();
-  //   if (!session) {
-  //     navigate("/login");
-  //     return;
-  //   }
-
-  //   const { data: roles } = await supabase
-  //     .from("user_roles")
-  //     .select("role")
-  //     .eq("user_id", session.user.id)
-  //     .single();
-
-  //   if (!roles || (roles.role !== "admin" && roles.role !== "assistant")) {
-  //     toast.error("Access denied");
-  //     navigate("/");
-  //   }
-  // };
+    if (!authLoading && !roleLoading && user) {
+      loadStats();
+    }
+  }, [authLoading, roleLoading, user]);
 
   const loadStats = async () => {
     try {
@@ -122,11 +105,28 @@ export default function Dashboard() {
     },
   ];
 
-  if (loading) {
+  if (authLoading || roleLoading || loading) {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center h-screen">
           <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        </div>
+      </AdminLayout>
+    );
+  }
+
+  if (!isStaff) {
+    return (
+      <AdminLayout>
+        <div className="flex items-center justify-center h-screen">
+          <Card className="max-w-md">
+            <CardHeader>
+              <CardTitle className="text-destructive">Access Denied</CardTitle>
+              <CardDescription>
+                You don't have permission to access this page.
+              </CardDescription>
+            </CardHeader>
+          </Card>
         </div>
       </AdminLayout>
     );

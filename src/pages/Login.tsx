@@ -20,9 +20,13 @@ const Login = () => {
 
     try {
       if (isSignUp) {
+        const redirectUrl = `${window.location.origin}/cases`;
         const { error } = await supabase.auth.signUp({
           email,
           password,
+          options: {
+            emailRedirectTo: redirectUrl
+          }
         });
         if (error) throw error;
         toast.success("Account created successfully!");

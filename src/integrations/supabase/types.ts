@@ -842,6 +842,31 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_case_document_count: {
+        Args: { case_uuid: string }
+        Returns: number
+      }
+      get_cases_with_counts: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          client_code: string
+          client_name: string
+          completed_task_count: number
+          country: string
+          created_at: string
+          document_count: number
+          dropbox_path: string
+          generation: Database["public"]["Enums"]["case_generation"]
+          id: string
+          is_vip: boolean
+          notes: string
+          progress: number
+          start_date: string
+          status: Database["public"]["Enums"]["case_status"]
+          task_count: number
+          updated_at: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
