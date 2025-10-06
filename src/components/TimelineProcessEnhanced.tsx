@@ -378,19 +378,17 @@ export default function TimelineProcessEnhanced() {
           viewport={{ once: true }}
           className="mt-16 glass-card p-8 rounded-lg max-w-3xl mx-auto"
         >
-          <div className="flex items-start gap-4">
+          <div className="flex items-start gap-4 mb-4">
             <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
               <Shield className="w-6 h-6 text-primary" />
             </div>
-            <div>
-              <h3 className="text-xl font-bold mb-2 text-card-foreground">Expert Legal Guidance</h3>
-              <p className="text-muted-foreground">
-                Every case is unique. Our 20+ years of experience in Polish citizenship law ensures your application 
-                receives professional attention at each critical stage. We handle complex genealogical research, 
-                navigate bureaucratic requirements, and provide ongoing support throughout your journey.
-              </p>
-            </div>
+            <h3 className="text-xl font-bold text-card-foreground">Expert Legal Guidance</h3>
           </div>
+          <p className="text-muted-foreground text-left w-full">
+            Every case is unique. Our 20+ years of experience in Polish citizenship law ensures your application 
+            receives professional attention at each critical stage. We handle complex genealogical research, 
+            navigate bureaucratic requirements, and provide ongoing support throughout your journey.
+          </p>
         </motion.div>
 
         {/* CTA */}
