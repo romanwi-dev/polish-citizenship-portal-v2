@@ -267,9 +267,9 @@ export default function CasesManagement() {
           {filteredCases.map((caseItem) => (
             <Card
               key={caseItem.id}
-              className="p-6 hover-glow transition-all bg-card/50 backdrop-blur-sm border-border/50"
+              className="p-6 hover-glow transition-all bg-card/50 backdrop-blur-sm border-border/50 min-h-[400px] flex flex-col"
             >
-              <div className="flex items-start justify-between">
+              <div className="flex items-start justify-between flex-1">
                 <div 
                   className="flex-1 cursor-pointer"
                   onClick={() => navigate(`/admin/cases/${caseItem.id}`)}
@@ -307,7 +307,7 @@ export default function CasesManagement() {
                     </span>
                     <span className="flex items-center gap-1">
                       <Clock className="h-4 w-4" />
-                      Progress: {caseItem.progress}%
+                      Tasks: {caseItem.completed_task_count}/{caseItem.task_count}
                     </span>
                   </div>
 
@@ -393,8 +393,17 @@ export default function CasesManagement() {
                 </DropdownMenu>
               </div>
 
+
+              {/* Notes Section */}
+              {caseItem.notes && (
+                <div className="mt-4 p-3 bg-muted/30 rounded-lg border border-border/30">
+                  <p className="text-sm text-muted-foreground font-medium mb-1">Notes:</p>
+                  <p className="text-sm text-foreground">{caseItem.notes}</p>
+                </div>
+              )}
+
               {/* Action Buttons */}
-              <div className="grid grid-cols-2 gap-3 mt-4">
+              <div className="grid grid-cols-2 gap-3 mt-auto pt-4">
                 <Button
                   size="default"
                   className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-12 flex items-center justify-center"
@@ -413,24 +422,11 @@ export default function CasesManagement() {
                   className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-12 flex items-center justify-center"
                   onClick={(e) => {
                     e.stopPropagation();
-                    window.open('/family-tree.pdf', '_blank');
+                    navigate(`/admin/cases/${caseItem.id}?tab=tasks`);
                   }}
                 >
                   <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full">
-                    Family Tree
-                  </span>
-                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </Button>
-                <Button
-                  size="default"
-                  className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-12 flex items-center justify-center"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate(`/admin/cases/${caseItem.id}`);
-                  }}
-                >
-                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full">
-                    View Case
+                    New Task
                   </span>
                   <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </Button>
@@ -444,6 +440,19 @@ export default function CasesManagement() {
                 >
                   <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full">
                     Draft OBY
+                  </span>
+                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </Button>
+                <Button
+                  size="default"
+                  className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-12 flex items-center justify-center"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/admin/cases/${caseItem.id}?tab=wsc`);
+                  }}
+                >
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full">
+                    Draft USC
                   </span>
                   <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </Button>
