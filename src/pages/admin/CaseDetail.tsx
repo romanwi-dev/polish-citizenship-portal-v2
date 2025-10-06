@@ -141,69 +141,62 @@ export default function CaseDetail() {
         {/* Tabs */}
         <Tabs defaultValue={defaultTab} className="space-y-6">
           <div className="w-full overflow-x-auto pb-4">
-            <TabsList className="inline-flex gap-3 bg-transparent h-auto p-0 w-max relative z-50">
+            <TabsList className="inline-flex gap-3 bg-transparent h-auto p-0 w-max">
               <TabsTrigger 
                 value="overview"
-                className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-card/80 hover:bg-card shadow-glow hover-glow group relative backdrop-blur-md border border-white/30 data-[state=active]:bg-card/90 flex-shrink-0 md:flex-1 isolate"
+                className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-card/80 hover:bg-card/90 hover:shadow-[0_0_40px_hsl(221_83%_53%_/_0.4)] transition-all group relative backdrop-blur-md border border-white/30 data-[state=active]:bg-card flex-shrink-0 md:flex-1"
               >
                 <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Overview
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg -z-10" />
               </TabsTrigger>
               <TabsTrigger 
                 value="stage"
-                className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-card/80 hover:bg-card shadow-glow hover-glow group relative backdrop-blur-md border border-white/30 data-[state=active]:bg-card/90 flex-shrink-0 md:flex-1 isolate"
+                className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-card/80 hover:bg-card/90 hover:shadow-[0_0_40px_hsl(221_83%_53%_/_0.4)] transition-all group relative backdrop-blur-md border border-white/30 data-[state=active]:bg-card flex-shrink-0 md:flex-1"
               >
                 <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Stage
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg -z-10" />
               </TabsTrigger>
               <TabsTrigger 
                 value="documents"
-                className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-card/80 hover:bg-card shadow-glow hover-glow group relative backdrop-blur-md border border-white/30 data-[state=active]:bg-card/90 flex-shrink-0 md:flex-1 isolate"
+                className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-card/80 hover:bg-card/90 hover:shadow-[0_0_40px_hsl(221_83%_53%_/_0.4)] transition-all group relative backdrop-blur-md border border-white/30 data-[state=active]:bg-card flex-shrink-0 md:flex-1"
               >
                 <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Documents
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg -z-10" />
               </TabsTrigger>
               <TabsTrigger 
                 value="payments"
-                className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-card/80 hover:bg-card shadow-glow hover-glow group relative backdrop-blur-md border border-white/30 data-[state=active]:bg-card/90 flex-shrink-0 md:flex-1 isolate"
+                className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-card/80 hover:bg-card/90 hover:shadow-[0_0_40px_hsl(221_83%_53%_/_0.4)] transition-all group relative backdrop-blur-md border border-white/30 data-[state=active]:bg-card flex-shrink-0 md:flex-1"
               >
                 <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Payments
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg -z-10" />
               </TabsTrigger>
               <TabsTrigger 
                 value="tasks"
-                className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-card/80 hover:bg-card shadow-glow hover-glow group relative backdrop-blur-md border border-white/30 data-[state=active]:bg-card/90 flex-shrink-0 md:flex-1 isolate"
+                className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-card/80 hover:bg-card/90 hover:shadow-[0_0_40px_hsl(221_83%_53%_/_0.4)] transition-all group relative backdrop-blur-md border border-white/30 data-[state=active]:bg-card flex-shrink-0 md:flex-1"
               >
                 <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Tasks
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg -z-10" />
               </TabsTrigger>
               <TabsTrigger 
                 value="authority"
-                className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-card/80 hover:bg-card shadow-glow hover-glow group relative backdrop-blur-md border border-white/30 data-[state=active]:bg-card/90 flex-shrink-0 md:flex-1 isolate"
+                className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-card/80 hover:bg-card/90 hover:shadow-[0_0_40px_hsl(221_83%_53%_/_0.4)] transition-all group relative backdrop-blur-md border border-white/30 data-[state=active]:bg-card flex-shrink-0 md:flex-1"
               >
                 <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Authority
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg -z-10" />
               </TabsTrigger>
               <TabsTrigger 
                 value="tree"
-                className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-card/80 hover:bg-card shadow-glow hover-glow group relative backdrop-blur-md border border-white/30 data-[state=active]:bg-card/90 flex-shrink-0 md:flex-1 isolate"
+                className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-card/80 hover:bg-card/90 hover:shadow-[0_0_40px_hsl(221_83%_53%_/_0.4)] transition-all group relative backdrop-blur-md border border-white/30 data-[state=active]:bg-card flex-shrink-0 md:flex-1"
               >
                 <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Tree
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg -z-10" />
               </TabsTrigger>
             </TabsList>
           </div>
