@@ -8,6 +8,7 @@ import Cases from "./pages/Cases";
 import Login from "./pages/Login";
 import Dashboard from "./pages/admin/Dashboard";
 import CasesManagement from "./pages/admin/CasesManagement";
+import CaseDetail from "./pages/admin/CaseDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
           {/* Admin Routes */}
           <Route path="/admin" element={<Dashboard />} />
           <Route path="/admin/cases" element={<CasesManagement />} />
+          <Route path="/admin/cases/:id" element={<CaseDetail />} />
           
           {/* Catch-all */}
           <Route path="*" element={<NotFound />} />

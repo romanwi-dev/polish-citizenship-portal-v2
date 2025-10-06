@@ -2,3 +2,9 @@ project_id = "oogmuakyqadpynnrasnd"
 
 [functions.dropbox-sync]
 verify_jwt = false
+
+[functions.ocr-passport]
+verify_jwt = false
+
+[functions.generate-poa]
+verify_jwt = false
