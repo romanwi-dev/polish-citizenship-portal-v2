@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { AdminLayout } from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { CaseFilters } from "@/components/CaseFilters";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -42,6 +42,11 @@ import { ErrorState } from "@/components/ErrorState";
 export default function CasesManagement() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [processingModeFilter, setProcessingModeFilter] = useState("all");
+  const [scoreFilter, setScoreFilter] = useState<[number, number]>([0, 100]);
+  const [ageFilter, setAgeFilter] = useState("all");
+  const [progressFilter, setProgressFilter] = useState<[number, number]>([0, 100]);
   
   // Authentication and authorization
   const { user, loading: authLoading } = useAuth(true);
@@ -86,25 +91,70 @@ export default function CasesManagement() {
     }
   };
 
-  const getStageColor = (stage: string) => {
-    const colors: Record<string, string> = {
-      lead: "bg-muted",
-      intake: "bg-blue-500",
-      poa: "bg-purple-500",
-      oby_draft: "bg-yellow-500",
-      oby_filed: "bg-orange-500",
-      wsc_letter: "bg-pink-500",
-      authority_review: "bg-indigo-500",
-      decision: "bg-green-500",
-      consulate: "bg-teal-500",
-    };
-    return colors[stage] || "bg-muted";
+  const handleClearFilters = () => {
+    setSearchTerm("");
+    setStatusFilter("all");
+    setProcessingModeFilter("all");
+    setScoreFilter([0, 100]);
+    setAgeFilter("all");
+    setProgressFilter([0, 100]);
   };
 
-  const filteredCases = cases.filter(c =>
-    c.client_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (c.client_code && c.client_code.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  const activeFiltersCount = useMemo(() => {
+    let count = 0;
+    if (statusFilter !== "all") count++;
+    if (processingModeFilter !== "all") count++;
+    if (ageFilter !== "all") count++;
+    if (scoreFilter[0] !== 0 || scoreFilter[1] !== 100) count++;
+    if (progressFilter[0] !== 0 || progressFilter[1] !== 100) count++;
+    return count;
+  }, [statusFilter, processingModeFilter, ageFilter, scoreFilter, progressFilter]);
+
+  const filteredCases = useMemo(() => {
+    return cases.filter(c => {
+      // Search filter
+      const matchesSearch = c.client_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (c.client_code && c.client_code.toLowerCase().includes(searchTerm.toLowerCase()));
+      
+      // Status filter
+      const matchesStatus = statusFilter === "all" || c.status === statusFilter;
+      
+      // Processing mode filter
+      const matchesProcessingMode = processingModeFilter === "all" || c.processing_mode === processingModeFilter;
+      
+      // Score filter
+      const score = c.client_score || 0;
+      const matchesScore = score >= scoreFilter[0] && score <= scoreFilter[1];
+      
+      // Progress filter
+      const progress = c.progress || 0;
+      const matchesProgress = progress >= progressFilter[0] && progress <= progressFilter[1];
+      
+      // Age filter
+      let matchesAge = true;
+      if (ageFilter !== "all" && c.start_date) {
+        const startDate = new Date(c.start_date);
+        const daysSinceStart = Math.floor((Date.now() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+        
+        switch (ageFilter) {
+          case "new":
+            matchesAge = daysSinceStart <= 30;
+            break;
+          case "recent":
+            matchesAge = daysSinceStart > 30 && daysSinceStart <= 90;
+            break;
+          case "medium":
+            matchesAge = daysSinceStart > 90 && daysSinceStart <= 180;
+            break;
+          case "old":
+            matchesAge = daysSinceStart > 180;
+            break;
+        }
+      }
+      
+      return matchesSearch && matchesStatus && matchesProcessingMode && matchesScore && matchesProgress && matchesAge;
+    });
+  }, [cases, searchTerm, statusFilter, processingModeFilter, scoreFilter, ageFilter, progressFilter]);
 
   if (loading) {
     return (
@@ -145,7 +195,7 @@ export default function CasesManagement() {
       <div className="p-8 bg-background min-h-screen">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold mb-2">Cases Management</h1>
+            <h1 className="text-3xl font-bold mb-2 text-foreground">Cases Management</h1>
             <p className="text-muted-foreground">Manage all client cases</p>
           </div>
           <Button onClick={() => navigate("/admin/cases/new")}>
@@ -154,17 +204,22 @@ export default function CasesManagement() {
           </Button>
         </div>
 
-        <div className="mb-6">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search cases..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-        </div>
+        <CaseFilters
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+          statusFilter={statusFilter}
+          onStatusChange={setStatusFilter}
+          processingModeFilter={processingModeFilter}
+          onProcessingModeChange={setProcessingModeFilter}
+          scoreFilter={scoreFilter}
+          onScoreChange={setScoreFilter}
+          ageFilter={ageFilter}
+          onAgeChange={setAgeFilter}
+          progressFilter={progressFilter}
+          onProgressChange={setProgressFilter}
+          onClearFilters={handleClearFilters}
+          activeFiltersCount={activeFiltersCount}
+        />
 
         {filteredCases.length === 0 ? (
           <EmptyState
@@ -181,7 +236,7 @@ export default function CasesManagement() {
           {filteredCases.map((caseItem) => (
             <Card
               key={caseItem.id}
-              className="p-6 hover-glow transition-all bg-card border-border"
+              className="p-6 hover-glow transition-all bg-card/50 backdrop-blur-sm border-border/50"
             >
               <div className="flex items-start justify-between">
                 <div 
@@ -189,7 +244,7 @@ export default function CasesManagement() {
                   onClick={() => navigate(`/admin/cases/${caseItem.id}`)}
                 >
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-lg font-semibold">{caseItem.client_name}</h3>
+                    <h3 className="text-lg font-semibold text-foreground">{caseItem.client_name}</h3>
                     {caseItem.client_code && (
                       <Badge variant="outline">{caseItem.client_code}</Badge>
                     )}
