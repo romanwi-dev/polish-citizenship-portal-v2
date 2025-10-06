@@ -246,16 +246,16 @@ const FAQSection = () => {
           )}
 
           {/* CTA */}
-          <div className="mt-12 text-center">
-            <p className="text-muted-foreground mb-4">
-              Still have questions? We're here to help!
-            </p>
-            <a
-              href="#contact"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors font-medium"
+          <div className="mt-12 flex justify-center">
+            <button 
+              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+              className="text-2xl font-bold px-20 py-6 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 transition-all"
             >
-              Contact Us
-            </a>
+              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                Request More Info
+              </span>
+              <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+            </button>
           </div>
         </div>
       </div>
