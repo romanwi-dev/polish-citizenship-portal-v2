@@ -1,6 +1,6 @@
 import { useState, useEffect, memo } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Briefcase, Edit, MoreVertical, Copy, Download, Pause, Ban, Archive, Trash2 } from "lucide-react";
+import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Briefcase, Edit, MoreVertical, Copy, Download, Pause, Ban, Archive, Trash2, Eye, Radio, FileEdit } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -52,12 +52,13 @@ const statusColorMap: Record<string, string> = {
   other: "bg-slate-500/20 text-slate-400 border-slate-500/30",
 };
 
-const CaseCard = memo(({ clientCase, onOpenFullscreen, onEdit, onDelete, onUpdateStatus }: { 
+const CaseCard = memo(({ clientCase, onOpenFullscreen, onEdit, onDelete, onUpdateStatus, navigate }: { 
   clientCase: ClientCase; 
   onOpenFullscreen: (c: ClientCase) => void; 
   onEdit: (c: ClientCase) => void;
   onDelete: (id: string) => void;
   onUpdateStatus: (id: string, status: string) => void;
+  navigate: ReturnType<typeof useNavigate>;
 }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -246,15 +247,55 @@ const CaseCard = memo(({ clientCase, onOpenFullscreen, onEdit, onDelete, onUpdat
             </div>
           )}
 
-          <Button
-            variant="outline"
-            size="sm"
-            className="w-full mt-auto"
-            onClick={handleEdit}
-          >
-            <Edit className="w-4 h-4 mr-2" />
-            Edit Details
-          </Button>
+          <div className="space-y-2 mt-auto">
+            <div className="grid grid-cols-3 gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="text-xs"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/admin/case/${clientCase.id}`);
+                }}
+              >
+                <Eye className="w-3 h-3 mr-1" />
+                View
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="text-xs"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/admin/case/${clientCase.id}?tab=control`);
+                }}
+              >
+                <Radio className="w-3 h-3 mr-1" />
+                Control
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="text-xs"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/admin/case/${clientCase.id}?tab=oby`);
+                }}
+              >
+                <FileEdit className="w-3 h-3 mr-1" />
+                OBY
+              </Button>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full"
+              onClick={handleEdit}
+            >
+              <Edit className="w-4 h-4 mr-2" />
+              Edit Details
+            </Button>
+          </div>
         </div>
 
         {/* Back of Card */}
@@ -559,6 +600,7 @@ const Cases = () => {
                   onEdit={setEditCase}
                   onDelete={handleDeleteCase}
                   onUpdateStatus={handleUpdateStatus}
+                  navigate={navigate}
                 />
               ))}
             </div>
