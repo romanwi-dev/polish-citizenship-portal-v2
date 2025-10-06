@@ -5,8 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
+import { useUpdateCase } from "@/hooks/useCases";
 
 interface EditCaseDialogProps {
   caseData: {
@@ -26,6 +25,7 @@ interface EditCaseDialogProps {
 }
 
 export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditCaseDialogProps) => {
+  const updateCaseMutation = useUpdateCase();
   const [formData, setFormData] = useState({
     client_name: caseData.name,
     client_code: caseData.client_code || "",
@@ -36,7 +36,6 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
     notes: caseData.notes || "",
     progress: caseData.progress,
   });
-  const [loading, setLoading] = useState(false);
   const [showOtherCountry, setShowOtherCountry] = useState(
     !["US", "UK", "Canada", "Australia", "South Africa", "Brazil", "Argentina", "Mexico", "Venezuela", "Israel", "France", "Germany"].includes(caseData.country)
   );
@@ -48,14 +47,13 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
 
-    try {
-      const countryValue = showOtherCountry ? otherCountry : formData.country;
-      
-      const { error } = await supabase
-        .from("cases")
-        .update({
+    const countryValue = showOtherCountry ? otherCountry : formData.country;
+    
+    updateCaseMutation.mutate(
+      {
+        caseId: caseData.id,
+        updates: {
           client_name: formData.client_name,
           client_code: formData.client_code || null,
           country: countryValue,
@@ -64,19 +62,15 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
           is_vip: formData.is_vip,
           notes: formData.notes,
           progress: formData.progress,
-        })
-        .eq("id", caseData.id);
-
-      if (error) throw error;
-
-      toast.success("Case updated successfully");
-      onUpdate();
-      onOpenChange(false);
-    } catch (error: any) {
-      toast.error(error.message);
-    } finally {
-      setLoading(false);
-    }
+        },
+      },
+      {
+        onSuccess: () => {
+          onUpdate();
+          onOpenChange(false);
+        },
+      }
+    );
   };
 
   return (
@@ -241,8 +235,8 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
               Cancel
             </Button>
-            <Button type="submit" disabled={loading}>
-              {loading ? "Saving..." : "Save Changes"}
+            <Button type="submit" disabled={updateCaseMutation.isPending}>
+              {updateCaseMutation.isPending ? "Saving..." : "Save Changes"}
             </Button>
           </div>
         </form>
