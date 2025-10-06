@@ -228,10 +228,12 @@ const Cases = () => {
                       transformStyle: 'preserve-3d',
                     }}
                     onClick={(e) => {
+                      e.preventDefault();
                       e.stopPropagation();
-                      setFlippedCard(isFlipped ? null : clientCase.id);
+                      setFlippedCard(prev => prev === clientCase.id ? null : clientCase.id);
                     }}
                     onDoubleClick={(e) => {
+                      e.preventDefault();
                       e.stopPropagation();
                       setFullscreenCase(clientCase);
                       setFlippedCard(null);
@@ -239,7 +241,7 @@ const Cases = () => {
                   >
                     {/* Front of Card */}
                     <div
-                      className="absolute inset-0 w-full h-full p-6 rounded-lg bg-gradient-to-br from-background to-background/80"
+                      className="absolute inset-0 w-full h-full p-6 rounded-lg bg-gradient-to-br from-background to-background/80 pointer-events-none"
                       style={{
                         backfaceVisibility: 'hidden',
                         WebkitBackfaceVisibility: 'hidden',
@@ -322,7 +324,7 @@ const Cases = () => {
 
                     {/* Back of Card */}
                     <div
-                      className="absolute inset-0 w-full h-full p-6 rounded-lg bg-gradient-to-br from-primary/10 to-secondary/10 backdrop-blur-sm"
+                      className="absolute inset-0 w-full h-full p-6 rounded-lg bg-gradient-to-br from-primary/10 to-secondary/10 backdrop-blur-sm pointer-events-none"
                       style={{
                         backfaceVisibility: 'hidden',
                         WebkitBackfaceVisibility: 'hidden',
