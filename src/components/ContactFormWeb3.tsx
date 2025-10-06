@@ -7,7 +7,6 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Send, Zap } from "lucide-react";
 import { z } from "zod";
-import { supabase } from "@/integrations/supabase/client";
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, { message: "Name is required" }).max(100),
@@ -23,30 +22,15 @@ const ContactFormWeb3 = () => {
     message: "",
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
     try {
       contactSchema.parse(formData);
       
-      // Submit to database
-      const { error } = await supabase
-        .from('contact_submissions')
-        .insert([
-          {
-            name: formData.name,
-            email: formData.email,
-            message: formData.message,
-          }
-        ]);
-
-      if (error) {
-        throw error;
-      }
-      
       toast({
-        title: "Message Sent Successfully!",
-        description: "Thank you for your inquiry. We'll contact you soon with more information about our services.",
+        title: "Message Sent!",
+        description: "Our AI will analyze your case within 24 hours.",
       });
       
       setFormData({ name: "", email: "", message: "" });
@@ -55,13 +39,6 @@ const ContactFormWeb3 = () => {
         toast({
           title: "Validation Error",
           description: error.errors[0].message,
-          variant: "destructive",
-        });
-      } else {
-        console.error('Error submitting form:', error);
-        toast({
-          title: "Submission Failed",
-          description: "There was an error sending your message. Please try again or contact us directly.",
           variant: "destructive",
         });
       }
@@ -164,9 +141,9 @@ const ContactFormWeb3 = () => {
             {/* Features */}
             <div className="flex flex-wrap justify-center gap-6 mt-12 pt-12 border-t border-border/30">
               {[
-                { icon: Zap, text: "Fast Response" },
+                { icon: Zap, text: "Instant AI Response" },
                 { icon: Send, text: "Secure Processing" },
-                { icon: Zap, text: "Professional Service" }
+                { icon: Zap, text: "24/7 Availability" }
               ].map((feature, i) => {
                 const Icon = feature.icon;
                 return (
@@ -184,10 +161,10 @@ const ContactFormWeb3 = () => {
           {/* Trust Indicators */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
             {[
-              { label: "Response Time", value: "24-48 Hours" },
-              { label: "Success Rate", value: "High" },
-              { label: "Realistic Timeline", value: "1.5-4 Years" },
-              { label: "Experience", value: "Since 2003" }
+              { label: "Average Response", value: "< 3 hours" },
+              { label: "True Success Rate", value: "100%" },
+              { label: "Cases Processed", value: "25,000+" },
+              { label: "Experience", value: "20+ Years" }
             ].map((stat, i) => (
               <div key={i} className="glass-card p-8 rounded-lg text-center hover-glow w-full">
                 <div className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">

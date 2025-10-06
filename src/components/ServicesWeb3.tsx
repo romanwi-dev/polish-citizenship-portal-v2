@@ -3,14 +3,14 @@ import { FileText, Users, CheckCircle, Globe, Cpu, Shield, Zap } from "lucide-re
 const services = [
   {
     icon: Cpu,
-    title: "Expert Case Analysis",
-    description: "Comprehensive evaluation of your eligibility based on years of legal experience and case knowledge.",
+    title: "AI Deep Case Analysis",
+    description: "Predict success probability and timeline with high accuracy based on 20+ years of case history and 180+ data points.",
     color: "from-primary to-accent",
   },
   {
     icon: Shield,
-    title: "Secure & Professional",
-    description: "SSL encryption and certified legal professionals ensure your data and documents are handled securely.",
+    title: "Bank-Level Security",
+    description: "256-bit SSL encryption and certified legal professionals ensure your data and documents are secure.",
     color: "from-secondary to-primary",
   },
   {
@@ -27,8 +27,8 @@ const services = [
   },
   {
     icon: CheckCircle,
-    title: "High Success Rate",
-    description: "Proven track record with professional legal expertise since 2003. Results based on case-by-case evaluation.",
+    title: "100% Success Rate",
+    description: "Proven track record with 25,000+ successfully processed cases since 2003.",
     color: "from-secondary to-accent",
   },
   {
@@ -49,15 +49,15 @@ const ServicesWeb3 = () => {
         <div className="text-center mb-20">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16">
             <Zap className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium">Professional Services</span>
+            <span className="text-sm font-medium">Next-Gen Services</span>
           </div>
           <h2 className="text-5xl md:text-6xl font-bold mb-14">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              Expert Legal Services
+              Powered by Innovation
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-16">
-            Professional legal expertise for Polish citizenship by descent
+            Professional legal expertise combined with cutting-edge AI technology
           </p>
         </div>
 

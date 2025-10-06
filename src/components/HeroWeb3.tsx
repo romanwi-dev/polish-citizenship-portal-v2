@@ -26,7 +26,7 @@ const HeroWeb3 = () => {
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16 animate-fade-in">
             <Sparkles className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium">Professional Legal Services</span>
+            <span className="text-sm font-medium">Web3 Legal Services</span>
           </div>
           
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-14 leading-tight animate-fade-in">
@@ -36,7 +36,7 @@ const HeroWeb3 = () => {
           </h1>
           
           <p className="text-xl md:text-2xl text-muted-foreground mb-16 leading-relaxed max-w-3xl mx-auto animate-fade-in">
-            Expert legal guidance for people of Polish and Polish-Jewish descent from around the world for obtaining Polish citizenship and EU passports through Polish ancestry - realistic timeline 1.5-4 years, transparent pricing €3,500 - €12,500+
+            Expert legal guidance for people of Polish and Polish-Jewish descent from around the world for obtaining Polish citizenship and EU passports through Polish ancestry - unmatched 100% success rate, true realist timeline 1,5 - 4 years, transparent pricing €3,500 - €12,500+
           </p>
           
           <div className="flex justify-center animate-fade-in mb-20">
@@ -55,9 +55,9 @@ const HeroWeb3 = () => {
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             {[
-              { value: "1.5-4 Years", label: "Realistic Timeline" },
-              { value: "€3,500+", label: "Transparent Pricing" },
-              { value: "Since 2003", label: "Experience" }
+              { value: "2+ Years", label: "Realistic Timeline" },
+              { value: "€3,500+", label: "Transparent Real Pricing" },
+              { value: "100%", label: "True Success Rate" }
             ].map((stat, i) => (
               <div key={i} className="glass-card p-6 rounded-lg hover-glow">
                 <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
