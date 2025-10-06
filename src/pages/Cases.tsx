@@ -202,9 +202,9 @@ const Cases = () => {
       
       <section className="pt-24 md:pt-32 pb-12 md:pb-20 relative overflow-hidden">
         {/* Background Effects */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
-        <div className="absolute top-20 left-20 w-72 h-72 md:w-96 md:h-96 bg-primary/10 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-20 right-20 w-72 h-72 md:w-96 md:h-96 bg-secondary/10 rounded-full blur-[120px] animate-pulse delay-700" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background pointer-events-none" />
+        <div className="absolute top-20 left-20 w-72 h-72 md:w-96 md:h-96 bg-primary/20 rounded-full blur-[150px] animate-pulse pointer-events-none" />
+        <div className="absolute bottom-20 right-20 w-72 h-72 md:w-96 md:h-96 bg-secondary/20 rounded-full blur-[150px] animate-pulse delay-700 pointer-events-none" />
 
         <div className="container px-4 mx-auto relative z-10">
           {/* Header */}
@@ -243,35 +243,35 @@ const Cases = () => {
                 return (
                   <CarouselItem key={clientCase.id} className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
                     <div 
-                      className="transition-all duration-500 ease-out group"
+                      className="transition-all duration-500 ease-out relative"
                       style={{
                         transform: isCenterCard ? 'scale(1.05)' : 'scale(1)',
-                        zIndex: isCenterCard ? 20 : 10,
+                        zIndex: isCenterCard ? 30 : 10,
                       }}
                     >
                       {/* Flippable Card */}
                       <div
-                        className="relative w-full h-[500px] cursor-pointer transition-all duration-700 ease-out group-hover:scale-105"
+                        className="relative w-full h-[500px] transition-all duration-700 ease-out"
                         style={{
                           transformStyle: 'preserve-3d',
                           transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
                         }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setFlippedCard(isFlipped ? null : clientCase.id);
-                        }}
-                        onDoubleClick={(e) => {
-                          e.stopPropagation();
-                          setFullscreenCase(clientCase);
-                          setFlippedCard(null);
-                        }}
                       >
                         {/* Front of Card */}
                         <div
-                          className="absolute inset-0 w-full h-full"
+                          className="absolute inset-0 w-full h-full cursor-pointer hover:scale-105 transition-transform duration-300"
                           style={{
                             backfaceVisibility: 'hidden',
                             WebkitBackfaceVisibility: 'hidden',
+                          }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setFlippedCard(isFlipped ? null : clientCase.id);
+                          }}
+                          onDoubleClick={(e) => {
+                            e.stopPropagation();
+                            setFullscreenCase(clientCase);
+                            setFlippedCard(null);
                           }}
                         >
                           <div className={`h-full glass-card rounded-2xl p-6 bg-gradient-to-br ${getStatusColor(clientCase.status)} border shadow-2xl backdrop-blur-xl flex flex-col transition-shadow duration-300 hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.3)]`}>
@@ -345,11 +345,15 @@ const Cases = () => {
 
                         {/* Back of Card */}
                         <div
-                          className="absolute inset-0 w-full h-full"
+                          className="absolute inset-0 w-full h-full cursor-pointer"
                           style={{
                             backfaceVisibility: 'hidden',
                             WebkitBackfaceVisibility: 'hidden',
                             transform: 'rotateY(180deg)',
+                          }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setFlippedCard(null);
                           }}
                         >
                           <div className={`h-full glass-card rounded-2xl p-6 bg-gradient-to-br ${getStatusColor(clientCase.status)} border shadow-2xl backdrop-blur-xl flex flex-col justify-center transition-shadow duration-300 hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.3)]`}>
