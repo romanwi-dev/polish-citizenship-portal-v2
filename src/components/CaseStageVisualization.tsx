@@ -126,8 +126,8 @@ export function CaseStageVisualization({
           <h3 className="text-lg font-semibold">Part Progression</h3>
           <p className="text-sm text-muted-foreground">Click to jump • Double-click to complete</p>
         </div>
-        <ScrollArea className="w-full">
-          <div className="flex gap-4 pb-4">
+        <div className="w-full overflow-x-auto">
+          <div className="flex gap-4 pb-4 min-w-max">
             {PART_NAMES.map((partName, index) => {
               const partNum = index + 1;
               const partStages = CASE_STAGES.filter(s => s.part === partNum);
@@ -168,7 +168,7 @@ export function CaseStageVisualization({
               );
             })}
           </div>
-        </ScrollArea>
+        </div>
       </Card>
 
       {/* Stage Pipeline */}
@@ -177,8 +177,8 @@ export function CaseStageVisualization({
           <h3 className="text-lg font-semibold">Stage Pipeline</h3>
           <span className="text-sm text-muted-foreground">{totalStages} stages total</span>
         </div>
-        <ScrollArea className="w-full">
-          <div className="flex gap-4 pb-4">
+        <div className="w-full overflow-x-auto">
+          <div className="flex gap-4 pb-4 min-w-max">
             {CASE_STAGES.slice(0, 30).map((stage) => {
               const status = getStageStatus(stage.id);
               const isVisible = stage.isClientVisible;
@@ -217,7 +217,7 @@ export function CaseStageVisualization({
               );
             })}
           </div>
-        </ScrollArea>
+        </div>
       </Card>
 
       {/* Stage Management - Pending Stages */}
