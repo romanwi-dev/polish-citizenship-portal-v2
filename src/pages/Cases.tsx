@@ -395,6 +395,7 @@ const Cases = () => {
           open={!!editCase}
           onOpenChange={(open) => !open && setEditCase(null)}
           onUpdate={() => {
+            refetch();
             setEditCase(null);
           }}
         />

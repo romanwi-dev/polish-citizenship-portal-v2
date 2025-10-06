@@ -116,12 +116,7 @@ export default function CasesManagement() {
   }, [statusFilter, processingModeFilter, ageFilter, scoreFilter, progressFilter]);
 
   const filteredCases = useMemo(() => {
-    // Deduplicate cases by ID first
-    const uniqueCases = Array.from(
-      new Map(cases.map(c => [c.id, c])).values()
-    );
-    
-    return uniqueCases
+    return cases
       .filter(c => {
         // Search filter
         const matchesSearch = c.client_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -466,7 +461,10 @@ export default function CasesManagement() {
             }}
             open={!!editCase}
             onOpenChange={(open) => !open && setEditCase(null)}
-            onUpdate={() => setEditCase(null)}
+            onUpdate={() => {
+              refetch();
+              setEditCase(null);
+            }}
           />
         )}
       </div>

@@ -34,16 +34,10 @@ export const useCases = () => {
         throw error;
       }
       
-      // Deduplicate by ID in case the RPC returns duplicates
-      const uniqueData = Array.from(
-        new Map((data || []).map((item: CaseData) => [item.id, item])).values()
-      );
-      
-      return uniqueData as CaseData[];
+      return data as CaseData[];
     },
-    staleTime: 0, // Always refetch to ensure fresh data
-    refetchOnWindowFocus: false, // Prevent automatic refetch on focus
-    refetchOnMount: true,
+    staleTime: 30000, // Cache for 30 seconds
+    refetchOnWindowFocus: true,
   });
 };
 
@@ -74,28 +68,15 @@ export const useUpdateCase = () => {
   
   return useMutation({
     mutationFn: async ({ caseId, updates }: { caseId: string; updates: any }) => {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from("cases")
         .update(updates)
-        .eq("id", caseId)
-        .select()
-        .single();
+        .eq("id", caseId);
       
       if (error) throw error;
-      return data;
     },
-    onSuccess: async (updatedCase) => {
-      // Cancel any outgoing refetches
-      await queryClient.cancelQueries({ queryKey: ["cases"] });
-      
-      // Optimistically update the cache with the new data
-      queryClient.setQueryData(["cases"], (old: any) => {
-        if (!old) return old;
-        return old.map((c: any) => c.id === updatedCase.id ? { ...c, ...updatedCase } : c);
-      });
-      
-      // Then refetch to ensure consistency
-      await queryClient.invalidateQueries({ queryKey: ["cases"] });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cases"] });
       toast.success("Case updated successfully");
     },
     onError: (error: any) => {
