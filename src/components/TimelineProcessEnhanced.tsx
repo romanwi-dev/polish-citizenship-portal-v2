@@ -194,10 +194,9 @@ export default function TimelineProcessEnhanced() {
           viewport={{ once: true }}
           className="text-center mb-20"
         >
-          <div className="inline-block px-4 py-2 rounded-full glass-card mb-16">
-            <span className="text-sm font-medium bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Process Timeline
-            </span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16">
+            <Clock className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium">Process Timeline</span>
           </div>
           <motion.h2 
             initial={{ opacity: 0, scale: 0.9, y: 30 }}

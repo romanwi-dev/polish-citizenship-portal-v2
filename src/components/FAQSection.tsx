@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/accordion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
-import { Search, Users, Clock, DollarSign, FileText, AlertCircle } from "lucide-react";
+import { Search, Users, Clock, DollarSign, FileText, AlertCircle, HelpCircle } from "lucide-react";
 
 const FAQSection = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -169,10 +169,9 @@ const FAQSection = () => {
         <div className="max-w-5xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12 space-y-4">
-            <div className="inline-block px-4 py-2 rounded-full glass-card mb-6">
-              <span className="text-sm font-medium bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                FAQ
-              </span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-6">
+              <HelpCircle className="w-4 h-4 text-primary" />
+              <span className="text-sm font-medium">FAQ</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold">
               Find Answers{" "}

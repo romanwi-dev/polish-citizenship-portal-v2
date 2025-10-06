@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { UserCircle } from "lucide-react";
 import { MessageSquare, ClipboardCheck, FileSearch, Scale, Send, Brain, FileCheck2, Globe } from "lucide-react";
 import { Button } from "./ui/button";
 
@@ -96,10 +97,9 @@ export default function ClientOnboardingSection() {
           viewport={{ once: true }}
           className="text-center mb-20"
         >
-          <div className="inline-block px-4 py-2 rounded-full glass-card mb-16">
-            <span className="text-sm font-medium bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Client Journey
-            </span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16">
+            <UserCircle className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium">Client Journey</span>
           </div>
           <motion.h2 
             initial={{ opacity: 0, scale: 0.9, y: 30 }}

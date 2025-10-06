@@ -1,5 +1,5 @@
 import { useState, useEffect, memo } from "react";
-import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock } from "lucide-react";
+import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Briefcase } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 
@@ -378,10 +378,9 @@ const Cases = () => {
         <div className="container px-4 mx-auto">
           {/* Header */}
           <div className="text-center mb-16">
-            <div className="inline-block px-4 py-2 rounded-full glass-card mb-6">
-              <span className="text-sm font-medium bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                Client Portfolio
-              </span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-6">
+              <Briefcase className="w-4 h-4 text-primary" />
+              <span className="text-sm font-medium">Client Portfolio</span>
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
