@@ -2,155 +2,42 @@ import { useState, useEffect, memo } from "react";
 import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Briefcase } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
+import { DropboxSync } from "@/components/DropboxSync";
+import { toast } from "sonner";
 
 interface ClientCase {
-  id: number;
+  id: string;
   name: string;
+  client_code?: string;
   country: string;
-  status: "active" | "completed" | "pending";
+  status: string;
+  generation?: string;
+  is_vip: boolean;
   startDate: string;
   documents: number;
   progress: number;
   ancestry: string;
+  dropbox_path: string;
 }
 
-const mockCases: ClientCase[] = [
-  {
-    id: 1,
-    name: "Sarah Johnson",
-    country: "USA",
-    status: "active",
-    startDate: "2024-01-15",
-    documents: 12,
-    progress: 75,
-    ancestry: "Grandmother from Warsaw"
-  },
-  {
-    id: 2,
-    name: "Michael Cohen",
-    country: "Israel",
-    status: "completed",
-    startDate: "2023-08-20",
-    documents: 18,
-    progress: 100,
-    ancestry: "Great-grandfather from Krakow"
-  },
-  {
-    id: 3,
-    name: "Emma Williams",
-    country: "UK",
-    status: "active",
-    startDate: "2024-03-10",
-    documents: 8,
-    progress: 45,
-    ancestry: "Grandfather from Gdańsk"
-  },
-  {
-    id: 4,
-    name: "David Kowalski",
-    country: "Canada",
-    status: "pending",
-    startDate: "2024-06-01",
-    documents: 5,
-    progress: 20,
-    ancestry: "Mother from Poznań"
-  },
-  {
-    id: 5,
-    name: "Anna Schmidt",
-    country: "Germany",
-    status: "active",
-    startDate: "2024-02-28",
-    documents: 15,
-    progress: 60,
-    ancestry: "Father from Wrocław"
-  },
-  {
-    id: 6,
-    name: "James O'Brien",
-    country: "Ireland",
-    status: "completed",
-    startDate: "2023-11-05",
-    documents: 20,
-    progress: 100,
-    ancestry: "Great-grandmother from Lublin"
-  },
-  {
-    id: 7,
-    name: "Maria Rodriguez",
-    country: "Spain",
-    status: "active",
-    startDate: "2024-04-12",
-    documents: 10,
-    progress: 55,
-    ancestry: "Grandfather from Szczecin"
-  },
-  {
-    id: 8,
-    name: "John Smith",
-    country: "Australia",
-    status: "pending",
-    startDate: "2024-07-08",
-    documents: 6,
-    progress: 30,
-    ancestry: "Great-grandfather from Łódź"
-  },
-  {
-    id: 9,
-    name: "Sophie Dubois",
-    country: "France",
-    status: "active",
-    startDate: "2024-02-20",
-    documents: 14,
-    progress: 70,
-    ancestry: "Grandmother from Białystok"
-  },
-  {
-    id: 10,
-    name: "Lars Anderson",
-    country: "Sweden",
-    status: "completed",
-    startDate: "2023-09-15",
-    documents: 22,
-    progress: 100,
-    ancestry: "Mother from Katowice"
-  },
-  {
-    id: 11,
-    name: "Chen Wei",
-    country: "Singapore",
-    status: "active",
-    startDate: "2024-05-03",
-    documents: 9,
-    progress: 40,
-    ancestry: "Great-grandmother from Toruń"
-  },
-  {
-    id: 12,
-    name: "Isabella Costa",
-    country: "Brazil",
-    status: "pending",
-    startDate: "2024-08-01",
-    documents: 7,
-    progress: 25,
-    ancestry: "Grandfather from Opole"
-  }
-];
+const statusColorMap: Record<string, string> = {
+  active: "bg-primary/20 text-primary border-primary/30",
+  lead: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+  on_hold: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
+  finished: "bg-green-500/20 text-green-400 border-green-500/30",
+  failed: "bg-red-500/20 text-red-400 border-red-500/30",
+  suspended: "bg-gray-500/20 text-gray-400 border-gray-500/30",
+  bad: "bg-red-600/20 text-red-500 border-red-600/30",
+  name_change: "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
+  other: "bg-slate-500/20 text-slate-400 border-slate-500/30",
+};
 
 const CaseCard = memo(({ clientCase, onOpenFullscreen }: { clientCase: ClientCase; onOpenFullscreen: (c: ClientCase) => void }) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
   const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "completed":
-        return "bg-green-500/20 text-green-400 border-green-500/30";
-      case "active":
-        return "bg-primary/20 text-primary border-primary/30";
-      case "pending":
-        return "bg-yellow-500/20 text-yellow-400 border-yellow-500/30";
-      default:
-        return "bg-muted/20 text-muted-foreground border-muted/30";
-    }
+    return statusColorMap[status] || statusColorMap.other;
   };
 
   const handleClick = () => {
@@ -191,15 +78,29 @@ const CaseCard = memo(({ clientCase, onOpenFullscreen }: { clientCase: ClientCas
                 </div>
               </div>
             </div>
-            <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusBadge(clientCase.status)} capitalize flex-shrink-0`}>
-              {clientCase.status}
-            </span>
+            <div className="flex flex-col gap-1">
+              <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusBadge(clientCase.status)} capitalize flex-shrink-0`}>
+                {clientCase.status.replace(/_/g, ' ')}
+              </span>
+              {clientCase.is_vip && (
+                <span className="px-3 py-1 rounded-full text-xs font-medium border bg-purple-500/20 text-purple-400 border-purple-500/30">
+                  VIP
+                </span>
+              )}
+            </div>
           </div>
 
           <div className="mb-4 p-3 rounded-lg bg-background/50 backdrop-blur-sm">
             <p className="text-xs text-muted-foreground mb-1">Polish Ancestry</p>
-            <p className="text-sm font-medium">{clientCase.ancestry}</p>
+            <p className="text-sm font-medium">{clientCase.ancestry || "No ancestry info"}</p>
           </div>
+
+          {clientCase.client_code && (
+            <div className="mb-4 p-2 rounded-lg bg-background/30">
+              <p className="text-xs text-muted-foreground">Case Code</p>
+              <p className="text-sm font-mono">{clientCase.client_code}</p>
+            </div>
+          )}
 
           <div className="grid grid-cols-2 gap-3 mb-4">
             <div className="flex items-center gap-2 p-2 rounded-lg bg-background/30">
@@ -234,13 +135,12 @@ const CaseCard = memo(({ clientCase, onOpenFullscreen }: { clientCase: ClientCas
             </div>
           </div>
 
-          {clientCase.status === "completed" && (
+          {clientCase.status === "finished" && (
             <div className="mb-4 flex items-center justify-center gap-2 p-2 rounded-lg bg-green-500/10 border border-green-500/30">
               <CheckCircle2 className="w-4 h-4 text-green-400" />
               <span className="text-sm font-medium text-green-400">Citizenship Granted</span>
             </div>
           )}
-
         </div>
 
         {/* Back of Card */}
@@ -254,10 +154,19 @@ const CaseCard = memo(({ clientCase, onOpenFullscreen }: { clientCase: ClientCas
             </h3>
             
             <div className="space-y-3 flex-1 overflow-y-auto">
-              <div className="p-3 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
-                <p className="text-xs text-muted-foreground mb-1">Case Reference</p>
-                <p className="font-bold text-lg text-primary">#{clientCase.id.toString().padStart(6, '0')}</p>
-              </div>
+              {clientCase.client_code && (
+                <div className="p-3 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
+                  <p className="text-xs text-muted-foreground mb-1">Case Reference</p>
+                  <p className="font-bold text-lg text-primary">{clientCase.client_code}</p>
+                </div>
+              )}
+
+              {clientCase.generation && (
+                <div className="p-3 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
+                  <p className="text-xs text-muted-foreground mb-1">Generation</p>
+                  <p className="font-bold text-base capitalize">{clientCase.generation}</p>
+                </div>
+              )}
 
               <div className="p-3 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
                 <p className="text-xs text-muted-foreground mb-2">Timeline Details</p>
@@ -307,7 +216,7 @@ const CaseCard = memo(({ clientCase, onOpenFullscreen }: { clientCase: ClientCas
                 </div>
               </div>
 
-              {clientCase.status === "completed" && (
+              {clientCase.status === "finished" && (
                 <div className="p-3 rounded-lg bg-green-500/20 border border-green-500/40">
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-5 h-5 text-green-400" />
@@ -319,7 +228,6 @@ const CaseCard = memo(({ clientCase, onOpenFullscreen }: { clientCase: ClientCas
                 </div>
               )}
             </div>
-
           </div>
         </div>
       </div>
@@ -331,6 +239,60 @@ CaseCard.displayName = "CaseCard";
 
 const Cases = () => {
   const [fullscreenCase, setFullscreenCase] = useState<ClientCase | null>(null);
+  const [cases, setCases] = useState<ClientCase[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Load cases from database
+  useEffect(() => {
+    loadCases();
+  }, []);
+
+  const loadCases = async () => {
+    try {
+      setLoading(true);
+      const { data: casesData, error: casesError } = await supabase
+        .from("cases")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (casesError) throw casesError;
+
+      if (casesData) {
+        const casesWithDocs = await Promise.all(
+          casesData.map(async (caseData) => {
+            const { count } = await supabase
+              .from("documents")
+              .select("*", { count: "exact", head: true })
+              .eq("case_id", caseData.id);
+
+            return {
+              id: caseData.id,
+              name: caseData.client_name,
+              client_code: caseData.client_code || undefined,
+              country: caseData.country || "Poland",
+              status: caseData.status,
+              generation: caseData.generation || undefined,
+              is_vip: caseData.is_vip,
+              startDate: caseData.start_date || caseData.created_at,
+              documents: count || 0,
+              progress: caseData.progress,
+              dropbox_path: caseData.dropbox_path,
+              ancestry: typeof caseData.ancestry === 'object' && caseData.ancestry && caseData.ancestry !== null
+                ? JSON.stringify(caseData.ancestry) 
+                : (typeof caseData.ancestry === 'string' ? caseData.ancestry : "No ancestry info"),
+            } as ClientCase;
+          })
+        );
+
+        setCases(casesWithDocs);
+      }
+    } catch (error) {
+      console.error("Error loading cases:", error);
+      toast.error("Failed to load cases");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -343,34 +305,44 @@ const Cases = () => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [fullscreenCase]);
 
+  // Subscribe to realtime changes
+  useEffect(() => {
+    const channel = supabase
+      .channel('cases-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'cases'
+        },
+        () => {
+          loadCases();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
   const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "completed":
-        return "bg-green-500/20 text-green-400 border-green-500/30";
-      case "active":
-        return "bg-primary/20 text-primary border-primary/30";
-      case "pending":
-        return "bg-yellow-500/20 text-yellow-400 border-yellow-500/30";
-      default:
-        return "bg-muted/20 text-muted-foreground border-muted/30";
-    }
+    return statusColorMap[status] || statusColorMap.other;
   };
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
       
-      {/* Background Layer - Fixed Position */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
         <div className="absolute top-20 left-20 w-96 h-96 bg-primary/20 rounded-full blur-[150px] animate-pulse" />
         <div className="absolute bottom-20 right-20 w-96 h-96 bg-secondary/20 rounded-full blur-[150px] animate-pulse delay-700" />
       </div>
       
-      {/* Content */}
       <section className="relative py-32 overflow-hidden">
         <div className="container px-4 mx-auto">
-          {/* Header */}
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-6">
               <Briefcase className="w-4 h-4 text-primary" />
@@ -386,20 +358,32 @@ const Cases = () => {
             </p>
           </div>
 
-          {/* Cards Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-            {mockCases.map((clientCase) => (
-              <CaseCard 
-                key={clientCase.id} 
-                clientCase={clientCase}
-                onOpenFullscreen={setFullscreenCase}
-              />
-            ))}
+          <div className="max-w-4xl mx-auto mb-12">
+            <DropboxSync />
           </div>
+
+          {loading ? (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">Loading cases...</p>
+            </div>
+          ) : cases.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">No cases found. Sync with Dropbox to import cases.</p>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+              {cases.map((clientCase) => (
+                <CaseCard 
+                  key={clientCase.id}
+                  clientCase={clientCase}
+                  onOpenFullscreen={setFullscreenCase}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Fullscreen Modal */}
       {fullscreenCase && (
         <div 
           className="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-fade-in"
@@ -420,7 +404,6 @@ const Cases = () => {
             
             <div className="glass-card rounded-2xl p-8 bg-gradient-to-br from-primary/5 to-secondary/5 border shadow-2xl backdrop-blur-xl">
               <div className="grid md:grid-cols-2 gap-8">
-                {/* Left Column */}
                 <div>
                   <div className="flex items-center gap-4 mb-6">
                     <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
@@ -464,51 +447,51 @@ const Cases = () => {
                   </div>
                 </div>
 
-                {/* Right Column */}
-                <div>
-                  <div className="mb-6">
-                    <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium border ${getStatusBadge(fullscreenCase.status)} capitalize mb-4`}>
-                      {fullscreenCase.status}
+                <div className="space-y-4">
+                  <div className="p-4 rounded-lg bg-background/50">
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-sm text-muted-foreground">Status</p>
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusBadge(fullscreenCase.status)}`}>
+                        {fullscreenCase.status.replace(/_/g, ' ')}
+                      </span>
                     </div>
                   </div>
 
-                  <div className="space-y-4">
-                    <div className="p-4 rounded-lg bg-background/50">
-                      <div className="flex items-center gap-2 mb-2">
-                        <FileText className="w-4 h-4 text-accent" />
-                        <p className="text-sm text-muted-foreground">Documents Submitted</p>
-                      </div>
-                      <p className="text-2xl font-bold">{fullscreenCase.documents}</p>
+                  <div className="p-4 rounded-lg bg-background/50">
+                    <div className="flex items-center gap-2 mb-3">
+                      <FileText className="w-4 h-4 text-accent" />
+                      <p className="text-sm text-muted-foreground">Documents</p>
                     </div>
-
-                    <div className="p-4 rounded-lg bg-background/50">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-2">
-                          <TrendingUp className="w-4 h-4 text-primary" />
-                          <p className="text-sm text-muted-foreground">Overall Progress</p>
-                        </div>
-                        <p className="text-2xl font-bold">{fullscreenCase.progress}%</p>
-                      </div>
-                      <div className="h-3 bg-background/50 rounded-full overflow-hidden">
-                        <div 
-                          className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-500 rounded-full"
-                          style={{ width: `${fullscreenCase.progress}%` }}
-                        />
-                      </div>
-                    </div>
-
-                    {fullscreenCase.status === "completed" && (
-                      <div className="p-4 rounded-lg bg-green-500/10 border border-green-500/30">
-                        <div className="flex items-center gap-3">
-                          <CheckCircle2 className="w-6 h-6 text-green-400" />
-                          <div>
-                            <p className="font-bold text-green-400">Citizenship Granted</p>
-                            <p className="text-sm text-green-400/80">Application successfully approved</p>
-                          </div>
-                        </div>
-                      </div>
-                    )}
+                    <p className="text-3xl font-bold text-primary">{fullscreenCase.documents}</p>
                   </div>
+
+                  <div className="p-4 rounded-lg bg-background/50">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <TrendingUp className="w-4 h-4 text-primary" />
+                        <p className="text-sm text-muted-foreground">Progress</p>
+                      </div>
+                      <span className="text-xl font-bold">{fullscreenCase.progress}%</span>
+                    </div>
+                    <div className="h-3 bg-background rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-500"
+                        style={{ width: `${fullscreenCase.progress}%` }}
+                      />
+                    </div>
+                  </div>
+
+                  {fullscreenCase.status === "finished" && (
+                    <div className="p-4 rounded-lg bg-green-500/20 border border-green-500/40">
+                      <div className="flex items-center gap-3">
+                        <CheckCircle2 className="w-6 h-6 text-green-400" />
+                        <div>
+                          <p className="font-bold text-base text-green-400">Application Approved</p>
+                          <p className="text-sm text-green-400/80">Polish Citizenship Confirmed</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

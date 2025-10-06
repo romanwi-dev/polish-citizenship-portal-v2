@@ -1,0 +1,263 @@
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.58.0";
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+};
+
+interface DropboxEntry {
+  ".tag": string;
+  name: string;
+  path_display: string;
+  id: string;
+}
+
+interface DropboxListResult {
+  entries: DropboxEntry[];
+  cursor?: string;
+  has_more: boolean;
+}
+
+// Parse case classification from folder name
+function parseClassification(folderName: string): {
+  status: string;
+  generation: string | null;
+  isVip: boolean;
+} {
+  const name = folderName.toLowerCase();
+  
+  if (name.includes("###bad")) return { status: "bad", generation: null, isVip: false };
+  if (name.includes("###failed")) return { status: "failed", generation: null, isVip: false };
+  if (name.includes("###finished")) return { status: "finished", generation: null, isVip: false };
+  if (name.includes("###name change")) return { status: "name_change", generation: null, isVip: false };
+  if (name.includes("###on hold")) return { status: "on_hold", generation: null, isVip: false };
+  if (name.includes("###suspended")) return { status: "suspended", generation: null, isVip: false };
+  if (name.includes("###other")) return { status: "other", generation: null, isVip: false };
+  if (name.includes("##leads")) return { status: "lead", generation: null, isVip: false };
+  if (name.includes("v i p") || name.includes("vip")) return { status: "active", generation: "vip", isVip: true };
+  if (name.includes("3. third")) return { status: "active", generation: "third", isVip: false };
+  if (name.includes("4. fourth")) return { status: "active", generation: "fourth", isVip: false };
+  if (name.includes("5. fifth")) return { status: "active", generation: "fifth", isVip: false };
+  if (name.includes("10. ten")) return { status: "active", generation: "ten", isVip: false };
+  if (name.includes("global")) return { status: "active", generation: "global", isVip: false };
+  if (name.includes("work")) return { status: "active", generation: "work", isVip: false };
+  
+  return { status: "other", generation: "other", isVip: false };
+}
+
+// Extract client code from folder name (e.g., "ALBERT (v-...-D-3-3'500)")
+function extractClientCode(folderName: string): string | null {
+  const match = folderName.match(/\((v-.*?)\)/);
+  return match ? match[1] : null;
+}
+
+// Clean client name by removing code suffix
+function cleanClientName(folderName: string): string {
+  return folderName.replace(/\s*\(.*?\)\s*$/, '').trim();
+}
+
+async function listDropboxFolder(
+  accessToken: string,
+  path: string
+): Promise<DropboxEntry[]> {
+  const response = await fetch("https://api.dropboxapi.com/2/files/list_folder", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      path: path,
+      recursive: false,
+      include_mounted_folders: false,
+    }),
+  });
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(`Dropbox API error: ${response.status} - ${error}`);
+  }
+
+  const result: DropboxListResult = await response.json();
+  return result.entries;
+}
+
+serve(async (req) => {
+  if (req.method === "OPTIONS") {
+    return new Response(null, { headers: corsHeaders });
+  }
+
+  try {
+    const dropboxToken = Deno.env.get("DROPBOX_ACCESS_TOKEN");
+    if (!dropboxToken) {
+      throw new Error("DROPBOX_ACCESS_TOKEN not configured");
+    }
+
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    const { syncType = "full" } = await req.json();
+
+    // Create sync log
+    const { data: syncLog, error: logError } = await supabase
+      .from("sync_logs")
+      .insert({
+        sync_type: syncType,
+        status: "started",
+        metadata: { started_at: new Date().toISOString() },
+      })
+      .select()
+      .single();
+
+    if (logError) {
+      console.error("Failed to create sync log:", logError);
+      throw logError;
+    }
+
+    console.log("Starting Dropbox sync...");
+    let processedCount = 0;
+    let failedCount = 0;
+
+    // List classification folders in /CASES
+    const classificationFolders = await listDropboxFolder(dropboxToken, "/CASES");
+    console.log(`Found ${classificationFolders.length} classification folders`);
+
+    for (const classFolder of classificationFolders) {
+      if (classFolder[".tag"] !== "folder") continue;
+
+      const classification = parseClassification(classFolder.name);
+      console.log(`Processing ${classFolder.name} (${classification.status})`);
+
+      try {
+        // List client folders within this classification
+        const clientFolders = await listDropboxFolder(dropboxToken, classFolder.path_display);
+        
+        for (const clientFolder of clientFolders) {
+          if (clientFolder[".tag"] !== "folder") continue;
+
+          try {
+            const clientName = cleanClientName(clientFolder.name);
+            const clientCode = extractClientCode(clientFolder.name);
+
+            // Check if case already exists
+            const { data: existingCase } = await supabase
+              .from("cases")
+              .select("id, dropbox_path")
+              .eq("dropbox_path", clientFolder.path_display)
+              .maybeSingle();
+
+            if (existingCase) {
+              // Update existing case
+              await supabase
+                .from("cases")
+                .update({
+                  client_name: clientName,
+                  client_code: clientCode,
+                  status: classification.status,
+                  generation: classification.generation,
+                  is_vip: classification.isVip,
+                  dropbox_folder_id: clientFolder.id,
+                  last_synced_at: new Date().toISOString(),
+                })
+                .eq("id", existingCase.id);
+
+              console.log(`Updated case: ${clientName}`);
+            } else {
+              // Create new case
+              const { data: newCase, error: caseError } = await supabase
+                .from("cases")
+                .insert({
+                  client_name: clientName,
+                  client_code: clientCode,
+                  status: classification.status,
+                  generation: classification.generation,
+                  is_vip: classification.isVip,
+                  dropbox_path: clientFolder.path_display,
+                  dropbox_folder_id: clientFolder.id,
+                  last_synced_at: new Date().toISOString(),
+                })
+                .select()
+                .single();
+
+              if (caseError) {
+                console.error(`Failed to create case ${clientName}:`, caseError);
+                failedCount++;
+                continue;
+              }
+
+              console.log(`Created case: ${clientName}`);
+
+              // List documents in the client folder
+              const documents = await listDropboxFolder(dropboxToken, clientFolder.path_display);
+              
+              for (const doc of documents) {
+                if (doc[".tag"] === "file") {
+                  try {
+                    const fileExtension = doc.name.split(".").pop()?.toLowerCase() || "";
+                    
+                    await supabase.from("documents").insert({
+                      case_id: newCase.id,
+                      name: doc.name,
+                      type: fileExtension === "pdf" ? "pdf" : "other",
+                      file_extension: fileExtension,
+                      dropbox_path: doc.path_display,
+                      dropbox_file_id: doc.id,
+                    });
+                  } catch (docError) {
+                    console.error(`Failed to create document ${doc.name}:`, docError);
+                    failedCount++;
+                  }
+                }
+              }
+            }
+
+            processedCount++;
+          } catch (clientError) {
+            console.error(`Failed to process client ${clientFolder.name}:`, clientError);
+            failedCount++;
+          }
+        }
+      } catch (classError) {
+        console.error(`Failed to process classification ${classFolder.name}:`, classError);
+        failedCount++;
+      }
+    }
+
+    // Update sync log
+    await supabase
+      .from("sync_logs")
+      .update({
+        status: "completed",
+        items_processed: processedCount,
+        items_failed: failedCount,
+        metadata: {
+          started_at: syncLog.created_at,
+          completed_at: new Date().toISOString(),
+        },
+      })
+      .eq("id", syncLog.id);
+
+    return new Response(
+      JSON.stringify({
+        success: true,
+        processed: processedCount,
+        failed: failedCount,
+        message: `Sync completed: ${processedCount} cases processed, ${failedCount} failed`,
+      }),
+      {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      }
+    );
+  } catch (error) {
+    console.error("Sync error:", error);
+    return new Response(
+      JSON.stringify({ error: error instanceof Error ? error.message : "Unknown error" }),
+      {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      }
+    );
+  }
+});
