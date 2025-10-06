@@ -40,6 +40,7 @@ interface CaseCardProps {
     document_count: number;
     processing_mode: string;
     client_score: number;
+    scheme_introduced?: string;
   };
   onEdit: (clientCase: any) => void;
   onDelete: (id: string) => void;
@@ -149,90 +150,84 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
                 </div>
               </div>
             </div>
-            <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-2">
-                <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusBadge(clientCase.status)} capitalize flex-shrink-0`}>
-                  {clientCase.status.replace(/_/g, ' ')}
-                </span>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
-                      <MoreVertical className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-48 bg-popover border border-border z-50">
-                    <DropdownMenuItem onClick={handleCopyId}>
-                      <Copy className="mr-2 h-4 w-4" />
-                      Copy ID
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={handlePostpone}>
-                      <Pause className="mr-2 h-4 w-4" />
-                      Postpone
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={handleSuspend}>
-                      <Ban className="mr-2 h-4 w-4" />
-                      Suspend
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={handleCancel}>
-                      <X className="mr-2 h-4 w-4" />
-                      Cancel
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={handleArchive}>
-                      <Archive className="mr-2 h-4 w-4" />
-                      Archive
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={handleDeleteClick} className="text-destructive">
-                      <Trash2 className="mr-2 h-4 w-4" />
-                      Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-              {clientCase.is_vip && (
-                <span className="px-3 py-1 rounded-full text-xs font-medium border bg-purple-500/20 text-purple-400 border-purple-500/30">
-                  VIP
-                </span>
-              )}
-              
-              {/* Processing Mode Badge with Dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium border cursor-pointer hover:opacity-80 transition-opacity flex items-center gap-1 ${
-                    PROCESSING_MODE_COLORS[clientCase.processing_mode as keyof typeof PROCESSING_MODE_COLORS]
-                  }`}>
-                    {getProcessingModeIcon()}
-                    {PROCESSING_MODE_LABELS[clientCase.processing_mode as keyof typeof PROCESSING_MODE_LABELS]}
-                  </span>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-40 bg-popover border border-border z-50">
-                  <DropdownMenuLabel>Processing Mode</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleProcessingModeChange('standard'); }}>
-                    Standard
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleProcessingModeChange('expedited'); }}>
-                    <Zap className="mr-2 h-3 w-3" />
-                    Expedited
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleProcessingModeChange('vip'); }}>
-                    <Award className="mr-2 h-3 w-3" />
-                    VIP
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleProcessingModeChange('vip_plus'); }}>
-                    <Award className="mr-2 h-3 w-3" />
-                    VIP+
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <MoreVertical className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48 bg-popover border border-border z-50">
+                <DropdownMenuItem onClick={handleCopyId}>
+                  <Copy className="mr-2 h-4 w-4" />
+                  Copy ID
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handlePostpone}>
+                  <Pause className="mr-2 h-4 w-4" />
+                  Postpone
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleSuspend}>
+                  <Ban className="mr-2 h-4 w-4" />
+                  Suspend
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleCancel}>
+                  <X className="mr-2 h-4 w-4" />
+                  Cancel
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleArchive}>
+                  <Archive className="mr-2 h-4 w-4" />
+                  Archive
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleDeleteClick} className="text-destructive">
+                  <Trash2 className="mr-2 h-4 w-4" />
+                  Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
 
-          {clientCase.generation && (
-            <div className="mb-4 p-3 rounded-lg bg-background/50 backdrop-blur-sm">
-              <p className="text-xs text-muted-foreground mb-1">Generation</p>
-              <p className="text-sm font-medium capitalize">{clientCase.generation}</p>
-            </div>
-          )}
+          {/* Badges Row */}
+          <div className="flex flex-wrap gap-2 mb-4">
+            <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusBadge(clientCase.status)} capitalize`}>
+              {clientCase.status.replace(/_/g, ' ')}
+            </span>
+            
+            {/* Processing Mode Badge with Dropdown - no VIP badge if VIP mode */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                <span className={`px-3 py-1 rounded-full text-xs font-medium border cursor-pointer hover:opacity-80 transition-opacity flex items-center gap-1 ${
+                  PROCESSING_MODE_COLORS[clientCase.processing_mode as keyof typeof PROCESSING_MODE_COLORS]
+                }`}>
+                  {getProcessingModeIcon()}
+                  {PROCESSING_MODE_LABELS[clientCase.processing_mode as keyof typeof PROCESSING_MODE_LABELS]}
+                </span>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-40 bg-popover border border-border z-50">
+                <DropdownMenuLabel>Processing Mode</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleProcessingModeChange('standard'); }}>
+                  Standard
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleProcessingModeChange('expedited'); }}>
+                  <Zap className="mr-2 h-3 w-3" />
+                  Expedited
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleProcessingModeChange('vip'); }}>
+                  <Award className="mr-2 h-3 w-3" />
+                  VIP
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleProcessingModeChange('vip_plus'); }}>
+                  <Award className="mr-2 h-3 w-3" />
+                  VIP+
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {clientCase.scheme_introduced && (
+              <span className="px-3 py-1 rounded-full text-xs font-medium border bg-cyan-500/20 text-cyan-400 border-cyan-500/30">
+                {clientCase.scheme_introduced}
+              </span>
+            )}
+          </div>
 
           {clientCase.client_code && (
             <div className="mb-4 p-2 rounded-lg bg-background/30">
@@ -241,22 +236,29 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
             </div>
           )}
 
-          <div className="grid grid-cols-2 gap-3 mb-4">
-            <div className="flex items-center gap-2 p-2 rounded-lg bg-background/30">
-              <Calendar className="w-4 h-4 text-primary flex-shrink-0" />
-              <div>
+          <div className="grid grid-cols-3 gap-2 mb-4">
+            <div className="flex flex-col gap-1 p-2 rounded-lg bg-background/30">
+              <div className="flex items-center gap-1">
+                <Calendar className="w-3 h-3 text-primary" />
                 <p className="text-xs text-muted-foreground">Started</p>
-                <p className="text-sm font-medium">
-                  {clientCase.start_date ? new Date(clientCase.start_date).toLocaleDateString() : 'N/A'}
-                </p>
               </div>
+              <p className="text-xs font-medium">
+                {clientCase.start_date ? new Date(clientCase.start_date).toLocaleDateString() : 'N/A'}
+              </p>
             </div>
-            <div className="flex items-center gap-2 p-2 rounded-lg bg-background/30">
-              <FileText className="w-4 h-4 text-secondary flex-shrink-0" />
-              <div>
-                <p className="text-xs text-muted-foreground">Documents</p>
-                <p className="text-sm font-medium">{clientCase.document_count}</p>
+            <div className="flex flex-col gap-1 p-2 rounded-lg bg-background/30">
+              <div className="flex items-center gap-1">
+                <FileText className="w-3 h-3 text-secondary" />
+                <p className="text-xs text-muted-foreground">Docs</p>
               </div>
+              <p className="text-xs font-medium">{clientCase.document_count}</p>
+            </div>
+            <div className="flex flex-col gap-1 p-2 rounded-lg bg-background/30">
+              <div className="flex items-center gap-1">
+                <TrendingUp className="w-3 h-3 text-accent" />
+                <p className="text-xs text-muted-foreground">Score</p>
+              </div>
+              <p className="text-xs font-medium">{clientCase.client_score || 0}</p>
             </div>
           </div>
 
@@ -284,53 +286,66 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
           )}
 
           <div className="space-y-2 mt-auto">
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 gap-2">
               <Button
-                variant="outline"
                 size="sm"
-                className="text-xs"
+                className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30"
                 onClick={(e) => {
                   e.stopPropagation();
                   navigate(`/admin/cases/${clientCase.id}`);
                 }}
               >
-                <Eye className="w-3 h-3 mr-1" />
-                View
+                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center gap-1">
+                  <Eye className="w-3 h-3" />
+                  View Case
+                </span>
+                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               </Button>
               <Button
-                variant="outline"
                 size="sm"
-                className="text-xs"
+                className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open('/family-tree.pdf', '_blank');
+                }}
+              >
+                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center gap-1">
+                  <FileText className="w-3 h-3" />
+                  Family Tree
+                </span>
+                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </Button>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <Button
+                size="sm"
+                className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30"
                 onClick={(e) => {
                   e.stopPropagation();
                   navigate(`/admin/cases/${clientCase.id}?tab=control`);
                 }}
               >
-                <Radio className="w-3 h-3 mr-1" />
-                Control
+                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center gap-1">
+                  <Radio className="w-3 h-3" />
+                  Control
+                </span>
+                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               </Button>
               <Button
-                variant="outline"
                 size="sm"
-                className="text-xs"
+                className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30"
                 onClick={(e) => {
                   e.stopPropagation();
                   navigate(`/admin/cases/${clientCase.id}?tab=oby`);
                 }}
               >
-                <FileEdit className="w-3 h-3 mr-1" />
-                OBY
+                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center gap-1">
+                  <FileEdit className="w-3 h-3" />
+                  Draft OBY
+                </span>
+                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               </Button>
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full"
-              onClick={handleEdit}
-            >
-              <Edit className="w-4 h-4 mr-2" />
-              Edit Details
-            </Button>
           </div>
         </div>
 
@@ -352,10 +367,15 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
                 </div>
               )}
 
-              {clientCase.generation && (
+              <div className="p-3 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
+                <p className="text-xs text-muted-foreground mb-1">Processing Mode</p>
+                <p className="font-bold text-base capitalize">{PROCESSING_MODE_LABELS[clientCase.processing_mode as keyof typeof PROCESSING_MODE_LABELS]}</p>
+              </div>
+
+              {clientCase.scheme_introduced && (
                 <div className="p-3 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
-                  <p className="text-xs text-muted-foreground mb-1">Generation</p>
-                  <p className="font-bold text-base capitalize">{clientCase.generation}</p>
+                  <p className="text-xs text-muted-foreground mb-1">Scheme Introduced</p>
+                  <p className="font-bold text-base">{clientCase.scheme_introduced}</p>
                 </div>
               )}
 
