@@ -2,36 +2,13 @@ import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { AdminLayout } from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { CaseFilters } from "@/components/CaseFilters";
 import { EditCaseDialog } from "@/components/EditCaseDialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { CaseCard } from "@/components/CaseCard";
 import { 
   Plus, 
-  Search, 
-  FileText, 
-  CheckCircle, 
-  Clock, 
-  AlertTriangle,
-  MoreVertical,
-  Copy,
-  Download,
-  Pause,
-  Ban,
-  XCircle,
-  Archive,
-  Trash2,
-  Database,
-  Edit
+  Database
 } from "lucide-react";
-import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 import { useIsStaff } from "@/hooks/useUserRole";
 import { useCases, useUpdateCaseStatus, useDeleteCase } from "@/hooks/useCases";
@@ -60,33 +37,11 @@ export default function CasesManagement() {
 
   const loading = authLoading || roleLoading || casesLoading;
 
-  const handleCopyId = (caseId: string) => {
-    navigator.clipboard.writeText(caseId);
-    toast.success("Case ID copied to clipboard");
+  const handleUpdateStatus = (caseId: string, status: string) => {
+    updateStatusMutation.mutate({ caseId, status });
   };
 
-  const handleExport = async (caseId: string) => {
-    toast.info("Exporting case data...");
-    // TODO: Implement export functionality
-  };
-
-  const handlePostpone = (caseId: string) => {
-    updateStatusMutation.mutate({ caseId, status: "on_hold" });
-  };
-
-  const handleSuspend = (caseId: string) => {
-    updateStatusMutation.mutate({ caseId, status: "suspended" });
-  };
-
-  const handleCancel = (caseId: string) => {
-    updateStatusMutation.mutate({ caseId, status: "failed" });
-  };
-
-  const handleArchive = (caseId: string) => {
-    updateStatusMutation.mutate({ caseId, status: "finished" });
-  };
-
-  const handleDelete = (caseId: string) => {
+  const handleDeleteCase = (caseId: string) => {
     if (confirm("Are you sure you want to delete this case? This action cannot be undone.")) {
       deleteMutation.mutate(caseId);
     }
@@ -255,279 +210,61 @@ export default function CasesManagement() {
         {filteredCases.length === 0 ? (
           <EmptyState
             icon={Database}
-            title={searchTerm ? "No Matching Cases" : "No Cases Found"}
-            description={searchTerm ? "Try adjusting your search term." : "Start by syncing with Dropbox or creating a new case."}
-            action={searchTerm ? undefined : {
-              label: "Refresh",
-              onClick: () => refetch()
-            }}
+            title={searchTerm || activeFiltersCount > 0 ? "No Matching Cases" : "No Cases Found"}
+            description={
+              searchTerm || activeFiltersCount > 0
+                ? "Try adjusting your search or filters."
+                : "Start by syncing with Dropbox or creating a new case."
+            }
+            action={
+              searchTerm || activeFiltersCount > 0 ? {
+                label: "Clear Filters",
+                onClick: () => {
+                  setSearchTerm("");
+                  handleClearFilters();
+                }
+              } : {
+                label: "Refresh",
+                onClick: () => refetch()
+              }
+            }
           />
         ) : (
-          <div className="grid grid-cols-1 gap-4">
-          {filteredCases.map((caseItem) => (
-            <Card
-              key={caseItem.id}
-              className="p-6 hover-glow transition-all bg-card/50 backdrop-blur-sm border-border/50 min-h-[400px] flex flex-col"
-            >
-              <div className="flex items-start justify-between flex-1">
-                <div 
-                  className="flex-1 cursor-pointer"
-                  onClick={() => navigate(`/admin/cases/${caseItem.id}`)}
-                >
-                  <div className="flex items-center gap-3 mb-2 flex-wrap">
-                    <h3 className="text-lg font-semibold text-foreground">{caseItem.client_name}</h3>
-                    {caseItem.client_code && (
-                      <Badge variant="outline">{caseItem.client_code}</Badge>
-                    )}
-                    <Badge className="bg-primary">
-                      {caseItem.status.replace("_", " ").toUpperCase()}
-                    </Badge>
-                    {caseItem.processing_mode && (
-                      <Badge 
-                        variant={
-                          caseItem.processing_mode === 'vip_plus' ? 'vipPlus' :
-                          caseItem.processing_mode === 'vip' ? 'vip' :
-                          caseItem.processing_mode === 'expedited' ? 'expedited' :
-                          'standard'
-                        }
-                      >
-                        {caseItem.processing_mode === 'vip_plus' ? 'VIP+' : caseItem.processing_mode.toUpperCase()}
-                      </Badge>
-                    )}
-                  </div>
-                  
-                  <div className="flex items-center gap-6 text-sm text-muted-foreground mb-3">
-                    <span className="flex items-center gap-1">
-                      <FileText className="h-4 w-4" />
-                      Docs: {caseItem.document_count}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <CheckCircle className="h-4 w-4" />
-                      Progress: {caseItem.progress || 0}%
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="h-4 w-4" />
-                      Tasks: {caseItem.completed_task_count}/{caseItem.task_count}
-                    </span>
-                  </div>
-
-                  <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-primary transition-all"
-                      style={{ width: `${caseItem.progress}%` }}
-                    />
-                  </div>
-                </div>
-
-                {/* Dropdown Menu */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" onClick={(e) => e.stopPropagation()}>
-                      <MoreVertical className="h-5 w-5" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-48 bg-card z-50">
-                    <DropdownMenuItem onClick={(e) => {
-                      e.stopPropagation();
-                      handleEdit(caseItem);
-                    }}>
-                      <Edit className="h-4 w-4 mr-2" />
-                      Edit Case
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={(e) => {
-                      e.stopPropagation();
-                      handleCopyId(caseItem.id);
-                    }}>
-                      <Copy className="h-4 w-4 mr-2" />
-                      Copy ID
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={(e) => {
-                      e.stopPropagation();
-                      handleExport(caseItem.id);
-                    }}>
-                      <Download className="h-4 w-4 mr-2" />
-                      Export
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={(e) => {
-                      e.stopPropagation();
-                      handlePostpone(caseItem.id);
-                    }}>
-                      <Pause className="h-4 w-4 mr-2" />
-                      Postpone
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={(e) => {
-                      e.stopPropagation();
-                      handleSuspend(caseItem.id);
-                    }}>
-                      <Ban className="h-4 w-4 mr-2" />
-                      Suspend
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={(e) => {
-                      e.stopPropagation();
-                      handleCancel(caseItem.id);
-                    }}>
-                      <XCircle className="h-4 w-4 mr-2" />
-                      Cancel
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={(e) => {
-                      e.stopPropagation();
-                      handleArchive(caseItem.id);
-                    }}>
-                      <Archive className="h-4 w-4 mr-2" />
-                      Archive
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDelete(caseItem.id);
-                      }}
-                      className="text-destructive focus:text-destructive"
-                    >
-                      <Trash2 className="h-4 w-4 mr-2" />
-                      Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-
-
-              {/* Notes Section */}
-              <div className="mt-4 p-3 bg-muted/30 rounded-lg border border-border/30">
-                <p className="text-sm text-muted-foreground font-medium mb-1">Notes:</p>
-                <p className="text-sm text-foreground">{caseItem.notes || 'No notes yet'}</p>
-              </div>
-
-              {/* Control Room Button - Premium Feature */}
-              <div className="mt-4">
-                <Button
-                  size="default"
-                  className="w-full text-sm font-bold bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-blue-500/20 hover:from-purple-500/30 hover:via-pink-500/30 hover:to-blue-500/30 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 h-14"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate(`/admin/cases/${caseItem.id}`);
-                  }}
-                >
-                  <span className="relative z-10 bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent flex items-center justify-center gap-2 w-full text-base">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
-                    </svg>
-                    CONTROL ROOM
-                  </span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </Button>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="grid grid-cols-3 gap-3 mt-4 pt-4 border-t border-border/30">
-                <Button
-                  size="default"
-                  className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-12 flex items-center justify-center"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate(`/admin/cases/${caseItem.id}`);
-                  }}
-                >
-                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full">
-                    View Case
-                  </span>
-                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </Button>
-                <Button
-                  size="default"
-                  className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-12 flex items-center justify-center"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    window.open('/family-tree.pdf', '_blank');
-                  }}
-                >
-                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full">
-                    Family Tree
-                  </span>
-                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </Button>
-                <Button
-                  size="default"
-                  className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-12 flex items-center justify-center"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate(`/admin/cases/${caseItem.id}?tab=tasks`);
-                  }}
-                >
-                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full">
-                    New Task
-                  </span>
-                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </Button>
-                <Button
-                  size="default"
-                  className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-12 flex items-center justify-center"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate(`/admin/cases/${caseItem.id}?tab=oby`);
-                  }}
-                >
-                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full">
-                    Draft OBY
-                  </span>
-                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </Button>
-                <Button
-                  size="default"
-                  className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-12 flex items-center justify-center"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate(`/admin/cases/${caseItem.id}?tab=wsc`);
-                  }}
-                >
-                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full">
-                    Draft USC
-                  </span>
-                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </Button>
-                <Button
-                  size="default"
-                  className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-12 flex items-center justify-center"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate(`/admin/cases/${caseItem.id}?tab=documents`);
-                  }}
-                >
-                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full">
-                    Documents
-                  </span>
-                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </Button>
-              </div>
-            </Card>
-          ))}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredCases.map((caseItem) => (
+              <CaseCard 
+                key={caseItem.id}
+                clientCase={caseItem}
+                onEdit={handleEdit}
+                onDelete={handleDeleteCase}
+                onUpdateStatus={handleUpdateStatus}
+              />
+            ))}
           </div>
         )}
-
-        {editCase && (
-          <EditCaseDialog
-            caseData={{
-              id: editCase.id,
-              name: editCase.client_name,
-              client_code: editCase.client_code,
-              country: editCase.country,
-              status: editCase.status,
-              generation: editCase.generation,
-              is_vip: editCase.is_vip,
-              notes: editCase.notes,
-              progress: editCase.progress,
-            }}
-            open={!!editCase}
-            onOpenChange={(open) => !open && setEditCase(null)}
-            onUpdate={() => {
-              refetch();
-              setEditCase(null);
-            }}
-          />
-        )}
       </div>
+
+      {editCase && (
+        <EditCaseDialog
+          caseData={{
+            id: editCase.id,
+            name: editCase.client_name,
+            client_code: editCase.client_code,
+            country: editCase.country,
+            status: editCase.status,
+            generation: editCase.generation,
+            is_vip: editCase.is_vip,
+            notes: editCase.notes,
+            progress: editCase.progress,
+          }}
+          open={!!editCase}
+          onOpenChange={(open) => !open && setEditCase(null)}
+          onUpdate={() => {
+            refetch();
+            setEditCase(null);
+          }}
+        />
+      )}
     </AdminLayout>
   );
 }
