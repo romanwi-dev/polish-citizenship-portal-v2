@@ -1,12 +1,28 @@
 import { useState, useEffect, memo } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Briefcase, Edit } from "lucide-react";
+import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Briefcase, Edit, MoreVertical, Copy, Download, Pause, Ban, Archive, Trash2 } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { DropboxSync } from "@/components/DropboxSync";
 import { EditCaseDialog } from "@/components/EditCaseDialog";
 import { toast } from "sonner";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface ClientCase {
   id: string;
@@ -36,8 +52,15 @@ const statusColorMap: Record<string, string> = {
   other: "bg-slate-500/20 text-slate-400 border-slate-500/30",
 };
 
-const CaseCard = memo(({ clientCase, onOpenFullscreen, onEdit }: { clientCase: ClientCase; onOpenFullscreen: (c: ClientCase) => void; onEdit: (c: ClientCase) => void }) => {
+const CaseCard = memo(({ clientCase, onOpenFullscreen, onEdit, onDelete, onUpdateStatus }: { 
+  clientCase: ClientCase; 
+  onOpenFullscreen: (c: ClientCase) => void; 
+  onEdit: (c: ClientCase) => void;
+  onDelete: (id: string) => void;
+  onUpdateStatus: (id: string, status: string) => void;
+}) => {
   const [isFlipped, setIsFlipped] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const getStatusBadge = (status: string) => {
     return statusColorMap[status] || statusColorMap.other;
@@ -55,6 +78,42 @@ const CaseCard = memo(({ clientCase, onOpenFullscreen, onEdit }: { clientCase: C
   const handleEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
     onEdit(clientCase);
+  };
+
+  const handleCopyId = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    await navigator.clipboard.writeText(clientCase.id);
+    toast.success("Case ID copied to clipboard");
+  };
+
+  const handlePostpone = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onUpdateStatus(clientCase.id, "on_hold");
+  };
+
+  const handleSuspend = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onUpdateStatus(clientCase.id, "suspended");
+  };
+
+  const handleCancel = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onUpdateStatus(clientCase.id, "failed");
+  };
+
+  const handleArchive = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onUpdateStatus(clientCase.id, "finished");
+  };
+
+  const handleDeleteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowDeleteDialog(true);
+  };
+
+  const confirmDelete = () => {
+    onDelete(clientCase.id);
+    setShowDeleteDialog(false);
   };
 
   return (
@@ -87,9 +146,44 @@ const CaseCard = memo(({ clientCase, onOpenFullscreen, onEdit }: { clientCase: C
               </div>
             </div>
             <div className="flex flex-col gap-1">
-              <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusBadge(clientCase.status)} capitalize flex-shrink-0`}>
-                {clientCase.status.replace(/_/g, ' ')}
-              </span>
+              <div className="flex items-center gap-2">
+                <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusBadge(clientCase.status)} capitalize flex-shrink-0`}>
+                  {clientCase.status.replace(/_/g, ' ')}
+                </span>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                    <Button variant="ghost" size="icon" className="h-8 w-8">
+                      <MoreVertical className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48 bg-card z-50">
+                    <DropdownMenuItem onClick={handleCopyId}>
+                      <Copy className="mr-2 h-4 w-4" />
+                      Copy ID
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handlePostpone}>
+                      <Pause className="mr-2 h-4 w-4" />
+                      Postpone
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleSuspend}>
+                      <Ban className="mr-2 h-4 w-4" />
+                      Suspend
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleCancel}>
+                      <X className="mr-2 h-4 w-4" />
+                      Cancel
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleArchive}>
+                      <Archive className="mr-2 h-4 w-4" />
+                      Archive
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleDeleteClick} className="text-red-500">
+                      <Trash2 className="mr-2 h-4 w-4" />
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
               {clientCase.is_vip && (
                 <span className="px-3 py-1 rounded-full text-xs font-medium border bg-purple-500/20 text-purple-400 border-purple-500/30">
                   VIP
@@ -251,6 +345,23 @@ const CaseCard = memo(({ clientCase, onOpenFullscreen, onEdit }: { clientCase: C
           </div>
         </div>
       </div>
+
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent onClick={(e) => e.stopPropagation()}>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Case</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete this case? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete} className="bg-red-500 hover:bg-red-600">
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 });
@@ -365,6 +476,40 @@ const Cases = () => {
     return statusColorMap[status] || statusColorMap.other;
   };
 
+  const handleUpdateStatus = async (caseId: string, status: string) => {
+    try {
+      const { error } = await supabase
+        .from("cases")
+        .update({ status: status as any })
+        .eq("id", caseId);
+
+      if (error) throw error;
+
+      toast.success(`Case status updated to ${status.replace(/_/g, ' ')}`);
+      loadCases();
+    } catch (error) {
+      console.error("Error updating case status:", error);
+      toast.error("Failed to update case status");
+    }
+  };
+
+  const handleDeleteCase = async (caseId: string) => {
+    try {
+      const { error } = await supabase
+        .from("cases")
+        .delete()
+        .eq("id", caseId);
+
+      if (error) throw error;
+
+      toast.success("Case deleted successfully");
+      loadCases();
+    } catch (error) {
+      console.error("Error deleting case:", error);
+      toast.error("Failed to delete case");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -412,6 +557,8 @@ const Cases = () => {
                   clientCase={clientCase}
                   onOpenFullscreen={setFullscreenCase}
                   onEdit={setEditCase}
+                  onDelete={handleDeleteCase}
+                  onUpdateStatus={handleUpdateStatus}
                 />
               ))}
             </div>
