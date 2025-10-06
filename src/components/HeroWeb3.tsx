@@ -1,6 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Sparkles } from "lucide-react";
-import { Hero3DMap } from "./Hero3DMap";
+import { lazy, Suspense } from "react";
+
+// Lazy load 3D component to reduce initial bundle blocking time
+const Hero3DMap = lazy(() => import("./Hero3DMap").then(module => ({ default: module.Hero3DMap })));
 
 const HeroWeb3 = () => {
   const scrollToContact = () => {
@@ -11,7 +14,9 @@ const HeroWeb3 = () => {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* 3D Background */}
       <div className="absolute inset-0 z-0">
-        <Hero3DMap />
+        <Suspense fallback={<div className="w-full h-full bg-gradient-to-b from-primary/5 to-background" />}>
+          <Hero3DMap />
+        </Suspense>
       </div>
 
       {/* Gradient Overlays */}
