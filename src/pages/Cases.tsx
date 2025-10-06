@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp } from "lucide-react";
+import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 
@@ -139,6 +139,20 @@ const mockCases: ClientCase[] = [
 ];
 
 const Cases = () => {
+  const [flippedCard, setFlippedCard] = useState<number | null>(null);
+  const [fullscreenCase, setFullscreenCase] = useState<ClientCase | null>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && fullscreenCase) {
+        setFullscreenCase(null);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [fullscreenCase]);
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "completed":
@@ -190,93 +204,311 @@ const Cases = () => {
 
           {/* Cards Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-            {mockCases.map((clientCase, index) => (
-              <motion.div
-                key={clientCase.id}
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
+            {mockCases.map((clientCase, index) => {
+              const isFlipped = flippedCard === clientCase.id;
+              
+              return (
                 <motion.div
-                  whileHover={{ scale: 1.03, y: -5 }}
-                  transition={{ duration: 0.3 }}
-                  className="glass-card p-6 rounded-lg h-full hover-glow group"
+                  key={clientCase.id}
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
-                  {/* Header */}
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-                        <User className="w-6 h-6 text-white" />
+                  <motion.div
+                    whileHover={{ scale: 1.03, y: -5 }}
+                    transition={{ duration: 0.3 }}
+                    className="glass-card p-6 rounded-lg h-[520px] hover-glow group relative cursor-pointer"
+                    style={{
+                      transformStyle: 'preserve-3d',
+                      transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                      transition: 'transform 0.7s',
+                    }}
+                    onClick={() => setFlippedCard(isFlipped ? null : clientCase.id)}
+                    onDoubleClick={() => {
+                      setFullscreenCase(clientCase);
+                      setFlippedCard(null);
+                    }}
+                  >
+                    {/* Front of Card */}
+                    <div
+                      className="absolute inset-0 w-full h-full p-6 rounded-lg"
+                      style={{
+                        backfaceVisibility: 'hidden',
+                        WebkitBackfaceVisibility: 'hidden',
+                      }}
+                    >
+                      {/* Header */}
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                            <User className="w-6 h-6 text-white" />
+                          </div>
+                          <div>
+                            <h3 className="font-bold text-lg bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                              {clientCase.name}
+                            </h3>
+                            <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                              <MapPin className="w-3 h-3" />
+                              {clientCase.country}
+                            </div>
+                          </div>
+                        </div>
+                        <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusBadge(clientCase.status)} capitalize flex-shrink-0`}>
+                          {clientCase.status}
+                        </span>
                       </div>
-                      <div>
-                        <h3 className="font-bold text-lg bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                          {clientCase.name}
+
+                      {/* Ancestry */}
+                      <div className="mb-4 p-3 rounded-lg bg-background/50 backdrop-blur-sm">
+                        <p className="text-xs text-muted-foreground mb-1">Polish Ancestry</p>
+                        <p className="text-sm font-medium">{clientCase.ancestry}</p>
+                      </div>
+
+                      {/* Stats */}
+                      <div className="grid grid-cols-2 gap-3 mb-4">
+                        <div className="flex items-center gap-2 p-2 rounded-lg bg-background/30">
+                          <Calendar className="w-4 h-4 text-primary flex-shrink-0" />
+                          <div>
+                            <p className="text-xs text-muted-foreground">Started</p>
+                            <p className="text-sm font-medium">{new Date(clientCase.startDate).toLocaleDateString()}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 p-2 rounded-lg bg-background/30">
+                          <FileText className="w-4 h-4 text-secondary flex-shrink-0" />
+                          <div>
+                            <p className="text-xs text-muted-foreground">Documents</p>
+                            <p className="text-sm font-medium">{clientCase.documents}</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Progress */}
+                      <div className="space-y-2 mb-4">
+                        <div className="flex items-center justify-between text-sm">
+                          <div className="flex items-center gap-1">
+                            <TrendingUp className="w-4 h-4 text-muted-foreground" />
+                            <span className="text-muted-foreground">Progress</span>
+                          </div>
+                          <span className="font-bold">{clientCase.progress}%</span>
+                        </div>
+                        <div className="h-2 bg-background/50 rounded-full overflow-hidden">
+                          <div 
+                            className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-500 rounded-full"
+                            style={{ width: `${clientCase.progress}%` }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Completion Badge */}
+                      {clientCase.status === "completed" && (
+                        <div className="mb-4 flex items-center justify-center gap-2 p-2 rounded-lg bg-green-500/10 border border-green-500/30">
+                          <CheckCircle2 className="w-4 h-4 text-green-400" />
+                          <span className="text-sm font-medium text-green-400">Citizenship Granted</span>
+                        </div>
+                      )}
+
+                      <div className="absolute bottom-6 left-6 right-6 text-center text-xs text-muted-foreground">
+                        Click to flip • Double-click for fullscreen
+                      </div>
+                    </div>
+
+                    {/* Back of Card */}
+                    <div
+                      className="absolute inset-0 w-full h-full p-6 rounded-lg"
+                      style={{
+                        backfaceVisibility: 'hidden',
+                        WebkitBackfaceVisibility: 'hidden',
+                        transform: 'rotateY(180deg)',
+                      }}
+                    >
+                      <div className="h-full flex flex-col">
+                        <h3 className="text-xl font-bold mb-6 text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                          Additional Details
                         </h3>
-                        <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                          <MapPin className="w-3 h-3" />
-                          {clientCase.country}
+                        
+                        <div className="space-y-4 flex-1">
+                          <div className="p-4 rounded-lg bg-background/50 backdrop-blur-sm">
+                            <p className="text-xs text-muted-foreground mb-1">Case Number</p>
+                            <p className="font-bold text-lg">#{clientCase.id.toString().padStart(6, '0')}</p>
+                          </div>
+
+                          <div className="p-4 rounded-lg bg-background/50 backdrop-blur-sm">
+                            <p className="text-xs text-muted-foreground mb-2">Application Timeline</p>
+                            <div className="space-y-2">
+                              <div className="flex justify-between items-center">
+                                <span className="text-sm">Start Date</span>
+                                <span className="text-sm font-medium">{new Date(clientCase.startDate).toLocaleDateString()}</span>
+                              </div>
+                              <div className="flex justify-between items-center">
+                                <span className="text-sm">Duration</span>
+                                <span className="text-sm font-medium">
+                                  {Math.floor((Date.now() - new Date(clientCase.startDate).getTime()) / (1000 * 60 * 60 * 24))} days
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="p-4 rounded-lg bg-background/50 backdrop-blur-sm">
+                            <p className="text-xs text-muted-foreground mb-2">Document Collection</p>
+                            <div className="space-y-2">
+                              <div className="flex justify-between items-center">
+                                <span className="text-sm">Total Files</span>
+                                <span className="text-sm font-medium">{clientCase.documents}</span>
+                              </div>
+                              <div className="flex justify-between items-center">
+                                <span className="text-sm">Completion</span>
+                                <span className="text-sm font-medium">{clientCase.progress}%</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="p-4 rounded-lg bg-background/50 backdrop-blur-sm">
+                            <p className="text-xs text-muted-foreground mb-1">Residing In</p>
+                            <p className="font-medium">{clientCase.country}</p>
+                          </div>
+
+                          {clientCase.status === "completed" && (
+                            <div className="p-3 rounded-lg bg-green-500/10 border border-green-500/30">
+                              <div className="flex items-center justify-center gap-2">
+                                <CheckCircle2 className="w-4 h-4 text-green-400" />
+                                <span className="text-sm font-medium text-green-400">Citizenship Granted</span>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="text-center text-xs text-muted-foreground">
+                          Click to flip back • Double-click for fullscreen
                         </div>
                       </div>
                     </div>
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusBadge(clientCase.status)} capitalize flex-shrink-0`}>
-                      {clientCase.status}
-                    </span>
-                  </div>
-
-                  {/* Ancestry */}
-                  <div className="mb-4 p-3 rounded-lg bg-background/50 backdrop-blur-sm">
-                    <p className="text-xs text-muted-foreground mb-1">Polish Ancestry</p>
-                    <p className="text-sm font-medium">{clientCase.ancestry}</p>
-                  </div>
-
-                  {/* Stats */}
-                  <div className="grid grid-cols-2 gap-3 mb-4">
-                    <div className="flex items-center gap-2 p-2 rounded-lg bg-background/30">
-                      <Calendar className="w-4 h-4 text-primary flex-shrink-0" />
-                      <div>
-                        <p className="text-xs text-muted-foreground">Started</p>
-                        <p className="text-sm font-medium">{new Date(clientCase.startDate).toLocaleDateString()}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2 p-2 rounded-lg bg-background/30">
-                      <FileText className="w-4 h-4 text-secondary flex-shrink-0" />
-                      <div>
-                        <p className="text-xs text-muted-foreground">Documents</p>
-                        <p className="text-sm font-medium">{clientCase.documents}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Progress */}
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-sm">
-                      <div className="flex items-center gap-1">
-                        <TrendingUp className="w-4 h-4 text-muted-foreground" />
-                        <span className="text-muted-foreground">Progress</span>
-                      </div>
-                      <span className="font-bold">{clientCase.progress}%</span>
-                    </div>
-                    <div className="h-2 bg-background/50 rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-500 rounded-full"
-                        style={{ width: `${clientCase.progress}%` }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Completion Badge */}
-                  {clientCase.status === "completed" && (
-                    <div className="mt-4 flex items-center justify-center gap-2 p-2 rounded-lg bg-green-500/10 border border-green-500/30">
-                      <CheckCircle2 className="w-4 h-4 text-green-400" />
-                      <span className="text-sm font-medium text-green-400">Citizenship Granted</span>
-                    </div>
-                  )}
+                  </motion.div>
                 </motion.div>
-              </motion.div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
+
+      {/* Fullscreen Modal */}
+      {fullscreenCase && (
+        <div 
+          className="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-fade-in"
+          onClick={() => setFullscreenCase(null)}
+        >
+          <motion.div 
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.3 }}
+            className="relative w-full max-w-4xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Button
+              onClick={() => setFullscreenCase(null)}
+              size="icon"
+              variant="ghost"
+              className="absolute -top-12 right-0 glass-card hover-glow hover:rotate-90 transition-transform duration-300"
+            >
+              <X className="w-6 h-6" />
+            </Button>
+            
+            <div className="glass-card rounded-2xl p-8 bg-gradient-to-br from-primary/5 to-secondary/5 border shadow-2xl backdrop-blur-xl">
+              <div className="grid md:grid-cols-2 gap-8">
+                {/* Left Column */}
+                <div>
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+                      <User className="w-8 h-8 text-white" />
+                    </div>
+                    <div>
+                      <h2 className="text-3xl font-bold">{fullscreenCase.name}</h2>
+                      <p className="text-lg text-muted-foreground flex items-center gap-1">
+                        <MapPin className="w-4 h-4" />
+                        {fullscreenCase.country}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="p-4 rounded-lg bg-background/50">
+                      <p className="text-sm text-muted-foreground mb-2">Polish Ancestry</p>
+                      <p className="text-lg font-medium">{fullscreenCase.ancestry}</p>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="p-4 rounded-lg bg-background/50">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Calendar className="w-4 h-4 text-primary" />
+                          <p className="text-sm text-muted-foreground">Start Date</p>
+                        </div>
+                        <p className="text-lg font-medium">
+                          {new Date(fullscreenCase.startDate).toLocaleDateString()}
+                        </p>
+                      </div>
+                      <div className="p-4 rounded-lg bg-background/50">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Clock className="w-4 h-4 text-secondary" />
+                          <p className="text-sm text-muted-foreground">Duration</p>
+                        </div>
+                        <p className="text-lg font-medium">
+                          {Math.floor((Date.now() - new Date(fullscreenCase.startDate).getTime()) / (1000 * 60 * 60 * 24))} days
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Column */}
+                <div>
+                  <div className="mb-6">
+                    <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium border ${getStatusBadge(fullscreenCase.status)} capitalize mb-4`}>
+                      {fullscreenCase.status}
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="p-4 rounded-lg bg-background/50">
+                      <div className="flex items-center gap-2 mb-2">
+                        <FileText className="w-4 h-4 text-accent" />
+                        <p className="text-sm text-muted-foreground">Documents Submitted</p>
+                      </div>
+                      <p className="text-2xl font-bold">{fullscreenCase.documents}</p>
+                    </div>
+
+                    <div className="p-4 rounded-lg bg-background/50">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                          <TrendingUp className="w-4 h-4 text-primary" />
+                          <p className="text-sm text-muted-foreground">Overall Progress</p>
+                        </div>
+                        <p className="text-2xl font-bold">{fullscreenCase.progress}%</p>
+                      </div>
+                      <div className="h-3 bg-background/50 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-500 rounded-full"
+                          style={{ width: `${fullscreenCase.progress}%` }}
+                        />
+                      </div>
+                    </div>
+
+                    {fullscreenCase.status === "completed" && (
+                      <div className="p-4 rounded-lg bg-green-500/10 border border-green-500/30">
+                        <div className="flex items-center gap-3">
+                          <CheckCircle2 className="w-6 h-6 text-green-400" />
+                          <div>
+                            <p className="font-bold text-green-400">Citizenship Granted</p>
+                            <p className="text-sm text-green-400/80">Application successfully approved</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 };
