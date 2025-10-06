@@ -23,18 +23,21 @@ interface DropboxListResult {
 let currentAccessToken: string | null = null;
 
 // Refresh the access token using the refresh token
-async function refreshAccessToken(appKey: string, refreshToken: string): Promise<string> {
+async function refreshAccessToken(appKey: string, appSecret: string, refreshToken: string): Promise<string> {
   console.log("Refreshing Dropbox access token...");
+  
+  // Create Basic auth header
+  const credentials = btoa(`${appKey}:${appSecret}`);
   
   const response = await fetch("https://api.dropbox.com/oauth2/token", {
     method: "POST",
     headers: {
+      "Authorization": `Basic ${credentials}`,
       "Content-Type": "application/x-www-form-urlencoded",
     },
     body: new URLSearchParams({
       grant_type: "refresh_token",
       refresh_token: refreshToken,
-      client_id: appKey,
     }),
   });
 
@@ -92,6 +95,7 @@ async function listDropboxFolder(
   accessToken: string,
   path: string,
   appKey: string,
+  appSecret: string,
   refreshToken: string,
   retry = true
 ): Promise<DropboxEntry[]> {
@@ -111,8 +115,8 @@ async function listDropboxFolder(
   // If we get a 401 and haven't retried yet, refresh the token and retry
   if (response.status === 401 && retry) {
     console.log("Access token expired, refreshing...");
-    const newToken = await refreshAccessToken(appKey, refreshToken);
-    return listDropboxFolder(newToken, path, appKey, refreshToken, false);
+    const newToken = await refreshAccessToken(appKey, appSecret, refreshToken);
+    return listDropboxFolder(newToken, path, appKey, appSecret, refreshToken, false);
   }
 
   if (!response.ok) {
@@ -132,10 +136,11 @@ serve(async (req) => {
   try {
     const dropboxToken = Deno.env.get("DROPBOX_ACCESS_TOKEN");
     const dropboxAppKey = Deno.env.get("DROPBOX_APP_KEY");
+    const dropboxAppSecret = Deno.env.get("DROPBOX_APP_SECRET");
     const dropboxRefreshToken = Deno.env.get("DROPBOX_REFRESH_TOKEN");
     
-    if (!dropboxToken || !dropboxAppKey || !dropboxRefreshToken) {
-      throw new Error("Missing Dropbox credentials: DROPBOX_ACCESS_TOKEN, DROPBOX_APP_KEY, and DROPBOX_REFRESH_TOKEN required");
+    if (!dropboxToken || !dropboxAppKey || !dropboxAppSecret || !dropboxRefreshToken) {
+      throw new Error("Missing Dropbox credentials: DROPBOX_ACCESS_TOKEN, DROPBOX_APP_KEY, DROPBOX_APP_SECRET, and DROPBOX_REFRESH_TOKEN required");
     }
 
     // Initialize current access token
@@ -172,6 +177,7 @@ serve(async (req) => {
       currentAccessToken!,
       "/CASES",
       dropboxAppKey,
+      dropboxAppSecret,
       dropboxRefreshToken
     );
     console.log(`Found ${classificationFolders.length} classification folders`);
@@ -188,6 +194,7 @@ serve(async (req) => {
           currentAccessToken!,
           classFolder.path_display,
           dropboxAppKey,
+          dropboxAppSecret,
           dropboxRefreshToken
         );
         
@@ -251,6 +258,7 @@ serve(async (req) => {
                 currentAccessToken!,
                 clientFolder.path_display,
                 dropboxAppKey,
+                dropboxAppSecret,
                 dropboxRefreshToken
               );
               
