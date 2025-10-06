@@ -256,66 +256,66 @@ const CaseCard = memo(({ clientCase, onOpenFullscreen }: { clientCase: ClientCas
               Case Details
             </h3>
             
-            <div className="space-y-4 flex-1">
-              <div className="p-4 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
+            <div className="space-y-3 flex-1 overflow-y-auto">
+              <div className="p-3 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
                 <p className="text-xs text-muted-foreground mb-1">Case Reference</p>
-                <p className="font-bold text-xl text-primary">#{clientCase.id.toString().padStart(6, '0')}</p>
+                <p className="font-bold text-lg text-primary">#{clientCase.id.toString().padStart(6, '0')}</p>
               </div>
 
-              <div className="p-4 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
-                <p className="text-xs text-muted-foreground mb-3">Timeline Details</p>
-                <div className="space-y-2">
+              <div className="p-3 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
+                <p className="text-xs text-muted-foreground mb-2">Timeline Details</p>
+                <div className="space-y-1.5">
                   <div className="flex justify-between items-center py-1 border-b border-border/30">
-                    <span className="text-sm flex items-center gap-2">
+                    <span className="text-xs flex items-center gap-1.5">
                       <Calendar className="w-3 h-3 text-primary" />
                       Started
                     </span>
-                    <span className="text-sm font-bold">{new Date(clientCase.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                    <span className="text-xs font-bold">{new Date(clientCase.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                   </div>
                   <div className="flex justify-between items-center py-1 border-b border-border/30">
-                    <span className="text-sm flex items-center gap-2">
+                    <span className="text-xs flex items-center gap-1.5">
                       <Clock className="w-3 h-3 text-secondary" />
                       Days Active
                     </span>
-                    <span className="text-sm font-bold">
+                    <span className="text-xs font-bold">
                       {Math.floor((Date.now() - new Date(clientCase.startDate).getTime()) / (1000 * 60 * 60 * 24))} days
                     </span>
                   </div>
                   <div className="flex justify-between items-center py-1">
-                    <span className="text-sm flex items-center gap-2">
+                    <span className="text-xs flex items-center gap-1.5">
                       <TrendingUp className="w-3 h-3 text-accent" />
                       Completion
                     </span>
-                    <span className="text-sm font-bold text-primary">{clientCase.progress}%</span>
+                    <span className="text-xs font-bold text-primary">{clientCase.progress}%</span>
                   </div>
                 </div>
               </div>
 
-              <div className="p-4 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
-                <p className="text-xs text-muted-foreground mb-3">Documents Status</p>
+              <div className="p-3 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
+                <p className="text-xs text-muted-foreground mb-2">Documents Status</p>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <FileText className="w-5 h-5 text-accent" />
-                    <span className="text-sm">Total Submitted</span>
+                    <FileText className="w-4 h-4 text-accent" />
+                    <span className="text-xs">Total Submitted</span>
                   </div>
-                  <span className="text-2xl font-bold text-primary">{clientCase.documents}</span>
+                  <span className="text-xl font-bold text-primary">{clientCase.documents}</span>
                 </div>
               </div>
 
-              <div className="p-4 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
+              <div className="p-3 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
                 <p className="text-xs text-muted-foreground mb-1">Current Location</p>
                 <div className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-secondary" />
-                  <p className="font-bold text-lg">{clientCase.country}</p>
+                  <p className="font-bold text-base">{clientCase.country}</p>
                 </div>
               </div>
 
               {clientCase.status === "completed" && (
-                <div className="p-4 rounded-lg bg-green-500/20 border border-green-500/40">
-                  <div className="flex items-center gap-3">
-                    <CheckCircle2 className="w-6 h-6 text-green-400" />
+                <div className="p-3 rounded-lg bg-green-500/20 border border-green-500/40">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-green-400" />
                     <div>
-                      <p className="font-bold text-green-400">Application Approved</p>
+                      <p className="font-bold text-sm text-green-400">Application Approved</p>
                       <p className="text-xs text-green-400/80">Polish Citizenship Confirmed</p>
                     </div>
                   </div>
