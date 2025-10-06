@@ -67,11 +67,12 @@ const HeroWeb3 = () => {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
             {[
               { value: "2+ Years", label: "Realistic Timeline" },
               { value: "€3,500+", label: "Transparent Real Pricing" },
-              { value: "25,000+", label: "Cases Processed" }
+              { value: "25,000+", label: "Cases Processed" },
+              { value: "100%", label: "Unmatched Success Rate" }
             ].map((stat, i) => (
               <div key={i} className="glass-card p-6 rounded-lg hover-glow w-full max-w-[280px] mx-auto md:max-w-none">
                 <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
