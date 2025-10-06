@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import logo from "@/assets/logo.png";
 
 const navItems = [
   { title: "Dashboard", url: "/admin", icon: LayoutDashboard, exact: true },
@@ -51,8 +52,14 @@ function AppSidebar() {
 
   return (
     <Sidebar collapsible="icon">
-      <div className="flex items-center justify-between p-4 border-b">
-        {open && <h2 className="text-lg font-bold">PL Citizenship</h2>}
+      <div className="flex items-center justify-between p-4 border-b border-border">
+        {open && (
+          <img 
+            src={logo} 
+            alt="PL Citizenship" 
+            className="h-8 w-auto object-contain"
+          />
+        )}
         <SidebarTrigger />
       </div>
       
