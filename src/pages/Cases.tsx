@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { User, Calendar, FileText, CheckCircle2, X } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
@@ -243,17 +244,13 @@ const Cases = () => {
                 return (
                   <CarouselItem key={clientCase.id} className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
                     {/* Flippable Card Container with hover effects */}
-                    <div
-                      className="glass-card p-6 rounded-lg hover-glow group h-[500px] transition-all duration-700 relative z-10 hover:z-30"
+                    <motion.div
+                      whileHover={{ scale: 1.03, y: -5 }}
+                      transition={{ duration: 0.3 }}
+                      className="glass-card p-6 rounded-lg hover-glow group h-[500px] transition-all duration-700 relative z-10"
                       style={{
                         transformStyle: 'preserve-3d',
                         transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = isFlipped ? 'rotateY(180deg) scale(1.03) translateZ(50px)' : 'scale(1.03) translateZ(50px)';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
                       }}
                     >
                       {/* Front of Card */}
@@ -416,7 +413,7 @@ const Cases = () => {
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </motion.div>
                   </CarouselItem>
                 );
               })}
