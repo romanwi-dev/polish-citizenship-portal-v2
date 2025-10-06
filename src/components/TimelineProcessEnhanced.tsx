@@ -202,10 +202,11 @@ export default function TimelineProcessEnhanced() {
             initial={{ opacity: 0, scale: 0.9, y: 30 }}
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ 
-              duration: 1, 
-              delay: 0.2,
+              duration: 2.5, 
+              delay: 0.3,
               type: "spring",
-              stiffness: 100
+              stiffness: 40,
+              damping: 20
             }}
             viewport={{ once: true }}
             className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight"
