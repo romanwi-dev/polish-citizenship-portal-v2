@@ -116,49 +116,60 @@ export default function CasesManagement() {
   }, [statusFilter, processingModeFilter, ageFilter, scoreFilter, progressFilter]);
 
   const filteredCases = useMemo(() => {
-    return cases.filter(c => {
-      // Search filter
-      const matchesSearch = c.client_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (c.client_code && c.client_code.toLowerCase().includes(searchTerm.toLowerCase()));
-      
-      // Status filter
-      const matchesStatus = statusFilter === "all" || c.status === statusFilter;
-      
-      // Processing mode filter
-      const matchesProcessingMode = processingModeFilter === "all" || c.processing_mode === processingModeFilter;
-      
-      // Score filter
-      const score = c.client_score || 0;
-      const matchesScore = score >= scoreFilter[0] && score <= scoreFilter[1];
-      
-      // Progress filter
-      const progress = c.progress || 0;
-      const matchesProgress = progress >= progressFilter[0] && progress <= progressFilter[1];
-      
-      // Age filter
-      let matchesAge = true;
-      if (ageFilter !== "all" && c.start_date) {
-        const startDate = new Date(c.start_date);
-        const daysSinceStart = Math.floor((Date.now() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+    return cases
+      .filter(c => {
+        // Search filter
+        const matchesSearch = c.client_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (c.client_code && c.client_code.toLowerCase().includes(searchTerm.toLowerCase()));
         
-        switch (ageFilter) {
-          case "new":
-            matchesAge = daysSinceStart <= 30;
-            break;
-          case "recent":
-            matchesAge = daysSinceStart > 30 && daysSinceStart <= 90;
-            break;
-          case "medium":
-            matchesAge = daysSinceStart > 90 && daysSinceStart <= 180;
-            break;
-          case "old":
-            matchesAge = daysSinceStart > 180;
-            break;
+        // Status filter
+        const matchesStatus = statusFilter === "all" || c.status === statusFilter;
+        
+        // Processing mode filter
+        const matchesProcessingMode = processingModeFilter === "all" || c.processing_mode === processingModeFilter;
+        
+        // Score filter
+        const score = c.client_score || 0;
+        const matchesScore = score >= scoreFilter[0] && score <= scoreFilter[1];
+        
+        // Progress filter
+        const progress = c.progress || 0;
+        const matchesProgress = progress >= progressFilter[0] && progress <= progressFilter[1];
+        
+        // Age filter
+        let matchesAge = true;
+        if (ageFilter !== "all" && c.start_date) {
+          const startDate = new Date(c.start_date);
+          const daysSinceStart = Math.floor((Date.now() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+          
+          switch (ageFilter) {
+            case "new":
+              matchesAge = daysSinceStart <= 30;
+              break;
+            case "recent":
+              matchesAge = daysSinceStart > 30 && daysSinceStart <= 90;
+              break;
+            case "medium":
+              matchesAge = daysSinceStart > 90 && daysSinceStart <= 180;
+              break;
+            case "old":
+              matchesAge = daysSinceStart > 180;
+              break;
+          }
         }
-      }
-      
-      return matchesSearch && matchesStatus && matchesProcessingMode && matchesScore && matchesProgress && matchesAge;
-    });
+        
+        return matchesSearch && matchesStatus && matchesProcessingMode && matchesScore && matchesProgress && matchesAge;
+      })
+      .sort((a, b) => {
+        // VIP cases first
+        if (a.is_vip && !b.is_vip) return -1;
+        if (!a.is_vip && b.is_vip) return 1;
+        
+        // Then sort by client score (higher scores first, so bad cases with low scores go to bottom)
+        const scoreA = a.client_score || 0;
+        const scoreB = b.client_score || 0;
+        return scoreB - scoreA;
+      });
   }, [cases, searchTerm, statusFilter, processingModeFilter, scoreFilter, ageFilter, progressFilter]);
 
   if (loading) {
