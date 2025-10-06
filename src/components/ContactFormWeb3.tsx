@@ -137,25 +137,6 @@ const ContactFormWeb3 = () => {
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               </Button>
             </form>
-
-            {/* Features */}
-            <div className="flex flex-wrap justify-center gap-6 mt-12 pt-12 border-t border-border/30">
-              {[
-                { icon: Zap, text: "Instant AI Response" },
-                { icon: Send, text: "Secure Processing" },
-                { icon: Zap, text: "24/7 Availability" }
-              ].map((feature, i) => {
-                const Icon = feature.icon;
-                return (
-                  <div key={i} className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center flex-shrink-0">
-                      <Icon className="w-5 h-5 text-white" />
-                    </div>
-                    <span className="text-sm text-muted-foreground">{feature.text}</span>
-                  </div>
-                );
-              })}
-            </div>
           </div>
 
           {/* Trust Indicators */}
