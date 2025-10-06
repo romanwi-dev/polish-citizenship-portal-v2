@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
+import { useState } from "react";
 import { UserCircle } from "lucide-react";
 import { MessageSquare, ClipboardCheck, FileSearch, Scale, Send, Brain, FileCheck2, Globe } from "lucide-react";
 import { Button } from "./ui/button";
+import { Card } from "./ui/card";
 
 const onboardingSteps = [
   {
@@ -79,6 +81,15 @@ const onboardingSteps = [
 ];
 
 export default function ClientOnboardingSection() {
+  const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
+
+  const toggleFlip = (stepNumber: string) => {
+    setFlippedCards(prev => ({
+      ...prev,
+      [stepNumber]: !prev[stepNumber]
+    }));
+  };
+
   return (
     <section id="how-to-start" className="relative py-24 overflow-hidden">
       {/* Background */}
@@ -138,50 +149,97 @@ export default function ClientOnboardingSection() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.15 }}
               viewport={{ once: true, margin: "-50px" }}
+              style={{ perspective: '1000px' }}
             >
               <motion.div
+                onClick={() => toggleFlip(step.number)}
                 whileHover={{ scale: 1.03, y: -5 }}
                 transition={{ duration: 0.3 }}
-                className="glass-card p-8 rounded-lg h-full hover-glow group"
+                className="relative cursor-pointer h-full"
+                style={{
+                  transformStyle: 'preserve-3d',
+                  transition: 'transform 0.6s',
+                  transform: flippedCards[step.number] ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                }}
               >
-                {/* Icon and Number */}
-                <div className="mb-6 relative">
-                  <div className="w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/5 flex items-center justify-center">
-                    <step.icon className="w-16 h-16 text-primary opacity-80 group-hover:opacity-100 transition-opacity duration-300" />
+                {/* Front Side */}
+                <div 
+                  className="glass-card p-8 rounded-lg h-full hover-glow group"
+                  style={{
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                  }}
+                >
+                  {/* Icon and Number */}
+                  <div className="mb-6 relative">
+                    <div className="w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/5 flex items-center justify-center">
+                      <step.icon className="w-16 h-16 text-primary opacity-80 group-hover:opacity-100 transition-opacity duration-300" />
+                    </div>
+                    <div className={`absolute top-4 left-4 text-5xl font-heading font-black bg-gradient-to-r ${step.gradient} bg-clip-text text-transparent opacity-20`}>
+                      {step.number}
+                    </div>
                   </div>
-                  <div className={`absolute top-4 left-4 text-5xl font-heading font-black bg-gradient-to-r ${step.gradient} bg-clip-text text-transparent opacity-20`}>
-                    {step.number}
+
+                  {/* Content */}
+                  <div className="space-y-4">
+                    <motion.h3 
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      viewport={{ once: true }}
+                      className="text-2xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300"
+                    >
+                      {step.title}
+                    </motion.h3>
+                    <p className="text-muted-foreground leading-relaxed mb-4">
+                      {step.description}
+                    </p>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (step.link.startsWith('#')) {
+                          document.querySelector(step.link)?.scrollIntoView({ behavior: 'smooth' });
+                        } else if (step.link.startsWith('http')) {
+                          window.open(step.link, '_blank');
+                        }
+                      }}
+                    >
+                      {step.cta} →
+                    </Button>
+                    <p className="text-xs text-muted-foreground/60 text-center mt-2">Click card to flip</p>
                   </div>
                 </div>
 
-                {/* Content */}
-                <div className="space-y-4">
-                  <motion.h3 
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    className="text-2xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300"
-                  >
-                    {step.title}
-                  </motion.h3>
-                  <p className="text-muted-foreground leading-relaxed mb-4">
-                    {step.description}
-                  </p>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full"
-                    onClick={() => {
-                      if (step.link.startsWith('#')) {
-                        document.querySelector(step.link)?.scrollIntoView({ behavior: 'smooth' });
-                      } else if (step.link.startsWith('http')) {
-                        window.open(step.link, '_blank');
-                      }
-                    }}
-                  >
-                    {step.cta} →
-                  </Button>
+                {/* Back Side */}
+                <div 
+                  className="glass-card p-8 rounded-lg absolute inset-0 hover-glow"
+                  style={{
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                    transform: 'rotateY(180deg)',
+                  }}
+                >
+                  <div className="flex flex-col gap-4 h-full">
+                    <div className="mb-4 relative">
+                      <div className="w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-secondary/5 to-accent/5 flex items-center justify-center">
+                        <step.icon className="w-16 h-16 text-secondary opacity-60" />
+                      </div>
+                      <div className={`absolute top-4 left-4 text-5xl font-heading font-black bg-gradient-to-r ${step.gradient} bg-clip-text text-transparent opacity-20`}>
+                        {step.number}
+                      </div>
+                    </div>
+                    
+                    <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground mb-2">
+                      Additional Information
+                    </h3>
+                    <p className="text-sm text-muted-foreground italic flex-1">
+                      [Admin: Add detailed information about {step.title} here. This section can include specific requirements, documents needed, timelines, tips, or important notes that clients should know about this step.]
+                    </p>
+                    <p className="text-xs text-muted-foreground/60 text-center mt-auto">Click to flip back</p>
+                  </div>
                 </div>
               </motion.div>
             </motion.div>
