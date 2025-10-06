@@ -37,20 +37,30 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
     progress: caseData.progress,
   });
   const [loading, setLoading] = useState(false);
+  const [showOtherCountry, setShowOtherCountry] = useState(
+    !["US", "UK", "Canada", "Australia", "South Africa", "Brazil", "Argentina", "Mexico", "Venezuela", "Israel", "France", "Germany"].includes(caseData.country)
+  );
+  const [otherCountry, setOtherCountry] = useState(
+    !["US", "UK", "Canada", "Australia", "South Africa", "Brazil", "Argentina", "Mexico", "Venezuela", "Israel", "France", "Germany"].includes(caseData.country) 
+      ? caseData.country 
+      : ""
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
+      const countryValue = showOtherCountry ? otherCountry : formData.country;
+      
       const { error } = await supabase
         .from("cases")
         .update({
           client_name: formData.client_name,
           client_code: formData.client_code || null,
-          country: formData.country,
+          country: countryValue,
           status: formData.status as any,
-          generation: formData.generation || null as any,
+          processing_mode: formData.generation || null as any,
           is_vip: formData.is_vip,
           notes: formData.notes,
           progress: formData.progress,
@@ -91,22 +101,68 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
             </div>
             <div className="space-y-2">
               <Label htmlFor="client_code">Client Code</Label>
-              <Input
-                id="client_code"
-                value={formData.client_code}
-                onChange={(e) => setFormData({ ...formData, client_code: e.target.value })}
-              />
+              <Select value={formData.client_code} onValueChange={(value) => setFormData({ ...formData, client_code: value })}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select client code" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Bad">Bad</SelectItem>
+                  <SelectItem value="Poor">Poor</SelectItem>
+                  <SelectItem value="Fair">Fair</SelectItem>
+                  <SelectItem value="Normal">Normal</SelectItem>
+                  <SelectItem value="Good">Good</SelectItem>
+                  <SelectItem value="Very Good">Very Good</SelectItem>
+                  <SelectItem value="Excellent">Excellent</SelectItem>
+                  <SelectItem value="Topp">Topp</SelectItem>
+                  <SelectItem value="ExTopFr">ExTopFr</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="country">Country</Label>
-              <Input
-                id="country"
-                value={formData.country}
-                onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-              />
+              <Select 
+                value={showOtherCountry ? "Other" : formData.country} 
+                onValueChange={(value) => {
+                  if (value === "Other") {
+                    setShowOtherCountry(true);
+                    setFormData({ ...formData, country: "" });
+                  } else {
+                    setShowOtherCountry(false);
+                    setOtherCountry("");
+                    setFormData({ ...formData, country: value });
+                  }
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select country" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="US">US</SelectItem>
+                  <SelectItem value="UK">UK</SelectItem>
+                  <SelectItem value="Canada">Canada</SelectItem>
+                  <SelectItem value="Australia">Australia</SelectItem>
+                  <SelectItem value="South Africa">South Africa</SelectItem>
+                  <SelectItem value="Brazil">Brazil</SelectItem>
+                  <SelectItem value="Argentina">Argentina</SelectItem>
+                  <SelectItem value="Mexico">Mexico</SelectItem>
+                  <SelectItem value="Venezuela">Venezuela</SelectItem>
+                  <SelectItem value="Israel">Israel</SelectItem>
+                  <SelectItem value="France">France</SelectItem>
+                  <SelectItem value="Germany">Germany</SelectItem>
+                  <SelectItem value="Other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+              {showOtherCountry && (
+                <Input
+                  placeholder="Enter country"
+                  value={otherCountry}
+                  onChange={(e) => setOtherCountry(e.target.value)}
+                  className="mt-2"
+                />
+              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="status">Status</Label>
@@ -131,13 +187,18 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="generation">Generation</Label>
-              <Input
-                id="generation"
-                value={formData.generation}
-                onChange={(e) => setFormData({ ...formData, generation: e.target.value })}
-                placeholder="e.g., third, fourth, vip"
-              />
+              <Label htmlFor="processing_mode">Processing Mode</Label>
+              <Select value={formData.generation} onValueChange={(value) => setFormData({ ...formData, generation: value })}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select processing mode" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="standard">Standard</SelectItem>
+                  <SelectItem value="expedited">Expedited</SelectItem>
+                  <SelectItem value="vip">VIP</SelectItem>
+                  <SelectItem value="vip_plus">VIP+</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <div className="space-y-2">
               <Label htmlFor="progress">Progress (%)</Label>
