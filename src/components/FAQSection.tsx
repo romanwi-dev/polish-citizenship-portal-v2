@@ -24,7 +24,7 @@ const FAQSection = () => {
         },
         {
           question: "What if my ancestor left before 1920?",
-          answer: "Pre-1920 cases are among our specialties. If your ancestor emigrated before Poland regained independence in 1918, they may have been citizens of the Russian Empire, Austro-Hungarian Empire, or German/Prussian territories. We analyze historical citizenship laws and borders to determine if your ancestor acquired Polish citizenship automatically in 1920 or through other legal mechanisms. These cases require extensive historical research and legal expertise."
+          answer: "Leaving before 1920 does not automatically make you ineligible. Under the 1920 Citizenship Act and related treaty provisions, people connected to territories that became Poland could acquire (or be deemed to have acquired) Polish citizenship based on domicile/right of residence—even if they had emigrated earlier. We assess where the ancestor was domiciled on 31 January 1920 and shortly after. These cases are complex and document-heavy—our specialty."
         },
         {
           question: "Can I apply through my grandmother's line?",

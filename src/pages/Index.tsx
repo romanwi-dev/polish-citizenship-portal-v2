@@ -19,8 +19,8 @@ const Index = () => {
       <AboutSection />
       <AIAnalysisSection />
       <ServicesWeb3 />
-      <ClientOnboardingSection />
       <TimelineProcessEnhanced />
+      <ClientOnboardingSection />
       <PricingSection />
       <FAQSection />
       <ContactFormWeb3 />
