@@ -229,11 +229,11 @@ const Cases = () => {
             opts={{
               align: "start",
               loop: false,
-              dragFree: false,
-              skipSnaps: false,
+              dragFree: true,
+              containScroll: "trimSnaps",
             }}
             setApi={setApi}
-            className="w-full max-w-7xl mx-auto"
+            className="w-full max-w-7xl mx-auto relative z-20"
           >
             <CarouselContent className="-ml-4">
               {mockCases.map((clientCase, index) => {
@@ -242,145 +242,137 @@ const Cases = () => {
                 
                 return (
                   <CarouselItem key={clientCase.id} className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
-                    <div 
-                      className="transition-all duration-500 ease-out relative"
+                    {/* Flippable Card Container with hover effects */}
+                    <div
+                      className="glass-card hover-glow group relative w-full h-[500px] rounded-2xl overflow-visible transition-all duration-700"
                       style={{
-                        transform: isCenterCard ? 'scale(1.05)' : 'scale(1)',
-                        zIndex: isCenterCard ? 30 : 10,
+                        transformStyle: 'preserve-3d',
+                        transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
                       }}
                     >
-                      {/* Flippable Card */}
+                      {/* Front of Card */}
                       <div
-                        className="relative w-full h-[500px] transition-all duration-700 ease-out"
+                        className="absolute inset-0 w-full h-full cursor-pointer"
                         style={{
-                          transformStyle: 'preserve-3d',
-                          transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                          backfaceVisibility: 'hidden',
+                          WebkitBackfaceVisibility: 'hidden',
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setFlippedCard(isFlipped ? null : clientCase.id);
+                        }}
+                        onDoubleClick={(e) => {
+                          e.stopPropagation();
+                          setFullscreenCase(clientCase);
+                          setFlippedCard(null);
                         }}
                       >
-                        {/* Front of Card */}
-                        <div
-                          className="absolute inset-0 w-full h-full cursor-pointer hover:scale-105 transition-transform duration-300"
-                          style={{
-                            backfaceVisibility: 'hidden',
-                            WebkitBackfaceVisibility: 'hidden',
-                          }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setFlippedCard(isFlipped ? null : clientCase.id);
-                          }}
-                          onDoubleClick={(e) => {
-                            e.stopPropagation();
-                            setFullscreenCase(clientCase);
-                            setFlippedCard(null);
-                          }}
-                        >
-                          <div className={`h-full glass-card rounded-2xl p-6 bg-gradient-to-br ${getStatusColor(clientCase.status)} border shadow-2xl backdrop-blur-xl flex flex-col transition-shadow duration-300 hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.3)]`}>
-                            {/* Header */}
-                            <div className="flex items-start justify-between mb-4">
-                              <div className="flex items-center gap-3">
-                                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center flex-shrink-0">
-                                  <User className="w-6 h-6 text-white" />
-                                </div>
-                                <div className="min-w-0">
-                                  <h3 className="font-bold text-lg">{clientCase.name}</h3>
-                                  <p className="text-sm text-muted-foreground">{clientCase.country}</p>
-                                </div>
+                        <div className={`h-full rounded-2xl p-6 bg-gradient-to-br ${getStatusColor(clientCase.status)} border shadow-2xl backdrop-blur-xl flex flex-col`}>
+                          {/* Header */}
+                          <div className="flex items-start justify-between mb-4">
+                            <div className="flex items-center gap-3">
+                              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                                <User className="w-6 h-6 text-white" />
                               </div>
-                              <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusBadge(clientCase.status)} capitalize flex-shrink-0`}>
-                                {clientCase.status}
-                              </span>
-                            </div>
-
-                            {/* Ancestry Info */}
-                            <div className="mb-4 p-3 rounded-lg bg-background/50 backdrop-blur-sm">
-                              <p className="text-sm text-muted-foreground mb-1">Polish Ancestry</p>
-                              <p className="text-sm font-medium">{clientCase.ancestry}</p>
-                            </div>
-
-                            {/* Stats */}
-                            <div className="grid grid-cols-2 gap-3 mb-4">
-                              <div className="flex items-center gap-2 p-2 rounded-lg bg-background/30">
-                                <Calendar className="w-4 h-4 text-primary flex-shrink-0" />
-                                <div className="min-w-0">
-                                  <p className="text-xs text-muted-foreground">Started</p>
-                                  <p className="text-sm font-medium">{new Date(clientCase.startDate).toLocaleDateString()}</p>
-                                </div>
-                              </div>
-                              <div className="flex items-center gap-2 p-2 rounded-lg bg-background/30">
-                                <FileText className="w-4 h-4 text-secondary flex-shrink-0" />
-                                <div className="min-w-0">
-                                  <p className="text-xs text-muted-foreground">Documents</p>
-                                  <p className="text-sm font-medium">{clientCase.documents}</p>
-                                </div>
+                              <div className="min-w-0">
+                                <h3 className="font-bold text-lg">{clientCase.name}</h3>
+                                <p className="text-sm text-muted-foreground">{clientCase.country}</p>
                               </div>
                             </div>
+                            <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusBadge(clientCase.status)} capitalize flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                              {clientCase.status}
+                            </span>
+                          </div>
 
-                            {/* Progress */}
-                            <div className="space-y-2 mt-auto">
-                              <div className="flex items-center justify-between text-sm">
-                                <span className="text-muted-foreground">Progress</span>
-                                <span className="font-bold">{clientCase.progress}%</span>
-                              </div>
-                              <div className="h-2 bg-background/50 rounded-full overflow-hidden">
-                                <div 
-                                  className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-500 rounded-full"
-                                  style={{ width: `${clientCase.progress}%` }}
-                                />
+                          {/* Ancestry Info */}
+                          <div className="mb-4 p-3 rounded-lg bg-background/50 backdrop-blur-sm">
+                            <p className="text-sm text-muted-foreground mb-1">Polish Ancestry</p>
+                            <p className="text-sm font-medium">{clientCase.ancestry}</p>
+                          </div>
+
+                          {/* Stats */}
+                          <div className="grid grid-cols-2 gap-3 mb-4">
+                            <div className="flex items-center gap-2 p-2 rounded-lg bg-background/30">
+                              <Calendar className="w-4 h-4 text-primary flex-shrink-0" />
+                              <div className="min-w-0">
+                                <p className="text-xs text-muted-foreground">Started</p>
+                                <p className="text-sm font-medium">{new Date(clientCase.startDate).toLocaleDateString()}</p>
                               </div>
                             </div>
-
-                            {/* Completion Badge */}
-                            {clientCase.status === "completed" && (
-                              <div className="mt-4 flex items-center justify-center gap-2 p-2 rounded-lg bg-green-500/10 border border-green-500/30">
-                                <CheckCircle2 className="w-4 h-4 text-green-400" />
-                                <span className="text-sm font-medium text-green-400">Application Approved</span>
+                            <div className="flex items-center gap-2 p-2 rounded-lg bg-background/30">
+                              <FileText className="w-4 h-4 text-secondary flex-shrink-0" />
+                              <div className="min-w-0">
+                                <p className="text-xs text-muted-foreground">Documents</p>
+                                <p className="text-sm font-medium">{clientCase.documents}</p>
                               </div>
-                            )}
-
-                            <div className="mt-4 text-center text-xs text-muted-foreground">
-                              Click to flip • Double-click for fullscreen
                             </div>
                           </div>
-                        </div>
 
-                        {/* Back of Card */}
-                        <div
-                          className="absolute inset-0 w-full h-full cursor-pointer"
-                          style={{
-                            backfaceVisibility: 'hidden',
-                            WebkitBackfaceVisibility: 'hidden',
-                            transform: 'rotateY(180deg)',
-                          }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setFlippedCard(null);
-                          }}
-                        >
-                          <div className={`h-full glass-card rounded-2xl p-6 bg-gradient-to-br ${getStatusColor(clientCase.status)} border shadow-2xl backdrop-blur-xl flex flex-col justify-center transition-shadow duration-300 hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.3)]`}>
-                            <h3 className="text-2xl font-bold mb-4 text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                              Case Details
-                            </h3>
-                            <div className="space-y-3">
-                              <div className="p-3 rounded-lg bg-background/50">
-                                <p className="text-xs text-muted-foreground">Client ID</p>
-                                <p className="font-medium">#{clientCase.id.toString().padStart(6, '0')}</p>
-                              </div>
-                              <div className="p-3 rounded-lg bg-background/50">
-                                <p className="text-xs text-muted-foreground">Total Documents</p>
-                                <p className="font-medium">{clientCase.documents} files uploaded</p>
-                              </div>
-                              <div className="p-3 rounded-lg bg-background/50">
-                                <p className="text-xs text-muted-foreground">Application Status</p>
-                                <p className="font-medium capitalize">{clientCase.status}</p>
-                              </div>
-                              <div className="p-3 rounded-lg bg-background/50">
-                                <p className="text-xs text-muted-foreground">Origin Country</p>
-                                <p className="font-medium">{clientCase.country}</p>
-                              </div>
+                          {/* Progress */}
+                          <div className="space-y-2 mt-auto">
+                            <div className="flex items-center justify-between text-sm">
+                              <span className="text-muted-foreground">Progress</span>
+                              <span className="font-bold">{clientCase.progress}%</span>
                             </div>
-                            <div className="mt-4 text-center text-xs text-muted-foreground">
-                              Click to flip back
+                            <div className="h-2 bg-background/50 rounded-full overflow-hidden">
+                              <div 
+                                className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-500 rounded-full"
+                                style={{ width: `${clientCase.progress}%` }}
+                              />
                             </div>
+                          </div>
+
+                          {/* Completion Badge */}
+                          {clientCase.status === "completed" && (
+                            <div className="mt-4 flex items-center justify-center gap-2 p-2 rounded-lg bg-green-500/10 border border-green-500/30">
+                              <CheckCircle2 className="w-4 h-4 text-green-400" />
+                              <span className="text-sm font-medium text-green-400">Application Approved</span>
+                            </div>
+                          )}
+
+                          <div className="mt-4 text-center text-xs text-muted-foreground">
+                            Click to flip • Double-click for fullscreen
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Back of Card */}
+                      <div
+                        className="absolute inset-0 w-full h-full cursor-pointer"
+                        style={{
+                          backfaceVisibility: 'hidden',
+                          WebkitBackfaceVisibility: 'hidden',
+                          transform: 'rotateY(180deg)',
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setFlippedCard(null);
+                        }}
+                      >
+                        <div className={`h-full rounded-2xl p-6 bg-gradient-to-br ${getStatusColor(clientCase.status)} border shadow-2xl backdrop-blur-xl flex flex-col justify-center`}>
+                          <h3 className="text-2xl font-bold mb-4 text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                            Case Details
+                          </h3>
+                          <div className="space-y-3">
+                            <div className="p-3 rounded-lg bg-background/50">
+                              <p className="text-xs text-muted-foreground">Client ID</p>
+                              <p className="font-medium">#{clientCase.id.toString().padStart(6, '0')}</p>
+                            </div>
+                            <div className="p-3 rounded-lg bg-background/50">
+                              <p className="text-xs text-muted-foreground">Total Documents</p>
+                              <p className="font-medium">{clientCase.documents} files uploaded</p>
+                            </div>
+                            <div className="p-3 rounded-lg bg-background/50">
+                              <p className="text-xs text-muted-foreground">Application Status</p>
+                              <p className="font-medium capitalize">{clientCase.status}</p>
+                            </div>
+                            <div className="p-3 rounded-lg bg-background/50">
+                              <p className="text-xs text-muted-foreground">Origin Country</p>
+                              <p className="font-medium">{clientCase.country}</p>
+                            </div>
+                          </div>
+                          <div className="mt-4 text-center text-xs text-muted-foreground">
+                            Click to flip back
                           </div>
                         </div>
                       </div>
