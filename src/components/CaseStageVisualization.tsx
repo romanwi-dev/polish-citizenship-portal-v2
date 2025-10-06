@@ -63,7 +63,7 @@ export function CaseStageVisualization({
       {/* Header */}
       <Card className="p-6 bg-card/50 backdrop-blur">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold">Polish Citizenship Case Pipeline</h2>
+          <h2 className="text-xl font-semibold">Cases Pipeline</h2>
           <div className="flex items-center gap-6 text-sm">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-red-500" />
@@ -71,15 +71,15 @@ export function CaseStageVisualization({
             </div>
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-cyan-400" />
-              <span className="text-cyan-400">High Priority</span>
+              <span className="text-cyan-400">High</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-blue-400" />
-              <span className="text-blue-400">Medium Priority</span>
+              <span className="text-blue-400">Medium</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-muted-foreground" />
-              <span className="text-muted-foreground">Low Priority</span>
+              <span className="text-muted-foreground">Low</span>
             </div>
           </div>
         </div>
