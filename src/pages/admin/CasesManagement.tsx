@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CaseFilters } from "@/components/CaseFilters";
+import { EditCaseDialog } from "@/components/EditCaseDialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,7 +28,8 @@ import {
   XCircle,
   Archive,
   Trash2,
-  Database
+  Database,
+  Edit
 } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
@@ -45,6 +47,7 @@ export default function CasesManagement() {
   const [scoreFilter, setScoreFilter] = useState<[number, number]>([0, 100]);
   const [ageFilter, setAgeFilter] = useState("all");
   const [progressFilter, setProgressFilter] = useState<[number, number]>([0, 100]);
+  const [editCase, setEditCase] = useState<any>(null);
   
   // Authentication and authorization
   const { user, loading: authLoading } = useAuth(true);
@@ -87,6 +90,10 @@ export default function CasesManagement() {
     if (confirm("Are you sure you want to delete this case? This action cannot be undone.")) {
       deleteMutation.mutate(caseId);
     }
+  };
+
+  const handleEdit = (caseItem: any) => {
+    setEditCase(caseItem);
   };
 
   const handleClearFilters = () => {
@@ -284,6 +291,14 @@ export default function CasesManagement() {
                   <DropdownMenuContent align="end" className="w-48 bg-card z-50">
                     <DropdownMenuItem onClick={(e) => {
                       e.stopPropagation();
+                      handleEdit(caseItem);
+                    }}>
+                      <Edit className="h-4 w-4 mr-2" />
+                      Edit Case
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={(e) => {
+                      e.stopPropagation();
                       handleCopyId(caseItem.id);
                     }}>
                       <Copy className="h-4 w-4 mr-2" />
@@ -398,6 +413,28 @@ export default function CasesManagement() {
             </Card>
           ))}
           </div>
+        )}
+
+        {editCase && (
+          <EditCaseDialog
+            caseData={{
+              id: editCase.id,
+              name: editCase.client_name,
+              client_code: editCase.client_code,
+              country: editCase.country,
+              status: editCase.status,
+              generation: editCase.generation,
+              is_vip: editCase.is_vip,
+              notes: editCase.notes,
+              progress: editCase.progress,
+            }}
+            open={!!editCase}
+            onOpenChange={(open) => !open && setEditCase(null)}
+            onUpdate={() => {
+              refetch();
+              setEditCase(null);
+            }}
+          />
         )}
       </div>
     </AdminLayout>
