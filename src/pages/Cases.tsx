@@ -201,13 +201,13 @@ const Cases = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       
-      <section className="pt-24 md:pt-32 pb-12 md:pb-20 relative overflow-hidden">
+      <section className="pt-24 md:pt-32 pb-12 md:pb-20 relative">
         {/* Background Effects */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background pointer-events-none" />
-        <div className="absolute top-20 left-20 w-72 h-72 md:w-96 md:h-96 bg-primary/20 rounded-full blur-[150px] animate-pulse pointer-events-none" />
-        <div className="absolute bottom-20 right-20 w-72 h-72 md:w-96 md:h-96 bg-secondary/20 rounded-full blur-[150px] animate-pulse delay-700 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background pointer-events-none -z-10" />
+        <div className="absolute top-20 left-20 w-72 h-72 md:w-96 md:h-96 bg-primary/20 rounded-full blur-[150px] animate-pulse pointer-events-none -z-10" />
+        <div className="absolute bottom-20 right-20 w-72 h-72 md:w-96 md:h-96 bg-secondary/20 rounded-full blur-[150px] animate-pulse delay-700 pointer-events-none -z-10" />
 
-        <div className="container px-4 mx-auto relative z-10">
+        <div className="container px-4 mx-auto relative">
           {/* Header */}
           <div className="text-center mb-8 md:mb-16">
             <div className="inline-block px-4 py-2 rounded-full glass-card mb-4 md:mb-6">
@@ -236,7 +236,7 @@ const Cases = () => {
             setApi={setApi}
             className="w-full max-w-7xl mx-auto cursor-grab active:cursor-grabbing"
           >
-            <CarouselContent className="-ml-4 relative z-20">
+            <CarouselContent className="-ml-4">
               {mockCases.map((clientCase, index) => {
                 const isFlipped = flippedCard === clientCase.id;
                 const isCenterCard = index === currentIndex;
