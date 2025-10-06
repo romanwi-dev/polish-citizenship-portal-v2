@@ -52,14 +52,14 @@ export function CaseStageVisualization({
   };
 
   const getStageCardColor = (status: string, priority: string) => {
-    if (status === 'completed') return 'bg-green-500/20 border-green-500/50';
-    if (status === 'active') return 'bg-blue-500/20 border-blue-500/50';
+    if (status === 'completed') return 'bg-green-500/20 border-green-500/50 hover:bg-green-500/30';
+    if (status === 'active') return 'bg-primary/20 border-primary/50 hover:bg-primary/30';
     // Pending stages colored by priority
-    if (priority === 'critical') return 'bg-red-500/10 border-red-500/30';
-    if (priority === 'high') return 'bg-cyan-400/10 border-cyan-400/30';
-    if (priority === 'medium') return 'bg-blue-400/10 border-blue-400/30';
-    if (priority === 'low') return 'bg-muted/10 border-muted/30';
-    return 'bg-card border-border/30';
+    if (priority === 'critical') return 'bg-red-500/20 border-red-500/50 hover:bg-red-500/30';
+    if (priority === 'high') return 'bg-secondary/20 border-secondary/50 hover:bg-secondary/30';
+    if (priority === 'medium') return 'bg-accent/20 border-accent/50 hover:bg-accent/30';
+    if (priority === 'low') return 'bg-muted/20 border-muted/50 hover:bg-muted/30';
+    return 'bg-card/50 border-border/30 hover:bg-card/70';
   };
 
   return (
@@ -179,7 +179,7 @@ export function CaseStageVisualization({
         </div>
         <div className="w-full overflow-x-auto">
           <div className="flex gap-4 pb-4 min-w-max">
-            {CASE_STAGES.slice(0, 30).map((stage) => {
+            {CASE_STAGES.map((stage) => {
               const status = getStageStatus(stage.id);
               const isVisible = stage.isClientVisible;
               
@@ -236,7 +236,7 @@ export function CaseStageVisualization({
 
         <ScrollArea className="h-[400px]">
           <div className="space-y-3">
-            {pendingStages.slice(0, 20).map((stage) => (
+            {pendingStages.map((stage) => (
               <Card key={stage.id} className="p-4 bg-card/50">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
