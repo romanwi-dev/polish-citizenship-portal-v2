@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { User, Calendar, FileText, CheckCircle2, X } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from "@/components/ui/carousel";
 
 interface ClientCase {
@@ -147,6 +148,27 @@ const mockCases: ClientCase[] = [
 const Cases = () => {
   const [flippedCard, setFlippedCard] = useState<number | null>(null);
   const [fullscreenCase, setFullscreenCase] = useState<ClientCase | null>(null);
+  const [api, setApi] = useState<CarouselApi>();
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (!api) return;
+
+    api.on("select", () => {
+      setCurrentIndex(api.selectedScrollSnap());
+    });
+  }, [api]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && fullscreenCase) {
+        setFullscreenCase(null);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [fullscreenCase]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -207,25 +229,36 @@ const Cases = () => {
             opts={{
               align: "center",
               loop: true,
+              dragFree: true,
             }}
-            className="w-full max-w-5xl mx-auto"
+            setApi={setApi}
+            className="w-full max-w-6xl mx-auto"
           >
-            <CarouselContent>
-              {mockCases.map((clientCase) => {
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {mockCases.map((clientCase, index) => {
                 const isFlipped = flippedCard === clientCase.id;
+                const isCenterCard = index === currentIndex;
                 
                 return (
-                  <CarouselItem key={clientCase.id} className="md:basis-1/2 lg:basis-1/3">
-                    <div className="p-4">
+                  <CarouselItem key={clientCase.id} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
+                    <div 
+                      className="p-2 transition-all duration-500 ease-out"
+                      style={{
+                        transform: isCenterCard ? 'scale(1.05)' : 'scale(0.95)',
+                        zIndex: isCenterCard ? 20 : 10,
+                      }}
+                    >
                       {/* Flippable Card */}
                       <div
-                        className="relative w-full h-[500px] cursor-pointer"
+                        className="relative w-full h-[500px] cursor-pointer transition-all duration-700 ease-out hover:scale-105"
                         style={{
                           transformStyle: 'preserve-3d',
-                          transition: 'transform 0.7s',
                           transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
                         }}
-                        onClick={() => setFlippedCard(isFlipped ? null : clientCase.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setFlippedCard(isFlipped ? null : clientCase.id);
+                        }}
                         onDoubleClick={(e) => {
                           e.stopPropagation();
                           setFullscreenCase(clientCase);
@@ -240,7 +273,7 @@ const Cases = () => {
                             WebkitBackfaceVisibility: 'hidden',
                           }}
                         >
-                          <div className={`h-full glass-card rounded-2xl p-6 bg-gradient-to-br ${getStatusColor(clientCase.status)} border shadow-2xl backdrop-blur-xl flex flex-col`}>
+                          <div className={`h-full glass-card rounded-2xl p-6 bg-gradient-to-br ${getStatusColor(clientCase.status)} border shadow-2xl backdrop-blur-xl flex flex-col transition-shadow duration-300 hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.3)]`}>
                             {/* Header */}
                             <div className="flex items-start justify-between mb-4">
                               <div className="flex items-center gap-3">
@@ -318,7 +351,7 @@ const Cases = () => {
                             transform: 'rotateY(180deg)',
                           }}
                         >
-                          <div className={`h-full glass-card rounded-2xl p-6 bg-gradient-to-br ${getStatusColor(clientCase.status)} border shadow-2xl backdrop-blur-xl flex flex-col justify-center`}>
+                          <div className={`h-full glass-card rounded-2xl p-6 bg-gradient-to-br ${getStatusColor(clientCase.status)} border shadow-2xl backdrop-blur-xl flex flex-col justify-center transition-shadow duration-300 hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.3)]`}>
                             <h3 className="text-2xl font-bold mb-4 text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                               Case Details
                             </h3>
@@ -351,8 +384,8 @@ const Cases = () => {
                 );
               })}
             </CarouselContent>
-            <CarouselPrevious className="glass-card hover-glow" />
-            <CarouselNext className="glass-card hover-glow" />
+            <CarouselPrevious className="glass-card hover-glow -left-4 md:-left-12" />
+            <CarouselNext className="glass-card hover-glow -right-4 md:-right-12" />
           </Carousel>
         </div>
       </section>
@@ -360,24 +393,18 @@ const Cases = () => {
       {/* Fullscreen Modal */}
       {fullscreenCase && (
         <div 
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-fade-in"
           onClick={() => setFullscreenCase(null)}
-          onKeyDown={(e) => {
-            if (e.key === 'Escape') {
-              setFullscreenCase(null);
-            }
-          }}
-          tabIndex={0}
         >
           <div 
-            className="relative w-full max-w-4xl"
+            className="relative w-full max-w-4xl animate-scale-in"
             onClick={(e) => e.stopPropagation()}
           >
             <Button
               onClick={() => setFullscreenCase(null)}
               size="icon"
               variant="ghost"
-              className="absolute -top-12 right-0 glass-card hover-glow"
+              className="absolute -top-12 right-0 glass-card hover-glow hover:rotate-90 transition-transform duration-300"
             >
               <X className="w-6 h-6" />
             </Button>
