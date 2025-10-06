@@ -8,7 +8,6 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Search, Users, Clock, DollarSign, FileText, AlertCircle } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 
 const FAQSection = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -170,10 +169,10 @@ const FAQSection = () => {
         <div className="max-w-5xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12 space-y-4">
-            <div className="flex justify-center mb-4">
-              <Badge variant="outline" className="px-4 py-1 text-sm font-semibold border-primary/30 text-primary">
+            <div className="inline-block px-4 py-2 rounded-full glass-card mb-6">
+              <span className="text-sm font-medium bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 FAQ
-              </Badge>
+              </span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold">
               Find Answers{" "}
