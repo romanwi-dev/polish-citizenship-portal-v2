@@ -74,20 +74,28 @@ export const useUpdateCase = () => {
   
   return useMutation({
     mutationFn: async ({ caseId, updates }: { caseId: string; updates: any }) => {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from("cases")
         .update(updates)
-        .eq("id", caseId);
+        .eq("id", caseId)
+        .select()
+        .single();
       
       if (error) throw error;
+      return data;
     },
-    onSuccess: async () => {
-      // Cancel any outgoing queries
+    onSuccess: async (updatedCase) => {
+      // Cancel any outgoing refetches
       await queryClient.cancelQueries({ queryKey: ["cases"] });
-      // Remove the old cache completely
-      queryClient.removeQueries({ queryKey: ["cases"] });
-      // Refetch fresh data
-      await queryClient.refetchQueries({ queryKey: ["cases"] });
+      
+      // Optimistically update the cache with the new data
+      queryClient.setQueryData(["cases"], (old: any) => {
+        if (!old) return old;
+        return old.map((c: any) => c.id === updatedCase.id ? { ...c, ...updatedCase } : c);
+      });
+      
+      // Then refetch to ensure consistency
+      await queryClient.invalidateQueries({ queryKey: ["cases"] });
       toast.success("Case updated successfully");
     },
     onError: (error: any) => {
