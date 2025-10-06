@@ -53,7 +53,7 @@ const HeroWeb3 = () => {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             {[
               { value: "2+ Years", label: "Realistic Timeline" },
               { value: "€3,500+", label: "Transparent Real Pricing" },
