@@ -242,12 +242,12 @@ const Cases = () => {
                 const isCenterCard = index === currentIndex;
                 
                 return (
-                  <CarouselItem key={clientCase.id} className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
+                  <CarouselItem key={clientCase.id} className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3 relative z-10 hover:z-50">
                     {/* Flippable Card Container with hover effects */}
                     <motion.div
-                      whileHover={{ scale: 1.03, y: -5 }}
+                      whileHover={{ scale: 1.03, y: -5, zIndex: 50 }}
                       transition={{ duration: 0.3 }}
-                      className="glass-card p-6 rounded-lg hover-glow group h-[500px] transition-all duration-700 relative z-10"
+                      className="glass-card p-6 rounded-lg hover-glow group h-[500px] transition-all duration-700 relative"
                       style={{
                         transformStyle: 'preserve-3d',
                         transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
