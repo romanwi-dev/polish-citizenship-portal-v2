@@ -1,21 +1,30 @@
 import { Button } from "@/components/ui/button";
 import { Sparkles } from "lucide-react";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useState, useEffect, useRef } from "react";
 
 // Lazy load 3D component to reduce initial bundle blocking time
 const Hero3DMap = lazy(() => import("./Hero3DMap").then(module => ({ default: module.Hero3DMap })));
 
 const HeroWeb3 = () => {
+  const [shouldLoadMap, setShouldLoadMap] = useState(false);
+  const heroRef = useRef<HTMLDivElement>(null);
+
+  // Defer 3D component loading until after initial render
+  useEffect(() => {
+    const timer = setTimeout(() => setShouldLoadMap(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
   const scrollToContact = () => {
     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* 3D Background */}
       <div className="absolute inset-0 z-0">
         <Suspense fallback={<div className="w-full h-full bg-gradient-to-b from-primary/5 to-background" />}>
-          <Hero3DMap />
+          {shouldLoadMap && <Hero3DMap />}
         </Suspense>
       </div>
 
