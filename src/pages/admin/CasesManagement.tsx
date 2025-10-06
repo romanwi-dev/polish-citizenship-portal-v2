@@ -388,11 +388,11 @@ export default function CasesManagement() {
                   className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-12 flex items-center justify-center"
                   onClick={(e) => {
                     e.stopPropagation();
-                    navigate(`/admin/cases/${caseItem.id}?tab=control`);
+                    navigate(`/admin/cases/${caseItem.id}`);
                   }}
                 >
                   <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full">
-                    Control Room
+                    View Case
                   </span>
                   <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </Button>

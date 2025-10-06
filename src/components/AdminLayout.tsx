@@ -51,8 +51,8 @@ function AppSidebar() {
   };
 
   return (
-    <Sidebar collapsible="icon" className="bg-sidebar border-r border-sidebar-border">
-      <div className="flex items-center justify-between p-4 border-b border-sidebar-border bg-sidebar">
+    <Sidebar collapsible="icon">
+      <div className="flex items-center justify-between p-4 border-b">
         {open && (
           <img 
             src={logo} 
@@ -60,22 +60,21 @@ function AppSidebar() {
             className="h-8 w-auto object-contain"
           />
         )}
-        <SidebarTrigger className="text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground" />
+        <SidebarTrigger />
       </div>
       
-      <SidebarContent className="bg-sidebar">
-        <SidebarGroup className="bg-sidebar">
-          <SidebarGroupLabel className="text-sidebar-foreground px-2 py-2">Management</SidebarGroupLabel>
-          <SidebarGroupContent className="bg-sidebar">
-            <SidebarMenu className="bg-sidebar">
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Management</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
               {navItems.map((item) => {
                 const active = isActive(item.url, item.exact);
                 return (
-                  <SidebarMenuItem key={item.title} className="bg-sidebar">
+                  <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
                       asChild
                       className={cn(
-                        "text-sidebar-foreground bg-sidebar hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors",
                         active && "bg-primary text-primary-foreground hover:bg-primary/90"
                       )}
                     >
