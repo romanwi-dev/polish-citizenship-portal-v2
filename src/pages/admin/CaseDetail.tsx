@@ -142,10 +142,10 @@ export default function CaseDetail() {
         <Tabs defaultValue={defaultTab} className="space-y-6">
           <div className="relative -mx-6 px-6">
             <ScrollArea className="w-full whitespace-nowrap">
-              <div className="flex gap-3 pb-4">
+              <div className="flex gap-3 pb-4 md:justify-between">
                 <TabsTrigger 
                   value="overview"
-                  className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 data-[state=active]:bg-white/10 flex-shrink-0"
+                  className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 data-[state=active]:bg-white/10 flex-shrink-0 md:flex-1"
                 >
                   <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                     Overview
@@ -154,7 +154,7 @@ export default function CaseDetail() {
                 </TabsTrigger>
                 <TabsTrigger 
                   value="stage"
-                  className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 data-[state=active]:bg-white/10 flex-shrink-0"
+                  className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 data-[state=active]:bg-white/10 flex-shrink-0 md:flex-1"
                 >
                   <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                     Stage
@@ -163,7 +163,7 @@ export default function CaseDetail() {
                 </TabsTrigger>
                 <TabsTrigger 
                   value="documents"
-                  className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 data-[state=active]:bg-white/10 flex-shrink-0"
+                  className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 data-[state=active]:bg-white/10 flex-shrink-0 md:flex-1"
                 >
                   <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                     Documents
@@ -172,7 +172,7 @@ export default function CaseDetail() {
                 </TabsTrigger>
                 <TabsTrigger 
                   value="payments"
-                  className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 data-[state=active]:bg-white/10 flex-shrink-0"
+                  className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 data-[state=active]:bg-white/10 flex-shrink-0 md:flex-1"
                 >
                   <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                     Payments
@@ -181,7 +181,7 @@ export default function CaseDetail() {
                 </TabsTrigger>
                 <TabsTrigger 
                   value="tasks"
-                  className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 data-[state=active]:bg-white/10 flex-shrink-0"
+                  className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 data-[state=active]:bg-white/10 flex-shrink-0 md:flex-1"
                 >
                   <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                     Tasks
@@ -190,7 +190,7 @@ export default function CaseDetail() {
                 </TabsTrigger>
                 <TabsTrigger 
                   value="authority"
-                  className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 data-[state=active]:bg-white/10 flex-shrink-0"
+                  className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 data-[state=active]:bg-white/10 flex-shrink-0 md:flex-1"
                 >
                   <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                     Authority
@@ -199,7 +199,7 @@ export default function CaseDetail() {
                 </TabsTrigger>
                 <TabsTrigger 
                   value="tree"
-                  className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 data-[state=active]:bg-white/10 flex-shrink-0"
+                  className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 data-[state=active]:bg-white/10 flex-shrink-0 md:flex-1"
                 >
                   <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                     Tree
