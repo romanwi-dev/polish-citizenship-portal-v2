@@ -241,9 +241,6 @@ const CaseCard = memo(({ clientCase, onOpenFullscreen }: { clientCase: ClientCas
             </div>
           )}
 
-          <div className="absolute bottom-6 left-6 right-6 text-center text-xs text-muted-foreground">
-            Click to flip • Double-click for fullscreen
-          </div>
         </div>
 
         {/* Back of Card */}
@@ -323,9 +320,6 @@ const CaseCard = memo(({ clientCase, onOpenFullscreen }: { clientCase: ClientCas
               )}
             </div>
 
-            <div className="text-center text-xs text-muted-foreground mt-4 pt-4 border-t border-border/30">
-              Click to flip back • Double-click for fullscreen
-            </div>
           </div>
         </div>
       </div>
