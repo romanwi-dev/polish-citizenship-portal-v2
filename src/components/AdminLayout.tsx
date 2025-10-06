@@ -51,8 +51,8 @@ function AppSidebar() {
   };
 
   return (
-    <Sidebar collapsible="icon">
-      <div className="flex items-center justify-between p-4 border-b border-border">
+    <Sidebar collapsible="icon" className="bg-sidebar border-sidebar-border">
+      <div className="flex items-center justify-between p-4 border-b border-sidebar-border bg-sidebar">
         {open && (
           <img 
             src={logo} 
@@ -60,12 +60,12 @@ function AppSidebar() {
             className="h-8 w-auto object-contain"
           />
         )}
-        <SidebarTrigger />
+        <SidebarTrigger className="text-sidebar-foreground" />
       </div>
       
-      <SidebarContent>
+      <SidebarContent className="bg-sidebar">
         <SidebarGroup>
-          <SidebarGroupLabel>Management</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-sidebar-foreground">Management</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {navItems.map((item) => {
@@ -75,6 +75,7 @@ function AppSidebar() {
                     <SidebarMenuButton
                       asChild
                       className={cn(
+                        "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
                         active && "bg-primary text-primary-foreground hover:bg-primary/90"
                       )}
                     >

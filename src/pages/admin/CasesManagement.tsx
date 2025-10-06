@@ -29,7 +29,8 @@ import {
   Trash2,
   Eye,
   Settings,
-  Database
+  Database,
+  Users
 } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
@@ -354,6 +355,17 @@ export default function CasesManagement() {
                 >
                   <Eye className="h-4 w-4 mr-2" />
                   View
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    window.open('/family-tree.pdf', '_blank');
+                  }}
+                >
+                  <Users className="h-4 w-4 mr-2" />
+                  Family Tree
                 </Button>
                 <Button
                   size="sm"
