@@ -20,6 +20,17 @@ export default function Dashboard() {
     documents: 0,
     avgProgress: 0,
     upcomingDeadlines: 0,
+    vipCases: 0,
+    vipPlusCases: 0,
+    vipModeCases: 0,
+    expeditedCases: 0,
+    standardCases: 0,
+    leadCases: 0,
+    activeStatusCases: 0,
+    onHoldCases: 0,
+    finishedCases: 0,
+    failedCases: 0,
+    badCases: 0,
   });
   const [loading, setLoading] = useState(true);
 
@@ -32,7 +43,7 @@ export default function Dashboard() {
   const loadStats = async () => {
     try {
       const [casesRes, tasksRes, docsRes] = await Promise.all([
-        supabase.from("cases").select("status, progress", { count: "exact" }),
+        supabase.from("cases").select("status, progress, is_vip, processing_mode, client_score", { count: "exact" }),
         supabase.from("tasks").select("status", { count: "exact" }).eq("status", "pending"),
         supabase.from("documents").select("id", { count: "exact" }),
       ]);
@@ -46,6 +57,25 @@ export default function Dashboard() {
         ? Math.round(cases.reduce((sum, c) => sum + (c.progress || 0), 0) / cases.length)
         : 0;
 
+      // Count VIP cases
+      const vipCases = cases.filter(c => c.is_vip).length;
+      
+      // Count by processing mode
+      const vipPlusCases = cases.filter(c => c.processing_mode === 'vip_plus').length;
+      const vipModeCases = cases.filter(c => c.processing_mode === 'vip').length;
+      const expeditedCases = cases.filter(c => c.processing_mode === 'expedited').length;
+      const standardCases = cases.filter(c => c.processing_mode === 'standard').length;
+      
+      // Count by status
+      const leadCases = cases.filter(c => c.status === 'lead').length;
+      const activeStatusCases = cases.filter(c => c.status === 'active').length;
+      const onHoldCases = cases.filter(c => c.status === 'on_hold').length;
+      const finishedCases = cases.filter(c => c.status === 'finished').length;
+      const failedCases = cases.filter(c => c.status === 'failed').length;
+      
+      // Count bad cases (low score)
+      const badCases = cases.filter(c => (c.client_score || 0) < 30).length;
+
       setStats({
         totalCases: casesRes.count || 0,
         activeCases,
@@ -53,6 +83,17 @@ export default function Dashboard() {
         documents: docsRes.count || 0,
         avgProgress,
         upcomingDeadlines: 0, // TODO: Calculate from WSC letters
+        vipCases,
+        vipPlusCases,
+        vipModeCases,
+        expeditedCases,
+        standardCases,
+        leadCases,
+        activeStatusCases,
+        onHoldCases,
+        finishedCases,
+        failedCases,
+        badCases,
       });
     } catch (error) {
       console.error("Error loading stats:", error);
@@ -154,37 +195,83 @@ export default function Dashboard() {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <Card>
             <CardHeader>
-              <CardTitle>Recent Activity</CardTitle>
-              <CardDescription>Latest updates across all cases</CardDescription>
+              <CardTitle>By Status</CardTitle>
+              <CardDescription>Cases breakdown by status</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-sm text-muted-foreground">
-                No recent activity to display
+              <div className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm">Lead</span>
+                  <span className="text-sm font-medium">{stats.leadCases}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm">Active</span>
+                  <span className="text-sm font-medium">{stats.activeStatusCases}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm">On Hold</span>
+                  <span className="text-sm font-medium">{stats.onHoldCases}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm">Finished</span>
+                  <span className="text-sm font-medium text-green-500">{stats.finishedCases}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm">Failed</span>
+                  <span className="text-sm font-medium text-red-500">{stats.failedCases}</span>
+                </div>
               </div>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
-              <CardTitle>System Health</CardTitle>
-              <CardDescription>Current system status</CardDescription>
+              <CardTitle>By Processing Mode</CardTitle>
+              <CardDescription>Cases by service level</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm">Database</span>
-                  <span className="text-xs text-green-500">● Healthy</span>
+                  <span className="text-sm">VIP+</span>
+                  <span className="text-sm font-medium text-purple-400">{stats.vipPlusCases}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm">Dropbox Sync</span>
-                  <span className="text-xs text-green-500">● Connected</span>
+                  <span className="text-sm">VIP</span>
+                  <span className="text-sm font-medium text-amber-400">{stats.vipModeCases}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm">Authentication</span>
-                  <span className="text-xs text-green-500">● Active</span>
+                  <span className="text-sm">Expedited</span>
+                  <span className="text-sm font-medium text-blue-400">{stats.expeditedCases}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm">Standard</span>
+                  <span className="text-sm font-medium">{stats.standardCases}</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Priority & Quality</CardTitle>
+              <CardDescription>Special classifications</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm">VIP Clients</span>
+                  <span className="text-sm font-medium text-amber-400">{stats.vipCases}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm">Bad Cases (&lt;30 score)</span>
+                  <span className="text-sm font-medium text-red-400">{stats.badCases}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm">System Health</span>
+                  <span className="text-xs text-green-500">● All Clear</span>
                 </div>
               </div>
             </CardContent>

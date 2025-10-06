@@ -86,36 +86,47 @@ const Cases = () => {
 
   // Filter cases based on all criteria
   const filteredCases = useMemo(() => {
-    return cases.filter(c => {
-      // Search filter
-      const matchesSearch = searchTerm === "" || 
-        c.client_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (c.client_code && c.client_code.toLowerCase().includes(searchTerm.toLowerCase()));
+    return cases
+      .filter(c => {
+        // Search filter
+        const matchesSearch = searchTerm === "" || 
+          c.client_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (c.client_code && c.client_code.toLowerCase().includes(searchTerm.toLowerCase()));
 
-      // Status filter
-      const matchesStatus = statusFilter === "all" || c.status === statusFilter;
+        // Status filter
+        const matchesStatus = statusFilter === "all" || c.status === statusFilter;
 
-      // Processing mode filter
-      const matchesProcessingMode = processingModeFilter === "all" || c.processing_mode === processingModeFilter;
+        // Processing mode filter
+        const matchesProcessingMode = processingModeFilter === "all" || c.processing_mode === processingModeFilter;
 
-      // Score filter
-      const matchesScore = c.client_score >= scoreFilter[0] && c.client_score <= scoreFilter[1];
+        // Score filter
+        const matchesScore = c.client_score >= scoreFilter[0] && c.client_score <= scoreFilter[1];
 
-      // Age filter
-      const caseAge = getCaseAge(c.start_date);
-      const matchesAge = ageFilter === "all" || 
-        (ageFilter === "new" && caseAge <= 30) ||
-        (ageFilter === "recent" && caseAge > 30 && caseAge <= 90) ||
-        (ageFilter === "medium" && caseAge > 90 && caseAge <= 180) ||
-        (ageFilter === "old" && caseAge > 180);
+        // Age filter
+        const caseAge = getCaseAge(c.start_date);
+        const matchesAge = ageFilter === "all" || 
+          (ageFilter === "new" && caseAge <= 30) ||
+          (ageFilter === "recent" && caseAge > 30 && caseAge <= 90) ||
+          (ageFilter === "medium" && caseAge > 90 && caseAge <= 180) ||
+          (ageFilter === "old" && caseAge > 180);
 
-      // Progress filter
-      const progress = c.progress || 0;
-      const matchesProgress = progress >= progressFilter[0] && progress <= progressFilter[1];
+        // Progress filter
+        const progress = c.progress || 0;
+        const matchesProgress = progress >= progressFilter[0] && progress <= progressFilter[1];
 
-      return matchesSearch && matchesStatus && matchesProcessingMode && 
-             matchesScore && matchesAge && matchesProgress;
-    });
+        return matchesSearch && matchesStatus && matchesProcessingMode && 
+               matchesScore && matchesAge && matchesProgress;
+      })
+      .sort((a, b) => {
+        // VIP cases first
+        if (a.is_vip && !b.is_vip) return -1;
+        if (!a.is_vip && b.is_vip) return 1;
+        
+        // Then sort by client score (higher scores first, bad cases with low scores go to bottom)
+        const scoreA = a.client_score || 0;
+        const scoreB = b.client_score || 0;
+        return scoreB - scoreA;
+      });
   }, [cases, searchTerm, statusFilter, processingModeFilter, scoreFilter, ageFilter, progressFilter]);
 
   // Count active filters
