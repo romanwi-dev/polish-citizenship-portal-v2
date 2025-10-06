@@ -51,7 +51,7 @@ function AppSidebar() {
   };
 
   return (
-    <Sidebar collapsible="icon" className="bg-sidebar border-sidebar-border">
+    <Sidebar collapsible="icon" className="bg-sidebar border-r border-sidebar-border">
       <div className="flex items-center justify-between p-4 border-b border-sidebar-border bg-sidebar">
         {open && (
           <img 
@@ -60,28 +60,28 @@ function AppSidebar() {
             className="h-8 w-auto object-contain"
           />
         )}
-        <SidebarTrigger className="text-sidebar-foreground" />
+        <SidebarTrigger className="text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground" />
       </div>
       
       <SidebarContent className="bg-sidebar">
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-sidebar-foreground">Management</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
+        <SidebarGroup className="bg-sidebar">
+          <SidebarGroupLabel className="text-sidebar-foreground px-2 py-2">Management</SidebarGroupLabel>
+          <SidebarGroupContent className="bg-sidebar">
+            <SidebarMenu className="bg-sidebar">
               {navItems.map((item) => {
                 const active = isActive(item.url, item.exact);
                 return (
-                  <SidebarMenuItem key={item.title}>
+                  <SidebarMenuItem key={item.title} className="bg-sidebar">
                     <SidebarMenuButton
                       asChild
                       className={cn(
-                        "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                        "text-sidebar-foreground bg-sidebar hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors",
                         active && "bg-primary text-primary-foreground hover:bg-primary/90"
                       )}
                     >
-                      <NavLink to={item.url}>
-                        <item.icon className="h-4 w-4" />
-                        {open && <span>{item.title}</span>}
+                      <NavLink to={item.url} className="flex items-center gap-2 w-full">
+                        <item.icon className="h-4 w-4 flex-shrink-0" />
+                        {open && <span className="flex-1">{item.title}</span>}
                       </NavLink>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
