@@ -19,6 +19,37 @@ interface DropboxListResult {
   has_more: boolean;
 }
 
+// Global variable to store the current access token in memory
+let currentAccessToken: string | null = null;
+
+// Refresh the access token using the refresh token
+async function refreshAccessToken(appKey: string, refreshToken: string): Promise<string> {
+  console.log("Refreshing Dropbox access token...");
+  
+  const response = await fetch("https://api.dropbox.com/oauth2/token", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams({
+      grant_type: "refresh_token",
+      refresh_token: refreshToken,
+      client_id: appKey,
+    }),
+  });
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(`Failed to refresh token: ${response.status} - ${error}`);
+  }
+
+  const data = await response.json();
+  currentAccessToken = data.access_token;
+  console.log("Access token refreshed successfully");
+  
+  return data.access_token;
+}
+
 // Parse case classification from folder name
 function parseClassification(folderName: string): {
   status: string;
@@ -59,7 +90,10 @@ function cleanClientName(folderName: string): string {
 
 async function listDropboxFolder(
   accessToken: string,
-  path: string
+  path: string,
+  appKey: string,
+  refreshToken: string,
+  retry = true
 ): Promise<DropboxEntry[]> {
   const response = await fetch("https://api.dropboxapi.com/2/files/list_folder", {
     method: "POST",
@@ -73,6 +107,13 @@ async function listDropboxFolder(
       include_mounted_folders: false,
     }),
   });
+
+  // If we get a 401 and haven't retried yet, refresh the token and retry
+  if (response.status === 401 && retry) {
+    console.log("Access token expired, refreshing...");
+    const newToken = await refreshAccessToken(appKey, refreshToken);
+    return listDropboxFolder(newToken, path, appKey, refreshToken, false);
+  }
 
   if (!response.ok) {
     const error = await response.text();
@@ -90,9 +131,15 @@ serve(async (req) => {
 
   try {
     const dropboxToken = Deno.env.get("DROPBOX_ACCESS_TOKEN");
-    if (!dropboxToken) {
-      throw new Error("DROPBOX_ACCESS_TOKEN not configured");
+    const dropboxAppKey = Deno.env.get("DROPBOX_APP_KEY");
+    const dropboxRefreshToken = Deno.env.get("DROPBOX_REFRESH_TOKEN");
+    
+    if (!dropboxToken || !dropboxAppKey || !dropboxRefreshToken) {
+      throw new Error("Missing Dropbox credentials: DROPBOX_ACCESS_TOKEN, DROPBOX_APP_KEY, and DROPBOX_REFRESH_TOKEN required");
     }
+
+    // Initialize current access token
+    currentAccessToken = dropboxToken;
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -121,7 +168,12 @@ serve(async (req) => {
     let failedCount = 0;
 
     // List classification folders in /CASES
-    const classificationFolders = await listDropboxFolder(dropboxToken, "/CASES");
+    const classificationFolders = await listDropboxFolder(
+      currentAccessToken!,
+      "/CASES",
+      dropboxAppKey,
+      dropboxRefreshToken
+    );
     console.log(`Found ${classificationFolders.length} classification folders`);
 
     for (const classFolder of classificationFolders) {
@@ -132,7 +184,12 @@ serve(async (req) => {
 
       try {
         // List client folders within this classification
-        const clientFolders = await listDropboxFolder(dropboxToken, classFolder.path_display);
+        const clientFolders = await listDropboxFolder(
+          currentAccessToken!,
+          classFolder.path_display,
+          dropboxAppKey,
+          dropboxRefreshToken
+        );
         
         for (const clientFolder of clientFolders) {
           if (clientFolder[".tag"] !== "folder") continue;
@@ -190,7 +247,12 @@ serve(async (req) => {
               console.log(`Created case: ${clientName}`);
 
               // List documents in the client folder
-              const documents = await listDropboxFolder(dropboxToken, clientFolder.path_display);
+              const documents = await listDropboxFolder(
+                currentAccessToken!,
+                clientFolder.path_display,
+                dropboxAppKey,
+                dropboxRefreshToken
+              );
               
               for (const doc of documents) {
                 if (doc[".tag"] === "file") {
