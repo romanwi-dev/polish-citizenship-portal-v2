@@ -71,7 +71,7 @@ const onboardingSteps = [
   },
   {
     number: "08",
-    title: "Comprehensive Processing",
+    title: "Processing",
     description: "We handle all procedures simultaneously: sworn translations, archives search, Polish civil acts, and passport preparation. After about 12 months, we receive initial response from authorities.",
     icon: Globe,
     gradient: "from-secondary to-accent",
