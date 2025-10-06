@@ -236,41 +236,41 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
             </div>
           )}
 
-          <div className="grid grid-cols-3 gap-2 mb-4">
-            <div className="flex flex-col gap-1 p-2 rounded-lg bg-background/30">
+          <div className="grid grid-cols-3 gap-2 mb-6">
+            <div className="flex flex-col gap-1 p-3 rounded-lg bg-background/30">
               <div className="flex items-center gap-1">
-                <Calendar className="w-3 h-3 text-primary" />
+                <Calendar className="w-4 h-4 text-primary" />
                 <p className="text-xs text-muted-foreground">Started</p>
               </div>
-              <p className="text-xs font-medium">
+              <p className="text-sm font-medium mt-1">
                 {clientCase.start_date ? new Date(clientCase.start_date).toLocaleDateString() : 'N/A'}
               </p>
             </div>
-            <div className="flex flex-col gap-1 p-2 rounded-lg bg-background/30">
+            <div className="flex flex-col gap-1 p-3 rounded-lg bg-background/30">
               <div className="flex items-center gap-1">
-                <FileText className="w-3 h-3 text-secondary" />
+                <FileText className="w-4 h-4 text-secondary" />
                 <p className="text-xs text-muted-foreground">Docs</p>
               </div>
-              <p className="text-xs font-medium">{clientCase.document_count}</p>
+              <p className="text-sm font-medium mt-1">{clientCase.document_count}</p>
             </div>
-            <div className="flex flex-col gap-1 p-2 rounded-lg bg-background/30">
+            <div className="flex flex-col gap-1 p-3 rounded-lg bg-background/30">
               <div className="flex items-center gap-1">
-                <TrendingUp className="w-3 h-3 text-accent" />
+                <TrendingUp className="w-4 h-4 text-accent" />
                 <p className="text-xs text-muted-foreground">Score</p>
               </div>
-              <p className="text-xs font-medium">{clientCase.client_score || 0}</p>
+              <p className="text-sm font-medium mt-1">{clientCase.client_score || 0}</p>
             </div>
           </div>
 
-          <div className="space-y-2 mb-4">
+          <div className="space-y-3 mb-6">
             <div className="flex items-center justify-between text-sm">
               <div className="flex items-center gap-1">
                 <TrendingUp className="w-4 h-4 text-muted-foreground" />
                 <span className="text-muted-foreground">Progress</span>
               </div>
-              <span className="font-bold">{clientCase.progress || 0}%</span>
+              <span className="font-bold text-lg">{clientCase.progress || 0}%</span>
             </div>
-            <div className="h-2 bg-background/50 rounded-full overflow-hidden">
+            <div className="h-3 bg-background/50 rounded-full overflow-hidden">
               <div 
                 className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-500 rounded-full"
                 style={{ width: `${clientCase.progress || 0}%` }}
@@ -279,68 +279,68 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
           </div>
 
           {clientCase.status === "finished" && (
-            <div className="mb-4 flex items-center justify-center gap-2 p-2 rounded-lg bg-green-500/10 border border-green-500/30">
-              <CheckCircle2 className="w-4 h-4 text-green-400" />
-              <span className="text-sm font-medium text-green-400">Citizenship Granted</span>
+            <div className="mb-6 flex items-center justify-center gap-2 p-3 rounded-lg bg-green-500/10 border border-green-500/30">
+              <CheckCircle2 className="w-5 h-5 text-green-400" />
+              <span className="text-base font-medium text-green-400">Citizenship Granted</span>
             </div>
           )}
 
-          <div className="space-y-2 mt-auto">
-            <div className="grid grid-cols-2 gap-2">
+          <div className="space-y-3 mt-auto">
+            <div className="grid grid-cols-2 gap-3">
               <Button
-                size="sm"
-                className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30"
+                size="default"
+                className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-12"
                 onClick={(e) => {
                   e.stopPropagation();
                   navigate(`/admin/cases/${clientCase.id}`);
                 }}
               >
-                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center gap-1">
-                  <Eye className="w-3 h-3" />
+                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center gap-1.5">
+                  <Eye className="w-4 h-4" />
                   View Case
                 </span>
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               </Button>
               <Button
-                size="sm"
-                className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30"
+                size="default"
+                className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-12"
                 onClick={(e) => {
                   e.stopPropagation();
                   window.open('/family-tree.pdf', '_blank');
                 }}
               >
-                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center gap-1">
-                  <FileText className="w-3 h-3" />
+                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center gap-1.5">
+                  <FileText className="w-4 h-4" />
                   Family Tree
                 </span>
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               </Button>
             </div>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-3">
               <Button
-                size="sm"
-                className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30"
+                size="default"
+                className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-12"
                 onClick={(e) => {
                   e.stopPropagation();
                   navigate(`/admin/cases/${clientCase.id}?tab=control`);
                 }}
               >
-                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center gap-1">
-                  <Radio className="w-3 h-3" />
+                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center gap-1.5">
+                  <Radio className="w-4 h-4" />
                   Control
                 </span>
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               </Button>
               <Button
-                size="sm"
-                className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30"
+                size="default"
+                className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-12"
                 onClick={(e) => {
                   e.stopPropagation();
                   navigate(`/admin/cases/${clientCase.id}?tab=oby`);
                 }}
               >
-                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center gap-1">
-                  <FileEdit className="w-3 h-3" />
+                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center gap-1.5">
+                  <FileEdit className="w-4 h-4" />
                   Draft OBY
                 </span>
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />

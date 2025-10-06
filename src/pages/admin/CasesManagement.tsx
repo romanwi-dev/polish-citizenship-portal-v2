@@ -142,7 +142,7 @@ export default function CasesManagement() {
 
   return (
     <AdminLayout>
-      <div className="p-8">
+      <div className="p-8 bg-background min-h-screen">
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold mb-2">Cases Management</h1>
@@ -181,7 +181,7 @@ export default function CasesManagement() {
           {filteredCases.map((caseItem) => (
             <Card
               key={caseItem.id}
-              className="p-6 hover-glow transition-all"
+              className="p-6 hover-glow transition-all bg-card border-border"
             >
               <div className="flex items-start justify-between">
                 <div 
