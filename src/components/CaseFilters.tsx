@@ -80,10 +80,10 @@ export const CaseFilters = ({
               )}
             </Button>
           </SheetTrigger>
-          <SheetContent className="overflow-y-auto">
+          <SheetContent className="overflow-y-auto bg-background border-border">
             <SheetHeader>
-              <SheetTitle>Filter Cases</SheetTitle>
-              <SheetDescription>
+              <SheetTitle className="text-foreground">Filter Cases</SheetTitle>
+              <SheetDescription className="text-muted-foreground">
                 Apply filters to narrow down your case list
               </SheetDescription>
             </SheetHeader>
@@ -91,12 +91,12 @@ export const CaseFilters = ({
             <div className="space-y-6 mt-6">
               {/* Status Filter */}
               <div className="space-y-2">
-                <Label>Status</Label>
+                <Label className="text-foreground">Status</Label>
                 <Select value={statusFilter} onValueChange={onStatusChange}>
-                  <SelectTrigger>
+                  <SelectTrigger className="bg-background border-border text-foreground">
                     <SelectValue placeholder="All statuses" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-popover border-border">
                     <SelectItem value="all">All Statuses</SelectItem>
                     <SelectItem value="active">Active</SelectItem>
                     <SelectItem value="lead">Lead</SelectItem>
@@ -108,12 +108,12 @@ export const CaseFilters = ({
 
               {/* Processing Mode Filter */}
               <div className="space-y-2">
-                <Label>Processing Mode</Label>
+                <Label className="text-foreground">Processing Mode</Label>
                 <Select value={processingModeFilter} onValueChange={onProcessingModeChange}>
-                  <SelectTrigger>
+                  <SelectTrigger className="bg-background border-border text-foreground">
                     <SelectValue placeholder="All modes" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-popover border-border">
                     <SelectItem value="all">All Modes</SelectItem>
                     <SelectItem value="standard">Standard</SelectItem>
                     <SelectItem value="expedited">Expedited</SelectItem>
@@ -125,7 +125,7 @@ export const CaseFilters = ({
 
               {/* Client Score Filter */}
               <div className="space-y-2">
-                <Label>Client Score: {scoreFilter[0]} - {scoreFilter[1]}</Label>
+                <Label className="text-foreground">Client Score: {scoreFilter[0]} - {scoreFilter[1]}</Label>
                 <Slider
                   value={scoreFilter}
                   onValueChange={(value) => onScoreChange(value as [number, number])}
@@ -138,12 +138,12 @@ export const CaseFilters = ({
 
               {/* Case Age Filter */}
               <div className="space-y-2">
-                <Label>Case Age</Label>
+                <Label className="text-foreground">Case Age</Label>
                 <Select value={ageFilter} onValueChange={onAgeChange}>
-                  <SelectTrigger>
+                  <SelectTrigger className="bg-background border-border text-foreground">
                     <SelectValue placeholder="All ages" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-popover border-border">
                     <SelectItem value="all">All Ages</SelectItem>
                     <SelectItem value="new">New (0-30 days)</SelectItem>
                     <SelectItem value="recent">Recent (31-90 days)</SelectItem>
@@ -155,7 +155,7 @@ export const CaseFilters = ({
 
               {/* Progress Filter */}
               <div className="space-y-2">
-                <Label>Progress: {progressFilter[0]}% - {progressFilter[1]}%</Label>
+                <Label className="text-foreground">Progress: {progressFilter[0]}% - {progressFilter[1]}%</Label>
                 <Slider
                   value={progressFilter}
                   onValueChange={(value) => onProgressChange(value as [number, number])}
