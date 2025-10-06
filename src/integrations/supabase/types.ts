@@ -14,7 +14,191 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      cases: {
+        Row: {
+          ancestry: Json | null
+          client_code: string | null
+          client_name: string
+          country: string | null
+          created_at: string
+          dropbox_folder_id: string | null
+          dropbox_path: string
+          generation: Database["public"]["Enums"]["case_generation"] | null
+          id: string
+          is_vip: boolean | null
+          last_synced_at: string | null
+          metadata: Json | null
+          notes: string | null
+          progress: number | null
+          start_date: string | null
+          status: Database["public"]["Enums"]["case_status"]
+          updated_at: string
+        }
+        Insert: {
+          ancestry?: Json | null
+          client_code?: string | null
+          client_name: string
+          country?: string | null
+          created_at?: string
+          dropbox_folder_id?: string | null
+          dropbox_path: string
+          generation?: Database["public"]["Enums"]["case_generation"] | null
+          id?: string
+          is_vip?: boolean | null
+          last_synced_at?: string | null
+          metadata?: Json | null
+          notes?: string | null
+          progress?: number | null
+          start_date?: string | null
+          status?: Database["public"]["Enums"]["case_status"]
+          updated_at?: string
+        }
+        Update: {
+          ancestry?: Json | null
+          client_code?: string | null
+          client_name?: string
+          country?: string | null
+          created_at?: string
+          dropbox_folder_id?: string | null
+          dropbox_path?: string
+          generation?: Database["public"]["Enums"]["case_generation"] | null
+          id?: string
+          is_vip?: boolean | null
+          last_synced_at?: string | null
+          metadata?: Json | null
+          notes?: string | null
+          progress?: number | null
+          start_date?: string | null
+          status?: Database["public"]["Enums"]["case_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      contact_submissions: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      documents: {
+        Row: {
+          case_id: string
+          category: string | null
+          created_at: string
+          dropbox_file_id: string | null
+          dropbox_path: string
+          file_extension: string | null
+          file_size: number | null
+          id: string
+          is_translated: boolean | null
+          is_verified: boolean | null
+          metadata: Json | null
+          name: string
+          translation_required: boolean | null
+          type: string | null
+          updated_at: string
+        }
+        Insert: {
+          case_id: string
+          category?: string | null
+          created_at?: string
+          dropbox_file_id?: string | null
+          dropbox_path: string
+          file_extension?: string | null
+          file_size?: number | null
+          id?: string
+          is_translated?: boolean | null
+          is_verified?: boolean | null
+          metadata?: Json | null
+          name: string
+          translation_required?: boolean | null
+          type?: string | null
+          updated_at?: string
+        }
+        Update: {
+          case_id?: string
+          category?: string | null
+          created_at?: string
+          dropbox_file_id?: string | null
+          dropbox_path?: string
+          file_extension?: string | null
+          file_size?: number | null
+          id?: string
+          is_translated?: boolean | null
+          is_verified?: boolean | null
+          metadata?: Json | null
+          name?: string
+          translation_required?: boolean | null
+          type?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "documents_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sync_logs: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          id: string
+          items_failed: number | null
+          items_processed: number | null
+          metadata: Json | null
+          status: string
+          sync_type: string
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          items_failed?: number | null
+          items_processed?: number | null
+          metadata?: Json | null
+          status: string
+          sync_type: string
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          items_failed?: number | null
+          items_processed?: number | null
+          metadata?: Json | null
+          status?: string
+          sync_type?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +207,25 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      case_generation:
+        | "third"
+        | "fourth"
+        | "fifth"
+        | "ten"
+        | "global"
+        | "vip"
+        | "work"
+        | "other"
+      case_status:
+        | "lead"
+        | "active"
+        | "on_hold"
+        | "finished"
+        | "failed"
+        | "suspended"
+        | "bad"
+        | "name_change"
+        | "other"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +352,28 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      case_generation: [
+        "third",
+        "fourth",
+        "fifth",
+        "ten",
+        "global",
+        "vip",
+        "work",
+        "other",
+      ],
+      case_status: [
+        "lead",
+        "active",
+        "on_hold",
+        "finished",
+        "failed",
+        "suspended",
+        "bad",
+        "name_change",
+        "other",
+      ],
+    },
   },
 } as const
