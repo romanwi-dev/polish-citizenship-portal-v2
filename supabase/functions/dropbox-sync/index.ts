@@ -173,6 +173,19 @@ serve(async (req) => {
     let processedCount = 0;
     let failedCount = 0;
 
+    // Only process active case folders (skip finished, failed, leads, etc.)
+    const activeFolders = [
+      "###BAD CASES",
+      "###ON HOLD",
+      "###SUSPENDED",
+      "3. THIRD",
+      "4. FOURTH",
+      "5. FIFTH",
+      "10. TEN",
+      "GLOBAL",
+      "V I P"
+    ];
+
     // List classification folders in /CASES
     const classificationFolders = await listDropboxFolder(
       currentAccessToken!,
@@ -185,6 +198,16 @@ serve(async (req) => {
 
     for (const classFolder of classificationFolders) {
       if (classFolder[".tag"] !== "folder") continue;
+
+      // Skip folders that are not in the active list
+      const isActiveFolder = activeFolders.some(activeFolder => 
+        classFolder.name.toUpperCase().includes(activeFolder.toUpperCase())
+      );
+      
+      if (!isActiveFolder) {
+        console.log(`Skipping inactive folder: ${classFolder.name}`);
+        continue;
+      }
 
       const classification = parseClassification(classFolder.name);
       console.log(`Processing ${classFolder.name} (${classification.status})`);
