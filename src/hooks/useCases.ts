@@ -34,10 +34,16 @@ export const useCases = () => {
         throw error;
       }
       
-      return data as CaseData[];
+      // Deduplicate by ID in case the RPC returns duplicates
+      const uniqueData = Array.from(
+        new Map((data || []).map((item: CaseData) => [item.id, item])).values()
+      );
+      
+      return uniqueData as CaseData[];
     },
-    staleTime: 30000, // Cache for 30 seconds
-    refetchOnWindowFocus: true,
+    staleTime: 0, // Always refetch to ensure fresh data
+    refetchOnWindowFocus: false, // Prevent automatic refetch on focus
+    refetchOnMount: true,
   });
 };
 
