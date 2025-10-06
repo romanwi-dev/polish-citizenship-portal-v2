@@ -226,28 +226,29 @@ const Cases = () => {
           </div>
 
           {/* Carousel */}
-          <Carousel
-            opts={{
-              align: "start",
-              loop: false,
-              dragFree: true,
-              containScroll: "trimSnaps",
-            }}
-            setApi={setApi}
-            className="w-full max-w-7xl mx-auto cursor-grab active:cursor-grabbing"
-          >
+          <div className="relative z-20">
+            <Carousel
+              opts={{
+                align: "start",
+                loop: false,
+                dragFree: true,
+                containScroll: "trimSnaps",
+              }}
+              setApi={setApi}
+              className="w-full max-w-7xl mx-auto cursor-grab active:cursor-grabbing"
+            >
             <CarouselContent className="-ml-4">
               {mockCases.map((clientCase, index) => {
                 const isFlipped = flippedCard === clientCase.id;
                 const isCenterCard = index === currentIndex;
                 
                 return (
-                  <CarouselItem key={clientCase.id} className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3 relative z-10 hover:z-50">
+                  <CarouselItem key={clientCase.id} className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
                     {/* Flippable Card Container with hover effects */}
                     <motion.div
-                      whileHover={{ scale: 1.03, y: -5, zIndex: 50 }}
+                      whileHover={{ scale: 1.03, y: -5 }}
                       transition={{ duration: 0.3 }}
-                      className="glass-card p-6 rounded-lg hover-glow group h-[500px] transition-all duration-700 relative"
+                      className="glass-card p-6 rounded-lg hover-glow group h-[500px] transition-all duration-700 relative z-30"
                       style={{
                         transformStyle: 'preserve-3d',
                         transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
@@ -420,7 +421,8 @@ const Cases = () => {
             </CarouselContent>
             <CarouselPrevious className="glass-card hover-glow -left-4 md:-left-12" />
             <CarouselNext className="glass-card hover-glow -right-4 md:-right-12" />
-          </Carousel>
+            </Carousel>
+          </div>
         </div>
       </section>
 
