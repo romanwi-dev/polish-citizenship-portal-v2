@@ -161,7 +161,11 @@ export default function CasesManagement() {
         return matchesSearch && matchesStatus && matchesProcessingMode && matchesScore && matchesProgress && matchesAge;
       })
       .sort((a, b) => {
-        // Bad status cases always go to the bottom
+        // Other status cases go to the very bottom
+        if (a.status === 'other' && b.status !== 'other') return 1;
+        if (a.status !== 'other' && b.status === 'other') return -1;
+        
+        // Bad status cases go above other, but below everything else
         if (a.status === 'bad' && b.status !== 'bad') return 1;
         if (a.status !== 'bad' && b.status === 'bad') return -1;
         
