@@ -62,11 +62,11 @@ const Navigation = () => {
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Button
-                    onClick={() => scrollToSection('process')}
+                    onClick={() => scrollToSection('timeline')}
                     variant="ghost"
                     className="w-full justify-start text-base font-medium rounded-md hover:bg-primary/10 transition-colors"
                   >
-                    Process
+                    Timeline
                   </Button>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
