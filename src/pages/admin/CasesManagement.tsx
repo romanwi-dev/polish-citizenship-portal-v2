@@ -6,7 +6,31 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Search, FileText, CheckCircle, Clock, AlertTriangle } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { 
+  Plus, 
+  Search, 
+  FileText, 
+  CheckCircle, 
+  Clock, 
+  AlertTriangle,
+  MoreVertical,
+  Copy,
+  Download,
+  Pause,
+  Ban,
+  XCircle,
+  Archive,
+  Trash2,
+  Eye,
+  Settings
+} from "lucide-react";
 import { toast } from "sonner";
 
 interface Case {
@@ -57,6 +81,95 @@ export default function CasesManagement() {
       toast.error("Failed to load cases");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleCopyId = (caseId: string) => {
+    navigator.clipboard.writeText(caseId);
+    toast.success("Case ID copied to clipboard");
+  };
+
+  const handleExport = async (caseId: string) => {
+    toast.info("Exporting case data...");
+    // TODO: Implement export functionality
+  };
+
+  const handlePostpone = async (caseId: string) => {
+    try {
+      const { error } = await supabase
+        .from("cases")
+        .update({ status: "on_hold" })
+        .eq("id", caseId);
+      
+      if (error) throw error;
+      toast.success("Case postponed");
+      loadCases();
+    } catch (error) {
+      toast.error("Failed to postpone case");
+    }
+  };
+
+  const handleSuspend = async (caseId: string) => {
+    try {
+      const { error } = await supabase
+        .from("cases")
+        .update({ status: "suspended" })
+        .eq("id", caseId);
+      
+      if (error) throw error;
+      toast.success("Case suspended");
+      loadCases();
+    } catch (error) {
+      toast.error("Failed to suspend case");
+    }
+  };
+
+  const handleCancel = async (caseId: string) => {
+    try {
+      const { error } = await supabase
+        .from("cases")
+        .update({ status: "failed" })
+        .eq("id", caseId);
+      
+      if (error) throw error;
+      toast.success("Case cancelled");
+      loadCases();
+    } catch (error) {
+      toast.error("Failed to cancel case");
+    }
+  };
+
+  const handleArchive = async (caseId: string) => {
+    try {
+      const { error } = await supabase
+        .from("cases")
+        .update({ status: "finished" })
+        .eq("id", caseId);
+      
+      if (error) throw error;
+      toast.success("Case archived");
+      loadCases();
+    } catch (error) {
+      toast.error("Failed to archive case");
+    }
+  };
+
+  const handleDelete = async (caseId: string) => {
+    if (!confirm("Are you sure you want to delete this case? This action cannot be undone.")) {
+      return;
+    }
+    
+    try {
+      const { error } = await supabase
+        .from("cases")
+        .delete()
+        .eq("id", caseId);
+      
+      if (error) throw error;
+      toast.success("Case deleted");
+      loadCases();
+    } catch (error) {
+      toast.error("Failed to delete case");
     }
   };
 
@@ -120,11 +233,13 @@ export default function CasesManagement() {
           {filteredCases.map((caseItem) => (
             <Card
               key={caseItem.id}
-              className="p-6 hover-glow cursor-pointer transition-all"
-              onClick={() => navigate(`/admin/cases/${caseItem.id}`)}
+              className="p-6 hover-glow transition-all"
             >
               <div className="flex items-start justify-between">
-                <div className="flex-1">
+                <div 
+                  className="flex-1 cursor-pointer"
+                  onClick={() => navigate(`/admin/cases/${caseItem.id}`)}
+                >
                   <div className="flex items-center gap-3 mb-2">
                     <h3 className="text-lg font-semibold">{caseItem.client_name}</h3>
                     {caseItem.client_code && (
@@ -135,7 +250,7 @@ export default function CasesManagement() {
                     </Badge>
                   </div>
                   
-                  <div className="flex items-center gap-6 text-sm text-muted-foreground">
+                  <div className="flex items-center gap-6 text-sm text-muted-foreground mb-3">
                     <span className="flex items-center gap-1">
                       <FileText className="h-4 w-4" />
                       Docs: {caseItem.kpi_docs_percentage}%
@@ -149,19 +264,115 @@ export default function CasesManagement() {
                       Progress: {caseItem.progress}%
                     </span>
                   </div>
-                </div>
 
-                <div className="flex flex-col items-end gap-2">
-                  <div className="w-32 h-2 bg-muted rounded-full overflow-hidden">
+                  <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
                     <div
                       className="h-full bg-primary transition-all"
                       style={{ width: `${caseItem.progress}%` }}
                     />
                   </div>
-                  <span className="text-xs text-muted-foreground">
-                    {caseItem.country || "Poland"}
-                  </span>
                 </div>
+
+                {/* Dropdown Menu */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon" onClick={(e) => e.stopPropagation()}>
+                      <MoreVertical className="h-5 w-5" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48 bg-card z-50">
+                    <DropdownMenuItem onClick={(e) => {
+                      e.stopPropagation();
+                      handleCopyId(caseItem.id);
+                    }}>
+                      <Copy className="h-4 w-4 mr-2" />
+                      Copy ID
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={(e) => {
+                      e.stopPropagation();
+                      handleExport(caseItem.id);
+                    }}>
+                      <Download className="h-4 w-4 mr-2" />
+                      Export
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={(e) => {
+                      e.stopPropagation();
+                      handlePostpone(caseItem.id);
+                    }}>
+                      <Pause className="h-4 w-4 mr-2" />
+                      Postpone
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={(e) => {
+                      e.stopPropagation();
+                      handleSuspend(caseItem.id);
+                    }}>
+                      <Ban className="h-4 w-4 mr-2" />
+                      Suspend
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={(e) => {
+                      e.stopPropagation();
+                      handleCancel(caseItem.id);
+                    }}>
+                      <XCircle className="h-4 w-4 mr-2" />
+                      Cancel
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={(e) => {
+                      e.stopPropagation();
+                      handleArchive(caseItem.id);
+                    }}>
+                      <Archive className="h-4 w-4 mr-2" />
+                      Archive
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(caseItem.id);
+                      }}
+                      className="text-destructive focus:text-destructive"
+                    >
+                      <Trash2 className="h-4 w-4 mr-2" />
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center gap-2 mt-4">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/admin/cases/${caseItem.id}`);
+                  }}
+                >
+                  <Eye className="h-4 w-4 mr-2" />
+                  View
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/admin/cases/${caseItem.id}`);
+                  }}
+                >
+                  <Settings className="h-4 w-4 mr-2" />
+                  Control Room
+                </Button>
+                <Button
+                  size="sm"
+                  className="bg-green-600 hover:bg-green-700"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/admin/cases/${caseItem.id}?tab=oby`);
+                  }}
+                >
+                  <FileText className="h-4 w-4 mr-2" />
+                  Draft OBY
+                </Button>
               </div>
             </Card>
           ))}
