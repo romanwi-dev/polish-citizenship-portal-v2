@@ -378,7 +378,7 @@ export default function TimelineProcessEnhanced() {
           viewport={{ once: true }}
           className="mt-16 glass-card p-8 rounded-lg max-w-3xl mx-auto"
         >
-          <div className="flex items-start gap-4 mb-4">
+          <div className="flex items-center gap-4 mb-4">
             <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
               <Shield className="w-6 h-6 text-primary" />
             </div>
