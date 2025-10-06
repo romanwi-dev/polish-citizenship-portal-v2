@@ -140,8 +140,8 @@ export default function CaseDetail() {
 
         {/* Tabs */}
         <Tabs defaultValue={defaultTab} className="space-y-6">
-          <ScrollArea className="w-full whitespace-nowrap pb-4">
-            <TabsList className="inline-flex gap-3 bg-transparent h-auto p-0 md:w-full md:justify-between">
+          <div className="w-full overflow-x-auto pb-4">
+            <TabsList className="inline-flex gap-3 bg-transparent h-auto p-0 w-max">
               <TabsTrigger 
                 value="overview"
                 className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 data-[state=active]:bg-white/10 flex-shrink-0 md:flex-1"
@@ -206,7 +206,7 @@ export default function CaseDetail() {
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               </TabsTrigger>
             </TabsList>
-          </ScrollArea>
+          </div>
 
           {/* OVERVIEW TAB - Finalized from Replit */}
           <TabsContent value="overview" className="space-y-6">
