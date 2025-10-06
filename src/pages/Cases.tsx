@@ -178,7 +178,7 @@ const Cases = () => {
       </div>
       
       {/* Content */}
-      <section className="pt-24 md:pt-32 pb-20 relative">
+      <section className="relative py-32 overflow-hidden">
         <div className="container px-4 mx-auto">
           {/* Header */}
           <motion.div
