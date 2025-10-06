@@ -279,7 +279,7 @@ export default function TimelineProcessEnhanced() {
                     >
                       <div className="flex flex-col gap-3 h-full">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className={`text-xs font-bold px-2 py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
+                          <span className={`text-base md:text-xs font-bold px-3 py-1.5 md:px-2 md:py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
                             {step.number}
                           </span>
                           <span className="text-xs text-muted-foreground">{step.duration}</span>
@@ -325,7 +325,7 @@ export default function TimelineProcessEnhanced() {
                     >
                       <div className="flex flex-col gap-3 h-full">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className={`text-xs font-bold px-2 py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
+                          <span className={`text-base md:text-xs font-bold px-3 py-1.5 md:px-2 md:py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
                             {step.number}
                           </span>
                           <span className="text-xs text-primary/60">Details</span>
