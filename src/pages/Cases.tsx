@@ -223,19 +223,23 @@ const Cases = () => {
                       scale: { duration: 0.3 },
                       rotateY: { duration: 0.7 }
                     }}
-                    className="glass-card p-6 rounded-lg h-[520px] hover-glow group relative cursor-pointer"
+                    className="glass-card rounded-lg h-[520px] hover-glow group relative cursor-pointer"
                     style={{
                       transformStyle: 'preserve-3d',
                     }}
-                    onClick={() => setFlippedCard(isFlipped ? null : clientCase.id)}
-                    onDoubleClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setFlippedCard(isFlipped ? null : clientCase.id);
+                    }}
+                    onDoubleClick={(e) => {
+                      e.stopPropagation();
                       setFullscreenCase(clientCase);
                       setFlippedCard(null);
                     }}
                   >
                     {/* Front of Card */}
                     <div
-                      className="absolute inset-0 w-full h-full p-6 rounded-lg"
+                      className="absolute inset-0 w-full h-full p-6 rounded-lg bg-gradient-to-br from-background to-background/80"
                       style={{
                         backfaceVisibility: 'hidden',
                         WebkitBackfaceVisibility: 'hidden',
@@ -318,7 +322,7 @@ const Cases = () => {
 
                     {/* Back of Card */}
                     <div
-                      className="absolute inset-0 w-full h-full p-6 rounded-lg"
+                      className="absolute inset-0 w-full h-full p-6 rounded-lg bg-gradient-to-br from-primary/10 to-secondary/10 backdrop-blur-sm"
                       style={{
                         backfaceVisibility: 'hidden',
                         WebkitBackfaceVisibility: 'hidden',
@@ -326,62 +330,78 @@ const Cases = () => {
                       }}
                     >
                       <div className="h-full flex flex-col">
-                        <h3 className="text-xl font-bold mb-6 text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                          Additional Details
+                        <h3 className="text-2xl font-bold mb-6 text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                          Case Details
                         </h3>
                         
                         <div className="space-y-4 flex-1">
-                          <div className="p-4 rounded-lg bg-background/50 backdrop-blur-sm">
-                            <p className="text-xs text-muted-foreground mb-1">Case Number</p>
-                            <p className="font-bold text-lg">#{clientCase.id.toString().padStart(6, '0')}</p>
+                          <div className="p-4 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
+                            <p className="text-xs text-muted-foreground mb-1">Case Reference</p>
+                            <p className="font-bold text-xl text-primary">#{clientCase.id.toString().padStart(6, '0')}</p>
                           </div>
 
-                          <div className="p-4 rounded-lg bg-background/50 backdrop-blur-sm">
-                            <p className="text-xs text-muted-foreground mb-2">Application Timeline</p>
+                          <div className="p-4 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
+                            <p className="text-xs text-muted-foreground mb-3">Timeline Details</p>
                             <div className="space-y-2">
-                              <div className="flex justify-between items-center">
-                                <span className="text-sm">Start Date</span>
-                                <span className="text-sm font-medium">{new Date(clientCase.startDate).toLocaleDateString()}</span>
+                              <div className="flex justify-between items-center py-1 border-b border-border/30">
+                                <span className="text-sm flex items-center gap-2">
+                                  <Calendar className="w-3 h-3 text-primary" />
+                                  Started
+                                </span>
+                                <span className="text-sm font-bold">{new Date(clientCase.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                               </div>
-                              <div className="flex justify-between items-center">
-                                <span className="text-sm">Duration</span>
-                                <span className="text-sm font-medium">
+                              <div className="flex justify-between items-center py-1 border-b border-border/30">
+                                <span className="text-sm flex items-center gap-2">
+                                  <Clock className="w-3 h-3 text-secondary" />
+                                  Days Active
+                                </span>
+                                <span className="text-sm font-bold">
                                   {Math.floor((Date.now() - new Date(clientCase.startDate).getTime()) / (1000 * 60 * 60 * 24))} days
                                 </span>
                               </div>
-                            </div>
-                          </div>
-
-                          <div className="p-4 rounded-lg bg-background/50 backdrop-blur-sm">
-                            <p className="text-xs text-muted-foreground mb-2">Document Collection</p>
-                            <div className="space-y-2">
-                              <div className="flex justify-between items-center">
-                                <span className="text-sm">Total Files</span>
-                                <span className="text-sm font-medium">{clientCase.documents}</span>
-                              </div>
-                              <div className="flex justify-between items-center">
-                                <span className="text-sm">Completion</span>
-                                <span className="text-sm font-medium">{clientCase.progress}%</span>
+                              <div className="flex justify-between items-center py-1">
+                                <span className="text-sm flex items-center gap-2">
+                                  <TrendingUp className="w-3 h-3 text-accent" />
+                                  Completion
+                                </span>
+                                <span className="text-sm font-bold text-primary">{clientCase.progress}%</span>
                               </div>
                             </div>
                           </div>
 
-                          <div className="p-4 rounded-lg bg-background/50 backdrop-blur-sm">
-                            <p className="text-xs text-muted-foreground mb-1">Residing In</p>
-                            <p className="font-medium">{clientCase.country}</p>
+                          <div className="p-4 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
+                            <p className="text-xs text-muted-foreground mb-3">Documents Status</p>
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <FileText className="w-5 h-5 text-accent" />
+                                <span className="text-sm">Total Submitted</span>
+                              </div>
+                              <span className="text-2xl font-bold text-primary">{clientCase.documents}</span>
+                            </div>
+                          </div>
+
+                          <div className="p-4 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
+                            <p className="text-xs text-muted-foreground mb-1">Current Location</p>
+                            <div className="flex items-center gap-2">
+                              <MapPin className="w-4 h-4 text-secondary" />
+                              <p className="font-bold text-lg">{clientCase.country}</p>
+                            </div>
                           </div>
 
                           {clientCase.status === "completed" && (
-                            <div className="p-3 rounded-lg bg-green-500/10 border border-green-500/30">
-                              <div className="flex items-center justify-center gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-green-400" />
-                                <span className="text-sm font-medium text-green-400">Citizenship Granted</span>
+                            <div className="p-4 rounded-lg bg-green-500/20 border border-green-500/40">
+                              <div className="flex items-center gap-3">
+                                <CheckCircle2 className="w-6 h-6 text-green-400" />
+                                <div>
+                                  <p className="font-bold text-green-400">Application Approved</p>
+                                  <p className="text-xs text-green-400/80">Polish Citizenship Confirmed</p>
+                                </div>
                               </div>
                             </div>
                           )}
                         </div>
 
-                        <div className="text-center text-xs text-muted-foreground">
+                        <div className="text-center text-xs text-muted-foreground mt-4 pt-4 border-t border-border/30">
                           Click to flip back • Double-click for fullscreen
                         </div>
                       </div>
