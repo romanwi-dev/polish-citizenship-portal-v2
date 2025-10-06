@@ -190,7 +190,7 @@ All colors MUST be HSL.
   }
 
   .backface-hidden {
-    backfaceVisibility: hidden;
+    backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
   }
 
