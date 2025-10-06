@@ -259,7 +259,7 @@ export default function CasesManagement() {
                   className="flex-1 cursor-pointer"
                   onClick={() => navigate(`/admin/cases/${caseItem.id}`)}
                 >
-                  <div className="flex items-center gap-3 mb-2">
+                  <div className="flex items-center gap-3 mb-2 flex-wrap">
                     <h3 className="text-lg font-semibold text-foreground">{caseItem.client_name}</h3>
                     {caseItem.client_code && (
                       <Badge variant="outline">{caseItem.client_code}</Badge>
@@ -267,6 +267,18 @@ export default function CasesManagement() {
                     <Badge className="bg-primary">
                       {caseItem.status.replace("_", " ").toUpperCase()}
                     </Badge>
+                    {caseItem.processing_mode && (
+                      <Badge 
+                        variant={
+                          caseItem.processing_mode === 'vip_plus' ? 'vipPlus' :
+                          caseItem.processing_mode === 'vip' ? 'vip' :
+                          caseItem.processing_mode === 'expedited' ? 'expedited' :
+                          'standard'
+                        }
+                      >
+                        {caseItem.processing_mode === 'vip_plus' ? 'VIP+' : caseItem.processing_mode.toUpperCase()}
+                      </Badge>
+                    )}
                   </div>
                   
                   <div className="flex items-center gap-6 text-sm text-muted-foreground mb-3">
