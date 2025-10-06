@@ -1,12 +1,36 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { RefreshCw, Database, CheckCircle2, AlertCircle } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 export const DropboxSync = () => {
   const [isSyncing, setIsSyncing] = useState(false);
   const [lastSync, setLastSync] = useState<Date | null>(null);
+
+  // Load last sync time from database on mount
+  useEffect(() => {
+    const loadLastSync = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("sync_logs")
+          .select("created_at")
+          .eq("status", "completed")
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+        if (data && !error) {
+          setLastSync(new Date(data.created_at));
+        }
+      } catch (error) {
+        console.error("Error loading last sync:", error);
+      }
+    };
+
+    loadLastSync();
+  }, []);
 
   const handleSync = async () => {
     setIsSyncing(true);
