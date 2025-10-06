@@ -140,52 +140,75 @@ export default function CaseDetail() {
 
         {/* Tabs */}
         <Tabs defaultValue={defaultTab} className="space-y-6">
-          <ScrollArea className="w-full">
-            <TabsList className="inline-flex h-12 items-center justify-start bg-transparent border-b border-border w-full">
-              <TabsTrigger 
-                value="overview"
-                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-md px-6"
-              >
-                Overview
-              </TabsTrigger>
-              <TabsTrigger 
-                value="stage"
-                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-md px-6"
-              >
-                Stage
-              </TabsTrigger>
-              <TabsTrigger 
-                value="documents"
-                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-md px-6"
-              >
-                Documents
-              </TabsTrigger>
-              <TabsTrigger 
-                value="payments"
-                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-md px-6"
-              >
-                Payments
-              </TabsTrigger>
-              <TabsTrigger 
-                value="tasks"
-                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-md px-6"
-              >
-                Tasks
-              </TabsTrigger>
-              <TabsTrigger 
-                value="authority"
-                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-md px-6"
-              >
-                Authority
-              </TabsTrigger>
-              <TabsTrigger 
-                value="tree"
-                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-md px-6"
-              >
-                Tree
-              </TabsTrigger>
-            </TabsList>
-          </ScrollArea>
+          <div className="relative -mx-6 px-6">
+            <ScrollArea className="w-full whitespace-nowrap">
+              <div className="flex gap-3 pb-4">
+                <TabsTrigger 
+                  value="overview"
+                  className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 data-[state=active]:bg-white/10 flex-shrink-0"
+                >
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                    Overview
+                  </span>
+                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="stage"
+                  className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 data-[state=active]:bg-white/10 flex-shrink-0"
+                >
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                    Stage
+                  </span>
+                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="documents"
+                  className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 data-[state=active]:bg-white/10 flex-shrink-0"
+                >
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                    Documents
+                  </span>
+                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="payments"
+                  className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 data-[state=active]:bg-white/10 flex-shrink-0"
+                >
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                    Payments
+                  </span>
+                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="tasks"
+                  className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 data-[state=active]:bg-white/10 flex-shrink-0"
+                >
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                    Tasks
+                  </span>
+                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="authority"
+                  className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 data-[state=active]:bg-white/10 flex-shrink-0"
+                >
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                    Authority
+                  </span>
+                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="tree"
+                  className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 data-[state=active]:bg-white/10 flex-shrink-0"
+                >
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                    Tree
+                  </span>
+                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </TabsTrigger>
+              </div>
+            </ScrollArea>
+          </div>
 
           {/* OVERVIEW TAB - Finalized from Replit */}
           <TabsContent value="overview" className="space-y-6">
