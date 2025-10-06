@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Edit, MoreVertical, Copy, Pause, Ban, Archive, Trash2, Eye, Radio, FileEdit } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { STATUS_COLORS } from "@/lib/constants";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,18 +20,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-
-const statusColorMap: Record<string, string> = {
-  active: "bg-primary/20 text-primary border-primary/30",
-  lead: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  on_hold: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
-  finished: "bg-green-500/20 text-green-400 border-green-500/30",
-  failed: "bg-red-500/20 text-red-400 border-red-500/30",
-  suspended: "bg-muted/20 text-muted-foreground border-muted/30",
-  bad: "bg-red-600/20 text-red-500 border-red-600/30",
-  name_change: "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
-  other: "bg-muted/20 text-muted-foreground border-muted/30",
-};
 
 interface CaseCardProps {
   clientCase: {
@@ -58,7 +47,7 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const getStatusBadge = (status: string) => {
-    return statusColorMap[status] || statusColorMap.other;
+    return STATUS_COLORS[status as keyof typeof STATUS_COLORS] || STATUS_COLORS.other;
   };
 
   const handleClick = () => {
@@ -149,7 +138,7 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
                       <MoreVertical className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-48 bg-popover z-50">
+                  <DropdownMenuContent align="end" className="w-48 bg-popover border border-border z-50">
                     <DropdownMenuItem onClick={handleCopyId}>
                       <Copy className="mr-2 h-4 w-4" />
                       Copy ID

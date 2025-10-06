@@ -28,12 +28,16 @@ import {
   Archive,
   Trash2,
   Eye,
-  Settings
+  Settings,
+  Database
 } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 import { useIsStaff } from "@/hooks/useUserRole";
 import { useCases, useUpdateCaseStatus, useDeleteCase } from "@/hooks/useCases";
+import { LoadingState } from "@/components/LoadingState";
+import { EmptyState } from "@/components/EmptyState";
+import { ErrorState } from "@/components/ErrorState";
 
 export default function CasesManagement() {
   const navigate = useNavigate();
@@ -44,7 +48,7 @@ export default function CasesManagement() {
   const { data: isStaff, isLoading: roleLoading } = useIsStaff(user?.id);
   
   // Data fetching with optimized hooks
-  const { data: cases = [], isLoading: casesLoading } = useCases();
+  const { data: cases = [], isLoading: casesLoading, error, refetch } = useCases();
   const updateStatusMutation = useUpdateCaseStatus();
   const deleteMutation = useDeleteCase();
 
@@ -105,8 +109,32 @@ export default function CasesManagement() {
   if (loading) {
     return (
       <AdminLayout>
+        <LoadingState message="Loading cases..." className="h-screen" />
+      </AdminLayout>
+    );
+  }
+
+  if (!isStaff) {
+    return (
+      <AdminLayout>
         <div className="flex items-center justify-center h-screen">
-          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+          <ErrorState 
+            title="Access Denied"
+            message="You don't have permission to access this page."
+          />
+        </div>
+      </AdminLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <AdminLayout>
+        <div className="p-8">
+          <ErrorState 
+            message="Failed to load cases. Please try again."
+            retry={() => refetch()}
+          />
         </div>
       </AdminLayout>
     );
@@ -138,7 +166,18 @@ export default function CasesManagement() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-4">
+        {filteredCases.length === 0 ? (
+          <EmptyState
+            icon={Database}
+            title={searchTerm ? "No Matching Cases" : "No Cases Found"}
+            description={searchTerm ? "Try adjusting your search term." : "Start by syncing with Dropbox or creating a new case."}
+            action={searchTerm ? undefined : {
+              label: "Refresh",
+              onClick: () => refetch()
+            }}
+          />
+        ) : (
+          <div className="grid grid-cols-1 gap-4">
           {filteredCases.map((caseItem) => (
             <Card
               key={caseItem.id}
@@ -285,14 +324,8 @@ export default function CasesManagement() {
               </div>
             </Card>
           ))}
-
-          {filteredCases.length === 0 && (
-            <div className="text-center py-12">
-              <AlertTriangle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground">No cases found</p>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </AdminLayout>
   );

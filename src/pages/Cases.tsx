@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
-import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Briefcase } from "lucide-react";
+import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Briefcase, Database } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { DropboxSync } from "@/components/DropboxSync";
 import { EditCaseDialog } from "@/components/EditCaseDialog";
 import { CaseCard } from "@/components/CaseCard";
+import { LoadingState } from "@/components/LoadingState";
+import { EmptyState } from "@/components/EmptyState";
+import { ErrorState } from "@/components/ErrorState";
 import { useAuth } from "@/hooks/useAuth";
 import { useCases, useUpdateCaseStatus, useDeleteCase } from "@/hooks/useCases";
+import { STATUS_COLORS } from "@/lib/constants";
 
 interface FullscreenCase {
   id: string;
@@ -23,18 +27,6 @@ interface FullscreenCase {
   document_count: number;
 }
 
-const statusColorMap: Record<string, string> = {
-  active: "bg-primary/20 text-primary border-primary/30",
-  lead: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  on_hold: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
-  finished: "bg-green-500/20 text-green-400 border-green-500/30",
-  failed: "bg-red-500/20 text-red-400 border-red-500/30",
-  suspended: "bg-muted/20 text-muted-foreground border-muted/30",
-  bad: "bg-red-600/20 text-red-500 border-red-600/30",
-  name_change: "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
-  other: "bg-muted/20 text-muted-foreground border-muted/30",
-};
-
 const Cases = () => {
   const [fullscreenCase, setFullscreenCase] = useState<FullscreenCase | null>(null);
   const [editCase, setEditCase] = useState<FullscreenCase | null>(null);
@@ -43,7 +35,7 @@ const Cases = () => {
   const { loading: authLoading } = useAuth(true);
   
   // Use optimized cases hook with caching
-  const { data: cases = [], isLoading, refetch } = useCases();
+  const { data: cases = [], isLoading, error, refetch } = useCases();
   const updateStatusMutation = useUpdateCaseStatus();
   const deleteMutation = useDeleteCase();
 
@@ -62,7 +54,7 @@ const Cases = () => {
   }, [fullscreenCase]);
 
   const getStatusBadge = (status: string) => {
-    return statusColorMap[status] || statusColorMap.other;
+    return STATUS_COLORS[status as keyof typeof STATUS_COLORS] || STATUS_COLORS.other;
   };
 
   const handleUpdateStatus = (caseId: string, status: string) => {
@@ -80,10 +72,7 @@ const Cases = () => {
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center">
-          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-muted-foreground">Verifying authentication...</p>
-        </div>
+        <LoadingState message="Verifying authentication..." />
       </div>
     );
   }
@@ -119,15 +108,23 @@ const Cases = () => {
             <DropboxSync />
           </div>
 
-          {loading ? (
-            <div className="text-center py-12">
-              <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-              <p className="text-muted-foreground">Loading cases...</p>
-            </div>
+          {error ? (
+            <ErrorState 
+              message="Failed to load cases. Please try again."
+              retry={() => refetch()}
+            />
+          ) : loading ? (
+            <LoadingState message="Loading cases..." />
           ) : cases.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-muted-foreground">No cases found. Sync with Dropbox to import cases.</p>
-            </div>
+            <EmptyState
+              icon={Database}
+              title="No Cases Found"
+              description="Sync with Dropbox to import cases or create your first case manually."
+              action={{
+                label: "Refresh",
+                onClick: () => refetch()
+              }}
+            />
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
               {cases.map((clientCase) => (

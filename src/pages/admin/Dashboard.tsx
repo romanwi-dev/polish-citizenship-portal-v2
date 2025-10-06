@@ -6,6 +6,8 @@ import { Users, FileText, CheckSquare, AlertCircle, TrendingUp, Clock } from "lu
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 import { useIsStaff } from "@/hooks/useUserRole";
+import { LoadingState } from "@/components/LoadingState";
+import { ErrorState } from "@/components/ErrorState";
 
 export default function Dashboard() {
   const { user, loading: authLoading } = useAuth(true);
@@ -108,9 +110,7 @@ export default function Dashboard() {
   if (authLoading || roleLoading || loading) {
     return (
       <AdminLayout>
-        <div className="flex items-center justify-center h-screen">
-          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-        </div>
+        <LoadingState message="Loading dashboard..." className="h-screen" />
       </AdminLayout>
     );
   }
@@ -119,14 +119,10 @@ export default function Dashboard() {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center h-screen">
-          <Card className="max-w-md">
-            <CardHeader>
-              <CardTitle className="text-destructive">Access Denied</CardTitle>
-              <CardDescription>
-                You don't have permission to access this page.
-              </CardDescription>
-            </CardHeader>
-          </Card>
+          <ErrorState 
+            title="Access Denied"
+            message="You don't have permission to access this page."
+          />
         </div>
       </AdminLayout>
     );

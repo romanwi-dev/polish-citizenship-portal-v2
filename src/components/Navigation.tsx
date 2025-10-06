@@ -1,19 +1,27 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, User } from "lucide-react";
+import { Menu, User, LogOut } from "lucide-react";
 import logo from "@/assets/logo.png";
+import { useAuth } from "@/hooks/useAuth";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
 const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, signOut } = useAuth(false);
 
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    setIsMobileMenuOpen(false);
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
     setIsMobileMenuOpen(false);
   };
 
@@ -106,10 +114,25 @@ const Navigation = () => {
                     Cases Management
                   </Button>
                 </DropdownMenuItem>
+                {user && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>
+                      <Button
+                        onClick={handleSignOut}
+                        variant="ghost"
+                        className="w-full justify-start text-base font-medium rounded-md hover:bg-destructive/10 text-destructive transition-colors"
+                      >
+                        <LogOut className="w-4 h-4 mr-2" />
+                        Sign Out
+                      </Button>
+                    </DropdownMenuItem>
+                  </>
+                )}
                 <DropdownMenuItem asChild>
                   <Button 
                     onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
-                    className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white rounded-md mt-2"
+                    className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground rounded-md mt-2"
                   >
                     Take Full Test
                   </Button>
