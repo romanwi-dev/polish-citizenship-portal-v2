@@ -28,3 +28,17 @@ export const TASK_STATUS_COLORS = {
   completed: "bg-green-500/20 text-green-400",
   blocked: "bg-red-500/20 text-red-400",
 } as const;
+
+export const PROCESSING_MODE_COLORS = {
+  standard: "bg-muted text-muted-foreground",
+  expedited: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+  vip: "bg-purple-500/20 text-purple-400 border-purple-500/30",
+  vip_plus: "bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-400 border-purple-500/30",
+} as const;
+
+export const PROCESSING_MODE_LABELS = {
+  standard: "Standard",
+  expedited: "Expedited",
+  vip: "VIP",
+  vip_plus: "VIP+",
+} as const;

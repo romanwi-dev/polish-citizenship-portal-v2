@@ -16,6 +16,8 @@ export interface CaseData {
   notes: string | null;
   created_at: string;
   updated_at: string;
+  processing_mode: string;
+  client_score: number;
   document_count: number;
   task_count: number;
   completed_task_count: number;

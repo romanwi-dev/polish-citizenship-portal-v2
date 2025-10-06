@@ -19,6 +19,7 @@ export type Database = {
           ancestry: Json | null
           client_code: string | null
           client_name: string
+          client_score: number | null
           country: string | null
           created_at: string
           current_stage: string | null
@@ -37,6 +38,7 @@ export type Database = {
           notes: string | null
           oby_filed: boolean | null
           poa_approved: boolean | null
+          processing_mode: Database["public"]["Enums"]["processing_mode"] | null
           progress: number | null
           start_date: string | null
           status: Database["public"]["Enums"]["case_status"]
@@ -47,6 +49,7 @@ export type Database = {
           ancestry?: Json | null
           client_code?: string | null
           client_name: string
+          client_score?: number | null
           country?: string | null
           created_at?: string
           current_stage?: string | null
@@ -65,6 +68,9 @@ export type Database = {
           notes?: string | null
           oby_filed?: boolean | null
           poa_approved?: boolean | null
+          processing_mode?:
+            | Database["public"]["Enums"]["processing_mode"]
+            | null
           progress?: number | null
           start_date?: string | null
           status?: Database["public"]["Enums"]["case_status"]
@@ -75,6 +81,7 @@ export type Database = {
           ancestry?: Json | null
           client_code?: string | null
           client_name?: string
+          client_score?: number | null
           country?: string | null
           created_at?: string
           current_stage?: string | null
@@ -93,6 +100,9 @@ export type Database = {
           notes?: string | null
           oby_filed?: boolean | null
           poa_approved?: boolean | null
+          processing_mode?:
+            | Database["public"]["Enums"]["processing_mode"]
+            | null
           progress?: number | null
           start_date?: string | null
           status?: Database["public"]["Enums"]["case_status"]
@@ -851,6 +861,7 @@ export type Database = {
         Returns: {
           client_code: string
           client_name: string
+          client_score: number
           completed_task_count: number
           country: string
           created_at: string
@@ -860,6 +871,7 @@ export type Database = {
           id: string
           is_vip: boolean
           notes: string
+          processing_mode: Database["public"]["Enums"]["processing_mode"]
           progress: number
           start_date: string
           status: Database["public"]["Enums"]["case_status"]
@@ -896,6 +908,7 @@ export type Database = {
         | "bad"
         | "name_change"
         | "other"
+      processing_mode: "standard" | "expedited" | "vip" | "vip_plus"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1045,6 +1058,7 @@ export const Constants = {
         "name_change",
         "other",
       ],
+      processing_mode: ["standard", "expedited", "vip", "vip_plus"],
     },
   },
 } as const

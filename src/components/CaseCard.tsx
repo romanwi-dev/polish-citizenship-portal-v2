@@ -1,14 +1,17 @@
 import { useState, memo } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Edit, MoreVertical, Copy, Pause, Ban, Archive, Trash2, Eye, Radio, FileEdit } from "lucide-react";
+import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Edit, MoreVertical, Copy, Pause, Ban, Archive, Trash2, Eye, Radio, FileEdit, Award, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { STATUS_COLORS } from "@/lib/constants";
+import { STATUS_COLORS, PROCESSING_MODE_COLORS, PROCESSING_MODE_LABELS } from "@/lib/constants";
+import { useUpdateProcessingMode } from "@/hooks/useCaseMutations";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
 import {
   AlertDialog,
@@ -35,6 +38,8 @@ interface CaseCardProps {
     dropbox_path: string;
     notes: string | null;
     document_count: number;
+    processing_mode: string;
+    client_score: number;
   };
   onEdit: (clientCase: any) => void;
   onDelete: (id: string) => void;
@@ -45,6 +50,7 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
   const navigate = useNavigate();
   const [isFlipped, setIsFlipped] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const updateProcessingMode = useUpdateProcessingMode();
 
   const getStatusBadge = (status: string) => {
     return STATUS_COLORS[status as keyof typeof STATUS_COLORS] || STATUS_COLORS.other;
@@ -98,6 +104,22 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
   const confirmDelete = () => {
     onDelete(clientCase.id);
     setShowDeleteDialog(false);
+  };
+
+  const handleProcessingModeChange = (mode: string) => {
+    updateProcessingMode.mutate({ caseId: clientCase.id, processingMode: mode });
+  };
+
+  const getProcessingModeIcon = () => {
+    switch (clientCase.processing_mode) {
+      case "expedited":
+        return <Zap className="w-3 h-3" />;
+      case "vip":
+      case "vip_plus":
+        return <Award className="w-3 h-3" />;
+      default:
+        return null;
+    }
   };
 
   return (
@@ -171,6 +193,37 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
                   VIP
                 </span>
               )}
+              
+              {/* Processing Mode Badge with Dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                  <span className={`px-3 py-1 rounded-full text-xs font-medium border cursor-pointer hover:opacity-80 transition-opacity flex items-center gap-1 ${
+                    PROCESSING_MODE_COLORS[clientCase.processing_mode as keyof typeof PROCESSING_MODE_COLORS]
+                  }`}>
+                    {getProcessingModeIcon()}
+                    {PROCESSING_MODE_LABELS[clientCase.processing_mode as keyof typeof PROCESSING_MODE_LABELS]}
+                  </span>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-40 bg-popover border border-border z-50">
+                  <DropdownMenuLabel>Processing Mode</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleProcessingModeChange('standard'); }}>
+                    Standard
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleProcessingModeChange('expedited'); }}>
+                    <Zap className="mr-2 h-3 w-3" />
+                    Expedited
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleProcessingModeChange('vip'); }}>
+                    <Award className="mr-2 h-3 w-3" />
+                    VIP
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleProcessingModeChange('vip_plus'); }}>
+                    <Award className="mr-2 h-3 w-3" />
+                    VIP+
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
 
