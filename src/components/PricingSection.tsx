@@ -92,7 +92,7 @@ const PricingSection = () => {
 
             {/* Expedited - Most Popular */}
             <div className="glass-card p-8 rounded-3xl hover-glow relative border-2 border-primary/50">
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-primary to-secondary text-white text-sm font-semibold whitespace-nowrap">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-primary to-secondary text-white text-sm font-semibold whitespace-nowrap min-w-[120px] text-center">
                 Most Popular
               </div>
               
@@ -156,7 +156,7 @@ const PricingSection = () => {
 
             {/* VIP */}
             <div className="glass-card p-8 rounded-3xl hover-glow relative">
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-accent/80 to-primary/80 text-white text-sm font-semibold whitespace-nowrap">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-accent/80 to-primary/80 text-white text-sm font-semibold whitespace-nowrap min-w-[120px] text-center">
                 Waitlist...
               </div>
               
