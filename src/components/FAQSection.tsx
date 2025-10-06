@@ -168,17 +168,18 @@ const FAQSection = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-12 space-y-4">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-6">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16">
               <HelpCircle className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium">FAQ</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold">
+            <h2 className="text-4xl md:text-5xl font-bold mb-14">
               Find Answers{" "}
               <span className="bg-gradient-to-r from-primary via-purple-400 to-primary bg-clip-text text-transparent">
                 Instantly
               </span>
             </h2>
+            <div className="mb-16" />
           </div>
 
           {/* Search Bar */}

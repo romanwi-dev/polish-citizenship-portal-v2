@@ -203,7 +203,7 @@ export default function TimelineProcessEnhanced() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-20"
+          className="text-center mb-16"
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16">
             <Clock className="w-4 h-4 text-primary" />

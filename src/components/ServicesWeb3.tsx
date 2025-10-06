@@ -46,7 +46,7 @@ const ServicesWeb3 = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
       
       <div className="container px-4 mx-auto relative z-10">
-        <div className="text-center mb-20">
+        <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16">
             <Zap className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium">Next-Gen Services</span>
