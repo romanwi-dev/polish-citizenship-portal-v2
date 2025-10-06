@@ -216,12 +216,16 @@ const Cases = () => {
                 >
                   <motion.div
                     whileHover={{ scale: 1.03, y: -5 }}
-                    transition={{ duration: 0.3 }}
+                    animate={{ 
+                      rotateY: isFlipped ? 180 : 0 
+                    }}
+                    transition={{ 
+                      scale: { duration: 0.3 },
+                      rotateY: { duration: 0.7 }
+                    }}
                     className="glass-card p-6 rounded-lg h-[520px] hover-glow group relative cursor-pointer"
                     style={{
                       transformStyle: 'preserve-3d',
-                      transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
-                      transition: 'transform 0.7s',
                     }}
                     onClick={() => setFlippedCard(isFlipped ? null : clientCase.id)}
                     onDoubleClick={() => {
