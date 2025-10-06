@@ -1,9 +1,11 @@
 import { useState, useEffect, memo } from "react";
-import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Briefcase } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Briefcase, Edit } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { DropboxSync } from "@/components/DropboxSync";
+import { EditCaseDialog } from "@/components/EditCaseDialog";
 import { toast } from "sonner";
 
 interface ClientCase {
@@ -19,6 +21,7 @@ interface ClientCase {
   progress: number;
   ancestry: string;
   dropbox_path: string;
+  notes?: string;
 }
 
 const statusColorMap: Record<string, string> = {
@@ -33,7 +36,7 @@ const statusColorMap: Record<string, string> = {
   other: "bg-slate-500/20 text-slate-400 border-slate-500/30",
 };
 
-const CaseCard = memo(({ clientCase, onOpenFullscreen }: { clientCase: ClientCase; onOpenFullscreen: (c: ClientCase) => void }) => {
+const CaseCard = memo(({ clientCase, onOpenFullscreen, onEdit }: { clientCase: ClientCase; onOpenFullscreen: (c: ClientCase) => void; onEdit: (c: ClientCase) => void }) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
   const getStatusBadge = (status: string) => {
@@ -47,6 +50,11 @@ const CaseCard = memo(({ clientCase, onOpenFullscreen }: { clientCase: ClientCas
   const handleDoubleClick = () => {
     onOpenFullscreen(clientCase);
     setIsFlipped(false);
+  };
+
+  const handleEdit = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onEdit(clientCase);
   };
 
   return (
@@ -141,6 +149,16 @@ const CaseCard = memo(({ clientCase, onOpenFullscreen }: { clientCase: ClientCas
               <span className="text-sm font-medium text-green-400">Citizenship Granted</span>
             </div>
           )}
+
+          <Button
+            variant="outline"
+            size="sm"
+            className="w-full mt-auto"
+            onClick={handleEdit}
+          >
+            <Edit className="w-4 h-4 mr-2" />
+            Edit Details
+          </Button>
         </div>
 
         {/* Back of Card */}
@@ -238,9 +256,22 @@ const CaseCard = memo(({ clientCase, onOpenFullscreen }: { clientCase: ClientCas
 CaseCard.displayName = "CaseCard";
 
 const Cases = () => {
+  const navigate = useNavigate();
   const [fullscreenCase, setFullscreenCase] = useState<ClientCase | null>(null);
+  const [editCase, setEditCase] = useState<ClientCase | null>(null);
   const [cases, setCases] = useState<ClientCase[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Check authentication
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        navigate("/login");
+      }
+    };
+    checkAuth();
+  }, [navigate]);
 
   // Load cases from database
   useEffect(() => {
@@ -277,6 +308,7 @@ const Cases = () => {
               documents: count || 0,
               progress: caseData.progress,
               dropbox_path: caseData.dropbox_path,
+              notes: caseData.notes || undefined,
               ancestry: typeof caseData.ancestry === 'object' && caseData.ancestry && caseData.ancestry !== null
                 ? JSON.stringify(caseData.ancestry) 
                 : (typeof caseData.ancestry === 'string' ? caseData.ancestry : "No ancestry info"),
@@ -377,6 +409,7 @@ const Cases = () => {
                   key={clientCase.id}
                   clientCase={clientCase}
                   onOpenFullscreen={setFullscreenCase}
+                  onEdit={setEditCase}
                 />
               ))}
             </div>
@@ -497,6 +530,25 @@ const Cases = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {editCase && (
+        <EditCaseDialog
+          caseData={{
+            id: editCase.id,
+            name: editCase.name,
+            client_code: editCase.client_code,
+            country: editCase.country,
+            status: editCase.status,
+            generation: editCase.generation,
+            is_vip: editCase.is_vip,
+            notes: editCase.notes,
+            progress: editCase.progress,
+          }}
+          open={!!editCase}
+          onOpenChange={(open) => !open && setEditCase(null)}
+          onUpdate={loadCases}
+        />
       )}
     </div>
   );
