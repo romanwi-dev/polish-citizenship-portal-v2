@@ -198,7 +198,7 @@ export default function ClientOnboardingSection() {
         >
           <Button
             size="lg"
-            className="text-2xl font-bold px-20 py-6 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30"
+            className="text-xl md:text-2xl font-bold px-8 md:px-20 py-6 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 w-full md:w-auto"
             onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU', '_blank')}
           >
             <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
