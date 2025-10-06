@@ -222,11 +222,6 @@ const PricingSection = () => {
               </Button>
             </div>
           </div>
-
-          {/* Note */}
-          <p className="text-center text-sm text-muted-foreground">
-            Due to high demand from USA, UK, Canada, Australia, and South Africa, prices are increasing. We advise not to delay starting your Polish citizenship procedure as capacity is limited.
-          </p>
         </div>
       </div>
     </section>
