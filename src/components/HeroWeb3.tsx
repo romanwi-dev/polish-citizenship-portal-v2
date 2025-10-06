@@ -3,7 +3,7 @@ import { Sparkles } from "lucide-react";
 import { lazy, Suspense, useState, useEffect, useRef } from "react";
 
 // Lazy load 3D component to reduce initial bundle blocking time
-const Hero3DMap = lazy(() => import("./Hero3DMap").then(module => ({ default: module.Hero3DMap })));
+const Hero3DMap = lazy(() => import("./Hero3DMap"));
 
 const HeroWeb3 = () => {
   const [shouldLoadMap, setShouldLoadMap] = useState(false);

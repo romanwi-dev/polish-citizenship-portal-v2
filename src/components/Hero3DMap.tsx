@@ -32,7 +32,7 @@ const MapPlane = memo(function MapPlane() {
   );
 });
 
-export const Hero3DMap = memo(() => {
+const Hero3DMap = memo(() => {
   return (
     <div className="w-full h-full">
       <Canvas 
@@ -61,3 +61,5 @@ export const Hero3DMap = memo(() => {
 });
 
 Hero3DMap.displayName = "Hero3DMap";
+
+export default Hero3DMap;
