@@ -201,13 +201,15 @@ const Cases = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       
+      {/* Background Layer - Completely Separate */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
+        <div className="absolute top-20 left-20 w-72 h-72 md:w-96 md:h-96 bg-primary/20 rounded-full blur-[150px] animate-pulse" />
+        <div className="absolute bottom-20 right-20 w-72 h-72 md:w-96 md:h-96 bg-secondary/20 rounded-full blur-[150px] animate-pulse delay-700" />
+      </div>
+      
       <section className="pt-24 md:pt-32 pb-12 md:pb-20 relative">
-        {/* Background Effects */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background pointer-events-none -z-10" />
-        <div className="absolute top-20 left-20 w-72 h-72 md:w-96 md:h-96 bg-primary/20 rounded-full blur-[150px] animate-pulse pointer-events-none -z-10" />
-        <div className="absolute bottom-20 right-20 w-72 h-72 md:w-96 md:h-96 bg-secondary/20 rounded-full blur-[150px] animate-pulse delay-700 pointer-events-none -z-10" />
-
-        <div className="container px-4 mx-auto relative">
+        <div className="container px-4 mx-auto">
           {/* Header */}
           <div className="text-center mb-8 md:mb-16">
             <div className="inline-block px-4 py-2 rounded-full glass-card mb-4 md:mb-6">
@@ -226,27 +228,26 @@ const Cases = () => {
           </div>
 
           {/* Carousel */}
-          <div className="relative" style={{ isolation: 'isolate' }}>
-            <Carousel
-              opts={{
-                align: "start",
-                loop: false,
-                dragFree: true,
-                containScroll: "trimSnaps",
-              }}
-              setApi={setApi}
-              className="w-full max-w-7xl mx-auto cursor-grab active:cursor-grabbing"
-            >
+          <Carousel
+            opts={{
+              align: "start",
+              loop: false,
+              dragFree: true,
+              containScroll: "trimSnaps",
+            }}
+            setApi={setApi}
+            className="w-full max-w-7xl mx-auto cursor-grab active:cursor-grabbing"
+          >
             <CarouselContent className="-ml-4">
               {mockCases.map((clientCase, index) => {
                 const isFlipped = flippedCard === clientCase.id;
                 const isCenterCard = index === currentIndex;
                 
                 return (
-                  <CarouselItem key={clientCase.id} className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3" style={{ isolation: 'isolate' }}>
+                  <CarouselItem key={clientCase.id} className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
                     {/* Flippable Card Container with hover effects */}
                     <motion.div
-                      whileHover={{ scale: 1.03, y: -5, zIndex: 100 }}
+                      whileHover={{ scale: 1.03, y: -5 }}
                       transition={{ duration: 0.3 }}
                       className="glass-card p-6 rounded-lg hover-glow group h-[500px] transition-all duration-700 relative"
                       style={{
@@ -422,7 +423,6 @@ const Cases = () => {
             <CarouselPrevious className="glass-card hover-glow -left-4 md:-left-12" />
             <CarouselNext className="glass-card hover-glow -right-4 md:-right-12" />
             </Carousel>
-          </div>
         </div>
       </section>
 
