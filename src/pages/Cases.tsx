@@ -235,7 +235,7 @@ const Cases = () => {
             setApi={setApi}
             className="w-full max-w-7xl mx-auto cursor-grab active:cursor-grabbing"
           >
-            <CarouselContent className="-ml-4">
+            <CarouselContent className="-ml-4 relative z-20">
               {mockCases.map((clientCase, index) => {
                 const isFlipped = flippedCard === clientCase.id;
                 const isCenterCard = index === currentIndex;
@@ -244,7 +244,7 @@ const Cases = () => {
                   <CarouselItem key={clientCase.id} className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
                     {/* Flippable Card Container with hover effects */}
                     <div
-                      className="glass-card p-6 rounded-lg hover-glow group h-[500px] transition-all duration-700 relative hover:z-10"
+                      className="glass-card p-6 rounded-lg hover-glow group h-[500px] transition-all duration-700 relative z-10 hover:z-30"
                       style={{
                         transformStyle: 'preserve-3d',
                         transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
