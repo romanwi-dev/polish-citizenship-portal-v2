@@ -37,9 +37,10 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
             <Button
               variant="outline"
               className={cn(
-                "w-full h-16 justify-start text-left font-medium border-2 hover-glow bg-card/50 backdrop-blur text-2xl",
+                "w-full h-16 justify-start text-left border-2 hover-glow bg-card/50 backdrop-blur",
                 !dateValue && "text-muted-foreground"
               )}
+              style={{ fontSize: '1.5rem', fontWeight: '500' }}
             >
               <CalendarIcon className="mr-2 h-5 w-5" />
               {dateValue ? format(dateValue, "dd/MM/yyyy") : <span>Pick a date</span>}
@@ -74,9 +75,10 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
         id={name}
         type={type}
         value={value || ""}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => onChange(e.target.value.toUpperCase())}
         placeholder={value ? "" : (placeholder || `Enter ${label.toLowerCase()}`)}
-        className="h-16 border-2 text-2xl font-medium hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+        style={{ fontSize: '1.5rem', fontWeight: '500' }}
       />
     </motion.div>
   );
