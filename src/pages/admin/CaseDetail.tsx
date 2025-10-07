@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CaseStageVisualization } from "@/components/CaseStageVisualization";
+import { EditCaseDialog } from "@/components/EditCaseDialog";
 import { 
   CheckSquare, 
   AlertCircle, 
@@ -21,6 +22,7 @@ interface CaseData {
   id: string;
   client_name: string;
   client_code: string;
+  country: string;
   status: string;
   current_stage: string;
   progress: number;
@@ -33,6 +35,9 @@ interface CaseData {
   wsc_received: boolean;
   processing_mode: string;
   client_score: number;
+  is_vip: boolean;
+  notes: string;
+  generation: string;
   created_at: string;
   updated_at: string;
 }
@@ -47,6 +52,7 @@ export default function CaseDetail() {
   const [documents, setDocuments] = useState<any[]>([]);
   const [tasks, setTasks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showEditDialog, setShowEditDialog] = useState(false);
 
   useEffect(() => {
     loadCaseData();
@@ -122,7 +128,7 @@ export default function CaseDetail() {
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <Button variant="outline">
+          <Button variant="outline" onClick={() => setShowEditDialog(true)}>
             <Edit className="h-4 w-4 mr-2" />
             Edit
           </Button>
@@ -438,6 +444,29 @@ export default function CaseDetail() {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Edit Dialog */}
+      {caseData && showEditDialog && (
+        <EditCaseDialog
+          caseData={{
+            id: caseData.id,
+            name: caseData.client_name,
+            client_code: caseData.client_code,
+            country: caseData.country || '',
+            status: caseData.status,
+            generation: caseData.processing_mode,
+            is_vip: caseData.is_vip,
+            notes: caseData.notes || '',
+            progress: caseData.progress,
+          }}
+          open={showEditDialog}
+          onOpenChange={setShowEditDialog}
+          onUpdate={() => {
+            loadCaseData();
+            setShowEditDialog(false);
+          }}
+        />
+      )}
     </AdminLayout>
   );
 }
