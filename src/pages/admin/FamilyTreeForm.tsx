@@ -77,7 +77,7 @@ export default function FamilyTreeForm() {
         animate={{ opacity: 1, y: 0 }}
         className="space-y-3"
       >
-        <Label htmlFor={name} className="text-base font-medium text-foreground">
+        <Label htmlFor={name} className="text-base font-medium text-foreground/70">
           {label}
         </Label>
         <Popover>
@@ -85,7 +85,7 @@ export default function FamilyTreeForm() {
             <Button
               variant="outline"
               className={cn(
-                "w-full h-14 justify-start text-left font-normal border-2 hover-glow bg-card/50 backdrop-blur",
+                "w-full h-16 justify-start text-left font-normal text-lg border-2 hover-glow bg-card/50 backdrop-blur",
                 !dateValue && "text-muted-foreground"
               )}
             >
@@ -123,7 +123,7 @@ export default function FamilyTreeForm() {
               renderDateField(field.name, field.label)
             ) : (
               <>
-                <Label htmlFor={field.name} className="text-base font-medium text-foreground">
+                <Label htmlFor={field.name} className="text-base font-medium text-foreground/70">
                   {field.label}
                 </Label>
                 <Input
@@ -132,7 +132,7 @@ export default function FamilyTreeForm() {
                   value={formData[field.name] || ""}
                   onChange={(e) => handleInputChange(field.name, e.target.value)}
                   placeholder={formData[field.name] ? "" : (field.placeholder || `Enter ${field.label.toLowerCase()}`)}
-                  className="h-14 border-2 text-base hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+                  className="h-16 border-2 text-lg hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
                 />
               </>
             )}
@@ -181,9 +181,6 @@ export default function FamilyTreeForm() {
                   <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
                     Family Tree Form
                   </CardTitle>
-                  <CardDescription className="text-xl md:text-2xl mt-4 text-muted-foreground leading-relaxed">
-                    Complete generational documentation
-                  </CardDescription>
                 </motion.div>
                 <motion.div
                   initial={{ x: 20, opacity: 0 }}

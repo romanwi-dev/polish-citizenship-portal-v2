@@ -78,7 +78,7 @@ export default function POAForm() {
         animate={{ opacity: 1, y: 0 }}
         className="space-y-3"
       >
-        <Label htmlFor={name} className="text-base font-medium text-foreground">
+        <Label htmlFor={name} className="text-base font-medium text-foreground/70">
           {label}
         </Label>
         <Popover>
@@ -86,7 +86,7 @@ export default function POAForm() {
             <Button
               variant="outline"
               className={cn(
-                "w-full h-14 justify-start text-left font-normal border-2 hover-glow bg-card/50 backdrop-blur",
+                "w-full h-16 justify-start text-left font-normal text-lg border-2 hover-glow bg-card/50 backdrop-blur",
                 !dateValue && "text-muted-foreground"
               )}
             >
@@ -124,7 +124,7 @@ export default function POAForm() {
               renderDateField(field.name, field.label)
             ) : (
               <>
-                <Label htmlFor={field.name} className="text-base font-medium text-foreground">
+                <Label htmlFor={field.name} className="text-base font-medium text-foreground/70">
                   {field.label}
                 </Label>
                 <Input
@@ -133,7 +133,7 @@ export default function POAForm() {
                   value={formData[field.name] || ""}
                   onChange={(e) => handleInputChange(field.name, e.target.value)}
                   placeholder={formData[field.name] ? "" : (field.placeholder || `Enter ${field.label.toLowerCase()}`)}
-                  className="h-14 border-2 text-base hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+                  className="h-16 border-2 text-lg hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
                 />
               </>
             )}
@@ -182,14 +182,12 @@ export default function POAForm() {
                   <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
                     Power of Attorney Forms
                   </CardTitle>
-                  <CardDescription className="text-xl md:text-2xl mt-4 text-muted-foreground leading-relaxed">
-                    Pełnomocnictwo - Legal representation documents
-                  </CardDescription>
                 </motion.div>
                 <motion.div
                   initial={{ x: 20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: 0.3 }}
+                  className="flex gap-3"
                 >
                   <Button 
                     onClick={handleSave} 
@@ -254,12 +252,23 @@ export default function POAForm() {
             >
               <Card className="glass-card border-primary/20">
                 <CardHeader className="border-b border-border/50 pb-6">
-                  <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                    Adult Power of Attorney
-                  </CardTitle>
-                  <CardDescription className="text-lg mt-2">
-                    Pełnomocnictwo dla osoby dorosłej
-                  </CardDescription>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                      Adult Power of Attorney
+                    </CardTitle>
+                    <Button 
+                      onClick={() => handleGeneratePDF('poa-adult', 'Adult POA')} 
+                      disabled={isGenerating}
+                      size="lg"
+                      className="text-xl font-bold px-8 h-14 bg-gradient-to-r from-primary to-secondary hover:opacity-90"
+                    >
+                      {isGenerating ? (
+                        <><Loader2 className="h-5 w-5 animate-spin mr-2" />Generating...</>
+                      ) : (
+                        <><Download className="h-5 w-5 mr-2" />Generate PDF</>
+                      )}
+                    </Button>
+                  </div>
                 </CardHeader>
                 <CardContent className="p-6 md:p-10 space-y-10">
                   {renderFieldGroup([
@@ -267,21 +276,6 @@ export default function POAForm() {
                     { name: "applicant_last_name", label: "Applicant Last Name / Nazwisko" },
                     { name: "applicant_passport_number", label: "ID Document Number / Nr dokumentu tożsamości" },
                   ])}
-
-                  <div className="pt-8">
-                    <Button 
-                      onClick={() => handleGeneratePDF('poa-adult', 'Adult POA')} 
-                      disabled={isGenerating}
-                      size="lg"
-                      className="w-full h-16 text-xl font-bold bg-gradient-to-r from-primary to-secondary hover:opacity-90"
-                    >
-                      {isGenerating ? (
-                        <><Loader2 className="h-5 w-5 animate-spin mr-2" />Generating...</>
-                      ) : (
-                        <><Download className="h-5 w-5 mr-2" />Generate Adult POA</>
-                      )}
-                    </Button>
-                  </div>
                 </CardContent>
               </Card>
             </motion.div>
@@ -296,12 +290,23 @@ export default function POAForm() {
             >
               <Card className="glass-card border-primary/20">
                 <CardHeader className="border-b border-border/50 pb-6">
-                  <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                    Minor Power of Attorney
-                  </CardTitle>
-                  <CardDescription className="text-lg mt-2">
-                    Pełnomocnictwo dla małoletniego dziecka
-                  </CardDescription>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                      Minor Power of Attorney
+                    </CardTitle>
+                    <Button 
+                      onClick={() => handleGeneratePDF('poa-minor', 'Minor POA')} 
+                      disabled={isGenerating}
+                      size="lg"
+                      className="text-xl font-bold px-8 h-14 bg-gradient-to-r from-primary to-secondary hover:opacity-90"
+                    >
+                      {isGenerating ? (
+                        <><Loader2 className="h-5 w-5 animate-spin mr-2" />Generating...</>
+                      ) : (
+                        <><Download className="h-5 w-5 mr-2" />Generate PDF</>
+                      )}
+                    </Button>
+                  </div>
                 </CardHeader>
                 <CardContent className="p-6 md:p-10 space-y-10">
                   <div>
@@ -320,21 +325,6 @@ export default function POAForm() {
                       { name: "child_1_last_name", label: "Child Last Name / Nazwisko dziecka" },
                     ])}
                   </div>
-
-                  <div className="pt-8">
-                    <Button 
-                      onClick={() => handleGeneratePDF('poa-minor', 'Minor POA')} 
-                      disabled={isGenerating}
-                      size="lg"
-                      className="w-full h-16 text-xl font-bold bg-gradient-to-r from-primary to-secondary hover:opacity-90"
-                    >
-                      {isGenerating ? (
-                        <><Loader2 className="h-5 w-5 animate-spin mr-2" />Generating...</>
-                      ) : (
-                        <><Download className="h-5 w-5 mr-2" />Generate Minor POA</>
-                      )}
-                    </Button>
-                  </div>
                 </CardContent>
               </Card>
             </motion.div>
@@ -349,12 +339,23 @@ export default function POAForm() {
             >
               <Card className="glass-card border-primary/20">
                 <CardHeader className="border-b border-border/50 pb-6">
-                  <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                    Spouses Power of Attorney
-                  </CardTitle>
-                  <CardDescription className="text-lg mt-2">
-                    Oświadczenie małżonków
-                  </CardDescription>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                      Spouses Power of Attorney
+                    </CardTitle>
+                    <Button 
+                      onClick={() => handleGeneratePDF('poa-spouses', 'Spouses POA')} 
+                      disabled={isGenerating}
+                      size="lg"
+                      className="text-xl font-bold px-8 h-14 bg-gradient-to-r from-primary to-secondary hover:opacity-90"
+                    >
+                      {isGenerating ? (
+                        <><Loader2 className="h-5 w-5 animate-spin mr-2" />Generating...</>
+                      ) : (
+                        <><Download className="h-5 w-5 mr-2" />Generate PDF</>
+                      )}
+                    </Button>
+                  </div>
                 </CardHeader>
                 <CardContent className="p-6 md:p-10 space-y-10">
                   <div>
@@ -381,21 +382,6 @@ export default function POAForm() {
                       { name: "child_2_last_name", label: "Child 2 Surname / Nazwisko dziecka 2" },
                       { name: "child_3_last_name", label: "Child 3 Surname / Nazwisko dziecka 3" },
                     ])}
-                  </div>
-
-                  <div className="pt-8">
-                    <Button 
-                      onClick={() => handleGeneratePDF('poa-spouses', 'Spouses POA')} 
-                      disabled={isGenerating}
-                      size="lg"
-                      className="w-full h-16 text-xl font-bold bg-gradient-to-r from-primary to-secondary hover:opacity-90"
-                    >
-                      {isGenerating ? (
-                        <><Loader2 className="h-5 w-5 animate-spin mr-2" />Generating...</>
-                      ) : (
-                        <><Download className="h-5 w-5 mr-2" />Generate Spouses POA</>
-                      )}
-                    </Button>
                   </div>
                 </CardContent>
               </Card>

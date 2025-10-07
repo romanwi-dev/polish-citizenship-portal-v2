@@ -77,7 +77,7 @@ export default function CivilRegistryForm() {
         animate={{ opacity: 1, y: 0 }}
         className="space-y-3"
       >
-        <Label htmlFor={name} className="text-base font-medium text-foreground">
+        <Label htmlFor={name} className="text-base font-medium text-foreground/70">
           {label}
         </Label>
         <Popover>
@@ -85,7 +85,7 @@ export default function CivilRegistryForm() {
             <Button
               variant="outline"
               className={cn(
-                "w-full h-14 justify-start text-left font-normal border-2 hover-glow bg-card/50 backdrop-blur",
+                "w-full h-16 justify-start text-left font-normal text-lg border-2 hover-glow bg-card/50 backdrop-blur",
                 !dateValue && "text-muted-foreground"
               )}
             >
@@ -123,7 +123,7 @@ export default function CivilRegistryForm() {
               renderDateField(field.name, field.label)
             ) : (
               <>
-                <Label htmlFor={field.name} className="text-base font-medium text-foreground">
+                <Label htmlFor={field.name} className="text-base font-medium text-foreground/70">
                   {field.label}
                 </Label>
                 <Input
@@ -132,7 +132,7 @@ export default function CivilRegistryForm() {
                   value={formData[field.name] || ""}
                   onChange={(e) => handleInputChange(field.name, e.target.value)}
                   placeholder={formData[field.name] ? "" : (field.placeholder || `Enter ${field.label.toLowerCase()}`)}
-                  className="h-14 border-2 text-base hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+                  className="h-16 border-2 text-lg hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
                 />
               </>
             )}
@@ -181,9 +181,6 @@ export default function CivilRegistryForm() {
                   <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
                     Civil Registry Application
                   </CardTitle>
-                  <CardDescription className="text-xl md:text-2xl mt-4 text-muted-foreground leading-relaxed">
-                    Wniosek o wpisanie zagranicznego aktu stanu cywilnego
-                  </CardDescription>
                 </motion.div>
                 <motion.div
                   initial={{ x: 20, opacity: 0 }}
@@ -238,15 +235,12 @@ export default function CivilRegistryForm() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <Card className="glass-card border-primary/20">
-            <CardHeader className="border-b border-border/50 pb-6">
-              <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Registration of Foreign Civil Status Record
-              </CardTitle>
-              <CardDescription className="text-lg mt-2">
-                Request to register foreign birth/marriage certificate in Polish civil registry
-              </CardDescription>
-            </CardHeader>
+            <Card className="glass-card border-primary/20">
+              <CardHeader className="border-b border-border/50 pb-6">
+                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                  Registration of Foreign Civil Status Record
+                </CardTitle>
+              </CardHeader>
             <CardContent className="p-6 md:p-10 space-y-10">
               <div className="bg-muted/30 rounded-lg p-6 border-2 border-primary/20">
                 <h3 className="text-xl font-semibold mb-4 text-foreground">Document Information</h3>
