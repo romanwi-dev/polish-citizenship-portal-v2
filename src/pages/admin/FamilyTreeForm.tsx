@@ -123,7 +123,7 @@ export default function FamilyTreeForm() {
               renderDateField(field.name, field.label)
             ) : (
               <>
-                <Label htmlFor={field.name} className="text-base font-medium text-foreground/70">
+                <Label htmlFor={field.name} className="text-base font-medium text-foreground">
                   {field.label}
                 </Label>
                 <Input
@@ -160,7 +160,7 @@ export default function FamilyTreeForm() {
               onChange={(e) => handleInputChange(field.name, e.target.checked)}
               className="h-6 w-6 rounded border-2"
             />
-            <Label htmlFor={field.name} className="cursor-pointer text-base font-medium text-foreground/70">
+            <Label htmlFor={field.name} className="cursor-pointer text-base font-medium">
               {field.label}
             </Label>
           </motion.div>
@@ -272,10 +272,15 @@ export default function FamilyTreeForm() {
               </CardHeader>
               <CardContent className="p-6 md:p-10 space-y-10">
                 {renderFieldGroup([
-                  { name: "applicant_first_name", label: "Full Name / Imię i nazwisko" },
-                  { name: "applicant_last_name", label: "Last Name / Nazwisko" },
-                  { name: "applicant_dob", label: "Date of Birth / Data urodzenia", type: "date" },
-                  { name: "applicant_pob", label: "Place of Birth / Miejsce urodzenia" },
+                  { name: "applicant_first_name", label: "First Name(s)" },
+                  { name: "applicant_last_name", label: "Last Name" },
+                  { name: "applicant_maiden_name", label: "Maiden Name" },
+                  { name: "applicant_sex", label: "Sex" },
+                  { name: "applicant_dob", label: "Date of Birth", type: "date" },
+                  { name: "applicant_pob", label: "Place of Birth" },
+                  { name: "applicant_email", label: "Email", type: "email" },
+                  { name: "applicant_phone", label: "Phone" },
+                  { name: "applicant_passport_number", label: "Passport Number" },
                 ])}
 
                 <div className="pt-8">
@@ -305,10 +310,14 @@ export default function FamilyTreeForm() {
               </CardHeader>
               <CardContent className="p-6 md:p-10 space-y-10">
                 {renderFieldGroup([
-                  { name: "spouse_first_name", label: "Spouse Full Name / Imię i nazwisko małżonka" },
-                  { name: "spouse_maiden_name", label: "Spouse Maiden Name / Nazwisko panieńskie" },
-                  { name: "date_of_marriage", label: "Date of Marriage / Data zawarcia związku małżeńskiego", type: "date" },
-                  { name: "place_of_marriage", label: "Place of Marriage / Miejsce zawarcia związku" },
+                  { name: "spouse_first_name", label: "First Name(s)" },
+                  { name: "spouse_last_name", label: "Last Name" },
+                  { name: "spouse_maiden_name", label: "Maiden Name" },
+                  { name: "spouse_sex", label: "Sex" },
+                  { name: "spouse_dob", label: "Date of Birth", type: "date" },
+                  { name: "spouse_pob", label: "Place of Birth" },
+                  { name: "date_of_marriage", label: "Date of Marriage", type: "date" },
+                  { name: "place_of_marriage", label: "Place of Marriage" },
                 ])}
 
                 <div className="pt-8">
@@ -340,10 +349,19 @@ export default function FamilyTreeForm() {
                   <div key={num} className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
                     <h3 className="text-xl font-semibold text-foreground">Child {num}</h3>
                     {renderFieldGroup([
-                      { name: `child_${num}_first_name`, label: `Full Name / Imię i nazwisko` },
-                      { name: `child_${num}_dob`, label: `Date of Birth / Data urodzenia`, type: "date" },
-                      { name: `child_${num}_pob`, label: `Place of Birth / Miejsce urodzenia` },
+                      { name: `child_${num}_first_name`, label: "First Name" },
+                      { name: `child_${num}_last_name`, label: "Last Name" },
+                      { name: `child_${num}_dob`, label: "Date of Birth", type: "date" },
+                      { name: `child_${num}_pob`, label: "Place of Birth" },
                     ])}
+                    <div className="pt-4">
+                      <h4 className="text-lg font-semibold mb-4 text-foreground">Documents Required</h4>
+                      {renderCheckboxGroup([
+                        { name: `child_${num}_has_passport`, label: "Passport Copy" },
+                        { name: `child_${num}_has_birth_cert`, label: "Birth Certificate" },
+                        { name: `child_${num}_has_poa_minor`, label: "POA Minor" },
+                      ])}
+                    </div>
                   </div>
                 ))}
               </CardContent>
@@ -363,29 +381,60 @@ export default function FamilyTreeForm() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6 md:p-10 space-y-10">
-                {renderFieldGroup([
-                  { name: formData.ancestry_line === 'father' ? 'father_first_name' : 'mother_first_name', label: "Full Name / Imię i nazwisko" },
-                  { name: formData.ancestry_line === 'father' ? 'father_dob' : 'mother_dob', label: "Date of Birth / Data urodzenia", type: "date" },
-                  { name: formData.ancestry_line === 'father' ? 'father_pob' : 'mother_pob', label: "Place of Birth / Miejsce urodzenia" },
-                  { name: "father_mother_marriage_date", label: "Date of Marriage / Data małżeństwa", type: "date" },
-                  { name: "father_mother_marriage_place", label: "Place of Marriage / Miejsce małżeństwa" },
-                  { name: formData.ancestry_line === 'father' ? 'father_date_of_emigration' : 'mother_date_of_emigration', label: "Date of Emigration / Data emigracji", type: "date" },
-                  { name: formData.ancestry_line === 'father' ? 'father_date_of_naturalization' : 'mother_date_of_naturalization', label: "Date of Naturalization / Data naturalizacji", type: "date" },
-                ])}
+                <Card className="glass-card border-primary/20 mb-6">
+                  <CardHeader className="border-b border-border/50">
+                    <CardTitle className="text-3xl md:text-4xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                      Father Information
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-6 md:p-8 space-y-8">
+                    {renderFieldGroup([
+                      { name: "father_first_name", label: "First Name(s)" },
+                      { name: "father_last_name", label: "Last Name" },
+                      { name: "father_pob", label: "Place of Birth" },
+                      { name: "father_dob", label: "Date of Birth", type: "date" },
+                      { name: "father_date_of_emigration", label: "Date of Emigration", type: "date" },
+                      { name: "father_date_of_naturalization", label: "Date of Naturalization", type: "date" },
+                    ])}
+                    <div className="pt-4">
+                      <h4 className="text-lg font-semibold mb-4 text-foreground">Documents Required</h4>
+                      {renderCheckboxGroup([
+                        { name: "father_has_birth_cert", label: "Birth Certificate" },
+                        { name: "father_has_marriage_cert", label: "Marriage Certificate" },
+                      ])}
+                    </div>
+                  </CardContent>
+                </Card>
 
-                <div className="pt-8">
-                  <h3 className="text-xl font-semibold mb-6 text-foreground">Documents Required</h3>
-                  {renderCheckboxGroup([
-                    { name: formData.ancestry_line === 'father' ? 'father_has_birth_cert' : 'mother_has_birth_cert', label: "Birth Certificate" },
-                    { name: formData.ancestry_line === 'father' ? 'father_has_marriage_cert' : 'mother_has_marriage_cert', label: "Marriage Certificate" },
-                    { name: formData.ancestry_line === 'father' ? 'father_has_naturalization' : 'mother_has_naturalization', label: "Naturalization Certificate" },
-                  ])}
-                </div>
+                <Card className="glass-card border-primary/20">
+                  <CardHeader className="border-b border-border/50">
+                    <CardTitle className="text-3xl md:text-4xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                      Mother Information
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-6 md:p-8 space-y-8">
+                    {renderFieldGroup([
+                      { name: "mother_first_name", label: "First Name(s)" },
+                      { name: "mother_last_name", label: "Last Name" },
+                      { name: "mother_maiden_name", label: "Maiden Name" },
+                      { name: "mother_pob", label: "Place of Birth" },
+                      { name: "mother_dob", label: "Date of Birth", type: "date" },
+                      { name: "mother_date_of_emigration", label: "Date of Emigration", type: "date" },
+                    ])}
+                    <div className="pt-4">
+                      <h4 className="text-lg font-semibold mb-4 text-foreground">Documents Required</h4>
+                      {renderCheckboxGroup([
+                        { name: "mother_has_birth_cert", label: "Birth Certificate" },
+                        { name: "mother_has_marriage_cert", label: "Marriage Certificate" },
+                      ])}
+                    </div>
+                  </CardContent>
+                </Card>
               </CardContent>
             </Card>
           </motion.div>
 
-          {/* Polish Grandparent Section */}
+          {/* Grandparents Section */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -394,61 +443,53 @@ export default function FamilyTreeForm() {
             <Card className="glass-card border-primary/20">
               <CardHeader className="border-b border-border/50 pb-6">
                 <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                  Polish Grandparent
+                  Grandparents
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-6 md:p-10 space-y-10">
-                {renderFieldGroup([
-                  { 
-                    name: formData.ancestry_line === 'pgf' ? 'pgf_first_name' :
-                          formData.ancestry_line === 'pgm' ? 'pgm_first_name' :
-                          formData.ancestry_line === 'mgf' ? 'mgf_first_name' :
-                          'mgm_first_name', 
-                    label: "Full Name / Imię i nazwisko" 
-                  },
-                  { 
-                    name: formData.ancestry_line === 'pgf' ? 'pgf_dob' :
-                          formData.ancestry_line === 'pgm' ? 'pgm_dob' :
-                          formData.ancestry_line === 'mgf' ? 'mgf_dob' :
-                          'mgm_dob', 
-                    label: "Date of Birth / Data urodzenia", 
-                    type: "date" 
-                  },
-                  { 
-                    name: formData.ancestry_line === 'pgf' ? 'pgf_pob' :
-                          formData.ancestry_line === 'pgm' ? 'pgm_pob' :
-                          formData.ancestry_line === 'mgf' ? 'mgf_pob' :
-                          'mgm_pob', 
-                    label: "Place of Birth / Miejsce urodzenia" 
-                  },
-                ])}
-
-                <div className="pt-8">
-                  <h3 className="text-xl font-semibold mb-6 text-foreground">Documents Required</h3>
-                  {renderCheckboxGroup([
-                    { 
-                      name: formData.ancestry_line === 'pgf' ? 'pgf_has_birth_cert' :
-                            formData.ancestry_line === 'pgm' ? 'pgm_has_birth_cert' :
-                            formData.ancestry_line === 'mgf' ? 'mgf_has_birth_cert' :
-                            'mgm_has_birth_cert', 
-                      label: "Birth Certificate" 
-                    },
-                    { 
-                      name: formData.ancestry_line === 'pgf' ? 'pgf_has_marriage_cert' :
-                            formData.ancestry_line === 'pgm' ? 'pgm_has_marriage_cert' :
-                            formData.ancestry_line === 'mgf' ? 'mgf_has_marriage_cert' :
-                            'mgm_has_marriage_cert', 
-                      label: "Marriage Certificate" 
-                    },
-                    { 
-                      name: formData.ancestry_line === 'pgf' ? 'pgf_has_naturalization' :
-                            formData.ancestry_line === 'pgm' ? 'pgm_has_naturalization' :
-                            formData.ancestry_line === 'mgf' ? 'mgf_has_naturalization' :
-                            'mgm_has_naturalization', 
-                      label: "Naturalization Certificate" 
-                    },
-                  ])}
-                </div>
+              <CardContent className="p-6 md:p-10 space-y-8">
+                {["pgf", "pgm", "mgf", "mgm"].map((prefix) => {
+                  const labels = {
+                    pgf: "Paternal Grandfather",
+                    pgm: "Paternal Grandmother",
+                    mgf: "Maternal Grandfather",
+                    mgm: "Maternal Grandmother",
+                  };
+                  return (
+                    <Card key={prefix} className="glass-card border-primary/20">
+                      <CardHeader className="border-b border-border/50">
+                        <CardTitle className="text-2xl md:text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                          {labels[prefix as keyof typeof labels]}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-6 md:p-8 space-y-8">
+                        <div className="mb-6 p-4 bg-primary/10 rounded-lg border-2 border-primary/30">
+                          {renderCheckboxGroup([
+                            { name: `${prefix}_is_polish`, label: "Polish Ancestor" },
+                          ])}
+                        </div>
+                        {renderFieldGroup([
+                          { name: `${prefix}_first_name`, label: "First Name" },
+                          { name: `${prefix}_last_name`, label: "Last Name" },
+                          ...(prefix.includes("gm") ? [{ name: `${prefix}_maiden_name`, label: "Maiden Name" }] : []),
+                          { name: `${prefix}_pob`, label: "Place of Birth" },
+                          { name: `${prefix}_dob`, label: "Date of Birth", type: "date" },
+                        ])}
+                        <div className="pt-4">
+                          <h4 className="text-lg font-semibold mb-4 text-foreground">Documents Required</h4>
+                          {renderCheckboxGroup([
+                            { name: `${prefix}_has_polish_documents`, label: "Polish Documents" },
+                            { name: `${prefix}_has_birth_cert`, label: "Birth Certificate" },
+                            { name: `${prefix}_has_marriage_cert`, label: "Marriage Certificate" },
+                            { name: `${prefix}_has_emigration_papers`, label: "Emigration Papers" },
+                            { name: `${prefix}_has_naturalization_papers`, label: "Naturalization Papers" },
+                            { name: `${prefix}_has_foreign_documents`, label: "Foreign Documents" },
+                            { name: `${prefix}_has_military_records`, label: "Military Records" },
+                          ])}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </CardContent>
             </Card>
           </motion.div>
@@ -465,43 +506,45 @@ export default function FamilyTreeForm() {
                   Great-Grandparents
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-6 md:p-10 space-y-10">
-                <div className="space-y-8">
-                  <div className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
-                    <h3 className="text-xl font-semibold text-foreground">Great-Grandfather / Pradziadek</h3>
-                    {renderFieldGroup([
-                      { name: "pggf_first_name", label: "Full Name / Imię i nazwisko" },
-                      { name: "pggf_dob", label: "Date of Birth / Data urodzenia", type: "date" },
-                      { name: "pggf_pob", label: "Place of Birth / Miejsce urodzenia" },
-                    ])}
-                  </div>
-
-                  <div className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
-                    <h3 className="text-xl font-semibold text-foreground">Great-Grandmother / Prababcia</h3>
-                    {renderFieldGroup([
-                      { name: "pggm_first_name", label: "Full Name / Imię i nazwisko" },
-                      { name: "pggm_maiden_name", label: "Maiden Name / Nazwisko panieńskie" },
-                      { name: "pggm_dob", label: "Date of Birth / Data urodzenia", type: "date" },
-                      { name: "pggm_pob", label: "Place of Birth / Miejsce urodzenia" },
-                    ])}
-                  </div>
-
-                  {renderFieldGroup([
-                    { name: "pggf_pggm_marriage_date", label: "Date of Marriage / Data małżeństwa", type: "date" },
-                    { name: "pggf_pggm_marriage_place", label: "Place of Marriage / Miejsce małżeństwa" },
-                  ])}
-                </div>
-
-                <div className="pt-8">
-                  <h3 className="text-xl font-semibold mb-6 text-foreground">Documents Required</h3>
-                  {renderCheckboxGroup([
-                    { name: "pggf_has_birth_cert", label: "Great-Grandfather Birth Certificate" },
-                    { name: "pggf_has_marriage_cert", label: "Great-Grandparents Marriage Certificate" },
-                    { name: "pggf_has_naturalization", label: "Great-Grandfather Naturalization Certificate" },
-                    { name: "pggm_has_birth_cert", label: "Great-Grandmother Birth Certificate" },
-                    { name: "pggm_has_naturalization", label: "Great-Grandmother Naturalization Certificate" },
-                  ])}
-                </div>
+              <CardContent className="p-6 md:p-10 space-y-8">
+                {["pggf", "pggm", "mggf", "mggm"].map((prefix) => {
+                  const labels = {
+                    pggf: "Pat. Great-Grandfather (Father's Side)",
+                    pggm: "Pat. Great-Grandmother (Father's Side)",
+                    mggf: "Mat. Great-Grandfather (Mother's Side)",
+                    mggm: "Mat. Great-Grandmother (Mother's Side)",
+                  };
+                  return (
+                    <Card key={prefix} className="glass-card border-primary/20">
+                      <CardHeader className="border-b border-border/50">
+                        <CardTitle className="text-2xl md:text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                          {labels[prefix as keyof typeof labels]}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-6 md:p-8 space-y-8">
+                        {renderFieldGroup([
+                          { name: `${prefix}_first_name`, label: "First Name" },
+                          { name: `${prefix}_last_name`, label: "Last Name" },
+                          ...(prefix.includes("ggm") ? [{ name: `${prefix}_maiden_name`, label: "Maiden Name" }] : []),
+                          { name: `${prefix}_pob`, label: "Place of Birth" },
+                          { name: `${prefix}_dob`, label: "Date of Birth", type: "date" },
+                        ])}
+                        <div className="pt-4">
+                          <h4 className="text-lg font-semibold mb-4 text-foreground">Documents Required</h4>
+                          {renderCheckboxGroup([
+                            ...(prefix === "pggf" || prefix === "mggf" ? [{ name: `${prefix}_has_polish_documents`, label: "Polish Documents" }] : []),
+                            { name: `${prefix}_has_birth_cert`, label: "Birth Certificate" },
+                            { name: `${prefix}_has_marriage_cert`, label: "Marriage Certificate" },
+                            { name: `${prefix}_has_emigration_papers`, label: "Emigration Papers" },
+                            { name: `${prefix}_has_naturalization_papers`, label: "Naturalization Papers" },
+                            { name: `${prefix}_has_foreign_documents`, label: "Foreign Documents" },
+                            { name: `${prefix}_has_military_records`, label: "Military Records" },
+                          ])}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </CardContent>
             </Card>
           </motion.div>
