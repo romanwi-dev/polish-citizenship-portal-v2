@@ -279,6 +279,7 @@ export default function MasterDataTable() {
                 { value: "parents", label: "Parents" },
                 { value: "grandparents", label: "Grandparents" },
                 { value: "great-grandparents", label: "Great-Grandparents" },
+                { value: "additional-data", label: "Additional Data" },
               ].map((tab) => (
                 <TabsTrigger
                   key={tab.value}
@@ -684,6 +685,30 @@ export default function MasterDataTable() {
                 })}
               </motion.div>
             </ScrollArea>
+          </TabsContent>
+
+          {/* ADDITIONAL DATA TAB */}
+          <TabsContent value="additional-data">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Card className="glass-card border-primary/20">
+                <CardHeader className="border-b border-border/50 pb-6">
+                  <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                    Additional Data
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6 md:p-10 space-y-10">
+                  <div className="text-center py-20">
+                    <p className="text-xl text-muted-foreground">
+                      Additional fields will be added here...
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
           </TabsContent>
         </Tabs>
       </div>
