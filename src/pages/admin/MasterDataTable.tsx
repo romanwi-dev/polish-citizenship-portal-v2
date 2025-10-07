@@ -573,6 +573,7 @@ export default function MasterDataTable() {
                             { name: `${prefix}_has_naturalization_papers`, label: "Naturalization Papers" },
                             { name: `${prefix}_has_foreign_documents`, label: "Foreign Documents" },
                             { name: `${prefix}_has_military_records`, label: "Military Records" },
+                            { name: `${prefix}_has_polish_documents`, label: "Polish Documents" },
                           ])}
                         </div>
                         <div>{renderTextarea(`${prefix}_notes`, "Notes")}</div>
@@ -623,6 +624,7 @@ export default function MasterDataTable() {
                             { name: `${prefix}_has_naturalization_papers`, label: "Naturalization Papers" },
                             { name: `${prefix}_has_foreign_documents`, label: "Foreign Documents" },
                             { name: `${prefix}_has_military_records`, label: "Military Records" },
+                            ...(prefix === "pggf" || prefix === "mggf" ? [{ name: `${prefix}_has_polish_documents`, label: "Polish Documents" }] : []),
                           ])}
                         </div>
                         <div>{renderTextarea(`${prefix}_notes`, "Notes")}</div>
