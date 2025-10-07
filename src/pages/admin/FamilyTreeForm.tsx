@@ -361,7 +361,7 @@ export default function FamilyTreeForm() {
                 {/* 1st row - Name fields */}
                 {renderFieldGroup([{
                 name: "applicant_first_name",
-                label: "Given names / Imię / imiona",
+                label: "Given names / Imię/ imiona",
                 isNameField: true
               }, {
                 name: "applicant_last_name",
