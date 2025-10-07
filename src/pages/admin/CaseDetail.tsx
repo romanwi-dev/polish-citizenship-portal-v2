@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CaseStageVisualization } from "@/components/CaseStageVisualization";
+import { FamilyTree } from "@/components/FamilyTree";
 import { EditCaseDialog } from "@/components/EditCaseDialog";
 import { 
   CheckSquare, 
@@ -430,17 +431,73 @@ export default function CaseDetail() {
 
           {/* TREE TAB */}
           <TabsContent value="tree">
-            <Card>
-              <CardHeader>
-                <CardTitle>Family Tree</CardTitle>
-                <CardDescription>Interactive family tree visualization</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-12 text-muted-foreground">
-                  <p>Family tree visualization coming soon</p>
-                </div>
-              </CardContent>
-            </Card>
+            {intakeData ? (
+              <FamilyTree
+                clientData={{
+                  firstName: intakeData.first_name || '',
+                  lastName: intakeData.last_name || '',
+                  maidenName: intakeData.maiden_name,
+                  dateOfBirth: intakeData.date_of_birth,
+                  placeOfBirth: intakeData.place_of_birth,
+                  sex: intakeData.sex
+                }}
+                father={intakeData.father_first_name ? {
+                  firstName: intakeData.father_first_name,
+                  lastName: intakeData.father_last_name || '',
+                  dateOfBirth: intakeData.father_dob,
+                  placeOfBirth: intakeData.father_pob
+                } : undefined}
+                mother={intakeData.mother_first_name ? {
+                  firstName: intakeData.mother_first_name,
+                  lastName: intakeData.mother_last_name || '',
+                  maidenName: intakeData.mother_maiden_name,
+                  dateOfBirth: intakeData.mother_dob,
+                  placeOfBirth: intakeData.mother_pob
+                } : undefined}
+                paternalGrandfather={intakeData.pgf_first_name ? {
+                  firstName: intakeData.pgf_first_name,
+                  lastName: intakeData.pgf_last_name || '',
+                  dateOfBirth: intakeData.pgf_dob,
+                  placeOfBirth: intakeData.pgf_pob
+                } : undefined}
+                paternalGrandmother={intakeData.pgm_first_name ? {
+                  firstName: intakeData.pgm_first_name,
+                  lastName: intakeData.pgm_last_name || '',
+                  maidenName: intakeData.pgm_maiden_name,
+                  dateOfBirth: intakeData.pgm_dob,
+                  placeOfBirth: intakeData.pgm_pob
+                } : undefined}
+                maternalGrandfather={intakeData.mgf_first_name ? {
+                  firstName: intakeData.mgf_first_name,
+                  lastName: intakeData.mgf_last_name || '',
+                  dateOfBirth: intakeData.mgf_dob,
+                  placeOfBirth: intakeData.mgf_pob
+                } : undefined}
+                maternalGrandmother={intakeData.mgm_first_name ? {
+                  firstName: intakeData.mgm_first_name,
+                  lastName: intakeData.mgm_last_name || '',
+                  maidenName: intakeData.mgm_maiden_name,
+                  dateOfBirth: intakeData.mgm_dob,
+                  placeOfBirth: intakeData.mgm_pob
+                } : undefined}
+                onEdit={() => {
+                  // TODO: Navigate to intake form or open edit dialog
+                  toast.info("Family data editing will be added soon");
+                }}
+              />
+            ) : (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Family Tree</CardTitle>
+                  <CardDescription>No family data available</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-center py-12 text-muted-foreground">
+                    <p>Complete the intake form to populate family tree data</p>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
         </Tabs>
       </div>
