@@ -553,6 +553,11 @@ export default function MasterDataTable() {
                         </CardTitle>
                       </CardHeader>
                       <CardContent className="p-6 md:p-10 space-y-10">
+                        <div className="mb-6 p-4 bg-primary/10 rounded-lg border-2 border-primary/30">
+                          {renderCheckboxGroup([
+                            { name: `${prefix}_is_polish`, label: "🇵🇱 Polish Ancestor" },
+                          ])}
+                        </div>
                         {renderFieldGroup([
                           { name: `${prefix}_first_name`, label: "First Name" },
                           { name: `${prefix}_last_name`, label: "Last Name" },
