@@ -158,7 +158,7 @@ export default function IntakeForm() {
                 {/* Personal Information */}
                 <POAFormField
                   name="given_names"
-                  label="Given Names (as in passport)"
+                  label="Given names (exactly like in your valid ID/ passport)"
                   value={formData.given_names}
                   onChange={(value) => handleInputChange("given_names", value)}
                   delay={0}
@@ -166,7 +166,7 @@ export default function IntakeForm() {
                 
                 <POAFormField
                   name="last_name"
-                  label="Full Last Name (as in passport)"
+                  label="Full last name (exactly like in your valid ID/ passport)"
                   value={formData.last_name}
                   onChange={(value) => handleInputChange("last_name", value)}
                   delay={0.05}
