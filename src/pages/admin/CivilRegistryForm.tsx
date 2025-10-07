@@ -15,42 +15,56 @@ import { Calendar as CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
-
 export default function CivilRegistryForm() {
-  const { id: caseId } = useParams();
-  const { data: masterData, isLoading } = useMasterData(caseId);
+  const {
+    id: caseId
+  } = useParams();
+  const {
+    data: masterData,
+    isLoading
+  } = useMasterData(caseId);
   const updateMutation = useUpdateMasterData();
-  const { isLargeFonts, toggleFontSize } = useAccessibility();
+  const {
+    isLargeFonts,
+    toggleFontSize
+  } = useAccessibility();
   const [formData, setFormData] = useState<any>({});
   const [isGenerating, setIsGenerating] = useState(false);
-
   useEffect(() => {
     if (masterData) {
       setFormData(masterData);
     }
   }, [masterData]);
-
   const handleInputChange = (field: string, value: any) => {
-    setFormData((prev: any) => ({ ...prev, [field]: value }));
+    setFormData((prev: any) => ({
+      ...prev,
+      [field]: value
+    }));
   };
-
   const handleSave = () => {
     if (!caseId) return;
-    updateMutation.mutate({ caseId, updates: formData });
+    updateMutation.mutate({
+      caseId,
+      updates: formData
+    });
   };
-
   const handleGeneratePDF = async () => {
     try {
       setIsGenerating(true);
       toast.loading("Generating Civil Registry Application PDF...");
-
-      const { data, error } = await supabase.functions.invoke('fill-pdf', {
-        body: { caseId, templateType: 'registration' },
+      const {
+        data,
+        error
+      } = await supabase.functions.invoke('fill-pdf', {
+        body: {
+          caseId,
+          templateType: 'registration'
+        }
       });
-
       if (error) throw error;
-
-      const blob = new Blob([data], { type: 'application/pdf' });
+      const blob = new Blob([data], {
+        type: 'application/pdf'
+      });
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
@@ -59,7 +73,6 @@ export default function CivilRegistryForm() {
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
-
       toast.dismiss();
       toast.success("Civil Registry Application PDF generated successfully!");
     } catch (error: any) {
@@ -69,141 +82,103 @@ export default function CivilRegistryForm() {
       setIsGenerating(false);
     }
   };
-
   const renderDateField = (name: string, label: string) => {
     const dateValue = formData[name] ? new Date(formData[name]) : undefined;
-    
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="space-y-2"
-      >
-        <Label htmlFor={name} className={cn(
-          "font-light text-foreground/90",
-          isLargeFonts ? "text-xl" : "text-sm"
-        )}>
+    return <motion.div initial={{
+      opacity: 0,
+      y: 20
+    }} animate={{
+      opacity: 1,
+      y: 0
+    }} className="space-y-2">
+        <Label htmlFor={name} className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
           {label}
         </Label>
         <Popover>
           <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              className={cn(
-                "w-full h-16 justify-start text-left border-2 hover-glow bg-card/50 backdrop-blur",
-                !dateValue && "text-muted-foreground"
-              )}
-            >
+            <Button variant="outline" className={cn("w-full h-16 justify-start text-left border-2 hover-glow bg-card/50 backdrop-blur", !dateValue && "text-muted-foreground")}>
               <CalendarIcon className="mr-2 h-4 w-4" />
               {dateValue ? format(dateValue, "dd/MM/yyyy") : <span>Pick a date</span>}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
-            <Calendar
-              mode="single"
-              selected={dateValue}
-              onSelect={(date) => handleInputChange(name, date ? format(date, "yyyy-MM-dd") : "")}
-              disabled={(date) => date > new Date("2030-12-31") || date < new Date("1900-01-01")}
-              initialFocus
-              className={cn("p-3 pointer-events-auto")}
-            />
+            <Calendar mode="single" selected={dateValue} onSelect={date => handleInputChange(name, date ? format(date, "yyyy-MM-dd") : "")} disabled={date => date > new Date("2030-12-31") || date < new Date("1900-01-01")} initialFocus className={cn("p-3 pointer-events-auto")} />
           </PopoverContent>
         </Popover>
-      </motion.div>
-    );
+      </motion.div>;
   };
-
-  const renderFieldGroup = (fields: Array<{ name: string; label: string; type?: string; placeholder?: string }>) => {
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {fields.map((field, idx) => (
-          <motion.div
-            key={field.name}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: idx * 0.05, duration: 0.4 }}
-            className="space-y-2"
-            onDoubleClick={() => !field.type || field.type === "text" ? handleInputChange(field.name, "") : null}
-          >
-            {field.type === "date" ? (
-              renderDateField(field.name, field.label)
-            ) : (
-              <>
-                <Label htmlFor={field.name} className={cn(
-                  "font-light text-foreground/90",
-                  isLargeFonts ? "text-xl" : "text-sm"
-                )}>
+  const renderFieldGroup = (fields: Array<{
+    name: string;
+    label: string;
+    type?: string;
+    placeholder?: string;
+  }>) => {
+    return <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {fields.map((field, idx) => <motion.div key={field.name} initial={{
+        opacity: 0,
+        y: 20
+      }} animate={{
+        opacity: 1,
+        y: 0
+      }} transition={{
+        delay: idx * 0.05,
+        duration: 0.4
+      }} className="space-y-2" onDoubleClick={() => !field.type || field.type === "text" ? handleInputChange(field.name, "") : null}>
+            {field.type === "date" ? renderDateField(field.name, field.label) : <>
+                <Label htmlFor={field.name} className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
                   {field.label}
                 </Label>
-                <Input
-                  id={field.name}
-                  type={field.type || "text"}
-                  value={formData[field.name] || ""}
-                  onChange={(e) => handleInputChange(field.name, field.type === "email" ? e.target.value : e.target.value.toUpperCase())}
-                  placeholder=""
-                  className={cn(
-                    "h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur",
-                    field.type !== "email" && "uppercase"
-                  )}
-                />
-              </>
-            )}
-          </motion.div>
-        ))}
-      </div>
-    );
+                <Input id={field.name} type={field.type || "text"} value={formData[field.name] || ""} onChange={e => handleInputChange(field.name, field.type === "email" ? e.target.value : e.target.value.toUpperCase())} placeholder="" className={cn("h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur", field.type !== "email" && "uppercase")} />
+              </>}
+          </motion.div>)}
+      </div>;
   };
-
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-background">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-        >
+    return <div className="flex items-center justify-center min-h-screen bg-background">
+        <motion.div animate={{
+        rotate: 360
+      }} transition={{
+        duration: 1,
+        repeat: Infinity,
+        ease: "linear"
+      }}>
           <Sparkles className="h-16 w-16 text-primary" />
         </motion.div>
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <div className="min-h-screen relative">
+  return <div className="min-h-screen relative">
       {/* Background */}
       <div className="fixed inset-0 bg-gradient-to-t from-background via-primary/5 to-background pointer-events-none -z-10" />
       <div className="fixed inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none -z-10" />
 
       <div className="container mx-auto py-12 px-4 md:px-6 lg:px-8 relative z-10 max-w-7xl">
         {/* Sticky Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="sticky top-0 z-50 mb-8 bg-background/95 backdrop-blur-lg border-b border-primary/20"
-        >
+        <motion.div initial={{
+        opacity: 0,
+        y: -50
+      }} animate={{
+        opacity: 1,
+        y: 0
+      }} transition={{
+        duration: 0.8
+      }} className="sticky top-0 z-50 mb-8 bg-background/95 backdrop-blur-lg border-b border-primary/20">
           <Card className="glass-card border-primary/20 overflow-hidden rounded-none border-x-0 border-t-0">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5" />
             <CardHeader className="relative pb-8 pt-8">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                <motion.div
-                  initial={{ x: -20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                >
-                  <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
-                    Civil Registry Application
-                  </CardTitle>
+                <motion.div initial={{
+                x: -20,
+                opacity: 0
+              }} animate={{
+                x: 0,
+                opacity: 1
+              }} transition={{
+                delay: 0.2
+              }}>
+                  <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">Civil Registry Applications</CardTitle>
                 </motion.div>
                 <div className="flex items-center gap-3">
-                  <Button
-                    onClick={toggleFontSize}
-                    size="lg"
-                    variant="ghost"
-                    className={`h-16 w-16 rounded-full transition-all ${
-                      isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground'
-                    }`}
-                    title="Toggle font size"
-                  >
+                  <Button onClick={toggleFontSize} size="lg" variant="ghost" className={`h-16 w-16 rounded-full transition-all ${isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground'}`} title="Toggle font size">
                     <Type className="h-8 w-8" />
                   </Button>
                 </div>
@@ -213,34 +188,28 @@ export default function CivilRegistryForm() {
         </motion.div>
 
         {/* Action Buttons Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }} 
-          animate={{ opacity: 1, y: 0 }} 
-          transition={{ duration: 0.5 }}
-          className="mb-8"
-        >
+        <motion.div initial={{
+        opacity: 0,
+        y: 20
+      }} animate={{
+        opacity: 1,
+        y: 0
+      }} transition={{
+        duration: 0.5
+      }} className="mb-8">
           <div className="flex gap-3 overflow-x-auto pb-2 justify-between bg-background/95 backdrop-blur-lg p-4 rounded-lg">
-            <Button 
-              onClick={handleSave} 
-              disabled={updateMutation.isPending}
-              size="default" 
-              className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]"
-            >
-              {updateMutation.isPending ? (
-                <>
+            <Button onClick={handleSave} disabled={updateMutation.isPending} size="default" className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]">
+              {updateMutation.isPending ? <>
                   <Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
                   <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                     Saving...
                   </span>
-                </>
-              ) : (
-                <>
+                </> : <>
                   <Save className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
                   <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                     Save data
                   </span>
-                </>
-              )}
+                </>}
             </Button>
             <Button variant="outline" className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]">
               <FileText className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
@@ -272,11 +241,15 @@ export default function CivilRegistryForm() {
         {/* Form Sections */}
         <div className="space-y-8">
           {/* Applicant Information */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-          >
+          <motion.div initial={{
+          opacity: 0,
+          scale: 0.95
+        }} animate={{
+          opacity: 1,
+          scale: 1
+        }} transition={{
+          duration: 0.5
+        }}>
             <Card className="glass-card border-primary/20">
               <CardHeader className="border-b border-border/50 pb-6">
                 <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
@@ -284,27 +257,50 @@ export default function CivilRegistryForm() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6 md:p-10 space-y-10">
-                {renderFieldGroup([
-                  { name: "applicant_first_name", label: "Given names / Imię / imiona" },
-                  { name: "applicant_last_name", label: "Full last name / Nazwisko" },
-                  { name: "applicant_maiden_name", label: "Maiden name / Nazwisko panieńskie" },
-                  { name: "applicant_dob", label: "Date of birth / Data urodzenia", type: "date" },
-                  { name: "applicant_pob", label: "Place of birth / Miejsce urodzenia" },
-                  { name: "applicant_sex", label: "Sex / Płeć" },
-                  { name: "applicant_email", label: "Email" },
-                  { name: "applicant_phone", label: "Phone / Telefon" },
-                  { name: "applicant_passport_number", label: "Passport Number / Nr paszportu" },
-                ])}
+                {renderFieldGroup([{
+                name: "applicant_first_name",
+                label: "Given names / Imię / imiona"
+              }, {
+                name: "applicant_last_name",
+                label: "Full last name / Nazwisko"
+              }, {
+                name: "applicant_maiden_name",
+                label: "Maiden name / Nazwisko panieńskie"
+              }, {
+                name: "applicant_dob",
+                label: "Date of birth / Data urodzenia",
+                type: "date"
+              }, {
+                name: "applicant_pob",
+                label: "Place of birth / Miejsce urodzenia"
+              }, {
+                name: "applicant_sex",
+                label: "Sex / Płeć"
+              }, {
+                name: "applicant_email",
+                label: "Email"
+              }, {
+                name: "applicant_phone",
+                label: "Phone / Telefon"
+              }, {
+                name: "applicant_passport_number",
+                label: "Passport Number / Nr paszportu"
+              }])}
               </CardContent>
             </Card>
           </motion.div>
 
           {/* Document Information */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
+          <motion.div initial={{
+          opacity: 0,
+          scale: 0.95
+        }} animate={{
+          opacity: 1,
+          scale: 1
+        }} transition={{
+          duration: 0.5,
+          delay: 0.1
+        }}>
             <Card className="glass-card border-primary/20">
               <CardHeader className="border-b border-border/50 pb-6">
                 <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
@@ -317,10 +313,14 @@ export default function CivilRegistryForm() {
                   <p className="text-muted-foreground mb-6">
                     Foreign civil status record was issued in / Zagraniczny akt stanu cywilnego został sporządzony
                   </p>
-                  {renderFieldGroup([
-                    { name: "applicant_pob", label: "Place Where Document Was Issued / Miejsce sporządzenia aktu" },
-                    { name: "applicant_dob", label: "Event Date / Data zdarzenia", type: "date" },
-                  ])}
+                  {renderFieldGroup([{
+                  name: "applicant_pob",
+                  label: "Place Where Document Was Issued / Miejsce sporządzenia aktu"
+                }, {
+                  name: "applicant_dob",
+                  label: "Event Date / Data zdarzenia",
+                  type: "date"
+                }])}
                 </div>
 
                 <div className="bg-muted/30 rounded-lg p-6 border-2 border-primary/20">
@@ -380,6 +380,5 @@ export default function CivilRegistryForm() {
           </motion.div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 }
