@@ -369,9 +369,6 @@ export default function MasterDataTable() {
                   <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                     Spouse Information
                   </CardTitle>
-                  <CardDescription className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
-                    Spouse data - maps to OBY-SPOUSE-* fields
-                  </CardDescription>
                 </CardHeader>
                 <CardContent className="p-6 md:p-10 space-y-10">
                   {renderFieldGroup([
