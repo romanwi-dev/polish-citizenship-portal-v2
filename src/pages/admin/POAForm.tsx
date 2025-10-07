@@ -172,14 +172,14 @@ export default function POAForm() {
                         >
                           {updateMutation.isPending ? (
                             <>
-                              <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                              <Loader2 className="h-5 w-5 animate-spin mr-2 opacity-50" />
                               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                                 Saving...
                               </span>
                             </>
                           ) : (
                             <>
-                              <Save className="h-5 w-5 mr-2" />
+                              <Save className="h-5 w-5 mr-2 opacity-50" />
                               <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                                 Save
                               </span>
@@ -190,12 +190,22 @@ export default function POAForm() {
                           onClick={() => handleGeneratePDF(config.pdfType, config.title)} 
                           disabled={isGenerating}
                           size="lg"
-                          className="text-xl font-bold px-8 h-14 bg-gradient-to-r from-primary to-secondary hover:opacity-90"
+                          className="text-xl font-bold px-8 h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30"
                         >
                           {isGenerating ? (
-                            <><Loader2 className="h-5 w-5 animate-spin mr-2" />Generating...</>
+                            <>
+                              <Loader2 className="h-5 w-5 animate-spin mr-2 opacity-50" />
+                              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                                Generating...
+                              </span>
+                            </>
                           ) : (
-                            <><Download className="h-5 w-5 mr-2" />Generate PDF</>
+                            <>
+                              <Download className="h-5 w-5 mr-2 opacity-50" />
+                              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                                Generate PDF
+                              </span>
+                            </>
                           )}
                         </Button>
                       </div>
