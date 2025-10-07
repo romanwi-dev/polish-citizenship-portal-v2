@@ -279,15 +279,15 @@ export default function POAForm() {
                 <CardContent className="p-6 md:p-10 space-y-10">
                   <div>
                     {renderFieldGroup([
-                      { name: "poa_date_filed", label: "Date Signed / Data Podpisania", type: "date" },
+                      { name: "applicant_first_name", label: "Applicant First Name(s) / Imię" },
+                      { name: "applicant_last_name", label: "Applicant Last Name / Nazwisko" },
+                      { name: "applicant_passport_number", label: "ID Document Number / Nr dokumentu tożsamości" },
                     ])}
                   </div>
                   
                   <div>
                     {renderFieldGroup([
-                      { name: "applicant_first_name", label: "Applicant First Name(s) / Imię" },
-                      { name: "applicant_last_name", label: "Applicant Last Name / Nazwisko" },
-                      { name: "applicant_passport_number", label: "ID Document Number / Nr dokumentu tożsamości" },
+                      { name: "poa_date_filed", label: "Date Signed / Data Podpisania", type: "date" },
                     ])}
                   </div>
                 </CardContent>
@@ -325,12 +325,6 @@ export default function POAForm() {
                 <CardContent className="p-6 md:p-10 space-y-10">
                   <div>
                     {renderFieldGroup([
-                      { name: "poa_date_filed", label: "Date Signed / Data Podpisania", type: "date" },
-                    ])}
-                  </div>
-
-                  <div>
-                    {renderFieldGroup([
                       { name: "applicant_first_name", label: "Parent First Name(s) / Imię rodzica" },
                       { name: "applicant_last_name", label: "Parent Last Name / Nazwisko rodzica" },
                       { name: "applicant_passport_number", label: "Parent ID Document Number / Nr dokumentu tożsamości rodzica" },
@@ -341,6 +335,12 @@ export default function POAForm() {
                     {renderFieldGroup([
                       { name: "child_1_first_name", label: "Child First Name(s) / Imię dziecka" },
                       { name: "child_1_last_name", label: "Child Last Name / Nazwisko dziecka" },
+                    ])}
+                  </div>
+
+                  <div>
+                    {renderFieldGroup([
+                      { name: "poa_date_filed", label: "Date Signed / Data Podpisania", type: "date" },
                     ])}
                   </div>
                 </CardContent>
@@ -378,12 +378,6 @@ export default function POAForm() {
                 <CardContent className="p-6 md:p-10 space-y-10">
                   <div>
                     {renderFieldGroup([
-                      { name: "poa_date_filed", label: "Date Signed / Data Podpisania", type: "date" },
-                    ])}
-                  </div>
-
-                  <div>
-                    {renderFieldGroup([
                       { name: "applicant_first_name", label: "Applicant First Name(s)" },
                       { name: "applicant_last_name", label: "Applicant Last Name" },
                       { name: "applicant_sex", label: "Applicant Sex (Male/Female)" },
@@ -403,6 +397,12 @@ export default function POAForm() {
                       { name: "child_1_last_name", label: "Child 1 Surname" },
                       { name: "child_2_last_name", label: "Child 2 Surname" },
                       { name: "child_3_last_name", label: "Child 3 Surname" },
+                    ])}
+                  </div>
+
+                  <div>
+                    {renderFieldGroup([
+                      { name: "poa_date_filed", label: "Date Signed / Data Podpisania", type: "date" },
                     ])}
                   </div>
                 </CardContent>
