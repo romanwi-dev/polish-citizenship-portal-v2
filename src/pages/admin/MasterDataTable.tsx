@@ -555,7 +555,7 @@ export default function MasterDataTable() {
                       <CardContent className="p-6 md:p-10 space-y-10">
                         <div className="mb-6 p-4 bg-primary/10 rounded-lg border-2 border-primary/30">
                           {renderCheckboxGroup([
-                            { name: `${prefix}_is_polish`, label: "🇵🇱 Polish Ancestor" },
+                            { name: `${prefix}_is_polish`, label: "Polish Ancestor" },
                           ])}
                         </div>
                         {renderFieldGroup([
