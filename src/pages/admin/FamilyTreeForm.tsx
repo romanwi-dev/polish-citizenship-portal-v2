@@ -120,12 +120,13 @@ export default function FamilyTreeForm() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.05, duration: 0.4 }}
             className="space-y-2"
+            onDoubleClick={() => !field.type || field.type === "text" ? handleInputChange(field.name, "") : null}
           >
             {field.type === "date" ? (
               renderDateField(field.name, field.label)
             ) : (
               <>
-                <Label htmlFor={field.name} className="text-sm font-normal text-foreground">
+                <Label htmlFor={field.name} className="text-sm font-normal text-foreground/90">
                   {field.label}
                 </Label>
                 <Input
@@ -134,7 +135,10 @@ export default function FamilyTreeForm() {
                   value={formData[field.name] || ""}
                   onChange={(e) => handleInputChange(field.name, field.type === "email" ? e.target.value : e.target.value.toUpperCase())}
                   placeholder=""
-                  className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                  className={cn(
+                    "h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur",
+                    field.type !== "email" && "uppercase"
+                  )}
                   style={{ fontSize: '1.125rem', fontWeight: '400' }}
                 />
               </>
@@ -225,14 +229,14 @@ export default function FamilyTreeForm() {
                   >
                     {updateMutation.isPending ? (
                       <>
-                        <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                        <Loader2 className="h-5 w-5 animate-spin mr-2 opacity-50" />
                         <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                           Saving...
                         </span>
                       </>
                     ) : (
                       <>
-                        <Save className="h-5 w-5 mr-2" />
+                        <Save className="h-5 w-5 mr-2 opacity-50" />
                         <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                           Save
                         </span>
@@ -247,9 +251,9 @@ export default function FamilyTreeForm() {
                     className="text-xl font-bold px-12 h-16"
                   >
                     {isGenerating ? (
-                      <><Loader2 className="h-5 w-5 animate-spin mr-2" />Generating...</>
+                      <><Loader2 className="h-5 w-5 animate-spin mr-2 opacity-50" />Generating...</>
                     ) : (
-                      <><Download className="h-5 w-5 mr-2" />Generate PDF</>
+                      <><Download className="h-5 w-5 mr-2 opacity-50" />Generate PDF</>
                     )}
                   </Button>
                 </motion.div>

@@ -77,8 +77,8 @@ const ContactFormWeb3 = () => {
             
             <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="space-y-3 animate-fade-in group">
-                  <Label htmlFor="name" className="text-foreground text-lg font-semibold">Name *</Label>
+                <div className="space-y-3 animate-fade-in group" onDoubleClick={() => setFormData({ ...formData, name: "" })}>
+                  <Label htmlFor="name" className="text-sm font-normal text-foreground/90">Name *</Label>
                   <div className="relative overflow-hidden rounded-lg">
                     <div className="absolute inset-0 bg-gradient-to-br from-primary to-accent opacity-0 group-hover:opacity-10 transition-opacity duration-500" />
                     <Input
@@ -86,14 +86,15 @@ const ContactFormWeb3 = () => {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      placeholder="Enter your full name"
+                      placeholder=""
                       required
-                      className="glass-card border-border/50 focus:border-primary hover:scale-[1.02] focus:scale-[1.02] transition-all duration-300 h-16 text-lg placeholder:text-muted-foreground/50 hover:border-primary/50 w-full relative z-10"
+                      className="glass-card border-2 border-border/50 focus:border-primary hover-glow focus:shadow-lg transition-all h-16 placeholder:text-muted-foreground/50 hover:border-primary/50 w-full relative z-10 bg-card/50 backdrop-blur"
+                      style={{ fontSize: '1.125rem', fontWeight: '400' }}
                     />
                   </div>
                 </div>
-                <div className="space-y-3 animate-fade-in group" style={{ animationDelay: '0.1s' }}>
-                  <Label htmlFor="email" className="text-foreground text-lg font-semibold">Email *</Label>
+                <div className="space-y-3 animate-fade-in group" style={{ animationDelay: '0.1s' }} onDoubleClick={() => setFormData({ ...formData, email: "" })}>
+                  <Label htmlFor="email" className="text-sm font-normal text-foreground/90">Email *</Label>
                   <div className="relative overflow-hidden rounded-lg">
                     <div className="absolute inset-0 bg-gradient-to-br from-secondary to-primary opacity-0 group-hover:opacity-10 transition-opacity duration-500" />
                     <Input
@@ -102,16 +103,17 @@ const ContactFormWeb3 = () => {
                       type="email"
                       value={formData.email}
                       onChange={handleChange}
-                      placeholder="your.email@example.com"
+                      placeholder=""
                       required
-                      className="glass-card border-border/50 focus:border-primary hover:scale-[1.02] focus:scale-[1.02] transition-all duration-300 h-16 text-lg placeholder:text-muted-foreground/50 hover:border-primary/50 w-full relative z-10"
+                      className="glass-card border-2 border-border/50 focus:border-primary hover-glow focus:shadow-lg transition-all h-16 placeholder:text-muted-foreground/50 hover:border-primary/50 w-full relative z-10 bg-card/50 backdrop-blur"
+                      style={{ fontSize: '1.125rem', fontWeight: '400' }}
                     />
                   </div>
                 </div>
               </div>
               
-              <div className="space-y-3 animate-fade-in group" style={{ animationDelay: '0.2s' }}>
-                <Label htmlFor="message" className="text-foreground text-lg font-semibold">Message</Label>
+              <div className="space-y-3 animate-fade-in group" style={{ animationDelay: '0.2s' }} onDoubleClick={() => setFormData({ ...formData, message: "" })}>
+                <Label htmlFor="message" className="text-sm font-normal text-foreground/90">Message</Label>
                 <div className="relative overflow-hidden rounded-lg">
                   <div className="absolute inset-0 bg-gradient-to-br from-accent to-secondary opacity-0 group-hover:opacity-10 transition-opacity duration-500" />
                   <div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-accent to-secondary opacity-20 blur-3xl rounded-full group-hover:opacity-30 transition-opacity" />
@@ -120,8 +122,9 @@ const ContactFormWeb3 = () => {
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    placeholder="Describe your Polish ancestry, available documents, and citizenship goals..."
-                    className="min-h-[240px] glass-card border-border/50 focus:border-primary hover:scale-[1.01] focus:scale-[1.01] transition-all duration-300 text-lg placeholder:text-muted-foreground/50 hover:border-primary/50 resize-none w-full relative z-10"
+                    placeholder=""
+                    className="min-h-[240px] glass-card border-2 border-border/50 focus:border-primary hover-glow focus:shadow-lg transition-all placeholder:text-muted-foreground/50 hover:border-primary/50 resize-none w-full relative z-10 bg-card/50 backdrop-blur"
+                    style={{ fontSize: '1.125rem', fontWeight: '400' }}
                   />
                 </div>
               </div>
@@ -129,8 +132,9 @@ const ContactFormWeb3 = () => {
               <Button 
                 type="submit" 
                 size="lg" 
-                className="text-2xl font-bold px-20 py-6 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 w-full"
+                className="text-xl font-bold px-12 h-16 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 w-full"
               >
+                <Send className="h-5 w-5 mr-2 opacity-50" />
                 <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Send Your Info
                 </span>
@@ -142,12 +146,13 @@ const ContactFormWeb3 = () => {
           {/* Trust Indicators */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mt-12">
             {[
-              { label: "AI Accurate Response", value: "< 5 mins" },
-              { label: "Human Detailed Response", value: "< 1 hour" },
-              { label: "Consultation Availability", value: "24/7" },
-              { label: "Initial Assessment", value: "Free" }
+              { icon: Zap, label: "AI Accurate Response", value: "< 5 mins" },
+              { icon: Mail, label: "Human Detailed Response", value: "< 1 hour" },
+              { icon: Zap, label: "Consultation Availability", value: "24/7" },
+              { icon: Mail, label: "Initial Assessment", value: "Free" }
             ].map((stat, i) => (
               <div key={i} className="glass-card p-6 rounded-lg hover-glow w-full max-w-[280px] mx-auto md:max-w-none">
+                <stat.icon className="h-6 w-6 mb-3 opacity-50 text-primary" />
                 <div className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
                   {stat.value}
                 </div>
