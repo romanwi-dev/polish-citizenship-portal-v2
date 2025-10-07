@@ -524,7 +524,7 @@ export default function FamilyTreeForm() {
                             { name: `${prefix}_has_marriage_cert`, label: "Marriage Certificate" },
                             { name: `${prefix}_has_naturalization_papers`, label: "Naturalization Papers" },
                             { name: `${prefix}_has_foreign_documents`, label: "Foreign Documents" },
-                            { name: `${prefix}_has_military_records`, label: "Military Records" },
+                            ...(prefix === "pgf" || prefix === "mgf" ? [{ name: `${prefix}_has_military_records`, label: "Military Records" }] : []),
                           ])}
                         </div>
                       </CardContent>
@@ -578,7 +578,7 @@ export default function FamilyTreeForm() {
                             { name: `${prefix}_has_marriage_cert`, label: "Marriage Certificate" },
                             { name: `${prefix}_has_naturalization_papers`, label: "Naturalization Papers" },
                             { name: `${prefix}_has_foreign_documents`, label: "Foreign Documents" },
-                            { name: `${prefix}_has_military_records`, label: "Military Records" },
+                            ...(prefix === "pggf" || prefix === "mggf" ? [{ name: `${prefix}_has_military_records`, label: "Military Records" }] : []),
                           ])}
                         </div>
                       </CardContent>
