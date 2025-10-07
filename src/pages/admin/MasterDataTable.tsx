@@ -60,9 +60,9 @@ export default function MasterDataTable() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="space-y-3"
+        className="space-y-4"
       >
-        <Label htmlFor={name} className="text-base font-medium text-foreground">
+        <Label htmlFor={name} className="text-sm font-normal text-foreground/90">
           {label}
         </Label>
         <Popover>
@@ -70,11 +70,12 @@ export default function MasterDataTable() {
             <Button
               variant="outline"
               className={cn(
-                "w-full h-14 justify-start text-left font-normal border-2 hover-glow bg-card/50 backdrop-blur",
+                "w-full h-16 justify-start text-left border-2 hover-glow bg-card/50 backdrop-blur",
                 !dateValue && "text-muted-foreground"
               )}
+              style={{ fontSize: '1.125rem', fontWeight: '400' }}
             >
-              <CalendarIcon className="mr-2 h-4 w-4" />
+              <CalendarIcon className="mr-2 h-5 w-5" />
               {dateValue ? format(dateValue, "dd/MM/yyyy") : <span>Pick a date</span>}
             </Button>
           </PopoverTrigger>
@@ -102,22 +103,23 @@ export default function MasterDataTable() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.05, duration: 0.4 }}
-            className="space-y-3"
+            className="space-y-4"
           >
             {field.type === "date" ? (
               renderDateField(field.name, field.label)
             ) : (
               <>
-                <Label htmlFor={field.name} className="text-base font-medium text-foreground">
+                <Label htmlFor={field.name} className="text-sm font-normal text-foreground/90">
                   {field.label}
                 </Label>
                 <Input
                   id={field.name}
                   type={field.type || "text"}
                   value={formData[field.name] || ""}
-                  onChange={(e) => handleInputChange(field.name, e.target.value)}
-                  placeholder={formData[field.name] ? "" : (field.placeholder || `Enter ${field.label.toLowerCase()}`)}
-                  className="h-14 border-2 text-base hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+                  onChange={(e) => handleInputChange(field.name, field.type === "email" || field.type === "text" && !field.name.includes("sex") ? e.target.value : e.target.value.toUpperCase())}
+                  placeholder=""
+                  className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                  style={{ fontSize: '1.125rem', fontWeight: '400' }}
                 />
               </>
             )}
@@ -319,15 +321,15 @@ export default function MasterDataTable() {
                   </motion.div>
 
                   {renderFieldGroup([
-                    { name: "applicant_first_name", label: "First Name(s)", placeholder: "OBY-A-GN" },
-                    { name: "applicant_last_name", label: "Last Name", placeholder: "OBY-A-SN" },
-                    { name: "applicant_maiden_name", label: "Maiden Name", placeholder: "OBY-A-MAIDEN-NAME" },
-                    { name: "applicant_sex", label: "Sex", placeholder: "OBY-A-GENDER" },
+                    { name: "applicant_first_name", label: "First Name(s)" },
+                    { name: "applicant_last_name", label: "Last Name" },
+                    { name: "applicant_maiden_name", label: "Maiden Name" },
+                    { name: "applicant_sex", label: "Sex" },
                     { name: "applicant_dob", label: "Date of Birth", type: "date" },
-                    { name: "applicant_pob", label: "Place of Birth", placeholder: "OBY-A-BP" },
-                    { name: "applicant_email", label: "Email", type: "email", placeholder: "OBY-A-EMAIL" },
-                    { name: "applicant_phone", label: "Phone", placeholder: "OBY-A-PHONE" },
-                    { name: "applicant_passport_number", label: "Passport Number", placeholder: "OBY-A-PASSPORT" },
+                    { name: "applicant_pob", label: "Place of Birth" },
+                    { name: "applicant_email", label: "Email", type: "email" },
+                    { name: "applicant_phone", label: "Phone" },
+                    { name: "applicant_passport_number", label: "Passport Number" },
                   ])}
 
                   <div className="pt-8">
@@ -363,14 +365,14 @@ export default function MasterDataTable() {
                 </CardHeader>
                 <CardContent className="p-6 md:p-10 space-y-10">
                   {renderFieldGroup([
-                    { name: "spouse_first_name", label: "First Name(s)", placeholder: "OBY-SPOUSE-GN" },
-                    { name: "spouse_last_name", label: "Last Name", placeholder: "OBY-SPOUSE-SN" },
+                    { name: "spouse_first_name", label: "First Name(s)" },
+                    { name: "spouse_last_name", label: "Last Name" },
                     { name: "spouse_maiden_name", label: "Maiden Name" },
                     { name: "spouse_sex", label: "Sex" },
                     { name: "spouse_dob", label: "Date of Birth", type: "date" },
                     { name: "spouse_pob", label: "Place of Birth" },
-                    { name: "date_of_marriage", label: "Date of Marriage", type: "date", placeholder: "OBY-MARRIAGE-DATE" },
-                    { name: "place_of_marriage", label: "Place of Marriage", placeholder: "OBY-MARRIAGE-PLACE" },
+                    { name: "date_of_marriage", label: "Date of Marriage", type: "date" },
+                    { name: "place_of_marriage", label: "Place of Marriage" },
                   ])}
 
                   <div className="pt-8">
