@@ -168,7 +168,7 @@ export default function POAForm() {
                           onClick={handleSave} 
                           disabled={updateMutation.isPending}
                           size="lg" 
-                          className="text-xl font-bold px-8 h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30"
+                          className="text-xl font-bold px-8 h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]"
                         >
                           {updateMutation.isPending ? (
                             <>
@@ -190,7 +190,7 @@ export default function POAForm() {
                           onClick={() => handleGeneratePDF(config.pdfType, config.title)} 
                           disabled={isGenerating}
                           size="lg"
-                          className="text-xl font-bold px-8 h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30"
+                          className="text-xl font-bold px-8 h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]"
                         >
                           {isGenerating ? (
                             <>
