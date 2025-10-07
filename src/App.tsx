@@ -15,6 +15,10 @@ const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
 const CasesManagement = lazy(() => import("./pages/admin/CasesManagement"));
 const CaseDetail = lazy(() => import("./pages/admin/CaseDetail"));
 const MasterDataTable = lazy(() => import("./pages/admin/MasterDataTable"));
+const FamilyTreeForm = lazy(() => import("./pages/admin/FamilyTreeForm"));
+const POAForm = lazy(() => import("./pages/admin/POAForm"));
+const CitizenshipForm = lazy(() => import("./pages/admin/CitizenshipForm"));
+const CivilRegistryForm = lazy(() => import("./pages/admin/CivilRegistryForm"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -75,6 +79,38 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <MasterDataTable />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/cases/:id/family-tree" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <FamilyTreeForm />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/cases/:id/poa" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <POAForm />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/cases/:id/citizenship" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <CitizenshipForm />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/cases/:id/civil-registry" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <CivilRegistryForm />
               </Suspense>
             } 
           />

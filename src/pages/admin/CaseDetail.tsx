@@ -137,6 +137,21 @@ export default function CaseDetail() {
             <Edit className="h-4 w-4 mr-2" />
             Edit
           </Button>
+          <Button variant="outline" onClick={() => navigate(`/admin/cases/${id}/master-data`)}>
+            Master Data
+          </Button>
+          <Button variant="outline" onClick={() => navigate(`/admin/cases/${id}/family-tree`)}>
+            Family Tree
+          </Button>
+          <Button variant="outline" onClick={() => navigate(`/admin/cases/${id}/poa`)}>
+            POA Forms
+          </Button>
+          <Button variant="outline" onClick={() => navigate(`/admin/cases/${id}/citizenship`)}>
+            Citizenship
+          </Button>
+          <Button variant="outline" onClick={() => navigate(`/admin/cases/${id}/civil-registry`)}>
+            Civil Registry
+          </Button>
         </div>
 
         {/* Client Info Header */}
