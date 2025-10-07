@@ -273,16 +273,30 @@ export default function FamilyTreeForm() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6 md:p-10 space-y-10">
-                {/* Marital Status */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="p-6 border-2 border-primary/20 rounded-xl bg-primary/5"
-                >
-                  {renderCheckboxGroup([
-                    { name: "applicant_is_married", label: "Married?" },
-                  ])}
-                </motion.div>
+                {/* Marital Status & Children - Side by side on desktop */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="p-6 border-2 border-primary/20 rounded-xl bg-primary/5"
+                  >
+                    {renderCheckboxGroup([
+                      { name: "applicant_is_married", label: "Married?" },
+                    ])}
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="p-6 border-2 border-primary/20 rounded-xl bg-primary/5"
+                  >
+                    <div className="whitespace-nowrap">
+                      {renderCheckboxGroup([
+                        { name: "applicant_has_minor_children", label: "Minor Kids?" },
+                      ])}
+                    </div>
+                  </motion.div>
+                </div>
 
                 {renderFieldGroup([
                   { name: "applicant_first_name", label: "Given Names" },
@@ -347,7 +361,8 @@ export default function FamilyTreeForm() {
           </motion.div>
           )}
 
-          {/* Children Section */}
+          {/* Kids Section - Only show if has minor children */}
+          {formData.applicant_has_minor_children && (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -356,7 +371,7 @@ export default function FamilyTreeForm() {
             <Card className="glass-card border-primary/20">
               <CardHeader className="border-b border-border/50 pb-6">
                 <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                  Minor Children
+                  Minor Kids
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6 md:p-10 space-y-10">
@@ -382,6 +397,7 @@ export default function FamilyTreeForm() {
               </CardContent>
             </Card>
           </motion.div>
+          )}
 
           {/* Polish Parent Section */}
           <motion.div
