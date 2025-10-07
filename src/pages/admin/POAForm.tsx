@@ -245,7 +245,7 @@ export default function POAForm() {
                             <>
                               <Save className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
                               <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                                Save
+                                Saving
                               </span>
                             </>
                           )}
