@@ -448,6 +448,13 @@ export default function MasterDataTable() {
                         { name: `child_${num}_dob`, label: "Date of Birth", type: "date" },
                         { name: `child_${num}_pob`, label: "Place of Birth" },
                       ])}
+                      <div className="pt-4">
+                        {renderCheckboxGroup([
+                          { name: `child_${num}_has_passport`, label: "Passport Copy" },
+                          { name: `child_${num}_has_birth_cert`, label: "Birth Certificate" },
+                          { name: `child_${num}_has_poa_minor`, label: "POA Minor" },
+                        ])}
+                      </div>
                       <div>
                         {renderTextarea(`child_${num}_notes`, "Notes", 2)}
                       </div>
