@@ -270,9 +270,9 @@ export default function CitizenshipForm() {
               </CardHeader>
               <CardContent className="p-6 md:p-10 space-y-10">
                 {renderFieldGroup([
-                  { name: "applicant_last_name", label: "Nazwisko / Full Last Name" },
-                  { name: "applicant_maiden_name", label: "Nazwisko rodowe / Maiden Name" },
-                  { name: "applicant_first_name", label: "Imię/imiona / Given Names" },
+                  { name: "applicant_last_name", label: "Nazwisko / Full last name" },
+                  { name: "applicant_maiden_name", label: "Nazwisko rodowe / Maiden name" },
+                  { name: "applicant_first_name", label: "Imię / imiona / Given names" },
                   { name: "father_first_name", label: "Imię i nazwisko ojca / Father's Full Name" },
                   { name: "mother_first_name", label: "Imię i nazwisko rodowe matki / Mother's Full Name" },
                   { name: "applicant_dob", label: "Data urodzenia / Date of Birth", type: "date" },
@@ -304,9 +304,9 @@ export default function CitizenshipForm() {
                 <div className="space-y-6">
                   <h3 className="text-2xl font-semibold text-foreground border-b pb-2">Dane dotyczące matki / Mother's Data</h3>
                   {renderFieldGroup([
-                    { name: "mother_last_name", label: "Nazwisko / Full Last Name" },
-                    { name: "mother_maiden_name", label: "Nazwisko rodowe / Maiden Name" },
-                    { name: "mother_first_name", label: "Imię/imiona / Given Names" },
+                    { name: "mother_last_name", label: "Nazwisko / Full last name" },
+                    { name: "mother_maiden_name", label: "Nazwisko rodowe / Maiden name" },
+                    { name: "mother_first_name", label: "Imię / imiona / Given names" },
                     { name: "mother_dob", label: "Data urodzenia / Date of Birth", type: "date" },
                     { name: "mother_pob", label: "Miejsce urodzenia / Place of Birth" },
                   ])}
@@ -316,8 +316,8 @@ export default function CitizenshipForm() {
                 <div className="space-y-6">
                   <h3 className="text-2xl font-semibold text-foreground border-b pb-2">Dane dotyczące ojca / Father's Data</h3>
                   {renderFieldGroup([
-                    { name: "father_last_name", label: "Nazwisko / Full Last Name" },
-                    { name: "father_first_name", label: "Imię/imiona / Given Names" },
+                    { name: "father_last_name", label: "Nazwisko / Full last name" },
+                    { name: "father_first_name", label: "Imię / imiona / Given names" },
                     { name: "father_dob", label: "Data urodzenia / Date of Birth", type: "date" },
                     { name: "father_pob", label: "Miejsce urodzenia / Place of Birth" },
                     { name: "father_mother_marriage_date", label: "Data zawarcia związku małżeńskiego / Date of Marriage", type: "date" },
@@ -345,8 +345,8 @@ export default function CitizenshipForm() {
                 <div className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
                   <h3 className="text-2xl font-semibold text-foreground">Dziadek ze strony matki / Maternal Grandfather</h3>
                   {renderFieldGroup([
-                    { name: "mgf_last_name", label: "Nazwisko / Full Last Name" },
-                    { name: "mgf_first_name", label: "Imię/imiona / Given Names" },
+                    { name: "mgf_last_name", label: "Nazwisko / Full last name" },
+                    { name: "mgf_first_name", label: "Imię / imiona / Given names" },
                     { name: "mgf_dob", label: "Data urodzenia / Date of Birth", type: "date" },
                     { name: "mgf_pob", label: "Miejsce urodzenia / Place of Birth" },
                   ])}
@@ -356,9 +356,9 @@ export default function CitizenshipForm() {
                 <div className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
                   <h3 className="text-2xl font-semibold text-foreground">Babka ze strony matki / Maternal Grandmother</h3>
                   {renderFieldGroup([
-                    { name: "mgm_last_name", label: "Nazwisko / Full Last Name" },
-                    { name: "mgm_maiden_name", label: "Nazwisko rodowe / Maiden Name" },
-                    { name: "mgm_first_name", label: "Imię/imiona / Given Names" },
+                    { name: "mgm_last_name", label: "Nazwisko / Full last name" },
+                    { name: "mgm_maiden_name", label: "Nazwisko rodowe / Maiden name" },
+                    { name: "mgm_first_name", label: "Imię / imiona / Given names" },
                     { name: "mgm_dob", label: "Data urodzenia / Date of Birth", type: "date" },
                     { name: "mgm_pob", label: "Miejsce urodzenia / Place of Birth" },
                   ])}
@@ -368,8 +368,8 @@ export default function CitizenshipForm() {
                 <div className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
                   <h3 className="text-2xl font-semibold text-foreground">Dziadek ze strony ojca / Paternal Grandfather</h3>
                   {renderFieldGroup([
-                    { name: "pgf_last_name", label: "Nazwisko / Full Last Name" },
-                    { name: "pgf_first_name", label: "Imię/imiona / Given Names" },
+                    { name: "pgf_last_name", label: "Nazwisko / Full last name" },
+                    { name: "pgf_first_name", label: "Imię / imiona / Given names" },
                     { name: "pgf_dob", label: "Data urodzenia / Date of Birth", type: "date" },
                     { name: "pgf_pob", label: "Miejsce urodzenia / Place of Birth" },
                   ])}
@@ -379,9 +379,9 @@ export default function CitizenshipForm() {
                 <div className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
                   <h3 className="text-2xl font-semibold text-foreground">Babka ze strony ojca / Paternal Grandmother</h3>
                   {renderFieldGroup([
-                    { name: "pgm_last_name", label: "Nazwisko / Full Last Name" },
-                    { name: "pgm_maiden_name", label: "Nazwisko rodowe / Maiden Name" },
-                    { name: "pgm_first_name", label: "Imię/imiona / Given Names" },
+                    { name: "pgm_last_name", label: "Nazwisko / Full last name" },
+                    { name: "pgm_maiden_name", label: "Nazwisko rodowe / Maiden name" },
+                    { name: "pgm_first_name", label: "Imię / imiona / Given names" },
                     { name: "pgm_dob", label: "Data urodzenia / Date of Birth", type: "date" },
                     { name: "pgm_pob", label: "Miejsce urodzenia / Place of Birth" },
                   ])}
