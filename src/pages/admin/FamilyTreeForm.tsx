@@ -280,7 +280,7 @@ export default function FamilyTreeForm() {
                   className="p-6 border-2 border-primary/20 rounded-xl bg-primary/5"
                 >
                   {renderCheckboxGroup([
-                    { name: "applicant_is_married", label: "Is Married?" },
+                    { name: "applicant_is_married", label: "Married?" },
                   ])}
                 </motion.div>
 
