@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useState, useEffect } from "react";
-import { Loader2, Save, Download, FileCheck, Sparkles } from "lucide-react";
+import { Loader2, Save, Download, FileCheck, Sparkles, Type } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -16,6 +16,7 @@ import { Calendar as CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useLongPress } from "@/hooks/useLongPress";
+import { useAccessibility } from "@/contexts/AccessibilityContext";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -31,6 +32,7 @@ export default function CitizenshipForm() {
   const { id: caseId } = useParams();
   const { data: masterData, isLoading } = useMasterData(caseId);
   const updateMutation = useUpdateMasterData();
+  const { isLargeFonts, toggleFontSize } = useAccessibility();
   const [formData, setFormData] = useState<any>({});
   const [isGenerating, setIsGenerating] = useState(false);
   const [showClearAllDialog, setShowClearAllDialog] = useState(false);
@@ -104,7 +106,10 @@ export default function CitizenshipForm() {
         className="space-y-2"
         onDoubleClick={() => handleInputChange(name, "")}
       >
-        <Label htmlFor={name} className="text-sm font-normal text-foreground">
+        <Label htmlFor={name} className={cn(
+          "font-light text-foreground/90",
+          isLargeFonts ? "text-xl" : "text-sm"
+        )}>
           {label}
         </Label>
         <Popover>
@@ -112,10 +117,9 @@ export default function CitizenshipForm() {
             <Button
               variant="outline"
               className={cn(
-                "w-full h-14 justify-start text-left font-normal border-2 hover-glow bg-card/50 backdrop-blur transition-all",
+                "w-full h-16 justify-start text-left font-normal border-2 hover-glow bg-card/50 backdrop-blur transition-all",
                 !dateValue && "text-muted-foreground"
               )}
-              style={{ fontSize: '1.125rem', fontWeight: '400' }}
             >
               <CalendarIcon className="mr-2 h-5 w-5" />
               {dateValue ? format(dateValue, "dd/MM/yyyy") : <span>Pick a date</span>}
@@ -151,7 +155,10 @@ export default function CitizenshipForm() {
               renderDateField(field.name, field.label)
             ) : (
               <>
-                <Label htmlFor={field.name} className="text-sm font-normal text-foreground">
+                <Label htmlFor={field.name} className={cn(
+                  "font-light text-foreground/90",
+                  isLargeFonts ? "text-xl" : "text-sm"
+                )}>
                   {field.label}
                 </Label>
                 <Input
@@ -160,8 +167,7 @@ export default function CitizenshipForm() {
                   value={formData[field.name] || ""}
                   onChange={(e) => handleInputChange(field.name, e.target.value.toUpperCase())}
                   placeholder={field.placeholder || ""}
-                  className="h-14 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
-                  style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                  className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
                 />
               </>
             )}
@@ -178,7 +184,10 @@ export default function CitizenshipForm() {
         animate={{ opacity: 1, y: 0 }}
         className="space-y-2"
       >
-        <Label htmlFor={name} className="text-sm font-normal text-foreground">
+        <Label htmlFor={name} className={cn(
+          "font-light text-foreground/90",
+          isLargeFonts ? "text-xl" : "text-sm"
+        )}>
           {label}
         </Label>
         <Textarea
@@ -187,7 +196,6 @@ export default function CitizenshipForm() {
           onChange={(e) => handleInputChange(name, e.target.value.toUpperCase())}
           rows={rows}
           className="border-2 hover-glow focus:shadow-lg transition-all resize-none bg-card/50 backdrop-blur uppercase"
-          style={{ fontSize: '1.125rem', fontWeight: '400' }}
         />
       </motion.div>
     );
@@ -239,6 +247,17 @@ export default function CitizenshipForm() {
                   transition={{ delay: 0.3 }}
                   className="flex gap-3"
                 >
+                  <Button
+                    onClick={toggleFontSize}
+                    size="lg"
+                    variant="ghost"
+                    className={`h-16 w-16 rounded-full transition-all ${
+                      isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground'
+                    }`}
+                    title="Toggle font size"
+                  >
+                    <Type className="h-8 w-8" />
+                  </Button>
                   <Button 
                     onClick={handleSave} 
                     disabled={updateMutation.isPending}

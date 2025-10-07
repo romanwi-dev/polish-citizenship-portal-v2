@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState, useEffect } from "react";
-import { Loader2, Save, Download, Users, Sparkles } from "lucide-react";
+import { Loader2, Save, Download, Users, Sparkles, Type } from "lucide-react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
@@ -15,11 +15,13 @@ import { Calendar as CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useAccessibility } from "@/contexts/AccessibilityContext";
 
 export default function FamilyTreeForm() {
   const { id: caseId } = useParams();
   const { data: masterData, isLoading } = useMasterData(caseId);
   const updateMutation = useUpdateMasterData();
+  const { isLargeFonts, toggleFontSize } = useAccessibility();
   const [formData, setFormData] = useState<any>({});
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -78,7 +80,10 @@ export default function FamilyTreeForm() {
         animate={{ opacity: 1, y: 0 }}
         className="space-y-2"
       >
-        <Label htmlFor={name} className="text-sm font-normal text-foreground">
+        <Label htmlFor={name} className={cn(
+          "font-light text-foreground/90",
+          isLargeFonts ? "text-xl" : "text-sm"
+        )}>
           {label}
         </Label>
         <Popover>
@@ -89,7 +94,6 @@ export default function FamilyTreeForm() {
                 "w-full h-16 justify-start text-left border-2 hover-glow bg-card/50 backdrop-blur",
                 !dateValue && "text-muted-foreground"
               )}
-              style={{ fontSize: '1.125rem', fontWeight: '400' }}
             >
               <CalendarIcon className="mr-2 h-4 w-4" />
               {dateValue ? format(dateValue, "dd/MM/yyyy") : <span>Pick a date</span>}
@@ -126,7 +130,10 @@ export default function FamilyTreeForm() {
               renderDateField(field.name, field.label)
             ) : (
               <>
-                <Label htmlFor={field.name} className="text-sm font-normal text-foreground/90">
+                <Label htmlFor={field.name} className={cn(
+                  "font-light text-foreground/90",
+                  isLargeFonts ? "text-xl" : "text-sm"
+                )}>
                   {field.label}
                 </Label>
                 <Input
@@ -139,7 +146,6 @@ export default function FamilyTreeForm() {
                     "h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur",
                     field.type !== "email" && "uppercase"
                   )}
-                  style={{ fontSize: '1.125rem', fontWeight: '400' }}
                 />
               </>
             )}
@@ -221,6 +227,17 @@ export default function FamilyTreeForm() {
                   transition={{ delay: 0.3 }}
                   className="flex gap-3"
                 >
+                  <Button
+                    onClick={toggleFontSize}
+                    size="lg"
+                    variant="ghost"
+                    className={`h-16 w-16 rounded-full transition-all ${
+                      isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground'
+                    }`}
+                    title="Toggle font size"
+                  >
+                    <Type className="h-8 w-8" />
+                  </Button>
                   <Button 
                     onClick={handleSave} 
                     disabled={updateMutation.isPending}
