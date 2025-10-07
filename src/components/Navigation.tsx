@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, User, LogOut } from "lucide-react";
+import { Menu, User, LogOut, Type } from "lucide-react";
+import { useAccessibility } from "@/contexts/AccessibilityContext";
 import logo from "@/assets/logo.png";
 import { useAuth } from "@/hooks/useAuth";
 import {
@@ -14,6 +15,7 @@ import {
 const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user, signOut } = useAuth(false);
+  const { isLargeFonts, toggleFontSize } = useAccessibility();
 
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -36,6 +38,15 @@ const Navigation = () => {
 
           {/* User Icon & Mobile Menu */}
           <div className="flex items-center gap-2">
+            <Button 
+              variant="ghost" 
+              size="icon"
+              className={`text-foreground hover:text-primary ${isLargeFonts ? 'bg-primary/10' : ''}`}
+              onClick={toggleFontSize}
+              title={isLargeFonts ? "Normal font size" : "Large font size"}
+            >
+              <Type className="h-8 w-8" />
+            </Button>
             <Button 
               variant="ghost" 
               size="icon"

@@ -8,6 +8,8 @@ import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { POAFormField } from "@/components/POAFormField";
 import { Label } from "@/components/ui/label";
+import { useAccessibility } from "@/contexts/AccessibilityContext";
+import { cn } from "@/lib/utils";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLongPressWithFeedback } from "@/hooks/useLongPressWithFeedback";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
@@ -21,6 +23,7 @@ export default function IntakeForm() {
   } = useIntakeData(caseId);
   const updateMutation = useUpdateIntakeData();
   const [showClearDialog, setShowClearDialog] = useState(false);
+  const { isLargeFonts } = useAccessibility();
   const [formData, setFormData] = useState<any>({
     given_names: "",
     last_name: "",
@@ -217,7 +220,10 @@ export default function IntakeForm() {
                 delay: 0.3,
                 duration: 0.4
               }} className="space-y-4" onDoubleClick={() => clearField("civil_status")}>
-                  <Label className="text-sm font-normal text-foreground/90">Civil status</Label>
+                  <Label className={cn(
+                    "font-light text-foreground/90",
+                    isLargeFonts ? "text-xl" : "text-sm"
+                  )}>Civil status</Label>
                   <Select value={formData.civil_status} onValueChange={value => handleInputChange("civil_status", value)}>
                     <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
                       <SelectValue placeholder="Select status" />
@@ -243,7 +249,10 @@ export default function IntakeForm() {
                 clearField("children_count");
                 clearField("has_children");
               }}>
-                  <Label className="text-sm font-normal text-foreground/90">Number of children (including minors)</Label>
+                  <Label className={cn(
+                    "font-light text-foreground/90",
+                    isLargeFonts ? "text-xl" : "text-sm"
+                  )}>Number of children (including minors)</Label>
                   <Select value={formData.children_count?.toString() || "0"} onValueChange={value => {
                   const count = parseInt(value);
                   handleInputChange("children_count", count);
@@ -272,7 +281,10 @@ export default function IntakeForm() {
                   delay: 0.4,
                   duration: 0.4
                 }} className="space-y-4" onDoubleClick={() => clearField("has_minor_children")}>
-                      <Label className="text-sm font-normal text-foreground/90">Do you have minor children (under 18)?</Label>
+                      <Label className={cn(
+                        "font-light text-foreground/90",
+                        isLargeFonts ? "text-xl" : "text-sm"
+                      )}>Do you have minor children (under 18)?</Label>
                       <Select value={formData.has_minor_children ? "yes" : "no"} onValueChange={value => handleInputChange("has_minor_children", value === "yes")}>
                         <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
                           <SelectValue />
@@ -294,7 +306,10 @@ export default function IntakeForm() {
                   delay: 0.45,
                   duration: 0.4
                 }} className="space-y-4" onDoubleClick={() => clearField("minor_children_count")}>
-                        <Label className="text-sm font-normal text-foreground/90">How many minor kids?</Label>
+                        <Label className={cn(
+                          "font-light text-foreground/90",
+                          isLargeFonts ? "text-xl" : "text-sm"
+                        )}>How many minor kids?</Label>
                         <Select value={formData.minor_children_count?.toString() || "0"} onValueChange={value => handleInputChange("minor_children_count", parseInt(value))}>
                           <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
                             <SelectValue />

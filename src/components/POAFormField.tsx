@@ -7,6 +7,7 @@ import { Calendar as CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import { useAccessibility } from "@/contexts/AccessibilityContext";
 
 interface POAFormFieldProps {
   name: string;
@@ -19,6 +20,8 @@ interface POAFormFieldProps {
 }
 
 export function POAFormField({ name, label, type = "text", value, onChange, placeholder, delay = 0 }: POAFormFieldProps) {
+  const { isLargeFonts } = useAccessibility();
+  
   const handleDoubleClick = () => {
     // Don't clear date fields
     if (type === "date") return;
@@ -37,7 +40,10 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
         className="space-y-4"
         onDoubleClick={handleDoubleClick}
       >
-        <Label htmlFor={name} className="text-sm font-normal text-foreground/90">
+        <Label htmlFor={name} className={cn(
+          "font-light text-foreground/90",
+          isLargeFonts ? "text-xl" : "text-sm"
+        )}>
           {label}
         </Label>
         <div
@@ -58,7 +64,10 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
       className="space-y-4"
       onDoubleClick={handleDoubleClick}
     >
-      <Label htmlFor={name} className="text-sm font-normal text-foreground/90">
+      <Label htmlFor={name} className={cn(
+        "font-light text-foreground/90",
+        isLargeFonts ? "text-xl" : "text-sm"
+      )}>
         {label}
       </Label>
       <Input
