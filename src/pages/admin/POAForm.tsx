@@ -11,7 +11,7 @@ import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { POAFormField } from "@/components/POAFormField";
 import { poaFormConfigs } from "@/config/poaFormConfig";
-import { useLongPress } from "@/hooks/useLongPress";
+import { useLongPressWithFeedback } from "@/hooks/useLongPressWithFeedback";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -107,9 +107,10 @@ export default function POAForm() {
     }
   };
 
-  const formLongPress = useLongPress({
+  const { handlers: formLongPressHandlers, isPressed: isFormPressed } = useLongPressWithFeedback({
     onLongPress: () => setShowClearAllDialog(true),
     duration: 5000,
+    feedbackMessage: "Hold for 5 seconds to clear entire form...",
   });
 
   if (isLoading) {
@@ -191,17 +192,20 @@ export default function POAForm() {
                 transition={{ duration: 0.5 }}
               >
                 <Card className="glass-card border-primary/20">
-                  <CardHeader 
-                    className="border-b border-border/50 pb-6"
-                    {...useLongPress({
-                      onLongPress: () => clearCardFields(config),
-                      duration: 2000,
-                    })}
-                  >
+                  <CardHeader className="border-b border-border/50 pb-6">
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                      <CardTitle className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent whitespace-nowrap">
-                        {config.title}
-                      </CardTitle>
+                      <div
+                        {...useLongPressWithFeedback({
+                          onLongPress: () => clearCardFields(config),
+                          duration: 2000,
+                          feedbackMessage: `Hold for 2 seconds to clear ${config.title}...`,
+                        }).handlers}
+                        className="cursor-pointer select-none hover:opacity-80 transition-opacity"
+                      >
+                        <CardTitle className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent whitespace-nowrap">
+                          {config.title}
+                        </CardTitle>
+                      </div>
                       <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
                         <Button 
                           onClick={handleSave} 

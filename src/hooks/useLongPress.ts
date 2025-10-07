@@ -9,7 +9,8 @@ export const useLongPress = ({ onLongPress, duration = 2000 }: UseLongPressOptio
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const isLongPress = useRef(false);
 
-  const start = useCallback(() => {
+  const start = useCallback((e: React.MouseEvent | React.TouchEvent) => {
+    e.preventDefault();
     isLongPress.current = false;
     timerRef.current = setTimeout(() => {
       isLongPress.current = true;
@@ -24,7 +25,8 @@ export const useLongPress = ({ onLongPress, duration = 2000 }: UseLongPressOptio
     }
   }, []);
 
-  const cancel = useCallback(() => {
+  const cancel = useCallback((e: React.MouseEvent | React.TouchEvent) => {
+    e.preventDefault();
     clear();
     isLongPress.current = false;
   }, [clear]);
