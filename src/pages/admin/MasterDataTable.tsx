@@ -380,9 +380,11 @@ export default function MasterDataTable() {
                       animate={{ opacity: 1, y: 0 }}
                       className="p-6 border-2 border-primary/20 rounded-xl bg-primary/5"
                     >
-                      {renderCheckboxGroup([
-                        { name: "applicant_has_minor_children", label: "Minor Children?" },
-                      ])}
+                      <div className="whitespace-nowrap">
+                        {renderCheckboxGroup([
+                          { name: "applicant_has_minor_children", label: "Minor Children?" },
+                        ])}
+                      </div>
                     </motion.div>
                   </div>
 
