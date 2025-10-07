@@ -374,6 +374,17 @@ export default function MasterDataTable() {
                     ])}
                   </motion.div>
 
+                  {/* Minor Children */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="p-6 border-2 border-primary/20 rounded-xl bg-primary/5"
+                  >
+                    {renderCheckboxGroup([
+                      { name: "applicant_has_minor_children", label: "Minor Children?" },
+                    ])}
+                  </motion.div>
+
                   {renderFieldGroup([
                     { name: "applicant_first_name", label: "Given Names" },
                     { name: "applicant_last_name", label: "Full Last Name" },
