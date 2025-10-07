@@ -374,32 +374,55 @@ export default function FamilyTreeForm() {
               }] : [])])}
 
                 {/* 2nd row - Places and emigration */}
-                {renderFieldGroup([{
-                name: "applicant_pob",
-                label: "Place of birth"
-              }, ...(formData.applicant_is_married ? [{
-                name: "place_of_marriage",
-                label: "Place of marriage"
-              }] : []), {
-                name: "applicant_date_of_emigration",
-                label: "Date of emigration",
-                type: "date"
-              }])}
+                {formData.applicant_is_married ? (
+                  renderFieldGroup([{
+                    name: "applicant_pob",
+                    label: "Place of birth"
+                  }, {
+                    name: "place_of_marriage",
+                    label: "Place of marriage"
+                  }, {
+                    name: "applicant_date_of_emigration",
+                    label: "Date of emigration",
+                    type: "date"
+                  }])
+                ) : (
+                  renderFieldGroup([{
+                    name: "applicant_pob",
+                    label: "Place of birth"
+                  }, {
+                    name: "applicant_date_of_emigration",
+                    label: "Date of emigration",
+                    type: "date"
+                  }])
+                )}
 
                 {/* 3rd row - Dates */}
-                {renderFieldGroup([{
-                name: "applicant_dob",
-                label: "Date of birth",
-                type: "date"
-              }, ...(formData.applicant_is_married ? [{
-                name: "date_of_marriage",
-                label: "Date of marriage",
-                type: "date"
-              }] : []), {
-                name: "applicant_date_of_naturalization",
-                label: "Date of naturalization",
-                type: "date"
-              }])}
+                {formData.applicant_is_married ? (
+                  renderFieldGroup([{
+                    name: "applicant_dob",
+                    label: "Date of birth",
+                    type: "date"
+                  }, {
+                    name: "date_of_marriage",
+                    label: "Date of marriage",
+                    type: "date"
+                  }, {
+                    name: "applicant_date_of_naturalization",
+                    label: "Date of naturalization",
+                    type: "date"
+                  }])
+                ) : (
+                  renderFieldGroup([{
+                    name: "applicant_dob",
+                    label: "Date of birth",
+                    type: "date"
+                  }, {
+                    name: "applicant_date_of_naturalization",
+                    label: "Date of naturalization",
+                    type: "date"
+                  }])
+                )}
 
                 {/* Other fields */}
                 {renderFieldGroup([{
