@@ -28,7 +28,7 @@ export const poaFormConfigs: Record<string, POAFormConfig> = {
     fields: [
       { name: "applicant_first_name", label: "Parent First Name(s) / Imię rodzica" },
       { name: "applicant_last_name", label: "Parent Last Name / Nazwisko rodzica" },
-      { name: "applicant_passport_number", label: "Parent ID Document Number / Nr dokumentu tożsamości rodzica" },
+      { name: "applicant_passport_number", label: "Parent ID Document Number / Nr dokumentu tożsamości" },
       { name: "child_1_first_name", label: "Child First Name(s) / Imię dziecka" },
       { name: "child_1_last_name", label: "Child Last Name / Nazwisko dziecka" },
       { name: "poa_date_filed", label: "Date Signed / Data Podpisania", type: "date" },
