@@ -359,28 +359,29 @@ export default function POAForm() {
                 </CardHeader>
                 <CardContent className="p-6 md:p-10 space-y-10">
                   <div>
-                    <h3 className="text-xl font-semibold mb-6 text-foreground">Husband Information / Dane męża</h3>
+                    <h3 className="text-xl font-semibold mb-6 text-foreground">Applicant Information</h3>
                     {renderFieldGroup([
-                      { name: "applicant_first_name", label: "Husband First Name(s) / Imię męża" },
-                      { name: "applicant_last_name", label: "Husband Last Name / Nazwisko męża" },
-                      { name: "applicant_passport_number", label: "Husband ID Document Number / Nr dokumentu męża" },
+                      { name: "applicant_first_name", label: "Applicant First Name(s)" },
+                      { name: "applicant_last_name", label: "Applicant Last Name" },
+                      { name: "applicant_sex", label: "Applicant Sex (Male/Female)" },
+                      { name: "applicant_passport_number", label: "Applicant ID Document Number" },
                     ])}
                   </div>
 
                   <div>
-                    <h3 className="text-xl font-semibold mb-6 text-foreground">Wife Information / Dane żony</h3>
+                    <h3 className="text-xl font-semibold mb-6 text-foreground">Spouse Information</h3>
                     {renderFieldGroup([
-                      { name: "spouse_first_name", label: "Wife First Name(s) / Imię żony" },
-                      { name: "spouse_last_name", label: "Wife Last Name / Nazwisko żony" },
+                      { name: "spouse_first_name", label: "Spouse First Name(s)" },
+                      { name: "spouse_last_name", label: "Spouse Last Name" },
                     ])}
                   </div>
 
                   <div>
-                    <h3 className="text-xl font-semibold mb-6 text-foreground">Children Surnames / Nazwiska dzieci</h3>
+                    <h3 className="text-xl font-semibold mb-6 text-foreground">Children Surnames</h3>
                     {renderFieldGroup([
-                      { name: "child_1_last_name", label: "Child 1 Surname / Nazwisko dziecka 1" },
-                      { name: "child_2_last_name", label: "Child 2 Surname / Nazwisko dziecka 2" },
-                      { name: "child_3_last_name", label: "Child 3 Surname / Nazwisko dziecka 3" },
+                      { name: "child_1_last_name", label: "Child 1 Surname" },
+                      { name: "child_2_last_name", label: "Child 2 Surname" },
+                      { name: "child_3_last_name", label: "Child 3 Surname" },
                     ])}
                   </div>
                 </CardContent>
