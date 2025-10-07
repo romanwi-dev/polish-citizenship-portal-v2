@@ -1,15 +1,16 @@
 import { useParams } from "react-router-dom";
 import { useMasterData, useUpdateMasterData } from "@/hooks/useMasterData";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
-import { Loader2, Save, Download, Users } from "lucide-react";
+import { Loader2, Save, Download, Users, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar as CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -71,18 +72,25 @@ export default function FamilyTreeForm() {
     const dateValue = formData[name] ? new Date(formData[name]) : undefined;
     
     return (
-      <div className="space-y-3">
-        <Label className="text-base font-medium">{label}</Label>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="space-y-3"
+      >
+        <Label htmlFor={name} className="text-base font-medium text-foreground">
+          {label}
+        </Label>
         <Popover>
           <PopoverTrigger asChild>
             <Button
               variant="outline"
               className={cn(
-                "w-full justify-start text-left font-normal",
+                "w-full h-14 justify-start text-left font-normal border-2 hover-glow bg-card/50 backdrop-blur",
                 !dateValue && "text-muted-foreground"
               )}
             >
-              {dateValue ? format(dateValue, "dd/MM/yyyy") : "Pick a date"}
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {dateValue ? format(dateValue, "dd/MM/yyyy") : <span>Pick a date</span>}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
@@ -92,193 +100,323 @@ export default function FamilyTreeForm() {
               onSelect={(date) => handleInputChange(name, date ? format(date, "yyyy-MM-dd") : "")}
               disabled={(date) => date > new Date("2030-12-31") || date < new Date("1900-01-01")}
               initialFocus
+              className={cn("p-3 pointer-events-auto")}
             />
           </PopoverContent>
         </Popover>
+      </motion.div>
+    );
+  };
+
+  const renderFieldGroup = (fields: Array<{ name: string; label: string; type?: string; placeholder?: string }>) => {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {fields.map((field, idx) => (
+          <motion.div
+            key={field.name}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: idx * 0.05, duration: 0.4 }}
+            className="space-y-3"
+          >
+            {field.type === "date" ? (
+              renderDateField(field.name, field.label)
+            ) : (
+              <>
+                <Label htmlFor={field.name} className="text-base font-medium text-foreground">
+                  {field.label}
+                </Label>
+                <Input
+                  id={field.name}
+                  type={field.type || "text"}
+                  value={formData[field.name] || ""}
+                  onChange={(e) => handleInputChange(field.name, e.target.value)}
+                  placeholder={formData[field.name] ? "" : (field.placeholder || `Enter ${field.label.toLowerCase()}`)}
+                  className="h-14 border-2 text-base hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+                />
+              </>
+            )}
+          </motion.div>
+        ))}
       </div>
     );
   };
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin" />
+      <div className="flex items-center justify-center min-h-screen bg-background">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+        >
+          <Sparkles className="h-16 w-16 text-primary" />
+        </motion.div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto py-8 px-4 max-w-6xl">
-      <Card>
-        <CardHeader className="border-b">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Users className="h-8 w-8 text-primary" />
-              <CardTitle className="text-3xl font-bold">Family Tree Form</CardTitle>
-            </div>
-            <div className="flex gap-3">
-              <Button onClick={handleSave} disabled={updateMutation.isPending}>
-                {updateMutation.isPending ? (
-                  <><Loader2 className="h-4 w-4 animate-spin mr-2" />Saving...</>
-                ) : (
-                  <><Save className="h-4 w-4 mr-2" />Save</>
-                )}
-              </Button>
-              <Button onClick={handleGeneratePDF} disabled={isGenerating} variant="secondary">
-                {isGenerating ? (
-                  <><Loader2 className="h-4 w-4 animate-spin mr-2" />Generating...</>
-                ) : (
-                  <><Download className="h-4 w-4 mr-2" />Generate PDF</>
-                )}
-              </Button>
-            </div>
-          </div>
-        </CardHeader>
-        
-        <CardContent className="p-6 space-y-8">
-          {/* Applicant Section */}
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold border-b pb-2">Applicant Information</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>Full Name</Label>
-                <Input
-                  value={`${formData.applicant_first_name || ''} ${formData.applicant_last_name || ''}`.trim()}
-                  onChange={(e) => {
-                    const names = e.target.value.split(' ');
-                    handleInputChange('applicant_first_name', names[0] || '');
-                    handleInputChange('applicant_last_name', names.slice(1).join(' ') || '');
-                  }}
-                  placeholder="Full name"
-                />
-              </div>
-              {renderDateField('applicant_dob', 'Date of Birth')}
-              <div className="space-y-2">
-                <Label>Place of Birth</Label>
-                <Input
-                  value={formData.applicant_pob || ''}
-                  onChange={(e) => handleInputChange('applicant_pob', e.target.value)}
-                />
-              </div>
-              {renderDateField('date_of_marriage', 'Date of Marriage')}
-              <div className="space-y-2">
-                <Label>Place of Marriage</Label>
-                <Input
-                  value={formData.place_of_marriage || ''}
-                  onChange={(e) => handleInputChange('place_of_marriage', e.target.value)}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Spouse Full Name & Maiden Name</Label>
-                <Input
-                  value={`${formData.spouse_first_name || ''} ${formData.spouse_last_name || ''} ${formData.spouse_maiden_name ? `(${formData.spouse_maiden_name})` : ''}`.trim()}
-                  onChange={(e) => {
-                    const parts = e.target.value.split('(');
-                    const names = parts[0].trim().split(' ');
-                    handleInputChange('spouse_first_name', names[0] || '');
-                    handleInputChange('spouse_last_name', names.slice(1).join(' ') || '');
-                    if (parts[1]) {
-                      handleInputChange('spouse_maiden_name', parts[1].replace(')', '').trim());
-                    }
-                  }}
-                />
-              </div>
-            </div>
-          </div>
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
 
-          {/* Minor Children Section */}
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold border-b pb-2">Minor Children (up to 3)</h3>
-            {[1, 2, 3].map((num) => (
-              <div key={num} className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 border rounded-lg">
-                <div className="space-y-2">
-                  <Label>Child {num} Full Name</Label>
-                  <Input
-                    value={`${formData[`child_${num}_first_name`] || ''} ${formData[`child_${num}_last_name`] || ''}`.trim()}
-                    onChange={(e) => {
-                      const names = e.target.value.split(' ');
-                      handleInputChange(`child_${num}_first_name`, names[0] || '');
-                      handleInputChange(`child_${num}_last_name`, names.slice(1).join(' ') || '');
-                    }}
-                  />
-                </div>
-                {renderDateField(`child_${num}_dob`, `Date of Birth`)}
-                <div className="space-y-2">
-                  <Label>Place of Birth</Label>
-                  <Input
-                    value={formData[`child_${num}_pob`] || ''}
-                    onChange={(e) => handleInputChange(`child_${num}_pob`, e.target.value)}
-                  />
-                </div>
+      <div className="container mx-auto py-12 px-4 md:px-6 lg:px-8 relative z-10 max-w-7xl">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="mb-12"
+        >
+          <Card className="glass-card border-primary/20 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5" />
+            <CardHeader className="relative pb-8 pt-8">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                <motion.div
+                  initial={{ x: -20, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
+                    Family Tree Form
+                  </CardTitle>
+                  <CardDescription className="text-xl md:text-2xl mt-4 text-muted-foreground leading-relaxed">
+                    Complete generational documentation
+                  </CardDescription>
+                </motion.div>
+                <motion.div
+                  initial={{ x: 20, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                  className="flex gap-3"
+                >
+                  <Button 
+                    onClick={handleSave} 
+                    disabled={updateMutation.isPending}
+                    size="lg" 
+                    className="text-xl font-bold px-12 h-16 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30"
+                  >
+                    {updateMutation.isPending ? (
+                      <>
+                        <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                          Saving...
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <Save className="h-5 w-5 mr-2" />
+                        <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                          Save
+                        </span>
+                      </>
+                    )}
+                  </Button>
+                  <Button 
+                    onClick={handleGeneratePDF} 
+                    disabled={isGenerating}
+                    size="lg"
+                    variant="secondary"
+                    className="text-xl font-bold px-12 h-16"
+                  >
+                    {isGenerating ? (
+                      <><Loader2 className="h-5 w-5 animate-spin mr-2" />Generating...</>
+                    ) : (
+                      <><Download className="h-5 w-5 mr-2" />Generate PDF</>
+                    )}
+                  </Button>
+                </motion.div>
               </div>
-            ))}
-          </div>
+            </CardHeader>
+          </Card>
+        </motion.div>
+
+        {/* Form Sections */}
+        <div className="space-y-8">
+          {/* Applicant Section */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Card className="glass-card border-primary/20">
+              <CardHeader className="border-b border-border/50 pb-6">
+                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                  Applicant Information
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 md:p-10 space-y-10">
+                {renderFieldGroup([
+                  { name: "applicant_first_name", label: "Full Name / Imię i nazwisko" },
+                  { name: "applicant_last_name", label: "Last Name / Nazwisko" },
+                  { name: "applicant_dob", label: "Date of Birth / Data urodzenia", type: "date" },
+                  { name: "applicant_pob", label: "Place of Birth / Miejsce urodzenia" },
+                ])}
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Spouse Section */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <Card className="glass-card border-primary/20">
+              <CardHeader className="border-b border-border/50 pb-6">
+                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                  Applicant's Spouse
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 md:p-10 space-y-10">
+                {renderFieldGroup([
+                  { name: "spouse_first_name", label: "Spouse Full Name / Imię i nazwisko małżonka" },
+                  { name: "spouse_maiden_name", label: "Spouse Maiden Name / Nazwisko panieńskie" },
+                  { name: "date_of_marriage", label: "Date of Marriage / Data zawarcia związku małżeńskiego", type: "date" },
+                  { name: "place_of_marriage", label: "Place of Marriage / Miejsce zawarcia związku" },
+                ])}
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Children Section */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <Card className="glass-card border-primary/20">
+              <CardHeader className="border-b border-border/50 pb-6">
+                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                  Children (up to 3)
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 md:p-10 space-y-10">
+                {[1, 2, 3].map((num) => (
+                  <div key={num} className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
+                    <h3 className="text-xl font-semibold text-foreground">Child {num}</h3>
+                    {renderFieldGroup([
+                      { name: `child_${num}_first_name`, label: `Full Name / Imię i nazwisko` },
+                      { name: `child_${num}_dob`, label: `Date of Birth / Data urodzenia`, type: "date" },
+                      { name: `child_${num}_pob`, label: `Place of Birth / Miejsce urodzenia` },
+                    ])}
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </motion.div>
 
           {/* Polish Parent Section */}
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold border-b pb-2">Polish Parent</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>Full Name</Label>
-                <Input
-                  value={formData.ancestry_line === 'father' 
-                    ? `${formData.father_first_name || ''} ${formData.father_last_name || ''}`.trim()
-                    : `${formData.mother_first_name || ''} ${formData.mother_last_name || ''}`.trim()
-                  }
-                  readOnly
-                  className="bg-muted"
-                />
-              </div>
-              {renderDateField(formData.ancestry_line === 'father' ? 'father_dob' : 'mother_dob', 'Date of Birth')}
-              <div className="space-y-2">
-                <Label>Place of Birth</Label>
-                <Input
-                  value={formData.ancestry_line === 'father' ? formData.father_pob || '' : formData.mother_pob || ''}
-                  readOnly
-                  className="bg-muted"
-                />
-              </div>
-              {renderDateField('father_mother_marriage_date', 'Date of Marriage')}
-              <div className="space-y-2">
-                <Label>Place of Marriage</Label>
-                <Input
-                  value={formData.father_mother_marriage_place || ''}
-                  onChange={(e) => handleInputChange('father_mother_marriage_place', e.target.value)}
-                />
-              </div>
-              {renderDateField(formData.ancestry_line === 'father' ? 'father_date_of_emigration' : 'mother_date_of_emigration', 'Date of Emigration')}
-              {renderDateField(formData.ancestry_line === 'father' ? 'father_date_of_naturalization' : 'mother_date_of_naturalization', 'Date of Naturalization')}
-            </div>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <Card className="glass-card border-primary/20">
+              <CardHeader className="border-b border-border/50 pb-6">
+                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                  Polish Parent
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 md:p-10 space-y-10">
+                {renderFieldGroup([
+                  { name: formData.ancestry_line === 'father' ? 'father_first_name' : 'mother_first_name', label: "Full Name / Imię i nazwisko" },
+                  { name: formData.ancestry_line === 'father' ? 'father_dob' : 'mother_dob', label: "Date of Birth / Data urodzenia", type: "date" },
+                  { name: formData.ancestry_line === 'father' ? 'father_pob' : 'mother_pob', label: "Place of Birth / Miejsce urodzenia" },
+                  { name: "father_mother_marriage_date", label: "Date of Marriage / Data małżeństwa", type: "date" },
+                  { name: "father_mother_marriage_place", label: "Place of Marriage / Miejsce małżeństwa" },
+                  { name: formData.ancestry_line === 'father' ? 'father_date_of_emigration' : 'mother_date_of_emigration', label: "Date of Emigration / Data emigracji", type: "date" },
+                  { name: formData.ancestry_line === 'father' ? 'father_date_of_naturalization' : 'mother_date_of_naturalization', label: "Date of Naturalization / Data naturalizacji", type: "date" },
+                ])}
+              </CardContent>
+            </Card>
+          </motion.div>
 
           {/* Polish Grandparent Section */}
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold border-b pb-2">Polish Grandparent</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>Full Name</Label>
-                <Input
-                  value={
-                    formData.ancestry_line === 'pgf' ? `${formData.pgf_first_name || ''} ${formData.pgf_last_name || ''}`.trim() :
-                    formData.ancestry_line === 'pgm' ? `${formData.pgm_first_name || ''} ${formData.pgm_last_name || ''}`.trim() :
-                    formData.ancestry_line === 'mgf' ? `${formData.mgf_first_name || ''} ${formData.mgf_last_name || ''}`.trim() :
-                    formData.ancestry_line === 'mgm' ? `${formData.mgm_first_name || ''} ${formData.mgm_last_name || ''}`.trim() : ''
-                  }
-                  readOnly
-                  className="bg-muted"
-                />
-              </div>
-              {renderDateField(
-                formData.ancestry_line === 'pgf' ? 'pgf_dob' :
-                formData.ancestry_line === 'pgm' ? 'pgm_dob' :
-                formData.ancestry_line === 'mgf' ? 'mgf_dob' :
-                formData.ancestry_line === 'mgm' ? 'mgm_dob' : 'pgf_dob',
-                'Date of Birth'
-              )}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            <Card className="glass-card border-primary/20">
+              <CardHeader className="border-b border-border/50 pb-6">
+                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                  Polish Grandparent
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 md:p-10 space-y-10">
+                {renderFieldGroup([
+                  { 
+                    name: formData.ancestry_line === 'pgf' ? 'pgf_first_name' :
+                          formData.ancestry_line === 'pgm' ? 'pgm_first_name' :
+                          formData.ancestry_line === 'mgf' ? 'mgf_first_name' :
+                          'mgm_first_name', 
+                    label: "Full Name / Imię i nazwisko" 
+                  },
+                  { 
+                    name: formData.ancestry_line === 'pgf' ? 'pgf_dob' :
+                          formData.ancestry_line === 'pgm' ? 'pgm_dob' :
+                          formData.ancestry_line === 'mgf' ? 'mgf_dob' :
+                          'mgm_dob', 
+                    label: "Date of Birth / Data urodzenia", 
+                    type: "date" 
+                  },
+                  { 
+                    name: formData.ancestry_line === 'pgf' ? 'pgf_pob' :
+                          formData.ancestry_line === 'pgm' ? 'pgm_pob' :
+                          formData.ancestry_line === 'mgf' ? 'mgf_pob' :
+                          'mgm_pob', 
+                    label: "Place of Birth / Miejsce urodzenia" 
+                  },
+                ])}
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Great-Grandparents Section */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+          >
+            <Card className="glass-card border-primary/20">
+              <CardHeader className="border-b border-border/50 pb-6">
+                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                  Great-Grandparents
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 md:p-10 space-y-10">
+                <div className="space-y-8">
+                  <div className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
+                    <h3 className="text-xl font-semibold text-foreground">Great-Grandfather / Pradziadek</h3>
+                    {renderFieldGroup([
+                      { name: "pggf_first_name", label: "Full Name / Imię i nazwisko" },
+                      { name: "pggf_dob", label: "Date of Birth / Data urodzenia", type: "date" },
+                      { name: "pggf_pob", label: "Place of Birth / Miejsce urodzenia" },
+                    ])}
+                  </div>
+
+                  <div className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
+                    <h3 className="text-xl font-semibold text-foreground">Great-Grandmother / Prababcia</h3>
+                    {renderFieldGroup([
+                      { name: "pggm_first_name", label: "Full Name / Imię i nazwisko" },
+                      { name: "pggm_maiden_name", label: "Maiden Name / Nazwisko panieńskie" },
+                      { name: "pggm_dob", label: "Date of Birth / Data urodzenia", type: "date" },
+                      { name: "pggm_pob", label: "Place of Birth / Miejsce urodzenia" },
+                    ])}
+                  </div>
+
+                  {renderFieldGroup([
+                    { name: "pggf_pggm_marriage_date", label: "Date of Marriage / Data małżeństwa", type: "date" },
+                    { name: "pggf_pggm_marriage_place", label: "Place of Marriage / Miejsce małżeństwa" },
+                  ])}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,17 +1,18 @@
 import { useParams } from "react-router-dom";
 import { useMasterData, useUpdateMasterData } from "@/hooks/useMasterData";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
-import { Loader2, Save, Download, FileText } from "lucide-react";
+import { Loader2, Save, Download, FileText, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { format } from "date-fns";
+import { motion } from "framer-motion";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar as CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
 export default function CivilRegistryForm() {
@@ -36,13 +37,13 @@ export default function CivilRegistryForm() {
     updateMutation.mutate({ caseId, updates: formData });
   };
 
-  const handleGeneratePDF = async (formType: string, label: string) => {
+  const handleGeneratePDF = async () => {
     try {
       setIsGenerating(true);
-      toast.loading(`Generating ${label}...`);
+      toast.loading("Generating Civil Registry Application PDF...");
 
       const { data, error } = await supabase.functions.invoke('fill-pdf', {
-        body: { caseId, templateType: formType },
+        body: { caseId, templateType: 'registration' },
       });
 
       if (error) throw error;
@@ -51,14 +52,14 @@ export default function CivilRegistryForm() {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `${formType}-${caseId}.pdf`;
+      link.download = `civil-registry-${caseId}.pdf`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
 
       toast.dismiss();
-      toast.success(`${label} generated successfully!`);
+      toast.success("Civil Registry Application PDF generated successfully!");
     } catch (error: any) {
       toast.dismiss();
       toast.error(`Failed to generate PDF: ${error.message}`);
@@ -71,18 +72,25 @@ export default function CivilRegistryForm() {
     const dateValue = formData[name] ? new Date(formData[name]) : undefined;
     
     return (
-      <div className="space-y-3">
-        <Label className="text-base font-medium">{label}</Label>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="space-y-3"
+      >
+        <Label htmlFor={name} className="text-base font-medium text-foreground">
+          {label}
+        </Label>
         <Popover>
           <PopoverTrigger asChild>
             <Button
               variant="outline"
               className={cn(
-                "w-full justify-start text-left font-normal",
+                "w-full h-14 justify-start text-left font-normal border-2 hover-glow bg-card/50 backdrop-blur",
                 !dateValue && "text-muted-foreground"
               )}
             >
-              {dateValue ? format(dateValue, "dd/MM/yyyy") : "Pick a date"}
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {dateValue ? format(dateValue, "dd/MM/yyyy") : <span>Pick a date</span>}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
@@ -92,136 +100,208 @@ export default function CivilRegistryForm() {
               onSelect={(date) => handleInputChange(name, date ? format(date, "yyyy-MM-dd") : "")}
               disabled={(date) => date > new Date("2030-12-31") || date < new Date("1900-01-01")}
               initialFocus
+              className={cn("p-3 pointer-events-auto")}
             />
           </PopoverContent>
         </Popover>
+      </motion.div>
+    );
+  };
+
+  const renderFieldGroup = (fields: Array<{ name: string; label: string; type?: string; placeholder?: string }>) => {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {fields.map((field, idx) => (
+          <motion.div
+            key={field.name}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: idx * 0.05, duration: 0.4 }}
+            className="space-y-3"
+          >
+            {field.type === "date" ? (
+              renderDateField(field.name, field.label)
+            ) : (
+              <>
+                <Label htmlFor={field.name} className="text-base font-medium text-foreground">
+                  {field.label}
+                </Label>
+                <Input
+                  id={field.name}
+                  type={field.type || "text"}
+                  value={formData[field.name] || ""}
+                  onChange={(e) => handleInputChange(field.name, e.target.value)}
+                  placeholder={formData[field.name] ? "" : (field.placeholder || `Enter ${field.label.toLowerCase()}`)}
+                  className="h-14 border-2 text-base hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+                />
+              </>
+            )}
+          </motion.div>
+        ))}
       </div>
     );
   };
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin" />
+      <div className="flex items-center justify-center min-h-screen bg-background">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+        >
+          <Sparkles className="h-16 w-16 text-primary" />
+        </motion.div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto py-8 px-4 max-w-6xl">
-      <Card>
-        <CardHeader className="border-b">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <FileText className="h-8 w-8 text-primary" />
-              <CardTitle className="text-3xl font-bold">Civil Registry Applications</CardTitle>
-            </div>
-            <Button onClick={handleSave} disabled={updateMutation.isPending}>
-              {updateMutation.isPending ? (
-                <><Loader2 className="h-4 w-4 animate-spin mr-2" />Saving...</>
-              ) : (
-                <><Save className="h-4 w-4 mr-2" />Save</>
-              )}
-            </Button>
-          </div>
-        </CardHeader>
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
 
-        <CardContent className="p-6">
-          <Tabs defaultValue="registration" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-6">
-              <TabsTrigger value="registration">Foreign Act Registration</TabsTrigger>
-              <TabsTrigger value="supplementation">Birth Certificate Supplementation</TabsTrigger>
-            </TabsList>
+      <div className="container mx-auto py-12 px-4 md:px-6 lg:px-8 relative z-10 max-w-7xl">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="mb-12"
+        >
+          <Card className="glass-card border-primary/20 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5" />
+            <CardHeader className="relative pb-8 pt-8">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                <motion.div
+                  initial={{ x: -20, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
+                    Civil Registry Application
+                  </CardTitle>
+                  <CardDescription className="text-xl md:text-2xl mt-4 text-muted-foreground leading-relaxed">
+                    Wniosek o wpisanie zagranicznego aktu stanu cywilnego
+                  </CardDescription>
+                </motion.div>
+                <motion.div
+                  initial={{ x: 20, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                  className="flex gap-3"
+                >
+                  <Button 
+                    onClick={handleSave} 
+                    disabled={updateMutation.isPending}
+                    size="lg" 
+                    className="text-xl font-bold px-12 h-16 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30"
+                  >
+                    {updateMutation.isPending ? (
+                      <>
+                        <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                          Saving...
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <Save className="h-5 w-5 mr-2" />
+                        <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                          Save
+                        </span>
+                      </>
+                    )}
+                  </Button>
+                  <Button 
+                    onClick={handleGeneratePDF} 
+                    disabled={isGenerating}
+                    size="lg"
+                    variant="secondary"
+                    className="text-xl font-bold px-12 h-16"
+                  >
+                    {isGenerating ? (
+                      <><Loader2 className="h-5 w-5 animate-spin mr-2" />Generating...</>
+                    ) : (
+                      <><Download className="h-5 w-5 mr-2" />Generate PDF</>
+                    )}
+                  </Button>
+                </motion.div>
+              </div>
+            </CardHeader>
+          </Card>
+        </motion.div>
 
-            {/* Registration Form */}
-            <TabsContent value="registration" className="space-y-6">
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold">Foreign Act Registration Application</h3>
-                <p className="text-sm text-muted-foreground">
-                  Application for registering a foreign civil status document (birth, marriage, etc.) in Polish civil registry
+        {/* Form Section */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Card className="glass-card border-primary/20">
+            <CardHeader className="border-b border-border/50 pb-6">
+              <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                Registration of Foreign Civil Status Record
+              </CardTitle>
+              <CardDescription className="text-lg mt-2">
+                Request to register foreign birth/marriage certificate in Polish civil registry
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-6 md:p-10 space-y-10">
+              <div className="bg-muted/30 rounded-lg p-6 border-2 border-primary/20">
+                <h3 className="text-xl font-semibold mb-4 text-foreground">Document Information</h3>
+                <p className="text-muted-foreground mb-4">
+                  Zagraniczny akt stanu cywilnego został sporządzony w ____ na imię (imiona) i nazwisko/a ____
                 </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label>Applicant Name</Label>
-                    <Input
-                      value={`${formData.applicant_first_name || ''} ${formData.applicant_last_name || ''}`.trim()}
-                      readOnly
-                      className="bg-muted"
-                    />
+                {renderFieldGroup([
+                  { name: "applicant_first_name", label: "Full Name on Document / Imię i nazwisko na akcie" },
+                  { name: "applicant_pob", label: "Place Where Document Was Issued / Miejsce sporządzenia aktu" },
+                  { name: "applicant_dob", label: "Event Date / Data zdarzenia", type: "date" },
+                ])}
+              </div>
+
+              <div className="bg-muted/30 rounded-lg p-6 border-2 border-primary/20">
+                <h3 className="text-xl font-semibold mb-4 text-foreground">Required Documents / Do podania załączam</h3>
+                <div className="space-y-3 text-muted-foreground">
+                  <div className="flex items-center gap-3">
+                    <div className="h-2 w-2 rounded-full bg-primary"></div>
+                    <span>1. Oryginał aktu z tłumaczeniem przysięgłym na jęz. polski</span>
                   </div>
-                  {renderDateField('applicant_dob', 'Event Date')}
-                  <div className="space-y-2">
-                    <Label>Event Location</Label>
-                    <Input
-                      value={formData.applicant_pob || ''}
-                      readOnly
-                      className="bg-muted"
-                    />
+                  <div className="flex items-center gap-3">
+                    <div className="h-2 w-2 rounded-full bg-primary"></div>
+                    <span>2. Dowód uiszczenia opłaty skarbowej</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="h-2 w-2 rounded-full bg-primary"></div>
+                    <span>3. Pełnomocnictwo</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="h-2 w-2 rounded-full bg-primary"></div>
+                    <span>4. Kopia paszportu</span>
                   </div>
                 </div>
-                <Button 
-                  onClick={() => handleGeneratePDF('registration', 'Registration Application')} 
-                  disabled={isGenerating}
-                  className="w-full"
-                >
-                  {isGenerating ? (
-                    <><Loader2 className="h-4 w-4 animate-spin mr-2" />Generating...</>
-                  ) : (
-                    <><Download className="h-4 w-4 mr-2" />Generate Registration Form</>
-                  )}
-                </Button>
               </div>
-            </TabsContent>
 
-            {/* Supplementation Form */}
-            <TabsContent value="supplementation" className="space-y-6">
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold">Birth Certificate Supplementation</h3>
-                <p className="text-sm text-muted-foreground">
-                  Application to supplement/complete Polish birth certificate with missing parental information
+              <div className="bg-muted/30 rounded-lg p-6 border-2 border-primary/20">
+                <h3 className="text-xl font-semibold mb-4 text-foreground">Declaration / Oświadczenie</h3>
+                <p className="text-muted-foreground italic">
+                  "Oświadczam, że ten akt nie został zarejestrowany w księgach stanu cywilnego na terenie RP."
                 </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label>Applicant Name</Label>
-                    <Input
-                      value={`${formData.applicant_first_name || ''} ${formData.applicant_last_name || ''}`.trim()}
-                      readOnly
-                      className="bg-muted"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Father's Surname</Label>
-                    <Input
-                      value={formData.father_last_name || ''}
-                      readOnly
-                      className="bg-muted"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Mother's Maiden Name</Label>
-                    <Input
-                      value={formData.mother_maiden_name || ''}
-                      readOnly
-                      className="bg-muted"
-                    />
-                  </div>
-                </div>
-                <Button 
-                  onClick={() => handleGeneratePDF('uzupelnienie', 'Supplementation Form')} 
-                  disabled={isGenerating}
-                  className="w-full"
-                >
-                  {isGenerating ? (
-                    <><Loader2 className="h-4 w-4 animate-spin mr-2" />Generating...</>
-                  ) : (
-                    <><Download className="h-4 w-4 mr-2" />Generate Supplementation Form</>
-                  )}
-                </Button>
+                <p className="text-sm text-muted-foreground mt-4">
+                  I declare that this record has not been registered in civil status books in the Republic of Poland.
+                </p>
               </div>
-            </TabsContent>
-          </Tabs>
-        </CardContent>
-      </Card>
+
+              <div className="bg-muted/30 rounded-lg p-6 border-2 border-primary/20">
+                <h3 className="text-xl font-semibold mb-4 text-foreground">Delivery Method / Sposób odbioru dokumentów</h3>
+                <p className="text-muted-foreground">
+                  Wysłać do pełnomocnika / Send to authorized representative
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </div>
     </div>
   );
 }
