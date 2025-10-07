@@ -207,7 +207,7 @@ export default function MasterDataTable() {
           initial={{ opacity: 0, y: -50 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ duration: 0.8 }}
-          className="sticky top-0 z-50 mb-12 bg-background/95 backdrop-blur-lg border-b border-primary/20"
+          className="sticky top-0 z-50 mb-8 bg-background/95 backdrop-blur-lg border-b border-primary/20"
         >
           <Card className="glass-card border-primary/20 overflow-hidden rounded-none border-x-0 border-t-0">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5" />
@@ -218,33 +218,66 @@ export default function MasterDataTable() {
                     Master Data Form
                   </CardTitle>
                 </motion.div>
-                <div className="flex items-center gap-3">
-                  <Button 
-                    onClick={handleSave} 
-                    disabled={updateMutation.isPending} 
-                    size="default" 
-                    className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 md:px-[50px]"
-                  >
-                    {updateMutation.isPending ? (
-                      <>
-                        <Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
-                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                          Saving...
-                        </span>
-                      </>
-                    ) : (
-                      <>
-                        <Save className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-                        <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                          Save data
-                        </span>
-                      </>
-                    )}
-                  </Button>
-                </div>
               </div>
             </CardHeader>
           </Card>
+        </motion.div>
+
+        {/* Action Buttons Section */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          transition={{ duration: 0.5 }}
+          className="mb-8 relative z-[60]"
+        >
+          <div className="flex gap-3 overflow-x-auto pb-2 justify-between bg-background/95 backdrop-blur-lg p-4 rounded-lg">
+            <Button 
+              onClick={handleSave} 
+              disabled={updateMutation.isPending} 
+              size="default" 
+              className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]"
+            >
+              {updateMutation.isPending ? (
+                <>
+                  <Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
+                  <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                    Saving...
+                  </span>
+                </>
+              ) : (
+                <>
+                  <Save className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                    Save data
+                  </span>
+                </>
+              )}
+            </Button>
+            <Button variant="outline" className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]">
+              <GitBranch className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
+              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                New Button
+              </span>
+            </Button>
+            <Button variant="outline" className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]">
+              <GitBranch className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
+              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                New Button
+              </span>
+            </Button>
+            <Button variant="outline" className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]">
+              <GitBranch className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
+              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                New Button
+              </span>
+            </Button>
+            <Button variant="outline" className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]">
+              <GitBranch className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
+              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                New Button
+              </span>
+            </Button>
+          </div>
         </motion.div>
 
         {/* Premium Tabs */}
