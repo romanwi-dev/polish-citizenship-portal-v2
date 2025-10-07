@@ -13,35 +13,35 @@ export interface POAFormConfig {
 
 export const poaFormConfigs: Record<string, POAFormConfig> = {
   adult: {
-    title: "Adult Power of Attorney",
+    title: "POA Adult",
     pdfType: "poa-adult",
     fields: [
       { name: "applicant_first_name", label: "Applicant Given Names / Imię" },
       { name: "applicant_last_name", label: "Applicant Full Last Name / Nazwisko" },
-      { name: "applicant_passport_number", label: "ID Document Number / Nr dokumentu tożsamości" },
+      { name: "applicant_passport_number", label: "ID Number / Nr dokumentu tożsamości" },
       { name: "poa_date_filed", label: "Date Signed / Data Podpisania", type: "date" },
     ]
   },
   minor: {
-    title: "Minor Power of Attorney",
+    title: "POA Minor",
     pdfType: "poa-minor",
     fields: [
       { name: "applicant_first_name", label: "Parent Given Names / Imię rodzica" },
       { name: "applicant_last_name", label: "Parent Full Last Name / Nazwisko rodzica" },
-      { name: "applicant_passport_number", label: "Parent ID Document Number / Nr dokumentu tożsamości" },
+      { name: "applicant_passport_number", label: "Parent ID Number / Nr dokumentu tożsamości" },
       { name: "child_1_first_name", label: "Child Given Names / Imię dziecka" },
       { name: "child_1_last_name", label: "Child Full Last Name / Nazwisko dziecka" },
       { name: "poa_date_filed", label: "Date Signed / Data Podpisania", type: "date" },
     ]
   },
   spouses: {
-    title: "Spouses Power of Attorney",
+    title: "POA Spouses",
     pdfType: "poa-spouses",
     fields: [
       { name: "applicant_first_name", label: "Applicant Given Names" },
       { name: "applicant_last_name", label: "Applicant Full Last Name" },
       { name: "applicant_sex", label: "Applicant Sex (Male/Female)" },
-      { name: "applicant_passport_number", label: "Applicant ID Document Number" },
+      { name: "applicant_passport_number", label: "Applicant ID Number" },
       { name: "spouse_first_name", label: "Spouse Given Names" },
       { name: "spouse_last_name", label: "Spouse Full Last Name" },
       { name: "child_1_last_name", label: "Child 1 Surname" },

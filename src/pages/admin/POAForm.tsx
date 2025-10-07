@@ -116,37 +116,8 @@ export default function POAForm() {
                   transition={{ delay: 0.2 }}
                 >
                   <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
-                    Power of Attorney Forms
+                    Power of Attorney
                   </CardTitle>
-                </motion.div>
-                <motion.div
-                  initial={{ x: 20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: 0.3 }}
-                  className="flex gap-3"
-                >
-                  <Button 
-                    onClick={handleSave} 
-                    disabled={updateMutation.isPending}
-                    size="lg" 
-                    className="text-xl font-bold px-12 h-16 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30"
-                  >
-                    {updateMutation.isPending ? (
-                      <>
-                        <Loader2 className="h-5 w-5 animate-spin mr-2" />
-                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                          Saving...
-                        </span>
-                      </>
-                    ) : (
-                      <>
-                        <Save className="h-5 w-5 mr-2" />
-                        <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                          Save
-                        </span>
-                      </>
-                    )}
-                  </Button>
                 </motion.div>
               </div>
             </CardHeader>
@@ -192,18 +163,42 @@ export default function POAForm() {
                       <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                         {config.title}
                       </CardTitle>
-                      <Button 
-                        onClick={() => handleGeneratePDF(config.pdfType, config.title)} 
-                        disabled={isGenerating}
-                        size="lg"
-                        className="text-xl font-bold px-8 h-14 bg-gradient-to-r from-primary to-secondary hover:opacity-90"
-                      >
-                        {isGenerating ? (
-                          <><Loader2 className="h-5 w-5 animate-spin mr-2" />Generating...</>
-                        ) : (
-                          <><Download className="h-5 w-5 mr-2" />Generate PDF</>
-                        )}
-                      </Button>
+                      <div className="flex gap-3">
+                        <Button 
+                          onClick={handleSave} 
+                          disabled={updateMutation.isPending}
+                          size="lg" 
+                          className="text-xl font-bold px-8 h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30"
+                        >
+                          {updateMutation.isPending ? (
+                            <>
+                              <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                                Saving...
+                              </span>
+                            </>
+                          ) : (
+                            <>
+                              <Save className="h-5 w-5 mr-2" />
+                              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                                Save
+                              </span>
+                            </>
+                          )}
+                        </Button>
+                        <Button 
+                          onClick={() => handleGeneratePDF(config.pdfType, config.title)} 
+                          disabled={isGenerating}
+                          size="lg"
+                          className="text-xl font-bold px-8 h-14 bg-gradient-to-r from-primary to-secondary hover:opacity-90"
+                        >
+                          {isGenerating ? (
+                            <><Loader2 className="h-5 w-5 animate-spin mr-2" />Generating...</>
+                          ) : (
+                            <><Download className="h-5 w-5 mr-2" />Generate PDF</>
+                          )}
+                        </Button>
+                      </div>
                     </div>
                   </CardHeader>
                   <CardContent className="p-6 md:p-10">
