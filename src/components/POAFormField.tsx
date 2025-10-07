@@ -27,9 +27,9 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay, duration: 0.4 }}
-        className="space-y-3"
+        className="space-y-4"
       >
-        <Label htmlFor={name} className="text-base font-semibold text-foreground">
+        <Label htmlFor={name} className="text-xl font-semibold text-foreground/90">
           {label}
         </Label>
         <Popover>
@@ -37,11 +37,11 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
             <Button
               variant="outline"
               className={cn(
-                "w-full h-14 justify-start text-left font-normal border-2 hover-glow bg-card/50 backdrop-blur",
+                "w-full h-16 justify-start text-left font-normal border-2 hover-glow bg-card/50 backdrop-blur text-lg",
                 !dateValue && "text-muted-foreground"
               )}
             >
-              <CalendarIcon className="mr-2 h-4 w-4" />
+              <CalendarIcon className="mr-2 h-5 w-5" />
               {dateValue ? format(dateValue, "dd/MM/yyyy") : <span>Pick a date</span>}
             </Button>
           </PopoverTrigger>
@@ -65,9 +65,9 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.4 }}
-      className="space-y-3"
+      className="space-y-4"
     >
-      <Label htmlFor={name} className="text-base font-semibold text-foreground">
+      <Label htmlFor={name} className="text-xl font-semibold text-foreground/90">
         {label}
       </Label>
       <Input
@@ -76,7 +76,7 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
         value={value || ""}
         onChange={(e) => onChange(e.target.value)}
         placeholder={value ? "" : (placeholder || `Enter ${label.toLowerCase()}`)}
-        className="h-14 border-2 text-base hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+        className="h-16 border-2 text-lg hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
       />
     </motion.div>
   );
