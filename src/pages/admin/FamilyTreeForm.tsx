@@ -609,9 +609,7 @@ export default function FamilyTreeForm() {
         }}>
             <Card className="glass-card border-primary/20">
               <CardHeader className="border-b border-border/50 pb-6">
-                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                  Grandparents
-                </CardTitle>
+                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Polish Grandparents</CardTitle>
               </CardHeader>
               <CardContent className="p-6 md:p-10 space-y-8">
                 {["pgf", "pgm", "mgf", "mgm"].map(prefix => {
@@ -693,9 +691,7 @@ export default function FamilyTreeForm() {
         }}>
             <Card className="glass-card border-primary/20">
               <CardHeader className="border-b border-border/50 pb-6">
-                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                  Great-Grandparents
-                </CardTitle>
+                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Polish Great-Grandparents</CardTitle>
               </CardHeader>
               <CardContent className="p-6 md:p-10 space-y-8">
                 {["pggf", "pggm", "mggf", "mggm"].map(prefix => {
