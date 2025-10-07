@@ -303,8 +303,8 @@ export default function FamilyTreeForm() {
                   { name: "applicant_last_name", label: "Full last name / Nazwisko" },
                   { name: "applicant_maiden_name", label: "Maiden name" },
                   { name: "applicant_sex", label: "Sex" },
-                  { name: "applicant_dob", label: "Date of Birth", type: "date" },
-                  { name: "applicant_pob", label: "Place of Birth" },
+                  { name: "applicant_dob", label: "Date of birth", type: "date" },
+                  { name: "applicant_pob", label: "Place of birth" },
                   { name: "applicant_email", label: "Email", type: "email" },
                   { name: "applicant_phone", label: "Phone" },
                   { name: "applicant_passport_number", label: "Passport Number" },
@@ -313,10 +313,10 @@ export default function FamilyTreeForm() {
                 <div className="pt-8">
                   <h3 className="text-xl font-semibold mb-6 text-foreground">Documents Required</h3>
                   {renderCheckboxGroup([
-                    { name: "applicant_has_birth_cert", label: "Birth Certificate" },
-                    ...(formData.applicant_is_married ? [{ name: "applicant_has_marriage_cert", label: "Marriage Certificate" }] : []),
+                    { name: "applicant_has_birth_cert", label: "Birth certificate" },
+                    ...(formData.applicant_is_married ? [{ name: "applicant_has_marriage_cert", label: "Marriage certificate" }] : []),
                     { name: "applicant_has_passport", label: "Passport" },
-                    { name: "applicant_has_naturalization", label: "Naturalization Certificate" },
+                    { name: "applicant_has_naturalization", label: "Naturalization certificate" },
                   ])}
                 </div>
               </CardContent>
@@ -342,17 +342,17 @@ export default function FamilyTreeForm() {
                   { name: "spouse_last_name", label: "Full last name / Nazwisko" },
                   { name: "spouse_maiden_name", label: "Maiden name" },
                   { name: "spouse_sex", label: "Sex" },
-                  { name: "spouse_dob", label: "Date of Birth", type: "date" },
-                  { name: "spouse_pob", label: "Place of Birth" },
-                  { name: "date_of_marriage", label: "Date of Marriage", type: "date" },
-                  { name: "place_of_marriage", label: "Place of Marriage" },
+                  { name: "spouse_dob", label: "Date of birth", type: "date" },
+                  { name: "spouse_pob", label: "Place of birth" },
+                  { name: "date_of_marriage", label: "Date of marriage", type: "date" },
+                  { name: "place_of_marriage", label: "Place of marriage" },
                 ])}
 
                 <div className="pt-8">
                   <h3 className="text-xl font-semibold mb-6 text-foreground">Documents Required</h3>
                   {renderCheckboxGroup([
-                    { name: "spouse_has_birth_cert", label: "Birth Certificate" },
-                    { name: "spouse_has_marriage_cert", label: "Marriage Certificate" },
+                    { name: "spouse_has_birth_cert", label: "Birth certificate" },
+                    { name: "spouse_has_marriage_cert", label: "Marriage certificate" },
                     { name: "spouse_has_passport", label: "Passport" },
                   ])}
                 </div>
@@ -381,14 +381,14 @@ export default function FamilyTreeForm() {
                     {renderFieldGroup([
                       { name: `child_${num}_first_name`, label: "Given names / Imię / imiona" },
                       { name: `child_${num}_last_name`, label: "Full last name / Nazwisko" },
-                      { name: `child_${num}_dob`, label: "Date of Birth", type: "date" },
-                      { name: `child_${num}_pob`, label: "Place of Birth" },
+                      { name: `child_${num}_dob`, label: "Date of birth", type: "date" },
+                      { name: `child_${num}_pob`, label: "Place of birth" },
                     ])}
                     <div className="pt-4">
                       <h4 className="text-lg font-semibold mb-4 text-foreground">Documents Required</h4>
                       {renderCheckboxGroup([
                         { name: `child_${num}_has_passport`, label: "Passport Copy" },
-                        { name: `child_${num}_has_birth_cert`, label: "Birth Certificate" },
+                        { name: `child_${num}_has_birth_cert`, label: "Birth certificate" },
                         { name: `child_${num}_has_poa_minor`, label: "POA Minor" },
                       ])}
                     </div>
@@ -422,19 +422,19 @@ export default function FamilyTreeForm() {
                     {renderFieldGroup([
                       { name: "father_first_name", label: "Given names / Imię / imiona" },
                       { name: "father_last_name", label: "Full last name / Nazwisko" },
-                      { name: "father_pob", label: "Place of Birth" },
-                      { name: "father_dob", label: "Date of Birth", type: "date" },
-                      { name: "father_date_of_emigration", label: "Date of Emigration", type: "date" },
-                      { name: "father_date_of_naturalization", label: "Date of Naturalization", type: "date" },
-                      { name: "father_mother_marriage_date", label: "Date of Marriage", type: "date" },
-                      { name: "father_mother_marriage_place", label: "Place of Marriage" },
+                      { name: "father_pob", label: "Place of birth" },
+                      { name: "father_dob", label: "Date of birth", type: "date" },
+                      { name: "father_date_of_emigration", label: "Date of emigration", type: "date" },
+                      { name: "father_date_of_naturalization", label: "Date of naturalization", type: "date" },
+                      { name: "father_mother_marriage_date", label: "Date of marriage", type: "date" },
+                      { name: "father_mother_marriage_place", label: "Place of marriage" },
                     ])}
                     <div className="pt-4">
                       <h4 className="text-lg font-semibold mb-4 text-foreground">Documents Required</h4>
                       {renderCheckboxGroup([
-                        { name: "father_has_polish_documents", label: "Polish Documents" },
-                        { name: "father_has_birth_cert", label: "Birth Certificate" },
-                        { name: "father_has_marriage_cert", label: "Marriage Certificate" },
+                        { name: "father_has_polish_documents", label: "Polish documents" },
+                        { name: "father_has_birth_cert", label: "Birth certificate" },
+                        { name: "father_has_marriage_cert", label: "Marriage certificate" },
                         { name: "father_has_naturalization_papers", label: "Naturalization Papers" },
                         { name: "father_has_foreign_documents", label: "Foreign Documents" },
                         { name: "father_has_military_records", label: "Military Records" },
@@ -454,18 +454,18 @@ export default function FamilyTreeForm() {
                       { name: "mother_first_name", label: "Given names / Imię / imiona" },
                       { name: "mother_last_name", label: "Full last name / Nazwisko" },
                       { name: "mother_maiden_name", label: "Maiden name" },
-                      { name: "mother_pob", label: "Place of Birth" },
-                      { name: "mother_dob", label: "Date of Birth", type: "date" },
-                      { name: "mother_date_of_emigration", label: "Date of Emigration", type: "date" },
-                      { name: "father_mother_marriage_date", label: "Date of Marriage", type: "date" },
-                      { name: "father_mother_marriage_place", label: "Place of Marriage" },
+                      { name: "mother_pob", label: "Place of birth" },
+                      { name: "mother_dob", label: "Date of birth", type: "date" },
+                      { name: "mother_date_of_emigration", label: "Date of emigration", type: "date" },
+                      { name: "father_mother_marriage_date", label: "Date of marriage", type: "date" },
+                      { name: "father_mother_marriage_place", label: "Place of marriage" },
                     ])}
                     <div className="pt-4">
                       <h4 className="text-lg font-semibold mb-4 text-foreground">Documents Required</h4>
                       {renderCheckboxGroup([
-                        { name: "mother_has_polish_documents", label: "Polish Documents" },
-                        { name: "mother_has_birth_cert", label: "Birth Certificate" },
-                        { name: "mother_has_marriage_cert", label: "Marriage Certificate" },
+                        { name: "mother_has_polish_documents", label: "Polish documents" },
+                        { name: "mother_has_birth_cert", label: "Birth certificate" },
+                        { name: "mother_has_marriage_cert", label: "Marriage certificate" },
                         { name: "mother_has_naturalization_papers", label: "Naturalization Papers" },
                         { name: "mother_has_foreign_documents", label: "Foreign Documents" },
                       ])}
@@ -513,15 +513,15 @@ export default function FamilyTreeForm() {
                           { name: `${prefix}_first_name`, label: "Given names / Imię / imiona" },
                           { name: `${prefix}_last_name`, label: "Full last name / Nazwisko" },
                           ...(prefix.includes("gm") ? [{ name: `${prefix}_maiden_name`, label: "Maiden name" }] : []),
-                          { name: `${prefix}_pob`, label: "Place of Birth" },
-                          { name: `${prefix}_dob`, label: "Date of Birth", type: "date" },
+                          { name: `${prefix}_pob`, label: "Place of birth" },
+                          { name: `${prefix}_dob`, label: "Date of birth", type: "date" },
                         ])}
                         <div className="pt-4">
                           <h4 className="text-lg font-semibold mb-4 text-foreground">Documents Required</h4>
                           {renderCheckboxGroup([
-                            { name: `${prefix}_has_polish_documents`, label: "Polish Documents" },
-                            { name: `${prefix}_has_birth_cert`, label: "Birth Certificate" },
-                            { name: `${prefix}_has_marriage_cert`, label: "Marriage Certificate" },
+                            { name: `${prefix}_has_polish_documents`, label: "Polish documents" },
+                            { name: `${prefix}_has_birth_cert`, label: "Birth certificate" },
+                            { name: `${prefix}_has_marriage_cert`, label: "Marriage certificate" },
                             { name: `${prefix}_has_naturalization_papers`, label: "Naturalization Papers" },
                             { name: `${prefix}_has_foreign_documents`, label: "Foreign Documents" },
                             ...(prefix === "pgf" || prefix === "mgf" ? [{ name: `${prefix}_has_military_records`, label: "Military Records" }] : []),
@@ -567,15 +567,15 @@ export default function FamilyTreeForm() {
                           { name: `${prefix}_first_name`, label: "Given names / Imię / imiona" },
                           { name: `${prefix}_last_name`, label: "Full last name / Nazwisko" },
                           ...(prefix.includes("ggm") ? [{ name: `${prefix}_maiden_name`, label: "Maiden name" }] : []),
-                          { name: `${prefix}_pob`, label: "Place of Birth" },
-                          { name: `${prefix}_dob`, label: "Date of Birth", type: "date" },
+                          { name: `${prefix}_pob`, label: "Place of birth" },
+                          { name: `${prefix}_dob`, label: "Date of birth", type: "date" },
                         ])}
                         <div className="pt-4">
                           <h4 className="text-lg font-semibold mb-4 text-foreground">Documents Required</h4>
                           {renderCheckboxGroup([
-                            ...(prefix === "pggf" || prefix === "mggf" ? [{ name: `${prefix}_has_polish_documents`, label: "Polish Documents" }] : []),
-                            { name: `${prefix}_has_birth_cert`, label: "Birth Certificate" },
-                            { name: `${prefix}_has_marriage_cert`, label: "Marriage Certificate" },
+                            ...(prefix === "pggf" || prefix === "mggf" ? [{ name: `${prefix}_has_polish_documents`, label: "Polish documents" }] : []),
+                            { name: `${prefix}_has_birth_cert`, label: "Birth certificate" },
+                            { name: `${prefix}_has_marriage_cert`, label: "Marriage certificate" },
                             { name: `${prefix}_has_naturalization_papers`, label: "Naturalization Papers" },
                             { name: `${prefix}_has_foreign_documents`, label: "Foreign Documents" },
                             ...(prefix === "pggf" || prefix === "mggf" ? [{ name: `${prefix}_has_military_records`, label: "Military Records" }] : []),

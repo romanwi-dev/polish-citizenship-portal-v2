@@ -275,13 +275,13 @@ export default function CitizenshipForm() {
                   { name: "applicant_first_name", label: "Imię / imiona / Given names" },
                   { name: "father_first_name", label: "Imię i nazwisko ojca / Father's full name" },
                   { name: "mother_first_name", label: "Imię i nazwisko rodowe matki / Mother's full name" },
-                  { name: "applicant_dob", label: "Data urodzenia / Date of Birth", type: "date" },
+                  { name: "applicant_dob", label: "Data urodzenia / Date of birth", type: "date" },
                   { name: "applicant_sex", label: "Płeć / Sex" },
-                  { name: "applicant_pob", label: "Miejsce urodzenia / Place of Birth" },
+                  { name: "applicant_pob", label: "Miejsce urodzenia / Place of birth" },
                 ])}
                 
                 <div className="pt-6">
-                  {renderTextarea("applicant_other_citizenships", "Posiadane obce obywatelstwa wraz z datą nabycia / Foreign Citizenships with Acquisition Date", 3)}
+                  {renderTextarea("applicant_other_citizenships", "Posiadane obce obywatelstwa wraz z datą nabycia / Foreign citizenships with acquisition date", 3)}
                 </div>
               </CardContent>
             </Card>
@@ -307,8 +307,8 @@ export default function CitizenshipForm() {
                     { name: "mother_last_name", label: "Nazwisko / Full last name" },
                     { name: "mother_maiden_name", label: "Nazwisko rodowe / Maiden name" },
                     { name: "mother_first_name", label: "Imię / imiona / Given names" },
-                    { name: "mother_dob", label: "Data urodzenia / Date of Birth", type: "date" },
-                    { name: "mother_pob", label: "Miejsce urodzenia / Place of Birth" },
+                    { name: "mother_dob", label: "Data urodzenia / Date of birth", type: "date" },
+                    { name: "mother_pob", label: "Miejsce urodzenia / Place of birth" },
                   ])}
                 </div>
 
@@ -318,10 +318,10 @@ export default function CitizenshipForm() {
                   {renderFieldGroup([
                     { name: "father_last_name", label: "Nazwisko / Full last name" },
                     { name: "father_first_name", label: "Imię / imiona / Given names" },
-                    { name: "father_dob", label: "Data urodzenia / Date of Birth", type: "date" },
-                    { name: "father_pob", label: "Miejsce urodzenia / Place of Birth" },
-                    { name: "father_mother_marriage_date", label: "Data zawarcia związku małżeńskiego / Date of Marriage", type: "date" },
-                    { name: "father_mother_marriage_place", label: "Miejsce zawarcia związku małżeńskiego / Place of Marriage" },
+                    { name: "father_dob", label: "Data urodzenia / Date of birth", type: "date" },
+                    { name: "father_pob", label: "Miejsce urodzenia / Place of birth" },
+                    { name: "father_mother_marriage_date", label: "Data zawarcia związku małżeńskiego / Date of marriage", type: "date" },
+                    { name: "father_mother_marriage_place", label: "Miejsce zawarcia związku małżeńskiego / Place of marriage" },
                   ])}
                 </div>
               </CardContent>
@@ -347,8 +347,8 @@ export default function CitizenshipForm() {
                   {renderFieldGroup([
                     { name: "mgf_last_name", label: "Nazwisko / Full last name" },
                     { name: "mgf_first_name", label: "Imię / imiona / Given names" },
-                    { name: "mgf_dob", label: "Data urodzenia / Date of Birth", type: "date" },
-                    { name: "mgf_pob", label: "Miejsce urodzenia / Place of Birth" },
+                    { name: "mgf_dob", label: "Data urodzenia / Date of birth", type: "date" },
+                    { name: "mgf_pob", label: "Miejsce urodzenia / Place of birth" },
                   ])}
                 </div>
 
@@ -359,8 +359,8 @@ export default function CitizenshipForm() {
                     { name: "mgm_last_name", label: "Nazwisko / Full last name" },
                     { name: "mgm_maiden_name", label: "Nazwisko rodowe / Maiden name" },
                     { name: "mgm_first_name", label: "Imię / imiona / Given names" },
-                    { name: "mgm_dob", label: "Data urodzenia / Date of Birth", type: "date" },
-                    { name: "mgm_pob", label: "Miejsce urodzenia / Place of Birth" },
+                    { name: "mgm_dob", label: "Data urodzenia / Date of birth", type: "date" },
+                    { name: "mgm_pob", label: "Miejsce urodzenia / Place of birth" },
                   ])}
                 </div>
 
@@ -370,8 +370,8 @@ export default function CitizenshipForm() {
                   {renderFieldGroup([
                     { name: "pgf_last_name", label: "Nazwisko / Full last name" },
                     { name: "pgf_first_name", label: "Imię / imiona / Given names" },
-                    { name: "pgf_dob", label: "Data urodzenia / Date of Birth", type: "date" },
-                    { name: "pgf_pob", label: "Miejsce urodzenia / Place of Birth" },
+                    { name: "pgf_dob", label: "Data urodzenia / Date of birth", type: "date" },
+                    { name: "pgf_pob", label: "Miejsce urodzenia / Place of birth" },
                   ])}
                 </div>
 
@@ -382,8 +382,8 @@ export default function CitizenshipForm() {
                     { name: "pgm_last_name", label: "Nazwisko / Full last name" },
                     { name: "pgm_maiden_name", label: "Nazwisko rodowe / Maiden name" },
                     { name: "pgm_first_name", label: "Imię / imiona / Given names" },
-                    { name: "pgm_dob", label: "Data urodzenia / Date of Birth", type: "date" },
-                    { name: "pgm_pob", label: "Miejsce urodzenia / Place of Birth" },
+                    { name: "pgm_dob", label: "Data urodzenia / Date of birth", type: "date" },
+                    { name: "pgm_pob", label: "Miejsce urodzenia / Place of birth" },
                   ])}
                 </div>
               </CardContent>
