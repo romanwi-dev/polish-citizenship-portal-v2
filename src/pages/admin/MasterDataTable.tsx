@@ -7,10 +7,14 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useState, useEffect } from "react";
-import { Loader2, Save, FileText, Users, Baby, Heart, Calendar, Sparkles, Download } from "lucide-react";
+import { Loader2, Save, FileText, Users, Baby, Heart, Calendar as CalendarIcon, Sparkles, Download } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { motion } from "framer-motion";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 export default function MasterDataTable() {
   const { id: caseId } = useParams();
@@ -47,6 +51,46 @@ export default function MasterDataTable() {
     );
   }
 
+  const renderDateField = (name: string, label: string) => {
+    const dateValue = formData[name] ? new Date(formData[name]) : undefined;
+    
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="space-y-3"
+      >
+        <Label htmlFor={name} className="text-base font-medium text-foreground">
+          {label}
+        </Label>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              className={cn(
+                "w-full h-14 justify-start text-left font-normal border-2 hover-glow bg-card/50 backdrop-blur",
+                !dateValue && "text-muted-foreground"
+              )}
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {dateValue ? format(dateValue, "dd/MM/yyyy") : <span>Pick a date</span>}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0" align="start">
+            <Calendar
+              mode="single"
+              selected={dateValue}
+              onSelect={(date) => handleInputChange(name, date ? format(date, "yyyy-MM-dd") : "")}
+              disabled={(date) => date > new Date("2030-12-31") || date < new Date("1900-01-01")}
+              initialFocus
+              className={cn("p-3 pointer-events-auto")}
+            />
+          </PopoverContent>
+        </Popover>
+      </motion.div>
+    );
+  };
+
   const renderFieldGroup = (fields: Array<{ name: string; label: string; type?: string; placeholder?: string }>) => {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -58,17 +102,23 @@ export default function MasterDataTable() {
             transition={{ delay: idx * 0.05, duration: 0.4 }}
             className="space-y-3"
           >
-            <Label htmlFor={field.name} className="text-base font-medium text-foreground">
-              {field.label}
-            </Label>
-            <Input
-              id={field.name}
-              type={field.type || "text"}
-              value={formData[field.name] || ""}
-              onChange={(e) => handleInputChange(field.name, e.target.value)}
-              placeholder={field.placeholder || `Enter ${field.label.toLowerCase()}`}
-              className="h-14 border-2 text-base hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
-            />
+            {field.type === "date" ? (
+              renderDateField(field.name, field.label)
+            ) : (
+              <>
+                <Label htmlFor={field.name} className="text-base font-medium text-foreground">
+                  {field.label}
+                </Label>
+                <Input
+                  id={field.name}
+                  type={field.type || "text"}
+                  value={formData[field.name] || ""}
+                  onChange={(e) => handleInputChange(field.name, e.target.value)}
+                  placeholder={field.placeholder || `Enter ${field.label.toLowerCase()}`}
+                  className="h-14 border-2 text-base hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+                />
+              </>
+            )}
           </motion.div>
         ))}
       </div>
