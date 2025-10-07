@@ -11,7 +11,8 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState, useEffect } from "react";
-import { Loader2, Save, FileText, Users, Baby, Heart, Calendar as CalendarIcon, Sparkles, Download, GitBranch } from "lucide-react";
+import { Loader2, Save, FileText, Users, Baby, Heart, Calendar as CalendarIcon, Sparkles, Download, GitBranch, Type } from "lucide-react";
+import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { PDFGenerationButtons } from "@/components/PDFGenerationButtons";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { motion } from "framer-motion";
@@ -31,6 +32,7 @@ export default function MasterDataTable() {
   const updateMutation = useUpdateMasterData();
   const [formData, setFormData] = useState<any>({});
   const [activeTab, setActiveTab] = useState("applicant");
+  const { isLargeFonts, toggleFontSize } = useAccessibility();
 
   // Show error if no valid caseId
   if (!caseId || caseId === ':id') {
@@ -218,6 +220,19 @@ export default function MasterDataTable() {
                     Master Data Form
                   </CardTitle>
                 </motion.div>
+                <div className="flex items-center gap-3">
+                  <Button
+                    onClick={toggleFontSize}
+                    size="lg"
+                    variant="ghost"
+                    className={`h-16 w-16 rounded-full transition-all ${
+                      isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground'
+                    }`}
+                    title="Toggle font size"
+                  >
+                    <Type className="h-8 w-8" />
+                  </Button>
+                </div>
               </div>
             </CardHeader>
           </Card>
