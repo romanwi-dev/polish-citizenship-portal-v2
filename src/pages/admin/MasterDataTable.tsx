@@ -228,7 +228,7 @@ export default function MasterDataTable() {
           initial={{ opacity: 0, y: 20 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ duration: 0.5 }}
-          className="mb-8 relative z-[60]"
+          className="mb-8"
         >
           <div className="flex gap-3 overflow-x-auto pb-2 justify-between bg-background/95 backdrop-blur-lg p-4 rounded-lg">
             <Button 
