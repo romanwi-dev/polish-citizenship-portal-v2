@@ -3,7 +3,7 @@ import { useIntakeData, useUpdateIntakeData } from "@/hooks/useIntakeData";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
-import { Loader2, Save, Sparkles, CheckCircle2 } from "lucide-react";
+import { Loader2, Save, Sparkles, CheckCircle2, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { POAFormField } from "@/components/POAFormField";
@@ -65,6 +65,30 @@ export default function IntakeForm() {
     });
   };
 
+  const handleClear = () => {
+    if (intakeData) {
+      setFormData(intakeData);
+      toast.success("Form reset to saved data");
+    } else {
+      setFormData({
+        given_names: "",
+        last_name: "",
+        passport_number: "",
+        phone: "",
+        email: "",
+        confirm_email: "",
+        phone_verified: false,
+        email_verified: false,
+        civil_status: "",
+        has_children: false,
+        has_minor_children: false,
+        children_count: 0,
+        minor_children_count: 0,
+      });
+      toast.success("Form cleared");
+    }
+  };
+
 
   if (isLoading) {
     return (
@@ -106,28 +130,42 @@ export default function IntakeForm() {
                     Client Intake Form
                   </CardTitle>
                 </motion.div>
-                <Button
-                  onClick={handleSave}
-                  disabled={updateMutation.isPending}
-                  size="default"
-                  className="text-base md:text-xl font-bold px-6 md:px-8 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30"
-                >
-                  {updateMutation.isPending ? (
-                    <>
-                      <Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
-                      <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                        Saving...
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <Save className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-                      <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                        Save data
-                      </span>
-                    </>
-                  )}
-                </Button>
+                <div className="flex gap-3">
+                  <Button
+                    onClick={handleClear}
+                    disabled={updateMutation.isPending}
+                    size="default"
+                    variant="outline"
+                    className="text-base md:text-xl font-bold px-6 md:px-8 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30"
+                  >
+                    <RotateCcw className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
+                    <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                      Clear
+                    </span>
+                  </Button>
+                  <Button
+                    onClick={handleSave}
+                    disabled={updateMutation.isPending}
+                    size="default"
+                    className="text-base md:text-xl font-bold px-6 md:px-8 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30"
+                  >
+                    {updateMutation.isPending ? (
+                      <>
+                        <Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
+                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                          Saving...
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <Save className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
+                        <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                          Save data
+                        </span>
+                      </>
+                    )}
+                  </Button>
+                </div>
               </div>
             </CardHeader>
           </Card>
