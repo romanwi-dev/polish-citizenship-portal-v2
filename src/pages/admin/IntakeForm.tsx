@@ -3,7 +3,7 @@ import { useIntakeData, useUpdateIntakeData } from "@/hooks/useIntakeData";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
-import { Loader2, Save, Sparkles, CheckCircle2 } from "lucide-react";
+import { Loader2, Save, Sparkles, CheckCircle2, Type } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { POAFormField } from "@/components/POAFormField";
@@ -23,7 +23,7 @@ export default function IntakeForm() {
   } = useIntakeData(caseId);
   const updateMutation = useUpdateIntakeData();
   const [showClearDialog, setShowClearDialog] = useState(false);
-  const { isLargeFonts } = useAccessibility();
+  const { isLargeFonts, toggleFontSize } = useAccessibility();
   const [formData, setFormData] = useState<any>({
     given_names: "",
     last_name: "",
@@ -149,19 +149,32 @@ export default function IntakeForm() {
                     Client Intake Form
                   </CardTitle>
                 </motion.div>
-                <Button onClick={handleSave} disabled={updateMutation.isPending} size="default" className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 md:px-[50px]">
-                  {updateMutation.isPending ? <>
-                      <Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
-                      <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                        Saving...
-                      </span>
-                    </> : <>
-                      <Save className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-                      <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                        Save data
-                      </span>
-                    </>}
-                </Button>
+                <div className="flex items-center gap-3">
+                  <Button
+                    onClick={toggleFontSize}
+                    size="lg"
+                    variant="ghost"
+                    className={`h-16 w-16 rounded-full transition-all ${
+                      isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground'
+                    }`}
+                    title="Toggle font size"
+                  >
+                    <Type className="h-8 w-8" />
+                  </Button>
+                  <Button onClick={handleSave} disabled={updateMutation.isPending} size="default" className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 md:px-[50px]">
+                    {updateMutation.isPending ? <>
+                        <Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
+                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                          Saving...
+                        </span>
+                      </> : <>
+                        <Save className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
+                        <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                          Save data
+                        </span>
+                      </>}
+                  </Button>
+                </div>
               </div>
             </CardHeader>
           </Card>

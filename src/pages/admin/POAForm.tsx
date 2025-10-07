@@ -3,7 +3,7 @@ import { useMasterData, useUpdateMasterData } from "@/hooks/useMasterData";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
-import { Loader2, Save, Download, Sparkles } from "lucide-react";
+import { Loader2, Save, Download, Sparkles, Type } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -13,6 +13,7 @@ import { POAFormField } from "@/components/POAFormField";
 import { poaFormConfigs } from "@/config/poaFormConfig";
 import { useLongPressWithFeedback } from "@/hooks/useLongPressWithFeedback";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { useAccessibility } from "@/contexts/AccessibilityContext";
 export default function POAForm() {
   const {
     id: caseId
@@ -22,6 +23,7 @@ export default function POAForm() {
     isLoading
   } = useMasterData(caseId);
   const updateMutation = useUpdateMasterData();
+  const { isLargeFonts, toggleFontSize } = useAccessibility();
   const today = format(new Date(), "yyyy-MM-dd");
   const [formData, setFormData] = useState<any>({
     poa_date_filed: today
@@ -182,6 +184,17 @@ export default function POAForm() {
                     Power of Attorney Forms
                   </CardTitle>
                 </motion.div>
+                <Button
+                  onClick={toggleFontSize}
+                  size="lg"
+                  variant="ghost"
+                  className={`h-16 w-16 rounded-full transition-all ${
+                    isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground'
+                  }`}
+                  title="Toggle font size"
+                >
+                  <Type className="h-8 w-8" />
+                </Button>
               </div>
             </CardHeader>
           </Card>
