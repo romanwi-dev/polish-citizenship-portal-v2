@@ -340,7 +340,7 @@ export default function FamilyTreeForm() {
                   </motion.div>
                 </div>
 
-                {/* Name fields first - depends on sex */}
+                {/* 1st row - Name fields */}
                 {renderFieldGroup([{
                 name: "applicant_first_name",
                 label: "Given names / Imię / imiona"
@@ -352,16 +352,38 @@ export default function FamilyTreeForm() {
                 label: "Maiden name"
               }] : [])])}
 
+                {/* 2nd row - Places and emigration */}
                 {renderFieldGroup([{
-                name: "applicant_sex",
-                label: "Sex"
-              }, {
+                name: "applicant_pob",
+                label: "Place of birth"
+              }, ...(formData.applicant_is_married ? [{
+                name: "place_of_marriage",
+                label: "Place of marriage"
+              }] : []), {
+                name: "applicant_date_of_emigration",
+                label: "Date of emigration",
+                type: "date"
+              }])}
+
+                {/* 3rd row - Dates */}
+                {renderFieldGroup([{
                 name: "applicant_dob",
                 label: "Date of birth",
                 type: "date"
-              }, {
-                name: "applicant_pob",
-                label: "Place of birth"
+              }, ...(formData.applicant_is_married ? [{
+                name: "date_of_marriage",
+                label: "Date of marriage",
+                type: "date"
+              }] : []), {
+                name: "applicant_date_of_naturalization",
+                label: "Date of naturalization",
+                type: "date"
+              }])}
+
+                {/* Other fields */}
+                {renderFieldGroup([{
+                name: "applicant_sex",
+                label: "Sex"
               }, {
                 name: "applicant_email",
                 label: "Email",
@@ -425,7 +447,7 @@ export default function FamilyTreeForm() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6 md:p-10 space-y-10">
-                {/* Name fields first - depends on sex */}
+                {/* 1st row - Name fields */}
                 {renderFieldGroup([{
                 name: "spouse_first_name",
                 label: "Given names / Imię / imiona"
@@ -437,23 +459,38 @@ export default function FamilyTreeForm() {
                 label: "Maiden name"
               }] : [])])}
 
+                {/* 2nd row - Places and emigration */}
                 {renderFieldGroup([{
-                name: "spouse_sex",
-                label: "Sex"
+                name: "spouse_pob",
+                label: "Place of birth"
               }, {
+                name: "place_of_marriage",
+                label: "Place of marriage"
+              }, {
+                name: "spouse_date_of_emigration",
+                label: "Date of emigration",
+                type: "date"
+              }])}
+
+                {/* 3rd row - Dates */}
+                {renderFieldGroup([{
                 name: "spouse_dob",
                 label: "Date of birth",
                 type: "date"
-              }, {
-                name: "spouse_pob",
-                label: "Place of birth"
               }, {
                 name: "date_of_marriage",
                 label: "Date of marriage",
                 type: "date"
               }, {
-                name: "place_of_marriage",
-                label: "Place of marriage"
+                name: "spouse_date_of_naturalization",
+                label: "Date of naturalization",
+                type: "date"
+              }])}
+
+                {/* Other fields */}
+                {renderFieldGroup([{
+                name: "spouse_sex",
+                label: "Sex"
               }])}
 
                 <div className="space-y-2">
@@ -506,7 +543,7 @@ export default function FamilyTreeForm() {
               <CardContent className="p-6 md:p-10 space-y-10">
                 {[1, 2, 3, 4].map(num => <div key={num} className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
                     <h3 className="text-xl font-semibold text-foreground">Child {num}</h3>
-                    {/* Name fields first - 2 fields for all children */}
+                    {/* 1st row - Name fields */}
                     {renderFieldGroup([{
                   name: `child_${num}_first_name`,
                   label: "Given names / Imię / imiona"
@@ -515,13 +552,17 @@ export default function FamilyTreeForm() {
                   label: "Full last name / Nazwisko"
                 }])}
 
+                    {/* 2nd row - Places */}
+                    {renderFieldGroup([{
+                  name: `child_${num}_pob`,
+                  label: "Place of birth"
+                }])}
+
+                    {/* 3rd row - Dates */}
                     {renderFieldGroup([{
                   name: `child_${num}_dob`,
                   label: "Date of birth",
                   type: "date"
-                }, {
-                  name: `child_${num}_pob`,
-                  label: "Place of birth"
                 }])}
                     <div className="space-y-2">
                       <Label htmlFor={`child_${num}_notes`} className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
@@ -590,7 +631,7 @@ export default function FamilyTreeForm() {
                         label: "Polish Ancestor"
                       }])}
                     </div>
-                    {/* Name fields first - 2 fields for males */}
+                    {/* 1st row - Name fields */}
                     {renderFieldGroup([{
                     name: "father_first_name",
                     label: "Given names / Imię / imiona"
@@ -599,28 +640,32 @@ export default function FamilyTreeForm() {
                     label: "Full last name / Nazwisko"
                   }])}
 
+                    {/* 2nd row - Places and emigration */}
                     {renderFieldGroup([{
                     name: "father_pob",
                     label: "Place of birth"
                   }, {
-                    name: "father_dob",
-                    label: "Date of birth",
-                    type: "date"
+                    name: "father_mother_marriage_place",
+                    label: "Place of marriage"
                   }, {
                     name: "father_date_of_emigration",
                     label: "Date of emigration",
                     type: "date"
-                  }, {
-                    name: "father_date_of_naturalization",
-                    label: "Date of naturalization",
+                  }])}
+
+                    {/* 3rd row - Dates */}
+                    {renderFieldGroup([{
+                    name: "father_dob",
+                    label: "Date of birth",
                     type: "date"
                   }, {
                     name: "father_mother_marriage_date",
                     label: "Date of marriage",
                     type: "date"
                   }, {
-                    name: "father_mother_marriage_place",
-                    label: "Place of marriage"
+                    name: "father_date_of_naturalization",
+                    label: "Date of naturalization",
+                    type: "date"
                   }])}
                     <div className="space-y-2">
                       <Label htmlFor="father_notes" className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
@@ -678,7 +723,7 @@ export default function FamilyTreeForm() {
                         label: "Polish Ancestor"
                       }])}
                     </div>
-                    {/* Name fields first - 3 fields for females */}
+                    {/* 1st row - Name fields */}
                     {renderFieldGroup([{
                     name: "mother_first_name",
                     label: "Given names / Imię / imiona"
@@ -690,24 +735,32 @@ export default function FamilyTreeForm() {
                     label: "Maiden name"
                   }])}
 
+                    {/* 2nd row - Places and emigration */}
                     {renderFieldGroup([{
                     name: "mother_pob",
                     label: "Place of birth"
                   }, {
-                    name: "mother_dob",
-                    label: "Date of birth",
-                    type: "date"
+                    name: "father_mother_marriage_place",
+                    label: "Place of marriage"
                   }, {
                     name: "mother_date_of_emigration",
                     label: "Date of emigration",
+                    type: "date"
+                  }])}
+
+                    {/* 3rd row - Dates */}
+                    {renderFieldGroup([{
+                    name: "mother_dob",
+                    label: "Date of birth",
                     type: "date"
                   }, {
                     name: "father_mother_marriage_date",
                     label: "Date of marriage",
                     type: "date"
                   }, {
-                    name: "father_mother_marriage_place",
-                    label: "Place of marriage"
+                    name: "mother_date_of_naturalization",
+                    label: "Date of naturalization",
+                    type: "date"
                   }])}
                     <div className="space-y-2">
                       <Label htmlFor="mother_notes" className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
@@ -788,7 +841,7 @@ export default function FamilyTreeForm() {
                         label: "Polish Ancestor"
                       }])}
                         </div>
-                        {/* Name fields first - 2 for males, 3 for females */}
+                        {/* 1st row - Name fields */}
                         {renderFieldGroup([{
                       name: `${prefix}_first_name`,
                       label: "Given names / Imię / imiona"
@@ -800,12 +853,31 @@ export default function FamilyTreeForm() {
                       label: "Maiden name"
                     }] : [])])}
 
+                        {/* 2nd row - Places and emigration */}
                         {renderFieldGroup([{
                       name: `${prefix}_pob`,
                       label: "Place of birth"
                     }, {
+                      name: `${prefix === 'pgf' || prefix === 'pgm' ? 'pgf_pgm_marriage_place' : 'mgf_mgm_marriage_place'}`,
+                      label: "Place of marriage"
+                    }, {
+                      name: `${prefix}_date_of_emigration`,
+                      label: "Date of emigration",
+                      type: "date"
+                    }])}
+
+                        {/* 3rd row - Dates */}
+                        {renderFieldGroup([{
                       name: `${prefix}_dob`,
                       label: "Date of birth",
+                      type: "date"
+                    }, {
+                      name: `${prefix === 'pgf' || prefix === 'pgm' ? 'pgf_pgm_marriage_date' : 'mgf_mgm_marriage_date'}`,
+                      label: "Date of marriage",
+                      type: "date"
+                    }, {
+                      name: `${prefix}_date_of_naturalization`,
+                      label: "Date of naturalization",
                       type: "date"
                     }])}
                         <div className="space-y-2">
