@@ -445,7 +445,6 @@ export default function MasterDataTable() {
                       {renderFieldGroup([
                         { name: `child_${num}_first_name`, label: "First Name" },
                         { name: `child_${num}_last_name`, label: "Last Name" },
-                        { name: `child_${num}_sex`, label: "Sex" },
                         { name: `child_${num}_dob`, label: "Date of Birth", type: "date" },
                         { name: `child_${num}_pob`, label: "Place of Birth" },
                       ])}
