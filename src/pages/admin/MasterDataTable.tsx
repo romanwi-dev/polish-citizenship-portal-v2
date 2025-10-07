@@ -20,10 +20,30 @@ import { cn } from "@/lib/utils";
 
 export default function MasterDataTable() {
   const { id: caseId } = useParams();
+  
+  // Debug logging
+  console.log('MasterDataTable - caseId from URL:', caseId);
+  
   const { data: masterData, isLoading } = useMasterData(caseId);
   const updateMutation = useUpdateMasterData();
   const [formData, setFormData] = useState<any>({});
   const [activeTab, setActiveTab] = useState("applicant");
+  
+  // Show error if no valid caseId
+  if (!caseId || caseId === ':id') {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-background">
+        <Card className="p-8 max-w-md">
+          <CardHeader>
+            <CardTitle className="text-red-500">Invalid Case ID</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p>Please navigate to this page from a valid case detail page.</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   useEffect(() => {
     if (masterData) {
