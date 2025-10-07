@@ -29,7 +29,7 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
         transition={{ delay, duration: 0.4 }}
         className="space-y-4"
       >
-        <Label htmlFor={name} className="text-xl font-semibold text-foreground/90">
+        <Label htmlFor={name} className="text-sm font-normal text-foreground/90">
           {label}
         </Label>
         <Popover>
@@ -37,7 +37,7 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
             <Button
               variant="outline"
               className={cn(
-                "w-full h-16 justify-start text-left font-normal border-2 hover-glow bg-card/50 backdrop-blur text-xl",
+                "w-full h-16 justify-start text-left font-medium border-2 hover-glow bg-card/50 backdrop-blur text-2xl",
                 !dateValue && "text-muted-foreground"
               )}
             >
@@ -67,7 +67,7 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
       transition={{ delay, duration: 0.4 }}
       className="space-y-4"
     >
-      <Label htmlFor={name} className="text-xl font-semibold text-foreground/90">
+      <Label htmlFor={name} className="text-sm font-normal text-foreground/90">
         {label}
       </Label>
       <Input
@@ -76,7 +76,7 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
         value={value || ""}
         onChange={(e) => onChange(e.target.value)}
         placeholder={value ? "" : (placeholder || `Enter ${label.toLowerCase()}`)}
-        className="h-16 border-2 text-xl hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+        className="h-16 border-2 text-2xl font-medium hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
       />
     </motion.div>
   );
