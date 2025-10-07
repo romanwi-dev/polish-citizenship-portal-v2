@@ -20,6 +20,8 @@ interface POAFormFieldProps {
 
 export function POAFormField({ name, label, type = "text", value, onChange, placeholder, delay = 0 }: POAFormFieldProps) {
   const handleDoubleClick = () => {
+    // Don't clear date fields
+    if (type === "date") return;
     onChange("");
   };
 

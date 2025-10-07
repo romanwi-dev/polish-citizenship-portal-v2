@@ -48,15 +48,18 @@ export default function POAForm() {
   const clearCardFields = (config: any) => {
     const clearedFields: any = {};
     config.fields.forEach((field: any) => {
-      clearedFields[field.name] = "";
+      // Skip date fields
+      if (field.type !== "date") {
+        clearedFields[field.name] = "";
+      }
     });
     setFormData((prev: any) => ({ ...prev, ...clearedFields }));
     toast.success(`Cleared all fields in ${config.title}`);
   };
 
   const clearAllFields = () => {
-    const today = format(new Date(), "yyyy-MM-dd");
-    setFormData({ poa_date_filed: today });
+    // Preserve date fields when clearing all
+    setFormData({ poa_date_filed: formData.poa_date_filed || today });
     toast.success("Cleared all fields");
     setShowClearAllDialog(false);
   };
