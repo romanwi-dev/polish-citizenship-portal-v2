@@ -557,6 +557,11 @@ export default function MasterDataTable() {
                         <div className="pt-4">
                           {renderCheckboxGroup([
                             { name: `${prefix}_has_birth_cert`, label: "Birth Certificate" },
+                            { name: `${prefix}_has_marriage_cert`, label: "Marriage Certificate" },
+                            { name: `${prefix}_has_emigration_papers`, label: "Emigration Papers" },
+                            { name: `${prefix}_has_naturalization_papers`, label: "Naturalization Papers" },
+                            { name: `${prefix}_has_foreign_documents`, label: "Foreign Documents" },
+                            { name: `${prefix}_has_military_records`, label: "Military Records" },
                           ])}
                         </div>
                         <div>{renderTextarea(`${prefix}_notes`, "Notes")}</div>
@@ -602,6 +607,11 @@ export default function MasterDataTable() {
                         <div className="pt-4">
                           {renderCheckboxGroup([
                             { name: `${prefix}_has_birth_cert`, label: "Birth Certificate" },
+                            { name: `${prefix}_has_marriage_cert`, label: "Marriage Certificate" },
+                            { name: `${prefix}_has_emigration_papers`, label: "Emigration Papers" },
+                            { name: `${prefix}_has_naturalization_papers`, label: "Naturalization Papers" },
+                            { name: `${prefix}_has_foreign_documents`, label: "Foreign Documents" },
+                            { name: `${prefix}_has_military_records`, label: "Military Records" },
                           ])}
                         </div>
                         <div>{renderTextarea(`${prefix}_notes`, "Notes")}</div>
