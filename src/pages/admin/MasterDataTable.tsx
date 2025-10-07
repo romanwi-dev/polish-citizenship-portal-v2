@@ -363,27 +363,28 @@ export default function MasterDataTable() {
                     </p>
                   </motion.div>
 
-                  {/* Marital Status */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="p-6 border-2 border-primary/20 rounded-xl bg-primary/5"
-                  >
-                    {renderCheckboxGroup([
-                      { name: "applicant_is_married", label: "Married?" },
-                    ])}
-                  </motion.div>
+                  {/* Marital Status & Children - Side by side on desktop */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="p-6 border-2 border-primary/20 rounded-xl bg-primary/5"
+                    >
+                      {renderCheckboxGroup([
+                        { name: "applicant_is_married", label: "Married?" },
+                      ])}
+                    </motion.div>
 
-                  {/* Minor Children */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="p-6 border-2 border-primary/20 rounded-xl bg-primary/5"
-                  >
-                    {renderCheckboxGroup([
-                      { name: "applicant_has_minor_children", label: "Minor Children?" },
-                    ])}
-                  </motion.div>
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="p-6 border-2 border-primary/20 rounded-xl bg-primary/5"
+                    >
+                      {renderCheckboxGroup([
+                        { name: "applicant_has_minor_children", label: "Minor Children?" },
+                      ])}
+                    </motion.div>
+                  </div>
 
                   {renderFieldGroup([
                     { name: "applicant_first_name", label: "Given Names" },
