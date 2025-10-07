@@ -21,6 +21,7 @@ export default function IntakeForm() {
     passport_number: "",
     phone: "",
     email: "",
+    confirm_email: "",
     phone_verified: false,
     email_verified: false,
     civil_status: "",
@@ -63,21 +64,6 @@ export default function IntakeForm() {
     });
   };
 
-  const sendVerificationEmail = async () => {
-    if (!formData.email) {
-      toast.error("Please enter an email address first");
-      return;
-    }
-    toast.success("Verification email sent (demo)");
-  };
-
-  const sendVerificationSMS = async () => {
-    if (!formData.phone) {
-      toast.error("Please enter a phone number first");
-      return;
-    }
-    toast.success("Verification SMS sent (demo)");
-  };
 
   if (isLoading) {
     return (
@@ -181,70 +167,40 @@ export default function IntakeForm() {
                   delay={0.1}
                 />
 
-                {/* Email with verification */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.15, duration: 0.4 }}
-                  className="space-y-4"
-                >
-                  <Label className="text-sm font-normal text-foreground/90">
-                    Email address {formData.email_verified && <CheckCircle2 className="inline h-4 w-4 text-green-500 ml-1" />}
-                  </Label>
-                  <div className="flex gap-2">
-                    <POAFormField
-                      name="email"
-                      label=""
-                      type="email"
-                      value={formData.email}
-                      onChange={(value) => handleInputChange("email", value.toLowerCase())}
-                      delay={0}
-                    />
-                    <Button
-                      onClick={sendVerificationEmail}
-                      variant="outline"
-                      className="mt-6 h-16 px-6"
-                      disabled={formData.email_verified}
-                    >
-                      {formData.email_verified ? "Verified" : "Verify"}
-                    </Button>
-                  </div>
-                </motion.div>
+                {/* Phone */}
+                <POAFormField
+                  name="phone"
+                  label="Phone number"
+                  value={formData.phone}
+                  onChange={(value) => handleInputChange("phone", value)}
+                  delay={0.15}
+                />
 
-                {/* Phone with verification */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2, duration: 0.4 }}
-                  className="space-y-4"
-                >
-                  <Label className="text-sm font-normal text-foreground/90">
-                    Phone number {formData.phone_verified && <CheckCircle2 className="inline h-4 w-4 text-green-500 ml-1" />}
-                  </Label>
-                  <div className="flex gap-2">
-                    <POAFormField
-                      name="phone"
-                      label=""
-                      value={formData.phone}
-                      onChange={(value) => handleInputChange("phone", value)}
-                      delay={0}
-                    />
-                    <Button
-                      onClick={sendVerificationSMS}
-                      variant="outline"
-                      className="mt-6 h-16 px-6"
-                      disabled={formData.phone_verified}
-                    >
-                      {formData.phone_verified ? "Verified" : "Verify"}
-                    </Button>
-                  </div>
-                </motion.div>
+                {/* Email */}
+                <POAFormField
+                  name="email"
+                  label="Email address"
+                  type="email"
+                  value={formData.email}
+                  onChange={(value) => handleInputChange("email", value.toLowerCase())}
+                  delay={0.2}
+                />
+
+                {/* Confirm Email */}
+                <POAFormField
+                  name="confirm_email"
+                  label="Confirm your email address"
+                  type="email"
+                  value={formData.confirm_email}
+                  onChange={(value) => handleInputChange("confirm_email", value.toLowerCase())}
+                  delay={0.25}
+                />
 
                 {/* Civil Status */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.25, duration: 0.4 }}
+                  transition={{ delay: 0.3, duration: 0.4 }}
                   className="space-y-4"
                 >
                   <Label className="text-sm font-normal text-foreground/90">Civil status</Label>
@@ -266,7 +222,7 @@ export default function IntakeForm() {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3, duration: 0.4 }}
+                  transition={{ delay: 0.35, duration: 0.4 }}
                   className="space-y-4"
                 >
                   <Label className="text-sm font-normal text-foreground/90">Number of children (including minors)</Label>
@@ -296,7 +252,7 @@ export default function IntakeForm() {
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.35, duration: 0.4 }}
+                    transition={{ delay: 0.4, duration: 0.4 }}
                     className="space-y-4 col-span-2"
                   >
                     <Label className="text-sm font-normal text-foreground/90">Do you have minor children (under 18)?</Label>
