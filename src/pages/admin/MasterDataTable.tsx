@@ -417,6 +417,7 @@ export default function MasterDataTable() {
                     </motion.div>
                   </div>
 
+                  {/* Basic Information */}
                   {renderFieldGroup([{
                   name: "applicant_first_name",
                   label: "Given names / Imię / imiona"
@@ -436,17 +437,72 @@ export default function MasterDataTable() {
                 }, {
                   name: "applicant_pob",
                   label: "Place of birth"
-                }, {
-                  name: "applicant_email",
-                  label: "Email",
-                  type: "email"
-                }, {
-                  name: "applicant_phone",
-                  label: "Phone"
-                }, {
-                  name: "applicant_passport_number",
-                  label: "Passport Number"
                 }])}
+
+                  {/* Contact Information */}
+                  <div className="pt-8">
+                    <h3 className="text-xl font-semibold mb-6 text-foreground">Contact Information</h3>
+                    {renderFieldGroup([{
+                      name: "applicant_email",
+                      label: "Email",
+                      type: "email"
+                    }, {
+                      name: "applicant_phone",
+                      label: "Phone"
+                    }])}
+                  </div>
+
+                  {/* Passport Information */}
+                  <div className="pt-8">
+                    <h3 className="text-xl font-semibold mb-6 text-foreground">Passport Information</h3>
+                    {renderFieldGroup([{
+                      name: "applicant_passport_number",
+                      label: "Passport Number"
+                    }, {
+                      name: "applicant_passport_issuing_country",
+                      label: "Passport Issuing Country"
+                    }, {
+                      name: "applicant_passport_issuing_authority",
+                      label: "Passport Issuing Authority"
+                    }, {
+                      name: "applicant_passport_issue_date",
+                      label: "Passport Issue Date",
+                      type: "date"
+                    }, {
+                      name: "applicant_passport_expiry_date",
+                      label: "Passport Expiry Date",
+                      type: "date"
+                    }])}
+                  </div>
+
+                  {/* Marriage Information - Only show if married */}
+                  {formData.applicant_is_married && (
+                    <div className="pt-8">
+                      <h3 className="text-xl font-semibold mb-6 text-foreground">Marriage Information</h3>
+                      {renderFieldGroup([{
+                        name: "place_of_marriage",
+                        label: "Place of marriage"
+                      }, {
+                        name: "date_of_marriage",
+                        label: "Date of marriage",
+                        type: "date"
+                      }])}
+                    </div>
+                  )}
+
+                  {/* Immigration Information */}
+                  <div className="pt-8">
+                    <h3 className="text-xl font-semibold mb-6 text-foreground">Immigration Information</h3>
+                    {renderFieldGroup([{
+                      name: "applicant_date_of_emigration",
+                      label: "Date of emigration",
+                      type: "date"
+                    }, {
+                      name: "applicant_date_of_naturalization",
+                      label: "Date of naturalization",
+                      type: "date"
+                    }])}
+                  </div>
 
                   {/* Address Section */}
                   <div className="pt-8">
