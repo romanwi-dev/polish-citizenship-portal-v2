@@ -6,6 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
+import { PasswordStrengthMeter } from "@/components/PasswordStrengthMeter";
+import { AlertCircle } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -13,13 +16,52 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
+  const [isPasswordStrong, setIsPasswordStrong] = useState(false);
+  const [breachWarning, setBreachWarning] = useState("");
+
+  const checkPasswordBreach = async (pwd: string): Promise<boolean> => {
+    try {
+      const { data, error } = await supabase.functions.invoke('check-password-breach', {
+        body: { password: pwd }
+      });
+
+      if (error) throw error;
+
+      if (data.isBreached) {
+        setBreachWarning(data.message);
+        return false;
+      }
+
+      setBreachWarning("");
+      return true;
+    } catch (error) {
+      console.error('Error checking password breach:', error);
+      // Don't block signup if breach check fails
+      return true;
+    }
+  };
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setBreachWarning("");
 
     try {
       if (isSignUp) {
+        // Validate password strength
+        if (!isPasswordStrong) {
+          toast.error("Please choose a stronger password that meets all requirements");
+          setLoading(false);
+          return;
+        }
+
+        // Check for leaked password
+        const isSafe = await checkPasswordBreach(password);
+        if (!isSafe) {
+          setLoading(false);
+          return;
+        }
+
         const redirectUrl = `${window.location.origin}/cases`;
         const { error } = await supabase.auth.signUp({
           email,
@@ -29,7 +71,7 @@ const Login = () => {
           }
         });
         if (error) throw error;
-        toast.success("Account created successfully!");
+        toast.success("Account created! Check your email for confirmation.");
         navigate("/cases");
       } else {
         const { error } = await supabase.auth.signInWithPassword({
@@ -79,6 +121,18 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              
+              {isSignUp && <PasswordStrengthMeter 
+                password={password} 
+                onStrengthChange={setIsPasswordStrong}
+              />}
+
+              {breachWarning && (
+                <Alert variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>{breachWarning}</AlertDescription>
+                </Alert>
+              )}
             </div>
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? "Loading..." : isSignUp ? "Sign Up" : "Login"}
