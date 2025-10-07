@@ -481,9 +481,7 @@ export default function FamilyTreeForm() {
               <CardContent className="p-6 md:p-10 space-y-10">
                 <Card className="glass-card border-primary/20 mb-6">
                   <CardHeader className="border-b border-border/50">
-                    <CardTitle className="text-3xl md:text-4xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                      Father Information
-                    </CardTitle>
+                    <CardTitle className="text-3xl md:text-4xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Father</CardTitle>
                   </CardHeader>
                   <CardContent className="p-6 md:p-8 space-y-8">
                     {renderFieldGroup([{
