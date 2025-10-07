@@ -41,9 +41,16 @@ export default function POAForm() {
   };
 
   const handleGeneratePDF = async (poaType: string, label: string) => {
+    if (!caseId || caseId === ':id') {
+      toast.error('Invalid case ID. Please navigate to this page from the cases list.');
+      return;
+    }
+
     try {
       setIsGenerating(true);
       toast.loading(`Generating ${label}...`);
+
+      console.log('Generating PDF for case:', caseId, 'Type:', poaType);
 
       const { data, error } = await supabase.functions.invoke('fill-pdf', {
         body: { caseId, templateType: poaType },
@@ -66,6 +73,7 @@ export default function POAForm() {
     } catch (error: any) {
       toast.dismiss();
       toast.error(`Failed to generate PDF: ${error.message}`);
+      console.error('PDF Generation Error:', error);
     } finally {
       setIsGenerating(false);
     }

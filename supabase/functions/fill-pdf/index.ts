@@ -151,10 +151,10 @@ function getFieldMappings(templateType: string, data: any): Record<string, strin
     case 'poa-minor':
     case 'poa-spouses':
       return {
-        'imie_nazwisko_wniosko': `${data.applicant_first_name || ''} ${data.applicant_last_name || ''}`.trim(),
-        'nr_dok_tozsamosci': data.applicant_passport_number || '',
-        'data_pelnomocnictwa': formatDate(new Date().toISOString()),
-        'imie_nazwisko_dziecka': `${data.child_1_first_name || ''} ${data.child_1_last_name || ''}`.trim(),
+        'imie_nazwisko_wniosko': `${data.applicant_first_name || ''} ${data.applicant_last_name || ''}`.trim().toUpperCase(),
+        'nr_dok_tozsamosci': (data.applicant_passport_number || '').toUpperCase(),
+        'data_pelnomocnictwa': formatDate(data.poa_date_filed || new Date().toISOString()),
+        'imie_nazwisko_dziecka': `${data.child_1_first_name || ''} ${data.child_1_last_name || ''}`.trim().toUpperCase(),
       };
 
     case 'registration':
