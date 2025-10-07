@@ -724,6 +724,7 @@ export type Database = {
           pgm_notes: string | null
           pgm_pob: string | null
           place_of_marriage: string | null
+          poa_date_filed: string | null
           spouse_current_citizenship: string[] | null
           spouse_date_of_emigration: string | null
           spouse_date_of_naturalization: string | null
@@ -974,6 +975,7 @@ export type Database = {
           pgm_notes?: string | null
           pgm_pob?: string | null
           place_of_marriage?: string | null
+          poa_date_filed?: string | null
           spouse_current_citizenship?: string[] | null
           spouse_date_of_emigration?: string | null
           spouse_date_of_naturalization?: string | null
@@ -1224,6 +1226,7 @@ export type Database = {
           pgm_notes?: string | null
           pgm_pob?: string | null
           place_of_marriage?: string | null
+          poa_date_filed?: string | null
           spouse_current_citizenship?: string[] | null
           spouse_date_of_emigration?: string | null
           spouse_date_of_naturalization?: string | null
