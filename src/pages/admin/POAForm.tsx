@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { Loader2, Save, Download, Sparkles, Type } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { POAFormField } from "@/components/POAFormField";
@@ -30,6 +30,7 @@ export default function POAForm() {
   });
   const [isGenerating, setIsGenerating] = useState(false);
   const [showClearAllDialog, setShowClearAllDialog] = useState(false);
+  const [activePOAType, setActivePOAType] = useState('adult');
   useEffect(() => {
     if (masterData) {
       setFormData({
@@ -200,44 +201,73 @@ export default function POAForm() {
           </Card>
         </motion.div>
 
-        {/* Tabs */}
-        <Tabs defaultValue="adult" className="w-full">
-          <motion.div initial={{
-          opacity: 0
-        }} animate={{
-          opacity: 1
-        }} transition={{
-          delay: 0.4
-        }}>
-            <TabsList className="grid w-full grid-cols-3 mb-10 p-2 glass-card h-auto gap-2">
-              <TabsTrigger value="adult" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-secondary transition-all duration-300 py-4 text-base font-heading font-bold">
-                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent data-[state=active]:from-white data-[state=active]:to-white">
-                  Adult POA
-                </span>
-              </TabsTrigger>
-              <TabsTrigger value="minor" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-secondary transition-all duration-300 py-4 text-base font-heading font-bold">
-                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent data-[state=active]:from-white data-[state=active]:to-white">
-                  Minor POA
-                </span>
-              </TabsTrigger>
-              <TabsTrigger value="spouses" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-secondary transition-all duration-300 py-4 text-base font-heading font-bold">
-                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent data-[state=active]:from-white data-[state=active]:to-white">
-                  Spouses POA
-                </span>
-              </TabsTrigger>
-            </TabsList>
-          </motion.div>
+        {/* Action Buttons Section */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          transition={{ duration: 0.5 }}
+          className="mb-8"
+        >
+          <div className="flex gap-3 overflow-x-auto pb-2 justify-between bg-background/95 backdrop-blur-lg p-4 rounded-lg">
+            <Button 
+              onClick={() => setActivePOAType('adult')}
+              variant={activePOAType === 'adult' ? 'default' : 'outline'}
+              className={`text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg ${
+                activePOAType === 'adult' 
+                  ? 'bg-gradient-to-r from-primary to-secondary text-white' 
+                  : 'bg-white/5 hover:bg-white/10'
+              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]`}
+            >
+              <span className={activePOAType === 'adult' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
+                Adult POA
+              </span>
+            </Button>
+            <Button 
+              onClick={() => setActivePOAType('minor')}
+              variant={activePOAType === 'minor' ? 'default' : 'outline'}
+              className={`text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg ${
+                activePOAType === 'minor' 
+                  ? 'bg-gradient-to-r from-primary to-secondary text-white' 
+                  : 'bg-white/5 hover:bg-white/10'
+              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]`}
+            >
+              <span className={activePOAType === 'minor' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
+                Minor POA
+              </span>
+            </Button>
+            <Button 
+              onClick={() => setActivePOAType('spouses')}
+              variant={activePOAType === 'spouses' ? 'default' : 'outline'}
+              className={`text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg ${
+                activePOAType === 'spouses' 
+                  ? 'bg-gradient-to-r from-primary to-secondary text-white' 
+                  : 'bg-white/5 hover:bg-white/10'
+              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]`}
+            >
+              <span className={activePOAType === 'spouses' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
+                Spouses POA
+              </span>
+            </Button>
+          </div>
+        </motion.div>
 
-          {Object.entries(poaFormConfigs).map(([key, config]) => <TabsContent key={key} value={key}>
-              <motion.div initial={{
-            opacity: 0,
-            scale: 0.95
-          }} animate={{
-            opacity: 1,
-            scale: 1
-          }} transition={{
-            duration: 0.5
-          }}>
+        {/* POA Forms */}
+        <div className="space-y-8">
+          {Object.entries(poaFormConfigs).map(([key, config]) => activePOAType === key && (
+            <motion.div 
+              key={key} 
+              initial={{
+                opacity: 0,
+                scale: 0.95
+              }} 
+              animate={{
+                opacity: 1,
+                scale: 1
+              }} 
+              transition={{
+                duration: 0.5
+              }}
+            >
                 <Card className="glass-card border-primary/20">
                   <CardHeader className="border-b border-border/50 pb-6">
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -282,8 +312,8 @@ export default function POAForm() {
                   </CardContent>
                 </Card>
               </motion.div>
-            </TabsContent>)}
-        </Tabs>
+          ))}
+        </div>
 
         <AlertDialog open={showClearAllDialog} onOpenChange={setShowClearAllDialog}>
           <AlertDialogContent>
