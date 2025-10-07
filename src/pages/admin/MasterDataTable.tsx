@@ -370,11 +370,6 @@ export default function MasterDataTable() {
                         { name: `child_${num}_pob`, label: "Place of Birth" },
                       ])}
                       <div>
-                        {renderCheckboxGroup([
-                          { name: `child_${num}_is_alive`, label: "Is Alive" },
-                        ])}
-                      </div>
-                      <div>
                         {renderTextarea(`child_${num}_notes`, "Notes", 2)}
                       </div>
                     </CardContent>
@@ -411,7 +406,6 @@ export default function MasterDataTable() {
                     ])}
                     <div className="pt-4">
                       {renderCheckboxGroup([
-                        { name: "father_is_alive", label: "Is Alive" },
                         { name: "father_has_birth_cert", label: "Birth Certificate" },
                         { name: "father_has_marriage_cert", label: "Marriage Certificate" },
                       ])}
@@ -438,7 +432,6 @@ export default function MasterDataTable() {
                     ])}
                     <div className="pt-4">
                       {renderCheckboxGroup([
-                        { name: "mother_is_alive", label: "Is Alive" },
                         { name: "mother_has_birth_cert", label: "Birth Certificate" },
                         { name: "mother_has_marriage_cert", label: "Marriage Certificate" },
                       ])}
@@ -483,7 +476,6 @@ export default function MasterDataTable() {
                         ])}
                         <div className="pt-4">
                           {renderCheckboxGroup([
-                            { name: `${prefix}_is_alive`, label: "Is Alive" },
                             { name: `${prefix}_has_birth_cert`, label: "Birth Certificate" },
                           ])}
                         </div>
@@ -529,7 +521,6 @@ export default function MasterDataTable() {
                         ])}
                         <div className="pt-4">
                           {renderCheckboxGroup([
-                            { name: `${prefix}_is_alive`, label: "Is Alive" },
                             { name: `${prefix}_has_birth_cert`, label: "Birth Certificate" },
                           ])}
                         </div>
