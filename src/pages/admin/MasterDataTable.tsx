@@ -146,7 +146,7 @@ export default function MasterDataTable() {
               onCheckedChange={(checked) => handleInputChange(field.name, checked)}
               className="h-6 w-6"
             />
-            <Label htmlFor={field.name} className="cursor-pointer text-base font-medium">
+            <Label htmlFor={field.name} className="cursor-pointer text-sm font-normal">
               {field.label}
             </Label>
           </motion.div>

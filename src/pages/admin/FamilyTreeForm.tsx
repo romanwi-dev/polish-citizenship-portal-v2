@@ -162,7 +162,7 @@ export default function FamilyTreeForm() {
               onChange={(e) => handleInputChange(field.name, e.target.checked)}
               className="h-6 w-6 rounded border-2"
             />
-            <Label htmlFor={field.name} className="cursor-pointer text-base font-medium">
+            <Label htmlFor={field.name} className="cursor-pointer text-sm font-normal">
               {field.label}
             </Label>
           </motion.div>
