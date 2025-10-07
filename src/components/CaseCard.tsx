@@ -125,16 +125,16 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
 
   return (
     <div 
-      className="perspective-1000 cursor-pointer h-[520px]"
+      className="perspective-1000 cursor-pointer min-h-[520px] h-auto"
       onClick={handleClick}
       onDoubleClick={handleDoubleClick}
     >
       <div
-        className={`relative w-full h-full transition-transform duration-700 preserve-3d ${isFlipped ? 'rotate-y-180' : ''}`}
+        className={`relative w-full h-full min-h-[520px] transition-transform duration-700 preserve-3d ${isFlipped ? 'rotate-y-180' : ''}`}
         style={{ transformStyle: 'preserve-3d' }}
       >
         {/* Front of Card */}
-        <div className="absolute inset-0 w-full h-full backface-hidden glass-card p-6 rounded-lg hover-glow">
+        <div className="absolute inset-0 w-full h-full min-h-[520px] backface-hidden glass-card p-6 rounded-lg hover-glow flex flex-col">
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center flex-shrink-0">
