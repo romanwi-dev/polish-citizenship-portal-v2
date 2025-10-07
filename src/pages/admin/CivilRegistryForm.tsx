@@ -123,7 +123,7 @@ export default function CivilRegistryForm() {
               renderDateField(field.name, field.label)
             ) : (
               <>
-                <Label htmlFor={field.name} className="text-base font-medium text-foreground/70">
+                <Label htmlFor={field.name} className="text-base font-medium text-foreground">
                   {field.label}
                 </Label>
                 <Input
@@ -132,7 +132,7 @@ export default function CivilRegistryForm() {
                   value={formData[field.name] || ""}
                   onChange={(e) => handleInputChange(field.name, e.target.value)}
                   placeholder={formData[field.name] ? "" : (field.placeholder || `Enter ${field.label.toLowerCase()}`)}
-                  className="h-16 border-2 text-lg hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+                  className="h-14 border-2 text-base hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
                 />
               </>
             )}

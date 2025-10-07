@@ -77,7 +77,7 @@ export default function FamilyTreeForm() {
         animate={{ opacity: 1, y: 0 }}
         className="space-y-3"
       >
-        <Label htmlFor={name} className="text-base font-medium text-foreground/70">
+        <Label htmlFor={name} className="text-base font-medium text-foreground">
           {label}
         </Label>
         <Popover>
@@ -85,7 +85,7 @@ export default function FamilyTreeForm() {
             <Button
               variant="outline"
               className={cn(
-                "w-full h-16 justify-start text-left font-normal text-lg border-2 hover-glow bg-card/50 backdrop-blur",
+                "w-full h-14 justify-start text-left font-normal border-2 hover-glow bg-card/50 backdrop-blur",
                 !dateValue && "text-muted-foreground"
               )}
             >
@@ -132,7 +132,7 @@ export default function FamilyTreeForm() {
                   value={formData[field.name] || ""}
                   onChange={(e) => handleInputChange(field.name, e.target.value)}
                   placeholder={formData[field.name] ? "" : (field.placeholder || `Enter ${field.label.toLowerCase()}`)}
-                  className="h-16 border-2 text-lg hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+                  className="h-14 border-2 text-base hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
                 />
               </>
             )}
