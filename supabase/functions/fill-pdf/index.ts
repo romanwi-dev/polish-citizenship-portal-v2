@@ -36,12 +36,14 @@ serve(async (req) => {
     if (masterError) throw masterError;
     if (!masterData) throw new Error('Master data not found');
 
-    // Fetch the appropriate template
-    const templateUrl = `${Deno.env.get('SUPABASE_URL')}/storage/v1/object/public/templates/${templateType}.pdf`;
+    // Fetch the appropriate template from public folder
+    const publicUrl = Deno.env.get('SUPABASE_URL')?.replace('/v1', '');
+    const templateUrl = `${publicUrl}/templates/${templateType}.pdf`;
     console.log(`Fetching template from: ${templateUrl}`);
     
     const templateResponse = await fetch(templateUrl);
     if (!templateResponse.ok) {
+      console.error(`Template fetch failed: ${templateResponse.status} ${templateResponse.statusText}`);
       throw new Error(`Failed to fetch template: ${templateResponse.statusText}`);
     }
     
@@ -59,7 +61,7 @@ serve(async (req) => {
           field.setText(String(fieldValue));
         }
       } catch (e) {
-        console.log(`Field ${fieldName} not found or error: ${e.message}`);
+        console.log(`Field ${fieldName} not found or error: ${(e as Error).message}`);
       }
     }
 
@@ -68,8 +70,11 @@ serve(async (req) => {
 
     // Save the filled PDF
     const pdfBytes = await pdfDoc.save();
+    
+    // Convert to proper ArrayBuffer for Response
+    const buffer = new Uint8Array(pdfBytes).buffer;
 
-    return new Response(pdfBytes, {
+    return new Response(buffer, {
       headers: {
         ...corsHeaders,
         'Content-Type': 'application/pdf',
@@ -80,7 +85,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error filling PDF:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: (error as Error).message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
