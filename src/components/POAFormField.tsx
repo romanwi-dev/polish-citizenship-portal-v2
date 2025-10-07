@@ -48,7 +48,7 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
               style={{ fontSize: '1.125rem', fontWeight: '400' }}
             >
               <CalendarIcon className="mr-2 h-5 w-5" />
-              {dateValue ? format(dateValue, "dd/MM/yyyy") : <span>Pick a date</span>}
+              {dateValue ? format(dateValue, "dd.MM.yyyy") : <span>Pick a date</span>}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
