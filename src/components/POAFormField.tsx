@@ -19,6 +19,10 @@ interface POAFormFieldProps {
 }
 
 export function POAFormField({ name, label, type = "text", value, onChange, placeholder, delay = 0 }: POAFormFieldProps) {
+  const handleDoubleClick = () => {
+    onChange("");
+  };
+
   if (type === "date") {
     const dateValue = value ? new Date(value) : undefined;
     
@@ -28,6 +32,7 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay, duration: 0.4 }}
         className="space-y-4"
+        onDoubleClick={handleDoubleClick}
       >
         <Label htmlFor={name} className="text-sm font-normal text-foreground/90">
           {label}
@@ -67,6 +72,7 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.4 }}
       className="space-y-4"
+      onDoubleClick={handleDoubleClick}
     >
       <Label htmlFor={name} className="text-sm font-normal text-foreground/90">
         {label}

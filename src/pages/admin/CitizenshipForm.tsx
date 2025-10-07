@@ -15,6 +15,17 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Calendar as CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { useLongPress } from "@/hooks/useLongPress";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 export default function CitizenshipForm() {
   const { id: caseId } = useParams();
@@ -22,6 +33,7 @@ export default function CitizenshipForm() {
   const updateMutation = useUpdateMasterData();
   const [formData, setFormData] = useState<any>({});
   const [isGenerating, setIsGenerating] = useState(false);
+  const [showClearAllDialog, setShowClearAllDialog] = useState(false);
 
   useEffect(() => {
     if (masterData) {
@@ -31,6 +43,21 @@ export default function CitizenshipForm() {
 
   const handleInputChange = (field: string, value: any) => {
     setFormData((prev: any) => ({ ...prev, [field]: value }));
+  };
+
+  const clearCardFields = (fieldNames: string[], cardTitle: string) => {
+    const clearedFields: any = {};
+    fieldNames.forEach((name) => {
+      clearedFields[name] = "";
+    });
+    setFormData((prev: any) => ({ ...prev, ...clearedFields }));
+    toast.success(`Cleared all fields in ${cardTitle}`);
+  };
+
+  const clearAllFields = () => {
+    setFormData({});
+    toast.success("Cleared all fields");
+    setShowClearAllDialog(false);
   };
 
   const handleSave = () => {
@@ -73,10 +100,9 @@ export default function CitizenshipForm() {
     const dateValue = formData[name] ? new Date(formData[name]) : undefined;
     
     return (
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+      <div
         className="space-y-2"
+        onDoubleClick={() => handleInputChange(name, "")}
       >
         <Label htmlFor={name} className="text-sm font-normal text-foreground">
           {label}
@@ -86,12 +112,12 @@ export default function CitizenshipForm() {
             <Button
               variant="outline"
               className={cn(
-                "w-full h-16 justify-start text-left border-2 hover-glow bg-card/50 backdrop-blur",
+                "w-full h-14 justify-start text-left font-normal border-2 hover-glow bg-card/50 backdrop-blur transition-all",
                 !dateValue && "text-muted-foreground"
               )}
               style={{ fontSize: '1.125rem', fontWeight: '400' }}
             >
-              <CalendarIcon className="mr-2 h-4 w-4" />
+              <CalendarIcon className="mr-2 h-5 w-5" />
               {dateValue ? format(dateValue, "dd/MM/yyyy") : <span>Pick a date</span>}
             </Button>
           </PopoverTrigger>
@@ -102,11 +128,10 @@ export default function CitizenshipForm() {
               onSelect={(date) => handleInputChange(name, date ? format(date, "yyyy-MM-dd") : "")}
               disabled={(date) => date > new Date("2030-12-31") || date < new Date("1900-01-01")}
               initialFocus
-              className={cn("p-3 pointer-events-auto")}
             />
           </PopoverContent>
         </Popover>
-      </motion.div>
+      </div>
     );
   };
 
@@ -118,8 +143,9 @@ export default function CitizenshipForm() {
             key={field.name}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: idx * 0.05, duration: 0.4 }}
+            transition={{ duration: 0.3, delay: idx * 0.05 }}
             className="space-y-2"
+            onDoubleClick={() => !field.type && handleInputChange(field.name, "")}
           >
             {field.type === "date" ? (
               renderDateField(field.name, field.label)
@@ -132,9 +158,9 @@ export default function CitizenshipForm() {
                   id={field.name}
                   type={field.type || "text"}
                   value={formData[field.name] || ""}
-                  onChange={(e) => handleInputChange(field.name, field.type === "email" ? e.target.value : e.target.value.toUpperCase())}
-                  placeholder=""
-                  className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                  onChange={(e) => handleInputChange(field.name, e.target.value.toUpperCase())}
+                  placeholder={field.placeholder || ""}
+                  className="h-14 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
                   style={{ fontSize: '1.125rem', fontWeight: '400' }}
                 />
               </>

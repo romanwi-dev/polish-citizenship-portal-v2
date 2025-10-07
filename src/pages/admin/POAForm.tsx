@@ -11,6 +11,17 @@ import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { POAFormField } from "@/components/POAFormField";
 import { poaFormConfigs } from "@/config/poaFormConfig";
+import { useLongPress } from "@/hooks/useLongPress";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 export default function POAForm() {
   const { id: caseId } = useParams();
@@ -18,6 +29,7 @@ export default function POAForm() {
   const updateMutation = useUpdateMasterData();
   const [formData, setFormData] = useState<any>({});
   const [isGenerating, setIsGenerating] = useState(false);
+  const [showClearAllDialog, setShowClearAllDialog] = useState(false);
 
   useEffect(() => {
     const today = format(new Date(), "yyyy-MM-dd");
@@ -33,6 +45,22 @@ export default function POAForm() {
 
   const handleInputChange = (field: string, value: any) => {
     setFormData((prev: any) => ({ ...prev, [field]: value }));
+  };
+
+  const clearCardFields = (config: any) => {
+    const clearedFields: any = {};
+    config.fields.forEach((field: any) => {
+      clearedFields[field.name] = "";
+    });
+    setFormData((prev: any) => ({ ...prev, ...clearedFields }));
+    toast.success(`Cleared all fields in ${config.title}`);
+  };
+
+  const clearAllFields = () => {
+    const today = format(new Date(), "yyyy-MM-dd");
+    setFormData({ poa_date_filed: today });
+    toast.success("Cleared all fields");
+    setShowClearAllDialog(false);
   };
 
   const handleSave = () => {
@@ -78,6 +106,11 @@ export default function POAForm() {
       setIsGenerating(false);
     }
   };
+
+  const formLongPress = useLongPress({
+    onLongPress: () => setShowClearAllDialog(true),
+    duration: 5000,
+  });
 
   if (isLoading) {
     return (
@@ -158,7 +191,13 @@ export default function POAForm() {
                 transition={{ duration: 0.5 }}
               >
                 <Card className="glass-card border-primary/20">
-                  <CardHeader className="border-b border-border/50 pb-6">
+                  <CardHeader 
+                    className="border-b border-border/50 pb-6"
+                    {...useLongPress({
+                      onLongPress: () => clearCardFields(config),
+                      duration: 2000,
+                    })}
+                  >
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                       <CardTitle className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent whitespace-nowrap">
                         {config.title}
@@ -232,6 +271,23 @@ export default function POAForm() {
             </TabsContent>
           ))}
         </Tabs>
+
+        <AlertDialog open={showClearAllDialog} onOpenChange={setShowClearAllDialog}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Clear All Fields?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This will clear all fields in the entire form. This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={clearAllFields}>
+                Clear All
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </div>
   );
