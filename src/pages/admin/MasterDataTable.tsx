@@ -202,57 +202,46 @@ export default function MasterDataTable() {
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
 
       <div className="container mx-auto py-12 px-4 md:px-6 lg:px-8 relative z-10 max-w-7xl">
-        {/* Premium Header with 3D Effect */}
-        <motion.div initial={{
-        opacity: 0,
-        y: -50
-      }} animate={{
-        opacity: 1,
-        y: 0
-      }} transition={{
-        duration: 0.8
-      }} className="mb-12">
-          <Card className="glass-card border-primary/20 overflow-hidden">
+        {/* Sticky Header */}
+        <motion.div 
+          initial={{ opacity: 0, y: -50 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          transition={{ duration: 0.8 }}
+          className="sticky top-0 z-50 mb-12 bg-background/95 backdrop-blur-lg border-b border-primary/20"
+        >
+          <Card className="glass-card border-primary/20 overflow-hidden rounded-none border-x-0 border-t-0">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5" />
             <CardHeader className="relative pb-8 pt-8">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                <motion.div initial={{
-                x: -20,
-                opacity: 0
-              }} animate={{
-                x: 0,
-                opacity: 1
-              }} transition={{
-                delay: 0.2
-              }}>
-                  <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">Master Data Form</CardTitle>
-                  
+                <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
+                  <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
+                    Master Data Form
+                  </CardTitle>
                 </motion.div>
-                <motion.div initial={{
-                x: 20,
-                opacity: 0
-              }} animate={{
-                x: 0,
-                opacity: 1
-              }} transition={{
-                delay: 0.3
-              }} className="flex gap-3 ml-auto">
-                  <Button onClick={handleSave} disabled={updateMutation.isPending} size="lg" className="text-xl font-bold px-12 h-16 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30">
-                    {updateMutation.isPending ? <>
-                        <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                <div className="flex items-center gap-3">
+                  <Button 
+                    onClick={handleSave} 
+                    disabled={updateMutation.isPending} 
+                    size="default" 
+                    className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 md:px-[50px]"
+                  >
+                    {updateMutation.isPending ? (
+                      <>
+                        <Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
                         <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                           Saving...
                         </span>
-                      </> : <>
-                        <Save className="h-5 w-5 mr-2" />
+                      </>
+                    ) : (
+                      <>
+                        <Save className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
                         <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                          Save
+                          Save data
                         </span>
-                      </>}
-                    <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </>
+                    )}
                   </Button>
-                  <PDFGenerationButtons caseId={caseId || ''} />
-                </motion.div>
+                </div>
               </div>
             </CardHeader>
           </Card>
