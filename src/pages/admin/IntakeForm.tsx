@@ -9,11 +9,14 @@ import { motion } from "framer-motion";
 import { POAFormField } from "@/components/POAFormField";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useLongPressWithFeedback } from "@/hooks/useLongPressWithFeedback";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 
 export default function IntakeForm() {
   const { id: caseId } = useParams();
   const { data: intakeData, isLoading } = useIntakeData(caseId);
   const updateMutation = useUpdateIntakeData();
+  const [showClearDialog, setShowClearDialog] = useState(false);
   
   const [formData, setFormData] = useState<any>({
     given_names: "",
@@ -89,6 +92,45 @@ export default function IntakeForm() {
     }
   };
 
+  const clearAllFields = () => {
+    setFormData({
+      given_names: "",
+      last_name: "",
+      passport_number: "",
+      phone: "",
+      email: "",
+      confirm_email: "",
+      phone_verified: false,
+      email_verified: false,
+      civil_status: "",
+      has_children: false,
+      has_minor_children: false,
+      children_count: 0,
+      minor_children_count: 0,
+    });
+    toast.success("All fields cleared");
+  };
+
+  const clearField = (field: string) => {
+    setFormData((prev: any) => ({
+      ...prev,
+      [field]: typeof prev[field] === 'boolean' ? false : typeof prev[field] === 'number' ? 0 : "",
+    }));
+    toast.success("Field cleared");
+  };
+
+  const titleLongPress = useLongPressWithFeedback({
+    onLongPress: clearAllFields,
+    duration: 2000,
+    feedbackMessage: "Hold to clear all fields...",
+  });
+
+  const backgroundLongPress = useLongPressWithFeedback({
+    onLongPress: () => setShowClearDialog(true),
+    duration: 5000,
+    feedbackMessage: "Hold to clear entire form...",
+  });
+
 
   if (isLoading) {
     return (
@@ -104,7 +146,7 @@ export default function IntakeForm() {
   }
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="min-h-screen relative overflow-hidden" {...backgroundLongPress.handlers}>
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background pointer-events-none" />
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
@@ -126,7 +168,10 @@ export default function IntakeForm() {
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: 0.2 }}
                 >
-                  <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
+                  <CardTitle 
+                    {...titleLongPress.handlers}
+                    className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-pointer select-none"
+                  >
                     Client Intake Form
                   </CardTitle>
                 </motion.div>
@@ -181,59 +226,71 @@ export default function IntakeForm() {
             <CardContent className="p-6 md:p-10">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Personal Information */}
-                <POAFormField
-                  name="given_names"
-                  label="Given names (exactly like in your valid ID/ passport)"
-                  value={formData.given_names}
-                  onChange={(value) => handleInputChange("given_names", value)}
-                  delay={0}
-                />
+                <div onDoubleClick={() => clearField("given_names")}>
+                  <POAFormField
+                    name="given_names"
+                    label="Given names (exactly like in your valid ID/ passport)"
+                    value={formData.given_names}
+                    onChange={(value) => handleInputChange("given_names", value)}
+                    delay={0}
+                  />
+                </div>
                 
-                <POAFormField
-                  name="last_name"
-                  label="Full last name (exactly like in your valid ID/ passport)"
-                  value={formData.last_name}
-                  onChange={(value) => handleInputChange("last_name", value)}
-                  delay={0.05}
-                />
+                <div onDoubleClick={() => clearField("last_name")}>
+                  <POAFormField
+                    name="last_name"
+                    label="Full last name (exactly like in your valid ID/ passport)"
+                    value={formData.last_name}
+                    onChange={(value) => handleInputChange("last_name", value)}
+                    delay={0.05}
+                  />
+                </div>
 
                 {/* Passport */}
-                <POAFormField
-                  name="passport_number"
-                  label="Passport number"
-                  value={formData.passport_number}
-                  onChange={(value) => handleInputChange("passport_number", value)}
-                  delay={0.1}
-                />
+                <div onDoubleClick={() => clearField("passport_number")}>
+                  <POAFormField
+                    name="passport_number"
+                    label="Passport number"
+                    value={formData.passport_number}
+                    onChange={(value) => handleInputChange("passport_number", value)}
+                    delay={0.1}
+                  />
+                </div>
 
                 {/* Mobile */}
-                <POAFormField
-                  name="phone"
-                  label="Mobile number"
-                  value={formData.phone}
-                  onChange={(value) => handleInputChange("phone", value)}
-                  delay={0.15}
-                />
+                <div onDoubleClick={() => clearField("phone")}>
+                  <POAFormField
+                    name="phone"
+                    label="Mobile number"
+                    value={formData.phone}
+                    onChange={(value) => handleInputChange("phone", value)}
+                    delay={0.15}
+                  />
+                </div>
 
                 {/* Email */}
-                <POAFormField
-                  name="email"
-                  label="Email address"
-                  type="email"
-                  value={formData.email}
-                  onChange={(value) => handleInputChange("email", value.toLowerCase())}
-                  delay={0.2}
-                />
+                <div onDoubleClick={() => clearField("email")}>
+                  <POAFormField
+                    name="email"
+                    label="Email address"
+                    type="email"
+                    value={formData.email}
+                    onChange={(value) => handleInputChange("email", value.toLowerCase())}
+                    delay={0.2}
+                  />
+                </div>
 
                 {/* Confirm Email */}
-                <POAFormField
-                  name="confirm_email"
-                  label="Confirm your email address"
-                  type="email"
-                  value={formData.confirm_email}
-                  onChange={(value) => handleInputChange("confirm_email", value.toLowerCase())}
-                  delay={0.25}
-                />
+                <div onDoubleClick={() => clearField("confirm_email")}>
+                  <POAFormField
+                    name="confirm_email"
+                    label="Confirm your email address"
+                    type="email"
+                    value={formData.confirm_email}
+                    onChange={(value) => handleInputChange("confirm_email", value.toLowerCase())}
+                    delay={0.25}
+                  />
+                </div>
 
                 {/* Civil Status */}
                 <motion.div
@@ -241,6 +298,7 @@ export default function IntakeForm() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3, duration: 0.4 }}
                   className="space-y-4"
+                  onDoubleClick={() => clearField("civil_status")}
                 >
                   <Label className="text-sm font-normal text-foreground/90">Civil status</Label>
                   <Select
@@ -263,6 +321,10 @@ export default function IntakeForm() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.35, duration: 0.4 }}
                   className="space-y-4"
+                  onDoubleClick={() => {
+                    clearField("children_count");
+                    clearField("has_children");
+                  }}
                 >
                   <Label className="text-sm font-normal text-foreground/90">Number of children (including minors)</Label>
                   <Select
@@ -294,6 +356,7 @@ export default function IntakeForm() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.4, duration: 0.4 }}
                       className="space-y-4"
+                      onDoubleClick={() => clearField("has_minor_children")}
                     >
                       <Label className="text-sm font-normal text-foreground/90">Do you have minor children (under 18)?</Label>
                       <Select
@@ -316,6 +379,7 @@ export default function IntakeForm() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.45, duration: 0.4 }}
                         className="space-y-4"
+                        onDoubleClick={() => clearField("minor_children_count")}
                       >
                         <Label className="text-sm font-normal text-foreground/90">How many minor kids?</Label>
                         <Select
@@ -342,6 +406,24 @@ export default function IntakeForm() {
           </Card>
         </motion.div>
       </div>
+
+      {/* Clear All Confirmation Dialog */}
+      <AlertDialog open={showClearDialog} onOpenChange={setShowClearDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Clear entire form?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will clear all fields in the intake form. This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={clearAllFields}>
+              Clear all fields
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
