@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,7 @@ import {
   getMilestones,
   getPartStageCount 
 } from "@/lib/caseStages";
-import { Check, Play, Star } from "lucide-react";
+import { Check, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface CaseStageVisualizationProps {
@@ -27,7 +27,9 @@ export function CaseStageVisualization({
   onStageActivate 
 }: CaseStageVisualizationProps) {
   const [selectedPart, setSelectedPart] = useState<number | null>(null);
+  const [highlightedStage, setHighlightedStage] = useState<string | null>(null);
   const stageRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const pipelineScrollRef = useRef<HTMLDivElement | null>(null);
   const totalStages = getTotalStages();
   const completedCount = completedStages.length;
   const clientVisibleCount = getClientVisibleStages();
@@ -70,11 +72,47 @@ export function CaseStageVisualization({
   };
 
   const handlePartClick = (partNum: number) => {
-    setSelectedPart(partNum === selectedPart ? null : partNum);
-    const firstStageOfPart = CASE_STAGES.find(s => s.part === partNum);
-    if (firstStageOfPart && stageRefs.current[firstStageOfPart.id]) {
-      stageRefs.current[firstStageOfPart.id]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    const newSelectedPart = partNum === selectedPart ? null : partNum;
+    setSelectedPart(newSelectedPart);
+    setHighlightedStage(null);
+    
+    if (newSelectedPart) {
+      const firstStageOfPart = CASE_STAGES.find(s => s.part === newSelectedPart);
+      if (firstStageOfPart && stageRefs.current[firstStageOfPart.id]) {
+        setTimeout(() => {
+          stageRefs.current[firstStageOfPart.id]?.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'nearest', 
+            inline: 'center' 
+          });
+        }, 100);
+      }
     }
+  };
+
+  const handleStageClick = (stageId: string) => {
+    setHighlightedStage(stageId);
+    const stage = CASE_STAGES.find(s => s.id === stageId);
+    if (stage) {
+      setSelectedPart(stage.part);
+    }
+    onStageActivate?.(stageId);
+  };
+
+  const handlePendingStageClick = (stageId: string) => {
+    setHighlightedStage(stageId);
+    const stage = CASE_STAGES.find(s => s.id === stageId);
+    if (stage) {
+      setSelectedPart(stage.part);
+      setTimeout(() => {
+        stageRefs.current[stageId]?.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'nearest', 
+          inline: 'center' 
+        });
+      }, 100);
+    }
+    onStageActivate?.(stageId);
   };
 
   const filteredStages = selectedPart 
@@ -155,14 +193,14 @@ export function CaseStageVisualization({
               const isActive = partStages.some(s => s.id === currentStage);
               
               return (
-                <div 
+                <button
                   key={partNum}
                   className={cn(
-                    "flex flex-col items-center min-w-[80px] cursor-pointer transition-all",
-                    isActive && "opacity-100",
-                    selectedPart === partNum && "ring-2 ring-primary rounded-lg p-1"
+                    "flex flex-col items-center min-w-[80px] cursor-pointer transition-all hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg p-2",
+                    selectedPart === partNum && "ring-2 ring-primary bg-primary/5"
                   )}
                   onClick={() => handlePartClick(partNum)}
+                  type="button"
                 >
                   <div 
                     className={cn(
@@ -174,7 +212,7 @@ export function CaseStageVisualization({
                         : partCompleted > 0
                         ? "bg-accent/20 text-accent border-2 border-accent/50"
                         : "bg-muted/20 text-muted-foreground border border-muted/30",
-                      selectedPart === partNum && "scale-110"
+                      selectedPart === partNum && "scale-105 shadow-lg"
                     )}
                   >
                     {partNum}
@@ -186,7 +224,7 @@ export function CaseStageVisualization({
                   <span className="text-xs font-medium">
                     {partCompleted}/{partTotal}
                   </span>
-                </div>
+                </button>
               );
             })}
           </div>
@@ -208,11 +246,12 @@ export function CaseStageVisualization({
             </span>
           </div>
         </div>
-        <div className="w-full overflow-x-auto">
+        <div className="w-full overflow-x-auto" ref={pipelineScrollRef}>
           <div className="flex gap-4 pb-4 min-w-max">
             {filteredStages.map((stage) => {
               const status = getStageStatus(stage.id);
               const isVisible = stage.isClientVisible;
+              const isHighlighted = highlightedStage === stage.id;
               
               return (
                 <Card
@@ -220,15 +259,11 @@ export function CaseStageVisualization({
                   ref={(el) => { stageRefs.current[stage.id] = el; }}
                   className={cn(
                     "min-w-[200px] p-4 transition-all cursor-pointer hover:shadow-lg relative",
-                    getStageCardColor(status, stage.priority, stage.isMilestone)
+                    getStageCardColor(status, stage.priority, stage.isMilestone),
+                    isHighlighted && "ring-2 ring-primary shadow-2xl scale-105"
                   )}
-                  onClick={() => onStageActivate?.(stage.id)}
+                  onClick={() => handleStageClick(stage.id)}
                 >
-                  {stage.isMilestone && (
-                    <div className="absolute top-2 right-2">
-                      <Star className="h-5 w-5 text-yellow-400 fill-yellow-400" />
-                    </div>
-                  )}
                   <div className="flex items-start justify-between mb-2">
                     <Badge variant="outline" className="text-xs">
                       {stage.order}
@@ -281,7 +316,14 @@ export function CaseStageVisualization({
         <ScrollArea className="h-[400px]">
           <div className="space-y-3">
             {pendingStages.map((stage) => (
-              <Card key={stage.id} className="p-4 bg-card/50">
+              <Card 
+                key={stage.id} 
+                className={cn(
+                  "p-4 bg-card/50 transition-all cursor-pointer hover:bg-card/70",
+                  highlightedStage === stage.id && "ring-2 ring-primary bg-card"
+                )}
+                onClick={() => handlePendingStageClick(stage.id)}
+              >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
@@ -308,7 +350,10 @@ export function CaseStageVisualization({
                   <Button
                     size="sm"
                     variant="outline"
-                    onClick={() => onStageActivate?.(stage.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handlePendingStageClick(stage.id);
+                    }}
                     className="ml-4"
                   >
                     <Play className="h-3 w-3 mr-1" />
