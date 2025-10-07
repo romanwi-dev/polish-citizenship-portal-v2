@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState, useEffect } from "react";
 import { Loader2, Save, Download, Users, Sparkles, Type } from "lucide-react";
 import { motion } from "framer-motion";
@@ -115,6 +116,8 @@ export default function FamilyTreeForm() {
     type?: string;
     placeholder?: string;
     isNameField?: boolean;
+    isSelect?: boolean;
+    selectOptions?: Array<{ value: string; label: string }>;
   }>) => {
     // Check if this is a name fields group (first/last/maiden names)
     const isNameGroup = fields.every(f => f.isNameField);
@@ -133,7 +136,23 @@ export default function FamilyTreeForm() {
         delay: idx * 0.05,
         duration: 0.4
       }} className="space-y-2" onDoubleClick={() => !field.type || field.type === "text" ? handleInputChange(field.name, "") : null}>
-            {field.type === "date" ? renderDateField(field.name, field.label) : <>
+            {field.type === "date" ? renderDateField(field.name, field.label) : field.isSelect ? <>
+                <Label htmlFor={field.name} className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                  {field.label}
+                </Label>
+                <Select value={formData[field.name] || ""} onValueChange={(value) => handleInputChange(field.name, value)}>
+                  <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur" style={{ fontSize: '1.125rem', fontWeight: '400' }}>
+                    <SelectValue placeholder="Select..." />
+                  </SelectTrigger>
+                  <SelectContent className="bg-background border-2 z-50">
+                    {field.selectOptions?.map(option => (
+                      <SelectItem key={option.value} value={option.value} className="text-base cursor-pointer">
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </> : <>
                 <Label htmlFor={field.name} className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
                   {field.label}
                 </Label>
@@ -430,7 +449,12 @@ export default function FamilyTreeForm() {
                 label: "Passport Number"
               }, {
                 name: "applicant_sex",
-                label: "Sex"
+                label: "Sex",
+                isSelect: true,
+                selectOptions: [
+                  { value: "MALE", label: "Male" },
+                  { value: "FEMALE", label: "Female" }
+                ]
               }, {
                 name: "applicant_email",
                 label: "Email",
