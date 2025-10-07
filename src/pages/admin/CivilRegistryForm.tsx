@@ -77,7 +77,7 @@ export default function CivilRegistryForm() {
         animate={{ opacity: 1, y: 0 }}
         className="space-y-3"
       >
-        <Label htmlFor={name} className="text-base font-medium text-foreground/70">
+        <Label htmlFor={name} className="text-base font-medium text-foreground">
           {label}
         </Label>
         <Popover>
@@ -85,7 +85,7 @@ export default function CivilRegistryForm() {
             <Button
               variant="outline"
               className={cn(
-                "w-full h-16 justify-start text-left font-normal text-lg border-2 hover-glow bg-card/50 backdrop-blur",
+                "w-full h-14 justify-start text-left font-normal border-2 hover-glow bg-card/50 backdrop-blur",
                 !dateValue && "text-muted-foreground"
               )}
             >
@@ -229,72 +229,116 @@ export default function CivilRegistryForm() {
           </Card>
         </motion.div>
 
-        {/* Form Section */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-        >
+        {/* Form Sections */}
+        <div className="space-y-8">
+          {/* Applicant Information */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+          >
             <Card className="glass-card border-primary/20">
               <CardHeader className="border-b border-border/50 pb-6">
                 <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                  Registration of Foreign Civil Status Record
+                  Applicant Information / Dane wnioskodawcy
                 </CardTitle>
               </CardHeader>
-            <CardContent className="p-6 md:p-10 space-y-10">
-              <div className="bg-muted/30 rounded-lg p-6 border-2 border-primary/20">
-                <h3 className="text-xl font-semibold mb-4 text-foreground">Document Information</h3>
-                <p className="text-muted-foreground mb-4">
-                  Zagraniczny akt stanu cywilnego został sporządzony w ____ na imię (imiona) i nazwisko/a ____
-                </p>
+              <CardContent className="p-6 md:p-10 space-y-10">
                 {renderFieldGroup([
-                  { name: "applicant_first_name", label: "Full Name on Document / Imię i nazwisko na akcie" },
-                  { name: "applicant_pob", label: "Place Where Document Was Issued / Miejsce sporządzenia aktu" },
-                  { name: "applicant_dob", label: "Event Date / Data zdarzenia", type: "date" },
+                  { name: "applicant_first_name", label: "First Name(s) / Imię" },
+                  { name: "applicant_last_name", label: "Last Name / Nazwisko" },
+                  { name: "applicant_maiden_name", label: "Maiden Name / Nazwisko panieńskie" },
+                  { name: "applicant_dob", label: "Date of Birth / Data urodzenia", type: "date" },
+                  { name: "applicant_pob", label: "Place of Birth / Miejsce urodzenia" },
+                  { name: "applicant_sex", label: "Sex / Płeć" },
+                  { name: "applicant_email", label: "Email" },
+                  { name: "applicant_phone", label: "Phone / Telefon" },
+                  { name: "applicant_passport_number", label: "Passport Number / Nr paszportu" },
                 ])}
-              </div>
+              </CardContent>
+            </Card>
+          </motion.div>
 
-              <div className="bg-muted/30 rounded-lg p-6 border-2 border-primary/20">
-                <h3 className="text-xl font-semibold mb-4 text-foreground">Required Documents / Do podania załączam</h3>
-                <div className="space-y-3 text-muted-foreground">
-                  <div className="flex items-center gap-3">
-                    <div className="h-2 w-2 rounded-full bg-primary"></div>
-                    <span>1. Oryginał aktu z tłumaczeniem przysięgłym na jęz. polski</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="h-2 w-2 rounded-full bg-primary"></div>
-                    <span>2. Dowód uiszczenia opłaty skarbowej</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="h-2 w-2 rounded-full bg-primary"></div>
-                    <span>3. Pełnomocnictwo</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="h-2 w-2 rounded-full bg-primary"></div>
-                    <span>4. Kopia paszportu</span>
+          {/* Document Information */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <Card className="glass-card border-primary/20">
+              <CardHeader className="border-b border-border/50 pb-6">
+                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                  Document to Register / Dokument do rejestracji
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 md:p-10 space-y-10">
+                <div className="bg-muted/30 rounded-lg p-6 border-2 border-primary/20">
+                  <h3 className="text-2xl font-semibold mb-6 text-foreground">Required Information / Wymagane informacje</h3>
+                  <p className="text-muted-foreground mb-6">
+                    Foreign civil status record was issued in / Zagraniczny akt stanu cywilnego został sporządzony
+                  </p>
+                  {renderFieldGroup([
+                    { name: "applicant_pob", label: "Place Where Document Was Issued / Miejsce sporządzenia aktu" },
+                    { name: "applicant_dob", label: "Event Date / Data zdarzenia", type: "date" },
+                  ])}
+                </div>
+
+                <div className="bg-muted/30 rounded-lg p-6 border-2 border-primary/20">
+                  <h3 className="text-2xl font-semibold mb-6 text-foreground">Required Documents / Wymagane dokumenty</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-4 p-4 bg-card/30 rounded-lg">
+                      <div className="h-3 w-3 rounded-full bg-primary mt-1"></div>
+                      <div>
+                        <p className="font-medium text-foreground">1. Original Document with Translation</p>
+                        <p className="text-sm text-muted-foreground">Oryginał aktu z tłumaczeniem przysięgłym na język polski</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-4 p-4 bg-card/30 rounded-lg">
+                      <div className="h-3 w-3 rounded-full bg-primary mt-1"></div>
+                      <div>
+                        <p className="font-medium text-foreground">2. Proof of Tax Payment</p>
+                        <p className="text-sm text-muted-foreground">Dowód uiszczenia opłaty skarbowej</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-4 p-4 bg-card/30 rounded-lg">
+                      <div className="h-3 w-3 rounded-full bg-primary mt-1"></div>
+                      <div>
+                        <p className="font-medium text-foreground">3. Power of Attorney</p>
+                        <p className="text-sm text-muted-foreground">Pełnomocnictwo</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-4 p-4 bg-card/30 rounded-lg">
+                      <div className="h-3 w-3 rounded-full bg-primary mt-1"></div>
+                      <div>
+                        <p className="font-medium text-foreground">4. Passport Copy</p>
+                        <p className="text-sm text-muted-foreground">Kopia paszportu</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="bg-muted/30 rounded-lg p-6 border-2 border-primary/20">
-                <h3 className="text-xl font-semibold mb-4 text-foreground">Declaration / Oświadczenie</h3>
-                <p className="text-muted-foreground italic">
-                  "Oświadczam, że ten akt nie został zarejestrowany w księgach stanu cywilnego na terenie RP."
-                </p>
-                <p className="text-sm text-muted-foreground mt-4">
-                  I declare that this record has not been registered in civil status books in the Republic of Poland.
-                </p>
-              </div>
+                <div className="bg-muted/30 rounded-lg p-6 border-2 border-primary/20">
+                  <h3 className="text-2xl font-semibold mb-6 text-foreground">Declaration / Oświadczenie</h3>
+                  <div className="space-y-4">
+                    <p className="text-foreground italic font-medium">
+                      "Oświadczam, że ten akt nie został zarejestrowany w księgach stanu cywilnego na terenie RP."
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      I declare that this record has not been registered in civil status books in the Republic of Poland.
+                    </p>
+                  </div>
+                </div>
 
-              <div className="bg-muted/30 rounded-lg p-6 border-2 border-primary/20">
-                <h3 className="text-xl font-semibold mb-4 text-foreground">Delivery Method / Sposób odbioru dokumentów</h3>
-                <p className="text-muted-foreground">
-                  Wysłać do pełnomocnika / Send to authorized representative
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
+                <div className="bg-muted/30 rounded-lg p-6 border-2 border-primary/20">
+                  <h3 className="text-2xl font-semibold mb-6 text-foreground">Delivery Method / Sposób odbioru dokumentów</h3>
+                  <p className="text-foreground font-medium">
+                    Wysłać do pełnomocnika / Send to authorized representative
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
       </div>
     </div>
   );
