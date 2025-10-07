@@ -12,6 +12,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState, useEffect } from "react";
 import { Loader2, Save, FileText, Users, Baby, Heart, Calendar as CalendarIcon, Sparkles, Download, GitBranch } from "lucide-react";
+import { PDFGenerationButtons } from "@/components/PDFGenerationButtons";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
@@ -232,17 +233,7 @@ export default function MasterDataTable() {
                     )}
                     <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </Button>
-                  <Button 
-                    variant="outline" 
-                    size="lg" 
-                    className="text-xl font-bold px-12 h-16 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30"
-                  >
-                    <Download className="h-5 w-5 mr-2" />
-                    <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                      Export
-                    </span>
-                    <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </Button>
+                  <PDFGenerationButtons caseId={caseId || ''} />
                 </motion.div>
               </div>
             </CardHeader>
