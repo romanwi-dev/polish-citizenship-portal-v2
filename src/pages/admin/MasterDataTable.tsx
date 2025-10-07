@@ -295,7 +295,7 @@ export default function MasterDataTable() {
               {[
                 { value: "applicant", label: "Applicant" },
                 ...(formData.applicant_is_married ? [{ value: "spouse", label: "Spouse" }] : []),
-                { value: "children", label: "Children" },
+                { value: "children", label: "Kids" },
                 { value: "parents", label: "Parents" },
                 { value: "grandparents", label: "Grandparents" },
                 { value: "great-grandparents", label: "Great-Grandparents" },
@@ -382,7 +382,7 @@ export default function MasterDataTable() {
                     >
                       <div className="whitespace-nowrap">
                         {renderCheckboxGroup([
-                          { name: "applicant_has_minor_children", label: "Minor Children?" },
+                          { name: "applicant_has_minor_children", label: "Minor Kids?" },
                         ])}
                       </div>
                     </motion.div>
@@ -486,7 +486,7 @@ export default function MasterDataTable() {
                 <Card className="glass-card border-primary/20">
                   <CardHeader>
                     <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                      Minor Children
+                      Minor Kids
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-6 md:p-10">
@@ -496,7 +496,7 @@ export default function MasterDataTable() {
                       className="space-y-3 max-w-xs"
                     >
                       <Label htmlFor="children_count" className="text-base font-medium">
-                        Number of Children
+                        Number of Kids
                       </Label>
                       <Input
                         id="children_count"
