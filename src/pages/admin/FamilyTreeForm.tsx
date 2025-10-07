@@ -147,7 +147,7 @@ export default function FamilyTreeForm() {
                     "h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur", 
                     field.type !== "email" && "uppercase"
                   )} 
-                  style={field.isNameField ? { fontSize: '1.125rem', fontWeight: '400' } : {}}
+                  style={{ fontSize: '1.125rem', fontWeight: '400' }}
                 />
               </>}
           </motion.div>)}
