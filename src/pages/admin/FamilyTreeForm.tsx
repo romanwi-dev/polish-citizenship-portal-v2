@@ -218,7 +218,7 @@ export default function FamilyTreeForm() {
                   transition={{ delay: 0.2 }}
                 >
                   <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
-                    Family Tree Form
+                    Family Tree
                   </CardTitle>
                 </motion.div>
                 <motion.div
@@ -241,21 +241,21 @@ export default function FamilyTreeForm() {
                   <Button 
                     onClick={handleSave} 
                     disabled={updateMutation.isPending}
-                    size="lg" 
-                    className="text-xl font-bold px-12 h-16 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30"
+                    size="default" 
+                    className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 md:px-[50px]"
                   >
                     {updateMutation.isPending ? (
                       <>
-                        <Loader2 className="h-5 w-5 animate-spin mr-2 opacity-50" />
+                        <Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
                         <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                           Saving...
                         </span>
                       </>
                     ) : (
                       <>
-                        <Save className="h-5 w-5 mr-2 opacity-50" />
+                        <Save className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
                         <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                          Save
+                          Save data
                         </span>
                       </>
                     )}
@@ -263,14 +263,14 @@ export default function FamilyTreeForm() {
                   <Button 
                     onClick={handleGeneratePDF} 
                     disabled={isGenerating}
-                    size="lg"
+                    size="default"
                     variant="secondary"
-                    className="text-xl font-bold px-12 h-16"
+                    className="text-base md:text-xl font-bold h-12 md:h-14 md:px-[50px]"
                   >
                     {isGenerating ? (
-                      <><Loader2 className="h-5 w-5 animate-spin mr-2 opacity-50" />Generating...</>
+                      <><Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />Generating...</>
                     ) : (
-                      <><Download className="h-5 w-5 mr-2 opacity-50" />Generate PDF</>
+                      <><Download className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />Generate PDF</>
                     )}
                   </Button>
                 </motion.div>
