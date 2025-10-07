@@ -468,7 +468,6 @@ export default function FamilyTreeForm() {
                         { name: "mother_has_marriage_cert", label: "Marriage Certificate" },
                         { name: "mother_has_naturalization_papers", label: "Naturalization Papers" },
                         { name: "mother_has_foreign_documents", label: "Foreign Documents" },
-                        { name: "mother_has_military_records", label: "Military Records" },
                       ])}
                     </div>
                   </CardContent>
