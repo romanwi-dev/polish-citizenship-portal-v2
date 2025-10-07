@@ -314,7 +314,7 @@ export default function FamilyTreeForm() {
                   <h3 className="text-xl font-semibold mb-6 text-foreground">Documents Required</h3>
                   {renderCheckboxGroup([
                     { name: "applicant_has_birth_cert", label: "Birth Certificate" },
-                    { name: "applicant_has_marriage_cert", label: "Marriage Certificate" },
+                    ...(formData.applicant_is_married ? [{ name: "applicant_has_marriage_cert", label: "Marriage Certificate" }] : []),
                     { name: "applicant_has_passport", label: "Passport" },
                     { name: "applicant_has_naturalization", label: "Naturalization Certificate" },
                   ])}
