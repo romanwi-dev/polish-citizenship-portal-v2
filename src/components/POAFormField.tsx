@@ -29,7 +29,7 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
         transition={{ delay, duration: 0.4 }}
         className="space-y-3"
       >
-        <Label htmlFor={name} className="text-base font-bold text-gray-700 dark:text-gray-200">
+        <Label htmlFor={name} className="text-base font-semibold text-foreground">
           {label}
         </Label>
         <Popover>
@@ -67,7 +67,7 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
       transition={{ delay, duration: 0.4 }}
       className="space-y-3"
     >
-      <Label htmlFor={name} className="text-base font-bold text-gray-700 dark:text-gray-200">
+      <Label htmlFor={name} className="text-base font-semibold text-foreground">
         {label}
       </Label>
       <Input
