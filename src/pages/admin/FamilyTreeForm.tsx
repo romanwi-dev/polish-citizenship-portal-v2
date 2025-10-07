@@ -426,6 +426,9 @@ export default function FamilyTreeForm() {
 
                 {/* Other fields */}
                 {renderFieldGroup([{
+                name: "applicant_passport_number",
+                label: "Passport Number"
+              }, {
                 name: "applicant_sex",
                 label: "Sex"
               }, {
@@ -435,10 +438,7 @@ export default function FamilyTreeForm() {
               }, {
                 name: "applicant_phone",
                 label: "Phone"
-              }, {
-                name: "applicant_passport_number",
-                  label: "Passport Number"
-                }])}
+              }])}
 
                 <div className="space-y-2">
                   <Label htmlFor="applicant_notes" className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
