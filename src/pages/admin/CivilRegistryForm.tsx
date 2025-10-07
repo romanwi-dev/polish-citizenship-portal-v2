@@ -247,8 +247,8 @@ export default function CivilRegistryForm() {
               </CardHeader>
               <CardContent className="p-6 md:p-10 space-y-10">
                 {renderFieldGroup([
-                  { name: "applicant_first_name", label: "First Name(s) / Imię" },
-                  { name: "applicant_last_name", label: "Last Name / Nazwisko" },
+                  { name: "applicant_first_name", label: "Given Names / Imię" },
+                  { name: "applicant_last_name", label: "Full Last Name / Nazwisko" },
                   { name: "applicant_maiden_name", label: "Maiden Name / Nazwisko panieńskie" },
                   { name: "applicant_dob", label: "Date of Birth / Data urodzenia", type: "date" },
                   { name: "applicant_pob", label: "Place of Birth / Miejsce urodzenia" },

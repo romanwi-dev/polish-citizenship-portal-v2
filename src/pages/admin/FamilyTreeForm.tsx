@@ -274,8 +274,8 @@ export default function FamilyTreeForm() {
               </CardHeader>
               <CardContent className="p-6 md:p-10 space-y-10">
                 {renderFieldGroup([
-                  { name: "applicant_first_name", label: "First Name(s)" },
-                  { name: "applicant_last_name", label: "Last Name" },
+                  { name: "applicant_first_name", label: "Given Names" },
+                  { name: "applicant_last_name", label: "Full Last Name" },
                   { name: "applicant_maiden_name", label: "Maiden Name" },
                   { name: "applicant_sex", label: "Sex" },
                   { name: "applicant_dob", label: "Date of Birth", type: "date" },
@@ -312,8 +312,8 @@ export default function FamilyTreeForm() {
               </CardHeader>
               <CardContent className="p-6 md:p-10 space-y-10">
                 {renderFieldGroup([
-                  { name: "spouse_first_name", label: "First Name(s)" },
-                  { name: "spouse_last_name", label: "Last Name" },
+                  { name: "spouse_first_name", label: "Given Names" },
+                  { name: "spouse_last_name", label: "Full Last Name" },
                   { name: "spouse_maiden_name", label: "Maiden Name" },
                   { name: "spouse_sex", label: "Sex" },
                   { name: "spouse_dob", label: "Date of Birth", type: "date" },
@@ -351,8 +351,8 @@ export default function FamilyTreeForm() {
                   <div key={num} className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
                     <h3 className="text-xl font-semibold text-foreground">Child {num}</h3>
                     {renderFieldGroup([
-                      { name: `child_${num}_first_name`, label: "First Name" },
-                      { name: `child_${num}_last_name`, label: "Last Name" },
+                      { name: `child_${num}_first_name`, label: "Given Names" },
+                      { name: `child_${num}_last_name`, label: "Full Last Name" },
                       { name: `child_${num}_dob`, label: "Date of Birth", type: "date" },
                       { name: `child_${num}_pob`, label: "Place of Birth" },
                     ])}
@@ -391,8 +391,8 @@ export default function FamilyTreeForm() {
                   </CardHeader>
                   <CardContent className="p-6 md:p-8 space-y-8">
                     {renderFieldGroup([
-                      { name: "father_first_name", label: "First Name(s)" },
-                      { name: "father_last_name", label: "Last Name" },
+                      { name: "father_first_name", label: "Given Names" },
+                      { name: "father_last_name", label: "Full Last Name" },
                       { name: "father_pob", label: "Place of Birth" },
                       { name: "father_dob", label: "Date of Birth", type: "date" },
                       { name: "father_date_of_emigration", label: "Date of Emigration", type: "date" },
@@ -416,8 +416,8 @@ export default function FamilyTreeForm() {
                   </CardHeader>
                   <CardContent className="p-6 md:p-8 space-y-8">
                     {renderFieldGroup([
-                      { name: "mother_first_name", label: "First Name(s)" },
-                      { name: "mother_last_name", label: "Last Name" },
+                      { name: "mother_first_name", label: "Given Names" },
+                      { name: "mother_last_name", label: "Full Last Name" },
                       { name: "mother_maiden_name", label: "Maiden Name" },
                       { name: "mother_pob", label: "Place of Birth" },
                       { name: "mother_dob", label: "Date of Birth", type: "date" },
@@ -470,8 +470,8 @@ export default function FamilyTreeForm() {
                           ])}
                         </div>
                         {renderFieldGroup([
-                          { name: `${prefix}_first_name`, label: "First Name" },
-                          { name: `${prefix}_last_name`, label: "Last Name" },
+                          { name: `${prefix}_first_name`, label: "Given Names" },
+                          { name: `${prefix}_last_name`, label: "Full Last Name" },
                           ...(prefix.includes("gm") ? [{ name: `${prefix}_maiden_name`, label: "Maiden Name" }] : []),
                           { name: `${prefix}_pob`, label: "Place of Birth" },
                           { name: `${prefix}_dob`, label: "Date of Birth", type: "date" },
@@ -525,8 +525,8 @@ export default function FamilyTreeForm() {
                       </CardHeader>
                       <CardContent className="p-6 md:p-8 space-y-8">
                         {renderFieldGroup([
-                          { name: `${prefix}_first_name`, label: "First Name" },
-                          { name: `${prefix}_last_name`, label: "Last Name" },
+                          { name: `${prefix}_first_name`, label: "Given Names" },
+                          { name: `${prefix}_last_name`, label: "Full Last Name" },
                           ...(prefix.includes("ggm") ? [{ name: `${prefix}_maiden_name`, label: "Maiden Name" }] : []),
                           { name: `${prefix}_pob`, label: "Place of Birth" },
                           { name: `${prefix}_dob`, label: "Date of Birth", type: "date" },
