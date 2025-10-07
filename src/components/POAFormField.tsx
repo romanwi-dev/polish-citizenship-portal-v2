@@ -37,7 +37,7 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
             <Button
               variant="outline"
               className={cn(
-                "w-full h-16 justify-start text-left font-normal border-2 hover-glow bg-card/50 backdrop-blur text-lg",
+                "w-full h-16 justify-start text-left font-normal border-2 hover-glow bg-card/50 backdrop-blur text-xl",
                 !dateValue && "text-muted-foreground"
               )}
             >
@@ -76,7 +76,7 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
         value={value || ""}
         onChange={(e) => onChange(e.target.value)}
         placeholder={value ? "" : (placeholder || `Enter ${label.toLowerCase()}`)}
-        className="h-16 border-2 text-lg hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+        className="h-16 border-2 text-xl hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
       />
     </motion.div>
   );
