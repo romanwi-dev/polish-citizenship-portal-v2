@@ -441,9 +441,6 @@ export default function MasterDataTable() {
                     name: "applicant_has_marriage_cert",
                     label: "Marriage certificate"
                   }, {
-                    name: "applicant_has_passport",
-                    label: "Passport"
-                  }, {
                     name: "applicant_has_naturalization",
                     label: "Naturalization certificate"
                   }])}
