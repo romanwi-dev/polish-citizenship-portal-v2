@@ -76,7 +76,7 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
         type={type}
         value={value || ""}
         onChange={(e) => onChange(e.target.value.toUpperCase())}
-        placeholder={value ? "" : (placeholder || `Enter ${label.toLowerCase()}`)}
+        placeholder=""
         className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
         style={{ fontSize: '1.125rem', fontWeight: '400' }}
       />
