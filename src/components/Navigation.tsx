@@ -40,7 +40,7 @@ const Navigation = () => {
               variant="ghost" 
               size="icon"
               className="text-foreground hover:text-primary"
-              onClick={() => window.location.href = '/cases'}
+              onClick={() => window.location.href = '/admin/dashboard'}
             >
               <User className="h-14 w-14" />
             </Button>
