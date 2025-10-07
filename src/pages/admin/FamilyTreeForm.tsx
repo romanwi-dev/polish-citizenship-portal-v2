@@ -426,6 +426,8 @@ export default function FamilyTreeForm() {
                       { name: "father_dob", label: "Date of Birth", type: "date" },
                       { name: "father_date_of_emigration", label: "Date of Emigration", type: "date" },
                       { name: "father_date_of_naturalization", label: "Date of Naturalization", type: "date" },
+                      { name: "father_mother_marriage_date", label: "Date of Marriage", type: "date" },
+                      { name: "father_mother_marriage_place", label: "Place of Marriage" },
                     ])}
                     <div className="pt-4">
                       <h4 className="text-lg font-semibold mb-4 text-foreground">Documents Required</h4>
@@ -455,6 +457,8 @@ export default function FamilyTreeForm() {
                       { name: "mother_pob", label: "Place of Birth" },
                       { name: "mother_dob", label: "Date of Birth", type: "date" },
                       { name: "mother_date_of_emigration", label: "Date of Emigration", type: "date" },
+                      { name: "father_mother_marriage_date", label: "Date of Marriage", type: "date" },
+                      { name: "father_mother_marriage_place", label: "Place of Marriage" },
                     ])}
                     <div className="pt-4">
                       <h4 className="text-lg font-semibold mb-4 text-foreground">Documents Required</h4>
