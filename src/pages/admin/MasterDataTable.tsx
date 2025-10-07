@@ -9,8 +9,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState, useEffect } from "react";
-import { Loader2, Save, FileText, Users, Baby, Heart, Calendar as CalendarIcon, Sparkles, Download } from "lucide-react";
+import { Loader2, Save, FileText, Users, Baby, Heart, Calendar as CalendarIcon, Sparkles, Download, GitBranch } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
@@ -284,13 +285,48 @@ export default function MasterDataTable() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <Card className="glass-card border-primary/20">
+               <Card className="glass-card border-primary/20">
                 <CardHeader className="border-b border-border/50 pb-6">
                   <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                     Applicant Information
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-6 md:p-10 space-y-10">
+                  {/* Ancestry Line Selection */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="space-y-3"
+                  >
+                    <Label htmlFor="ancestry_line" className="text-base font-medium text-foreground flex items-center gap-2">
+                      <GitBranch className="h-5 w-5 text-primary" />
+                      Polish Ancestry Line
+                    </Label>
+                    <Select
+                      value={formData.ancestry_line || ""}
+                      onValueChange={(value) => handleInputChange("ancestry_line", value)}
+                    >
+                      <SelectTrigger className="h-14 border-2 text-base hover-glow bg-card/50 backdrop-blur">
+                        <SelectValue placeholder="Select bloodline path" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="father">Father's Line (Paternal)</SelectItem>
+                        <SelectItem value="mother">Mother's Line (Maternal)</SelectItem>
+                        <SelectItem value="pgf">Paternal Grandfather's Line</SelectItem>
+                        <SelectItem value="pgm">Paternal Grandmother's Line</SelectItem>
+                        <SelectItem value="mgf">Maternal Grandfather's Line</SelectItem>
+                        <SelectItem value="mgm">Maternal Grandmother's Line</SelectItem>
+                        <SelectItem value="pggf">Paternal Great-Grandfather (Father's Side)</SelectItem>
+                        <SelectItem value="pggm">Paternal Great-Grandmother (Father's Side)</SelectItem>
+                        <SelectItem value="mggf">Maternal Great-Grandfather (Mother's Side)</SelectItem>
+                        <SelectItem value="mggm">Maternal Great-Grandmother (Mother's Side)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <p className="text-sm text-muted-foreground">
+                      Select the ancestral line through which Polish citizenship is claimed
+                    </p>
+                  </motion.div>
+
                   {renderFieldGroup([
                     { name: "applicant_first_name", label: "First Name(s)", placeholder: "OBY-A-GN" },
                     { name: "applicant_last_name", label: "Last Name", placeholder: "OBY-A-SN" },
@@ -304,7 +340,7 @@ export default function MasterDataTable() {
                   ])}
 
                   <div className="pt-8">
-                    <h3 className="text-xl font-semibold mb-6 text-foreground">Document Availability</h3>
+                    <h3 className="text-xl font-semibold mb-6 text-foreground">Documents Required</h3>
                     {renderCheckboxGroup([
                       { name: "applicant_has_birth_cert", label: "Birth Certificate" },
                       { name: "applicant_has_marriage_cert", label: "Marriage Certificate" },
@@ -350,7 +386,7 @@ export default function MasterDataTable() {
                   ])}
 
                   <div className="pt-8">
-                    <h3 className="text-xl font-semibold mb-6 text-foreground">Document Availability</h3>
+                    <h3 className="text-xl font-semibold mb-6 text-foreground">Documents Required</h3>
                     {renderCheckboxGroup([
                       { name: "spouse_has_birth_cert", label: "Birth Certificate" },
                       { name: "spouse_has_marriage_cert", label: "Marriage Certificate" },
