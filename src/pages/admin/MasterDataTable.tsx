@@ -123,40 +123,10 @@ export default function MasterDataTable() {
   };
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
-      {/* Animated Background Gradients */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <motion.div
-          className="absolute top-0 left-0 w-[1000px] h-[1000px] rounded-full blur-3xl opacity-15"
-          style={{
-            background: "radial-gradient(circle, hsl(221 83% 53%) 0%, transparent 70%)",
-          }}
-          animate={{
-            x: [0, 100, 0],
-            y: [0, 50, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-        <motion.div
-          className="absolute bottom-0 right-0 w-[800px] h-[800px] rounded-full blur-3xl opacity-15"
-          style={{
-            background: "radial-gradient(circle, hsl(204 70% 53%) 0%, transparent 70%)",
-          }}
-          animate={{
-            x: [0, -100, 0],
-            y: [0, -50, 0],
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-      </div>
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Footer-style Background */}
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
 
       <div className="container mx-auto py-12 px-4 md:px-6 lg:px-8 relative z-10 max-w-7xl">
         {/* Premium Header with 3D Effect */}
