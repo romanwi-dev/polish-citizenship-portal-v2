@@ -364,11 +364,11 @@ export default function MasterDataTable() {
                   </motion.div>
 
                   {/* Marital Status & Children - Side by side on desktop */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="p-6 border-2 border-primary/20 rounded-xl bg-primary/5 md:col-span-1"
+                      className="p-6 border-2 border-primary/20 rounded-xl bg-primary/5"
                     >
                       {renderCheckboxGroup([
                         { name: "applicant_is_married", label: "Married?" },
@@ -378,7 +378,7 @@ export default function MasterDataTable() {
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="p-6 border-2 border-primary/20 rounded-xl bg-primary/5 md:col-span-2"
+                      className="p-6 border-2 border-primary/20 rounded-xl bg-primary/5"
                     >
                       <div className="whitespace-nowrap">
                         {renderCheckboxGroup([
