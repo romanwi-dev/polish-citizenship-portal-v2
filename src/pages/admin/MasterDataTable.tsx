@@ -295,7 +295,7 @@ export default function MasterDataTable() {
               {[
                 { value: "applicant", label: "Applicant" },
                 ...(formData.applicant_is_married ? [{ value: "spouse", label: "Spouse" }] : []),
-                { value: "children", label: "Kids" },
+                ...(formData.applicant_has_minor_children ? [{ value: "children", label: "Kids" }] : []),
                 { value: "parents", label: "Parents" },
                 { value: "grandparents", label: "Grandparents" },
                 { value: "great-grandparents", label: "Great-Grandparents" },
@@ -474,7 +474,8 @@ export default function MasterDataTable() {
           </TabsContent>
           )}
 
-          {/* CHILDREN TAB */}
+          {/* KIDS TAB - Only show if has minor children */}
+          {formData.applicant_has_minor_children && (
           <TabsContent value="children">
             <ScrollArea className="h-[800px]">
               <motion.div
@@ -539,6 +540,7 @@ export default function MasterDataTable() {
               </motion.div>
             </ScrollArea>
           </TabsContent>
+          )}
 
           {/* PARENTS TAB */}
           <TabsContent value="parents">
