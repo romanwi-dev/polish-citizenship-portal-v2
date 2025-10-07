@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
 import { useState, useEffect } from "react";
 import { Loader2, Save, Download, Users, Sparkles, Type } from "lucide-react";
 import { motion } from "framer-motion";
@@ -377,8 +378,21 @@ export default function FamilyTreeForm() {
                 label: "Phone"
               }, {
                 name: "applicant_passport_number",
-                label: "Passport Number"
-              }])}
+                  label: "Passport Number"
+                }])}
+
+                <div className="space-y-2">
+                  <Label htmlFor="applicant_notes" className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                    Relevant additional information
+                  </Label>
+                  <Textarea
+                    id="applicant_notes"
+                    value={formData.applicant_notes || ""}
+                    onChange={e => handleInputChange("applicant_notes", e.target.value.toUpperCase())}
+                    placeholder=""
+                    className={cn("min-h-[100px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                  />
+                </div>
 
                 <div className="pt-8">
                   <h3 className="text-xl font-semibold mb-6 text-foreground">Documents Required</h3>
@@ -446,6 +460,19 @@ export default function FamilyTreeForm() {
                 label: "Place of marriage"
               }])}
 
+                <div className="space-y-2">
+                  <Label htmlFor="spouse_notes" className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                    Relevant additional information
+                  </Label>
+                  <Textarea
+                    id="spouse_notes"
+                    value={formData.spouse_notes || ""}
+                    onChange={e => handleInputChange("spouse_notes", e.target.value.toUpperCase())}
+                    placeholder=""
+                    className={cn("min-h-[100px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                  />
+                </div>
+
                 <div className="pt-8">
                   <h3 className="text-xl font-semibold mb-6 text-foreground">Documents Required</h3>
                   {renderCheckboxGroup([{
@@ -497,6 +524,18 @@ export default function FamilyTreeForm() {
                   name: `child_${num}_pob`,
                   label: "Place of birth"
                 }])}
+                    <div className="space-y-2">
+                      <Label htmlFor={`child_${num}_notes`} className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                        Relevant additional information
+                      </Label>
+                      <Textarea
+                        id={`child_${num}_notes`}
+                        value={formData[`child_${num}_notes`] || ""}
+                        onChange={e => handleInputChange(`child_${num}_notes`, e.target.value.toUpperCase())}
+                        placeholder=""
+                        className={cn("min-h-[100px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                      />
+                    </div>
                     <div className="pt-4">
                       <h4 className="text-lg font-semibold mb-4 text-foreground">Documents Required</h4>
                       {renderCheckboxGroup([{
@@ -573,6 +612,18 @@ export default function FamilyTreeForm() {
                     name: "father_mother_marriage_place",
                     label: "Place of marriage"
                   }])}
+                    <div className="space-y-2">
+                      <Label htmlFor="father_notes" className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                        Relevant additional information
+                      </Label>
+                      <Textarea
+                        id="father_notes"
+                        value={formData.father_notes || ""}
+                        onChange={e => handleInputChange("father_notes", e.target.value.toUpperCase())}
+                        placeholder=""
+                        className={cn("min-h-[100px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                      />
+                    </div>
                     <div className="pt-4">
                       <h4 className="text-lg font-semibold mb-4 text-foreground">Documents Required</h4>
                       {renderCheckboxGroup([{
@@ -637,6 +688,18 @@ export default function FamilyTreeForm() {
                     name: "father_mother_marriage_place",
                     label: "Place of marriage"
                   }])}
+                    <div className="space-y-2">
+                      <Label htmlFor="mother_notes" className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                        Relevant additional information
+                      </Label>
+                      <Textarea
+                        id="mother_notes"
+                        value={formData.mother_notes || ""}
+                        onChange={e => handleInputChange("mother_notes", e.target.value.toUpperCase())}
+                        placeholder=""
+                        className={cn("min-h-[100px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                      />
+                    </div>
                     <div className="pt-4">
                       <h4 className="text-lg font-semibold mb-4 text-foreground">Documents Required</h4>
                       {renderCheckboxGroup([{
@@ -715,6 +778,18 @@ export default function FamilyTreeForm() {
                       label: "Date of birth",
                       type: "date"
                     }])}
+                        <div className="space-y-2">
+                          <Label htmlFor={`${prefix}_notes`} className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                            Relevant additional information
+                          </Label>
+                          <Textarea
+                            id={`${prefix}_notes`}
+                            value={formData[`${prefix}_notes`] || ""}
+                            onChange={e => handleInputChange(`${prefix}_notes`, e.target.value.toUpperCase())}
+                            placeholder=""
+                            className={cn("min-h-[100px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                          />
+                        </div>
                         <div className="pt-4">
                           <h4 className="text-lg font-semibold mb-4 text-foreground">Documents Required</h4>
                           {renderCheckboxGroup([{
@@ -791,6 +866,18 @@ export default function FamilyTreeForm() {
                       label: "Date of birth",
                       type: "date"
                     }])}
+                        <div className="space-y-2">
+                          <Label htmlFor={`${prefix}_notes`} className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                            Relevant additional information
+                          </Label>
+                          <Textarea
+                            id={`${prefix}_notes`}
+                            value={formData[`${prefix}_notes`] || ""}
+                            onChange={e => handleInputChange(`${prefix}_notes`, e.target.value.toUpperCase())}
+                            placeholder=""
+                            className={cn("min-h-[100px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                          />
+                        </div>
                         <div className="pt-4">
                           <h4 className="text-lg font-semibold mb-4 text-foreground">Documents Required</h4>
                           {renderCheckboxGroup([...(prefix === "pggf" || prefix === "mggf" ? [{
