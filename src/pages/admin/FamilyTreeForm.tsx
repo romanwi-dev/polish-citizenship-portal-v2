@@ -414,8 +414,13 @@ export default function FamilyTreeForm() {
                     <div className="pt-4">
                       <h4 className="text-lg font-semibold mb-4 text-foreground">Documents Required</h4>
                       {renderCheckboxGroup([
+                        { name: "father_has_polish_documents", label: "Polish Documents" },
                         { name: "father_has_birth_cert", label: "Birth Certificate" },
                         { name: "father_has_marriage_cert", label: "Marriage Certificate" },
+                        { name: "father_has_emigration_papers", label: "Emigration Papers" },
+                        { name: "father_has_naturalization_papers", label: "Naturalization Papers" },
+                        { name: "father_has_foreign_documents", label: "Foreign Documents" },
+                        { name: "father_has_military_records", label: "Military Records" },
                       ])}
                     </div>
                   </CardContent>
@@ -439,8 +444,13 @@ export default function FamilyTreeForm() {
                     <div className="pt-4">
                       <h4 className="text-lg font-semibold mb-4 text-foreground">Documents Required</h4>
                       {renderCheckboxGroup([
+                        { name: "mother_has_polish_documents", label: "Polish Documents" },
                         { name: "mother_has_birth_cert", label: "Birth Certificate" },
                         { name: "mother_has_marriage_cert", label: "Marriage Certificate" },
+                        { name: "mother_has_emigration_papers", label: "Emigration Papers" },
+                        { name: "mother_has_naturalization_papers", label: "Naturalization Papers" },
+                        { name: "mother_has_foreign_documents", label: "Foreign Documents" },
+                        { name: "mother_has_military_records", label: "Military Records" },
                       ])}
                     </div>
                   </CardContent>
