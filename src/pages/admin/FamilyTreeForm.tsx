@@ -142,6 +142,33 @@ export default function FamilyTreeForm() {
     );
   };
 
+  const renderCheckboxGroup = (fields: Array<{ name: string; label: string }>) => {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {fields.map((field, idx) => (
+          <motion.div
+            key={field.name}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: idx * 0.05 }}
+            className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur"
+          >
+            <input
+              type="checkbox"
+              id={field.name}
+              checked={formData[field.name] || false}
+              onChange={(e) => handleInputChange(field.name, e.target.checked)}
+              className="h-6 w-6 rounded border-2"
+            />
+            <Label htmlFor={field.name} className="cursor-pointer text-base font-medium text-foreground/70">
+              {field.label}
+            </Label>
+          </motion.div>
+        ))}
+      </div>
+    );
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
@@ -250,6 +277,16 @@ export default function FamilyTreeForm() {
                   { name: "applicant_dob", label: "Date of Birth / Data urodzenia", type: "date" },
                   { name: "applicant_pob", label: "Place of Birth / Miejsce urodzenia" },
                 ])}
+
+                <div className="pt-8">
+                  <h3 className="text-xl font-semibold mb-6 text-foreground">Documents Required</h3>
+                  {renderCheckboxGroup([
+                    { name: "applicant_has_birth_cert", label: "Birth Certificate" },
+                    { name: "applicant_has_marriage_cert", label: "Marriage Certificate" },
+                    { name: "applicant_has_passport", label: "Passport" },
+                    { name: "applicant_has_naturalization", label: "Naturalization Certificate" },
+                  ])}
+                </div>
               </CardContent>
             </Card>
           </motion.div>
@@ -273,6 +310,15 @@ export default function FamilyTreeForm() {
                   { name: "date_of_marriage", label: "Date of Marriage / Data zawarcia związku małżeńskiego", type: "date" },
                   { name: "place_of_marriage", label: "Place of Marriage / Miejsce zawarcia związku" },
                 ])}
+
+                <div className="pt-8">
+                  <h3 className="text-xl font-semibold mb-6 text-foreground">Documents Required</h3>
+                  {renderCheckboxGroup([
+                    { name: "spouse_has_birth_cert", label: "Birth Certificate" },
+                    { name: "spouse_has_marriage_cert", label: "Marriage Certificate" },
+                    { name: "spouse_has_passport", label: "Passport" },
+                  ])}
+                </div>
               </CardContent>
             </Card>
           </motion.div>
@@ -286,7 +332,7 @@ export default function FamilyTreeForm() {
             <Card className="glass-card border-primary/20">
               <CardHeader className="border-b border-border/50 pb-6">
                 <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                  Children (up to 3)
+                  Minor Children
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6 md:p-10 space-y-10">
@@ -326,6 +372,15 @@ export default function FamilyTreeForm() {
                   { name: formData.ancestry_line === 'father' ? 'father_date_of_emigration' : 'mother_date_of_emigration', label: "Date of Emigration / Data emigracji", type: "date" },
                   { name: formData.ancestry_line === 'father' ? 'father_date_of_naturalization' : 'mother_date_of_naturalization', label: "Date of Naturalization / Data naturalizacji", type: "date" },
                 ])}
+
+                <div className="pt-8">
+                  <h3 className="text-xl font-semibold mb-6 text-foreground">Documents Required</h3>
+                  {renderCheckboxGroup([
+                    { name: formData.ancestry_line === 'father' ? 'father_has_birth_cert' : 'mother_has_birth_cert', label: "Birth Certificate" },
+                    { name: formData.ancestry_line === 'father' ? 'father_has_marriage_cert' : 'mother_has_marriage_cert', label: "Marriage Certificate" },
+                    { name: formData.ancestry_line === 'father' ? 'father_has_naturalization' : 'mother_has_naturalization', label: "Naturalization Certificate" },
+                  ])}
+                </div>
               </CardContent>
             </Card>
           </motion.div>
@@ -367,6 +422,33 @@ export default function FamilyTreeForm() {
                     label: "Place of Birth / Miejsce urodzenia" 
                   },
                 ])}
+
+                <div className="pt-8">
+                  <h3 className="text-xl font-semibold mb-6 text-foreground">Documents Required</h3>
+                  {renderCheckboxGroup([
+                    { 
+                      name: formData.ancestry_line === 'pgf' ? 'pgf_has_birth_cert' :
+                            formData.ancestry_line === 'pgm' ? 'pgm_has_birth_cert' :
+                            formData.ancestry_line === 'mgf' ? 'mgf_has_birth_cert' :
+                            'mgm_has_birth_cert', 
+                      label: "Birth Certificate" 
+                    },
+                    { 
+                      name: formData.ancestry_line === 'pgf' ? 'pgf_has_marriage_cert' :
+                            formData.ancestry_line === 'pgm' ? 'pgm_has_marriage_cert' :
+                            formData.ancestry_line === 'mgf' ? 'mgf_has_marriage_cert' :
+                            'mgm_has_marriage_cert', 
+                      label: "Marriage Certificate" 
+                    },
+                    { 
+                      name: formData.ancestry_line === 'pgf' ? 'pgf_has_naturalization' :
+                            formData.ancestry_line === 'pgm' ? 'pgm_has_naturalization' :
+                            formData.ancestry_line === 'mgf' ? 'mgf_has_naturalization' :
+                            'mgm_has_naturalization', 
+                      label: "Naturalization Certificate" 
+                    },
+                  ])}
+                </div>
               </CardContent>
             </Card>
           </motion.div>
@@ -407,6 +489,17 @@ export default function FamilyTreeForm() {
                   {renderFieldGroup([
                     { name: "pggf_pggm_marriage_date", label: "Date of Marriage / Data małżeństwa", type: "date" },
                     { name: "pggf_pggm_marriage_place", label: "Place of Marriage / Miejsce małżeństwa" },
+                  ])}
+                </div>
+
+                <div className="pt-8">
+                  <h3 className="text-xl font-semibold mb-6 text-foreground">Documents Required</h3>
+                  {renderCheckboxGroup([
+                    { name: "pggf_has_birth_cert", label: "Great-Grandfather Birth Certificate" },
+                    { name: "pggf_has_marriage_cert", label: "Great-Grandparents Marriage Certificate" },
+                    { name: "pggf_has_naturalization", label: "Great-Grandfather Naturalization Certificate" },
+                    { name: "pggm_has_birth_cert", label: "Great-Grandmother Birth Certificate" },
+                    { name: "pggm_has_naturalization", label: "Great-Grandmother Naturalization Certificate" },
                   ])}
                 </div>
               </CardContent>
