@@ -75,9 +75,9 @@ export default function CivilRegistryForm() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="space-y-3"
+        className="space-y-2"
       >
-        <Label htmlFor={name} className="text-base font-medium text-foreground">
+        <Label htmlFor={name} className="text-sm font-normal text-foreground">
           {label}
         </Label>
         <Popover>
@@ -85,9 +85,10 @@ export default function CivilRegistryForm() {
             <Button
               variant="outline"
               className={cn(
-                "w-full h-14 justify-start text-left font-normal border-2 hover-glow bg-card/50 backdrop-blur",
+                "w-full h-16 justify-start text-left border-2 hover-glow bg-card/50 backdrop-blur",
                 !dateValue && "text-muted-foreground"
               )}
+              style={{ fontSize: '1.125rem', fontWeight: '400' }}
             >
               <CalendarIcon className="mr-2 h-4 w-4" />
               {dateValue ? format(dateValue, "dd/MM/yyyy") : <span>Pick a date</span>}
@@ -117,22 +118,23 @@ export default function CivilRegistryForm() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.05, duration: 0.4 }}
-            className="space-y-3"
+            className="space-y-2"
           >
             {field.type === "date" ? (
               renderDateField(field.name, field.label)
             ) : (
               <>
-                <Label htmlFor={field.name} className="text-base font-medium text-foreground">
+                <Label htmlFor={field.name} className="text-sm font-normal text-foreground">
                   {field.label}
                 </Label>
                 <Input
                   id={field.name}
                   type={field.type || "text"}
                   value={formData[field.name] || ""}
-                  onChange={(e) => handleInputChange(field.name, e.target.value)}
-                  placeholder={formData[field.name] ? "" : (field.placeholder || `Enter ${field.label.toLowerCase()}`)}
-                  className="h-14 border-2 text-base hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+                  onChange={(e) => handleInputChange(field.name, field.type === "email" ? e.target.value : e.target.value.toUpperCase())}
+                  placeholder=""
+                  className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                  style={{ fontSize: '1.125rem', fontWeight: '400' }}
                 />
               </>
             )}
