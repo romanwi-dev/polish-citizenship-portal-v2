@@ -14,6 +14,7 @@ import NotFound from "./pages/NotFound";
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
 const CasesManagement = lazy(() => import("./pages/admin/CasesManagement"));
 const CaseDetail = lazy(() => import("./pages/admin/CaseDetail"));
+const MasterDataTable = lazy(() => import("./pages/admin/MasterDataTable"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -66,6 +67,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <CaseDetail />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/cases/:id/master-data" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <MasterDataTable />
               </Suspense>
             } 
           />
