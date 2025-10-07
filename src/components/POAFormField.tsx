@@ -24,7 +24,8 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
   };
 
   if (type === "date") {
-    const dateValue = value ? new Date(value) : undefined;
+    const dateValue = value ? new Date(value) : new Date();
+    const displayDate = format(dateValue, "dd.MM.yyyy");
     
     return (
       <motion.div
@@ -37,31 +38,12 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
         <Label htmlFor={name} className="text-sm font-normal text-foreground/90">
           {label}
         </Label>
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              className={cn(
-                "w-full h-16 justify-start text-left border-2 hover-glow bg-card/50 backdrop-blur",
-                !dateValue && "text-muted-foreground"
-              )}
-              style={{ fontSize: '1.125rem', fontWeight: '400' }}
-            >
-              <CalendarIcon className="mr-2 h-5 w-5" />
-              {dateValue ? format(dateValue, "dd.MM.yyyy") : <span>Pick a date</span>}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
-            <Calendar
-              mode="single"
-              selected={dateValue}
-              onSelect={(date) => onChange(date ? format(date, "yyyy-MM-dd") : "")}
-              disabled={(date) => date > new Date("2030-12-31") || date < new Date("1900-01-01")}
-              initialFocus
-              className={cn("p-3 pointer-events-auto")}
-            />
-          </PopoverContent>
-        </Popover>
+        <div
+          className="w-full h-16 px-3 flex items-center border-2 rounded-md hover-glow bg-card/50 backdrop-blur"
+          style={{ fontSize: '1.125rem', fontWeight: '400' }}
+        >
+          {displayDate}
+        </div>
       </motion.div>
     );
   }
