@@ -27,12 +27,34 @@ export default function MasterDataTable() {
 
   useEffect(() => {
     if (masterData) {
-      setFormData(masterData);
+      const address = masterData.applicant_address as { street?: string; city?: string; state?: string; postal?: string; country?: string } || {};
+      setFormData({
+        ...masterData,
+        applicant_address_street: address.street || '',
+        applicant_address_city: address.city || '',
+        applicant_address_state: address.state || '',
+        applicant_address_postal: address.postal || '',
+        applicant_address_country: address.country || '',
+      });
     }
   }, [masterData]);
 
   const handleInputChange = (field: string, value: any) => {
-    setFormData((prev: any) => ({ ...prev, [field]: value }));
+    setFormData((prev: any) => {
+      // Handle address fields specially
+      if (field.startsWith('applicant_address_')) {
+        const addressField = field.replace('applicant_address_', '');
+        return {
+          ...prev,
+          [field]: value,
+          applicant_address: {
+            ...(typeof prev.applicant_address === 'object' ? prev.applicant_address : {}),
+            [addressField]: value
+          }
+        };
+      }
+      return { ...prev, [field]: value };
+    });
   };
 
   const handleSave = () => {
@@ -252,7 +274,7 @@ export default function MasterDataTable() {
             <TabsList className="grid w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-6 mb-10 p-2 glass-card h-auto gap-2">
               {[
                 { value: "applicant", label: "Applicant" },
-                { value: "spouse", label: "Spouse" },
+                ...(formData.applicant_is_married ? [{ value: "spouse", label: "Spouse" }] : []),
                 { value: "children", label: "Children" },
                 { value: "parents", label: "Parents" },
                 { value: "grandparents", label: "Grandparents" },
@@ -320,6 +342,17 @@ export default function MasterDataTable() {
                     </p>
                   </motion.div>
 
+                  {/* Marital Status */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="p-6 border-2 border-primary/20 rounded-xl bg-primary/5"
+                  >
+                    {renderCheckboxGroup([
+                      { name: "applicant_is_married", label: "Is Married?" },
+                    ])}
+                  </motion.div>
+
                   {renderFieldGroup([
                     { name: "applicant_first_name", label: "Given Names" },
                     { name: "applicant_last_name", label: "Full Last Name" },
@@ -331,6 +364,18 @@ export default function MasterDataTable() {
                     { name: "applicant_phone", label: "Phone" },
                     { name: "applicant_passport_number", label: "Passport Number" },
                   ])}
+
+                  {/* Address Section */}
+                  <div className="pt-8">
+                    <h3 className="text-xl font-semibold mb-6 text-foreground">Address</h3>
+                    {renderFieldGroup([
+                      { name: "applicant_address_street", label: "Street Address" },
+                      { name: "applicant_address_city", label: "City" },
+                      { name: "applicant_address_state", label: "State/Province" },
+                      { name: "applicant_address_postal", label: "Postal Code" },
+                      { name: "applicant_address_country", label: "Country" },
+                    ])}
+                  </div>
 
                   <div className="pt-8">
                     <h3 className="text-xl font-semibold mb-6 text-foreground">Documents Required</h3>
@@ -350,7 +395,8 @@ export default function MasterDataTable() {
             </motion.div>
           </TabsContent>
 
-          {/* SPOUSE TAB */}
+          {/* SPOUSE TAB - Only show if married */}
+          {formData.applicant_is_married && (
           <TabsContent value="spouse">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
@@ -391,6 +437,7 @@ export default function MasterDataTable() {
               </Card>
             </motion.div>
           </TabsContent>
+          )}
 
           {/* CHILDREN TAB */}
           <TabsContent value="children">

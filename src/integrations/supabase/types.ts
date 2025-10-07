@@ -506,6 +506,7 @@ export type Database = {
           applicant_has_naturalization: boolean | null
           applicant_has_passport: boolean | null
           applicant_is_alive: boolean | null
+          applicant_is_married: boolean | null
           applicant_last_name: string | null
           applicant_maiden_name: string | null
           applicant_notes: string | null
@@ -757,6 +758,7 @@ export type Database = {
           applicant_has_naturalization?: boolean | null
           applicant_has_passport?: boolean | null
           applicant_is_alive?: boolean | null
+          applicant_is_married?: boolean | null
           applicant_last_name?: string | null
           applicant_maiden_name?: string | null
           applicant_notes?: string | null
@@ -1008,6 +1010,7 @@ export type Database = {
           applicant_has_naturalization?: boolean | null
           applicant_has_passport?: boolean | null
           applicant_is_alive?: boolean | null
+          applicant_is_married?: boolean | null
           applicant_last_name?: string | null
           applicant_maiden_name?: string | null
           applicant_notes?: string | null

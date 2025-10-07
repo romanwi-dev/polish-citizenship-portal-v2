@@ -273,6 +273,17 @@ export default function FamilyTreeForm() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6 md:p-10 space-y-10">
+                {/* Marital Status */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="p-6 border-2 border-primary/20 rounded-xl bg-primary/5"
+                >
+                  {renderCheckboxGroup([
+                    { name: "applicant_is_married", label: "Is Married?" },
+                  ])}
+                </motion.div>
+
                 {renderFieldGroup([
                   { name: "applicant_first_name", label: "Given Names" },
                   { name: "applicant_last_name", label: "Full Last Name" },
@@ -298,7 +309,8 @@ export default function FamilyTreeForm() {
             </Card>
           </motion.div>
 
-          {/* Spouse Section */}
+          {/* Spouse Section - Only show if married */}
+          {formData.applicant_is_married && (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -333,6 +345,7 @@ export default function FamilyTreeForm() {
               </CardContent>
             </Card>
           </motion.div>
+          )}
 
           {/* Children Section */}
           <motion.div
