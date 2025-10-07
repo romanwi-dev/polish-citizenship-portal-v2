@@ -198,7 +198,7 @@ export default function FamilyTreeForm() {
                 delay: 0.2
               }}>
                   <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
-                    Family Tree
+                    Polish Family Tree
                   </CardTitle>
                 </motion.div>
                 <motion.div initial={{
@@ -213,36 +213,90 @@ export default function FamilyTreeForm() {
                   <Button onClick={toggleFontSize} size="lg" variant="ghost" className={`h-16 w-16 rounded-full transition-all ${isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground'}`} title="Toggle font size">
                     <Type className="h-8 w-8" />
                   </Button>
-                  <Button onClick={handleSave} disabled={updateMutation.isPending} size="default" className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 md:px-[50px]">
-                    {updateMutation.isPending ? <>
-                        <Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
-                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                          Saving...
-                        </span>
-                      </> : <>
-                        <Save className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-                        <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                          Save data
-                        </span>
-                      </>}
-                  </Button>
-                  <Button onClick={handleGeneratePDF} disabled={isGenerating} size="default" className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 md:px-[50px]">
-                    {isGenerating ? <>
-                        <Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
-                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                          Generating...
-                        </span>
-                      </> : <>
-                        <Download className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-                        <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                          Generate PDF
-                        </span>
-                      </>}
-                  </Button>
                 </motion.div>
               </div>
             </CardHeader>
           </Card>
+        </motion.div>
+
+        {/* Action Buttons Section */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          transition={{ duration: 0.5 }}
+          className="mb-8"
+        >
+          <div className="flex gap-3 overflow-x-auto pb-2 justify-center md:justify-start">
+            <Button 
+              onClick={handleSave} 
+              disabled={updateMutation.isPending} 
+              className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]"
+            >
+              {updateMutation.isPending ? (
+                <>
+                  <Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
+                  <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                    Saving...
+                  </span>
+                </>
+              ) : (
+                <>
+                  <Save className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                    Save data
+                  </span>
+                </>
+              )}
+            </Button>
+            <Button 
+              onClick={handleGeneratePDF} 
+              disabled={isGenerating} 
+              className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]"
+            >
+              {isGenerating ? (
+                <>
+                  <Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
+                  <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                    Generating...
+                  </span>
+                </>
+              ) : (
+                <>
+                  <Download className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                    Generate PDF
+                  </span>
+                </>
+              )}
+            </Button>
+            <Button 
+              variant="outline"
+              className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]"
+            >
+              <Users className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
+              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                New Button
+              </span>
+            </Button>
+            <Button 
+              variant="outline"
+              className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]"
+            >
+              <Users className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
+              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                New Button
+              </span>
+            </Button>
+            <Button 
+              variant="outline"
+              className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]"
+            >
+              <Users className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
+              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                New Button
+              </span>
+            </Button>
+          </div>
         </motion.div>
 
         {/* Form Sections */}
@@ -484,6 +538,12 @@ export default function FamilyTreeForm() {
                     <CardTitle className="text-3xl md:text-4xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Father</CardTitle>
                   </CardHeader>
                   <CardContent className="p-6 md:p-8 space-y-8">
+                    <div className="mb-6 p-4 bg-primary/10 rounded-lg border-2 border-primary/30">
+                      {renderCheckboxGroup([{
+                        name: "father_is_polish",
+                        label: "Polish Ancestor"
+                      }])}
+                    </div>
                     {renderFieldGroup([{
                     name: "father_first_name",
                     label: "Given names / Imię / imiona"
@@ -543,6 +603,12 @@ export default function FamilyTreeForm() {
                     <CardTitle className="text-3xl md:text-4xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Mother</CardTitle>
                   </CardHeader>
                   <CardContent className="p-6 md:p-8 space-y-8">
+                    <div className="mb-6 p-4 bg-primary/10 rounded-lg border-2 border-primary/30">
+                      {renderCheckboxGroup([{
+                        name: "mother_is_polish",
+                        label: "Polish Ancestor"
+                      }])}
+                    </div>
                     {renderFieldGroup([{
                     name: "mother_first_name",
                     label: "Given names / Imię / imiona"

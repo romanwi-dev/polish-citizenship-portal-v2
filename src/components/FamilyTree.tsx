@@ -11,6 +11,7 @@ interface Person {
   dateOfBirth?: string;
   placeOfBirth?: string;
   isAlive?: boolean;
+  isPolish?: boolean;
 }
 
 interface FamilyTreeProps {
@@ -61,18 +62,23 @@ const PersonCard = ({
   return (
     <Card className={cn(
       "p-4 relative overflow-hidden group hover:shadow-lg transition-all border-border/50",
-      variant === "grandparent" && "bg-accent/10 border-accent/30 min-w-[180px]",
-      variant === "parent" && "bg-secondary/10 border-secondary/30 min-w-[200px]",
-      variant === "client" && "bg-primary/10 border-primary/50 min-w-[240px]"
+      person.isPolish && "bg-red-950/30 border-red-900/50",
+      !person.isPolish && variant === "grandparent" && "bg-accent/10 border-accent/30",
+      !person.isPolish && variant === "parent" && "bg-secondary/10 border-secondary/30",
+      !person.isPolish && variant === "client" && "bg-primary/10 border-primary/50",
+      variant === "grandparent" && "min-w-[180px]",
+      variant === "parent" && "min-w-[200px]",
+      variant === "client" && "min-w-[240px]"
     )}>
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-secondary to-accent opacity-50" />
       
       <div className="flex items-start gap-3">
         <div className={cn(
           "w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0",
-          variant === "grandparent" && "bg-accent/20",
-          variant === "parent" && "bg-secondary/20",
-          variant === "client" && "bg-primary/20"
+          person.isPolish && "bg-red-900/30",
+          !person.isPolish && variant === "grandparent" && "bg-accent/20",
+          !person.isPolish && variant === "parent" && "bg-secondary/20",
+          !person.isPolish && variant === "client" && "bg-primary/20"
         )}>
           <Icon className="h-5 w-5" />
         </div>
@@ -80,7 +86,12 @@ const PersonCard = ({
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2 mb-2">
             <div>
-              <p className="text-xs text-muted-foreground mb-1">{title}</p>
+              <p className={cn(
+                "text-xs mb-1",
+                person.isPolish ? "text-red-400 font-semibold" : "text-muted-foreground"
+              )}>
+                {title}
+              </p>
               <h4 className="font-semibold text-sm leading-tight">{displayName}</h4>
             </div>
           </div>
@@ -119,7 +130,7 @@ export const FamilyTree = ({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold mb-2">Family Tree</h2>
+          <h2 className="text-2xl font-bold mb-2">Polish Family Tree</h2>
           <p className="text-muted-foreground">Three generation ancestry visualization</p>
         </div>
         <Button onClick={onEdit}>
