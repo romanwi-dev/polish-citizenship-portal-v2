@@ -114,8 +114,15 @@ export default function FamilyTreeForm() {
     label: string;
     type?: string;
     placeholder?: string;
+    isNameField?: boolean;
   }>) => {
-    return <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    // Check if this is a name fields group (first/last/maiden names)
+    const isNameGroup = fields.every(f => f.isNameField);
+    
+    return <div className={cn(
+      "grid gap-6",
+      isNameGroup ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+    )}>
         {fields.map((field, idx) => <motion.div key={field.name} initial={{
         opacity: 0,
         y: 20
@@ -130,7 +137,18 @@ export default function FamilyTreeForm() {
                 <Label htmlFor={field.name} className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
                   {field.label}
                 </Label>
-                <Input id={field.name} type={field.type || "text"} value={formData[field.name] || ""} onChange={e => handleInputChange(field.name, field.type === "email" ? e.target.value : e.target.value.toUpperCase())} placeholder="" className={cn("h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur", field.type !== "email" && "uppercase")} />
+                <Input 
+                  id={field.name} 
+                  type={field.type || "text"} 
+                  value={formData[field.name] || ""} 
+                  onChange={e => handleInputChange(field.name, field.type === "email" ? e.target.value : e.target.value.toUpperCase())} 
+                  placeholder="" 
+                  className={cn(
+                    "h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur", 
+                    field.type !== "email" && "uppercase"
+                  )} 
+                  style={field.isNameField ? { fontSize: '1.125rem', fontWeight: '400' } : {}}
+                />
               </>}
           </motion.div>)}
       </div>;
@@ -343,13 +361,16 @@ export default function FamilyTreeForm() {
                 {/* 1st row - Name fields */}
                 {renderFieldGroup([{
                 name: "applicant_first_name",
-                label: "Given names / Imię / imiona"
+                label: "Given names / Imię / imiona",
+                isNameField: true
               }, {
                 name: "applicant_last_name",
-                label: "Full last name / Nazwisko"
+                label: "Full last name / Nazwisko",
+                isNameField: true
               }, ...(formData.applicant_sex?.toLowerCase() === 'f' || formData.applicant_sex?.toLowerCase() === 'female' ? [{
                 name: "applicant_maiden_name",
-                label: "Maiden name"
+                label: "Maiden name",
+                isNameField: true
               }] : [])])}
 
                 {/* 2nd row - Places and emigration */}
@@ -450,13 +471,16 @@ export default function FamilyTreeForm() {
                 {/* 1st row - Name fields */}
                 {renderFieldGroup([{
                 name: "spouse_first_name",
-                label: "Given names / Imię / imiona"
+                label: "Given names / Imię / imiona",
+                isNameField: true
               }, {
                 name: "spouse_last_name",
-                label: "Full last name / Nazwisko"
+                label: "Full last name / Nazwisko",
+                isNameField: true
               }, ...(formData.spouse_sex?.toLowerCase() === 'f' || formData.spouse_sex?.toLowerCase() === 'female' ? [{
                 name: "spouse_maiden_name",
-                label: "Maiden name"
+                label: "Maiden name",
+                isNameField: true
               }] : [])])}
 
                 {/* 2nd row - Places and emigration */}
@@ -546,10 +570,12 @@ export default function FamilyTreeForm() {
                     {/* 1st row - Name fields */}
                     {renderFieldGroup([{
                   name: `child_${num}_first_name`,
-                  label: "Given names / Imię / imiona"
+                  label: "Given names / Imię / imiona",
+                  isNameField: true
                 }, {
                   name: `child_${num}_last_name`,
-                  label: "Full last name / Nazwisko"
+                  label: "Full last name / Nazwisko",
+                  isNameField: true
                 }])}
 
                     {/* 2nd row - Places */}
@@ -634,10 +660,12 @@ export default function FamilyTreeForm() {
                     {/* 1st row - Name fields */}
                     {renderFieldGroup([{
                     name: "father_first_name",
-                    label: "Given names / Imię / imiona"
+                    label: "Given names / Imię / imiona",
+                    isNameField: true
                   }, {
                     name: "father_last_name",
-                    label: "Full last name / Nazwisko"
+                    label: "Full last name / Nazwisko",
+                    isNameField: true
                   }])}
 
                     {/* 2nd row - Places and emigration */}
@@ -726,13 +754,16 @@ export default function FamilyTreeForm() {
                     {/* 1st row - Name fields */}
                     {renderFieldGroup([{
                     name: "mother_first_name",
-                    label: "Given names / Imię / imiona"
+                    label: "Given names / Imię / imiona",
+                    isNameField: true
                   }, {
                     name: "mother_last_name",
-                    label: "Full last name / Nazwisko"
+                    label: "Full last name / Nazwisko",
+                    isNameField: true
                   }, {
                     name: "mother_maiden_name",
-                    label: "Maiden name"
+                    label: "Maiden name",
+                    isNameField: true
                   }])}
 
                     {/* 2nd row - Places and emigration */}
@@ -844,13 +875,16 @@ export default function FamilyTreeForm() {
                         {/* 1st row - Name fields */}
                         {renderFieldGroup([{
                       name: `${prefix}_first_name`,
-                      label: "Given names / Imię / imiona"
+                      label: "Given names / Imię / imiona",
+                      isNameField: true
                     }, {
                       name: `${prefix}_last_name`,
-                      label: "Full last name / Nazwisko"
+                      label: "Full last name / Nazwisko",
+                      isNameField: true
                     }, ...(prefix.includes("gm") ? [{
                       name: `${prefix}_maiden_name`,
-                      label: "Maiden name"
+                      label: "Maiden name",
+                      isNameField: true
                     }] : [])])}
 
                         {/* 2nd row - Places and emigration */}
