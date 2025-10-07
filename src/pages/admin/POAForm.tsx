@@ -278,14 +278,12 @@ export default function POAForm() {
                 </CardHeader>
                 <CardContent className="p-6 md:p-10 space-y-10">
                   <div>
-                    <h3 className="text-2xl font-semibold mb-6 text-foreground">Document Information</h3>
                     {renderFieldGroup([
                       { name: "poa_date_filed", label: "Date Filed / Data złożenia", type: "date" },
                     ])}
                   </div>
                   
                   <div>
-                    <h3 className="text-2xl font-semibold mb-6 text-foreground">Applicant Information</h3>
                     {renderFieldGroup([
                       { name: "applicant_first_name", label: "Applicant First Name(s) / Imię" },
                       { name: "applicant_last_name", label: "Applicant Last Name / Nazwisko" },
@@ -326,14 +324,12 @@ export default function POAForm() {
                 </CardHeader>
                 <CardContent className="p-6 md:p-10 space-y-10">
                   <div>
-                    <h3 className="text-2xl font-semibold mb-6 text-foreground">Document Information</h3>
                     {renderFieldGroup([
                       { name: "poa_date_filed", label: "Date Filed / Data złożenia", type: "date" },
                     ])}
                   </div>
 
                   <div>
-                    <h3 className="text-2xl font-semibold mb-6 text-foreground">Parent Information / Dane rodzica</h3>
                     {renderFieldGroup([
                       { name: "applicant_first_name", label: "Parent First Name(s) / Imię rodzica" },
                       { name: "applicant_last_name", label: "Parent Last Name / Nazwisko rodzica" },
@@ -342,7 +338,6 @@ export default function POAForm() {
                   </div>
 
                   <div>
-                    <h3 className="text-2xl font-semibold mb-6 text-foreground">Minor Child Information / Dane małoletniego dziecka</h3>
                     {renderFieldGroup([
                       { name: "child_1_first_name", label: "Child First Name(s) / Imię dziecka" },
                       { name: "child_1_last_name", label: "Child Last Name / Nazwisko dziecka" },
@@ -382,14 +377,12 @@ export default function POAForm() {
                 </CardHeader>
                 <CardContent className="p-6 md:p-10 space-y-10">
                   <div>
-                    <h3 className="text-2xl font-semibold mb-6 text-foreground">Document Information</h3>
                     {renderFieldGroup([
                       { name: "poa_date_filed", label: "Date Filed / Data złożenia", type: "date" },
                     ])}
                   </div>
 
                   <div>
-                    <h3 className="text-2xl font-semibold mb-6 text-foreground">Applicant Information</h3>
                     {renderFieldGroup([
                       { name: "applicant_first_name", label: "Applicant First Name(s)" },
                       { name: "applicant_last_name", label: "Applicant Last Name" },
@@ -399,7 +392,6 @@ export default function POAForm() {
                   </div>
 
                   <div>
-                    <h3 className="text-2xl font-semibold mb-6 text-foreground">Spouse Information</h3>
                     {renderFieldGroup([
                       { name: "spouse_first_name", label: "Spouse First Name(s)" },
                       { name: "spouse_last_name", label: "Spouse Last Name" },
@@ -407,7 +399,6 @@ export default function POAForm() {
                   </div>
 
                   <div>
-                    <h3 className="text-2xl font-semibold mb-6 text-foreground">Children Surnames</h3>
                     {renderFieldGroup([
                       { name: "child_1_last_name", label: "Child 1 Surname" },
                       { name: "child_2_last_name", label: "Child 2 Surname" },
