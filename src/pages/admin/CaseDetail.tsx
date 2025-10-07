@@ -136,20 +136,20 @@ export default function CaseDetail() {
           <div className="w-full overflow-x-auto pb-2">
             <div className="inline-flex gap-2 w-max">
               <Button 
-                onClick={() => navigate(`/admin/cases/${id}/intake`)}
-                className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0"
-              >
-                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                  Intake Form
-                </span>
-              </Button>
-              <Button 
                 onClick={() => setShowEditDialog(true)}
                 className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0"
               >
                 <Edit className="h-3.5 w-3.5 mr-2" />
                 <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Edit
+                </span>
+              </Button>
+              <Button 
+                onClick={() => navigate(`/admin/cases/${id}/intake`)}
+                className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0"
+              >
+                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                  Intake Form
                 </span>
               </Button>
               <Button 
