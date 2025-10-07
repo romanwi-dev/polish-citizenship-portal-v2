@@ -340,7 +340,7 @@ export default function CitizenshipForm() {
               <CardContent className="p-6 md:p-10 space-y-10">
                 {/* Maternal Grandfather */}
                 <div className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
-                  <h3 className="text-xl font-semibold text-foreground">Dziadek ze strony matki / Maternal Grandfather</h3>
+                  <h3 className="text-2xl font-semibold text-foreground">Dziadek ze strony matki / Maternal Grandfather</h3>
                   {renderFieldGroup([
                     { name: "mgf_last_name", label: "Nazwisko / Last Name" },
                     { name: "mgf_first_name", label: "Imię/imiona / First Name(s)" },
@@ -351,7 +351,7 @@ export default function CitizenshipForm() {
 
                 {/* Maternal Grandmother */}
                 <div className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
-                  <h3 className="text-xl font-semibold text-foreground">Babka ze strony matki / Maternal Grandmother</h3>
+                  <h3 className="text-2xl font-semibold text-foreground">Babka ze strony matki / Maternal Grandmother</h3>
                   {renderFieldGroup([
                     { name: "mgm_last_name", label: "Nazwisko / Last Name" },
                     { name: "mgm_maiden_name", label: "Nazwisko rodowe / Maiden Name" },
@@ -363,7 +363,7 @@ export default function CitizenshipForm() {
 
                 {/* Paternal Grandfather */}
                 <div className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
-                  <h3 className="text-xl font-semibold text-foreground">Dziadek ze strony ojca / Paternal Grandfather</h3>
+                  <h3 className="text-2xl font-semibold text-foreground">Dziadek ze strony ojca / Paternal Grandfather</h3>
                   {renderFieldGroup([
                     { name: "pgf_last_name", label: "Nazwisko / Last Name" },
                     { name: "pgf_first_name", label: "Imię/imiona / First Name(s)" },
@@ -374,7 +374,7 @@ export default function CitizenshipForm() {
 
                 {/* Paternal Grandmother */}
                 <div className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
-                  <h3 className="text-xl font-semibold text-foreground">Babka ze strony ojca / Paternal Grandmother</h3>
+                  <h3 className="text-2xl font-semibold text-foreground">Babka ze strony ojca / Paternal Grandmother</h3>
                   {renderFieldGroup([
                     { name: "pgm_last_name", label: "Nazwisko / Last Name" },
                     { name: "pgm_maiden_name", label: "Nazwisko rodowe / Maiden Name" },
