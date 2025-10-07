@@ -553,9 +553,17 @@ export default function FamilyTreeForm() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6 md:p-10 space-y-10">
-                <Card className="glass-card border-primary/20 mb-6">
+                <Card className={cn(
+                  "glass-card border-primary/20 mb-6",
+                  formData.father_is_polish && "bg-red-950/30 border-red-900/50"
+                )}>
                   <CardHeader className="border-b border-border/50">
-                    <CardTitle className="text-3xl md:text-4xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Father</CardTitle>
+                    <CardTitle className={cn(
+                      "text-3xl md:text-4xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent",
+                      formData.father_is_polish && "text-red-400"
+                    )}>
+                      Father
+                    </CardTitle>
                   </CardHeader>
                   <CardContent className="p-6 md:p-8 space-y-8">
                     <div className="mb-6 p-4 bg-primary/10 rounded-lg border-2 border-primary/30">
@@ -630,9 +638,17 @@ export default function FamilyTreeForm() {
                   </CardContent>
                 </Card>
 
-                <Card className="glass-card border-primary/20">
+                <Card className={cn(
+                  "glass-card border-primary/20",
+                  formData.mother_is_polish && "bg-red-950/30 border-red-900/50"
+                )}>
                   <CardHeader className="border-b border-border/50">
-                    <CardTitle className="text-3xl md:text-4xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Mother</CardTitle>
+                    <CardTitle className={cn(
+                      "text-3xl md:text-4xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent",
+                      formData.mother_is_polish && "text-red-400"
+                    )}>
+                      Mother
+                    </CardTitle>
                   </CardHeader>
                   <CardContent className="p-6 md:p-8 space-y-8">
                     <div className="mb-6 p-4 bg-primary/10 rounded-lg border-2 border-primary/30">
@@ -729,9 +745,15 @@ export default function FamilyTreeForm() {
                   mgf: "Maternal Grandfather",
                   mgm: "Maternal Grandmother"
                 };
-                return <Card key={prefix} className="glass-card border-primary/20">
+                return <Card key={prefix} className={cn(
+                  "glass-card border-primary/20",
+                  formData[`${prefix}_is_polish`] && "bg-red-950/30 border-red-900/50"
+                )}>
                       <CardHeader className="border-b border-border/50">
-                        <CardTitle className="text-2xl md:text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                        <CardTitle className={cn(
+                          "text-2xl md:text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent",
+                          formData[`${prefix}_is_polish`] && "text-red-400"
+                        )}>
                           {labels[prefix as keyof typeof labels]}
                         </CardTitle>
                       </CardHeader>
