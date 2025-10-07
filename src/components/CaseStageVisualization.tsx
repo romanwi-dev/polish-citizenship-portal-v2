@@ -122,24 +122,24 @@ export function CaseStageVisualization({
   return (
     <div className="space-y-6">
       {/* Header */}
-      <Card className="p-6 bg-card/50 backdrop-blur">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold">Cases Pipeline</h2>
-          <div className="flex items-center gap-6 text-sm">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-red-500" />
+      <Card className="p-4 sm:p-6 bg-card/50 backdrop-blur">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 sm:mb-4">
+          <h2 className="text-lg sm:text-xl font-semibold">Cases Pipeline</h2>
+          <div className="hidden md:flex items-center gap-4 lg:gap-6 text-xs sm:text-sm flex-wrap">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-red-500" />
               <span className="text-red-500">Critical</span>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-cyan-400" />
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-cyan-400" />
               <span className="text-cyan-400">High</span>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-blue-400" />
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-blue-400" />
               <span className="text-blue-400">Medium</span>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-muted-foreground" />
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-muted-foreground" />
               <span className="text-muted-foreground">Low</span>
             </div>
           </div>
@@ -147,41 +147,41 @@ export function CaseStageVisualization({
       </Card>
 
       {/* Progress Overview */}
-      <Card className="p-6">
-        <h3 className="text-lg font-semibold mb-4">Progress Overview</h3>
-        <div className="grid grid-cols-4 gap-4 mb-6">
-          <Card className="p-4 bg-card/50">
-            <div className="text-3xl font-bold text-center mb-2">{totalStages}</div>
-            <div className="text-sm text-center text-muted-foreground">Total Stages</div>
+      <Card className="p-4 sm:p-6">
+        <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Progress Overview</h3>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6">
+          <Card className="p-3 sm:p-4 bg-card/50">
+            <div className="text-2xl sm:text-3xl font-bold text-center mb-1 sm:mb-2">{totalStages}</div>
+            <div className="text-xs sm:text-sm text-center text-muted-foreground">Total Stages</div>
           </Card>
-          <Card className="p-4 bg-green-500/10">
-            <div className="text-3xl font-bold text-center text-green-500 mb-2">{completedCount}</div>
-            <div className="text-sm text-center text-green-500">Completed</div>
+          <Card className="p-3 sm:p-4 bg-green-500/10">
+            <div className="text-2xl sm:text-3xl font-bold text-center text-green-500 mb-1 sm:mb-2">{completedCount}</div>
+            <div className="text-xs sm:text-sm text-center text-green-500">Completed</div>
           </Card>
-          <Card className="p-4 bg-blue-500/10">
-            <div className="text-3xl font-bold text-center text-blue-400 mb-2">{clientVisibleCount}</div>
-            <div className="text-sm text-center text-blue-400">Client Visible</div>
+          <Card className="p-3 sm:p-4 bg-blue-500/10">
+            <div className="text-2xl sm:text-3xl font-bold text-center text-blue-400 mb-1 sm:mb-2">{clientVisibleCount}</div>
+            <div className="text-xs sm:text-sm text-center text-blue-400">Client Visible</div>
           </Card>
-          <Card className="p-4 bg-yellow-500/10">
-            <div className="text-3xl font-bold text-center text-yellow-400 mb-2">{milestonesCount}</div>
-            <div className="text-sm text-center text-yellow-400">Milestones</div>
+          <Card className="p-3 sm:p-4 bg-yellow-500/10">
+            <div className="text-2xl sm:text-3xl font-bold text-center text-yellow-400 mb-1 sm:mb-2">{milestonesCount}</div>
+            <div className="text-xs sm:text-sm text-center text-yellow-400">Milestones</div>
           </Card>
         </div>
         
         <div>
           <div className="flex items-center justify-between mb-2">
-            <span className="font-medium">Overall Progress</span>
-            <span className="text-2xl font-bold">{overallProgress}%</span>
+            <span className="text-sm sm:text-base font-medium">Overall Progress</span>
+            <span className="text-xl sm:text-2xl font-bold">{overallProgress}%</span>
           </div>
-          <Progress value={overallProgress} className="h-3" />
+          <Progress value={overallProgress} className="h-2 sm:h-3" />
         </div>
       </Card>
 
       {/* Part Progression */}
-      <Card className="p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold">Part Progression</h3>
-          <p className="text-sm text-muted-foreground">Click to jump • Double-click to complete</p>
+      <Card className="p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-0 mb-3 sm:mb-4">
+          <h3 className="text-base sm:text-lg font-semibold">Part Progression</h3>
+          <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">Click to jump • Double-click to complete</p>
         </div>
         <div className="w-full overflow-x-auto">
           <div className="flex gap-4 pb-4 min-w-max">
@@ -196,7 +196,7 @@ export function CaseStageVisualization({
                 <button
                   key={partNum}
                   className={cn(
-                    "flex flex-col items-center min-w-[80px] cursor-pointer transition-all hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg p-2",
+                    "flex flex-col items-center min-w-[70px] sm:min-w-[80px] cursor-pointer transition-all hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg p-1.5 sm:p-2",
                     selectedPart === partNum && "ring-2 ring-primary bg-primary/5"
                   )}
                   onClick={() => handlePartClick(partNum)}
@@ -204,7 +204,7 @@ export function CaseStageVisualization({
                 >
                   <div 
                     className={cn(
-                      "w-16 h-16 rounded-lg flex items-center justify-center text-xl font-bold mb-2 transition-all",
+                      "w-12 h-12 sm:w-16 sm:h-16 rounded-lg flex items-center justify-center text-lg sm:text-xl font-bold mb-1.5 sm:mb-2 transition-all",
                       partCompleted === partTotal 
                         ? "bg-green-500/20 text-green-500 border-2 border-green-500/50"
                         : isActive 
@@ -219,9 +219,9 @@ export function CaseStageVisualization({
                   </div>
                   <Progress 
                     value={(partCompleted / partTotal) * 100} 
-                    className="w-16 h-1 mb-1" 
+                    className="w-12 sm:w-16 h-1 mb-0.5 sm:mb-1" 
                   />
-                  <span className="text-xs font-medium">
+                  <span className="text-[10px] sm:text-xs font-medium">
                     {partCompleted}/{partTotal}
                   </span>
                 </button>
@@ -232,17 +232,17 @@ export function CaseStageVisualization({
       </Card>
 
       {/* Stage Pipeline */}
-      <Card className="p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold">Stage Pipeline</h3>
-          <div className="flex items-center gap-4">
+      <Card className="p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 mb-3 sm:mb-4">
+          <h3 className="text-base sm:text-lg font-semibold">Stage Pipeline</h3>
+          <div className="flex items-center gap-2 sm:gap-4">
             {selectedPart && (
-              <Button variant="outline" size="sm" onClick={() => setSelectedPart(null)}>
-                Show All Parts
+              <Button variant="outline" size="sm" onClick={() => setSelectedPart(null)} className="text-xs sm:text-sm">
+                Show All
               </Button>
             )}
-            <span className="text-sm text-muted-foreground">
-              {selectedPart ? `Part ${selectedPart}` : `${filteredStages.length} stages total`}
+            <span className="text-xs sm:text-sm text-muted-foreground">
+              {selectedPart ? `Part ${selectedPart}` : `${filteredStages.length} stages`}
             </span>
           </div>
         </div>
@@ -300,10 +300,10 @@ export function CaseStageVisualization({
       </Card>
 
       {/* Stage Management - Pending Stages */}
-      <Card className="p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold">Stage Management</h3>
-          <span className="text-sm text-muted-foreground">
+      <Card className="p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-0 mb-3 sm:mb-4">
+          <h3 className="text-base sm:text-lg font-semibold">Stage Management</h3>
+          <span className="text-xs sm:text-sm text-muted-foreground">
             Current: {CASE_STAGES.find(s => s.id === currentStage)?.name || 'None'}
           </span>
         </div>
