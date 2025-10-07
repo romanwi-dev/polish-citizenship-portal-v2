@@ -156,33 +156,37 @@ export default function MasterDataTable() {
                   initial={{ x: 20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: 0.3 }}
-                  className="flex gap-3 flex-wrap"
+                  className="flex gap-3 ml-auto"
                 >
                   <Button 
                     onClick={handleSave} 
                     disabled={updateMutation.isPending}
                     size="lg" 
-                    className="text-2xl font-bold px-20 py-6 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30"
+                    className="text-xl font-bold px-12 h-16 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30"
                   >
                     {updateMutation.isPending ? (
                       <>
-                        <Loader2 className="h-5 w-5 animate-spin" />
-                        <span className="ml-2 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                        <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                           Saving...
                         </span>
                       </>
                     ) : (
-                      <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                        Save
-                      </span>
+                      <>
+                        <Save className="h-5 w-5 mr-2" />
+                        <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                          Save
+                        </span>
+                      </>
                     )}
                     <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </Button>
                   <Button 
                     variant="outline" 
                     size="lg" 
-                    className="text-2xl font-bold px-20 py-6 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30"
+                    className="text-xl font-bold px-12 h-16 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30"
                   >
+                    <Download className="h-5 w-5 mr-2" />
                     <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                       Export
                     </span>
