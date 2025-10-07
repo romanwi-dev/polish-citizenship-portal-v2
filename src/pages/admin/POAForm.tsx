@@ -1,20 +1,16 @@
 import { useParams } from "react-router-dom";
 import { useMasterData, useUpdateMasterData } from "@/hooks/useMasterData";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
-import { Loader2, Save, Download, FileText, Sparkles } from "lucide-react";
+import { Loader2, Save, Download, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar as CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
-import { cn } from "@/lib/utils";
+import { POAFormField } from "@/components/POAFormField";
+import { poaFormConfigs } from "@/config/poaFormConfig";
 
 export default function POAForm() {
   const { id: caseId } = useParams();
@@ -73,80 +69,6 @@ export default function POAForm() {
     } finally {
       setIsGenerating(false);
     }
-  };
-
-  const renderDateField = (name: string, label: string) => {
-    const dateValue = formData[name] ? new Date(formData[name]) : undefined;
-    
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="space-y-3"
-      >
-        <Label htmlFor={name} className="text-base font-semibold text-foreground/90">
-          {label}
-        </Label>
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              className={cn(
-                "w-full h-14 justify-start text-left font-normal border-2 hover-glow bg-card/50 backdrop-blur",
-                !dateValue && "text-muted-foreground"
-              )}
-            >
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {dateValue ? format(dateValue, "dd/MM/yyyy") : <span>Pick a date</span>}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
-            <Calendar
-              mode="single"
-              selected={dateValue}
-              onSelect={(date) => handleInputChange(name, date ? format(date, "yyyy-MM-dd") : "")}
-              disabled={(date) => date > new Date("2030-12-31") || date < new Date("1900-01-01")}
-              initialFocus
-              className={cn("p-3 pointer-events-auto")}
-            />
-          </PopoverContent>
-        </Popover>
-      </motion.div>
-    );
-  };
-
-  const renderFieldGroup = (fields: Array<{ name: string; label: string; type?: string; placeholder?: string }>) => {
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {fields.map((field, idx) => (
-          <motion.div
-            key={field.name}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: idx * 0.05, duration: 0.4 }}
-            className="space-y-3"
-          >
-            {field.type === "date" ? (
-              renderDateField(field.name, field.label)
-            ) : (
-              <>
-                <Label htmlFor={field.name} className="text-base font-semibold text-foreground/90">
-                  {field.label}
-                </Label>
-                <Input
-                  id={field.name}
-                  type={field.type || "text"}
-                  value={formData[field.name] || ""}
-                  onChange={(e) => handleInputChange(field.name, e.target.value)}
-                  placeholder={formData[field.name] ? "" : (field.placeholder || `Enter ${field.label.toLowerCase()}`)}
-                  className="h-14 border-2 text-base hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
-                />
-              </>
-            )}
-          </motion.div>
-        ))}
-      </div>
-    );
   };
 
   if (isLoading) {
@@ -249,166 +171,53 @@ export default function POAForm() {
             </TabsList>
           </motion.div>
 
-          {/* Adult POA */}
-          <TabsContent value="adult">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-            >
-              <Card className="glass-card border-primary/20">
-                <CardHeader className="border-b border-border/50 pb-6">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                      Adult Power of Attorney
-                    </CardTitle>
-                    <Button 
-                      onClick={() => handleGeneratePDF('poa-adult', 'Adult POA')} 
-                      disabled={isGenerating}
-                      size="lg"
-                      className="text-xl font-bold px-8 h-14 bg-gradient-to-r from-primary to-secondary hover:opacity-90"
-                    >
-                      {isGenerating ? (
-                        <><Loader2 className="h-5 w-5 animate-spin mr-2" />Generating...</>
-                      ) : (
-                        <><Download className="h-5 w-5 mr-2" />Generate PDF</>
-                      )}
-                    </Button>
-                  </div>
-                </CardHeader>
-                <CardContent className="p-6 md:p-10 space-y-10">
-                  <div>
-                    {renderFieldGroup([
-                      { name: "applicant_first_name", label: "Applicant First Name(s) / Imię" },
-                      { name: "applicant_last_name", label: "Applicant Last Name / Nazwisko" },
-                      { name: "applicant_passport_number", label: "ID Document Number / Nr dokumentu tożsamości" },
-                    ])}
-                  </div>
-                  
-                  <div>
-                    {renderFieldGroup([
-                      { name: "poa_date_filed", label: "Date Signed / Data Podpisania", type: "date" },
-                    ])}
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </TabsContent>
-
-          {/* Minor POA */}
-          <TabsContent value="minor">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-            >
-              <Card className="glass-card border-primary/20">
-                <CardHeader className="border-b border-border/50 pb-6">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                      Minor Power of Attorney
-                    </CardTitle>
-                    <Button 
-                      onClick={() => handleGeneratePDF('poa-minor', 'Minor POA')} 
-                      disabled={isGenerating}
-                      size="lg"
-                      className="text-xl font-bold px-8 h-14 bg-gradient-to-r from-primary to-secondary hover:opacity-90"
-                    >
-                      {isGenerating ? (
-                        <><Loader2 className="h-5 w-5 animate-spin mr-2" />Generating...</>
-                      ) : (
-                        <><Download className="h-5 w-5 mr-2" />Generate PDF</>
-                      )}
-                    </Button>
-                  </div>
-                </CardHeader>
-                <CardContent className="p-6 md:p-10 space-y-10">
-                  <div>
-                    {renderFieldGroup([
-                      { name: "applicant_first_name", label: "Parent First Name(s) / Imię rodzica" },
-                      { name: "applicant_last_name", label: "Parent Last Name / Nazwisko rodzica" },
-                      { name: "applicant_passport_number", label: "Parent ID Document Number / Nr dokumentu tożsamości rodzica" },
-                    ])}
-                  </div>
-
-                  <div>
-                    {renderFieldGroup([
-                      { name: "child_1_first_name", label: "Child First Name(s) / Imię dziecka" },
-                      { name: "child_1_last_name", label: "Child Last Name / Nazwisko dziecka" },
-                    ])}
-                  </div>
-
-                  <div>
-                    {renderFieldGroup([
-                      { name: "poa_date_filed", label: "Date Signed / Data Podpisania", type: "date" },
-                    ])}
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </TabsContent>
-
-          {/* Spouses POA */}
-          <TabsContent value="spouses">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-            >
-              <Card className="glass-card border-primary/20">
-                <CardHeader className="border-b border-border/50 pb-6">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                      Spouses Power of Attorney
-                    </CardTitle>
-                    <Button 
-                      onClick={() => handleGeneratePDF('poa-spouses', 'Spouses POA')} 
-                      disabled={isGenerating}
-                      size="lg"
-                      className="text-xl font-bold px-8 h-14 bg-gradient-to-r from-primary to-secondary hover:opacity-90"
-                    >
-                      {isGenerating ? (
-                        <><Loader2 className="h-5 w-5 animate-spin mr-2" />Generating...</>
-                      ) : (
-                        <><Download className="h-5 w-5 mr-2" />Generate PDF</>
-                      )}
-                    </Button>
-                  </div>
-                </CardHeader>
-                <CardContent className="p-6 md:p-10 space-y-10">
-                  <div>
-                    {renderFieldGroup([
-                      { name: "applicant_first_name", label: "Applicant First Name(s)" },
-                      { name: "applicant_last_name", label: "Applicant Last Name" },
-                      { name: "applicant_sex", label: "Applicant Sex (Male/Female)" },
-                      { name: "applicant_passport_number", label: "Applicant ID Document Number" },
-                    ])}
-                  </div>
-
-                  <div>
-                    {renderFieldGroup([
-                      { name: "spouse_first_name", label: "Spouse First Name(s)" },
-                      { name: "spouse_last_name", label: "Spouse Last Name" },
-                    ])}
-                  </div>
-
-                  <div>
-                    {renderFieldGroup([
-                      { name: "child_1_last_name", label: "Child 1 Surname" },
-                      { name: "child_2_last_name", label: "Child 2 Surname" },
-                      { name: "child_3_last_name", label: "Child 3 Surname" },
-                    ])}
-                  </div>
-
-                  <div>
-                    {renderFieldGroup([
-                      { name: "poa_date_filed", label: "Date Signed / Data Podpisania", type: "date" },
-                    ])}
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </TabsContent>
+          {Object.entries(poaFormConfigs).map(([key, config]) => (
+            <TabsContent key={key} value={key}>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                <Card className="glass-card border-primary/20">
+                  <CardHeader className="border-b border-border/50 pb-6">
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                        {config.title}
+                      </CardTitle>
+                      <Button 
+                        onClick={() => handleGeneratePDF(config.pdfType, config.title)} 
+                        disabled={isGenerating}
+                        size="lg"
+                        className="text-xl font-bold px-8 h-14 bg-gradient-to-r from-primary to-secondary hover:opacity-90"
+                      >
+                        {isGenerating ? (
+                          <><Loader2 className="h-5 w-5 animate-spin mr-2" />Generating...</>
+                        ) : (
+                          <><Download className="h-5 w-5 mr-2" />Generate PDF</>
+                        )}
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="p-6 md:p-10">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {config.fields.map((field, idx) => (
+                        <POAFormField
+                          key={field.name}
+                          name={field.name}
+                          label={field.label}
+                          type={field.type}
+                          value={formData[field.name]}
+                          onChange={(value) => handleInputChange(field.name, value)}
+                          placeholder={field.placeholder}
+                          delay={idx * 0.05}
+                        />
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </TabsContent>
+          ))}
         </Tabs>
       </div>
     </div>
