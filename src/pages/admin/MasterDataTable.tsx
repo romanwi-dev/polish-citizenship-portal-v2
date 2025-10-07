@@ -225,9 +225,7 @@ export default function MasterDataTable() {
               }} transition={{
                 delay: 0.2
               }}>
-                  <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
-                    Master Data Center
-                  </CardTitle>
+                  <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">Master Data Form</CardTitle>
                   
                 </motion.div>
                 <motion.div initial={{
