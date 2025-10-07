@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useState, useEffect } from "react";
 import { Loader2, Save, Download, Users, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
@@ -155,12 +156,11 @@ export default function FamilyTreeForm() {
             transition={{ delay: idx * 0.05 }}
             className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur"
           >
-            <input
-              type="checkbox"
+            <Checkbox
               id={field.name}
               checked={formData[field.name] || false}
-              onChange={(e) => handleInputChange(field.name, e.target.checked)}
-              className="h-6 w-6 rounded border-2"
+              onCheckedChange={(checked) => handleInputChange(field.name, checked)}
+              className="h-6 w-6"
             />
             <Label htmlFor={field.name} className="cursor-pointer text-sm font-normal">
               {field.label}
