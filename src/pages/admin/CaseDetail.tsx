@@ -9,6 +9,8 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CaseStageVisualization } from "@/components/CaseStageVisualization";
 import { FamilyTree } from "@/components/FamilyTree";
+import { FamilyTreeInteractive } from "@/components/FamilyTreeInteractive";
+import { MasterDataTable } from "@/components/MasterDataTable";
 import { EditCaseDialog } from "@/components/EditCaseDialog";
 import { 
   CheckSquare, 
@@ -54,6 +56,8 @@ export default function CaseDetail() {
   const [tasks, setTasks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showEditDialog, setShowEditDialog] = useState(false);
+  const [masterTableOpen, setMasterTableOpen] = useState(false);
+  const [editingPerson, setEditingPerson] = useState<string | null>(null);
 
   useEffect(() => {
     loadCaseData();
@@ -432,58 +436,103 @@ export default function CaseDetail() {
           {/* TREE TAB */}
           <TabsContent value="tree">
             {intakeData ? (
-              <FamilyTree
+              <FamilyTreeInteractive
                 clientData={{
                   firstName: intakeData.first_name || '',
                   lastName: intakeData.last_name || '',
                   maidenName: intakeData.maiden_name,
                   dateOfBirth: intakeData.date_of_birth,
                   placeOfBirth: intakeData.place_of_birth,
-                  sex: intakeData.sex
+                  sex: intakeData.sex,
+                  documents: {
+                    birthCertificate: true,
+                    marriageCertificate: false,
+                    passport: true,
+                  }
+                }}
+                spouse={{
+                  firstName: "",
+                  lastName: "",
+                  documents: {
+                    birthCertificate: false,
+                    marriageCertificate: false,
+                    passport: false,
+                  }
                 }}
                 father={intakeData.father_first_name ? {
                   firstName: intakeData.father_first_name,
                   lastName: intakeData.father_last_name || '',
                   dateOfBirth: intakeData.father_dob,
-                  placeOfBirth: intakeData.father_pob
+                  placeOfBirth: intakeData.father_pob,
+                  documents: {
+                    birthCertificate: true,
+                    marriageCertificate: true,
+                    passport: false,
+                  }
                 } : undefined}
                 mother={intakeData.mother_first_name ? {
                   firstName: intakeData.mother_first_name,
                   lastName: intakeData.mother_last_name || '',
                   maidenName: intakeData.mother_maiden_name,
                   dateOfBirth: intakeData.mother_dob,
-                  placeOfBirth: intakeData.mother_pob
+                  placeOfBirth: intakeData.mother_pob,
+                  documents: {
+                    birthCertificate: true,
+                    marriageCertificate: true,
+                    passport: true,
+                  }
                 } : undefined}
                 paternalGrandfather={intakeData.pgf_first_name ? {
                   firstName: intakeData.pgf_first_name,
                   lastName: intakeData.pgf_last_name || '',
                   dateOfBirth: intakeData.pgf_dob,
-                  placeOfBirth: intakeData.pgf_pob
+                  placeOfBirth: intakeData.pgf_pob,
+                  documents: {
+                    birthCertificate: false,
+                    marriageCertificate: true,
+                    passport: false,
+                  }
                 } : undefined}
                 paternalGrandmother={intakeData.pgm_first_name ? {
                   firstName: intakeData.pgm_first_name,
                   lastName: intakeData.pgm_last_name || '',
                   maidenName: intakeData.pgm_maiden_name,
                   dateOfBirth: intakeData.pgm_dob,
-                  placeOfBirth: intakeData.pgm_pob
+                  placeOfBirth: intakeData.pgm_pob,
+                  documents: {
+                    birthCertificate: false,
+                    marriageCertificate: true,
+                    passport: false,
+                  }
                 } : undefined}
                 maternalGrandfather={intakeData.mgf_first_name ? {
                   firstName: intakeData.mgf_first_name,
                   lastName: intakeData.mgf_last_name || '',
                   dateOfBirth: intakeData.mgf_dob,
-                  placeOfBirth: intakeData.mgf_pob
+                  placeOfBirth: intakeData.mgf_pob,
+                  documents: {
+                    birthCertificate: true,
+                    marriageCertificate: false,
+                    passport: false,
+                  }
                 } : undefined}
                 maternalGrandmother={intakeData.mgm_first_name ? {
                   firstName: intakeData.mgm_first_name,
                   lastName: intakeData.mgm_last_name || '',
                   maidenName: intakeData.mgm_maiden_name,
                   dateOfBirth: intakeData.mgm_dob,
-                  placeOfBirth: intakeData.mgm_pob
+                  placeOfBirth: intakeData.mgm_pob,
+                  documents: {
+                    birthCertificate: true,
+                    marriageCertificate: false,
+                    passport: true,
+                  }
                 } : undefined}
-                onEdit={() => {
-                  // TODO: Navigate to intake form or open edit dialog
-                  toast.info("Family data editing will be added soon");
+                onEdit={(personType) => {
+                  setEditingPerson(personType);
+                  setMasterTableOpen(true);
                 }}
+                onOpenMasterTable={() => setMasterTableOpen(true)}
               />
             ) : (
               <Card>
@@ -494,6 +543,9 @@ export default function CaseDetail() {
                 <CardContent>
                   <div className="text-center py-12 text-muted-foreground">
                     <p>Complete the intake form to populate family tree data</p>
+                    <Button onClick={() => setMasterTableOpen(true)} className="mt-4">
+                      Open Master Data Table
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -524,6 +576,13 @@ export default function CaseDetail() {
           }}
         />
       )}
+
+      {/* Master Data Table */}
+      <MasterDataTable
+        open={masterTableOpen}
+        onOpenChange={setMasterTableOpen}
+        caseId={id || ""}
+      />
     </AdminLayout>
   );
 }
