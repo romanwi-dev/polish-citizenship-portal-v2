@@ -84,7 +84,7 @@ export default function POAForm() {
         animate={{ opacity: 1, y: 0 }}
         className="space-y-3"
       >
-        <Label htmlFor={name} className="text-base font-medium text-foreground">
+        <Label htmlFor={name} className="text-base font-semibold text-foreground/90">
           {label}
         </Label>
         <Popover>
@@ -130,7 +130,7 @@ export default function POAForm() {
               renderDateField(field.name, field.label)
             ) : (
               <>
-                <Label htmlFor={field.name} className="text-base font-medium text-foreground">
+                <Label htmlFor={field.name} className="text-base font-semibold text-foreground/90">
                   {field.label}
                 </Label>
                 <Input
@@ -279,7 +279,7 @@ export default function POAForm() {
                 <CardContent className="p-6 md:p-10 space-y-10">
                   <div>
                     {renderFieldGroup([
-                      { name: "poa_date_filed", label: "Date Filed / Data złożenia", type: "date" },
+                      { name: "poa_date_filed", label: "Date Signed / Data Podpisania", type: "date" },
                     ])}
                   </div>
                   
@@ -325,7 +325,7 @@ export default function POAForm() {
                 <CardContent className="p-6 md:p-10 space-y-10">
                   <div>
                     {renderFieldGroup([
-                      { name: "poa_date_filed", label: "Date Filed / Data złożenia", type: "date" },
+                      { name: "poa_date_filed", label: "Date Signed / Data Podpisania", type: "date" },
                     ])}
                   </div>
 
@@ -378,7 +378,7 @@ export default function POAForm() {
                 <CardContent className="p-6 md:p-10 space-y-10">
                   <div>
                     {renderFieldGroup([
-                      { name: "poa_date_filed", label: "Date Filed / Data złożenia", type: "date" },
+                      { name: "poa_date_filed", label: "Date Signed / Data Podpisania", type: "date" },
                     ])}
                   </div>
 
