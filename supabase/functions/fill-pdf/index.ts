@@ -36,18 +36,41 @@ serve(async (req) => {
     if (masterError) throw masterError;
     if (!masterData) throw new Error('Master data not found');
 
-    // Fetch the appropriate template from public folder
-    const publicUrl = Deno.env.get('SUPABASE_URL')?.replace('/v1', '');
-    const templateUrl = `${publicUrl}/templates/${templateType}.pdf`;
-    console.log(`Fetching template from: ${templateUrl}`);
-    
-    const templateResponse = await fetch(templateUrl);
-    if (!templateResponse.ok) {
-      console.error(`Template fetch failed: ${templateResponse.status} ${templateResponse.statusText}`);
-      throw new Error(`Failed to fetch template: ${templateResponse.statusText}`);
+    // Map template type to Dropbox filename
+    const templateFileMap: Record<string, string> = {
+      'family-tree': 'new-FAMILY_TREE-4.pdf',
+      'poa-adult': 'new-POA-adult-3.pdf',
+      'poa-minor': 'new-POA-minor-3.pdf',
+      'poa-spouses': 'new-POA-spuses-3.pdf',
+      'registration': 'REGISTRATION-3.pdf',
+      'uzupelnienie': 'UZUPELNIENIE-3.pdf',
+      'citizenship': 'CITIZENSHIP-3.pdf',
+    };
+
+    const templateFileName = templateFileMap[templateType];
+    if (!templateFileName) {
+      throw new Error(`Unknown template type: ${templateType}`);
+    }
+
+    // Fetch template from Dropbox
+    const dropboxPath = `/cases/POA/${templateFileName}`;
+    console.log(`Fetching template from Dropbox: ${dropboxPath}`);
+
+    const dropboxResponse = await fetch('https://content.dropboxapi.com/2/files/download', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${Deno.env.get('DROPBOX_ACCESS_TOKEN')}`,
+        'Dropbox-API-Arg': JSON.stringify({ path: dropboxPath }),
+      },
+    });
+
+    if (!dropboxResponse.ok) {
+      const errorText = await dropboxResponse.text();
+      console.error(`Dropbox fetch failed: ${dropboxResponse.status} - ${errorText}`);
+      throw new Error(`Failed to fetch template from Dropbox: ${dropboxResponse.statusText}`);
     }
     
-    const templateBytes = await templateResponse.arrayBuffer();
+    const templateBytes = await dropboxResponse.arrayBuffer();
     const pdfDoc = await PDFDocument.load(templateBytes);
     const form = pdfDoc.getForm();
 
