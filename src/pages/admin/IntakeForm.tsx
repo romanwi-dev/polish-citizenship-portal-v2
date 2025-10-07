@@ -269,7 +269,7 @@ export default function IntakeForm() {
                   transition={{ delay: 0.3, duration: 0.4 }}
                   className="space-y-4"
                 >
-                  <Label className="text-sm font-normal text-foreground/90">Number of Children (including minors)</Label>
+                  <Label className="text-sm font-normal text-foreground/90">Number of children (including minors)</Label>
                   <Select
                     value={formData.children_count?.toString() || "0"}
                     onValueChange={(value) => {
