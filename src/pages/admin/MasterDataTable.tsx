@@ -694,7 +694,7 @@ export default function MasterDataTable() {
                       </CardHeader>
                       <CardContent className="p-6 md:p-10 space-y-10">
                         {renderFieldGroup([
-                          { name: `${prefix}_first_name`, label: "Given Names" },
+                          { name: `${prefix}_first_name`, label: "Given names / Imię / imiona" },
                           { name: `${prefix}_last_name`, label: "Full last name / Nazwisko" },
                           ...(prefix.includes("ggm") ? [{ name: `${prefix}_maiden_name`, label: "Maiden name" }] : []),
                           { name: `${prefix}_pob`, label: "Place of Birth" },
