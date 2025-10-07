@@ -136,7 +136,7 @@ export default function IntakeForm() {
                     <>
                       <Save className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
                       <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                        Save Data
+                        Save data
                       </span>
                     </>
                   )}
@@ -175,7 +175,7 @@ export default function IntakeForm() {
                 {/* Passport */}
                 <POAFormField
                   name="passport_number"
-                  label="Passport Number"
+                  label="Passport number"
                   value={formData.passport_number}
                   onChange={(value) => handleInputChange("passport_number", value)}
                   delay={0.1}
@@ -189,7 +189,7 @@ export default function IntakeForm() {
                   className="space-y-4"
                 >
                   <Label className="text-sm font-normal text-foreground/90">
-                    Email Address {formData.email_verified && <CheckCircle2 className="inline h-4 w-4 text-green-500 ml-1" />}
+                    Email address {formData.email_verified && <CheckCircle2 className="inline h-4 w-4 text-green-500 ml-1" />}
                   </Label>
                   <div className="flex gap-2">
                     <POAFormField
@@ -219,7 +219,7 @@ export default function IntakeForm() {
                   className="space-y-4"
                 >
                   <Label className="text-sm font-normal text-foreground/90">
-                    Phone Number {formData.phone_verified && <CheckCircle2 className="inline h-4 w-4 text-green-500 ml-1" />}
+                    Phone number {formData.phone_verified && <CheckCircle2 className="inline h-4 w-4 text-green-500 ml-1" />}
                   </Label>
                   <div className="flex gap-2">
                     <POAFormField
@@ -247,7 +247,7 @@ export default function IntakeForm() {
                   transition={{ delay: 0.25, duration: 0.4 }}
                   className="space-y-4"
                 >
-                  <Label className="text-sm font-normal text-foreground/90">Civil Status</Label>
+                  <Label className="text-sm font-normal text-foreground/90">Civil status</Label>
                   <Select
                     value={formData.civil_status}
                     onValueChange={(value) => handleInputChange("civil_status", value)}
