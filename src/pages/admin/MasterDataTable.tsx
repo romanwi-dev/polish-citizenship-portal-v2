@@ -145,23 +145,10 @@ export default function MasterDataTable() {
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: 0.2 }}
                 >
-                  <CardTitle className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold flex items-center gap-4 glow-text">
-                    <motion.div
-                      animate={{
-                        rotateY: [0, 360],
-                      }}
-                      transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                      style={{ transformStyle: "preserve-3d" }}
-                    >
-                      <Users className="h-12 w-12 md:h-16 md:w-16 text-primary" />
-                    </motion.div>
+                  <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
                     Master Data Center
                   </CardTitle>
-                  <CardDescription className="text-lg md:text-xl mt-4 text-muted-foreground">
+                  <CardDescription className="text-xl md:text-2xl mt-4 text-muted-foreground leading-relaxed">
                     Comprehensive family information & documentation portal
                   </CardDescription>
                 </motion.div>
@@ -175,27 +162,31 @@ export default function MasterDataTable() {
                     onClick={handleSave} 
                     disabled={updateMutation.isPending}
                     size="lg" 
-                    className="gap-2 hover-glow min-w-[160px] h-14 text-base"
+                    className="text-2xl font-bold px-20 py-6 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30"
                   >
                     {updateMutation.isPending ? (
                       <>
                         <Loader2 className="h-5 w-5 animate-spin" />
-                        Saving...
+                        <span className="ml-2 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                          Saving...
+                        </span>
                       </>
                     ) : (
-                      <>
-                        <Save className="h-5 w-5" />
-                        Save Changes
-                      </>
+                      <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                        Save
+                      </span>
                     )}
+                    <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </Button>
                   <Button 
                     variant="outline" 
                     size="lg" 
-                    className="gap-2 border-primary/30 min-w-[140px] h-14 text-base"
+                    className="text-2xl font-bold px-20 py-6 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30"
                   >
-                    <Download className="h-5 w-5" />
-                    Export
+                    <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                      Export
+                    </span>
+                    <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </Button>
                 </motion.div>
               </div>
@@ -212,25 +203,21 @@ export default function MasterDataTable() {
           >
             <TabsList className="grid w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-6 mb-10 p-2 glass-card h-auto gap-2">
               {[
-                { value: "applicant", icon: FileText, label: "Applicant" },
-                { value: "spouse", icon: Heart, label: "Spouse" },
-                { value: "children", icon: Baby, label: "Children" },
-                { value: "parents", icon: Users, label: "Parents" },
-                { value: "grandparents", icon: Users, label: "Grandparents" },
-                { value: "great-grandparents", icon: Calendar, label: "Great-GP" },
+                { value: "applicant", label: "Applicant" },
+                { value: "spouse", label: "Spouse" },
+                { value: "children", label: "Children" },
+                { value: "parents", label: "Parents" },
+                { value: "grandparents", label: "Grandparents" },
+                { value: "great-grandparents", label: "Great-Grandparents" },
               ].map((tab) => (
                 <TabsTrigger
                   key={tab.value}
                   value={tab.value}
-                  className="gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-secondary data-[state=active]:text-primary-foreground transition-all duration-300 py-4 text-base"
+                  className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-secondary transition-all duration-300 py-4 text-base font-heading font-bold"
                 >
-                  <motion.div
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <tab.icon className="h-5 w-5" />
-                  </motion.div>
-                  <span className="font-medium hidden sm:inline">{tab.label}</span>
+                  <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent data-[state=active]:from-white data-[state=active]:to-white">
+                    {tab.label}
+                  </span>
                 </TabsTrigger>
               ))}
             </TabsList>
@@ -245,11 +232,10 @@ export default function MasterDataTable() {
             >
               <Card className="glass-card border-primary/20">
                 <CardHeader className="border-b border-border/50 pb-6">
-                  <CardTitle className="text-3xl md:text-4xl font-heading text-primary flex items-center gap-3">
-                    <FileText className="h-8 w-8 md:h-10 md:w-10" />
+                  <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                     Applicant Information
                   </CardTitle>
-                  <CardDescription className="text-base md:text-lg">
+                  <CardDescription className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
                     Main applicant personal data - maps to OBY-A-* fields
                   </CardDescription>
                 </CardHeader>
@@ -293,11 +279,10 @@ export default function MasterDataTable() {
             >
               <Card className="glass-card border-primary/20">
                 <CardHeader className="border-b border-border/50 pb-6">
-                  <CardTitle className="text-3xl md:text-4xl font-heading text-primary flex items-center gap-3">
-                    <Heart className="h-8 w-8 md:h-10 md:w-10" />
+                  <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                     Spouse Information
                   </CardTitle>
-                  <CardDescription className="text-base md:text-lg">
+                  <CardDescription className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
                     Spouse data - maps to OBY-SPOUSE-* fields
                   </CardDescription>
                 </CardHeader>
@@ -341,11 +326,10 @@ export default function MasterDataTable() {
               >
                 <Card className="glass-card border-primary/20">
                   <CardHeader>
-                    <CardTitle className="text-3xl md:text-4xl font-heading text-primary flex items-center gap-3">
-                      <Baby className="h-8 w-8 md:h-10 md:w-10" />
+                    <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                       Children Information
                     </CardTitle>
-                    <CardDescription className="text-base md:text-lg">
+                    <CardDescription className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
                       Up to 10 children - maps to OBY-CHILD* fields
                     </CardDescription>
                   </CardHeader>
@@ -374,7 +358,7 @@ export default function MasterDataTable() {
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
                   <Card key={num} className="glass-card border-primary/20">
                     <CardHeader className="border-b border-border/50">
-                      <CardTitle className="text-2xl font-heading text-primary">Child {num}</CardTitle>
+                      <CardTitle className="text-3xl md:text-4xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Child {num}</CardTitle>
                     </CardHeader>
                     <CardContent className="p-6 md:p-10 space-y-8">
                       {renderFieldGroup([
@@ -411,8 +395,7 @@ export default function MasterDataTable() {
                 {/* Father */}
                 <Card className="glass-card border-primary/20">
                   <CardHeader className="border-b border-border/50">
-                    <CardTitle className="text-3xl md:text-4xl font-heading text-primary flex items-center gap-3">
-                      <Users className="h-8 w-8 md:h-10 md:w-10" />
+                    <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                       Father Information
                     </CardTitle>
                   </CardHeader>
@@ -439,8 +422,7 @@ export default function MasterDataTable() {
                 {/* Mother */}
                 <Card className="glass-card border-primary/20">
                   <CardHeader className="border-b border-border/50">
-                    <CardTitle className="text-3xl md:text-4xl font-heading text-primary flex items-center gap-3">
-                      <Users className="h-8 w-8 md:h-10 md:w-10" />
+                    <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                       Mother Information
                     </CardTitle>
                   </CardHeader>
@@ -486,7 +468,7 @@ export default function MasterDataTable() {
                   return (
                     <Card key={prefix} className="glass-card border-primary/20">
                       <CardHeader className="border-b border-border/50">
-                        <CardTitle className="text-2xl md:text-3xl font-heading text-primary">
+                        <CardTitle className="text-3xl md:text-4xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                           {labels[prefix as keyof typeof labels]}
                         </CardTitle>
                       </CardHeader>
@@ -532,7 +514,7 @@ export default function MasterDataTable() {
                   return (
                     <Card key={prefix} className="glass-card border-primary/20">
                       <CardHeader className="border-b border-border/50">
-                        <CardTitle className="text-2xl md:text-3xl font-heading text-primary">
+                        <CardTitle className="text-3xl md:text-4xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                           {labels[prefix as keyof typeof labels]}
                         </CardTitle>
                       </CardHeader>
