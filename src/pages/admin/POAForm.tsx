@@ -24,12 +24,14 @@ export default function POAForm() {
   const [isGenerating, setIsGenerating] = useState(false);
 
   useEffect(() => {
+    const today = format(new Date(), "yyyy-MM-dd");
     if (masterData) {
-      const today = format(new Date(), "yyyy-MM-dd");
       setFormData({
         ...masterData,
         poa_date_filed: masterData.poa_date_filed || today
       });
+    } else {
+      setFormData({ poa_date_filed: today });
     }
   }, [masterData]);
 
