@@ -157,6 +157,11 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48 bg-popover border border-border z-50">
+                <DropdownMenuItem onClick={handleEdit}>
+                  <Edit className="mr-2 h-4 w-4" />
+                  Edit
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleCopyId}>
                   <Copy className="mr-2 h-4 w-4" />
                   Copy ID
