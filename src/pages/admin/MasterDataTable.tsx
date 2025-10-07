@@ -331,11 +331,8 @@ export default function MasterDataTable() {
                 <Card className="glass-card border-primary/20">
                   <CardHeader>
                     <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                      Children Information
+                      Minor Children
                     </CardTitle>
-                    <CardDescription className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
-                      Up to 10 children - maps to OBY-CHILD* fields
-                    </CardDescription>
                   </CardHeader>
                   <CardContent className="p-6 md:p-10">
                     <motion.div
@@ -359,7 +356,7 @@ export default function MasterDataTable() {
                   </CardContent>
                 </Card>
 
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+                {Array.from({ length: formData.children_count || 0 }, (_, i) => i + 1).map((num) => (
                   <Card key={num} className="glass-card border-primary/20">
                     <CardHeader className="border-b border-border/50">
                       <CardTitle className="text-3xl md:text-4xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Child {num}</CardTitle>
