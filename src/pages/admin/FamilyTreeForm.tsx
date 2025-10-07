@@ -259,9 +259,9 @@ export default function FamilyTreeForm() {
         }}>
             <Card className="glass-card border-primary/20">
               <CardHeader className="border-b border-border/50 pb-6">
-                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                  Applicant Information
-                </CardTitle>
+                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Applicant
+
+              </CardTitle>
               </CardHeader>
               <CardContent className="p-6 md:p-10 space-y-10">
                 {/* Marital Status & Children - Side by side on desktop */}
