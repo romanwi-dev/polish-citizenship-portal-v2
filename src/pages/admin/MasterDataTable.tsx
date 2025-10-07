@@ -115,7 +115,7 @@ export default function MasterDataTable() {
                   type={field.type || "text"}
                   value={formData[field.name] || ""}
                   onChange={(e) => handleInputChange(field.name, e.target.value)}
-                  placeholder={field.placeholder || `Enter ${field.label.toLowerCase()}`}
+                  placeholder={formData[field.name] ? "" : (field.placeholder || `Enter ${field.label.toLowerCase()}`)}
                   className="h-14 border-2 text-base hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
                 />
               </>
