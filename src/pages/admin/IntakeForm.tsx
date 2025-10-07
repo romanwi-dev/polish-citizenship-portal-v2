@@ -11,13 +11,16 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLongPressWithFeedback } from "@/hooks/useLongPressWithFeedback";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-
 export default function IntakeForm() {
-  const { id: caseId } = useParams();
-  const { data: intakeData, isLoading } = useIntakeData(caseId);
+  const {
+    id: caseId
+  } = useParams();
+  const {
+    data: intakeData,
+    isLoading
+  } = useIntakeData(caseId);
   const updateMutation = useUpdateIntakeData();
   const [showClearDialog, setShowClearDialog] = useState(false);
-  
   const [formData, setFormData] = useState<any>({
     given_names: "",
     last_name: "",
@@ -31,28 +34,24 @@ export default function IntakeForm() {
     has_children: false,
     has_minor_children: false,
     children_count: 0,
-    minor_children_count: 0,
+    minor_children_count: 0
   });
-
   useEffect(() => {
     if (intakeData) {
       setFormData(intakeData);
     }
   }, [intakeData]);
-
   const handleInputChange = (field: string, value: any) => {
     setFormData((prev: any) => ({
       ...prev,
-      [field]: value,
+      [field]: value
     }));
   };
-
   const validatePassportNumber = (passport: string): boolean => {
     // Basic validation: alphanumeric, 6-9 characters
     const passportRegex = /^[A-Z0-9]{6,9}$/;
     return passportRegex.test(passport.toUpperCase());
   };
-
   const handleSave = () => {
     if (!caseId) return;
 
@@ -61,13 +60,11 @@ export default function IntakeForm() {
       toast.error("Invalid passport number format");
       return;
     }
-
     updateMutation.mutate({
       caseId,
-      updates: formData,
+      updates: formData
     });
   };
-
   const clearAllFields = () => {
     setFormData({
       given_names: "",
@@ -82,96 +79,85 @@ export default function IntakeForm() {
       has_children: false,
       has_minor_children: false,
       children_count: 0,
-      minor_children_count: 0,
+      minor_children_count: 0
     });
     toast.success("All fields cleared");
   };
-
   const clearField = (field: string) => {
     setFormData((prev: any) => ({
       ...prev,
-      [field]: typeof prev[field] === 'boolean' ? false : typeof prev[field] === 'number' ? 0 : "",
+      [field]: typeof prev[field] === 'boolean' ? false : typeof prev[field] === 'number' ? 0 : ""
     }));
     toast.success("Field cleared");
   };
-
   const titleLongPress = useLongPressWithFeedback({
     onLongPress: clearAllFields,
     duration: 2000,
-    feedbackMessage: "Hold to clear all fields...",
+    feedbackMessage: "Hold to clear all fields..."
   });
-
   const backgroundLongPress = useLongPressWithFeedback({
     onLongPress: () => setShowClearDialog(true),
     duration: 5000,
-    feedbackMessage: "Hold to clear entire form...",
+    feedbackMessage: "Hold to clear entire form..."
   });
-
-
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-background">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-        >
+    return <div className="flex items-center justify-center min-h-screen bg-background">
+        <motion.div animate={{
+        rotate: 360
+      }} transition={{
+        duration: 1,
+        repeat: Infinity,
+        ease: "linear"
+      }}>
           <Sparkles className="h-16 w-16 text-primary" />
         </motion.div>
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <div className="min-h-screen relative overflow-hidden" {...backgroundLongPress.handlers}>
+  return <div className="min-h-screen relative overflow-hidden" {...backgroundLongPress.handlers}>
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background pointer-events-none" />
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
 
       <div className="container mx-auto py-12 px-4 md:px-6 lg:px-8 relative z-10 max-w-7xl">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="mb-12"
-        >
+        <motion.div initial={{
+        opacity: 0,
+        y: -50
+      }} animate={{
+        opacity: 1,
+        y: 0
+      }} transition={{
+        duration: 0.8
+      }} className="mb-12">
           <Card className="glass-card border-primary/20 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5" />
             <CardHeader className="relative pb-8 pt-8">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                <motion.div
-                  initial={{ x: -20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                >
-                  <CardTitle 
-                    {...titleLongPress.handlers}
-                    className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-pointer select-none"
-                  >
+                <motion.div initial={{
+                x: -20,
+                opacity: 0
+              }} animate={{
+                x: 0,
+                opacity: 1
+              }} transition={{
+                delay: 0.2
+              }}>
+                  <CardTitle {...titleLongPress.handlers} className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-pointer select-none">
                     Client Intake Form
                   </CardTitle>
                 </motion.div>
-                <Button
-                  onClick={handleSave}
-                  disabled={updateMutation.isPending}
-                  size="default"
-                  className="text-base md:text-xl font-bold px-6 md:px-8 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30"
-                >
-                  {updateMutation.isPending ? (
-                    <>
+                <Button onClick={handleSave} disabled={updateMutation.isPending} size="default" className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 md:px-[50px]">
+                  {updateMutation.isPending ? <>
                       <Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
                       <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                         Saving...
                       </span>
-                    </>
-                  ) : (
-                    <>
+                    </> : <>
                       <Save className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
                       <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                         Save data
                       </span>
-                    </>
-                  )}
+                    </>}
                 </Button>
               </div>
             </CardHeader>
@@ -179,94 +165,60 @@ export default function IntakeForm() {
         </motion.div>
 
         {/* Form */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-        >
+        <motion.div initial={{
+        opacity: 0,
+        scale: 0.95
+      }} animate={{
+        opacity: 1,
+        scale: 1
+      }} transition={{
+        duration: 0.5
+      }}>
           <Card className="glass-card border-primary/20">
             <CardContent className="p-6 md:p-10">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Personal Information */}
                 <div onDoubleClick={() => clearField("given_names")}>
-                  <POAFormField
-                    name="given_names"
-                    label="Given names (exactly like in your valid ID/ passport)"
-                    value={formData.given_names}
-                    onChange={(value) => handleInputChange("given_names", value)}
-                    delay={0}
-                  />
+                  <POAFormField name="given_names" label="Given names (exactly like in your valid ID/ passport)" value={formData.given_names} onChange={value => handleInputChange("given_names", value)} delay={0} />
                 </div>
                 
                 <div onDoubleClick={() => clearField("last_name")}>
-                  <POAFormField
-                    name="last_name"
-                    label="Full last name (exactly like in your valid ID/ passport)"
-                    value={formData.last_name}
-                    onChange={(value) => handleInputChange("last_name", value)}
-                    delay={0.05}
-                  />
+                  <POAFormField name="last_name" label="Full last name (exactly like in your valid ID/ passport)" value={formData.last_name} onChange={value => handleInputChange("last_name", value)} delay={0.05} />
                 </div>
 
                 {/* Passport */}
                 <div onDoubleClick={() => clearField("passport_number")}>
-                  <POAFormField
-                    name="passport_number"
-                    label="Passport number"
-                    value={formData.passport_number}
-                    onChange={(value) => handleInputChange("passport_number", value)}
-                    delay={0.1}
-                  />
+                  <POAFormField name="passport_number" label="Passport number" value={formData.passport_number} onChange={value => handleInputChange("passport_number", value)} delay={0.1} />
                 </div>
 
                 {/* Mobile */}
                 <div onDoubleClick={() => clearField("phone")}>
-                  <POAFormField
-                    name="phone"
-                    label="Mobile number"
-                    value={formData.phone}
-                    onChange={(value) => handleInputChange("phone", value)}
-                    delay={0.15}
-                  />
+                  <POAFormField name="phone" label="Mobile number" value={formData.phone} onChange={value => handleInputChange("phone", value)} delay={0.15} />
                 </div>
 
                 {/* Email */}
                 <div onDoubleClick={() => clearField("email")}>
-                  <POAFormField
-                    name="email"
-                    label="Email address"
-                    type="email"
-                    value={formData.email}
-                    onChange={(value) => handleInputChange("email", value.toLowerCase())}
-                    delay={0.2}
-                  />
+                  <POAFormField name="email" label="Email address" type="email" value={formData.email} onChange={value => handleInputChange("email", value.toLowerCase())} delay={0.2} />
                 </div>
 
                 {/* Confirm Email */}
                 <div onDoubleClick={() => clearField("confirm_email")}>
-                  <POAFormField
-                    name="confirm_email"
-                    label="Confirm your email address"
-                    type="email"
-                    value={formData.confirm_email}
-                    onChange={(value) => handleInputChange("confirm_email", value.toLowerCase())}
-                    delay={0.25}
-                  />
+                  <POAFormField name="confirm_email" label="Confirm your email address" type="email" value={formData.confirm_email} onChange={value => handleInputChange("confirm_email", value.toLowerCase())} delay={0.25} />
                 </div>
 
                 {/* Civil Status */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3, duration: 0.4 }}
-                  className="space-y-4"
-                  onDoubleClick={() => clearField("civil_status")}
-                >
+                <motion.div initial={{
+                opacity: 0,
+                y: 20
+              }} animate={{
+                opacity: 1,
+                y: 0
+              }} transition={{
+                delay: 0.3,
+                duration: 0.4
+              }} className="space-y-4" onDoubleClick={() => clearField("civil_status")}>
                   <Label className="text-sm font-normal text-foreground/90">Civil status</Label>
-                  <Select
-                    value={formData.civil_status}
-                    onValueChange={(value) => handleInputChange("civil_status", value)}
-                  >
+                  <Select value={formData.civil_status} onValueChange={value => handleInputChange("civil_status", value)}>
                     <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
                       <SelectValue placeholder="Select status" />
                     </SelectTrigger>
@@ -278,53 +230,50 @@ export default function IntakeForm() {
                 </motion.div>
 
                 {/* Children Count */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.35, duration: 0.4 }}
-                  className="space-y-4"
-                  onDoubleClick={() => {
-                    clearField("children_count");
-                    clearField("has_children");
-                  }}
-                >
+                <motion.div initial={{
+                opacity: 0,
+                y: 20
+              }} animate={{
+                opacity: 1,
+                y: 0
+              }} transition={{
+                delay: 0.35,
+                duration: 0.4
+              }} className="space-y-4" onDoubleClick={() => {
+                clearField("children_count");
+                clearField("has_children");
+              }}>
                   <Label className="text-sm font-normal text-foreground/90">Number of children (including minors)</Label>
-                  <Select
-                    value={formData.children_count?.toString() || "0"}
-                    onValueChange={(value) => {
-                      const count = parseInt(value);
-                      handleInputChange("children_count", count);
-                      handleInputChange("has_children", count > 0);
-                    }}
-                  >
+                  <Select value={formData.children_count?.toString() || "0"} onValueChange={value => {
+                  const count = parseInt(value);
+                  handleInputChange("children_count", count);
+                  handleInputChange("has_children", count > 0);
+                }}>
                     <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-                        <SelectItem key={num} value={num.toString()}>
+                      {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => <SelectItem key={num} value={num.toString()}>
                           {num}
-                        </SelectItem>
-                      ))}
+                        </SelectItem>)}
                     </SelectContent>
                   </Select>
                 </motion.div>
 
                 {/* Minor Children if applicable */}
-                {formData.children_count > 0 && (
-                  <>
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.4, duration: 0.4 }}
-                      className="space-y-4"
-                      onDoubleClick={() => clearField("has_minor_children")}
-                    >
+                {formData.children_count > 0 && <>
+                    <motion.div initial={{
+                  opacity: 0,
+                  y: 20
+                }} animate={{
+                  opacity: 1,
+                  y: 0
+                }} transition={{
+                  delay: 0.4,
+                  duration: 0.4
+                }} className="space-y-4" onDoubleClick={() => clearField("has_minor_children")}>
                       <Label className="text-sm font-normal text-foreground/90">Do you have minor children (under 18)?</Label>
-                      <Select
-                        value={formData.has_minor_children ? "yes" : "no"}
-                        onValueChange={(value) => handleInputChange("has_minor_children", value === "yes")}
-                      >
+                      <Select value={formData.has_minor_children ? "yes" : "no"} onValueChange={value => handleInputChange("has_minor_children", value === "yes")}>
                         <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
                           <SelectValue />
                         </SelectTrigger>
@@ -335,34 +284,31 @@ export default function IntakeForm() {
                       </Select>
                     </motion.div>
 
-                    {formData.has_minor_children && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.45, duration: 0.4 }}
-                        className="space-y-4"
-                        onDoubleClick={() => clearField("minor_children_count")}
-                      >
+                    {formData.has_minor_children && <motion.div initial={{
+                  opacity: 0,
+                  y: 20
+                }} animate={{
+                  opacity: 1,
+                  y: 0
+                }} transition={{
+                  delay: 0.45,
+                  duration: 0.4
+                }} className="space-y-4" onDoubleClick={() => clearField("minor_children_count")}>
                         <Label className="text-sm font-normal text-foreground/90">How many minor kids?</Label>
-                        <Select
-                          value={formData.minor_children_count?.toString() || "0"}
-                          onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}
-                        >
+                        <Select value={formData.minor_children_count?.toString() || "0"} onValueChange={value => handleInputChange("minor_children_count", parseInt(value))}>
                           <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
-                            {Array.from({ length: formData.children_count + 1 }, (_, i) => i).map((num) => (
-                              <SelectItem key={num} value={num.toString()}>
+                            {Array.from({
+                        length: formData.children_count + 1
+                      }, (_, i) => i).map(num => <SelectItem key={num} value={num.toString()}>
                                 {num}
-                              </SelectItem>
-                            ))}
+                              </SelectItem>)}
                           </SelectContent>
                         </Select>
-                      </motion.div>
-                    )}
-                  </>
-                )}
+                      </motion.div>}
+                  </>}
               </div>
             </CardContent>
           </Card>
@@ -386,6 +332,5 @@ export default function IntakeForm() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
-  );
+    </div>;
 }
