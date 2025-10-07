@@ -28,6 +28,7 @@ export default function IntakeForm() {
     has_children: false,
     has_minor_children: false,
     children_count: 0,
+    minor_children_count: 0,
   });
 
   useEffect(() => {
@@ -167,10 +168,10 @@ export default function IntakeForm() {
                   delay={0.1}
                 />
 
-                {/* Phone */}
+                {/* Mobile */}
                 <POAFormField
                   name="phone"
-                  label="Phone number"
+                  label="Mobile number"
                   value={formData.phone}
                   onChange={(value) => handleInputChange("phone", value)}
                   delay={0.15}
@@ -249,26 +250,54 @@ export default function IntakeForm() {
 
                 {/* Minor Children if applicable */}
                 {formData.children_count > 0 && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4, duration: 0.4 }}
-                    className="space-y-4 col-span-2"
-                  >
-                    <Label className="text-sm font-normal text-foreground/90">Do you have minor children (under 18)?</Label>
-                    <Select
-                      value={formData.has_minor_children ? "yes" : "no"}
-                      onValueChange={(value) => handleInputChange("has_minor_children", value === "yes")}
+                  <>
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4, duration: 0.4 }}
+                      className="space-y-4"
                     >
-                      <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="yes">Yes</SelectItem>
-                        <SelectItem value="no">No</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </motion.div>
+                      <Label className="text-sm font-normal text-foreground/90">Do you have minor children (under 18)?</Label>
+                      <Select
+                        value={formData.has_minor_children ? "yes" : "no"}
+                        onValueChange={(value) => handleInputChange("has_minor_children", value === "yes")}
+                      >
+                        <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="yes">Yes</SelectItem>
+                          <SelectItem value="no">No</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </motion.div>
+
+                    {formData.has_minor_children && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.45, duration: 0.4 }}
+                        className="space-y-4"
+                      >
+                        <Label className="text-sm font-normal text-foreground/90">How many minor kids?</Label>
+                        <Select
+                          value={formData.minor_children_count?.toString() || "0"}
+                          onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}
+                        >
+                          <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {Array.from({ length: formData.children_count + 1 }, (_, i) => i).map((num) => (
+                              <SelectItem key={num} value={num.toString()}>
+                                {num}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </motion.div>
+                    )}
+                  </>
                 )}
               </div>
             </CardContent>
