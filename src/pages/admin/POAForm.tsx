@@ -113,6 +113,25 @@ export default function POAForm() {
     feedbackMessage: "Hold for 5 seconds to clear entire form...",
   });
 
+  // Create long-press handlers for each card type
+  const adultCardLongPress = useLongPressWithFeedback({
+    onLongPress: () => clearCardFields(poaFormConfigs.adult),
+    duration: 2000,
+    feedbackMessage: "Hold for 2 seconds to clear POA Adult...",
+  });
+
+  const minorCardLongPress = useLongPressWithFeedback({
+    onLongPress: () => clearCardFields(poaFormConfigs.minor),
+    duration: 2000,
+    feedbackMessage: "Hold for 2 seconds to clear POA Minor...",
+  });
+
+  const spousesCardLongPress = useLongPressWithFeedback({
+    onLongPress: () => clearCardFields(poaFormConfigs.spouses),
+    duration: 2000,
+    feedbackMessage: "Hold for 2 seconds to clear POA Spouses...",
+  });
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
@@ -195,11 +214,9 @@ export default function POAForm() {
                   <CardHeader className="border-b border-border/50 pb-6">
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                       <div
-                        {...useLongPressWithFeedback({
-                          onLongPress: () => clearCardFields(config),
-                          duration: 2000,
-                          feedbackMessage: `Hold for 2 seconds to clear ${config.title}...`,
-                        }).handlers}
+                        {...(key === 'adult' ? adultCardLongPress.handlers : 
+                            key === 'minor' ? minorCardLongPress.handlers : 
+                            spousesCardLongPress.handlers)}
                         className="cursor-pointer select-none hover:opacity-80 transition-opacity"
                       >
                         <CardTitle className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent whitespace-nowrap">
