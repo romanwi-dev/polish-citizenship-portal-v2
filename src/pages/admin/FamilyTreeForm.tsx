@@ -175,42 +175,23 @@ export default function FamilyTreeForm() {
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
 
       <div className="container mx-auto py-12 px-4 md:px-6 lg:px-8 relative z-10 max-w-7xl">
-        {/* Header */}
-        <motion.div initial={{
-        opacity: 0,
-        y: -50
-      }} animate={{
-        opacity: 1,
-        y: 0
-      }} transition={{
-        duration: 0.8
-      }} className="mb-12">
+        {/* Sticky Header */}
+        <motion.div 
+          initial={{ opacity: 0, y: -50 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          transition={{ duration: 0.8 }}
+          className="sticky top-0 z-50 mb-12 bg-background/95 backdrop-blur-lg"
+        >
           <Card className="glass-card border-primary/20 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5" />
             <CardHeader className="relative pb-8 pt-8">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                <motion.div initial={{
-                x: -20,
-                opacity: 0
-              }} animate={{
-                x: 0,
-                opacity: 1
-              }} transition={{
-                delay: 0.2
-              }}>
+                <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
                   <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
                     Polish Family Tree
                   </CardTitle>
                 </motion.div>
-                <motion.div initial={{
-                x: 20,
-                opacity: 0
-              }} animate={{
-                x: 0,
-                opacity: 1
-              }} transition={{
-                delay: 0.3
-              }} className="flex gap-3">
+                <motion.div initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.3 }} className="flex gap-3">
                   <Button onClick={toggleFontSize} size="lg" variant="ghost" className={`h-16 w-16 rounded-full transition-all ${isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground'}`} title="Toggle font size">
                     <Type className="h-8 w-8" />
                   </Button>
@@ -225,13 +206,13 @@ export default function FamilyTreeForm() {
           initial={{ opacity: 0, y: 20 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ duration: 0.5 }}
-          className="mb-8"
+          className="mb-8 relative z-40"
         >
           <div className="flex gap-3 overflow-x-auto pb-2 justify-center md:justify-start">
             <Button 
               onClick={handleSave} 
               disabled={updateMutation.isPending} 
-              className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]"
+              className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px] relative z-40"
             >
               {updateMutation.isPending ? (
                 <>
@@ -252,7 +233,7 @@ export default function FamilyTreeForm() {
             <Button 
               onClick={handleGeneratePDF} 
               disabled={isGenerating} 
-              className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]"
+              className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px] relative z-40"
             >
               {isGenerating ? (
                 <>
@@ -272,7 +253,7 @@ export default function FamilyTreeForm() {
             </Button>
             <Button 
               variant="outline"
-              className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]"
+              className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px] relative z-40"
             >
               <Users className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
               <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
@@ -281,7 +262,7 @@ export default function FamilyTreeForm() {
             </Button>
             <Button 
               variant="outline"
-              className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]"
+              className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px] relative z-40"
             >
               <Users className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
               <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
@@ -290,7 +271,7 @@ export default function FamilyTreeForm() {
             </Button>
             <Button 
               variant="outline"
-              className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]"
+              className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px] relative z-40"
             >
               <Users className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
               <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
