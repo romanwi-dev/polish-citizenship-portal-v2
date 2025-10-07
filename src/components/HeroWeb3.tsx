@@ -50,7 +50,7 @@ const HeroWeb3 = () => {
           </h1>
           
           <p className="text-xl md:text-2xl text-muted-foreground mb-16 leading-relaxed max-w-3xl mx-auto animate-fade-in">
-            Expert legal guidance for people of Polish and Polish-Jewish descent from around the world for obtaining Polish citizenship and EU passports through Polish ancestry - unmatched 100% success rate, true realist timeline 1,5 - 4 years, transparent pricing €3,500 - €12,500+
+            Expert legal guidance for people of Polish and Polish-Jewish descent from around the world for obtaining Polish citizenship and EU passports through Polish ancestry - unmatched success rate, true realistic timeline, transparent pricing
           </p>
           
           <div className="flex justify-center animate-fade-in mb-20">
@@ -67,10 +67,9 @@ const HeroWeb3 = () => {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {[
-              { value: "2+ Years", label: "Realistic Timeline" },
-              { value: "€3,500+", label: "Transparent Real Pricing" },
+              { value: "22+", label: "Years of Experience" },
               { value: "25,000+", label: "Cases Processed" },
               { value: "100%", label: "Unmatched Success Rate" }
             ].map((stat, i) => (
