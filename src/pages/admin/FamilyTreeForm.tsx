@@ -375,7 +375,7 @@ export default function FamilyTreeForm() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6 md:p-10 space-y-10">
-                {[1, 2, 3].map((num) => (
+                {[1, 2, 3, 4].map((num) => (
                   <div key={num} className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
                     <h3 className="text-xl font-semibold text-foreground">Child {num}</h3>
                     {renderFieldGroup([
