@@ -159,27 +159,27 @@ export default function POAForm() {
               >
                 <Card className="glass-card border-primary/20">
                   <CardHeader className="border-b border-border/50 pb-6">
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                      <CardTitle className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent whitespace-nowrap">
                         {config.title}
                       </CardTitle>
-                      <div className="flex gap-3">
+                      <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
                         <Button 
                           onClick={handleSave} 
                           disabled={updateMutation.isPending}
-                          size="lg" 
-                          className="text-xl font-bold px-8 h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]"
+                          size="default"
+                          className="text-base md:text-xl font-bold px-6 md:px-8 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 w-full sm:min-w-[180px] md:min-w-[200px]"
                         >
                           {updateMutation.isPending ? (
                             <>
-                              <Loader2 className="h-5 w-5 animate-spin mr-2 opacity-50" />
+                              <Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
                               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                                 Saving...
                               </span>
                             </>
                           ) : (
                             <>
-                              <Save className="h-5 w-5 mr-2 opacity-50" />
+                              <Save className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
                               <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                                 Save
                               </span>
@@ -189,19 +189,19 @@ export default function POAForm() {
                         <Button 
                           onClick={() => handleGeneratePDF(config.pdfType, config.title)} 
                           disabled={isGenerating}
-                          size="lg"
-                          className="text-xl font-bold px-8 h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]"
+                          size="default"
+                          className="text-base md:text-xl font-bold px-6 md:px-8 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 w-full sm:min-w-[180px] md:min-w-[200px]"
                         >
                           {isGenerating ? (
                             <>
-                              <Loader2 className="h-5 w-5 animate-spin mr-2 opacity-50" />
+                              <Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
                               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                                 Generating...
                               </span>
                             </>
                           ) : (
                             <>
-                              <Download className="h-5 w-5 mr-2 opacity-50" />
+                              <Download className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
                               <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                                 Generate PDF
                               </span>
