@@ -315,6 +315,31 @@ export default function POAForm() {
                 </div>
               </CardHeader>
               <CardContent className="pt-6">
+                {/* Gender Selector */}
+                <div className="mb-6">
+                  <Label className="text-base md:text-lg lg:text-xl font-semibold mb-3 block">
+                    Applicant Gender / Płeć
+                  </Label>
+                  <RadioGroup
+                    value={formData.applicant_sex || ""}
+                    onValueChange={(value) => handleInputChange("applicant_sex", value)}
+                    className="flex gap-4"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="M" id="gender-male" />
+                      <Label htmlFor="gender-male" className="cursor-pointer text-sm md:text-base lg:text-lg">
+                        Male / Mężczyzna
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="F" id="gender-female" />
+                      <Label htmlFor="gender-female" className="cursor-pointer text-sm md:text-base lg:text-lg">
+                        Female / Kobieta
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                   <POAFormField
                     name="applicant_first_name"
