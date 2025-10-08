@@ -8,12 +8,17 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { POAFormField } from "@/components/POAFormField";
+import { DateField } from "@/components/DateField";
 import { Label } from "@/components/ui/label";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { cn } from "@/lib/utils";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLongPressWithFeedback } from "@/hooks/useLongPressWithFeedback";
+import { useFormAutoSave } from "@/hooks/useFormAutoSave";
+import { useUnsavedChanges } from "@/hooks/useUnsavedChanges";
+import { validateEmail, validatePassport } from "@/utils/validators";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { Input } from "@/components/ui/input";
 
 export default function IntakeForm() {
   const {
@@ -27,51 +32,81 @@ export default function IntakeForm() {
   const updateMutation = useUpdateIntakeData();
   const [showClearDialog, setShowClearDialog] = useState(false);
   const { isLargeFonts, toggleFontSize } = useAccessibility();
-  const [formData, setFormData] = useState<any>({
-    given_names: "",
-    last_name: "",
-    passport_number: "",
-    phone: "",
-    email: "",
-    confirm_email: "",
-    phone_verified: false,
-    email_verified: false,
-    civil_status: "",
-    has_children: false,
-    has_minor_children: false,
-    children_count: 0,
-    minor_children_count: 0,
-    additional_info: ""
-  });
+  const [formData, setFormData] = useState<any>({});
+  const [originalData, setOriginalData] = useState<any>({});
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+
   useEffect(() => {
     if (intakeData) {
       setFormData(intakeData);
+      setOriginalData(intakeData);
     }
   }, [intakeData]);
+
+  useEffect(() => {
+    setHasUnsavedChanges(JSON.stringify(formData) !== JSON.stringify(originalData));
+  }, [formData, originalData]);
+
   const handleInputChange = (field: string, value: any) => {
     setFormData((prev: any) => ({
       ...prev,
       [field]: value
     }));
   };
-  const validatePassportNumber = (passport: string): boolean => {
-    // Basic validation: alphanumeric, 6-9 characters
-    const passportRegex = /^[A-Z0-9]{6,9}$/;
-    return passportRegex.test(passport.toUpperCase());
-  };
+
   const handleSave = () => {
     if (!caseId) return;
 
-    // Validate passport
-    if (formData.passport_number && !validatePassportNumber(formData.passport_number)) {
-      toast.error("Invalid passport number format");
-      return;
+    // Validate email
+    if (formData.email) {
+      const emailValidation = validateEmail(formData.email);
+      if (!emailValidation.valid) {
+        toast.error(emailValidation.error);
+        return;
+      }
     }
+
+    // Validate passport
+    if (formData.passport_number) {
+      const passportValidation = validatePassport(formData.passport_number);
+      if (!passportValidation.valid) {
+        toast.error(passportValidation.error);
+        return;
+      }
+    }
+
     updateMutation.mutate({
       caseId,
       updates: formData
+    }, {
+      onSuccess: () => {
+        setOriginalData(formData);
+        setHasUnsavedChanges(false);
+      }
     });
   };
+
+  // Auto-save
+  useFormAutoSave({
+    formData,
+    onSave: (data) => {
+      if (caseId) {
+        updateMutation.mutate({
+          caseId,
+          updates: data
+        }, {
+          onSuccess: () => {
+            setOriginalData(data);
+          }
+        });
+      }
+    },
+    delay: 5000,
+    enabled: hasUnsavedChanges
+  });
+
+  // Unsaved changes warning
+  const { blocker } = useUnsavedChanges(hasUnsavedChanges);
   const clearAllFields = () => {
     setFormData({
       given_names: "",
