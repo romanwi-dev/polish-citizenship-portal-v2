@@ -450,7 +450,7 @@ export default function POAForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
                   <POAFormField
                     name="spouse_first_name"
-                    label="Wife given names / Imię/imiona żony"
+                    label="Wife given names / Imię / imiona żony"
                     value={formData.spouse_first_name || ""}
                     onChange={(value) => handleInputChange("spouse_first_name", value)}
                   />
