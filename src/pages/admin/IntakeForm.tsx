@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLongPressWithFeedback } from "@/hooks/useLongPressWithFeedback";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { ClientGuideAssistant } from "@/components/ClientGuideAssistant";
 export default function IntakeForm() {
   const {
     id: caseId
@@ -467,5 +468,11 @@ export default function IntakeForm() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* AI Guide Assistant */}
+      <ClientGuideAssistant 
+        formType="intake"
+        compact={true}
+      />
     </div>;
 }
