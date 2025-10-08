@@ -57,6 +57,14 @@ export default function POAForm() {
     setFormData((prev: any) => {
       const updatedData = { ...prev, [field]: value };
       
+      // Auto-sync children's last names when father's last name changes
+      if (field === 'father_last_name') {
+        for (let i = 1; i <= 10; i++) {
+          updatedData[`child_${i}_last_name`] = value;
+        }
+        console.log('🔄 Father last name synced to all children');
+      }
+      
       // Auto-sync husband's last name after marriage with his current last name
       if (prev.applicant_sex === 'M' && field === 'applicant_last_name') {
         updatedData.applicant_last_name_after_marriage = value;
