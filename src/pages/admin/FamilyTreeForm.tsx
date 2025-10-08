@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useMasterData, useUpdateMasterData } from "@/hooks/useMasterData";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -8,7 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState, useEffect } from "react";
-import { Loader2, Save, Download, Users, Sparkles, Type } from "lucide-react";
+import { Loader2, Save, Download, Users, Sparkles, Type, User } from "lucide-react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
@@ -22,6 +22,7 @@ export default function FamilyTreeForm() {
   const {
     id: caseId
   } = useParams();
+  const navigate = useNavigate();
   const {
     data: masterData,
     isLoading
@@ -230,6 +231,15 @@ export default function FamilyTreeForm() {
                   </CardTitle>
                 </motion.div>
                 <div className="flex items-center gap-3">
+                  <Button
+                    onClick={() => navigate('/login')}
+                    size="lg"
+                    variant="ghost"
+                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10"
+                    title="Login / Register"
+                  >
+                    <User className="h-8 w-8" />
+                  </Button>
                   <Button onClick={toggleFontSize} size="lg" variant="ghost" className={`h-16 w-16 rounded-full transition-all ${isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground'}`} title="Toggle font size">
                     <Type className="h-8 w-8" />
                   </Button>

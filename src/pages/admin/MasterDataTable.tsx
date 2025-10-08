@@ -11,7 +11,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState, useEffect } from "react";
-import { Loader2, Save, FileText, Users, Baby, Heart, Calendar as CalendarIcon, Sparkles, Download, GitBranch, Type, FilePlus } from "lucide-react";
+import { Loader2, Save, FileText, Users, Baby, Heart, Calendar as CalendarIcon, Sparkles, Download, GitBranch, Type, FilePlus, User } from "lucide-react";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { PDFGenerationButtons } from "@/components/PDFGenerationButtons";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -221,17 +221,28 @@ export default function MasterDataTable() {
                     Master Data Form
                   </CardTitle>
                 </motion.div>
-                <Button
-                  onClick={toggleFontSize}
-                  size="lg"
-                  variant="ghost"
-                  className={`h-16 w-16 rounded-full transition-all ${
-                    isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground'
-                  }`}
-                  title="Toggle font size"
-                >
-                  <Type className="h-8 w-8" />
-                </Button>
+                <div className="flex items-center gap-3">
+                  <Button
+                    onClick={() => navigate('/login')}
+                    size="lg"
+                    variant="ghost"
+                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10"
+                    title="Login / Register"
+                  >
+                    <User className="h-8 w-8" />
+                  </Button>
+                  <Button
+                    onClick={toggleFontSize}
+                    size="lg"
+                    variant="ghost"
+                    className={`h-16 w-16 rounded-full transition-all ${
+                      isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground'
+                    }`}
+                    title="Toggle font size"
+                  >
+                    <Type className="h-8 w-8" />
+                  </Button>
+                </div>
               </div>
             </CardHeader>
           </Card>
