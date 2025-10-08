@@ -65,18 +65,18 @@ const ContactFormWeb3 = () => {
   return (
     <section id="contact" className="py-32 relative overflow-hidden">
       {/* 3D Background */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 opacity-60">
         <Suspense fallback={<div className="w-full h-full bg-gradient-to-b from-primary/5 to-background" />}>
           {shouldLoadMap && <Hero3DMap />}
         </Suspense>
       </div>
 
-      {/* Gradient Overlays */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/50 to-background z-[1]" />
+      {/* Subtle Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background/60 z-[1]" />
       
-      {/* Animated Glow Orbs */}
-      <div className="absolute top-20 left-20 w-96 h-96 bg-primary/20 rounded-full blur-[120px] animate-pulse z-[1]" />
-      <div className="absolute bottom-20 right-20 w-96 h-96 bg-secondary/20 rounded-full blur-[120px] animate-pulse delay-700 z-[1]" />
+      {/* Soft Glow Effects */}
+      <div className="absolute top-20 left-20 w-72 h-72 bg-primary/10 rounded-full blur-[100px] z-[1]" />
+      <div className="absolute bottom-20 right-20 w-72 h-72 bg-secondary/10 rounded-full blur-[100px] z-[1]" />
       
       <div className="container px-4 mx-auto relative z-10">
         <div className="text-center mb-20">
