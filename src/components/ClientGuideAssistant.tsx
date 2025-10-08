@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Bot, Volume2, VolumeX, Loader2, HelpCircle, Sparkles } from "lucide-react";
+import { Bot, Volume2, VolumeX, Loader2, HelpCircle, Sparkles, Minimize2, Maximize2, X } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface ClientGuideAssistantProps {
@@ -25,6 +25,8 @@ export const ClientGuideAssistant = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [autoSpeak, setAutoSpeak] = useState(true);
+  const [isMinimized, setIsMinimized] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const { toast } = useToast();
 
@@ -135,6 +137,51 @@ export const ClientGuideAssistant = ({
   ];
 
   if (compact) {
+    // Hidden state - just show a small button to reopen
+    if (!isVisible) {
+      return (
+        <div className="fixed bottom-6 right-6 z-50">
+          <Button
+            onClick={() => setIsVisible(true)}
+            size="lg"
+            className="rounded-full h-16 w-16 shadow-2xl"
+          >
+            <Bot className="h-8 w-8" />
+          </Button>
+        </div>
+      );
+    }
+
+    // Minimized state - just show header
+    if (isMinimized) {
+      return (
+        <div className="fixed bottom-6 right-6 z-50">
+          <Card className="w-80 shadow-2xl border-primary/20">
+            <CardHeader className="pb-3 cursor-pointer" onClick={() => setIsMinimized(false)}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Bot className="h-5 w-5 text-primary animate-pulse" />
+                  <CardTitle className="text-base">AI Guide (Click to expand)</CardTitle>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsVisible(false);
+                  }}
+                  className="h-8 w-8 p-0"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            </CardHeader>
+          </Card>
+        </div>
+      );
+    }
+
+    // Full expanded state
     return (
       <div className="fixed bottom-6 right-6 z-50">
         <Card className="w-96 shadow-2xl border-primary/20">
@@ -144,14 +191,35 @@ export const ClientGuideAssistant = ({
                 <Bot className="h-5 w-5 text-primary" />
                 <CardTitle className="text-base">AI Guide</CardTitle>
               </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setAutoSpeak(!autoSpeak)}
-                className="h-8 w-8 p-0"
-              >
-                {autoSpeak ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
-              </Button>
+              <div className="flex items-center gap-1">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setAutoSpeak(!autoSpeak)}
+                  className="h-8 w-8 p-0"
+                  title={autoSpeak ? "Disable auto-speak" : "Enable auto-speak"}
+                >
+                  {autoSpeak ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsMinimized(true)}
+                  className="h-8 w-8 p-0"
+                  title="Minimize"
+                >
+                  <Minimize2 className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsVisible(false)}
+                  className="h-8 w-8 p-0"
+                  title="Close"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
           </CardHeader>
           <CardContent className="space-y-3">
