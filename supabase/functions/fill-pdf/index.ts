@@ -36,7 +36,10 @@ serve(async (req) => {
     if (masterError) throw masterError;
     if (!masterData) throw new Error('Master data not found');
 
-    // Map template type to local template files
+    // Get the request origin to construct the absolute URL
+    const origin = req.headers.get('origin') || 'https://98b4e1c7-7682-4f23-9f68-2a61bbec99a9.lovableproject.com';
+    
+    // Map template type to file name
     const templateFileMap: Record<string, string> = {
       'family-tree': 'family-tree.pdf',
       'poa-adult': 'poa-adult.pdf',
@@ -52,12 +55,16 @@ serve(async (req) => {
       throw new Error(`Unknown template type: ${templateType}`);
     }
 
-    // Read template file from function directory
-    const templatePath = `./templates/${templateFileName}`;
-    console.log(`Loading template from: ${templatePath}`);
-
-    // Read template file
-    const templateBytes = await Deno.readFile(templatePath);
+    const templateUrl = `${origin}/templates/${templateFileName}`;
+    console.log(`Loading template from: ${templateUrl}`);
+    
+    // Fetch the template file from public folder
+    const templateResponse = await fetch(templateUrl);
+    if (!templateResponse.ok) {
+      throw new Error(`Failed to fetch template: ${templateResponse.statusText}`);
+    }
+    
+    const templateBytes = await templateResponse.arrayBuffer();
     const pdfDoc = await PDFDocument.load(templateBytes);
     const form = pdfDoc.getForm();
 
