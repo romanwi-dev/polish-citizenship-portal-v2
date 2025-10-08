@@ -22,6 +22,7 @@ const POAForm = lazy(() => import("./pages/admin/POAForm"));
 const CitizenshipForm = lazy(() => import("./pages/admin/CitizenshipForm"));
 const CivilRegistryForm = lazy(() => import("./pages/admin/CivilRegistryForm"));
 const IntakeForm = lazy(() => import("./pages/admin/IntakeForm"));
+const FormScanner = lazy(() => import("./pages/admin/FormScanner"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -131,6 +132,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <IntakeForm />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/form-scanner" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <FormScanner />
               </Suspense>
             } 
           />
