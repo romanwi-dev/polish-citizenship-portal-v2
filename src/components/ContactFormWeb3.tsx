@@ -188,7 +188,6 @@ const ContactFormWeb3 = () => {
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 rounded-3xl" />
                 
                 <div className="relative z-10">
-                  <CheckCircle2 className="h-20 w-20 text-primary mb-6 animate-scale-in mx-auto" />
                   <h3 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                     Thank You!
                   </h3>
