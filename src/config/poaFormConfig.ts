@@ -19,7 +19,6 @@ export const poaFormConfigs: Record<string, POAFormConfig> = {
       { name: "applicant_first_name", label: "Applicant given names / Imię/ imiona" },
       { name: "applicant_last_name", label: "Applicant full last name / Nazwisko" },
       { name: "applicant_passport_number", label: "ID number / Nr dokumentu tożsamości" },
-      { name: "poa_date_filed", label: "Date signed / Data podpisania", type: "date" },
     ]
   },
   minor: {
@@ -31,7 +30,6 @@ export const poaFormConfigs: Record<string, POAFormConfig> = {
       { name: "applicant_passport_number", label: "Parent ID number / Nr dokumentu tożsamości" },
       { name: "child_1_first_name", label: "Child given names / Imię/ imiona dziecka" },
       { name: "child_1_last_name", label: "Child full last name / Nazwisko dziecka" },
-      { name: "poa_date_filed", label: "Date signed / Data podpisania", type: "date" },
     ]
   },
   spouses: {
@@ -48,7 +46,6 @@ export const poaFormConfigs: Record<string, POAFormConfig> = {
       { name: "child_2_last_name", label: "Child 2 surname" },
       { name: "child_3_last_name", label: "Child 3 surname" },
       { name: "child_4_last_name", label: "Child 4 surname" },
-      { name: "poa_date_filed", label: "Date signed / Data podpisania", type: "date" },
     ]
   }
 };

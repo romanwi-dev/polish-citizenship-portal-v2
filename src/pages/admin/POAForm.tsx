@@ -84,6 +84,19 @@ export default function POAForm() {
       setIsGenerating(true);
       toast.loading(`Generating ${label}...`);
       console.log('Generating PDF for case:', caseId, 'Type:', poaType);
+      
+      // Automatically add current date for PDF generation
+      const pdfData = {
+        ...formData,
+        poa_date_filed: format(new Date(), 'yyyy-MM-dd')
+      };
+      
+      // Save the data with the current date before generating PDF
+      await updateMutation.mutateAsync({
+        caseId,
+        updates: pdfData
+      });
+      
       const {
         data,
         error
@@ -358,8 +371,39 @@ export default function POAForm() {
                     </div>
                   </CardHeader>
                   <CardContent className="p-6 md:p-10">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {config.fields.map((field, idx) => <POAFormField key={field.name} name={field.name} label={field.label} type={field.type} value={formData[field.name]} onChange={value => handleInputChange(field.name, value)} placeholder={field.placeholder} delay={idx * 0.05} />)}
+                    <div className="space-y-6">
+                      {/* First row: Always 2 fields on desktop */}
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        {config.fields.slice(0, 2).map((field, idx) => (
+                          <POAFormField 
+                            key={field.name} 
+                            name={field.name} 
+                            label={field.label} 
+                            type={field.type} 
+                            value={formData[field.name]} 
+                            onChange={value => handleInputChange(field.name, value)} 
+                            placeholder={field.placeholder} 
+                            delay={idx * 0.05} 
+                          />
+                        ))}
+                      </div>
+                      {/* Remaining fields: Standard grid */}
+                      {config.fields.length > 2 && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                          {config.fields.slice(2).map((field, idx) => (
+                            <POAFormField 
+                              key={field.name} 
+                              name={field.name} 
+                              label={field.label} 
+                              type={field.type} 
+                              value={formData[field.name]} 
+                              onChange={value => handleInputChange(field.name, value)} 
+                              placeholder={field.placeholder} 
+                              delay={(idx + 2) * 0.05} 
+                            />
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
