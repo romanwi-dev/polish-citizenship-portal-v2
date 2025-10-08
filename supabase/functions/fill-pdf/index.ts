@@ -66,47 +66,14 @@ serve(async (req) => {
     
     const templateBytes = await templateResponse.arrayBuffer();
     const pdfDoc = await PDFDocument.load(templateBytes);
-    const form = pdfDoc.getForm();
-
-    // Map data to PDF fields based on template type
-    const fieldMappings = getFieldMappings(templateType, masterData);
     
-    // Name fields that should auto-size
-    const nameFields = [
-      'imie_nazwisko_wniosko',
-      'imie_nazwisko_dziecka',
-      'applicant_full_name',
-      'applicant_spouse_full_name_and_maiden_name',
-      'minor_1_full_name',
-      'minor_2_full_name',
-      'minor_3_full_name',
-      'polish_parent_full_name',
-      'applicant_name',
-      'father_surname',
-      'mother_maiden_name'
-    ];
-    
-    for (const [fieldName, fieldValue] of Object.entries(fieldMappings)) {
-      try {
-        const field = form.getTextField(fieldName);
-        if (field && fieldValue) {
-          field.setText(String(fieldValue));
-          
-          // Enable auto-sizing for name fields
-          if (nameFields.includes(fieldName)) {
-            field.enableMultiline();
-            field.enableReadOnly();
-            // Set font size to 0 to enable auto-sizing
-            field.setFontSize(0);
-          }
-        }
-      } catch (e) {
-        console.log(`Field ${fieldName} not found or error: ${(e as Error).message}`);
-      }
-    }
+    // Get the first page
+    const pages = pdfDoc.getPages();
+    const firstPage = pages[0];
+    const { height } = firstPage.getSize();
 
-    // Flatten the form (make it non-editable)
-    form.flatten();
+    // Add text overlays based on template type
+    await addTextOverlays(pdfDoc, firstPage, templateType, masterData, height);
 
     // Save the filled PDF
     const pdfBytes = await pdfDoc.save();
@@ -131,163 +98,47 @@ serve(async (req) => {
   }
 });
 
-function getFieldMappings(templateType: string, data: any): Record<string, string> {
+async function addTextOverlays(pdfDoc: any, page: any, templateType: string, data: any, pageHeight: number) {
   const formatDate = (date: string | null) => {
     if (!date) return '';
     const d = new Date(date);
     return `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.${d.getFullYear()}`;
   };
 
+  // Import font for text overlay
+  const font = await pdfDoc.embedFont('Helvetica');
+  
   switch (templateType) {
-    case 'family-tree':
-      return {
-        'applicant_full_name': `${data.applicant_first_name || ''} ${data.applicant_last_name || ''}`.trim(),
-        'applicant_date_of_birth': formatDate(data.applicant_dob),
-        'applicant_place_of_birth': data.applicant_pob || '',
-        'applicant_date_of_marriage': formatDate(data.date_of_marriage),
-        'applicant_place_of_marriage': data.place_of_marriage || '',
-        'applicant_spouse_full_name_and_maiden_name': `${data.spouse_first_name || ''} ${data.spouse_last_name || ''} ${data.spouse_maiden_name ? `(${data.spouse_maiden_name})` : ''}`.trim(),
-        
-        // Minor children
-        'minor_1_full_name': `${data.child_1_first_name || ''} ${data.child_1_last_name || ''}`.trim(),
-        'minor_1_date_of_birth': formatDate(data.child_1_dob),
-        'minor_1_place_of_birth': data.child_1_pob || '',
-        'minor_2_full_name': `${data.child_2_first_name || ''} ${data.child_2_last_name || ''}`.trim(),
-        'minor_2_date_of_birth': formatDate(data.child_2_dob),
-        'minor_2_place_of_birth': data.child_2_pob || '',
-        'minor_3_full_name': `${data.child_3_first_name || ''} ${data.child_3_last_name || ''}`.trim(),
-        'minor_3_date_of_birth': formatDate(data.child_3_dob),
-        
-        // Polish parent (based on ancestry line)
-        'polish_parent_full_name': getPolishParentName(data),
-        'polish_parent_date_of_birth': getPolishParentDOB(data, formatDate),
-        'polish_parent_place_of_birth': getPolishParentPOB(data),
-      };
-
     case 'poa-adult':
-      return {
-        // Applicant personal information
-        'imie_nazwisko_wniosko': `${data.applicant_first_name || ''} ${data.applicant_last_name || ''}`.trim().toUpperCase(),
-        'imie_wnioskodawcy': (data.applicant_first_name || '').toUpperCase(),
-        'nazwisko_wnioskodawcy': (data.applicant_last_name || '').toUpperCase(),
-        
-        // ID/Passport information
-        'nr_dok_tozsamosci': (data.applicant_passport_number || '').toUpperCase(),
-        'nr_paszportu': (data.applicant_passport_number || '').toUpperCase(),
-        'numer_dokumentu': (data.applicant_passport_number || '').toUpperCase(),
-        
-        // Date
-        'data_pelnomocnictwa': formatDate(data.poa_date_filed || new Date().toISOString()),
-        'data': formatDate(data.poa_date_filed || new Date().toISOString()),
-      };
-
-    case 'poa-minor':
-      return {
-        // Parent (applicant) information
-        'imie_nazwisko_wniosko': `${data.applicant_first_name || ''} ${data.applicant_last_name || ''}`.trim().toUpperCase(),
-        'imie_rodzica': (data.applicant_first_name || '').toUpperCase(),
-        'nazwisko_rodzica': (data.applicant_last_name || '').toUpperCase(),
-        'imie_nazwisko_rodzica': `${data.applicant_first_name || ''} ${data.applicant_last_name || ''}`.trim().toUpperCase(),
-        
-        // Parent ID/Passport
-        'nr_dok_tozsamosci': (data.applicant_passport_number || '').toUpperCase(),
-        'nr_paszportu_rodzica': (data.applicant_passport_number || '').toUpperCase(),
-        'numer_dokumentu_rodzica': (data.applicant_passport_number || '').toUpperCase(),
-        
-        // Child information
-        'imie_nazwisko_dziecka': `${data.child_1_first_name || ''} ${data.child_1_last_name || ''}`.trim().toUpperCase(),
-        'imie_dziecka': (data.child_1_first_name || '').toUpperCase(),
-        'nazwisko_dziecka': (data.child_1_last_name || '').toUpperCase(),
-        
-        // Date
-        'data_pelnomocnictwa': formatDate(data.poa_date_filed || new Date().toISOString()),
-        'data': formatDate(data.poa_date_filed || new Date().toISOString()),
-      };
-
-    case 'poa-spouses':
-      return {
-        // Husband (primary applicant if male)
-        'imie_meza': (data.applicant_first_name || '').toUpperCase(),
-        'nazwisko_meza': (data.applicant_last_name || '').toUpperCase(),
-        'imie_nazwisko_meza': `${data.applicant_first_name || ''} ${data.applicant_last_name || ''}`.trim().toUpperCase(),
-        'nr_dok_meza': (data.applicant_passport_number || '').toUpperCase(),
-        'nr_paszportu_meza': (data.applicant_passport_number || '').toUpperCase(),
-        
-        // Wife (spouse)
-        'imie_zony': (data.spouse_first_name || '').toUpperCase(),
-        'nazwisko_zony': (data.spouse_last_name || '').toUpperCase(),
-        'imie_nazwisko_zony': `${data.spouse_first_name || ''} ${data.spouse_last_name || ''}`.trim().toUpperCase(),
-        'nr_dok_zony': (data.spouse_passport_number || '').toUpperCase(),
-        'nr_paszportu_zony': (data.spouse_passport_number || '').toUpperCase(),
-        
-        // Surnames after marriage
-        'nazwisko_meza_po_slubie': (data.applicant_last_name_after_marriage || '').toUpperCase(),
-        'nazwisko_zony_po_slubie': (data.spouse_last_name_after_marriage || '').toUpperCase(),
-        'nazwisko_po_zawarciu_malzenstwa_maz': (data.applicant_last_name_after_marriage || '').toUpperCase(),
-        'nazwisko_po_zawarciu_malzenstwa_zona': (data.spouse_last_name_after_marriage || '').toUpperCase(),
-        
-        // Children surnames
-        'nazwisko_dzieci': (data.children_surnames || '').toUpperCase(),
-        'nazwiska_dzieci': (data.children_surnames || '').toUpperCase(),
-        
-        // General applicant fields (for compatibility)
-        'imie_nazwisko_wniosko': `${data.applicant_first_name || ''} ${data.applicant_last_name || ''}`.trim().toUpperCase(),
-        'nr_dok_tozsamosci': (data.applicant_passport_number || '').toUpperCase(),
-        
-        // Date
-        'data_pelnomocnictwa': formatDate(data.poa_date_filed || new Date().toISOString()),
-        'data': formatDate(data.poa_date_filed || new Date().toISOString()),
-        'data_zawarcia_malzenstwa': formatDate(data.date_of_marriage),
-      };
-
-    case 'registration':
-      return {
-        'applicant_name': `${data.applicant_first_name || ''} ${data.applicant_last_name || ''}`.trim(),
-        'event_date': formatDate(data.applicant_dob),
-        'event_location': data.applicant_pob || '',
-      };
-
-    case 'uzupelnienie':
-      return {
-        'applicant_name': `${data.applicant_first_name || ''} ${data.applicant_last_name || ''}`.trim(),
-        'father_surname': data.father_last_name || '',
-        'mother_maiden_name': data.mother_maiden_name || '',
-      };
-
-    default:
-      return {};
+      // Name and surname (line starting with "Ja, niżej podpisany/a:")
+      const fullName = `${data.applicant_first_name || ''} ${data.applicant_last_name || ''}`.trim().toUpperCase();
+      page.drawText(fullName, {
+        x: 140,
+        y: pageHeight - 160,
+        size: 11,
+        font,
+      });
+      
+      // ID/Passport number
+      const passportNum = (data.applicant_passport_number || '').toUpperCase();
+      page.drawText(passportNum, {
+        x: 365,
+        y: pageHeight - 185,
+        size: 11,
+        font,
+      });
+      
+      // Date
+      const date = formatDate(data.poa_date_filed || new Date().toISOString());
+      page.drawText(date, {
+        x: 50,
+        y: pageHeight - 710,
+        size: 11,
+        font,
+      });
+      break;
+      
+    // Add other template types as needed
   }
 }
 
-function getPolishParentName(data: any): string {
-  const line = data.ancestry_line;
-  if (line === 'father') return `${data.father_first_name || ''} ${data.father_last_name || ''}`.trim();
-  if (line === 'mother') return `${data.mother_first_name || ''} ${data.mother_last_name || ''}`.trim();
-  if (line === 'pgf') return `${data.pgf_first_name || ''} ${data.pgf_last_name || ''}`.trim();
-  if (line === 'pgm') return `${data.pgm_first_name || ''} ${data.pgm_last_name || ''}`.trim();
-  if (line === 'mgf') return `${data.mgf_first_name || ''} ${data.mgf_last_name || ''}`.trim();
-  if (line === 'mgm') return `${data.mgm_first_name || ''} ${data.mgm_last_name || ''}`.trim();
-  return '';
-}
-
-function getPolishParentDOB(data: any, formatDate: Function): string {
-  const line = data.ancestry_line;
-  if (line === 'father') return formatDate(data.father_dob);
-  if (line === 'mother') return formatDate(data.mother_dob);
-  if (line === 'pgf') return formatDate(data.pgf_dob);
-  if (line === 'pgm') return formatDate(data.pgm_dob);
-  if (line === 'mgf') return formatDate(data.mgf_dob);
-  if (line === 'mgm') return formatDate(data.mgm_dob);
-  return '';
-}
-
-function getPolishParentPOB(data: any): string {
-  const line = data.ancestry_line;
-  if (line === 'father') return data.father_pob || '';
-  if (line === 'mother') return data.mother_pob || '';
-  if (line === 'pgf') return data.pgf_pob || '';
-  if (line === 'pgm') return data.pgm_pob || '';
-  if (line === 'mgf') return data.mgf_pob || '';
-  if (line === 'mgm') return data.mgm_pob || '';
-  return '';
-}
