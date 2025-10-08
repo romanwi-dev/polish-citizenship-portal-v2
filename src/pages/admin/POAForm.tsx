@@ -105,7 +105,14 @@ export default function POAForm() {
         body: { caseId, templateType }
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Edge function error:", error);
+        throw new Error(error.message || 'PDF generation failed');
+      }
+
+      if (!data) {
+        throw new Error('No PDF data received');
+      }
 
       // Create blob and preview URL
       const blob = new Blob([data], { type: 'application/pdf' });
@@ -117,7 +124,7 @@ export default function POAForm() {
       toast.success(`${templateType.toUpperCase()} ready to print!`);
     } catch (error: any) {
       console.error("PDF generation error:", error);
-      toast.error(`Failed: ${error.message}`);
+      toast.error(`Failed to generate PDF: ${error.message}`);
     } finally {
       setIsGenerating(false);
     }
