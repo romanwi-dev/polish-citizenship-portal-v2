@@ -1,11 +1,11 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useMasterData, useUpdateMasterData } from "@/hooks/useMasterData";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
-import { Loader2, Save, Download, FileText, Sparkles, Type } from "lucide-react";
+import { Loader2, Save, Download, FileText, Sparkles, Type, FilePlus } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -15,10 +15,12 @@ import { Calendar as CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
+import { Textarea } from "@/components/ui/textarea";
 export default function CivilRegistryForm() {
   const {
     id: caseId
   } = useParams();
+  const navigate = useNavigate();
   const {
     data: masterData,
     isLoading
@@ -328,8 +330,8 @@ export default function CivilRegistryForm() {
               </CardHeader>
               <CardContent className="p-6 md:p-10 space-y-10">
                 <div className="bg-muted/30 rounded-lg p-6 border-2 border-primary/20">
-                  <h3 className="text-2xl font-semibold mb-6 text-foreground">Required Information / Wymagane informacje</h3>
-                  <p className="text-muted-foreground mb-6">
+                  <h3 className={cn("font-semibold mb-6 text-foreground", isLargeFonts ? "text-3xl" : "text-2xl")}>Required Information / Wymagane informacje</h3>
+                  <p className={cn("text-muted-foreground mb-6", isLargeFonts ? "text-lg" : "text-base")}>
                     Foreign civil status record was issued in / Zagraniczny akt stanu cywilnego został sporządzony
                   </p>
                   {renderFieldGroup([{
@@ -343,56 +345,92 @@ export default function CivilRegistryForm() {
                 </div>
 
                 <div className="bg-muted/30 rounded-lg p-6 border-2 border-primary/20">
-                  <h3 className="text-2xl font-semibold mb-6 text-foreground">Required Documents / Wymagane dokumenty</h3>
+                  <h3 className={cn("font-semibold mb-6 text-foreground", isLargeFonts ? "text-3xl" : "text-2xl")}>Required Documents / Wymagane dokumenty</h3>
                   <div className="space-y-4">
                     <div className="flex items-start gap-4 p-4 bg-card/30 rounded-lg">
                       <div className="h-3 w-3 rounded-full bg-primary mt-1"></div>
                       <div>
-                        <p className="font-medium text-foreground">1. Original Document with Translation</p>
-                        <p className="text-sm text-muted-foreground">Oryginał aktu z tłumaczeniem przysięgłym na język polski</p>
+                        <p className={cn("font-medium text-foreground", isLargeFonts ? "text-lg" : "text-base")}>1. Original Document with Translation</p>
+                        <p className={cn("text-muted-foreground", isLargeFonts ? "text-base" : "text-sm")}>Oryginał aktu z tłumaczeniem przysięgłym na język polski</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-4 p-4 bg-card/30 rounded-lg">
                       <div className="h-3 w-3 rounded-full bg-primary mt-1"></div>
                       <div>
-                        <p className="font-medium text-foreground">2. Proof of Tax Payment</p>
-                        <p className="text-sm text-muted-foreground">Dowód uiszczenia opłaty skarbowej</p>
+                        <p className={cn("font-medium text-foreground", isLargeFonts ? "text-lg" : "text-base")}>2. Proof of Tax Paymen</p>
+                        <p className={cn("text-muted-foreground", isLargeFonts ? "text-base" : "text-sm")}>Dowód uiszczenia opłaty skarbowej</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-4 p-4 bg-card/30 rounded-lg">
                       <div className="h-3 w-3 rounded-full bg-primary mt-1"></div>
                       <div>
-                        <p className="font-medium text-foreground">3. Power of Attorney</p>
-                        <p className="text-sm text-muted-foreground">Pełnomocnictwo</p>
+                        <p className={cn("font-medium text-foreground", isLargeFonts ? "text-lg" : "text-base")}>3. Power of Attorney</p>
+                        <p className={cn("text-muted-foreground", isLargeFonts ? "text-base" : "text-sm")}>Pełnomocnictwo</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-4 p-4 bg-card/30 rounded-lg">
                       <div className="h-3 w-3 rounded-full bg-primary mt-1"></div>
                       <div>
-                        <p className="font-medium text-foreground">4. Passport Copy</p>
-                        <p className="text-sm text-muted-foreground">Kopia paszportu</p>
+                        <p className={cn("font-medium text-foreground", isLargeFonts ? "text-lg" : "text-base")}>4. Passport Copy</p>
+                        <p className={cn("text-muted-foreground", isLargeFonts ? "text-base" : "text-sm")}>Kopia paszportu</p>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 <div className="bg-muted/30 rounded-lg p-6 border-2 border-primary/20">
-                  <h3 className="text-2xl font-semibold mb-6 text-foreground">Declaration / Oświadczenie</h3>
+                  <h3 className={cn("font-semibold mb-6 text-foreground", isLargeFonts ? "text-3xl" : "text-2xl")}>Declaration / Oświadczenie</h3>
                   <div className="space-y-4">
-                    <p className="text-foreground italic font-medium">
+                    <p className={cn("text-foreground italic font-medium", isLargeFonts ? "text-lg" : "text-base")}>
                       "Oświadczam, że ten akt nie został zarejestrowany w księgach stanu cywilnego na terenie RP."
                     </p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className={cn("text-muted-foreground", isLargeFonts ? "text-base" : "text-sm")}>
                       I declare that this record has not been registered in civil status books in the Republic of Poland.
                     </p>
                   </div>
                 </div>
 
                 <div className="bg-muted/30 rounded-lg p-6 border-2 border-primary/20">
-                  <h3 className="text-2xl font-semibold mb-6 text-foreground">Delivery Method / Sposób odbioru dokumentów</h3>
-                  <p className="text-foreground font-medium">
+                  <h3 className={cn("font-semibold mb-6 text-foreground", isLargeFonts ? "text-3xl" : "text-2xl")}>Delivery Method / Sposób odbioru dokumentów</h3>
+                  <p className={cn("text-foreground font-medium", isLargeFonts ? "text-lg" : "text-base")}>
                     Wysłać do pełnomocnika / Send to authorized representative
                   </p>
+                </div>
+
+                <div className="bg-muted/30 rounded-lg p-6 border-2 border-primary/20">
+                  <h3 className={cn("font-semibold mb-6 text-foreground", isLargeFonts ? "text-3xl" : "text-2xl")}>Additional Relevant Info / Dodatkowe informacje</h3>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="space-y-2"
+                  >
+                    <Label htmlFor="additional_info" className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                      Additional Information
+                    </Label>
+                    <Textarea
+                      id="additional_info"
+                      value={formData.additional_info || ""}
+                      onChange={(e) => handleInputChange("additional_info", e.target.value.toUpperCase())}
+                      placeholder=""
+                      className={cn(
+                        "min-h-32 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase",
+                        isLargeFonts ? "text-lg" : "text-base"
+                      )}
+                    />
+                  </motion.div>
+                </div>
+
+                <div className="flex justify-center pt-6">
+                  <Button
+                    onClick={() => navigate(`/admin/cases/${caseId}/additional-data`)}
+                    variant="outline"
+                    className="text-sm md:text-base lg:text-xl font-bold px-6 md:px-8 h-12 md:h-14 lg:h-16 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[180px] md:min-w-[220px] lg:min-w-[250px] whitespace-nowrap"
+                  >
+                    <FilePlus className="h-4 md:h-5 lg:h-6 w-4 md:w-5 lg:w-6 mr-2 opacity-50" />
+                    <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                      Additional Data
+                    </span>
+                  </Button>
                 </div>
               </CardContent>
             </Card>
