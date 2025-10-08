@@ -48,7 +48,11 @@ export const ClientGuideAssistant = ({
 
       if (guideError) throw guideError;
 
-      setGuidance(guideData.guidance);
+      const guidanceText = guideData.guidance;
+      setGuidance(guidanceText);
+
+      // Auto-play voice response
+      await playVoice(guidanceText);
 
     } catch (error: any) {
       console.error('Guide error:', error);
@@ -66,34 +70,40 @@ export const ClientGuideAssistant = ({
     try {
       setIsPlaying(true);
 
-      // Generate speech using ElevenLabs
-      const { data, error } = await supabase.functions.invoke('elevenlabs-tts', {
-        body: { text }
-      });
+      // Get audio blob directly from edge function
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/elevenlabs-tts`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          },
+          body: JSON.stringify({ text }),
+        }
+      );
 
-      if (error) throw error;
-      if (!data || !data.audioContent) {
-        throw new Error('No audio content received');
-      }
+      if (!response.ok) throw new Error('Failed to generate speech');
 
-      // Convert base64 to blob - simpler method
-      const audioData = `data:audio/mpeg;base64,${data.audioContent}`;
-      
+      const audioBlob = await response.blob();
+      const audioUrl = URL.createObjectURL(audioBlob);
+
       // Play audio
       if (audioRef.current) {
         audioRef.current.pause();
       }
       
-      const audio = new Audio(audioData);
+      const audio = new Audio(audioUrl);
       audioRef.current = audio;
       
       audio.onended = () => {
         setIsPlaying(false);
+        URL.revokeObjectURL(audioUrl);
       };
 
-      audio.onerror = (e) => {
-        console.error('Audio error:', e);
+      audio.onerror = () => {
         setIsPlaying(false);
+        URL.revokeObjectURL(audioUrl);
       };
 
       await audio.play();
@@ -101,7 +111,6 @@ export const ClientGuideAssistant = ({
     } catch (error: any) {
       console.error('Voice error:', error);
       setIsPlaying(false);
-      // Silently fail - don't show error toast
     }
   };
 
@@ -283,10 +292,16 @@ export const ClientGuideAssistant = ({
                   )}
                 </div>
                 <CardTitle className="text-base font-light text-foreground/90">
-                  AI Assistant
+                  AI Voice Assistant
                 </CardTitle>
               </div>
               <div className="flex items-center gap-1">
+                {isPlaying && (
+                  <div className="flex items-center gap-1 text-xs text-green-500">
+                    <Volume2 className="h-4 w-4 animate-pulse" />
+                    Speaking...
+                  </div>
+                )}
                 <Button
                   variant="ghost"
                   size="sm"

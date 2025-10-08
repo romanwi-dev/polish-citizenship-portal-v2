@@ -54,18 +54,17 @@ serve(async (req) => {
       throw new Error(`Failed to generate speech: ${response.status}`);
     }
 
-    // Get audio as array buffer
-    const arrayBuffer = await response.arrayBuffer();
-    const base64Audio = btoa(
-      String.fromCharCode(...new Uint8Array(arrayBuffer))
-    );
-
     console.log('Speech generated successfully');
 
-    return new Response(
-      JSON.stringify({ audioContent: base64Audio }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+    // Return audio directly as blob
+    const audioBuffer = await response.arrayBuffer();
+
+    return new Response(audioBuffer, {
+      headers: {
+        ...corsHeaders,
+        'Content-Type': 'audio/mpeg',
+      },
+    });
 
   } catch (error: any) {
     console.error('Error in elevenlabs-tts:', error);
