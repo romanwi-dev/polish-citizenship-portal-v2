@@ -69,20 +69,37 @@ export const ClientGuideAssistant = ({
   const playVoice = async (text: string) => {
     try {
       setIsPlaying(true);
+      console.log('Generating speech for:', text);
 
       // Generate speech using ElevenLabs
       const { data, error } = await supabase.functions.invoke('elevenlabs-tts', {
         body: { text }
       });
 
-      if (error) throw error;
+      console.log('TTS response:', { data, error });
+
+      if (error) {
+        console.error('TTS invocation error:', error);
+        throw error;
+      }
+
+      if (!data || !data.audioContent) {
+        throw new Error('No audio content received from TTS');
+      }
+
+      console.log('Converting audio to blob...');
 
       // Convert base64 to audio blob
-      const audioBlob = new Blob(
-        [Uint8Array.from(atob(data.audioContent), c => c.charCodeAt(0))],
-        { type: 'audio/mpeg' }
-      );
+      const binaryString = atob(data.audioContent);
+      const bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      
+      const audioBlob = new Blob([bytes], { type: 'audio/mpeg' });
       const audioUrl = URL.createObjectURL(audioBlob);
+
+      console.log('Playing audio...');
 
       // Play audio
       if (audioRef.current) {
@@ -93,18 +110,28 @@ export const ClientGuideAssistant = ({
       audioRef.current = audio;
       
       audio.onended = () => {
+        console.log('Audio playback ended');
+        setIsPlaying(false);
+        URL.revokeObjectURL(audioUrl);
+      };
+
+      audio.onerror = (e) => {
+        console.error('Audio playback error:', e);
         setIsPlaying(false);
         URL.revokeObjectURL(audioUrl);
       };
 
       await audio.play();
+      console.log('Audio playing successfully');
 
     } catch (error: any) {
       console.error('Voice playback error:', error);
       setIsPlaying(false);
+      
+      // Show more detailed error
       toast({
         title: "Voice Error",
-        description: "Couldn't play voice response",
+        description: error.message || "Couldn't play voice response",
         variant: "destructive",
       });
     }
