@@ -77,39 +77,38 @@ export const ClientGuideAssistant = ({
     try {
       setIsPlayingAudio(true);
 
-      // Use browser's built-in Speech Synthesis API (free, no API key needed)
-      if ('speechSynthesis' in window) {
-        const utterance = new SpeechSynthesisUtterance(text);
-        
-        // Configure voice settings
-        utterance.rate = 0.9; // Slightly slower for clarity
-        utterance.pitch = 1.0;
-        utterance.volume = 1.0;
-        
-        // Try to use a high-quality English voice
-        const voices = speechSynthesis.getVoices();
-        const preferredVoice = voices.find(v => 
-          v.lang.startsWith('en') && (v.name.includes('Google') || v.name.includes('Microsoft'))
-        ) || voices.find(v => v.lang.startsWith('en'));
-        
-        if (preferredVoice) {
-          utterance.voice = preferredVoice;
+      const { data: audioData, error: audioError } = await supabase.functions.invoke('text-to-speech', {
+        body: { 
+          text,
+          voice: 'nova' // Warm, engaging female voice
         }
+      });
 
-        utterance.onend = () => {
-          setIsPlayingAudio(false);
-        };
+      if (audioError) throw audioError;
 
-        utterance.onerror = (e) => {
-          console.error('Speech synthesis error:', e);
-          setIsPlayingAudio(false);
-          throw new Error('Speech synthesis failed');
-        };
-
-        speechSynthesis.speak(utterance);
-      } else {
-        throw new Error('Speech synthesis not supported in this browser');
+      // Convert base64 to blob
+      const binaryString = atob(audioData.audioContent);
+      const bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
       }
+      const blob = new Blob([bytes], { type: 'audio/mpeg' });
+      const audioUrl = URL.createObjectURL(blob);
+
+      const audio = new Audio(audioUrl);
+      audioRef.current = audio;
+      
+      audio.onended = () => {
+        setIsPlayingAudio(false);
+        URL.revokeObjectURL(audioUrl);
+      };
+
+      audio.onerror = () => {
+        setIsPlayingAudio(false);
+        URL.revokeObjectURL(audioUrl);
+      };
+
+      await audio.play();
 
     } catch (error: any) {
       console.error('Audio error:', error);
@@ -123,8 +122,9 @@ export const ClientGuideAssistant = ({
   };
 
   const stopAudio = () => {
-    if ('speechSynthesis' in window) {
-      speechSynthesis.cancel();
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
       setIsPlayingAudio(false);
     }
   };
@@ -151,31 +151,36 @@ export const ClientGuideAssistant = ({
   ];
 
   if (compact) {
-    // Hidden state - just show a small button to reopen
+    // Hidden state - sleek floating button
     if (!isVisible) {
       return (
         <div className="fixed bottom-6 right-6 z-50">
           <Button
             onClick={() => setIsVisible(true)}
             size="lg"
-            className="rounded-full h-16 w-16 shadow-2xl"
+            className="rounded-full h-16 w-16 shadow-2xl bg-gradient-to-br from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 transition-all duration-300 hover:scale-110"
           >
-            <Bot className="h-8 w-8" />
+            <Bot className="h-8 w-8 text-white" />
           </Button>
         </div>
       );
     }
 
-    // Minimized state - just show header
+    // Minimized state - elegant header bar
     if (isMinimized) {
       return (
-        <div className="fixed bottom-6 right-6 z-50">
-          <Card className="w-80 shadow-2xl border-primary/20">
-            <CardHeader className="pb-3 cursor-pointer" onClick={() => setIsMinimized(false)}>
+        <div className="fixed bottom-6 right-6 z-50 animate-fade-in">
+          <Card className="w-80 shadow-2xl border-primary/30 bg-gradient-to-br from-background to-primary/5 backdrop-blur-sm">
+            <CardHeader className="pb-3 cursor-pointer hover:bg-primary/5 transition-colors rounded-t-lg" onClick={() => setIsMinimized(false)}>
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Bot className="h-5 w-5 text-primary animate-pulse" />
-                  <CardTitle className="text-base">AI Guide (Click to expand)</CardTitle>
+                <div className="flex items-center gap-3">
+                  <div className="relative">
+                    <Bot className="h-6 w-6 text-primary" />
+                    <div className="absolute -top-1 -right-1 h-3 w-3 bg-green-500 rounded-full animate-pulse" />
+                  </div>
+                  <CardTitle className="text-base bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+                    AI Guide
+                  </CardTitle>
                 </div>
                 <Button
                   variant="ghost"
@@ -184,7 +189,7 @@ export const ClientGuideAssistant = ({
                     e.stopPropagation();
                     setIsVisible(false);
                   }}
-                  className="h-8 w-8 p-0"
+                  className="h-8 w-8 p-0 hover:bg-destructive/10 hover:text-destructive"
                 >
                   <X className="h-4 w-4" />
                 </Button>
@@ -195,31 +200,39 @@ export const ClientGuideAssistant = ({
       );
     }
 
-    // Full expanded state
+    // Full expanded state - beautiful, modern design
     return (
-      <div className="fixed bottom-6 right-6 z-50">
-        <Card className="w-96 shadow-2xl border-primary/20">
-          <CardHeader className="pb-3">
+      <div className="fixed bottom-6 right-6 z-50 animate-scale-in">
+        <Card className="w-96 shadow-2xl border-primary/30 bg-gradient-to-br from-background via-background to-primary/5 backdrop-blur-sm">
+          <CardHeader className="pb-3 bg-gradient-to-r from-primary/10 to-transparent border-b border-primary/20">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Bot className="h-5 w-5 text-primary" />
-                <CardTitle className="text-base">AI Guide</CardTitle>
+              <div className="flex items-center gap-3">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-primary/20 rounded-full animate-ping" />
+                  <Bot className="h-6 w-6 text-primary relative z-10" />
+                </div>
+                <CardTitle className="text-base bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+                  AI Form Assistant
+                </CardTitle>
               </div>
               <div className="flex items-center gap-1">
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setAutoSpeak(!autoSpeak)}
-                  className="h-8 w-8 p-0"
+                  className="h-8 w-8 p-0 hover:bg-primary/10"
                   title={autoSpeak ? "Disable auto-speak" : "Enable auto-speak"}
                 >
-                  {autoSpeak ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
+                  {autoSpeak ? 
+                    <Volume2 className="h-4 w-4 text-primary" /> : 
+                    <VolumeX className="h-4 w-4 text-muted-foreground" />
+                  }
                 </Button>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setIsMinimized(true)}
-                  className="h-8 w-8 p-0"
+                  className="h-8 w-8 p-0 hover:bg-primary/10"
                   title="Minimize"
                 >
                   <Minimize2 className="h-4 w-4" />
@@ -228,7 +241,7 @@ export const ClientGuideAssistant = ({
                   variant="ghost"
                   size="sm"
                   onClick={() => setIsVisible(false)}
-                  className="h-8 w-8 p-0"
+                  className="h-8 w-8 p-0 hover:bg-destructive/10 hover:text-destructive"
                   title="Close"
                 >
                   <X className="h-4 w-4" />
@@ -236,11 +249,11 @@ export const ClientGuideAssistant = ({
               </div>
             </div>
           </CardHeader>
-          <CardContent className="space-y-3">
+          <CardContent className="space-y-3 pt-4">
             {guidance && (
-              <Alert className="bg-primary/5 border-primary/20">
-                <Sparkles className="h-4 w-4" />
-                <AlertDescription className="text-sm mt-2">
+              <Alert className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/30 shadow-sm">
+                <Sparkles className="h-4 w-4 text-primary" />
+                <AlertDescription className="text-sm mt-2 leading-relaxed">
                   {guidance}
                 </AlertDescription>
               </Alert>
@@ -252,7 +265,7 @@ export const ClientGuideAssistant = ({
                 onChange={(e) => setQuestion(e.target.value)}
                 placeholder="Ask me anything..."
                 rows={2}
-                className="resize-none text-sm"
+                className="resize-none text-sm bg-background/50 border-primary/20 focus:border-primary/40"
                 onKeyPress={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
@@ -264,7 +277,7 @@ export const ClientGuideAssistant = ({
                 onClick={handleAskQuestion}
                 disabled={isLoading}
                 size="sm"
-                className="shrink-0"
+                className="shrink-0 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
               >
                 {isLoading ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -279,7 +292,7 @@ export const ClientGuideAssistant = ({
                 onClick={stopAudio}
                 variant="outline"
                 size="sm"
-                className="w-full"
+                className="w-full border-primary/30 hover:bg-primary/10"
               >
                 <VolumeX className="h-4 w-4 mr-2" />
                 Stop Audio
