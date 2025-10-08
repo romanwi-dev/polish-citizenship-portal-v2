@@ -8,7 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState, useEffect } from "react";
-import { Loader2, Save, Download, Users, Sparkles, Type, User } from "lucide-react";
+import { Loader2, Save, Download, Users, Sparkles, Type, User, ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
@@ -214,6 +214,84 @@ export default function FamilyTreeForm() {
       <div className="fixed inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none -z-10" />
 
       <div className="container mx-auto py-12 px-4 md:px-6 lg:px-8 relative z-10 max-w-7xl">
+        {/* Sticky Header */}
+        <motion.div 
+          initial={{ opacity: 0, y: -50 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          transition={{ duration: 0.8 }}
+          className="sticky top-0 z-20 bg-gradient-to-br from-background via-background to-background/95 backdrop-blur-sm pb-4 mb-4 border-b"
+        >
+          <Card className="glass-card border-primary/20 overflow-hidden rounded-none border-x-0 border-t-0">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5" />
+            <CardHeader className="relative pb-6 pt-6">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
+                  <CardTitle className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">
+                    Family Tree
+                  </CardTitle>
+                </motion.div>
+                <div className="flex items-center gap-3">
+                  <Button
+                    onClick={() => navigate('/login')}
+                    size="lg"
+                    variant="ghost"
+                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10"
+                    title="Login / Register"
+                  >
+                    <User className="h-8 w-8" />
+                  </Button>
+                  <Button
+                    onClick={toggleFontSize}
+                    size="lg"
+                    variant="ghost"
+                    className={`h-16 w-16 rounded-full transition-all ${
+                      isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground'
+                    }`}
+                    title="Toggle font size"
+                  >
+                    <Type className="h-8 w-8" />
+                  </Button>
+                </div>
+              </div>
+            </CardHeader>
+          </Card>
+          
+          <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 p-3 md:p-4 scrollbar-hide mt-4">
+            <Button 
+              onClick={handleSave} 
+              disabled={updateMutation.isPending} 
+              size="default" 
+              className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[140px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap"
+            >
+              {updateMutation.isPending ? (
+                <>
+                  <Loader2 className="h-3 md:h-4 lg:h-5 w-3 md:w-4 lg:w-5 animate-spin mr-1 md:mr-2 opacity-50" />
+                  <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                    Saving...
+                  </span>
+                </>
+              ) : (
+                <>
+                  <Save className="h-3 md:h-4 lg:h-5 w-3 md:w-4 lg:w-5 mr-1 md:mr-2 opacity-50" />
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                    Save data
+                  </span>
+                </>
+              )}
+            </Button>
+            <Button 
+              onClick={() => navigate(`/admin/case/${caseId}`)} 
+              size="default" 
+              variant="outline" 
+              className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg border-2 hover:bg-white/5 whitespace-nowrap min-w-[140px] md:min-w-[180px] lg:min-w-[200px]"
+            >
+              <ArrowLeft className="h-3 md:h-4 lg:h-5 w-3 md:w-4 lg:w-5 mr-1 md:mr-2 opacity-50" />
+              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                Back to Case
+              </span>
+            </Button>
+          </div>
+        </motion.div>
         {/* Header */}
         <motion.div 
           initial={{ opacity: 0, y: -50 }} 

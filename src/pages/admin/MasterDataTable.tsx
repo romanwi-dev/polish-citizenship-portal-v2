@@ -205,20 +205,21 @@ export default function MasterDataTable() {
       <div className="fixed inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none -z-10" />
 
       <div className="container mx-auto py-12 px-4 md:px-6 lg:px-8 relative z-10 max-w-7xl">
-        {/* Header */}
+
+        {/* Action Buttons Section */}
         <motion.div 
-          initial={{ opacity: 0, y: -50 }} 
+          initial={{ opacity: 0, y: 20 }} 
           animate={{ opacity: 1, y: 0 }} 
-          transition={{ duration: 0.8 }}
-          className="mb-8"
+          transition={{ duration: 0.5 }}
+          className="sticky top-0 z-20 bg-gradient-to-br from-background via-background to-background/95 backdrop-blur-sm pb-4 mb-4 border-b"
         >
           <Card className="glass-card border-primary/20 overflow-hidden rounded-none border-x-0 border-t-0">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5" />
-            <CardHeader className="relative pb-8 pt-8">
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <CardHeader className="relative pb-6 pt-6">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
-                  <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
-                    Master Data Form
+                  <CardTitle className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">
+                    Master Form
                   </CardTitle>
                 </motion.div>
                 <div className="flex items-center gap-3">
@@ -246,16 +247,8 @@ export default function MasterDataTable() {
               </div>
             </CardHeader>
           </Card>
-        </motion.div>
-
-        {/* Action Buttons Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }} 
-          animate={{ opacity: 1, y: 0 }} 
-          transition={{ duration: 0.5 }}
-          className="mb-8"
-        >
-          <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 p-3 md:p-4 scrollbar-hide">
+          
+          <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 p-3 md:p-4 scrollbar-hide mt-4">
             <Button 
               onClick={handleSave} 
               disabled={updateMutation.isPending} 

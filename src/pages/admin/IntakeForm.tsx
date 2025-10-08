@@ -128,14 +128,14 @@ export default function IntakeForm() {
           initial={{ opacity: 0, y: -50 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ duration: 0.8 }}
-          className="mb-8"
+          className="sticky top-0 z-20 bg-gradient-to-br from-background via-background to-background/95 backdrop-blur-sm pb-4 mb-4 border-b"
         >
           <Card className="glass-card border-primary/20 overflow-hidden rounded-none border-x-0 border-t-0">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5" />
             <CardHeader className="relative pb-8 pt-8">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                 <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
-                  <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-pointer select-none">
+                  <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">
                     Client Intake Form
                   </CardTitle>
                 </motion.div>

@@ -28,8 +28,8 @@ export const useIntakeData = (caseId: string | undefined) => {
           confirm_email: data.applicant_email, // Same as email
           civil_status: data.applicant_is_married ? "married" : "not_married",
           has_children: data.children_count > 0,
-          has_minor_children: data.has_minor_children,
-          minor_children_count: data.minor_children_count,
+          has_minor_children: (data as any).has_minor_children || false,
+          minor_children_count: (data as any).minor_children_count || 0,
         };
       }
       return data;
