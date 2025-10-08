@@ -86,10 +86,14 @@ export default function MasterDataTable() {
 
       // Auto-sync children's last names when father's last name changes
       if (field === 'father_last_name') {
+        console.log('🔄 Father last name changed to:', value);
         const updatedData = { ...prev, [field]: value };
-        const childrenCount = prev.children_count || 0;
+        const childrenCount = prev.children_count || 10; // Default to max 10 children
+        console.log('👶 Syncing to', childrenCount, 'children');
+        
         for (let i = 1; i <= childrenCount; i++) {
           updatedData[`child_${i}_last_name`] = value;
+          console.log(`✅ Set child_${i}_last_name =`, value);
         }
         return updatedData;
       }
