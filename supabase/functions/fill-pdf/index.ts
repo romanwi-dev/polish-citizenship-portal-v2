@@ -36,15 +36,15 @@ serve(async (req) => {
     if (masterError) throw masterError;
     if (!masterData) throw new Error('Master data not found');
 
-    // Map template type to Dropbox filename
+    // Map template type to public template files
     const templateFileMap: Record<string, string> = {
-      'family-tree': 'new-FAMILY_TREE-4.pdf',
-      'poa-adult': 'new-POA-adult-3.pdf',
-      'poa-minor': 'new-POA-minor-3.pdf',
-      'poa-spouses': 'new-POA-spuses-3.pdf',
-      'registration': 'REGISTRATION-3.pdf',
-      'uzupelnienie': 'UZUPELNIENIE-3.pdf',
-      'citizenship': 'CITIZENSHIP-3.pdf',
+      'family-tree': 'family-tree.pdf',
+      'poa-adult': 'poa-adult.pdf',
+      'poa-minor': 'poa-minor.pdf',
+      'poa-spouses': 'poa-spouses.pdf',
+      'registration': 'registration.pdf',
+      'uzupelnienie': 'uzupelnienie.pdf',
+      'citizenship': 'citizenship.pdf',
     };
 
     const templateFileName = templateFileMap[templateType];
@@ -52,49 +52,21 @@ serve(async (req) => {
       throw new Error(`Unknown template type: ${templateType}`);
     }
 
-    // Fetch template from Dropbox
-    const dropboxPath = `/cases/POA/${templateFileName}`;
-    console.log(`Fetching template from Dropbox: ${dropboxPath}`);
+    // Fetch template from public folder via project URL
+    const projectUrl = Deno.env.get('SUPABASE_URL')?.replace('https://oogmuakyqadpynnrasnd.supabase.co', 'https://98b4e1c7-7682-4f23-9f68-2a61bbec99a9.lovableproject.com') || '';
+    const templateUrl = `${projectUrl}/templates/${templateFileName}`;
+    console.log(`Fetching template from: ${templateUrl}`);
 
-    // Get fresh access token using refresh token
-    let accessToken = Deno.env.get('DROPBOX_ACCESS_TOKEN');
-    
-    const refreshTokenResponse = await fetch('https://api.dropboxapi.com/oauth2/token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams({
-        grant_type: 'refresh_token',
-        refresh_token: Deno.env.get('DROPBOX_REFRESH_TOKEN') ?? '',
-        client_id: Deno.env.get('DROPBOX_APP_KEY') ?? '',
-        client_secret: Deno.env.get('DROPBOX_APP_SECRET') ?? '',
-      }),
-    });
+    // Fetch template from public URL
+    const templateResponse = await fetch(templateUrl);
 
-    if (refreshTokenResponse.ok) {
-      const tokenData = await refreshTokenResponse.json();
-      accessToken = tokenData.access_token;
-      console.log('Successfully refreshed Dropbox access token');
-    } else {
-      console.warn('Failed to refresh token, using existing one');
-    }
-
-    const dropboxResponse = await fetch('https://content.dropboxapi.com/2/files/download', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        'Dropbox-API-Arg': JSON.stringify({ path: dropboxPath }),
-      },
-    });
-
-    if (!dropboxResponse.ok) {
-      const errorText = await dropboxResponse.text();
-      console.error(`Dropbox fetch failed: ${dropboxResponse.status} - ${errorText}`);
-      throw new Error(`Failed to fetch template from Dropbox: ${dropboxResponse.statusText}`);
+    if (!templateResponse.ok) {
+      const errorText = await templateResponse.text();
+      console.error(`Template fetch failed: ${templateResponse.status} - ${errorText}`);
+      throw new Error(`Failed to fetch template: ${templateResponse.statusText}`);
     }
     
-    const templateBytes = await dropboxResponse.arrayBuffer();
+    const templateBytes = await templateResponse.arrayBuffer();
     const pdfDoc = await PDFDocument.load(templateBytes);
     const form = pdfDoc.getForm();
 
