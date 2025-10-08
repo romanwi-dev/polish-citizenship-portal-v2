@@ -182,7 +182,7 @@ export default function POAForm() {
               }} transition={{
                 delay: 0.2
               }}>
-                  <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-primary">
+                  <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">
                     Power of Attorney
                   </CardTitle>
                 </motion.div>
