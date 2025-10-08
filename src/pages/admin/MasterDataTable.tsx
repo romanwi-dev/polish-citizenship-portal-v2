@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";
@@ -245,7 +245,7 @@ export default function MasterDataTable() {
           transition={{ duration: 0.5 }}
           className="mb-8"
         >
-          <div className="flex gap-3 overflow-x-auto pb-2 justify-between bg-background/95 backdrop-blur-lg p-4 rounded-lg">
+          <div className="flex gap-3 overflow-x-auto pb-2 bg-background/95 backdrop-blur-lg p-4 rounded-lg">
             <Button 
               onClick={handleSave} 
               disabled={updateMutation.isPending} 
@@ -268,74 +268,78 @@ export default function MasterDataTable() {
                 </>
               )}
             </Button>
-            <Button variant="outline" className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]">
-              <GitBranch className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                New Button
+            <Button 
+              onClick={() => setActiveTab('applicant')}
+              variant={activeTab === 'applicant' ? 'default' : 'outline'}
+              className={`text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg ${
+                activeTab === 'applicant' 
+                  ? 'bg-gradient-to-r from-primary to-secondary text-white' 
+                  : 'bg-white/5 hover:bg-white/10'
+              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]`}
+            >
+              <span className={activeTab === 'applicant' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
+                Applicant
               </span>
             </Button>
-            <Button variant="outline" className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]">
-              <GitBranch className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                New Button
+            <Button 
+              onClick={() => setActiveTab('parents')}
+              variant={activeTab === 'parents' ? 'default' : 'outline'}
+              className={`text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg ${
+                activeTab === 'parents' 
+                  ? 'bg-gradient-to-r from-primary to-secondary text-white' 
+                  : 'bg-white/5 hover:bg-white/10'
+              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]`}
+            >
+              <span className={activeTab === 'parents' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
+                Parents
               </span>
             </Button>
-            <Button variant="outline" className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]">
-              <GitBranch className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                New Button
+            <Button 
+              onClick={() => setActiveTab('grandparents')}
+              variant={activeTab === 'grandparents' ? 'default' : 'outline'}
+              className={`text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg ${
+                activeTab === 'grandparents' 
+                  ? 'bg-gradient-to-r from-primary to-secondary text-white' 
+                  : 'bg-white/5 hover:bg-white/10'
+              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]`}
+            >
+              <span className={activeTab === 'grandparents' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
+                Grandparents
               </span>
             </Button>
-            <Button variant="outline" className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]">
-              <GitBranch className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                New Button
+            <Button 
+              onClick={() => setActiveTab('great-grandparents')}
+              variant={activeTab === 'great-grandparents' ? 'default' : 'outline'}
+              className={`text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg ${
+                activeTab === 'great-grandparents' 
+                  ? 'bg-gradient-to-r from-primary to-secondary text-white' 
+                  : 'bg-white/5 hover:bg-white/10'
+              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]`}
+            >
+              <span className={activeTab === 'great-grandparents' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
+                Great-Grandparents
+              </span>
+            </Button>
+            <Button 
+              onClick={() => setActiveTab('children')}
+              variant={activeTab === 'children' ? 'default' : 'outline'}
+              className={`text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg ${
+                activeTab === 'children' 
+                  ? 'bg-gradient-to-r from-primary to-secondary text-white' 
+                  : 'bg-white/5 hover:bg-white/10'
+              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]`}
+            >
+              <span className={activeTab === 'children' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
+                Children
               </span>
             </Button>
           </div>
         </motion.div>
 
-        {/* Premium Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <motion.div initial={{
-          opacity: 0
-        }} animate={{
-          opacity: 1
-        }} transition={{
-          delay: 0.4
-        }}>
-            <TabsList className="grid w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-6 mb-10 p-2 glass-card h-auto gap-2">
-              {[{
-              value: "applicant",
-              label: "Applicant"
-            }, ...(formData.applicant_is_married ? [{
-              value: "spouse",
-              label: "Spouse"
-            }] : []), ...(formData.applicant_has_minor_children ? [{
-              value: "children",
-              label: "Kids"
-            }] : []), {
-              value: "parents",
-              label: "Parents"
-            }, {
-              value: "grandparents",
-              label: "Grandparents"
-            }, {
-              value: "great-grandparents",
-              label: "Great-Grandparents"
-            }, {
-              value: "additional-data",
-              label: "Additional Data"
-            }].map(tab => <TabsTrigger key={tab.value} value={tab.value} className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-secondary transition-all duration-300 py-4 text-base font-heading font-bold">
-                  <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent data-[state=active]:from-white data-[state=active]:to-white">
-                    {tab.label}
-                  </span>
-                </TabsTrigger>)}
-            </TabsList>
-          </motion.div>
-
+        {/* Form Content */}
+        <div className="w-full">
           {/* APPLICANT TAB */}
-          <TabsContent value="applicant">
+          {activeTab === "applicant" && (
             <motion.div initial={{
             opacity: 0,
             scale: 0.95
@@ -545,10 +549,10 @@ export default function MasterDataTable() {
                 </CardContent>
               </Card>
             </motion.div>
-          </TabsContent>
+          )}
 
           {/* SPOUSE TAB - Only show if married */}
-          {formData.applicant_is_married && <TabsContent value="spouse">
+          {formData.applicant_is_married && activeTab === "spouse" && (
             <motion.div initial={{
             opacity: 0,
             scale: 0.95
@@ -613,10 +617,10 @@ export default function MasterDataTable() {
                 </CardContent>
               </Card>
             </motion.div>
-          </TabsContent>}
+          )}
 
           {/* KIDS TAB - Only show if has minor children */}
-          {formData.applicant_has_minor_children && <TabsContent value="children">
+          {formData.applicant_has_minor_children && activeTab === "children" && (
             <ScrollArea className="h-[800px]">
               <motion.div initial={{
               opacity: 0,
@@ -687,10 +691,10 @@ export default function MasterDataTable() {
                   </Card>)}
               </motion.div>
             </ScrollArea>
-          </TabsContent>}
+          )}
 
           {/* PARENTS TAB */}
-          <TabsContent value="parents">
+          {activeTab === "parents" && (
             <ScrollArea className="h-[800px]">
               <motion.div initial={{
               opacity: 0,
@@ -811,10 +815,10 @@ export default function MasterDataTable() {
                 </Card>
               </motion.div>
             </ScrollArea>
-          </TabsContent>
+          )}
 
           {/* GRANDPARENTS TAB */}
-          <TabsContent value="grandparents">
+          {activeTab === "grandparents" && (
             <ScrollArea className="h-[800px]">
               <motion.div initial={{
               opacity: 0,
@@ -889,10 +893,10 @@ export default function MasterDataTable() {
               })}
               </motion.div>
             </ScrollArea>
-          </TabsContent>
+          )}
 
           {/* GREAT-GRANDPARENTS TAB */}
-          <TabsContent value="great-grandparents">
+          {activeTab === "great-grandparents" && (
             <ScrollArea className="h-[800px]">
               <motion.div initial={{
               opacity: 0,
@@ -961,10 +965,10 @@ export default function MasterDataTable() {
               })}
               </motion.div>
             </ScrollArea>
-          </TabsContent>
+          )}
 
           {/* ADDITIONAL DATA TAB */}
-          <TabsContent value="additional-data">
+          {activeTab === "additional-data" && (
             <motion.div initial={{
             opacity: 0,
             scale: 0.95
@@ -989,8 +993,8 @@ export default function MasterDataTable() {
                 </CardContent>
               </Card>
             </motion.div>
-          </TabsContent>
-        </Tabs>
+          )}
+        </div>
       </div>
     </div>;
 }

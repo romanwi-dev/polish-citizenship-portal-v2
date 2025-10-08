@@ -266,7 +266,7 @@ export default function CitizenshipForm() {
           transition={{ duration: 0.5 }}
           className="mb-8"
         >
-          <div className="flex gap-3 overflow-x-auto pb-2 justify-between bg-background/95 backdrop-blur-lg p-4 rounded-lg">
+          <div className="flex gap-3 overflow-x-auto pb-2 bg-background/95 backdrop-blur-lg p-4 rounded-lg">
             <Button 
               onClick={handleSave} 
               disabled={updateMutation.isPending}
@@ -285,28 +285,6 @@ export default function CitizenshipForm() {
                   <Save className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
                   <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                     Save data
-                  </span>
-                </>
-              )}
-            </Button>
-            <Button 
-              onClick={handleGeneratePDF} 
-              disabled={isGenerating} 
-              variant="outline" 
-              className="text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]"
-            >
-              {isGenerating ? (
-                <>
-                  <Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
-                  <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                    Generating...
-                  </span>
-                </>
-              ) : (
-                <>
-                  <Download className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                    Generate PDF
                   </span>
                 </>
               )}
