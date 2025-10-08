@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-
+import { toast } from "sonner";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";
@@ -88,19 +88,20 @@ export default function MasterDataTable() {
       if (field === 'father_last_name') {
         console.log('🔄 Father last name changed to:', value);
         const updatedData = { ...prev, [field]: value };
-        const childrenCount = prev.children_count || 10; // Default to max 10 children
-        console.log('👶 Syncing to', childrenCount, 'children');
+        const childrenCount = 10; // Always sync all 10 possible children
         
         for (let i = 1; i <= childrenCount; i++) {
           updatedData[`child_${i}_last_name`] = value;
-          console.log(`✅ Set child_${i}_last_name =`, value);
         }
+        
+        toast.success(`Father's last name synced to all ${childrenCount} children fields`);
         return updatedData;
       }
 
       // Auto-sync husband's last name after marriage with his current last name
       if (prev.applicant_sex === 'M' && field === 'applicant_last_name') {
         console.log('🤵 Male applicant: syncing applicant_last_name_after_marriage =', value);
+        toast.success('Husband\'s last name after marriage auto-synced');
         return {
           ...prev,
           [field]: value,
@@ -110,6 +111,7 @@ export default function MasterDataTable() {
       
       if (prev.applicant_sex === 'F' && field === 'spouse_last_name') {
         console.log('🤵 Husband (spouse): syncing spouse_last_name_after_marriage =', value);
+        toast.success('Husband\'s last name after marriage auto-synced');
         return {
           ...prev,
           [field]: value,
