@@ -76,88 +76,98 @@ const ContactFormWeb3 = () => {
         <div className="max-w-5xl mx-auto px-2">
           <div className="relative" style={{ perspective: '1000px', minHeight: '600px' }}>
             <div 
-              className={`glass-card p-4 md:p-12 rounded-3xl relative overflow-hidden transition-all duration-700 ${
-                isFlipped ? '[transform:rotateY(180deg)]' : ''
-              }`}
+              className="relative w-full h-full transition-transform duration-700"
               style={{ 
                 transformStyle: 'preserve-3d',
-                backfaceVisibility: 'hidden'
+                transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
               }}
             >
-              {/* Background Gradient */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5" />
-              
-              <form 
-                onSubmit={handleSubmit} 
-                className={`space-y-8 relative z-10 ${isFlipped ? 'hidden' : ''}`}
-                style={{ backfaceVisibility: 'hidden' }}
+              {/* Front Side - Form */}
+              <div 
+                className="glass-card p-4 md:p-12 rounded-3xl absolute inset-0"
+                style={{ 
+                  backfaceVisibility: 'hidden',
+                  WebkitBackfaceVisibility: 'hidden'
+                }}
               >
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="space-y-3 animate-fade-in" onDoubleClick={() => setFormData({ ...formData, name: "" })}>
-                    <Label htmlFor="name" className="text-sm font-light text-foreground/90">Name *</Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      placeholder=""
-                      required
-                      className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
-                      style={{ fontSize: '1.125rem', fontWeight: '400' }}
-                    />
-                  </div>
-                  <div className="space-y-3 animate-fade-in" style={{ animationDelay: '0.1s' }} onDoubleClick={() => setFormData({ ...formData, email: "" })}>
-                    <Label htmlFor="email" className="text-sm font-light text-foreground/90">Email *</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder=""
-                      required
-                      className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
-                      style={{ fontSize: '1.125rem', fontWeight: '400' }}
-                    />
-                  </div>
-                </div>
+                {/* Background Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 rounded-3xl" />
                 
-                <div className="space-y-3 animate-fade-in" style={{ animationDelay: '0.2s' }} onDoubleClick={() => setFormData({ ...formData, message: "" })}>
-                  <Label htmlFor="message" className="text-sm font-light text-foreground/90">Message</Label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    placeholder=""
-                    className="min-h-[240px] border-2 hover-glow focus:shadow-lg transition-all resize-none bg-card/50 backdrop-blur uppercase"
-                    style={{ fontSize: '1.125rem', fontWeight: '400' }}
-                  />
-                </div>
-
-                <Button 
-                  type="submit" 
-                  size="lg" 
-                  className="text-xl font-bold px-12 h-16 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 w-full"
+                <form 
+                  onSubmit={handleSubmit} 
+                  className="space-y-8 relative z-10"
                 >
-                  <Send className="h-5 w-5 mr-2 opacity-50" />
-                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                    Send Your Info
-                  </span>
-                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </Button>
-              </form>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-3 animate-fade-in" onDoubleClick={() => setFormData({ ...formData, name: "" })}>
+                      <Label htmlFor="name" className="text-sm font-light text-foreground/90">Name *</Label>
+                      <Input
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        placeholder=""
+                        required
+                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                        style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                      />
+                    </div>
+                    <div className="space-y-3 animate-fade-in" style={{ animationDelay: '0.1s' }} onDoubleClick={() => setFormData({ ...formData, email: "" })}>
+                      <Label htmlFor="email" className="text-sm font-light text-foreground/90">Email *</Label>
+                      <Input
+                        id="email"
+                        name="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        placeholder=""
+                        required
+                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+                        style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-3 animate-fade-in" style={{ animationDelay: '0.2s' }} onDoubleClick={() => setFormData({ ...formData, message: "" })}>
+                    <Label htmlFor="message" className="text-sm font-light text-foreground/90">Message</Label>
+                    <Textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      placeholder=""
+                      className="min-h-[240px] border-2 hover-glow focus:shadow-lg transition-all resize-none bg-card/50 backdrop-blur uppercase"
+                      style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                    />
+                  </div>
 
-              {/* Thank You Message - Back Side */}
-              {isFlipped && (
-                <div 
-                  className="absolute inset-0 p-4 md:p-12 flex flex-col items-center justify-center text-center"
-                  style={{ 
-                    transform: 'rotateY(180deg)',
-                    backfaceVisibility: 'hidden'
-                  }}
-                >
-                  <CheckCircle2 className="h-20 w-20 text-primary mb-6 animate-scale-in" />
+                  <Button 
+                    type="submit" 
+                    size="lg" 
+                    className="text-xl font-bold px-12 h-16 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 w-full"
+                  >
+                    <Send className="h-5 w-5 mr-2 opacity-50" />
+                    <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                      Send Your Info
+                    </span>
+                    <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </Button>
+                </form>
+              </div>
+
+              {/* Back Side - Thank You Message */}
+              <div 
+                className="glass-card p-4 md:p-12 rounded-3xl absolute inset-0 flex flex-col items-center justify-center text-center"
+                style={{ 
+                  backfaceVisibility: 'hidden',
+                  WebkitBackfaceVisibility: 'hidden',
+                  transform: 'rotateY(180deg)'
+                }}
+              >
+                {/* Background Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 rounded-3xl" />
+                
+                <div className="relative z-10">
+                  <CheckCircle2 className="h-20 w-20 text-primary mb-6 animate-scale-in mx-auto" />
                   <h3 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                     Thank You!
                   </h3>
@@ -173,7 +183,7 @@ const ContactFormWeb3 = () => {
                     Send Another Message
                   </Button>
                 </div>
-              )}
+              </div>
             </div>
           </div>
 
