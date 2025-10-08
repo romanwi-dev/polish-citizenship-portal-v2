@@ -269,6 +269,11 @@ export default function IntakeForm() {
         duration: 0.5
       }}>
           <Card className="glass-card border-primary/20">
+            <CardHeader className="border-b border-border/50 pb-6">
+              <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                Applicant Information
+              </CardTitle>
+            </CardHeader>
             <CardContent className="p-6 md:p-10">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Personal Information */}
