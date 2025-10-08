@@ -225,23 +225,21 @@ export default function FamilyTreeForm() {
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5" />
             <CardHeader className="relative pb-6 pt-6">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="flex items-center gap-3">
-                  <Button 
-                    onClick={() => navigate(`/admin/case/${caseId}`)} 
-                    size="lg" 
-                    variant="outline" 
-                    className="text-base md:text-lg font-bold px-4 md:px-6 h-12 md:h-14 rounded-lg border-2 hover:bg-white/5 whitespace-nowrap"
-                  >
-                    <ArrowLeft className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-                    <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                      Back to Case
-                    </span>
-                  </Button>
+                <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
                   <CardTitle className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">
                     Family Tree
                   </CardTitle>
                 </motion.div>
                 <div className="flex items-center gap-3">
+                  <Button
+                    onClick={() => navigate(`/admin/case/${caseId}`)}
+                    size="lg"
+                    variant="ghost"
+                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10"
+                    title="Back to Case"
+                  >
+                    <ArrowLeft className="h-8 w-8" />
+                  </Button>
                   <Button
                     onClick={() => navigate('/login')}
                     size="lg"
