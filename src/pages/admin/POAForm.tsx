@@ -30,14 +30,14 @@ export default function POAForm() {
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null);
   const [previewFormData, setPreviewFormData] = useState<any>(null);
 
-  // Always use fresh data when it arrives
+  // Initialize form ONCE on mount only
   useEffect(() => {
     const today = format(new Date(), "yyyy-MM-dd");
-    if (masterData) {
-      console.log('🔄 Updating form with fresh master data');
+    if (masterData && Object.keys(formData).length === 0) {
+      console.log('🆕 Initializing form with master data');
       setFormData({ ...masterData, poa_date_filed: masterData.poa_date_filed || today });
-    } else if (!isLoading) {
-      console.log('🆕 Initializing form with default data');
+    } else if (!isLoading && Object.keys(formData).length === 0) {
+      console.log('🆕 Initializing empty form');
       setFormData({ poa_date_filed: today });
     }
   }, [masterData, isLoading]);
