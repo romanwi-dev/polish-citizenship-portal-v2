@@ -192,7 +192,7 @@ const ContactFormWeb3 = () => {
                     Thank You!
                   </h3>
                   <p className="text-xl text-muted-foreground mb-8">
-                    We've received your message and will get in touch shortly...
+                    Message received. We will get in touch with you in less than one hour...
                   </p>
                 </div>
               </div>
