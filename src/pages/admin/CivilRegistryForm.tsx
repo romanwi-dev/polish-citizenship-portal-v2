@@ -163,10 +163,10 @@ export default function CivilRegistryForm() {
         y: 0
       }} transition={{
         duration: 0.8
-      }} className="sticky top-0 z-10 bg-gradient-to-br from-background via-background to-background/95 backdrop-blur-sm pb-4 mb-4 border-b">
+      }} className="sticky top-0 z-20 bg-gradient-to-br from-background via-background to-background/95 backdrop-blur-sm border-b mb-0">
           <Card className="glass-card border-primary/20 overflow-hidden rounded-none border-x-0 border-t-0">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5" />
-            <CardHeader className="relative pb-8 pt-8">
+            <CardHeader className="relative pb-6 pt-6">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                 <motion.div initial={{
                 x: -20,
@@ -216,8 +216,8 @@ export default function CivilRegistryForm() {
         y: 0
       }} transition={{
         duration: 0.5
-      }} className="bg-gradient-to-br from-background via-background to-background/95 backdrop-blur-sm pb-4 pt-4 mb-8">
-          <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 bg-background/95 backdrop-blur-lg p-3 md:p-4 rounded-lg scrollbar-hide"
+      }} className="bg-gradient-to-br from-background via-background to-background/95 backdrop-blur-sm pb-4 pt-4">
+          <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 p-3 md:p-4 scrollbar-hide"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             <Button onClick={handleSave} disabled={updateMutation.isPending} size="default" className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap">
