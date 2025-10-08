@@ -165,13 +165,79 @@ function getFieldMappings(templateType: string, data: any): Record<string, strin
       };
 
     case 'poa-adult':
+      return {
+        // Applicant personal information
+        'imie_nazwisko_wniosko': `${data.applicant_first_name || ''} ${data.applicant_last_name || ''}`.trim().toUpperCase(),
+        'imie_wnioskodawcy': (data.applicant_first_name || '').toUpperCase(),
+        'nazwisko_wnioskodawcy': (data.applicant_last_name || '').toUpperCase(),
+        
+        // ID/Passport information
+        'nr_dok_tozsamosci': (data.applicant_passport_number || '').toUpperCase(),
+        'nr_paszportu': (data.applicant_passport_number || '').toUpperCase(),
+        'numer_dokumentu': (data.applicant_passport_number || '').toUpperCase(),
+        
+        // Date
+        'data_pelnomocnictwa': formatDate(data.poa_date_filed || new Date().toISOString()),
+        'data': formatDate(data.poa_date_filed || new Date().toISOString()),
+      };
+
     case 'poa-minor':
+      return {
+        // Parent (applicant) information
+        'imie_nazwisko_wniosko': `${data.applicant_first_name || ''} ${data.applicant_last_name || ''}`.trim().toUpperCase(),
+        'imie_rodzica': (data.applicant_first_name || '').toUpperCase(),
+        'nazwisko_rodzica': (data.applicant_last_name || '').toUpperCase(),
+        'imie_nazwisko_rodzica': `${data.applicant_first_name || ''} ${data.applicant_last_name || ''}`.trim().toUpperCase(),
+        
+        // Parent ID/Passport
+        'nr_dok_tozsamosci': (data.applicant_passport_number || '').toUpperCase(),
+        'nr_paszportu_rodzica': (data.applicant_passport_number || '').toUpperCase(),
+        'numer_dokumentu_rodzica': (data.applicant_passport_number || '').toUpperCase(),
+        
+        // Child information
+        'imie_nazwisko_dziecka': `${data.child_1_first_name || ''} ${data.child_1_last_name || ''}`.trim().toUpperCase(),
+        'imie_dziecka': (data.child_1_first_name || '').toUpperCase(),
+        'nazwisko_dziecka': (data.child_1_last_name || '').toUpperCase(),
+        
+        // Date
+        'data_pelnomocnictwa': formatDate(data.poa_date_filed || new Date().toISOString()),
+        'data': formatDate(data.poa_date_filed || new Date().toISOString()),
+      };
+
     case 'poa-spouses':
       return {
+        // Husband (primary applicant if male)
+        'imie_meza': (data.applicant_first_name || '').toUpperCase(),
+        'nazwisko_meza': (data.applicant_last_name || '').toUpperCase(),
+        'imie_nazwisko_meza': `${data.applicant_first_name || ''} ${data.applicant_last_name || ''}`.trim().toUpperCase(),
+        'nr_dok_meza': (data.applicant_passport_number || '').toUpperCase(),
+        'nr_paszportu_meza': (data.applicant_passport_number || '').toUpperCase(),
+        
+        // Wife (spouse)
+        'imie_zony': (data.spouse_first_name || '').toUpperCase(),
+        'nazwisko_zony': (data.spouse_last_name || '').toUpperCase(),
+        'imie_nazwisko_zony': `${data.spouse_first_name || ''} ${data.spouse_last_name || ''}`.trim().toUpperCase(),
+        'nr_dok_zony': (data.spouse_passport_number || '').toUpperCase(),
+        'nr_paszportu_zony': (data.spouse_passport_number || '').toUpperCase(),
+        
+        // Surnames after marriage
+        'nazwisko_meza_po_slubie': (data.applicant_last_name_after_marriage || '').toUpperCase(),
+        'nazwisko_zony_po_slubie': (data.spouse_last_name_after_marriage || '').toUpperCase(),
+        'nazwisko_po_zawarciu_malzenstwa_maz': (data.applicant_last_name_after_marriage || '').toUpperCase(),
+        'nazwisko_po_zawarciu_malzenstwa_zona': (data.spouse_last_name_after_marriage || '').toUpperCase(),
+        
+        // Children surnames
+        'nazwisko_dzieci': (data.children_surnames || '').toUpperCase(),
+        'nazwiska_dzieci': (data.children_surnames || '').toUpperCase(),
+        
+        // General applicant fields (for compatibility)
         'imie_nazwisko_wniosko': `${data.applicant_first_name || ''} ${data.applicant_last_name || ''}`.trim().toUpperCase(),
         'nr_dok_tozsamosci': (data.applicant_passport_number || '').toUpperCase(),
+        
+        // Date
         'data_pelnomocnictwa': formatDate(data.poa_date_filed || new Date().toISOString()),
-        'imie_nazwisko_dziecka': `${data.child_1_first_name || ''} ${data.child_1_last_name || ''}`.trim().toUpperCase(),
+        'data': formatDate(data.poa_date_filed || new Date().toISOString()),
+        'data_zawarcia_malzenstwa': formatDate(data.date_of_marriage),
       };
 
     case 'registration':
