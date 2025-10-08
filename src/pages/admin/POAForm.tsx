@@ -46,11 +46,14 @@ export default function POAForm() {
       console.log('🆕 Initializing form with master data (FIRST TIME ONLY)');
       const initialData: any = { ...masterData, poa_date_filed: masterData.poa_date_filed || today };
       
+      let needsUpdate = false;
+      
       // Auto-sync father's last name to all children
       if (initialData.father_last_name) {
         for (let i = 1; i <= 10; i++) {
           if (!initialData[`child_${i}_last_name`]) {
             initialData[`child_${i}_last_name`] = initialData.father_last_name;
+            needsUpdate = true;
           }
         }
       }
@@ -59,6 +62,7 @@ export default function POAForm() {
       if (initialData.applicant_sex === 'M' && initialData.applicant_last_name) {
         if (!initialData.applicant_last_name_after_marriage) {
           initialData.applicant_last_name_after_marriage = initialData.applicant_last_name;
+          needsUpdate = true;
         }
       }
       
@@ -66,10 +70,21 @@ export default function POAForm() {
       if (initialData.applicant_sex === 'F' && initialData.spouse_last_name) {
         if (!initialData.spouse_last_name_after_marriage) {
           initialData.spouse_last_name_after_marriage = initialData.spouse_last_name;
+          needsUpdate = true;
         }
       }
       
       setFormData(initialData);
+      
+      // Save synced data to database if changes were made
+      if (needsUpdate && caseId) {
+        console.log('💾 Auto-saving synced data to database');
+        updateMutation.mutate({
+          caseId,
+          updates: initialData
+        });
+      }
+      
       hasInitialized.current = true;
     } else if (!isLoading) {
       console.log('🆕 Initializing empty form (FIRST TIME ONLY)');
