@@ -9,7 +9,7 @@ export const useMasterData = (caseId: string | undefined) => {
     queryFn: async () => {
       if (!caseId || caseId === ':id') throw new Error("Invalid case ID");
 
-      console.log('🔍 Fetching master data for case:', caseId);
+      console.log('🔍 Fetching FRESH master data for case:', caseId);
 
       const { data, error } = await supabase
         .from("master_table")
@@ -23,7 +23,10 @@ export const useMasterData = (caseId: string | undefined) => {
       return data;
     },
     enabled: !!caseId && caseId !== ':id',
-    staleTime: 30000,
+    staleTime: 0, // Always fetch fresh data
+    gcTime: 0, // Don't cache after component unmounts
+    refetchOnMount: 'always', // Always refetch when component mounts
+    refetchOnWindowFocus: true, // Refetch when window regains focus
   });
 };
 
