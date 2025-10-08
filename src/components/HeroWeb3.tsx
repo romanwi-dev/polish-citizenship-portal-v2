@@ -47,7 +47,7 @@ const HeroWeb3 = () => {
             </span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-muted-foreground mb-16 leading-relaxed max-w-4xl animate-fade-in mx-auto px-12 my-[65px] py-[10px]">
+          <p className="text-xl md:text-2xl text-muted-foreground mb-16 leading-relaxed max-w-2xl animate-fade-in mx-auto px-8 my-[65px] py-[10px]">
             Expert legal guidance for people of Polish and Polish-Jewish descent from around the world for obtaining Polish citizenship and EU passports through Polish ancestry - unmatched success rate, true realistic timeline, transparent pricing
           </p>
           
