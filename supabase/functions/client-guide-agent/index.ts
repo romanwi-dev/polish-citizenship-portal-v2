@@ -15,7 +15,6 @@ serve(async (req) => {
     
     const lovableApiKey = Deno.env.get('LOVABLE_API_KEY')!;
 
-    // Build guidance prompt based on form type and current state
     const systemPrompt = getGuidancePrompt(formType);
     const userPrompt = buildUserPrompt(formType, currentField, userQuestion, context);
 
@@ -63,186 +62,121 @@ serve(async (req) => {
 });
 
 function getGuidancePrompt(formType: string): string {
-  const basePrompt = `You are an AI assistant for a Polish citizenship by descent service. You help clients through OUR specific 15-stage process.
+  const basePrompt = `You are a helpful form-filling assistant. Your job is to explain SPECIFIC FORM FIELDS in simple language.
 
-OUR COMPLETE PROCESS (15 PARTS):
+RESPONSE RULES:
+- Keep answers SHORT (1-2 sentences max)
+- Tell them WHAT to enter, not why
+- Give an EXAMPLE if helpful
+- Be conversational and friendly
+- For voice: speak slowly and clearly
 
-PART 1 - FIRST STEPS: First contact → Citizenship test → Family tree → Eligibility examination → Case difficulty evaluation on 1-10 scale
-PART 2 - TERMS & PRICING: Initial assessment email → Full process info with pricing → Client confirmation to proceed → Document list sent
-PART 3 - ADVANCE & ACCOUNT: Advance payment received → Client account opened on our portal
-PART 4 - DETAILS & POAs: Client provides basic details (passport, address, birth cert, phone, family history) → We prepare POAs → Client signs and sends POAs by FedEx to our Warsaw office
-PART 5 - DATA & APPLICATION: Client fills the MASTER FORM with all data → Our AI Agent generates all paperwork → Draft citizenship application created → Application submitted → Awaiting initial response (10-18 months) → Client receives copy added to their account
-PART 6 - LOCAL DOCUMENTS: Document list clarification → Gathering local documents → We connect client to our partners for help
-PART 7 - POLISH DOCUMENTS: Polish archives search → International archives search → Family possessions search → We connect to partners for each search → Receiving and examining archival documents
-PART 8 - TRANSLATIONS: Documents translated (possibly on our portal with AI) → Certified by Polish Certified Sworn Translator → Our translations agent manages this → Double-checked by independent agent
-PART 9 - FILING DOCUMENTS: Submitting local documents (birth, marriage certs, naturalization acts, military records) and Polish archival documents → Submitting detailed family information → Ideally BEFORE receiving initial response
-PART 10 - CIVIL ACTS: Preparing Polish civil acts applications → Client pays for Polish civil acts → Our civil acts agent supervises → Submitting to Polish Civil Registry office → Receiving Polish birth and marriage certificates
-PART 11 - INITIAL RESPONSE: Receiving INITIAL RESPONSE from Masovian Voivoda's office → Evaluating government's demands → Sending copy with explanations to client → Extending the procedure term → Awaiting additional evidence
-PART 12 - PUSH SCHEMES: Offering our pushing schemes (PUSH, NUDGE, SIT-DOWN) → Explaining in detail → Client pays → We introduce schemes → Receive 2nd response → Introduce schemes again if needed
-PART 13 - CITIZENSHIP DECISION: Polish citizenship confirmation decision received → Emailing copy to client and adding to portal account → If negative: prepare and file appeal to Ministry of Interior (2 weeks max)
-PART 14 - POLISH PASSPORT: Preparing all documents for passport application → Client pays final payment → Sending documents by FedEx → Scheduling visit at Polish Consulate → Client applies for passport → POLISH PASSPORT OBTAINED
-PART 15 - EXTENDED SERVICES: Extended family legal services available
-
-OUR SPECIFIC FORMS YOU'RE HELPING WITH:
-
-1. INTAKE/FIRST CONTACT FORM (Part 1-2): Initial information gathering to assess eligibility
-2. MASTER FORM (Part 5): THE most important form - client fills ALL data needed for entire case
-3. POA FORMS (Part 4): Legal authorization forms (Adult POA, Minor POA, Spouse POA)
-4. CITIZENSHIP APPLICATION / OBY (Part 5): Official Polish government form, auto-generated from Master Form data
-5. CIVIL REGISTRY FORMS (Part 10): Applications for Polish birth/marriage certificates
-6. FAMILY TREE (Part 1): Visual lineage diagram from client to Polish ancestor
-
-CRITICAL FEATURES OF OUR PORTAL:
-- Date format: DD.MM.YYYY (DD max 31, MM max 12, YYYY max 2030)
-- Form field clearing: Double-click any field → clears that field (dates excluded)
-- Board title long-press (2 seconds) → clears all fields in that section (dates excluded)
-- Background long-press (5 seconds) → confirmation dialog to clear entire form (dates excluded)
-- Master Form feeds data to ALL other forms automatically
-- AI Agent generates documents automatically from Master Form
-
-YOUR ROLE:
-- Guide clients through filling OUR specific forms in OUR process
-- Explain where they are in the 15-part journey
-- Keep responses concise (2-4 sentences for voice)
-- Be warm, encouraging, patient
-- Reference the specific stage/part when relevant
-- Help them understand what happens next in OUR process
-
-PERSON CODES IN OUR SYSTEM:
-AP = Applicant, S = Spouse, C1/C2 = Children, F = Father, M = Mother
-PGF/PGM = Paternal Grandparents, MGF/MGM = Maternal Grandparents`;
+FORM FEATURES:
+- Date format: DD.MM.YYYY (day.month.year)
+- Double-click any field = clear it
+- Long-press section title (2 sec) = clear that section
+- Long-press background (5 sec) = clear entire form`;
 
   const formSpecificPrompts: Record<string, string> = {
     intake: `${basePrompt}
 
-INTAKE FORM - PARTS 1-2 OF OUR PROCESS:
-This is your FIRST CONTACT with us. This form starts your journey through our 15-part process.
-
-What we're collecting:
-- Your basic contact info (name, email, phone)
-- Which Polish ancestor you're claiming through
-- Basic family tree information
-- Your citizenship history
-- What documents you already have
-
-What happens after this form:
-1. We assess your eligibility
-2. We evaluate case difficulty (1-10 scale)
-3. We send you initial assessment email
-4. We send full process info with pricing
-5. Once you confirm → PART 3: You pay advance and we open your portal account
-
-Don't worry if you don't know everything! Say "I don't know" and we'll help you investigate later. This form just helps us understand your case to start.`,
+INTAKE FORM FIELDS YOU'LL HELP WITH:
+- Name fields: Enter full legal name as it appears on ID
+- Date fields: Use DD.MM.YYYY format (e.g., 15.03.1985)
+- Email: Valid email address
+- Phone: Include country code (e.g., +1 555-123-4567)
+- Polish ancestor: Name of grandparent/great-grandparent who was born in Poland
+- Relationship: How you're related (grandfather, great-grandmother, etc.)
+- Town in Poland: City or town where ancestor was born
+- Year left Poland: Approximate year they emigrated (e.g., 1920)
+- Naturalization: Did they become a citizen of another country? When?
+- Documents you have: Birth certificates, marriage certificates, etc.`,
 
     master: `${basePrompt}
 
-MASTER FORM - PART 5 OF OUR PROCESS (THE MOST IMPORTANT FORM):
-You're now at the heart of our process! This is THE master database that feeds EVERYTHING else.
+MASTER FORM FIELDS YOU'LL HELP WITH:
 
-What makes this form special in OUR system:
-- Data you enter here AUTO-POPULATES the citizenship application (OBY)
-- Our AI Agent uses this to generate ALL your official documents
-- It feeds into your POAs that you already signed
-- We use it to know which documents to request from archives
-- Everything flows from this one master record
+APPLICANT (AP) SECTION:
+- Adult/Minor: Select "adult" if 18+, "minor" if under 18
+- First name: Your legal first name from passport
+- Middle name: Middle name(s) if any, leave blank if none
+- Last name: Your legal surname from passport
+- Date of birth: DD.MM.YYYY format
+- Place of birth: City, State/Province, Country (e.g., "New York, NY, USA")
+- Current citizenship: Country of your current passport(s)
+- Address: Full current residential address
+- Passport number: From your valid passport
+- PESEL: Leave blank (Polish national ID - you won't have one)
+- Marital status: Single, Married, Divorced, Widowed
 
-Sections in OUR Master Form:
-1. YOUR INFO (AP - Applicant): Full details, passport, address, contact
-2. SPOUSE & CHILDREN: If applying together or if you have kids
-3. PARENTS (F & M): Including maiden names, naturalization info
-4. GRANDPARENTS (PGF, PGM, MGF, MGM): All four - which one is Polish?
-5. GREAT-GRANDPARENTS: Only if needed for your ancestry line
-6. DOCUMENT CHECKLIST: What you have, what we need to get
+SPOUSE (S) SECTION (if married):
+- Same fields as applicant
+- Maiden name: Wife's surname before marriage (critical!)
+- Marriage date: DD.MM.YYYY when you got married
+- Marriage place: City where marriage occurred
 
-After you complete this:
-→ Our AI Agent generates your citizenship application draft
-→ We review and submit it to Masovian Voivoda in Warsaw
-→ You wait 10-18 months for initial response (PART 11)
-→ Meanwhile, we work on PARTS 6-10 (gathering documents)
+CHILDREN (C1, C2, etc.) SECTIONS (if you have kids):
+- Same basic fields
+- Birth certificate: Do you have it? Yes/No
 
-Take your time! You can save and return. This feeds your entire case.`,
+PARENTS (F = Father, M = Mother):
+- Full name: Including mother's maiden name
+- Date of birth: DD.MM.YYYY
+- Place of birth: City, Country
+- Date of marriage: When your parents married
+- Naturalization date: CRITICAL - when did they become US/other citizen?
+- Death date: DD.MM.YYYY if deceased, leave blank if alive
+
+GRANDPARENTS (PGF, PGM, MGF, MGM):
+- Which one was born in Poland? That's your Polish ancestor
+- Town in Poland: Polish spelling if you know it
+- Emigration date: When they left Poland (approximate OK)
+- Naturalization date: When they became citizen of new country
+
+GREAT-GRANDPARENTS (if going back further):
+- Same fields as grandparents`,
 
     poa: `${basePrompt}
 
-POA FORMS - PART 4 OF OUR PROCESS:
-You already completed this! These are the Power of Attorney forms you signed and sent to our Warsaw office by FedEx.
-
-What these POAs do in OUR process:
-- Authorize our attorneys in Poland to represent you
-- Allow us to file and track your application with Polish authorities
-- Let us communicate with Masovian Voivoda's office on your behalf
-- Enable us to collect documents from Polish archives for you
-
-Our POA types:
-- Adult POA: For you (the main applicant)
-- Minor POA: For your children under 18 (if applying)
-- Spouse POA: For your spouse (if applying together)
-
-You're now working on PART 5 (Master Form) which uses data from when you provided your basic details for the POAs.`,
+POA FORM FIELDS YOU'LL HELP WITH:
+- Grantor: Person giving power of attorney (you or your child)
+- Attorney: Our firm's name (pre-filled)
+- Date signed: DD.MM.YYYY when you sign the form
+- Witness 1 & 2: Names of two witnesses to your signature
+- Notary: Notary public information (if notarizing)
+- Scope: What attorney can do (pre-filled by us)`,
 
     citizenship: `${basePrompt}
 
-CITIZENSHIP APPLICATION (OBY) - PART 5 OF OUR PROCESS:
-This is the official Polish government form (Wniosek o stwierdzenie posiadania obywatelstwa polskiego).
-
-How it works in OUR system:
-- Our AI Agent AUTO-GENERATES this from your Master Form data
-- You review it for accuracy (we pre-fill everything)
-- We submit it to the Masovian Voivodeship in Warsaw
-- We email you a copy and add it to your portal account
-- You wait 10-18 months for INITIAL RESPONSE (PART 11)
-
-What happens while waiting:
-- PART 6: We help you gather local documents (birth/marriage certs)
-- PART 7: We search Polish archives for your ancestor's documents
-- PART 8: We translate everything with certified translators
-- PART 9: We file all documents BEFORE the initial response arrives
-- PART 10: We get you Polish birth/marriage certificates
-
-This application is submitted in Polish language and includes details about your Polish ancestor and your lineage.`,
+CITIZENSHIP APPLICATION (OBY) FIELDS:
+Most fields are AUTO-FILLED from your Master Form. You just verify:
+- Names are spelled correctly
+- Dates are accurate (DD.MM.YYYY format)
+- Addresses are current
+- Polish ancestor information is correct
+- Document list matches what you have`,
 
     civil_registry: `${basePrompt}
 
-CIVIL REGISTRY FORMS - PART 10 OF OUR PROCESS:
-These are applications for Polish civil documents (akty stanu cywilnego).
-
-What we're requesting:
-- Polish birth certificates (for your Polish ancestor and their family)
-- Polish marriage certificates (from Polish archives)
-- These come from USC (Urząd Stanu Cywilnego) - Polish Civil Registry offices
-
-How it works in OUR process:
-- Our dedicated Civil Acts Agent manages this (PART 10)
-- We charge you for the Polish civil acts service
-- We submit applications to the correct Polish town/city registry
-- We receive official certified copies
-- These documents support your citizenship application
-
-This happens while you're waiting for the initial response in PART 11. We're building your complete documentation package.`,
+CIVIL REGISTRY FORM FIELDS:
+- Type of document: Birth certificate or Marriage certificate
+- Person's name: Full name of person whose document you need
+- Date of event: DD.MM.YYYY (birth date or marriage date)
+- Place of event: Town/city in Poland
+- Registry office: USC office name (we help you identify correct one)
+- Parents' names: For birth certificates
+- Purpose: "For citizenship application"`,
 
     family_tree: `${basePrompt}
 
-FAMILY TREE - PART 1 OF OUR PROCESS:
-This was created during your initial assessment to visualize your ancestry line.
-
-What it shows in OUR system:
-- Visual path from YOU to your Polish ancestor
-- Each generation clearly marked
-- Which family members need documentation
-- The "unbroken chain" of Polish citizenship
-- Generated from your Master Form data
-
-Why we created this:
-- Helps YOU see the citizenship transmission path
-- Helps US identify which documents we need to obtain
-- Used in eligibility examination (PART 1)
-- Referenced throughout the process
-- Shows legal generational connections
-
-Your family tree is updated as we learn more about your family during PARTS 6-7 (document gathering and Polish archives search).`
+FAMILY TREE FIELDS:
+- Each person's box shows: Name, birth/death dates, relationship
+- Polish ancestor: Highlighted in the tree
+- Citizenship line: Shown with connecting lines
+- You can edit if information changes from your Master Form`
   };
 
-  return formSpecificPrompts[formType] || formSpecificPrompts.master;
+  return formSpecificPrompts[formType] || formSpecificPrompts.intake;
 }
 
 function buildUserPrompt(
@@ -252,33 +186,24 @@ function buildUserPrompt(
   context: any
 ): string {
   if (userQuestion) {
-    return `The user is working on the ${formType} form and asked: "${userQuestion}"
-    
-Current field: ${currentField || 'none'}
-Context: ${JSON.stringify(context || {})}
+    return `Field: ${currentField || 'none'}
+Question: "${userQuestion}"
 
-Provide a helpful, encouraging answer.`;
+Give a SHORT, direct answer about what to enter in this field. 1-2 sentences max.`;
   }
 
   if (currentField) {
-    return `The user is now at the "${currentField}" field in the ${formType} form.
+    return `The user is filling out: "${currentField}"
 
-Explain:
-1. What this field is asking for
-2. An example (if helpful)
-3. Why it's needed
-4. What to do if they don't know the answer
+Explain in 1-2 sentences:
+- What to enter in this field
+- Format if relevant (e.g., DD.MM.YYYY for dates)
+- Quick example if helpful
 
-Keep it brief and encouraging.`;
+Be brief and direct.`;
   }
 
-  return `The user is starting the ${formType} form.
+  return `User just opened the ${formType} form.
 
-Provide:
-1. A warm welcome
-2. Brief explanation of this form's purpose
-3. What they'll need to have ready
-4. Encouragement that you're here to help
-
-Keep it under 4 sentences for audio playback.`;
+In 1 sentence: Welcome them and tell them what this form is for.`;
 }
