@@ -29,6 +29,7 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
   };
 
   if (type === "date") {
+    // Use the current date in the user's timezone if no value provided
     const dateValue = value ? new Date(value) : new Date();
     const displayDate = format(dateValue, "dd.MM.yyyy");
     
