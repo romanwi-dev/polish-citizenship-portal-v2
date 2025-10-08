@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Bot, Loader2, Sparkles, Minimize2, X, Volume2, VolumeX } from "lucide-react";
+import { Bot, Loader2, Sparkles, Minimize2, X, Volume2, VolumeX, Mic, MicOff } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface ClientGuideAssistantProps {
@@ -26,7 +26,10 @@ export const ClientGuideAssistant = ({
   const [isMinimized, setIsMinimized] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
   const { toast } = useToast();
 
   const getGuidance = async (userQuestion: string | null) => {
@@ -127,6 +130,90 @@ export const ClientGuideAssistant = ({
 
     await getGuidance(question);
     setQuestion("");
+  };
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      audioChunksRef.current = [];
+
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data);
+        }
+      };
+
+      mediaRecorder.onstop = async () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+        await transcribeAudio(audioBlob);
+        stream.getTracks().forEach(track => track.stop());
+      };
+
+      mediaRecorder.start();
+      setIsRecording(true);
+      
+      toast({
+        title: "Recording...",
+        description: "Speak your question now",
+      });
+    } catch (error: any) {
+      console.error('Recording error:', error);
+      toast({
+        title: "Microphone Error",
+        description: "Couldn't access microphone",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+    }
+  };
+
+  const transcribeAudio = async (audioBlob: Blob) => {
+    try {
+      setIsLoading(true);
+      
+      // Convert blob to base64
+      const reader = new FileReader();
+      reader.readAsDataURL(audioBlob);
+      
+      const base64Audio = await new Promise<string>((resolve) => {
+        reader.onloadend = () => {
+          const base64 = (reader.result as string).split(',')[1];
+          resolve(base64);
+        };
+      });
+
+      // Transcribe with Whisper
+      const { data, error } = await supabase.functions.invoke('voice-to-text', {
+        body: { audio: base64Audio }
+      });
+
+      if (error) throw error;
+
+      const transcribedText = data.text;
+      setQuestion(transcribedText);
+      
+      // Auto-submit the transcribed question
+      await getGuidance(transcribedText);
+      setQuestion("");
+
+    } catch (error: any) {
+      console.error('Transcription error:', error);
+      toast({
+        title: "Transcription Error",
+        description: "Couldn't understand audio",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const quickQuestions = [
@@ -247,29 +334,47 @@ export const ClientGuideAssistant = ({
               </Alert>
             )}
 
-            <div className="flex gap-2">
-              <Textarea
-                value={question}
-                onChange={(e) => setQuestion(e.target.value)}
-                placeholder="Ask me anything..."
-                rows={2}
-                className="resize-none text-sm bg-background/50 border-primary/20 focus:border-primary/40"
-                onKeyPress={(e) => {
-                  if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    handleAskQuestion();
-                  }
-                }}
-              />
-              <Button 
-                onClick={handleAskQuestion}
-                disabled={isLoading}
-                size="sm"
-                className="shrink-0 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
-              >
-                {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
-                {!isLoading && "Ask"}
-              </Button>
+            <div className="space-y-2">
+              <div className="flex gap-2">
+                <Textarea
+                  value={question}
+                  onChange={(e) => setQuestion(e.target.value)}
+                  placeholder="Type or speak your question..."
+                  rows={2}
+                  className="resize-none text-sm bg-background/50 border-primary/20 focus:border-primary/40"
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      handleAskQuestion();
+                    }
+                  }}
+                />
+                <div className="flex flex-col gap-1">
+                  <Button 
+                    onClick={handleAskQuestion}
+                    disabled={isLoading || !question.trim()}
+                    size="sm"
+                    className="shrink-0 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
+                  >
+                    {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
+                    {!isLoading && "Ask"}
+                  </Button>
+                  <Button
+                    onClick={isRecording ? stopRecording : startRecording}
+                    disabled={isLoading}
+                    size="sm"
+                    variant={isRecording ? "destructive" : "outline"}
+                    className="shrink-0"
+                  >
+                    {isRecording ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                  </Button>
+                </div>
+              </div>
+              {isRecording && (
+                <div className="text-xs text-center text-red-500 animate-pulse">
+                  🔴 Recording... Click mic to stop
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
