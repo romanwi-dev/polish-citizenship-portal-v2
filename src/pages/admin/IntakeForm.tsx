@@ -345,6 +345,32 @@ export default function IntakeForm() {
                   <POAFormField name="applicant_passport_number" label="Passport number" value={formData.applicant_passport_number} onChange={value => handleInputChange("applicant_passport_number", value)} delay={0.1} />
                 </div>
 
+                {/* Gender/Sex */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }} 
+                  animate={{ opacity: 1, y: 0 }} 
+                  transition={{ delay: 0.15, duration: 0.4 }}
+                  className="space-y-4" 
+                  onDoubleClick={() => clearField("applicant_sex")}
+                >
+                  <Label className={cn(
+                    "font-light text-foreground/90",
+                    isLargeFonts ? "text-xl" : "text-sm"
+                  )}>Gender / Sex</Label>
+                  <Select 
+                    value={formData.applicant_sex || ""} 
+                    onValueChange={(value) => handleInputChange("applicant_sex", value)}
+                  >
+                    <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                      <SelectValue placeholder="Select gender" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background border-2 border-border shadow-xl z-50">
+                      <SelectItem value="M" className="text-lg py-3 hover:bg-primary/10 cursor-pointer">Male</SelectItem>
+                      <SelectItem value="F" className="text-lg py-3 hover:bg-primary/10 cursor-pointer">Female</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </motion.div>
+
                 {/* Mobile */}
                 <div onDoubleClick={() => clearField("applicant_phone")}>
                   <POAFormField name="applicant_phone" label="Mobile number" value={formData.applicant_phone} onChange={value => handleInputChange("applicant_phone", value)} delay={0.15} />
