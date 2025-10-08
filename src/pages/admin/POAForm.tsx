@@ -158,7 +158,7 @@ export default function POAForm() {
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
 
       <div className="container mx-auto py-12 px-4 md:px-6 lg:px-8 relative z-10 max-w-7xl">
-        {/* Header */}
+        {/* Sticky Header */}
         <motion.div initial={{
         opacity: 0,
         y: -50
@@ -167,8 +167,8 @@ export default function POAForm() {
         y: 0
       }} transition={{
         duration: 0.8
-      }} className="mb-12">
-          <Card className="glass-card border-primary/20 overflow-hidden">
+      }} className="sticky top-0 z-50 mb-8 bg-background/95 backdrop-blur-lg border-b border-primary/20">
+          <Card className="glass-card border-primary/20 overflow-hidden rounded-none border-x-0 border-t-0">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5" />
             <CardHeader className="relative pb-8 pt-8">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
@@ -201,14 +201,36 @@ export default function POAForm() {
           </Card>
         </motion.div>
 
-        {/* Action Buttons Section */}
+        {/* Action Buttons Section - All in one row, sticky */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ duration: 0.5 }}
-          className="mb-8"
+          className="sticky top-[calc(var(--header-height,0px))] z-40 mb-8 bg-background/95 backdrop-blur-lg border-b border-primary/20"
         >
-          <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 bg-background/95 backdrop-blur-lg p-3 md:p-4 rounded-lg scrollbar-hide">
+          <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 p-3 md:p-4 scrollbar-hide">
+            <Button 
+              onClick={handleSave} 
+              disabled={updateMutation.isPending} 
+              size="default" 
+              className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap"
+            >
+              {updateMutation.isPending ? (
+                <>
+                  <Loader2 className="h-3 md:h-4 lg:h-5 w-3 md:w-4 lg:w-5 animate-spin mr-1 md:mr-2 opacity-50" />
+                  <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                    Saving...
+                  </span>
+                </>
+              ) : (
+                <>
+                  <Save className="h-3 md:h-4 lg:h-5 w-3 md:w-4 lg:w-5 mr-1 md:mr-2 opacity-50" />
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                    Save Data
+                  </span>
+                </>
+              )}
+            </Button>
             <Button 
               onClick={() => setActivePOAType('adult')}
               variant={activePOAType === 'adult' ? 'default' : 'outline'}
@@ -248,6 +270,26 @@ export default function POAForm() {
                 Spouses POA
               </span>
             </Button>
+            <Button variant="outline" className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap">
+              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                Button 3
+              </span>
+            </Button>
+            <Button variant="outline" className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap">
+              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                Button 4
+              </span>
+            </Button>
+            <Button variant="outline" className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap">
+              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                Button 5
+              </span>
+            </Button>
+            <Button variant="outline" className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap">
+              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                Button 6
+              </span>
+            </Button>
           </div>
         </motion.div>
 
@@ -270,60 +312,10 @@ export default function POAForm() {
             >
                 <Card className="glass-card border-primary/20">
                   <CardHeader className="border-b border-border/50 pb-6">
-                    <div className="flex flex-col gap-4">
-                      <div {...key === 'adult' ? adultCardLongPress.handlers : key === 'minor' ? minorCardLongPress.handlers : spousesCardLongPress.handlers} className="cursor-pointer select-none hover:opacity-80 transition-opacity">
-                        <CardTitle className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent whitespace-nowrap">
-                          {config.title}
-                        </CardTitle>
-                      </div>
-                      {/* Action Buttons - Same row */}
-                      <div className="flex flex-wrap gap-2 md:gap-3">
-                        <Button onClick={handleSave} disabled={updateMutation.isPending} size="default" className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap">
-                          {updateMutation.isPending ? <>
-                              <Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
-                              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                                Saving...
-                              </span>
-                            </> : <>
-                              <Save className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-                              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Save Data
-                        </span>
-                            </>}
-                        </Button>
-                        <Button onClick={() => handleGeneratePDF(config.pdfType, config.title)} disabled={isGenerating} size="default" className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap">
-                          {isGenerating ? <>
-                              <Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
-                              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                                Generating...
-                              </span>
-                            </> : <>
-                              <Download className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-                              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                                Generate PDF
-                              </span>
-                            </>}
-                        </Button>
-                        <Button variant="outline" className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap">
-                          <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                            Button 3
-                          </span>
-                        </Button>
-                        <Button variant="outline" className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap">
-                          <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                            Button 4
-                          </span>
-                        </Button>
-                        <Button variant="outline" className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap">
-                          <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                            Button 5
-                          </span>
-                        </Button>
-                        <Button variant="outline" className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap">
-                          <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                            Button 6
-                          </span>
-                        </Button>
-                      </div>
+                    <div {...key === 'adult' ? adultCardLongPress.handlers : key === 'minor' ? minorCardLongPress.handlers : spousesCardLongPress.handlers} className="cursor-pointer select-none hover:opacity-80 transition-opacity">
+                      <CardTitle className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent whitespace-nowrap">
+                        {config.title}
+                      </CardTitle>
                     </div>
                   </CardHeader>
                   <CardContent className="p-6 md:p-10">
