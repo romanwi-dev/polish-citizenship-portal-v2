@@ -314,17 +314,26 @@ export default function POAForm() {
               </CardHeader>
               <CardContent className="pt-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                  {poaFormConfigs.adult.fields.map(field => (
-                    <POAFormField
-                      key={field.name}
-                      name={field.name}
-                      label={field.label}
-                      type={field.type}
-                      placeholder={field.placeholder}
-                      value={formData[field.name] || ""}
-                      onChange={(value) => handleInputChange(field.name, value)}
-                    />
-                  ))}
+                  <POAFormField
+                    name="applicant_first_name"
+                    label="Applicant given names / Imię/ imiona"
+                    value={formData.applicant_first_name || ""}
+                    onChange={(value) => handleInputChange("applicant_first_name", value)}
+                  />
+                  <POAFormField
+                    name="applicant_last_name"
+                    label="Applicant full last name / Nazwisko"
+                    value={formData.applicant_last_name || ""}
+                    onChange={(value) => handleInputChange("applicant_last_name", value)}
+                  />
+                </div>
+                <div className="mt-4 md:mt-6">
+                  <POAFormField
+                    name="applicant_passport_number"
+                    label="ID/ passport number / Nr dokumentu tożsamości"
+                    value={formData.applicant_passport_number || ""}
+                    onChange={(value) => handleInputChange("applicant_passport_number", value)}
+                  />
                 </div>
                 <div className="mt-6 flex justify-end">
                   <Button onClick={() => handleGenerateAndPreview('poa-adult')} disabled={isGenerating}
@@ -354,17 +363,40 @@ export default function POAForm() {
               </CardHeader>
               <CardContent className="pt-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                  {poaFormConfigs.minor.fields.map(field => (
-                    <POAFormField
-                      key={field.name}
-                      name={field.name}
-                      label={field.label}
-                      type={field.type}
-                      placeholder={field.placeholder}
-                      value={formData[field.name] || ""}
-                      onChange={(value) => handleInputChange(field.name, value)}
-                    />
-                  ))}
+                  <POAFormField
+                    name="applicant_first_name"
+                    label="Parent given names / Imię/ imiona rodzica"
+                    value={formData.applicant_first_name || ""}
+                    onChange={(value) => handleInputChange("applicant_first_name", value)}
+                  />
+                  <POAFormField
+                    name="applicant_last_name"
+                    label="Parent full last name / Nazwisko rodzica"
+                    value={formData.applicant_last_name || ""}
+                    onChange={(value) => handleInputChange("applicant_last_name", value)}
+                  />
+                </div>
+                <div className="mt-4 md:mt-6">
+                  <POAFormField
+                    name="applicant_passport_number"
+                    label="Parent ID/ passport number / Nr dokumentu tożsamości"
+                    value={formData.applicant_passport_number || ""}
+                    onChange={(value) => handleInputChange("applicant_passport_number", value)}
+                  />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
+                  <POAFormField
+                    name="child_1_first_name"
+                    label="Child given names / Imię/ imiona dziecka"
+                    value={formData.child_1_first_name || ""}
+                    onChange={(value) => handleInputChange("child_1_first_name", value)}
+                  />
+                  <POAFormField
+                    name="child_1_last_name"
+                    label="Child full last name / Nazwisko dziecka"
+                    value={formData.child_1_last_name || ""}
+                    onChange={(value) => handleInputChange("child_1_last_name", value)}
+                  />
                 </div>
                 <div className="mt-6 flex justify-end">
                   <Button onClick={() => handleGenerateAndPreview('poa-minor')} disabled={isGenerating}
@@ -394,17 +426,70 @@ export default function POAForm() {
               </CardHeader>
               <CardContent className="pt-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                  {poaFormConfigs.spouses.fields.map(field => (
-                    <POAFormField
-                      key={field.name}
-                      name={field.name}
-                      label={field.label}
-                      type={field.type}
-                      placeholder={field.placeholder}
-                      value={formData[field.name] || ""}
-                      onChange={(value) => handleInputChange(field.name, value)}
-                    />
-                  ))}
+                  <POAFormField
+                    name="applicant_first_name"
+                    label="Husband given names / Imię/imiona męża"
+                    value={formData.applicant_first_name || ""}
+                    onChange={(value) => handleInputChange("applicant_first_name", value)}
+                  />
+                  <POAFormField
+                    name="applicant_last_name"
+                    label="Husband surname / Nazwisko męża"
+                    value={formData.applicant_last_name || ""}
+                    onChange={(value) => handleInputChange("applicant_last_name", value)}
+                  />
+                </div>
+                <div className="mt-4 md:mt-6">
+                  <POAFormField
+                    name="applicant_passport_number"
+                    label="Husband ID/passport number / Nr dokumentu tożsamości męża"
+                    value={formData.applicant_passport_number || ""}
+                    onChange={(value) => handleInputChange("applicant_passport_number", value)}
+                  />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
+                  <POAFormField
+                    name="spouse_first_name"
+                    label="Wife given names / Imię/imiona żony"
+                    value={formData.spouse_first_name || ""}
+                    onChange={(value) => handleInputChange("spouse_first_name", value)}
+                  />
+                  <POAFormField
+                    name="spouse_last_name"
+                    label="Wife surname / Nazwisko żony"
+                    value={formData.spouse_last_name || ""}
+                    onChange={(value) => handleInputChange("spouse_last_name", value)}
+                  />
+                </div>
+                <div className="mt-4 md:mt-6">
+                  <POAFormField
+                    name="spouse_passport_number"
+                    label="Wife ID/passport number / Nr dokumentu tożsamości żony"
+                    value={formData.spouse_passport_number || ""}
+                    onChange={(value) => handleInputChange("spouse_passport_number", value)}
+                  />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
+                  <POAFormField
+                    name="applicant_last_name_after_marriage"
+                    label="Husband's surname after marriage / Nazwisko męża po zawarciu małżeństwa"
+                    value={formData.applicant_last_name_after_marriage || ""}
+                    onChange={(value) => handleInputChange("applicant_last_name_after_marriage", value)}
+                  />
+                  <POAFormField
+                    name="spouse_last_name_after_marriage"
+                    label="Wife's surname after marriage / Nazwisko żony po zawarciu małżeństwa"
+                    value={formData.spouse_last_name_after_marriage || ""}
+                    onChange={(value) => handleInputChange("spouse_last_name_after_marriage", value)}
+                  />
+                </div>
+                <div className="mt-4 md:mt-6">
+                  <POAFormField
+                    name="children_surnames"
+                    label="Children's surname(s) / Nazwisko/a dzieci"
+                    value={formData.children_surnames || ""}
+                    onChange={(value) => handleInputChange("children_surnames", value)}
+                  />
                 </div>
                 <div className="mt-6 flex justify-end">
                   <Button onClick={() => handleGenerateAndPreview('poa-spouses')} disabled={isGenerating}
