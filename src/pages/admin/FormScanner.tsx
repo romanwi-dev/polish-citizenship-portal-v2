@@ -74,8 +74,22 @@ export default function FormScanner() {
       for (const form of FORMS_TO_SCAN) {
         setCurrentForm(form.name);
         
-        // Mock form code - in production, you'd read the actual file
-        const formCode = `// Form: ${form.name}\n// This is a placeholder for the actual form code`;
+        // Read actual form code from file system
+        const { data: fileData, error: fileError } = await supabase.functions.invoke('get-form-code', {
+          body: { filePath: form.path }
+        });
+
+        if (fileError || !fileData?.code) {
+          setResults(prev => [...prev, {
+            form: form.name,
+            status: 'error',
+            analysis: `Failed to read form file: ${fileError?.message || 'Unknown error'}`,
+            timestamp: new Date().toISOString()
+          }]);
+          continue;
+        }
+
+        const formCode = fileData.code;
         
         const { data, error } = await supabase.functions.invoke('analyze-forms', {
           body: { 

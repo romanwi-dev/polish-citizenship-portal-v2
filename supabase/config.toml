@@ -29,3 +29,6 @@ verify_jwt = false
 
 [functions.analyze-forms]
 verify_jwt = false
+
+[functions.get-form-code]
+verify_jwt = false
