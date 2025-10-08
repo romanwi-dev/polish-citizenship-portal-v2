@@ -275,6 +275,16 @@ export default function CivilRegistryForm() {
                 Button 6
               </span>
             </Button>
+            <Button
+              onClick={() => navigate(`/admin/cases/${caseId}/additional-data`)}
+              variant="outline"
+              className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[140px] md:min-w-[180px] lg:min-w-[220px] whitespace-nowrap"
+            >
+              <FilePlus className="h-3 md:h-4 lg:h-5 w-3 md:w-4 lg:w-5 mr-1 md:mr-2 opacity-50" />
+              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                Additional Data
+              </span>
+            </Button>
           </div>
         </motion.div>
 
@@ -440,18 +450,6 @@ export default function CivilRegistryForm() {
                   </motion.div>
                 </div>
 
-                <div className="flex justify-center pt-6">
-                  <Button
-                    onClick={() => navigate(`/admin/cases/${caseId}/additional-data`)}
-                    variant="outline"
-                    className="text-sm md:text-base lg:text-xl font-bold px-6 md:px-8 h-12 md:h-14 lg:h-16 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[180px] md:min-w-[220px] lg:min-w-[250px] whitespace-nowrap"
-                  >
-                    <FilePlus className="h-4 md:h-5 lg:h-6 w-4 md:w-5 lg:w-6 mr-2 opacity-50" />
-                    <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                      Additional Data
-                    </span>
-                  </Button>
-                </div>
               </CardContent>
             </Card>
           </motion.div>
