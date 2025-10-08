@@ -69,71 +69,43 @@ export const ClientGuideAssistant = ({
   const playVoice = async (text: string) => {
     try {
       setIsPlaying(true);
-      console.log('Generating speech for:', text);
 
       // Generate speech using ElevenLabs
       const { data, error } = await supabase.functions.invoke('elevenlabs-tts', {
         body: { text }
       });
 
-      console.log('TTS response:', { data, error });
-
-      if (error) {
-        console.error('TTS invocation error:', error);
-        throw error;
-      }
-
+      if (error) throw error;
       if (!data || !data.audioContent) {
-        throw new Error('No audio content received from TTS');
+        throw new Error('No audio content received');
       }
 
-      console.log('Converting audio to blob...');
-
-      // Convert base64 to audio blob
-      const binaryString = atob(data.audioContent);
-      const bytes = new Uint8Array(binaryString.length);
-      for (let i = 0; i < binaryString.length; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-      }
+      // Convert base64 to blob - simpler method
+      const audioData = `data:audio/mpeg;base64,${data.audioContent}`;
       
-      const audioBlob = new Blob([bytes], { type: 'audio/mpeg' });
-      const audioUrl = URL.createObjectURL(audioBlob);
-
-      console.log('Playing audio...');
-
       // Play audio
       if (audioRef.current) {
         audioRef.current.pause();
       }
       
-      const audio = new Audio(audioUrl);
+      const audio = new Audio(audioData);
       audioRef.current = audio;
       
       audio.onended = () => {
-        console.log('Audio playback ended');
         setIsPlaying(false);
-        URL.revokeObjectURL(audioUrl);
       };
 
       audio.onerror = (e) => {
-        console.error('Audio playback error:', e);
+        console.error('Audio error:', e);
         setIsPlaying(false);
-        URL.revokeObjectURL(audioUrl);
       };
 
       await audio.play();
-      console.log('Audio playing successfully');
 
     } catch (error: any) {
-      console.error('Voice playback error:', error);
+      console.error('Voice error:', error);
       setIsPlaying(false);
-      
-      // Show more detailed error
-      toast({
-        title: "Voice Error",
-        description: error.message || "Couldn't play voice response",
-        variant: "destructive",
-      });
+      // Silently fail - don't show error toast
     }
   };
 
