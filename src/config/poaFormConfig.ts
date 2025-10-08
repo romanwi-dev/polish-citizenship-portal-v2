@@ -37,14 +37,14 @@ export const poaFormConfigs: Record<string, POAFormConfig> = {
     pdfType: "poa-spouses",
     fields: [
       { name: "applicant_first_name", label: "Husband given names / Imię/imiona męża" },
-      { name: "applicant_last_name", label: "Husband surname / Nazwisko męża" },
+      { name: "applicant_last_name", label: "Husband full last name / Nazwisko męża" },
       { name: "applicant_passport_number", label: "Husband ID/passport number / Nr dokumentu tożsamości męża" },
       { name: "spouse_first_name", label: "Wife given names / Imię/imiona żony" },
-      { name: "spouse_last_name", label: "Wife surname / Nazwisko żony" },
+      { name: "spouse_last_name", label: "Wife full last name / Nazwisko żony" },
       { name: "spouse_passport_number", label: "Wife ID/passport number / Nr dokumentu tożsamości żony" },
-      { name: "applicant_last_name_after_marriage", label: "Husband's surname after marriage / Nazwisko męża po zawarciu małżeństwa" },
-      { name: "spouse_last_name_after_marriage", label: "Wife's surname after marriage / Nazwisko żony po zawarciu małżeństwa" },
-      { name: "children_surnames", label: "Children's surname(s) / Nazwisko/a dzieci" },
+      { name: "applicant_last_name_after_marriage", label: "Husband's full last name after marriage / Nazwisko męża po zawarciu małżeństwa" },
+      { name: "spouse_last_name_after_marriage", label: "Wife's full last name after marriage / Nazwisko żony po zawarciu małżeństwa" },
+      { name: "children_surnames", label: "Children's full last name(s) / Nazwisko/a dzieci" },
     ]
   }
 };

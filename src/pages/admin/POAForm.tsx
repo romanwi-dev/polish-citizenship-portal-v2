@@ -571,8 +571,8 @@ export default function POAForm() {
                   <POAFormField
                     name="applicant_last_name_after_marriage"
                     label={formData.applicant_sex === 'F'
-                      ? "Wife's surname after marriage / Nazwisko żony po zawarciu małżeństwa"
-                      : "Husband's surname after marriage / Nazwisko męża po zawarciu małżeństwa"
+                      ? "Wife's full last name after marriage / Nazwisko żony po zawarciu małżeństwa"
+                      : "Husband's full last name after marriage / Nazwisko męża po zawarciu małżeństwa"
                     }
                     value={formData.applicant_last_name_after_marriage || ""}
                     onChange={(value) => handleInputChange("applicant_last_name_after_marriage", value)}
@@ -580,8 +580,8 @@ export default function POAForm() {
                   <POAFormField
                     name="spouse_last_name_after_marriage"
                     label={formData.applicant_sex === 'F'
-                      ? "Husband's surname after marriage / Nazwisko męża po zawarciu małżeństwa"
-                      : "Wife's surname after marriage / Nazwisko żony po zawarciu małżeństwa"
+                      ? "Husband's full last name after marriage / Nazwisko męża po zawarciu małżeństwa"
+                      : "Wife's full last name after marriage / Nazwisko żony po zawarciu małżeństwa"
                     }
                     value={formData.spouse_last_name_after_marriage || ""}
                     onChange={(value) => handleInputChange("spouse_last_name_after_marriage", value)}
@@ -590,7 +590,7 @@ export default function POAForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
                   <POAFormField
                     name="children_surnames"
-                    label="Children's surname(s) / Nazwisko/a dzieci"
+                    label="Children's full last name(s) / Nazwisko/a dzieci"
                     value={formData.children_surnames || ""}
                     onChange={(value) => handleInputChange("children_surnames", value)}
                   />

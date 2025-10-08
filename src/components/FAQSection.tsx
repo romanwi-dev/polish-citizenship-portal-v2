@@ -101,7 +101,7 @@ const FAQSection = () => {
       questions: [
         {
           question: "What documents prove my claim?",
-          answer: "Essential documents include: (1) Birth certificates for you and each ancestor in the citizenship chain, (2) Marriage certificates if surnames changed, (3) Death certificates for deceased ancestors, (4) Proof of your ancestor's Polish origin (birth records, passport, immigration records), (5) Documents showing your ancestor never renounced Polish citizenship. We guide you through obtaining each document and help locate records in archives worldwide. The specific documents needed vary based on your family circumstances."
+          answer: "Essential documents include: (1) Birth certificates for you and each ancestor in the citizenship chain, (2) Marriage certificates if full last names changed, (3) Death certificates for deceased ancestors, (4) Proof of your ancestor's Polish origin (birth records, passport, immigration records), (5) Documents showing your ancestor never renounced Polish citizenship. We guide you through obtaining each document and help locate records in archives worldwide. The specific documents needed vary based on your family circumstances."
         },
         {
           question: "What if my ancestor's Polish records were destroyed?",
@@ -135,8 +135,8 @@ const FAQSection = () => {
           answer: "This is the most common obstacle in citizenship cases. If your ancestor naturalized in another country (e.g., became a U.S. citizen), they likely lost Polish citizenship at that moment - but there are critical nuances: (1) If they had children BEFORE naturalizing, those children may have acquired Polish citizenship at birth, (2) The timing of naturalization relative to births is crucial, (3) Some historical periods had different rules, (4) Lack of documentation about naturalization can sometimes work in your favor. We conduct thorough research in naturalization records and apply sophisticated legal analysis to determine if the citizenship chain survived naturalization."
         },
         {
-          question: "Our surname changed after immigration. Is that a problem?",
-          answer: "Name changes are extremely common and don't prevent citizenship claims. Immigration officials often anglicized or modified Polish surnames. We establish identity continuity through: (1) Documents showing the name change (naturalization papers, court records, early U.S. documents showing both names), (2) Family tree documentation linking the different surname variants, (3) Declarations or affidavits where permitted. Our research team specializes in tracing lineage through name changes due to immigration, marriage, translation variations, or deliberate changes."
+          question: "Our full last name changed after immigration. Is that a problem?",
+          answer: "Name changes are extremely common and don't prevent citizenship claims. Immigration officials often anglicized or modified Polish full last names. We establish identity continuity through: (1) Documents showing the name change (naturalization papers, court records, early U.S. documents showing both names), (2) Family tree documentation linking the different full last name variants, (3) Declarations or affidavits where permitted. Our research team specializes in tracing lineage through name changes due to immigration, marriage, translation variations, or deliberate changes."
         },
         {
           question: "Can Americans keep their U.S. citizenship after confirmation?",
