@@ -22,20 +22,25 @@ export default function POAForm() {
   const { data: masterData, isLoading } = useMasterData(caseId);
   const updateMutation = useUpdateMasterData();
   const { isLargeFonts, toggleFontSize } = useAccessibility();
-  const today = format(new Date(), "yyyy-MM-dd");
   
-  const [formData, setFormData] = useState<any>({ poa_date_filed: today });
+  const [formData, setFormData] = useState<any>({});
   const [isGenerating, setIsGenerating] = useState(false);
   const [showClearAllDialog, setShowClearAllDialog] = useState(false);
   const [activePOAType, setActivePOAType] = useState('adult');
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null);
   const [previewFormData, setPreviewFormData] = useState<any>(null);
 
+  // Always use fresh data when it arrives
   useEffect(() => {
+    const today = format(new Date(), "yyyy-MM-dd");
     if (masterData) {
+      console.log('🔄 Updating form with fresh master data');
       setFormData({ ...masterData, poa_date_filed: masterData.poa_date_filed || today });
+    } else if (!isLoading) {
+      console.log('🆕 Initializing form with default data');
+      setFormData({ poa_date_filed: today });
     }
-  }, [masterData, today]);
+  }, [masterData, isLoading]);
 
   const handleInputChange = (field: string, value: any) => {
     setFormData((prev: any) => ({ ...prev, [field]: value }));
@@ -51,6 +56,7 @@ export default function POAForm() {
   };
 
   const clearAllFields = () => {
+    const today = format(new Date(), "yyyy-MM-dd");
     setFormData({ poa_date_filed: formData.poa_date_filed || today });
     toast.success("Cleared all fields");
     setShowClearAllDialog(false);
