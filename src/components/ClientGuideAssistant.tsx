@@ -83,14 +83,21 @@ export const ClientGuideAssistant = ({
         }
       );
 
-      if (!response.ok) throw new Error('Failed to generate speech');
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('TTS Response error:', response.status, errorText);
+        throw new Error('Failed to generate speech');
+      }
 
       const audioBlob = await response.blob();
+      console.log('Audio blob received, size:', audioBlob.size, 'type:', audioBlob.type);
+      
       const audioUrl = URL.createObjectURL(audioBlob);
 
-      // Play audio
+      // Stop any currently playing audio
       if (audioRef.current) {
         audioRef.current.pause();
+        audioRef.current = null;
       }
       
       const audio = new Audio(audioUrl);
@@ -101,16 +108,38 @@ export const ClientGuideAssistant = ({
         URL.revokeObjectURL(audioUrl);
       };
 
-      audio.onerror = () => {
+      audio.onerror = (e) => {
+        console.error('Audio playback error:', e);
         setIsPlaying(false);
         URL.revokeObjectURL(audioUrl);
+        toast({
+          title: "Audio Error",
+          description: "Couldn't play voice response",
+          variant: "destructive",
+        });
       };
 
-      await audio.play();
+      // Handle autoplay blocking
+      try {
+        await audio.play();
+        console.log('Audio playing successfully');
+      } catch (playError: any) {
+        console.error('Autoplay blocked:', playError);
+        setIsPlaying(false);
+        toast({
+          title: "Click to hear",
+          description: "Click the speaker icon to play voice",
+        });
+      }
 
     } catch (error: any) {
-      console.error('Voice error:', error);
+      console.error('Voice generation error:', error);
       setIsPlaying(false);
+      toast({
+        title: "Voice Error",
+        description: error.message || "Couldn't generate voice",
+        variant: "destructive",
+      });
     }
   };
 
