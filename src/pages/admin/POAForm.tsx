@@ -218,7 +218,7 @@ export default function POAForm() {
           initial={{ opacity: 0, y: 20 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ duration: 0.5 }}
-          className="mb-8"
+          className="bg-gradient-to-br from-background via-background to-background/95 backdrop-blur-sm pb-4 pt-4 mb-8"
         >
           <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 p-3 md:p-4 scrollbar-hide"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}

@@ -207,7 +207,7 @@ export default function CivilRegistryForm() {
         y: 0
       }} transition={{
         duration: 0.5
-      }} className="mb-8">
+      }} className="bg-gradient-to-br from-background via-background to-background/95 backdrop-blur-sm pb-4 pt-4 mb-8">
           <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 bg-background/95 backdrop-blur-lg p-3 md:p-4 rounded-lg scrollbar-hide"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
