@@ -317,7 +317,7 @@ export default function POAForm() {
               <CardContent className="pt-6">
                 {/* Gender Selector */}
                 <div className="mb-6">
-                  <Label className="text-base md:text-lg lg:text-xl font-semibold mb-3 block">
+                  <Label className="text-base md:text-lg lg:text-xl font-semibold mb-3 block text-foreground/80">
                     Applicant Gender / Płeć
                   </Label>
                   <RadioGroup
@@ -327,13 +327,13 @@ export default function POAForm() {
                   >
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="M" id="gender-male" />
-                      <Label htmlFor="gender-male" className="cursor-pointer text-sm md:text-base lg:text-lg">
+                      <Label htmlFor="gender-male" className="cursor-pointer text-sm md:text-base lg:text-lg text-foreground/80">
                         Male / Mężczyzna
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="F" id="gender-female" />
-                      <Label htmlFor="gender-female" className="cursor-pointer text-sm md:text-base lg:text-lg">
+                      <Label htmlFor="gender-female" className="cursor-pointer text-sm md:text-base lg:text-lg text-foreground/80">
                         Female / Kobieta
                       </Label>
                     </div>
