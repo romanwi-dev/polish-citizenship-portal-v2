@@ -36,7 +36,7 @@ serve(async (req) => {
     if (masterError) throw masterError;
     if (!masterData) throw new Error('Master data not found');
 
-    // Map template type to public template files
+    // Map template type to local template files
     const templateFileMap: Record<string, string> = {
       'family-tree': 'family-tree.pdf',
       'poa-adult': 'poa-adult.pdf',
@@ -52,21 +52,12 @@ serve(async (req) => {
       throw new Error(`Unknown template type: ${templateType}`);
     }
 
-    // Fetch template from public folder via project URL
-    const projectUrl = Deno.env.get('SUPABASE_URL')?.replace('https://oogmuakyqadpynnrasnd.supabase.co', 'https://98b4e1c7-7682-4f23-9f68-2a61bbec99a9.lovableproject.com') || '';
-    const templateUrl = `${projectUrl}/templates/${templateFileName}`;
-    console.log(`Fetching template from: ${templateUrl}`);
+    // Read template file from function directory
+    const templatePath = `./templates/${templateFileName}`;
+    console.log(`Loading template from: ${templatePath}`);
 
-    // Fetch template from public URL
-    const templateResponse = await fetch(templateUrl);
-
-    if (!templateResponse.ok) {
-      const errorText = await templateResponse.text();
-      console.error(`Template fetch failed: ${templateResponse.status} - ${errorText}`);
-      throw new Error(`Failed to fetch template: ${templateResponse.statusText}`);
-    }
-    
-    const templateBytes = await templateResponse.arrayBuffer();
+    // Read template file
+    const templateBytes = await Deno.readFile(templatePath);
     const pdfDoc = await PDFDocument.load(templateBytes);
     const form = pdfDoc.getForm();
 
