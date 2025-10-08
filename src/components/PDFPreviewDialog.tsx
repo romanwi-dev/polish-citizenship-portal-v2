@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Download, X, Edit, FileText } from "lucide-react";
+import { Download, X, Edit, FileText, Printer } from "lucide-react";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -52,6 +52,16 @@ export function PDFPreviewDialog({
   const handleDownloadAndClose = () => {
     onDownload();
     onClose();
+  };
+
+  const handlePrint = () => {
+    const iframe = document.querySelector('iframe[title="PDF Preview"]') as HTMLIFrameElement;
+    if (iframe) {
+      iframe.contentWindow?.print();
+      toast.success("Print dialog opened");
+    } else {
+      toast.error("Unable to print. Please download and print manually.");
+    }
   };
 
   const renderEditableFields = () => {
@@ -141,9 +151,13 @@ export function PDFPreviewDialog({
           <Button variant="outline" onClick={onClose}>
             Cancel
           </Button>
+          <Button variant="secondary" onClick={handlePrint} className="gap-2">
+            <Printer className="h-4 w-4" />
+            Print
+          </Button>
           <Button onClick={handleDownloadAndClose} className="gap-2">
             <Download className="h-4 w-4" />
-            Download PDF
+            Download & Close
           </Button>
         </DialogFooter>
       </DialogContent>
