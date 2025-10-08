@@ -673,8 +673,8 @@ export default function MasterDataTable() {
             </motion.div>
           )}
 
-          {/* SPOUSE TAB - Only show if married */}
-          {formData.applicant_is_married && activeTab === "spouse" && (
+          {/* SPOUSE TAB - Always accessible */}
+          {activeTab === "spouse" && (
             <motion.div initial={{
             opacity: 0,
             scale: 0.95
@@ -741,8 +741,8 @@ export default function MasterDataTable() {
             </motion.div>
           )}
 
-          {/* KIDS TAB - Only show if has minor children */}
-          {formData.applicant_has_minor_children && activeTab === "children" && (
+          {/* KIDS TAB - Only show if has children */}
+          {(formData.children_count > 0 || activeTab === "children") && activeTab === "children" && (
             <ScrollArea className="h-[800px]">
               <motion.div initial={{
               opacity: 0,
