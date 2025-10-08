@@ -160,7 +160,7 @@ const Login = () => {
                       isLargeFonts ? "text-xl" : "text-sm"
                     )}
                   >
-                    Email address
+                    Email
                   </Label>
                   <Input
                     id="email"
