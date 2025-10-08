@@ -219,7 +219,7 @@ export default function FamilyTreeForm() {
           initial={{ opacity: 0, y: -50 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ duration: 0.8 }}
-          className="sticky top-0 z-20 bg-gradient-to-br from-background via-background to-background/95 backdrop-blur-sm pb-4 border-b"
+          className="sticky top-0 z-20 bg-gradient-to-br from-background via-background to-background/95 backdrop-blur-sm pb-4 pt-4 border-b"
         >
           <Card className="glass-card border-primary/20 overflow-hidden rounded-none border-x-0 border-t-0">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5" />
@@ -227,7 +227,7 @@ export default function FamilyTreeForm() {
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
                   <CardTitle className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">
-                    Family Tree
+                    Polish Family Tree
                   </CardTitle>
                 </motion.div>
                 <div className="flex items-center gap-3">
@@ -285,7 +285,7 @@ export default function FamilyTreeForm() {
                 <>
                   <Save className="h-3 md:h-4 lg:h-5 w-3 md:w-4 lg:w-5 mr-1 md:mr-2 opacity-50" />
                   <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                    Save data
+                    Save Data
                   </span>
                 </>
               )}
