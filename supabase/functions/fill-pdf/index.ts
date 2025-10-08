@@ -77,11 +77,34 @@ serve(async (req) => {
     // Map data to PDF fields based on template type
     const fieldMappings = getFieldMappings(templateType, masterData);
     
+    // Name fields that should auto-size
+    const nameFields = [
+      'imie_nazwisko_wniosko',
+      'imie_nazwisko_dziecka',
+      'applicant_full_name',
+      'applicant_spouse_full_name_and_maiden_name',
+      'minor_1_full_name',
+      'minor_2_full_name',
+      'minor_3_full_name',
+      'polish_parent_full_name',
+      'applicant_name',
+      'father_surname',
+      'mother_maiden_name'
+    ];
+    
     for (const [fieldName, fieldValue] of Object.entries(fieldMappings)) {
       try {
         const field = form.getTextField(fieldName);
         if (field && fieldValue) {
           field.setText(String(fieldValue));
+          
+          // Enable auto-sizing for name fields
+          if (nameFields.includes(fieldName)) {
+            field.enableMultiline();
+            field.enableReadOnly();
+            // Set font size to 0 to enable auto-sizing
+            field.setFontSize(0);
+          }
         }
       } catch (e) {
         console.log(`Field ${fieldName} not found or error: ${(e as Error).message}`);
