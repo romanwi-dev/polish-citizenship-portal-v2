@@ -15,24 +15,22 @@ export const useIntakeData = (caseId: string | undefined) => {
         .maybeSingle();
 
       if (error) throw error;
-      
-      // Map master_table fields to intake form field names for backwards compatibility
-      if (data) {
-        return {
-          ...data,
-          given_names: data.applicant_first_name,
-          last_name: data.applicant_last_name,
-          passport_number: data.applicant_passport_number,
-          phone: data.applicant_phone,
-          email: data.applicant_email,
-          confirm_email: data.applicant_email, // Same as email
-          civil_status: data.applicant_is_married ? "married" : "not_married",
-          has_children: data.children_count > 0,
-          has_minor_children: (data as any).has_minor_children || false,
-          minor_children_count: (data as any).minor_children_count || 0,
-        };
-      }
-      return data;
+
+      // Map master_table fields to intake form fields
+      return data ? {
+        given_names: data.applicant_first_name || "",
+        last_name: data.applicant_last_name || "",
+        passport_number: data.applicant_passport_number || "",
+        phone: data.applicant_phone || "",
+        email: data.applicant_email || "",
+        confirm_email: data.applicant_email || "",
+        civil_status: data.applicant_is_married ? "married" : "not_married",
+        has_children: (data.children_count || 0) > 0,
+        has_minor_children: false, // Will be set based on children details
+        children_count: data.children_count || 0,
+        minor_children_count: 0,
+        additional_info: data.applicant_notes || ""
+      } : null;
     },
     enabled: !!caseId,
     staleTime: 30000,
@@ -54,8 +52,7 @@ export const useUpdateIntakeData = () => {
       if (updates.email !== undefined) masterUpdates.applicant_email = updates.email;
       if (updates.civil_status !== undefined) masterUpdates.applicant_is_married = updates.civil_status === "married";
       if (updates.children_count !== undefined) masterUpdates.children_count = updates.children_count;
-      if (updates.has_minor_children !== undefined) masterUpdates.has_minor_children = updates.has_minor_children;
-      if (updates.minor_children_count !== undefined) masterUpdates.minor_children_count = updates.minor_children_count;
+      if (updates.additional_info !== undefined) masterUpdates.applicant_notes = updates.additional_info;
 
       // Check if record exists
       const { data: existing } = await supabase
