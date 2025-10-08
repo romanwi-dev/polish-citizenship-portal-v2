@@ -98,6 +98,25 @@ export default function MasterDataTable() {
         return updatedData;
       }
 
+      // Auto-sync husband's last name after marriage with his current last name
+      if (prev.applicant_sex === 'M' && field === 'applicant_last_name') {
+        console.log('🤵 Male applicant: syncing applicant_last_name_after_marriage =', value);
+        return {
+          ...prev,
+          [field]: value,
+          applicant_last_name_after_marriage: value
+        };
+      }
+      
+      if (prev.applicant_sex === 'F' && field === 'spouse_last_name') {
+        console.log('🤵 Husband (spouse): syncing spouse_last_name_after_marriage =', value);
+        return {
+          ...prev,
+          [field]: value,
+          spouse_last_name_after_marriage: value
+        };
+      }
+
       return {
         ...prev,
         [field]: value

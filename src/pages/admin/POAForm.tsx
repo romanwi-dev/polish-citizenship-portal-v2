@@ -54,7 +54,22 @@ export default function POAForm() {
   }, [masterData, isLoading]);
 
   const handleInputChange = (field: string, value: any) => {
-    setFormData((prev: any) => ({ ...prev, [field]: value }));
+    setFormData((prev: any) => {
+      const updatedData = { ...prev, [field]: value };
+      
+      // Auto-sync husband's last name after marriage with his current last name
+      if (prev.applicant_sex === 'M' && field === 'applicant_last_name') {
+        updatedData.applicant_last_name_after_marriage = value;
+        console.log('🤵 Male applicant: syncing applicant_last_name_after_marriage =', value);
+      }
+      
+      if (prev.applicant_sex === 'F' && field === 'spouse_last_name') {
+        updatedData.spouse_last_name_after_marriage = value;
+        console.log('🤵 Husband (spouse): syncing spouse_last_name_after_marriage =', value);
+      }
+      
+      return updatedData;
+    });
   };
 
   const clearCardFields = (config: any) => {
