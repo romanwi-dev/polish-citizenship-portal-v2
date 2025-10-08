@@ -25,12 +25,13 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-pro',
+        model: 'google/gemini-2.5-flash',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt }
         ],
-        temperature: 0.7,
+        temperature: 0.3,
+        max_tokens: 100,
       }),
     });
 
@@ -63,36 +64,29 @@ serve(async (req) => {
 
 function getGuidancePrompt(formType: string): string {
   const formFieldGuides: Record<string, string> = {
-    intake: `You help fill the INTAKE FORM. Answer ONLY about the specific field asked.
+    intake: `INTAKE FORM GUIDE - BE DIRECT AND BRIEF
 
-FIELD-BY-FIELD GUIDE:
+AP-FN: First name from passport
+AP-MN: Middle name or leave blank
+AP-LN: Last name from passport  
+AP-DOB: DD.MM.YYYY format
+AP-POB: City, State, Country
+AP-CUR-CIT: Passport country
+AP-ADDR: Full street address
+AP-PASS: Passport number
+AP-EMAIL: Email address
+AP-PHONE: Phone with country code
 
-AP-FN (First Name): Legal first name from passport. Example: "John"
-AP-MN (Middle Name): Middle name(s) or leave blank. Example: "Michael" or leave empty
-AP-LN (Last Name): Legal surname from passport. Example: "Smith"
-AP-DOB (Date of Birth): Format DD.MM.YYYY. Example: "15.03.1985"
-AP-POB (Place of Birth): City, State, Country. Example: "New York, NY, USA"
-AP-CUR-CIT (Current Citizenship): Your passport country. Example: "United States"
-AP-ADDR (Address): Full street address. Example: "123 Main St, Apt 4B, Boston, MA 02101"
-AP-PASS (Passport Number): From your passport. Example: "123456789"
-AP-EMAIL: Valid email. Example: "john.smith@email.com"
-AP-PHONE: With country code. Example: "+1 617-555-0123"
+ANCESTOR:
+ANC-NAME: Polish ancestor's full name
+ANC-REL: How related (grandfather, etc)
+ANC-TOWN: Polish town they were born
+ANC-YEAR: Year left Poland
+ANC-NAT: Year naturalized or "never"
 
-POLISH ANCESTOR:
-ANC-NAME: Full name of Polish-born ancestor. Example: "Jan Kowalski"
-ANC-REL: Relationship to you. Example: "grandfather" or "great-grandmother"
-ANC-TOWN: Polish town they were born in. Example: "Kraków" or "Warsaw"
-ANC-YEAR: Year they left Poland (approximate). Example: "1920"
-ANC-NAT: Year they naturalized (if they did). Example: "1935" or "never"
+DOC-HAVE: Documents you have
 
-DOCUMENTS:
-DOC-HAVE: What you already have. Example: "birth certificate, marriage certificate"
-
-INSTRUCTIONS:
-- When user asks about a field, tell them ONLY what to enter and format
-- Give ONE specific example
-- Keep it under 15 words
-- No explanations about the process`,
+RULES: Answer in 5 words max. Give format only.`,
 
     master: `You help fill the MASTER DATA FORM. Answer ONLY about the specific field asked.
 
@@ -246,19 +240,17 @@ function buildUserPrompt(
   context: any
 ): string {
   if (userQuestion) {
-    return `Field name: ${currentField || 'not specified'}
-User asks: "${userQuestion}"
+    return `Field: ${currentField || 'general'}
+Question: "${userQuestion}"
 
-Find this exact field in your guide and tell them what to enter. Format: "[what]. Example: [example]". Maximum 10 words.`;
+Answer in 5 words max. Format only.`;
   }
 
   if (currentField) {
-    return `Field name: "${currentField}"
+    return `Field: "${currentField}"
 
-Look up this field and respond ONLY: "[what to enter]. Example: [example]". Maximum 8 words.`;
+3 words max. What format?`;
   }
 
-  return `User opened ${formType} form.
-
-Say: "Ask me about any field." 4 words only.`;
+  return `Say: "Ask about any field." Nothing else.`;
 }

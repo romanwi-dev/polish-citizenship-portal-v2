@@ -51,9 +51,6 @@ export const ClientGuideAssistant = ({
       const guidanceText = guideData.guidance;
       setGuidance(guidanceText);
 
-      // Auto-play voice response
-      await playVoice(guidanceText);
-
     } catch (error: any) {
       console.error('Guide error:', error);
       toast({
@@ -325,12 +322,6 @@ export const ClientGuideAssistant = ({
                 </CardTitle>
               </div>
               <div className="flex items-center gap-1">
-                {isPlaying && (
-                  <div className="flex items-center gap-1 text-xs text-green-500">
-                    <Volume2 className="h-4 w-4 animate-pulse" />
-                    Speaking...
-                  </div>
-                )}
                 <Button
                   variant="ghost"
                   size="sm"
@@ -354,12 +345,33 @@ export const ClientGuideAssistant = ({
           </CardHeader>
           <CardContent className="space-y-3 pt-4">
             {guidance && (
-              <Alert className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/30 shadow-sm">
-                <Sparkles className="h-4 w-4 text-primary" />
-                <AlertDescription className="text-sm mt-2 leading-relaxed font-light text-foreground/90">
-                  {guidance}
-                </AlertDescription>
-              </Alert>
+              <div className="space-y-2">
+                <Alert className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/30 shadow-sm">
+                  <Sparkles className="h-4 w-4 text-primary" />
+                  <AlertDescription className="text-base mt-2 leading-relaxed font-medium text-foreground">
+                    {guidance}
+                  </AlertDescription>
+                </Alert>
+                <Button
+                  onClick={() => playVoice(guidance)}
+                  disabled={isPlaying}
+                  size="sm"
+                  variant="outline"
+                  className="w-full"
+                >
+                  {isPlaying ? (
+                    <>
+                      <VolumeX className="h-4 w-4 mr-2" />
+                      Playing...
+                    </>
+                  ) : (
+                    <>
+                      <Volume2 className="h-4 w-4 mr-2" />
+                      Play Voice
+                    </>
+                  )}
+                </Button>
+              </div>
             )}
 
             <div className="space-y-2">
