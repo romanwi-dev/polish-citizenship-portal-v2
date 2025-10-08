@@ -74,9 +74,9 @@ const ContactFormWeb3 = () => {
         </div>
 
         <div className="max-w-5xl mx-auto px-2">
-          <div className="relative" style={{ perspective: '1000px', minHeight: '600px' }}>
+          <div className="relative w-full" style={{ perspective: '1000px' }}>
             <div 
-              className="relative w-full h-full transition-transform duration-700"
+              className="relative w-full transition-transform duration-700"
               style={{ 
                 transformStyle: 'preserve-3d',
                 transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
@@ -84,7 +84,7 @@ const ContactFormWeb3 = () => {
             >
               {/* Front Side - Form */}
               <div 
-                className="glass-card p-4 md:p-12 rounded-3xl absolute inset-0"
+                className="glass-card p-4 md:p-12 rounded-3xl w-full"
                 style={{ 
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden'
@@ -156,7 +156,7 @@ const ContactFormWeb3 = () => {
 
               {/* Back Side - Thank You Message */}
               <div 
-                className="glass-card p-4 md:p-12 rounded-3xl absolute inset-0 flex flex-col items-center justify-center text-center"
+                className="glass-card p-4 md:p-12 rounded-3xl w-full absolute top-0 left-0 flex flex-col items-center justify-center text-center min-h-[600px]"
                 style={{ 
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden',
