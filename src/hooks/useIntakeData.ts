@@ -54,7 +54,6 @@ export const useUpdateIntakeData = () => {
       if (updates.email !== undefined) masterUpdates.applicant_email = updates.email;
       if (updates.civil_status !== undefined) masterUpdates.applicant_is_married = updates.civil_status === "married";
       if (updates.children_count !== undefined) masterUpdates.children_count = updates.children_count;
-      if (updates.has_children !== undefined) masterUpdates.applicant_has_children = updates.has_children;
       if (updates.has_minor_children !== undefined) masterUpdates.has_minor_children = updates.has_minor_children;
       if (updates.minor_children_count !== undefined) masterUpdates.minor_children_count = updates.minor_children_count;
 
