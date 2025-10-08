@@ -128,7 +128,7 @@ const ContactFormWeb3 = () => {
                         onChange={handleChange}
                         placeholder=""
                         required
-                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
                         style={{ fontSize: '1.125rem', fontWeight: '400' }}
                       />
                     </div>
@@ -156,7 +156,7 @@ const ContactFormWeb3 = () => {
                       value={formData.message}
                       onChange={handleChange}
                       placeholder=""
-                      className="min-h-[240px] border-2 hover-glow focus:shadow-lg transition-all resize-none bg-card/50 backdrop-blur uppercase"
+                      className="min-h-[240px] border-2 hover-glow focus:shadow-lg transition-all resize-none bg-card/50 backdrop-blur"
                       style={{ fontSize: '1.125rem', fontWeight: '400' }}
                     />
                   </div>
