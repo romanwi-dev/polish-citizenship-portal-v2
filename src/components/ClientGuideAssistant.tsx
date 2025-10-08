@@ -170,8 +170,8 @@ export const ClientGuideAssistant = ({
     if (isMinimized) {
       return (
         <div className="fixed bottom-6 right-6 z-50 animate-fade-in">
-          <Card className="w-80 shadow-2xl border-primary/30 bg-gradient-to-br from-background to-primary/5 backdrop-blur-sm">
-            <CardHeader className="pb-3 cursor-pointer hover:bg-primary/5 transition-colors rounded-t-lg" onClick={() => setIsMinimized(false)}>
+          <Card className="w-80 shadow-2xl border-primary/30 bg-gradient-to-br from-background to-primary/5 backdrop-blur-sm rounded-2xl">
+            <CardHeader className="pb-3 cursor-pointer hover:bg-primary/5 transition-colors rounded-t-2xl" onClick={() => setIsMinimized(false)}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="relative">
@@ -203,8 +203,8 @@ export const ClientGuideAssistant = ({
     // Full expanded state - beautiful, modern design
     return (
       <div className="fixed bottom-6 right-6 z-50 animate-scale-in">
-        <Card className="w-96 shadow-2xl border-primary/30 bg-gradient-to-br from-background via-background to-primary/5 backdrop-blur-sm">
-          <CardHeader className="pb-3 bg-gradient-to-r from-primary/10 to-transparent border-b border-primary/20">
+        <Card className="w-96 shadow-2xl border-primary/30 bg-gradient-to-br from-background via-background to-primary/5 backdrop-blur-sm rounded-2xl">
+          <CardHeader className="pb-3 bg-gradient-to-r from-primary/10 to-transparent border-b border-primary/20 rounded-t-2xl">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="relative">
@@ -279,11 +279,8 @@ export const ClientGuideAssistant = ({
                 size="sm"
                 className="shrink-0 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
               >
-                {isLoading ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <HelpCircle className="h-4 w-4" />
-                )}
+                {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
+                {!isLoading && "Ask"}
               </Button>
             </div>
 
