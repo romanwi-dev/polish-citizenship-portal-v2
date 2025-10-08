@@ -137,9 +137,9 @@ const Login = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="w-full max-w-4xl mt-32"
+          className="w-full max-w-3xl mt-32"
         >
-          <Card className="glass-card border-primary/20">
+          <Card className="glass-card border-primary/20 rounded-2xl">
             <CardHeader className="border-b border-border/50 pb-6">
               <CardDescription className="text-center text-lg">
                 {isSignUp ? "Create a new account to access the case management system" : "Sign in to access your case management system"}
