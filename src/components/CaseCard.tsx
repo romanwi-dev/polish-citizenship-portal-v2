@@ -293,17 +293,17 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
           <div className="space-y-3 mt-auto">
             {/* Control Room Button - Premium Feature */}
             <Button
-              size="default"
-              className="w-full text-sm font-bold bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-blue-500/20 hover:from-purple-500/30 hover:via-pink-500/30 hover:to-blue-500/30 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 h-14"
+              size="lg"
+              variant="outline"
+              className="w-full bg-background/10 border-primary/20 hover:bg-background/20 h-14"
               onClick={(e) => {
                 e.stopPropagation();
                 navigate(`/admin/cases/${clientCase.id}`);
               }}
             >
-              <span className="relative z-10 bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent text-base text-center w-full">
+              <span className="text-base font-bold">
                 CONTROL ROOM
               </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity" />
             </Button>
 
             {/* Action Buttons - 2 rows of 3 */}
