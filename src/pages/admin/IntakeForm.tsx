@@ -422,8 +422,8 @@ export default function IntakeForm() {
                   <Textarea
                     value={formData.additional_info || ""}
                     onChange={(e) => handleInputChange("additional_info", e.target.value)}
-                    placeholder="Enter any additional information that might be relevant..."
-                    className="min-h-[120px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur resize-none"
+                    placeholder=""
+                    className="min-h-[120px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur resize-vertical"
                     style={{
                       fontSize: '1.125rem',
                       fontWeight: '400'

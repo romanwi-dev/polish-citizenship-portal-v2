@@ -282,7 +282,7 @@ export default function CitizenshipForm() {
           value={formData[name] || ""}
           onChange={(e) => handleInputChange(name, e.target.value.toUpperCase())}
           rows={rows}
-          className="border-2 hover-glow focus:shadow-lg transition-all resize-none bg-card/50 backdrop-blur uppercase"
+          className="border-2 hover-glow focus:shadow-lg transition-all resize-vertical bg-card/50 backdrop-blur uppercase"
         />
       </motion.div>
     );
