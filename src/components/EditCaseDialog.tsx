@@ -108,7 +108,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
           client_code: formData.client_code || null,
           country: countryValue,
           status: formData.status as any,
-          processing_mode: formData.generation || null as any,
+          generation: formData.generation as any,
           is_vip: formData.is_vip,
           notes: formData.notes,
           progress: formData.progress,
