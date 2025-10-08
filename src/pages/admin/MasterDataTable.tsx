@@ -283,6 +283,7 @@ export default function MasterDataTable() {
                 </>
               )}
             </Button>
+            <PDFGenerationButtons caseId={caseId || ''} />
             <Button 
               onClick={() => setActiveTab('applicant')}
               variant={activeTab === 'applicant' ? 'default' : 'outline'}
