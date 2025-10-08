@@ -40,12 +40,16 @@ export const poaFormConfigs: Record<string, POAFormConfig> = {
       { name: "applicant_last_name", label: "Applicant full last name / Nazwisko" },
       { name: "applicant_sex", label: "Applicant sex (Male/Female)" },
       { name: "applicant_passport_number", label: "Applicant ID/ passport number / Nr dokumentu tożsamości" },
-      { name: "spouse_first_name", label: "Spouse given names / Imię/ imiona" },
-      { name: "spouse_last_name", label: "Spouse full last name / Nazwisko" },
-      { name: "child_1_last_name", label: "Child 1 surname" },
-      { name: "child_2_last_name", label: "Child 2 surname" },
-      { name: "child_3_last_name", label: "Child 3 surname" },
-      { name: "child_4_last_name", label: "Child 4 surname" },
+      { name: "spouse_first_name", label: "Spouse given names / Imię/ imiona współmałżonka" },
+      { name: "spouse_last_name", label: "Spouse full last name / Nazwisko współmałżonka" },
+      { name: "child_1_first_name", label: "Child 1 given names / Imię/imiona dziecka 1" },
+      { name: "child_1_last_name", label: "Child 1 surname / Nazwisko dziecka 1" },
+      { name: "child_2_first_name", label: "Child 2 given names / Imię/imiona dziecka 2" },
+      { name: "child_2_last_name", label: "Child 2 surname / Nazwisko dziecka 2" },
+      { name: "child_3_first_name", label: "Child 3 given names / Imię/imiona dziecka 3" },
+      { name: "child_3_last_name", label: "Child 3 surname / Nazwisko dziecka 3" },
+      { name: "child_4_first_name", label: "Child 4 given names / Imię/imiona dziecka 4" },
+      { name: "child_4_last_name", label: "Child 4 surname / Nazwisko dziecka 4" },
     ]
   }
 };

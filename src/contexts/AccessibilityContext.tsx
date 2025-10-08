@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 
 interface AccessibilityContextType {
   isLargeFonts: boolean;
@@ -13,6 +13,15 @@ export function AccessibilityProvider({ children }: { children: ReactNode }) {
   const toggleFontSize = () => {
     setIsLargeFonts(prev => !prev);
   };
+
+  useEffect(() => {
+    // Apply font size changes to document root for mobile
+    if (isLargeFonts) {
+      document.documentElement.style.fontSize = '18px';
+    } else {
+      document.documentElement.style.fontSize = '16px';
+    }
+  }, [isLargeFonts]);
 
   return (
     <AccessibilityContext.Provider value={{ isLargeFonts, toggleFontSize }}>
