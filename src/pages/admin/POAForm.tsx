@@ -244,6 +244,33 @@ export default function POAForm() {
               )}
             </Button>
             <Button 
+              onClick={() => handleGeneratePDF(
+                activePOAType === 'adult' ? 'poa-adult' : 
+                activePOAType === 'minor' ? 'poa-minor' : 'poa-spouses',
+                activePOAType === 'adult' ? 'Adult POA' : 
+                activePOAType === 'minor' ? 'Minor POA' : 'Spouses POA'
+              )}
+              disabled={isGenerating}
+              variant="outline"
+              className="text-sm md:text-base lg:text-xl font-bold px-6 md:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[160px] md:min-w-[220px] lg:min-w-[260px] whitespace-nowrap"
+            >
+              {isGenerating ? (
+                <>
+                  <Loader2 className="h-3 md:h-4 lg:h-5 w-3 md:w-4 lg:w-5 animate-spin mr-1 md:mr-2 opacity-50" />
+                  <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                    Generating...
+                  </span>
+                </>
+              ) : (
+                <>
+                  <Download className="h-3 md:h-4 lg:h-5 w-3 md:w-4 lg:w-5 mr-1 md:mr-2 opacity-50" />
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                    Generate PDF
+                  </span>
+                </>
+              )}
+            </Button>
+            <Button 
               onClick={() => setActivePOAType('adult')}
               variant={activePOAType === 'adult' ? 'default' : 'outline'}
               className={`text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg ${
@@ -282,32 +309,10 @@ export default function POAForm() {
                 Spouses POA
               </span>
             </Button>
-            <Button 
-              onClick={() => handleGeneratePDF(
-                activePOAType === 'adult' ? 'poa-adult' : 
-                activePOAType === 'minor' ? 'poa-minor' : 'poa-spouses',
-                activePOAType === 'adult' ? 'Adult POA' : 
-                activePOAType === 'minor' ? 'Minor POA' : 'Spouses POA'
-              )}
-              disabled={isGenerating}
-              variant="outline"
-              className="text-sm md:text-base lg:text-xl font-bold px-6 md:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[160px] md:min-w-[220px] lg:min-w-[260px] whitespace-nowrap"
-            >
-              {isGenerating ? (
-                <>
-                  <Loader2 className="h-3 md:h-4 lg:h-5 w-3 md:w-4 lg:w-5 animate-spin mr-1 md:mr-2 opacity-50" />
-                  <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                    Generating...
-                  </span>
-                </>
-              ) : (
-                <>
-                  <Download className="h-3 md:h-4 lg:h-5 w-3 md:w-4 lg:w-5 mr-1 md:mr-2 opacity-50" />
-                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                    Generate PDF
-                  </span>
-                </>
-              )}
+            <Button variant="outline" className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap">
+              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                Button 3
+              </span>
             </Button>
             <Button variant="outline" className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap">
               <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
