@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useMasterData, useUpdateMasterData } from "@/hooks/useMasterData";
+import { sanitizeMasterData } from "@/utils/masterDataSanitizer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -46,9 +47,10 @@ export default function CivilRegistryForm() {
   };
   const handleSave = () => {
     if (!caseId) return;
+    const sanitizedData = sanitizeMasterData(formData);
     updateMutation.mutate({
       caseId,
-      updates: formData
+      updates: sanitizedData
     });
   };
   const handleGeneratePDF = async () => {
@@ -131,7 +133,22 @@ export default function CivilRegistryForm() {
                 <Label htmlFor={field.name} className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
                   {field.label}
                 </Label>
-                <Input id={field.name} type={field.type || "text"} value={formData[field.name] || ""} onChange={e => handleInputChange(field.name, field.type === "email" ? e.target.value : e.target.value.toUpperCase())} placeholder="" className={cn("h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur", field.type === "email" ? "" : "uppercase")} />
+                <Input 
+                  id={field.name} 
+                  type={field.type || "text"} 
+                  value={formData[field.name] || ""} 
+                  onChange={e => {
+                    // Only uppercase name/POB fields, preserve phone/passport/email as-is
+                    const isNameOrPlace = field.name.includes('_name') || field.name.includes('_pob') || field.name === 'place_of_marriage';
+                    const shouldUppercase = isNameOrPlace && field.type !== "email";
+                    handleInputChange(field.name, shouldUppercase ? e.target.value.toUpperCase() : e.target.value);
+                  }} 
+                  placeholder="" 
+                  className={cn(
+                    "h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur", 
+                    (field.name.includes('_name') || field.name.includes('_pob') || field.name === 'place_of_marriage') && field.type !== "email" && "uppercase"
+                  )} 
+                />
               </>}
           </motion.div>)}
       </div>;

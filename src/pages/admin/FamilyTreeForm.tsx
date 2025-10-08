@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useMasterData, useUpdateMasterData } from "@/hooks/useMasterData";
+import { sanitizeMasterData } from "@/utils/masterDataSanitizer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -49,9 +50,10 @@ export default function FamilyTreeForm() {
   };
   const handleSave = () => {
     if (!caseId) return;
+    const sanitizedData = sanitizeMasterData(formData);
     updateMutation.mutate({
       caseId,
-      updates: formData
+      updates: sanitizedData
     });
   };
   const handleGeneratePDF = async () => {
@@ -163,11 +165,15 @@ export default function FamilyTreeForm() {
                   id={field.name} 
                   type={field.type || "text"} 
                   value={formData[field.name] || ""} 
-                  onChange={e => handleInputChange(field.name, field.type === "email" ? e.target.value : e.target.value.toUpperCase())} 
+                  onChange={e => {
+                    // Only uppercase name fields, not phone/passport numbers
+                    const shouldUppercase = field.isNameField && field.type !== "email";
+                    handleInputChange(field.name, shouldUppercase ? e.target.value.toUpperCase() : e.target.value);
+                  }} 
                   placeholder="" 
                   className={cn(
                     "h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur", 
-                    field.type !== "email" && "uppercase"
+                    field.isNameField && field.type !== "email" && "uppercase"
                   )} 
                   style={{ fontSize: '1.125rem', fontWeight: '400' }}
                 />

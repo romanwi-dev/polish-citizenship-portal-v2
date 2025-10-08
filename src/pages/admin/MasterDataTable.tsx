@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useMasterData, useUpdateMasterData } from "@/hooks/useMasterData";
+import { sanitizeMasterData } from "@/utils/masterDataSanitizer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -90,9 +91,10 @@ export default function MasterDataTable() {
   };
   const handleSave = () => {
     if (!caseId) return;
+    const sanitizedData = sanitizeMasterData(formData);
     updateMutation.mutate({
       caseId,
-      updates: formData
+      updates: sanitizedData
     });
   };
   if (isLoading) {
