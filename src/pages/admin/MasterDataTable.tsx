@@ -83,6 +83,17 @@ export default function MasterDataTable() {
           }
         };
       }
+
+      // Auto-sync children's last names when father's last name changes
+      if (field === 'father_last_name') {
+        const updatedData = { ...prev, [field]: value };
+        const childrenCount = prev.children_count || 0;
+        for (let i = 1; i <= childrenCount; i++) {
+          updatedData[`child_${i}_last_name`] = value;
+        }
+        return updatedData;
+      }
+
       return {
         ...prev,
         [field]: value
