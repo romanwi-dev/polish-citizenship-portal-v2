@@ -295,7 +295,7 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
             <Button
               size="lg"
               variant="outline"
-              className="w-full bg-background/10 border-primary/20 hover:bg-background/20 h-14 perspective-1000 group relative overflow-hidden preserve-3d transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_40px_rgba(var(--primary),0.3)] animate-pulse"
+              className="w-full bg-background/10 border-primary/20 hover:bg-background/20 h-14 perspective-1000 group relative overflow-hidden preserve-3d transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_40px_rgba(var(--primary),0.3)]"
               onClick={(e) => {
                 e.stopPropagation();
                 navigate(`/admin/cases/${clientCase.id}`);
