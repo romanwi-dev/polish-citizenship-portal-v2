@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { Loader2, Save, Sparkles, CheckCircle2, Type, User, FileText, GitBranch, Download, Heart } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { POAFormField } from "@/components/POAFormField";
@@ -38,7 +39,8 @@ export default function IntakeForm() {
     has_children: false,
     has_minor_children: false,
     children_count: 0,
-    minor_children_count: 0
+    minor_children_count: 0,
+    additional_info: ""
   });
   useEffect(() => {
     if (intakeData) {
@@ -83,7 +85,8 @@ export default function IntakeForm() {
       has_children: false,
       has_minor_children: false,
       children_count: 0,
-      minor_children_count: 0
+      minor_children_count: 0,
+      additional_info: ""
     });
     toast.success("All fields cleared");
   };
@@ -406,6 +409,30 @@ export default function IntakeForm() {
                         </Select>
                       </motion.div>}
                   </>}
+
+                {/* Additional Information - Full Width */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }} 
+                  animate={{ opacity: 1, y: 0 }} 
+                  transition={{ delay: 0.5, duration: 0.4 }}
+                  className="col-span-1 md:col-span-2 space-y-4"
+                  onDoubleClick={() => clearField("additional_info")}
+                >
+                  <Label className={cn(
+                    "font-light text-foreground/90",
+                    isLargeFonts ? "text-xl" : "text-sm"
+                  )}>Additional relevant information</Label>
+                  <Textarea
+                    value={formData.additional_info || ""}
+                    onChange={(e) => handleInputChange("additional_info", e.target.value)}
+                    placeholder="Enter any additional information that might be relevant..."
+                    className="min-h-[120px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur resize-none"
+                    style={{
+                      fontSize: '1.125rem',
+                      fontWeight: '400'
+                    }}
+                  />
+                </motion.div>
               </div>
             </CardContent>
           </Card>
