@@ -301,7 +301,7 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
                 navigate(`/admin/cases/${clientCase.id}`);
               }}
             >
-              <span className="text-base font-bold">
+              <span className="text-base font-normal text-foreground/40">
                 CONTROL ROOM
               </span>
             </Button>
