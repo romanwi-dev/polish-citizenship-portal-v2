@@ -108,14 +108,91 @@ export default function CitizenshipForm() {
     feedbackMessage: "Hold for 5 seconds to clear entire form..."
   });
 
+  // Section 1: Person Data
+  const {
+    handlers: section1LongPressHandlers,
+    isPressed: isSection1Pressed
+  } = useLongPressWithFeedback({
+    onLongPress: () => clearCardFields([
+      "applicant_last_name", "applicant_maiden_name", "applicant_first_name",
+      "father_first_name", "mother_first_name", "applicant_sex", "applicant_pob",
+      "applicant_other_citizenships"
+    ], "Person Data"),
+    duration: 2000,
+    feedbackMessage: "Hold for 2 seconds to clear this section..."
+  });
+
+  // Section 2: Parents Data
+  const {
+    handlers: section2LongPressHandlers,
+    isPressed: isSection2Pressed
+  } = useLongPressWithFeedback({
+    onLongPress: () => clearCardFields([
+      "mother_last_name", "mother_maiden_name", "mother_first_name", "mother_pob",
+      "father_last_name", "father_first_name", "father_pob", "father_mother_marriage_place"
+    ], "Parents Data"),
+    duration: 2000,
+    feedbackMessage: "Hold for 2 seconds to clear this section..."
+  });
+
+  // Section 3: Grandparents Data
+  const {
+    handlers: section3LongPressHandlers,
+    isPressed: isSection3Pressed
+  } = useLongPressWithFeedback({
+    onLongPress: () => clearCardFields([
+      "mgf_last_name", "mgf_first_name", "mgf_pob",
+      "mgm_last_name", "mgm_maiden_name", "mgm_first_name", "mgm_pob",
+      "pgf_last_name", "pgf_first_name", "pgf_pob",
+      "pgm_last_name", "pgm_maiden_name", "pgm_first_name", "pgm_pob"
+    ], "Grandparents Data"),
+    duration: 2000,
+    feedbackMessage: "Hold for 2 seconds to clear this section..."
+  });
+
+  // Section 4: Address Data
+  const {
+    handlers: section4LongPressHandlers,
+    isPressed: isSection4Pressed
+  } = useLongPressWithFeedback({
+    onLongPress: () => clearCardFields([
+      "applicant_address_street", "applicant_address_city", "applicant_address_state",
+      "applicant_address_postal", "applicant_address_country", "applicant_phone", "applicant_email"
+    ], "Address Data"),
+    duration: 2000,
+    feedbackMessage: "Hold for 2 seconds to clear this section..."
+  });
+
+  // Section 5: Additional Info
+  const {
+    handlers: section5LongPressHandlers,
+    isPressed: isSection5Pressed
+  } = useLongPressWithFeedback({
+    onLongPress: () => clearCardFields([
+      "applicant_additional_info"
+    ], "Additional Information"),
+    duration: 2000,
+    feedbackMessage: "Hold for 2 seconds to clear this section..."
+  });
+
+  // Section 6: Biographies
+  const {
+    handlers: section6LongPressHandlers,
+    isPressed: isSection6Pressed
+  } = useLongPressWithFeedback({
+    onLongPress: () => clearCardFields([
+      "applicant_notes", "mother_notes", "father_notes",
+      "mgf_notes", "mgm_notes", "pgf_notes", "pgm_notes"
+    ], "Biographies"),
+    duration: 2000,
+    feedbackMessage: "Hold for 2 seconds to clear this section..."
+  });
+
   const renderDateField = (name: string, label: string) => {
     const dateValue = formData[name] ? new Date(formData[name]) : undefined;
     
     return (
-      <div
-        className="space-y-2"
-        onDoubleClick={() => handleInputChange(name, "")}
-      >
+      <div className="space-y-2">
         <Label htmlFor={name} className={cn(
           "font-light text-foreground/90",
           isLargeFonts ? "text-xl" : "text-sm"
@@ -362,8 +439,14 @@ export default function CitizenshipForm() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <Card className="glass-card border-primary/20">
-              <CardHeader className="border-b border-border/50 pb-6">
+            <Card className={cn(
+              "glass-card border-primary/20 transition-opacity",
+              isSection1Pressed && "opacity-70"
+            )}>
+              <CardHeader 
+                className="border-b border-border/50 pb-6 cursor-pointer"
+                {...section1LongPressHandlers}
+              >
                 <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   CZĘŚĆ I - Dane osoby, której dotyczy wniosek
                 </CardTitle>
@@ -393,8 +476,14 @@ export default function CitizenshipForm() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <Card className="glass-card border-primary/20">
-              <CardHeader className="border-b border-border/50 pb-6">
+            <Card className={cn(
+              "glass-card border-primary/20 transition-opacity",
+              isSection2Pressed && "opacity-70"
+            )}>
+              <CardHeader 
+                className="border-b border-border/50 pb-6 cursor-pointer"
+                {...section2LongPressHandlers}
+              >
                 <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Dane osobowe rodziców / Parents Personal Data
                 </CardTitle>
@@ -434,8 +523,14 @@ export default function CitizenshipForm() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <Card className="glass-card border-primary/20">
-              <CardHeader className="border-b border-border/50 pb-6">
+            <Card className={cn(
+              "glass-card border-primary/20 transition-opacity",
+              isSection3Pressed && "opacity-70"
+            )}>
+              <CardHeader 
+                className="border-b border-border/50 pb-6 cursor-pointer"
+                {...section3LongPressHandlers}
+              >
                 <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Dane osobowe dalszych wstępnych / Grandparents Data
                 </CardTitle>
@@ -496,8 +591,14 @@ export default function CitizenshipForm() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <Card className="glass-card border-primary/20">
-              <CardHeader className="border-b border-border/50 pb-6">
+            <Card className={cn(
+              "glass-card border-primary/20 transition-opacity",
+              isSection6Pressed && "opacity-70"
+            )}>
+              <CardHeader 
+                className="border-b border-border/50 pb-6 cursor-pointer"
+                {...section6LongPressHandlers}
+              >
                 <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   CZĘŚĆ II & III - Dodatkowe informacje / Additional Information
                 </CardTitle>
