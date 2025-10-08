@@ -40,8 +40,12 @@ export default function IntakeForm() {
     if (masterData) {
       setFormData(masterData);
       setOriginalData(masterData);
+    } else if (!isLoading) {
+      // Initialize with empty object when no data exists
+      setFormData({});
+      setOriginalData({});
     }
-  }, [masterData]);
+  }, [masterData, isLoading]);
 
   useEffect(() => {
     setHasUnsavedChanges(JSON.stringify(formData) !== JSON.stringify(originalData));
