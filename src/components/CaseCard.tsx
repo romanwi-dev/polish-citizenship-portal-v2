@@ -295,15 +295,16 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
             <Button
               size="lg"
               variant="outline"
-              className="w-full bg-background/10 border-primary/20 hover:bg-background/20 h-14"
+              className="w-full bg-background/10 border-primary/20 hover:bg-background/20 h-14 perspective-1000 group relative overflow-hidden preserve-3d transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_40px_rgba(var(--primary),0.3)] animate-pulse"
               onClick={(e) => {
                 e.stopPropagation();
                 navigate(`/admin/cases/${clientCase.id}`);
               }}
             >
-              <span className="text-base font-normal text-foreground/40">
+              <span className="text-base font-normal text-foreground/40 group-hover:text-foreground/60 transition-colors relative z-10">
                 CONTROL ROOM
               </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-fade-in" />
             </Button>
 
             {/* Action Buttons - 2 rows of 3 */}
