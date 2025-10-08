@@ -290,9 +290,10 @@ export default function POAForm() {
           </div>
         </motion.div>
 
-        {/* POA Form */}
+        {/* POA Forms */}
         <div className="space-y-8">
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }}>
+          {/* POA Adult */}
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0 }}>
             <Card className="glass-card border-primary/20">
               <CardHeader className="border-b border-border/50 pb-6">
                 <div {...adultCardLongPress.handlers} className="cursor-pointer select-none hover:opacity-80 transition-opacity">
@@ -304,6 +305,62 @@ export default function POAForm() {
               <CardContent className="pt-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                   {poaFormConfigs.adult.fields.map(field => (
+                    <POAFormField
+                      key={field.name}
+                      name={field.name}
+                      label={field.label}
+                      type={field.type}
+                      placeholder={field.placeholder}
+                      value={formData[field.name] || ""}
+                      onChange={(value) => handleInputChange(field.name, value)}
+                    />
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* POA Minor */}
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.1 }}>
+            <Card className="glass-card border-primary/20">
+              <CardHeader className="border-b border-border/50 pb-6">
+                <div {...minorCardLongPress.handlers} className="cursor-pointer select-none hover:opacity-80 transition-opacity">
+                  <CardTitle className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                    {poaFormConfigs.minor.title}
+                  </CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent className="pt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                  {poaFormConfigs.minor.fields.map(field => (
+                    <POAFormField
+                      key={field.name}
+                      name={field.name}
+                      label={field.label}
+                      type={field.type}
+                      placeholder={field.placeholder}
+                      value={formData[field.name] || ""}
+                      onChange={(value) => handleInputChange(field.name, value)}
+                    />
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* POA Spouses */}
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.2 }}>
+            <Card className="glass-card border-primary/20">
+              <CardHeader className="border-b border-border/50 pb-6">
+                <div {...spousesCardLongPress.handlers} className="cursor-pointer select-none hover:opacity-80 transition-opacity">
+                  <CardTitle className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                    {poaFormConfigs.spouses.title}
+                  </CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent className="pt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                  {poaFormConfigs.spouses.fields.map(field => (
                     <POAFormField
                       key={field.name}
                       name={field.name}
