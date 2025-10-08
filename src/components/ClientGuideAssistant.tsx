@@ -1,10 +1,10 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Bot, Volume2, VolumeX, Loader2, HelpCircle, Sparkles, Minimize2, Maximize2, X } from "lucide-react";
+import { Bot, Loader2, Sparkles, Minimize2, X } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface ClientGuideAssistantProps {
@@ -23,19 +23,9 @@ export const ClientGuideAssistant = ({
   const [question, setQuestion] = useState("");
   const [guidance, setGuidance] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
-  const [autoSpeak, setAutoSpeak] = useState(false); // Disabled by default until audio works
   const [isMinimized, setIsMinimized] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
   const { toast } = useToast();
-
-  // Auto-generate guidance when field changes
-  useEffect(() => {
-    if (currentField && autoSpeak) {
-      getGuidance(null);
-    }
-  }, [currentField]);
 
   const getGuidance = async (userQuestion: string | null) => {
     setIsLoading(true);
@@ -56,11 +46,6 @@ export const ClientGuideAssistant = ({
       const guidanceText = guideData.guidance;
       setGuidance(guidanceText);
 
-      // Auto-play audio if enabled
-      if (autoSpeak) {
-        await speakGuidance(guidanceText);
-      }
-
     } catch (error: any) {
       console.error('Guide error:', error);
       toast({
@@ -70,62 +55,6 @@ export const ClientGuideAssistant = ({
       });
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const speakGuidance = async (text: string) => {
-    try {
-      setIsPlayingAudio(true);
-
-      const { data: audioData, error: audioError } = await supabase.functions.invoke('text-to-speech', {
-        body: { 
-          text,
-          voice: 'nova' // Warm, engaging female voice
-        }
-      });
-
-      if (audioError) throw audioError;
-
-      // Convert base64 to blob
-      const binaryString = atob(audioData.audioContent);
-      const bytes = new Uint8Array(binaryString.length);
-      for (let i = 0; i < binaryString.length; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-      }
-      const blob = new Blob([bytes], { type: 'audio/mpeg' });
-      const audioUrl = URL.createObjectURL(blob);
-
-      const audio = new Audio(audioUrl);
-      audioRef.current = audio;
-      
-      audio.onended = () => {
-        setIsPlayingAudio(false);
-        URL.revokeObjectURL(audioUrl);
-      };
-
-      audio.onerror = () => {
-        setIsPlayingAudio(false);
-        URL.revokeObjectURL(audioUrl);
-      };
-
-      await audio.play();
-
-    } catch (error: any) {
-      console.error('Audio error:', error);
-      setIsPlayingAudio(false);
-      toast({
-        title: "Audio Error",
-        description: "Could not play audio, but guidance is shown below.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const stopAudio = () => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-      setIsPlayingAudio(false);
     }
   };
 
@@ -219,18 +148,6 @@ export const ClientGuideAssistant = ({
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => setAutoSpeak(!autoSpeak)}
-                  className="h-8 w-8 p-0 hover:bg-primary/10"
-                  title={autoSpeak ? "Disable auto-speak" : "Enable auto-speak"}
-                >
-                  {autoSpeak ? 
-                    <Volume2 className="h-4 w-4 text-primary" /> : 
-                    <VolumeX className="h-4 w-4 text-muted-foreground" />
-                  }
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
                   onClick={() => setIsMinimized(true)}
                   className="h-8 w-8 p-0 hover:bg-primary/10"
                   title="Minimize"
@@ -283,18 +200,6 @@ export const ClientGuideAssistant = ({
                 {!isLoading && "Ask"}
               </Button>
             </div>
-
-            {isPlayingAudio && (
-              <Button
-                onClick={stopAudio}
-                variant="outline"
-                size="sm"
-                className="w-full border-primary/30 hover:bg-primary/10"
-              >
-                <VolumeX className="h-4 w-4 mr-2" />
-                Stop Audio
-              </Button>
-            )}
           </CardContent>
         </Card>
       </div>
@@ -304,22 +209,9 @@ export const ClientGuideAssistant = ({
   return (
     <Card className="border-primary/20">
       <CardHeader>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Bot className="h-5 w-5 text-primary" />
-            <CardTitle>AI Form Guide</CardTitle>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-muted-foreground">Auto-speak</span>
-            <Button
-              variant={autoSpeak ? "default" : "outline"}
-              size="sm"
-              onClick={() => setAutoSpeak(!autoSpeak)}
-              className="h-8"
-            >
-              {autoSpeak ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
-            </Button>
-          </div>
+        <div className="flex items-center gap-2">
+          <Bot className="h-5 w-5 text-primary" />
+          <CardTitle>AI Form Guide</CardTitle>
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -375,36 +267,21 @@ export const ClientGuideAssistant = ({
           </div>
         </div>
 
-        {/* Actions */}
-        <div className="flex gap-2">
-          <Button 
-            onClick={handleAskQuestion}
-            disabled={isLoading || !question.trim()}
-            className="flex-1"
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Getting Answer...
-              </>
-            ) : (
-              <>
-                <HelpCircle className="mr-2 h-4 w-4" />
-                Ask Guide
-              </>
-            )}
-          </Button>
-
-          {isPlayingAudio && (
-            <Button
-              onClick={stopAudio}
-              variant="outline"
-            >
-              <VolumeX className="h-4 w-4 mr-2" />
-              Stop Audio
-            </Button>
+        {/* Ask Button */}
+        <Button 
+          onClick={handleAskQuestion}
+          disabled={isLoading || !question.trim()}
+          className="w-full"
+        >
+          {isLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Getting Answer...
+            </>
+          ) : (
+            "Ask Guide"
           )}
-        </div>
+        </Button>
       </CardContent>
     </Card>
   );
