@@ -52,7 +52,16 @@ export const useUpdateIntakeData = () => {
       if (updates.email !== undefined) masterUpdates.applicant_email = updates.email;
       if (updates.civil_status !== undefined) masterUpdates.applicant_is_married = updates.civil_status === "married";
       if (updates.children_count !== undefined) masterUpdates.children_count = updates.children_count;
+      if (updates.has_children !== undefined) {
+        // Only update children_count if has_children is false, otherwise keep the number
+        if (!updates.has_children) {
+          masterUpdates.children_count = 0;
+        }
+      }
       if (updates.additional_info !== undefined) masterUpdates.applicant_notes = updates.additional_info;
+      
+      // Note: has_minor_children and minor_children_count are intake-form-only fields
+      // They are not stored in master_table but used for UI logic
 
       // Check if record exists
       const { data: existing } = await supabase
