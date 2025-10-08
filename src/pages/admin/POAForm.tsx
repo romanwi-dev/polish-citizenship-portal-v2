@@ -276,6 +276,7 @@ export default function POAForm() {
                           {config.title}
                         </CardTitle>
                       </div>
+                      {/* Action Buttons - Same row */}
                       <div className="flex flex-wrap gap-2 md:gap-3">
                         <Button onClick={handleSave} disabled={updateMutation.isPending} size="default" className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap">
                           {updateMutation.isPending ? <>
