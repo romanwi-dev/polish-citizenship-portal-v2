@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Bot, Loader2, Sparkles, Minimize2, X } from "lucide-react";
+import { Bot, Loader2, Sparkles, Minimize2, X, Mic, MicOff, Volume2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { RealtimeChat } from "@/utils/RealtimeAudio";
 
 interface ClientGuideAssistantProps {
   formType: 'intake' | 'master' | 'poa' | 'citizenship' | 'civil_registry' | 'family_tree';
@@ -25,6 +26,9 @@ export const ClientGuideAssistant = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isVoiceActive, setIsVoiceActive] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const chatRef = useRef<RealtimeChat | null>(null);
   const { toast } = useToast();
 
   const getGuidance = async (userQuestion: string | null) => {
@@ -70,6 +74,47 @@ export const ClientGuideAssistant = ({
 
     await getGuidance(question);
     setQuestion("");
+  };
+
+  const startVoiceChat = async () => {
+    try {
+      setIsLoading(true);
+      chatRef.current = new RealtimeChat(
+        formType,
+        (event) => {
+          console.log("Chat event:", event);
+          if (event.type === 'response.audio_transcript.delta') {
+            setGuidance(prev => prev + event.delta);
+          } else if (event.type === 'response.audio_transcript.done') {
+            // Transcript complete
+          }
+        },
+        setIsSpeaking
+      );
+      
+      await chatRef.current.init();
+      setIsVoiceActive(true);
+      
+      toast({
+        title: "Voice Active",
+        description: "You can now speak to the AI assistant!",
+      });
+    } catch (error: any) {
+      console.error('Voice error:', error);
+      toast({
+        title: "Voice Error",
+        description: error.message || "Failed to start voice chat",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const stopVoiceChat = () => {
+    chatRef.current?.disconnect();
+    setIsVoiceActive(false);
+    setIsSpeaking(false);
   };
 
   const quickQuestions = [
@@ -139,12 +184,37 @@ export const ClientGuideAssistant = ({
                 <div className="relative">
                   <div className="absolute inset-0 bg-primary/20 rounded-full animate-ping" />
                   <Bot className="h-6 w-6 text-primary relative z-10" />
+                  {isSpeaking && (
+                    <Volume2 className="h-3 w-3 text-green-500 absolute -bottom-1 -right-1 animate-pulse" />
+                  )}
                 </div>
                 <CardTitle className="text-base font-light text-foreground/90">
                   AI Form Assistant
                 </CardTitle>
               </div>
               <div className="flex items-center gap-1">
+                {!isVoiceActive ? (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={startVoiceChat}
+                    disabled={isLoading}
+                    className="h-8 w-8 p-0 hover:bg-green-500/10"
+                    title="Start voice chat"
+                  >
+                    {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Mic className="h-4 w-4 text-green-500" />}
+                  </Button>
+                ) : (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={stopVoiceChat}
+                    className="h-8 w-8 p-0 hover:bg-red-500/10"
+                    title="Stop voice chat"
+                  >
+                    <MicOff className="h-4 w-4 text-red-500" />
+                  </Button>
+                )}
                 <Button
                   variant="ghost"
                   size="sm"
