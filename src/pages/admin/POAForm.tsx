@@ -327,7 +327,7 @@ export default function POAForm() {
                     onChange={(value) => handleInputChange("applicant_last_name", value)}
                   />
                 </div>
-                <div className="mt-4 md:mt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
                   <POAFormField
                     name="applicant_passport_number"
                     label="ID/ passport number / Nr dokumentu tożsamości"
@@ -376,7 +376,7 @@ export default function POAForm() {
                     onChange={(value) => handleInputChange("applicant_last_name", value)}
                   />
                 </div>
-                <div className="mt-4 md:mt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
                   <POAFormField
                     name="applicant_passport_number"
                     label="Parent ID/ passport number / Nr dokumentu tożsamości"
@@ -461,7 +461,7 @@ export default function POAForm() {
                     onChange={(value) => handleInputChange("spouse_last_name", value)}
                   />
                 </div>
-                <div className="mt-4 md:mt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
                   <POAFormField
                     name="spouse_passport_number"
                     label="Wife ID/passport number / Nr dokumentu tożsamości żony"
@@ -483,7 +483,7 @@ export default function POAForm() {
                     onChange={(value) => handleInputChange("spouse_last_name_after_marriage", value)}
                   />
                 </div>
-                <div className="mt-4 md:mt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
                   <POAFormField
                     name="children_surnames"
                     label="Children's surname(s) / Nazwisko/a dzieci"
