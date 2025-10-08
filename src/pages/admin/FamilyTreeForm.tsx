@@ -292,41 +292,6 @@ export default function FamilyTreeForm() {
             </Button>
           </div>
         </motion.div>
-        {/* Header */}
-        <motion.div 
-          initial={{ opacity: 0, y: -50 }} 
-          animate={{ opacity: 1, y: 0 }} 
-          transition={{ duration: 0.8 }}
-          className="mb-8"
-        >
-          <Card className="glass-card border-primary/20 overflow-hidden rounded-none border-x-0 border-t-0">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5" />
-            <CardHeader className="relative pb-8 pt-8">
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
-                  <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
-                    Polish Family Tree
-                  </CardTitle>
-                </motion.div>
-                <div className="flex items-center gap-3">
-                  <Button
-                    onClick={() => navigate('/login')}
-                    size="lg"
-                    variant="ghost"
-                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10"
-                    title="Login / Register"
-                  >
-                    <User className="h-8 w-8" />
-                  </Button>
-                  <Button onClick={toggleFontSize} size="lg" variant="ghost" className={`h-16 w-16 rounded-full transition-all ${isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground'}`} title="Toggle font size">
-                    <Type className="h-8 w-8" />
-                  </Button>
-                </div>
-              </div>
-            </CardHeader>
-          </Card>
-        </motion.div>
-
         {/* Action Buttons Section */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }} 
