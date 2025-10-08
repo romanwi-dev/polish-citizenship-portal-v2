@@ -63,8 +63,18 @@ export default function POAForm() {
   };
 
   const handleSave = async () => {
-    if (!caseId) return;
-    await updateMutation.mutateAsync({ caseId, updates: formData });
+    console.log('💾 SAVE BUTTON CLICKED - caseId:', caseId);
+    console.log('📋 Form data to save:', formData);
+    if (!caseId) {
+      console.error('❌ No caseId!');
+      return;
+    }
+    try {
+      await updateMutation.mutateAsync({ caseId, updates: formData });
+      console.log('✅ Save completed successfully');
+    } catch (error) {
+      console.error('❌ Save failed:', error);
+    }
   };
 
   const handleGenerateAndPreview = async () => {
