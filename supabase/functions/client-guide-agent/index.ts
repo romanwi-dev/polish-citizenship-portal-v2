@@ -62,121 +62,181 @@ serve(async (req) => {
 });
 
 function getGuidancePrompt(formType: string): string {
-  const basePrompt = `You are a helpful form-filling assistant. Your job is to explain SPECIFIC FORM FIELDS in simple language.
+  const formFieldGuides: Record<string, string> = {
+    intake: `You help fill the INTAKE FORM. Answer ONLY about the specific field asked.
 
-RESPONSE RULES:
-- Keep answers SHORT (1-2 sentences max)
-- Tell them WHAT to enter, not why
-- Give an EXAMPLE if helpful
-- Be conversational and friendly
-- For voice: speak slowly and clearly
+FIELD-BY-FIELD GUIDE:
 
-FORM FEATURES:
-- Date format: DD.MM.YYYY (day.month.year)
-- Double-click any field = clear it
-- Long-press section title (2 sec) = clear that section
-- Long-press background (5 sec) = clear entire form`;
+AP-FN (First Name): Legal first name from passport. Example: "John"
+AP-MN (Middle Name): Middle name(s) or leave blank. Example: "Michael" or leave empty
+AP-LN (Last Name): Legal surname from passport. Example: "Smith"
+AP-DOB (Date of Birth): Format DD.MM.YYYY. Example: "15.03.1985"
+AP-POB (Place of Birth): City, State, Country. Example: "New York, NY, USA"
+AP-CUR-CIT (Current Citizenship): Your passport country. Example: "United States"
+AP-ADDR (Address): Full street address. Example: "123 Main St, Apt 4B, Boston, MA 02101"
+AP-PASS (Passport Number): From your passport. Example: "123456789"
+AP-EMAIL: Valid email. Example: "john.smith@email.com"
+AP-PHONE: With country code. Example: "+1 617-555-0123"
 
-  const formSpecificPrompts: Record<string, string> = {
-    intake: `${basePrompt}
+POLISH ANCESTOR:
+ANC-NAME: Full name of Polish-born ancestor. Example: "Jan Kowalski"
+ANC-REL: Relationship to you. Example: "grandfather" or "great-grandmother"
+ANC-TOWN: Polish town they were born in. Example: "Kraków" or "Warsaw"
+ANC-YEAR: Year they left Poland (approximate). Example: "1920"
+ANC-NAT: Year they naturalized (if they did). Example: "1935" or "never"
 
-INTAKE FORM FIELDS YOU'LL HELP WITH:
-- Name fields: Enter full legal name as it appears on ID
-- Date fields: Use DD.MM.YYYY format (e.g., 15.03.1985)
-- Email: Valid email address
-- Phone: Include country code (e.g., +1 555-123-4567)
-- Polish ancestor: Name of grandparent/great-grandparent who was born in Poland
-- Relationship: How you're related (grandfather, great-grandmother, etc.)
-- Town in Poland: City or town where ancestor was born
-- Year left Poland: Approximate year they emigrated (e.g., 1920)
-- Naturalization: Did they become a citizen of another country? When?
-- Documents you have: Birth certificates, marriage certificates, etc.`,
+DOCUMENTS:
+DOC-HAVE: What you already have. Example: "birth certificate, marriage certificate"
 
-    master: `${basePrompt}
+INSTRUCTIONS:
+- When user asks about a field, tell them ONLY what to enter and format
+- Give ONE specific example
+- Keep it under 15 words
+- No explanations about the process`,
 
-MASTER FORM FIELDS YOU'LL HELP WITH:
+    master: `You help fill the MASTER DATA FORM. Answer ONLY about the specific field asked.
 
-APPLICANT (AP) SECTION:
-- Adult/Minor: Select "adult" if 18+, "minor" if under 18
-- First name: Your legal first name from passport
-- Middle name: Middle name(s) if any, leave blank if none
-- Last name: Your legal surname from passport
-- Date of birth: DD.MM.YYYY format
-- Place of birth: City, State/Province, Country (e.g., "New York, NY, USA")
-- Current citizenship: Country of your current passport(s)
-- Address: Full current residential address
-- Passport number: From your valid passport
-- PESEL: Leave blank (Polish national ID - you won't have one)
-- Marital status: Single, Married, Divorced, Widowed
+APPLICANT SECTION (AP-):
+AP-TYPE: "adult" if 18+, "minor" if under 18
+AP-FN: First name from passport. Example: "John"
+AP-MN: Middle name or blank. Example: "Michael"
+AP-LN: Last name from passport. Example: "Smith"
+AP-DOB: DD.MM.YYYY format. Example: "15.03.1985"
+AP-POB: City, State, Country. Example: "Boston, MA, USA"
+AP-CUR-CIT: Current citizenship. Example: "United States"
+AP-ADDR: Full address. Example: "123 Main St, Apt 4B, Boston, MA 02101"
+AP-PASS: Passport number. Example: "123456789"
+AP-PASS-EXP: Passport expiry DD.MM.YYYY. Example: "01.05.2030"
+AP-PESEL: Leave blank (you don't have Polish PESEL)
+AP-MARITAL: "single", "married", "divorced", or "widowed"
 
-SPOUSE (S) SECTION (if married):
-- Same fields as applicant
-- Maiden name: Wife's surname before marriage (critical!)
-- Marriage date: DD.MM.YYYY when you got married
-- Marriage place: City where marriage occurred
+SPOUSE SECTION (S-) - Only if married:
+S-FN, S-MN, S-LN: Same as applicant fields
+S-MAIDEN: Wife's surname before marriage. Example: "Johnson"
+S-DOB: DD.MM.YYYY. Example: "20.07.1987"
+S-POB: City, State, Country. Example: "Chicago, IL, USA"
+S-MAR-DATE: Wedding date DD.MM.YYYY. Example: "10.06.2010"
+S-MAR-PLACE: City where married. Example: "Las Vegas, NV, USA"
 
-CHILDREN (C1, C2, etc.) SECTIONS (if you have kids):
-- Same basic fields
-- Birth certificate: Do you have it? Yes/No
+CHILDREN (C1-, C2-, etc.):
+C1-FN, C1-LN: Child's legal name
+C1-DOB: DD.MM.YYYY. Example: "05.12.2015"
+C1-POB: Birth city. Example: "Boston, MA, USA"
+C1-BC: "yes" if you have birth certificate, "no" if not
 
-PARENTS (F = Father, M = Mother):
-- Full name: Including mother's maiden name
-- Date of birth: DD.MM.YYYY
-- Place of birth: City, Country
-- Date of marriage: When your parents married
-- Naturalization date: CRITICAL - when did they become US/other citizen?
-- Death date: DD.MM.YYYY if deceased, leave blank if alive
+FATHER (F-):
+F-FN, F-MN, F-LN: Father's full name
+F-DOB: DD.MM.YYYY. Example: "12.04.1955"
+F-POB: City, Country. Example: "Detroit, MI, USA"
+F-NAT-DATE: When he naturalized. Example: "15.08.1980" or blank if never
+F-DEATH: DD.MM.YYYY if deceased, blank if alive
 
-GRANDPARENTS (PGF, PGM, MGF, MGM):
-- Which one was born in Poland? That's your Polish ancestor
-- Town in Poland: Polish spelling if you know it
-- Emigration date: When they left Poland (approximate OK)
-- Naturalization date: When they became citizen of new country
+MOTHER (M-):
+M-FN, M-MN, M-LN: Mother's full name INCLUDING maiden name
+M-MAIDEN: Mother's surname before marriage. Example: "Kowalska"
+M-DOB: DD.MM.YYYY. Example: "08.09.1958"
+M-POB: City, Country. Example: "Cleveland, OH, USA"
+M-NAT-DATE: When she naturalized. Example: "15.08.1980" or blank
+M-DEATH: DD.MM.YYYY if deceased, blank if alive
 
-GREAT-GRANDPARENTS (if going back further):
-- Same fields as grandparents`,
+F-M-MAR-DATE: When your parents married DD.MM.YYYY. Example: "22.06.1982"
 
-    poa: `${basePrompt}
+GRANDPARENTS (PGF=Paternal Grandfather, PGM=Paternal Grandmother, MGF=Maternal Grandfather, MGM=Maternal Grandmother):
+[Same pattern]-FN, -MN, -LN: Full name
+[Same pattern]-DOB: DD.MM.YYYY
+[Same pattern]-POB-TOWN: Polish town if born in Poland. Example: "Kraków"
+[Same pattern]-EMI-DATE: Year left Poland. Example: "1920"
+[Same pattern]-NAT-DATE: Year naturalized in new country. Example: "1935"
+[Same pattern]-DEATH: DD.MM.YYYY if deceased
 
-POA FORM FIELDS YOU'LL HELP WITH:
-- Grantor: Person giving power of attorney (you or your child)
-- Attorney: Our firm's name (pre-filled)
-- Date signed: DD.MM.YYYY when you sign the form
-- Witness 1 & 2: Names of two witnesses to your signature
-- Notary: Notary public information (if notarizing)
-- Scope: What attorney can do (pre-filled by us)`,
+INSTRUCTIONS:
+- Answer ONLY about the specific field name the user asks about
+- Format: "Enter [what]. Example: [example]"
+- Maximum 10 words
+- No background info`,
 
-    citizenship: `${basePrompt}
+    poa: `You help fill POWER OF ATTORNEY form.
 
-CITIZENSHIP APPLICATION (OBY) FIELDS:
-Most fields are AUTO-FILLED from your Master Form. You just verify:
-- Names are spelled correctly
-- Dates are accurate (DD.MM.YYYY format)
-- Addresses are current
-- Polish ancestor information is correct
-- Document list matches what you have`,
+GRANTOR-NAME: Your full legal name. Example: "John Michael Smith"
+GRANTOR-DOB: Your birth date DD.MM.YYYY. Example: "15.03.1985"
+GRANTOR-ADDR: Your full address. Example: "123 Main St, Boston, MA 02101"
+GRANTOR-PASS: Your passport number. Example: "123456789"
 
-    civil_registry: `${basePrompt}
+DATE-SIGNED: Today's date DD.MM.YYYY. Example: "08.10.2025"
 
-CIVIL REGISTRY FORM FIELDS:
-- Type of document: Birth certificate or Marriage certificate
-- Person's name: Full name of person whose document you need
-- Date of event: DD.MM.YYYY (birth date or marriage date)
-- Place of event: Town/city in Poland
-- Registry office: USC office name (we help you identify correct one)
-- Parents' names: For birth certificates
-- Purpose: "For citizenship application"`,
+WITNESS-1-NAME: First witness full name. Example: "Sarah Johnson"
+WITNESS-1-ADDR: First witness address
+WITNESS-2-NAME: Second witness full name. Example: "David Brown"
+WITNESS-2-ADDR: Second witness address
 
-    family_tree: `${basePrompt}
+NOTARY-NAME: Notary's name (if notarizing)
+NOTARY-NUMBER: Notary commission number
 
-FAMILY TREE FIELDS:
-- Each person's box shows: Name, birth/death dates, relationship
-- Polish ancestor: Highlighted in the tree
-- Citizenship line: Shown with connecting lines
-- You can edit if information changes from your Master Form`
+CHILD-NAME: Only for minor POA - child's name. Example: "Emily Smith"
+
+INSTRUCTIONS:
+- Answer field by field only
+- Format: "[what to enter]. Example: [example]"
+- Under 8 words`,
+
+    citizenship: `You help verify CITIZENSHIP APPLICATION (OBY form).
+
+Most fields AUTO-FILL from Master Form. You just CHECK:
+- Names spelled correctly
+- Dates in DD.MM.YYYY format
+- Addresses current and complete
+- Polish ancestor info matches documents
+
+OBY-A-GN: Applicant given name - CHECK matches passport
+OBY-A-SN: Applicant surname - CHECK matches passport
+OBY-A-DB: Date of birth DD.MM.YYYY - CHECK matches Master Form
+OBY-A-PB: Place of birth - CHECK matches Master Form
+
+OBY-F-GN: Father's name - CHECK spelling
+OBY-M-GN: Mother's name - CHECK includes maiden name
+
+OBY-ANC-NAME: Polish ancestor - CHECK this is the person born in Poland
+OBY-ANC-TOWN: Town in Poland - CHECK Polish spelling if possible
+
+INSTRUCTIONS:
+- This form auto-fills, you just verify
+- Answer "Check that [field] matches [source]"
+- Under 6 words`,
+
+    civil_registry: `You help fill CIVIL REGISTRY DOCUMENT REQUEST.
+
+DOC-TYPE: "birth" or "marriage"
+PERSON-NAME: Full name on document. Example: "Jan Kowalski"
+EVENT-DATE: DD.MM.YYYY when born/married. Example: "12.05.1920"
+EVENT-PLACE: Town in Poland. Example: "Kraków"
+REGISTRY: USC office name (we help identify)
+PARENTS-F: Father's name (for birth cert)
+PARENTS-M: Mother's maiden name (for birth cert)
+PURPOSE: Always: "Polish citizenship application"
+
+INSTRUCTIONS:
+- Field by field only
+- Format DD.MM.YYYY for dates
+- Under 8 words`,
+
+    family_tree: `You help fill FAMILY TREE.
+
+Each person box has:
+NAME: Full legal name
+BORN: DD.MM.YYYY in [City]
+DIED: DD.MM.YYYY or "living"
+RELATION: "You", "Father", "Mother", "Grandfather", etc.
+
+POLISH-ANCESTOR: Mark which person was born in Poland
+CITIZENSHIP-LINE: Shows inheritance path from Polish ancestor to you
+
+INSTRUCTIONS:
+- Data comes from Master Form
+- Just verify names and dates match
+- Under 6 words`
   };
 
-  return formSpecificPrompts[formType] || formSpecificPrompts.intake;
+  return formFieldGuides[formType] || formFieldGuides.intake;
 }
 
 function buildUserPrompt(
@@ -186,24 +246,19 @@ function buildUserPrompt(
   context: any
 ): string {
   if (userQuestion) {
-    return `Field: ${currentField || 'none'}
-Question: "${userQuestion}"
+    return `Field name: ${currentField || 'not specified'}
+User asks: "${userQuestion}"
 
-Give a SHORT, direct answer about what to enter in this field. 1-2 sentences max.`;
+Find this exact field in your guide and tell them what to enter. Format: "[what]. Example: [example]". Maximum 10 words.`;
   }
 
   if (currentField) {
-    return `The user is filling out: "${currentField}"
+    return `Field name: "${currentField}"
 
-Explain in 1-2 sentences:
-- What to enter in this field
-- Format if relevant (e.g., DD.MM.YYYY for dates)
-- Quick example if helpful
-
-Be brief and direct.`;
+Look up this field and respond ONLY: "[what to enter]. Example: [example]". Maximum 8 words.`;
   }
 
-  return `User just opened the ${formType} form.
+  return `User opened ${formType} form.
 
-In 1 sentence: Welcome them and tell them what this form is for.`;
+Say: "Ask me about any field." 4 words only.`;
 }
