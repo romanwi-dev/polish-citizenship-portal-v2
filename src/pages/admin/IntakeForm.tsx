@@ -75,9 +75,12 @@ export default function IntakeForm() {
       }
     }
 
+    // Remove UI-only fields that don't exist in master_table
+    const { confirm_email, ...dataToSave } = formData;
+
     updateMutation.mutate({
       caseId,
-      updates: formData
+      updates: dataToSave
     }, {
       onSuccess: () => {
         setOriginalData(formData);
@@ -91,9 +94,12 @@ export default function IntakeForm() {
     formData,
     onSave: (data) => {
       if (caseId) {
+        // Remove UI-only fields that don't exist in master_table
+        const { confirm_email, ...dataToSave } = data;
+        
         updateMutation.mutate({
           caseId,
-          updates: data
+          updates: dataToSave
         }, {
           onSuccess: () => {
             setOriginalData(data);
