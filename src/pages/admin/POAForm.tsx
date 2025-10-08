@@ -488,8 +488,8 @@ export default function POAForm() {
                   <POAFormField
                     name="applicant_last_name"
                     label={formData.applicant_sex === 'F'
-                      ? "Wife surname / Nazwisko żony"
-                      : "Husband surname / Nazwisko męża"
+                      ? "Wife full last name / Nazwisko żony"
+                      : "Husband full last name / Nazwisko męża"
                     }
                     value={formData.applicant_last_name || ""}
                     onChange={(value) => handleInputChange("applicant_last_name", value)}
@@ -521,8 +521,8 @@ export default function POAForm() {
                   <POAFormField
                     name="spouse_last_name"
                     label={formData.applicant_sex === 'F'
-                      ? "Husband surname / Nazwisko męża"
-                      : "Wife surname / Nazwisko żony"
+                      ? "Husband full last name / Nazwisko męża"
+                      : "Wife full last name / Nazwisko żony"
                     }
                     value={formData.spouse_last_name || ""}
                     onChange={(value) => handleInputChange("spouse_last_name", value)}
