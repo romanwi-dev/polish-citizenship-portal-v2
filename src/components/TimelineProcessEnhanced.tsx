@@ -3,21 +3,6 @@ import { useState } from "react";
 import { FileText, CheckCircle, CreditCard, FileCheck, Send, FolderSearch, Archive, Languages, Upload, Stamp, Clock, Zap, Award, Book, Users, Shield } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
-import timeline01 from "@/assets/timeline-01-first-steps.jpg";
-import timeline02 from "@/assets/timeline-02-terms-pricing.jpg";
-import timeline03 from "@/assets/timeline-03-advance-account.jpg";
-import timeline04 from "@/assets/timeline-04-poa.jpg";
-import timeline05 from "@/assets/timeline-05-application.jpg";
-import timeline06 from "@/assets/timeline-06-local-docs.jpg";
-import timeline07 from "@/assets/timeline-07-polish-docs.jpg";
-import timeline08 from "@/assets/timeline-08-translation.jpg";
-import timeline09 from "@/assets/timeline-09-filing.jpg";
-import timeline10 from "@/assets/timeline-10-civil-acts.jpg";
-import timeline11 from "@/assets/timeline-11-initial-response.jpg";
-import timeline12 from "@/assets/timeline-12-push-schemes.jpg";
-import timeline13 from "@/assets/timeline-13-citizenship.jpg";
-import timeline14 from "@/assets/timeline-14-passport.jpg";
-import timeline15 from "@/assets/timeline-15-extended.jpg";
 const timelineSteps = [{
   number: "1",
   title: "FIRST STEPS",
@@ -26,8 +11,7 @@ const timelineSteps = [{
   keyAction: "Initial Setup & Payment",
   priority: "Major Milestone",
   icon: FileText,
-  gradient: "from-blue-500 to-cyan-500",
-  illustration: timeline01
+  gradient: "from-blue-500 to-cyan-500"
 }, {
   number: "2",
   title: "TERMS & PRICING",
@@ -36,8 +20,7 @@ const timelineSteps = [{
   keyAction: "Initial Setup & Payment",
   priority: "Foundation Building",
   icon: CreditCard,
-  gradient: "from-cyan-500 to-blue-500",
-  illustration: timeline02
+  gradient: "from-cyan-500 to-blue-500"
 }, {
   number: "3",
   title: "ADVANCE & ACCOUNT",
@@ -46,8 +29,7 @@ const timelineSteps = [{
   keyAction: "Initial Setup & Payment",
   priority: "Major Milestone",
   icon: CheckCircle,
-  gradient: "from-blue-500 to-indigo-500",
-  illustration: timeline03
+  gradient: "from-blue-500 to-indigo-500"
 }, {
   number: "4",
   title: "DETAILS & POAs",
@@ -56,8 +38,7 @@ const timelineSteps = [{
   keyAction: "Details & Application",
   priority: "Foundation Building",
   icon: FileCheck,
-  gradient: "from-indigo-500 to-purple-500",
-  illustration: timeline04
+  gradient: "from-indigo-500 to-purple-500"
 }, {
   number: "5",
   title: "DATA & APPLICATION",
@@ -66,8 +47,7 @@ const timelineSteps = [{
   keyAction: "Details & Application",
   priority: "Major Milestone",
   icon: Send,
-  gradient: "from-purple-500 to-pink-500",
-  illustration: timeline05
+  gradient: "from-purple-500 to-pink-500"
 }, {
   number: "6",
   title: "LOCAL DOCUMENTS",
@@ -76,8 +56,7 @@ const timelineSteps = [{
   keyAction: "Documentation & Translation",
   priority: "Major Milestone",
   icon: FolderSearch,
-  gradient: "from-pink-500 to-rose-500",
-  illustration: timeline06
+  gradient: "from-pink-500 to-rose-500"
 }, {
   number: "7",
   title: "POLISH DOCUMENTS",
@@ -86,8 +65,7 @@ const timelineSteps = [{
   keyAction: "Documentation & Translation",
   priority: "Major Milestone",
   icon: Archive,
-  gradient: "from-rose-500 to-red-500",
-  illustration: timeline07
+  gradient: "from-rose-500 to-red-500"
 }, {
   number: "8",
   title: "TRANSLATIONS",
@@ -96,8 +74,7 @@ const timelineSteps = [{
   keyAction: "Documentation & Translation",
   priority: "Major Milestone",
   icon: Languages,
-  gradient: "from-red-500 to-orange-500",
-  illustration: timeline08
+  gradient: "from-red-500 to-orange-500"
 }, {
   number: "9",
   title: "FILING DOCUMENTS",
@@ -106,8 +83,7 @@ const timelineSteps = [{
   keyAction: "Filing & Civil Acts",
   priority: "Active Processing",
   icon: Upload,
-  gradient: "from-orange-500 to-amber-500",
-  illustration: timeline09
+  gradient: "from-orange-500 to-amber-500"
 }, {
   number: "10",
   title: "CIVIL ACTS",
@@ -116,8 +92,7 @@ const timelineSteps = [{
   keyAction: "Filing & Civil Acts",
   priority: "Major Milestone",
   icon: Stamp,
-  gradient: "from-amber-500 to-yellow-500",
-  illustration: timeline10
+  gradient: "from-amber-500 to-yellow-500"
 }, {
   number: "11",
   title: "INITIAL RESPONSE",
@@ -126,8 +101,7 @@ const timelineSteps = [{
   keyAction: "Government Processing",
   priority: "Major Milestone",
   icon: Clock,
-  gradient: "from-yellow-500 to-lime-500",
-  illustration: timeline11
+  gradient: "from-yellow-500 to-lime-500"
 }, {
   number: "12",
   title: "PUSH SCHEMES",
@@ -136,8 +110,7 @@ const timelineSteps = [{
   keyAction: "Government Processing",
   priority: "Major Milestone",
   icon: Zap,
-  gradient: "from-lime-500 to-green-500",
-  illustration: timeline12
+  gradient: "from-lime-500 to-green-500"
 }, {
   number: "13",
   title: "CITIZENSHIP DECISION",
@@ -146,8 +119,7 @@ const timelineSteps = [{
   keyAction: "Citizenship Confirmation",
   priority: "Critical Milestone",
   icon: Award,
-  gradient: "from-green-500 to-emerald-500",
-  illustration: timeline13
+  gradient: "from-green-500 to-emerald-500"
 }, {
   number: "14",
   title: "POLISH PASSPORT",
@@ -156,8 +128,7 @@ const timelineSteps = [{
   keyAction: "Passport & Extended Services",
   priority: "Major Milestone",
   icon: Book,
-  gradient: "from-emerald-500 to-teal-500",
-  illustration: timeline14
+  gradient: "from-emerald-500 to-teal-500"
 }, {
   number: "15",
   title: "EXTENDED SERVICES",
@@ -166,8 +137,7 @@ const timelineSteps = [{
   keyAction: "Passport & Extended Services",
   priority: "Final Achievement",
   icon: Users,
-  gradient: "from-teal-500 to-cyan-500",
-  illustration: timeline15
+  gradient: "from-teal-500 to-cyan-500"
 }];
 export default function TimelineProcessEnhanced() {
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
@@ -271,16 +241,6 @@ export default function TimelineProcessEnhanced() {
                   WebkitBackfaceVisibility: 'hidden'
                 }}>
                       <div className="flex flex-col gap-3 h-full">
-                        {/* Artistic Illustration - centered on all cards */}
-                        <div className="relative w-full h-40 mb-2 rounded-lg overflow-hidden flex items-center justify-center bg-gradient-to-br from-card/50 to-card/30">
-                          <img 
-                            src={step.illustration} 
-                            alt={step.title}
-                            className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-card/60 to-transparent pointer-events-none" />
-                        </div>
-                        
                         <div className="flex items-center gap-2 mb-1">
                           <span className={`text-base md:text-xs font-bold px-3 py-1.5 md:px-2 md:py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
                             {step.number}
