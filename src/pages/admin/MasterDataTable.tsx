@@ -465,7 +465,7 @@ export default function MasterDataTable() {
                   </motion.div>
 
                   {/* Minor Children if applicable */}
-                  {formData.applicant_children_count > 0 && (
+                  {formData.children_count > 0 && (
                     <>
                       <motion.div initial={{
                         opacity: 0,
@@ -481,11 +481,11 @@ export default function MasterDataTable() {
                           Do you have minor children (under 18)?
                         </Label>
                         <Select 
-                          value={formData.applicant_has_minor_children ? "yes" : "no"} 
+                          value={formData.has_minor_children ? "yes" : "no"} 
                           onValueChange={value => {
-                            handleInputChange("applicant_has_minor_children", value === "yes");
+                            handleInputChange("has_minor_children", value === "yes");
                             if (value === "no") {
-                              handleInputChange("applicant_minor_children_count", 0);
+                              handleInputChange("minor_children_count", 0);
                             }
                           }}
                         >
@@ -499,7 +499,7 @@ export default function MasterDataTable() {
                         </Select>
                       </motion.div>
 
-                      {formData.applicant_has_minor_children && (
+                      {formData.has_minor_children && (
                         <motion.div initial={{
                           opacity: 0,
                           y: 20
@@ -514,14 +514,14 @@ export default function MasterDataTable() {
                             How many minor kids?
                           </Label>
                           <Select 
-                            value={formData.applicant_minor_children_count?.toString() || "0"} 
-                            onValueChange={value => handleInputChange("applicant_minor_children_count", parseInt(value))}
+                            value={formData.minor_children_count?.toString() || "0"} 
+                            onValueChange={value => handleInputChange("minor_children_count", parseInt(value))}
                           >
                             <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur" style={{ fontSize: '1.125rem', fontWeight: '400' }}>
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent className="bg-background border-2 z-50">
-                              {Array.from({ length: formData.applicant_children_count + 1 }, (_, i) => i).map(num => (
+                              {Array.from({ length: formData.children_count + 1 }, (_, i) => i).map(num => (
                                 <SelectItem key={num} value={num.toString()} className="text-base cursor-pointer">
                                   {num}
                                 </SelectItem>
