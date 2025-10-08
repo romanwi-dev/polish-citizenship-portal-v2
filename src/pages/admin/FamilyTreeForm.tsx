@@ -313,20 +313,6 @@ export default function FamilyTreeForm() {
                 </>
               )}
             </Button>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Tab Buttons Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }} 
-          animate={{ opacity: 1, y: 0 }} 
-          transition={{ duration: 0.5 }}
-          className="mb-8"
-        >
-          <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 p-3 md:p-4 scrollbar-hide"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
             <Button 
               onClick={() => setActiveTab('applicant')}
               variant={activeTab === 'applicant' ? 'default' : 'outline'}
@@ -407,6 +393,7 @@ export default function FamilyTreeForm() {
                 Additional Info
               </span>
             </Button>
+            </div>
           </div>
         </motion.div>
 
