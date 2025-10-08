@@ -48,17 +48,13 @@ export const ClientGuideAssistant = ({
 
       if (guideError) throw guideError;
 
-      const guidanceText = guideData.guidance;
-      setGuidance(guidanceText);
-
-      // Auto-play voice response
-      await playVoice(guidanceText);
+      setGuidance(guideData.guidance);
 
     } catch (error: any) {
       console.error('Guide error:', error);
       toast({
         title: "Error",
-        description: "Failed to get guidance. Please try again.",
+        description: "Failed to get guidance",
         variant: "destructive",
       });
     } finally {
@@ -287,21 +283,10 @@ export const ClientGuideAssistant = ({
                   )}
                 </div>
                 <CardTitle className="text-base font-light text-foreground/90">
-                  AI Voice Assistant
+                  AI Assistant
                 </CardTitle>
               </div>
               <div className="flex items-center gap-1">
-                {isPlaying && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={stopVoice}
-                    className="h-8 w-8 p-0 hover:bg-red-500/10"
-                    title="Stop voice"
-                  >
-                    <VolumeX className="h-4 w-4 text-red-500" />
-                  </Button>
-                )}
                 <Button
                   variant="ghost"
                   size="sm"
