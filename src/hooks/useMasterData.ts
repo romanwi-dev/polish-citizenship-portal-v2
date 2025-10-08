@@ -23,9 +23,11 @@ export const useMasterData = (caseId: string | undefined) => {
       return data;
     },
     enabled: !!caseId && caseId !== ':id',
-    staleTime: 5000,
-    refetchOnMount: true,
-    refetchOnWindowFocus: false
+    staleTime: 0, // Always consider data stale
+    gcTime: 0, // Don't cache after unmount
+    refetchOnMount: 'always', // Always refetch on mount
+    refetchOnWindowFocus: true, // Refetch when window gains focus
+    refetchOnReconnect: true, // Refetch on reconnect
   });
 };
 
