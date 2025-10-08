@@ -466,7 +466,7 @@ export default function CitizenshipForm() {
                 className="border-b border-border/50 pb-6 cursor-pointer"
                 {...section1LongPressHandlers}
               >
-                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                <CardTitle className="text-4xl md:text-5xl font-heading font-bold text-primary">
                   CZĘŚĆ I - Dane osoby, której dotyczy wniosek
                 </CardTitle>
               </CardHeader>
@@ -503,7 +503,7 @@ export default function CitizenshipForm() {
                 className="border-b border-border/50 pb-6 cursor-pointer"
                 {...section2LongPressHandlers}
               >
-                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                <CardTitle className="text-4xl md:text-5xl font-heading font-bold text-primary">
                   Dane osobowe rodziców / Parents Personal Data
                 </CardTitle>
               </CardHeader>
@@ -550,7 +550,7 @@ export default function CitizenshipForm() {
                 className="border-b border-border/50 pb-6 cursor-pointer"
                 {...section3LongPressHandlers}
               >
-                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                <CardTitle className="text-4xl md:text-5xl font-heading font-bold text-primary">
                   Dane osobowe dalszych wstępnych / Grandparents Data
                 </CardTitle>
               </CardHeader>
@@ -618,7 +618,7 @@ export default function CitizenshipForm() {
                 className="border-b border-border/50 pb-6 cursor-pointer"
                 {...section6LongPressHandlers}
               >
-                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                <CardTitle className="text-4xl md:text-5xl font-heading font-bold text-primary">
                   CZĘŚĆ II & III - Dodatkowe informacje / Additional Information
                 </CardTitle>
               </CardHeader>
