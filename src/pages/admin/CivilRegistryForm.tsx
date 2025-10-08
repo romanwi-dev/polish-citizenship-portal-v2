@@ -154,7 +154,7 @@ export default function CivilRegistryForm() {
       <div className="fixed inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none -z-10" />
 
       <div className="container mx-auto py-12 px-4 md:px-6 lg:px-8 relative z-10 max-w-7xl">
-        {/* Sticky Header */}
+        {/* Header */}
         <motion.div initial={{
         opacity: 0,
         y: -50
@@ -163,7 +163,7 @@ export default function CivilRegistryForm() {
         y: 0
       }} transition={{
         duration: 0.8
-      }} className="sticky top-0 z-50 mb-8 bg-background/95 backdrop-blur-lg border-b border-primary/20">
+      }} className="mb-8">
           <Card className="glass-card border-primary/20 overflow-hidden rounded-none border-x-0 border-t-0">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5" />
             <CardHeader className="relative pb-8 pt-8">
