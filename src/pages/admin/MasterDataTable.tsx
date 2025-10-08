@@ -221,19 +221,17 @@ export default function MasterDataTable() {
                     Master Data Form
                   </CardTitle>
                 </motion.div>
-                <div className="flex items-center gap-3">
-                  <Button
-                    onClick={toggleFontSize}
-                    size="lg"
-                    variant="ghost"
-                    className={`h-16 w-16 rounded-full transition-all ${
-                      isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground'
-                    }`}
-                    title="Toggle font size"
-                  >
-                    <Type className="h-8 w-8" />
-                  </Button>
-                </div>
+                <Button
+                  onClick={toggleFontSize}
+                  size="lg"
+                  variant="ghost"
+                  className={`h-16 w-16 rounded-full transition-all ${
+                    isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground'
+                  }`}
+                  title="Toggle font size"
+                >
+                  <Type className="h-8 w-8" />
+                </Button>
               </div>
             </CardHeader>
           </Card>
@@ -913,7 +911,7 @@ export default function MasterDataTable() {
                       }, ...(prefix === "pgf" || prefix === "mgf" ? [{
                         name: `${prefix}_has_military_records`,
                         label: "Military Records"
-                      }] : [])])}
+                      }] : []), ...(prefix === "mgm" ? [] : [])])}
                         </div>
                         <div>{renderTextarea(`${prefix}_notes`, "Notes")}</div>
                       </CardContent>
@@ -968,6 +966,9 @@ export default function MasterDataTable() {
                     }])}
                         <div className="pt-4">
                           {renderCheckboxGroup([...(prefix === "pggf" || prefix === "mggf" ? [{
+                        name: `${prefix}_has_polish_documents`,
+                        label: "Polish documents"
+                      }] : []), ...(prefix === "pggm" || prefix === "mggm" ? [{
                         name: `${prefix}_has_polish_documents`,
                         label: "Polish documents"
                       }] : []), {

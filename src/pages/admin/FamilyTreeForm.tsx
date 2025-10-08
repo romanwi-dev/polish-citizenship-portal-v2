@@ -959,7 +959,7 @@ export default function FamilyTreeForm() {
                       }, ...(prefix === "pgf" || prefix === "mgf" ? [{
                         name: `${prefix}_has_military_records`,
                         label: "Military Records"
-                      }] : [])])}
+                      }] : []), ...(prefix === "pgm" || prefix === "mgm" ? [] : [])])}
                         </div>
                       </CardContent>
                     </Card>;
@@ -1030,6 +1030,9 @@ export default function FamilyTreeForm() {
                         <div className="pt-4">
                           <h4 className="text-lg font-semibold mb-4 text-foreground">Documents Required</h4>
                           {renderCheckboxGroup([...(prefix === "pggf" || prefix === "mggf" ? [{
+                        name: `${prefix}_has_polish_documents`,
+                        label: "Polish documents"
+                      }] : []), ...(prefix === "pggm" || prefix === "mggm" ? [{
                         name: `${prefix}_has_polish_documents`,
                         label: "Polish documents"
                       }] : []), {
