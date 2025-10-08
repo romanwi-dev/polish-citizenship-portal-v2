@@ -393,39 +393,6 @@ export default function MasterDataTable() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-6 md:p-10 space-y-10">
-                  {/* Ancestry Line Selection */}
-                  <motion.div initial={{
-                  opacity: 0,
-                  y: 20
-                }} animate={{
-                  opacity: 1,
-                  y: 0
-                }} className="space-y-3">
-                    <Label htmlFor="ancestry_line" className="text-base font-medium text-foreground flex items-center gap-2">
-                      <GitBranch className="h-5 w-5 text-primary" />
-                      Polish Ancestry Line
-                    </Label>
-                    <Select value={formData.ancestry_line || ""} onValueChange={value => handleInputChange("ancestry_line", value)}>
-                      <SelectTrigger className="h-14 border-2 text-base hover-glow bg-card/50 backdrop-blur">
-                        <SelectValue placeholder="Select bloodline path" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="father">Father's Line (Paternal)</SelectItem>
-                        <SelectItem value="mother">Mother's Line (Maternal)</SelectItem>
-                        <SelectItem value="pgf">Paternal Grandfather's Line</SelectItem>
-                        <SelectItem value="pgm">Paternal Grandmother's Line</SelectItem>
-                        <SelectItem value="mgf">Maternal Grandfather's Line</SelectItem>
-                        <SelectItem value="mgm">Maternal Grandmother's Line</SelectItem>
-                        <SelectItem value="pggf">Paternal Great-Grandfather (Father's Side)</SelectItem>
-                        <SelectItem value="pggm">Paternal Great-Grandmother (Father's Side)</SelectItem>
-                        <SelectItem value="mggf">Maternal Great-Grandfather (Mother's Side)</SelectItem>
-                        <SelectItem value="mggm">Maternal Great-Grandmother (Mother's Side)</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <p className="text-sm text-muted-foreground">
-                      Select the ancestral line through which Polish citizenship is claimed
-                    </p>
-                  </motion.div>
 
                   {/* Marital Status & Children - Side by side on desktop */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
