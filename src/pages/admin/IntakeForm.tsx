@@ -75,12 +75,10 @@ export default function IntakeForm() {
       }
     }
 
-    // Remove UI-only fields that don't exist in master_table
-    const { confirm_email, ...dataToSave } = formData;
-
+    // No need to filter - useMasterData hook handles sanitization
     updateMutation.mutate({
       caseId,
-      updates: dataToSave
+      updates: formData
     }, {
       onSuccess: () => {
         setOriginalData(formData);
@@ -94,12 +92,10 @@ export default function IntakeForm() {
     formData,
     onSave: (data) => {
       if (caseId) {
-        // Remove UI-only fields that don't exist in master_table
-        const { confirm_email, ...dataToSave } = data;
-        
+        // No need to filter - useMasterData hook handles sanitization
         updateMutation.mutate({
           caseId,
-          updates: dataToSave
+          updates: data
         }, {
           onSuccess: () => {
             setOriginalData(data);

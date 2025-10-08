@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { sanitizeMasterData } from "@/utils/masterDataSanitizer";
 
 export const useMasterData = (caseId: string | undefined) => {
   return useQuery({
@@ -36,7 +37,10 @@ export const useUpdateMasterData = () => {
         throw new Error("Invalid case ID");
       }
 
-      console.log('💾 Saving to master_table for case:', caseId, 'Updates:', updates);
+      // Sanitize updates to remove UI-only fields
+      const sanitizedUpdates = sanitizeMasterData(updates);
+
+      console.log('💾 Saving to master_table for case:', caseId, 'Sanitized updates:', sanitizedUpdates);
 
       // Check if record exists
       const { data: existing } = await supabase
@@ -49,7 +53,7 @@ export const useUpdateMasterData = () => {
         // Update existing
         const { error } = await supabase
           .from("master_table")
-          .update(updates)
+          .update(sanitizedUpdates)
           .eq("case_id", caseId);
         
         if (error) throw error;
@@ -58,7 +62,7 @@ export const useUpdateMasterData = () => {
         // Insert new
         const { error } = await supabase
           .from("master_table")
-          .insert({ case_id: caseId, ...updates });
+          .insert({ case_id: caseId, ...sanitizedUpdates });
         
         if (error) throw error;
         console.log('✅ Inserted new record');
