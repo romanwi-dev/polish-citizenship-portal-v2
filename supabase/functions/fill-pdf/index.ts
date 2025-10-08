@@ -56,10 +56,34 @@ serve(async (req) => {
     const dropboxPath = `/cases/POA/${templateFileName}`;
     console.log(`Fetching template from Dropbox: ${dropboxPath}`);
 
+    // Get fresh access token using refresh token
+    let accessToken = Deno.env.get('DROPBOX_ACCESS_TOKEN');
+    
+    const refreshTokenResponse = await fetch('https://api.dropboxapi.com/oauth2/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        grant_type: 'refresh_token',
+        refresh_token: Deno.env.get('DROPBOX_REFRESH_TOKEN') ?? '',
+        client_id: Deno.env.get('DROPBOX_APP_KEY') ?? '',
+        client_secret: Deno.env.get('DROPBOX_APP_SECRET') ?? '',
+      }),
+    });
+
+    if (refreshTokenResponse.ok) {
+      const tokenData = await refreshTokenResponse.json();
+      accessToken = tokenData.access_token;
+      console.log('Successfully refreshed Dropbox access token');
+    } else {
+      console.warn('Failed to refresh token, using existing one');
+    }
+
     const dropboxResponse = await fetch('https://content.dropboxapi.com/2/files/download', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${Deno.env.get('DROPBOX_ACCESS_TOKEN')}`,
+        'Authorization': `Bearer ${accessToken}`,
         'Dropbox-API-Arg': JSON.stringify({ path: dropboxPath }),
       },
     });
