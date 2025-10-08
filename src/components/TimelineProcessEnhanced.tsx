@@ -264,6 +264,17 @@ export default function TimelineProcessEnhanced() {
                   WebkitBackfaceVisibility: 'hidden'
                 }}>
                       <div className="flex flex-col gap-3 h-full">
+                        {/* Artistic Illustration - only for first 2 cards */}
+                        {(step.number === "1" || step.number === "2") && (
+                          <div className="relative w-full h-40 mb-2 rounded-lg overflow-hidden">
+                            <img 
+                              src={step.illustration} 
+                              alt={step.title}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-card/80 to-transparent" />
+                          </div>
+                        )}
                         
                         <div className="flex items-center gap-2 mb-1">
                           <span className={`text-base md:text-xs font-bold px-3 py-1.5 md:px-2 md:py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
