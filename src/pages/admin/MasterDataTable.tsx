@@ -18,7 +18,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import { ClientGuideAssistant } from "@/components/ClientGuideAssistant";
+
 export default function MasterDataTable() {
   const {
     id: caseId
@@ -1119,11 +1119,5 @@ export default function MasterDataTable() {
         </div>
       </div>
 
-      {/* AI Guide Assistant */}
-      <ClientGuideAssistant 
-        formType="master"
-        currentField={activeTab}
-        compact={true}
-      />
     </div>;
 }

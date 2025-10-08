@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
-import { ClientGuideAssistant } from "@/components/ClientGuideAssistant";
+
 export default function FamilyTreeForm() {
   const {
     id: caseId
@@ -1222,11 +1222,5 @@ export default function FamilyTreeForm() {
         </div>
       </div>
 
-      {/* AI Guide Assistant */}
-      <ClientGuideAssistant 
-        formType="family_tree"
-        currentField={activeTab}
-        compact={true}
-      />
     </div>;
 }

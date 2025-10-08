@@ -16,7 +16,7 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { Textarea } from "@/components/ui/textarea";
-import { ClientGuideAssistant } from "@/components/ClientGuideAssistant";
+
 export default function CivilRegistryForm() {
   const {
     id: caseId
@@ -456,10 +456,5 @@ export default function CivilRegistryForm() {
         </div>
       </div>
 
-      {/* AI Guide Assistant */}
-      <ClientGuideAssistant 
-        formType="civil_registry"
-        compact={true}
-      />
     </div>;
 }

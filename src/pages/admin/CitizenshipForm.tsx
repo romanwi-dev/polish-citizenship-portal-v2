@@ -27,7 +27,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { ClientGuideAssistant } from "@/components/ClientGuideAssistant";
+
 
 export default function CitizenshipForm() {
   const { id: caseId } = useParams();
@@ -650,11 +650,6 @@ export default function CitizenshipForm() {
         </AlertDialog>
       </div>
 
-      {/* AI Guide Assistant */}
-      <ClientGuideAssistant 
-        formType="citizenship"
-        compact={true}
-      />
     </div>
   );
 }

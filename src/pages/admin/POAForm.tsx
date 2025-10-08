@@ -14,7 +14,7 @@ import { poaFormConfigs } from "@/config/poaFormConfig";
 import { useLongPressWithFeedback } from "@/hooks/useLongPressWithFeedback";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
-import { ClientGuideAssistant } from "@/components/ClientGuideAssistant";
+
 export default function POAForm() {
   const {
     id: caseId
@@ -430,11 +430,5 @@ export default function POAForm() {
         </AlertDialog>
       </div>
 
-      {/* AI Guide Assistant */}
-      <ClientGuideAssistant 
-        formType="poa"
-        currentField={activePOAType}
-        compact={true}
-      />
     </div>;
 }
