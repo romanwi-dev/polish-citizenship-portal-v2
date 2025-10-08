@@ -741,8 +741,8 @@ export default function MasterDataTable() {
             </motion.div>
           )}
 
-          {/* KIDS TAB - Only show if has children */}
-          {(formData.children_count > 0 || activeTab === "children") && activeTab === "children" && (
+          {/* KIDS TAB */}
+          {activeTab === "children" && (
             <ScrollArea className="h-[800px]">
               <motion.div initial={{
               opacity: 0,
@@ -756,20 +756,72 @@ export default function MasterDataTable() {
                 <Card className="glass-card border-primary/20">
                   <CardHeader>
                     <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                      Minor Kids
+                      Children Information
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="p-6 md:p-10">
+                  <CardContent className="p-6 md:p-10 space-y-8">
+                    {/* Number of children */}
                     <motion.div initial={{
-                    opacity: 0
+                    opacity: 0,
+                    y: 20
                   }} animate={{
-                    opacity: 1
-                  }} className="space-y-3 max-w-xs">
+                    opacity: 1,
+                    y: 0
+                  }} className="space-y-4 max-w-xs">
                       <Label htmlFor="children_count" className="text-base font-medium">
-                        Number of Kids
+                        Number of children (including minors)
                       </Label>
-                      <Input id="children_count" type="number" value={formData.children_count || 0} onChange={e => handleInputChange("children_count", parseInt(e.target.value) || 0)} min={0} max={10} className="h-14 border-2 text-base hover-glow bg-card/50 backdrop-blur" />
+                      <Select 
+                        value={formData.children_count?.toString() || "0"} 
+                        onValueChange={value => {
+                          const count = parseInt(value);
+                          handleInputChange("children_count", count);
+                          if (count === 0) {
+                            handleInputChange("applicant_has_minor_children", false);
+                          }
+                        }}
+                      >
+                        <SelectTrigger className="h-14 border-2 text-base hover-glow bg-card/50 backdrop-blur">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
+                            <SelectItem key={num} value={num.toString()}>
+                              {num}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </motion.div>
+
+                    {/* Minor children if applicable */}
+                    {formData.children_count > 0 && (
+                      <motion.div initial={{
+                        opacity: 0,
+                        y: 20
+                      }} animate={{
+                        opacity: 1,
+                        y: 0
+                      }} transition={{
+                        delay: 0.1
+                      }} className="space-y-4 max-w-xs">
+                        <Label className="text-base font-medium">
+                          Do you have minor children (under 18)?
+                        </Label>
+                        <Select 
+                          value={formData.applicant_has_minor_children ? "yes" : "no"} 
+                          onValueChange={value => handleInputChange("applicant_has_minor_children", value === "yes")}
+                        >
+                          <SelectTrigger className="h-14 border-2 text-base hover-glow bg-card/50 backdrop-blur">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="yes">Yes</SelectItem>
+                            <SelectItem value="no">No</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </motion.div>
+                    )}
                   </CardContent>
                 </Card>
 
@@ -787,6 +839,9 @@ export default function MasterDataTable() {
                     name: `child_${num}_last_name`,
                     label: "Full last name / Nazwisko"
                   }, {
+                    name: `child_${num}_sex`,
+                    label: "Sex"
+                  }, {
                     name: `child_${num}_dob`,
                     label: "Date of birth",
                     type: "date"
@@ -801,9 +856,6 @@ export default function MasterDataTable() {
                     }, {
                       name: `child_${num}_has_birth_cert`,
                       label: "Birth certificate"
-                    }, {
-                      name: `child_${num}_has_poa_minor`,
-                      label: "POA Minor"
                     }])}
                       </div>
                       <div>
