@@ -324,7 +324,7 @@ export default function CitizenshipForm() {
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: 0.2 }}
                 >
-                  <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">
+                  <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-primary">
                     Citizenship Application
                   </CardTitle>
                 </motion.div>
