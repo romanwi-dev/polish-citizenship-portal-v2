@@ -44,47 +44,7 @@ export default function POAForm() {
     const today = format(new Date(), "yyyy-MM-dd");
     if (masterData) {
       console.log('🆕 Initializing form with master data (FIRST TIME ONLY)');
-      const initialData: any = { ...masterData, poa_date_filed: masterData.poa_date_filed || today };
-      
-      let needsUpdate = false;
-      
-      // Auto-sync father's last name to all children
-      if (initialData.father_last_name) {
-        for (let i = 1; i <= 10; i++) {
-          if (!initialData[`child_${i}_last_name`]) {
-            initialData[`child_${i}_last_name`] = initialData.father_last_name;
-            needsUpdate = true;
-          }
-        }
-      }
-      
-      // Auto-sync male applicant's last name after marriage
-      if (initialData.applicant_sex === 'M' && initialData.applicant_last_name) {
-        if (!initialData.applicant_last_name_after_marriage) {
-          initialData.applicant_last_name_after_marriage = initialData.applicant_last_name;
-          needsUpdate = true;
-        }
-      }
-      
-      // Auto-sync husband's (spouse) last name after marriage if applicant is female
-      if (initialData.applicant_sex === 'F' && initialData.spouse_last_name) {
-        if (!initialData.spouse_last_name_after_marriage) {
-          initialData.spouse_last_name_after_marriage = initialData.spouse_last_name;
-          needsUpdate = true;
-        }
-      }
-      
-      setFormData(initialData);
-      
-      // Save synced data to database if changes were made
-      if (needsUpdate && caseId) {
-        console.log('💾 Auto-saving synced data to database');
-        updateMutation.mutate({
-          caseId,
-          updates: initialData
-        });
-      }
-      
+      setFormData({ ...masterData, poa_date_filed: masterData.poa_date_filed || today });
       hasInitialized.current = true;
     } else if (!isLoading) {
       console.log('🆕 Initializing empty form (FIRST TIME ONLY)');
@@ -97,13 +57,7 @@ export default function POAForm() {
     setFormData((prev: any) => {
       const updatedData = { ...prev, [field]: value };
       
-      // Auto-sync children's last names when father's last name changes
-      if (field === 'father_last_name') {
-        for (let i = 1; i <= 10; i++) {
-          updatedData[`child_${i}_last_name`] = value;
-        }
-        console.log('🔄 Father last name synced to all children');
-      }
+      // Database trigger handles father->children sync automatically
       
       // Auto-sync husband's last name after marriage with his current last name
       if (prev.applicant_sex === 'M' && field === 'applicant_last_name') {
