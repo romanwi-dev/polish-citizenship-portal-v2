@@ -208,15 +208,15 @@ export default function POAForm() {
           transition={{ duration: 0.5 }}
           className="mb-8"
         >
-          <div className="flex gap-3 overflow-x-auto pb-2 justify-between bg-background/95 backdrop-blur-lg p-4 rounded-lg">
+          <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 bg-background/95 backdrop-blur-lg p-3 md:p-4 rounded-lg scrollbar-hide">
             <Button 
               onClick={() => setActivePOAType('adult')}
               variant={activePOAType === 'adult' ? 'default' : 'outline'}
-              className={`text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg ${
+              className={`text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg ${
                 activePOAType === 'adult' 
                   ? 'bg-gradient-to-r from-primary to-secondary text-white' 
                   : 'bg-white/5 hover:bg-white/10'
-              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]`}
+              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap`}
             >
               <span className={activePOAType === 'adult' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
                 Adult POA
@@ -225,11 +225,11 @@ export default function POAForm() {
             <Button 
               onClick={() => setActivePOAType('minor')}
               variant={activePOAType === 'minor' ? 'default' : 'outline'}
-              className={`text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg ${
+              className={`text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg ${
                 activePOAType === 'minor' 
                   ? 'bg-gradient-to-r from-primary to-secondary text-white' 
                   : 'bg-white/5 hover:bg-white/10'
-              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]`}
+              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap`}
             >
               <span className={activePOAType === 'minor' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
                 Minor POA
@@ -238,11 +238,11 @@ export default function POAForm() {
             <Button 
               onClick={() => setActivePOAType('spouses')}
               variant={activePOAType === 'spouses' ? 'default' : 'outline'}
-              className={`text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg ${
+              className={`text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg ${
                 activePOAType === 'spouses' 
                   ? 'bg-gradient-to-r from-primary to-secondary text-white' 
                   : 'bg-white/5 hover:bg-white/10'
-              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]`}
+              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap`}
             >
               <span className={activePOAType === 'spouses' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
                 Spouses POA
