@@ -564,9 +564,12 @@ export default function MasterDataTable() {
                     {renderCheckboxGroup([{
                     name: "applicant_has_birth_cert",
                     label: "Birth certificate"
-                  }, {
+                  }, ...(formData.applicant_is_married ? [{
                     name: "applicant_has_marriage_cert",
                     label: "Marriage certificate"
+                  }] : []), {
+                    name: "applicant_has_passport",
+                    label: "Passport"
                   }, {
                     name: "applicant_has_naturalization",
                     label: "Naturalization certificate"
@@ -835,9 +838,6 @@ export default function MasterDataTable() {
                     }, {
                       name: "mother_has_foreign_documents",
                       label: "Foreign Documents"
-                    }, {
-                      name: "mother_has_military_records",
-                      label: "Military Records"
                     }])}
                     </div>
                     <div>{renderTextarea("mother_notes", "Notes")}</div>
@@ -912,10 +912,10 @@ export default function MasterDataTable() {
                       }, {
                         name: `${prefix}_has_foreign_documents`,
                         label: "Foreign Documents"
-                      }, {
+                      }, ...(prefix === "pgf" || prefix === "mgf" ? [{
                         name: `${prefix}_has_military_records`,
                         label: "Military Records"
-                      }])}
+                      }] : [])])}
                         </div>
                         <div>{renderTextarea(`${prefix}_notes`, "Notes")}</div>
                       </CardContent>
@@ -984,10 +984,10 @@ export default function MasterDataTable() {
                       }, {
                         name: `${prefix}_has_foreign_documents`,
                         label: "Foreign Documents"
-                      }, {
+                      }, ...(prefix === "pggf" || prefix === "mggf" ? [{
                         name: `${prefix}_has_military_records`,
                         label: "Military Records"
-                      }])}
+                      }] : [])])}
                         </div>
                         <div>{renderTextarea(`${prefix}_notes`, "Notes")}</div>
                       </CardContent>
