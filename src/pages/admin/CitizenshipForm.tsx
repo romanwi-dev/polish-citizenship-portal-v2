@@ -289,6 +289,24 @@ export default function CitizenshipForm() {
     );
   };
 
+  if (!caseId || caseId === ':id') {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-background">
+        <Card className="p-8 max-w-md">
+          <CardHeader>
+            <CardTitle className="text-red-500">Invalid Case ID</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p>Please navigate to this page from a valid case.</p>
+            <Button onClick={() => navigate('/admin/cases')} className="mt-4">
+              Go to Cases
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
