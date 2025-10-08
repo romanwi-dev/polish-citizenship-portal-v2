@@ -26,7 +26,7 @@ serve(async (req) => {
     // Use OpenAI's natural voices (alloy, echo, fable, onyx, nova, shimmer)
     const selectedVoice = voice || 'nova'; // Nova is warm and engaging
 
-    console.log('Generating speech with OpenAI for text:', text.substring(0, 50) + '...');
+    console.log('Generating speech with OpenAI TTS for text:', text.substring(0, 50) + '...');
 
     const response = await fetch('https://api.openai.com/v1/audio/speech', {
       method: 'POST',
