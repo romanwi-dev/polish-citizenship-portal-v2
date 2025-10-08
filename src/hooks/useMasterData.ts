@@ -23,10 +23,9 @@ export const useMasterData = (caseId: string | undefined) => {
       return data;
     },
     enabled: !!caseId && caseId !== ':id',
-    staleTime: 0, // Always fetch fresh data
-    gcTime: 0, // Don't cache after component unmounts
-    refetchOnMount: 'always', // Always refetch when component mounts
-    refetchOnWindowFocus: true, // Refetch when window regains focus
+    staleTime: 5000,
+    refetchOnMount: true,
+    refetchOnWindowFocus: false
   });
 };
 
