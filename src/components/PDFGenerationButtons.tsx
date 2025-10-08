@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Download } from "lucide-react";
+import { Download, Eye } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useState } from "react";
@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { PDFPreviewDialog } from "./PDFPreviewDialog";
 
 interface PDFGenerationButtonsProps {
   caseId: string;
@@ -17,11 +18,22 @@ interface PDFGenerationButtonsProps {
 
 export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
   const [isGenerating, setIsGenerating] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState("");
+  const [currentTemplate, setCurrentTemplate] = useState({ type: "", label: "" });
+  const [formData, setFormData] = useState<any>(null);
 
-  const handleGeneratePDF = async (templateType: string, label: string) => {
+  const handleGeneratePDF = async (templateType: string, label: string, preview: boolean = false) => {
     try {
       setIsGenerating(true);
       toast.loading(`Generating ${label}...`);
+
+      // Fetch current form data
+      const { data: masterData } = await supabase
+        .from("master_table")
+        .select("*")
+        .eq("case_id", caseId)
+        .maybeSingle();
 
       const { data, error } = await supabase.functions.invoke('fill-pdf', {
         body: { caseId, templateType },
@@ -29,19 +41,29 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
 
       if (error) throw error;
 
-      // Create a blob from the response
       const blob = new Blob([data], { type: 'application/pdf' });
       const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `${templateType}-${caseId}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
 
       toast.dismiss();
-      toast.success(`${label} generated successfully!`);
+
+      if (preview) {
+        // Open preview dialog
+        setPreviewUrl(url);
+        setCurrentTemplate({ type: templateType, label });
+        setFormData(masterData);
+        setPreviewOpen(true);
+        toast.success(`${label} ready for preview!`);
+      } else {
+        // Direct download
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${templateType}-${caseId}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+        toast.success(`${label} downloaded successfully!`);
+      }
     } catch (error: any) {
       toast.dismiss();
       toast.error(`Failed to generate ${label}: ${error.message}`);
@@ -49,6 +71,26 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
     } finally {
       setIsGenerating(false);
     }
+  };
+
+  const handleRegeneratePDF = async (updatedData: any) => {
+    // Update master table first
+    await supabase
+      .from("master_table")
+      .update(updatedData)
+      .eq("case_id", caseId);
+
+    // Regenerate PDF
+    await handleGeneratePDF(currentTemplate.type, currentTemplate.label, true);
+  };
+
+  const handleDownloadFromPreview = () => {
+    const link = document.createElement('a');
+    link.href = previewUrl;
+    link.download = `${currentTemplate.type}-${caseId}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -66,28 +108,44 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
           </span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-64">
-        <DropdownMenuItem onClick={() => handleGeneratePDF('family-tree', 'Family Tree')}>
-          Family Tree
+      <DropdownMenuContent align="end" className="w-72">
+        <DropdownMenuItem onClick={() => handleGeneratePDF('family-tree', 'Family Tree', true)}>
+          <Eye className="h-4 w-4 mr-2" />
+          Preview Family Tree
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => handleGeneratePDF('poa-adult', 'POA - Adult')}>
-          POA - Adult
+        <DropdownMenuItem onClick={() => handleGeneratePDF('poa-adult', 'POA - Adult', true)}>
+          <Eye className="h-4 w-4 mr-2" />
+          Preview POA - Adult
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleGeneratePDF('poa-minor', 'POA - Minor')}>
-          POA - Minor
+        <DropdownMenuItem onClick={() => handleGeneratePDF('poa-minor', 'POA - Minor', true)}>
+          <Eye className="h-4 w-4 mr-2" />
+          Preview POA - Minor
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleGeneratePDF('poa-spouses', 'POA - Spouses')}>
-          POA - Spouses
+        <DropdownMenuItem onClick={() => handleGeneratePDF('poa-spouses', 'POA - Spouses', true)}>
+          <Eye className="h-4 w-4 mr-2" />
+          Preview POA - Spouses
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => handleGeneratePDF('registration', 'Civil Registry Application')}>
-          Civil Registry Application
+        <DropdownMenuItem onClick={() => handleGeneratePDF('registration', 'Civil Registry Application', true)}>
+          <Eye className="h-4 w-4 mr-2" />
+          Preview Civil Registry Application
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleGeneratePDF('uzupelnienie', 'Birth Certificate Supplementation')}>
-          Birth Certificate Supplementation
+        <DropdownMenuItem onClick={() => handleGeneratePDF('uzupelnienie', 'Birth Certificate Supplementation', true)}>
+          <Eye className="h-4 w-4 mr-2" />
+          Preview Birth Certificate Supplementation
         </DropdownMenuItem>
       </DropdownMenuContent>
+      
+      <PDFPreviewDialog
+        open={previewOpen}
+        onClose={() => setPreviewOpen(false)}
+        pdfUrl={previewUrl}
+        formData={formData}
+        onRegeneratePDF={handleRegeneratePDF}
+        onDownload={handleDownloadFromPreview}
+        documentTitle={currentTemplate.label}
+      />
     </DropdownMenu>
   );
 }
