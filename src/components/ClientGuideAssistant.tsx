@@ -178,7 +178,7 @@ export const ClientGuideAssistant = ({
                     <Bot className="h-6 w-6 text-primary" />
                     <div className="absolute -top-1 -right-1 h-3 w-3 bg-green-500 rounded-full animate-pulse" />
                   </div>
-                  <CardTitle className="text-base bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+                  <CardTitle className="text-base font-light text-foreground/90">
                     AI Guide
                   </CardTitle>
                 </div>
@@ -211,7 +211,7 @@ export const ClientGuideAssistant = ({
                   <div className="absolute inset-0 bg-primary/20 rounded-full animate-ping" />
                   <Bot className="h-6 w-6 text-primary relative z-10" />
                 </div>
-                <CardTitle className="text-base bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+                <CardTitle className="text-base font-light text-foreground/90">
                   AI Form Assistant
                 </CardTitle>
               </div>
@@ -253,7 +253,7 @@ export const ClientGuideAssistant = ({
             {guidance && (
               <Alert className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/30 shadow-sm">
                 <Sparkles className="h-4 w-4 text-primary" />
-                <AlertDescription className="text-sm mt-2 leading-relaxed">
+                <AlertDescription className="text-sm mt-2 leading-relaxed font-light text-foreground/90">
                   {guidance}
                 </AlertDescription>
               </Alert>
