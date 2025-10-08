@@ -66,6 +66,7 @@ export const ClientGuideAssistant = ({
   const playVoice = async (text: string) => {
     try {
       setIsPlaying(true);
+      console.log('🎤 Starting voice generation for text:', text.substring(0, 50));
 
       // Get audio blob directly from edge function
       const response = await fetch(
@@ -80,16 +81,27 @@ export const ClientGuideAssistant = ({
         }
       );
 
+      console.log('📡 TTS Response status:', response.status, response.statusText);
+
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('TTS Response error:', response.status, errorText);
+        console.error('❌ TTS Response error:', response.status, errorText);
         throw new Error('Failed to generate speech');
       }
 
       const audioBlob = await response.blob();
-      console.log('Audio blob received, size:', audioBlob.size, 'type:', audioBlob.type);
+      console.log('🔊 Audio blob received:', {
+        size: audioBlob.size,
+        type: audioBlob.type,
+        sizeKB: (audioBlob.size / 1024).toFixed(2)
+      });
+
+      if (audioBlob.size === 0) {
+        throw new Error('Audio blob is empty');
+      }
       
       const audioUrl = URL.createObjectURL(audioBlob);
+      console.log('🎵 Audio URL created:', audioUrl);
 
       // Stop any currently playing audio
       if (audioRef.current) {
@@ -98,39 +110,52 @@ export const ClientGuideAssistant = ({
       }
       
       const audio = new Audio(audioUrl);
+      audio.volume = 1.0; // Maximum volume
       audioRef.current = audio;
       
+      console.log('🎧 Audio element created, volume:', audio.volume);
+
+      audio.onloadedmetadata = () => {
+        console.log('📊 Audio loaded - Duration:', audio.duration, 'seconds');
+      };
+
+      audio.onplay = () => {
+        console.log('▶️ Audio started playing');
+      };
+
       audio.onended = () => {
+        console.log('✅ Audio playback completed');
         setIsPlaying(false);
         URL.revokeObjectURL(audioUrl);
       };
 
       audio.onerror = (e) => {
-        console.error('Audio playback error:', e);
+        console.error('❌ Audio playback error:', e, audio.error);
         setIsPlaying(false);
         URL.revokeObjectURL(audioUrl);
         toast({
           title: "Audio Error",
-          description: "Couldn't play voice response",
+          description: `Code: ${audio.error?.code}, Message: ${audio.error?.message}`,
           variant: "destructive",
         });
       };
 
       // Handle autoplay blocking
       try {
+        console.log('🎬 Attempting to play audio...');
         await audio.play();
-        console.log('Audio playing successfully');
+        console.log('✅ Audio.play() succeeded');
       } catch (playError: any) {
-        console.error('Autoplay blocked:', playError);
+        console.error('⚠️ Autoplay blocked or play failed:', playError);
         setIsPlaying(false);
         toast({
           title: "Click to hear",
-          description: "Click the speaker icon to play voice",
+          description: "Browser blocked autoplay - click Play Voice button",
         });
       }
 
     } catch (error: any) {
-      console.error('Voice generation error:', error);
+      console.error('💥 Voice generation error:', error);
       setIsPlaying(false);
       toast({
         title: "Voice Error",
