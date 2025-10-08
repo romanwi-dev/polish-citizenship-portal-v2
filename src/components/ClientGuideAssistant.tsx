@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Bot, Loader2, Sparkles, Minimize2, X, Mic, MicOff, Volume2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { RealtimeChat } from "@/utils/RealtimeAudio";
+import { useConversation } from '@11labs/react';
 
 interface ClientGuideAssistantProps {
   formType: 'intake' | 'master' | 'poa' | 'citizenship' | 'civil_registry' | 'family_tree';
@@ -26,10 +26,62 @@ export const ClientGuideAssistant = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [isVoiceActive, setIsVoiceActive] = useState(false);
-  const [isSpeaking, setIsSpeaking] = useState(false);
-  const chatRef = useRef<RealtimeChat | null>(null);
   const { toast } = useToast();
+
+  // ElevenLabs conversation hook with Aria voice
+  const conversation = useConversation({
+    onConnect: () => {
+      console.log('Voice connected');
+      toast({
+        title: "Voice Ready",
+        description: "You can now speak with your assistant",
+      });
+    },
+    onDisconnect: () => {
+      console.log('Voice disconnected');
+    },
+    onMessage: (message) => {
+      console.log('Voice message:', message);
+      if (message.message?.role === 'assistant' && message.message?.content) {
+        setGuidance(message.message.content);
+      }
+    },
+    onError: (error) => {
+      console.error('Voice error:', error);
+      toast({
+        title: "Voice Error",
+        description: "Something went wrong with the voice assistant",
+        variant: "destructive",
+      });
+    },
+    overrides: {
+      agent: {
+        prompt: {
+          prompt: `You are a form-filling voice assistant for Polish citizenship applications. 
+          
+CRITICAL RULES:
+- Answer in 5-8 words maximum
+- Tell exactly what to enter
+- Give one example
+- Speak slowly and clearly
+- No background explanations
+
+Current form: ${formType}
+Current field: ${currentField || 'none'}
+
+When user asks about a field, respond ONLY:
+"Enter [what]. Example: [example]"
+
+Keep it ultra-brief and helpful.`,
+        },
+        firstMessage: "Hi! Ask me about any form field.",
+        language: "en",
+      },
+      tts: {
+        voiceId: "9BWtsMINqrJLrRacOk9x", // Aria - premium ASMR-like female voice
+      },
+    },
+  });
 
   const getGuidance = async (userQuestion: string | null) => {
     setIsLoading(true);
@@ -79,26 +131,24 @@ export const ClientGuideAssistant = ({
   const startVoiceChat = async () => {
     try {
       setIsLoading(true);
-      chatRef.current = new RealtimeChat(
-        formType,
-        (event) => {
-          console.log("Chat event:", event);
-          if (event.type === 'response.audio_transcript.delta') {
-            setGuidance(prev => prev + event.delta);
-          } else if (event.type === 'response.audio_transcript.done') {
-            // Transcript complete
-          }
-        },
-        setIsSpeaking
-      );
       
-      await chatRef.current.init();
-      setIsVoiceActive(true);
-      
-      toast({
-        title: "Voice Active",
-        description: "You can now speak to the AI assistant!",
+      // Request microphone access
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+
+      // Get signed URL from our edge function
+      // Note: You need to create an agent in ElevenLabs UI first and use that agent ID
+      const { data, error } = await supabase.functions.invoke('elevenlabs-signed-url', {
+        body: { 
+          agentId: 'your-agent-id-here', // Replace with your ElevenLabs agent ID
+        }
       });
+
+      if (error) throw error;
+
+      await conversation.startSession({ 
+        signedUrl: data.signedUrl 
+      });
+
     } catch (error: any) {
       console.error('Voice error:', error);
       toast({
@@ -111,10 +161,8 @@ export const ClientGuideAssistant = ({
     }
   };
 
-  const stopVoiceChat = () => {
-    chatRef.current?.disconnect();
-    setIsVoiceActive(false);
-    setIsSpeaking(false);
+  const stopVoiceChat = async () => {
+    await conversation.endSession();
   };
 
   const quickQuestions = [
@@ -184,7 +232,7 @@ export const ClientGuideAssistant = ({
                 <div className="relative">
                   <div className="absolute inset-0 bg-primary/20 rounded-full animate-ping" />
                   <Bot className="h-6 w-6 text-primary relative z-10" />
-                  {isSpeaking && (
+                  {conversation.isSpeaking && (
                     <Volume2 className="h-3 w-3 text-green-500 absolute -bottom-1 -right-1 animate-pulse" />
                   )}
                 </div>
@@ -193,7 +241,7 @@ export const ClientGuideAssistant = ({
                 </CardTitle>
               </div>
               <div className="flex items-center gap-1">
-                {!isVoiceActive ? (
+                {conversation.status !== "connected" ? (
                   <Button
                     variant="ghost"
                     size="sm"
