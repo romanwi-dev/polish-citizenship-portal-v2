@@ -237,14 +237,14 @@ export default function MasterDataTable() {
           </Card>
         </motion.div>
 
-        {/* Action Buttons Section */}
+        {/* Action Buttons Section - Sticky */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ duration: 0.5 }}
-          className="mb-8"
+          className="sticky top-[calc(var(--header-height,0px))] z-40 mb-8 bg-background/95 backdrop-blur-lg border-b border-primary/20"
         >
-          <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 bg-background/95 backdrop-blur-lg p-3 md:p-4 rounded-lg scrollbar-hide">
+          <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 p-3 md:p-4 scrollbar-hide">
             <Button 
               onClick={handleSave} 
               disabled={updateMutation.isPending} 
