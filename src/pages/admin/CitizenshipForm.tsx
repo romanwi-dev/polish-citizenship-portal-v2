@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useState, useEffect } from "react";
-import { Loader2, Save, Download, FileCheck, Sparkles, Type, FilePlus, User } from "lucide-react";
+import { Loader2, Save, Download, FileCheck, Sparkles, Type, FilePlus, User, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -329,6 +329,15 @@ export default function CitizenshipForm() {
                   </CardTitle>
                 </motion.div>
                 <div className="flex items-center gap-3">
+                  <Button
+                    onClick={() => navigate(`/admin/case/${caseId}`)}
+                    size="lg"
+                    variant="ghost"
+                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10"
+                    title="Back to Case"
+                  >
+                    <ArrowLeft className="h-8 w-8" />
+                  </Button>
                   <Button
                     onClick={() => navigate('/login')}
                     size="lg"

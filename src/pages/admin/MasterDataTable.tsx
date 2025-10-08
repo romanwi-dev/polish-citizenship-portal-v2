@@ -11,7 +11,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState, useEffect } from "react";
-import { Loader2, Save, FileText, Users, Baby, Heart, Calendar as CalendarIcon, Sparkles, Download, GitBranch, Type, FilePlus, User } from "lucide-react";
+import { Loader2, Save, FileText, Users, Baby, Heart, Calendar as CalendarIcon, Sparkles, Download, GitBranch, Type, FilePlus, User, ArrowLeft } from "lucide-react";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { PDFGenerationButtons } from "@/components/PDFGenerationButtons";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -223,6 +223,15 @@ export default function MasterDataTable() {
                   </CardTitle>
                 </motion.div>
                 <div className="flex items-center gap-3">
+                  <Button
+                    onClick={() => navigate(`/admin/case/${caseId}`)}
+                    size="lg"
+                    variant="ghost"
+                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10"
+                    title="Back to Case"
+                  >
+                    <ArrowLeft className="h-8 w-8" />
+                  </Button>
                   <Button
                     onClick={() => navigate('/login')}
                     size="lg"

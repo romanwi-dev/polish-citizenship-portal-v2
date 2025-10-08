@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
-import { Loader2, Save, Download, FileText, Sparkles, Type, FilePlus, User } from "lucide-react";
+import { Loader2, Save, Download, FileText, Sparkles, Type, FilePlus, User, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -180,6 +180,15 @@ export default function CivilRegistryForm() {
                   <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">Civil Registry</CardTitle>
                 </motion.div>
                 <div className="flex items-center gap-3">
+                  <Button
+                    onClick={() => navigate(`/admin/case/${caseId}`)}
+                    size="lg"
+                    variant="ghost"
+                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10"
+                    title="Back to Case"
+                  >
+                    <ArrowLeft className="h-8 w-8" />
+                  </Button>
                   <Button
                     onClick={() => navigate('/login')}
                     size="lg"
