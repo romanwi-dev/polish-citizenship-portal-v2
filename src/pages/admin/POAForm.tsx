@@ -183,7 +183,7 @@ export default function POAForm() {
                 delay: 0.2
               }}>
                   <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-primary">
-                    Power of Attorney Forms
+                    Power of Attorney
                   </CardTitle>
                 </motion.div>
                 <div className="flex items-center gap-3">
