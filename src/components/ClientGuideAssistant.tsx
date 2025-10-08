@@ -27,7 +27,9 @@ export const ClientGuideAssistant = ({
   const [isVisible, setIsVisible] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
+  const [audioInitialized, setAudioInitialized] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const { toast } = useToast();
@@ -63,12 +65,27 @@ export const ClientGuideAssistant = ({
     }
   };
 
+  const initAudioContext = () => {
+    if (!audioContextRef.current) {
+      const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+      audioContextRef.current = new AudioContextClass();
+      console.log('🎵 Audio context initialized for mobile');
+    }
+    if (audioContextRef.current.state === 'suspended') {
+      audioContextRef.current.resume();
+      console.log('🎵 Audio context resumed');
+    }
+    setAudioInitialized(true);
+  };
+
   const playVoice = async (text: string) => {
     try {
+      // Initialize audio context on first user interaction (iOS requirement)
+      initAudioContext();
+      
       setIsPlaying(true);
-      console.log('🎤 Starting voice generation for text:', text.substring(0, 50));
+      console.log('🎤 [MOBILE] Starting voice generation:', text.substring(0, 30));
 
-      // Get audio blob directly from edge function
       const response = await fetch(
         `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/elevenlabs-tts`,
         {
@@ -81,85 +98,88 @@ export const ClientGuideAssistant = ({
         }
       );
 
-      console.log('📡 TTS Response status:', response.status, response.statusText);
+      console.log('📡 [MOBILE] Response:', response.status);
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error('❌ TTS Response error:', response.status, errorText);
         throw new Error('Failed to generate speech');
       }
 
       const audioBlob = await response.blob();
-      console.log('🔊 Audio blob received:', {
-        size: audioBlob.size,
-        type: audioBlob.type,
-        sizeKB: (audioBlob.size / 1024).toFixed(2)
-      });
+      console.log('🔊 [MOBILE] Audio blob:', audioBlob.size, 'bytes');
 
       if (audioBlob.size === 0) {
-        throw new Error('Audio blob is empty');
+        throw new Error('Empty audio');
       }
       
       const audioUrl = URL.createObjectURL(audioBlob);
-      console.log('🎵 Audio URL created:', audioUrl);
 
-      // Stop any currently playing audio
+      // Stop current audio
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current = null;
       }
       
+      // Create new audio element
       const audio = new Audio(audioUrl);
-      audio.volume = 1.0; // Maximum volume
+      
+      // CRITICAL FOR MOBILE: Set volume to max and ensure it's not muted
+      audio.volume = 1.0;
+      audio.muted = false;
+      
+      // iOS-specific: Set playsinline to prevent fullscreen
+      audio.setAttribute('playsinline', 'true');
+      audio.setAttribute('webkit-playsinline', 'true');
+      
       audioRef.current = audio;
       
-      console.log('🎧 Audio element created, volume:', audio.volume);
+      console.log('🎧 [MOBILE] Audio created, volume:', audio.volume, 'muted:', audio.muted);
 
-      audio.onloadedmetadata = () => {
-        console.log('📊 Audio loaded - Duration:', audio.duration, 'seconds');
-      };
-
-      audio.onplay = () => {
-        console.log('▶️ Audio started playing');
+      audio.oncanplaythrough = () => {
+        console.log('✅ [MOBILE] Audio ready to play');
       };
 
       audio.onended = () => {
-        console.log('✅ Audio playback completed');
+        console.log('✅ [MOBILE] Playback ended');
         setIsPlaying(false);
         URL.revokeObjectURL(audioUrl);
       };
 
       audio.onerror = (e) => {
-        console.error('❌ Audio playback error:', e, audio.error);
+        console.error('❌ [MOBILE] Audio error:', audio.error);
         setIsPlaying(false);
         URL.revokeObjectURL(audioUrl);
         toast({
           title: "Audio Error",
-          description: `Code: ${audio.error?.code}, Message: ${audio.error?.message}`,
+          description: "Check your volume and try again",
           variant: "destructive",
         });
       };
 
-      // Handle autoplay blocking
+      // Play with user gesture (already in button click context)
       try {
-        console.log('🎬 Attempting to play audio...');
-        await audio.play();
-        console.log('✅ Audio.play() succeeded');
+        console.log('▶️ [MOBILE] Playing...');
+        const playPromise = audio.play();
+        
+        if (playPromise !== undefined) {
+          await playPromise;
+          console.log('✅ [MOBILE] Playing successfully');
+        }
       } catch (playError: any) {
-        console.error('⚠️ Autoplay blocked or play failed:', playError);
+        console.error('❌ [MOBILE] Play failed:', playError);
         setIsPlaying(false);
         toast({
-          title: "Click to hear",
-          description: "Browser blocked autoplay - click Play Voice button",
+          title: "Can't play audio",
+          description: "Check volume or permissions",
+          variant: "destructive",
         });
       }
 
     } catch (error: any) {
-      console.error('💥 Voice generation error:', error);
+      console.error('💥 [MOBILE] Error:', error);
       setIsPlaying(false);
       toast({
         title: "Voice Error",
-        description: error.message || "Couldn't generate voice",
+        description: error.message,
         variant: "destructive",
       });
     }
@@ -381,18 +401,17 @@ export const ClientGuideAssistant = ({
                   onClick={() => playVoice(guidance)}
                   disabled={isPlaying}
                   size="sm"
-                  variant="outline"
-                  className="w-full"
+                  className="w-full bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white font-medium shadow-md"
                 >
                   {isPlaying ? (
                     <>
-                      <VolumeX className="h-4 w-4 mr-2" />
-                      Playing...
+                      <VolumeX className="h-5 w-5 mr-2 animate-pulse" />
+                      Playing Voice...
                     </>
                   ) : (
                     <>
-                      <Volume2 className="h-4 w-4 mr-2" />
-                      Play Voice
+                      <Volume2 className="h-5 w-5 mr-2" />
+                      🔊 Play Voice (Tap Here)
                     </>
                   )}
                 </Button>
