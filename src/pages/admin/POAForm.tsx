@@ -1,6 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useMasterData, useUpdateMasterData } from "@/hooks/useMasterData";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
 import { Loader2, Save, FileText, Sparkles, Type, User, ArrowLeft } from "lucide-react";
@@ -29,6 +31,7 @@ export default function POAForm() {
   const [activePOAType, setActivePOAType] = useState('adult');
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null);
   const [previewFormData, setPreviewFormData] = useState<any>(null);
+  const [primaryApplicantGender, setPrimaryApplicantGender] = useState<'male' | 'female'>('male');
 
   // Initialize form ONCE on mount only - NEVER overwrite user edits
   const hasInitialized = useRef(false);
@@ -425,38 +428,75 @@ export default function POAForm() {
                 </div>
               </CardHeader>
               <CardContent className="pt-6">
+                {/* Primary Applicant Gender Selector */}
+                <div className="mb-8 p-4 bg-muted/30 rounded-lg border border-border/50">
+                  <Label className="text-lg font-semibold mb-3 block">Who is the primary applicant?</Label>
+                  <RadioGroup 
+                    value={primaryApplicantGender} 
+                    onValueChange={(value: 'male' | 'female') => setPrimaryApplicantGender(value)}
+                    className="flex gap-6"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="male" id="male" />
+                      <Label htmlFor="male" className="cursor-pointer font-medium">Husband / Mąż</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="female" id="female" />
+                      <Label htmlFor="female" className="cursor-pointer font-medium">Wife / Żona</Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+
+                {/* Primary Applicant Fields */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                   <POAFormField
                     name="applicant_first_name"
-                    label="Husband given names / Imię / imiona męża"
+                    label={primaryApplicantGender === 'male' 
+                      ? "Husband given names / Imię / imiona męża"
+                      : "Wife given names / Imię / imiona żony"
+                    }
                     value={formData.applicant_first_name || ""}
                     onChange={(value) => handleInputChange("applicant_first_name", value)}
                   />
                   <POAFormField
                     name="applicant_last_name"
-                    label="Husband surname / Nazwisko męża"
+                    label={primaryApplicantGender === 'male'
+                      ? "Husband surname / Nazwisko męża"
+                      : "Wife surname / Nazwisko żony"
+                    }
                     value={formData.applicant_last_name || ""}
                     onChange={(value) => handleInputChange("applicant_last_name", value)}
                   />
                 </div>
-                <div className="mt-4 md:mt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
                   <POAFormField
                     name="applicant_passport_number"
-                    label="Husband ID/passport number / Nr dokumentu tożsamości męża"
+                    label={primaryApplicantGender === 'male'
+                      ? "Husband ID/passport number / Nr dokumentu tożsamości męża"
+                      : "Wife ID/passport number / Nr dokumentu tożsamości żony"
+                    }
                     value={formData.applicant_passport_number || ""}
                     onChange={(value) => handleInputChange("applicant_passport_number", value)}
                   />
                 </div>
+
+                {/* Spouse Fields */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
                   <POAFormField
                     name="spouse_first_name"
-                    label="Wife given names / Imię / imiona żony"
+                    label={primaryApplicantGender === 'male'
+                      ? "Wife given names / Imię / imiona żony"
+                      : "Husband given names / Imię / imiona męża"
+                    }
                     value={formData.spouse_first_name || ""}
                     onChange={(value) => handleInputChange("spouse_first_name", value)}
                   />
                   <POAFormField
                     name="spouse_last_name"
-                    label="Wife surname / Nazwisko żony"
+                    label={primaryApplicantGender === 'male'
+                      ? "Wife surname / Nazwisko żony"
+                      : "Husband surname / Nazwisko męża"
+                    }
                     value={formData.spouse_last_name || ""}
                     onChange={(value) => handleInputChange("spouse_last_name", value)}
                   />
@@ -464,21 +504,32 @@ export default function POAForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
                   <POAFormField
                     name="spouse_passport_number"
-                    label="Wife ID/passport number / Nr dokumentu tożsamości żony"
+                    label={primaryApplicantGender === 'male'
+                      ? "Wife ID/passport number / Nr dokumentu tożsamości żony"
+                      : "Husband ID/passport number / Nr dokumentu tożsamości męża"
+                    }
                     value={formData.spouse_passport_number || ""}
                     onChange={(value) => handleInputChange("spouse_passport_number", value)}
                   />
                 </div>
+
+                {/* Marriage Names */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
                   <POAFormField
                     name="applicant_last_name_after_marriage"
-                    label="Husband's surname after marriage / Nazwisko męża po zawarciu małżeństwa"
+                    label={primaryApplicantGender === 'male'
+                      ? "Husband's surname after marriage / Nazwisko męża po zawarciu małżeństwa"
+                      : "Wife's surname after marriage / Nazwisko żony po zawarciu małżeństwa"
+                    }
                     value={formData.applicant_last_name_after_marriage || ""}
                     onChange={(value) => handleInputChange("applicant_last_name_after_marriage", value)}
                   />
                   <POAFormField
                     name="spouse_last_name_after_marriage"
-                    label="Wife's surname after marriage / Nazwisko żony po zawarciu małżeństwa"
+                    label={primaryApplicantGender === 'male'
+                      ? "Wife's surname after marriage / Nazwisko żony po zawarciu małżeństwa"
+                      : "Husband's surname after marriage / Nazwisko męża po zawarciu małżeństwa"
+                    }
                     value={formData.spouse_last_name_after_marriage || ""}
                     onChange={(value) => handleInputChange("spouse_last_name_after_marriage", value)}
                   />
