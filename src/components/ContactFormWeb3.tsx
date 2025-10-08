@@ -191,8 +191,8 @@ const ContactFormWeb3 = () => {
                   <h3 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                     Thank You!
                   </h3>
-                  <p className="text-xl text-muted-foreground mb-8 max-w-md">
-                    We've received your message and will get in touch with you shortly.
+                  <p className="text-xl text-muted-foreground mb-8">
+                    We've received your message and will get in touch shortly...
                   </p>
                 </div>
               </div>
