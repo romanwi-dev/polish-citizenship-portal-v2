@@ -76,86 +76,55 @@ export const ClientGuideAssistant = ({
   const speakGuidance = async (text: string) => {
     try {
       setIsPlayingAudio(true);
-      console.log('[TTS] Requesting speech for:', text.substring(0, 50));
 
-      const { data: audioData, error: audioError } = await supabase.functions.invoke('text-to-speech', {
-        body: { 
-          text,
-          voice: 'EXAVITQu4vr4xnSDxMaL'
+      // Use browser's built-in Speech Synthesis API (free, no API key needed)
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        
+        // Configure voice settings
+        utterance.rate = 0.9; // Slightly slower for clarity
+        utterance.pitch = 1.0;
+        utterance.volume = 1.0;
+        
+        // Try to use a high-quality English voice
+        const voices = speechSynthesis.getVoices();
+        const preferredVoice = voices.find(v => 
+          v.lang.startsWith('en') && (v.name.includes('Google') || v.name.includes('Microsoft'))
+        ) || voices.find(v => v.lang.startsWith('en'));
+        
+        if (preferredVoice) {
+          utterance.voice = preferredVoice;
         }
-      });
 
-      if (audioError) {
-        console.error('[TTS] Edge function error:', audioError);
-        throw new Error(`TTS function failed: ${JSON.stringify(audioError)}`);
-      }
-
-      if (!audioData?.audioContent) {
-        console.error('[TTS] No audio content in response:', audioData);
-        throw new Error('No audio content received from TTS service');
-      }
-
-      console.log('[TTS] Base64 length:', audioData.audioContent.length);
-
-      // Convert base64 to blob with error handling
-      try {
-        const binaryString = atob(audioData.audioContent);
-        console.log('[TTS] Decoded binary length:', binaryString.length);
-        
-        const bytes = new Uint8Array(binaryString.length);
-        for (let i = 0; i < binaryString.length; i++) {
-          bytes[i] = binaryString.charCodeAt(i);
-        }
-        
-        const blob = new Blob([bytes], { type: 'audio/mpeg' });
-        console.log('[TTS] Blob created, size:', blob.size, 'type:', blob.type);
-        
-        const audioUrl = URL.createObjectURL(blob);
-        console.log('[TTS] Blob URL created:', audioUrl);
-
-        const audio = new Audio();
-        audioRef.current = audio;
-        
-        audio.onloadedmetadata = () => console.log('[TTS] Audio metadata loaded, duration:', audio.duration);
-        audio.oncanplay = () => console.log('[TTS] Audio can play');
-        audio.onplay = () => console.log('[TTS] Audio started playing');
-        audio.onended = () => {
-          console.log('[TTS] Audio ended');
+        utterance.onend = () => {
           setIsPlayingAudio(false);
-          URL.revokeObjectURL(audioUrl);
-        };
-        audio.onerror = (e) => {
-          console.error('[TTS] Audio element error:', e, audio.error);
-          setIsPlayingAudio(false);
-          URL.revokeObjectURL(audioUrl);
-          throw new Error(`Audio playback failed: ${audio.error?.message || 'Unknown error'}`);
         };
 
-        audio.src = audioUrl;
-        console.log('[TTS] Attempting to play...');
-        await audio.play();
-        console.log('[TTS] Play() succeeded');
-        
-      } catch (decodeError) {
-        console.error('[TTS] Decode/playback error:', decodeError);
-        throw decodeError;
+        utterance.onerror = (e) => {
+          console.error('Speech synthesis error:', e);
+          setIsPlayingAudio(false);
+          throw new Error('Speech synthesis failed');
+        };
+
+        speechSynthesis.speak(utterance);
+      } else {
+        throw new Error('Speech synthesis not supported in this browser');
       }
 
     } catch (error: any) {
-      console.error('[TTS] Full error:', error);
+      console.error('Audio error:', error);
       setIsPlayingAudio(false);
       toast({
         title: "Audio Error",
-        description: error.message || "Could not play audio, but guidance is shown below.",
+        description: "Could not play audio, but guidance is shown below.",
         variant: "destructive",
       });
     }
   };
 
   const stopAudio = () => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
+    if ('speechSynthesis' in window) {
+      speechSynthesis.cancel();
       setIsPlayingAudio(false);
     }
   };
