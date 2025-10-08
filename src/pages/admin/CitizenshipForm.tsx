@@ -362,7 +362,9 @@ export default function CitizenshipForm() {
           transition={{ duration: 0.5 }}
           className="mb-8"
         >
-          <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 bg-background/95 backdrop-blur-lg p-3 md:p-4 rounded-lg scrollbar-hide">
+          <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 bg-background/95 backdrop-blur-lg p-3 md:p-4 rounded-lg scrollbar-hide"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
             <Button 
               onClick={handleSave} 
               disabled={updateMutation.isPending}

@@ -220,7 +220,9 @@ export default function POAForm() {
           transition={{ duration: 0.5 }}
           className="mb-8"
         >
-          <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 p-3 md:p-4 scrollbar-hide">
+          <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 p-3 md:p-4 scrollbar-hide"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
             <Button 
               onClick={handleSave} 
               disabled={updateMutation.isPending} 

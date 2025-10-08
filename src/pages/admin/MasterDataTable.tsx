@@ -248,7 +248,9 @@ export default function MasterDataTable() {
             </CardHeader>
           </Card>
           
-          <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 p-3 md:p-4 scrollbar-hide mt-4">
+          <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 p-3 md:p-4 scrollbar-hide mt-4"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
             <Button 
               onClick={handleSave} 
               disabled={updateMutation.isPending} 
