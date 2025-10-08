@@ -31,5 +31,26 @@ export const sanitizeMasterData = (formData: any): any => {
     sanitized.applicant_address = addressFields;
   }
 
+  // Convert string arrays to proper arrays for ARRAY columns
+  // These fields are ARRAY type in DB but may come as text from textareas
+  const arrayFields = ['applicant_current_citizenship', 'spouse_current_citizenship', 'applicant_other_citizenships'];
+  
+  arrayFields.forEach(field => {
+    if (sanitized[field] && typeof sanitized[field] === 'string') {
+      // Split by comma, newline, or semicolon and filter empty
+      sanitized[field] = sanitized[field]
+        .split(/[,;\n]+/)
+        .map((s: string) => s.trim())
+        .filter((s: string) => s.length > 0);
+    }
+  });
+
+  // Convert empty strings to null for nullable fields to avoid constraint violations
+  Object.keys(sanitized).forEach(key => {
+    if (sanitized[key] === '') {
+      sanitized[key] = null;
+    }
+  });
+
   return sanitized;
 };

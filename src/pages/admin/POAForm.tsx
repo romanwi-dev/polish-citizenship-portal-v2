@@ -14,6 +14,7 @@ import { useLongPressWithFeedback } from "@/hooks/useLongPressWithFeedback";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { PDFPreviewDialog } from "@/components/PDFPreviewDialog";
+import { sanitizeMasterData } from "@/utils/masterDataSanitizer";
 
 export default function POAForm() {
   const { id: caseId } = useParams();
@@ -99,7 +100,10 @@ export default function POAForm() {
 
     setIsGenerating(true);
     try {
-      await supabase.from("master_table").update(updatedData).eq("case_id", caseId);
+      // Sanitize before saving
+      const sanitizedData = sanitizeMasterData(updatedData);
+      
+      await supabase.from("master_table").update(sanitizedData).eq("case_id", caseId);
 
       const { data, error } = await supabase.functions.invoke('fill-pdf', {
         body: { caseId, templateType: 'poa-adult' }
