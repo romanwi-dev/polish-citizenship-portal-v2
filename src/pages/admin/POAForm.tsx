@@ -44,7 +44,32 @@ export default function POAForm() {
     const today = format(new Date(), "yyyy-MM-dd");
     if (masterData) {
       console.log('🆕 Initializing form with master data (FIRST TIME ONLY)');
-      setFormData({ ...masterData, poa_date_filed: masterData.poa_date_filed || today });
+      const initialData: any = { ...masterData, poa_date_filed: masterData.poa_date_filed || today };
+      
+      // Auto-sync father's last name to all children
+      if (initialData.father_last_name) {
+        for (let i = 1; i <= 10; i++) {
+          if (!initialData[`child_${i}_last_name`]) {
+            initialData[`child_${i}_last_name`] = initialData.father_last_name;
+          }
+        }
+      }
+      
+      // Auto-sync male applicant's last name after marriage
+      if (initialData.applicant_sex === 'M' && initialData.applicant_last_name) {
+        if (!initialData.applicant_last_name_after_marriage) {
+          initialData.applicant_last_name_after_marriage = initialData.applicant_last_name;
+        }
+      }
+      
+      // Auto-sync husband's (spouse) last name after marriage if applicant is female
+      if (initialData.applicant_sex === 'F' && initialData.spouse_last_name) {
+        if (!initialData.spouse_last_name_after_marriage) {
+          initialData.spouse_last_name_after_marriage = initialData.spouse_last_name;
+        }
+      }
+      
+      setFormData(initialData);
       hasInitialized.current = true;
     } else if (!isLoading) {
       console.log('🆕 Initializing empty form (FIRST TIME ONLY)');

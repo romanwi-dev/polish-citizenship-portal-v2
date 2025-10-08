@@ -59,14 +59,40 @@ export default function MasterDataTable() {
         postal?: string;
         country?: string;
       } || {};
-      setFormData({
+      
+      const initialData: any = {
         ...masterData,
         applicant_address_street: address.street || '',
         applicant_address_city: address.city || '',
         applicant_address_state: address.state || '',
         applicant_address_postal: address.postal || '',
         applicant_address_country: address.country || ''
-      });
+      };
+      
+      // Auto-sync father's last name to all children on load
+      if (initialData.father_last_name) {
+        for (let i = 1; i <= 10; i++) {
+          if (!initialData[`child_${i}_last_name`]) {
+            initialData[`child_${i}_last_name`] = initialData.father_last_name;
+          }
+        }
+      }
+      
+      // Auto-sync male applicant's last name after marriage on load
+      if (initialData.applicant_sex === 'M' && initialData.applicant_last_name) {
+        if (!initialData.applicant_last_name_after_marriage) {
+          initialData.applicant_last_name_after_marriage = initialData.applicant_last_name;
+        }
+      }
+      
+      // Auto-sync husband's (spouse) last name after marriage if applicant is female on load
+      if (initialData.applicant_sex === 'F' && initialData.spouse_last_name) {
+        if (!initialData.spouse_last_name_after_marriage) {
+          initialData.spouse_last_name_after_marriage = initialData.spouse_last_name;
+        }
+      }
+      
+      setFormData(initialData);
     }
   }, [masterData]);
   const handleInputChange = (field: string, value: any) => {
