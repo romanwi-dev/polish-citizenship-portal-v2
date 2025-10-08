@@ -345,7 +345,7 @@ export default function FamilyTreeForm() {
                 Applicant
               </span>
             </Button>
-            {formData.applicant_has_minor_children && (
+            {(formData.children_count > 0) && (
               <Button 
                 onClick={() => setActiveTab('children')}
                 variant={activeTab === 'children' ? 'default' : 'outline'}

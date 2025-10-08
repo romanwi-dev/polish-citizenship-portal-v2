@@ -298,7 +298,7 @@ export default function MasterDataTable() {
                 Applicant
               </span>
             </Button>
-            {formData.applicant_is_married && (
+            {(formData.spouse_first_name || formData.spouse_last_name || formData.date_of_marriage) && (
               <Button 
                 onClick={() => setActiveTab('spouse')}
                 variant={activeTab === 'spouse' ? 'default' : 'outline'}
@@ -313,7 +313,7 @@ export default function MasterDataTable() {
                 </span>
               </Button>
             )}
-            {formData.applicant_has_minor_children && (
+            {(formData.children_count > 0) && (
               <Button 
                 onClick={() => setActiveTab('children')}
                 variant={activeTab === 'children' ? 'default' : 'outline'}

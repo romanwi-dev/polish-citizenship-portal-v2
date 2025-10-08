@@ -170,7 +170,7 @@ export default function CitizenshipForm() {
     isPressed: isSection5Pressed
   } = useLongPressWithFeedback({
     onLongPress: () => clearCardFields([
-      "applicant_additional_info"
+      "applicant_notes"
     ], "Additional Information"),
     duration: 2000,
     feedbackMessage: "Hold for 2 seconds to clear this section..."
