@@ -369,26 +369,7 @@ export default function POAForm() {
                     onChange={(value) => handleInputChange("applicant_passport_number", value)}
                   />
                 </div>
-                <div className="mt-6 flex justify-end gap-3">
-                  <Button 
-                    onClick={async () => {
-                      const { data, error } = await supabase.functions.invoke('inspect-pdf-fields', {
-                        body: { templateType: 'poa-adult' }
-                      });
-                      if (error) {
-                        console.error("Inspection error:", error);
-                        toast.error("Failed to inspect PDF");
-                      } else {
-                        console.log("PDF FIELDS:", data);
-                        toast.success(`Found ${data.totalFields} fields - check console`);
-                      }
-                    }}
-                    variant="outline"
-                    className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30"
-                  >
-                    <FileText className="h-4 md:h-5 w-4 md:w-5 mr-2" />
-                    Inspect PDF Fields
-                  </Button>
+                <div className="mt-6 flex justify-end">
                   <Button onClick={() => handleGenerateAndPreview('poa-adult')} disabled={isGenerating}
                     className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30">
                     {isGenerating && activePOAType === 'adult' ? (
