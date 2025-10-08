@@ -26,7 +26,7 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
   const handleGeneratePDF = async (templateType: string, label: string, preview: boolean = false) => {
     try {
       setIsGenerating(true);
-      toast.loading(`Generating ${label}...`);
+      const loadingToast = toast.loading(`Generating ${label}...`);
 
       // Fetch current form data
       const { data: masterData } = await supabase
@@ -35,16 +35,25 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
         .eq("case_id", caseId)
         .maybeSingle();
 
+      console.log('Invoking fill-pdf function...');
       const { data, error } = await supabase.functions.invoke('fill-pdf', {
         body: { caseId, templateType },
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Edge function error:', error);
+        throw error;
+      }
 
+      console.log('PDF data received, type:', typeof data);
+      
+      // Create blob from the response data
       const blob = new Blob([data], { type: 'application/pdf' });
-      const url = window.URL.createObjectURL(blob);
 
-      toast.dismiss();
+      const url = window.URL.createObjectURL(blob);
+      console.log('Blob URL created:', url);
+
+      toast.dismiss(loadingToast);
 
       if (preview) {
         // Open preview dialog
@@ -65,9 +74,9 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
         toast.success(`${label} downloaded successfully!`);
       }
     } catch (error: any) {
+      console.error('PDF generation error:', error);
       toast.dismiss();
       toast.error(`Failed to generate ${label}: ${error.message}`);
-      console.error('PDF generation error:', error);
     } finally {
       setIsGenerating(false);
     }
