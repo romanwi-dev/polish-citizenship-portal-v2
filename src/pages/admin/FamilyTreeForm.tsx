@@ -405,7 +405,7 @@ export default function FamilyTreeForm() {
                 activeTab === 'great-grandparents' 
                   ? 'bg-gradient-to-r from-primary to-secondary text-white' 
                   : 'bg-white/5 hover:bg-white/10'
-              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap`}
+              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[180px] md:min-w-[220px] lg:min-w-[260px] whitespace-nowrap`}
             >
               <span className={activeTab === 'great-grandparents' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
                 Great Grandparents
