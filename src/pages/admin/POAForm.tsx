@@ -77,20 +77,21 @@ export default function POAForm() {
     }
   };
 
-  const handleGenerateAndPreview = async () => {
+  const handleGenerateAndPreview = async (templateType: 'poa-adult' | 'poa-minor' | 'poa-spouses') => {
     if (!caseId || caseId === ':id') {
       toast.error('Invalid case ID');
       return;
     }
 
     setIsGenerating(true);
+    setActivePOAType(templateType.replace('poa-', ''));
     try {
       // Save first
       await handleSave();
 
       // Generate PDF
       const { data, error } = await supabase.functions.invoke('fill-pdf', {
-        body: { caseId, templateType: 'poa-adult' }
+        body: { caseId, templateType }
       });
 
       if (error) throw error;
@@ -102,7 +103,7 @@ export default function POAForm() {
       setPdfPreviewUrl(url);
       setPreviewFormData(formData);
       
-      toast.success("PDF ready to print!");
+      toast.success(`${templateType.toUpperCase()} ready to print!`);
     } catch (error: any) {
       console.error("PDF generation error:", error);
       toast.error(`Failed: ${error.message}`);
@@ -251,16 +252,6 @@ export default function POAForm() {
               )}
             </Button>
 
-            <Button onClick={handleGenerateAndPreview} disabled={isGenerating}
-              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[160px] md:min-w-[200px] lg:min-w-[240px] whitespace-nowrap flex-shrink-0">
-              {isGenerating ? (
-                <><Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
-                  <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generating...</span></>
-              ) : (
-                <><FileText className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-                  <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generate POA</span></>
-              )}
-            </Button>
 
             <Button onClick={() => setShowClearAllDialog(true)} size="default" variant="outline"
               className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[140px] md:min-w-[180px] lg:min-w-[220px] whitespace-nowrap flex-shrink-0">
@@ -326,6 +317,18 @@ export default function POAForm() {
                     />
                   ))}
                 </div>
+                <div className="mt-6 flex justify-end">
+                  <Button onClick={() => handleGenerateAndPreview('poa-adult')} disabled={isGenerating}
+                    className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30">
+                    {isGenerating && activePOAType === 'adult' ? (
+                      <><Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
+                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generating...</span></>
+                    ) : (
+                      <><FileText className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
+                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generate POA Adult</span></>
+                    )}
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </motion.div>
@@ -354,6 +357,18 @@ export default function POAForm() {
                     />
                   ))}
                 </div>
+                <div className="mt-6 flex justify-end">
+                  <Button onClick={() => handleGenerateAndPreview('poa-minor')} disabled={isGenerating}
+                    className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30">
+                    {isGenerating && activePOAType === 'minor' ? (
+                      <><Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
+                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generating...</span></>
+                    ) : (
+                      <><FileText className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
+                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generate POA Minor</span></>
+                    )}
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </motion.div>
@@ -381,6 +396,18 @@ export default function POAForm() {
                       onChange={(value) => handleInputChange(field.name, value)}
                     />
                   ))}
+                </div>
+                <div className="mt-6 flex justify-end">
+                  <Button onClick={() => handleGenerateAndPreview('poa-spouses')} disabled={isGenerating}
+                    className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30">
+                    {isGenerating && activePOAType === 'spouses' ? (
+                      <><Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
+                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generating...</span></>
+                    ) : (
+                      <><FileText className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
+                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generate POA Spouses</span></>
+                    )}
+                  </Button>
                 </div>
               </CardContent>
             </Card>
