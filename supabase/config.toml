@@ -26,3 +26,6 @@ verify_jwt = false
 
 [functions.realtime-token]
 verify_jwt = false
+
+[functions.analyze-forms]
+verify_jwt = false
