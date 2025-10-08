@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useMasterData, useUpdateMasterData } from "@/hooks/useMasterData";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Loader2, Save, FileText, Sparkles, Type, User, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -30,15 +30,24 @@ export default function POAForm() {
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null);
   const [previewFormData, setPreviewFormData] = useState<any>(null);
 
-  // Initialize form ONCE on mount only
+  // Initialize form ONCE on mount only - NEVER overwrite user edits
+  const hasInitialized = useRef(false);
+  
   useEffect(() => {
+    if (hasInitialized.current) {
+      console.log('⏭️ Form already initialized, skipping data load');
+      return;
+    }
+    
     const today = format(new Date(), "yyyy-MM-dd");
-    if (masterData && Object.keys(formData).length === 0) {
-      console.log('🆕 Initializing form with master data');
+    if (masterData) {
+      console.log('🆕 Initializing form with master data (FIRST TIME ONLY)');
       setFormData({ ...masterData, poa_date_filed: masterData.poa_date_filed || today });
-    } else if (!isLoading && Object.keys(formData).length === 0) {
-      console.log('🆕 Initializing empty form');
+      hasInitialized.current = true;
+    } else if (!isLoading) {
+      console.log('🆕 Initializing empty form (FIRST TIME ONLY)');
       setFormData({ poa_date_filed: today });
+      hasInitialized.current = true;
     }
   }, [masterData, isLoading]);
 

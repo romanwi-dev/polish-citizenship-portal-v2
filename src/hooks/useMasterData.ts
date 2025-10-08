@@ -23,11 +23,11 @@ export const useMasterData = (caseId: string | undefined) => {
       return data;
     },
     enabled: !!caseId && caseId !== ':id',
-    staleTime: 0, // Always consider data stale
-    gcTime: 0, // Don't cache after unmount
-    refetchOnMount: 'always', // Always refetch on mount
-    refetchOnWindowFocus: true, // Refetch when window gains focus
-    refetchOnReconnect: true, // Refetch on reconnect
+    staleTime: 30000, // Keep data fresh for 30 seconds
+    gcTime: 60000, // Cache for 1 minute after unmount
+    refetchOnMount: false, // DON'T refetch on mount - use cache
+    refetchOnWindowFocus: false, // DON'T refetch on window focus
+    refetchOnReconnect: false, // DON'T refetch on reconnect
   });
 };
 
