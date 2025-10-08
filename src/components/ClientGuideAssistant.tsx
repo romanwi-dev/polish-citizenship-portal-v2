@@ -76,6 +76,7 @@ export const ClientGuideAssistant = ({
   const speakGuidance = async (text: string) => {
     try {
       setIsPlayingAudio(true);
+      console.log('Requesting TTS for text:', text.substring(0, 50));
 
       const { data: audioData, error: audioError } = await supabase.functions.invoke('text-to-speech', {
         body: { 
@@ -84,17 +85,42 @@ export const ClientGuideAssistant = ({
         }
       });
 
-      if (audioError) throw audioError;
+      if (audioError) {
+        console.error('TTS error:', audioError);
+        throw audioError;
+      }
+
+      console.log('TTS response received, base64 length:', audioData?.audioContent?.length);
+
+      // Convert base64 to blob
+      const binaryString = atob(audioData.audioContent);
+      const bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], { type: 'audio/mpeg' });
+      const audioUrl = URL.createObjectURL(blob);
+      
+      console.log('Audio blob created, size:', blob.size);
 
       // Create audio element and play
-      const audio = new Audio(`data:audio/mpeg;base64,${audioData.audioContent}`);
+      const audio = new Audio(audioUrl);
       audioRef.current = audio;
       
       audio.onended = () => {
         setIsPlayingAudio(false);
+        URL.revokeObjectURL(audioUrl);
       };
 
+      audio.onerror = (e) => {
+        console.error('Audio playback error:', e);
+        setIsPlayingAudio(false);
+        URL.revokeObjectURL(audioUrl);
+      };
+
+      console.log('Starting audio playback...');
       await audio.play();
+      console.log('Audio playing');
 
     } catch (error: any) {
       console.error('Audio error:', error);
