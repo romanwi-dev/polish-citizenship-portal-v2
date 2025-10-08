@@ -106,7 +106,7 @@ export default function IntakeForm() {
   });
 
   // Unsaved changes warning
-  const { blocker } = useUnsavedChanges(hasUnsavedChanges);
+  useUnsavedChanges(hasUnsavedChanges);
   const clearAllFields = () => {
     setFormData({
       given_names: "",
