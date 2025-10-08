@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,6 +7,9 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Send, Zap, CheckCircle2 } from "lucide-react";
 import { z } from "zod";
+
+// Lazy load 3D component
+const Hero3DMap = lazy(() => import("./Hero3DMap"));
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, { message: "Name is required" }).max(100),
@@ -17,11 +20,18 @@ const contactSchema = z.object({
 const ContactFormWeb3 = () => {
   const { toast } = useToast();
   const [isFlipped, setIsFlipped] = useState(false);
+  const [shouldLoadMap, setShouldLoadMap] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
   });
+
+  // Defer 3D component loading
+  useEffect(() => {
+    const timer = setTimeout(() => setShouldLoadMap(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,8 +64,19 @@ const ContactFormWeb3 = () => {
 
   return (
     <section id="contact" className="py-32 relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
+      {/* 3D Background */}
+      <div className="absolute inset-0 z-0">
+        <Suspense fallback={<div className="w-full h-full bg-gradient-to-b from-primary/5 to-background" />}>
+          {shouldLoadMap && <Hero3DMap />}
+        </Suspense>
+      </div>
+
+      {/* Gradient Overlays */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/50 to-background z-[1]" />
+      
+      {/* Animated Glow Orbs */}
+      <div className="absolute top-20 left-20 w-96 h-96 bg-primary/20 rounded-full blur-[120px] animate-pulse z-[1]" />
+      <div className="absolute bottom-20 right-20 w-96 h-96 bg-secondary/20 rounded-full blur-[120px] animate-pulse delay-700 z-[1]" />
       
       <div className="container px-4 mx-auto relative z-10">
         <div className="text-center mb-20">
@@ -174,14 +195,6 @@ const ContactFormWeb3 = () => {
                   <p className="text-xl text-muted-foreground mb-8 max-w-md">
                     We've received your message and will get in touch with you shortly.
                   </p>
-                  <Button 
-                    onClick={() => setIsFlipped(false)}
-                    size="lg"
-                    variant="outline"
-                    className="text-lg font-semibold px-8 h-14 rounded-lg"
-                  >
-                    Send Another Message
-                  </Button>
                 </div>
               </div>
             </div>
