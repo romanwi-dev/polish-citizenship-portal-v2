@@ -262,6 +262,31 @@ export default function TimelineProcessEnhanced() {
                   WebkitBackfaceVisibility: 'hidden'
                 }}>
                       <div className="flex flex-col gap-3 h-full">
+                        {/* 3D Illustration - only for first 2 cards */}
+                        {(step.number === "1" || step.number === "2") && (
+                          <div className="relative w-full h-32 mb-2 rounded-lg overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/5">
+                            <div className="absolute inset-0 flex items-center justify-center" style={{
+                              transform: 'perspective(600px) rotateX(10deg)',
+                              transformStyle: 'preserve-3d'
+                            }}>
+                              <div className="relative" style={{
+                                transform: 'translateZ(40px)',
+                                transition: 'transform 0.3s ease'
+                              }}>
+                                <step.icon className={`w-16 h-16 bg-gradient-to-br ${step.gradient} text-white p-3 rounded-xl shadow-2xl group-hover:scale-110 transition-transform duration-300`} 
+                                  style={{
+                                    filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.3))'
+                                  }}
+                                />
+                              </div>
+                              {/* Floating particles */}
+                              <div className="absolute top-4 left-8 w-2 h-2 bg-primary/40 rounded-full animate-float" style={{ animationDelay: '0s' }} />
+                              <div className="absolute top-8 right-12 w-1.5 h-1.5 bg-secondary/40 rounded-full animate-float" style={{ animationDelay: '0.5s' }} />
+                              <div className="absolute bottom-6 left-16 w-2.5 h-2.5 bg-accent/40 rounded-full animate-float" style={{ animationDelay: '1s' }} />
+                            </div>
+                          </div>
+                        )}
+                        
                         <div className="flex items-center gap-2 mb-1">
                           <span className={`text-base md:text-xs font-bold px-3 py-1.5 md:px-2 md:py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
                             {step.number}
