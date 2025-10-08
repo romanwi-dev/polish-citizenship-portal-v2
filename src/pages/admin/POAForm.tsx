@@ -231,12 +231,20 @@ export default function POAForm() {
             </Button>
 
             <Button onClick={handleGenerateAndPreview} disabled={isGenerating}
-              className="text-xl lg:text-2xl font-bold px-8 h-14 lg:h-16 rounded-lg bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-glow hover-glow backdrop-blur-md border-2 border-white/50 min-w-[280px]">
+              className="text-base lg:text-xl font-bold px-6 h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]">
               {isGenerating ? (
-                <><Loader2 className="h-6 w-6 animate-spin mr-2" />Generating...</>
+                <><Loader2 className="h-4 lg:h-5 w-4 lg:w-5 animate-spin mr-2 opacity-50" />
+                  <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generating...</span></>
               ) : (
-                <><FileText className="h-6 w-6 mr-2" />GENERATE POA</>
+                <><FileText className="h-4 lg:h-5 w-4 lg:w-5 mr-2 opacity-50" />
+                  <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generate POA</span></>
               )}
+            </Button>
+
+            <Button onClick={() => setShowClearAllDialog(true)} size="default" variant="outline"
+              className="text-base lg:text-xl font-bold px-6 h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[180px]">
+              <Sparkles className="h-4 lg:h-5 w-4 lg:w-5 mr-2 opacity-50" />
+              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Clear All</span>
             </Button>
           </div>
         </motion.div>
