@@ -26,7 +26,7 @@ export const ClientGuideAssistant = ({
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [autoSpeak, setAutoSpeak] = useState(false); // Disabled by default until audio works
   const [isMinimized, setIsMinimized] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const { toast } = useToast();
 
