@@ -33,6 +33,7 @@ export default function FamilyTreeForm() {
   } = useAccessibility();
   const [formData, setFormData] = useState<any>({});
   const [isGenerating, setIsGenerating] = useState(false);
+  const [activeTab, setActiveTab] = useState("applicant");
   useEffect(() => {
     if (masterData) {
       setFormData(masterData);
@@ -290,33 +291,83 @@ export default function FamilyTreeForm() {
                 </>
               )}
             </Button>
-            <Button variant="outline" className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap">
-              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            <Button 
+              onClick={() => setActiveTab('applicant')}
+              variant={activeTab === 'applicant' ? 'default' : 'outline'}
+              className={`text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg ${
+                activeTab === 'applicant' 
+                  ? 'bg-gradient-to-r from-primary to-secondary text-white' 
+                  : 'bg-white/5 hover:bg-white/10'
+              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap`}
+            >
+              <span className={activeTab === 'applicant' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
                 Applicant
               </span>
             </Button>
-            <Button variant="outline" className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap">
-              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Children
-              </span>
-            </Button>
-            <Button variant="outline" className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap">
-              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            {formData.applicant_has_minor_children && (
+              <Button 
+                onClick={() => setActiveTab('children')}
+                variant={activeTab === 'children' ? 'default' : 'outline'}
+                className={`text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg ${
+                  activeTab === 'children' 
+                    ? 'bg-gradient-to-r from-primary to-secondary text-white' 
+                    : 'bg-white/5 hover:bg-white/10'
+                } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap`}
+              >
+                <span className={activeTab === 'children' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
+                  Children
+                </span>
+              </Button>
+            )}
+            <Button 
+              onClick={() => setActiveTab('parents')}
+              variant={activeTab === 'parents' ? 'default' : 'outline'}
+              className={`text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg ${
+                activeTab === 'parents' 
+                  ? 'bg-gradient-to-r from-primary to-secondary text-white' 
+                  : 'bg-white/5 hover:bg-white/10'
+              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap`}
+            >
+              <span className={activeTab === 'parents' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
                 Parents
               </span>
             </Button>
-            <Button variant="outline" className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap">
-              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            <Button 
+              onClick={() => setActiveTab('grandparents')}
+              variant={activeTab === 'grandparents' ? 'default' : 'outline'}
+              className={`text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg ${
+                activeTab === 'grandparents' 
+                  ? 'bg-gradient-to-r from-primary to-secondary text-white' 
+                  : 'bg-white/5 hover:bg-white/10'
+              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap`}
+            >
+              <span className={activeTab === 'grandparents' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
                 Grandparents
               </span>
             </Button>
-            <Button variant="outline" className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap">
-              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            <Button 
+              onClick={() => setActiveTab('great-grandparents')}
+              variant={activeTab === 'great-grandparents' ? 'default' : 'outline'}
+              className={`text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg ${
+                activeTab === 'great-grandparents' 
+                  ? 'bg-gradient-to-r from-primary to-secondary text-white' 
+                  : 'bg-white/5 hover:bg-white/10'
+              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap`}
+            >
+              <span className={activeTab === 'great-grandparents' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
                 Great Grandparents
               </span>
             </Button>
-            <Button variant="outline" className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap">
-              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            <Button 
+              onClick={() => setActiveTab('additional')}
+              variant={activeTab === 'additional' ? 'default' : 'outline'}
+              className={`text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg ${
+                activeTab === 'additional' 
+                  ? 'bg-gradient-to-r from-primary to-secondary text-white' 
+                  : 'bg-white/5 hover:bg-white/10'
+              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap`}
+            >
+              <span className={activeTab === 'additional' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
                 Additional Info
               </span>
             </Button>
@@ -326,6 +377,7 @@ export default function FamilyTreeForm() {
         {/* Form Sections */}
         <div className="space-y-8">
           {/* Applicant Section */}
+          {activeTab === 'applicant' && (
           <motion.div initial={{
           opacity: 0,
           scale: 0.95
@@ -492,9 +544,11 @@ export default function FamilyTreeForm() {
               </CardContent>
             </Card>
           </motion.div>
+          )}
 
-          {/* Spouse Section - Only show if married */}
-          {formData.applicant_is_married && <motion.div initial={{
+          {/* Children Section */}
+          {activeTab === 'children' && formData.applicant_has_minor_children && (
+          <motion.div initial={{
           opacity: 0,
           scale: 0.95
         }} animate={{
@@ -507,91 +561,69 @@ export default function FamilyTreeForm() {
             <Card className="glass-card border-primary/20">
               <CardHeader className="border-b border-border/50 pb-6">
                 <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                  Applicant's Spouse
+                  Applicant's Minor Children
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6 md:p-10 space-y-10">
-                {/* 1st row - Name fields */}
-                {renderFieldGroup([{
-                name: "spouse_first_name",
-                label: "Given names / Imię / imiona",
-                isNameField: true
-              }, {
-                name: "spouse_last_name",
-                label: "Full last name / Nazwisko",
-                isNameField: true
-              }, ...(formData.spouse_sex?.toLowerCase() === 'f' || formData.spouse_sex?.toLowerCase() === 'female' ? [{
-                name: "spouse_maiden_name",
-                label: "Maiden name",
-                isNameField: true
-              }] : [])])}
-
-                {/* 2nd row - Places and emigration */}
-                {renderFieldGroup([{
-                name: "spouse_pob",
-                label: "Place of birth"
-              }, {
-                name: "place_of_marriage",
-                label: "Place of marriage"
-              }, {
-                name: "spouse_date_of_emigration",
-                label: "Date of emigration",
-                type: "date"
-              }])}
-
-                {/* 3rd row - Dates */}
-                {renderFieldGroup([{
-                name: "spouse_dob",
-                label: "Date of birth",
-                type: "date"
-              }, {
-                name: "date_of_marriage",
-                label: "Date of marriage",
-                type: "date"
-              }, {
-                name: "spouse_date_of_naturalization",
-                label: "Date of naturalization",
-                type: "date"
-              }])}
-
-                {/* Other fields */}
-                {renderFieldGroup([{
-                name: "spouse_sex",
-                label: "Sex"
-              }])}
-
-                <div className="space-y-2">
-                  <Label htmlFor="spouse_notes" className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                    Relevant additional information
-                  </Label>
-                  <Textarea
-                    id="spouse_notes"
-                    value={formData.spouse_notes || ""}
-                    onChange={e => handleInputChange("spouse_notes", e.target.value.toUpperCase())}
-                    placeholder=""
-                    className={cn("min-h-[100px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
-                  />
-                </div>
-
-                <div className="pt-8">
-                  <h3 className="text-xl font-semibold mb-6 text-foreground">Documents Required</h3>
-                  {renderCheckboxGroup([{
-                  name: "spouse_has_birth_cert",
-                  label: "Birth certificate"
+                {[1, 2, 3, 4].map(num => <div key={num} className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
+                    <h3 className="text-xl font-semibold text-foreground">Child {num}</h3>
+                    {/* 1st row - Name fields */}
+                    {renderFieldGroup([{
+                  name: `child_${num}_first_name`,
+                  label: "Given names / Imię / imiona",
+                  isNameField: true
                 }, {
-                  name: "spouse_has_marriage_cert",
-                  label: "Marriage certificate"
-                }, {
-                  name: "spouse_has_passport",
-                  label: "Passport"
+                  name: `child_${num}_last_name`,
+                  label: "Full last name / Nazwisko",
+                  isNameField: true
                 }])}
-                </div>
+
+                    {/* 2nd row - Places */}
+                    {renderFieldGroup([{
+                  name: `child_${num}_pob`,
+                  label: "Place of birth"
+                }])}
+
+                    {/* 3rd row - Dates */}
+                    {renderFieldGroup([{
+                  name: `child_${num}_dob`,
+                  label: "Date of birth",
+                  type: "date"
+                }])}
+                    <div className="space-y-2">
+                      <Label htmlFor={`child_${num}_notes`} className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                        Relevant additional information
+                      </Label>
+                      <Textarea
+                        id={`child_${num}_notes`}
+                        value={formData[`child_${num}_notes`] || ""}
+                        onChange={e => handleInputChange(`child_${num}_notes`, e.target.value.toUpperCase())}
+                        placeholder=""
+                        className={cn("min-h-[100px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                      />
+                    </div>
+                    <div className="pt-4">
+                      <h4 className="text-lg font-semibold mb-4 text-foreground">Documents Required</h4>
+                      {renderCheckboxGroup([{
+                    name: `child_${num}_has_passport`,
+                    label: "Passport Copy"
+                  }, {
+                    name: `child_${num}_has_birth_cert`,
+                    label: "Birth certificate"
+                  }, {
+                    name: `child_${num}_has_poa_minor`,
+                    label: "POA Minor"
+                  }])}
+                    </div>
+                  </div>)}
               </CardContent>
             </Card>
-          </motion.div>}
+          </motion.div>
+          )}
 
-          {/* Kids Section - Only show if has minor children */}
-          {formData.applicant_has_minor_children && <motion.div initial={{
+          {/* Parents Section */}
+          {activeTab === 'parents' && (
+          <motion.div initial={{
           opacity: 0,
           scale: 0.95
         }} animate={{
@@ -661,9 +693,11 @@ export default function FamilyTreeForm() {
                   </div>)}
               </CardContent>
             </Card>
-          </motion.div>}
+          </motion.div>
+          )}
 
-          {/* Polish Parent Section */}
+          {/* Parents Section */}
+          {activeTab === 'parents' && (
           <motion.div initial={{
           opacity: 0,
           scale: 0.95
@@ -872,8 +906,10 @@ export default function FamilyTreeForm() {
               </CardContent>
             </Card>
           </motion.div>
+          )}
 
           {/* Grandparents Section */}
+          {activeTab === 'grandparents' && (
           <motion.div initial={{
           opacity: 0,
           scale: 0.95
@@ -997,8 +1033,10 @@ export default function FamilyTreeForm() {
               </CardContent>
             </Card>
           </motion.div>
+          )}
 
           {/* Great-Grandparents Section */}
+          {activeTab === 'great-grandparents' && (
           <motion.div initial={{
           opacity: 0,
           scale: 0.95
@@ -1088,6 +1126,38 @@ export default function FamilyTreeForm() {
               </CardContent>
             </Card>
           </motion.div>
+          )}
+
+          {/* Additional Info Section */}
+          {activeTab === 'additional' && (
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }} 
+            animate={{ opacity: 1, scale: 1 }} 
+            transition={{ duration: 0.5 }}
+          >
+            <Card className="glass-card border-primary/20">
+              <CardHeader className="border-b border-border/50 pb-6">
+                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                  Additional Information
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 md:p-10">
+                <div className="space-y-2">
+                  <Label htmlFor="additional_info" className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                    Additional relevant information
+                  </Label>
+                  <Textarea
+                    id="additional_info"
+                    value={formData.additional_info || ""}
+                    onChange={e => handleInputChange("additional_info", e.target.value.toUpperCase())}
+                    placeholder=""
+                    className={cn("min-h-[200px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+          )}
         </div>
       </div>
     </div>;
