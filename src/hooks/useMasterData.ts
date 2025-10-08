@@ -8,6 +8,8 @@ export const useMasterData = (caseId: string | undefined) => {
     queryFn: async () => {
       if (!caseId || caseId === ':id') throw new Error("Invalid case ID");
 
+      console.log('🔍 Fetching master data for case:', caseId);
+
       const { data, error } = await supabase
         .from("master_table")
         .select("*")
@@ -15,6 +17,8 @@ export const useMasterData = (caseId: string | undefined) => {
         .maybeSingle();
 
       if (error) throw error;
+      
+      console.log('✅ Master data fetched:', data);
       return data;
     },
     enabled: !!caseId && caseId !== ':id',
@@ -32,6 +36,8 @@ export const useUpdateMasterData = () => {
         throw new Error("Invalid case ID");
       }
 
+      console.log('💾 Saving to master_table for case:', caseId, 'Updates:', updates);
+
       // Check if record exists
       const { data: existing } = await supabase
         .from("master_table")
@@ -47,6 +53,7 @@ export const useUpdateMasterData = () => {
           .eq("case_id", caseId);
         
         if (error) throw error;
+        console.log('✅ Updated existing record');
       } else {
         // Insert new
         const { error } = await supabase
@@ -54,6 +61,7 @@ export const useUpdateMasterData = () => {
           .insert({ case_id: caseId, ...updates });
         
         if (error) throw error;
+        console.log('✅ Inserted new record');
       }
     },
     onSuccess: (_, variables) => {
