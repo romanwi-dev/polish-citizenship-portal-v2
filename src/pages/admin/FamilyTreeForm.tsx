@@ -295,7 +295,7 @@ export default function FamilyTreeForm() {
               onClick={handleGeneratePDF} 
               disabled={isGenerating} 
               variant="outline" 
-              className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[180px] md:min-w-[220px] lg:min-w-[250px] whitespace-nowrap"
+              className="text-sm md:text-base lg:text-xl font-bold px-6 md:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px] md:min-w-[280px] lg:min-w-[320px] whitespace-nowrap"
             >
               {isGenerating ? (
                 <>
