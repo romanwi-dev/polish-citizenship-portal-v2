@@ -27,9 +27,6 @@ export const ClientGuideAssistant = ({
   const [isVisible, setIsVisible] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
-  const [audioInitialized, setAudioInitialized] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const audioContextRef = useRef<AudioContext | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const { toast } = useToast();
@@ -65,117 +62,61 @@ export const ClientGuideAssistant = ({
     }
   };
 
-  const initAudioContext = () => {
-    if (!audioContextRef.current) {
-      const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
-      audioContextRef.current = new AudioContextClass();
-      console.log('🎵 Audio context initialized for mobile');
-    }
-    if (audioContextRef.current.state === 'suspended') {
-      audioContextRef.current.resume();
-      console.log('🎵 Audio context resumed');
-    }
-    setAudioInitialized(true);
-  };
-
-  const playVoice = async (text: string) => {
+  const playVoice = (text: string) => {
     try {
-      // Initialize audio context on first user interaction (iOS requirement)
-      initAudioContext();
+      // Stop any current speech
+      window.speechSynthesis.cancel();
       
       setIsPlaying(true);
-      console.log('🎤 [MOBILE] Starting voice generation:', text.substring(0, 30));
+      console.log('🎤 [MOBILE SPEECH] Starting:', text.substring(0, 30));
 
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/elevenlabs-tts`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
-          },
-          body: JSON.stringify({ text }),
-        }
+      // Use browser's built-in speech synthesis (works on iOS/Android)
+      const utterance = new SpeechSynthesisUtterance(text);
+      
+      // Configure voice settings
+      utterance.rate = 0.9; // Slightly slower for clarity
+      utterance.pitch = 1.0;
+      utterance.volume = 1.0;
+      utterance.lang = 'en-US';
+
+      // Try to use a female voice if available
+      const voices = window.speechSynthesis.getVoices();
+      const femaleVoice = voices.find(voice => 
+        voice.name.includes('Female') || 
+        voice.name.includes('Samantha') ||
+        voice.name.includes('Karen') ||
+        voice.name.includes('Google US English')
       );
-
-      console.log('📡 [MOBILE] Response:', response.status);
-
-      if (!response.ok) {
-        throw new Error('Failed to generate speech');
+      if (femaleVoice) {
+        utterance.voice = femaleVoice;
+        console.log('🎵 Using voice:', femaleVoice.name);
       }
 
-      const audioBlob = await response.blob();
-      console.log('🔊 [MOBILE] Audio blob:', audioBlob.size, 'bytes');
-
-      if (audioBlob.size === 0) {
-        throw new Error('Empty audio');
-      }
-      
-      const audioUrl = URL.createObjectURL(audioBlob);
-
-      // Stop current audio
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
-      }
-      
-      // Create new audio element
-      const audio = new Audio(audioUrl);
-      
-      // CRITICAL FOR MOBILE: Set volume to max and ensure it's not muted
-      audio.volume = 1.0;
-      audio.muted = false;
-      
-      // iOS-specific: Set playsinline to prevent fullscreen
-      audio.setAttribute('playsinline', 'true');
-      audio.setAttribute('webkit-playsinline', 'true');
-      
-      audioRef.current = audio;
-      
-      console.log('🎧 [MOBILE] Audio created, volume:', audio.volume, 'muted:', audio.muted);
-
-      audio.oncanplaythrough = () => {
-        console.log('✅ [MOBILE] Audio ready to play');
+      utterance.onstart = () => {
+        console.log('▶️ [MOBILE SPEECH] Started playing');
       };
 
-      audio.onended = () => {
-        console.log('✅ [MOBILE] Playback ended');
+      utterance.onend = () => {
+        console.log('✅ [MOBILE SPEECH] Finished');
         setIsPlaying(false);
-        URL.revokeObjectURL(audioUrl);
       };
 
-      audio.onerror = (e) => {
-        console.error('❌ [MOBILE] Audio error:', audio.error);
+      utterance.onerror = (event) => {
+        console.error('❌ [MOBILE SPEECH] Error:', event.error);
         setIsPlaying(false);
-        URL.revokeObjectURL(audioUrl);
         toast({
-          title: "Audio Error",
-          description: "Check your volume and try again",
+          title: "Speech Error",
+          description: "Could not speak text",
           variant: "destructive",
         });
       };
 
-      // Play with user gesture (already in button click context)
-      try {
-        console.log('▶️ [MOBILE] Playing...');
-        const playPromise = audio.play();
-        
-        if (playPromise !== undefined) {
-          await playPromise;
-          console.log('✅ [MOBILE] Playing successfully');
-        }
-      } catch (playError: any) {
-        console.error('❌ [MOBILE] Play failed:', playError);
-        setIsPlaying(false);
-        toast({
-          title: "Can't play audio",
-          description: "Check volume or permissions",
-          variant: "destructive",
-        });
-      }
+      // Speak immediately (works on mobile in button click context)
+      window.speechSynthesis.speak(utterance);
+      console.log('✅ [MOBILE SPEECH] Speech queued');
 
     } catch (error: any) {
-      console.error('💥 [MOBILE] Error:', error);
+      console.error('💥 [MOBILE SPEECH] Error:', error);
       setIsPlaying(false);
       toast({
         title: "Voice Error",
@@ -186,10 +127,7 @@ export const ClientGuideAssistant = ({
   };
 
   const stopVoice = () => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current = null;
-    }
+    window.speechSynthesis.cancel();
     setIsPlaying(false);
   };
 
@@ -401,17 +339,17 @@ export const ClientGuideAssistant = ({
                   onClick={() => playVoice(guidance)}
                   disabled={isPlaying}
                   size="sm"
-                  className="w-full bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white font-medium shadow-md"
+                  className="w-full bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white font-semibold shadow-lg text-base py-6"
                 >
                   {isPlaying ? (
                     <>
-                      <VolumeX className="h-5 w-5 mr-2 animate-pulse" />
-                      Playing Voice...
+                      <VolumeX className="h-6 w-6 mr-2 animate-pulse" />
+                      Speaking...
                     </>
                   ) : (
                     <>
-                      <Volume2 className="h-5 w-5 mr-2" />
-                      🔊 Play Voice (Tap Here)
+                      <Volume2 className="h-6 w-6 mr-2" />
+                      🔊 TAP TO HEAR
                     </>
                   )}
                 </Button>
