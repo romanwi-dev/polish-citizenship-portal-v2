@@ -9,6 +9,9 @@ verify_jwt = false
 [functions.generate-poa]
 verify_jwt = false
 
+[functions.fill-pdf]
+verify_jwt = false
+
 [functions.check-password-breach]
 verify_jwt = false
 
