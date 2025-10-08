@@ -245,7 +245,7 @@ export default function FamilyTreeForm() {
           transition={{ duration: 0.5 }}
           className="mb-8"
         >
-          <div className="flex gap-3 overflow-x-auto pb-2 justify-between bg-background/95 backdrop-blur-lg p-4 rounded-lg">
+          <div className="flex gap-3 overflow-x-auto pb-2 bg-background/95 backdrop-blur-lg p-4 rounded-lg">
             <Button 
               onClick={handleSave} 
               disabled={updateMutation.isPending} 

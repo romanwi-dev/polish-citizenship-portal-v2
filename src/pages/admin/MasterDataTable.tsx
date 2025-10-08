@@ -155,7 +155,7 @@ export default function MasterDataTable() {
                 <Label htmlFor={field.name} className="text-sm font-normal text-foreground/90">
                   {field.label}
                 </Label>
-                <Input id={field.name} type={field.type || "text"} value={formData[field.name] || ""} onChange={e => handleInputChange(field.name, field.type === "email" || field.type === "text" && !field.name.includes("sex") ? e.target.value : e.target.value.toUpperCase())} placeholder="" className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase" style={{
+                <Input id={field.name} type={field.type || "text"} value={formData[field.name] || ""} onChange={e => handleInputChange(field.name, field.type === "email" ? e.target.value : e.target.value.toUpperCase())} placeholder="" className={cn("h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur", field.type === "email" ? "" : "uppercase")} style={{
             fontSize: '1.125rem',
             fontWeight: '400'
           }} />
@@ -281,6 +281,36 @@ export default function MasterDataTable() {
                 Applicant
               </span>
             </Button>
+            {formData.applicant_is_married && (
+              <Button 
+                onClick={() => setActiveTab('spouse')}
+                variant={activeTab === 'spouse' ? 'default' : 'outline'}
+                className={`text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg ${
+                  activeTab === 'spouse' 
+                    ? 'bg-gradient-to-r from-primary to-secondary text-white' 
+                    : 'bg-white/5 hover:bg-white/10'
+                } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]`}
+              >
+                <span className={activeTab === 'spouse' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
+                  Spouse
+                </span>
+              </Button>
+            )}
+            {formData.applicant_has_minor_children && (
+              <Button 
+                onClick={() => setActiveTab('children')}
+                variant={activeTab === 'children' ? 'default' : 'outline'}
+                className={`text-base md:text-xl font-bold px-6 h-12 md:h-14 rounded-lg ${
+                  activeTab === 'children' 
+                    ? 'bg-gradient-to-r from-primary to-secondary text-white' 
+                    : 'bg-white/5 hover:bg-white/10'
+                } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px]`}
+              >
+                <span className={activeTab === 'children' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
+                  Children
+                </span>
+              </Button>
+            )}
             <Button 
               onClick={() => setActiveTab('parents')}
               variant={activeTab === 'parents' ? 'default' : 'outline'}

@@ -128,7 +128,7 @@ export default function CivilRegistryForm() {
                 <Label htmlFor={field.name} className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
                   {field.label}
                 </Label>
-                <Input id={field.name} type={field.type || "text"} value={formData[field.name] || ""} onChange={e => handleInputChange(field.name, field.type === "email" ? e.target.value : e.target.value.toUpperCase())} placeholder="" className={cn("h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur", field.type !== "email" && "uppercase")} />
+                <Input id={field.name} type={field.type || "text"} value={formData[field.name] || ""} onChange={e => handleInputChange(field.name, field.type === "email" ? e.target.value : e.target.value.toUpperCase())} placeholder="" className={cn("h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur", field.type === "email" ? "" : "uppercase")} />
               </>}
           </motion.div>)}
       </div>;
@@ -276,7 +276,8 @@ export default function CivilRegistryForm() {
                 label: "Sex / Płeć"
               }, {
                 name: "applicant_email",
-                label: "Email"
+                label: "Email",
+                type: "email"
               }, {
                 name: "applicant_phone",
                 label: "Phone / Telefon"

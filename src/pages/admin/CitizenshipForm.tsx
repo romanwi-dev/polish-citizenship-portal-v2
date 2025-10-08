@@ -15,7 +15,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Calendar as CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import { useLongPress } from "@/hooks/useLongPress";
+import { useLongPressWithFeedback } from "@/hooks/useLongPressWithFeedback";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import {
   AlertDialog,
@@ -97,6 +97,15 @@ export default function CitizenshipForm() {
       setIsGenerating(false);
     }
   };
+
+  const {
+    handlers: formLongPressHandlers,
+    isPressed: isFormPressed
+  } = useLongPressWithFeedback({
+    onLongPress: () => setShowClearAllDialog(true),
+    duration: 5000,
+    feedbackMessage: "Hold for 5 seconds to clear entire form..."
+  });
 
   const renderDateField = (name: string, label: string) => {
     const dateValue = formData[name] ? new Date(formData[name]) : undefined;
@@ -215,7 +224,7 @@ export default function CitizenshipForm() {
   }
 
   return (
-    <div className="min-h-screen relative">
+    <div className={`min-h-screen relative transition-opacity ${isFormPressed ? 'opacity-90' : 'opacity-100'}`} {...formLongPressHandlers}>
       {/* Background */}
       <div className="fixed inset-0 bg-gradient-to-t from-background via-primary/5 to-background pointer-events-none -z-10" />
       <div className="fixed inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none -z-10" />
@@ -452,6 +461,23 @@ export default function CitizenshipForm() {
             </Card>
           </motion.div>
         </div>
+
+        <AlertDialog open={showClearAllDialog} onOpenChange={setShowClearAllDialog}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Clear All Fields?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This will clear all fields in the entire form. This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={clearAllFields}>
+                Clear All
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </div>
   );
