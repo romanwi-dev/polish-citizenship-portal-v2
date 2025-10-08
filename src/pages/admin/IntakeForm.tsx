@@ -177,14 +177,13 @@ export default function IntakeForm() {
           className="mb-8"
         >
           <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 bg-background/95 backdrop-blur-lg p-3 md:p-4 rounded-lg scrollbar-hide">
-            <Button onClick={handleSave} disabled={updateMutation.isPending} size="default" className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap">
+            <Button onClick={handleSave} disabled={updateMutation.isPending} size="default" className="text-sm md:text-base lg:text-lg font-bold px-3 md:px-4 lg:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[100px] md:min-w-[140px] lg:min-w-[160px] whitespace-nowrap">
               {updateMutation.isPending ? <>
                   <Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
                   <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                     Saving...
                   </span>
                 </> : <>
-                  <Save className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
                   <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                     Save data
                   </span>
@@ -193,9 +192,8 @@ export default function IntakeForm() {
             <Button 
               onClick={() => navigate(`/admin/cases/${caseId}/master-data`)}
               variant="outline" 
-              className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap"
+              className="text-sm md:text-base lg:text-lg font-bold px-3 md:px-4 lg:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[100px] md:min-w-[140px] lg:min-w-[160px] whitespace-nowrap"
             >
-              <FileText className="h-3 md:h-4 lg:h-5 w-3 md:w-4 lg:w-5 mr-1 md:mr-2 opacity-50" />
               <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 Master Form
               </span>
@@ -203,9 +201,8 @@ export default function IntakeForm() {
             <Button 
               onClick={() => navigate(`/admin/cases/${caseId}/family-tree`)}
               variant="outline" 
-              className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap"
+              className="text-sm md:text-base lg:text-lg font-bold px-3 md:px-4 lg:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[100px] md:min-w-[140px] lg:min-w-[160px] whitespace-nowrap"
             >
-              <GitBranch className="h-3 md:h-4 lg:h-5 w-3 md:w-4 lg:w-5 mr-1 md:mr-2 opacity-50" />
               <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 Family Tree
               </span>
@@ -213,9 +210,8 @@ export default function IntakeForm() {
             <Button 
               onClick={() => navigate(`/admin/cases/${caseId}/poa`)}
               variant="outline" 
-              className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap"
+              className="text-sm md:text-base lg:text-lg font-bold px-3 md:px-4 lg:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[100px] md:min-w-[140px] lg:min-w-[160px] whitespace-nowrap"
             >
-              <Download className="h-3 md:h-4 lg:h-5 w-3 md:w-4 lg:w-5 mr-1 md:mr-2 opacity-50" />
               <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 Power of Attorney
               </span>
@@ -223,9 +219,8 @@ export default function IntakeForm() {
             <Button 
               onClick={() => navigate(`/admin/cases/${caseId}/citizenship`)}
               variant="outline" 
-              className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap"
+              className="text-sm md:text-base lg:text-lg font-bold px-3 md:px-4 lg:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[100px] md:min-w-[140px] lg:min-w-[160px] whitespace-nowrap"
             >
-              <CheckCircle2 className="h-3 md:h-4 lg:h-5 w-3 md:w-4 lg:w-5 mr-1 md:mr-2 opacity-50" />
               <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 Citizenship Application
               </span>
@@ -233,9 +228,8 @@ export default function IntakeForm() {
             <Button 
               onClick={() => navigate(`/admin/cases/${caseId}/civil-registry`)}
               variant="outline" 
-              className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap"
+              className="text-sm md:text-base lg:text-lg font-bold px-3 md:px-4 lg:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[100px] md:min-w-[140px] lg:min-w-[160px] whitespace-nowrap"
             >
-              <Heart className="h-3 md:h-4 lg:h-5 w-3 md:w-4 lg:w-5 mr-1 md:mr-2 opacity-50" />
               <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 Civil Registry
               </span>
@@ -243,7 +237,7 @@ export default function IntakeForm() {
             <Button 
               onClick={() => navigate(`/admin/cases/${caseId}/additional-data`)}
               variant="outline" 
-              className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap"
+              className="text-sm md:text-base lg:text-lg font-bold px-3 md:px-4 lg:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[100px] md:min-w-[140px] lg:min-w-[160px] whitespace-nowrap"
             >
               <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 Additional Data
