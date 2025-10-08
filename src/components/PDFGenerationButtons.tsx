@@ -35,9 +35,13 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
         .eq("case_id", caseId)
         .maybeSingle();
 
-      console.log('Invoking fill-pdf function...');
+      console.log('Invoking fill-pdf function with:', { caseId, templateType });
+      
       const { data, error } = await supabase.functions.invoke('fill-pdf', {
         body: { caseId, templateType },
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
 
       if (error) {
@@ -45,10 +49,14 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
         throw error;
       }
 
-      console.log('PDF data received, type:', typeof data);
+      if (!data) {
+        throw new Error('No PDF data received from edge function');
+      }
+
+      console.log('PDF data received, creating blob...');
       
-      // Create blob from the response data
-      const blob = new Blob([data], { type: 'application/pdf' });
+      // The edge function returns raw bytes, convert to Blob
+      const blob = data instanceof Blob ? data : new Blob([data], { type: 'application/pdf' });
 
       const url = window.URL.createObjectURL(blob);
       console.log('Blob URL created:', url);

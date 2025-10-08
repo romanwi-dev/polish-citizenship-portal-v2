@@ -78,10 +78,10 @@ serve(async (req) => {
     // Save the filled PDF
     const pdfBytes = await pdfDoc.save();
     
-    // Convert to proper ArrayBuffer for Response
-    const buffer = new Uint8Array(pdfBytes).buffer;
-
-    return new Response(buffer, {
+    console.log(`PDF generated successfully, size: ${pdfBytes.length} bytes`);
+    
+    // Return the PDF bytes directly
+    return new Response(new Uint8Array(pdfBytes), {
       headers: {
         ...corsHeaders,
         'Content-Type': 'application/pdf',
