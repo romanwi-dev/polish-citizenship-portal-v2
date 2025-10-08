@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useIntakeData, useUpdateIntakeData } from "@/hooks/useIntakeData";
+import { useMasterData, useUpdateMasterData } from "@/hooks/useMasterData";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
@@ -26,10 +26,10 @@ export default function IntakeForm() {
   } = useParams();
   const navigate = useNavigate();
   const {
-    data: intakeData,
+    data: masterData,
     isLoading
-  } = useIntakeData(caseId);
-  const updateMutation = useUpdateIntakeData();
+  } = useMasterData(caseId);
+  const updateMutation = useUpdateMasterData();
   const [showClearDialog, setShowClearDialog] = useState(false);
   const { isLargeFonts, toggleFontSize } = useAccessibility();
   const [formData, setFormData] = useState<any>({});
@@ -37,11 +37,11 @@ export default function IntakeForm() {
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
   useEffect(() => {
-    if (intakeData) {
-      setFormData(intakeData);
-      setOriginalData(intakeData);
+    if (masterData) {
+      setFormData(masterData);
+      setOriginalData(masterData);
     }
-  }, [intakeData]);
+  }, [masterData]);
 
   useEffect(() => {
     setHasUnsavedChanges(JSON.stringify(formData) !== JSON.stringify(originalData));
@@ -58,8 +58,8 @@ export default function IntakeForm() {
     if (!caseId) return;
 
     // Validate email
-    if (formData.email) {
-      const emailValidation = validateEmail(formData.email);
+    if (formData.applicant_email) {
+      const emailValidation = validateEmail(formData.applicant_email);
       if (!emailValidation.valid) {
         toast.error(emailValidation.error);
         return;
@@ -67,8 +67,8 @@ export default function IntakeForm() {
     }
 
     // Validate passport
-    if (formData.passport_number) {
-      const passportValidation = validatePassport(formData.passport_number);
+    if (formData.applicant_passport_number) {
+      const passportValidation = validatePassport(formData.applicant_passport_number);
       if (!passportValidation.valid) {
         toast.error(passportValidation.error);
         return;
@@ -108,22 +108,7 @@ export default function IntakeForm() {
   // Unsaved changes warning
   useUnsavedChanges(hasUnsavedChanges);
   const clearAllFields = () => {
-    setFormData({
-      given_names: "",
-      last_name: "",
-      passport_number: "",
-      phone: "",
-      email: "",
-      confirm_email: "",
-      phone_verified: false,
-      email_verified: false,
-      civil_status: "",
-      has_children: false,
-      has_minor_children: false,
-      children_count: 0,
-      minor_children_count: 0,
-      additional_info: ""
-    });
+    setFormData({});
     toast.success("All fields cleared");
   };
   const clearField = (field: string) => {
@@ -313,30 +298,30 @@ export default function IntakeForm() {
             <CardContent className="p-6 md:p-10">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Personal Information */}
-                <div onDoubleClick={() => clearField("given_names")}>
-                  <POAFormField name="given_names" label="Given names (exactly like in your valid ID/ passport)" value={formData.given_names} onChange={value => handleInputChange("given_names", value)} delay={0} />
+                <div onDoubleClick={() => clearField("applicant_first_name")}>
+                  <POAFormField name="applicant_first_name" label="Given names (exactly like in your valid ID/ passport)" value={formData.applicant_first_name} onChange={value => handleInputChange("applicant_first_name", value)} delay={0} />
                 </div>
                 
-                <div onDoubleClick={() => clearField("last_name")}>
-                  <POAFormField name="last_name" label="Full last name (exactly like in your valid ID/ passport)" value={formData.last_name} onChange={value => handleInputChange("last_name", value)} delay={0.05} />
+                <div onDoubleClick={() => clearField("applicant_last_name")}>
+                  <POAFormField name="applicant_last_name" label="Full last name (exactly like in your valid ID/ passport)" value={formData.applicant_last_name} onChange={value => handleInputChange("applicant_last_name", value)} delay={0.05} />
                 </div>
 
                 {/* Passport */}
-                <div onDoubleClick={() => clearField("passport_number")}>
-                  <POAFormField name="passport_number" label="Passport number" value={formData.passport_number} onChange={value => handleInputChange("passport_number", value)} delay={0.1} />
+                <div onDoubleClick={() => clearField("applicant_passport_number")}>
+                  <POAFormField name="applicant_passport_number" label="Passport number" value={formData.applicant_passport_number} onChange={value => handleInputChange("applicant_passport_number", value)} delay={0.1} />
                 </div>
 
                 {/* Mobile */}
-                <div onDoubleClick={() => clearField("phone")}>
-                  <POAFormField name="phone" label="Mobile number" value={formData.phone} onChange={value => handleInputChange("phone", value)} delay={0.15} />
+                <div onDoubleClick={() => clearField("applicant_phone")}>
+                  <POAFormField name="applicant_phone" label="Mobile number" value={formData.applicant_phone} onChange={value => handleInputChange("applicant_phone", value)} delay={0.15} />
                 </div>
 
                 {/* Email */}
-                <div onDoubleClick={() => clearField("email")}>
-                  <POAFormField name="email" label="Email address" type="email" value={formData.email} onChange={value => handleInputChange("email", value.toLowerCase())} delay={0.2} />
+                <div onDoubleClick={() => clearField("applicant_email")}>
+                  <POAFormField name="applicant_email" label="Email address" type="email" value={formData.applicant_email} onChange={value => handleInputChange("applicant_email", value.toLowerCase())} delay={0.2} />
                 </div>
 
-                {/* Confirm Email */}
+                {/* Confirm Email - Not stored in master_table, just for UI validation */}
                 <div onDoubleClick={() => clearField("confirm_email")}>
                   <POAFormField name="confirm_email" label="Confirm your email address" type="email" value={formData.confirm_email} onChange={value => handleInputChange("confirm_email", value.toLowerCase())} delay={0.25} />
                 </div>
@@ -351,12 +336,12 @@ export default function IntakeForm() {
               }} transition={{
                 delay: 0.3,
                 duration: 0.4
-              }} className="space-y-4" onDoubleClick={() => clearField("civil_status")}>
+              }} className="space-y-4" onDoubleClick={() => clearField("applicant_is_married")}>
                   <Label className={cn(
                     "font-light text-foreground/90",
                     isLargeFonts ? "text-xl" : "text-sm"
                   )}>Civil status</Label>
-                  <Select value={formData.civil_status} onValueChange={value => handleInputChange("civil_status", value)}>
+                  <Select value={formData.applicant_is_married ? "married" : "not_married"} onValueChange={value => handleInputChange("applicant_is_married", value === "married")}>
                     <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
                       <SelectValue placeholder="Select status" />
                     </SelectTrigger>
@@ -463,15 +448,15 @@ export default function IntakeForm() {
                   animate={{ opacity: 1, y: 0 }} 
                   transition={{ delay: 0.5, duration: 0.4 }}
                   className="col-span-1 md:col-span-2 space-y-4"
-                  onDoubleClick={() => clearField("additional_info")}
+                  onDoubleClick={() => clearField("applicant_notes")}
                 >
                   <Label className={cn(
                     "font-light text-foreground/90",
                     isLargeFonts ? "text-xl" : "text-sm"
                   )}>Additional relevant information</Label>
                   <Textarea
-                    value={formData.additional_info || ""}
-                    onChange={(e) => handleInputChange("additional_info", e.target.value)}
+                    value={formData.applicant_notes || ""}
+                    onChange={(e) => handleInputChange("applicant_notes", e.target.value)}
                     placeholder=""
                     className="min-h-[120px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur resize-vertical"
                     style={{
