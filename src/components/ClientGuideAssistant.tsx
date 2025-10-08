@@ -76,58 +76,77 @@ export const ClientGuideAssistant = ({
   const speakGuidance = async (text: string) => {
     try {
       setIsPlayingAudio(true);
-      console.log('Requesting TTS for text:', text.substring(0, 50));
+      console.log('[TTS] Requesting speech for:', text.substring(0, 50));
 
       const { data: audioData, error: audioError } = await supabase.functions.invoke('text-to-speech', {
         body: { 
           text,
-          voice: 'EXAVITQu4vr4xnSDxMaL' // Sarah - warm, clear female voice
+          voice: 'EXAVITQu4vr4xnSDxMaL'
         }
       });
 
       if (audioError) {
-        console.error('TTS error:', audioError);
-        throw audioError;
+        console.error('[TTS] Edge function error:', audioError);
+        throw new Error(`TTS function failed: ${JSON.stringify(audioError)}`);
       }
 
-      console.log('TTS response received, base64 length:', audioData?.audioContent?.length);
-
-      // Convert base64 to blob
-      const binaryString = atob(audioData.audioContent);
-      const bytes = new Uint8Array(binaryString.length);
-      for (let i = 0; i < binaryString.length; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
+      if (!audioData?.audioContent) {
+        console.error('[TTS] No audio content in response:', audioData);
+        throw new Error('No audio content received from TTS service');
       }
-      const blob = new Blob([bytes], { type: 'audio/mpeg' });
-      const audioUrl = URL.createObjectURL(blob);
-      
-      console.log('Audio blob created, size:', blob.size);
 
-      // Create audio element and play
-      const audio = new Audio(audioUrl);
-      audioRef.current = audio;
-      
-      audio.onended = () => {
-        setIsPlayingAudio(false);
-        URL.revokeObjectURL(audioUrl);
-      };
+      console.log('[TTS] Base64 length:', audioData.audioContent.length);
 
-      audio.onerror = (e) => {
-        console.error('Audio playback error:', e);
-        setIsPlayingAudio(false);
-        URL.revokeObjectURL(audioUrl);
-      };
+      // Convert base64 to blob with error handling
+      try {
+        const binaryString = atob(audioData.audioContent);
+        console.log('[TTS] Decoded binary length:', binaryString.length);
+        
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        
+        const blob = new Blob([bytes], { type: 'audio/mpeg' });
+        console.log('[TTS] Blob created, size:', blob.size, 'type:', blob.type);
+        
+        const audioUrl = URL.createObjectURL(blob);
+        console.log('[TTS] Blob URL created:', audioUrl);
 
-      console.log('Starting audio playback...');
-      await audio.play();
-      console.log('Audio playing');
+        const audio = new Audio();
+        audioRef.current = audio;
+        
+        audio.onloadedmetadata = () => console.log('[TTS] Audio metadata loaded, duration:', audio.duration);
+        audio.oncanplay = () => console.log('[TTS] Audio can play');
+        audio.onplay = () => console.log('[TTS] Audio started playing');
+        audio.onended = () => {
+          console.log('[TTS] Audio ended');
+          setIsPlayingAudio(false);
+          URL.revokeObjectURL(audioUrl);
+        };
+        audio.onerror = (e) => {
+          console.error('[TTS] Audio element error:', e, audio.error);
+          setIsPlayingAudio(false);
+          URL.revokeObjectURL(audioUrl);
+          throw new Error(`Audio playback failed: ${audio.error?.message || 'Unknown error'}`);
+        };
+
+        audio.src = audioUrl;
+        console.log('[TTS] Attempting to play...');
+        await audio.play();
+        console.log('[TTS] Play() succeeded');
+        
+      } catch (decodeError) {
+        console.error('[TTS] Decode/playback error:', decodeError);
+        throw decodeError;
+      }
 
     } catch (error: any) {
-      console.error('Audio error:', error);
+      console.error('[TTS] Full error:', error);
       setIsPlayingAudio(false);
       toast({
         title: "Audio Error",
-        description: "Could not play audio, but guidance is shown below.",
+        description: error.message || "Could not play audio, but guidance is shown below.",
         variant: "destructive",
       });
     }
