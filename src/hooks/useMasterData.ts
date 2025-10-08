@@ -36,40 +36,57 @@ export const useUpdateMasterData = () => {
 
   return useMutation({
     mutationFn: async ({ caseId, updates }: { caseId: string; updates: any }) => {
+      console.log('🚀 MUTATION CALLED - caseId:', caseId, 'updates:', updates);
+      
       // Validate caseId
       if (!caseId || caseId === ':id') {
+        console.error('❌ Invalid case ID:', caseId);
         throw new Error("Invalid case ID");
       }
 
       // Sanitize updates to remove UI-only fields
       const sanitizedUpdates = sanitizeMasterData(updates);
 
-      console.log('💾 Saving to master_table for case:', caseId, 'Sanitized updates:', sanitizedUpdates);
+      console.log('💾 Saving to master_table for case:', caseId);
+      console.log('📝 Sanitized updates:', sanitizedUpdates);
 
       // Check if record exists
-      const { data: existing } = await supabase
+      const { data: existing, error: checkError } = await supabase
         .from("master_table")
         .select("id")
         .eq("case_id", caseId)
         .maybeSingle();
 
+      if (checkError) {
+        console.error('❌ Error checking existing record:', checkError);
+        throw checkError;
+      }
+
       if (existing) {
+        console.log('📝 Updating existing record:', existing.id);
         // Update existing
         const { error } = await supabase
           .from("master_table")
           .update(sanitizedUpdates)
           .eq("case_id", caseId);
         
-        if (error) throw error;
-        console.log('✅ Updated existing record');
+        if (error) {
+          console.error('❌ Update error:', error);
+          throw error;
+        }
+        console.log('✅ Updated existing record successfully');
       } else {
+        console.log('➕ Inserting new record');
         // Insert new
         const { error } = await supabase
           .from("master_table")
           .insert({ case_id: caseId, ...sanitizedUpdates });
         
-        if (error) throw error;
-        console.log('✅ Inserted new record');
+        if (error) {
+          console.error('❌ Insert error:', error);
+          throw error;
+        }
+        console.log('✅ Inserted new record successfully');
       }
     },
     onSuccess: (_, variables) => {
