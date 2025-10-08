@@ -6,7 +6,7 @@ export const useMasterData = (caseId: string | undefined) => {
   return useQuery({
     queryKey: ["masterData", caseId],
     queryFn: async () => {
-      if (!caseId) throw new Error("Case ID is required");
+      if (!caseId || caseId === ':id') throw new Error("Invalid case ID");
 
       const { data, error } = await supabase
         .from("master_table")
@@ -17,7 +17,7 @@ export const useMasterData = (caseId: string | undefined) => {
       if (error) throw error;
       return data;
     },
-    enabled: !!caseId,
+    enabled: !!caseId && caseId !== ':id',
     staleTime: 30000,
   });
 };
@@ -27,6 +27,11 @@ export const useUpdateMasterData = () => {
 
   return useMutation({
     mutationFn: async ({ caseId, updates }: { caseId: string; updates: any }) => {
+      // Validate caseId
+      if (!caseId || caseId === ':id') {
+        throw new Error("Invalid case ID");
+      }
+
       // Check if record exists
       const { data: existing } = await supabase
         .from("master_table")
