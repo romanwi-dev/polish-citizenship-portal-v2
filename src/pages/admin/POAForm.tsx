@@ -379,7 +379,7 @@ export default function POAForm() {
                   >
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="single" id="single" />
-                      <Label htmlFor="single" className="cursor-pointer text-sm md:text-base lg:text-lg">Not Married / Wolny</Label>
+                      <Label htmlFor="single" className="cursor-pointer text-sm md:text-base lg:text-lg">Not Married / Kawaler</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="married" id="married" />
