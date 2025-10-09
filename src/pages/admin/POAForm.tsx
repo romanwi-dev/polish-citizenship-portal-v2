@@ -457,35 +457,37 @@ export default function POAForm() {
                     </Select>
                   </div>
 
-                  {/* Minor Children - only show if has children */}
-                  {(formData.children_count && formData.children_count > 0) && (
-                    <div className="space-y-4">
-                      <Label className={cn(
-                        "font-light text-foreground/90",
-                        isLargeFonts ? "text-xl" : "text-sm"
-                      )}>
-                        Minor children
-                      </Label>
-                      <Select 
-                        value={formData.minor_children_count?.toString() || "0"} 
-                        onValueChange={value => {
-                          const count = parseInt(value);
-                          handleInputChange("minor_children_count", count);
-                        }}
-                      >
-                      <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur overflow-hidden">
-                        <SelectValue />
-                      </SelectTrigger>
-                        <SelectContent className="bg-background z-50">
-                          {Array.from({ length: (formData.children_count || 0) + 1 }, (_, i) => i).map(num => (
-                            <SelectItem key={num} value={num.toString()}>
-                              {num}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  )}
+                  {/* Minor Children - always render container to maintain grid */}
+                  <div className="space-y-4">
+                    {(formData.children_count && formData.children_count > 0) ? (
+                      <>
+                        <Label className={cn(
+                          "font-light text-foreground/90",
+                          isLargeFonts ? "text-xl" : "text-sm"
+                        )}>
+                          Minor children
+                        </Label>
+                        <Select 
+                          value={formData.minor_children_count?.toString() || "0"} 
+                          onValueChange={value => {
+                            const count = parseInt(value);
+                            handleInputChange("minor_children_count", count);
+                          }}
+                        >
+                          <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur overflow-hidden">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="bg-background z-50">
+                            {Array.from({ length: (formData.children_count || 0) + 1 }, (_, i) => i).map(num => (
+                              <SelectItem key={num} value={num.toString()}>
+                                {num}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </>
+                    ) : null}
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
