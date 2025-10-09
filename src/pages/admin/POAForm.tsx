@@ -367,6 +367,39 @@ export default function POAForm() {
                 </div>
               </CardHeader>
               <CardContent className="pt-6">
+                {/* Marital Status */}
+                <div className="mb-6 p-4 bg-primary/5 rounded-lg border border-primary/20">
+                  <Label className="text-base md:text-lg lg:text-xl font-semibold mb-3 block text-foreground/80">
+                    Marital Status / Stan cywilny
+                  </Label>
+                  <RadioGroup
+                    value={formData.applicant_is_married === true ? "married" : formData.applicant_is_married === false ? "single" : ""}
+                    onValueChange={(value) => handleInputChange("applicant_is_married", value === "married")}
+                    className="flex gap-4"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="single" id="single" />
+                      <Label htmlFor="single" className="cursor-pointer text-sm md:text-base lg:text-lg">Not Married / Wolny</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="married" id="married" />
+                      <Label htmlFor="married" className="cursor-pointer text-sm md:text-base lg:text-lg">Married / Żonaty/Zamężna</Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+
+                {/* Minor Children Info */}
+                <div className="mb-6 p-4 bg-secondary/5 rounded-lg border border-secondary/20">
+                  <Label className="text-base md:text-lg lg:text-xl font-semibold mb-2 block text-foreground/80">
+                    Minor Children Status
+                  </Label>
+                  <p className="text-sm md:text-base text-muted-foreground">
+                    {hasMinorChildren() 
+                      ? "✓ Has children under 18 (based on Master Data)" 
+                      : "No minor children detected. Add child birth dates in Master Data if needed."}
+                  </p>
+                </div>
+
                 {/* Gender Selector */}
                 <div className="mb-6">
                   <Label className="text-base md:text-lg lg:text-xl font-semibold mb-3 block text-foreground/80">
