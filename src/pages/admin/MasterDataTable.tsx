@@ -323,21 +323,19 @@ export default function MasterDataTable() {
                 </span>
               </Button>
             )}
-            {(formData.children_count > 0) && (
-              <Button 
-                onClick={() => setActiveTab('children')}
-                variant={activeTab === 'children' ? 'default' : 'outline'}
-                className={`text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg ${
-                  activeTab === 'children' 
-                    ? 'bg-gradient-to-r from-primary to-secondary text-white' 
-                    : 'bg-white/5 hover:bg-white/10'
-                } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[140px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap`}
-              >
-                <span className={activeTab === 'children' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
-                  Children
-                </span>
-              </Button>
-            )}
+            <Button 
+              onClick={() => setActiveTab('children')}
+              variant={activeTab === 'children' ? 'default' : 'outline'}
+              className={`text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg ${
+                activeTab === 'children' 
+                  ? 'bg-gradient-to-r from-primary to-secondary text-white' 
+                  : 'bg-white/5 hover:bg-white/10'
+              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[140px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap`}
+            >
+              <span className={activeTab === 'children' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
+                Children
+              </span>
+            </Button>
             <Button 
               onClick={() => setActiveTab('parents')}
               variant={activeTab === 'parents' ? 'default' : 'outline'}
