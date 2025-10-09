@@ -150,7 +150,7 @@ export default function MasterDataTable() {
     type?: string;
     placeholder?: string;
   }>) => {
-    return <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    return <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {fields.map((field, idx) => <motion.div key={field.name} initial={{
         opacity: 0,
         y: 20
@@ -177,7 +177,7 @@ export default function MasterDataTable() {
     name: string;
     label: string;
   }>) => {
-    return <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    return <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {fields.map((field, idx) => <motion.div key={field.name} initial={{
         opacity: 0,
         scale: 0.95
@@ -536,37 +536,73 @@ export default function MasterDataTable() {
                   {/* Contact Information */}
                   <div className="pt-8">
                     <h3 className="text-xl font-semibold mb-6 text-foreground">Contact Information</h3>
-                    {renderFieldGroup([{
-                      name: "applicant_email",
-                      label: "Email",
-                      type: "email"
-                    }, {
-                      name: "applicant_phone",
-                      label: "Phone"
-                    }])}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
+                        <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                          Email
+                        </Label>
+                        <Input
+                          value={formData.applicant_email || ""}
+                          onChange={(e) => handleInputChange("applicant_email", e.target.value)}
+                          type="email"
+                          className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+                          style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                        />
+                      </motion.div>
+                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
+                        <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                          Phone
+                        </Label>
+                        <Input
+                          value={formData.applicant_phone || ""}
+                          onChange={(e) => handleInputChange("applicant_phone", e.target.value)}
+                          className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+                          style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                        />
+                      </motion.div>
+                    </div>
                   </div>
 
                   {/* Passport Information */}
                   <div className="pt-8">
                     <h3 className="text-xl font-semibold mb-6 text-foreground">Passport Information</h3>
-                    {renderFieldGroup([{
-                      name: "applicant_passport_number",
-                      label: "Passport Number"
-                    }, {
-                      name: "applicant_passport_issuing_country",
-                      label: "Passport Issuing Country"
-                    }, {
-                      name: "applicant_passport_issuing_authority",
-                      label: "Passport Issuing Authority"
-                    }, {
-                      name: "applicant_passport_issue_date",
-                      label: "Passport Issue Date",
-                      type: "date"
-                    }, {
-                      name: "applicant_passport_expiry_date",
-                      label: "Passport Expiry Date",
-                      type: "date"
-                    }])}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
+                        <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                          Passport Number
+                        </Label>
+                        <Input
+                          value={formData.applicant_passport_number || ""}
+                          onChange={(e) => handleInputChange("applicant_passport_number", e.target.value.toUpperCase())}
+                          className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                          style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                        />
+                      </motion.div>
+                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
+                        <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                          Passport Issuing Country
+                        </Label>
+                        <Input
+                          value={formData.applicant_passport_issuing_country || ""}
+                          onChange={(e) => handleInputChange("applicant_passport_issuing_country", e.target.value.toUpperCase())}
+                          className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                          style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                        />
+                      </motion.div>
+                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
+                        <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                          Passport Issuing Authority
+                        </Label>
+                        <Input
+                          value={formData.applicant_passport_issuing_authority || ""}
+                          onChange={(e) => handleInputChange("applicant_passport_issuing_authority", e.target.value.toUpperCase())}
+                          className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                          style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                        />
+                      </motion.div>
+                      {renderDateField("applicant_passport_issue_date", "Passport Issue Date")}
+                      {renderDateField("applicant_passport_expiry_date", "Passport Expiry Date")}
+                    </div>
                   </div>
 
                   {/* Marriage Information - Only show if married */}

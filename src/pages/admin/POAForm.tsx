@@ -464,7 +464,30 @@ export default function POAForm() {
                     onChange={(value) => handleInputChange("applicant_last_name", value)}
                   />
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
+                
+                {/* Marriage Information - Only show if married */}
+                {formData.applicant_is_married && (
+                  <div className="mt-6">
+                    <h3 className="text-xl font-semibold mb-4 text-foreground">Marriage Information</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                      <POAFormField
+                        name="place_of_marriage"
+                        label="Place of marriage / Miejsce zawarcia związku małżeńskiego"
+                        value={formData?.place_of_marriage || ""}
+                        onChange={(value) => handleInputChange("place_of_marriage", value)}
+                      />
+                      <POAFormField
+                        name="date_of_marriage"
+                        label="Date of marriage / Data zawarcia związku małżeńskiego"
+                        value={formData?.date_of_marriage || ""}
+                        onChange={(value) => handleInputChange("date_of_marriage", value)}
+                        type="date"
+                      />
+                    </div>
+                  </div>
+                )}
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-6">
                   <POAFormField
                     name="applicant_passport_number"
                     label="ID/ passport number / Nr dokumentu tożsamości"

@@ -556,13 +556,33 @@ export default function CitizenshipForm() {
                 </div>
 
                 {renderFieldGroup([
-                  { name: "applicant_last_name", label: "Nazwisko / Full last name" },
-                  { name: "applicant_maiden_name", label: "Nazwisko rodowe / Maiden name" },
                   { name: "applicant_first_name", label: "Imię/ imiona / Given names" },
-                  { name: "father_first_name", label: "Imię i nazwisko ojca / Father's full name" },
-                  { name: "mother_first_name", label: "Imię i nazwisko rodowe matki / Mother's full name" },
-                  { name: "applicant_dob", label: "Data urodzenia / Date of birth", type: "date" },
+                  { name: "applicant_last_name", label: "Nazwisko / Full last name" }
+                ])}
+                
+                {renderFieldGroup([
                   { name: "applicant_pob", label: "Miejsce urodzenia / Place of birth" },
+                  { name: "applicant_dob", label: "Data urodzenia / Date of birth", type: "date" }
+                ])}
+                
+                {/* Marriage Information - Only show if married */}
+                {formData.applicant_is_married && (
+                  <div className="pt-6">
+                    <h3 className="text-xl font-semibold mb-6 text-foreground">Marriage Information / Dane małżeństwa</h3>
+                    {renderFieldGroup([
+                      { name: "place_of_marriage", label: "Miejsce zawarcia związku małżeńskiego / Place of marriage" },
+                      { name: "date_of_marriage", label: "Data zawarcia związku małżeńskiego / Date of marriage", type: "date" }
+                    ])}
+                  </div>
+                )}
+                
+                {renderFieldGroup([
+                  { name: "applicant_maiden_name", label: "Nazwisko rodowe / Maiden name" },
+                  { name: "father_first_name", label: "Imię i nazwisko ojca / Father's full name" }
+                ])}
+                
+                {renderFieldGroup([
+                  { name: "mother_first_name", label: "Imię i nazwisko rodowe matki / Mother's full name" }
                 ])}
                 
                 <div className="pt-6">

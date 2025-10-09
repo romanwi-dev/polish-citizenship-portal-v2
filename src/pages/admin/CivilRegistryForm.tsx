@@ -418,21 +418,42 @@ export default function CivilRegistryForm() {
               }, {
                 name: "applicant_last_name",
                 label: "Full last name / Nazwisko"
-              }, {
-                name: "applicant_maiden_name",
-                label: "Maiden name / Nazwisko panieńskie"
+              }])}
+              
+                {renderFieldGroup([{
+                name: "applicant_pob",
+                label: "Place of birth / Miejsce urodzenia"
               }, {
                 name: "applicant_dob",
                 label: "Date of birth / Data urodzenia",
                 type: "date"
-              }, {
-                name: "applicant_pob",
-                label: "Place of birth / Miejsce urodzenia"
+              }])}
+              
+                {/* Marriage Information - Only show if married */}
+                {formData.applicant_is_married && (
+                  <div className="pt-6">
+                    <h3 className="text-xl font-semibold mb-6 text-foreground">Marriage Information</h3>
+                    {renderFieldGroup([{
+                      name: "place_of_marriage",
+                      label: "Place of marriage / Miejsce zawarcia związku małżeńskiego"
+                    }, {
+                      name: "date_of_marriage",
+                      label: "Date of marriage / Data zawarcia związku małżeńskiego",
+                      type: "date"
+                    }])}
+                  </div>
+                )}
+              
+                {renderFieldGroup([{
+                name: "applicant_maiden_name",
+                label: "Maiden name / Nazwisko panieńskie"
               }, {
                 name: "applicant_email",
                 label: "Email",
                 type: "email"
-              }, {
+              }])}
+              
+                {renderFieldGroup([{
                 name: "applicant_phone",
                 label: "Phone / Telefon"
               }, {
