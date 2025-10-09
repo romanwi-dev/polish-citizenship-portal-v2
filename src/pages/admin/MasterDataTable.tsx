@@ -19,6 +19,7 @@ import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useFormSync } from "@/hooks/useFormSync";
+import { CountrySelect } from "@/components/CountrySelect";
 
 export default function MasterDataTable() {
   const { id: caseId } = useParams();
@@ -663,11 +664,15 @@ export default function MasterDataTable() {
                     label: "State/Province"
                   }, {
                     name: "applicant_address_postal",
-                    label: "Postal Code"
-                  }, {
-                    name: "applicant_address_country",
-                    label: "Country"
+                    label: "Postal code"
                   }])}
+                  
+                  <CountrySelect
+                    value={formData.applicant_address_country || ""}
+                    onChange={(value) => handleInputChange("applicant_address_country", value)}
+                    label="Country"
+                    isLargeFonts={isLargeFonts}
+                  />
                   </div>
 
                   <div className="pt-8">

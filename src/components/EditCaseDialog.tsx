@@ -41,10 +41,10 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
     progress: caseData.progress,
   });
   const [showOtherCountry, setShowOtherCountry] = useState(
-    !["US", "UK", "Canada", "Australia", "South Africa", "Brazil", "Argentina", "Mexico", "Venezuela", "Israel", "France", "Germany"].includes(caseData.country)
+    !["USA", "UK", "Canada", "Australia", "South Africa", "Brazil", "Argentina", "Mexico", "Venezuela", "Israel", "Germany", "France"].includes(caseData.country)
   );
   const [otherCountry, setOtherCountry] = useState(
-    !["US", "UK", "Canada", "Australia", "South Africa", "Brazil", "Argentina", "Mexico", "Venezuela", "Israel", "France", "Germany"].includes(caseData.country) 
+    !["USA", "UK", "Canada", "Australia", "South Africa", "Brazil", "Argentina", "Mexico", "Venezuela", "Israel", "Germany", "France"].includes(caseData.country) 
       ? caseData.country 
       : ""
   );
@@ -191,7 +191,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                   <SelectValue placeholder="Select country" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="US">US</SelectItem>
+                  <SelectItem value="USA">USA</SelectItem>
                   <SelectItem value="UK">UK</SelectItem>
                   <SelectItem value="Canada">Canada</SelectItem>
                   <SelectItem value="Australia">Australia</SelectItem>
@@ -201,8 +201,8 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                   <SelectItem value="Mexico">Mexico</SelectItem>
                   <SelectItem value="Venezuela">Venezuela</SelectItem>
                   <SelectItem value="Israel">Israel</SelectItem>
-                  <SelectItem value="France">France</SelectItem>
                   <SelectItem value="Germany">Germany</SelectItem>
+                  <SelectItem value="France">France</SelectItem>
                   <SelectItem value="Other">Other</SelectItem>
                 </SelectContent>
               </Select>

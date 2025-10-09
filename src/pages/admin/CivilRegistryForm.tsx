@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { Textarea } from "@/components/ui/textarea";
 import { useRealtimeFormSync } from "@/hooks/useRealtimeFormSync";
+import { CountrySelect } from "@/components/CountrySelect";
 
 export default function CivilRegistryForm() {
   const {
@@ -489,23 +490,22 @@ export default function CivilRegistryForm() {
                   },
                   {
                     name: "document_issue_place",
-                    label: "Place Where Document Was Issued / Miejsce sporządzenia aktu"
-                  },
-                  {
-                    name: "document_issue_country",
-                    label: "Country / Kraj"
-                  },
-                  {
-                    name: "document_event_date",
-                    label: "Event Date / Data zdarzenia",
-                    type: "date"
+                    label: "Place where document was issued / Miejsce sporządzenia aktu"
                   },
                   {
                     name: "document_registry_number",
-                    label: "Registry Number / Numer aktu"
+                    label: "Registry number / Numer aktu"
                   },
                 ])}
 
+                <CountrySelect
+                  value={formData.document_issue_country || ""}
+                  onChange={(value) => handleInputChange("document_issue_country", value)}
+                  label="Country / Kraj"
+                  isLargeFonts={isLargeFonts}
+                />
+
+                {renderDateField("document_event_date", "Event date / Data zdarzenia")}
                 
                 <div className="bg-muted/30 rounded-lg p-6 border-2 border-primary/20">
                   <h3 className={cn("font-semibold mb-6 text-foreground", isLargeFonts ? "text-3xl" : "text-2xl")}>Required Documents Checklist / Lista wymaganych dokumentów</h3>
