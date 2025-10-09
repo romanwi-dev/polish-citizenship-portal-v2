@@ -1,6 +1,4 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useMasterData, useUpdateMasterData } from "@/hooks/useMasterData";
-import { sanitizeMasterData } from "@/utils/masterDataSanitizer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Loader2, Save, FileText, Users, Baby, Heart, Calendar as CalendarIcon, Sparkles, Download, GitBranch, Type, FilePlus, User, ArrowLeft } from "lucide-react";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { PDFGenerationButtons } from "@/components/PDFGenerationButtons";
@@ -19,27 +17,17 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import { useRealtimeFormSync } from "@/hooks/useRealtimeFormSync";
+import { useFormSync } from "@/hooks/useFormSync";
 
 export default function MasterDataTable() {
-  const {
-    id: caseId
-  } = useParams();
+  const { id: caseId } = useParams();
   const navigate = useNavigate();
 
-  // Debug logging
   console.log('MasterDataTable - caseId from URL:', caseId);
-  const {
-    data: masterData,
-    isLoading
-  } = useMasterData(caseId);
-  const updateMutation = useUpdateMasterData();
-  const [formData, setFormData] = useState<any>({});
+  
+  const { formData, setFormData, isLoading, isSaving, saveData } = useFormSync(caseId);
   const [activeTab, setActiveTab] = useState("applicant");
   const { isLargeFonts, toggleFontSize } = useAccessibility();
-  
-  // Enable real-time sync with direct state updates
-  useRealtimeFormSync(caseId, masterData, isLoading, setFormData);
 
   // Show error if no valid caseId
   if (!caseId || caseId === ':id') {
@@ -54,65 +42,6 @@ export default function MasterDataTable() {
         </Card>
       </div>;
   }
-  useEffect(() => {
-    if (masterData) {
-      const address = masterData.applicant_address as {
-        street?: string;
-        city?: string;
-        state?: string;
-        postal?: string;
-        country?: string;
-      } || {};
-      
-      const initialData: any = {
-        ...masterData,
-        applicant_address_street: address.street || '',
-        applicant_address_city: address.city || '',
-        applicant_address_state: address.state || '',
-        applicant_address_postal: address.postal || '',
-        applicant_address_country: address.country || ''
-      };
-      
-      let needsUpdate = false;
-      
-      // Auto-sync father's last name to all children on load
-      if (initialData.father_last_name) {
-        for (let i = 1; i <= 10; i++) {
-          if (!initialData[`child_${i}_last_name`]) {
-            initialData[`child_${i}_last_name`] = initialData.father_last_name;
-            needsUpdate = true;
-          }
-        }
-      }
-      
-      // Auto-sync male applicant's last name after marriage on load
-      if (initialData.applicant_sex === 'M' && initialData.applicant_last_name) {
-        if (!initialData.applicant_last_name_after_marriage) {
-          initialData.applicant_last_name_after_marriage = initialData.applicant_last_name;
-          needsUpdate = true;
-        }
-      }
-      
-      // Auto-sync husband's (spouse) last name after marriage if applicant is female on load
-      if (initialData.applicant_sex === 'F' && initialData.spouse_last_name) {
-        if (!initialData.spouse_last_name_after_marriage) {
-          initialData.spouse_last_name_after_marriage = initialData.spouse_last_name;
-          needsUpdate = true;
-        }
-      }
-      
-      setFormData(initialData);
-      
-      // Save synced data to database if changes were made
-      if (needsUpdate && caseId) {
-        console.log('💾 Auto-saving synced data to database');
-        updateMutation.mutate({
-          caseId,
-          updates: initialData
-        });
-      }
-    }
-  }, [masterData]);
   const handleInputChange = (field: string, value: any) => {
     setFormData((prev: any) => {
       // Handle address fields specially
@@ -169,13 +98,9 @@ export default function MasterDataTable() {
       };
     });
   };
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!caseId) return;
-    const sanitizedData = sanitizeMasterData(formData);
-    updateMutation.mutate({
-      caseId,
-      updates: sanitizedData
-    });
+    await saveData(formData);
   };
   if (isLoading) {
     return <div className="flex items-center justify-center min-h-screen bg-background">
@@ -346,11 +271,11 @@ export default function MasterDataTable() {
             >
             <Button 
               onClick={handleSave} 
-              disabled={updateMutation.isPending} 
+              disabled={isSaving} 
               size="default" 
               className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[160px] md:min-w-[220px] lg:min-w-[260px] whitespace-nowrap"
             >
-              {updateMutation.isPending ? (
+              {isSaving ? (
                 <>
                   <Loader2 className="h-3 md:h-4 lg:h-5 w-3 md:w-4 lg:w-5 animate-spin mr-1 md:mr-2 opacity-50" />
                   <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
