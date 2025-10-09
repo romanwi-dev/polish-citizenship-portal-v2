@@ -650,6 +650,20 @@ export default function FamilyTreeForm() {
                       />
                       <Label htmlFor="applicant_has_naturalization" className="cursor-pointer text-sm font-normal">Naturalization certificate</Label>
                     </motion.div>
+                    <motion.div 
+                      initial={{ opacity: 0, scale: 0.95 }} 
+                      animate={{ opacity: 1, scale: 1 }} 
+                      transition={{ delay: 0.15 }}
+                      className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur"
+                    >
+                      <Checkbox
+                        id="applicant_has_additional_documents"
+                        checked={formData?.applicant_has_additional_documents || false}
+                        onCheckedChange={(checked) => handleInputChange("applicant_has_additional_documents", checked)}
+                        className="h-6 w-6"
+                      />
+                      <Label htmlFor="applicant_has_additional_documents" className="cursor-pointer text-sm font-normal">Additional documents</Label>
+                    </motion.div>
                   </div>
                 </div>
               </CardContent>

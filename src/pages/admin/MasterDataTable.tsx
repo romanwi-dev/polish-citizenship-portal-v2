@@ -710,6 +710,9 @@ export default function MasterDataTable() {
                   }] : []), {
                     name: "applicant_has_foreign_documents",
                     label: "Foreign documents"
+                  }, {
+                    name: "applicant_has_additional_documents",
+                    label: "Additional documents"
                   }])}
                   </div>
 
@@ -929,6 +932,9 @@ export default function MasterDataTable() {
                     }] : []), {
                       name: "spouse_has_foreign_documents",
                       label: "Foreign documents"
+                    }, {
+                      name: "spouse_has_additional_documents",
+                      label: "Additional documents"
                     }])}
                   </div>
 
@@ -1089,6 +1095,9 @@ export default function MasterDataTable() {
                       }, {
                         name: "father_has_naturalization",
                         label: "Naturalization papers"
+                      }, {
+                        name: "father_has_additional_documents",
+                        label: "Additional documents"
                       }])}
                     </div>
 
@@ -1165,6 +1174,9 @@ export default function MasterDataTable() {
                       }, {
                         name: "mother_has_naturalization",
                         label: "Naturalization papers"
+                      }, {
+                        name: "mother_has_additional_documents",
+                        label: "Additional documents"
                       }])}
                     </div>
 
