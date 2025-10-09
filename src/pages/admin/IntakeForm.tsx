@@ -678,15 +678,6 @@ export default function IntakeForm() {
                 </div>
               </div>
 
-              {/* Address Section - Coming Soon Placeholder */}
-              <div className="pt-8">
-                <h3 className="text-xl font-semibold mb-6 text-foreground">Address information</h3>
-                <div className="p-6 border-2 border-dashed border-primary/30 rounded-lg bg-primary/5 text-center">
-                  <p className="text-muted-foreground">
-                    Address fields will be added here to match the Master Form
-                  </p>
-                </div>
-              </div>
 
               {/* Documents Required */}
               <div className="pt-8">
