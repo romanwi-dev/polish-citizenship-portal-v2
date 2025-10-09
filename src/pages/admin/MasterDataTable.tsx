@@ -530,7 +530,22 @@ export default function MasterDataTable() {
                         style={{ fontSize: '1.125rem', fontWeight: '400' }}
                       />
                     </motion.div>
-                    {renderDateField("applicant_dob", "Date of birth / Data urodzenia")}
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="space-y-2">
+                      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                        Date of birth / Data urodzenia
+                      </Label>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button variant="outline" className={cn("w-full h-16 justify-start text-left border-2 hover-glow bg-card/50 backdrop-blur", !formData.applicant_dob && "text-muted-foreground")} style={{ fontSize: '1.125rem', fontWeight: '400' }}>
+                            <CalendarIcon className="mr-2 h-5 w-5" />
+                            {formData.applicant_dob ? format(new Date(formData.applicant_dob), "dd/MM/yyyy") : <span>Pick a date</span>}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar mode="single" selected={formData.applicant_dob ? new Date(formData.applicant_dob) : undefined} onSelect={date => handleInputChange("applicant_dob", date ? format(date, "yyyy-MM-dd") : "")} disabled={date => date > new Date("2030-12-31") || date < new Date("1900-01-01")} initialFocus className={cn("p-3 pointer-events-auto")} />
+                        </PopoverContent>
+                      </Popover>
+                    </motion.div>
                   </div>
 
                   {/* Contact Information */}
