@@ -17,6 +17,7 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useLongPressWithFeedback } from "@/hooks/useLongPressWithFeedback";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
+import { useRealtimeFormSync } from "@/hooks/useRealtimeFormSync";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -38,6 +39,9 @@ export default function CitizenshipForm() {
   const [formData, setFormData] = useState<any>({});
   const [isGenerating, setIsGenerating] = useState(false);
   const [showClearAllDialog, setShowClearAllDialog] = useState(false);
+  
+  // Enable real-time sync
+  useRealtimeFormSync(caseId);
 
   useEffect(() => {
     if (masterData) {

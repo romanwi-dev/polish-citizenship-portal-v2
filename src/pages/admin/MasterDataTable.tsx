@@ -19,6 +19,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { useRealtimeFormSync } from "@/hooks/useRealtimeFormSync";
 
 export default function MasterDataTable() {
   const {
@@ -36,6 +37,9 @@ export default function MasterDataTable() {
   const [formData, setFormData] = useState<any>({});
   const [activeTab, setActiveTab] = useState("applicant");
   const { isLargeFonts, toggleFontSize } = useAccessibility();
+  
+  // Enable real-time sync
+  useRealtimeFormSync(caseId);
 
   // Show error if no valid caseId
   if (!caseId || caseId === ':id') {

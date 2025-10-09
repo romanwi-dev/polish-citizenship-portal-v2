@@ -17,6 +17,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { PDFPreviewDialog } from "@/components/PDFPreviewDialog";
 import { sanitizeMasterData } from "@/utils/masterDataSanitizer";
+import { useRealtimeFormSync } from "@/hooks/useRealtimeFormSync";
 
 export default function POAForm() {
   const { id: caseId } = useParams();
@@ -24,6 +25,9 @@ export default function POAForm() {
   const { data: masterData, isLoading } = useMasterData(caseId);
   const updateMutation = useUpdateMasterData();
   const { isLargeFonts, toggleFontSize } = useAccessibility();
+  
+  // Enable real-time sync
+  useRealtimeFormSync(caseId);
   
   const [formData, setFormData] = useState<any>({});
   const [isGenerating, setIsGenerating] = useState(false);

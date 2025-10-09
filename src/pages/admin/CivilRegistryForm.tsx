@@ -17,6 +17,7 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { Textarea } from "@/components/ui/textarea";
+import { useRealtimeFormSync } from "@/hooks/useRealtimeFormSync";
 
 export default function CivilRegistryForm() {
   const {
@@ -34,6 +35,9 @@ export default function CivilRegistryForm() {
   } = useAccessibility();
   const [formData, setFormData] = useState<any>({});
   const [isGenerating, setIsGenerating] = useState(false);
+  
+  // Enable real-time sync
+  useRealtimeFormSync(caseId);
   useEffect(() => {
     if (masterData) {
       setFormData(masterData);

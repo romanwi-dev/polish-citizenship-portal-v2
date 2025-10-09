@@ -19,6 +19,7 @@ import { useUnsavedChanges } from "@/hooks/useUnsavedChanges";
 import { validateEmail, validatePassport } from "@/utils/validators";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
+import { useRealtimeFormSync } from "@/hooks/useRealtimeFormSync";
 
 export default function IntakeForm() {
   const {
@@ -35,6 +36,9 @@ export default function IntakeForm() {
   const [formData, setFormData] = useState<any>({});
   const [originalData, setOriginalData] = useState<any>({});
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  
+  // Enable real-time sync
+  useRealtimeFormSync(caseId);
 
   useEffect(() => {
     if (masterData) {

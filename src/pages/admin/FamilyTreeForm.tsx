@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
+import { useRealtimeFormSync } from "@/hooks/useRealtimeFormSync";
 
 export default function FamilyTreeForm() {
   const {
@@ -37,6 +38,9 @@ export default function FamilyTreeForm() {
   const [formData, setFormData] = useState<any>({});
   const [isGenerating, setIsGenerating] = useState(false);
   const [activeTab, setActiveTab] = useState("applicant");
+  
+  // Enable real-time sync
+  useRealtimeFormSync(caseId);
   useEffect(() => {
     if (masterData) {
       setFormData(masterData);
