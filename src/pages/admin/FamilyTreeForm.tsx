@@ -344,21 +344,19 @@ export default function FamilyTreeForm() {
                 Applicant
               </span>
             </Button>
-            {(formData.children_count > 0) && (
-              <Button 
-                onClick={() => setActiveTab('children')}
-                variant={activeTab === 'children' ? 'default' : 'outline'}
-                className={`text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg ${
-                  activeTab === 'children' 
-                    ? 'bg-gradient-to-r from-primary to-secondary text-white' 
-                    : 'bg-white/5 hover:bg-white/10'
-                } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap`}
-              >
-                <span className={activeTab === 'children' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
-                  Children
-                </span>
-              </Button>
-            )}
+            <Button 
+              onClick={() => setActiveTab('children')}
+              variant={activeTab === 'children' ? 'default' : 'outline'}
+              className={`text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg ${
+                activeTab === 'children' 
+                  ? 'bg-gradient-to-r from-primary to-secondary text-white' 
+                  : 'bg-white/5 hover:bg-white/10'
+              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap`}
+            >
+              <span className={activeTab === 'children' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
+                Children
+              </span>
+            </Button>
             <Button 
               onClick={() => setActiveTab('parents')}
               variant={activeTab === 'parents' ? 'default' : 'outline'}
@@ -627,7 +625,7 @@ export default function FamilyTreeForm() {
           )}
 
           {/* Children Section */}
-          {activeTab === 'children' && formData.applicant_has_minor_children && (
+          {activeTab === 'children' && (formData.children_count > 0) && (
           <motion.div initial={{
           opacity: 0,
           scale: 0.95
@@ -641,11 +639,19 @@ export default function FamilyTreeForm() {
             <Card className="glass-card border-primary/20">
               <CardHeader className="border-b border-border/50 pb-6">
                 <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                  Applicant's Minor Children
+                  Applicant's Children
                 </CardTitle>
+                <CardDescription className="text-base mt-2">
+                  Based on the Applicant information, you have <span className="font-semibold text-primary">{formData.children_count || 0} {formData.children_count === 1 ? 'child' : 'children'}</span> to enter details for.
+                  {formData.minor_children_count > 0 && (
+                    <span className="block mt-1">
+                      ({formData.minor_children_count} minor {formData.minor_children_count === 1 ? 'child' : 'children'} under 18)
+                    </span>
+                  )}
+                </CardDescription>
               </CardHeader>
               <CardContent className="p-6 md:p-10 space-y-10">
-                {[1, 2, 3, 4].map(num => <div key={num} className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
+                {Array.from({ length: formData.children_count || 0 }, (_, i) => i + 1).map(num => <div key={num} className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
                     <h3 className="text-xl font-semibold text-foreground">Child {num}</h3>
                     {/* 1st row - Name fields */}
                     {renderFieldGroup([{
