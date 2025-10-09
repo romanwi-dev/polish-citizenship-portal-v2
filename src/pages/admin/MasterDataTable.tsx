@@ -256,12 +256,10 @@ export default function MasterDataTable() {
                     onClick={toggleFontSize}
                     size="lg"
                     variant="ghost"
-                    className={`h-16 w-16 rounded-full transition-all ${
-                      isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground'
-                    }`}
+                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10"
                     title="Toggle font size"
                   >
-                    <Type className="h-8 w-8" />
+                    <Type className={cn("transition-all", isLargeFonts ? "h-9 w-9" : "h-8 w-8")} />
                   </Button>
                 </div>
               </div>
