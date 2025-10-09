@@ -596,65 +596,91 @@ export default function IntakeForm() {
               {/* Documents Required */}
               <div className="pt-8">
                 <h3 className="text-xl font-semibold mb-6 text-foreground">Documents required</h3>
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95 }} 
+                    animate={{ opacity: 1, scale: 1 }} 
+                    transition={{ delay: 0 }}
+                    className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur"
+                  >
                     <Checkbox
                       id="applicant_has_polish_documents"
                       checked={formData?.applicant_has_polish_documents || false}
                       onCheckedChange={(checked) => handleInputChange("applicant_has_polish_documents", checked)}
+                      className="h-6 w-6"
                     />
-                    <Label htmlFor="applicant_has_polish_documents" className="cursor-pointer">Polish documents</Label>
-                  </div>
-                  <div className="flex items-center space-x-3">
+                    <Label htmlFor="applicant_has_polish_documents" className="cursor-pointer text-sm font-normal">Polish documents</Label>
+                  </motion.div>
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95 }} 
+                    animate={{ opacity: 1, scale: 1 }} 
+                    transition={{ delay: 0.05 }}
+                    className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur"
+                  >
                     <Checkbox
                       id="applicant_has_passport"
                       checked={formData?.applicant_has_passport || false}
                       onCheckedChange={(checked) => handleInputChange("applicant_has_passport", checked)}
+                      className="h-6 w-6"
                     />
-                    <Label htmlFor="applicant_has_passport" className="cursor-pointer">Passport copy</Label>
-                  </div>
-                  <div className="flex items-center space-x-3">
+                    <Label htmlFor="applicant_has_passport" className="cursor-pointer text-sm font-normal">Passport copy</Label>
+                  </motion.div>
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95 }} 
+                    animate={{ opacity: 1, scale: 1 }} 
+                    transition={{ delay: 0.1 }}
+                    className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur"
+                  >
                     <Checkbox
                       id="applicant_has_birth_cert"
                       checked={formData?.applicant_has_birth_cert || false}
                       onCheckedChange={(checked) => handleInputChange("applicant_has_birth_cert", checked)}
+                      className="h-6 w-6"
                     />
-                    <Label htmlFor="applicant_has_birth_cert" className="cursor-pointer">Birth certificate</Label>
-                  </div>
-                  <div className="flex items-center space-x-3">
+                    <Label htmlFor="applicant_has_birth_cert" className="cursor-pointer text-sm font-normal">Birth certificate</Label>
+                  </motion.div>
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95 }} 
+                    animate={{ opacity: 1, scale: 1 }} 
+                    transition={{ delay: 0.15 }}
+                    className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur"
+                  >
                     <Checkbox
                       id="applicant_has_marriage_cert"
                       checked={formData?.applicant_has_marriage_cert || false}
                       onCheckedChange={(checked) => handleInputChange("applicant_has_marriage_cert", checked)}
+                      className="h-6 w-6"
                     />
-                    <Label htmlFor="applicant_has_marriage_cert" className="cursor-pointer">Marriage certificate</Label>
-                  </div>
-                  <div className="flex items-center space-x-3">
+                    <Label htmlFor="applicant_has_marriage_cert" className="cursor-pointer text-sm font-normal">Marriage certificate</Label>
+                  </motion.div>
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95 }} 
+                    animate={{ opacity: 1, scale: 1 }} 
+                    transition={{ delay: 0.2 }}
+                    className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur"
+                  >
                     <Checkbox
                       id="applicant_has_naturalization"
                       checked={formData?.applicant_has_naturalization || false}
                       onCheckedChange={(checked) => handleInputChange("applicant_has_naturalization", checked)}
+                      className="h-6 w-6"
                     />
-                    <Label htmlFor="applicant_has_naturalization" className="cursor-pointer">Naturalization certificate</Label>
-                  </div>
-                  {(formData?.applicant_sex === "Male / Mężczyzna" || formData?.sex === "Male / Mężczyzna") && (
-                    <div className="flex items-center space-x-3">
-                      <Checkbox
-                        id="applicant_has_military_record"
-                        checked={formData?.applicant_has_military_record || false}
-                        onCheckedChange={(checked) => handleInputChange("applicant_has_military_record", checked)}
-                      />
-                      <Label htmlFor="applicant_has_military_record" className="cursor-pointer">Military record (males only)</Label>
-                    </div>
-                  )}
-                  <div className="flex items-center space-x-3">
+                    <Label htmlFor="applicant_has_naturalization" className="cursor-pointer text-sm font-normal">Naturalization certificate</Label>
+                  </motion.div>
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95 }} 
+                    animate={{ opacity: 1, scale: 1 }} 
+                    transition={{ delay: 0.25 }}
+                    className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur"
+                  >
                     <Checkbox
                       id="applicant_has_foreign_documents"
                       checked={formData?.applicant_has_foreign_documents || false}
                       onCheckedChange={(checked) => handleInputChange("applicant_has_foreign_documents", checked)}
+                      className="h-6 w-6"
                     />
-                    <Label htmlFor="applicant_has_foreign_documents" className="cursor-pointer">Foreign documents</Label>
-                  </div>
+                    <Label htmlFor="applicant_has_foreign_documents" className="cursor-pointer text-sm font-normal">Foreign documents</Label>
+                  </motion.div>
                 </div>
               </div>
 
