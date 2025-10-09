@@ -157,22 +157,27 @@ export default function POAForm() {
       // Save first
       await handleSave();
 
-      // Generate PDF - the response is already binary data
-      const response = await supabase.functions.invoke('fill-pdf', {
-        body: { caseId, templateType }
-      });
+      // Generate PDF
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/fill-pdf`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify({ caseId, templateType }),
+        }
+      );
 
-      if (response.error) {
-        console.error("Edge function error:", response.error);
-        throw new Error(response.error.message || 'PDF generation failed');
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Edge function error:", errorText);
+        throw new Error(`PDF generation failed: ${errorText}`);
       }
 
-      if (!response.data) {
-        throw new Error('No PDF data received');
-      }
-
-      // The response.data is already a Uint8Array/ArrayBuffer, convert to Blob
-      const blob = new Blob([response.data], { type: 'application/pdf' });
+      // Get the PDF as a blob
+      const blob = await response.blob();
       const url = URL.createObjectURL(blob);
       
       setPdfPreviewUrl(url);
@@ -197,14 +202,21 @@ export default function POAForm() {
       
       await supabase.from("master_table").update(sanitizedData).eq("case_id", caseId);
 
-      const response = await supabase.functions.invoke('fill-pdf', {
-        body: { caseId, templateType: 'poa-adult' }
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/fill-pdf`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify({ caseId, templateType: 'poa-adult' }),
+        }
+      );
 
-      if (response.error) throw response.error;
-      if (!response.data) throw new Error('No PDF data received');
+      if (!response.ok) throw new Error('PDF generation failed');
 
-      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const blob = await response.blob();
       const url = URL.createObjectURL(blob);
       
       setPdfPreviewUrl(url);
@@ -242,14 +254,21 @@ export default function POAForm() {
       if (showSpousePOA) templates.push('poa-spouses');
 
       for (const templateType of templates) {
-        const response = await supabase.functions.invoke('fill-pdf', {
-          body: { caseId, templateType }
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/fill-pdf`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+            },
+            body: JSON.stringify({ caseId, templateType }),
+          }
+        );
 
-        if (response.error) throw new Error(response.error.message);
-        if (!response.data) throw new Error('No PDF data received');
+        if (!response.ok) throw new Error('PDF generation failed');
 
-        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const blob = await response.blob();
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;

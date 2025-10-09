@@ -259,7 +259,7 @@ serve(async (req) => {
     
     console.log(`Successfully generated PDF: ${pdfBytes.length} bytes`);
     
-    return new Response(new Uint8Array(pdfBytes), {
+    return new Response(pdfBytes, {
       headers: {
         ...corsHeaders,
         'Content-Type': 'application/pdf',

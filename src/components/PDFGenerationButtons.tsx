@@ -37,26 +37,28 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
 
       console.log('Invoking fill-pdf function with:', { caseId, templateType });
       
-      const { data, error } = await supabase.functions.invoke('fill-pdf', {
-        body: { caseId, templateType },
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/fill-pdf`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify({ caseId, templateType }),
+        }
+      );
 
-      if (error) {
-        console.error('Edge function error:', error);
-        throw error;
-      }
-
-      if (!data) {
-        throw new Error('No PDF data received from edge function');
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Edge function error:', errorText);
+        throw new Error(`Failed to generate PDF: ${errorText}`);
       }
 
       console.log('PDF data received, creating blob...');
       
-      // The edge function returns raw bytes, convert to Blob
-      const blob = data instanceof Blob ? data : new Blob([data], { type: 'application/pdf' });
+      // Get the PDF as a blob
+      const blob = await response.blob();
 
       const url = window.URL.createObjectURL(blob);
       console.log('Blob URL created:', url);
