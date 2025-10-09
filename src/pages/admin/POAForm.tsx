@@ -60,7 +60,7 @@ export default function POAForm() {
   };
 
   const showSpousePOA = formData.applicant_is_married === true;
-  const showMinorPOA = hasMinorChildren();
+  const minorChildrenCount = formData.minor_children_count || 0;
 
   const handleInputChange = (field: string, value: any) => {
     console.log(`🔄 Field changed: ${field} = "${value}"`);
@@ -368,73 +368,100 @@ export default function POAForm() {
                 </div>
               </CardHeader>
               <CardContent className="pt-6">
-                {/* Civil Status */}
-                <div className="mb-6 space-y-4">
-                  <Label className="text-base md:text-lg lg:text-xl font-semibold text-foreground/80">
-                    Civil status
-                  </Label>
-                  <Select 
-                    value={formData.applicant_is_married ? "married" : "not_married"} 
-                    onValueChange={value => handleInputChange("applicant_is_married", value === "married")}
-                  >
-                    <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
-                      <SelectValue placeholder="Select status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="married">Married</SelectItem>
-                      <SelectItem value="not_married">Not Married</SelectItem>
-                    </SelectContent>
-                  </Select>
+                {/* First Row: Civil Status (left) and Gender (right) */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
+                  {/* Civil Status */}
+                  <div className="space-y-4">
+                    <Label className="text-base md:text-lg lg:text-xl font-semibold text-foreground/80">
+                      Civil status
+                    </Label>
+                    <Select 
+                      value={formData.applicant_is_married ? "married" : "not_married"} 
+                      onValueChange={value => handleInputChange("applicant_is_married", value === "married")}
+                    >
+                      <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                        <SelectValue placeholder="Not Married" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background z-50">
+                        <SelectItem value="not_married">Not Married</SelectItem>
+                        <SelectItem value="married">Married</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Gender */}
+                  <div className="space-y-4">
+                    <Label className="text-base md:text-lg lg:text-xl font-semibold text-foreground/80">
+                      Gender
+                    </Label>
+                    <Select 
+                      value={formData.applicant_sex || ""} 
+                      onValueChange={value => handleInputChange("applicant_sex", value)}
+                    >
+                      <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                        <SelectValue placeholder="Select gender" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background z-50">
+                        <SelectItem value="M">Male</SelectItem>
+                        <SelectItem value="F">Female</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
 
-                {/* Number of Children */}
-                <div className="mb-6 space-y-4">
-                  <Label className="text-base md:text-lg lg:text-xl font-semibold text-foreground/80">
-                    Number of children (including minors)
-                  </Label>
-                  <Select 
-                    value={formData.children_count?.toString() || "0"} 
-                    onValueChange={value => {
-                      const count = parseInt(value);
-                      handleInputChange("children_count", count);
-                    }}
-                  >
-                    <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
-                        <SelectItem key={num} value={num.toString()}>
-                          {num}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+                {/* Second Row: Number of Children (left) and Minor Children field (right) */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
+                  {/* Number of Children */}
+                  <div className="space-y-4">
+                    <Label className="text-base md:text-lg lg:text-xl font-semibold text-foreground/80">
+                      Number of children (including minors)
+                    </Label>
+                    <Select 
+                      value={formData.children_count?.toString() || "0"} 
+                      onValueChange={value => {
+                        const count = parseInt(value);
+                        handleInputChange("children_count", count);
+                      }}
+                    >
+                      <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background z-50">
+                        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
+                          <SelectItem key={num} value={num.toString()}>
+                            {num}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-                {/* Gender Selector */}
-                <div className="mb-6">
-                  <Label className="text-base md:text-lg lg:text-xl font-semibold mb-3 block text-foreground/80">
-                    Applicant Gender / Płeć
-                  </Label>
-                  <RadioGroup
-                    value={formData?.applicant_sex || ""}
-                    onValueChange={(value) => handleInputChange("applicant_sex", value)}
-                    className="flex gap-4"
-                  >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="M" id="gender-male" />
-                      <Label htmlFor="gender-male" className="cursor-pointer text-sm md:text-base lg:text-lg text-foreground/80">
-                        Male / Mężczyzna
+                  {/* Minor Children - only show if has children */}
+                  {(formData.children_count && formData.children_count > 0) && (
+                    <div className="space-y-4">
+                      <Label className="text-base md:text-lg lg:text-xl font-semibold text-foreground/80">
+                        Minor children
                       </Label>
+                      <Select 
+                        value={formData.minor_children_count?.toString() || "0"} 
+                        onValueChange={value => {
+                          const count = parseInt(value);
+                          handleInputChange("minor_children_count", count);
+                        }}
+                      >
+                        <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-background z-50">
+                          {Array.from({ length: (formData.children_count || 0) + 1 }, (_, i) => i).map(num => (
+                            <SelectItem key={num} value={num.toString()}>
+                              {num}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="F" id="gender-female" />
-                      <Label htmlFor="gender-female" className="cursor-pointer text-sm md:text-base lg:text-lg text-foreground/80">
-                        Female / Kobieta
-                      </Label>
-                    </div>
-                  </RadioGroup>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
@@ -475,14 +502,19 @@ export default function POAForm() {
             </Card>
           </motion.div>
 
-          {/* POA Minor - Only show if has minor children */}
-          {showMinorPOA && (
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.1 }}>
+          {/* POA Minor - Show as many forms as minor children count */}
+          {Array.from({ length: minorChildrenCount }, (_, index) => (
+            <motion.div 
+              key={`minor-${index}`}
+              initial={{ opacity: 0, scale: 0.95 }} 
+              animate={{ opacity: 1, scale: 1 }} 
+              transition={{ duration: 0.5, delay: 0.1 + (index * 0.1) }}
+            >
               <Card className="glass-card border-primary/20">
               <CardHeader className="border-b border-border/50 pb-6">
                 <div {...minorCardLongPress.handlers} className="cursor-pointer select-none hover:opacity-80 transition-opacity">
                   <CardTitle className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                    {poaFormConfigs.minor.title}
+                    {poaFormConfigs.minor.title} {minorChildrenCount > 1 ? `- Child ${index + 1}` : ''}
                   </CardTitle>
                 </div>
               </CardHeader>
@@ -511,16 +543,16 @@ export default function POAForm() {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
                   <POAFormField
-                    name="child_1_first_name"
+                    name={`child_${index + 1}_first_name`}
                     label="Child given names / Imię/ imiona dziecka"
-                    value={formData?.child_1_first_name || ""}
-                    onChange={(value) => handleInputChange("child_1_first_name", value)}
+                    value={formData?.[`child_${index + 1}_first_name`] || ""}
+                    onChange={(value) => handleInputChange(`child_${index + 1}_first_name`, value)}
                   />
                   <POAFormField
-                    name="child_1_last_name"
+                    name={`child_${index + 1}_last_name`}
                     label="Child full last name / Nazwisko dziecka"
-                    value={formData?.child_1_last_name || ""}
-                    onChange={(value) => handleInputChange("child_1_last_name", value)}
+                    value={formData?.[`child_${index + 1}_last_name`] || ""}
+                    onChange={(value) => handleInputChange(`child_${index + 1}_last_name`, value)}
                   />
                 </div>
                 <div className="mt-6 flex justify-end">
@@ -531,14 +563,14 @@ export default function POAForm() {
                         <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generating...</span></>
                     ) : (
                       <><FileText className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generate POA Minor</span></>
+                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generate POA Minor {minorChildrenCount > 1 ? `(Child ${index + 1})` : ''}</span></>
                     )}
                   </Button>
                 </div>
               </CardContent>
             </Card>
           </motion.div>
-          )}
+          ))}
 
           {/* POA Spouses - Only show if married */}
           {showSpousePOA && (
