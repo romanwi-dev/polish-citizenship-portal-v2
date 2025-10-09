@@ -332,7 +332,7 @@ export default function IntakeForm() {
                   onDoubleClick={() => clearField("children_count")}
                 >
                   <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                    Number of children (including minors) / Liczba dzieci (w tym nieletnich)
+                    Number of children
                   </Label>
                   <Select
                     value={formData?.children_count?.toString() || ""}
@@ -364,7 +364,7 @@ export default function IntakeForm() {
                     onDoubleClick={() => clearField("minor_children_count")}
                   >
                     <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                      Number of minor children (under 18)
+                      Number of minor children
                     </Label>
                     <Select
                       value={formData?.minor_children_count?.toString() || ""}

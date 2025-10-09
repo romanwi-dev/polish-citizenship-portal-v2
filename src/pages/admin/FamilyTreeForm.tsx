@@ -331,6 +331,21 @@ export default function FamilyTreeForm() {
                 </>
               )}
             </Button>
+            {(formData.minor_children_count > 0) && (
+              <Button 
+                onClick={() => setActiveTab('children')}
+                variant={activeTab === 'children' ? 'default' : 'outline'}
+                className={`text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg ${
+                  activeTab === 'children' 
+                    ? 'bg-gradient-to-r from-primary to-secondary text-white' 
+                    : 'bg-white/5 hover:bg-white/10'
+                } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap`}
+              >
+                <span className={activeTab === 'children' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
+                  Children
+                </span>
+              </Button>
+            )}
             <Button 
               onClick={() => setActiveTab('applicant')}
               variant={activeTab === 'applicant' ? 'default' : 'outline'}
@@ -342,19 +357,6 @@ export default function FamilyTreeForm() {
             >
               <span className={activeTab === 'applicant' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
                 Applicant
-              </span>
-            </Button>
-            <Button 
-              onClick={() => setActiveTab('children')}
-              variant={activeTab === 'children' ? 'default' : 'outline'}
-              className={`text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg ${
-                activeTab === 'children' 
-                  ? 'bg-gradient-to-r from-primary to-secondary text-white' 
-                  : 'bg-white/5 hover:bg-white/10'
-              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap`}
-            >
-              <span className={activeTab === 'children' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
-                Children
               </span>
             </Button>
             <Button 
@@ -473,7 +475,7 @@ export default function FamilyTreeForm() {
                   {/* Number of children */}
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-2">
                     <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                      Number of children (including minors) / Liczba dzieci (w tym nieletnich)
+                      Number of children
                     </Label>
                     <Select value={formData.children_count?.toString() || ""} onValueChange={(value) => { const count = parseInt(value); handleInputChange("children_count", count); }}>
                       <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
@@ -489,7 +491,7 @@ export default function FamilyTreeForm() {
                   {(formData.children_count > 0) && (
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="space-y-2">
                       <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                        Number of minor children (under 18)
+                        Number of minor children
                       </Label>
                       <Select value={formData.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
                         <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
