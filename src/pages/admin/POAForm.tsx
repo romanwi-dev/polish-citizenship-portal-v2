@@ -32,12 +32,18 @@ export default function POAForm() {
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null);
   const [previewFormData, setPreviewFormData] = useState<any>(null);
 
-  // Initialize form ONCE on mount only - NEVER overwrite user edits
+  // Initialize form when masterData loads or caseId changes
   const hasInitialized = useRef(false);
+  const lastCaseId = useRef<string | undefined>(undefined);
   
   useEffect(() => {
+    // Reset initialization when switching cases
+    if (caseId !== lastCaseId.current) {
+      hasInitialized.current = false;
+      lastCaseId.current = caseId;
+    }
+    
     if (hasInitialized.current) {
-      console.log('⏭️ Form already initialized, skipping data load');
       return;
     }
     
@@ -45,12 +51,9 @@ export default function POAForm() {
       const today = format(new Date(), "yyyy-MM-dd");
       
       if (masterData) {
-        console.log('🆕 Initializing form with master data (FIRST TIME ONLY)');
         setFormData({ ...masterData, poa_date_filed: masterData.poa_date_filed || today });
         hasInitialized.current = true;
       } else if (!isLoading && caseId) {
-        console.log('🆕 No master data found, checking intake data...');
-        
         // Try to populate from intake_data
         const { data: intakeData } = await supabase
           .from('intake_data')
@@ -59,8 +62,6 @@ export default function POAForm() {
           .maybeSingle();
         
         if (intakeData) {
-          console.log('📥 Populating from intake data:', intakeData);
-          
           // Map intake fields to master_table fields
           const initialData = {
             poa_date_filed: today,
@@ -90,12 +91,8 @@ export default function POAForm() {
           };
           
           setFormData(initialData);
-          
-          // Save to master_table automatically
-          console.log('💾 Auto-saving intake data to master_table...');
           updateMutation.mutate({ caseId, updates: initialData });
         } else {
-          console.log('🆕 Initializing empty form (FIRST TIME ONLY)');
           setFormData({ poa_date_filed: today });
         }
         
@@ -107,26 +104,16 @@ export default function POAForm() {
   }, [masterData, isLoading, caseId]);
 
   const handleInputChange = (field: string, value: any) => {
-    console.log(`📝 Field changed: ${field} = ${value}`);
-    
     setFormData((prev: any) => {
       const updatedData = { ...prev, [field]: value };
-      
-      // Log for debugging
-      if (field === 'father_last_name') {
-        console.log('👨 Father last name changed to:', value);
-        console.log('🔄 Database trigger will sync to all children on SAVE');
-      }
       
       // Auto-sync husband's last name after marriage with his current last name
       if (prev.applicant_sex === 'M' && field === 'applicant_last_name') {
         updatedData.applicant_last_name_after_marriage = value;
-        console.log('🤵 Male applicant: syncing applicant_last_name_after_marriage =', value);
       }
       
       if (prev.applicant_sex === 'F' && field === 'spouse_last_name') {
         updatedData.spouse_last_name_after_marriage = value;
-        console.log('🤵 Husband (spouse): syncing spouse_last_name_after_marriage =', value);
       }
       
       return updatedData;
@@ -150,30 +137,12 @@ export default function POAForm() {
   };
 
   const handleSave = async () => {
-    console.log('💾 SAVE BUTTON CLICKED - caseId:', caseId);
-    console.log('📋 Form data to save:', formData);
-    
-    if (!caseId) {
-      console.error('❌ No caseId!');
-      return;
-    }
+    if (!caseId) return;
     
     try {
-      console.log('🚀 Calling updateMutation...');
       await updateMutation.mutateAsync({ caseId, updates: formData });
-      console.log('✅ Save completed successfully');
-      
-      // Refetch to see the trigger's effect
-      const { data: updated } = await supabase
-        .from('master_table')
-        .select('father_last_name, child_1_last_name, child_2_last_name, child_3_last_name')
-        .eq('case_id', caseId)
-        .single();
-      
-      console.log('🔍 After save - children sync result:', updated);
-      toast.success('Data saved! Database trigger synced children last names.');
     } catch (error) {
-      console.error('❌ Save failed:', error);
+      console.error('Save failed:', error);
     }
   };
 
