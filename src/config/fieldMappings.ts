@@ -58,6 +58,8 @@ export const SPOUSE_FIELDS: FieldMapping[] = [
   { formField: 'applicant_is_married', dbColumn: 'applicant_is_married', forms: ['master'], dbTable: 'master_table', fieldType: 'boolean' },
   { formField: 'date_of_marriage', dbColumn: 'date_of_marriage', forms: ['master'], dbTable: 'master_table', fieldType: 'date' },
   { formField: 'place_of_marriage', dbColumn: 'place_of_marriage', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
+  { formField: 'children_count', dbColumn: 'children_count', forms: ['master'], dbTable: 'master_table', fieldType: 'number' },
+  { formField: 'minor_children_count', dbColumn: 'minor_children_count', forms: ['master'], dbTable: 'master_table', fieldType: 'number' },
 ];
 
 // FATHER FIELDS
