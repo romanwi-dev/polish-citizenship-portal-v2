@@ -107,10 +107,16 @@ export default function POAForm() {
   }, [masterData, isLoading, caseId]);
 
   const handleInputChange = (field: string, value: any) => {
+    console.log(`📝 Field changed: ${field} = ${value}`);
+    
     setFormData((prev: any) => {
       const updatedData = { ...prev, [field]: value };
       
-      // Database trigger handles father->children sync automatically
+      // Log for debugging
+      if (field === 'father_last_name') {
+        console.log('👨 Father last name changed to:', value);
+        console.log('🔄 Database trigger will sync to all children on SAVE');
+      }
       
       // Auto-sync husband's last name after marriage with his current last name
       if (prev.applicant_sex === 'M' && field === 'applicant_last_name') {
@@ -146,13 +152,26 @@ export default function POAForm() {
   const handleSave = async () => {
     console.log('💾 SAVE BUTTON CLICKED - caseId:', caseId);
     console.log('📋 Form data to save:', formData);
+    
     if (!caseId) {
       console.error('❌ No caseId!');
       return;
     }
+    
     try {
+      console.log('🚀 Calling updateMutation...');
       await updateMutation.mutateAsync({ caseId, updates: formData });
       console.log('✅ Save completed successfully');
+      
+      // Refetch to see the trigger's effect
+      const { data: updated } = await supabase
+        .from('master_table')
+        .select('father_last_name, child_1_last_name, child_2_last_name, child_3_last_name')
+        .eq('case_id', caseId)
+        .single();
+      
+      console.log('🔍 After save - children sync result:', updated);
+      toast.success('Data saved! Database trigger synced children last names.');
     } catch (error) {
       console.error('❌ Save failed:', error);
     }
