@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useState } from "react";
 import { Loader2, Save, FileText, Users, Baby, Heart, Calendar as CalendarIcon, Sparkles, Download, GitBranch, Type, FilePlus, User, ArrowLeft } from "lucide-react";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
@@ -408,61 +409,87 @@ export default function MasterDataTable() {
                 </CardHeader>
                 <CardContent className="p-6 md:p-10 space-y-10">
 
-                  {/* Marital Status & Children - Side by side on desktop */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <motion.div initial={{
-                    opacity: 0,
-                    y: 20
-                  }} animate={{
-                    opacity: 1,
-                    y: 0
-                  }} className="p-6 border-2 border-primary/20 rounded-xl bg-primary/5">
-                      {renderCheckboxGroup([{
-                      name: "applicant_is_married",
-                      label: "Married?"
-                    }])}
-                    </motion.div>
-
-                    <motion.div initial={{
-                    opacity: 0,
-                    y: 20
-                  }} animate={{
-                    opacity: 1,
-                    y: 0
-                  }} className="p-6 border-2 border-primary/20 rounded-xl bg-primary/5">
-                      <div className="whitespace-nowrap">
-                        {renderCheckboxGroup([{
-                        name: "applicant_has_minor_children",
-                        label: "Minor Kids?"
-                      }])}
+                  {/* Gender/Sex - Radio Group like IntakeForm */}
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }} 
+                    animate={{ opacity: 1, y: 0 }} 
+                    transition={{ delay: 0, duration: 0.4 }}
+                    className="mb-8 p-4 bg-muted/30 rounded-lg border border-border/50"
+                  >
+                    <Label className={cn(
+                      "text-lg font-semibold mb-3 block",
+                      isLargeFonts ? "text-xl" : "text-lg"
+                    )}>
+                      Applicant Gender / Płeć
+                    </Label>
+                    <RadioGroup
+                      value={formData?.applicant_sex || ""}
+                      onValueChange={(value) => handleInputChange("applicant_sex", value)}
+                      className="flex gap-4"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="M" id="male" className="border-2" />
+                        <Label htmlFor="male" className="cursor-pointer font-normal">
+                          Male / Mężczyzna
+                        </Label>
                       </div>
-                    </motion.div>
-                  </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="F" id="female" className="border-2" />
+                        <Label htmlFor="female" className="cursor-pointer font-normal">
+                          Female / Kobieta
+                        </Label>
+                      </div>
+                    </RadioGroup>
+                  </motion.div>
+
+                  {/* Marital Status - Radio Group */}
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }} 
+                    animate={{ opacity: 1, y: 0 }} 
+                    transition={{ delay: 0.1, duration: 0.4 }}
+                    className="mb-8 p-4 bg-muted/30 rounded-lg border border-border/50"
+                  >
+                    <Label className={cn(
+                      "text-lg font-semibold mb-3 block",
+                      isLargeFonts ? "text-xl" : "text-lg"
+                    )}>
+                      Marital Status / Stan cywilny
+                    </Label>
+                    <RadioGroup
+                      value={formData?.applicant_is_married ? "married" : "single"}
+                      onValueChange={(value) => handleInputChange("applicant_is_married", value === "married")}
+                      className="flex gap-4"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="single" id="single" className="border-2" />
+                        <Label htmlFor="single" className="cursor-pointer font-normal">
+                          Single / Wolny/a
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="married" id="married" className="border-2" />
+                        <Label htmlFor="married" className="cursor-pointer font-normal">
+                          Married / Żonaty/Zamężna
+                        </Label>
+                      </div>
+                    </RadioGroup>
+                  </motion.div>
 
                   {/* Children Count */}
-                  <motion.div initial={{
-                    opacity: 0,
-                    y: 20
-                  }} animate={{
-                    opacity: 1,
-                    y: 0
-                  }} transition={{
-                    delay: 0.1,
-                    duration: 0.4
-                  }} className="space-y-4">
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }} 
+                    animate={{ opacity: 1, y: 0 }} 
+                    transition={{ delay: 0.2, duration: 0.4 }} 
+                    className="space-y-4"
+                  >
                     <Label className="text-sm font-normal text-foreground/90">
-                      Number of children (including minors)
+                      Number of children / Liczba dzieci
                     </Label>
                     <Select 
-                      value={formData.applicant_children_count?.toString() || "0"} 
+                      value={formData.children_count?.toString() || "0"} 
                       onValueChange={value => {
                         const count = parseInt(value);
-                        handleInputChange("applicant_children_count", count);
-                        handleInputChange("applicant_has_children", count > 0);
-                        if (count === 0) {
-                          handleInputChange("applicant_has_minor_children", false);
-                          handleInputChange("applicant_minor_children_count", 0);
-                        }
+                        handleInputChange("children_count", count);
                       }}
                     >
                       <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur" style={{ fontSize: '1.125rem', fontWeight: '400' }}>
@@ -478,73 +505,33 @@ export default function MasterDataTable() {
                     </Select>
                   </motion.div>
 
-                  {/* Minor Children if applicable */}
+                  {/* Minor Children Count - only show if has children */}
                   {formData.children_count > 0 && (
-                    <>
-                      <motion.div initial={{
-                        opacity: 0,
-                        y: 20
-                      }} animate={{
-                        opacity: 1,
-                        y: 0
-                      }} transition={{
-                        delay: 0.15,
-                        duration: 0.4
-                      }} className="space-y-4">
-                        <Label className="text-sm font-normal text-foreground/90">
-                          Do you have minor children (under 18)?
-                        </Label>
-                        <Select 
-                          value={formData.has_minor_children ? "yes" : "no"} 
-                          onValueChange={value => {
-                            handleInputChange("has_minor_children", value === "yes");
-                            if (value === "no") {
-                              handleInputChange("minor_children_count", 0);
-                            }
-                          }}
-                        >
-                          <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur" style={{ fontSize: '1.125rem', fontWeight: '400' }}>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent className="bg-background border-2 z-50">
-                            <SelectItem value="yes" className="text-base cursor-pointer">Yes</SelectItem>
-                            <SelectItem value="no" className="text-base cursor-pointer">No</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </motion.div>
-
-                      {formData.has_minor_children && (
-                        <motion.div initial={{
-                          opacity: 0,
-                          y: 20
-                        }} animate={{
-                          opacity: 1,
-                          y: 0
-                        }} transition={{
-                          delay: 0.2,
-                          duration: 0.4
-                        }} className="space-y-4">
-                          <Label className="text-sm font-normal text-foreground/90">
-                            How many minor kids?
-                          </Label>
-                          <Select 
-                            value={formData.minor_children_count?.toString() || "0"} 
-                            onValueChange={value => handleInputChange("minor_children_count", parseInt(value))}
-                          >
-                            <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur" style={{ fontSize: '1.125rem', fontWeight: '400' }}>
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent className="bg-background border-2 z-50">
-                              {Array.from({ length: formData.children_count + 1 }, (_, i) => i).map(num => (
-                                <SelectItem key={num} value={num.toString()} className="text-base cursor-pointer">
-                                  {num}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </motion.div>
-                      )}
-                    </>
+                    <motion.div 
+                      initial={{ opacity: 0, y: 20 }} 
+                      animate={{ opacity: 1, y: 0 }} 
+                      transition={{ delay: 0.3, duration: 0.4 }} 
+                      className="space-y-4"
+                    >
+                      <Label className="text-sm font-normal text-foreground/90">
+                        Number of minor children (under 18) / Liczba małoletnich dzieci
+                      </Label>
+                      <Select 
+                        value={formData.minor_children_count?.toString() || "0"} 
+                        onValueChange={value => handleInputChange("minor_children_count", parseInt(value))}
+                      >
+                        <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur" style={{ fontSize: '1.125rem', fontWeight: '400' }}>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-background border-2 z-50">
+                          {Array.from({ length: formData.children_count + 1 }, (_, i) => i).map(num => (
+                            <SelectItem key={num} value={num.toString()} className="text-base cursor-pointer">
+                              {num}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </motion.div>
                   )}
 
                   {/* Basic Information */}
@@ -557,9 +544,6 @@ export default function MasterDataTable() {
                 }, {
                   name: "applicant_maiden_name",
                   label: "Maiden name"
-                }, {
-                  name: "applicant_sex",
-                  label: "Sex"
                 }, {
                   name: "applicant_dob",
                   label: "Date of birth",
