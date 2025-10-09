@@ -27,6 +27,10 @@ export const sanitizeMasterData = (formData: any): any => {
     additional_info, // Use applicant_notes or family_notes instead
     applicant_additional_info, // Not in schema
     
+    // NON-EXISTENT FIELDS - These don't exist in master_table schema
+    applicant_last_name_after_marriage, // Not in schema
+    spouse_last_name_after_marriage, // Not in schema
+    
     ...rest 
   } = formData;
 

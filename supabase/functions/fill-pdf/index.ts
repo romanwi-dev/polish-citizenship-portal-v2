@@ -36,35 +36,26 @@ serve(async (req) => {
     if (masterError) throw masterError;
     if (!masterData) throw new Error('Master data not found');
 
-    // Get the request origin to construct the absolute URL
-    const origin = req.headers.get('origin') || 'https://98b4e1c7-7682-4f23-9f68-2a61bbec99a9.lovableproject.com';
-    
-    // Map template type to file name
+    // Map template type to file name - load from edge function local folder
     const templateFileMap: Record<string, string> = {
-      'family-tree': 'family-tree.pdf',
-      'poa-adult': 'poa-adult.pdf',
-      'poa-minor': 'poa-minor.pdf',
-      'poa-spouses': 'poa-spouses.pdf',
-      'registration': 'registration.pdf',
-      'uzupelnienie': 'uzupelnienie.pdf',
-      'citizenship': 'citizenship.pdf',
+      'family-tree': './templates/family-tree.pdf',
+      'poa-adult': './templates/poa-adult.pdf',
+      'poa-minor': './templates/poa-minor.pdf',
+      'poa-spouses': './templates/poa-spouses.pdf',
+      'registration': './templates/registration.pdf',
+      'uzupelnienie': './templates/uzupelnienie.pdf',
+      'citizenship': './templates/citizenship.pdf',
     };
 
-    const templateFileName = templateFileMap[templateType];
-    if (!templateFileName) {
+    const templatePath = templateFileMap[templateType];
+    if (!templatePath) {
       throw new Error(`Unknown template type: ${templateType}`);
     }
 
-    const templateUrl = `${origin}/templates/${templateFileName}`;
-    console.log(`Loading template from: ${templateUrl}`);
+    console.log(`Loading template from local path: ${templatePath}`);
     
-    // Fetch the template file from public folder
-    const templateResponse = await fetch(templateUrl);
-    if (!templateResponse.ok) {
-      throw new Error(`Failed to fetch template: ${templateResponse.statusText}`);
-    }
-    
-    const templateBytes = await templateResponse.arrayBuffer();
+    // Read template from local file system
+    const templateBytes = await Deno.readFile(templatePath);
     const pdfDoc = await PDFDocument.load(templateBytes);
     
     // Fill form fields with master data

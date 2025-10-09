@@ -40,20 +40,7 @@ export default function POAForm() {
   // Form will be initialized by useRealtimeFormSync hook
 
   const handleInputChange = (field: string, value: any) => {
-    setFormData((prev: any) => {
-      const updatedData = { ...prev, [field]: value };
-      
-      // Auto-sync husband's last name after marriage with his current last name
-      if (prev.applicant_sex === 'M' && field === 'applicant_last_name') {
-        updatedData.applicant_last_name_after_marriage = value;
-      }
-      
-      if (prev.applicant_sex === 'F' && field === 'spouse_last_name') {
-        updatedData.spouse_last_name_after_marriage = value;
-      }
-      
-      return updatedData;
-    });
+    setFormData((prev: any) => ({ ...prev, [field]: value }));
   };
 
   const clearCardFields = (config: any) => {
