@@ -1,8 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useMasterData, useUpdateMasterData } from "@/hooks/useMasterData";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Loader2, Save, Sparkles, CheckCircle2, Type, User, FileText, GitBranch, Download, Heart, ArrowLeft } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
@@ -15,55 +14,25 @@ import { cn } from "@/lib/utils";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLongPressWithFeedback } from "@/hooks/useLongPressWithFeedback";
-import { useFormAutoSave } from "@/hooks/useFormAutoSave";
-import { useUnsavedChanges } from "@/hooks/useUnsavedChanges";
 import { validateEmail, validatePassport } from "@/utils/validators";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
-import { useRealtimeFormSync } from "@/hooks/useRealtimeFormSync";
+import { useFormSync } from "@/hooks/useFormSync";
 
 export default function IntakeForm() {
-  const {
-    id: caseId
-  } = useParams();
+  const { id: caseId } = useParams();
   const navigate = useNavigate();
-  const {
-    data: masterData,
-    isLoading
-  } = useMasterData(caseId);
-  const updateMutation = useUpdateMasterData();
+  const { formData, setFormData, isLoading, isSaving, saveData, clearAll, clearField } = useFormSync(caseId);
   const [showClearDialog, setShowClearDialog] = useState(false);
   const { isLargeFonts, toggleFontSize } = useAccessibility();
-  const [formData, setFormData] = useState<any>({});
-  const [originalData, setOriginalData] = useState<any>({});
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-  
-  // Enable real-time sync with direct state updates
-  useRealtimeFormSync(caseId, masterData, isLoading, setFormData);
 
-  useEffect(() => {
-    setHasUnsavedChanges(JSON.stringify(formData) !== JSON.stringify(originalData));
-  }, [formData, originalData]);
 
   const handleInputChange = (field: string, value: any) => {
-    console.log('✏️ Field changed:', field, '=', value);
-    setFormData((prev: any) => ({
-      ...prev,
-      [field]: value
-    }));
+    setFormData((prev: any) => ({ ...prev, [field]: value }));
   };
 
-  const handleSave = () => {
-    if (!caseId) return;
-
-    console.log('💾 [INTAKE] Saving form data:', Object.keys(formData).length, 'fields');
-    console.log('📋 [INTAKE] Sample data:', {
-      applicant_first_name: formData.applicant_first_name,
-      applicant_last_name: formData.applicant_last_name,
-      applicant_email: formData.applicant_email
-    });
-
-    // Validate email
+  const handleSave = async () => {
+    // Validate
     if (formData.applicant_email) {
       const emailValidation = validateEmail(formData.applicant_email);
       if (!emailValidation.valid) {
@@ -72,7 +41,6 @@ export default function IntakeForm() {
       }
     }
 
-    // Validate passport
     if (formData.applicant_passport_number) {
       const passportValidation = validatePassport(formData.applicant_passport_number);
       if (!passportValidation.valid) {
@@ -81,79 +49,15 @@ export default function IntakeForm() {
       }
     }
 
-    // Send ALL formData to ensure cleared fields are saved as null
-    updateMutation.mutate({
-      caseId,
-      updates: { ...formData }
-    }, {
-      onSuccess: () => {
-        setOriginalData(formData);
-        setHasUnsavedChanges(false);
-      }
-    });
+    await saveData(formData);
   };
 
-  // Auto-save
-  useFormAutoSave({
-    formData,
-    onSave: (data) => {
-      if (caseId) {
-        // No need to filter - useMasterData hook handles sanitization
-        updateMutation.mutate({
-          caseId,
-          updates: data
-        }, {
-          onSuccess: () => {
-            setOriginalData(data);
-          }
-        });
-      }
-    },
-    delay: 5000,
-    enabled: hasUnsavedChanges
-  });
-
-  // Unsaved changes warning
-  useUnsavedChanges(hasUnsavedChanges);
-  const clearAllFields = () => {
-    console.log('🧹 CLEAR ALL FIELDS called');
-    const clearedData = {};
-    setFormData(clearedData);
-    setOriginalData(clearedData);
-    
-    // Save cleared state to DB immediately
-    if (caseId) {
-      console.log('💾 Saving cleared data to DB');
-      updateMutation.mutate({
-        caseId,
-        updates: clearedData
-      });
-    }
-    
-    toast.success("All fields cleared and saved");
-  };
-  const clearField = (field: string) => {
-    const updatedData = {
-      ...formData,
-      [field]: null // Set to null to actually clear from DB
-    };
-    setFormData(updatedData);
-    
-    // Save immediately to DB
-    if (caseId) {
-      updateMutation.mutate({
-        caseId,
-        updates: { [field]: null }
-      });
-    }
-    
-    toast.success("Field cleared and saved");
-  };
   const titleLongPress = useLongPressWithFeedback({
-    onLongPress: clearAllFields,
+    onLongPress: clearAll,
     duration: 2000,
     feedbackMessage: "Hold to clear all fields..."
   });
+
   const backgroundLongPress = useLongPressWithFeedback({
     onLongPress: () => setShowClearDialog(true),
     duration: 5000,
@@ -258,8 +162,8 @@ export default function IntakeForm() {
           <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 p-3 md:p-4 scrollbar-hide"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
-            <Button onClick={handleSave} disabled={updateMutation.isPending} size="default" className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[140px] md:min-w-[180px] lg:min-w-[220px] whitespace-nowrap flex-shrink-0">
-              {updateMutation.isPending ? <>
+            <Button onClick={handleSave} disabled={isSaving} size="default" className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[140px] md:min-w-[180px] lg:min-w-[220px] whitespace-nowrap flex-shrink-0">
+              {isSaving ? <>
                   <Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
                   <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                     Saving...
@@ -575,7 +479,7 @@ export default function IntakeForm() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={clearAllFields}>
+            <AlertDialogAction onClick={clearAll}>
               Clear all fields
             </AlertDialogAction>
           </AlertDialogFooter>
