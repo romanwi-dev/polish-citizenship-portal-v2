@@ -41,7 +41,7 @@ export function CountrySelect({
   delay = 0
 }: CountrySelectProps) {
   const [showOtherInput, setShowOtherInput] = useState(
-    value && !COUNTRIES.slice(0, -1).includes(value)
+    value && value.length > 0 && !COUNTRIES.slice(0, -1).includes(value)
   );
 
   const handleSelectChange = (selectedValue: string) => {
@@ -55,7 +55,7 @@ export function CountrySelect({
   };
 
   const handleOtherInputChange = (inputValue: string) => {
-    onChange(inputValue);
+    onChange(inputValue.toUpperCase());
   };
 
   return (
@@ -73,18 +73,18 @@ export function CountrySelect({
       
       {!showOtherInput ? (
         <Select 
-          value={COUNTRIES.includes(value) ? value : "Other"} 
+          value={value && COUNTRIES.includes(value) ? value : value && !COUNTRIES.includes(value) ? "Other" : ""} 
           onValueChange={handleSelectChange}
         >
           <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur" style={{ fontSize: '1.125rem', fontWeight: '400' }}>
             <SelectValue placeholder={placeholder} />
           </SelectTrigger>
-          <SelectContent className="bg-background border-2 z-50">
+          <SelectContent className="bg-background border-2 z-[100]">
             {COUNTRIES.map((country) => (
               <SelectItem 
                 key={country} 
                 value={country} 
-                className="text-base cursor-pointer"
+                className="text-base cursor-pointer hover:bg-primary/10"
               >
                 {country}
               </SelectItem>
