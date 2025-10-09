@@ -715,7 +715,7 @@ export default function POAForm() {
                       ? "Husband's full last name after marriage / Nazwisko męża po zawarciu małżeństwa"
                       : "Wife's full last name after marriage / Nazwisko żony po zawarciu małżeństwa"
                     }
-                    value={formData?.spouse_last_name_after_marriage || ""}
+                    value={formData?.spouse_last_name_after_marriage || (formData?.applicant_sex === 'M' ? formData?.applicant_last_name || "" : "")}
                     onChange={(value) => handleInputChange("spouse_last_name_after_marriage", value)}
                   />
                 </div>
