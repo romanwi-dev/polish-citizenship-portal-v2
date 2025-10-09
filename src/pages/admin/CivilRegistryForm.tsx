@@ -507,12 +507,14 @@ export default function CivilRegistryForm() {
                   },
                 ])}
 
-                <CountrySelect
-                  value={formData.document_issue_country || ""}
-                  onChange={(value) => handleInputChange("document_issue_country", value)}
-                  label="Country / Kraj"
-                  isLargeFonts={isLargeFonts}
-                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <CountrySelect
+                    value={formData.document_issue_country || ""}
+                    onChange={(value) => handleInputChange("document_issue_country", value)}
+                    label="Country / Kraj"
+                    isLargeFonts={isLargeFonts}
+                  />
+                </div>
 
                 <div className="pt-8">
                   <h3 className={cn("font-semibold mb-6 text-foreground", isLargeFonts ? "text-2xl" : "text-xl")}>Required Documents Checklist / Lista wymaganych dokumentów</h3>
