@@ -409,93 +409,101 @@ export default function MasterDataTable() {
                 </CardHeader>
                 <CardContent className="p-6 md:p-10 space-y-10">
 
-                  {/* Gender - Select like POAForm */}
+                  {/* Gender/Sex - RadioGroup like IntakeForm */}
                   <motion.div 
                     initial={{ opacity: 0, y: 20 }} 
                     animate={{ opacity: 1, y: 0 }} 
                     transition={{ delay: 0, duration: 0.4 }}
-                    className="space-y-4"
+                    className="mb-8 p-4 bg-muted/30 rounded-lg border border-border/50"
                   >
                     <Label className={cn(
-                      "font-light text-foreground/90",
-                      isLargeFonts ? "text-xl" : "text-sm"
+                      "text-lg font-semibold mb-3 block",
+                      isLargeFonts ? "text-xl" : "text-lg"
                     )}>
-                      Gender
+                      Applicant Gender / Płeć
                     </Label>
-                    <Select 
-                      value={formData.applicant_sex || ""} 
+                    <RadioGroup
+                      value={formData?.applicant_sex || ""}
                       onValueChange={(value) => handleInputChange("applicant_sex", value)}
+                      className="flex gap-4"
                     >
-                      <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur overflow-hidden">
-                        <SelectValue placeholder="Select gender" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-background z-50">
-                        <SelectItem value="M">Male</SelectItem>
-                        <SelectItem value="F">Female</SelectItem>
-                      </SelectContent>
-                    </Select>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="M" id="male" className="border-2" />
+                        <Label htmlFor="male" className="cursor-pointer font-normal">
+                          Male / Mężczyzna
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="F" id="female" className="border-2" />
+                        <Label htmlFor="female" className="cursor-pointer font-normal">
+                          Female / Kobieta
+                        </Label>
+                      </div>
+                    </RadioGroup>
                   </motion.div>
 
-                  {/* Civil Status - Select like IntakeForm with correct order */}
-                  <motion.div 
-                    initial={{ opacity: 0, y: 20 }} 
-                    animate={{ opacity: 1, y: 0 }} 
-                    transition={{ delay: 0.3, duration: 0.4 }}
-                    className="space-y-4"
-                  >
-                    <Label className={cn(
-                      "font-light text-foreground/90",
-                      isLargeFonts ? "text-xl" : "text-sm"
-                    )}>
-                      Civil status
-                    </Label>
-                    <Select 
-                      value={formData.applicant_is_married ? "married" : "not_married"} 
-                      onValueChange={(value) => handleInputChange("applicant_is_married", value === "married")}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {/* Civil Status */}
+                    <motion.div 
+                      initial={{ opacity: 0, y: 20 }} 
+                      animate={{ opacity: 1, y: 0 }} 
+                      transition={{ delay: 0.3, duration: 0.4 }}
+                      className="space-y-4"
                     >
-                      <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
-                        <SelectValue placeholder="Select status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="married">Married</SelectItem>
-                        <SelectItem value="not_married">Not Married</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </motion.div>
+                      <Label className={cn(
+                        "font-light text-foreground/90",
+                        isLargeFonts ? "text-xl" : "text-sm"
+                      )}>
+                        Civil status
+                      </Label>
+                      <Select 
+                        value={formData.applicant_is_married ? "married" : "not_married"} 
+                        onValueChange={(value) => handleInputChange("applicant_is_married", value === "married")}
+                      >
+                        <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                          <SelectValue placeholder="Select status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="married">Married</SelectItem>
+                          <SelectItem value="not_married">Not Married</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </motion.div>
 
-                  {/* Number of children - Select like IntakeForm with exact logic */}
-                  <motion.div 
-                    initial={{ opacity: 0, y: 20 }} 
-                    animate={{ opacity: 1, y: 0 }} 
-                    transition={{ delay: 0.35, duration: 0.4 }} 
-                    className="space-y-4"
-                  >
-                    <Label className={cn(
-                      "font-light text-foreground/90",
-                      isLargeFonts ? "text-xl" : "text-sm"
-                    )}>
-                      Number of children (including minors)
-                    </Label>
-                    <Select 
-                      value={formData.children_count?.toString() || "0"} 
-                      onValueChange={(value) => {
-                        const count = parseInt(value);
-                        handleInputChange("children_count", count);
-                        handleInputChange("has_children", count > 0);
-                      }}
+                    {/* Children Count */}
+                    <motion.div 
+                      initial={{ opacity: 0, y: 20 }} 
+                      animate={{ opacity: 1, y: 0 }} 
+                      transition={{ delay: 0.35, duration: 0.4 }} 
+                      className="space-y-4"
                     >
-                      <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
-                          <SelectItem key={num} value={num.toString()}>
-                            {num}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </motion.div>
+                      <Label className={cn(
+                        "font-light text-foreground/90",
+                        isLargeFonts ? "text-xl" : "text-sm"
+                      )}>
+                        Number of children (including minors)
+                      </Label>
+                      <Select 
+                        value={formData.children_count?.toString() || "0"} 
+                        onValueChange={(value) => {
+                          const count = parseInt(value);
+                          handleInputChange("children_count", count);
+                          handleInputChange("has_children", count > 0);
+                        }}
+                      >
+                        <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
+                            <SelectItem key={num} value={num.toString()}>
+                              {num}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </motion.div>
+                  </div>
 
                   {/* Minor Children Count - only show if has children */}
                   {formData.children_count > 0 && (

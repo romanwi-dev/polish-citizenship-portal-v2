@@ -380,10 +380,47 @@ export default function POAForm() {
                 </div>
               </CardHeader>
               <CardContent className="pt-6">
-                {/* First Row: Civil Status (left) and Gender (right) */}
+                {/* Gender/Sex - RadioGroup like IntakeForm */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }} 
+                  animate={{ opacity: 1, y: 0 }} 
+                  transition={{ delay: 0, duration: 0.4 }}
+                  className="mb-8 p-4 bg-muted/30 rounded-lg border border-border/50"
+                >
+                  <Label className={cn(
+                    "text-lg font-semibold mb-3 block",
+                    isLargeFonts ? "text-xl" : "text-lg"
+                  )}>
+                    Applicant Gender / Płeć
+                  </Label>
+                  <RadioGroup
+                    value={formData?.applicant_sex || ""}
+                    onValueChange={(value) => handleInputChange("applicant_sex", value)}
+                    className="flex gap-4"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="M" id="male-poa" className="border-2" />
+                      <Label htmlFor="male-poa" className="cursor-pointer font-normal">
+                        Male / Mężczyzna
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="F" id="female-poa" className="border-2" />
+                      <Label htmlFor="female-poa" className="cursor-pointer font-normal">
+                        Female / Kobieta
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                </motion.div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
                   {/* Civil Status */}
-                  <div className="space-y-4">
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }} 
+                    animate={{ opacity: 1, y: 0 }} 
+                    transition={{ delay: 0.3, duration: 0.4 }}
+                    className="space-y-4"
+                  >
                     <Label className={cn(
                       "font-light text-foreground/90",
                       isLargeFonts ? "text-xl" : "text-sm"
@@ -392,45 +429,25 @@ export default function POAForm() {
                     </Label>
                     <Select 
                       value={formData.applicant_is_married ? "married" : "not_married"} 
-                      onValueChange={value => handleInputChange("applicant_is_married", value === "married")}
+                      onValueChange={(value) => handleInputChange("applicant_is_married", value === "married")}
                     >
-                      <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur overflow-hidden">
-                        <SelectValue placeholder="Not Married" />
+                      <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                        <SelectValue placeholder="Select status" />
                       </SelectTrigger>
                       <SelectContent className="bg-background z-50">
-                        <SelectItem value="not_married">Not Married</SelectItem>
                         <SelectItem value="married">Married</SelectItem>
+                        <SelectItem value="not_married">Not Married</SelectItem>
                       </SelectContent>
                     </Select>
-                  </div>
+                  </motion.div>
 
-                  {/* Gender */}
-                  <div className="space-y-4">
-                    <Label className={cn(
-                      "font-light text-foreground/90",
-                      isLargeFonts ? "text-xl" : "text-sm"
-                    )}>
-                      Gender
-                    </Label>
-                    <Select 
-                      value={formData.applicant_sex || ""} 
-                      onValueChange={value => handleInputChange("applicant_sex", value)}
-                    >
-                      <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur overflow-hidden">
-                        <SelectValue placeholder="Select gender" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-background z-50">
-                        <SelectItem value="M">Male</SelectItem>
-                        <SelectItem value="F">Female</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                {/* Second Row: Number of Children (left) and Minor Children field (right) */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
                   {/* Number of Children */}
-                  <div className="space-y-4">
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }} 
+                    animate={{ opacity: 1, y: 0 }} 
+                    transition={{ delay: 0.35, duration: 0.4 }}
+                    className="space-y-4"
+                  >
                     <Label className={cn(
                       "font-light text-foreground/90",
                       isLargeFonts ? "text-xl" : "text-sm"
@@ -439,13 +456,14 @@ export default function POAForm() {
                     </Label>
                     <Select 
                       value={formData.children_count?.toString() || "0"} 
-                      onValueChange={value => {
+                      onValueChange={(value) => {
                         const count = parseInt(value);
                         handleInputChange("children_count", count);
+                        handleInputChange("has_children", count > 0);
                       }}
                     >
-                      <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur overflow-hidden">
-                        <SelectValue placeholder="0" />
+                      <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                        <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-background z-50">
                         {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
@@ -455,39 +473,7 @@ export default function POAForm() {
                         ))}
                       </SelectContent>
                     </Select>
-                  </div>
-
-                  {/* Minor Children - always render container to maintain grid */}
-                  <div className="space-y-4">
-                    {(formData.children_count && formData.children_count > 0) ? (
-                      <>
-                        <Label className={cn(
-                          "font-light text-foreground/90",
-                          isLargeFonts ? "text-xl" : "text-sm"
-                        )}>
-                          Minor children
-                        </Label>
-                        <Select 
-                          value={formData.minor_children_count?.toString() || "0"} 
-                          onValueChange={value => {
-                            const count = parseInt(value);
-                            handleInputChange("minor_children_count", count);
-                          }}
-                        >
-                          <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur overflow-hidden">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent className="bg-background z-50">
-                            {Array.from({ length: (formData.children_count || 0) + 1 }, (_, i) => i).map(num => (
-                              <SelectItem key={num} value={num.toString()}>
-                                {num}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </>
-                    ) : null}
-                  </div>
+                  </motion.div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
