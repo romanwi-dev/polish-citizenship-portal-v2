@@ -614,7 +614,7 @@ export default function POAForm() {
                 <div className="mb-8 p-4 bg-muted/30 rounded-lg border border-border/50">
                   <Label className="text-lg font-semibold mb-3 block">Who is the primary applicant?</Label>
                   <RadioGroup 
-                    value={formData?.applicant_sex === 'F' ? 'female' : 'male'} 
+                    value={formData?.applicant_sex ? (formData.applicant_sex === 'F' ? 'female' : 'male') : undefined}
                     onValueChange={(value: 'male' | 'female') => {
                       const sex = value === 'female' ? 'F' : 'M';
                       handleInputChange('applicant_sex', sex);
