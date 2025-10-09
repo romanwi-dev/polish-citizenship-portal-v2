@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, User, LogOut, Type } from "lucide-react";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
@@ -13,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const Navigation = () => {
+  const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user, signOut } = useAuth(false);
   const { isLargeFonts, toggleFontSize } = useAccessibility();
@@ -51,7 +53,7 @@ const Navigation = () => {
               variant="ghost" 
               size="icon"
               className="text-foreground hover:text-primary"
-              onClick={() => window.location.href = '/admin'}
+              onClick={() => navigate('/admin')}
             >
               <User className="h-14 w-14" />
             </Button>
@@ -117,7 +119,7 @@ const Navigation = () => {
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Button
-                    onClick={() => window.location.href = '/cases'}
+                    onClick={() => navigate('/cases')}
                     variant="ghost"
                     className="w-full justify-start text-base font-medium rounded-md hover:bg-primary/10 transition-colors"
                   >
