@@ -466,35 +466,144 @@ export default function IntakeForm() {
                 />
               </div>
 
-              {/* Marriage information - Only show if married */}
+              {/* Marriage fields - Only show if married */}
               {formData?.applicant_is_married && (
-                <div className="pt-8">
-                  <h3 className="text-xl font-semibold mb-6 text-foreground">Marriage information</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="space-y-2"
-                      onDoubleClick={() => clearField("place_of_marriage")}
-                    >
-                      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                        Place of marriage / Miejsce zawarcia związku małżeńskiego
-                      </Label>
-                      <Input
-                        value={formData?.place_of_marriage || ""}
-                        onChange={(e) => handleInputChange("place_of_marriage", e.target.value.toUpperCase())}
-                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
-                      />
-                    </motion.div>
-                    <DateField
-                      name="date_of_marriage"
-                      label="Date of marriage / Data zawarcia związku małżeńskiego"
-                      value={formData?.date_of_marriage}
-                      onChange={(value) => handleInputChange("date_of_marriage", value)}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="space-y-2"
+                    onDoubleClick={() => clearField("place_of_marriage")}
+                  >
+                    <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                      Place of marriage / Miejsce zawarcia związku małżeńskiego
+                    </Label>
+                    <Input
+                      value={formData?.place_of_marriage || ""}
+                      onChange={(e) => handleInputChange("place_of_marriage", e.target.value.toUpperCase())}
+                      className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                      style={{ fontSize: '1.125rem', fontWeight: '400' }}
                     />
-                  </div>
+                  </motion.div>
+                  <DateField
+                    name="date_of_marriage"
+                    label="Date of marriage / Data zawarcia związku małżeńskiego"
+                    value={formData?.date_of_marriage}
+                    onChange={(value) => handleInputChange("date_of_marriage", value)}
+                  />
                 </div>
               )}
+
+              {/* Contact information */}
+              <div className="pt-8">
+                <h3 className="text-xl font-semibold mb-6 text-foreground">Contact information</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="space-y-2"
+                    onDoubleClick={() => clearField("applicant_email")}
+                  >
+                    <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                      Email
+                    </Label>
+                    <Input
+                      value={formData?.applicant_email || ""}
+                      onChange={(e) => handleInputChange("applicant_email", e.target.value)}
+                      type="email"
+                      className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+                      style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                    />
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="space-y-2"
+                    onDoubleClick={() => clearField("applicant_phone")}
+                  >
+                    <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                      Phone
+                    </Label>
+                    <Input
+                      value={formData?.applicant_phone || ""}
+                      onChange={(e) => handleInputChange("applicant_phone", e.target.value)}
+                      className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+                      style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                    />
+                  </motion.div>
+                </div>
+              </div>
+
+              {/* Passport information */}
+              <div className="pt-8">
+                <h3 className="text-xl font-semibold mb-6 text-foreground">Passport information</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="space-y-2"
+                    onDoubleClick={() => clearField("applicant_passport_number")}
+                  >
+                    <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                      Passport number
+                    </Label>
+                    <Input
+                      value={formData?.applicant_passport_number || ""}
+                      onChange={(e) => handleInputChange("applicant_passport_number", e.target.value.toUpperCase())}
+                      className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                      style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                    />
+                  </motion.div>
+                  <DateField
+                    name="applicant_passport_expiry_date"
+                    label="Passport expiry date"
+                    value={formData?.applicant_passport_expiry_date}
+                    onChange={(value) => handleInputChange("applicant_passport_expiry_date", value)}
+                  />
+                </div>
+              </div>
+
+              {/* Immigration information */}
+              <div className="pt-8">
+                <h3 className="text-xl font-semibold mb-6 text-foreground">Immigration information</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <DateField
+                    name="applicant_date_of_emigration"
+                    label="Date of emigration"
+                    value={formData?.applicant_date_of_emigration}
+                    onChange={(value) => handleInputChange("applicant_date_of_emigration", value)}
+                  />
+                  <DateField
+                    name="applicant_date_of_naturalization"
+                    label="Date of naturalization"
+                    value={formData?.applicant_date_of_naturalization}
+                    onChange={(value) => handleInputChange("applicant_date_of_naturalization", value)}
+                  />
+                </div>
+              </div>
+
+              {/* Address Section - Coming Soon Placeholder */}
+              <div className="pt-8">
+                <h3 className="text-xl font-semibold mb-6 text-foreground">Address information</h3>
+                <div className="p-6 border-2 border-dashed border-primary/30 rounded-lg bg-primary/5 text-center">
+                  <p className="text-muted-foreground">
+                    Address fields will be added here to match the Master Form
+                  </p>
+                </div>
+              </div>
+
+              {/* Additional notes */}
+              <div className="pt-8">
+                <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                  Additional notes
+                </Label>
+                <Textarea
+                  value={formData?.applicant_notes || ""}
+                  onChange={(e) => handleInputChange("applicant_notes", e.target.value.toUpperCase())}
+                  className="mt-2 min-h-[100px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                  style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                />
+              </div>
             </CardContent>
           </Card>
         </motion.div>
