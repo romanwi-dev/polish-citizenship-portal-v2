@@ -94,6 +94,35 @@ export default function AdditionalData() {
           <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 p-3 md:p-4 scrollbar-hide"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
+            <Button 
+              variant="outline" 
+              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[140px] md:min-w-[180px] lg:min-w-[220px] whitespace-nowrap flex-shrink-0"
+            >
+              <Save className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
+              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                Save data
+              </span>
+            </Button>
+            <Button 
+              variant="outline" 
+              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[140px] md:min-w-[180px] lg:min-w-[220px] whitespace-nowrap flex-shrink-0"
+            >
+              <Sparkles className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
+              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                Clear Data
+              </span>
+            </Button>
+
+            <Button 
+              variant="outline" 
+              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[160px] md:min-w-[200px] lg:min-w-[240px] whitespace-nowrap flex-shrink-0"
+            >
+              <Download className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
+              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                Generate PDF
+              </span>
+            </Button>
+
             {/* Navigation Buttons */}
             <Button 
               onClick={() => navigate(`/admin/cases/${caseId}/intake`)}
