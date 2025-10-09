@@ -442,57 +442,51 @@ export default function MasterDataTable() {
                     </RadioGroup>
                   </motion.div>
 
-                  {/* Marital Status - Radio Group */}
+                  {/* Civil Status - Select like IntakeForm */}
                   <motion.div 
                     initial={{ opacity: 0, y: 20 }} 
                     animate={{ opacity: 1, y: 0 }} 
-                    transition={{ delay: 0.1, duration: 0.4 }}
-                    className="mb-8 p-4 bg-muted/30 rounded-lg border border-border/50"
+                    transition={{ delay: 0.3, duration: 0.4 }}
+                    className="mb-8 space-y-4"
                   >
                     <Label className={cn(
-                      "text-lg font-semibold mb-3 block",
-                      isLargeFonts ? "text-xl" : "text-lg"
+                      "font-light text-foreground/90",
+                      isLargeFonts ? "text-xl" : "text-sm"
                     )}>
-                      Marital Status / Stan cywilny
+                      Civil status
                     </Label>
-                    <RadioGroup
-                      value={formData?.applicant_is_married ? "married" : "single"}
+                    <Select 
+                      value={formData.applicant_is_married ? "married" : "not_married"} 
                       onValueChange={(value) => handleInputChange("applicant_is_married", value === "married")}
-                      className="flex gap-4"
                     >
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="single" id="single" className="border-2" />
-                        <Label htmlFor="single" className="cursor-pointer font-normal">
-                          Single / Wolny/a
-                        </Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="married" id="married" className="border-2" />
-                        <Label htmlFor="married" className="cursor-pointer font-normal">
-                          Married / Żonaty/Zamężna
-                        </Label>
-                      </div>
-                    </RadioGroup>
+                      <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                        <SelectValue placeholder="Select status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="not_married">Not married</SelectItem>
+                        <SelectItem value="married">Married</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </motion.div>
 
-                  {/* Children Count */}
+                  {/* Number of children - Select like IntakeForm */}
                   <motion.div 
                     initial={{ opacity: 0, y: 20 }} 
                     animate={{ opacity: 1, y: 0 }} 
-                    transition={{ delay: 0.2, duration: 0.4 }} 
+                    transition={{ delay: 0.4, duration: 0.4 }} 
                     className="space-y-4"
                   >
-                    <Label className="text-sm font-normal text-foreground/90">
-                      Number of children / Liczba dzieci
+                    <Label className={cn(
+                      "font-light text-foreground/90",
+                      isLargeFonts ? "text-xl" : "text-sm"
+                    )}>
+                      Number of children
                     </Label>
                     <Select 
                       value={formData.children_count?.toString() || "0"} 
-                      onValueChange={value => {
-                        const count = parseInt(value);
-                        handleInputChange("children_count", count);
-                      }}
+                      onValueChange={(value) => handleInputChange("children_count", parseInt(value) || 0)}
                     >
-                      <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur" style={{ fontSize: '1.125rem', fontWeight: '400' }}>
+                      <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-50">
