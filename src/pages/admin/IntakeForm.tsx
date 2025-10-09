@@ -11,6 +11,7 @@ import { DateField } from "@/components/DateField";
 import { Label } from "@/components/ui/label";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { cn } from "@/lib/utils";
+import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLongPressWithFeedback } from "@/hooks/useLongPressWithFeedback";
@@ -589,6 +590,71 @@ export default function IntakeForm() {
                   <p className="text-muted-foreground">
                     Address fields will be added here to match the Master Form
                   </p>
+                </div>
+              </div>
+
+              {/* Documents Required */}
+              <div className="pt-8">
+                <h3 className="text-xl font-semibold mb-6 text-foreground">Documents required</h3>
+                <div className="space-y-4">
+                  <div className="flex items-center space-x-3">
+                    <Checkbox
+                      id="applicant_has_polish_documents"
+                      checked={formData?.applicant_has_polish_documents || false}
+                      onCheckedChange={(checked) => handleInputChange("applicant_has_polish_documents", checked)}
+                    />
+                    <Label htmlFor="applicant_has_polish_documents" className="cursor-pointer">Polish documents</Label>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <Checkbox
+                      id="applicant_has_passport"
+                      checked={formData?.applicant_has_passport || false}
+                      onCheckedChange={(checked) => handleInputChange("applicant_has_passport", checked)}
+                    />
+                    <Label htmlFor="applicant_has_passport" className="cursor-pointer">Passport copy</Label>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <Checkbox
+                      id="applicant_has_birth_cert"
+                      checked={formData?.applicant_has_birth_cert || false}
+                      onCheckedChange={(checked) => handleInputChange("applicant_has_birth_cert", checked)}
+                    />
+                    <Label htmlFor="applicant_has_birth_cert" className="cursor-pointer">Birth certificate</Label>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <Checkbox
+                      id="applicant_has_marriage_cert"
+                      checked={formData?.applicant_has_marriage_cert || false}
+                      onCheckedChange={(checked) => handleInputChange("applicant_has_marriage_cert", checked)}
+                    />
+                    <Label htmlFor="applicant_has_marriage_cert" className="cursor-pointer">Marriage certificate</Label>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <Checkbox
+                      id="applicant_has_naturalization"
+                      checked={formData?.applicant_has_naturalization || false}
+                      onCheckedChange={(checked) => handleInputChange("applicant_has_naturalization", checked)}
+                    />
+                    <Label htmlFor="applicant_has_naturalization" className="cursor-pointer">Naturalization certificate</Label>
+                  </div>
+                  {(formData?.applicant_sex === "Male / Mężczyzna" || formData?.sex === "Male / Mężczyzna") && (
+                    <div className="flex items-center space-x-3">
+                      <Checkbox
+                        id="applicant_has_military_record"
+                        checked={formData?.applicant_has_military_record || false}
+                        onCheckedChange={(checked) => handleInputChange("applicant_has_military_record", checked)}
+                      />
+                      <Label htmlFor="applicant_has_military_record" className="cursor-pointer">Military record (males only)</Label>
+                    </div>
+                  )}
+                  <div className="flex items-center space-x-3">
+                    <Checkbox
+                      id="applicant_has_foreign_documents"
+                      checked={formData?.applicant_has_foreign_documents || false}
+                      onCheckedChange={(checked) => handleInputChange("applicant_has_foreign_documents", checked)}
+                    />
+                    <Label htmlFor="applicant_has_foreign_documents" className="cursor-pointer">Foreign documents</Label>
+                  </div>
                 </div>
               </div>
 

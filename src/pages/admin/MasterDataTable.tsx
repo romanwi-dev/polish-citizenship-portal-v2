@@ -688,17 +688,26 @@ export default function MasterDataTable() {
                   <div className="pt-8">
                     <h3 className="text-xl font-semibold mb-6 text-foreground">Documents required</h3>
                     {renderCheckboxGroup([{
+                    name: "applicant_has_polish_documents",
+                    label: "Polish documents"
+                  }, {
+                    name: "applicant_has_passport",
+                    label: "Passport copy"
+                  }, {
                     name: "applicant_has_birth_cert",
                     label: "Birth certificate"
-                  }, ...(formData.applicant_is_married ? [{
+                  }, {
                     name: "applicant_has_marriage_cert",
                     label: "Marriage certificate"
-                  }] : []), {
-                    name: "applicant_has_passport",
-                    label: "Passport"
                   }, {
                     name: "applicant_has_naturalization",
                     label: "Naturalization certificate"
+                  }, ...(formData.applicant_sex === "Male / Mężczyzna" ? [{
+                    name: "applicant_has_military_record",
+                    label: "Military record (males only)"
+                  }] : []), {
+                    name: "applicant_has_foreign_documents",
+                    label: "Foreign documents"
                   }])}
                   </div>
 
@@ -898,17 +907,26 @@ export default function MasterDataTable() {
                   <div className="pt-8">
                     <h3 className="text-xl font-semibold mb-6 text-foreground">Documents required</h3>
                     {renderCheckboxGroup([{
+                      name: "spouse_has_polish_documents",
+                      label: "Polish documents"
+                    }, {
+                      name: "spouse_has_passport",
+                      label: "Passport copy"
+                    }, {
                       name: "spouse_has_birth_cert",
                       label: "Birth certificate"
                     }, {
                       name: "spouse_has_marriage_cert",
                       label: "Marriage certificate"
                     }, {
-                      name: "spouse_has_passport",
-                      label: "Passport"
-                    }, {
                       name: "spouse_has_naturalization",
                       label: "Naturalization certificate"
+                    }, ...(formData.spouse_sex === "Male / Mężczyzna" ? [{
+                      name: "spouse_has_military_record",
+                      label: "Military record (males only)"
+                    }] : []), {
+                      name: "spouse_has_foreign_documents",
+                      label: "Foreign documents"
                     }])}
                   </div>
 
