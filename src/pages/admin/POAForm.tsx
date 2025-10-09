@@ -19,6 +19,7 @@ import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { PDFPreviewDialog } from "@/components/PDFPreviewDialog";
 import { sanitizeMasterData } from "@/utils/masterDataSanitizer";
 import { useRealtimeFormSync } from "@/hooks/useRealtimeFormSync";
+import { cn } from "@/lib/utils";
 
 export default function POAForm() {
   const { id: caseId } = useParams();
@@ -383,7 +384,10 @@ export default function POAForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
                   {/* Civil Status */}
                   <div className="space-y-4">
-                    <Label className="text-base md:text-lg lg:text-xl font-semibold text-foreground/80">
+                    <Label className={cn(
+                      "font-light text-foreground/90",
+                      isLargeFonts ? "text-xl" : "text-sm"
+                    )}>
                       Civil status
                     </Label>
                     <Select 
@@ -402,7 +406,10 @@ export default function POAForm() {
 
                   {/* Gender */}
                   <div className="space-y-4">
-                    <Label className="text-base md:text-lg lg:text-xl font-semibold text-foreground/80">
+                    <Label className={cn(
+                      "font-light text-foreground/90",
+                      isLargeFonts ? "text-xl" : "text-sm"
+                    )}>
                       Gender
                     </Label>
                     <Select 
@@ -424,7 +431,10 @@ export default function POAForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
                   {/* Number of Children */}
                   <div className="space-y-4">
-                    <Label className="text-base md:text-lg lg:text-xl font-semibold text-foreground/80">
+                    <Label className={cn(
+                      "font-light text-foreground/90",
+                      isLargeFonts ? "text-xl" : "text-sm"
+                    )}>
                       Number of children (including minors)
                     </Label>
                     <Select 
@@ -450,7 +460,10 @@ export default function POAForm() {
                   {/* Minor Children - only show if has children */}
                   {(formData.children_count && formData.children_count > 0) && (
                     <div className="space-y-4">
-                      <Label className="text-base md:text-lg lg:text-xl font-semibold text-foreground/80">
+                      <Label className={cn(
+                        "font-light text-foreground/90",
+                        isLargeFonts ? "text-xl" : "text-sm"
+                      )}>
                         Minor children
                       </Label>
                       <Select 
