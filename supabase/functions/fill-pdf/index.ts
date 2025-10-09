@@ -62,7 +62,7 @@ serve(async (req) => {
     // Generate content based on template type
     if (templateType === 'poa-adult') {
       // Header
-      page.drawText('POWER OF ATTORNEY', {
+      page.drawText('POWER OF ATTORNEY - ADULT', {
         x: 50,
         y: yPosition,
         size: 20,
@@ -72,19 +72,13 @@ serve(async (req) => {
       
       yPosition -= 50;
       
-      // Content
+      // Map form fields to display
+      const fullName = `${masterData.applicant_first_name || ''} ${masterData.applicant_last_name || ''}`.trim() || 'N/A';
+      const passportNum = masterData.applicant_passport_number || 'N/A';
+      
       const fields = [
-        { label: 'Full Name:', value: `${masterData.applicant_first_name || ''} ${masterData.applicant_last_name || ''}`.trim() },
-        { label: 'Maiden Name:', value: masterData.applicant_maiden_name || 'N/A' },
-        { label: 'Date of Birth:', value: formatDate(masterData.applicant_dob) },
-        { label: 'Place of Birth:', value: masterData.applicant_pob || 'N/A' },
-        { label: 'Current Citizenship:', value: masterData.applicant_current_citizenship || 'N/A' },
-        { label: 'Passport Number:', value: masterData.applicant_passport_number || 'N/A' },
-        { label: 'Passport Country:', value: masterData.applicant_passport_issuing_country || 'N/A' },
-        { label: 'Passport Issue:', value: formatDate(masterData.applicant_passport_issue_date) },
-        { label: 'Passport Expiry:', value: formatDate(masterData.applicant_passport_expiry_date) },
-        { label: 'Email:', value: masterData.applicant_email || 'N/A' },
-        { label: 'Phone:', value: masterData.applicant_phone || 'N/A' },
+        { label: 'Full Name:', value: fullName },
+        { label: 'ID/Passport Number:', value: passportNum },
       ];
       
       for (const field of fields) {
@@ -97,7 +91,7 @@ serve(async (req) => {
         });
         
         page.drawText(field.value, {
-          x: 220,
+          x: 250,
           y: yPosition,
           size: 12,
           font: timesRoman,
@@ -116,6 +110,7 @@ serve(async (req) => {
         color: rgb(0, 0, 0),
       });
       
+      
     } else if (templateType === 'poa-minor') {
       // Header
       page.drawText('POWER OF ATTORNEY - MINOR', {
@@ -128,13 +123,15 @@ serve(async (req) => {
       
       yPosition -= 50;
       
+      // Map to POA Minor form fields
+      const parentName = `${masterData.applicant_first_name || ''} ${masterData.father_last_name || masterData.applicant_last_name || ''}`.trim() || 'N/A';
+      const parentPassport = masterData.applicant_passport_number || 'N/A';
+      const childName = `${masterData.child_1_first_name || ''} ${masterData.child_1_last_name || ''}`.trim() || 'N/A';
+      
       const fields = [
-        { label: 'Child Name:', value: `${masterData.child_1_first_name || ''} ${masterData.child_1_last_name || ''}`.trim() },
-        { label: 'Child DOB:', value: formatDate(masterData.child_1_dob) },
-        { label: 'Child POB:', value: masterData.child_1_pob || 'N/A' },
-        { label: 'Parent/Guardian:', value: `${masterData.applicant_first_name || ''} ${masterData.applicant_last_name || ''}`.trim() },
-        { label: 'Parent Email:', value: masterData.applicant_email || 'N/A' },
-        { label: 'Parent Phone:', value: masterData.applicant_phone || 'N/A' },
+        { label: 'Parent Name:', value: parentName },
+        { label: 'Parent ID/Passport:', value: parentPassport },
+        { label: 'Child Name:', value: childName },
       ];
       
       for (const field of fields) {
@@ -147,7 +144,7 @@ serve(async (req) => {
         });
         
         page.drawText(field.value, {
-          x: 220,
+          x: 250,
           y: yPosition,
           size: 12,
           font: timesRoman,
@@ -156,6 +153,7 @@ serve(async (req) => {
         
         yPosition -= 25;
       }
+      
       
     } else if (templateType === 'poa-spouses') {
       // Header
@@ -169,13 +167,19 @@ serve(async (req) => {
       
       yPosition -= 50;
       
+      // Map to POA Spouses form fields
+      const husbandName = `${masterData.applicant_first_name || ''} ${masterData.father_last_name || masterData.applicant_last_name || ''}`.trim() || 'N/A';
+      const husbandPassport = masterData.applicant_passport_number || 'N/A';
+      const wifeName = `${masterData.spouse_first_name || ''} ${masterData.spouse_last_name || ''}`.trim() || 'N/A';
+      const wifePassport = masterData.spouse_passport_number || 'N/A';
+      const childrenLastName = masterData.child_1_last_name || 'N/A';
+      
       const fields = [
-        { label: 'Applicant:', value: `${masterData.applicant_first_name || ''} ${masterData.applicant_last_name || ''}`.trim() },
-        { label: 'Spouse:', value: `${masterData.spouse_first_name || ''} ${masterData.spouse_last_name || ''}`.trim() },
-        { label: 'Marriage Date:', value: formatDate(masterData.date_of_marriage) },
-        { label: 'Marriage Place:', value: masterData.place_of_marriage || 'N/A' },
-        { label: 'Email:', value: masterData.applicant_email || 'N/A' },
-        { label: 'Phone:', value: masterData.applicant_phone || 'N/A' },
+        { label: 'Husband Name:', value: husbandName },
+        { label: 'Husband ID/Passport:', value: husbandPassport },
+        { label: 'Wife Name:', value: wifeName },
+        { label: 'Wife ID/Passport:', value: wifePassport },
+        { label: "Children's Last Name(s):", value: childrenLastName },
       ];
       
       for (const field of fields) {
@@ -188,7 +192,7 @@ serve(async (req) => {
         });
         
         page.drawText(field.value, {
-          x: 220,
+          x: 250,
           y: yPosition,
           size: 12,
           font: timesRoman,
