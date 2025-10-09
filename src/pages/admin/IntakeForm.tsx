@@ -535,7 +535,106 @@ export default function IntakeForm() {
                 </div>
               </div>
 
-              {/* Passport information */}
+              {/* Address information */}
+              <div className="pt-8">
+                <h3 className="text-xl font-semibold mb-6 text-foreground">Address information</h3>
+                <div className="grid grid-cols-1 gap-6">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="space-y-2"
+                    onDoubleClick={() => clearField("applicant_street")}
+                  >
+                    <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                      Street address
+                    </Label>
+                    <Input
+                      value={formData?.applicant_street || ""}
+                      onChange={(e) => handleInputChange("applicant_street", e.target.value.toUpperCase())}
+                      className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                      style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                      placeholder="STREET NAME AND NUMBER"
+                    />
+                  </motion.div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="space-y-2"
+                      onDoubleClick={() => clearField("applicant_city")}
+                    >
+                      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                        City
+                      </Label>
+                      <Input
+                        value={formData?.applicant_city || ""}
+                        onChange={(e) => handleInputChange("applicant_city", e.target.value.toUpperCase())}
+                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                        style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                        placeholder="CITY NAME"
+                      />
+                    </motion.div>
+
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="space-y-2"
+                      onDoubleClick={() => clearField("applicant_state")}
+                    >
+                      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                        State / Province
+                      </Label>
+                      <Input
+                        value={formData?.applicant_state || ""}
+                        onChange={(e) => handleInputChange("applicant_state", e.target.value.toUpperCase())}
+                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                        style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                        placeholder="STATE / PROVINCE"
+                      />
+                    </motion.div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="space-y-2"
+                      onDoubleClick={() => clearField("applicant_postal_code")}
+                    >
+                      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                        Postal / ZIP code
+                      </Label>
+                      <Input
+                        value={formData?.applicant_postal_code || ""}
+                        onChange={(e) => handleInputChange("applicant_postal_code", e.target.value.toUpperCase())}
+                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                        style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                        placeholder="POSTAL CODE"
+                      />
+                    </motion.div>
+
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="space-y-2"
+                      onDoubleClick={() => clearField("applicant_country")}
+                    >
+                      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                        Country
+                      </Label>
+                      <Input
+                        value={formData?.applicant_country || ""}
+                        onChange={(e) => handleInputChange("applicant_country", e.target.value.toUpperCase())}
+                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                        style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                        placeholder="COUNTRY"
+                      />
+                    </motion.div>
+                  </div>
+                </div>
+              </div>
+
               <div className="pt-8">
                 <h3 className="text-xl font-semibold mb-6 text-foreground">Passport information</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
