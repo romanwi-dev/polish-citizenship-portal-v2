@@ -302,7 +302,7 @@ export default function IntakeForm() {
                     Civil status / Stan cywilny
                   </Label>
                   <Select
-                    value={formData?.applicant_is_married === true ? "Married" : formData?.applicant_is_married === false ? "Single" : ""}
+                    value={formData?.applicant_is_married === true ? "Married" : formData?.applicant_is_married === false ? "Single" : undefined}
                     onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}
                   >
                     <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
