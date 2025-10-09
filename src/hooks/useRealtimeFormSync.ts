@@ -28,14 +28,15 @@ export const useRealtimeFormSync = (
     }
     
     console.log('📥 LOADING FRESH DATA FROM DB:', Object.keys(masterData).length, 'fields');
-    console.log('📊 Sample fields:', {
-      first_name: masterData.applicant_first_name,
-      last_name: masterData.applicant_last_name,
-      email: masterData.applicant_email
+    console.log('📊 Sample DB fields:', {
+      applicant_first_name: masterData.applicant_first_name,
+      applicant_last_name: masterData.applicant_last_name,
+      applicant_email: masterData.applicant_email,
+      applicant_passport_number: masterData.applicant_passport_number
     });
     
-    // FORCE UPDATE - bypass any stale state
-    setFormData(() => masterData);
+    // FORCE UPDATE - set ALL masterData as form data
+    setFormData(masterData);
   }, [masterData, isLoading, setFormData]);
 
   // Real-time sync
