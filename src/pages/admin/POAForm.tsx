@@ -465,10 +465,10 @@ export default function POAForm() {
                   />
                 </div>
                 
-                {/* Marriage Information - Only show if married */}
+                {/* Marriage information - Only show if married */}
                 {formData.applicant_is_married && (
                   <div className="mt-6">
-                    <h3 className="text-xl font-semibold mb-4 text-foreground">Marriage Information</h3>
+                    <h3 className="text-xl font-semibold mb-4 text-foreground">Marriage information</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                       <POAFormField
                         name="place_of_marriage"

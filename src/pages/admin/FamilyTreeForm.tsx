@@ -574,7 +574,7 @@ export default function FamilyTreeForm() {
                 {/* Other fields */}
                 {renderFieldGroup([{
                 name: "applicant_passport_number",
-                label: "Passport Number"
+                label: "Passport number"
               }, {
                 name: "applicant_sex",
                 label: "Sex",
@@ -606,7 +606,7 @@ export default function FamilyTreeForm() {
                 </div>
 
                 <div className="pt-8">
-                  <h3 className="text-xl font-semibold mb-6 text-foreground">Documents Required</h3>
+                  <h3 className="text-xl font-semibold mb-6 text-foreground">Documents required</h3>
                   {renderCheckboxGroup([{
                   name: "applicant_has_birth_cert",
                   label: "Birth certificate"
@@ -683,7 +683,7 @@ export default function FamilyTreeForm() {
                       />
                     </div>
                     <div className="pt-4">
-                      <h4 className="text-lg font-semibold mb-4 text-foreground">Documents Required</h4>
+                      <h4 className="text-lg font-semibold mb-4 text-foreground">Documents required</h4>
                       {renderCheckboxGroup([{
                     name: `child_${num}_has_passport`,
                     label: "Passport Copy"
@@ -791,7 +791,7 @@ export default function FamilyTreeForm() {
                       />
                     </div>
                     <div className="pt-4">
-                      <h4 className="text-lg font-semibold mb-4 text-foreground">Documents Required</h4>
+                      <h4 className="text-lg font-semibold mb-4 text-foreground">Documents required</h4>
                       {renderCheckboxGroup([{
                       name: "father_has_polish_documents",
                       label: "Polish documents"
@@ -889,7 +889,7 @@ export default function FamilyTreeForm() {
                       />
                     </div>
                     <div className="pt-4">
-                      <h4 className="text-lg font-semibold mb-4 text-foreground">Documents Required</h4>
+                      <h4 className="text-lg font-semibold mb-4 text-foreground">Documents required</h4>
                       {renderCheckboxGroup([{
                       name: "mother_has_polish_documents",
                       label: "Polish documents"
@@ -1012,7 +1012,7 @@ export default function FamilyTreeForm() {
                           />
                         </div>
                         <div className="pt-4">
-                          <h4 className="text-lg font-semibold mb-4 text-foreground">Documents Required</h4>
+                          <h4 className="text-lg font-semibold mb-4 text-foreground">Documents required</h4>
                           {renderCheckboxGroup([{
                         name: `${prefix}_has_polish_documents`,
                         label: "Polish documents"
@@ -1102,7 +1102,7 @@ export default function FamilyTreeForm() {
                           />
                         </div>
                         <div className="pt-4">
-                          <h4 className="text-lg font-semibold mb-4 text-foreground">Documents Required</h4>
+                          <h4 className="text-lg font-semibold mb-4 text-foreground">Documents required</h4>
                           {renderCheckboxGroup([...(prefix === "pggf" || prefix === "mggf" ? [{
                         name: `${prefix}_has_polish_documents`,
                         label: "Polish documents"

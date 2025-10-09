@@ -429,10 +429,10 @@ export default function CivilRegistryForm() {
                 type: "date"
               }])}
               
-                {/* Marriage Information - Only show if married */}
+                {/* Marriage information - Only show if married */}
                 {formData.applicant_is_married && (
                   <div className="pt-6">
-                    <h3 className="text-xl font-semibold mb-6 text-foreground">Marriage Information</h3>
+                    <h3 className="text-xl font-semibold mb-6 text-foreground">Marriage information</h3>
                     {renderFieldGroup([{
                       name: "place_of_marriage",
                       label: "Place of marriage / Miejsce zawarcia związku małżeńskiego"
@@ -458,7 +458,7 @@ export default function CivilRegistryForm() {
                 label: "Phone / Telefon"
               }, {
                 name: "applicant_passport_number",
-                label: "Passport Number / Nr paszportu"
+                label: "Passport number / Nr paszportu"
               }])}
               </CardContent>
             </Card>
@@ -542,7 +542,7 @@ export default function CivilRegistryForm() {
                 </div>
 
                 <div className="bg-muted/30 rounded-lg p-6 border-2 border-primary/20">
-                  <h3 className={cn("font-semibold mb-6 text-foreground", isLargeFonts ? "text-3xl" : "text-2xl")}>Additional Notes / Dodatkowe informacje</h3>
+                  <h3 className={cn("font-semibold mb-6 text-foreground", isLargeFonts ? "text-3xl" : "text-2xl")}>Additional notes / Dodatkowe informacje</h3>
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}

@@ -550,9 +550,9 @@ export default function MasterDataTable() {
                     </motion.div>
                   </div>
 
-                  {/* Contact Information */}
+                  {/* Contact information */}
                   <div className="pt-8">
-                    <h3 className="text-xl font-semibold mb-6 text-foreground">Contact Information</h3>
+                    <h3 className="text-xl font-semibold mb-6 text-foreground">Contact information</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
                         <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
@@ -580,13 +580,13 @@ export default function MasterDataTable() {
                     </div>
                   </div>
 
-                  {/* Passport Information */}
+                  {/* Passport information */}
                   <div className="pt-8">
-                    <h3 className="text-xl font-semibold mb-6 text-foreground">Passport Information</h3>
+                    <h3 className="text-xl font-semibold mb-6 text-foreground">Passport information</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
                         <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                          Passport Number
+                          Passport number
                         </Label>
                         <Input
                           value={formData.applicant_passport_number || ""}
@@ -595,37 +595,29 @@ export default function MasterDataTable() {
                           style={{ fontSize: '1.125rem', fontWeight: '400' }}
                         />
                       </motion.div>
-                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
+                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="space-y-2">
                         <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                          Passport Issuing Country
+                          Passport expiry date
                         </Label>
-                        <Input
-                          value={formData.applicant_passport_issuing_country || ""}
-                          onChange={(e) => handleInputChange("applicant_passport_issuing_country", e.target.value.toUpperCase())}
-                          className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
-                          style={{ fontSize: '1.125rem', fontWeight: '400' }}
-                        />
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button variant="outline" className={cn("w-full h-16 justify-start text-left border-2 hover-glow bg-card/50 backdrop-blur", !formData.applicant_passport_expiry_date && "text-muted-foreground")} style={{ fontSize: '1.125rem', fontWeight: '400' }}>
+                              <CalendarIcon className="mr-2 h-5 w-5" />
+                              {formData.applicant_passport_expiry_date ? format(new Date(formData.applicant_passport_expiry_date), "dd/MM/yyyy") : <span>Pick a date</span>}
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar mode="single" selected={formData.applicant_passport_expiry_date ? new Date(formData.applicant_passport_expiry_date) : undefined} onSelect={date => handleInputChange("applicant_passport_expiry_date", date ? format(date, "yyyy-MM-dd") : "")} disabled={date => date > new Date("2030-12-31") || date < new Date("1900-01-01")} initialFocus className={cn("p-3 pointer-events-auto")} />
+                          </PopoverContent>
+                        </Popover>
                       </motion.div>
-                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
-                        <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                          Passport Issuing Authority
-                        </Label>
-                        <Input
-                          value={formData.applicant_passport_issuing_authority || ""}
-                          onChange={(e) => handleInputChange("applicant_passport_issuing_authority", e.target.value.toUpperCase())}
-                          className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
-                          style={{ fontSize: '1.125rem', fontWeight: '400' }}
-                        />
-                      </motion.div>
-                      {renderDateField("applicant_passport_issue_date", "Passport Issue Date")}
-                      {renderDateField("applicant_passport_expiry_date", "Passport Expiry Date")}
                     </div>
                   </div>
 
-                  {/* Marriage Information - Only show if married */}
+                  {/* Marriage information - Only show if married */}
                   {formData.applicant_is_married && (
                     <div className="pt-8">
-                      <h3 className="text-xl font-semibold mb-6 text-foreground">Marriage Information</h3>
+                      <h3 className="text-xl font-semibold mb-6 text-foreground">Marriage information</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
                           <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
@@ -643,9 +635,9 @@ export default function MasterDataTable() {
                     </div>
                   )}
 
-                  {/* Immigration Information */}
+                  {/* Immigration information */}
                   <div className="pt-8">
-                    <h3 className="text-xl font-semibold mb-6 text-foreground">Immigration Information</h3>
+                    <h3 className="text-xl font-semibold mb-6 text-foreground">Immigration information</h3>
                     {renderFieldGroup([{
                       name: "applicant_date_of_emigration",
                       label: "Date of emigration",
@@ -679,7 +671,7 @@ export default function MasterDataTable() {
                   </div>
 
                   <div className="pt-8">
-                    <h3 className="text-xl font-semibold mb-6 text-foreground">Documents Required</h3>
+                    <h3 className="text-xl font-semibold mb-6 text-foreground">Documents required</h3>
                     {renderCheckboxGroup([{
                     name: "applicant_has_birth_cert",
                     label: "Birth certificate"
@@ -696,7 +688,7 @@ export default function MasterDataTable() {
                   </div>
 
                   <div className="pt-8">
-                    {renderTextarea("applicant_notes", "Additional Notes")}
+                    {renderTextarea("applicant_notes", "Additional notes")}
                   </div>
                 </CardContent>
               </Card>
@@ -750,7 +742,7 @@ export default function MasterDataTable() {
                 }])}
 
                   <div className="pt-8">
-                    <h3 className="text-xl font-semibold mb-6 text-foreground">Documents Required</h3>
+                    <h3 className="text-xl font-semibold mb-6 text-foreground">Documents required</h3>
                     {renderCheckboxGroup([{
                     name: "spouse_has_birth_cert",
                     label: "Birth certificate"
@@ -764,7 +756,7 @@ export default function MasterDataTable() {
                   </div>
 
                   <div className="pt-8">
-                    {renderTextarea("spouse_notes", "Additional Notes")}
+                    {renderTextarea("spouse_notes", "Additional notes")}
                   </div>
                 </CardContent>
               </Card>
