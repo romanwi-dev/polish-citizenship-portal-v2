@@ -16,14 +16,27 @@ export const useRealtimeFormSync = (
 
   // Initialize form with master data when it loads
   useEffect(() => {
-    if (isLoading || !masterData) {
-      console.log('⏳ Waiting for data...', { isLoading, hasData: !!masterData });
+    if (isLoading) {
+      console.log('⏳ Loading data...');
       return;
     }
     
-    console.log('📥 Initializing form with existing data:', Object.keys(masterData).length, 'fields');
-    setFormData(masterData);
-  }, [masterData, isLoading]);
+    if (!masterData) {
+      console.log('📭 No data in DB - initializing empty form');
+      setFormData({});
+      return;
+    }
+    
+    console.log('📥 LOADING FRESH DATA FROM DB:', Object.keys(masterData).length, 'fields');
+    console.log('📊 Sample fields:', {
+      first_name: masterData.applicant_first_name,
+      last_name: masterData.applicant_last_name,
+      email: masterData.applicant_email
+    });
+    
+    // FORCE UPDATE - bypass any stale state
+    setFormData(() => masterData);
+  }, [masterData, isLoading, setFormData]);
 
   // Real-time sync
   useEffect(() => {
@@ -45,13 +58,14 @@ export const useRealtimeFormSync = (
           console.log('⚡ Real-time update received:', payload);
           
           if (payload.new) {
-            console.log('🔄 Merging new data with existing form state');
+            console.log('🔄 Applying real-time update to form');
             setFormData((prev: any) => {
               const merged = { ...prev, ...payload.new };
               console.log('✅ Form updated -', Object.keys(payload.new).length, 'fields changed');
               return merged;
             });
             
+            // Update cache
             queryClient.setQueryData(['masterData', caseId], payload.new);
           }
         }

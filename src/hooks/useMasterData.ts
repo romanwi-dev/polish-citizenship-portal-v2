@@ -26,12 +26,12 @@ export const useMasterData = (caseId: string | undefined) => {
       return data;
     },
     enabled: !!caseId && caseId !== ':id',
-    // FORCE NO CACHING - ALWAYS FETCH FRESH
+    // NO CACHING BUT NO CONSTANT REFETCHING
     staleTime: 0,
     gcTime: 0,
-    refetchOnMount: 'always',
-    refetchOnWindowFocus: true,
-    refetchOnReconnect: true,
+    refetchOnMount: true,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 };
 
