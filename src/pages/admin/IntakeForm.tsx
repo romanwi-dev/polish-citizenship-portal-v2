@@ -115,15 +115,36 @@ export default function IntakeForm() {
   // Unsaved changes warning
   useUnsavedChanges(hasUnsavedChanges);
   const clearAllFields = () => {
-    setFormData({});
-    toast.success("All fields cleared");
+    const clearedData = {};
+    setFormData(clearedData);
+    setOriginalData(clearedData);
+    
+    // Save cleared state to DB immediately
+    if (caseId) {
+      updateMutation.mutate({
+        caseId,
+        updates: clearedData
+      });
+    }
+    
+    toast.success("All fields cleared and saved");
   };
   const clearField = (field: string) => {
-    setFormData((prev: any) => ({
-      ...prev,
-      [field]: typeof prev[field] === 'boolean' ? false : typeof prev[field] === 'number' ? 0 : ""
-    }));
-    toast.success("Field cleared");
+    const updatedData = {
+      ...formData,
+      [field]: null // Set to null to actually clear from DB
+    };
+    setFormData(updatedData);
+    
+    // Save immediately to DB
+    if (caseId) {
+      updateMutation.mutate({
+        caseId,
+        updates: { [field]: null }
+      });
+    }
+    
+    toast.success("Field cleared and saved");
   };
   const titleLongPress = useLongPressWithFeedback({
     onLongPress: clearAllFields,
