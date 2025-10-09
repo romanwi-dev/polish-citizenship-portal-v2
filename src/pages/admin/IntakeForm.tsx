@@ -811,7 +811,7 @@ export default function IntakeForm() {
                 <Textarea
                   value={formData?.applicant_notes || ""}
                   onChange={(e) => handleInputChange("applicant_notes", e.target.value.toUpperCase())}
-                  className="mt-2 min-h-[100px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                  className="mt-2 min-h-[150px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
                   style={{ fontSize: '1.125rem', fontWeight: '400' }}
                 />
               </div>

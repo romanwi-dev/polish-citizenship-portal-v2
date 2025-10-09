@@ -200,7 +200,7 @@ export default function MasterDataTable() {
         <Label htmlFor={name} className="text-base font-medium text-foreground">
           {label}
         </Label>
-        <Textarea id={name} value={formData[name] || ""} onChange={e => handleInputChange(name, e.target.value)} rows={rows} className="border-2 text-base hover-glow focus:shadow-lg transition-all resize-vertical bg-card/50 backdrop-blur" />
+        <Textarea id={name} value={formData[name] || ""} onChange={e => handleInputChange(name, e.target.value)} rows={rows} className="border-2 text-base hover-glow focus:shadow-lg transition-all resize-vertical bg-card/50 backdrop-blur min-h-[150px]" />
       </motion.div>;
   };
   return <div className="min-h-screen relative">

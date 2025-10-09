@@ -620,7 +620,7 @@ export default function FamilyTreeForm() {
                     value={formData.applicant_notes || ""}
                     onChange={e => handleInputChange("applicant_notes", e.target.value.toUpperCase())}
                     placeholder=""
-                    className={cn("min-h-[100px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                    className={cn("min-h-[150px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
                   />
                 </div>
 
@@ -749,7 +749,7 @@ export default function FamilyTreeForm() {
                         value={formData[`child_${num}_notes`] || ""}
                         onChange={e => handleInputChange(`child_${num}_notes`, e.target.value.toUpperCase())}
                         placeholder=""
-                        className={cn("min-h-[100px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                        className={cn("min-h-[150px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
                       />
                     </div>
                     <div className="pt-4">
@@ -857,7 +857,7 @@ export default function FamilyTreeForm() {
                         value={formData.father_notes || ""}
                         onChange={e => handleInputChange("father_notes", e.target.value.toUpperCase())}
                         placeholder=""
-                        className={cn("min-h-[100px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                        className={cn("min-h-[150px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
                       />
                     </div>
                     <div className="pt-4">
@@ -955,7 +955,7 @@ export default function FamilyTreeForm() {
                         value={formData.mother_notes || ""}
                         onChange={e => handleInputChange("mother_notes", e.target.value.toUpperCase())}
                         placeholder=""
-                        className={cn("min-h-[100px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                        className={cn("min-h-[150px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
                       />
                     </div>
                     <div className="pt-4">
@@ -1078,7 +1078,7 @@ export default function FamilyTreeForm() {
                             value={formData[`${prefix}_notes`] || ""}
                             onChange={e => handleInputChange(`${prefix}_notes`, e.target.value.toUpperCase())}
                             placeholder=""
-                            className={cn("min-h-[100px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                            className={cn("min-h-[150px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
                           />
                         </div>
                         <div className="pt-4">
@@ -1168,7 +1168,7 @@ export default function FamilyTreeForm() {
                             value={formData[`${prefix}_notes`] || ""}
                             onChange={e => handleInputChange(`${prefix}_notes`, e.target.value.toUpperCase())}
                             placeholder=""
-                            className={cn("min-h-[100px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                            className={cn("min-h-[150px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
                           />
                         </div>
                         <div className="pt-4">
