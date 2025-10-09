@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { PDFDocument } from "https://esm.sh/pdf-lib@1.17.1";
+import { PDFDocument, StandardFonts, rgb } from "https://esm.sh/pdf-lib@1.17.1";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -19,12 +19,12 @@ serve(async (req) => {
       throw new Error('caseId and templateType are required');
     }
 
+    console.log(`Generating PDF: ${templateType} for case: ${caseId}`);
+
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
-
-    console.log(`Filling PDF template: ${templateType} for case: ${caseId}`);
 
     // Get master data
     const { data: masterData, error: masterError } = await supabaseClient
@@ -36,37 +36,175 @@ serve(async (req) => {
     if (masterError) throw masterError;
     if (!masterData) throw new Error('Master data not found');
 
-    // Map template type to file name - load from edge function local folder
-    const templateFileMap: Record<string, string> = {
-      'family-tree': './templates/family-tree.pdf',
-      'poa-adult': './templates/poa-adult.pdf',
-      'poa-minor': './templates/poa-minor.pdf',
-      'poa-spouses': './templates/poa-spouses.pdf',
-      'registration': './templates/registration.pdf',
-      'uzupelnienie': './templates/uzupelnienie.pdf',
-      'citizenship': './templates/citizenship.pdf',
+    // Create PDF from scratch
+    const pdfDoc = await PDFDocument.create();
+    const timesRoman = await pdfDoc.embedFont(StandardFonts.TimesRoman);
+    const timesRomanBold = await pdfDoc.embedFont(StandardFonts.TimesRomanBold);
+    
+    const page = pdfDoc.addPage([595.28, 841.89]); // A4 size
+    const { width, height } = page.getSize();
+    
+    const formatDate = (date: string | null) => {
+      if (!date) return 'N/A';
+      try {
+        const d = new Date(date);
+        const day = String(d.getDate()).padStart(2, '0');
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const year = d.getFullYear();
+        return `${day}.${month}.${year}`;
+      } catch {
+        return date;
+      }
     };
 
-    const templatePath = templateFileMap[templateType];
-    if (!templatePath) {
-      throw new Error(`Unknown template type: ${templateType}`);
+    let yPosition = height - 50;
+    
+    // Generate content based on template type
+    if (templateType === 'poa-adult') {
+      // Header
+      page.drawText('POWER OF ATTORNEY', {
+        x: 50,
+        y: yPosition,
+        size: 20,
+        font: timesRomanBold,
+        color: rgb(0, 0, 0),
+      });
+      
+      yPosition -= 50;
+      
+      // Content
+      const fields = [
+        { label: 'Full Name:', value: `${masterData.applicant_first_name || ''} ${masterData.applicant_last_name || ''}`.trim() },
+        { label: 'Maiden Name:', value: masterData.applicant_maiden_name || 'N/A' },
+        { label: 'Date of Birth:', value: formatDate(masterData.applicant_dob) },
+        { label: 'Place of Birth:', value: masterData.applicant_pob || 'N/A' },
+        { label: 'Current Citizenship:', value: masterData.applicant_current_citizenship || 'N/A' },
+        { label: 'Passport Number:', value: masterData.applicant_passport_number || 'N/A' },
+        { label: 'Passport Country:', value: masterData.applicant_passport_issuing_country || 'N/A' },
+        { label: 'Passport Issue:', value: formatDate(masterData.applicant_passport_issue_date) },
+        { label: 'Passport Expiry:', value: formatDate(masterData.applicant_passport_expiry_date) },
+        { label: 'Email:', value: masterData.applicant_email || 'N/A' },
+        { label: 'Phone:', value: masterData.applicant_phone || 'N/A' },
+      ];
+      
+      for (const field of fields) {
+        page.drawText(field.label, {
+          x: 50,
+          y: yPosition,
+          size: 12,
+          font: timesRomanBold,
+          color: rgb(0, 0, 0),
+        });
+        
+        page.drawText(field.value, {
+          x: 220,
+          y: yPosition,
+          size: 12,
+          font: timesRoman,
+          color: rgb(0, 0, 0),
+        });
+        
+        yPosition -= 25;
+      }
+      
+      yPosition -= 20;
+      page.drawText('I hereby authorize the representative to act on my behalf...', {
+        x: 50,
+        y: yPosition,
+        size: 11,
+        font: timesRoman,
+        color: rgb(0, 0, 0),
+      });
+      
+    } else if (templateType === 'poa-minor') {
+      // Header
+      page.drawText('POWER OF ATTORNEY - MINOR', {
+        x: 50,
+        y: yPosition,
+        size: 20,
+        font: timesRomanBold,
+        color: rgb(0, 0, 0),
+      });
+      
+      yPosition -= 50;
+      
+      const fields = [
+        { label: 'Child Name:', value: `${masterData.child_1_first_name || ''} ${masterData.child_1_last_name || ''}`.trim() },
+        { label: 'Child DOB:', value: formatDate(masterData.child_1_dob) },
+        { label: 'Child POB:', value: masterData.child_1_pob || 'N/A' },
+        { label: 'Parent/Guardian:', value: `${masterData.applicant_first_name || ''} ${masterData.applicant_last_name || ''}`.trim() },
+        { label: 'Parent Email:', value: masterData.applicant_email || 'N/A' },
+        { label: 'Parent Phone:', value: masterData.applicant_phone || 'N/A' },
+      ];
+      
+      for (const field of fields) {
+        page.drawText(field.label, {
+          x: 50,
+          y: yPosition,
+          size: 12,
+          font: timesRomanBold,
+          color: rgb(0, 0, 0),
+        });
+        
+        page.drawText(field.value, {
+          x: 220,
+          y: yPosition,
+          size: 12,
+          font: timesRoman,
+          color: rgb(0, 0, 0),
+        });
+        
+        yPosition -= 25;
+      }
+      
+    } else if (templateType === 'poa-spouses') {
+      // Header
+      page.drawText('POWER OF ATTORNEY - SPOUSES', {
+        x: 50,
+        y: yPosition,
+        size: 20,
+        font: timesRomanBold,
+        color: rgb(0, 0, 0),
+      });
+      
+      yPosition -= 50;
+      
+      const fields = [
+        { label: 'Applicant:', value: `${masterData.applicant_first_name || ''} ${masterData.applicant_last_name || ''}`.trim() },
+        { label: 'Spouse:', value: `${masterData.spouse_first_name || ''} ${masterData.spouse_last_name || ''}`.trim() },
+        { label: 'Marriage Date:', value: formatDate(masterData.date_of_marriage) },
+        { label: 'Marriage Place:', value: masterData.place_of_marriage || 'N/A' },
+        { label: 'Email:', value: masterData.applicant_email || 'N/A' },
+        { label: 'Phone:', value: masterData.applicant_phone || 'N/A' },
+      ];
+      
+      for (const field of fields) {
+        page.drawText(field.label, {
+          x: 50,
+          y: yPosition,
+          size: 12,
+          font: timesRomanBold,
+          color: rgb(0, 0, 0),
+        });
+        
+        page.drawText(field.value, {
+          x: 220,
+          y: yPosition,
+          size: 12,
+          font: timesRoman,
+          color: rgb(0, 0, 0),
+        });
+        
+        yPosition -= 25;
+      }
+    } else {
+      throw new Error(`Unsupported template type: ${templateType}`);
     }
-
-    console.log(`Loading template from local path: ${templatePath}`);
     
-    // Read template from local file system
-    const templateBytes = await Deno.readFile(templatePath);
-    const pdfDoc = await PDFDocument.load(templateBytes);
-    
-    // Fill form fields with master data
-    await fillFormFields(pdfDoc, templateType, masterData);
-
-    // Save the filled PDF
     const pdfBytes = await pdfDoc.save();
     
-    console.log(`PDF generated successfully, size: ${pdfBytes.length} bytes`);
+    console.log(`Successfully generated PDF: ${pdfBytes.length} bytes`);
     
-    // Return the PDF bytes directly
     return new Response(new Uint8Array(pdfBytes), {
       headers: {
         ...corsHeaders,
@@ -74,154 +212,11 @@ serve(async (req) => {
         'Content-Disposition': `attachment; filename="${templateType}-${caseId}.pdf"`,
       },
     });
-
   } catch (error) {
-    console.error('Error filling PDF:', error);
+    console.error('Error generating PDF:', error);
     return new Response(
       JSON.stringify({ error: (error as Error).message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
 });
-
-async function fillFormFields(pdfDoc: any, templateType: string, data: any) {
-  const formatDate = (date: string | null) => {
-    if (!date) return '';
-    const d = new Date(date);
-    return `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.${d.getFullYear()}`;
-  };
-
-  try {
-    const form = pdfDoc.getForm();
-    const fields = form.getFields();
-    
-    console.log(`Found ${fields.length} form fields in ${templateType}`);
-    
-    // Create field mapping based on template type
-    let fieldMapping: Record<string, any> = {};
-    
-    switch (templateType) {
-      case 'poa-adult':
-        fieldMapping = {
-          'full_name': `${data.applicant_first_name || ''} ${data.applicant_last_name || ''}`.trim(),
-          'first_name': data.applicant_first_name || '',
-          'last_name': data.applicant_last_name || '',
-          'passport_number': data.applicant_passport_number || '',
-          'id_number': data.applicant_passport_number || '',
-          'date': formatDate(data.poa_date_filed || new Date().toISOString()),
-          'date_of_birth': formatDate(data.applicant_dob),
-          'place_of_birth': data.applicant_pob || '',
-          'address': data.applicant_address?.street || '',
-          'city': data.applicant_address?.city || '',
-          'country': data.applicant_address?.country || '',
-          'email': data.applicant_email || '',
-          'phone': data.applicant_phone || '',
-        };
-        break;
-        
-      case 'poa-minor':
-        fieldMapping = {
-          'parent_full_name': `${data.applicant_first_name || ''} ${data.applicant_last_name || ''}`.trim(),
-          'parent_first_name': data.applicant_first_name || '',
-          'parent_last_name': data.applicant_last_name || '',
-          'child_full_name': `${data.child_1_first_name || ''} ${data.child_1_last_name || ''}`.trim(),
-          'child_first_name': data.child_1_first_name || '',
-          'child_last_name': data.child_1_last_name || '',
-          'passport_number': data.applicant_passport_number || '',
-          'date': formatDate(data.poa_date_filed || new Date().toISOString()),
-        };
-        break;
-        
-      case 'poa-spouses':
-        fieldMapping = {
-          'spouse1_full_name': `${data.applicant_first_name || ''} ${data.applicant_last_name || ''}`.trim(),
-          'spouse2_full_name': `${data.spouse_first_name || ''} ${data.spouse_last_name || ''}`.trim(),
-          'date': formatDate(data.poa_date_filed || new Date().toISOString()),
-        };
-        break;
-        
-      case 'citizenship':
-        fieldMapping = {
-          'applicant_first_name': data.applicant_first_name || '',
-          'applicant_last_name': data.applicant_last_name || '',
-          'applicant_maiden_name': data.applicant_maiden_name || '',
-          'date_of_birth': formatDate(data.applicant_dob),
-          'place_of_birth': data.applicant_pob || '',
-          'father_first_name': data.father_first_name || '',
-          'father_last_name': data.father_last_name || '',
-          'mother_first_name': data.mother_first_name || '',
-          'mother_last_name': data.mother_last_name || '',
-          'mother_maiden_name': data.mother_maiden_name || '',
-          'address': data.applicant_address?.street || '',
-          'city': data.applicant_address?.city || '',
-          'postal_code': data.applicant_address?.postal_code || '',
-          'country': data.applicant_address?.country || '',
-        };
-        break;
-        
-      case 'family-tree':
-        fieldMapping = {
-          'applicant_name': `${data.applicant_first_name || ''} ${data.applicant_last_name || ''}`.trim(),
-          'father_name': `${data.father_first_name || ''} ${data.father_last_name || ''}`.trim(),
-          'mother_name': `${data.mother_first_name || ''} ${data.mother_last_name || ''}`.trim(),
-          'pgf_name': `${data.pgf_first_name || ''} ${data.pgf_last_name || ''}`.trim(),
-          'pgm_name': `${data.pgm_first_name || ''} ${data.pgm_last_name || ''}`.trim(),
-          'mgf_name': `${data.mgf_first_name || ''} ${data.mgf_last_name || ''}`.trim(),
-          'mgm_name': `${data.mgm_first_name || ''} ${data.mgm_last_name || ''}`.trim(),
-        };
-        break;
-    }
-    
-    // Fill each field
-    fields.forEach((field: any) => {
-      const fieldName = field.getName();
-      console.log(`Processing field: ${fieldName}`);
-      
-      // Try exact match first
-      if (fieldMapping[fieldName] !== undefined) {
-        try {
-          const fieldType = field.constructor.name;
-          console.log(`Filling ${fieldName} (${fieldType}) with: ${fieldMapping[fieldName]}`);
-          
-          if (fieldType === 'PDFTextField') {
-            field.setText(String(fieldMapping[fieldName] || ''));
-          } else if (fieldType === 'PDFCheckBox') {
-            if (fieldMapping[fieldName]) {
-              field.check();
-            } else {
-              field.uncheck();
-            }
-          } else if (fieldType === 'PDFDropdown') {
-            field.select(String(fieldMapping[fieldName] || ''));
-          }
-        } catch (e) {
-          console.error(`Error filling field ${fieldName}:`, e);
-        }
-      } else {
-        // Try partial match (case-insensitive)
-        const lowerFieldName = fieldName.toLowerCase();
-        for (const [key, value] of Object.entries(fieldMapping)) {
-          if (lowerFieldName.includes(key.toLowerCase()) || key.toLowerCase().includes(lowerFieldName)) {
-            try {
-              const fieldType = field.constructor.name;
-              console.log(`Filling ${fieldName} via partial match (${fieldType}) with: ${value}`);
-              
-              if (fieldType === 'PDFTextField') {
-                field.setText(String(value || ''));
-              }
-            } catch (e) {
-              console.error(`Error filling field ${fieldName} via partial match:`, e);
-            }
-            break;
-          }
-        }
-      }
-    });
-    
-    console.log('Form fields filled successfully');
-  } catch (error) {
-    console.error('Error filling form fields:', error);
-    throw error;
-  }
-}
-
