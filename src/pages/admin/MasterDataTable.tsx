@@ -12,6 +12,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useState } from "react";
 import { Loader2, Save, FileText, Users, Baby, Heart, Sparkles, Download, GitBranch, Type, FilePlus, User, ArrowLeft } from "lucide-react";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { motion } from "framer-motion";
