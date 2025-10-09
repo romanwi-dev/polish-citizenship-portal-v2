@@ -73,7 +73,7 @@ export function CountrySelect({
       
       {!showOtherInput ? (
         <Select 
-          value={value && COUNTRIES.includes(value) ? value : value && !COUNTRIES.includes(value) ? "Other" : ""} 
+          value={COUNTRIES.slice(0, -1).includes(value) ? value : ""} 
           onValueChange={handleSelectChange}
         >
           <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur" style={{ fontSize: '1.125rem', fontWeight: '400' }}>
