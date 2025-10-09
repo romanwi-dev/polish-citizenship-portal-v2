@@ -383,6 +383,116 @@ export default function IntakeForm() {
                   </motion.div>
                 )}
               </div>
+
+              {/* Row 3: Names */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="space-y-2"
+                  onDoubleClick={() => clearField("applicant_first_name")}
+                >
+                  <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                    Given names / Imię/ imiona
+                  </Label>
+                  <Input
+                    value={formData?.applicant_first_name || ""}
+                    onChange={(e) => handleInputChange("applicant_first_name", e.target.value.toUpperCase())}
+                    className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                  />
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.35 }}
+                  className="space-y-2"
+                  onDoubleClick={() => clearField("applicant_last_name")}
+                >
+                  <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                    Full last name / Nazwisko
+                  </Label>
+                  <Input
+                    value={formData?.applicant_last_name || ""}
+                    onChange={(e) => handleInputChange("applicant_last_name", e.target.value.toUpperCase())}
+                    className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                  />
+                </motion.div>
+              </div>
+
+              {/* Row 4: Maiden name - lonely field */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="space-y-2 mb-8"
+                onDoubleClick={() => clearField("applicant_maiden_name")}
+              >
+                <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                  Maiden name / Nazwisko panieńskie
+                </Label>
+                <Input
+                  value={formData?.applicant_maiden_name || ""}
+                  onChange={(e) => handleInputChange("applicant_maiden_name", e.target.value.toUpperCase())}
+                  className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                />
+              </motion.div>
+
+              {/* Row 5: Place and Date of birth */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.45 }}
+                  className="space-y-2"
+                  onDoubleClick={() => clearField("applicant_pob")}
+                >
+                  <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                    Place of birth / Miejsce urodzenia
+                  </Label>
+                  <Input
+                    value={formData?.applicant_pob || ""}
+                    onChange={(e) => handleInputChange("applicant_pob", e.target.value.toUpperCase())}
+                    className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                  />
+                </motion.div>
+                <DateField
+                  name="applicant_dob"
+                  label="Date of birth / Data urodzenia"
+                  value={formData?.applicant_dob}
+                  onChange={(value) => handleInputChange("applicant_dob", value)}
+                />
+              </div>
+
+              {/* Marriage Information - Only show if married */}
+              {formData?.applicant_is_married && (
+                <div className="pt-8">
+                  <h3 className="text-xl font-semibold mb-6 text-foreground">Marriage Information</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="space-y-2"
+                      onDoubleClick={() => clearField("place_of_marriage")}
+                    >
+                      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                        Place of marriage / Miejsce zawarcia związku małżeńskiego
+                      </Label>
+                      <Input
+                        value={formData?.place_of_marriage || ""}
+                        onChange={(e) => handleInputChange("place_of_marriage", e.target.value.toUpperCase())}
+                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                      />
+                    </motion.div>
+                    <DateField
+                      name="date_of_marriage"
+                      label="Date of marriage / Data zawarcia związku małżeńskiego"
+                      value={formData?.date_of_marriage}
+                      onChange={(value) => handleInputChange("date_of_marriage", value)}
+                    />
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
         </motion.div>

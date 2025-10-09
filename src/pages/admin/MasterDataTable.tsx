@@ -478,24 +478,60 @@ export default function MasterDataTable() {
                     )}
                   </div>
 
-                  {/* Basic Information */}
-                  {renderFieldGroup([{
-                  name: "applicant_first_name",
-                  label: "Given names / Imię/ imiona"
-                }, {
-                  name: "applicant_last_name",
-                  label: "Full last name / Nazwisko"
-                }, {
-                  name: "applicant_maiden_name",
-                  label: "Maiden name"
-                }, {
-                  name: "applicant_dob",
-                  label: "Date of birth",
-                  type: "date"
-                }, {
-                  name: "applicant_pob",
-                  label: "Place of birth"
-                }])}
+                  {/* Row 3: Names */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="space-y-2">
+                      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                        Given names / Imię/ imiona
+                      </Label>
+                      <Input
+                        value={formData.applicant_first_name || ""}
+                        onChange={(e) => handleInputChange("applicant_first_name", e.target.value.toUpperCase())}
+                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                        style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                      />
+                    </motion.div>
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="space-y-2">
+                      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                        Full last name / Nazwisko
+                      </Label>
+                      <Input
+                        value={formData.applicant_last_name || ""}
+                        onChange={(e) => handleInputChange("applicant_last_name", e.target.value.toUpperCase())}
+                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                        style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                      />
+                    </motion.div>
+                  </div>
+
+                  {/* Row 4: Maiden name - lonely field */}
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="space-y-2">
+                    <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                      Maiden name / Nazwisko panieńskie
+                    </Label>
+                    <Input
+                      value={formData.applicant_maiden_name || ""}
+                      onChange={(e) => handleInputChange("applicant_maiden_name", e.target.value.toUpperCase())}
+                      className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                      style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                    />
+                  </motion.div>
+
+                  {/* Row 5: Place and Date of birth */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="space-y-2">
+                      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                        Place of birth / Miejsce urodzenia
+                      </Label>
+                      <Input
+                        value={formData.applicant_pob || ""}
+                        onChange={(e) => handleInputChange("applicant_pob", e.target.value.toUpperCase())}
+                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                        style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                      />
+                    </motion.div>
+                    {renderDateField("applicant_dob", "Date of birth / Data urodzenia")}
+                  </div>
 
                   {/* Contact Information */}
                   <div className="pt-8">
@@ -537,14 +573,20 @@ export default function MasterDataTable() {
                   {formData.applicant_is_married && (
                     <div className="pt-8">
                       <h3 className="text-xl font-semibold mb-6 text-foreground">Marriage Information</h3>
-                      {renderFieldGroup([{
-                        name: "place_of_marriage",
-                        label: "Place of marriage / Miejsce zawarcia związku małżeńskiego"
-                      }, {
-                        name: "date_of_marriage",
-                        label: "Date of marriage / Data zawarcia związku małżeńskiego",
-                        type: "date"
-                      }])}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
+                          <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                            Place of marriage / Miejsce zawarcia związku małżeńskiego
+                          </Label>
+                          <Input
+                            value={formData.place_of_marriage || ""}
+                            onChange={(e) => handleInputChange("place_of_marriage", e.target.value.toUpperCase())}
+                            className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                            style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                          />
+                        </motion.div>
+                        {renderDateField("date_of_marriage", "Date of marriage / Data zawarcia związku małżeńskiego")}
+                      </div>
                     </div>
                   )}
 

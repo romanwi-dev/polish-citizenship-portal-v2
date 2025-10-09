@@ -123,13 +123,7 @@ export default function FamilyTreeForm() {
     isSelect?: boolean;
     selectOptions?: Array<{ value: string; label: string }>;
   }>) => {
-    // Check if this is a name fields group (first/last/maiden names)
-    const isNameGroup = fields.every(f => f.isNameField);
-    
-    return <div className={cn(
-      "grid gap-6",
-      isNameGroup ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-    )}>
+    return <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
         {fields.map((field, idx) => <motion.div key={field.name} initial={{
         opacity: 0,
         y: 20
