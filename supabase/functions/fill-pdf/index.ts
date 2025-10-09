@@ -7,6 +7,79 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// CENTRALIZED FIELD MAPPING FOR PDF GENERATION
+// Maps master_table DB columns to PDF form field names
+const PDF_FIELD_MAP: Record<string, Record<string, string>> = {
+  'poa-adult': {
+    // Applicant
+    'applicant_first_name': 'firstName',
+    'applicant_last_name': 'lastName',
+    'applicant_dob': 'dateOfBirth',
+    'applicant_pob': 'placeOfBirth',
+    'applicant_passport_number': 'passportNumber',
+    'applicant_passport_issuing_country': 'passportIssuingCountry',
+    // Parents
+    'father_first_name': 'fatherFirstName',
+    'father_last_name': 'fatherLastName',
+    'mother_first_name': 'motherFirstName',
+    'mother_last_name': 'motherLastName',
+    'mother_maiden_name': 'motherMaidenName',
+  },
+  'poa-minor': {
+    // Parent (applicant)
+    'applicant_first_name': 'parentFirstName',
+    'father_last_name': 'parentLastName',
+    'applicant_passport_number': 'parentPassportNumber',
+    // Child
+    'child_1_first_name': 'childFirstName',
+    'child_1_last_name': 'childLastName',
+    'child_1_dob': 'childDateOfBirth',
+  },
+  'poa-spouses': {
+    // Husband (applicant)
+    'applicant_first_name': 'husbandFirstName',
+    'father_last_name': 'husbandLastName',
+    'applicant_passport_number': 'husbandPassportNumber',
+    // Wife (spouse)
+    'spouse_first_name': 'wifeFirstName',
+    'spouse_last_name': 'wifeLastName',
+    'spouse_passport_number': 'wifePassportNumber',
+    // Children
+    'child_1_last_name': 'childrenLastName',
+  },
+};
+
+const formatDate = (date: string | null) => {
+  if (!date) return 'N/A';
+  try {
+    const d = new Date(date);
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const year = d.getFullYear();
+    return `${day}.${month}.${year}`;
+  } catch {
+    return date;
+  }
+};
+
+const mapDataToPDF = (masterData: any, templateType: string): Record<string, string> => {
+  const fieldMap = PDF_FIELD_MAP[templateType] || {};
+  const pdfData: Record<string, string> = {};
+  
+  Object.entries(fieldMap).forEach(([dbColumn, pdfField]) => {
+    let value = masterData[dbColumn];
+    
+    // Format dates
+    if (dbColumn.includes('_dob') || dbColumn.includes('_date')) {
+      value = formatDate(value);
+    }
+    
+    pdfData[pdfField] = value || 'N/A';
+  });
+  
+  return pdfData;
+};
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -36,6 +109,10 @@ serve(async (req) => {
     if (masterError) throw masterError;
     if (!masterData) throw new Error('Master data not found');
 
+    // Map data using centralized field mapping
+    const pdfData = mapDataToPDF(masterData, templateType);
+    console.log('PDF Data:', JSON.stringify(pdfData, null, 2));
+
     // Create PDF from scratch
     const pdfDoc = await PDFDocument.create();
     const timesRoman = await pdfDoc.embedFont(StandardFonts.TimesRoman);
@@ -43,25 +120,11 @@ serve(async (req) => {
     
     const page = pdfDoc.addPage([595.28, 841.89]); // A4 size
     const { width, height } = page.getSize();
-    
-    const formatDate = (date: string | null) => {
-      if (!date) return 'N/A';
-      try {
-        const d = new Date(date);
-        const day = String(d.getDate()).padStart(2, '0');
-        const month = String(d.getMonth() + 1).padStart(2, '0');
-        const year = d.getFullYear();
-        return `${day}.${month}.${year}`;
-      } catch {
-        return date;
-      }
-    };
 
     let yPosition = height - 50;
     
     // Generate content based on template type
     if (templateType === 'poa-adult') {
-      // Header
       page.drawText('POWER OF ATTORNEY - ADULT', {
         x: 50,
         y: yPosition,
@@ -72,13 +135,15 @@ serve(async (req) => {
       
       yPosition -= 50;
       
-      // Map form fields to display
-      const fullName = `${masterData.applicant_first_name || ''} ${masterData.applicant_last_name || ''}`.trim() || 'N/A';
-      const passportNum = masterData.applicant_passport_number || 'N/A';
-      
       const fields = [
-        { label: 'Full Name:', value: fullName },
-        { label: 'ID/Passport Number:', value: passportNum },
+        { label: 'Full Name:', value: `${pdfData.firstName || ''} ${pdfData.lastName || ''}`.trim() || 'N/A' },
+        { label: 'Date of Birth:', value: pdfData.dateOfBirth },
+        { label: 'Place of Birth:', value: pdfData.placeOfBirth },
+        { label: 'ID/Passport Number:', value: pdfData.passportNumber },
+        { label: 'Passport Issuing Country:', value: pdfData.passportIssuingCountry },
+        { label: 'Father Name:', value: `${pdfData.fatherFirstName || ''} ${pdfData.fatherLastName || ''}`.trim() || 'N/A' },
+        { label: 'Mother Name:', value: `${pdfData.motherFirstName || ''} ${pdfData.motherLastName || ''}`.trim() || 'N/A' },
+        { label: 'Mother Maiden Name:', value: pdfData.motherMaidenName },
       ];
       
       for (const field of fields) {
@@ -110,9 +175,7 @@ serve(async (req) => {
         color: rgb(0, 0, 0),
       });
       
-      
     } else if (templateType === 'poa-minor') {
-      // Header
       page.drawText('POWER OF ATTORNEY - MINOR', {
         x: 50,
         y: yPosition,
@@ -123,15 +186,11 @@ serve(async (req) => {
       
       yPosition -= 50;
       
-      // Map to POA Minor form fields
-      const parentName = `${masterData.applicant_first_name || ''} ${masterData.father_last_name || masterData.applicant_last_name || ''}`.trim() || 'N/A';
-      const parentPassport = masterData.applicant_passport_number || 'N/A';
-      const childName = `${masterData.child_1_first_name || ''} ${masterData.child_1_last_name || ''}`.trim() || 'N/A';
-      
       const fields = [
-        { label: 'Parent Name:', value: parentName },
-        { label: 'Parent ID/Passport:', value: parentPassport },
-        { label: 'Child Name:', value: childName },
+        { label: 'Parent Name:', value: `${pdfData.parentFirstName || ''} ${pdfData.parentLastName || ''}`.trim() || 'N/A' },
+        { label: 'Parent ID/Passport:', value: pdfData.parentPassportNumber },
+        { label: 'Child Name:', value: `${pdfData.childFirstName || ''} ${pdfData.childLastName || ''}`.trim() || 'N/A' },
+        { label: 'Child Date of Birth:', value: pdfData.childDateOfBirth },
       ];
       
       for (const field of fields) {
@@ -154,9 +213,7 @@ serve(async (req) => {
         yPosition -= 25;
       }
       
-      
     } else if (templateType === 'poa-spouses') {
-      // Header
       page.drawText('POWER OF ATTORNEY - SPOUSES', {
         x: 50,
         y: yPosition,
@@ -167,19 +224,12 @@ serve(async (req) => {
       
       yPosition -= 50;
       
-      // Map to POA Spouses form fields
-      const husbandName = `${masterData.applicant_first_name || ''} ${masterData.father_last_name || masterData.applicant_last_name || ''}`.trim() || 'N/A';
-      const husbandPassport = masterData.applicant_passport_number || 'N/A';
-      const wifeName = `${masterData.spouse_first_name || ''} ${masterData.spouse_last_name || ''}`.trim() || 'N/A';
-      const wifePassport = masterData.spouse_passport_number || 'N/A';
-      const childrenLastName = masterData.child_1_last_name || 'N/A';
-      
       const fields = [
-        { label: 'Husband Name:', value: husbandName },
-        { label: 'Husband ID/Passport:', value: husbandPassport },
-        { label: 'Wife Name:', value: wifeName },
-        { label: 'Wife ID/Passport:', value: wifePassport },
-        { label: "Children's Last Name(s):", value: childrenLastName },
+        { label: 'Husband Name:', value: `${pdfData.husbandFirstName || ''} ${pdfData.husbandLastName || ''}`.trim() || 'N/A' },
+        { label: 'Husband ID/Passport:', value: pdfData.husbandPassportNumber },
+        { label: 'Wife Name:', value: `${pdfData.wifeFirstName || ''} ${pdfData.wifeLastName || ''}`.trim() || 'N/A' },
+        { label: 'Wife ID/Passport:', value: pdfData.wifePassportNumber },
+        { label: "Children's Last Name(s):", value: pdfData.childrenLastName },
       ];
       
       for (const field of fields) {
