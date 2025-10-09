@@ -7,20 +7,19 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useState } from "react";
-import { Loader2, Save, FileText, Users, Baby, Heart, Calendar as CalendarIcon, Sparkles, Download, GitBranch, Type, FilePlus, User, ArrowLeft, Trash2 } from "lucide-react";
+import { Loader2, Save, FileText, Users, Baby, Heart, Sparkles, Download, GitBranch, Type, FilePlus, User, ArrowLeft } from "lucide-react";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { PDFGenerationButtons } from "@/components/PDFGenerationButtons";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { motion } from "framer-motion";
-import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useFormSync } from "@/hooks/useFormSync";
 import { CountrySelect } from "@/components/CountrySelect";
+import { DateField } from "@/components/DateField";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 
 export default function MasterDataTable() {
   const { id: caseId } = useParams();
@@ -30,6 +29,7 @@ export default function MasterDataTable() {
   
   const { formData, setFormData, isLoading, isSaving, saveData } = useFormSync(caseId);
   const [activeTab, setActiveTab] = useState("applicant");
+  const [showClearDialog, setShowClearDialog] = useState(false);
   const { isLargeFonts, toggleFontSize } = useAccessibility();
 
   // Show error if no valid caseId
@@ -107,10 +107,9 @@ export default function MasterDataTable() {
   };
 
   const handleClearData = () => {
-    if (window.confirm('Are you sure you want to clear all form data? This action cannot be undone.')) {
-      setFormData({});
-      toast.success('All form data cleared');
-    }
+    setFormData({});
+    toast.success('All form data cleared');
+    setShowClearDialog(false);
   };
   if (isLoading) {
     return <div className="flex items-center justify-center min-h-screen bg-background">
@@ -125,33 +124,16 @@ export default function MasterDataTable() {
         </motion.div>
       </div>;
   }
-  const renderDateField = (name: string, label: string) => {
-    const dateValue = formData[name] ? new Date(formData[name]) : undefined;
-    return <motion.div initial={{
-      opacity: 0,
-      y: 20
-    }} animate={{
-      opacity: 1,
-      y: 0
-    }} className="space-y-4">
-        <Label htmlFor={name} className="text-sm font-normal text-foreground/90">
-          {label}
-        </Label>
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline" className={cn("w-full h-16 justify-start text-left border-2 hover-glow bg-card/50 backdrop-blur", !dateValue && "text-muted-foreground")} style={{
-            fontSize: '1.125rem',
-            fontWeight: '400'
-          }}>
-              <CalendarIcon className="mr-2 h-5 w-5" />
-              {dateValue ? format(dateValue, "dd/MM/yyyy") : <span className="font-light opacity-40">DD.MM.YYYY</span>}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
-            <Calendar mode="single" selected={dateValue} onSelect={date => handleInputChange(name, date ? format(date, "yyyy-MM-dd") : "")} disabled={date => date > new Date("2030-12-31") || date < new Date("1900-01-01")} initialFocus className={cn("p-3 pointer-events-auto")} />
-          </PopoverContent>
-        </Popover>
-      </motion.div>;
+  // Use DateField component for consistent date styling
+  const renderDateFieldComponent = (name: string, label: string) => {
+    return (
+      <DateField
+        name={name}
+        label={label}
+        value={formData[name] || ""}
+        onChange={(value) => handleInputChange(name, value)}
+      />
+    );
   };
   const renderFieldGroup = (fields: Array<{
     name: string;
@@ -160,7 +142,12 @@ export default function MasterDataTable() {
     placeholder?: string;
   }>) => {
     return <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {fields.map((field, idx) => <motion.div key={field.name} initial={{
+        {fields.map((field, idx) => field.type === "date" ? (
+          <div key={field.name}>
+            {renderDateFieldComponent(field.name, field.label)}
+          </div>
+        ) : (
+          <motion.div key={field.name} initial={{
         opacity: 0,
         y: 20
       }} animate={{
@@ -170,16 +157,15 @@ export default function MasterDataTable() {
         delay: idx * 0.05,
         duration: 0.4
       }} className="space-y-4">
-            {field.type === "date" ? renderDateField(field.name, field.label) : <>
-                <Label htmlFor={field.name} className="text-sm font-normal text-foreground/90">
-                  {field.label}
-                </Label>
-                <Input id={field.name} type={field.type || "text"} value={formData[field.name] || ""} onChange={e => handleInputChange(field.name, field.type === "email" ? e.target.value : e.target.value.toUpperCase())} placeholder="" className={cn("h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur", field.type === "email" ? "" : "uppercase")} style={{
+            <Label htmlFor={field.name} className="text-sm font-normal text-foreground/90">
+              {field.label}
+            </Label>
+            <Input id={field.name} type={field.type || "text"} value={formData[field.name] || ""} onChange={e => handleInputChange(field.name, field.type === "email" ? e.target.value : e.target.value.toUpperCase())} placeholder="" className={cn("h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur", field.type === "email" ? "" : "uppercase")} style={{
             fontSize: '1.125rem',
             fontWeight: '400'
           }} />
-              </>}
-          </motion.div>)}
+          </motion.div>
+        ))}
       </div>;
   };
   const renderCheckboxGroup = (fields: Array<{
@@ -300,14 +286,14 @@ export default function MasterDataTable() {
               )}
             </Button>
             <Button 
-              onClick={handleClearData} 
+              onClick={() => setShowClearDialog(true)} 
               size="default" 
-              variant="destructive"
-              className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[160px] md:min-w-[220px] lg:min-w-[260px] whitespace-nowrap"
+              variant="outline"
+              className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[160px] md:min-w-[220px] lg:min-w-[260px] whitespace-nowrap"
             >
-              <Trash2 className="h-3 md:h-4 lg:h-5 w-3 md:w-4 lg:w-5 mr-1 md:mr-2" />
-              <span className="relative z-10">
-                Clear Data
+              <Sparkles className="h-3 md:h-4 lg:h-5 w-3 md:w-4 lg:w-5 mr-1 md:mr-2 opacity-50" />
+              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                Clear All
               </span>
             </Button>
             <PDFGenerationButtons caseId={caseId || ''} />
@@ -550,22 +536,12 @@ export default function MasterDataTable() {
                         style={{ fontSize: '1.125rem', fontWeight: '400' }}
                       />
                     </motion.div>
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="space-y-2">
-                      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                        Date of birth / Data urodzenia
-                      </Label>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button variant="outline" className={cn("w-full h-16 justify-start text-left border-2 hover-glow bg-card/50 backdrop-blur", !formData.applicant_dob && "text-muted-foreground")} style={{ fontSize: '1.125rem', fontWeight: '400' }}>
-                            <CalendarIcon className="mr-2 h-5 w-5" />
-                            {formData.applicant_dob ? format(new Date(formData.applicant_dob), "dd/MM/yyyy") : <span className="font-light opacity-40">DD.MM.YYYY</span>}
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar mode="single" selected={formData.applicant_dob ? new Date(formData.applicant_dob) : undefined} onSelect={date => handleInputChange("applicant_dob", date ? format(date, "yyyy-MM-dd") : "")} disabled={date => date > new Date("2030-12-31") || date < new Date("1900-01-01")} initialFocus className={cn("p-3 pointer-events-auto")} />
-                        </PopoverContent>
-                      </Popover>
-                    </motion.div>
+                    <DateField
+                      name="applicant_dob"
+                      label="Date of birth / Data urodzenia"
+                      value={formData.applicant_dob || ""}
+                      onChange={(value) => handleInputChange("applicant_dob", value)}
+                    />
                   </div>
 
                   {/* Marriage fields - Only show if married */}
@@ -582,22 +558,12 @@ export default function MasterDataTable() {
                           style={{ fontSize: '1.125rem', fontWeight: '400' }}
                         />
                       </motion.div>
-                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
-                        <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                          Date of marriage / Data zawarcia związku małżeńskiego
-                        </Label>
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <Button variant="outline" className={cn("w-full h-16 justify-start text-left border-2 hover-glow bg-card/50 backdrop-blur", !formData.date_of_marriage && "text-muted-foreground")} style={{ fontSize: '1.125rem', fontWeight: '400' }}>
-                              <CalendarIcon className="mr-2 h-5 w-5" />
-                              {formData.date_of_marriage ? format(new Date(formData.date_of_marriage), "dd/MM/yyyy") : <span className="font-light opacity-40">DD.MM.YYYY</span>}
-                            </Button>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0" align="start">
-                            <Calendar mode="single" selected={formData.date_of_marriage ? new Date(formData.date_of_marriage) : undefined} onSelect={date => handleInputChange("date_of_marriage", date ? format(date, "yyyy-MM-dd") : "")} disabled={date => date > new Date("2030-12-31") || date < new Date("1900-01-01")} initialFocus className={cn("p-3 pointer-events-auto")} />
-                          </PopoverContent>
-                        </Popover>
-                      </motion.div>
+                      <DateField
+                        name="date_of_marriage"
+                        label="Date of marriage / Data zawarcia związku małżeńskiego"
+                        value={formData.date_of_marriage || ""}
+                        onChange={(value) => handleInputChange("date_of_marriage", value)}
+                      />
                     </div>
                   )}
 
@@ -646,22 +612,12 @@ export default function MasterDataTable() {
                           style={{ fontSize: '1.125rem', fontWeight: '400' }}
                         />
                       </motion.div>
-                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="space-y-2">
-                        <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                          Passport expiry date
-                        </Label>
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <Button variant="outline" className={cn("w-full h-16 justify-start text-left border-2 hover-glow bg-card/50 backdrop-blur", !formData.applicant_passport_expiry_date && "text-muted-foreground")} style={{ fontSize: '1.125rem', fontWeight: '400' }}>
-                              <CalendarIcon className="mr-2 h-5 w-5" />
-                              {formData.applicant_passport_expiry_date ? format(new Date(formData.applicant_passport_expiry_date), "dd/MM/yyyy") : <span className="font-light opacity-40">DD.MM.YYYY</span>}
-                            </Button>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0" align="start">
-                            <Calendar mode="single" selected={formData.applicant_passport_expiry_date ? new Date(formData.applicant_passport_expiry_date) : undefined} onSelect={date => handleInputChange("applicant_passport_expiry_date", date ? format(date, "yyyy-MM-dd") : "")} disabled={date => date > new Date("2030-12-31") || date < new Date("1900-01-01")} initialFocus className={cn("p-3 pointer-events-auto")} />
-                          </PopoverContent>
-                        </Popover>
-                      </motion.div>
+                      <DateField
+                        name="applicant_passport_expiry_date"
+                        label="Passport expiry date"
+                        value={formData.applicant_passport_expiry_date || ""}
+                        onChange={(value) => handleInputChange("applicant_passport_expiry_date", value)}
+                      />
                     </div>
                   </div>
 
@@ -833,22 +789,12 @@ export default function MasterDataTable() {
                         style={{ fontSize: '1.125rem', fontWeight: '400' }}
                       />
                     </motion.div>
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="space-y-2">
-                      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                        Date of birth / Data urodzenia
-                      </Label>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button variant="outline" className={cn("w-full h-16 justify-start text-left border-2 hover-glow bg-card/50 backdrop-blur", !formData.spouse_dob && "text-muted-foreground")} style={{ fontSize: '1.125rem', fontWeight: '400' }}>
-                            <CalendarIcon className="mr-2 h-5 w-5" />
-                            {formData.spouse_dob ? format(new Date(formData.spouse_dob), "dd/MM/yyyy") : <span className="font-light opacity-40">DD.MM.YYYY</span>}
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar mode="single" selected={formData.spouse_dob ? new Date(formData.spouse_dob) : undefined} onSelect={date => handleInputChange("spouse_dob", date ? format(date, "yyyy-MM-dd") : "")} disabled={date => date > new Date("2030-12-31") || date < new Date("1900-01-01")} initialFocus className={cn("p-3 pointer-events-auto")} />
-                        </PopoverContent>
-                      </Popover>
-                    </motion.div>
+                    <DateField
+                      name="spouse_dob"
+                      label="Date of birth / Data urodzenia"
+                      value={formData.spouse_dob || ""}
+                      onChange={(value) => handleInputChange("spouse_dob", value)}
+                    />
                   </div>
 
                   {/* Marriage fields - Always show for spouse */}
@@ -864,22 +810,12 @@ export default function MasterDataTable() {
                         style={{ fontSize: '1.125rem', fontWeight: '400' }}
                       />
                     </motion.div>
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
-                      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                        Date of marriage / Data zawarcia związku małżeńskiego
-                      </Label>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button variant="outline" className={cn("w-full h-16 justify-start text-left border-2 hover-glow bg-card/50 backdrop-blur", !formData.date_of_marriage && "text-muted-foreground")} style={{ fontSize: '1.125rem', fontWeight: '400' }}>
-                            <CalendarIcon className="mr-2 h-5 w-5" />
-                            {formData.date_of_marriage ? format(new Date(formData.date_of_marriage), "dd/MM/yyyy") : <span className="font-light opacity-40">DD.MM.YYYY</span>}
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar mode="single" selected={formData.date_of_marriage ? new Date(formData.date_of_marriage) : undefined} onSelect={date => handleInputChange("date_of_marriage", date ? format(date, "yyyy-MM-dd") : "")} disabled={date => date > new Date("2030-12-31") || date < new Date("1900-01-01")} initialFocus className={cn("p-3 pointer-events-auto")} />
-                        </PopoverContent>
-                      </Popover>
-                    </motion.div>
+                    <DateField
+                      name="date_of_marriage"
+                      label="Date of marriage / Data zawarcia związku małżeńskiego"
+                      value={formData.date_of_marriage || ""}
+                      onChange={(value) => handleInputChange("date_of_marriage", value)}
+                    />
                   </div>
 
                   {/* Contact information */}
@@ -1446,6 +1382,24 @@ export default function MasterDataTable() {
           )}
         </div>
       </div>
+
+      {/* Clear All Confirmation Dialog */}
+      <AlertDialog open={showClearDialog} onOpenChange={setShowClearDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Clear entire form?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will clear all fields in the Master Form. This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleClearData}>
+              Clear all fields
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
     </div>;
 }
