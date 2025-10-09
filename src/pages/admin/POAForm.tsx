@@ -3,6 +3,7 @@ import { useMasterData, useUpdateMasterData } from "@/hooks/useMasterData";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
 import { Loader2, Save, FileText, Sparkles, Type, User, ArrowLeft } from "lucide-react";
@@ -367,37 +368,48 @@ export default function POAForm() {
                 </div>
               </CardHeader>
               <CardContent className="pt-6">
-                {/* Marital Status */}
-                <div className="mb-6 p-4 bg-primary/5 rounded-lg border border-primary/20">
-                  <Label className="text-base md:text-lg lg:text-xl font-semibold mb-3 block text-foreground/80">
-                    Marital Status / Stan cywilny
+                {/* Civil Status */}
+                <div className="mb-6 space-y-4">
+                  <Label className="text-base md:text-lg lg:text-xl font-semibold text-foreground/80">
+                    Civil status
                   </Label>
-                  <RadioGroup
-                    value={formData.applicant_is_married === true ? "married" : formData.applicant_is_married === false ? "single" : ""}
-                    onValueChange={(value) => handleInputChange("applicant_is_married", value === "married")}
-                    className="flex gap-4"
+                  <Select 
+                    value={formData.applicant_is_married ? "married" : "not_married"} 
+                    onValueChange={value => handleInputChange("applicant_is_married", value === "married")}
                   >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="single" id="single" />
-                      <Label htmlFor="single" className="cursor-pointer text-sm md:text-base lg:text-lg">Not Married / Kawaler</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="married" id="married" />
-                      <Label htmlFor="married" className="cursor-pointer text-sm md:text-base lg:text-lg">Married / Żonaty/Zamężna</Label>
-                    </div>
-                  </RadioGroup>
+                    <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                      <SelectValue placeholder="Select status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="married">Married</SelectItem>
+                      <SelectItem value="not_married">Not Married</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
-                {/* Minor Children Info */}
-                <div className="mb-6 p-4 bg-secondary/5 rounded-lg border border-secondary/20">
-                  <Label className="text-base md:text-lg lg:text-xl font-semibold mb-2 block text-foreground/80">
-                    Minor Children Status
+                {/* Number of Children */}
+                <div className="mb-6 space-y-4">
+                  <Label className="text-base md:text-lg lg:text-xl font-semibold text-foreground/80">
+                    Number of children (including minors)
                   </Label>
-                  <p className="text-sm md:text-base text-muted-foreground">
-                    {hasMinorChildren() 
-                      ? "✓ Has children under 18 (based on Master Data)" 
-                      : "No minor children detected. Add child birth dates in Master Data if needed."}
-                  </p>
+                  <Select 
+                    value={formData.children_count?.toString() || "0"} 
+                    onValueChange={value => {
+                      const count = parseInt(value);
+                      handleInputChange("children_count", count);
+                    }}
+                  >
+                    <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
+                        <SelectItem key={num} value={num.toString()}>
+                          {num}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 {/* Gender Selector */}
