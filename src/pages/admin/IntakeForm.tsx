@@ -12,6 +12,7 @@ import { DateField } from "@/components/DateField";
 import { Label } from "@/components/ui/label";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { cn } from "@/lib/utils";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLongPressWithFeedback } from "@/hooks/useLongPressWithFeedback";
 import { useFormAutoSave } from "@/hooks/useFormAutoSave";
@@ -323,6 +324,40 @@ export default function IntakeForm() {
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6 md:p-10">
+              {/* Gender/Sex - At the top like POA */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }} 
+                animate={{ opacity: 1, y: 0 }} 
+                transition={{ delay: 0, duration: 0.4 }}
+                className="mb-8 p-4 bg-muted/30 rounded-lg border border-border/50" 
+                onDoubleClick={() => clearField("applicant_sex")}
+              >
+                <Label className={cn(
+                  "text-lg font-semibold mb-3 block",
+                  isLargeFonts ? "text-xl" : "text-lg"
+                )}>
+                  Applicant Gender / Płeć
+                </Label>
+                <RadioGroup
+                  value={formData?.applicant_sex || ""}
+                  onValueChange={(value) => handleInputChange("applicant_sex", value)}
+                  className="flex gap-4"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="M" id="male" className="border-2" />
+                    <Label htmlFor="male" className="cursor-pointer font-normal">
+                      Male / Mężczyzna
+                    </Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="F" id="female" className="border-2" />
+                    <Label htmlFor="female" className="cursor-pointer font-normal">
+                      Female / Kobieta
+                    </Label>
+                  </div>
+                </RadioGroup>
+              </motion.div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Personal Information */}
                 <div onDoubleClick={() => clearField("applicant_first_name")}>
@@ -333,36 +368,10 @@ export default function IntakeForm() {
                   <POAFormField name="applicant_last_name" label="Full last name (exactly like in your valid ID/ passport)" value={formData.applicant_last_name} onChange={value => handleInputChange("applicant_last_name", value)} delay={0.05} />
                 </div>
 
-                {/* Passport */}
+                
                 <div onDoubleClick={() => clearField("applicant_passport_number")}>
                   <POAFormField name="applicant_passport_number" label="Passport number" value={formData.applicant_passport_number} onChange={value => handleInputChange("applicant_passport_number", value)} delay={0.1} />
                 </div>
-
-                {/* Gender/Sex */}
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }} 
-                  animate={{ opacity: 1, y: 0 }} 
-                  transition={{ delay: 0.15, duration: 0.4 }}
-                  className="space-y-4" 
-                  onDoubleClick={() => clearField("applicant_sex")}
-                >
-                  <Label className={cn(
-                    "font-light text-foreground/90",
-                    isLargeFonts ? "text-xl" : "text-sm"
-                  )}>Gender / Sex</Label>
-                  <Select 
-                    value={formData.applicant_sex || ""} 
-                    onValueChange={(value) => handleInputChange("applicant_sex", value)}
-                  >
-                    <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
-                      <SelectValue placeholder="Select gender" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-background border-2 border-border shadow-xl z-50">
-                      <SelectItem value="M" className="text-lg py-3 hover:bg-primary/10 cursor-pointer">Male</SelectItem>
-                      <SelectItem value="F" className="text-lg py-3 hover:bg-primary/10 cursor-pointer">Female</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </motion.div>
 
                 {/* Mobile */}
                 <div onDoubleClick={() => clearField("applicant_phone")}>
