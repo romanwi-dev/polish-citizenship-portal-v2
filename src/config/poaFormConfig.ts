@@ -42,7 +42,6 @@ export const poaFormConfigs: Record<string, POAFormConfig> = {
       { name: "spouse_first_name", label: "Wife given names / Imię/imiona żony" },
       { name: "spouse_last_name", label: "Wife full last name / Nazwisko żony" },
       { name: "spouse_passport_number", label: "Wife ID/passport number / Nr dokumentu tożsamości żony" },
-      { name: "father_last_name", label: "Husband's full last name after marriage / Nazwisko męża po zawarciu małżeństwa" },
       { name: "spouse_last_name_after_marriage", label: "Wife's full last name after marriage / Nazwisko żony po zawarciu małżeństwa" },
       { name: "child_1_last_name", label: "Children's full last name(s) / Nazwisko/a dzieci" },
     ]
