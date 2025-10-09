@@ -522,7 +522,7 @@ export default function POAForm() {
                 <div className="mb-8 p-4 bg-muted/30 rounded-lg border border-border/50">
                   <Label className="text-lg font-semibold mb-3 block">Who is the primary applicant?</Label>
                   <RadioGroup 
-                    value={formData.applicant_sex === 'F' ? 'female' : 'male'} 
+                    value={formData?.applicant_sex === 'F' ? 'female' : 'male'} 
                     onValueChange={(value: 'male' | 'female') => {
                       const sex = value === 'female' ? 'F' : 'M';
                       handleInputChange('applicant_sex', sex);
@@ -544,31 +544,31 @@ export default function POAForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                   <POAFormField
                     name="applicant_first_name"
-                    label={formData.applicant_sex === 'F'
+                    label={formData?.applicant_sex === 'F'
                       ? "Wife given names / Imię / imiona żony"
                       : "Husband given names / Imię / imiona męża"
                     }
-                    value={formData.applicant_first_name || ""}
+                    value={formData?.applicant_first_name || ""}
                     onChange={(value) => handleInputChange("applicant_first_name", value)}
                   />
                   <POAFormField
-                    name={formData.applicant_sex === 'F' ? "spouse_last_name" : "father_last_name"}
-                    label={formData.applicant_sex === 'F'
+                    name={formData?.applicant_sex === 'F' ? "spouse_last_name" : "father_last_name"}
+                    label={formData?.applicant_sex === 'F'
                       ? "Wife full last name / Nazwisko żony"
                       : "Husband full last name / Nazwisko męża"
                     }
-                    value={formData.applicant_sex === 'F' ? (formData.spouse_last_name || "") : (formData.father_last_name || "")}
-                    onChange={(value) => handleInputChange(formData.applicant_sex === 'F' ? "spouse_last_name" : "father_last_name", value)}
+                    value={formData?.applicant_sex === 'F' ? (formData?.spouse_last_name || "") : (formData?.father_last_name || "")}
+                    onChange={(value) => handleInputChange(formData?.applicant_sex === 'F' ? "spouse_last_name" : "father_last_name", value)}
                   />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
                   <POAFormField
                     name="applicant_passport_number"
-                    label={formData.applicant_sex === 'F'
+                    label={formData?.applicant_sex === 'F'
                       ? "Wife ID/passport number / Nr dokumentu tożsamości żony"
                       : "Husband ID/passport number / Nr dokumentu tożsamości męża"
                     }
-                    value={formData.applicant_passport_number || ""}
+                    value={formData?.applicant_passport_number || ""}
                     onChange={(value) => handleInputChange("applicant_passport_number", value)}
                   />
                 </div>
@@ -577,21 +577,21 @@ export default function POAForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
                   <POAFormField
                     name="spouse_first_name"
-                    label={formData.applicant_sex === 'F'
+                    label={formData?.applicant_sex === 'F'
                       ? "Husband given names / Imię / imiona męża"
                       : "Wife given names / Imię / imiona żony"
                     }
-                    value={formData.spouse_first_name || ""}
+                    value={formData?.spouse_first_name || ""}
                     onChange={(value) => handleInputChange("spouse_first_name", value)}
                   />
                   <POAFormField
-                    name={formData.applicant_sex === 'F' ? "father_last_name" : "spouse_last_name"}
-                    label={formData.applicant_sex === 'F'
+                    name={formData?.applicant_sex === 'F' ? "father_last_name" : "spouse_last_name"}
+                    label={formData?.applicant_sex === 'F'
                       ? "Husband full last name / Nazwisko męża"
                       : "Wife full last name / Nazwisko żony"
                     }
-                    value={formData.applicant_sex === 'F' ? (formData.father_last_name || "") : (formData.spouse_last_name || "")}
-                    onChange={(value) => handleInputChange(formData.applicant_sex === 'F' ? "father_last_name" : "spouse_last_name", value)}
+                    value={formData?.applicant_sex === 'F' ? (formData?.father_last_name || "") : (formData?.spouse_last_name || "")}
+                    onChange={(value) => handleInputChange(formData?.applicant_sex === 'F' ? "father_last_name" : "spouse_last_name", value)}
                   />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
