@@ -271,7 +271,7 @@ export default function IntakeForm() {
                   onDoubleClick={() => clearField("applicant_sex")}
                 >
                   <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                    Gender / Płeć
+                    Gender
                   </Label>
                   <Select
                     value={formData?.applicant_sex || ""}
@@ -281,11 +281,11 @@ export default function IntakeForm() {
                       <SelectValue placeholder="Select..." />
                     </SelectTrigger>
                     <SelectContent className="bg-background border-2 z-50">
-                      <SelectItem value="Male / Mężczyzna" className="text-base cursor-pointer">
-                        Male / Mężczyzna
+                      <SelectItem value="Male" className="text-base cursor-pointer">
+                        Male
                       </SelectItem>
-                      <SelectItem value="Female / Kobieta" className="text-base cursor-pointer">
-                        Female / Kobieta
+                      <SelectItem value="Female" className="text-base cursor-pointer">
+                        Female
                       </SelectItem>
                     </SelectContent>
                   </Select>
@@ -300,7 +300,7 @@ export default function IntakeForm() {
                   onDoubleClick={() => clearField("applicant_is_married")}
                 >
                   <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                    Civil status / Stan cywilny
+                    Civil status
                   </Label>
                   <Select
                     value={formData?.applicant_is_married === true ? "Married" : "Single"}
@@ -395,7 +395,7 @@ export default function IntakeForm() {
                   onDoubleClick={() => clearField("applicant_first_name")}
                 >
                   <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                    Given names / Imię/ imiona
+                    Given names
                   </Label>
                   <Input
                     value={formData?.applicant_first_name || ""}
@@ -411,7 +411,7 @@ export default function IntakeForm() {
                   onDoubleClick={() => clearField("applicant_last_name")}
                 >
                   <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                    Full last name / Nazwisko
+                    Full last name
                   </Label>
                   <Input
                     value={formData?.applicant_last_name || ""}
@@ -431,7 +431,7 @@ export default function IntakeForm() {
                   onDoubleClick={() => clearField("applicant_maiden_name")}
                 >
                   <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                    Maiden name / Nazwisko rodowe
+                    Maiden name
                   </Label>
                   <Input
                     value={formData?.applicant_maiden_name || ""}
@@ -451,7 +451,7 @@ export default function IntakeForm() {
                   onDoubleClick={() => clearField("applicant_pob")}
                 >
                   <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                    Place of birth / Miejsce urodzenia
+                    Place of birth
                   </Label>
                   <Input
                     value={formData?.applicant_pob || ""}
@@ -461,7 +461,7 @@ export default function IntakeForm() {
                 </motion.div>
                 <DateField
                   name="applicant_dob"
-                  label="Date of birth / Data urodzenia"
+                  label="Date of birth"
                   value={formData?.applicant_dob}
                   onChange={(value) => handleInputChange("applicant_dob", value)}
                 />
@@ -477,7 +477,7 @@ export default function IntakeForm() {
                     onDoubleClick={() => clearField("place_of_marriage")}
                   >
                     <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                      Place of marriage / Miejsce zawarcia związku małżeńskiego
+                      Place of marriage
                     </Label>
                     <Input
                       value={formData?.place_of_marriage || ""}
@@ -488,7 +488,7 @@ export default function IntakeForm() {
                   </motion.div>
                   <DateField
                     name="date_of_marriage"
-                    label="Date of marriage / Data zawarcia związku małżeńskiego"
+                    label="Date of marriage"
                     value={formData?.date_of_marriage}
                     onChange={(value) => handleInputChange("date_of_marriage", value)}
                   />
