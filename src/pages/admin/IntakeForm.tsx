@@ -624,7 +624,6 @@ export default function IntakeForm() {
                         onChange={(e) => handleInputChange("applicant_country", e.target.value.toUpperCase())}
                         className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
                         style={{ fontSize: '1.125rem', fontWeight: '400' }}
-                        placeholder="COUNTRY"
                       />
                     </motion.div>
                   </div>
