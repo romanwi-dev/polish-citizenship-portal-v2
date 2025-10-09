@@ -19,6 +19,7 @@ import { validateEmail, validatePassport } from "@/utils/validators";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { useFormSync } from "@/hooks/useFormSync";
+import { CountrySelect } from "@/components/CountrySelect";
 
 export default function IntakeForm() {
   const { id: caseId } = useParams();
@@ -610,22 +611,13 @@ export default function IntakeForm() {
                       />
                     </motion.div>
 
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="space-y-2"
-                      onDoubleClick={() => clearField("applicant_country")}
-                    >
-                      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                        Country
-                      </Label>
-                      <Input
-                        value={formData?.applicant_country || ""}
-                        onChange={(e) => handleInputChange("applicant_country", e.target.value.toUpperCase())}
-                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
-                        style={{ fontSize: '1.125rem', fontWeight: '400' }}
-                      />
-                    </motion.div>
+                    <CountrySelect
+                      value={formData?.applicant_country || ""}
+                      onChange={(value) => handleInputChange("applicant_country", value)}
+                      label="Country"
+                      isLargeFonts={isLargeFonts}
+                      delay={0}
+                    />
                   </div>
                 </div>
               </div>
