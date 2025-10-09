@@ -293,7 +293,7 @@ export default function MasterDataTable() {
             >
               <Sparkles className="h-3 md:h-4 lg:h-5 w-3 md:w-4 lg:w-5 mr-1 md:mr-2 opacity-50" />
               <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Clear All
+                Clear Data
               </span>
             </Button>
             <PDFGenerationButtons caseId={caseId || ''} />

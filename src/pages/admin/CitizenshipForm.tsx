@@ -741,15 +741,15 @@ export default function CitizenshipForm() {
         <AlertDialog open={showClearAllDialog} onOpenChange={setShowClearAllDialog}>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Clear All Fields?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This will clear all fields in the entire form. This action cannot be undone.
+            <AlertDialogTitle>Clear Data?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will clear all fields in the entire form. This action cannot be undone.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
               <AlertDialogAction onClick={clearAllFields}>
-                Clear All
+                Clear Data
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

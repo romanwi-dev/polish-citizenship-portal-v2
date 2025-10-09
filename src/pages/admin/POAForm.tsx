@@ -382,7 +382,7 @@ export default function POAForm() {
             <Button onClick={() => setShowClearAllDialog(true)} size="default" variant="outline"
               className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[140px] md:min-w-[180px] lg:min-w-[220px] whitespace-nowrap flex-shrink-0">
               <Sparkles className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Clear All</span>
+              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Clear Data</span>
             </Button>
 
             <Button onClick={() => navigate(`/admin/cases/${caseId}/intake`)} variant="outline"
@@ -782,14 +782,14 @@ export default function POAForm() {
       <AlertDialog open={showClearAllDialog} onOpenChange={setShowClearAllDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Clear All Fields?</AlertDialogTitle>
+            <AlertDialogTitle>Clear Data?</AlertDialogTitle>
             <AlertDialogDescription>
               This will clear all form fields (except dates). This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={clearAllFields}>Clear All</AlertDialogAction>
+            <AlertDialogAction onClick={clearAllFields}>Clear Data</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

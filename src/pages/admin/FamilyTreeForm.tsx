@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState, useEffect } from "react";
 import { Loader2, Save, Download, Users, Sparkles, Type, User, ArrowLeft } from "lucide-react";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
@@ -38,6 +39,7 @@ export default function FamilyTreeForm() {
   const [formData, setFormData] = useState<any>({});
   const [isGenerating, setIsGenerating] = useState(false);
   const [activeTab, setActiveTab] = useState("applicant");
+  const [showClearDialog, setShowClearDialog] = useState(false);
   
   // Enable real-time sync with direct state updates
   useRealtimeFormSync(caseId, masterData, isLoading, setFormData);
@@ -88,6 +90,12 @@ export default function FamilyTreeForm() {
     } finally {
       setIsGenerating(false);
     }
+  };
+
+  const handleClearData = () => {
+    setFormData({});
+    toast.success('All form data cleared');
+    setShowClearDialog(false);
   };
   const renderDateField = (name: string, label: string) => {
     const dateValue = formData[name] ? new Date(formData[name]) : undefined;
@@ -308,6 +316,17 @@ export default function FamilyTreeForm() {
                   </span>
                 </>
               )}
+            </Button>
+            <Button 
+              onClick={() => setShowClearDialog(true)} 
+              size="default" 
+              variant="outline"
+              className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[160px] md:min-w-[220px] lg:min-w-[260px] whitespace-nowrap"
+            >
+              <Sparkles className="h-3 md:h-4 lg:h-5 w-3 md:w-4 lg:w-5 mr-1 md:mr-2 opacity-50" />
+              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                Clear Data
+              </span>
             </Button>
             <Button 
               onClick={handleGeneratePDF} 
@@ -1217,6 +1236,24 @@ export default function FamilyTreeForm() {
           )}
         </div>
       </div>
+
+      {/* Clear Data Confirmation Dialog */}
+      <AlertDialog open={showClearDialog} onOpenChange={setShowClearDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Clear Data?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will clear all fields in the Family Tree form. This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleClearData}>
+              Clear Data
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
     </div>;
 }
