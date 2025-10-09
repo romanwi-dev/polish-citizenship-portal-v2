@@ -259,209 +259,129 @@ export default function IntakeForm() {
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6 md:p-10">
-              {/* Gender/Sex - At the top like POA */}
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }} 
-                animate={{ opacity: 1, y: 0 }} 
-                transition={{ delay: 0, duration: 0.4 }}
-                className="mb-8 p-4 bg-muted/30 rounded-lg border border-border/50" 
-                onDoubleClick={() => clearField("applicant_sex")}
-              >
-                <Label className={cn(
-                  "text-lg font-semibold mb-3 block",
-                  isLargeFonts ? "text-xl" : "text-lg"
-                )}>
-                  Applicant Gender / Płeć
-                </Label>
-                <RadioGroup
-                  value={formData?.applicant_sex || ""}
-                  onValueChange={(value) => handleInputChange("applicant_sex", value)}
-                  className="flex gap-4"
+              {/* Row 1: Gender and Civil Status */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                {/* Gender */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                  className="space-y-2"
+                  onDoubleClick={() => clearField("applicant_sex")}
                 >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="M" id="male" className="border-2" />
-                    <Label htmlFor="male" className="cursor-pointer font-normal">
-                      Male / Mężczyzna
-                    </Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="F" id="female" className="border-2" />
-                    <Label htmlFor="female" className="cursor-pointer font-normal">
-                      Female / Kobieta
-                    </Label>
-                  </div>
-                </RadioGroup>
-              </motion.div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Personal Information */}
-                <div onDoubleClick={() => clearField("applicant_first_name")}>
-                  <POAFormField name="applicant_first_name" label="Given names (exactly like in your valid ID/ passport)" value={formData.applicant_first_name} onChange={value => handleInputChange("applicant_first_name", value)} delay={0} />
-                </div>
-                
-                <div onDoubleClick={() => clearField("applicant_last_name")}>
-                  <POAFormField name="applicant_last_name" label="Full last name (exactly like in your valid ID/ passport)" value={formData.applicant_last_name} onChange={value => handleInputChange("applicant_last_name", value)} delay={0.05} />
-                </div>
-
-                
-                <div onDoubleClick={() => clearField("applicant_passport_number")}>
-                  <POAFormField name="applicant_passport_number" label="Passport number" value={formData.applicant_passport_number} onChange={value => handleInputChange("applicant_passport_number", value)} delay={0.1} />
-                </div>
-
-                {/* Mobile */}
-                <div onDoubleClick={() => clearField("applicant_phone")}>
-                  <POAFormField name="applicant_phone" label="Mobile number" value={formData.applicant_phone} onChange={value => handleInputChange("applicant_phone", value)} delay={0.15} />
-                </div>
-
-                {/* Email */}
-                <div onDoubleClick={() => clearField("applicant_email")}>
-                  <POAFormField name="applicant_email" label="Email address" type="email" value={formData.applicant_email} onChange={value => handleInputChange("applicant_email", value.toLowerCase())} delay={0.2} />
-                </div>
-
-                {/* Confirm Email - Not stored in master_table, just for UI validation */}
-                <div onDoubleClick={() => clearField("confirm_email")}>
-                  <POAFormField name="confirm_email" label="Confirm your email address" type="email" value={formData.confirm_email} onChange={value => handleInputChange("confirm_email", value.toLowerCase())} delay={0.25} />
-                </div>
+                  <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                    Gender / Płeć
+                  </Label>
+                  <Select
+                    value={formData?.applicant_sex || ""}
+                    onValueChange={(value) => handleInputChange("applicant_sex", value)}
+                  >
+                    <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                      <SelectValue placeholder="Select..." />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background border-2 z-50">
+                      <SelectItem value="Male / Mężczyzna" className="text-base cursor-pointer">
+                        Male / Mężczyzna
+                      </SelectItem>
+                      <SelectItem value="Female / Kobieta" className="text-base cursor-pointer">
+                        Female / Kobieta
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </motion.div>
 
                 {/* Civil Status */}
-                <motion.div initial={{
-                opacity: 0,
-                y: 20
-              }} animate={{
-                opacity: 1,
-                y: 0
-              }} transition={{
-                delay: 0.3,
-                duration: 0.4
-              }} className="space-y-4" onDoubleClick={() => clearField("applicant_is_married")}>
-                  <Label className={cn(
-                    "font-light text-foreground/90",
-                    isLargeFonts ? "text-xl" : "text-sm"
-                  )}>Civil status</Label>
-                  <Select value={formData.applicant_is_married ? "married" : "not_married"} onValueChange={value => handleInputChange("applicant_is_married", value === "married")}>
-                    <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
-                      <SelectValue placeholder="Select status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="married">Married</SelectItem>
-                      <SelectItem value="not_married">Not Married</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </motion.div>
-
-                {/* Children Count */}
-                <motion.div initial={{
-                opacity: 0,
-                y: 20
-              }} animate={{
-                opacity: 1,
-                y: 0
-              }} transition={{
-                delay: 0.35,
-                duration: 0.4
-              }} className="space-y-4" onDoubleClick={() => {
-                clearField("children_count");
-                clearField("has_children");
-              }}>
-                  <Label className={cn(
-                    "font-light text-foreground/90",
-                    isLargeFonts ? "text-xl" : "text-sm"
-                  )}>Number of children (including minors)</Label>
-                  <Select value={formData.children_count?.toString() || "0"} onValueChange={value => {
-                  const count = parseInt(value);
-                  handleInputChange("children_count", count);
-                  handleInputChange("has_children", count > 0);
-                }}>
-                    <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => <SelectItem key={num} value={num.toString()}>
-                          {num}
-                        </SelectItem>)}
-                    </SelectContent>
-                  </Select>
-                </motion.div>
-
-                {/* Minor Children if applicable */}
-                {formData.children_count > 0 && <>
-                    <motion.div initial={{
-                  opacity: 0,
-                  y: 20
-                }} animate={{
-                  opacity: 1,
-                  y: 0
-                }} transition={{
-                  delay: 0.4,
-                  duration: 0.4
-                }} className="space-y-4" onDoubleClick={() => clearField("has_minor_children")}>
-                      <Label className={cn(
-                        "font-light text-foreground/90",
-                        isLargeFonts ? "text-xl" : "text-sm"
-                      )}>Do you have minor children (under 18)?</Label>
-                      <Select value={formData.has_minor_children ? "yes" : "no"} onValueChange={value => handleInputChange("has_minor_children", value === "yes")}>
-                        <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="yes">Yes</SelectItem>
-                          <SelectItem value="no">No</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </motion.div>
-
-                    {formData.has_minor_children && <motion.div initial={{
-                  opacity: 0,
-                  y: 20
-                }} animate={{
-                  opacity: 1,
-                  y: 0
-                }} transition={{
-                  delay: 0.45,
-                  duration: 0.4
-                }} className="space-y-4" onDoubleClick={() => clearField("minor_children_count")}>
-                        <Label className={cn(
-                          "font-light text-foreground/90",
-                          isLargeFonts ? "text-xl" : "text-sm"
-                        )}>How many minor kids?</Label>
-                        <Select value={formData.minor_children_count?.toString() || "0"} onValueChange={value => handleInputChange("minor_children_count", parseInt(value))}>
-                          <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {Array.from({
-                        length: formData.children_count + 1
-                      }, (_, i) => i).map(num => <SelectItem key={num} value={num.toString()}>
-                                {num}
-                              </SelectItem>)}
-                          </SelectContent>
-                        </Select>
-                      </motion.div>}
-                  </>}
-
-                {/* Additional Information - Full Width */}
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }} 
-                  animate={{ opacity: 1, y: 0 }} 
-                  transition={{ delay: 0.5, duration: 0.4 }}
-                  className="col-span-1 md:col-span-2 space-y-4"
-                  onDoubleClick={() => clearField("applicant_notes")}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.15 }}
+                  className="space-y-2"
+                  onDoubleClick={() => clearField("applicant_is_married")}
                 >
-                  <Label className={cn(
-                    "font-light text-foreground/90",
-                    isLargeFonts ? "text-xl" : "text-sm"
-                  )}>Additional relevant information</Label>
-                  <Textarea
-                    value={formData.applicant_notes || ""}
-                    onChange={(e) => handleInputChange("applicant_notes", e.target.value)}
-                    placeholder=""
-                    className="min-h-[120px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur resize-vertical"
-                    style={{
-                      fontSize: '1.125rem',
-                      fontWeight: '400'
-                    }}
-                  />
+                  <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                    Civil status / Stan cywilny
+                  </Label>
+                  <Select
+                    value={formData?.applicant_is_married === true ? "Married" : formData?.applicant_is_married === false ? "Single" : ""}
+                    onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}
+                  >
+                    <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                      <SelectValue placeholder="Select..." />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background border-2 z-50">
+                      <SelectItem value="Married" className="text-base cursor-pointer">
+                        Married
+                      </SelectItem>
+                      <SelectItem value="Single" className="text-base cursor-pointer">
+                        Single
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
                 </motion.div>
+              </div>
+
+              {/* Row 2: Children counts */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                {/* Number of children */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="space-y-2"
+                  onDoubleClick={() => clearField("children_count")}
+                >
+                  <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                    Number of children (including minors) / Liczba dzieci (w tym nieletnich)
+                  </Label>
+                  <Select
+                    value={formData?.children_count?.toString() || ""}
+                    onValueChange={(value) => {
+                      const count = parseInt(value);
+                      handleInputChange("children_count", count);
+                    }}
+                  >
+                    <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                      <SelectValue placeholder="Select..." />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background border-2 z-50">
+                      {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+                        <SelectItem key={num} value={num.toString()} className="text-base cursor-pointer">
+                          {num}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </motion.div>
+
+                {/* Number of minor children - only show if children_count > 0 */}
+                {(formData?.children_count > 0) && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.25 }}
+                    className="space-y-2"
+                    onDoubleClick={() => clearField("minor_children_count")}
+                  >
+                    <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                      Number of minor children (under 18)
+                    </Label>
+                    <Select
+                      value={formData?.minor_children_count?.toString() || ""}
+                      onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}
+                    >
+                      <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                        <SelectValue placeholder="Select..." />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background border-2 z-50">
+                        {Array.from({ length: (formData?.children_count || 0) + 1 }, (_, i) => i).map((num) => (
+                          <SelectItem key={num} value={num.toString()} className="text-base cursor-pointer">
+                            {num}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </motion.div>
+                )}
               </div>
             </CardContent>
           </Card>

@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState, useEffect } from "react";
 import { Loader2, Save, Download, FileCheck, Sparkles, Type, FilePlus, User, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -484,6 +485,76 @@ export default function CitizenshipForm() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6 md:p-10 space-y-10">
+                {/* Row 1: Gender and Civil Status */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Gender */}
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-2">
+                    <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                      Gender / Płeć
+                    </Label>
+                    <Select value={formData.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
+                      <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                        <SelectValue placeholder="Select..." />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background border-2 z-50">
+                        <SelectItem value="Male / Mężczyzna" className="text-base cursor-pointer">Male / Mężczyzna</SelectItem>
+                        <SelectItem value="Female / Kobieta" className="text-base cursor-pointer">Female / Kobieta</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </motion.div>
+
+                  {/* Civil Status */}
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="space-y-2">
+                    <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                      Civil status / Stan cywilny
+                    </Label>
+                    <Select value={formData.applicant_is_married === true ? "Married" : formData.applicant_is_married === false ? "Single" : ""} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
+                      <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                        <SelectValue placeholder="Select..." />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background border-2 z-50">
+                        <SelectItem value="Married" className="text-base cursor-pointer">Married</SelectItem>
+                        <SelectItem value="Single" className="text-base cursor-pointer">Single</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </motion.div>
+                </div>
+
+                {/* Row 2: Children counts */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Number of children */}
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-2">
+                    <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                      Number of children (including minors) / Liczba dzieci (w tym nieletnich)
+                    </Label>
+                    <Select value={formData.children_count?.toString() || ""} onValueChange={(value) => { const count = parseInt(value); handleInputChange("children_count", count); }}>
+                      <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                        <SelectValue placeholder="Select..." />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background border-2 z-50">
+                        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (<SelectItem key={num} value={num.toString()} className="text-base cursor-pointer">{num}</SelectItem>))}
+                      </SelectContent>
+                    </Select>
+                  </motion.div>
+
+                  {/* Number of minor children - only show if children_count > 0 */}
+                  {(formData.children_count > 0) && (
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="space-y-2">
+                      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                        Number of minor children (under 18)
+                      </Label>
+                      <Select value={formData.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
+                        <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                          <SelectValue placeholder="Select..." />
+                        </SelectTrigger>
+                        <SelectContent className="bg-background border-2 z-50">
+                          {Array.from({ length: (formData.children_count || 0) + 1 }, (_, i) => i).map((num) => (<SelectItem key={num} value={num.toString()} className="text-base cursor-pointer">{num}</SelectItem>))}
+                        </SelectContent>
+                      </Select>
+                    </motion.div>
+                  )}
+                </div>
+
                 {renderFieldGroup([
                   { name: "applicant_last_name", label: "Nazwisko / Full last name" },
                   { name: "applicant_maiden_name", label: "Nazwisko rodowe / Maiden name" },
@@ -491,7 +562,6 @@ export default function CitizenshipForm() {
                   { name: "father_first_name", label: "Imię i nazwisko ojca / Father's full name" },
                   { name: "mother_first_name", label: "Imię i nazwisko rodowe matki / Mother's full name" },
                   { name: "applicant_dob", label: "Data urodzenia / Date of birth", type: "date" },
-                  { name: "applicant_sex", label: "Płeć / Sex" },
                   { name: "applicant_pob", label: "Miejsce urodzenia / Place of birth" },
                 ])}
                 
