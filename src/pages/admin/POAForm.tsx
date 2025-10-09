@@ -444,8 +444,8 @@ export default function POAForm() {
                         handleInputChange("children_count", count);
                       }}
                     >
-                      <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
-                        <SelectValue className="overflow-hidden" />
+                      <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur overflow-hidden">
+                        <SelectValue placeholder="0" />
                       </SelectTrigger>
                       <SelectContent className="bg-background z-50">
                         {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
