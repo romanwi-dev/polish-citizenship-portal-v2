@@ -800,22 +800,20 @@ export default function MasterDataTable() {
                     {/* Info message about children count */}
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-primary/10 border border-primary/30 rounded-lg p-4">
                       <p className="text-sm text-foreground/80">
-                        Based on the Applicant tab, you have <span className="font-semibold text-primary">{formData.children_count || 0} {formData.children_count === 1 ? 'child' : 'children'}</span> to enter details for below.
-                        {formData.minor_children_count > 0 && (
-                          <span className="block mt-1">
-                            ({formData.minor_children_count} minor {formData.minor_children_count === 1 ? 'child' : 'children'} under 18)
-                          </span>
-                        )}
+                        Based on the Applicant tab, you have <span className="font-semibold text-primary">{formData.minor_children_count || 0} minor {formData.minor_children_count === 1 ? 'child' : 'children'}</span> (under 18) to enter details for below.
+                        <span className="block mt-1 text-muted-foreground">
+                          Note: Adult children should be processed as separate applicants.
+                        </span>
                       </p>
                     </motion.div>
                   </CardContent>
                 </Card>
 
                 {Array.from({
-                length: formData.children_count || 0
+                length: formData.minor_children_count || 0
               }, (_, i) => i + 1).map(num => <Card key={num} className="glass-card border-primary/20">
                     <CardHeader className="border-b border-border/50">
-                      <CardTitle className="text-3xl md:text-4xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Child {num}</CardTitle>
+                      <CardTitle className="text-3xl md:text-4xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Minor Child {num}</CardTitle>
                     </CardHeader>
                     <CardContent className="p-6 md:p-10 space-y-8">
                       {renderFieldGroup([{
