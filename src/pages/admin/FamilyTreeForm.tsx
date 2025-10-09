@@ -105,7 +105,7 @@ export default function FamilyTreeForm() {
           <PopoverTrigger asChild>
             <Button variant="outline" className={cn("w-full h-16 justify-start text-left border-2 hover-glow bg-card/50 backdrop-blur", !dateValue && "text-muted-foreground")}>
               <CalendarIcon className="mr-2 h-4 w-4" />
-              {dateValue ? format(dateValue, "dd/MM/yyyy") : <span>Pick a date</span>}
+              {dateValue ? format(dateValue, "dd/MM/yyyy") : <span className="font-light opacity-40">DD.MM.YYYY</span>}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">

@@ -52,7 +52,7 @@ export function DateField({ name, label, value, onChange, delay = 0, required = 
         placeholder="DD.MM.YYYY"
         maxLength={10}
         className={cn(
-          "h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur",
+          "h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur placeholder:font-light placeholder:opacity-40",
           error && "border-destructive"
         )}
         style={{ fontSize: '1.125rem', fontWeight: '400' }}
@@ -60,7 +60,6 @@ export function DateField({ name, label, value, onChange, delay = 0, required = 
       {error && (
         <p className="text-sm text-destructive">{error}</p>
       )}
-      <p className="text-xs text-muted-foreground">Format: DD.MM.YYYY (e.g., 15.03.1990)</p>
     </motion.div>
   );
 }

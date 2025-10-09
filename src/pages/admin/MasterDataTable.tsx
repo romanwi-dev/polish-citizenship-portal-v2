@@ -137,7 +137,7 @@ export default function MasterDataTable() {
             fontWeight: '400'
           }}>
               <CalendarIcon className="mr-2 h-5 w-5" />
-              {dateValue ? format(dateValue, "dd/MM/yyyy") : <span>Pick a date</span>}
+              {dateValue ? format(dateValue, "dd/MM/yyyy") : <span className="font-light opacity-40">DD.MM.YYYY</span>}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
@@ -538,7 +538,7 @@ export default function MasterDataTable() {
                         <PopoverTrigger asChild>
                           <Button variant="outline" className={cn("w-full h-16 justify-start text-left border-2 hover-glow bg-card/50 backdrop-blur", !formData.applicant_dob && "text-muted-foreground")} style={{ fontSize: '1.125rem', fontWeight: '400' }}>
                             <CalendarIcon className="mr-2 h-5 w-5" />
-                            {formData.applicant_dob ? format(new Date(formData.applicant_dob), "dd/MM/yyyy") : <span>Pick a date</span>}
+                            {formData.applicant_dob ? format(new Date(formData.applicant_dob), "dd/MM/yyyy") : <span className="font-light opacity-40">DD.MM.YYYY</span>}
                           </Button>
                         </PopoverTrigger>
                         <PopoverContent className="w-auto p-0" align="start">
@@ -570,7 +570,7 @@ export default function MasterDataTable() {
                           <PopoverTrigger asChild>
                             <Button variant="outline" className={cn("w-full h-16 justify-start text-left border-2 hover-glow bg-card/50 backdrop-blur", !formData.date_of_marriage && "text-muted-foreground")} style={{ fontSize: '1.125rem', fontWeight: '400' }}>
                               <CalendarIcon className="mr-2 h-5 w-5" />
-                              {formData.date_of_marriage ? format(new Date(formData.date_of_marriage), "dd/MM/yyyy") : <span>Pick a date</span>}
+                              {formData.date_of_marriage ? format(new Date(formData.date_of_marriage), "dd/MM/yyyy") : <span className="font-light opacity-40">DD.MM.YYYY</span>}
                             </Button>
                           </PopoverTrigger>
                           <PopoverContent className="w-auto p-0" align="start">
@@ -634,7 +634,7 @@ export default function MasterDataTable() {
                           <PopoverTrigger asChild>
                             <Button variant="outline" className={cn("w-full h-16 justify-start text-left border-2 hover-glow bg-card/50 backdrop-blur", !formData.applicant_passport_expiry_date && "text-muted-foreground")} style={{ fontSize: '1.125rem', fontWeight: '400' }}>
                               <CalendarIcon className="mr-2 h-5 w-5" />
-                              {formData.applicant_passport_expiry_date ? format(new Date(formData.applicant_passport_expiry_date), "dd/MM/yyyy") : <span>Pick a date</span>}
+                              {formData.applicant_passport_expiry_date ? format(new Date(formData.applicant_passport_expiry_date), "dd/MM/yyyy") : <span className="font-light opacity-40">DD.MM.YYYY</span>}
                             </Button>
                           </PopoverTrigger>
                           <PopoverContent className="w-auto p-0" align="start">
@@ -818,7 +818,7 @@ export default function MasterDataTable() {
                         <PopoverTrigger asChild>
                           <Button variant="outline" className={cn("w-full h-16 justify-start text-left border-2 hover-glow bg-card/50 backdrop-blur", !formData.spouse_dob && "text-muted-foreground")} style={{ fontSize: '1.125rem', fontWeight: '400' }}>
                             <CalendarIcon className="mr-2 h-5 w-5" />
-                            {formData.spouse_dob ? format(new Date(formData.spouse_dob), "dd/MM/yyyy") : <span>Pick a date</span>}
+                            {formData.spouse_dob ? format(new Date(formData.spouse_dob), "dd/MM/yyyy") : <span className="font-light opacity-40">DD.MM.YYYY</span>}
                           </Button>
                         </PopoverTrigger>
                         <PopoverContent className="w-auto p-0" align="start">
@@ -849,7 +849,7 @@ export default function MasterDataTable() {
                         <PopoverTrigger asChild>
                           <Button variant="outline" className={cn("w-full h-16 justify-start text-left border-2 hover-glow bg-card/50 backdrop-blur", !formData.date_of_marriage && "text-muted-foreground")} style={{ fontSize: '1.125rem', fontWeight: '400' }}>
                             <CalendarIcon className="mr-2 h-5 w-5" />
-                            {formData.date_of_marriage ? format(new Date(formData.date_of_marriage), "dd/MM/yyyy") : <span>Pick a date</span>}
+                            {formData.date_of_marriage ? format(new Date(formData.date_of_marriage), "dd/MM/yyyy") : <span className="font-light opacity-40">DD.MM.YYYY</span>}
                           </Button>
                         </PopoverTrigger>
                         <PopoverContent className="w-auto p-0" align="start">
