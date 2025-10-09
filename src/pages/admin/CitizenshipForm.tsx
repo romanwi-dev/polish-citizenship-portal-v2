@@ -558,7 +558,7 @@ export default function CitizenshipForm() {
                 {renderFieldGroup([
                   { name: "applicant_last_name", label: "Nazwisko / Full last name" },
                   { name: "applicant_maiden_name", label: "Nazwisko rodowe / Maiden name" },
-                  { name: "applicant_first_name", label: "Imię / imiona / Given names" },
+                  { name: "applicant_first_name", label: "Imię/ imiona / Given names" },
                   { name: "father_first_name", label: "Imię i nazwisko ojca / Father's full name" },
                   { name: "mother_first_name", label: "Imię i nazwisko rodowe matki / Mother's full name" },
                   { name: "applicant_dob", label: "Data urodzenia / Date of birth", type: "date" },
@@ -597,7 +597,7 @@ export default function CitizenshipForm() {
                   {renderFieldGroup([
                     { name: "mother_last_name", label: "Nazwisko / Full last name" },
                     { name: "mother_maiden_name", label: "Nazwisko rodowe / Maiden name" },
-                    { name: "mother_first_name", label: "Imię / imiona / Given names" },
+                    { name: "mother_first_name", label: "Imię/ imiona / Given names" },
                     { name: "mother_dob", label: "Data urodzenia / Date of birth", type: "date" },
                     { name: "mother_pob", label: "Miejsce urodzenia / Place of birth" },
                   ])}
@@ -608,7 +608,7 @@ export default function CitizenshipForm() {
                   <h3 className="text-2xl font-semibold text-foreground border-b pb-2">Dane dotyczące ojca / Father's Data</h3>
                   {renderFieldGroup([
                     { name: "father_last_name", label: "Nazwisko / Full last name" },
-                    { name: "father_first_name", label: "Imię / imiona / Given names" },
+                    { name: "father_first_name", label: "Imię/ imiona / Given names" },
                     { name: "father_dob", label: "Data urodzenia / Date of birth", type: "date" },
                     { name: "father_pob", label: "Miejsce urodzenia / Place of birth" },
                     { name: "father_mother_marriage_date", label: "Data zawarcia związku małżeńskiego / Date of marriage", type: "date" },
@@ -643,7 +643,7 @@ export default function CitizenshipForm() {
                   <h3 className="text-2xl font-semibold text-foreground">Dziadek ze strony matki / Maternal Grandfather</h3>
                   {renderFieldGroup([
                     { name: "mgf_last_name", label: "Nazwisko / Full last name" },
-                    { name: "mgf_first_name", label: "Imię / imiona / Given names" },
+                    { name: "mgf_first_name", label: "Imię/ imiona / Given names" },
                     { name: "mgf_dob", label: "Data urodzenia / Date of birth", type: "date" },
                     { name: "mgf_pob", label: "Miejsce urodzenia / Place of birth" },
                   ])}
@@ -655,7 +655,7 @@ export default function CitizenshipForm() {
                   {renderFieldGroup([
                     { name: "mgm_last_name", label: "Nazwisko / Full last name" },
                     { name: "mgm_maiden_name", label: "Nazwisko rodowe / Maiden name" },
-                    { name: "mgm_first_name", label: "Imię / imiona / Given names" },
+                    { name: "mgm_first_name", label: "Imię/ imiona / Given names" },
                     { name: "mgm_dob", label: "Data urodzenia / Date of birth", type: "date" },
                     { name: "mgm_pob", label: "Miejsce urodzenia / Place of birth" },
                   ])}
@@ -666,7 +666,7 @@ export default function CitizenshipForm() {
                   <h3 className="text-2xl font-semibold text-foreground">Dziadek ze strony ojca / Paternal Grandfather</h3>
                   {renderFieldGroup([
                     { name: "pgf_last_name", label: "Nazwisko / Full last name" },
-                    { name: "pgf_first_name", label: "Imię / imiona / Given names" },
+                    { name: "pgf_first_name", label: "Imię/ imiona / Given names" },
                     { name: "pgf_dob", label: "Data urodzenia / Date of birth", type: "date" },
                     { name: "pgf_pob", label: "Miejsce urodzenia / Place of birth" },
                   ])}
@@ -678,7 +678,7 @@ export default function CitizenshipForm() {
                   {renderFieldGroup([
                     { name: "pgm_last_name", label: "Nazwisko / Full last name" },
                     { name: "pgm_maiden_name", label: "Nazwisko rodowe / Maiden name" },
-                    { name: "pgm_first_name", label: "Imię / imiona / Given names" },
+                    { name: "pgm_first_name", label: "Imię/ imiona / Given names" },
                     { name: "pgm_dob", label: "Data urodzenia / Date of birth", type: "date" },
                     { name: "pgm_pob", label: "Miejsce urodzenia / Place of birth" },
                   ])}

@@ -414,7 +414,7 @@ export default function CivilRegistryForm() {
 
                 {renderFieldGroup([{
                 name: "applicant_first_name",
-                label: "Given names / Imię / imiona"
+                label: "Given names / Imię/ imiona"
               }, {
                 name: "applicant_last_name",
                 label: "Full last name / Nazwisko"

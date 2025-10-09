@@ -656,7 +656,7 @@ export default function FamilyTreeForm() {
                     {/* 1st row - Name fields */}
                     {renderFieldGroup([{
                   name: `child_${num}_first_name`,
-                  label: "Given names / Imię / imiona",
+                  label: "Given names / Imię/ imiona",
                   isNameField: true
                 }, {
                   name: `child_${num}_last_name`,
@@ -749,7 +749,7 @@ export default function FamilyTreeForm() {
                     {/* 1st row - Name fields */}
                     {renderFieldGroup([{
                     name: "father_first_name",
-                    label: "Given names / Imię / imiona",
+                    label: "Given names / Imię/ imiona",
                     isNameField: true
                   }, {
                     name: "father_last_name",
@@ -843,7 +843,7 @@ export default function FamilyTreeForm() {
                     {/* 1st row - Name fields */}
                     {renderFieldGroup([{
                     name: "mother_first_name",
-                    label: "Given names / Imię / imiona",
+                    label: "Given names / Imię/ imiona",
                     isNameField: true
                   }, {
                     name: "mother_last_name",
@@ -966,7 +966,7 @@ export default function FamilyTreeForm() {
                         {/* 1st row - Name fields */}
                         {renderFieldGroup([{
                       name: `${prefix}_first_name`,
-                      label: "Given names / Imię / imiona",
+                      label: "Given names / Imię/ imiona",
                       isNameField: true
                     }, {
                       name: `${prefix}_last_name`,
@@ -1080,7 +1080,7 @@ export default function FamilyTreeForm() {
                       <CardContent className="p-6 md:p-8 space-y-8">
                         {renderFieldGroup([{
                       name: `${prefix}_first_name`,
-                      label: "Given names / Imię / imiona"
+                      label: "Given names / Imię/ imiona"
                     }, {
                       name: `${prefix}_last_name`,
                       label: "Full last name / Nazwisko"

@@ -306,7 +306,7 @@ export default function MasterDataTable() {
                 Applicant
               </span>
             </Button>
-            {(formData.spouse_first_name || formData.spouse_last_name || formData.date_of_marriage) && (
+            {formData.applicant_is_married && (
               <Button 
                 onClick={() => setActiveTab('spouse')}
                 variant={activeTab === 'spouse' ? 'default' : 'outline'}
@@ -481,7 +481,7 @@ export default function MasterDataTable() {
                   {/* Basic Information */}
                   {renderFieldGroup([{
                   name: "applicant_first_name",
-                  label: "Given names / Imię / imiona"
+                  label: "Given names / Imię/ imiona"
                 }, {
                   name: "applicant_last_name",
                   label: "Full last name / Nazwisko"
@@ -539,10 +539,10 @@ export default function MasterDataTable() {
                       <h3 className="text-xl font-semibold mb-6 text-foreground">Marriage Information</h3>
                       {renderFieldGroup([{
                         name: "place_of_marriage",
-                        label: "Place of marriage"
+                        label: "Place of marriage / Miejsce zawarcia związku małżeńskiego"
                       }, {
                         name: "date_of_marriage",
-                        label: "Date of marriage",
+                        label: "Date of marriage / Data zawarcia związku małżeńskiego",
                         type: "date"
                       }])}
                     </div>
@@ -628,7 +628,7 @@ export default function MasterDataTable() {
                 <CardContent className="p-6 md:p-10 space-y-10">
                   {renderFieldGroup([{
                   name: "spouse_first_name",
-                  label: "Given names / Imię / imiona"
+                  label: "Given names / Imię/ imiona"
                 }, {
                   name: "spouse_last_name",
                   label: "Full last name / Nazwisko"
@@ -769,7 +769,7 @@ export default function MasterDataTable() {
                     <CardContent className="p-6 md:p-10 space-y-8">
                       {renderFieldGroup([{
                     name: `child_${num}_first_name`,
-                    label: "Given names / Imię / imiona"
+                    label: "Given names / Imię/ imiona"
                   }, {
                     name: `child_${num}_last_name`,
                     label: "Full last name / Nazwisko"
@@ -824,7 +824,7 @@ export default function MasterDataTable() {
                   <CardContent className="p-6 md:p-10 space-y-10">
                     {renderFieldGroup([{
                     name: "father_first_name",
-                    label: "Given names / Imię / imiona"
+                    label: "Given names / Imię/ imiona"
                   }, {
                     name: "father_last_name",
                     label: "Full last name / Nazwisko"
@@ -879,7 +879,7 @@ export default function MasterDataTable() {
                   <CardContent className="p-6 md:p-10 space-y-10">
                     {renderFieldGroup([{
                     name: "mother_first_name",
-                    label: "Given names / Imię / imiona"
+                    label: "Given names / Imię/ imiona"
                   }, {
                     name: "mother_last_name",
                     label: "Full last name / Nazwisko"
@@ -957,7 +957,7 @@ export default function MasterDataTable() {
                         </div>
                         {renderFieldGroup([{
                       name: `${prefix}_first_name`,
-                      label: "Given names / Imię / imiona"
+                      label: "Given names / Imię/ imiona"
                     }, {
                       name: `${prefix}_last_name`,
                       label: "Full last name / Nazwisko"
@@ -1029,7 +1029,7 @@ export default function MasterDataTable() {
                       <CardContent className="p-6 md:p-10 space-y-10">
                         {renderFieldGroup([{
                       name: `${prefix}_first_name`,
-                      label: "Given names / Imię / imiona"
+                      label: "Given names / Imię/ imiona"
                     }, {
                       name: `${prefix}_last_name`,
                       label: "Full last name / Nazwisko"
