@@ -551,6 +551,39 @@ export default function MasterDataTable() {
                     </motion.div>
                   </div>
 
+                  {/* Marriage fields - Only show if married */}
+                  {formData.applicant_is_married && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
+                        <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                          Place of marriage / Miejsce zawarcia związku małżeńskiego
+                        </Label>
+                        <Input
+                          value={formData.place_of_marriage || ""}
+                          onChange={(e) => handleInputChange("place_of_marriage", e.target.value.toUpperCase())}
+                          className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                          style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                        />
+                      </motion.div>
+                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
+                        <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                          Date of marriage / Data zawarcia związku małżeńskiego
+                        </Label>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button variant="outline" className={cn("w-full h-16 justify-start text-left border-2 hover-glow bg-card/50 backdrop-blur", !formData.date_of_marriage && "text-muted-foreground")} style={{ fontSize: '1.125rem', fontWeight: '400' }}>
+                              <CalendarIcon className="mr-2 h-5 w-5" />
+                              {formData.date_of_marriage ? format(new Date(formData.date_of_marriage), "dd/MM/yyyy") : <span>Pick a date</span>}
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar mode="single" selected={formData.date_of_marriage ? new Date(formData.date_of_marriage) : undefined} onSelect={date => handleInputChange("date_of_marriage", date ? format(date, "yyyy-MM-dd") : "")} disabled={date => date > new Date("2030-12-31") || date < new Date("1900-01-01")} initialFocus className={cn("p-3 pointer-events-auto")} />
+                          </PopoverContent>
+                        </Popover>
+                      </motion.div>
+                    </div>
+                  )}
+
                   {/* Contact information */}
                   <div className="pt-8">
                     <h3 className="text-xl font-semibold mb-6 text-foreground">Contact information</h3>
@@ -615,26 +648,6 @@ export default function MasterDataTable() {
                     </div>
                   </div>
 
-                  {/* Marriage information - Only show if married */}
-                  {formData.applicant_is_married && (
-                    <div className="pt-8">
-                      <h3 className="text-xl font-semibold mb-6 text-foreground">Marriage information</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
-                          <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                            Place of marriage / Miejsce zawarcia związku małżeńskiego
-                          </Label>
-                          <Input
-                            value={formData.place_of_marriage || ""}
-                            onChange={(e) => handleInputChange("place_of_marriage", e.target.value.toUpperCase())}
-                            className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
-                            style={{ fontSize: '1.125rem', fontWeight: '400' }}
-                          />
-                        </motion.div>
-                        {renderDateField("date_of_marriage", "Date of marriage / Data zawarcia związku małżeńskiego")}
-                      </div>
-                    </div>
-                  )}
 
                   {/* Immigration information */}
                   <div className="pt-8">
