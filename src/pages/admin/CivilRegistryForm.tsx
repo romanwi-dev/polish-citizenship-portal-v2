@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useState, useEffect } from "react";
 import { Loader2, Save, Download, FileText, Sparkles, Type, FilePlus, User, ArrowLeft } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
@@ -513,39 +514,93 @@ export default function CivilRegistryForm() {
                   isLargeFonts={isLargeFonts}
                 />
 
-                {renderDateField("document_event_date", "Event date / Data zdarzenia")}
-                
-                <div className="bg-muted/30 rounded-lg p-6 border-2 border-primary/20">
-                  <h3 className={cn("font-semibold mb-6 text-foreground", isLargeFonts ? "text-3xl" : "text-2xl")}>Required Documents Checklist / Lista wymaganych dokumentów</h3>
-                  <div className="space-y-3">
-                    <div className="flex items-start gap-4 p-4 bg-card/30 rounded-lg border border-border/30">
-                      <div className="h-2.5 w-2.5 rounded-full bg-primary mt-1.5 flex-shrink-0"></div>
-                      <div className="flex-1">
-                        <p className={cn("font-medium text-foreground", isLargeFonts ? "text-lg" : "text-base")}>Original Document with Polish Translation</p>
-                        <p className={cn("text-muted-foreground", isLargeFonts ? "text-base" : "text-sm")}>Oryginał aktu z tłumaczeniem przysięgłym na język polski</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-4 p-4 bg-card/30 rounded-lg border border-border/30">
-                      <div className="h-2.5 w-2.5 rounded-full bg-primary mt-1.5 flex-shrink-0"></div>
-                      <div className="flex-1">
-                        <p className={cn("font-medium text-foreground", isLargeFonts ? "text-lg" : "text-base")}>Proof of Tax Payment (50 PLN)</p>
-                        <p className={cn("text-muted-foreground", isLargeFonts ? "text-base" : "text-sm")}>Dowód uiszczenia opłaty skarbowej</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-4 p-4 bg-card/30 rounded-lg border border-border/30">
-                      <div className="h-2.5 w-2.5 rounded-full bg-primary mt-1.5 flex-shrink-0"></div>
-                      <div className="flex-1">
-                        <p className={cn("font-medium text-foreground", isLargeFonts ? "text-lg" : "text-base")}>Power of Attorney</p>
-                        <p className={cn("text-muted-foreground", isLargeFonts ? "text-base" : "text-sm")}>Pełnomocnictwo (notarized or consular)</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-4 p-4 bg-card/30 rounded-lg border border-border/30">
-                      <div className="h-2.5 w-2.5 rounded-full bg-primary mt-1.5 flex-shrink-0"></div>
-                      <div className="flex-1">
-                        <p className={cn("font-medium text-foreground", isLargeFonts ? "text-lg" : "text-base")}>Valid Passport Copy</p>
-                        <p className={cn("text-muted-foreground", isLargeFonts ? "text-base" : "text-sm")}>Kopia paszportu</p>
-                      </div>
-                    </div>
+                <div className="pt-8">
+                  <h3 className={cn("font-semibold mb-6 text-foreground", isLargeFonts ? "text-2xl" : "text-xl")}>Required Documents Checklist / Lista wymaganych dokumentów</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <motion.div 
+                      initial={{ opacity: 0, scale: 0.95 }} 
+                      animate={{ opacity: 1, scale: 1 }} 
+                      transition={{ delay: 0 }}
+                      className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur"
+                    >
+                      <Checkbox
+                        id="has_original_foreign_act"
+                        checked={formData?.has_original_foreign_act || false}
+                        onCheckedChange={(checked) => handleInputChange("has_original_foreign_act", checked)}
+                        className="h-6 w-6"
+                      />
+                      <Label htmlFor="has_original_foreign_act" className="cursor-pointer text-sm font-normal">
+                        Original foreign civil act / Oryginał aktu zagranicznego
+                      </Label>
+                    </motion.div>
+
+                    <motion.div 
+                      initial={{ opacity: 0, scale: 0.95 }} 
+                      animate={{ opacity: 1, scale: 1 }} 
+                      transition={{ delay: 0.05 }}
+                      className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur"
+                    >
+                      <Checkbox
+                        id="has_sworn_translation"
+                        checked={formData?.has_sworn_translation || false}
+                        onCheckedChange={(checked) => handleInputChange("has_sworn_translation", checked)}
+                        className="h-6 w-6"
+                      />
+                      <Label htmlFor="has_sworn_translation" className="cursor-pointer text-sm font-normal">
+                        Sworn translation into Polish / Tłumaczenie przysięgłe na język polski
+                      </Label>
+                    </motion.div>
+
+                    <motion.div 
+                      initial={{ opacity: 0, scale: 0.95 }} 
+                      animate={{ opacity: 1, scale: 1 }} 
+                      transition={{ delay: 0.1 }}
+                      className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur"
+                    >
+                      <Checkbox
+                        id="has_tax_payment"
+                        checked={formData?.has_tax_payment || false}
+                        onCheckedChange={(checked) => handleInputChange("has_tax_payment", checked)}
+                        className="h-6 w-6"
+                      />
+                      <Label htmlFor="has_tax_payment" className="cursor-pointer text-sm font-normal">
+                        Proof of Tax Payment (50 PLN) / Dowód uiszczenia opłaty skarbowej
+                      </Label>
+                    </motion.div>
+
+                    <motion.div 
+                      initial={{ opacity: 0, scale: 0.95 }} 
+                      animate={{ opacity: 1, scale: 1 }} 
+                      transition={{ delay: 0.15 }}
+                      className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur"
+                    >
+                      <Checkbox
+                        id="has_power_of_attorney"
+                        checked={formData?.has_power_of_attorney || false}
+                        onCheckedChange={(checked) => handleInputChange("has_power_of_attorney", checked)}
+                        className="h-6 w-6"
+                      />
+                      <Label htmlFor="has_power_of_attorney" className="cursor-pointer text-sm font-normal">
+                        Power of Attorney / Pełnomocnictwo (notarized or consular)
+                      </Label>
+                    </motion.div>
+
+                    <motion.div 
+                      initial={{ opacity: 0, scale: 0.95 }} 
+                      animate={{ opacity: 1, scale: 1 }} 
+                      transition={{ delay: 0.2 }}
+                      className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur"
+                    >
+                      <Checkbox
+                        id="has_passport_copy"
+                        checked={formData?.has_passport_copy || false}
+                        onCheckedChange={(checked) => handleInputChange("has_passport_copy", checked)}
+                        className="h-6 w-6"
+                      />
+                      <Label htmlFor="has_passport_copy" className="cursor-pointer text-sm font-normal">
+                        Valid Passport Copy / Kopia paszportu
+                      </Label>
+                    </motion.div>
                   </div>
                 </div>
 
