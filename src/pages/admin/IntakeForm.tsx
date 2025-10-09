@@ -55,6 +55,13 @@ export default function IntakeForm() {
   const handleSave = () => {
     if (!caseId) return;
 
+    console.log('💾 [INTAKE] Saving form data:', Object.keys(formData).length, 'fields');
+    console.log('📋 [INTAKE] Sample data:', {
+      applicant_first_name: formData.applicant_first_name,
+      applicant_last_name: formData.applicant_last_name,
+      applicant_email: formData.applicant_email
+    });
+
     // Validate email
     if (formData.applicant_email) {
       const emailValidation = validateEmail(formData.applicant_email);
@@ -73,10 +80,10 @@ export default function IntakeForm() {
       }
     }
 
-    // No need to filter - useMasterData hook handles sanitization
+    // Send ALL formData to ensure cleared fields are saved as null
     updateMutation.mutate({
       caseId,
-      updates: formData
+      updates: { ...formData }
     }, {
       onSuccess: () => {
         setOriginalData(formData);

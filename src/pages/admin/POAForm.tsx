@@ -62,8 +62,16 @@ export default function POAForm() {
   const handleSave = async () => {
     if (!caseId) return;
     
+    console.log('💾 Saving form data:', Object.keys(formData).length, 'fields');
+    console.log('📋 Sample cleared fields:', {
+      applicant_first_name: formData.applicant_first_name,
+      applicant_last_name: formData.applicant_last_name,
+      applicant_email: formData.applicant_email
+    });
+    
     try {
-      await updateMutation.mutateAsync({ caseId, updates: formData });
+      // Send ALL formData to ensure cleared fields are saved as null
+      await updateMutation.mutateAsync({ caseId, updates: { ...formData } });
     } catch (error) {
       console.error('Save failed:', error);
     }
