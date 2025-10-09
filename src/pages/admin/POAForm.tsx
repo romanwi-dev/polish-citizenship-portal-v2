@@ -394,7 +394,7 @@ export default function POAForm() {
                       value={formData.applicant_is_married ? "married" : "not_married"} 
                       onValueChange={value => handleInputChange("applicant_is_married", value === "married")}
                     >
-                      <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                      <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur overflow-hidden">
                         <SelectValue placeholder="Not Married" />
                       </SelectTrigger>
                       <SelectContent className="bg-background z-50">
@@ -416,7 +416,7 @@ export default function POAForm() {
                       value={formData.applicant_sex || ""} 
                       onValueChange={value => handleInputChange("applicant_sex", value)}
                     >
-                      <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                      <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur overflow-hidden">
                         <SelectValue placeholder="Select gender" />
                       </SelectTrigger>
                       <SelectContent className="bg-background z-50">
@@ -445,7 +445,7 @@ export default function POAForm() {
                       }}
                     >
                       <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
-                        <SelectValue />
+                        <SelectValue className="overflow-hidden" />
                       </SelectTrigger>
                       <SelectContent className="bg-background z-50">
                         {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
@@ -473,9 +473,9 @@ export default function POAForm() {
                           handleInputChange("minor_children_count", count);
                         }}
                       >
-                        <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
-                          <SelectValue />
-                        </SelectTrigger>
+                      <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur overflow-hidden">
+                        <SelectValue />
+                      </SelectTrigger>
                         <SelectContent className="bg-background z-50">
                           {Array.from({ length: (formData.children_count || 0) + 1 }, (_, i) => i).map(num => (
                             <SelectItem key={num} value={num.toString()}>
