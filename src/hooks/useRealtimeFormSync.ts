@@ -24,6 +24,7 @@ export const useRealtimeFormSync = (
     
     // Prevent re-initialization if already done
     if (isInitialized.current) {
+      console.log('⛔ Already initialized - skipping');
       return;
     }
     
@@ -34,18 +35,12 @@ export const useRealtimeFormSync = (
       return;
     }
     
-    console.log('📥 LOADING FRESH DATA FROM DB:', Object.keys(masterData).length, 'fields');
-    console.log('📊 Sample DB fields:', {
-      applicant_first_name: masterData.applicant_first_name,
-      applicant_last_name: masterData.applicant_last_name,
-      applicant_email: masterData.applicant_email,
-      applicant_passport_number: masterData.applicant_passport_number
-    });
+    console.log('📥 INITIAL LOAD ONLY - Setting form data:', Object.keys(masterData).length, 'fields');
     
     // FORCE UPDATE - set ALL masterData as form data
     setFormData(masterData);
     isInitialized.current = true;
-  }, [isLoading]); // Only depend on isLoading, not masterData
+  }, [isLoading, masterData]); // Watch both to handle data arriving after loading completes
 
   // Real-time sync
   useEffect(() => {
@@ -64,17 +59,17 @@ export const useRealtimeFormSync = (
           filter: `case_id=eq.${caseId}`
         },
         (payload) => {
-          console.log('⚡ Real-time update received:', payload);
+          console.log('⚡ Real-time update received from another source');
           
           if (payload.new) {
-            console.log('🔄 Applying real-time update to form');
+            // Only update if this wasn't our own change
+            console.log('🔄 Syncing external changes to form');
             setFormData((prev: any) => {
               const merged = { ...prev, ...payload.new };
-              console.log('✅ Form updated -', Object.keys(payload.new).length, 'fields changed');
               return merged;
             });
             
-            // Update cache
+            // Update cache quietly without triggering refetch
             queryClient.setQueryData(['masterData', caseId], payload.new);
           }
         }

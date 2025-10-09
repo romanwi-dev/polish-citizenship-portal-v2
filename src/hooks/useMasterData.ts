@@ -84,18 +84,8 @@ export const useUpdateMasterData = () => {
       console.log('✅ SAVED TO DB SUCCESSFULLY');
     },
     onSuccess: (_, variables) => {
-      console.log('🔄 CLEARING ALL CACHES AND FORCING REFETCH');
-      
-      // NUCLEAR OPTION - CLEAR EVERYTHING
-      queryClient.removeQueries({ queryKey: ["masterData", variables.caseId] });
-      queryClient.invalidateQueries({ 
-        queryKey: ["masterData", variables.caseId],
-        refetchType: 'all'
-      });
-      queryClient.refetchQueries({ 
-        queryKey: ["masterData", variables.caseId]
-      });
-      
+      console.log('✅ Data saved - NOT refetching (realtime will handle updates)');
+      // DO NOT refetch - let realtime sync handle it
       toast.success("Master data updated successfully");
     },
     onError: (error: any) => {
