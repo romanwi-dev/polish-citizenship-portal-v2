@@ -624,8 +624,8 @@ export default function FamilyTreeForm() {
           </motion.div>
           )}
 
-          {/* Children Section */}
-          {activeTab === 'children' && (formData.children_count > 0) && (
+          {/* Children Section - Only Minor Children */}
+          {activeTab === 'children' && (formData.minor_children_count > 0) && (
           <motion.div initial={{
           opacity: 0,
           scale: 0.95
@@ -639,20 +639,18 @@ export default function FamilyTreeForm() {
             <Card className="glass-card border-primary/20">
               <CardHeader className="border-b border-border/50 pb-6">
                 <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                  Applicant's Children
+                  Applicant's Minor Children
                 </CardTitle>
                 <CardDescription className="text-base mt-2">
-                  Based on the Applicant information, you have <span className="font-semibold text-primary">{formData.children_count || 0} {formData.children_count === 1 ? 'child' : 'children'}</span> to enter details for.
-                  {formData.minor_children_count > 0 && (
-                    <span className="block mt-1">
-                      ({formData.minor_children_count} minor {formData.minor_children_count === 1 ? 'child' : 'children'} under 18)
-                    </span>
-                  )}
+                  Enter details for <span className="font-semibold text-primary">{formData.minor_children_count || 0} minor {formData.minor_children_count === 1 ? 'child' : 'children'}</span> (under 18 years old).
+                  <span className="block mt-1 text-muted-foreground">
+                    Note: Adult children should be processed as separate applicants.
+                  </span>
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-6 md:p-10 space-y-10">
-                {Array.from({ length: formData.children_count || 0 }, (_, i) => i + 1).map(num => <div key={num} className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
-                    <h3 className="text-xl font-semibold text-foreground">Child {num}</h3>
+                {Array.from({ length: formData.minor_children_count || 0 }, (_, i) => i + 1).map(num => <div key={num} className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
+                    <h3 className="text-xl font-semibold text-foreground">Minor Child {num}</h3>
                     {/* 1st row - Name fields */}
                     {renderFieldGroup([{
                   name: `child_${num}_first_name`,
