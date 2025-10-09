@@ -662,6 +662,7 @@ export type Database = {
           mgm_maiden_name: string | null
           mgm_notes: string | null
           mgm_pob: string | null
+          minor_children_count: number | null
           mother_date_of_emigration: string | null
           mother_date_of_naturalization: string | null
           mother_dob: string | null
@@ -914,6 +915,7 @@ export type Database = {
           mgm_maiden_name?: string | null
           mgm_notes?: string | null
           mgm_pob?: string | null
+          minor_children_count?: number | null
           mother_date_of_emigration?: string | null
           mother_date_of_naturalization?: string | null
           mother_dob?: string | null
@@ -1166,6 +1168,7 @@ export type Database = {
           mgm_maiden_name?: string | null
           mgm_notes?: string | null
           mgm_pob?: string | null
+          minor_children_count?: number | null
           mother_date_of_emigration?: string | null
           mother_date_of_naturalization?: string | null
           mother_dob?: string | null
