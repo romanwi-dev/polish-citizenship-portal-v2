@@ -780,6 +780,24 @@ export default function IntakeForm() {
                     />
                     <Label htmlFor="applicant_has_foreign_documents" className="cursor-pointer text-sm font-normal">Foreign documents</Label>
                   </motion.div>
+                  
+                  {/* Military record - only for males */}
+                  {(formData?.applicant_sex?.includes('Male') || formData?.applicant_sex?.includes('Mężczyzna')) && (
+                    <motion.div 
+                      initial={{ opacity: 0, scale: 0.95 }} 
+                      animate={{ opacity: 1, scale: 1 }} 
+                      transition={{ delay: 0.3 }}
+                      className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur"
+                    >
+                      <Checkbox
+                        id="applicant_has_military_record"
+                        checked={formData?.applicant_has_military_record || false}
+                        onCheckedChange={(checked) => handleInputChange("applicant_has_military_record", checked)}
+                        className="h-6 w-6"
+                      />
+                      <Label htmlFor="applicant_has_military_record" className="cursor-pointer text-sm font-normal">Military record</Label>
+                    </motion.div>
+                  )}
                 </div>
               </div>
 
