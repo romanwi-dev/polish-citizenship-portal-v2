@@ -27,8 +27,15 @@ export function PDFPreviewDialog({
   onDownload,
   documentTitle
 }: PDFPreviewDialogProps) {
-  const [editedData, setEditedData] = useState(formData);
+  const [editedData, setEditedData] = useState(formData || {});
   const [isRegenerating, setIsRegenerating] = useState(false);
+
+  // Update editedData when formData changes
+  useState(() => {
+    if (formData) {
+      setEditedData(formData);
+    }
+  });
 
   const handleFieldChange = (field: string, value: any) => {
     setEditedData((prev: any) => ({ ...prev, [field]: value }));
@@ -65,7 +72,13 @@ export function PDFPreviewDialog({
   };
 
   const renderEditableFields = () => {
-    if (!formData) return null;
+    if (!formData || !editedData) {
+      return (
+        <div className="text-center py-8 text-muted-foreground">
+          No data available to edit
+        </div>
+      );
+    }
 
     return (
       <ScrollArea className="h-[500px] pr-4">
@@ -81,7 +94,7 @@ export function PDFPreviewDialog({
                 </Label>
                 <Input
                   id={key}
-                  value={editedData[key] || ''}
+                  value={editedData?.[key] || ''}
                   onChange={(e) => handleFieldChange(key, e.target.value)}
                   className="w-full"
                 />
