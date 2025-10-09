@@ -12,7 +12,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useState } from "react";
 import { Loader2, Save, FileText, Users, Baby, Heart, Sparkles, Download, GitBranch, Type, FilePlus, User, ArrowLeft } from "lucide-react";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
-import { PDFGenerationButtons } from "@/components/PDFGenerationButtons";
+
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -296,7 +296,7 @@ export default function MasterDataTable() {
                 Clear Data
               </span>
             </Button>
-            <PDFGenerationButtons caseId={caseId || ''} />
+            
             {(formData.minor_children_count > 0) && (
               <Button 
                 onClick={() => setActiveTab('children')}
