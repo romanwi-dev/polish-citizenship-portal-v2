@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { Loader2, Save, Sparkles, CheckCircle2, Type, User, FileText, GitBranch, Download, Heart, ArrowLeft } from "lucide-react";
+import { Loader2, Save, Sparkles, CheckCircle2, Type, User, FileText, GitBranch, Download, Heart, ArrowLeft, Users, MapPin, Plane, FolderOpen, MessageSquare } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -20,6 +20,8 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Input } from "@/components/ui/input";
 import { useFormSync } from "@/hooks/useFormSync";
 import { CountrySelect } from "@/components/CountrySelect";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 
 export default function IntakeForm() {
   const { id: caseId } = useParams();
@@ -27,6 +29,7 @@ export default function IntakeForm() {
   const { formData, setFormData, isLoading, isSaving, saveData, clearAll, clearField } = useFormSync(caseId);
   const [showClearDialog, setShowClearDialog] = useState(false);
   const { isLargeFonts, toggleFontSize } = useAccessibility();
+  const [activeTab, setActiveTab] = useState("applicant");
 
 
   const handleInputChange = (field: string, value: any) => {
@@ -244,7 +247,7 @@ export default function IntakeForm() {
           </div>
         </motion.div>
 
-        {/* Form */}
+        {/* Form with Tabs */}
         <motion.div initial={{
         opacity: 0,
         scale: 0.95
@@ -255,12 +258,43 @@ export default function IntakeForm() {
         duration: 0.5
       }}>
           <Card className="glass-card border-primary/20">
-            <CardHeader className="border-b border-border/50 pb-6">
-              <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Applicant Information
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-6 md:p-10">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <div className="border-b border-border/50">
+                <TabsList className="w-full grid grid-cols-2 md:grid-cols-6 h-auto p-2 bg-transparent">
+                  <TabsTrigger value="applicant" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                    <User className="h-4 w-4 mr-2" />
+                    <span className="hidden sm:inline">Applicant</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="contact" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                    <MapPin className="h-4 w-4 mr-2" />
+                    <span className="hidden sm:inline">Contact</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="passport" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                    <Plane className="h-4 w-4 mr-2" />
+                    <span className="hidden sm:inline">Passport</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="immigration" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                    <Users className="h-4 w-4 mr-2" />
+                    <span className="hidden sm:inline">Immigration</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="documents" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                    <FolderOpen className="h-4 w-4 mr-2" />
+                    <span className="hidden sm:inline">Documents</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="notes" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                    <MessageSquare className="h-4 w-4 mr-2" />
+                    <span className="hidden sm:inline">Notes</span>
+                  </TabsTrigger>
+                </TabsList>
+              </div>
+
+              <TabsContent value="applicant" className="mt-0">
+                <CardHeader className="border-b border-border/50 pb-6">
+                  <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                    Applicant Information
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6 md:p-10">
               {/* Row 1: Gender and Civil Status */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 {/* Gender */}
@@ -386,7 +420,7 @@ export default function IntakeForm() {
                 )}
               </div>
 
-              {/* Row 3: Names */}
+              {/* Names */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -422,7 +456,7 @@ export default function IntakeForm() {
                 </motion.div>
               </div>
 
-              {/* Row 4: Maiden name */}
+              {/* Maiden name */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -442,7 +476,7 @@ export default function IntakeForm() {
                 </motion.div>
               </div>
 
-              {/* Row 5: Place and Date of birth */}
+              {/* Place and Date of birth */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -468,7 +502,7 @@ export default function IntakeForm() {
                 />
               </div>
 
-              {/* Marriage fields - Only show if married */}
+              {/* Marriage fields */}
               {formData?.applicant_is_married && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                   <motion.div
@@ -495,50 +529,57 @@ export default function IntakeForm() {
                   />
                 </div>
               )}
+                </CardContent>
+              </TabsContent>
+
+              <TabsContent value="contact" className="mt-0">
+                <CardHeader className="border-b border-border/50 pb-6">
+                  <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                    Contact & Address
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6 md:p-10">
 
               {/* Contact information */}
-              <div className="pt-8">
-                <h3 className="text-xl font-semibold mb-6 text-foreground">Contact information</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="space-y-2"
-                    onDoubleClick={() => clearField("applicant_email")}
-                  >
-                    <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                      Email
-                    </Label>
-                    <Input
-                      value={formData?.applicant_email || ""}
-                      onChange={(e) => handleInputChange("applicant_email", e.target.value)}
-                      type="email"
-                      className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
-                      style={{ fontSize: '1.125rem', fontWeight: '400' }}
-                    />
-                  </motion.div>
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="space-y-2"
-                    onDoubleClick={() => clearField("applicant_phone")}
-                  >
-                    <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                      Phone
-                    </Label>
-                    <Input
-                      value={formData?.applicant_phone || ""}
-                      onChange={(e) => handleInputChange("applicant_phone", e.target.value)}
-                      className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
-                      style={{ fontSize: '1.125rem', fontWeight: '400' }}
-                    />
-                  </motion.div>
-                </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="space-y-2"
+                  onDoubleClick={() => clearField("applicant_email")}
+                >
+                  <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                    Email
+                  </Label>
+                  <Input
+                    value={formData?.applicant_email || ""}
+                    onChange={(e) => handleInputChange("applicant_email", e.target.value)}
+                    type="email"
+                    className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+                    style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                  />
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="space-y-2"
+                  onDoubleClick={() => clearField("applicant_phone")}
+                >
+                  <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                    Phone
+                  </Label>
+                  <Input
+                    value={formData?.applicant_phone || ""}
+                    onChange={(e) => handleInputChange("applicant_phone", e.target.value)}
+                    className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+                    style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                  />
+                </motion.div>
               </div>
 
               {/* Address information */}
               <div className="pt-8">
-                <h3 className="text-xl font-semibold mb-6 text-foreground">Address information</h3>
+                <h3 className="text-xl font-semibold mb-6 text-foreground">Address</h3>
                 <div className="grid grid-cols-1 gap-6">
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -621,59 +662,75 @@ export default function IntakeForm() {
                   </div>
                 </div>
               </div>
+                </CardContent>
+              </TabsContent>
 
-              <div className="pt-8">
-                <h3 className="text-xl font-semibold mb-6 text-foreground">Passport information</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="space-y-2"
-                    onDoubleClick={() => clearField("applicant_passport_number")}
-                  >
-                    <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                      Passport number
-                    </Label>
-                    <Input
-                      value={formData?.applicant_passport_number || ""}
-                      onChange={(e) => handleInputChange("applicant_passport_number", e.target.value.toUpperCase())}
-                      className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
-                      style={{ fontSize: '1.125rem', fontWeight: '400' }}
-                    />
-                  </motion.div>
-                  <DateField
-                    name="applicant_passport_expiry_date"
-                    label="Passport expiry date"
-                    value={formData?.applicant_passport_expiry_date}
-                    onChange={(value) => handleInputChange("applicant_passport_expiry_date", value)}
+              <TabsContent value="passport" className="mt-0">
+                <CardHeader className="border-b border-border/50 pb-6">
+                  <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                    Passport Information
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6 md:p-10">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="space-y-2"
+                  onDoubleClick={() => clearField("applicant_passport_number")}
+                >
+                  <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                    Passport number
+                  </Label>
+                  <Input
+                    value={formData?.applicant_passport_number || ""}
+                    onChange={(e) => handleInputChange("applicant_passport_number", e.target.value.toUpperCase())}
+                    className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                    style={{ fontSize: '1.125rem', fontWeight: '400' }}
                   />
-                </div>
+                </motion.div>
+                <DateField
+                  name="applicant_passport_expiry_date"
+                  label="Passport expiry date"
+                  value={formData?.applicant_passport_expiry_date}
+                  onChange={(value) => handleInputChange("applicant_passport_expiry_date", value)}
+                />
               </div>
+              </CardContent>
+            </TabsContent>
 
-              {/* Immigration information */}
-              <div className="pt-8">
-                <h3 className="text-xl font-semibold mb-6 text-foreground">Immigration information</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <DateField
-                    name="applicant_date_of_emigration"
-                    label="Date of emigration"
-                    value={formData?.applicant_date_of_emigration}
-                    onChange={(value) => handleInputChange("applicant_date_of_emigration", value)}
-                  />
-                  <DateField
-                    name="applicant_date_of_naturalization"
-                    label="Date of naturalization"
-                    value={formData?.applicant_date_of_naturalization}
-                    onChange={(value) => handleInputChange("applicant_date_of_naturalization", value)}
-                  />
-                </div>
+            <TabsContent value="immigration" className="mt-0">
+              <CardHeader className="border-b border-border/50 pb-6">
+                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                  Immigration Information
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 md:p-10">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <DateField
+                  name="applicant_date_of_emigration"
+                  label="Date of emigration"
+                  value={formData?.applicant_date_of_emigration}
+                  onChange={(value) => handleInputChange("applicant_date_of_emigration", value)}
+                />
+                <DateField
+                  name="applicant_date_of_naturalization"
+                  label="Date of naturalization"
+                  value={formData?.applicant_date_of_naturalization}
+                  onChange={(value) => handleInputChange("applicant_date_of_naturalization", value)}
+                />
               </div>
+            </CardContent>
+          </TabsContent>
 
-
-              {/* Documents Required */}
-              <div className="pt-8">
-                <h3 className="text-xl font-semibold mb-6 text-foreground">Documents required</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <TabsContent value="documents" className="mt-0">
+            <CardHeader className="border-b border-border/50 pb-6">
+              <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                Documents Required
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-6 md:p-10">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <motion.div 
                     initial={{ opacity: 0, scale: 0.95 }} 
                     animate={{ opacity: 1, scale: 1 }} 
@@ -793,21 +850,29 @@ export default function IntakeForm() {
                     <Label htmlFor="applicant_has_additional_documents" className="cursor-pointer text-sm font-normal">Additional documents</Label>
                   </motion.div>
                 </div>
-              </div>
-
-              {/* Additional notes */}
-              <div className="pt-8">
-                <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                  Additional notes
-                </Label>
-                <Textarea
-                  value={formData?.applicant_notes || ""}
-                  onChange={(e) => handleInputChange("applicant_notes", e.target.value.toUpperCase())}
-                  className="mt-2 min-h-[150px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
-                  style={{ fontSize: '1.125rem', fontWeight: '400' }}
-                />
-              </div>
             </CardContent>
+          </TabsContent>
+
+          <TabsContent value="notes" className="mt-0">
+            <CardHeader className="border-b border-border/50 pb-6">
+              <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                Additional Notes
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-6 md:p-10">
+              <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                Additional notes
+              </Label>
+              <Textarea
+                value={formData?.applicant_notes || ""}
+                onChange={(e) => handleInputChange("applicant_notes", e.target.value.toUpperCase())}
+                className="mt-2 min-h-[150px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                style={{ fontSize: '1.125rem', fontWeight: '400' }}
+              />
+            </CardContent>
+          </TabsContent>
+
+            </Tabs>
           </Card>
         </motion.div>
       </div>
