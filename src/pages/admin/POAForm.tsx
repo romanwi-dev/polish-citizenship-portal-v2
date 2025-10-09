@@ -26,10 +26,11 @@ export default function POAForm() {
   const updateMutation = useUpdateMasterData();
   const { isLargeFonts, toggleFontSize } = useAccessibility();
   
-  // Enable real-time sync
-  useRealtimeFormSync(caseId);
-  
   const [formData, setFormData] = useState<any>({});
+  
+  // Enable real-time sync with direct state updates
+  useRealtimeFormSync(caseId, setFormData);
+  
   const [isGenerating, setIsGenerating] = useState(false);
   const [showClearAllDialog, setShowClearAllDialog] = useState(false);
   const [activePOAType, setActivePOAType] = useState('adult');

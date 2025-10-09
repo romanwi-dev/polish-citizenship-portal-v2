@@ -36,8 +36,8 @@ export default function CivilRegistryForm() {
   const [formData, setFormData] = useState<any>({});
   const [isGenerating, setIsGenerating] = useState(false);
   
-  // Enable real-time sync
-  useRealtimeFormSync(caseId);
+  // Enable real-time sync with direct state updates
+  useRealtimeFormSync(caseId, setFormData);
   useEffect(() => {
     if (masterData) {
       setFormData(masterData);

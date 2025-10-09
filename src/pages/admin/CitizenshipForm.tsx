@@ -40,8 +40,8 @@ export default function CitizenshipForm() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [showClearAllDialog, setShowClearAllDialog] = useState(false);
   
-  // Enable real-time sync
-  useRealtimeFormSync(caseId);
+  // Enable real-time sync with direct state updates
+  useRealtimeFormSync(caseId, setFormData);
 
   useEffect(() => {
     if (masterData) {
