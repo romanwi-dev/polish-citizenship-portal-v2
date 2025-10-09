@@ -387,7 +387,7 @@ export default function POAForm() {
                     Applicant Gender / Płeć
                   </Label>
                   <RadioGroup
-                    value={formData.applicant_sex || ""}
+                    value={formData?.applicant_sex || ""}
                     onValueChange={(value) => handleInputChange("applicant_sex", value)}
                     className="flex gap-4"
                   >
@@ -597,11 +597,11 @@ export default function POAForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
                   <POAFormField
                     name="spouse_passport_number"
-                    label={formData.applicant_sex === 'F'
+                    label={formData?.applicant_sex === 'F'
                       ? "Husband ID/passport number / Nr dokumentu tożsamości męża"
                       : "Wife ID/passport number / Nr dokumentu tożsamości żony"
                     }
-                    value={formData.spouse_passport_number || ""}
+                    value={formData?.spouse_passport_number || ""}
                     onChange={(value) => handleInputChange("spouse_passport_number", value)}
                   />
                 </div>
@@ -610,20 +610,20 @@ export default function POAForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
                   <POAFormField
                     name="applicant_last_name_after_marriage"
-                    label={formData.applicant_sex === 'F'
+                    label={formData?.applicant_sex === 'F'
                       ? "Wife's full last name after marriage / Nazwisko żony po zawarciu małżeństwa"
                       : "Husband's full last name after marriage / Nazwisko męża po zawarciu małżeństwa"
                     }
-                    value={formData.applicant_last_name_after_marriage || ""}
+                    value={formData?.applicant_last_name_after_marriage || ""}
                     onChange={(value) => handleInputChange("applicant_last_name_after_marriage", value)}
                   />
                   <POAFormField
                     name="spouse_last_name_after_marriage"
-                    label={formData.applicant_sex === 'F'
+                    label={formData?.applicant_sex === 'F'
                       ? "Husband's full last name after marriage / Nazwisko męża po zawarciu małżeństwa"
                       : "Wife's full last name after marriage / Nazwisko żony po zawarciu małżeństwa"
                     }
-                    value={formData.spouse_last_name_after_marriage || ""}
+                    value={formData?.spouse_last_name_after_marriage || ""}
                     onChange={(value) => handleInputChange("spouse_last_name_after_marriage", value)}
                   />
                 </div>
@@ -631,7 +631,7 @@ export default function POAForm() {
                   <POAFormField
                     name="child_1_last_name"
                     label="Children's full last name(s) / Nazwisko/a dzieci"
-                    value={formData.child_1_last_name || ""}
+                    value={formData?.child_1_last_name || ""}
                     onChange={(value) => handleInputChange("child_1_last_name", value)}
                   />
                 </div>
