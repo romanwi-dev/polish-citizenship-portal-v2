@@ -131,7 +131,7 @@ export default function POAForm() {
 
   const clearAllFields = () => {
     const today = format(new Date(), "yyyy-MM-dd");
-    setFormData({ poa_date_filed: formData.poa_date_filed || today });
+    setFormData({ poa_date_filed: formData?.poa_date_filed || today });
     toast.success("Cleared all fields");
     setShowClearAllDialog(false);
   };
@@ -410,13 +410,13 @@ export default function POAForm() {
                   <POAFormField
                     name="applicant_first_name"
                     label="Applicant given names / Imię/ imiona"
-                    value={formData.applicant_first_name || ""}
+                    value={formData?.applicant_first_name || ""}
                     onChange={(value) => handleInputChange("applicant_first_name", value)}
                   />
                   <POAFormField
                     name="applicant_last_name"
                     label="Applicant full last name / Nazwisko"
-                    value={formData.applicant_last_name || ""}
+                    value={formData?.applicant_last_name || ""}
                     onChange={(value) => handleInputChange("applicant_last_name", value)}
                   />
                 </div>
@@ -424,7 +424,7 @@ export default function POAForm() {
                   <POAFormField
                     name="applicant_passport_number"
                     label="ID/ passport number / Nr dokumentu tożsamości"
-                    value={formData.applicant_passport_number || ""}
+                    value={formData?.applicant_passport_number || ""}
                     onChange={(value) => handleInputChange("applicant_passport_number", value)}
                   />
                 </div>
@@ -459,13 +459,13 @@ export default function POAForm() {
                   <POAFormField
                     name="applicant_first_name"
                     label="Parent given names / Imię/ imiona rodzica"
-                    value={formData.applicant_first_name || ""}
+                    value={formData?.applicant_first_name || ""}
                     onChange={(value) => handleInputChange("applicant_first_name", value)}
                   />
                   <POAFormField
                     name="father_last_name"
                     label="Parent full last name / Nazwisko rodzica"
-                    value={formData.father_last_name || ""}
+                    value={formData?.father_last_name || ""}
                     onChange={(value) => handleInputChange("father_last_name", value)}
                   />
                 </div>
@@ -473,7 +473,7 @@ export default function POAForm() {
                   <POAFormField
                     name="applicant_passport_number"
                     label="Parent ID/ passport number / Nr dokumentu tożsamości"
-                    value={formData.applicant_passport_number || ""}
+                    value={formData?.applicant_passport_number || ""}
                     onChange={(value) => handleInputChange("applicant_passport_number", value)}
                   />
                 </div>
@@ -481,13 +481,13 @@ export default function POAForm() {
                   <POAFormField
                     name="child_1_first_name"
                     label="Child given names / Imię/ imiona dziecka"
-                    value={formData.child_1_first_name || ""}
+                    value={formData?.child_1_first_name || ""}
                     onChange={(value) => handleInputChange("child_1_first_name", value)}
                   />
                   <POAFormField
                     name="child_1_last_name"
                     label="Child full last name / Nazwisko dziecka"
-                    value={formData.child_1_last_name || ""}
+                    value={formData?.child_1_last_name || ""}
                     onChange={(value) => handleInputChange("child_1_last_name", value)}
                   />
                 </div>
