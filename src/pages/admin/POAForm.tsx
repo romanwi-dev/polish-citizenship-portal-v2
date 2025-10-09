@@ -227,6 +227,46 @@ export default function POAForm() {
     link.click();
   };
 
+  const handleGenerateAllPOAs = async () => {
+    if (!caseId || caseId === ':id') {
+      toast.error('Invalid case ID');
+      return;
+    }
+
+    setIsGenerating(true);
+    try {
+      await handleSave();
+
+      const templates: Array<'poa-adult' | 'poa-minor' | 'poa-spouses'> = ['poa-adult'];
+      if (hasMinorChildren() && minorChildrenCount > 0) templates.push('poa-minor');
+      if (showSpousePOA) templates.push('poa-spouses');
+
+      for (const templateType of templates) {
+        const response = await supabase.functions.invoke('fill-pdf', {
+          body: { caseId, templateType }
+        });
+
+        if (response.error) throw new Error(response.error.message);
+        if (!response.data) throw new Error('No PDF data received');
+
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `POA-${templateType.replace('poa-', '').toUpperCase()}-${caseId}.pdf`;
+        link.click();
+        URL.revokeObjectURL(url);
+      }
+
+      toast.success(`Generated ${templates.length} POA document(s)!`);
+    } catch (error: any) {
+      console.error("PDF generation error:", error);
+      toast.error(`Failed to generate PDFs: ${error.message}`);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
   const { handlers: formLongPressHandlers } = useLongPressWithFeedback({
     onLongPress: () => setShowClearAllDialog(true),
     duration: 5000,
@@ -328,6 +368,16 @@ export default function POAForm() {
               )}
             </Button>
 
+            <Button onClick={handleGenerateAllPOAs} disabled={isGenerating} size="default"
+              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[160px] md:min-w-[200px] lg:min-w-[240px] whitespace-nowrap flex-shrink-0">
+              {isGenerating ? (
+                <><Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
+                  <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generating...</span></>
+              ) : (
+                <><FileText className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
+                  <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generate PDFs</span></>
+              )}
+            </Button>
 
             <Button onClick={() => setShowClearAllDialog(true)} size="default" variant="outline"
               className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[140px] md:min-w-[180px] lg:min-w-[220px] whitespace-nowrap flex-shrink-0">
