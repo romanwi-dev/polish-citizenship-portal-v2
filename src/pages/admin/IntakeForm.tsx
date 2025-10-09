@@ -553,7 +553,6 @@ export default function IntakeForm() {
                       onChange={(e) => handleInputChange("applicant_street", e.target.value.toUpperCase())}
                       className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
                       style={{ fontSize: '1.125rem', fontWeight: '400' }}
-                      placeholder="STREET NAME AND NUMBER"
                     />
                   </motion.div>
                   
@@ -572,7 +571,6 @@ export default function IntakeForm() {
                         onChange={(e) => handleInputChange("applicant_city", e.target.value.toUpperCase())}
                         className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
                         style={{ fontSize: '1.125rem', fontWeight: '400' }}
-                        placeholder="CITY NAME"
                       />
                     </motion.div>
 
@@ -590,7 +588,6 @@ export default function IntakeForm() {
                         onChange={(e) => handleInputChange("applicant_state", e.target.value.toUpperCase())}
                         className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
                         style={{ fontSize: '1.125rem', fontWeight: '400' }}
-                        placeholder="STATE / PROVINCE"
                       />
                     </motion.div>
                   </div>
@@ -610,7 +607,6 @@ export default function IntakeForm() {
                         onChange={(e) => handleInputChange("applicant_postal_code", e.target.value.toUpperCase())}
                         className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
                         style={{ fontSize: '1.125rem', fontWeight: '400' }}
-                        placeholder="POSTAL CODE"
                       />
                     </motion.div>
 
