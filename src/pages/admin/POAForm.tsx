@@ -158,22 +158,22 @@ export default function POAForm() {
       // Save first
       await handleSave();
 
-      // Generate PDF
-      const { data, error } = await supabase.functions.invoke('fill-pdf', {
+      // Generate PDF - the response is already binary data
+      const response = await supabase.functions.invoke('fill-pdf', {
         body: { caseId, templateType }
       });
 
-      if (error) {
-        console.error("Edge function error:", error);
-        throw new Error(error.message || 'PDF generation failed');
+      if (response.error) {
+        console.error("Edge function error:", response.error);
+        throw new Error(response.error.message || 'PDF generation failed');
       }
 
-      if (!data) {
+      if (!response.data) {
         throw new Error('No PDF data received');
       }
 
-      // Create blob and preview URL
-      const blob = new Blob([data], { type: 'application/pdf' });
+      // The response.data is already a Uint8Array/ArrayBuffer, convert to Blob
+      const blob = new Blob([response.data], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
       
       setPdfPreviewUrl(url);
@@ -198,13 +198,14 @@ export default function POAForm() {
       
       await supabase.from("master_table").update(sanitizedData).eq("case_id", caseId);
 
-      const { data, error } = await supabase.functions.invoke('fill-pdf', {
+      const response = await supabase.functions.invoke('fill-pdf', {
         body: { caseId, templateType: 'poa-adult' }
       });
 
-      if (error) throw error;
+      if (response.error) throw response.error;
+      if (!response.data) throw new Error('No PDF data received');
 
-      const blob = new Blob([data], { type: 'application/pdf' });
+      const blob = new Blob([response.data], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
       
       setPdfPreviewUrl(url);
