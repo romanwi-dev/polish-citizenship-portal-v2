@@ -800,68 +800,17 @@ export default function MasterDataTable() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-6 md:p-10 space-y-8">
-                    {/* Number of children */}
-                    <motion.div initial={{
-                    opacity: 0,
-                    y: 20
-                  }} animate={{
-                    opacity: 1,
-                    y: 0
-                  }} className="space-y-4 max-w-xs">
-                      <Label htmlFor="children_count" className="text-base font-medium">
-                        Number of children (including minors)
-                      </Label>
-                      <Select 
-                        value={formData.children_count?.toString() || "0"} 
-                        onValueChange={value => {
-                          const count = parseInt(value);
-                          handleInputChange("children_count", count);
-                          if (count === 0) {
-                            handleInputChange("applicant_has_minor_children", false);
-                          }
-                        }}
-                      >
-                        <SelectTrigger className="h-14 border-2 text-base hover-glow bg-card/50 backdrop-blur">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
-                            <SelectItem key={num} value={num.toString()}>
-                              {num}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                    {/* Info message about children count */}
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-primary/10 border border-primary/30 rounded-lg p-4">
+                      <p className="text-sm text-foreground/80">
+                        Based on the Applicant tab, you have <span className="font-semibold text-primary">{formData.children_count || 0} {formData.children_count === 1 ? 'child' : 'children'}</span> to enter details for below.
+                        {formData.minor_children_count > 0 && (
+                          <span className="block mt-1">
+                            ({formData.minor_children_count} minor {formData.minor_children_count === 1 ? 'child' : 'children'} under 18)
+                          </span>
+                        )}
+                      </p>
                     </motion.div>
-
-                    {/* Minor children if applicable */}
-                    {formData.children_count > 0 && (
-                      <motion.div initial={{
-                        opacity: 0,
-                        y: 20
-                      }} animate={{
-                        opacity: 1,
-                        y: 0
-                      }} transition={{
-                        delay: 0.1
-                      }} className="space-y-4 max-w-xs">
-                        <Label className="text-base font-medium">
-                          Do you have minor children (under 18)?
-                        </Label>
-                        <Select 
-                          value={formData.applicant_has_minor_children ? "yes" : "no"} 
-                          onValueChange={value => handleInputChange("applicant_has_minor_children", value === "yes")}
-                        >
-                          <SelectTrigger className="h-14 border-2 text-base hover-glow bg-card/50 backdrop-blur">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="yes">Yes</SelectItem>
-                            <SelectItem value="no">No</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </motion.div>
-                    )}
                   </CardContent>
                 </Card>
 
