@@ -125,10 +125,15 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
           </span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-72">
+      <DropdownMenuContent align="end" className="w-72 bg-background/95 backdrop-blur-sm border-primary/20 z-50">
         <DropdownMenuItem onClick={() => handleGeneratePDF('family-tree', 'Family Tree', true)}>
           <Eye className="h-4 w-4 mr-2" />
           Preview Family Tree
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={() => handleGeneratePDF('citizenship', 'Citizenship Application', true)}>
+          <Eye className="h-4 w-4 mr-2" />
+          Preview Citizenship Application
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => handleGeneratePDF('poa-adult', 'POA - Adult', true)}>
