@@ -504,18 +504,20 @@ export default function MasterDataTable() {
                     </motion.div>
                   </div>
 
-                  {/* Row 4: Maiden name - lonely field */}
-                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="space-y-2">
-                    <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                      Maiden name / Nazwisko panieńskie
-                    </Label>
-                    <Input
-                      value={formData.applicant_maiden_name || ""}
-                      onChange={(e) => handleInputChange("applicant_maiden_name", e.target.value.toUpperCase())}
-                      className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
-                      style={{ fontSize: '1.125rem', fontWeight: '400' }}
-                    />
-                  </motion.div>
+                  {/* Row 4: Maiden name */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="space-y-2">
+                      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                        Maiden name / Nazwisko rodowe
+                      </Label>
+                      <Input
+                        value={formData.applicant_maiden_name || ""}
+                        onChange={(e) => handleInputChange("applicant_maiden_name", e.target.value.toUpperCase())}
+                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                        style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                      />
+                    </motion.div>
+                  </div>
 
                   {/* Row 5: Place and Date of birth */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

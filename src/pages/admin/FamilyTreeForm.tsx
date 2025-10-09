@@ -516,7 +516,7 @@ export default function FamilyTreeForm() {
                 isNameField: true
               }, ...(formData.applicant_sex?.toLowerCase() === 'f' || formData.applicant_sex?.toLowerCase() === 'female' ? [{
                 name: "applicant_maiden_name",
-                label: "Maiden name",
+                label: "Maiden name / Nazwisko rodowe",
                 isNameField: true
               }] : [])])}
 

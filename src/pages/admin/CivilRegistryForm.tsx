@@ -446,7 +446,7 @@ export default function CivilRegistryForm() {
               
                 {renderFieldGroup([{
                 name: "applicant_maiden_name",
-                label: "Maiden name / Nazwisko panieńskie"
+                label: "Maiden name / Nazwisko rodowe"
               }, {
                 name: "applicant_email",
                 label: "Email",
