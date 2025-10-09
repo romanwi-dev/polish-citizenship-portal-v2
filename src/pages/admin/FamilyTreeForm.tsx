@@ -13,11 +13,9 @@ import { Loader2, Save, Download, Users, Sparkles, Type, User, ArrowLeft } from 
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar as CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
+import { DateField } from "@/components/DateField";
 import { toast } from "sonner";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { useRealtimeFormSync } from "@/hooks/useRealtimeFormSync";
@@ -97,30 +95,38 @@ export default function FamilyTreeForm() {
     toast.success('All form data cleared');
     setShowClearDialog(false);
   };
-  const renderDateField = (name: string, label: string) => {
-    const dateValue = formData[name] ? new Date(formData[name]) : undefined;
-    return <motion.div initial={{
-      opacity: 0,
-      y: 20
-    }} animate={{
-      opacity: 1,
-      y: 0
-    }} className="space-y-2">
-        <Label htmlFor={name} className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-          {label}
-        </Label>
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline" className={cn("w-full h-16 justify-start text-left border-2 hover-glow bg-card/50 backdrop-blur", !dateValue && "text-muted-foreground")}>
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {dateValue ? format(dateValue, "dd/MM/yyyy") : <span className="font-light opacity-40">DD.MM.YYYY</span>}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
-            <Calendar mode="single" selected={dateValue} onSelect={date => handleInputChange(name, date ? format(date, "yyyy-MM-dd") : "")} disabled={date => date > new Date("2030-12-31") || date < new Date("1900-01-01")} initialFocus className={cn("p-3 pointer-events-auto")} />
-          </PopoverContent>
-        </Popover>
-      </motion.div>;
+  const renderDateField = (name: string, label: string, delay = 0) => {
+    // Convert ISO format to DD.MM.YYYY for display
+    const isoValue = formData[name] || "";
+    let displayValue = "";
+    if (isoValue) {
+      try {
+        const date = new Date(isoValue);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        displayValue = `${day}.${month}.${year}`;
+      } catch (e) {
+        displayValue = isoValue;
+      }
+    }
+    
+    return <DateField
+      name={name}
+      label={label}
+      value={displayValue}
+      onChange={(value) => {
+        // Convert DD.MM.YYYY to ISO format for storage
+        if (value && value.length === 10) {
+          const [day, month, year] = value.split('.');
+          const isoDate = `${year}-${month}-${day}`;
+          handleInputChange(name, isoDate);
+        } else {
+          handleInputChange(name, value);
+        }
+      }}
+      delay={delay}
+    />;
   };
   const renderFieldGroup = (fields: Array<{
     name: string;

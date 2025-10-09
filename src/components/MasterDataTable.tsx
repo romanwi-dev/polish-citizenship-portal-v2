@@ -7,13 +7,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Mic, Save, Download, Upload, Calendar as CalendarIcon, CheckCircle2, AlertCircle, User, Users, FileText, Baby } from "lucide-react";
-import { format } from "date-fns";
+import { Mic, Save, Download, Upload, CheckCircle2, AlertCircle, User, Users, FileText, Baby } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { DateField } from "@/components/DateField";
 
 interface MasterDataTableProps {
   open: boolean;
@@ -164,47 +162,27 @@ export const MasterDataTable = ({ open, onOpenChange, caseId }: MasterDataTableP
 
     if (isDateField) {
       return (
-        <div className="space-y-2">
-          <Label htmlFor={fieldName} className="flex items-center gap-2">
-            {fieldLabel}
-            {formData[fieldName] && <CheckCircle2 className="h-3 w-3 text-green-600" />}
-          </Label>
-          <div className="flex gap-2">
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className={cn(
-                    "flex-1 justify-start text-left font-normal",
-                    !formData[fieldName] && "text-muted-foreground"
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {formData[fieldName] ? format(formData[fieldName], "PPP") : <span className="font-light opacity-40">DD.MM.YYYY</span>}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={formData[fieldName]}
-                  onSelect={(date) => setFormData(prev => ({ ...prev, [fieldName]: date }))}
-                  initialFocus
-                  className="pointer-events-auto"
-                />
-              </PopoverContent>
-            </Popover>
-            <Button
-              size="icon"
-              variant="outline"
-              onClick={() => handleVoiceInput(fieldName)}
-              disabled={isListening && activeField !== fieldName}
-            >
-              <Mic className={cn(
-                "h-4 w-4",
-                isListening && activeField === fieldName && "text-red-600 animate-pulse"
-              )} />
-            </Button>
+        <div className="flex gap-2">
+          <div className="flex-1">
+            <DateField
+              name={fieldName}
+              label={fieldLabel}
+              value={formData[fieldName] || ""}
+              onChange={(value) => setFormData(prev => ({ ...prev, [fieldName]: value }))}
+            />
           </div>
+          <Button
+            size="icon"
+            variant="outline"
+            onClick={() => handleVoiceInput(fieldName)}
+            disabled={isListening && activeField !== fieldName}
+            className="mt-8"
+          >
+            <Mic className={cn(
+              "h-4 w-4",
+              isListening && activeField === fieldName && "text-red-600 animate-pulse"
+            )} />
+          </Button>
         </div>
       );
     }
