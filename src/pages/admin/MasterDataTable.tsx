@@ -39,7 +39,7 @@ export default function MasterDataTable() {
   const { isLargeFonts, toggleFontSize } = useAccessibility();
   
   // Enable real-time sync with direct state updates
-  useRealtimeFormSync(caseId, setFormData);
+  useRealtimeFormSync(caseId, masterData, isLoading, setFormData);
 
   // Show error if no valid caseId
   if (!caseId || caseId === ':id') {

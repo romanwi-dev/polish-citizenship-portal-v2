@@ -29,7 +29,7 @@ export default function POAForm() {
   const [formData, setFormData] = useState<any>({});
   
   // Enable real-time sync with direct state updates
-  useRealtimeFormSync(caseId, setFormData);
+  useRealtimeFormSync(caseId, masterData, isLoading, setFormData);
   
   const [isGenerating, setIsGenerating] = useState(false);
   const [showClearAllDialog, setShowClearAllDialog] = useState(false);

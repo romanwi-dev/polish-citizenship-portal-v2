@@ -38,7 +38,7 @@ export default function IntakeForm() {
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   
   // Enable real-time sync with direct state updates
-  useRealtimeFormSync(caseId, setFormData);
+  useRealtimeFormSync(caseId, masterData, isLoading, setFormData);
 
   useEffect(() => {
     if (masterData) {
