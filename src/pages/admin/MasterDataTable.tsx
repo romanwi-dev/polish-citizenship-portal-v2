@@ -1,3 +1,4 @@
+import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -871,106 +872,168 @@ export default function MasterDataTable() {
                 {/* Father */}
                 <Card className="glass-card border-primary/20">
                   <CardHeader className="border-b border-border/50">
-                    <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                      Father Information
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-6 md:p-10 space-y-10">
-                    {renderFieldGroup([{
-                    name: "father_first_name",
-                    label: "Given names / Imię/ imiona"
-                  }, {
-                    name: "father_last_name",
-                    label: "Full last name / Nazwisko"
-                  }, {
-                    name: "father_pob",
-                    label: "Place of birth"
-                  }, {
-                    name: "father_dob",
-                    label: "Date of birth",
-                    type: "date"
-                  }, {
-                    name: "father_date_of_emigration",
-                    label: "Date of Emigration",
-                    type: "date"
-                  }, {
-                    name: "father_date_of_naturalization",
-                    label: "Date of Naturalization",
-                    type: "date"
-                  }])}
-                    <div className="pt-4">
-                      {renderCheckboxGroup([{
-                      name: "father_has_polish_documents",
-                      label: "Polish documents"
-                    }, {
-                      name: "father_has_birth_cert",
-                      label: "Birth certificate"
-                    }, {
-                      name: "father_has_marriage_cert",
-                      label: "Marriage certificate"
-                    }, {
-                      name: "father_has_naturalization_papers",
-                      label: "Naturalization Papers"
-                    }, {
-                      name: "father_has_foreign_documents",
-                      label: "Foreign Documents"
-                    }, {
-                      name: "father_has_military_records",
-                      label: "Military Records"
-                    }])}
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                        Father Information
+                      </CardTitle>
+                      {/* Polish descent marker */}
+                      <div className="flex items-center gap-2 bg-primary/10 border-2 border-primary/30 rounded-lg px-4 py-2">
+                        <Checkbox
+                          id="father_polish_descent"
+                          checked={formData.father_polish_descent || false}
+                          onCheckedChange={(checked) => handleInputChange("father_polish_descent", checked)}
+                        />
+                        <Label htmlFor="father_polish_descent" className="text-sm font-semibold text-primary cursor-pointer">
+                          Polish Descent
+                        </Label>
+                      </div>
                     </div>
-                    <div>{renderTextarea("father_notes", "Notes")}</div>
+                  </CardHeader>
+                  <CardContent className="p-6 md:p-10 space-y-8">
+                    {/* Names and Birth */}
+                    <div className="space-y-6">
+                      <h3 className="text-xl font-semibold text-foreground">Personal information</h3>
+                      {renderFieldGroup([{
+                        name: "father_first_name",
+                        label: "Given names / Imię/ imiona"
+                      }, {
+                        name: "father_last_name",
+                        label: "Full last name / Nazwisko"
+                      }, {
+                        name: "father_pob",
+                        label: "Place of birth / Miejsce urodzenia"
+                      }, {
+                        name: "father_dob",
+                        label: "Date of birth / Data urodzenia",
+                        type: "date"
+                      }])}
+                    </div>
+
+                    {/* Emigration and Naturalization */}
+                    <div className="space-y-6 pt-6 border-t border-border/30">
+                      <h3 className="text-xl font-semibold text-foreground">Immigration information</h3>
+                      {renderFieldGroup([{
+                        name: "father_date_of_emigration",
+                        label: "Date of emigration / Data emigracji",
+                        type: "date"
+                      }, {
+                        name: "father_date_of_naturalization",
+                        label: "Date of naturalization / Data naturalizacji",
+                        type: "date"
+                      }])}
+                    </div>
+
+                    {/* Documents */}
+                    <div className="pt-6 border-t border-border/30">
+                      <h3 className="text-xl font-semibold mb-4 text-foreground">Documents checklist</h3>
+                      {renderCheckboxGroup([{
+                        name: "father_has_birth_cert",
+                        label: "Birth certificate"
+                      }, {
+                        name: "father_has_naturalization",
+                        label: "Naturalization papers"
+                      }])}
+                    </div>
+
+                    {/* Notes */}
+                    <div className="pt-6 border-t border-border/30">
+                      {renderTextarea("father_notes", "Notes")}
+                    </div>
                   </CardContent>
                 </Card>
 
                 {/* Mother */}
                 <Card className="glass-card border-primary/20">
                   <CardHeader className="border-b border-border/50">
-                    <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                      Mother Information
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                        Mother Information
+                      </CardTitle>
+                      {/* Polish descent marker */}
+                      <div className="flex items-center gap-2 bg-primary/10 border-2 border-primary/30 rounded-lg px-4 py-2">
+                        <Checkbox
+                          id="mother_polish_descent"
+                          checked={formData.mother_polish_descent || false}
+                          onCheckedChange={(checked) => handleInputChange("mother_polish_descent", checked)}
+                        />
+                        <Label htmlFor="mother_polish_descent" className="text-sm font-semibold text-primary cursor-pointer">
+                          Polish Descent
+                        </Label>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="p-6 md:p-10 space-y-8">
+                    {/* Names and Birth */}
+                    <div className="space-y-6">
+                      <h3 className="text-xl font-semibold text-foreground">Personal information</h3>
+                      {renderFieldGroup([{
+                        name: "mother_first_name",
+                        label: "Given names / Imię/ imiona"
+                      }, {
+                        name: "mother_last_name",
+                        label: "Full last name / Nazwisko"
+                      }, {
+                        name: "mother_maiden_name",
+                        label: "Maiden name / Nazwisko panieńskie"
+                      }, {
+                        name: "mother_pob",
+                        label: "Place of birth / Miejsce urodzenia"
+                      }, {
+                        name: "mother_dob",
+                        label: "Date of birth / Data urodzenia",
+                        type: "date"
+                      }])}
+                    </div>
+
+                    {/* Emigration and Naturalization */}
+                    <div className="space-y-6 pt-6 border-t border-border/30">
+                      <h3 className="text-xl font-semibold text-foreground">Immigration information</h3>
+                      {renderFieldGroup([{
+                        name: "mother_date_of_emigration",
+                        label: "Date of emigration / Data emigracji",
+                        type: "date"
+                      }, {
+                        name: "mother_date_of_naturalization",
+                        label: "Date of naturalization / Data naturalizacji",
+                        type: "date"
+                      }])}
+                    </div>
+
+                    {/* Documents */}
+                    <div className="pt-6 border-t border-border/30">
+                      <h3 className="text-xl font-semibold mb-4 text-foreground">Documents checklist</h3>
+                      {renderCheckboxGroup([{
+                        name: "mother_has_birth_cert",
+                        label: "Birth certificate"
+                      }, {
+                        name: "mother_has_naturalization",
+                        label: "Naturalization papers"
+                      }])}
+                    </div>
+
+                    {/* Notes */}
+                    <div className="pt-6 border-t border-border/30">
+                      {renderTextarea("mother_notes", "Notes")}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Parents Marriage Information - Always visible */}
+                <Card className="glass-card border-primary/20">
+                  <CardHeader className="border-b border-border/50">
+                    <CardTitle className="text-3xl md:text-4xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                      Parents' Marriage Information
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="p-6 md:p-10 space-y-10">
+                  <CardContent className="p-6 md:p-10 space-y-6">
                     {renderFieldGroup([{
-                    name: "mother_first_name",
-                    label: "Given names / Imię/ imiona"
-                  }, {
-                    name: "mother_last_name",
-                    label: "Full last name / Nazwisko"
-                  }, {
-                    name: "mother_maiden_name",
-                    label: "Maiden name"
-                  }, {
-                    name: "mother_pob",
-                    label: "Place of birth"
-                  }, {
-                    name: "mother_dob",
-                    label: "Date of birth",
-                    type: "date"
-                  }, {
-                    name: "mother_date_of_emigration",
-                    label: "Date of Emigration",
-                    type: "date"
-                  }])}
-                    <div className="pt-4">
-                      {renderCheckboxGroup([{
-                      name: "mother_has_polish_documents",
-                      label: "Polish documents"
+                      name: "father_mother_marriage_place",
+                      label: "Place of marriage / Miejsce zawarcia związku małżeńskiego"
                     }, {
-                      name: "mother_has_birth_cert",
-                      label: "Birth certificate"
-                    }, {
-                      name: "mother_has_marriage_cert",
-                      label: "Marriage certificate"
-                    }, {
-                      name: "mother_has_naturalization_papers",
-                      label: "Naturalization Papers"
-                    }, {
-                      name: "mother_has_foreign_documents",
-                      label: "Foreign Documents"
+                      name: "father_mother_marriage_date",
+                      label: "Date of marriage / Data zawarcia związku małżeńskiego",
+                      type: "date"
                     }])}
-                    </div>
-                    <div>{renderTextarea("mother_notes", "Notes")}</div>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -996,60 +1059,97 @@ export default function MasterDataTable() {
                   mgf: "Maternal Grandfather",
                   mgm: "Maternal Grandmother"
                 };
-                return <Card key={prefix} className="glass-card border-primary/20">
+                const marriageLabels = {
+                  pgf: "Paternal Grandparents' Marriage",
+                  mgf: "Maternal Grandparents' Marriage"
+                };
+                const marriagePrefix = prefix === "pgf" ? "pgf_pgm" : prefix === "mgf" ? "mgf_mgm" : null;
+                
+                return (
+                  <React.Fragment key={prefix}>
+                    <Card className="glass-card border-primary/20">
                       <CardHeader className="border-b border-border/50">
                         <CardTitle className="text-3xl md:text-4xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                           {labels[prefix as keyof typeof labels]}
                         </CardTitle>
                       </CardHeader>
-                      <CardContent className="p-6 md:p-10 space-y-10">
-                        <div className="mb-6 p-4 bg-primary/10 rounded-lg border-2 border-primary/30">
-                          {renderCheckboxGroup([{
-                        name: `${prefix}_is_polish`,
-                        label: "Polish Ancestor"
-                      }])}
+                      <CardContent className="p-6 md:p-10 space-y-8">
+                        {/* Names and Birth */}
+                        <div className="space-y-6">
+                          {renderFieldGroup([{
+                            name: `${prefix}_first_name`,
+                            label: "Given names / Imię/ imiona"
+                          }, {
+                            name: `${prefix}_last_name`,
+                            label: "Full last name / Nazwisko"
+                          }, ...(prefix.includes("gm") ? [{
+                            name: `${prefix}_maiden_name`,
+                            label: "Maiden name / Nazwisko panieńskie"
+                          }] : []), {
+                            name: `${prefix}_pob`,
+                            label: "Place of birth / Miejsce urodzenia"
+                          }, {
+                            name: `${prefix}_dob`,
+                            label: "Date of birth / Data urodzenia",
+                            type: "date"
+                          }])}
                         </div>
-                        {renderFieldGroup([{
-                      name: `${prefix}_first_name`,
-                      label: "Given names / Imię/ imiona"
-                    }, {
-                      name: `${prefix}_last_name`,
-                      label: "Full last name / Nazwisko"
-                    }, ...(prefix.includes("gm") ? [{
-                      name: `${prefix}_maiden_name`,
-                      label: "Maiden name"
-                    }] : []), {
-                      name: `${prefix}_pob`,
-                      label: "Place of birth"
-                    }, {
-                      name: `${prefix}_dob`,
-                      label: "Date of birth",
-                      type: "date"
-                    }])}
-                        <div className="pt-4">
-                          {renderCheckboxGroup([{
-                        name: `${prefix}_has_polish_documents`,
-                        label: "Polish documents"
-                      }, {
-                        name: `${prefix}_has_birth_cert`,
-                        label: "Birth certificate"
-                      }, {
-                        name: `${prefix}_has_marriage_cert`,
-                        label: "Marriage certificate"
-                      }, {
-                        name: `${prefix}_has_naturalization_papers`,
-                        label: "Naturalization Papers"
-                      }, {
-                        name: `${prefix}_has_foreign_documents`,
-                        label: "Foreign Documents"
-                      }, ...(prefix === "pgf" || prefix === "mgf" ? [{
-                        name: `${prefix}_has_military_records`,
-                        label: "Military Records"
-                      }] : []), ...(prefix === "mgm" ? [] : [])])}
+
+                        {/* Emigration and Naturalization */}
+                        <div className="space-y-6 pt-6 border-t border-border/30">
+                          <h3 className="text-xl font-semibold text-foreground">Immigration information</h3>
+                          {renderFieldGroup([{
+                            name: `${prefix}_date_of_emigration`,
+                            label: "Date of emigration / Data emigracji",
+                            type: "date"
+                          }, {
+                            name: `${prefix}_date_of_naturalization`,
+                            label: "Date of naturalization / Data naturalizacji",
+                            type: "date"
+                          }])}
                         </div>
-                        <div>{renderTextarea(`${prefix}_notes`, "Notes")}</div>
+
+                        {/* Documents */}
+                        <div className="pt-6 border-t border-border/30">
+                          <h3 className="text-xl font-semibold mb-4 text-foreground">Documents checklist</h3>
+                          {renderCheckboxGroup([{
+                            name: `${prefix}_has_birth_cert`,
+                            label: "Birth certificate"
+                          }, {
+                            name: `${prefix}_has_naturalization`,
+                            label: "Naturalization papers"
+                          }])}
+                        </div>
+
+                        {/* Notes */}
+                        <div className="pt-6 border-t border-border/30">
+                          {renderTextarea(`${prefix}_notes`, "Notes")}
+                        </div>
                       </CardContent>
-                    </Card>;
+                    </Card>
+
+                    {/* Marriage card after each grandfather */}
+                    {marriagePrefix && (
+                      <Card className="glass-card border-primary/20">
+                        <CardHeader className="border-b border-border/50">
+                          <CardTitle className="text-2xl md:text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                            {marriageLabels[prefix as keyof typeof marriageLabels]}
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent className="p-6 md:p-10 space-y-6">
+                          {renderFieldGroup([{
+                            name: `${marriagePrefix}_marriage_place`,
+                            label: "Place of marriage / Miejsce zawarcia związku małżeńskiego"
+                          }, {
+                            name: `${marriagePrefix}_marriage_date`,
+                            label: "Date of marriage / Data zawarcia związku małżeńskiego",
+                            type: "date"
+                          }])}
+                        </CardContent>
+                      </Card>
+                    )}
+                  </React.Fragment>
+                );
               })}
               </motion.div>
             </ScrollArea>
