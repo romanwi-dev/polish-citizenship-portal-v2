@@ -39,6 +39,28 @@ export default function POAForm() {
 
   // Form will be initialized by useRealtimeFormSync hook
 
+  // Calculate if there are minor children (under 18)
+  const hasMinorChildren = () => {
+    const today = new Date();
+    for (let i = 1; i <= 10; i++) {
+      const childDob = formData[`child_${i}_dob`];
+      if (childDob) {
+        const dob = new Date(childDob);
+        const age = today.getFullYear() - dob.getFullYear();
+        const monthDiff = today.getMonth() - dob.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+          if (age - 1 < 18) return true;
+        } else if (age < 18) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
+  const showSpousePOA = formData.applicant_is_married === true;
+  const showMinorPOA = hasMinorChildren();
+
   const handleInputChange = (field: string, value: any) => {
     console.log(`🔄 Field changed: ${field} = "${value}"`);
     setFormData((prev: any) => ({ ...prev, [field]: value }));
@@ -408,9 +430,10 @@ export default function POAForm() {
             </Card>
           </motion.div>
 
-          {/* POA Minor */}
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.1 }}>
-            <Card className="glass-card border-primary/20">
+          {/* POA Minor - Only show if has minor children */}
+          {showMinorPOA && (
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.1 }}>
+              <Card className="glass-card border-primary/20">
               <CardHeader className="border-b border-border/50 pb-6">
                 <div {...minorCardLongPress.handlers} className="cursor-pointer select-none hover:opacity-80 transition-opacity">
                   <CardTitle className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
@@ -470,10 +493,12 @@ export default function POAForm() {
               </CardContent>
             </Card>
           </motion.div>
+          )}
 
-          {/* POA Spouses */}
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.2 }}>
-            <Card className="glass-card border-primary/20">
+          {/* POA Spouses - Only show if married */}
+          {showSpousePOA && (
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.2 }}>
+              <Card className="glass-card border-primary/20">
               <CardHeader className="border-b border-border/50 pb-6">
                 <div {...spousesCardLongPress.handlers} className="cursor-pointer select-none hover:opacity-80 transition-opacity">
                   <CardTitle className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
@@ -614,6 +639,7 @@ export default function POAForm() {
               </CardContent>
             </Card>
           </motion.div>
+          )}
         </div>
       </div>
 
