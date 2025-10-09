@@ -728,48 +728,191 @@ export default function MasterDataTable() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-6 md:p-10 space-y-10">
-                  {renderFieldGroup([{
-                  name: "spouse_first_name",
-                  label: "Given names / Imię/ imiona"
-                }, {
-                  name: "spouse_last_name",
-                  label: "Full last name / Nazwisko"
-                }, {
-                  name: "spouse_maiden_name",
-                  label: "Maiden name"
-                }, {
-                  name: "spouse_sex",
-                  label: "Sex"
-                }, {
-                  name: "spouse_dob",
-                  label: "Date of birth",
-                  type: "date"
-                }, {
-                  name: "spouse_pob",
-                  label: "Place of birth"
-                }, {
-                  name: "date_of_marriage",
-                  label: "Date of marriage",
-                  type: "date"
-                }, {
-                  name: "place_of_marriage",
-                  label: "Place of marriage"
-                }])}
+                  {/* Row 1: Gender and Civil Status */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Gender */}
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-2">
+                      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                        Gender / Płeć
+                      </Label>
+                      <Select value={formData.spouse_sex || ""} onValueChange={(value) => handleInputChange("spouse_sex", value)}>
+                        <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                          <SelectValue placeholder="Select..." />
+                        </SelectTrigger>
+                        <SelectContent className="bg-background border-2 z-50">
+                          <SelectItem value="Male / Mężczyzna" className="text-base cursor-pointer">Male / Mężczyzna</SelectItem>
+                          <SelectItem value="Female / Kobieta" className="text-base cursor-pointer">Female / Kobieta</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </motion.div>
+                  </div>
 
+                  {/* Row 2: Names */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="space-y-2">
+                      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                        Given names / Imię/ imiona
+                      </Label>
+                      <Input
+                        value={formData.spouse_first_name || ""}
+                        onChange={(e) => handleInputChange("spouse_first_name", e.target.value.toUpperCase())}
+                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                        style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                      />
+                    </motion.div>
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="space-y-2">
+                      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                        Full last name / Nazwisko
+                      </Label>
+                      <Input
+                        value={formData.spouse_last_name || ""}
+                        onChange={(e) => handleInputChange("spouse_last_name", e.target.value.toUpperCase())}
+                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                        style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                      />
+                    </motion.div>
+                  </div>
+
+                  {/* Row 3: Maiden name */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="space-y-2">
+                      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                        Maiden name / Nazwisko rodowe
+                      </Label>
+                      <Input
+                        value={formData.spouse_maiden_name || ""}
+                        onChange={(e) => handleInputChange("spouse_maiden_name", e.target.value.toUpperCase())}
+                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                        style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                      />
+                    </motion.div>
+                  </div>
+
+                  {/* Row 4: Place and Date of birth */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="space-y-2">
+                      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                        Place of birth / Miejsce urodzenia
+                      </Label>
+                      <Input
+                        value={formData.spouse_pob || ""}
+                        onChange={(e) => handleInputChange("spouse_pob", e.target.value.toUpperCase())}
+                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                        style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                      />
+                    </motion.div>
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="space-y-2">
+                      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                        Date of birth / Data urodzenia
+                      </Label>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button variant="outline" className={cn("w-full h-16 justify-start text-left border-2 hover-glow bg-card/50 backdrop-blur", !formData.spouse_dob && "text-muted-foreground")} style={{ fontSize: '1.125rem', fontWeight: '400' }}>
+                            <CalendarIcon className="mr-2 h-5 w-5" />
+                            {formData.spouse_dob ? format(new Date(formData.spouse_dob), "dd/MM/yyyy") : <span>Pick a date</span>}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar mode="single" selected={formData.spouse_dob ? new Date(formData.spouse_dob) : undefined} onSelect={date => handleInputChange("spouse_dob", date ? format(date, "yyyy-MM-dd") : "")} disabled={date => date > new Date("2030-12-31") || date < new Date("1900-01-01")} initialFocus className={cn("p-3 pointer-events-auto")} />
+                        </PopoverContent>
+                      </Popover>
+                    </motion.div>
+                  </div>
+
+                  {/* Marriage fields - Always show for spouse */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
+                      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                        Place of marriage / Miejsce zawarcia związku małżeńskiego
+                      </Label>
+                      <Input
+                        value={formData.place_of_marriage || ""}
+                        onChange={(e) => handleInputChange("place_of_marriage", e.target.value.toUpperCase())}
+                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                        style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                      />
+                    </motion.div>
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
+                      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                        Date of marriage / Data zawarcia związku małżeńskiego
+                      </Label>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button variant="outline" className={cn("w-full h-16 justify-start text-left border-2 hover-glow bg-card/50 backdrop-blur", !formData.date_of_marriage && "text-muted-foreground")} style={{ fontSize: '1.125rem', fontWeight: '400' }}>
+                            <CalendarIcon className="mr-2 h-5 w-5" />
+                            {formData.date_of_marriage ? format(new Date(formData.date_of_marriage), "dd/MM/yyyy") : <span>Pick a date</span>}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar mode="single" selected={formData.date_of_marriage ? new Date(formData.date_of_marriage) : undefined} onSelect={date => handleInputChange("date_of_marriage", date ? format(date, "yyyy-MM-dd") : "")} disabled={date => date > new Date("2030-12-31") || date < new Date("1900-01-01")} initialFocus className={cn("p-3 pointer-events-auto")} />
+                        </PopoverContent>
+                      </Popover>
+                    </motion.div>
+                  </div>
+
+                  {/* Contact information */}
+                  <div className="pt-8">
+                    <h3 className="text-xl font-semibold mb-6 text-foreground">Contact information</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
+                        <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                          Email
+                        </Label>
+                        <Input
+                          value={formData.spouse_email || ""}
+                          onChange={(e) => handleInputChange("spouse_email", e.target.value)}
+                          type="email"
+                          className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+                          style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                        />
+                      </motion.div>
+                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
+                        <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                          Phone
+                        </Label>
+                        <Input
+                          value={formData.spouse_phone || ""}
+                          onChange={(e) => handleInputChange("spouse_phone", e.target.value)}
+                          className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+                          style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                        />
+                      </motion.div>
+                    </div>
+                  </div>
+
+                  {/* Immigration information */}
+                  <div className="pt-8">
+                    <h3 className="text-xl font-semibold mb-6 text-foreground">Immigration information</h3>
+                    {renderFieldGroup([{
+                      name: "spouse_date_of_emigration",
+                      label: "Date of emigration",
+                      type: "date"
+                    }, {
+                      name: "spouse_date_of_naturalization",
+                      label: "Date of naturalization",
+                      type: "date"
+                    }])}
+                  </div>
+
+                  {/* Documents required */}
                   <div className="pt-8">
                     <h3 className="text-xl font-semibold mb-6 text-foreground">Documents required</h3>
                     {renderCheckboxGroup([{
-                    name: "spouse_has_birth_cert",
-                    label: "Birth certificate"
-                  }, {
-                    name: "spouse_has_marriage_cert",
-                    label: "Marriage certificate"
-                  }, {
-                    name: "spouse_has_passport",
-                    label: "Passport"
-                  }])}
+                      name: "spouse_has_birth_cert",
+                      label: "Birth certificate"
+                    }, {
+                      name: "spouse_has_marriage_cert",
+                      label: "Marriage certificate"
+                    }, {
+                      name: "spouse_has_passport",
+                      label: "Passport"
+                    }, {
+                      name: "spouse_has_naturalization",
+                      label: "Naturalization certificate"
+                    }])}
                   </div>
 
+                  {/* Additional notes */}
                   <div className="pt-8">
                     {renderTextarea("spouse_notes", "Additional notes")}
                   </div>
