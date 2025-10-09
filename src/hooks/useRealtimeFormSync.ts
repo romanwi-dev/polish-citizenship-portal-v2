@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -13,17 +13,24 @@ export const useRealtimeFormSync = (
   setFormData: React.Dispatch<React.SetStateAction<any>>
 ) => {
   const queryClient = useQueryClient();
+  const isInitialized = useRef(false);
 
-  // Initialize form with master data when it loads
+  // Initialize form with master data when it loads - ONLY ONCE
   useEffect(() => {
     if (isLoading) {
       console.log('⏳ Loading data...');
       return;
     }
     
+    // Prevent re-initialization if already done
+    if (isInitialized.current) {
+      return;
+    }
+    
     if (!masterData) {
       console.log('📭 No data in DB - initializing empty form');
       setFormData({});
+      isInitialized.current = true;
       return;
     }
     
@@ -37,7 +44,8 @@ export const useRealtimeFormSync = (
     
     // FORCE UPDATE - set ALL masterData as form data
     setFormData(masterData);
-  }, [masterData, isLoading, setFormData]);
+    isInitialized.current = true;
+  }, [isLoading]); // Only depend on isLoading, not masterData
 
   // Real-time sync
   useEffect(() => {
