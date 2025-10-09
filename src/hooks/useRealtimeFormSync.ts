@@ -15,32 +15,15 @@ export const useRealtimeFormSync = (
   const queryClient = useQueryClient();
   const isInitialized = useRef(false);
 
-  // Initialize form with master data when it loads - ONLY ONCE
+  // Initialize form with master data when it loads - ONLY ONCE on mount
   useEffect(() => {
-    if (isLoading) {
-      console.log('⏳ Loading data...');
-      return;
-    }
+    if (isLoading) return;
+    if (isInitialized.current) return;
     
-    // Prevent re-initialization if already done
-    if (isInitialized.current) {
-      console.log('⛔ Already initialized - skipping');
-      return;
-    }
-    
-    if (!masterData) {
-      console.log('📭 No data in DB - initializing empty form');
-      setFormData({});
-      isInitialized.current = true;
-      return;
-    }
-    
-    console.log('📥 INITIAL LOAD ONLY - Setting form data:', Object.keys(masterData).length, 'fields');
-    
-    // FORCE UPDATE - set ALL masterData as form data
-    setFormData(masterData);
+    console.log('📥 ONE-TIME INITIALIZATION');
+    setFormData(masterData || {});
     isInitialized.current = true;
-  }, [isLoading, masterData]); // Watch both to handle data arriving after loading completes
+  }, [isLoading]); // NEVER watch masterData here!
 
   // Real-time sync
   useEffect(() => {
