@@ -37,76 +37,7 @@ export default function POAForm() {
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null);
   const [previewFormData, setPreviewFormData] = useState<any>(null);
 
-  // Initialize form when masterData loads or caseId changes
-  const hasInitialized = useRef(false);
-  const lastCaseId = useRef<string | undefined>(undefined);
-  
-  useEffect(() => {
-    // Reset initialization when switching cases
-    if (caseId !== lastCaseId.current) {
-      hasInitialized.current = false;
-      lastCaseId.current = caseId;
-    }
-    
-    if (hasInitialized.current) {
-      return;
-    }
-    
-    const initializeFormData = async () => {
-      const today = format(new Date(), "yyyy-MM-dd");
-      
-      if (masterData) {
-        setFormData({ ...masterData, poa_date_filed: masterData.poa_date_filed || today });
-        hasInitialized.current = true;
-      } else if (!isLoading && caseId) {
-        // Try to populate from intake_data
-        const { data: intakeData } = await supabase
-          .from('intake_data')
-          .select('*')
-          .eq('case_id', caseId)
-          .maybeSingle();
-        
-        if (intakeData) {
-          // Map intake fields to master_table fields
-          const initialData = {
-            poa_date_filed: today,
-            applicant_first_name: intakeData.first_name,
-            applicant_last_name: intakeData.last_name,
-            applicant_maiden_name: intakeData.maiden_name,
-            applicant_sex: intakeData.sex,
-            applicant_pob: intakeData.place_of_birth,
-            applicant_dob: intakeData.date_of_birth,
-            applicant_email: intakeData.email,
-            applicant_phone: intakeData.phone,
-            applicant_passport_number: intakeData.passport_number,
-            applicant_passport_issue_date: intakeData.passport_issue_date,
-            applicant_passport_expiry_date: intakeData.passport_expiry_date,
-            applicant_passport_issuing_country: intakeData.passport_issuing_country,
-            father_first_name: intakeData.father_first_name,
-            father_last_name: intakeData.father_last_name,
-            father_pob: intakeData.father_pob,
-            father_dob: intakeData.father_dob,
-            mother_first_name: intakeData.mother_first_name,
-            mother_last_name: intakeData.mother_last_name,
-            mother_maiden_name: intakeData.mother_maiden_name,
-            mother_pob: intakeData.mother_pob,
-            mother_dob: intakeData.mother_dob,
-            ancestry_line: intakeData.ancestry_line,
-            language_preference: intakeData.language_preference,
-          };
-          
-          setFormData(initialData);
-          updateMutation.mutate({ caseId, updates: initialData });
-        } else {
-          setFormData({ poa_date_filed: today });
-        }
-        
-        hasInitialized.current = true;
-      }
-    };
-    
-    initializeFormData();
-  }, [masterData, isLoading, caseId]);
+  // Form will be initialized by useRealtimeFormSync hook
 
   const handleInputChange = (field: string, value: any) => {
     setFormData((prev: any) => {

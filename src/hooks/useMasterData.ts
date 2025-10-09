@@ -9,22 +9,29 @@ export const useMasterData = (caseId: string | undefined) => {
     queryFn: async () => {
       if (!caseId || caseId === ':id') throw new Error("Invalid case ID");
 
+      console.log('🔍 FETCHING FRESH DATA FROM DB - Case:', caseId);
+
       const { data, error } = await supabase
         .from("master_table")
         .select("*")
         .eq("case_id", caseId)
         .maybeSingle();
 
-      if (error) throw error;
+      if (error) {
+        console.error('❌ DB FETCH ERROR:', error);
+        throw error;
+      }
       
+      console.log('✅ FRESH DATA FROM DB:', data ? Object.keys(data).length + ' fields' : 'NO DATA');
       return data;
     },
     enabled: !!caseId && caseId !== ':id',
-    staleTime: 0, // Always fetch fresh data
-    gcTime: 0, // Don't cache after unmount
-    refetchOnMount: true, // Always refetch on mount
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
+    // FORCE NO CACHING - ALWAYS FETCH FRESH
+    staleTime: 0,
+    gcTime: 0,
+    refetchOnMount: 'always',
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
   });
 };
 
@@ -37,7 +44,11 @@ export const useUpdateMasterData = () => {
         throw new Error("Invalid case ID");
       }
 
+      console.log('💾 SAVING TO DB - Case:', caseId);
+      console.log('📦 Updates:', Object.keys(updates).length, 'fields');
+
       const sanitizedUpdates = sanitizeMasterData(updates);
+      console.log('🧹 After sanitization:', Object.keys(sanitizedUpdates).length, 'fields');
 
       const { data: existing, error: checkError } = await supabase
         .from("master_table")
@@ -56,6 +67,7 @@ export const useUpdateMasterData = () => {
           .eq("case_id", caseId);
         
         if (error) {
+          console.error('❌ UPDATE ERROR:', error);
           throw error;
         }
       } else {
@@ -64,15 +76,30 @@ export const useUpdateMasterData = () => {
           .insert({ case_id: caseId, ...sanitizedUpdates });
         
         if (error) {
+          console.error('❌ INSERT ERROR:', error);
           throw error;
         }
       }
+
+      console.log('✅ SAVED TO DB SUCCESSFULLY');
     },
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ["masterData", variables.caseId] });
+      console.log('🔄 CLEARING ALL CACHES AND FORCING REFETCH');
+      
+      // NUCLEAR OPTION - CLEAR EVERYTHING
+      queryClient.removeQueries({ queryKey: ["masterData", variables.caseId] });
+      queryClient.invalidateQueries({ 
+        queryKey: ["masterData", variables.caseId],
+        refetchType: 'all'
+      });
+      queryClient.refetchQueries({ 
+        queryKey: ["masterData", variables.caseId]
+      });
+      
       toast.success("Master data updated successfully");
     },
     onError: (error: any) => {
+      console.error('❌ SAVE FAILED:', error);
       toast.error(`Failed to update: ${error.message}`);
     },
   });

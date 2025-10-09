@@ -41,17 +41,6 @@ export default function IntakeForm() {
   useRealtimeFormSync(caseId, masterData, isLoading, setFormData);
 
   useEffect(() => {
-    if (masterData) {
-      setFormData(masterData);
-      setOriginalData(masterData);
-    } else if (!isLoading) {
-      // Initialize with empty object when no data exists
-      setFormData({});
-      setOriginalData({});
-    }
-  }, [masterData, isLoading]);
-
-  useEffect(() => {
     setHasUnsavedChanges(JSON.stringify(formData) !== JSON.stringify(originalData));
   }, [formData, originalData]);
 

@@ -38,11 +38,6 @@ export default function CivilRegistryForm() {
   
   // Enable real-time sync with direct state updates
   useRealtimeFormSync(caseId, masterData, isLoading, setFormData);
-  useEffect(() => {
-    if (masterData) {
-      setFormData(masterData);
-    }
-  }, [masterData]);
   const handleInputChange = (field: string, value: any) => {
     setFormData((prev: any) => ({
       ...prev,
