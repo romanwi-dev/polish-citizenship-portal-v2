@@ -17,10 +17,12 @@ export const useRealtimeFormSync = (
 
   // Initialize form with master data when it loads - ONLY ONCE on mount
   useEffect(() => {
+    console.log('🔍 useEffect triggered - isLoading:', isLoading, 'isInitialized:', isInitialized.current, 'masterData keys:', masterData ? Object.keys(masterData).length : 'null');
+    
     if (isLoading) return;
     if (isInitialized.current) return;
     
-    console.log('📥 ONE-TIME INITIALIZATION');
+    console.log('✅ ONE-TIME INITIALIZATION - Setting form data');
     setFormData(masterData || {});
     isInitialized.current = true;
   }, [isLoading]); // NEVER watch masterData here!

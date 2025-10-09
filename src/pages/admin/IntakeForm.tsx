@@ -46,6 +46,7 @@ export default function IntakeForm() {
   }, [formData, originalData]);
 
   const handleInputChange = (field: string, value: any) => {
+    console.log('✏️ Field changed:', field, '=', value);
     setFormData((prev: any) => ({
       ...prev,
       [field]: value
@@ -115,12 +116,14 @@ export default function IntakeForm() {
   // Unsaved changes warning
   useUnsavedChanges(hasUnsavedChanges);
   const clearAllFields = () => {
+    console.log('🧹 CLEAR ALL FIELDS called');
     const clearedData = {};
     setFormData(clearedData);
     setOriginalData(clearedData);
     
     // Save cleared state to DB immediately
     if (caseId) {
+      console.log('💾 Saving cleared data to DB');
       updateMutation.mutate({
         caseId,
         updates: clearedData
