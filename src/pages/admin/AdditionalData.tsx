@@ -43,7 +43,7 @@ export default function AdditionalData() {
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                 <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
                   <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
-                    Additional Data
+                    Additional Information
                   </CardTitle>
                 </motion.div>
                 <Button
@@ -70,7 +70,7 @@ export default function AdditionalData() {
           <Card className="glass-card border-primary/20">
             <CardContent className="p-6 md:p-10">
               <p className="text-lg text-muted-foreground text-center">
-                Combined Additional Data page - Coming soon
+                Combined Additional Information page - Coming soon
               </p>
             </CardContent>
           </Card>

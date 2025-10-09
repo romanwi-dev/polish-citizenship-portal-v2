@@ -385,7 +385,7 @@ export default function MasterDataTable() {
               className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[140px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap"
             >
               <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Additional Data
+                Additional Information
               </span>
             </Button>
             </div>
@@ -1367,7 +1367,7 @@ export default function MasterDataTable() {
               <Card className="glass-card border-primary/20">
                 <CardHeader className="border-b border-border/50 pb-6">
                   <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                    Additional Data
+                    Additional Information
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-6 md:p-10 space-y-10">

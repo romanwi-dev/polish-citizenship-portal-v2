@@ -412,7 +412,7 @@ export default function POAForm() {
 
             <Button onClick={() => navigate(`/admin/cases/${caseId}/additional-data`)} variant="outline"
               className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[160px] md:min-w-[200px] lg:min-w-[240px] whitespace-nowrap flex-shrink-0">
-              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Additional Data</span>
+              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Additional Information</span>
             </Button>
           </div>
         </motion.div>
