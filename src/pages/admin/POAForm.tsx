@@ -40,22 +40,55 @@ export default function POAForm() {
   // Form will be initialized by useRealtimeFormSync hook
 
   const handleInputChange = (field: string, value: any) => {
+    console.log(`🔄 Field changed: ${field} = "${value}"`);
     setFormData((prev: any) => ({ ...prev, [field]: value }));
   };
 
+  const clearField = (fieldName: string) => {
+    console.log(`🗑️ Clearing single field: ${fieldName}`);
+    setFormData((prev: any) => ({ ...prev, [fieldName]: "" }));
+    toast.success(`Cleared ${fieldName}`);
+  };
+
   const clearCardFields = (config: any) => {
+    console.log(`🗑️ Clearing card: ${config.title}`);
     const clearedFields: any = {};
     config.fields.forEach((field: any) => {
-      if (field.type !== "date") clearedFields[field.name] = "";
+      if (field.type !== "date") {
+        clearedFields[field.name] = "";
+        console.log(`  - Clearing: ${field.name}`);
+      }
     });
-    setFormData((prev: any) => ({ ...prev, ...clearedFields }));
+    setFormData((prev: any) => {
+      const updated = { ...prev, ...clearedFields };
+      console.log(`✅ After clear - formData has ${Object.keys(updated).length} fields`);
+      return updated;
+    });
     toast.success(`Cleared all fields in ${config.title}`);
   };
 
   const clearAllFields = () => {
-    const today = format(new Date(), "yyyy-MM-dd");
-    setFormData({ poa_date_filed: formData?.poa_date_filed || today });
-    toast.success("Cleared all fields");
+    console.log(`🗑️ CLEARING ALL FIELDS`);
+    console.log(`📊 Before clear: ${Object.keys(formData).length} fields`);
+    
+    // Build cleared version keeping ALL fields but setting non-dates to ""
+    const clearedData: any = { ...formData };
+    Object.keys(clearedData).forEach(key => {
+      // Keep dates, clear everything else
+      if (!key.includes('_date') && !key.includes('_dob') && key !== 'poa_date_filed') {
+        clearedData[key] = "";
+      }
+    });
+    
+    console.log(`📊 After clear: ${Object.keys(clearedData).length} fields`);
+    console.log(`📋 Sample cleared fields:`, {
+      applicant_first_name: clearedData.applicant_first_name,
+      applicant_last_name: clearedData.applicant_last_name,
+      applicant_email: clearedData.applicant_email
+    });
+    
+    setFormData(clearedData);
+    toast.success("Cleared all fields (except dates)");
     setShowClearAllDialog(false);
   };
 
