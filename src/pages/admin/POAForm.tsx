@@ -64,7 +64,18 @@ export default function POAForm() {
 
   const handleInputChange = (field: string, value: any) => {
     console.log(`🔄 Field changed: ${field} = "${value}"`);
-    setFormData((prev: any) => ({ ...prev, [field]: value }));
+    setFormData((prev: any) => {
+      const updated = { ...prev, [field]: value };
+      
+      // If applicant_last_name or applicant_sex changes and applicant is male, update all child last names
+      if ((field === 'applicant_last_name' || field === 'applicant_sex') && updated.applicant_sex === 'M' && updated.applicant_last_name) {
+        for (let i = 1; i <= 10; i++) {
+          updated[`child_${i}_last_name`] = updated.applicant_last_name;
+        }
+      }
+      
+      return updated;
+    });
   };
 
   const clearField = (fieldName: string) => {
