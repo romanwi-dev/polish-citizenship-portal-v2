@@ -12,7 +12,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useState } from "react";
-import { Loader2, Save, FileText, Users, Baby, Heart, Calendar as CalendarIcon, Sparkles, Download, GitBranch, Type, FilePlus, User, ArrowLeft } from "lucide-react";
+import { Loader2, Save, FileText, Users, Baby, Heart, Calendar as CalendarIcon, Sparkles, Download, GitBranch, Type, FilePlus, User, ArrowLeft, Trash2 } from "lucide-react";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { PDFGenerationButtons } from "@/components/PDFGenerationButtons";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -104,6 +104,13 @@ export default function MasterDataTable() {
   const handleSave = async () => {
     if (!caseId) return;
     await saveData(formData);
+  };
+
+  const handleClearData = () => {
+    if (window.confirm('Are you sure you want to clear all form data? This action cannot be undone.')) {
+      setFormData({});
+      toast.success('All form data cleared');
+    }
   };
   if (isLoading) {
     return <div className="flex items-center justify-center min-h-screen bg-background">
@@ -291,6 +298,17 @@ export default function MasterDataTable() {
                   </span>
                 </>
               )}
+            </Button>
+            <Button 
+              onClick={handleClearData} 
+              size="default" 
+              variant="destructive"
+              className="text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[160px] md:min-w-[220px] lg:min-w-[260px] whitespace-nowrap"
+            >
+              <Trash2 className="h-3 md:h-4 lg:h-5 w-3 md:w-4 lg:w-5 mr-1 md:mr-2" />
+              <span className="relative z-10">
+                Clear Data
+              </span>
             </Button>
             <PDFGenerationButtons caseId={caseId || ''} />
             {(formData.minor_children_count > 0) && (
