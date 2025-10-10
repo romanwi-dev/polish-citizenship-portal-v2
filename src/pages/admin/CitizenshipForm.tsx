@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState, useEffect } from "react";
-import { Loader2, Save, Download, FileCheck, Sparkles, Type, FilePlus, User, ArrowLeft, HelpCircle } from "lucide-react";
+import { Loader2, Save, Download, FileCheck, Sparkles, Type, FilePlus, User, ArrowLeft, HelpCircle, Maximize2, Minimize2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -39,6 +39,7 @@ export default function CitizenshipForm() {
   const [formData, setFormData] = useState<any>({});
   const [isGenerating, setIsGenerating] = useState(false);
   const [showClearAllDialog, setShowClearAllDialog] = useState(false);
+  const [isFullView, setIsFullView] = useState(true); // Default to full view since it doesn't have tabs
   
   // Enable real-time sync with direct state updates
   useRealtimeFormSync(caseId, masterData, isLoading, setFormData);

@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useState } from "react";
-import { Loader2, Save, FileText, Users, Baby, Heart, Sparkles, Download, GitBranch, Type, FilePlus, User, ArrowLeft, TreePine, BookOpen, FolderOpen, HelpCircle } from "lucide-react";
+import { Loader2, Save, FileText, Users, Baby, Heart, Sparkles, Download, GitBranch, Type, FilePlus, User, ArrowLeft, TreePine, BookOpen, FolderOpen, HelpCircle, Maximize2, Minimize2 } from "lucide-react";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -34,6 +34,7 @@ export default function MasterDataTable() {
   const [activeTab, setActiveTab] = useState("applicant");
   const [showClearDialog, setShowClearDialog] = useState(false);
   const { isLargeFonts, toggleFontSize } = useAccessibility();
+  const [isFullView, setIsFullView] = useState(false);
 
   // Show error if no valid caseId
   if (!caseId || caseId === ':id') {
@@ -288,8 +289,18 @@ export default function MasterDataTable() {
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }}>
           <Card className="glass-card border-primary/20">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <div className="border-b border-border/50">
-                <TabsList className="w-full h-auto p-2 bg-transparent flex flex-wrap justify-start gap-1">
+              <div className="border-b border-border/50 flex items-center gap-2">
+                <Button
+                  onClick={() => setIsFullView(!isFullView)}
+                  variant="ghost"
+                  size="sm"
+                  className="ml-2 flex-shrink-0"
+                  title={isFullView ? "Show tabs" : "Show all sections"}
+                >
+                  {isFullView ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
+                </Button>
+                <div className="flex-1">
+                  <TabsList className="w-full h-auto p-2 bg-transparent flex flex-wrap justify-start gap-1">
                   <TabsTrigger value="applicant" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
                     <User className="h-4 w-4 mr-2" />
                     <span className="hidden sm:inline">Applicant</span>
@@ -322,7 +333,8 @@ export default function MasterDataTable() {
                     <FolderOpen className="h-4 w-4 mr-2" />
                     <span className="hidden sm:inline">Additional</span>
                   </TabsTrigger>
-                </TabsList>
+                  </TabsList>
+                </div>
               </div>
 
               <TabsContent value="applicant" className="mt-0">

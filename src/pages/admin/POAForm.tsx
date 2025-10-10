@@ -6,7 +6,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
-import { Loader2, Save, Download, FileText, Sparkles, Type, User, ArrowLeft, HelpCircle } from "lucide-react";
+import { Loader2, Save, Download, FileText, Sparkles, Type, User, ArrowLeft, HelpCircle, Maximize2, Minimize2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -40,6 +40,7 @@ export default function POAForm() {
   const [activePOAType, setActivePOAType] = useState('adult');
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null);
   const [previewFormData, setPreviewFormData] = useState<any>(null);
+  const [isFullView, setIsFullView] = useState(true); // Default to full view since it doesn't have tabs
 
   // Form will be initialized by useRealtimeFormSync hook
 
