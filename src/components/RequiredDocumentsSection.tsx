@@ -1,5 +1,4 @@
 import { Checkbox } from "@/components/ui/checkbox";
-import { Check } from "lucide-react";
 
 export interface DocumentItem {
   id: string;
@@ -28,17 +27,9 @@ export function RequiredDocumentsSection({
         ? 'bg-green-900/40 border-green-700/50' 
         : 'bg-blue-950/30 border-blue-800/50'
     }`}>
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xs font-light uppercase tracking-[0.2em] text-foreground/90">
-          {title}
-        </h3>
-        {isComplete && (
-          <div className="flex items-center gap-1.5 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium">
-            <Check className="h-3 w-3" />
-            Completed
-          </div>
-        )}
-      </div>
+      <h3 className="text-xs font-light uppercase tracking-[0.2em] text-foreground/90 mb-6">
+        {title}
+      </h3>
       
       <div className="grid grid-cols-2 gap-4">
         {documents.map((doc) => (
