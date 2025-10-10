@@ -178,40 +178,42 @@ export default function IntakeForm() {
                   >
                     <Maximize2 className="h-5 w-5" />
                   </Button>
-                  <TabsList className="flex-1 grid grid-cols-2 md:grid-cols-8 h-auto p-2 bg-transparent">
-                    <TabsTrigger value="select" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                      <Users className="h-4 w-4 mr-2" />
-                      <span className="hidden sm:inline">Select...</span>
-                    </TabsTrigger>
-                    <TabsTrigger value="applicant" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                      <User className="h-4 w-4 mr-2" />
-                      <span className="hidden sm:inline">Applicant</span>
-                    </TabsTrigger>
-                    <TabsTrigger value="contact" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                      <Phone className="h-4 w-4 mr-2" />
-                      <span className="hidden sm:inline">Contact</span>
-                    </TabsTrigger>
-                    <TabsTrigger value="address" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                      <MapPin className="h-4 w-4 mr-2" />
-                      <span className="hidden sm:inline">Address</span>
-                    </TabsTrigger>
-                    <TabsTrigger value="passport" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                      <Plane className="h-4 w-4 mr-2" />
-                      <span className="hidden sm:inline">Passport</span>
-                    </TabsTrigger>
-                    <TabsTrigger value="immigration" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                      <Users className="h-4 w-4 mr-2" />
-                      <span className="hidden sm:inline">Immigration</span>
-                    </TabsTrigger>
-                    <TabsTrigger value="documents" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                      <FolderOpen className="h-4 w-4 mr-2" />
-                      <span className="hidden sm:inline">Documents</span>
-                    </TabsTrigger>
-                    <TabsTrigger value="notes" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                      <MessageSquare className="h-4 w-4 mr-2" />
-                      <span className="hidden sm:inline">Notes</span>
-                    </TabsTrigger>
-                  </TabsList>
+                  <div className="flex-1">
+                    <TabsList className="w-full grid grid-cols-2 md:grid-cols-8 h-auto p-2 bg-transparent">
+                      <TabsTrigger value="select" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                        <Users className="h-4 w-4 mr-2" />
+                        <span className="hidden sm:inline">Select...</span>
+                      </TabsTrigger>
+                      <TabsTrigger value="applicant" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                        <User className="h-4 w-4 mr-2" />
+                        <span className="hidden sm:inline">Applicant</span>
+                      </TabsTrigger>
+                      <TabsTrigger value="contact" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                        <Phone className="h-4 w-4 mr-2" />
+                        <span className="hidden sm:inline">Contact</span>
+                      </TabsTrigger>
+                      <TabsTrigger value="address" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                        <MapPin className="h-4 w-4 mr-2" />
+                        <span className="hidden sm:inline">Address</span>
+                      </TabsTrigger>
+                      <TabsTrigger value="passport" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                        <Plane className="h-4 w-4 mr-2" />
+                        <span className="hidden sm:inline">Passport</span>
+                      </TabsTrigger>
+                      <TabsTrigger value="immigration" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                        <Users className="h-4 w-4 mr-2" />
+                        <span className="hidden sm:inline">Immigration</span>
+                      </TabsTrigger>
+                      <TabsTrigger value="documents" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                        <FolderOpen className="h-4 w-4 mr-2" />
+                        <span className="hidden sm:inline">Documents</span>
+                      </TabsTrigger>
+                      <TabsTrigger value="notes" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                        <MessageSquare className="h-4 w-4 mr-2" />
+                        <span className="hidden sm:inline">Notes</span>
+                      </TabsTrigger>
+                    </TabsList>
+                  </div>
                 </div>
 
                 <TabsContent value="select" className="mt-0">
