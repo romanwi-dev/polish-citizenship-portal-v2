@@ -201,7 +201,7 @@ export default function TimelineProcessEnhanced() {
           delay: 0.4
         }} viewport={{
           once: true
-        }} className="text-xl text-muted-foreground max-w-3xl mx-auto mb-16">Complex journey to Polish citizenship through our comprehensive 15-part process.        Many stages are always processed simultaneously to save time.</motion.p>
+        }} className="text-xl text-muted-foreground max-w-3xl mx-auto mb-16">Complex journey to Polish citizenship through our comprehensive 15-part process. Many stages are always processed simultaneously to save time.</motion.p>
         </motion.div>
 
         {/* Timeline */}
