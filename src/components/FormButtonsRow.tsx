@@ -46,7 +46,7 @@ export function FormButtonsRow({
           <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
           <span className="relative z-10 flex items-center">
             <Save className="mr-2 h-4 w-4 md:h-5 md:w-5 opacity-50" />
-            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent relative z-[300]">
               {isSaving ? "Saving..." : saveLabel}
             </span>
           </span>
@@ -59,7 +59,7 @@ export function FormButtonsRow({
           <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
           <span className="relative z-10 flex items-center">
             <Sparkles className="mr-2 h-4 w-4 md:h-5 md:w-5 opacity-50" />
-            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent relative z-[300]">
               Clear Data
             </span>
           </span>
@@ -72,7 +72,7 @@ export function FormButtonsRow({
           <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
           <span className="relative z-10 flex items-center">
             <Download className="mr-2 h-4 w-4 md:h-5 md:w-5 opacity-50" />
-            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent relative z-[300]">
               Generate PDF
             </span>
           </span>
@@ -100,7 +100,7 @@ export function FormButtonsRow({
               <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               <span className="relative z-10 flex items-center">
                 <Icon className="mr-2 h-4 w-4 md:h-5 md:w-5 opacity-50" />
-                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent relative z-[300]">
                   {btn.label}
                 </span>
               </span>
