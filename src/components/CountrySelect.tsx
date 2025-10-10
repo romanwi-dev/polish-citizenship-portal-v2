@@ -66,7 +66,7 @@ export function CountrySelect({
       className={cn("space-y-2", className)}
     >
       {label && (
-        <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+        <Label className={cn("font-normal text-foreground/95", isLargeFonts ? "text-2xl" : "text-xl")}>
           {label}
         </Label>
       )}
@@ -76,8 +76,8 @@ export function CountrySelect({
           value={COUNTRIES.slice(0, -1).includes(value) ? value : ""} 
           onValueChange={handleSelectChange}
         >
-          <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur text-lg">
-            <SelectValue placeholder="" />
+          <SelectTrigger className="h-16 border-2 border-border/50 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur">
+            <SelectValue placeholder="Select..." />
           </SelectTrigger>
           <SelectContent className="bg-background border-2 z-[100]">
             {COUNTRIES.map((country) => (
@@ -97,7 +97,7 @@ export function CountrySelect({
             value={value}
             onChange={(e) => handleOtherInputChange(e.target.value)}
             placeholder=""
-            className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase text-lg"
+            className="h-16 border-2 border-border/50 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur uppercase text-lg"
           />
           <button
             type="button"
