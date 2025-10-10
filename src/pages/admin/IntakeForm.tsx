@@ -76,7 +76,7 @@ export default function IntakeForm() {
   return <div className="relative">
       <div className="py-6 px-4 md:px-6 lg:px-8 relative z-10 max-w-7xl mx-auto">
         {/* Header */}
-        <Card className="glass-card border-primary/20 mb-6">
+        <Card className="glass-card border-primary/20 mb-6 relative z-0">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5" />
           <CardHeader className="relative pb-6 pt-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
