@@ -141,7 +141,7 @@ export default function CaseDetail() {
           <Button
             variant="ghost"
             onClick={() => navigate("/admin/cases")}
-            className="h-10 w-10 p-0 flex-shrink-0"
+            className="h-10 w-10 p-0 flex-shrink-0 z-50"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
@@ -149,7 +149,7 @@ export default function CaseDetail() {
             <div className="inline-flex gap-2 w-max">
               <Button 
                 onClick={() => setShowEditDialog(true)}
-                className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0"
+                className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0 z-50"
               >
                 <Edit className="h-3.5 w-3.5 mr-2" />
                 <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
@@ -158,7 +158,7 @@ export default function CaseDetail() {
               </Button>
               <Button 
                 onClick={() => navigate(`/admin/cases/${id}/intake`)}
-                className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0"
+                className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0 z-50"
               >
                 <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Intake Form
@@ -166,7 +166,7 @@ export default function CaseDetail() {
               </Button>
               <Button 
                 onClick={() => navigate(`/admin/cases/${id}/master-data`)}
-                className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0"
+                className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0 z-50"
               >
                 <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Master Data
@@ -174,7 +174,7 @@ export default function CaseDetail() {
               </Button>
               <Button 
                 onClick={() => navigate(`/admin/cases/${id}/family-tree`)}
-                className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0"
+                className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0 z-50"
               >
                 <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Family Tree
@@ -182,7 +182,7 @@ export default function CaseDetail() {
               </Button>
               <Button 
                 onClick={() => navigate(`/admin/cases/${id}/poa`)}
-                className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0"
+                className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0 z-50"
               >
                 <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   POA Forms
@@ -190,7 +190,7 @@ export default function CaseDetail() {
               </Button>
               <Button 
                 onClick={() => navigate(`/admin/cases/${id}/citizenship`)}
-                className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0"
+                className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0 z-50"
               >
                 <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Citizenship
@@ -198,7 +198,7 @@ export default function CaseDetail() {
               </Button>
               <Button 
                 onClick={() => navigate(`/admin/cases/${id}/civil-registry`)}
-                className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0"
+                className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0 z-50"
               >
                 <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Civil Registry
