@@ -327,15 +327,15 @@ export default function POAForm() {
           <CardHeader className="relative pb-6 pt-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
               <div className="flex items-center gap-3">
-                <Button
-                  onClick={() => window.open('https://docs.lovable.dev', '_blank')}
-                  size="lg"
-                  variant="ghost"
-                  className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 text-2xl"
-                  title="How to fill this form"
-                >
-                  ?
-                </Button>
+              <Button
+                onClick={() => window.open('https://docs.lovable.dev', '_blank')}
+                size="lg"
+                variant="ghost"
+                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 text-2xl font-light opacity-60"
+                title="How to fill this form"
+              >
+                ?
+              </Button>
                 <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Power of Attorney
                 </CardTitle>

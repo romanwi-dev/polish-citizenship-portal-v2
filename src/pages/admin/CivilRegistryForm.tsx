@@ -230,15 +230,15 @@ export default function CivilRegistryForm() {
               }} transition={{
                 delay: 0.2
               }} className="flex items-center gap-3">
-                  <Button
-                    onClick={() => window.open('https://docs.lovable.dev', '_blank')}
-                    size="lg"
-                    variant="ghost"
-                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 text-2xl"
-                    title="How to fill this form"
-                  >
-                    ?
-                  </Button>
+                <Button
+                  onClick={() => window.open('https://docs.lovable.dev', '_blank')}
+                  size="lg"
+                  variant="ghost"
+                  className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 text-2xl font-light opacity-60"
+                  title="How to fill this form"
+                >
+                  ?
+                </Button>
                   <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">Civil Registry</CardTitle>
                 </motion.div>
                 <div className="flex items-center gap-3">
