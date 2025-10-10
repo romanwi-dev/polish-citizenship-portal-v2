@@ -236,43 +236,43 @@ export const ImmigrationSection = ({ formData, handleInputChange, clearField, is
 export const DocumentsSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
   <>
     <CardHeader className="border-b border-border/50 pb-6">
-      <Label className={cn("text-lg font-normal opacity-60", isLargeFonts && "text-2xl")}>Documents required</Label>
+      <Label className={cn("font-light text-foreground/50 text-sm uppercase tracking-wider", isLargeFonts && "text-base")}>Documents required</Label>
     </CardHeader>
     <CardContent className="p-6 md:p-10">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 bg-card/30 backdrop-blur p-4 rounded-none">
-        <div className="flex items-center space-x-4 p-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 bg-card/30 backdrop-blur p-6 rounded-none">
+        <div className="flex items-center space-x-4">
           <Checkbox id="applicant_has_polish_documents" checked={formData?.applicant_has_polish_documents || false} onCheckedChange={(checked) => handleInputChange("applicant_has_polish_documents", checked)} className="h-6 w-6" />
-          <Label htmlFor="applicant_has_polish_documents" className="cursor-pointer text-sm font-normal uppercase tracking-wider">Polish documents</Label>
+          <Label htmlFor="applicant_has_polish_documents" className="cursor-pointer font-light text-foreground/50 text-sm uppercase tracking-wider">Polish documents</Label>
         </div>
-        <div className="flex items-center space-x-4 p-5">
+        <div className="flex items-center space-x-4">
           <Checkbox id="applicant_has_passport" checked={formData?.applicant_has_passport || false} onCheckedChange={(checked) => handleInputChange("applicant_has_passport", checked)} className="h-6 w-6" />
-          <Label htmlFor="applicant_has_passport" className="cursor-pointer text-sm font-normal uppercase tracking-wider">Passport copy</Label>
+          <Label htmlFor="applicant_has_passport" className="cursor-pointer font-light text-foreground/50 text-sm uppercase tracking-wider">Passport copy</Label>
         </div>
-        <div className="flex items-center space-x-4 p-5">
+        <div className="flex items-center space-x-4">
           <Checkbox id="applicant_has_birth_cert" checked={formData?.applicant_has_birth_cert || false} onCheckedChange={(checked) => handleInputChange("applicant_has_birth_cert", checked)} className="h-6 w-6" />
-          <Label htmlFor="applicant_has_birth_cert" className="cursor-pointer text-sm font-normal uppercase tracking-wider">Birth certificate</Label>
+          <Label htmlFor="applicant_has_birth_cert" className="cursor-pointer font-light text-foreground/50 text-sm uppercase tracking-wider">Birth certificate</Label>
         </div>
-        <div className="flex items-center space-x-4 p-5">
+        <div className="flex items-center space-x-4">
           <Checkbox id="applicant_has_marriage_cert" checked={formData?.applicant_has_marriage_cert || false} onCheckedChange={(checked) => handleInputChange("applicant_has_marriage_cert", checked)} className="h-6 w-6" />
-          <Label htmlFor="applicant_has_marriage_cert" className="cursor-pointer text-sm font-normal uppercase tracking-wider">Marriage certificate</Label>
+          <Label htmlFor="applicant_has_marriage_cert" className="cursor-pointer font-light text-foreground/50 text-sm uppercase tracking-wider">Marriage certificate</Label>
         </div>
-        <div className="flex items-center space-x-4 p-5">
+        <div className="flex items-center space-x-4">
           <Checkbox id="applicant_has_naturalization" checked={formData?.applicant_has_naturalization || false} onCheckedChange={(checked) => handleInputChange("applicant_has_naturalization", checked)} className="h-6 w-6" />
-          <Label htmlFor="applicant_has_naturalization" className="cursor-pointer text-sm font-normal uppercase tracking-wider">Naturalization certificate</Label>
+          <Label htmlFor="applicant_has_naturalization" className="cursor-pointer font-light text-foreground/50 text-sm uppercase tracking-wider">Naturalization certificate</Label>
         </div>
         {(formData?.applicant_sex?.includes('Male') || formData?.applicant_sex?.includes('Mężczyzna')) && (
-          <div className="flex items-center space-x-4 p-5">
+          <div className="flex items-center space-x-4">
             <Checkbox id="applicant_has_military_record" checked={formData?.applicant_has_military_record || false} onCheckedChange={(checked) => handleInputChange("applicant_has_military_record", checked)} className="h-6 w-6" />
-            <Label htmlFor="applicant_has_military_record" className="cursor-pointer text-sm font-normal uppercase tracking-wider">Military service record</Label>
+            <Label htmlFor="applicant_has_military_record" className="cursor-pointer font-light text-foreground/50 text-sm uppercase tracking-wider">Military service record</Label>
           </div>
         )}
-        <div className="flex items-center space-x-4 p-5">
+        <div className="flex items-center space-x-4">
           <Checkbox id="applicant_has_foreign_documents" checked={formData?.applicant_has_foreign_documents || false} onCheckedChange={(checked) => handleInputChange("applicant_has_foreign_documents", checked)} className="h-6 w-6" />
-          <Label htmlFor="applicant_has_foreign_documents" className="cursor-pointer text-sm font-normal uppercase tracking-wider">Foreign documents</Label>
+          <Label htmlFor="applicant_has_foreign_documents" className="cursor-pointer font-light text-foreground/50 text-sm uppercase tracking-wider">Foreign documents</Label>
         </div>
-        <div className="flex items-center space-x-4 p-5">
+        <div className="flex items-center space-x-4">
           <Checkbox id="applicant_has_additional_documents" checked={formData?.applicant_has_additional_documents || false} onCheckedChange={(checked) => handleInputChange("applicant_has_additional_documents", checked)} className="h-6 w-6" />
-          <Label htmlFor="applicant_has_additional_documents" className="cursor-pointer text-sm font-normal uppercase tracking-wider">Additional documents</Label>
+          <Label htmlFor="applicant_has_additional_documents" className="cursor-pointer font-light text-foreground/50 text-sm uppercase tracking-wider">Additional documents</Label>
         </div>
       </div>
     </CardContent>
