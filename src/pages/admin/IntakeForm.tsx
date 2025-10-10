@@ -20,7 +20,7 @@ export default function IntakeForm() {
   const { formData, setFormData, isLoading, isSaving, saveData, clearAll, clearField } = useFormSync(caseId);
   const [showClearDialog, setShowClearDialog] = useState(false);
   const { isLargeFonts, toggleFontSize } = useAccessibility();
-  const [activeTab, setActiveTab] = useState("applicant");
+  const [activeTab, setActiveTab] = useState("select");
   const [isFullView, setIsFullView] = useState(false);
 
   const handleInputChange = (field: string, value: any) => {

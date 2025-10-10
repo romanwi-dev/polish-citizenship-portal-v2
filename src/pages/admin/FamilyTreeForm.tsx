@@ -38,7 +38,7 @@ export default function FamilyTreeForm() {
   } = useAccessibility();
   const [formData, setFormData] = useState<any>({});
   const [isGenerating, setIsGenerating] = useState(false);
-  const [activeTab, setActiveTab] = useState("applicant");
+  const [activeTab, setActiveTab] = useState("select");
   const [showClearDialog, setShowClearDialog] = useState(false);
   
   // Enable real-time sync with direct state updates
