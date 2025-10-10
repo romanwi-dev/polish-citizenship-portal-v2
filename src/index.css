@@ -119,7 +119,9 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground font-heading;
+    @apply bg-background font-heading;
+    color: hsl(var(--foreground) / 0.5);
+    font-weight: 400;
     background-image: radial-gradient(circle at 20% 20%, hsl(221 83% 53% / 0.08) 0%, transparent 50%),
                       radial-gradient(circle at 80% 80%, hsl(204 70% 53% / 0.08) 0%, transparent 50%);
     background-attachment: fixed;
