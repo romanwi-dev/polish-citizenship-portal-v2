@@ -351,43 +351,43 @@ export default function CaseDetail() {
             {/* Case Information */}
             <Card className="bg-card/50 backdrop-blur">
               <CardHeader>
-                <CardTitle>Case Information</CardTitle>
+                <CardTitle className="text-2xl font-heading font-black">Case Information</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                   <div>
-                    <p className="text-sm text-muted-foreground mb-1">Client Name</p>
-                    <p className="font-semibold">{caseData.client_name}</p>
+                    <p className="text-base font-label text-muted-foreground mb-1">Client Name</p>
+                    <p className="text-lg font-bold">{caseData.client_name}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground mb-1">Email</p>
-                    <p className="font-semibold">{intakeData?.email || 'test@example.com'}</p>
+                    <p className="text-base font-label text-muted-foreground mb-1">Email</p>
+                    <p className="text-lg font-bold">{intakeData?.email || 'test@example.com'}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground mb-1">Current Stage</p>
-                    <p className="font-semibold">{caseData.current_stage?.replace('_', ' ') || 'Pending'}</p>
+                    <p className="text-base font-label text-muted-foreground mb-1">Current Stage</p>
+                    <p className="text-lg font-bold">{caseData.current_stage?.replace('_', ' ') || 'Pending'}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground mb-1">Processing Tier</p>
-                    <p className="font-semibold">{caseData.processing_mode?.toUpperCase() || 'STANDARD'}</p>
+                    <p className="text-base font-label text-muted-foreground mb-1">Processing Tier</p>
+                    <p className="text-lg font-bold">{caseData.processing_mode?.toUpperCase() || 'STANDARD'}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground mb-1">Score</p>
-                    <p className="font-semibold">{caseData.client_score || 85}%</p>
+                    <p className="text-base font-label text-muted-foreground mb-1">Score</p>
+                    <p className="text-lg font-bold">{caseData.client_score || 85}%</p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground mb-1">Age</p>
-                    <p className="font-semibold">
+                    <p className="text-base font-label text-muted-foreground mb-1">Age</p>
+                    <p className="text-lg font-bold">
                       {Math.floor((Date.now() - new Date(caseData.created_at).getTime()) / (1000 * 60 * 60 * 24 * 30))} months
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground mb-1">Created</p>
-                    <p className="font-semibold">{new Date(caseData.created_at).toLocaleDateString()}</p>
+                    <p className="text-base font-label text-muted-foreground mb-1">Created</p>
+                    <p className="text-lg font-bold">{new Date(caseData.created_at).toLocaleDateString()}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground mb-1">Last Updated</p>
-                    <p className="font-semibold">{new Date(caseData.updated_at).toLocaleDateString()}</p>
+                    <p className="text-base font-label text-muted-foreground mb-1">Last Updated</p>
+                    <p className="text-lg font-bold">{new Date(caseData.updated_at).toLocaleDateString()}</p>
                   </div>
                 </div>
               </CardContent>
@@ -396,25 +396,25 @@ export default function CaseDetail() {
             {/* Stage Progress */}
             <Card className="bg-card/50 backdrop-blur">
               <CardHeader>
-                <CardTitle>Stage Progress</CardTitle>
+                <CardTitle className="text-2xl font-heading font-black">Stage Progress</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-4 gap-6 text-center">
                   <div>
-                    <div className="text-3xl font-bold text-blue-400 mb-2">0</div>
-                    <div className="text-sm text-muted-foreground">Active</div>
+                    <div className="text-4xl font-bold text-blue-400 mb-2">0</div>
+                    <div className="text-base font-label text-muted-foreground">Active</div>
                   </div>
                   <div>
-                    <div className="text-3xl font-bold text-green-500 mb-2">0</div>
-                    <div className="text-sm text-muted-foreground">Completed</div>
+                    <div className="text-4xl font-bold text-green-500 mb-2">0</div>
+                    <div className="text-base font-label text-muted-foreground">Completed</div>
                   </div>
                   <div>
-                    <div className="text-3xl font-bold mb-2">0</div>
-                    <div className="text-sm text-muted-foreground">Remaining</div>
+                    <div className="text-4xl font-bold mb-2">0</div>
+                    <div className="text-base font-label text-muted-foreground">Remaining</div>
                   </div>
                   <div>
-                    <div className="text-3xl font-bold mb-2">0</div>
-                    <div className="text-sm text-muted-foreground">Total</div>
+                    <div className="text-4xl font-bold mb-2">0</div>
+                    <div className="text-base font-label text-muted-foreground">Total</div>
                   </div>
                 </div>
               </CardContent>
