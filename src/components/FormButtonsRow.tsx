@@ -35,7 +35,7 @@ export function FormButtonsRow({
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-row gap-3 mb-8 overflow-x-auto scrollbar-hide relative z-[200]">
+    <div className="flex flex-row gap-3 mb-8 overflow-x-auto scrollbar-hide isolate" style={{ zIndex: 9999 }}>
       {/* Action Buttons */}
       <div className="flex gap-3 flex-shrink-0 relative z-[200]">
         <Button

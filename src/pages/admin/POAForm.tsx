@@ -321,9 +321,9 @@ export default function POAForm() {
     <div className="relative">
       <div className="py-6 px-4 md:px-6 lg:px-8 relative z-10 max-w-7xl mx-auto">
         {/* Header */}
-        <Card className="glass-card border-primary/20 mb-6 relative z-0">
+        <Card className="glass-card border-primary/20 mb-6">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5" />
-          <CardHeader className="relative pb-6 pt-6 z-0">
+          <CardHeader className="relative pb-6 pt-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
               <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 Power of Attorney
