@@ -95,21 +95,37 @@ export const useFormSync = (caseId: string | undefined) => {
 
   // Clear all data
   const clearAll = useCallback(async () => {
-    console.log('🧹 Clearing all data');
+    if (!caseId || caseId === ':id') return;
     
-    // Clear in database by updating all fields to null/empty
-    const cleared = { 
-      case_id: caseId,
-      // Keep only case_id, clear everything else
-    };
+    console.log('🧹 Clearing all data - DELETING from database');
     
-    setFormData({});
-    const success = await saveData(cleared);
+    setIsSaving(true);
     
-    if (success) {
-      console.log('✅ All data cleared and saved to DB');
+    try {
+      // Delete the entire record from database
+      const { error } = await supabase
+        .from('master_table')
+        .delete()
+        .eq('case_id', caseId);
+      
+      if (error) throw error;
+      
+      console.log('✅ Database record deleted');
+      
+      // Clear local state
+      setFormData({});
+      
+      // Invalidate cache to force refetch (will return empty)
+      await queryClient.invalidateQueries({ queryKey: ['masterData', caseId] });
+      
+      toast.success('All data cleared');
+      setIsSaving(false);
+    } catch (error: any) {
+      console.error('❌ Clear error:', error);
+      toast.error('Failed to clear data');
+      setIsSaving(false);
     }
-  }, [caseId, saveData]);
+  }, [caseId, queryClient]);
 
   // Clear single field
   const clearField = useCallback(async (field: string) => {
