@@ -473,44 +473,42 @@ export default function FamilyTreeForm() {
             </div>
           </div>
 
-          {/* Tab Navigation - Sections within Family Tree Form */}
-          <div className="bg-gradient-to-br from-background via-background to-background/95 backdrop-blur-sm pb-6 pt-2 px-4">
-            <div className="overflow-x-auto scrollbar-thin pb-2">
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="w-max min-w-full inline-flex h-12 p-1 bg-muted/50 rounded-lg gap-1">
-                  <TabsTrigger value="applicant" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground gap-2 px-4">
-                    <User className="h-4 w-4" />
+        {/* Form with Tabs */}
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }}>
+          <Card className="glass-card border-primary/20">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <div className="border-b border-border/50">
+                <TabsList className="w-full grid grid-cols-3 md:grid-cols-7 h-auto p-2 bg-transparent">
+                  <TabsTrigger value="applicant" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                    <User className="h-4 w-4 mr-2" />
                     <span className="hidden sm:inline">Applicant</span>
                   </TabsTrigger>
                   {(formData.minor_children_count > 0) && (
-                    <TabsTrigger value="children" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground gap-2 px-4">
-                      <Baby className="h-4 w-4" />
+                    <TabsTrigger value="children" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                      <Baby className="h-4 w-4 mr-2" />
                       <span className="hidden sm:inline">Children</span>
                     </TabsTrigger>
                   )}
-                  <TabsTrigger value="parents" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground gap-2 px-4">
-                    <Users className="h-4 w-4" />
+                  <TabsTrigger value="parents" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                    <Users className="h-4 w-4 mr-2" />
                     <span className="hidden sm:inline">Polish Parent</span>
                   </TabsTrigger>
-                  <TabsTrigger value="grandparents" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground gap-2 px-4">
-                    <GitBranch className="h-4 w-4" />
+                  <TabsTrigger value="grandparents" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                    <GitBranch className="h-4 w-4 mr-2" />
                     <span className="hidden sm:inline">Grandparents</span>
                   </TabsTrigger>
-                  <TabsTrigger value="great-grandparents" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground gap-2 px-4">
-                    <TreePine className="h-4 w-4" />
+                  <TabsTrigger value="great-grandparents" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                    <TreePine className="h-4 w-4 mr-2" />
                     <span className="hidden sm:inline">G-Grandparents</span>
                   </TabsTrigger>
-                  <TabsTrigger value="additional" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground gap-2 px-4">
-                    <FileText className="h-4 w-4" />
+                  <TabsTrigger value="additional" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                    <FileText className="h-4 w-4 mr-2" />
                     <span className="hidden sm:inline">Additional Info</span>
                   </TabsTrigger>
                 </TabsList>
-              </Tabs>
-            </div>
-          </div>
-        </motion.div>
+              </div>
 
-        {/* Form Sections */}
+              <TabsContent value="applicant" className="mt-0">
         <div className="space-y-8">
           {/* Applicant Section */}
           {activeTab === 'applicant' && (
@@ -1308,9 +1306,10 @@ export default function FamilyTreeForm() {
                 </div>
               </CardContent>
             </Card>
-          </motion.div>
-          )}
-        </div>
+          </TabsContent>
+            </Tabs>
+          </Card>
+        </motion.div>
       </div>
 
       {/* Clear Data Confirmation Dialog */}
