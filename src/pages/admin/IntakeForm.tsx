@@ -101,7 +101,7 @@ export default function IntakeForm() {
                   onClick={() => navigate(`/admin/cases/${caseId}`)}
                   size="lg"
                   variant="ghost"
-                  className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10"
+                  className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 opacity-60"
                   title="Back to Case"
                 >
                   <ArrowLeft className="h-8 w-8" />
@@ -110,7 +110,7 @@ export default function IntakeForm() {
                   onClick={() => navigate('/login')}
                   size="lg"
                   variant="ghost"
-                  className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10"
+                  className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 opacity-60"
                   title="Login / Register"
                 >
                   <User className="h-8 w-8" />
@@ -119,7 +119,7 @@ export default function IntakeForm() {
                   onClick={toggleFontSize}
                   size="lg"
                   variant="ghost"
-                  className={`h-16 w-16 rounded-full transition-all z-50 ${
+                  className={`h-16 w-16 rounded-full transition-all z-50 opacity-60 ${
                     isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground'
                   }`}
                   title="Toggle font size"

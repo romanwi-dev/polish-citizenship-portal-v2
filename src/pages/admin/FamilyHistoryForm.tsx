@@ -73,7 +73,7 @@ export default function FamilyHistoryForm() {
                   onClick={() => navigate(`/admin/cases/${caseId}`)}
                   size="lg"
                   variant="ghost"
-                  className="h-16 w-16 rounded-full transition-all hover:bg-primary/10 z-50"
+                  className="h-16 w-16 rounded-full transition-all hover:bg-primary/10 z-50 opacity-60"
                   title="Back to case"
                 >
                   <ArrowLeft className="h-8 w-8" />

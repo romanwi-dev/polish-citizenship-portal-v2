@@ -243,7 +243,7 @@ export default function MasterDataTable() {
                     onClick={() => navigate(`/admin/case/${caseId}`)}
                     size="lg"
                     variant="ghost"
-                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50"
+                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50 opacity-60"
                     title="Back to Case"
                   >
                     <ArrowLeft className="h-8 w-8" />
@@ -252,7 +252,7 @@ export default function MasterDataTable() {
                     onClick={() => navigate('/login')}
                     size="lg"
                     variant="ghost"
-                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50"
+                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50 opacity-60"
                     title="Login / Register"
                   >
                     <User className="h-8 w-8" />
@@ -261,7 +261,7 @@ export default function MasterDataTable() {
                     onClick={toggleFontSize}
                     size="lg"
                     variant="ghost"
-                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50"
+                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50 opacity-60"
                     title="Toggle font size"
                   >
                     <Type className={cn("transition-all", isLargeFonts ? "h-9 w-9" : "h-8 w-8")} />
