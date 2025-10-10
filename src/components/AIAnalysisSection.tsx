@@ -16,7 +16,7 @@ const AIAnalysisSection = () => {
               <span className="text-sm font-medium">AI-Powered Analysis</span>
             </div>
             
-            <h2 className="text-4xl md:text-5xl font-bold mb-14">
+            <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-14">
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 AI Deep Case Analyzes
               </span>
