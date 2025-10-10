@@ -398,7 +398,7 @@ export const MasterDataTable = ({ open, onOpenChange, caseId }: MasterDataTableP
         )}
 
         <Tabs value={activeTab} onValueChange={handleTabChange} className="flex-1 overflow-hidden flex flex-col">
-          <div className="sticky top-0 z-20 bg-popover border-b border-border/50 pb-2 -mx-6 px-6">
+          <div className="sticky top-0 z-20 bg-popover border-b border-border/50 pb-2 pt-2 -mx-6 px-6">
             <div className="flex items-center gap-2 w-full">
               <Button
                 variant="ghost"
