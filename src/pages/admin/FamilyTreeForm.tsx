@@ -415,17 +415,7 @@ export default function FamilyTreeForm() {
             <CardContent className="pt-6">
               <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
                 <div className="sticky top-0 z-20 border-b border-border/50 pb-2 pt-2">
-                  <div className="flex items-center gap-2 w-full">
-                    <Button
-                      onClick={() => setIsFullView(!isFullView)}
-                      variant="ghost"
-                      size="icon"
-                      className="flex-shrink-0 h-auto"
-                      title={isFullView ? "Collapse" : "Expand All"}
-                    >
-                      {isFullView ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
-                    </Button>
-                    <TabsList className="flex-1 flex gap-2 bg-transparent p-0 overflow-x-auto scrollbar-hide">
+                    <TabsList className="w-full inline-flex justify-start gap-2 bg-transparent p-0 overflow-x-auto scrollbar-hide">
                       <TabsTrigger value="tree-view" className="flex-shrink-0">
                         <span>Tree View</span>
                       </TabsTrigger>
@@ -458,7 +448,6 @@ export default function FamilyTreeForm() {
                         <span>Additional Info</span>
                       </TabsTrigger>
                     </TabsList>
-                    </div>
                   </div>
 
                 {/* Full View Mode */}
