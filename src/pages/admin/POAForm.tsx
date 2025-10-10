@@ -605,28 +605,6 @@ export default function POAForm() {
                 </div>
               </CardHeader>
               <CardContent className="pt-6">
-                {/* Primary Applicant Gender Selector - synced with master_table */}
-                <div className="mb-8 p-4 bg-muted/30 rounded-lg border border-border/50">
-                  <Label className="text-lg font-semibold mb-3 block">Who is the primary applicant?</Label>
-                  <RadioGroup 
-                    value={formData?.applicant_sex ? (formData.applicant_sex === 'F' ? 'female' : 'male') : undefined}
-                    onValueChange={(value: 'male' | 'female') => {
-                      const sex = value === 'female' ? 'F' : 'M';
-                      handleInputChange('applicant_sex', sex);
-                    }}
-                    className="flex gap-6"
-                  >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="male" id="male" />
-                      <Label htmlFor="male" className="cursor-pointer font-medium">Husband / Mąż</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="female" id="female" />
-                      <Label htmlFor="female" className="cursor-pointer font-medium">Wife / Żona</Label>
-                    </div>
-                  </RadioGroup>
-                </div>
-
                 {/* Primary Applicant Fields - labels based on master_table applicant_sex */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                   <POAFormField
