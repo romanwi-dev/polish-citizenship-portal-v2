@@ -264,7 +264,7 @@ export default function FamilyTreeForm() {
                     onClick={() => window.open('https://docs.lovable.dev', '_blank')}
                     size="lg"
                     variant="ghost"
-                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 text-3xl font-bold"
+                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10"
                     title="How to fill this form"
                   >
                     ?
