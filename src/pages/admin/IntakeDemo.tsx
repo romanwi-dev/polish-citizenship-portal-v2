@@ -97,6 +97,123 @@ export default function IntakeDemo() {
           Back to Intake Form
         </Button>
 
+        {/* Font Comparison for Form Inputs */}
+        <div className="space-y-6 border-2 border-primary/20 p-6 rounded-lg bg-card/50">
+          <div>
+            <h2 className="text-3xl font-bold mb-2">Form Input Font Comparison</h2>
+            <p className="text-muted-foreground">
+              Compare 5 professional fonts optimized for form data input with full Polish character support.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+            {/* Font 1: Inter */}
+            <div className="space-y-3">
+              <h3 className="text-xs font-light tracking-[0.2em] text-foreground/70">INTER</h3>
+              <div className="space-y-2">
+                <Label className="text-xs font-light tracking-[0.15em] text-foreground/60">FULL LAST NAME / NAZWISKO</Label>
+                <Input 
+                  value="WIŚNIEWSKI" 
+                  readOnly
+                  className="font-input-inter text-base bg-blue-950/40 border-2 border-blue-800/50 rounded-none h-12"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-xs font-light tracking-[0.15em] text-foreground/60">GIVEN NAMES / IMIĘ</Label>
+                <Input 
+                  value="JÓZEF" 
+                  readOnly
+                  className="font-input-inter text-base bg-blue-950/40 border-2 border-blue-800/50 rounded-none h-12"
+                />
+              </div>
+            </div>
+
+            {/* Font 2: Roboto */}
+            <div className="space-y-3">
+              <h3 className="text-xs font-light tracking-[0.2em] text-foreground/70">ROBOTO</h3>
+              <div className="space-y-2">
+                <Label className="text-xs font-light tracking-[0.15em] text-foreground/60">FULL LAST NAME / NAZWISKO</Label>
+                <Input 
+                  value="WIŚNIEWSKI" 
+                  readOnly
+                  className="font-input-roboto text-base bg-blue-950/40 border-2 border-blue-800/50 rounded-none h-12"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-xs font-light tracking-[0.15em] text-foreground/60">GIVEN NAMES / IMIĘ</Label>
+                <Input 
+                  value="JÓZEF" 
+                  readOnly
+                  className="font-input-roboto text-base bg-blue-950/40 border-2 border-blue-800/50 rounded-none h-12"
+                />
+              </div>
+            </div>
+
+            {/* Font 3: Work Sans */}
+            <div className="space-y-3">
+              <h3 className="text-xs font-light tracking-[0.2em] text-foreground/70">WORK SANS</h3>
+              <div className="space-y-2">
+                <Label className="text-xs font-light tracking-[0.15em] text-foreground/60">FULL LAST NAME / NAZWISKO</Label>
+                <Input 
+                  value="WIŚNIEWSKI" 
+                  readOnly
+                  className="font-input-work text-base bg-blue-950/40 border-2 border-blue-800/50 rounded-none h-12"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-xs font-light tracking-[0.15em] text-foreground/60">GIVEN NAMES / IMIĘ</Label>
+                <Input 
+                  value="JÓZEF" 
+                  readOnly
+                  className="font-input-work text-base bg-blue-950/40 border-2 border-blue-800/50 rounded-none h-12"
+                />
+              </div>
+            </div>
+
+            {/* Font 4: Source Sans 3 */}
+            <div className="space-y-3">
+              <h3 className="text-xs font-light tracking-[0.2em] text-foreground/70">SOURCE SANS 3</h3>
+              <div className="space-y-2">
+                <Label className="text-xs font-light tracking-[0.15em] text-foreground/60">FULL LAST NAME / NAZWISKO</Label>
+                <Input 
+                  value="WIŚNIEWSKI" 
+                  readOnly
+                  className="font-input-source text-base bg-blue-950/40 border-2 border-blue-800/50 rounded-none h-12"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-xs font-light tracking-[0.15em] text-foreground/60">GIVEN NAMES / IMIĘ</Label>
+                <Input 
+                  value="JÓZEF" 
+                  readOnly
+                  className="font-input-source text-base bg-blue-950/40 border-2 border-blue-800/50 rounded-none h-12"
+                />
+              </div>
+            </div>
+
+            {/* Font 5: IBM Plex Sans */}
+            <div className="space-y-3">
+              <h3 className="text-xs font-light tracking-[0.2em] text-foreground/70">IBM PLEX SANS</h3>
+              <div className="space-y-2">
+                <Label className="text-xs font-light tracking-[0.15em] text-foreground/60">FULL LAST NAME / NAZWISKO</Label>
+                <Input 
+                  value="WIŚNIEWSKI" 
+                  readOnly
+                  className="font-input-ibm text-base bg-blue-950/40 border-2 border-blue-800/50 rounded-none h-12"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-xs font-light tracking-[0.15em] text-foreground/60">GIVEN NAMES / IMIĘ</Label>
+                <Input 
+                  value="JÓZEF" 
+                  readOnly
+                  className="font-input-ibm text-base bg-blue-950/40 border-2 border-blue-800/50 rounded-none h-12"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Required Documents Design Comparison - MOVED TO TOP */}
         <div className="space-y-6 border-2 border-primary/20 p-6 rounded-lg bg-card/50">
           <div>

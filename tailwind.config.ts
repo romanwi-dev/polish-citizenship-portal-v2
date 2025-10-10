@@ -17,6 +17,11 @@ export default {
         'heading': ['Montserrat', 'sans-serif'],
         'sans': ['Montserrat', 'sans-serif'],
         'label': ['DM Sans', 'Inter', 'sans-serif'],
+        'input-inter': ['Inter', 'sans-serif'],
+        'input-roboto': ['Roboto', 'sans-serif'],
+        'input-work': ['Work Sans', 'sans-serif'],
+        'input-source': ['Source Sans 3', 'sans-serif'],
+        'input-ibm': ['IBM Plex Sans', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
