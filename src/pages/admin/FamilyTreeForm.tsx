@@ -408,7 +408,7 @@ export default function FamilyTreeForm() {
                       )}
                       <TabsTrigger value="parents" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
                         <Users className="h-4 w-4 mr-2" />
-                        <span className="hidden sm:inline">Polish Parent</span>
+                        <span className="hidden sm:inline">Parents</span>
                       </TabsTrigger>
                       <TabsTrigger value="grandparents" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
                         <GitBranch className="h-4 w-4 mr-2" />
@@ -513,7 +513,7 @@ export default function FamilyTreeForm() {
         }}>
             <Card className="glass-card border-primary/20">
               <CardHeader className="border-b border-border/50 pb-6">
-                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Select Information
+                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Select
 
               </CardTitle>
               </CardHeader>
@@ -1059,7 +1059,7 @@ export default function FamilyTreeForm() {
             <Card className="glass-card border-primary/20">
               <CardHeader className="border-b border-border/50 pb-6">
                 <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                  Polish Parent
+                  Parents
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6 md:p-10 space-y-10">
@@ -1181,15 +1181,17 @@ export default function FamilyTreeForm() {
                           <Label htmlFor="father_has_naturalization" className="cursor-pointer text-sm font-normal">Naturalization certificate</Label>
                         </div>
                         
-                        <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
-                          <Checkbox
-                            id="father_has_military_record"
-                            checked={formData?.father_has_military_record || false}
-                            onCheckedChange={(checked) => handleInputChange("father_has_military_record", checked)}
-                            className="h-6 w-6"
-                          />
-                          <Label htmlFor="father_has_military_record" className="cursor-pointer text-sm font-normal">Military service record</Label>
-                        </div>
+                        {(formData?.father_sex?.includes('MALE') || formData?.father_sex?.includes('Male') || formData?.father_sex?.includes('Mężczyzna')) && (
+                          <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                            <Checkbox
+                              id="father_has_military_record"
+                              checked={formData?.father_has_military_record || false}
+                              onCheckedChange={(checked) => handleInputChange("father_has_military_record", checked)}
+                              className="h-6 w-6"
+                            />
+                            <Label htmlFor="father_has_military_record" className="cursor-pointer text-sm font-normal">Military service record</Label>
+                          </div>
+                        )}
                         
                         <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
                           <Checkbox
@@ -1199,16 +1201,6 @@ export default function FamilyTreeForm() {
                             className="h-6 w-6"
                           />
                           <Label htmlFor="father_has_foreign_documents" className="cursor-pointer text-sm font-normal">Foreign documents</Label>
-                        </div>
-                        
-                        <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
-                          <Checkbox
-                            id="father_has_death_cert"
-                            checked={formData?.father_has_death_cert || false}
-                            onCheckedChange={(checked) => handleInputChange("father_has_death_cert", checked)}
-                            className="h-6 w-6"
-                          />
-                          <Label htmlFor="father_has_death_cert" className="cursor-pointer text-sm font-normal">Death certificate</Label>
                         </div>
                         <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
                           <Checkbox
@@ -1348,32 +1340,12 @@ export default function FamilyTreeForm() {
                         
                         <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
                           <Checkbox
-                            id="mother_has_military_record"
-                            checked={formData?.mother_has_military_record || false}
-                            onCheckedChange={(checked) => handleInputChange("mother_has_military_record", checked)}
-                            className="h-6 w-6"
-                          />
-                          <Label htmlFor="mother_has_military_record" className="cursor-pointer text-sm font-normal">Military service record</Label>
-                        </div>
-                        
-                        <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
-                          <Checkbox
                             id="mother_has_foreign_documents"
                             checked={formData?.mother_has_foreign_documents || false}
                             onCheckedChange={(checked) => handleInputChange("mother_has_foreign_documents", checked)}
                             className="h-6 w-6"
                           />
                           <Label htmlFor="mother_has_foreign_documents" className="cursor-pointer text-sm font-normal">Foreign documents</Label>
-                        </div>
-                        
-                        <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
-                          <Checkbox
-                            id="mother_has_death_cert"
-                            checked={formData?.mother_has_death_cert || false}
-                            onCheckedChange={(checked) => handleInputChange("mother_has_death_cert", checked)}
-                            className="h-6 w-6"
-                          />
-                          <Label htmlFor="mother_has_death_cert" className="cursor-pointer text-sm font-normal">Death certificate</Label>
                         </div>
                         <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
                           <Checkbox
