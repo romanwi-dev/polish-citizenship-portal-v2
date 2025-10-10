@@ -969,7 +969,7 @@ export default function MasterDataTable() {
 
                     {/* Emigration and Naturalization */}
                     <div className="space-y-6 pt-6 border-t border-border/30">
-                      <h3 className="text-xl font-semibold text-foreground">Immigration information</h3>
+                      <h3 className="text-xl font-semibold text-foreground">Emigration information</h3>
                       {renderFieldGroup([{
                         name: "father_date_of_emigration",
                         label: "Date of emigration / Data emigracji",
@@ -1051,7 +1051,7 @@ export default function MasterDataTable() {
 
                     {/* Emigration and Naturalization */}
                     <div className="space-y-6 pt-6 border-t border-border/30">
-                      <h3 className="text-xl font-semibold text-foreground">Immigration information</h3>
+                      <h3 className="text-xl font-semibold text-foreground">Emigration information</h3>
                       {renderFieldGroup([{
                         name: "mother_date_of_emigration",
                         label: "Date of emigration / Data emigracji",
@@ -1184,7 +1184,7 @@ export default function MasterDataTable() {
 
                         {/* Emigration and Naturalization */}
                         <div className="space-y-6 pt-6 border-t border-border/30">
-                          <h3 className="text-xl font-semibold text-foreground">Immigration information</h3>
+                          <h3 className="text-xl font-semibold text-foreground">Emigration information</h3>
                           {renderFieldGroup([{
                             name: `${prefix}_date_of_emigration`,
                             label: "Date of emigration / Data emigracji",

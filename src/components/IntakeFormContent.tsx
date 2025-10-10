@@ -221,7 +221,7 @@ export const ImmigrationSection = ({ formData, handleInputChange, clearField, is
   <>
     <CardHeader className="border-b border-border/50 pb-6">
       <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-        Immigration Information
+        Emigration Information
       </CardTitle>
     </CardHeader>
     <CardContent className="p-6 md:p-10">

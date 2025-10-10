@@ -225,7 +225,7 @@ export default function IntakeForm() {
                       className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors text-sm md:text-base py-3"
                     >
                       <Users className="h-4 w-4 mr-2" />
-                      <span className="hidden sm:inline">Immigration</span>
+                      <span className="hidden sm:inline">Emigration</span>
                     </TabsTrigger>
                     <TabsTrigger 
                       value="documents" 

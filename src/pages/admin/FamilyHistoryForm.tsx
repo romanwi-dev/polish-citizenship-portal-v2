@@ -166,10 +166,10 @@ export default function FamilyHistoryForm() {
                 />
               </div>
 
-              {/* Immigration Journey */}
+              {/* Emigration Journey */}
               <div className="space-y-4">
                 <Label className={cn("text-lg font-semibold text-foreground", isLargeFonts && "text-2xl")}>
-                  Immigration Journey
+                  Emigration Journey
                 </Label>
                 <Textarea
                   value={formData.family_immigration_journey || ""}
