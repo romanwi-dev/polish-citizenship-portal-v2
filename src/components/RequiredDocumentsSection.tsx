@@ -26,13 +26,13 @@ export function RequiredDocumentsSection({
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className={`text-base font-medium uppercase tracking-wide ${
+        <h3 className={`text-base font-medium ${
           isComplete ? 'text-green-600 dark:text-green-400' : 'text-foreground'
         }`}>
           {title}
         </h3>
         {isComplete && (
-          <div className="flex items-center gap-1.5 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wide">
+          <div className="flex items-center gap-1.5 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium">
             <Check className="h-3 w-3" />
             Completed
           </div>
