@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Loader2, Type, Maximize2, Minimize2, User, Phone, MapPin, Plane, Users, FolderOpen, MessageSquare, ArrowLeft, HelpCircle } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -22,6 +22,7 @@ export default function IntakeForm() {
   const { isLargeFonts, toggleFontSize } = useAccessibility();
   const [activeTab, setActiveTab] = useState("select");
   const [isFullView, setIsFullView] = useState(false);
+  const tabsListRef = useRef<HTMLDivElement>(null);
 
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({
     select: null,
@@ -88,6 +89,13 @@ export default function IntakeForm() {
     clearField,
     isLargeFonts
   };
+
+  useEffect(() => {
+    // Scroll tabs to the start to show Select button fully
+    if (tabsListRef.current) {
+      tabsListRef.current.scrollLeft = 0;
+    }
+  }, []);
 
   if (isLoading) {
     return (
@@ -184,8 +192,8 @@ export default function IntakeForm() {
                     >
                       {isFullView ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
                     </Button>
-                    <TabsList className="flex-1 flex gap-2 bg-transparent p-0 overflow-x-auto scrollbar-hide scroll-smooth">
-                    <TabsTrigger value="select" className="flex-shrink-0" style={{ scrollMarginLeft: '0' }}>
+                    <TabsList ref={tabsListRef} className="flex-1 flex gap-2 bg-transparent p-0 overflow-x-auto scrollbar-hide scroll-smooth">
+                    <TabsTrigger value="select" className="flex-shrink-0">
                       <span>Select...</span>
                     </TabsTrigger>
                     <TabsTrigger value="applicant" className="flex-shrink-0">
