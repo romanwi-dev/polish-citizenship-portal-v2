@@ -103,7 +103,7 @@ export default function FamilyHistoryForm() {
                   onClick={() => navigate('/login')}
                   size="lg"
                   variant="ghost"
-                  className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50"
+                  className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50 opacity-60"
                   title="Login / Register"
                 >
                   <User className="h-8 w-8" />
@@ -112,10 +112,12 @@ export default function FamilyHistoryForm() {
                   onClick={toggleFontSize}
                   size="lg"
                   variant="ghost"
-                  className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50 opacity-60"
+                  className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 z-50 opacity-60 ${
+                    isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:text-primary'
+                  }`}
                   title="Toggle font size"
                 >
-                  <Type className={cn("transition-all", isLargeFonts ? "h-9 w-9" : "h-8 w-8")} />
+                  <Type className="h-8 w-8" />
                 </Button>
               </div>
           </div>
