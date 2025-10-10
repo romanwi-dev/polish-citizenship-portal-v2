@@ -86,6 +86,54 @@ export const MasterDataTable = ({ open, onOpenChange, caseId }: MasterDataTableP
       label: "Mother Docs",
       icon: FileText,
       fields: ["mother_has_polish_documents", "mother_has_passport", "mother_has_birth_cert", "mother_has_marriage_cert", "mother_has_naturalization", "mother_has_military_record", "mother_has_foreign_documents", "mother_has_additional_documents"]
+    },
+    {
+      id: "pgf_documents",
+      label: "PGF Docs",
+      icon: FileText,
+      fields: ["pgf_has_polish_documents", "pgf_has_passport", "pgf_has_birth_cert", "pgf_has_marriage_cert", "pgf_has_naturalization", "pgf_has_military_record", "pgf_has_foreign_documents", "pgf_has_additional_documents"]
+    },
+    {
+      id: "pgm_documents",
+      label: "PGM Docs",
+      icon: FileText,
+      fields: ["pgm_has_polish_documents", "pgm_has_passport", "pgm_has_birth_cert", "pgm_has_marriage_cert", "pgm_has_naturalization", "pgm_has_military_record", "pgm_has_foreign_documents", "pgm_has_additional_documents"]
+    },
+    {
+      id: "mgf_documents",
+      label: "MGF Docs",
+      icon: FileText,
+      fields: ["mgf_has_polish_documents", "mgf_has_passport", "mgf_has_birth_cert", "mgf_has_marriage_cert", "mgf_has_naturalization", "mgf_has_military_record", "mgf_has_foreign_documents", "mgf_has_additional_documents"]
+    },
+    {
+      id: "mgm_documents",
+      label: "MGM Docs",
+      icon: FileText,
+      fields: ["mgm_has_polish_documents", "mgm_has_passport", "mgm_has_birth_cert", "mgm_has_marriage_cert", "mgm_has_naturalization", "mgm_has_military_record", "mgm_has_foreign_documents", "mgm_has_additional_documents"]
+    },
+    {
+      id: "pggf_documents",
+      label: "PGGF Docs",
+      icon: FileText,
+      fields: ["pggf_has_polish_documents", "pggf_has_passport", "pggf_has_birth_cert", "pggf_has_marriage_cert", "pggf_has_naturalization", "pggf_has_military_record", "pggf_has_foreign_documents", "pggf_has_additional_documents"]
+    },
+    {
+      id: "pggm_documents",
+      label: "PGGM Docs",
+      icon: FileText,
+      fields: ["pggm_has_polish_documents", "pggm_has_passport", "pggm_has_birth_cert", "pggm_has_marriage_cert", "pggm_has_naturalization", "pggm_has_military_record", "pggm_has_foreign_documents", "pggm_has_additional_documents"]
+    },
+    {
+      id: "mggf_documents",
+      label: "MGGF Docs",
+      icon: FileText,
+      fields: ["mggf_has_polish_documents", "mggf_has_passport", "mggf_has_birth_cert", "mggf_has_marriage_cert", "mggf_has_naturalization", "mggf_has_military_record", "mggf_has_foreign_documents", "mggf_has_additional_documents"]
+    },
+    {
+      id: "mggm_documents",
+      label: "MGGM Docs",
+      icon: FileText,
+      fields: ["mggm_has_polish_documents", "mggm_has_passport", "mggm_has_birth_cert", "mggm_has_marriage_cert", "mggm_has_naturalization", "mggm_has_military_record", "mggm_has_foreign_documents", "mggm_has_additional_documents"]
     }
   ];
 
@@ -160,20 +208,24 @@ export const MasterDataTable = ({ open, onOpenChange, caseId }: MasterDataTableP
       .trim();
 
     if (isDocumentField) {
+      // Extract document label from field name
+      const documentLabel = fieldName
+        .split('_has_')[1]
+        ?.split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ') || fieldLabel;
+      
       return (
-        <div className="flex items-center space-x-2 p-4 border rounded-lg hover:bg-muted/50 transition-colors">
-          <Checkbox 
+        <div key={fieldName} className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+          <Checkbox
             id={fieldName}
-            checked={formData[fieldName] || false}
+            checked={formData?.[fieldName] || false}
             onCheckedChange={(checked) => setFormData(prev => ({ ...prev, [fieldName]: checked }))}
+            className="h-6 w-6"
           />
-          <label
-            htmlFor={fieldName}
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex-1 cursor-pointer"
-          >
-            {fieldLabel}
-          </label>
-          {formData[fieldName] && <CheckCircle2 className="h-4 w-4 text-green-600" />}
+          <Label htmlFor={fieldName} className="cursor-pointer text-sm font-normal">
+            {documentLabel}
+          </Label>
         </div>
       );
     }
@@ -326,7 +378,7 @@ export const MasterDataTable = ({ open, onOpenChange, caseId }: MasterDataTableP
         )}
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 overflow-hidden flex flex-col">
-          <TabsList className="grid grid-cols-3 lg:grid-cols-9 w-full">
+          <TabsList className="grid grid-cols-2 lg:grid-cols-6 w-full">
             {sections.map(section => {
               const completion = calculateCompletion(section.id);
               const Icon = section.icon;
