@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Loader2, Type, Maximize2, Minimize2, User, Phone, MapPin, Plane, Users, FolderOpen, MessageSquare, ArrowLeft, HelpCircle } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -22,6 +22,24 @@ export default function IntakeForm() {
   const { isLargeFonts, toggleFontSize } = useAccessibility();
   const [activeTab, setActiveTab] = useState("select");
   const [isFullView, setIsFullView] = useState(false);
+
+  const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({
+    select: null,
+    applicant: null,
+    contact: null,
+    address: null,
+    passport: null,
+    immigration: null,
+    documents: null,
+    notes: null
+  });
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    if (isFullView && sectionRefs.current[value]) {
+      sectionRefs.current[value]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   const handleInputChange = (field: string, value: any) => {
     setFormData((prev: any) => ({ ...prev, [field]: value }));
@@ -149,7 +167,7 @@ export default function IntakeForm() {
         >
           <Card className="glass-card border-primary/20">
             <CardContent className="pt-6">
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
                 <div className="sticky top-0 z-20 border-b border-border/50 pb-2">
                   <div className="flex items-center gap-2 w-full">
                     <Button
@@ -201,28 +219,28 @@ export default function IntakeForm() {
               {isFullView ? (
                 // Full View - All sections visible
                 <div className="space-y-0">
-                  <div className="border-b border-border/10">
+                  <div ref={(el) => sectionRefs.current.select = el} className="border-b border-border/10">
                     <SelectSection {...contentProps} />
                   </div>
-                  <div className="border-b border-border/10">
+                  <div ref={(el) => sectionRefs.current.applicant = el} className="border-b border-border/10">
                     <ApplicantSection {...contentProps} />
                   </div>
-                  <div className="border-b border-border/10">
+                  <div ref={(el) => sectionRefs.current.contact = el} className="border-b border-border/10">
                     <ContactSection {...contentProps} />
                   </div>
-                  <div className="border-b border-border/10">
+                  <div ref={(el) => sectionRefs.current.address = el} className="border-b border-border/10">
                     <AddressSection {...contentProps} />
                   </div>
-                  <div className="border-b border-border/10">
+                  <div ref={(el) => sectionRefs.current.passport = el} className="border-b border-border/10">
                     <PassportSection {...contentProps} />
                   </div>
-                  <div className="border-b border-border/10">
+                  <div ref={(el) => sectionRefs.current.immigration = el} className="border-b border-border/10">
                     <ImmigrationSection {...contentProps} />
                   </div>
-                  <div className="border-b border-border/10">
+                  <div ref={(el) => sectionRefs.current.documents = el} className="border-b border-border/10">
                     <DocumentsSection {...contentProps} />
                   </div>
-                  <div>
+                  <div ref={(el) => sectionRefs.current.notes = el}>
                     <NotesSection {...contentProps} />
                   </div>
                 </div>
