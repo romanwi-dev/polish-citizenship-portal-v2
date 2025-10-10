@@ -21,6 +21,7 @@ import { PDFPreviewDialog } from "@/components/PDFPreviewDialog";
 import { sanitizeMasterData } from "@/utils/masterDataSanitizer";
 import { useRealtimeFormSync } from "@/hooks/useRealtimeFormSync";
 import { cn } from "@/lib/utils";
+import { FormButtonsRow } from "@/components/FormButtonsRow";
 
 export default function POAForm() {
   const { id: caseId } = useParams();
@@ -337,39 +338,15 @@ export default function POAForm() {
           </CardHeader>
         </Card>
 
-        {/* Action Buttons */}
-        <div className="pb-4 pt-4">
-          <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 p-3 md:p-4 scrollbar-hide"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-            <Button onClick={handleSave} disabled={updateMutation.isPending} size="default"
-              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[140px] md:min-w-[180px] lg:min-w-[220px] whitespace-nowrap flex-shrink-0">
-              {updateMutation.isPending ? (
-                <><Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
-                  <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Saving...</span></>
-              ) : (
-                <><Save className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-                  <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Save data</span></>
-              )}
-            </Button>
-
-            <Button onClick={() => setShowClearAllDialog(true)} size="default" variant="outline"
-              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[140px] md:min-w-[180px] lg:min-w-[220px] whitespace-nowrap flex-shrink-0">
-              <Sparkles className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Clear Data</span>
-            </Button>
-
-            <Button onClick={handleGenerateAllPOAs} disabled={isGenerating} variant="outline"
-              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[160px] md:min-w-[200px] lg:min-w-[240px] whitespace-nowrap flex-shrink-0">
-              {isGenerating ? (
-                <><Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
-                  <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generating...</span></>
-              ) : (
-                <><Download className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generate PDF</span></>
-              )}
-            </Button>
-          </div>
-        </div>
+        {/* Buttons Row */}
+        <FormButtonsRow 
+          caseId={caseId!}
+          currentForm="poa"
+          onSave={handleSave}
+          onClear={() => setShowClearAllDialog(true)}
+          onGeneratePDF={handleGenerateAllPOAs}
+          isSaving={updateMutation.isPending || isGenerating}
+        />
 
         {/* POA Forms */}
         <div className="space-y-8">

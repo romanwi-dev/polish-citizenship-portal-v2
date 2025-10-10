@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { useFormSync } from "@/hooks/useFormSync";
+import { FormButtonsRow } from "@/components/FormButtonsRow";
 
 export default function FamilyHistoryForm() {
   const { id: caseId } = useParams();
@@ -110,123 +111,15 @@ export default function FamilyHistoryForm() {
           </CardHeader>
         </Card>
 
-        {/* Action Buttons Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }} 
-          animate={{ opacity: 1, y: 0 }} 
-          transition={{ duration: 0.5 }}
-          className="bg-gradient-to-br from-background via-background to-background/95 backdrop-blur-sm pb-4 pt-4"
-        >
-          <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 p-3 md:p-4 scrollbar-hide"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            <Button onClick={handleSave} disabled={isSaving} size="default" className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[140px] md:min-w-[180px] lg:min-w-[220px] whitespace-nowrap flex-shrink-0">
-              {isSaving ? <>
-                  <Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
-                  <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                    Saving...
-                  </span>
-                </> : <>
-                  <Save className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                    Save data
-                  </span>
-                </>}
-            </Button>
-            <Button 
-              onClick={() => setShowClearDialog(true)}
-              variant="outline" 
-              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[140px] md:min-w-[180px] lg:min-w-[220px] whitespace-nowrap flex-shrink-0"
-            >
-              <Sparkles className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Clear Data
-              </span>
-            </Button>
-
-            <Button 
-              variant="outline" 
-              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[160px] md:min-w-[200px] lg:min-w-[240px] whitespace-nowrap flex-shrink-0"
-            >
-              <Download className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Generate PDF
-              </span>
-            </Button>
-
-            <Button 
-              onClick={() => navigate(`/admin/cases/${caseId}/intake`)}
-              variant="outline" 
-              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[140px] md:min-w-[180px] lg:min-w-[220px] whitespace-nowrap flex-shrink-0"
-            >
-              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Client Intake
-              </span>
-            </Button>
-
-            <Button 
-              onClick={() => navigate(`/admin/cases/${caseId}/master-data`)}
-              variant="outline" 
-              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[140px] md:min-w-[180px] lg:min-w-[220px] whitespace-nowrap flex-shrink-0"
-            >
-              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Master Form
-              </span>
-            </Button>
-            <Button 
-              onClick={() => navigate(`/admin/cases/${caseId}/family-tree`)}
-              variant="outline" 
-              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[140px] md:min-w-[180px] lg:min-w-[220px] whitespace-nowrap flex-shrink-0"
-            >
-              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Family Tree
-              </span>
-            </Button>
-            
-            {/* Current form - Family History - HIGHLIGHTED */}
-            <Button variant="default"
-              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-gradient-to-r from-primary to-secondary shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[160px] md:min-w-[200px] lg:min-w-[240px] whitespace-nowrap flex-shrink-0">
-              <span className="text-white">Family History</span>
-            </Button>
-
-            <Button
-              onClick={() => navigate(`/admin/cases/${caseId}/poa`)}
-              variant="outline" 
-              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[180px] md:min-w-[220px] lg:min-w-[260px] whitespace-nowrap flex-shrink-0"
-            >
-              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Power of Attorney
-              </span>
-            </Button>
-            <Button 
-              onClick={() => navigate(`/admin/cases/${caseId}/citizenship`)}
-              variant="outline" 
-              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px] md:min-w-[240px] lg:min-w-[280px] whitespace-nowrap flex-shrink-0"
-            >
-              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Citizenship Application
-              </span>
-            </Button>
-            <Button 
-              onClick={() => navigate(`/admin/cases/${caseId}/civil-registry`)}
-              variant="outline" 
-              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[160px] md:min-w-[200px] lg:min-w-[240px] whitespace-nowrap flex-shrink-0"
-            >
-              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Civil Registry
-              </span>
-            </Button>
-            <Button 
-              onClick={() => navigate(`/admin/cases/${caseId}/additional-data`)}
-              variant="outline" 
-              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[160px] md:min-w-[200px] lg:min-w-[240px] whitespace-nowrap flex-shrink-0"
-            >
-              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Additional Information
-              </span>
-            </Button>
-          </div>
-        </motion.div>
+        {/* Buttons Row */}
+        <FormButtonsRow 
+          caseId={caseId!}
+          currentForm="family-history"
+          onSave={handleSave}
+          onClear={() => setShowClearDialog(true)}
+          onGeneratePDF={() => {}}
+          isSaving={isSaving}
+        />
       </motion.div>
 
       {/* Form Content */}

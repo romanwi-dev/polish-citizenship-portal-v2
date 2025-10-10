@@ -20,6 +20,7 @@ import { DateField } from "@/components/DateField";
 import { toast } from "sonner";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { useRealtimeFormSync } from "@/hooks/useRealtimeFormSync";
+import { FormButtonsRow } from "@/components/FormButtonsRow";
 
 export default function FamilyTreeForm() {
   const {
@@ -298,180 +299,14 @@ export default function FamilyTreeForm() {
             </CardHeader>
           </Card>
           
-          <div className="bg-gradient-to-br from-background via-background to-background/95 backdrop-blur-sm pb-4 pt-4">
-            <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 p-3 md:p-4 scrollbar-hide"
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-            >
-            <Button 
-              onClick={handleSave} 
-              disabled={updateMutation.isPending} 
-              size="default" 
-              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[140px] md:min-w-[180px] lg:min-w-[220px] whitespace-nowrap flex-shrink-0"
-            >
-              {updateMutation.isPending ? (
-                <>
-                  <Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
-                  <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                    Saving...
-                  </span>
-                </>
-              ) : (
-                <>
-                  <Save className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                    Save data
-                  </span>
-                </>
-              )}
-            </Button>
-            <Button 
-              onClick={() => navigate(`/admin/cases/${caseId}/family-history`)}
-              variant="outline" 
-              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[160px] md:min-w-[200px] lg:min-w-[240px] whitespace-nowrap flex-shrink-0"
-            >
-              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Family History
-              </span>
-            </Button>
-            <Button 
-              onClick={() => setShowClearDialog(true)} 
-              size="default" 
-              variant="outline"
-              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[140px] md:min-w-[180px] lg:min-w-[220px] whitespace-nowrap flex-shrink-0"
-            >
-              <Sparkles className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Clear Data
-              </span>
-            </Button>
-            <Button 
-              onClick={handleGeneratePDF} 
-              disabled={isGenerating} 
-              variant="outline" 
-              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[160px] md:min-w-[200px] lg:min-w-[240px] whitespace-nowrap flex-shrink-0"
-            >
-              {isGenerating ? (
-                <>
-                  <Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
-                  <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                    Generating...
-                  </span>
-                </>
-              ) : (
-                <>
-                  <Download className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                    Generate PDF
-                  </span>
-                </>
-              )}
-            </Button>
-
-            {/* Navigation Buttons */}
-            <Button 
-              onClick={() => navigate(`/admin/cases/${caseId}/intake`)}
-              variant="outline" 
-              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[140px] md:min-w-[180px] lg:min-w-[220px] whitespace-nowrap flex-shrink-0"
-            >
-              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Client Intake
-              </span>
-            </Button>
-
-            <Button 
-              onClick={() => navigate(`/admin/cases/${caseId}/master-data`)}
-              variant="outline" 
-              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[140px] md:min-w-[180px] lg:min-w-[220px] whitespace-nowrap flex-shrink-0"
-            >
-              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Master Form
-              </span>
-            </Button>
-
-            {/* Current form - Family Tree - HIGHLIGHTED */}
-            <Button variant="default"
-              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-gradient-to-r from-primary to-secondary shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[140px] md:min-w-[180px] lg:min-w-[220px] whitespace-nowrap flex-shrink-0">
-              <span className="text-white">Family Tree</span>
-            </Button>
-
-            <Button 
-              onClick={() => navigate(`/admin/cases/${caseId}/poa`)}
-              variant="outline" 
-              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[180px] md:min-w-[220px] lg:min-w-[260px] whitespace-nowrap flex-shrink-0"
-            >
-              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Power of Attorney
-              </span>
-            </Button>
-
-            <Button 
-              onClick={() => navigate(`/admin/cases/${caseId}/citizenship`)}
-              variant="outline" 
-              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[200px] md:min-w-[240px] lg:min-w-[280px] whitespace-nowrap flex-shrink-0"
-            >
-              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Citizenship Application
-              </span>
-            </Button>
-
-            <Button 
-              onClick={() => navigate(`/admin/cases/${caseId}/civil-registry`)}
-              variant="outline" 
-              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[160px] md:min-w-[200px] lg:min-w-[240px] whitespace-nowrap flex-shrink-0"
-            >
-              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Civil Registry
-              </span>
-            </Button>
-
-            <Button 
-              onClick={() => navigate(`/admin/cases/${caseId}/additional-data`)}
-              variant="outline" 
-              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[160px] md:min-w-[200px] lg:min-w-[240px] whitespace-nowrap flex-shrink-0"
-            >
-              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Additional Data
-              </span>
-            </Button>
-            {/* Tab Navigation */}
-            <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent pb-2">
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="w-max min-w-full inline-flex h-auto p-2 bg-transparent gap-2">
-                  <TabsTrigger value="applicant" className="data-[state=active]:bg-primary/20 gap-2">
-                    <User className="h-4 w-4" />
-                    <span className="hidden sm:inline">Applicant</span>
-                  </TabsTrigger>
-                  {(formData.minor_children_count > 0) && (
-                    <TabsTrigger value="children" className="data-[state=active]:bg-primary/20 gap-2">
-                      <Baby className="h-4 w-4" />
-                      <span className="hidden sm:inline">Children</span>
-                    </TabsTrigger>
-                  )}
-                  <TabsTrigger value="parents" className="data-[state=active]:bg-primary/20 gap-2">
-                    <Users className="h-4 w-4" />
-                    <span className="hidden sm:inline">Polish Parent</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="grandparents" className="data-[state=active]:bg-primary/20 gap-2">
-                    <GitBranch className="h-4 w-4" />
-                    <span className="hidden sm:inline">Grandparents</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="great-grandparents" className="data-[state=active]:bg-primary/20 gap-2">
-                    <TreePine className="h-4 w-4" />
-                    <span className="hidden sm:inline">G-Grandparents</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="family-history" className="data-[state=active]:bg-primary/20 gap-2">
-                    <BookOpen className="h-4 w-4" />
-                    <span className="hidden sm:inline">Family History</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="additional" className="data-[state=active]:bg-primary/20 gap-2">
-                    <FileText className="h-4 w-4" />
-                    <span className="hidden sm:inline">Additional Info</span>
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
-            </div>
-            </div>
-          </div>
+          <FormButtonsRow 
+            caseId={caseId!}
+            currentForm="family-tree"
+            onSave={handleSave}
+            onClear={() => setShowClearDialog(true)}
+            onGeneratePDF={handleGeneratePDF}
+            isSaving={updateMutation.isPending}
+          />
         </motion.div>
 
         {/* Form with Tabs */}
