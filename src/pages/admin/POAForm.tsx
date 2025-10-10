@@ -334,19 +334,19 @@ export default function POAForm() {
                   <Type className="h-8 w-8" />
                 </Button>
               </div>
-            </div>
-          </CardHeader>
-        </Card>
-
-        {/* Buttons Row */}
-        <FormButtonsRow 
-          caseId={caseId!}
-          currentForm="poa"
-          onSave={handleSave}
-          onClear={() => setShowClearAllDialog(true)}
-          onGeneratePDF={handleGenerateAllPOAs}
-          isSaving={updateMutation.isPending || isGenerating}
-        />
+          </div>
+        </CardHeader>
+        <CardContent className="pt-6 pb-6">
+          <FormButtonsRow 
+            caseId={caseId!}
+            currentForm="poa"
+            onSave={handleSave}
+            onClear={() => setShowClearAllDialog(true)}
+            onGeneratePDF={handleGenerateAllPOAs}
+            isSaving={updateMutation.isPending || isGenerating}
+          />
+        </CardContent>
+      </Card>
 
         {/* POA Forms */}
         <div className="space-y-8">

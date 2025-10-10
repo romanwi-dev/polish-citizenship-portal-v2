@@ -107,20 +107,20 @@ export default function FamilyHistoryForm() {
                   <Type className={cn("transition-all", isLargeFonts ? "h-9 w-9" : "h-8 w-8")} />
                 </Button>
               </div>
-            </div>
-          </CardHeader>
-        </Card>
-
-        {/* Buttons Row */}
-        <FormButtonsRow 
-          caseId={caseId!}
-          currentForm="family-history"
-          onSave={handleSave}
-          onClear={() => setShowClearDialog(true)}
-          onGeneratePDF={() => {}}
-          isSaving={isSaving}
-        />
-      </motion.div>
+          </div>
+        </CardHeader>
+        <CardContent className="pt-6 pb-6">
+          <FormButtonsRow 
+            caseId={caseId!}
+            currentForm="family-history"
+            onSave={handleSave}
+            onClear={() => setShowClearDialog(true)}
+            onGeneratePDF={() => {}}
+            isSaving={isSaving}
+          />
+        </CardContent>
+      </Card>
+    </motion.div>
 
       {/* Form Content */}
       <div className="w-full px-4 py-6">

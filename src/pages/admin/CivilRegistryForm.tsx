@@ -257,18 +257,18 @@ export default function CivilRegistryForm() {
                 </div>
               </div>
             </CardHeader>
+            <CardContent className="pt-6 pb-6">
+              <FormButtonsRow 
+                caseId={caseId!}
+                currentForm="civil-registry"
+                onSave={handleSave}
+                onClear={() => setShowClearDialog(true)}
+                onGeneratePDF={handleGeneratePDF}
+                isSaving={updateMutation.isPending || isGenerating}
+              />
+            </CardContent>
           </Card>
         </motion.div>
-
-        {/* Buttons Row */}
-        <FormButtonsRow 
-          caseId={caseId!}
-          currentForm="civil-registry"
-          onSave={handleSave}
-          onClear={() => setShowClearDialog(true)}
-          onGeneratePDF={handleGeneratePDF}
-          isSaving={updateMutation.isPending || isGenerating}
-        />
 
         {/* Form Sections */}
         <div className="space-y-8">

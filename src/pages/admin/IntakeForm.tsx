@@ -96,19 +96,19 @@ export default function IntakeForm() {
                     <Type className="h-8 w-8" />
                   </Button>
                 </div>
-              </div>
-            </CardHeader>
-          </Card>
-
-        {/* Buttons Row */}
-        <FormButtonsRow 
-          caseId={caseId!}
-          currentForm="intake"
-          onSave={handleSave}
-          onClear={() => setShowClearDialog(true)}
-          onGeneratePDF={() => {}}
-          isSaving={isSaving}
-        />
+            </div>
+          </CardHeader>
+          <CardContent className="pt-6 pb-6">
+            <FormButtonsRow 
+              caseId={caseId!}
+              currentForm="intake"
+              onSave={handleSave}
+              onClear={() => setShowClearDialog(true)}
+              onGeneratePDF={() => {}}
+              isSaving={isSaving}
+            />
+          </CardContent>
+        </Card>
 
         {/* Form with Tabs */}
         <motion.div initial={{

@@ -1,10 +1,10 @@
-import { Save, Sparkles, Download, FileText, Database, GitBranch, BookOpen, FileCheck, Award, Building } from "lucide-react";
+import { Save, Sparkles, Download, FileText, Database, GitBranch, BookOpen, FileCheck, Award, Building, FolderOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
 interface FormButtonsRowProps {
   caseId: string;
-  currentForm: 'intake' | 'master-data' | 'family-tree' | 'family-history' | 'poa' | 'citizenship' | 'civil-registry';
+  currentForm: 'intake' | 'master-data' | 'family-tree' | 'family-history' | 'poa' | 'citizenship' | 'civil-registry' | 'additional-data';
   onSave: () => void;
   onClear: () => void;
   onGeneratePDF: () => void;
@@ -20,6 +20,7 @@ const navigationButtons = [
   { id: 'poa', label: 'Power of Attorney', icon: FileCheck, path: '/admin/cases/:id/poa' },
   { id: 'citizenship', label: 'Citizenship Application', icon: Award, path: '/admin/cases/:id/citizenship' },
   { id: 'civil-registry', label: 'Civil Registry', icon: Building, path: '/admin/cases/:id/civil-registry' },
+  { id: 'additional-data', label: 'Additional Data', icon: FolderOpen, path: '/admin/cases/:id/additional-data' },
 ];
 
 export function FormButtonsRow({ 

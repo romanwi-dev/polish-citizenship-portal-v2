@@ -370,18 +370,18 @@ export default function CitizenshipForm() {
                 </div>
               </div>
             </CardHeader>
+            <CardContent className="pt-6 pb-6">
+              <FormButtonsRow 
+                caseId={caseId!}
+                currentForm="citizenship"
+                onSave={handleSave}
+                onClear={() => setShowClearAllDialog(true)}
+                onGeneratePDF={handleGeneratePDF}
+                isSaving={updateMutation.isPending || isGenerating}
+              />
+            </CardContent>
           </Card>
         </motion.div>
-
-        {/* Buttons Row */}
-        <FormButtonsRow 
-          caseId={caseId!}
-          currentForm="citizenship"
-          onSave={handleSave}
-          onClear={() => setShowClearAllDialog(true)}
-          onGeneratePDF={handleGeneratePDF}
-          isSaving={updateMutation.isPending || isGenerating}
-        />
 
         {/* Form Sections */}
         <div className="space-y-8">

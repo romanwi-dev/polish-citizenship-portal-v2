@@ -260,16 +260,17 @@ export default function MasterDataTable() {
                 </div>
               </div>
             </CardHeader>
+            <CardContent className="pt-6 pb-6">
+              <FormButtonsRow 
+                caseId={caseId!}
+                currentForm="master-data"
+                onSave={handleSave}
+                onClear={() => setShowClearDialog(true)}
+                onGeneratePDF={() => {}}
+                isSaving={isSaving}
+              />
+            </CardContent>
           </Card>
-          
-          <FormButtonsRow 
-            caseId={caseId!}
-            currentForm="master-data"
-            onSave={handleSave}
-            onClear={() => setShowClearDialog(true)}
-            onGeneratePDF={() => {}}
-            isSaving={isSaving}
-          />
         </motion.div>
 
         {/* Form with Tabs */}
