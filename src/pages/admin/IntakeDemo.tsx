@@ -2337,12 +2337,12 @@ export default function IntakeDemo() {
               </CardContent>
             </Card>
 
-            {/* Design 2.1: Transparent Background */}
+            {/* Design 2.1: Dark Slate Glow */}
             <Card>
               <CardHeader>
-                <CardTitle>Design 2.1: Card Grid - Transparent</CardTitle>
+                <CardTitle>Design 2.1: Dark Slate with Glow</CardTitle>
                 <CardDescription>
-                  Clean, minimal background with no container styling. Cards float freely.
+                  Premium modern feel with deep dark background, purple/blue glow, and high contrast white text.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -2351,17 +2351,17 @@ export default function IntakeDemo() {
                   documents={docsVariant2}
                   onChange={(id, checked) => handleDocChange(2, id, checked)}
                   variant="card-grid"
-                  backgroundStyle="transparent"
+                  backgroundStyle="dark-slate-glow"
                 />
               </CardContent>
             </Card>
 
-            {/* Design 2.2: Gradient Background */}
+            {/* Design 2.2: Vibrant Gradient Mesh */}
             <Card>
               <CardHeader>
-                <CardTitle>Design 2.2: Card Grid - Gradient</CardTitle>
+                <CardTitle>Design 2.2: Vibrant Gradient Mesh</CardTitle>
                 <CardDescription>
-                  Subtle gradient background from primary to secondary with rounded container.
+                  Eye-catching modern web3 aesthetic with bold animated gradients and smooth transitions.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -2370,17 +2370,17 @@ export default function IntakeDemo() {
                   documents={docsVariant3}
                   onChange={(id, checked) => handleDocChange(3, id, checked)}
                   variant="card-grid"
-                  backgroundStyle="gradient"
+                  backgroundStyle="vibrant-gradient-mesh"
                 />
               </CardContent>
             </Card>
 
-            {/* Design 2.3: Strong Glass Morphism */}
+            {/* Design 2.3: Paper Texture Warm */}
             <Card>
               <CardHeader>
-                <CardTitle>Design 2.3: Card Grid - Glass Strong</CardTitle>
+                <CardTitle>Design 2.3: Paper Texture (Warm)</CardTitle>
                 <CardDescription>
-                  Strong glass effect with backdrop blur, border and shadow for elevated appearance.
+                  Professional government-form aesthetic with warm beige/cream tones and subtle texture overlay.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -2389,17 +2389,17 @@ export default function IntakeDemo() {
                   documents={docsVariant4}
                   onChange={(id, checked) => handleDocChange(4, id, checked)}
                   variant="card-grid"
-                  backgroundStyle="glass-strong"
+                  backgroundStyle="paper-texture-warm"
                 />
               </CardContent>
             </Card>
 
-            {/* Design 2.4: Solid Muted Background */}
+            {/* Design 2.4: Glass Neumorphism */}
             <Card>
               <CardHeader>
-                <CardTitle>Design 2.4: Card Grid - Solid Muted</CardTitle>
+                <CardTitle>Design 2.4: Glass Neumorphism</CardTitle>
                 <CardDescription>
-                  Solid muted background for clear separation and professional appearance.
+                  Ultra-modern iOS/macOS style with strong frosted glass effect and heavy backdrop blur.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -2408,17 +2408,17 @@ export default function IntakeDemo() {
                   documents={docsVariant5}
                   onChange={(id, checked) => handleDocChange(5, id, checked)}
                   variant="card-grid"
-                  backgroundStyle="solid"
+                  backgroundStyle="glass-neumorphism"
                 />
               </CardContent>
             </Card>
 
-            {/* Design 2.5: Bordered Container */}
+            {/* Design 2.5: Bordered Grid Minimal */}
             <Card>
               <CardHeader>
-                <CardTitle>Design 2.5: Card Grid - Bordered</CardTitle>
+                <CardTitle>Design 2.5: Bordered Grid Minimal</CardTitle>
                 <CardDescription>
-                  Clean border without background fill for defined boundary without weight.
+                  Clean architectural blueprint feel with no background fill, strong borders, and maximum content focus.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -2427,7 +2427,7 @@ export default function IntakeDemo() {
                   documents={docsVariant6}
                   onChange={(id, checked) => handleDocChange(6, id, checked)}
                   variant="card-grid"
-                  backgroundStyle="bordered"
+                  backgroundStyle="bordered-grid-minimal"
                 />
               </CardContent>
             </Card>

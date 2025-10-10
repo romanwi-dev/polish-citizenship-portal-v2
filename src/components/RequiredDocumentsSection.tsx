@@ -12,7 +12,7 @@ interface RequiredDocumentsSectionProps {
   documents: DocumentItem[];
   onChange: (id: string, checked: boolean) => void;
   variant?: "subtle-glass" | "card-grid" | "bordered-list" | "compact-table" | "gradient-blocks";
-  backgroundStyle?: "transparent" | "gradient" | "glass-strong" | "solid" | "bordered";
+  backgroundStyle?: "dark-slate-glow" | "vibrant-gradient-mesh" | "paper-texture-warm" | "glass-neumorphism" | "bordered-grid-minimal";
 }
 
 export function RequiredDocumentsSection({
@@ -20,23 +20,60 @@ export function RequiredDocumentsSection({
   documents,
   onChange,
   variant = "subtle-glass",
-  backgroundStyle = "transparent",
+  backgroundStyle = "dark-slate-glow",
 }: RequiredDocumentsSectionProps) {
   const getBackgroundClass = () => {
     if (variant !== "card-grid") return "";
     
     switch (backgroundStyle) {
-      case "gradient":
-        return "bg-gradient-to-br from-primary/5 via-background to-secondary/5 p-6 rounded-lg";
-      case "glass-strong":
-        return "bg-card/50 backdrop-blur-xl border border-border/30 p-6 rounded-lg shadow-lg";
-      case "solid":
-        return "bg-muted/30 p-6 rounded-lg";
-      case "bordered":
-        return "border-2 border-border/40 p-6 rounded-lg";
-      case "transparent":
+      case "dark-slate-glow":
+        return "bg-slate-900/95 p-6 rounded-lg shadow-2xl shadow-primary/20 border border-slate-700";
+      case "vibrant-gradient-mesh":
+        return "bg-gradient-to-br from-primary/20 via-accent/30 to-secondary/20 p-6 rounded-lg backdrop-blur-sm border border-primary/30 shadow-xl";
+      case "paper-texture-warm":
+        return "bg-amber-50/80 dark:bg-amber-900/20 p-6 rounded-lg shadow-lg border-2 border-amber-200/50 dark:border-amber-700/50";
+      case "glass-neumorphism":
+        return "bg-white/10 dark:bg-black/10 backdrop-blur-2xl p-6 rounded-2xl shadow-[inset_0_2px_22px_rgba(255,255,255,0.1)] border border-white/20 dark:border-white/10";
+      case "bordered-grid-minimal":
+        return "p-6 rounded-none border-4 border-primary/40";
       default:
-        return "p-2";
+        return "p-6";
+    }
+  };
+
+  const getCardClass = () => {
+    if (variant !== "card-grid") return "border-2 border-border/50 rounded-lg p-4 hover:bg-accent/10 hover:border-primary/50 transition-all duration-200 hover:shadow-md";
+    
+    switch (backgroundStyle) {
+      case "dark-slate-glow":
+        return "border-2 border-slate-700 bg-slate-800/50 rounded-lg p-4 hover:bg-slate-700/50 hover:border-primary/50 transition-all duration-200 hover:shadow-lg";
+      case "vibrant-gradient-mesh":
+        return "border-2 border-primary/40 bg-card/60 backdrop-blur rounded-lg p-4 hover:bg-card/80 hover:border-primary/70 transition-all duration-200 hover:shadow-lg";
+      case "paper-texture-warm":
+        return "border-2 border-amber-300/60 dark:border-amber-600/60 bg-white/40 dark:bg-amber-800/20 rounded-lg p-4 hover:bg-amber-100/60 dark:hover:bg-amber-700/30 hover:border-amber-400 transition-all duration-200 hover:shadow-md";
+      case "glass-neumorphism":
+        return "border border-white/30 dark:border-white/10 bg-white/5 dark:bg-black/5 backdrop-blur-sm rounded-xl p-4 hover:bg-white/10 dark:hover:bg-black/10 hover:border-white/50 transition-all duration-200 shadow-lg";
+      case "bordered-grid-minimal":
+        return "border-b border-r border-border/30 p-4 hover:bg-accent/5 hover:border-primary/40 transition-all duration-200";
+      default:
+        return "border-2 border-border/50 rounded-lg p-4 hover:bg-accent/10 hover:border-primary/50 transition-all duration-200 hover:shadow-md";
+    }
+  };
+
+  const getLabelClass = () => {
+    switch (backgroundStyle) {
+      case "dark-slate-glow":
+        return "font-medium text-slate-100 text-sm uppercase tracking-wide cursor-pointer";
+      case "vibrant-gradient-mesh":
+        return "font-medium text-foreground text-sm uppercase tracking-wide cursor-pointer";
+      case "paper-texture-warm":
+        return "font-medium text-amber-900 dark:text-amber-100 text-sm uppercase tracking-wide cursor-pointer";
+      case "glass-neumorphism":
+        return "font-medium text-foreground/90 text-sm uppercase tracking-wide cursor-pointer";
+      case "bordered-grid-minimal":
+        return "font-medium text-foreground/70 text-sm uppercase tracking-wide cursor-pointer";
+      default:
+        return "font-medium text-foreground/70 text-sm uppercase tracking-wide cursor-pointer";
     }
   };
   if (variant === "subtle-glass") {
@@ -77,7 +114,7 @@ export function RequiredDocumentsSection({
           {documents.map((doc) => (
             <div
               key={doc.id}
-              className="border-2 border-border/50 rounded-lg p-4 hover:bg-accent/10 hover:border-primary/50 transition-all duration-200 hover:shadow-md"
+              className={getCardClass()}
             >
               <div className="flex items-center space-x-4">
                 <Checkbox
@@ -88,7 +125,7 @@ export function RequiredDocumentsSection({
                 />
                 <Label
                   htmlFor={doc.id}
-                  className="font-medium text-foreground/70 text-sm uppercase tracking-wide cursor-pointer"
+                  className={getLabelClass()}
                 >
                   {doc.label}
                 </Label>
