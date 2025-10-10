@@ -316,6 +316,10 @@ export default function FamilyTreeForm() {
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <div className="border-b border-border/50">
                 <TabsList className="w-full h-auto p-2 bg-transparent justify-start">
+                  <TabsTrigger value="select" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                    <Users className="h-4 w-4 mr-2" />
+                    <span className="hidden sm:inline">Select...</span>
+                  </TabsTrigger>
                   <TabsTrigger value="applicant" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
                     <User className="h-4 w-4 mr-2" />
                     <span className="hidden sm:inline">Applicant</span>
@@ -345,9 +349,8 @@ export default function FamilyTreeForm() {
                 </TabsList>
               </div>
 
-              <TabsContent value="applicant" className="mt-0">
-          {/* Applicant Section */}
-          {activeTab === 'applicant' && (
+              <TabsContent value="select" className="mt-0">
+          {activeTab === 'select' && (
           <motion.div initial={{
           opacity: 0,
           scale: 0.95
@@ -359,7 +362,7 @@ export default function FamilyTreeForm() {
         }}>
             <Card className="glass-card border-primary/20">
               <CardHeader className="border-b border-border/50 pb-6">
-                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Applicant
+                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Select Information
 
               </CardTitle>
               </CardHeader>
@@ -433,6 +436,31 @@ export default function FamilyTreeForm() {
                     </motion.div>
                   )}
                 </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+          )}
+        </TabsContent>
+
+              <TabsContent value="applicant" className="mt-0">
+          {/* Applicant Section */}
+          {activeTab === 'applicant' && (
+          <motion.div initial={{
+          opacity: 0,
+          scale: 0.95
+        }} animate={{
+          opacity: 1,
+          scale: 1
+        }} transition={{
+          duration: 0.5
+        }}>
+            <Card className="glass-card border-primary/20">
+              <CardHeader className="border-b border-border/50 pb-6">
+                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Applicant
+
+              </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 md:p-10 space-y-10">
 
                 {/* Row 1: Names */}
                 {renderFieldGroup([{

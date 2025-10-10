@@ -123,7 +123,11 @@ export default function IntakeForm() {
           <Card className="glass-card border-primary/20">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <div className="border-b border-border/50">
-                <TabsList className="w-full grid grid-cols-2 md:grid-cols-7 h-auto p-2 bg-transparent">
+                <TabsList className="w-full grid grid-cols-2 md:grid-cols-8 h-auto p-2 bg-transparent">
+                  <TabsTrigger value="select" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                    <Users className="h-4 w-4 mr-2" />
+                    <span className="hidden sm:inline">Select...</span>
+                  </TabsTrigger>
                   <TabsTrigger value="applicant" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
                     <User className="h-4 w-4 mr-2" />
                     <span className="hidden sm:inline">Applicant</span>
@@ -155,10 +159,10 @@ export default function IntakeForm() {
                 </TabsList>
               </div>
 
-              <TabsContent value="applicant" className="mt-0">
+              <TabsContent value="select" className="mt-0">
                 <CardHeader className="border-b border-border/50 pb-6">
                   <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                    Applicant Information
+                    Select Information
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-6 md:p-10">
@@ -286,8 +290,16 @@ export default function IntakeForm() {
                   </motion.div>
                 )}
               </div>
+                </CardContent>
+              </TabsContent>
 
-              {/* Names */}
+              <TabsContent value="applicant" className="mt-0">
+                <CardHeader className="border-b border-border/50 pb-6">
+                  <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                    Applicant Information
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6 md:p-10">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
