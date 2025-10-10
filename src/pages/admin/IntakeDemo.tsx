@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -1673,6 +1674,352 @@ export default function IntakeDemo() {
               </div>
             </CardContent>
           </Card>
+        </div>
+
+        {/* INPUT FIELD DESIGN VARIATIONS */}
+        <div className="space-y-6">
+          <div className="text-center space-y-4 py-8">
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              Input Field Design Variations
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              Compare 10 different input field styles for darkness, color, and design
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Style 1: Subtle Gray */}
+            <Card className="border-2 border-primary/20">
+              <CardHeader>
+                <CardTitle>Style 1: Subtle Gray</CardTitle>
+                <p className="text-sm text-muted-foreground">Very light gray, 30% opacity - barely darker</p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label>Full Name</Label>
+                  <Input 
+                    placeholder="Enter your name" 
+                    className="h-16 text-lg bg-muted/30 border-2 border-border/40 hover:border-border/60 focus:border-primary/60"
+                  />
+                </div>
+                <div>
+                  <Label>Birth Date</Label>
+                  <Input 
+                    type="text" 
+                    placeholder="DD.MM.YYYY" 
+                    className="h-16 text-lg bg-muted/30 border-2 border-border/40 hover:border-border/60 focus:border-primary/60"
+                  />
+                </div>
+                <div>
+                  <Label>Gender</Label>
+                  <select className="flex h-16 w-full rounded-md bg-muted/30 border-2 border-border/40 px-3 py-2 text-lg hover:border-border/60 focus:border-primary/60 focus:outline-none">
+                    <option>Select gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                  </select>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Style 2: Medium Gray */}
+            <Card className="border-2 border-primary/20">
+              <CardHeader>
+                <CardTitle>Style 2: Medium Gray</CardTitle>
+                <p className="text-sm text-muted-foreground">Medium gray, 60% opacity - good contrast</p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label>Full Name</Label>
+                  <Input 
+                    placeholder="Enter your name" 
+                    className="h-16 text-lg bg-muted/60 border-2 border-border/60 hover:border-border/80 focus:border-primary"
+                  />
+                </div>
+                <div>
+                  <Label>Birth Date</Label>
+                  <Input 
+                    type="text" 
+                    placeholder="DD.MM.YYYY" 
+                    className="h-16 text-lg bg-muted/60 border-2 border-border/60 hover:border-border/80 focus:border-primary"
+                  />
+                </div>
+                <div>
+                  <Label>Gender</Label>
+                  <select className="flex h-16 w-full rounded-md bg-muted/60 border-2 border-border/60 px-3 py-2 text-lg hover:border-border/80 focus:border-primary focus:outline-none">
+                    <option>Select gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                  </select>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Style 3: Dark Slate */}
+            <Card className="border-2 border-primary/20">
+              <CardHeader>
+                <CardTitle>Style 3: Dark Slate</CardTitle>
+                <p className="text-sm text-muted-foreground">Dark slate with transparency - sophisticated</p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label>Full Name</Label>
+                  <Input 
+                    placeholder="Enter your name" 
+                    className="h-16 text-lg bg-slate-900/40 border-2 border-slate-700/50 hover:border-slate-600/60 focus:border-primary backdrop-blur"
+                  />
+                </div>
+                <div>
+                  <Label>Birth Date</Label>
+                  <Input 
+                    type="text" 
+                    placeholder="DD.MM.YYYY" 
+                    className="h-16 text-lg bg-slate-900/40 border-2 border-slate-700/50 hover:border-slate-600/60 focus:border-primary backdrop-blur"
+                  />
+                </div>
+                <div>
+                  <Label>Gender</Label>
+                  <select className="flex h-16 w-full rounded-md bg-slate-900/40 border-2 border-slate-700/50 px-3 py-2 text-lg hover:border-slate-600/60 focus:border-primary focus:outline-none backdrop-blur">
+                    <option>Select gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                  </select>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Style 4: Warm Beige */}
+            <Card className="border-2 border-primary/20">
+              <CardHeader>
+                <CardTitle>Style 4: Warm Beige</CardTitle>
+                <p className="text-sm text-muted-foreground">Warm tone - inviting appearance</p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label>Full Name</Label>
+                  <Input 
+                    placeholder="Enter your name" 
+                    className="h-16 text-lg bg-amber-50/20 dark:bg-amber-950/20 border-2 border-amber-200/40 dark:border-amber-800/40 hover:border-amber-300/60 dark:hover:border-amber-700/60 focus:border-amber-500"
+                  />
+                </div>
+                <div>
+                  <Label>Birth Date</Label>
+                  <Input 
+                    type="text" 
+                    placeholder="DD.MM.YYYY" 
+                    className="h-16 text-lg bg-amber-50/20 dark:bg-amber-950/20 border-2 border-amber-200/40 dark:border-amber-800/40 hover:border-amber-300/60 dark:hover:border-amber-700/60 focus:border-amber-500"
+                  />
+                </div>
+                <div>
+                  <Label>Gender</Label>
+                  <select className="flex h-16 w-full rounded-md bg-amber-50/20 dark:bg-amber-950/20 border-2 border-amber-200/40 dark:border-amber-800/40 px-3 py-2 text-lg hover:border-amber-300/60 dark:hover:border-amber-700/60 focus:border-amber-500 focus:outline-none">
+                    <option>Select gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                  </select>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Style 5: Cool Blue Tint */}
+            <Card className="border-2 border-primary/20">
+              <CardHeader>
+                <CardTitle>Style 5: Cool Blue Tint</CardTitle>
+                <p className="text-sm text-muted-foreground">Cool blue tone - professional tech-feel</p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label>Full Name</Label>
+                  <Input 
+                    placeholder="Enter your name" 
+                    className="h-16 text-lg bg-blue-50/30 dark:bg-blue-950/30 border-2 border-blue-200/50 dark:border-blue-800/50 hover:border-blue-300/70 dark:hover:border-blue-700/70 focus:border-blue-500"
+                  />
+                </div>
+                <div>
+                  <Label>Birth Date</Label>
+                  <Input 
+                    type="text" 
+                    placeholder="DD.MM.YYYY" 
+                    className="h-16 text-lg bg-blue-50/30 dark:bg-blue-950/30 border-2 border-blue-200/50 dark:border-blue-800/50 hover:border-blue-300/70 dark:hover:border-blue-700/70 focus:border-blue-500"
+                  />
+                </div>
+                <div>
+                  <Label>Gender</Label>
+                  <select className="flex h-16 w-full rounded-md bg-blue-50/30 dark:bg-blue-950/30 border-2 border-blue-200/50 dark:border-blue-800/50 px-3 py-2 text-lg hover:border-blue-300/70 dark:hover:border-blue-700/70 focus:border-blue-500 focus:outline-none">
+                    <option>Select gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                  </select>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Style 6: Elevated Card */}
+            <Card className="border-2 border-primary/20">
+              <CardHeader>
+                <CardTitle>Style 6: Elevated Card</CardTitle>
+                <p className="text-sm text-muted-foreground">Material design - raised fields</p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label>Full Name</Label>
+                  <Input 
+                    placeholder="Enter your name" 
+                    className="h-16 text-lg bg-card border border-border shadow-md hover:shadow-lg focus:shadow-xl transition-shadow"
+                  />
+                </div>
+                <div>
+                  <Label>Birth Date</Label>
+                  <Input 
+                    type="text" 
+                    placeholder="DD.MM.YYYY" 
+                    className="h-16 text-lg bg-card border border-border shadow-md hover:shadow-lg focus:shadow-xl transition-shadow"
+                  />
+                </div>
+                <div>
+                  <Label>Gender</Label>
+                  <select className="flex h-16 w-full rounded-md bg-card border border-border shadow-md px-3 py-2 text-lg hover:shadow-lg focus:shadow-xl focus:outline-none transition-shadow">
+                    <option>Select gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                  </select>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Style 7: Frosted Glass Dark */}
+            <Card className="border-2 border-primary/20">
+              <CardHeader>
+                <CardTitle>Style 7: Frosted Glass Dark</CardTitle>
+                <p className="text-sm text-muted-foreground">Modern frosted glass - very dark</p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label>Full Name</Label>
+                  <Input 
+                    placeholder="Enter your name" 
+                    className="h-16 text-lg bg-background/80 border-2 border-primary/20 backdrop-blur-xl hover:border-primary/40 focus:border-primary/60"
+                  />
+                </div>
+                <div>
+                  <Label>Birth Date</Label>
+                  <Input 
+                    type="text" 
+                    placeholder="DD.MM.YYYY" 
+                    className="h-16 text-lg bg-background/80 border-2 border-primary/20 backdrop-blur-xl hover:border-primary/40 focus:border-primary/60"
+                  />
+                </div>
+                <div>
+                  <Label>Gender</Label>
+                  <select className="flex h-16 w-full rounded-md bg-background/80 border-2 border-primary/20 backdrop-blur-xl px-3 py-2 text-lg hover:border-primary/40 focus:border-primary/60 focus:outline-none">
+                    <option>Select gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                  </select>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Style 8: Gradient Border */}
+            <Card className="border-2 border-primary/20">
+              <CardHeader>
+                <CardTitle>Style 8: Gradient Border</CardTitle>
+                <p className="text-sm text-muted-foreground">Modern gradient - eye-catching</p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label>Full Name</Label>
+                  <div className="relative">
+                    <Input 
+                      placeholder="Enter your name" 
+                      className="h-16 text-lg bg-card/70 border-2 border-transparent bg-gradient-to-r from-primary/30 to-accent/30 hover:from-primary/50 hover:to-accent/50 focus:from-primary focus:to-accent"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label>Birth Date</Label>
+                  <Input 
+                    type="text" 
+                    placeholder="DD.MM.YYYY" 
+                    className="h-16 text-lg bg-card/70 border-2 border-transparent bg-gradient-to-r from-primary/30 to-accent/30 hover:from-primary/50 hover:to-accent/50 focus:from-primary focus:to-accent"
+                  />
+                </div>
+                <div>
+                  <Label>Gender</Label>
+                  <select className="flex h-16 w-full rounded-md bg-card/70 border-2 border-transparent bg-gradient-to-r from-primary/30 to-accent/30 px-3 py-2 text-lg hover:from-primary/50 hover:to-accent/50 focus:from-primary focus:to-accent focus:outline-none">
+                    <option>Select gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                  </select>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Style 9: Solid Contrast */}
+            <Card className="border-2 border-primary/20">
+              <CardHeader>
+                <CardTitle>Style 9: Solid Contrast</CardTitle>
+                <p className="text-sm text-muted-foreground">High contrast - very visible</p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label>Full Name</Label>
+                  <Input 
+                    placeholder="Enter your name" 
+                    className="h-16 text-lg bg-secondary border-2 border-secondary-foreground/20 hover:border-secondary-foreground/40 focus:border-primary"
+                  />
+                </div>
+                <div>
+                  <Label>Birth Date</Label>
+                  <Input 
+                    type="text" 
+                    placeholder="DD.MM.YYYY" 
+                    className="h-16 text-lg bg-secondary border-2 border-secondary-foreground/20 hover:border-secondary-foreground/40 focus:border-primary"
+                  />
+                </div>
+                <div>
+                  <Label>Gender</Label>
+                  <select className="flex h-16 w-full rounded-md bg-secondary border-2 border-secondary-foreground/20 px-3 py-2 text-lg hover:border-secondary-foreground/40 focus:border-primary focus:outline-none">
+                    <option>Select gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                  </select>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Style 10: Minimal Underline */}
+            <Card className="border-2 border-primary/20">
+              <CardHeader>
+                <CardTitle>Style 10: Minimal Underline</CardTitle>
+                <p className="text-sm text-muted-foreground">Clean minimal - modern style</p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label>Full Name</Label>
+                  <Input 
+                    placeholder="Enter your name" 
+                    className="h-16 text-lg bg-transparent border-0 border-b-2 border-border rounded-none hover:border-primary/60 focus:border-primary px-0"
+                  />
+                </div>
+                <div>
+                  <Label>Birth Date</Label>
+                  <Input 
+                    type="text" 
+                    placeholder="DD.MM.YYYY" 
+                    className="h-16 text-lg bg-transparent border-0 border-b-2 border-border rounded-none hover:border-primary/60 focus:border-primary px-0"
+                  />
+                </div>
+                <div>
+                  <Label>Gender</Label>
+                  <select className="flex h-16 w-full bg-transparent border-0 border-b-2 border-border rounded-none px-0 py-2 text-lg hover:border-primary/60 focus:border-primary focus:outline-none">
+                    <option>Select gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                  </select>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </div>
