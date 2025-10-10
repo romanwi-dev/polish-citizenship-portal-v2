@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,6 +32,25 @@ export const MasterDataTable = ({ open, onOpenChange, caseId }: MasterDataTableP
   const [formData, setFormData] = useState<Record<string, any>>({});
   const [activeTab, setActiveTab] = useState("applicant");
   const [isFullView, setIsFullView] = useState(false);
+
+  const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({
+    applicant: null,
+    spouse: null,
+    children: null,
+    documents: null
+  });
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    if (isFullView && sectionRefs.current[value]) {
+      const element = sectionRefs.current[value];
+      if (element) {
+        const yOffset = -100;
+        const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }
+  };
 
   const sections: FormSection[] = [
     {
@@ -378,7 +397,7 @@ export const MasterDataTable = ({ open, onOpenChange, caseId }: MasterDataTableP
           </Card>
         )}
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 overflow-hidden flex flex-col">
+        <Tabs value={activeTab} onValueChange={handleTabChange} className="flex-1 overflow-hidden flex flex-col">
           <div className="sticky top-0 z-20 border-b border-border/50 pb-2">
             <div className="flex items-center gap-2 w-full">
               <Button
@@ -412,39 +431,75 @@ export const MasterDataTable = ({ open, onOpenChange, caseId }: MasterDataTableP
           </div>
 
           <div className="flex-1 overflow-y-auto mt-4">
-            {sections.map(section => (
-              <TabsContent key={section.id} value={section.id} className="space-y-4 mt-0">
-                <Card className="p-6">
-                  <div className="space-y-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold flex items-center gap-2">
-                        <section.icon className="h-5 w-5" />
-                        {section.label} Information
-                      </h3>
-                      <Badge variant={calculateCompletion(section.id) === 100 ? "default" : "secondary"}>
-                        {calculateCompletion(section.id)}% Complete
-                      </Badge>
-                    </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {section.fields.map(field => (
-                        <div key={field}>
-                          {renderField(field)}
+            {isFullView ? (
+              // Full View - All sections visible
+              <div className="space-y-0">
+                {sections.map((section, index) => (
+                  <div 
+                    key={section.id} 
+                    ref={(el) => sectionRefs.current[section.id] = el}
+                    className={index < sections.length - 1 ? "border-b border-border/10" : ""}
+                  >
+                    <Card className="p-6 rounded-none border-0">
+                      <div className="space-y-6">
+                        <div className="flex items-center justify-between mb-4">
+                          <h3 className="text-lg font-semibold flex items-center gap-2">
+                            <section.icon className="h-5 w-5" />
+                            {section.label} Information
+                          </h3>
+                          <Badge variant={calculateCompletion(section.id) === 100 ? "default" : "secondary"}>
+                            {calculateCompletion(section.id)}% Complete
+                          </Badge>
                         </div>
-                      ))}
-                    </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {section.fields.map(field => (
+                            <div key={field}>
+                              {renderField(field)}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </Card>
                   </div>
-                </Card>
+                ))}
+              </div>
+            ) : (
+              // Tabbed View
+              sections.map(section => (
+                <TabsContent key={section.id} value={section.id} className="space-y-4 mt-0">
+                  <Card className="p-6">
+                    <div className="space-y-6">
+                      <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-lg font-semibold flex items-center gap-2">
+                          <section.icon className="h-5 w-5" />
+                          {section.label} Information
+                        </h3>
+                        <Badge variant={calculateCompletion(section.id) === 100 ? "default" : "secondary"}>
+                          {calculateCompletion(section.id)}% Complete
+                        </Badge>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {section.fields.map(field => (
+                          <div key={field}>
+                            {renderField(field)}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </Card>
 
-                {/* Section Instructions */}
-                <Card className="p-4 bg-blue-50 border-blue-200">
-                  <p className="text-sm text-blue-900">
-                    <strong>Tip:</strong> Click the microphone icon next to any field to use voice input. 
-                    Make sure your browser has microphone permissions enabled.
-                  </p>
-                </Card>
-              </TabsContent>
-            ))}
+                  {/* Section Instructions */}
+                  <Card className="p-4 bg-blue-50 border-blue-200">
+                    <p className="text-sm text-blue-900">
+                      <strong>Tip:</strong> Click the microphone icon next to any field to use voice input. 
+                      Make sure your browser has microphone permissions enabled.
+                    </p>
+                  </Card>
+                </TabsContent>
+              ))
+            )}
           </div>
         </Tabs>
       </DialogContent>
