@@ -12,6 +12,7 @@ export default function IntakeDemo() {
   const [values2, setValues2] = useState({ gender: "", status: "", children: "" });
   const [values3, setValues3] = useState({ gender: "", status: "", children: "" });
   const [values4, setValues4] = useState({ gender: "", status: "", children: "" });
+  const [values5, setValues5] = useState({ gender: "", status: "", children: "" });
 
   return (
     <div className="min-h-screen bg-background p-8">
@@ -24,7 +25,7 @@ export default function IntakeDemo() {
         <h1 className="text-3xl font-bold">Label Typography Comparison</h1>
         <p className="text-muted-foreground">Choose your preferred font style for form labels</p>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5 gap-6">
           {/* OPTION 1: Classic Serif */}
           <Card className="border-2">
             <CardHeader>
@@ -307,6 +308,77 @@ export default function IntakeDemo() {
                 </Label>
                 <Select value={values4.children} onValueChange={(v) => setValues4({...values4, children: v})}>
                   <SelectTrigger id="children-4" className="h-12">
+                    <SelectValue placeholder="Select number" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="0">0</SelectItem>
+                    <SelectItem value="1">1</SelectItem>
+                    <SelectItem value="2">2</SelectItem>
+                    <SelectItem value="3">3</SelectItem>
+                    <SelectItem value="4+">4+</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* OPTION 5: Clean Muted Sans */}
+          <Card className="border-2">
+            <CardHeader>
+              <CardTitle>Option 5: Clean Muted Sans</CardTitle>
+              <p className="text-sm text-muted-foreground">Subtle & readable - Light sans-serif</p>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Gender */}
+              <div className="space-y-2">
+                <Label 
+                  htmlFor="gender-5"
+                  className="text-base font-normal tracking-normal text-muted-foreground"
+                >
+                  Gender
+                </Label>
+                <Select value={values5.gender} onValueChange={(v) => setValues5({...values5, gender: v})}>
+                  <SelectTrigger id="gender-5" className="h-12">
+                    <SelectValue placeholder="Select gender" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="M">Male</SelectItem>
+                    <SelectItem value="F">Female</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Civil Status */}
+              <div className="space-y-2">
+                <Label 
+                  htmlFor="status-5"
+                  className="text-base font-normal tracking-normal text-muted-foreground"
+                >
+                  Civil Status
+                </Label>
+                <Select value={values5.status} onValueChange={(v) => setValues5({...values5, status: v})}>
+                  <SelectTrigger id="status-5" className="h-12">
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="single">Single</SelectItem>
+                    <SelectItem value="married">Married</SelectItem>
+                    <SelectItem value="divorced">Divorced</SelectItem>
+                    <SelectItem value="widowed">Widowed</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Number of Children */}
+              <div className="space-y-2">
+                <Label 
+                  htmlFor="children-5"
+                  className="text-base font-normal tracking-normal text-muted-foreground"
+                >
+                  Number of Children
+                </Label>
+                <Select value={values5.children} onValueChange={(v) => setValues5({...values5, children: v})}>
+                  <SelectTrigger id="children-5" className="h-12">
                     <SelectValue placeholder="Select number" />
                   </SelectTrigger>
                   <SelectContent>
