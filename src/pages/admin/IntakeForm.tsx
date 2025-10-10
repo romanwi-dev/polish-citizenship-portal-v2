@@ -184,29 +184,29 @@ export default function IntakeForm() {
                     >
                       {isFullView ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
                     </Button>
-                    <TabsList className="flex-1 grid grid-cols-2 md:grid-cols-8 gap-2 bg-transparent p-0">
-                    <TabsTrigger value="select">
+                    <TabsList className="flex-1 flex gap-2 bg-transparent p-0 overflow-x-auto scrollbar-hide">
+                    <TabsTrigger value="select" className="flex-shrink-0">
                       <span>Select...</span>
                     </TabsTrigger>
-                    <TabsTrigger value="applicant">
+                    <TabsTrigger value="applicant" className="flex-shrink-0">
                       <span>Applicant</span>
                     </TabsTrigger>
-                    <TabsTrigger value="contact">
+                    <TabsTrigger value="contact" className="flex-shrink-0">
                       <span>Contact</span>
                     </TabsTrigger>
-                    <TabsTrigger value="address">
+                    <TabsTrigger value="address" className="flex-shrink-0">
                       <span>Address</span>
                     </TabsTrigger>
-                    <TabsTrigger value="passport">
+                    <TabsTrigger value="passport" className="flex-shrink-0">
                       <span>Passport</span>
                     </TabsTrigger>
-                    <TabsTrigger value="immigration">
+                    <TabsTrigger value="immigration" className="flex-shrink-0">
                       <span>Emigration</span>
                     </TabsTrigger>
-                    <TabsTrigger value="documents">
+                    <TabsTrigger value="documents" className="flex-shrink-0">
                       <span>Documents</span>
                     </TabsTrigger>
-                    <TabsTrigger value="notes">
+                    <TabsTrigger value="notes" className="flex-shrink-0">
                       <span>Notes</span>
                     </TabsTrigger>
                   </TabsList>

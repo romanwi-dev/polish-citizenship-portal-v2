@@ -406,36 +406,36 @@ export default function FamilyTreeForm() {
                     >
                       {isFullView ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
                     </Button>
-                    <TabsList className="flex-1 w-full gap-2 bg-transparent p-0 justify-start flex-wrap">
-                      <TabsTrigger value="tree-view">
+                    <TabsList className="flex-1 flex gap-2 bg-transparent p-0 overflow-x-auto scrollbar-hide">
+                      <TabsTrigger value="tree-view" className="flex-shrink-0">
                         <span>Tree View</span>
                       </TabsTrigger>
-                      <TabsTrigger value="select">
+                      <TabsTrigger value="select" className="flex-shrink-0">
                         <span>Select...</span>
                       </TabsTrigger>
-                      <TabsTrigger value="applicant">
+                      <TabsTrigger value="applicant" className="flex-shrink-0">
                         <span>Applicant</span>
                       </TabsTrigger>
                       {formData.applicant_is_married && (
-                        <TabsTrigger value="spouse">
+                        <TabsTrigger value="spouse" className="flex-shrink-0">
                           <span>Spouse</span>
                         </TabsTrigger>
                       )}
                       {(formData.minor_children_count > 0) && (
-                        <TabsTrigger value="children">
+                        <TabsTrigger value="children" className="flex-shrink-0">
                           <span>Children</span>
                         </TabsTrigger>
                       )}
-                      <TabsTrigger value="parents">
+                      <TabsTrigger value="parents" className="flex-shrink-0">
                         <span>Parents</span>
                       </TabsTrigger>
-                      <TabsTrigger value="grandparents">
+                      <TabsTrigger value="grandparents" className="flex-shrink-0">
                         <span>Grandparents</span>
                       </TabsTrigger>
-                      <TabsTrigger value="great-grandparents">
+                      <TabsTrigger value="great-grandparents" className="flex-shrink-0">
                         <span>Great Grandparents</span>
                       </TabsTrigger>
-                      <TabsTrigger value="additional">
+                      <TabsTrigger value="additional" className="flex-shrink-0">
                         <span>Additional Info</span>
                       </TabsTrigger>
                     </TabsList>

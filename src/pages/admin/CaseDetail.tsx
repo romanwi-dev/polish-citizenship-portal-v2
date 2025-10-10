@@ -307,23 +307,23 @@ export default function CaseDetail() {
           {/* FORMS TAB */}
           <TabsContent value="forms" className="space-y-6">
             <Tabs defaultValue={defaultFormSection} onValueChange={(value) => setSearchParams({ tab: "forms", section: value })}>
-              <TabsList className="grid w-full grid-cols-3 md:grid-cols-6 gap-2 bg-transparent p-0">
-                <TabsTrigger value="intake">
+              <TabsList className="flex gap-2 bg-transparent p-0 overflow-x-auto scrollbar-hide w-full">
+                <TabsTrigger value="intake" className="flex-shrink-0">
                   <span>Intake</span>
                 </TabsTrigger>
-                <TabsTrigger value="master-data">
+                <TabsTrigger value="master-data" className="flex-shrink-0">
                   <span>Master Data</span>
                 </TabsTrigger>
-                <TabsTrigger value="family-tree">
+                <TabsTrigger value="family-tree" className="flex-shrink-0">
                   <span>Family Tree</span>
                 </TabsTrigger>
-                <TabsTrigger value="poa">
+                <TabsTrigger value="poa" className="flex-shrink-0">
                   <span>POA</span>
                 </TabsTrigger>
-                <TabsTrigger value="citizenship">
+                <TabsTrigger value="citizenship" className="flex-shrink-0">
                   <span>Citizenship</span>
                 </TabsTrigger>
-                <TabsTrigger value="civil-registry">
+                <TabsTrigger value="civil-registry" className="flex-shrink-0">
                   <span>Civil Registry</span>
                 </TabsTrigger>
               </TabsList>

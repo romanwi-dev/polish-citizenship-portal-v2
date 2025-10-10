@@ -409,13 +409,14 @@ export const MasterDataTable = ({ open, onOpenChange, caseId }: MasterDataTableP
               >
                 {isFullView ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
               </Button>
-              <TabsList className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-2 bg-transparent p-0">
+              <TabsList className="flex-1 flex gap-2 bg-transparent p-0 overflow-x-auto scrollbar-hide">
             {sections.map(section => {
               const completion = calculateCompletion(section.id);
               return (
                 <TabsTrigger 
                   key={section.id} 
                   value={section.id}
+                  className="flex-shrink-0"
                 >
                   <span>{section.label}</span>
                   <Badge 

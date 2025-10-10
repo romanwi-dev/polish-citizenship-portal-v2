@@ -100,17 +100,17 @@ export default function FieldAuditReport() {
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="intake">
-            <TabsList className="grid w-full grid-cols-4 gap-2 bg-transparent p-0">
-              <TabsTrigger value="intake">
+            <TabsList className="flex gap-2 bg-transparent p-0 overflow-x-auto scrollbar-hide w-full">
+              <TabsTrigger value="intake" className="flex-shrink-0">
                 <span>Intake ({intakeFields.length})</span>
               </TabsTrigger>
-              <TabsTrigger value="master">
+              <TabsTrigger value="master" className="flex-shrink-0">
                 <span>Master ({masterFields.length})</span>
               </TabsTrigger>
-              <TabsTrigger value="intake_db">
+              <TabsTrigger value="intake_db" className="flex-shrink-0">
                 <span>intake_data ({intakeDataFields.length})</span>
               </TabsTrigger>
-              <TabsTrigger value="master_db">
+              <TabsTrigger value="master_db" className="flex-shrink-0">
                 <span>master_table ({masterTableFields.length})</span>
               </TabsTrigger>
             </TabsList>
