@@ -131,6 +131,7 @@ serve(async (req) => {
     } else if (templateType === 'family-tree') {
       // Family Tree fields
       try {
+        console.log('Filling family-tree PDF fields...');
         form.getTextField('applicantName')?.setText(`${masterData.applicant_first_name || ''} ${masterData.applicant_last_name || ''}`.trim());
         form.getTextField('fatherName')?.setText(`${masterData.father_first_name || ''} ${masterData.father_last_name || ''}`.trim());
         form.getTextField('motherName')?.setText(`${masterData.mother_first_name || ''} ${masterData.mother_last_name || ''}`.trim());
@@ -138,8 +139,9 @@ serve(async (req) => {
         form.getTextField('pgmName')?.setText(`${masterData.pgm_first_name || ''} ${masterData.pgm_last_name || ''}`.trim());
         form.getTextField('mgfName')?.setText(`${masterData.mgf_first_name || ''} ${masterData.mgf_last_name || ''}`.trim());
         form.getTextField('mgmName')?.setText(`${masterData.mgm_first_name || ''} ${masterData.mgm_last_name || ''}`.trim());
+        console.log('Family tree PDF fields filled successfully');
       } catch (e) {
-        console.log('Some fields could not be filled:', (e as Error).message);
+        console.log('Some family tree fields could not be filled:', (e as Error).message);
       }
     } else if (templateType === 'registration') {
       // Civil Registry fields
@@ -151,6 +153,18 @@ serve(async (req) => {
       } catch (e) {
         console.log('Some fields could not be filled:', (e as Error).message);
       }
+    } else if (templateType === 'uzupelnienie') {
+      // Uzupełnienie fields (supplementary documents)
+      try {
+        console.log('Filling uzupelnienie PDF fields...');
+        form.getTextField('applicantName')?.setText(`${masterData.applicant_first_name || ''} ${masterData.applicant_last_name || ''}`.trim());
+        form.getTextField('dateOfBirth')?.setText(formatDate(masterData.applicant_dob));
+        console.log('Uzupelnienie PDF fields filled successfully');
+      } catch (e) {
+        console.log('Some uzupelnienie fields could not be filled:', (e as Error).message);
+      }
+    } else {
+      throw new Error(`Unsupported template type: ${templateType}. Supported types: poa-adult, poa-minor, poa-spouses, citizenship, family-tree, registration, uzupelnienie`);
     }
 
     // Flatten form (make fields non-editable)
