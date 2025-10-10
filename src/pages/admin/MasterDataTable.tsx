@@ -989,6 +989,9 @@ export default function MasterDataTable() {
                         name: "father_has_birth_cert",
                         label: "Birth certificate"
                       }, {
+                        name: "father_has_marriage_cert",
+                        label: "Marriage certificate"
+                      }, {
                         name: "father_has_naturalization",
                         label: "Naturalization papers"
                       }, {
@@ -1068,6 +1071,9 @@ export default function MasterDataTable() {
                         name: "mother_has_birth_cert",
                         label: "Birth certificate"
                       }, {
+                        name: "mother_has_marriage_cert",
+                        label: "Marriage certificate"
+                      }, {
                         name: "mother_has_naturalization",
                         label: "Naturalization papers"
                       }, {
@@ -1099,6 +1105,23 @@ export default function MasterDataTable() {
                       label: "Date of marriage / Data zawarcia związku małżeńskiego",
                       type: "date"
                     }])}
+                    
+                    {/* Documents required for parents' marriage */}
+                    <div className="pt-6 border-t border-border/30">
+                      <h3 className="text-xl font-semibold mb-4 text-foreground">
+                        Marriage documents checklist
+                      </h3>
+                      {renderCheckboxGroup([{
+                        name: "parents_has_marriage_cert",
+                        label: "Marriage certificate"
+                      }, {
+                        name: "parents_has_marriage_foreign_docs",
+                        label: "Foreign marriage documents"
+                      }, {
+                        name: "parents_has_marriage_additional_docs",
+                        label: "Additional marriage documents"
+                      }])}
+                    </div>
                   </CardContent>
                 </Card>
               </motion.div>

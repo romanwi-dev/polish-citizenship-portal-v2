@@ -681,6 +681,9 @@ export type Database = {
           mother_maiden_name: string | null
           mother_notes: string | null
           mother_pob: string | null
+          parents_has_marriage_additional_docs: boolean | null
+          parents_has_marriage_cert: boolean | null
+          parents_has_marriage_foreign_docs: boolean | null
           pgf_date_of_emigration: string | null
           pgf_date_of_naturalization: string | null
           pgf_dob: string | null
@@ -945,6 +948,9 @@ export type Database = {
           mother_maiden_name?: string | null
           mother_notes?: string | null
           mother_pob?: string | null
+          parents_has_marriage_additional_docs?: boolean | null
+          parents_has_marriage_cert?: boolean | null
+          parents_has_marriage_foreign_docs?: boolean | null
           pgf_date_of_emigration?: string | null
           pgf_date_of_naturalization?: string | null
           pgf_dob?: string | null
@@ -1209,6 +1215,9 @@ export type Database = {
           mother_maiden_name?: string | null
           mother_notes?: string | null
           mother_pob?: string | null
+          parents_has_marriage_additional_docs?: boolean | null
+          parents_has_marriage_cert?: boolean | null
+          parents_has_marriage_foreign_docs?: boolean | null
           pgf_date_of_emigration?: string | null
           pgf_date_of_naturalization?: string | null
           pgf_dob?: string | null
