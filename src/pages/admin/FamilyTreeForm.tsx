@@ -368,18 +368,18 @@ export default function FamilyTreeForm() {
           <Card className="glass-card border-primary/20">
             <CardContent className="pt-6">
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <div className="flex justify-end mb-2">
-                  <Button
-                    onClick={() => setIsFullView(!isFullView)}
-                    variant="ghost"
-                    size="icon"
-                    title={isFullView ? "Collapse" : "Expand All"}
-                  >
-                    {isFullView ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
-                  </Button>
-                </div>
                 <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border/50 pb-2">
-                  <TabsList className="w-full h-auto p-2 justify-start flex-wrap">
+                  <div className="flex items-center gap-2">
+                    <Button
+                      onClick={() => setIsFullView(!isFullView)}
+                      variant="ghost"
+                      size="icon"
+                      className="flex-shrink-0"
+                      title={isFullView ? "Collapse" : "Expand All"}
+                    >
+                      {isFullView ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
+                    </Button>
+                    <TabsList className="flex-1 w-full h-auto p-2 justify-start flex-wrap">
                       <TabsTrigger value="tree-view" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
                         <TreePine className="h-4 w-4 mr-2" />
                         <span className="hidden sm:inline">Tree View</span>
@@ -421,6 +421,7 @@ export default function FamilyTreeForm() {
                         <span className="hidden sm:inline">Additional Info</span>
                       </TabsTrigger>
                     </TabsList>
+                    </div>
                   </div>
 
                 {/* Full View Mode */}

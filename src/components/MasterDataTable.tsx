@@ -378,20 +378,19 @@ export const MasterDataTable = ({ open, onOpenChange, caseId }: MasterDataTableP
           </Card>
         )}
 
-        <div className="flex justify-end mb-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setIsFullView(!isFullView)}
-            title={isFullView ? "Collapse" : "Expand All"}
-          >
-            {isFullView ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
-          </Button>
-        </div>
-
         <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 overflow-hidden flex flex-col">
           <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border/50 pb-2">
-            <TabsList className="grid grid-cols-2 lg:grid-cols-6 w-full">
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsFullView(!isFullView)}
+                className="flex-shrink-0"
+                title={isFullView ? "Collapse" : "Expand All"}
+              >
+                {isFullView ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
+              </Button>
+              <TabsList className="flex-1 grid grid-cols-2 lg:grid-cols-6">
             {sections.map(section => {
               const completion = calculateCompletion(section.id);
               const Icon = section.icon;
@@ -409,6 +408,7 @@ export const MasterDataTable = ({ open, onOpenChange, caseId }: MasterDataTableP
               );
             })}
           </TabsList>
+          </div>
           </div>
 
           <div className="flex-1 overflow-y-auto mt-4">
