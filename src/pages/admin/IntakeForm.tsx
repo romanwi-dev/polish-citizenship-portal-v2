@@ -148,18 +148,20 @@ export default function IntakeForm() {
           transition={{ duration: 0.5 }}
         >
           <Card className="glass-card border-primary/20">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border/50 flex items-center gap-2 pb-2">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setIsFullView(!isFullView)}
-                  className="ml-2 flex-shrink-0"
-                  title={isFullView ? "Switch to tabbed view" : "Show all sections"}
-                >
-                  {isFullView ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
-                </Button>
-                <TabsList className="flex-1 grid grid-cols-2 md:grid-cols-8 h-auto p-2">
+            <CardContent className="pt-6">
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <div className="flex justify-end mb-2">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setIsFullView(!isFullView)}
+                    title={isFullView ? "Collapse" : "Expand All"}
+                  >
+                    {isFullView ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
+                  </Button>
+                </div>
+                <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border/50 pb-2">
+                  <TabsList className="w-full grid grid-cols-2 md:grid-cols-8 h-auto p-2">
                     <TabsTrigger value="select" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
                       <Users className="h-4 w-4 mr-2" />
                       <span className="hidden sm:inline">Select...</span>
@@ -193,7 +195,7 @@ export default function IntakeForm() {
                       <span className="hidden sm:inline">Notes</span>
                   </TabsTrigger>
                 </TabsList>
-              </div>
+                </div>
 
               {isFullView ? (
                 // Full View - All sections visible
@@ -253,6 +255,7 @@ export default function IntakeForm() {
                 </>
               )}
             </Tabs>
+            </CardContent>
           </Card>
         </motion.div>
       </div>
