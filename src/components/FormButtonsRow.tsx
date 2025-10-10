@@ -35,9 +35,9 @@ export function FormButtonsRow({
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col md:flex-row gap-4 mb-8">
-      {/* Action Buttons - Left Side */}
-      <div className="flex flex-wrap gap-3">
+    <div className="flex flex-row gap-3 mb-8 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
+      {/* Action Buttons */}
+      <div className="flex gap-3 flex-shrink-0">
         <Button
           onClick={onSave}
           disabled={isSaving}
@@ -79,9 +79,8 @@ export function FormButtonsRow({
         </Button>
       </div>
 
-      {/* Navigation Buttons - Right Side */}
-      <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
-        {navigationButtons.map((btn) => {
+      {/* Navigation Buttons */}
+      {navigationButtons.map((btn) => {
           const isCurrent = btn.id === currentForm;
           const Icon = btn.icon;
           
@@ -108,7 +107,6 @@ export function FormButtonsRow({
             </Button>
           );
         })}
-      </div>
     </div>
   );
 }
