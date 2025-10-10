@@ -1121,8 +1121,9 @@ export default function FamilyTreeForm() {
             </Card>
           </motion.div>
           )}
+        </TabsContent>
 
-
+        <TabsContent value="parents" className="mt-0">
           {/* Parents Section */}
           {activeTab === 'parents' && (
           <motion.div initial={{
