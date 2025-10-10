@@ -502,6 +502,7 @@ export type Database = {
           applicant_email: string | null
           applicant_first_name: string | null
           applicant_has_birth_cert: boolean | null
+          applicant_has_death_cert: boolean | null
           applicant_has_marriage_cert: boolean | null
           applicant_has_naturalization: boolean | null
           applicant_has_passport: boolean | null
@@ -601,8 +602,10 @@ export type Database = {
           father_dob: string | null
           father_first_name: string | null
           father_has_birth_cert: boolean | null
+          father_has_death_cert: boolean | null
           father_has_marriage_cert: boolean | null
           father_has_naturalization: boolean | null
+          father_has_passport: boolean | null
           father_is_alive: boolean | null
           father_last_name: string | null
           father_maiden_name: string | null
@@ -617,8 +620,10 @@ export type Database = {
           mgf_dob: string | null
           mgf_first_name: string | null
           mgf_has_birth_cert: boolean | null
+          mgf_has_death_cert: boolean | null
           mgf_has_marriage_cert: boolean | null
           mgf_has_naturalization: boolean | null
+          mgf_has_passport: boolean | null
           mgf_is_alive: boolean | null
           mgf_last_name: string | null
           mgf_mgm_marriage_date: string | null
@@ -630,8 +635,10 @@ export type Database = {
           mggf_dob: string | null
           mggf_first_name: string | null
           mggf_has_birth_cert: boolean | null
+          mggf_has_death_cert: boolean | null
           mggf_has_marriage_cert: boolean | null
           mggf_has_naturalization: boolean | null
+          mggf_has_passport: boolean | null
           mggf_is_alive: boolean | null
           mggf_last_name: string | null
           mggf_mggm_marriage_date: string | null
@@ -643,8 +650,10 @@ export type Database = {
           mggm_dob: string | null
           mggm_first_name: string | null
           mggm_has_birth_cert: boolean | null
+          mggm_has_death_cert: boolean | null
           mggm_has_marriage_cert: boolean | null
           mggm_has_naturalization: boolean | null
+          mggm_has_passport: boolean | null
           mggm_is_alive: boolean | null
           mggm_last_name: string | null
           mggm_maiden_name: string | null
@@ -655,8 +664,10 @@ export type Database = {
           mgm_dob: string | null
           mgm_first_name: string | null
           mgm_has_birth_cert: boolean | null
+          mgm_has_death_cert: boolean | null
           mgm_has_marriage_cert: boolean | null
           mgm_has_naturalization: boolean | null
+          mgm_has_passport: boolean | null
           mgm_is_alive: boolean | null
           mgm_last_name: string | null
           mgm_maiden_name: string | null
@@ -668,8 +679,10 @@ export type Database = {
           mother_dob: string | null
           mother_first_name: string | null
           mother_has_birth_cert: boolean | null
+          mother_has_death_cert: boolean | null
           mother_has_marriage_cert: boolean | null
           mother_has_naturalization: boolean | null
+          mother_has_passport: boolean | null
           mother_is_alive: boolean | null
           mother_last_name: string | null
           mother_maiden_name: string | null
@@ -680,8 +693,10 @@ export type Database = {
           pgf_dob: string | null
           pgf_first_name: string | null
           pgf_has_birth_cert: boolean | null
+          pgf_has_death_cert: boolean | null
           pgf_has_marriage_cert: boolean | null
           pgf_has_naturalization: boolean | null
+          pgf_has_passport: boolean | null
           pgf_is_alive: boolean | null
           pgf_last_name: string | null
           pgf_notes: string | null
@@ -693,8 +708,10 @@ export type Database = {
           pggf_dob: string | null
           pggf_first_name: string | null
           pggf_has_birth_cert: boolean | null
+          pggf_has_death_cert: boolean | null
           pggf_has_marriage_cert: boolean | null
           pggf_has_naturalization: boolean | null
+          pggf_has_passport: boolean | null
           pggf_is_alive: boolean | null
           pggf_last_name: string | null
           pggf_notes: string | null
@@ -706,8 +723,10 @@ export type Database = {
           pggm_dob: string | null
           pggm_first_name: string | null
           pggm_has_birth_cert: boolean | null
+          pggm_has_death_cert: boolean | null
           pggm_has_marriage_cert: boolean | null
           pggm_has_naturalization: boolean | null
+          pggm_has_passport: boolean | null
           pggm_is_alive: boolean | null
           pggm_last_name: string | null
           pggm_maiden_name: string | null
@@ -718,8 +737,10 @@ export type Database = {
           pgm_dob: string | null
           pgm_first_name: string | null
           pgm_has_birth_cert: boolean | null
+          pgm_has_death_cert: boolean | null
           pgm_has_marriage_cert: boolean | null
           pgm_has_naturalization: boolean | null
+          pgm_has_passport: boolean | null
           pgm_is_alive: boolean | null
           pgm_last_name: string | null
           pgm_maiden_name: string | null
@@ -734,7 +755,9 @@ export type Database = {
           spouse_email: string | null
           spouse_first_name: string | null
           spouse_has_birth_cert: boolean | null
+          spouse_has_death_cert: boolean | null
           spouse_has_marriage_cert: boolean | null
+          spouse_has_naturalization: boolean | null
           spouse_has_passport: boolean | null
           spouse_is_alive: boolean | null
           spouse_last_name: string | null
@@ -755,6 +778,7 @@ export type Database = {
           applicant_email?: string | null
           applicant_first_name?: string | null
           applicant_has_birth_cert?: boolean | null
+          applicant_has_death_cert?: boolean | null
           applicant_has_marriage_cert?: boolean | null
           applicant_has_naturalization?: boolean | null
           applicant_has_passport?: boolean | null
@@ -854,8 +878,10 @@ export type Database = {
           father_dob?: string | null
           father_first_name?: string | null
           father_has_birth_cert?: boolean | null
+          father_has_death_cert?: boolean | null
           father_has_marriage_cert?: boolean | null
           father_has_naturalization?: boolean | null
+          father_has_passport?: boolean | null
           father_is_alive?: boolean | null
           father_last_name?: string | null
           father_maiden_name?: string | null
@@ -870,8 +896,10 @@ export type Database = {
           mgf_dob?: string | null
           mgf_first_name?: string | null
           mgf_has_birth_cert?: boolean | null
+          mgf_has_death_cert?: boolean | null
           mgf_has_marriage_cert?: boolean | null
           mgf_has_naturalization?: boolean | null
+          mgf_has_passport?: boolean | null
           mgf_is_alive?: boolean | null
           mgf_last_name?: string | null
           mgf_mgm_marriage_date?: string | null
@@ -883,8 +911,10 @@ export type Database = {
           mggf_dob?: string | null
           mggf_first_name?: string | null
           mggf_has_birth_cert?: boolean | null
+          mggf_has_death_cert?: boolean | null
           mggf_has_marriage_cert?: boolean | null
           mggf_has_naturalization?: boolean | null
+          mggf_has_passport?: boolean | null
           mggf_is_alive?: boolean | null
           mggf_last_name?: string | null
           mggf_mggm_marriage_date?: string | null
@@ -896,8 +926,10 @@ export type Database = {
           mggm_dob?: string | null
           mggm_first_name?: string | null
           mggm_has_birth_cert?: boolean | null
+          mggm_has_death_cert?: boolean | null
           mggm_has_marriage_cert?: boolean | null
           mggm_has_naturalization?: boolean | null
+          mggm_has_passport?: boolean | null
           mggm_is_alive?: boolean | null
           mggm_last_name?: string | null
           mggm_maiden_name?: string | null
@@ -908,8 +940,10 @@ export type Database = {
           mgm_dob?: string | null
           mgm_first_name?: string | null
           mgm_has_birth_cert?: boolean | null
+          mgm_has_death_cert?: boolean | null
           mgm_has_marriage_cert?: boolean | null
           mgm_has_naturalization?: boolean | null
+          mgm_has_passport?: boolean | null
           mgm_is_alive?: boolean | null
           mgm_last_name?: string | null
           mgm_maiden_name?: string | null
@@ -921,8 +955,10 @@ export type Database = {
           mother_dob?: string | null
           mother_first_name?: string | null
           mother_has_birth_cert?: boolean | null
+          mother_has_death_cert?: boolean | null
           mother_has_marriage_cert?: boolean | null
           mother_has_naturalization?: boolean | null
+          mother_has_passport?: boolean | null
           mother_is_alive?: boolean | null
           mother_last_name?: string | null
           mother_maiden_name?: string | null
@@ -933,8 +969,10 @@ export type Database = {
           pgf_dob?: string | null
           pgf_first_name?: string | null
           pgf_has_birth_cert?: boolean | null
+          pgf_has_death_cert?: boolean | null
           pgf_has_marriage_cert?: boolean | null
           pgf_has_naturalization?: boolean | null
+          pgf_has_passport?: boolean | null
           pgf_is_alive?: boolean | null
           pgf_last_name?: string | null
           pgf_notes?: string | null
@@ -946,8 +984,10 @@ export type Database = {
           pggf_dob?: string | null
           pggf_first_name?: string | null
           pggf_has_birth_cert?: boolean | null
+          pggf_has_death_cert?: boolean | null
           pggf_has_marriage_cert?: boolean | null
           pggf_has_naturalization?: boolean | null
+          pggf_has_passport?: boolean | null
           pggf_is_alive?: boolean | null
           pggf_last_name?: string | null
           pggf_notes?: string | null
@@ -959,8 +999,10 @@ export type Database = {
           pggm_dob?: string | null
           pggm_first_name?: string | null
           pggm_has_birth_cert?: boolean | null
+          pggm_has_death_cert?: boolean | null
           pggm_has_marriage_cert?: boolean | null
           pggm_has_naturalization?: boolean | null
+          pggm_has_passport?: boolean | null
           pggm_is_alive?: boolean | null
           pggm_last_name?: string | null
           pggm_maiden_name?: string | null
@@ -971,8 +1013,10 @@ export type Database = {
           pgm_dob?: string | null
           pgm_first_name?: string | null
           pgm_has_birth_cert?: boolean | null
+          pgm_has_death_cert?: boolean | null
           pgm_has_marriage_cert?: boolean | null
           pgm_has_naturalization?: boolean | null
+          pgm_has_passport?: boolean | null
           pgm_is_alive?: boolean | null
           pgm_last_name?: string | null
           pgm_maiden_name?: string | null
@@ -987,7 +1031,9 @@ export type Database = {
           spouse_email?: string | null
           spouse_first_name?: string | null
           spouse_has_birth_cert?: boolean | null
+          spouse_has_death_cert?: boolean | null
           spouse_has_marriage_cert?: boolean | null
+          spouse_has_naturalization?: boolean | null
           spouse_has_passport?: boolean | null
           spouse_is_alive?: boolean | null
           spouse_last_name?: string | null
@@ -1008,6 +1054,7 @@ export type Database = {
           applicant_email?: string | null
           applicant_first_name?: string | null
           applicant_has_birth_cert?: boolean | null
+          applicant_has_death_cert?: boolean | null
           applicant_has_marriage_cert?: boolean | null
           applicant_has_naturalization?: boolean | null
           applicant_has_passport?: boolean | null
@@ -1107,8 +1154,10 @@ export type Database = {
           father_dob?: string | null
           father_first_name?: string | null
           father_has_birth_cert?: boolean | null
+          father_has_death_cert?: boolean | null
           father_has_marriage_cert?: boolean | null
           father_has_naturalization?: boolean | null
+          father_has_passport?: boolean | null
           father_is_alive?: boolean | null
           father_last_name?: string | null
           father_maiden_name?: string | null
@@ -1123,8 +1172,10 @@ export type Database = {
           mgf_dob?: string | null
           mgf_first_name?: string | null
           mgf_has_birth_cert?: boolean | null
+          mgf_has_death_cert?: boolean | null
           mgf_has_marriage_cert?: boolean | null
           mgf_has_naturalization?: boolean | null
+          mgf_has_passport?: boolean | null
           mgf_is_alive?: boolean | null
           mgf_last_name?: string | null
           mgf_mgm_marriage_date?: string | null
@@ -1136,8 +1187,10 @@ export type Database = {
           mggf_dob?: string | null
           mggf_first_name?: string | null
           mggf_has_birth_cert?: boolean | null
+          mggf_has_death_cert?: boolean | null
           mggf_has_marriage_cert?: boolean | null
           mggf_has_naturalization?: boolean | null
+          mggf_has_passport?: boolean | null
           mggf_is_alive?: boolean | null
           mggf_last_name?: string | null
           mggf_mggm_marriage_date?: string | null
@@ -1149,8 +1202,10 @@ export type Database = {
           mggm_dob?: string | null
           mggm_first_name?: string | null
           mggm_has_birth_cert?: boolean | null
+          mggm_has_death_cert?: boolean | null
           mggm_has_marriage_cert?: boolean | null
           mggm_has_naturalization?: boolean | null
+          mggm_has_passport?: boolean | null
           mggm_is_alive?: boolean | null
           mggm_last_name?: string | null
           mggm_maiden_name?: string | null
@@ -1161,8 +1216,10 @@ export type Database = {
           mgm_dob?: string | null
           mgm_first_name?: string | null
           mgm_has_birth_cert?: boolean | null
+          mgm_has_death_cert?: boolean | null
           mgm_has_marriage_cert?: boolean | null
           mgm_has_naturalization?: boolean | null
+          mgm_has_passport?: boolean | null
           mgm_is_alive?: boolean | null
           mgm_last_name?: string | null
           mgm_maiden_name?: string | null
@@ -1174,8 +1231,10 @@ export type Database = {
           mother_dob?: string | null
           mother_first_name?: string | null
           mother_has_birth_cert?: boolean | null
+          mother_has_death_cert?: boolean | null
           mother_has_marriage_cert?: boolean | null
           mother_has_naturalization?: boolean | null
+          mother_has_passport?: boolean | null
           mother_is_alive?: boolean | null
           mother_last_name?: string | null
           mother_maiden_name?: string | null
@@ -1186,8 +1245,10 @@ export type Database = {
           pgf_dob?: string | null
           pgf_first_name?: string | null
           pgf_has_birth_cert?: boolean | null
+          pgf_has_death_cert?: boolean | null
           pgf_has_marriage_cert?: boolean | null
           pgf_has_naturalization?: boolean | null
+          pgf_has_passport?: boolean | null
           pgf_is_alive?: boolean | null
           pgf_last_name?: string | null
           pgf_notes?: string | null
@@ -1199,8 +1260,10 @@ export type Database = {
           pggf_dob?: string | null
           pggf_first_name?: string | null
           pggf_has_birth_cert?: boolean | null
+          pggf_has_death_cert?: boolean | null
           pggf_has_marriage_cert?: boolean | null
           pggf_has_naturalization?: boolean | null
+          pggf_has_passport?: boolean | null
           pggf_is_alive?: boolean | null
           pggf_last_name?: string | null
           pggf_notes?: string | null
@@ -1212,8 +1275,10 @@ export type Database = {
           pggm_dob?: string | null
           pggm_first_name?: string | null
           pggm_has_birth_cert?: boolean | null
+          pggm_has_death_cert?: boolean | null
           pggm_has_marriage_cert?: boolean | null
           pggm_has_naturalization?: boolean | null
+          pggm_has_passport?: boolean | null
           pggm_is_alive?: boolean | null
           pggm_last_name?: string | null
           pggm_maiden_name?: string | null
@@ -1224,8 +1289,10 @@ export type Database = {
           pgm_dob?: string | null
           pgm_first_name?: string | null
           pgm_has_birth_cert?: boolean | null
+          pgm_has_death_cert?: boolean | null
           pgm_has_marriage_cert?: boolean | null
           pgm_has_naturalization?: boolean | null
+          pgm_has_passport?: boolean | null
           pgm_is_alive?: boolean | null
           pgm_last_name?: string | null
           pgm_maiden_name?: string | null
@@ -1240,7 +1307,9 @@ export type Database = {
           spouse_email?: string | null
           spouse_first_name?: string | null
           spouse_has_birth_cert?: boolean | null
+          spouse_has_death_cert?: boolean | null
           spouse_has_marriage_cert?: boolean | null
+          spouse_has_naturalization?: boolean | null
           spouse_has_passport?: boolean | null
           spouse_is_alive?: boolean | null
           spouse_last_name?: string | null

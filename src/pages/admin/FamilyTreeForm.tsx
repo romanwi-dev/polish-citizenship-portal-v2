@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { useRealtimeFormSync } from "@/hooks/useRealtimeFormSync";
 import { FormButtonsRow } from "@/components/FormButtonsRow";
+import { FamilyTreeInteractive } from "@/components/FamilyTreeInteractive";
 
 export default function FamilyTreeForm() {
   const {
@@ -96,6 +97,50 @@ export default function FamilyTreeForm() {
     setFormData({});
     toast.success('All form data cleared');
     setShowClearDialog(false);
+  };
+
+  // Map formData to Person props for FamilyTreeInteractive
+  const mapPersonData = (prefix: string) => ({
+    firstName: formData[`${prefix}_first_name`] || "",
+    lastName: formData[`${prefix}_last_name`] || "",
+    maidenName: formData[`${prefix}_maiden_name`],
+    dateOfBirth: formData[`${prefix}_dob`],
+    placeOfBirth: formData[`${prefix}_pob`],
+    dateOfMarriage: formData[`${prefix === 'applicant' ? 'date_of_marriage' : `${prefix}_date_of_marriage`}`],
+    placeOfMarriage: formData[`${prefix === 'applicant' ? 'place_of_marriage' : `${prefix}_place_of_marriage`}`],
+    dateOfEmigration: formData[`${prefix}_date_of_emigration`],
+    dateOfNaturalization: formData[`${prefix}_date_of_naturalization`],
+    isAlive: formData[`${prefix}_is_alive`],
+    documents: {
+      birthCertificate: formData[`${prefix}_has_birth_cert`] || false,
+      marriageCertificate: formData[`${prefix}_has_marriage_cert`] || false,
+      deathCertificate: formData[`${prefix}_has_death_cert`] || false,
+      passport: formData[`${prefix}_has_passport`] || false,
+      naturalizationDocs: formData[`${prefix}_has_naturalization`] || false,
+    }
+  });
+
+  // Handle editing a person from the tree
+  const handlePersonEdit = (personType: string) => {
+    const tabMap: Record<string, string> = {
+      'client': 'applicant',
+      'spouse': 'spouse',
+      'father': 'parents',
+      'mother': 'parents',
+      'paternalGrandfather': 'grandparents',
+      'paternalGrandmother': 'grandparents',
+      'maternalGrandfather': 'grandparents',
+      'maternalGrandmother': 'grandparents',
+      'paternalGreatGrandfather': 'great-grandparents',
+      'paternalGreatGrandmother': 'great-grandparents',
+      'maternalGreatGrandfather': 'great-grandparents',
+      'maternalGreatGrandmother': 'great-grandparents',
+    };
+    const targetTab = tabMap[personType];
+    if (targetTab) {
+      setActiveTab(targetTab);
+      toast.success(`Editing ${personType.replace(/([A-Z])/g, ' $1').trim()}`);
+    }
   };
   const renderDateField = (name: string, label: string, delay = 0) => {
     // Convert ISO format to DD.MM.YYYY for display
@@ -324,7 +369,11 @@ export default function FamilyTreeForm() {
           <Card className="glass-card border-primary/20">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <div className="border-b border-border/50">
-                <TabsList className="w-full h-auto p-2 bg-transparent justify-start">
+                <TabsList className="w-full h-auto p-2 bg-transparent justify-start flex-wrap">
+                  <TabsTrigger value="tree-view" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                    <TreePine className="h-4 w-4 mr-2" />
+                    <span className="hidden sm:inline">Tree View</span>
+                  </TabsTrigger>
                   <TabsTrigger value="select" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
                     <Users className="h-4 w-4 mr-2" />
                     <span className="hidden sm:inline">Select...</span>
@@ -332,6 +381,10 @@ export default function FamilyTreeForm() {
                   <TabsTrigger value="applicant" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
                     <User className="h-4 w-4 mr-2" />
                     <span className="hidden sm:inline">Applicant</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="spouse" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                    <Heart className="h-4 w-4 mr-2" />
+                    <span className="hidden sm:inline">Spouse</span>
                   </TabsTrigger>
                   {(formData.minor_children_count > 0) && (
                     <TabsTrigger value="children" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
@@ -357,6 +410,41 @@ export default function FamilyTreeForm() {
                   </TabsTrigger>
                 </TabsList>
               </div>
+
+              {/* Tree View Tab */}
+              <TabsContent value="tree-view" className="mt-0">
+                {activeTab === 'tree-view' && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <Card className="glass-card border-primary/20">
+                      <CardContent className="p-6 md:p-10">
+                        <FamilyTreeInteractive
+                          clientData={{
+                            ...mapPersonData('applicant'),
+                            sex: formData.applicant_sex
+                          }}
+                          spouse={mapPersonData('spouse')}
+                          father={mapPersonData('father')}
+                          mother={mapPersonData('mother')}
+                          paternalGrandfather={mapPersonData('pgf')}
+                          paternalGrandmother={mapPersonData('pgm')}
+                          maternalGrandfather={mapPersonData('mgf')}
+                          maternalGrandmother={mapPersonData('mgm')}
+                          paternalGreatGrandfather={mapPersonData('pggf')}
+                          paternalGreatGrandmother={mapPersonData('pggm')}
+                          maternalGreatGrandfather={mapPersonData('mggf')}
+                          maternalGreatGrandmother={mapPersonData('mggm')}
+                          onEdit={handlePersonEdit}
+                          onOpenMasterTable={() => navigate(`/admin/master-data/${caseId}`)}
+                        />
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                )}
+              </TabsContent>
 
               <TabsContent value="select" className="mt-0">
           {activeTab === 'select' && (
@@ -643,6 +731,15 @@ export default function FamilyTreeForm() {
                     
                     <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
                       <Checkbox
+                        id="applicant_has_death_cert"
+                        checked={formData?.applicant_has_death_cert || false}
+                        onCheckedChange={(checked) => handleInputChange("applicant_has_death_cert", checked)}
+                        className="h-6 w-6"
+                      />
+                      <Label htmlFor="applicant_has_death_cert" className="cursor-pointer text-sm font-normal">Death certificate</Label>
+                    </div>
+                    <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                      <Checkbox
                         id="applicant_has_additional_documents"
                         checked={formData?.applicant_has_additional_documents || false}
                         onCheckedChange={(checked) => handleInputChange("applicant_has_additional_documents", checked)}
@@ -656,6 +753,90 @@ export default function FamilyTreeForm() {
             </Card>
           </motion.div>
           )}
+        </TabsContent>
+
+        {/* Spouse Tab */}
+        <TabsContent value="spouse" className="mt-0">
+          {activeTab === 'spouse' && (
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }}>
+              <Card className="glass-card border-primary/20">
+                <CardHeader className="border-b border-border/50 pb-6">
+                  <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                    Spouse
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6 md:p-10 space-y-10">
+                  {/* Names */}
+                  {renderFieldGroup([
+                    { name: "spouse_first_name", label: "Given names / Imię/ imiona", isNameField: true },
+                    { name: "spouse_last_name", label: "Full last name / Nazwisko", isNameField: true }
+                  ])}
+
+                  {/* Maiden name */}
+                  {renderFieldGroup([
+                    { name: "spouse_maiden_name", label: "Maiden name / Nazwisko rodowe", isNameField: true },
+                    { name: "spouse_sex", label: "Sex", isSelect: true, selectOptions: [
+                      { value: "MALE", label: "Male" },
+                      { value: "FEMALE", label: "Female" }
+                    ]}
+                  ])}
+
+                  {/* Birth info */}
+                  {renderFieldGroup([
+                    { name: "spouse_pob", label: "Place of birth", isNameField: true },
+                    { name: "spouse_dob", label: "Date of birth", type: "date" }
+                  ])}
+
+                  {/* Marriage */}
+                  {renderFieldGroup([
+                    { name: "place_of_marriage", label: "Place of marriage", isNameField: true },
+                    { name: "date_of_marriage", label: "Date of marriage", type: "date" }
+                  ])}
+
+                  {/* Emigration and Naturalization */}
+                  {renderFieldGroup([
+                    { name: "spouse_date_of_emigration", label: "Date of emigration", type: "date" },
+                    { name: "spouse_date_of_naturalization", label: "Date of naturalization", type: "date" }
+                  ])}
+
+                  {/* Contact */}
+                  {renderFieldGroup([
+                    { name: "spouse_email", label: "Email", type: "email" },
+                    { name: "spouse_phone", label: "Phone" }
+                  ])}
+
+                  {/* Notes */}
+                  <div className="space-y-2">
+                    <Label htmlFor="spouse_notes" className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                      Relevant additional information
+                    </Label>
+                    <Textarea
+                      id="spouse_notes"
+                      value={formData.spouse_notes || ""}
+                      onChange={e => handleInputChange("spouse_notes", e.target.value.toUpperCase())}
+                      placeholder=""
+                      className={cn("min-h-[150px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                    />
+                  </div>
+
+                  {/* Documents */}
+                  <div className="pt-8">
+                    <h3 className="font-light text-foreground/90 text-sm mb-6">Available Documents</h3>
+                    {renderCheckboxGroup([
+                      { name: "spouse_has_birth_cert", label: "Birth certificate" },
+                      { name: "spouse_has_marriage_cert", label: "Marriage certificate" },
+                      { name: "spouse_has_death_cert", label: "Death certificate" },
+                      { name: "spouse_has_passport", label: "Passport copy" },
+                      { name: "spouse_has_naturalization", label: "Naturalization documents" }
+                    ])}
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          )}
+        </TabsContent>
+
+        <TabsContent value="children" className="mt-0">
 
           {/* Children Section - Only Minor Children */}
           {activeTab === 'children' && (formData.minor_children_count > 0) && (
@@ -968,6 +1149,15 @@ export default function FamilyTreeForm() {
                         
                         <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
                           <Checkbox
+                            id="father_has_death_cert"
+                            checked={formData?.father_has_death_cert || false}
+                            onCheckedChange={(checked) => handleInputChange("father_has_death_cert", checked)}
+                            className="h-6 w-6"
+                          />
+                          <Label htmlFor="father_has_death_cert" className="cursor-pointer text-sm font-normal">Death certificate</Label>
+                        </div>
+                        <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                          <Checkbox
                             id="father_has_additional_documents"
                             checked={formData?.father_has_additional_documents || false}
                             onCheckedChange={(checked) => handleInputChange("father_has_additional_documents", checked)}
@@ -1124,6 +1314,15 @@ export default function FamilyTreeForm() {
                         
                         <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
                           <Checkbox
+                            id="mother_has_death_cert"
+                            checked={formData?.mother_has_death_cert || false}
+                            onCheckedChange={(checked) => handleInputChange("mother_has_death_cert", checked)}
+                            className="h-6 w-6"
+                          />
+                          <Label htmlFor="mother_has_death_cert" className="cursor-pointer text-sm font-normal">Death certificate</Label>
+                        </div>
+                        <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                          <Checkbox
                             id="mother_has_additional_documents"
                             checked={formData?.mother_has_additional_documents || false}
                             onCheckedChange={(checked) => handleInputChange("mother_has_additional_documents", checked)}
@@ -1139,6 +1338,9 @@ export default function FamilyTreeForm() {
             </Card>
           </motion.div>
           )}
+        </TabsContent>
+
+        <TabsContent value="grandparents" className="mt-0">
 
           {/* Grandparents Section */}
           {activeTab === 'grandparents' && (
@@ -1311,6 +1513,15 @@ export default function FamilyTreeForm() {
                             
                             <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
                               <Checkbox
+                                id={`${prefix}_has_death_cert`}
+                                checked={formData?.[`${prefix}_has_death_cert`] || false}
+                                onCheckedChange={(checked) => handleInputChange(`${prefix}_has_death_cert`, checked)}
+                                className="h-6 w-6"
+                              />
+                              <Label htmlFor={`${prefix}_has_death_cert`} className="cursor-pointer text-sm font-normal">Death certificate</Label>
+                            </div>
+                            <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                              <Checkbox
                                 id={`${prefix}_has_additional_documents`}
                                 checked={formData?.[`${prefix}_has_additional_documents`] || false}
                                 onCheckedChange={(checked) => handleInputChange(`${prefix}_has_additional_documents`, checked)}
@@ -1327,6 +1538,9 @@ export default function FamilyTreeForm() {
             </Card>
           </motion.div>
           )}
+        </TabsContent>
+
+        <TabsContent value="great-grandparents" className="mt-0">
 
           {/* Great-Grandparents Section */}
           {activeTab === 'great-grandparents' && (
@@ -1462,6 +1676,15 @@ export default function FamilyTreeForm() {
                             
                             <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
                               <Checkbox
+                                id={`${prefix}_has_death_cert`}
+                                checked={formData?.[`${prefix}_has_death_cert`] || false}
+                                onCheckedChange={(checked) => handleInputChange(`${prefix}_has_death_cert`, checked)}
+                                className="h-6 w-6"
+                              />
+                              <Label htmlFor={`${prefix}_has_death_cert`} className="cursor-pointer text-sm font-normal">Death certificate</Label>
+                            </div>
+                            <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                              <Checkbox
                                 id={`${prefix}_has_additional_documents`}
                                 checked={formData?.[`${prefix}_has_additional_documents`] || false}
                                 onCheckedChange={(checked) => handleInputChange(`${prefix}_has_additional_documents`, checked)}
@@ -1478,6 +1701,9 @@ export default function FamilyTreeForm() {
             </Card>
           </motion.div>
           )}
+        </TabsContent>
+
+        <TabsContent value="additional" className="mt-0">
 
           {/* Additional Info Section */}
           {activeTab === 'additional' && (
