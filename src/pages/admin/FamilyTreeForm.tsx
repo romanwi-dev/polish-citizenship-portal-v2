@@ -115,7 +115,6 @@ export default function FamilyTreeForm() {
     documents: {
       birthCertificate: formData[`${prefix}_has_birth_cert`] || false,
       marriageCertificate: formData[`${prefix}_has_marriage_cert`] || false,
-      deathCertificate: formData[`${prefix}_has_death_cert`] || false,
       passport: formData[`${prefix}_has_passport`] || false,
       naturalizationDocs: formData[`${prefix}_has_naturalization`] || false,
     }
@@ -785,15 +784,6 @@ export default function FamilyTreeForm() {
                     
                     <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
                       <Checkbox
-                        id="applicant_has_death_cert"
-                        checked={formData?.applicant_has_death_cert || false}
-                        onCheckedChange={(checked) => handleInputChange("applicant_has_death_cert", checked)}
-                        className="h-6 w-6"
-                      />
-                      <Label htmlFor="applicant_has_death_cert" className="cursor-pointer text-sm font-normal">Death certificate</Label>
-                    </div>
-                    <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
-                      <Checkbox
                         id="applicant_has_additional_documents"
                         checked={formData?.applicant_has_additional_documents || false}
                         onCheckedChange={(checked) => handleInputChange("applicant_has_additional_documents", checked)}
@@ -875,14 +865,87 @@ export default function FamilyTreeForm() {
 
                   {/* Documents */}
                   <div className="pt-8">
-                    <h3 className="font-light text-foreground/90 text-sm mb-6">Available Documents</h3>
-                    {renderCheckboxGroup([
-                      { name: "spouse_has_birth_cert", label: "Birth certificate" },
-                      { name: "spouse_has_marriage_cert", label: "Marriage certificate" },
-                      { name: "spouse_has_death_cert", label: "Death certificate" },
-                      { name: "spouse_has_passport", label: "Passport copy" },
-                      { name: "spouse_has_naturalization", label: "Naturalization documents" }
-                    ])}
+                    <h3 className="font-light text-foreground/90 text-sm mb-6">Documents required</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                        <Checkbox
+                          id="spouse_has_polish_documents"
+                          checked={formData?.spouse_has_polish_documents || false}
+                          onCheckedChange={(checked) => handleInputChange("spouse_has_polish_documents", checked)}
+                          className="h-6 w-6"
+                        />
+                        <Label htmlFor="spouse_has_polish_documents" className="cursor-pointer text-sm font-normal">Polish documents</Label>
+                      </div>
+                      <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                        <Checkbox
+                          id="spouse_has_passport"
+                          checked={formData?.spouse_has_passport || false}
+                          onCheckedChange={(checked) => handleInputChange("spouse_has_passport", checked)}
+                          className="h-6 w-6"
+                        />
+                        <Label htmlFor="spouse_has_passport" className="cursor-pointer text-sm font-normal">Passport copy</Label>
+                      </div>
+                      <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                        <Checkbox
+                          id="spouse_has_birth_cert"
+                          checked={formData?.spouse_has_birth_cert || false}
+                          onCheckedChange={(checked) => handleInputChange("spouse_has_birth_cert", checked)}
+                          className="h-6 w-6"
+                        />
+                        <Label htmlFor="spouse_has_birth_cert" className="cursor-pointer text-sm font-normal">Birth certificate</Label>
+                      </div>
+                      <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                        <Checkbox
+                          id="spouse_has_marriage_cert"
+                          checked={formData?.spouse_has_marriage_cert || false}
+                          onCheckedChange={(checked) => handleInputChange("spouse_has_marriage_cert", checked)}
+                          className="h-6 w-6"
+                        />
+                        <Label htmlFor="spouse_has_marriage_cert" className="cursor-pointer text-sm font-normal">Marriage certificate</Label>
+                      </div>
+                      <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                        <Checkbox
+                          id="spouse_has_naturalization"
+                          checked={formData?.spouse_has_naturalization || false}
+                          onCheckedChange={(checked) => handleInputChange("spouse_has_naturalization", checked)}
+                          className="h-6 w-6"
+                        />
+                        <Label htmlFor="spouse_has_naturalization" className="cursor-pointer text-sm font-normal">Naturalization certificate</Label>
+                      </div>
+                      
+                      {/* Military record - only for males */}
+                      {(formData?.spouse_sex?.includes('Male') || formData?.spouse_sex?.includes('Mężczyzna') || formData?.spouse_sex === 'MALE') && (
+                        <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                          <Checkbox
+                            id="spouse_has_military_record"
+                            checked={formData?.spouse_has_military_record || false}
+                            onCheckedChange={(checked) => handleInputChange("spouse_has_military_record", checked)}
+                            className="h-6 w-6"
+                          />
+                          <Label htmlFor="spouse_has_military_record" className="cursor-pointer text-sm font-normal">Military service record</Label>
+                        </div>
+                      )}
+                      
+                      <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                        <Checkbox
+                          id="spouse_has_foreign_documents"
+                          checked={formData?.spouse_has_foreign_documents || false}
+                          onCheckedChange={(checked) => handleInputChange("spouse_has_foreign_documents", checked)}
+                          className="h-6 w-6"
+                        />
+                        <Label htmlFor="spouse_has_foreign_documents" className="cursor-pointer text-sm font-normal">Foreign documents</Label>
+                      </div>
+                      
+                      <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                        <Checkbox
+                          id="spouse_has_additional_documents"
+                          checked={formData?.spouse_has_additional_documents || false}
+                          onCheckedChange={(checked) => handleInputChange("spouse_has_additional_documents", checked)}
+                          className="h-6 w-6"
+                        />
+                        <Label htmlFor="spouse_has_additional_documents" className="cursor-pointer text-sm font-normal">Additional documents</Label>
+                      </div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -1539,15 +1602,6 @@ export default function FamilyTreeForm() {
                             
                             <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
                               <Checkbox
-                                id={`${prefix}_has_death_cert`}
-                                checked={formData?.[`${prefix}_has_death_cert`] || false}
-                                onCheckedChange={(checked) => handleInputChange(`${prefix}_has_death_cert`, checked)}
-                                className="h-6 w-6"
-                              />
-                              <Label htmlFor={`${prefix}_has_death_cert`} className="cursor-pointer text-sm font-normal">Death certificate</Label>
-                            </div>
-                            <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
-                              <Checkbox
                                 id={`${prefix}_has_additional_documents`}
                                 checked={formData?.[`${prefix}_has_additional_documents`] || false}
                                 onCheckedChange={(checked) => handleInputChange(`${prefix}_has_additional_documents`, checked)}
@@ -1700,15 +1754,6 @@ export default function FamilyTreeForm() {
                               <Label htmlFor={`${prefix}_has_foreign_documents`} className="cursor-pointer text-sm font-normal">Foreign documents</Label>
                             </div>
                             
-                            <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
-                              <Checkbox
-                                id={`${prefix}_has_death_cert`}
-                                checked={formData?.[`${prefix}_has_death_cert`] || false}
-                                onCheckedChange={(checked) => handleInputChange(`${prefix}_has_death_cert`, checked)}
-                                className="h-6 w-6"
-                              />
-                              <Label htmlFor={`${prefix}_has_death_cert`} className="cursor-pointer text-sm font-normal">Death certificate</Label>
-                            </div>
                             <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
                               <Checkbox
                                 id={`${prefix}_has_additional_documents`}
