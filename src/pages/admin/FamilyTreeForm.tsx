@@ -382,10 +382,12 @@ export default function FamilyTreeForm() {
                     <User className="h-4 w-4 mr-2" />
                     <span className="hidden sm:inline">Applicant</span>
                   </TabsTrigger>
-                  <TabsTrigger value="spouse" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                    <Heart className="h-4 w-4 mr-2" />
-                    <span className="hidden sm:inline">Spouse</span>
-                  </TabsTrigger>
+                  {formData.applicant_is_married && (
+                    <TabsTrigger value="spouse" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                      <Heart className="h-4 w-4 mr-2" />
+                      <span className="hidden sm:inline">Spouse</span>
+                    </TabsTrigger>
+                  )}
                   {(formData.minor_children_count > 0) && (
                     <TabsTrigger value="children" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
                       <Baby className="h-4 w-4 mr-2" />
