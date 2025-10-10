@@ -65,7 +65,7 @@ export default function FamilyHistoryForm() {
       {/* Header Card */}
       <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
         <Card className="glass-card border-primary/20 rounded-none border-x-0 border-t-0 relative z-0">
-          <CardHeader className="relative overflow-hidden">
+          <CardHeader className="relative overflow-hidden z-0">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-accent/5" />
             <div className="relative flex items-center justify-between">
               <div className="flex items-center gap-4">

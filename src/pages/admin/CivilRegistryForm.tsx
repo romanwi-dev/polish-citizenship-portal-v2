@@ -219,7 +219,7 @@ export default function CivilRegistryForm() {
       }} className="sticky top-0 z-20 bg-gradient-to-br from-background via-background to-background/95 backdrop-blur-sm border-b mb-0">
           <Card className="glass-card border-primary/20 overflow-hidden rounded-none border-x-0 border-t-0 relative z-0">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5" />
-            <CardHeader className="relative pb-6 pt-6">
+            <CardHeader className="relative pb-6 pt-6 z-0">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                 <motion.div initial={{
                 x: -20,
