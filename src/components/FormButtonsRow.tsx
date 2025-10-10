@@ -41,34 +41,40 @@ export function FormButtonsRow({
         <Button
           onClick={onSave}
           disabled={isSaving}
-          variant="default"
-          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold"
+          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 group relative overflow-hidden"
         >
-          <Save className="mr-2 h-4 w-4 md:h-5 md:w-5" />
-          <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-            {isSaving ? "Saving..." : saveLabel}
+          <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+          <span className="relative z-10 flex items-center">
+            <Save className="mr-2 h-4 w-4 md:h-5 md:w-5" />
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              {isSaving ? "Saving..." : saveLabel}
+            </span>
           </span>
         </Button>
         
         <Button
           onClick={onClear}
-          variant="outline"
-          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold"
+          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 group relative overflow-hidden"
         >
-          <Sparkles className="mr-2 h-4 w-4 md:h-5 md:w-5" />
-          <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-            Clear Data
+          <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+          <span className="relative z-10 flex items-center">
+            <Sparkles className="mr-2 h-4 w-4 md:h-5 md:w-5" />
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              Clear Data
+            </span>
           </span>
         </Button>
         
         <Button
           onClick={onGeneratePDF}
-          variant="outline"
-          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold"
+          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 group relative overflow-hidden"
         >
-          <Download className="mr-2 h-4 w-4 md:h-5 md:w-5" />
-          <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-            Generate PDF
+          <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+          <span className="relative z-10 flex items-center">
+            <Download className="mr-2 h-4 w-4 md:h-5 md:w-5" />
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              Generate PDF
+            </span>
           </span>
         </Button>
       </div>
@@ -83,24 +89,22 @@ export function FormButtonsRow({
             <Button
               key={btn.id}
               onClick={() => navigate(btn.path.replace(':id', caseId))}
-              variant={isCurrent ? "default" : "outline"}
               className={`
                 h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold
-                whitespace-nowrap flex-shrink-0
+                whitespace-nowrap flex-shrink-0 backdrop-blur-md border group relative overflow-hidden
                 ${isCurrent 
-                  ? 'bg-gradient-to-r from-primary to-secondary text-white' 
-                  : 'bg-white/5 hover:bg-white/10'
+                  ? 'bg-white/5 hover:bg-white/10 shadow-glow hover-glow border-white/30' 
+                  : 'bg-white/5 hover:bg-white/10 border-white/20'
                 }
               `}
             >
-              <Icon className="mr-2 h-4 w-4 md:h-5 md:w-5" />
-              {isCurrent ? (
-                <span>{btn.label}</span>
-              ) : (
+              <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <span className="relative z-10 flex items-center">
+                <Icon className="mr-2 h-4 w-4 md:h-5 md:w-5" />
                 <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   {btn.label}
                 </span>
-              )}
+              </span>
             </Button>
           );
         })}
