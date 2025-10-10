@@ -184,46 +184,44 @@ export default function IntakeForm() {
           transition={{ duration: 0.5 }}
         >
           <Card className="glass-card border-primary/20">
-            <CardContent className="pt-6">
+            <CardContent className="pt-6 relative">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsFullView(!isFullView)}
+                className="absolute top-2 left-2 z-30"
+                title={isFullView ? "Collapse" : "Expand All"}
+              >
+                {isFullView ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+              </Button>
               <Tabs defaultValue="select" value={activeTab} onValueChange={handleTabChange} className="w-full">
-                <div className="relative">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setIsFullView(!isFullView)}
-                    className="absolute -top-2 left-0 z-30"
-                    title={isFullView ? "Collapse" : "Expand All"}
-                  >
-                    {isFullView ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
-                  </Button>
-                  <div className="sticky top-0 z-20 border-b border-border/50 pb-2 pt-2 pl-12">
-                    <TabsList ref={tabsListRef} className="w-full inline-flex justify-start gap-2 bg-transparent p-0 overflow-x-auto scrollbar-hide">
-                      <TabsTrigger value="select" className="flex-shrink-0">
-                        <span>Select...</span>
-                      </TabsTrigger>
-                      <TabsTrigger value="applicant" className="flex-shrink-0">
-                        <span>Applicant</span>
-                      </TabsTrigger>
-                      <TabsTrigger value="contact" className="flex-shrink-0">
-                        <span>Contact</span>
-                      </TabsTrigger>
-                      <TabsTrigger value="address" className="flex-shrink-0">
-                        <span>Address</span>
-                      </TabsTrigger>
-                      <TabsTrigger value="passport" className="flex-shrink-0">
-                        <span>Passport</span>
-                      </TabsTrigger>
-                      <TabsTrigger value="immigration" className="flex-shrink-0">
-                        <span>Emigration</span>
-                      </TabsTrigger>
-                      <TabsTrigger value="documents" className="flex-shrink-0">
-                        <span>Documents</span>
-                      </TabsTrigger>
-                      <TabsTrigger value="notes" className="flex-shrink-0">
-                        <span>Notes</span>
-                      </TabsTrigger>
-                    </TabsList>
-                  </div>
+                <div className="sticky top-0 z-20 border-b border-border/50 pb-2 pt-2 pl-12">
+                  <TabsList ref={tabsListRef} className="w-full inline-flex justify-start gap-2 bg-transparent p-0 overflow-x-auto scrollbar-hide">
+                    <TabsTrigger value="select" className="flex-shrink-0">
+                      <span>Select...</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="applicant" className="flex-shrink-0">
+                      <span>Applicant</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="contact" className="flex-shrink-0">
+                      <span>Contact</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="address" className="flex-shrink-0">
+                      <span>Address</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="passport" className="flex-shrink-0">
+                      <span>Passport</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="immigration" className="flex-shrink-0">
+                      <span>Emigration</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="documents" className="flex-shrink-0">
+                      <span>Documents</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="notes" className="flex-shrink-0">
+                      <span>Notes</span>
+                    </TabsTrigger>
+                  </TabsList>
                 </div>
 
               {isFullView ? (
