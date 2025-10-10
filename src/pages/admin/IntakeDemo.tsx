@@ -4,6 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -1676,30 +1677,276 @@ export default function IntakeDemo() {
           </Card>
         </div>
 
-        {/* INPUT FIELD DESIGN VARIATIONS */}
+        {/* DOCUMENTS REQUIRED SECTION VARIATIONS */}
         <div className="space-y-6">
           <div className="text-center space-y-4 py-8">
             <h2 className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Input Field Design Variations
+              Documents Required Section - 10 Outstanding Designs
             </h2>
             <p className="text-lg text-muted-foreground">
-              Compare 10 different input field styles for darkness, color, and design
+              Compare 10 different approaches to make the documents section stand out
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Style 1: Subtle Gray */}
+            {/* Design 1: Amber Highlight Panel */}
             <Card className="border-2 border-primary/20">
               <CardHeader>
-                <CardTitle>Style 1: Subtle Gray</CardTitle>
-                <p className="text-sm text-muted-foreground">Very light gray, 30% opacity - barely darker</p>
+                <CardTitle>Design 1: Amber Highlight Panel</CardTitle>
+                <p className="text-sm text-muted-foreground">Left accent bar with amber tint</p>
+              </CardHeader>
+              <CardContent>
+                <div className="bg-amber-500/10 border-l-4 border-amber-500 p-6 rounded-r-lg">
+                  <h3 className="text-amber-600 dark:text-amber-400 font-medium text-base mb-4">Documents required</h3>
+                  <div className="grid grid-cols-1 gap-3">
+                    <div className="flex items-center space-x-4 p-4 rounded-lg bg-amber-50/20 dark:bg-amber-950/10 border border-amber-400/30">
+                      <Checkbox />
+                      <span className="text-sm">Birth certificate</span>
+                    </div>
+                    <div className="flex items-center space-x-4 p-4 rounded-lg bg-amber-50/20 dark:bg-amber-950/10 border border-amber-400/30">
+                      <Checkbox />
+                      <span className="text-sm">Marriage certificate</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Design 2: Emerald Bordered Section */}
+            <Card className="border-2 border-primary/20">
+              <CardHeader>
+                <CardTitle>Design 2: Emerald Bordered Section</CardTitle>
+                <p className="text-sm text-muted-foreground">Full border enclosure with emerald theme</p>
+              </CardHeader>
+              <CardContent>
+                <div className="bg-emerald-50/30 dark:bg-emerald-950/20 border-2 border-emerald-400/50 p-6 rounded-lg">
+                  <h3 className="text-emerald-700 dark:text-emerald-300 font-semibold text-base mb-4">Documents required</h3>
+                  <div className="grid grid-cols-1 gap-3">
+                    <div className="flex items-center space-x-4 p-4 rounded-lg bg-emerald-100/30 dark:bg-emerald-900/20 border border-emerald-400/40">
+                      <Checkbox />
+                      <span className="text-sm">Birth certificate</span>
+                    </div>
+                    <div className="flex items-center space-x-4 p-4 rounded-lg bg-emerald-100/30 dark:bg-emerald-900/20 border border-emerald-400/40">
+                      <Checkbox />
+                      <span className="text-sm">Marriage certificate</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Design 3: Purple Gradient Banner */}
+            <Card className="border-2 border-primary/20">
+              <CardHeader>
+                <CardTitle>Design 3: Purple Gradient Banner</CardTitle>
+                <p className="text-sm text-muted-foreground">Gradient background with top border accent</p>
+              </CardHeader>
+              <CardContent>
+                <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 border-t-4 border-purple-500 p-6 rounded-lg">
+                  <h3 className="text-purple-700 dark:text-purple-300 font-bold text-base mb-4">Documents required</h3>
+                  <div className="grid grid-cols-1 gap-3">
+                    <div className="flex items-center space-x-4 p-4 rounded-lg bg-purple-50/20 dark:bg-purple-950/20 border border-purple-400/30">
+                      <Checkbox />
+                      <span className="text-sm">Birth certificate</span>
+                    </div>
+                    <div className="flex items-center space-x-4 p-4 rounded-lg bg-purple-50/20 dark:bg-purple-950/20 border border-purple-400/30">
+                      <Checkbox />
+                      <span className="text-sm">Marriage certificate</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Design 4: Cyan Elevated Card */}
+            <Card className="border-2 border-primary/20">
+              <CardHeader>
+                <CardTitle>Design 4: Cyan Elevated Card</CardTitle>
+                <p className="text-sm text-muted-foreground">Elevated with shadow and cyan accents</p>
+              </CardHeader>
+              <CardContent>
+                <div className="bg-cyan-500/5 border border-cyan-400/30 p-6 rounded-xl shadow-lg shadow-cyan-500/20">
+                  <h3 className="text-cyan-600 dark:text-cyan-400 font-semibold uppercase text-xs tracking-wider mb-4">Documents required</h3>
+                  <div className="grid grid-cols-1 gap-3">
+                    <div className="flex items-center space-x-4 p-4 rounded-lg bg-cyan-50/20 dark:bg-cyan-950/20 border border-cyan-400/30">
+                      <Checkbox />
+                      <span className="text-sm">Birth certificate</span>
+                    </div>
+                    <div className="flex items-center space-x-4 p-4 rounded-lg bg-cyan-50/20 dark:bg-cyan-950/20 border border-cyan-400/30">
+                      <Checkbox />
+                      <span className="text-sm">Marriage certificate</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Design 5: Rose Accent Strip */}
+            <Card className="border-2 border-primary/20">
+              <CardHeader>
+                <CardTitle>Design 5: Rose Accent Strip</CardTitle>
+                <p className="text-sm text-muted-foreground">Horizontal emphasis with top & bottom borders</p>
+              </CardHeader>
+              <CardContent>
+                <div className="bg-rose-50/40 dark:bg-rose-950/30 border-y-2 border-rose-400/60 p-6">
+                  <h3 className="text-rose-700 dark:text-rose-300 font-bold text-base mb-4">Documents required</h3>
+                  <div className="grid grid-cols-1 gap-3">
+                    <div className="flex items-center space-x-4 p-4 rounded-lg bg-rose-100/30 dark:bg-rose-900/20 border border-rose-400/40">
+                      <Checkbox />
+                      <span className="text-sm">Birth certificate</span>
+                    </div>
+                    <div className="flex items-center space-x-4 p-4 rounded-lg bg-rose-100/30 dark:bg-rose-900/20 border border-rose-400/40">
+                      <Checkbox />
+                      <span className="text-sm">Marriage certificate</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Design 6: Indigo Frosted Panel */}
+            <Card className="border-2 border-primary/20">
+              <CardHeader>
+                <CardTitle>Design 6: Indigo Frosted Panel</CardTitle>
+                <p className="text-sm text-muted-foreground">Frosted glass effect with indigo theme</p>
+              </CardHeader>
+              <CardContent>
+                <div className="bg-indigo-500/15 backdrop-blur-sm border-2 border-indigo-300/40 dark:border-indigo-600/40 p-6 rounded-lg">
+                  <h3 className="text-indigo-800 dark:text-indigo-200 font-semibold text-base mb-4">Documents required</h3>
+                  <div className="grid grid-cols-1 gap-3">
+                    <div className="flex items-center space-x-4 p-4 rounded-lg bg-indigo-50/20 dark:bg-indigo-950/20 border border-indigo-400/30">
+                      <Checkbox />
+                      <span className="text-sm">Birth certificate</span>
+                    </div>
+                    <div className="flex items-center space-x-4 p-4 rounded-lg bg-indigo-50/20 dark:bg-indigo-950/20 border border-indigo-400/30">
+                      <Checkbox />
+                      <span className="text-sm">Marriage certificate</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Design 7: Teal Corner Accent */}
+            <Card className="border-2 border-primary/20">
+              <CardHeader>
+                <CardTitle>Design 7: Teal Corner Accent</CardTitle>
+                <p className="text-sm text-muted-foreground">Unique corner decoration with teal</p>
+              </CardHeader>
+              <CardContent>
+                <div className="bg-teal-500/8 border-l-4 border-t-4 border-teal-500 p-6 rounded-tl-lg">
+                  <h3 className="text-teal-700 dark:text-teal-300 font-bold text-base mb-4">Documents required</h3>
+                  <div className="grid grid-cols-1 gap-3">
+                    <div className="flex items-center space-x-4 p-4 rounded-lg bg-teal-50/20 dark:bg-teal-950/20 border border-teal-400/30">
+                      <Checkbox />
+                      <span className="text-sm">Birth certificate</span>
+                    </div>
+                    <div className="flex items-center space-x-4 p-4 rounded-lg bg-teal-50/20 dark:bg-teal-950/20 border border-teal-400/30">
+                      <Checkbox />
+                      <span className="text-sm">Marriage certificate</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Design 8: Orange Glow Box */}
+            <Card className="border-2 border-primary/20">
+              <CardHeader>
+                <CardTitle>Design 8: Orange Glow Box</CardTitle>
+                <p className="text-sm text-muted-foreground">Subtle glow effect with orange accents</p>
+              </CardHeader>
+              <CardContent>
+                <div className="bg-orange-500/10 border-2 border-orange-400/50 p-6 rounded-lg shadow-md shadow-orange-500/30">
+                  <h3 className="text-orange-700 dark:text-orange-300 font-bold text-base mb-4">Documents required</h3>
+                  <div className="grid grid-cols-1 gap-3">
+                    <div className="flex items-center space-x-4 p-4 rounded-lg bg-orange-50/20 dark:bg-orange-950/20 border border-orange-400/30">
+                      <Checkbox />
+                      <span className="text-sm">Birth certificate</span>
+                    </div>
+                    <div className="flex items-center space-x-4 p-4 rounded-lg bg-orange-50/20 dark:bg-orange-950/20 border border-orange-400/30">
+                      <Checkbox />
+                      <span className="text-sm">Marriage certificate</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Design 9: Violet Double Border */}
+            <Card className="border-2 border-primary/20">
+              <CardHeader>
+                <CardTitle>Design 9: Violet Double Border</CardTitle>
+                <p className="text-sm text-muted-foreground">Double border creates depth</p>
+              </CardHeader>
+              <CardContent>
+                <div className="bg-violet-500/5 border-4 border-violet-300/30 dark:border-violet-700/30 p-4 rounded-lg">
+                  <div className="p-2">
+                    <h3 className="text-violet-700 dark:text-violet-300 font-bold text-base mb-4">Documents required</h3>
+                    <div className="grid grid-cols-1 gap-3">
+                      <div className="flex items-center space-x-4 p-4 rounded-lg bg-violet-50/20 dark:bg-violet-950/20 border border-violet-400/30">
+                        <Checkbox />
+                        <span className="text-sm">Birth certificate</span>
+                      </div>
+                      <div className="flex items-center space-x-4 p-4 rounded-lg bg-violet-50/20 dark:bg-violet-950/20 border border-violet-400/30">
+                        <Checkbox />
+                        <span className="text-sm">Marriage certificate</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Design 10: Sky Blue Island */}
+            <Card className="border-2 border-primary/20">
+              <CardHeader>
+                <CardTitle>Design 10: Sky Blue Island</CardTitle>
+                <p className="text-sm text-muted-foreground">"Island" effect with generous spacing</p>
+              </CardHeader>
+              <CardContent>
+                <div className="bg-sky-100/50 dark:bg-sky-900/20 border-2 border-sky-400/60 p-6 rounded-2xl">
+                  <h3 className="text-sky-700 dark:text-sky-300 font-bold uppercase tracking-wide text-base mb-4">Documents required</h3>
+                  <div className="grid grid-cols-1 gap-3">
+                    <div className="flex items-center space-x-4 p-4 rounded-lg bg-sky-50/30 dark:bg-sky-950/20 border border-sky-400/40">
+                      <Checkbox />
+                      <span className="text-sm">Birth certificate</span>
+                    </div>
+                    <div className="flex items-center space-x-4 p-4 rounded-lg bg-sky-50/30 dark:bg-sky-950/20 border border-sky-400/40">
+                      <Checkbox />
+                      <span className="text-sm">Marriage certificate</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        {/* INPUT FIELD DESIGN VARIATIONS */}
+        <div className="space-y-6">
+          <div className="text-center space-y-4 py-8">
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              Input Field Design Variations (Darker Shades)
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              Compare 10 different input field styles with slightly darker backgrounds
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Style 1: Subtle Gray - Darker */}
+            <Card className="border-2 border-primary/20">
+              <CardHeader>
+                <CardTitle>Style 1: Subtle Gray (Darker)</CardTitle>
+                <p className="text-sm text-muted-foreground">Light gray, 45% opacity - slightly more visible</p>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
                   <Label>Full Name</Label>
                   <Input 
                     placeholder="Enter your name" 
-                    className="h-16 text-lg bg-muted/30 border-2 border-border/40 hover:border-border/60 focus:border-primary/60"
+                    className="h-16 text-lg bg-muted/45 border-2 border-border/40 hover:border-border/60 focus:border-primary/60"
                   />
                 </div>
                 <div>
@@ -1707,12 +1954,12 @@ export default function IntakeDemo() {
                   <Input 
                     type="text" 
                     placeholder="DD.MM.YYYY" 
-                    className="h-16 text-lg bg-muted/30 border-2 border-border/40 hover:border-border/60 focus:border-primary/60"
+                    className="h-16 text-lg bg-muted/45 border-2 border-border/40 hover:border-border/60 focus:border-primary/60"
                   />
                 </div>
                 <div>
                   <Label>Gender</Label>
-                  <select className="flex h-16 w-full rounded-md bg-muted/30 border-2 border-border/40 px-3 py-2 text-lg hover:border-border/60 focus:border-primary/60 focus:outline-none">
+                  <select className="flex h-16 w-full rounded-md bg-muted/45 border-2 border-border/40 px-3 py-2 text-lg hover:border-border/60 focus:border-primary/60 focus:outline-none">
                     <option>Select gender</option>
                     <option>Male</option>
                     <option>Female</option>
@@ -1721,18 +1968,18 @@ export default function IntakeDemo() {
               </CardContent>
             </Card>
 
-            {/* Style 2: Medium Gray */}
+            {/* Style 2: Medium Gray - Darker */}
             <Card className="border-2 border-primary/20">
               <CardHeader>
-                <CardTitle>Style 2: Medium Gray</CardTitle>
-                <p className="text-sm text-muted-foreground">Medium gray, 60% opacity - good contrast</p>
+                <CardTitle>Style 2: Medium Gray (Darker)</CardTitle>
+                <p className="text-sm text-muted-foreground">Medium gray, 70% opacity - stronger contrast</p>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
                   <Label>Full Name</Label>
                   <Input 
                     placeholder="Enter your name" 
-                    className="h-16 text-lg bg-muted/60 border-2 border-border/60 hover:border-border/80 focus:border-primary"
+                    className="h-16 text-lg bg-muted/70 border-2 border-border/60 hover:border-border/80 focus:border-primary"
                   />
                 </div>
                 <div>
@@ -1740,12 +1987,12 @@ export default function IntakeDemo() {
                   <Input 
                     type="text" 
                     placeholder="DD.MM.YYYY" 
-                    className="h-16 text-lg bg-muted/60 border-2 border-border/60 hover:border-border/80 focus:border-primary"
+                    className="h-16 text-lg bg-muted/70 border-2 border-border/60 hover:border-border/80 focus:border-primary"
                   />
                 </div>
                 <div>
                   <Label>Gender</Label>
-                  <select className="flex h-16 w-full rounded-md bg-muted/60 border-2 border-border/60 px-3 py-2 text-lg hover:border-border/80 focus:border-primary focus:outline-none">
+                  <select className="flex h-16 w-full rounded-md bg-muted/70 border-2 border-border/60 px-3 py-2 text-lg hover:border-border/80 focus:border-primary focus:outline-none">
                     <option>Select gender</option>
                     <option>Male</option>
                     <option>Female</option>
@@ -1754,18 +2001,18 @@ export default function IntakeDemo() {
               </CardContent>
             </Card>
 
-            {/* Style 3: Dark Slate */}
+            {/* Style 3: Dark Slate - Darker */}
             <Card className="border-2 border-primary/20">
               <CardHeader>
-                <CardTitle>Style 3: Dark Slate</CardTitle>
-                <p className="text-sm text-muted-foreground">Dark slate with transparency - sophisticated</p>
+                <CardTitle>Style 3: Dark Slate (Darker)</CardTitle>
+                <p className="text-sm text-muted-foreground">Dark slate, 50% opacity - more sophisticated</p>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
                   <Label>Full Name</Label>
                   <Input 
                     placeholder="Enter your name" 
-                    className="h-16 text-lg bg-slate-900/40 border-2 border-slate-700/50 hover:border-slate-600/60 focus:border-primary backdrop-blur"
+                    className="h-16 text-lg bg-slate-900/50 border-2 border-slate-700/50 hover:border-slate-600/60 focus:border-primary backdrop-blur"
                   />
                 </div>
                 <div>
@@ -1773,12 +2020,12 @@ export default function IntakeDemo() {
                   <Input 
                     type="text" 
                     placeholder="DD.MM.YYYY" 
-                    className="h-16 text-lg bg-slate-900/40 border-2 border-slate-700/50 hover:border-slate-600/60 focus:border-primary backdrop-blur"
+                    className="h-16 text-lg bg-slate-900/50 border-2 border-slate-700/50 hover:border-slate-600/60 focus:border-primary backdrop-blur"
                   />
                 </div>
                 <div>
                   <Label>Gender</Label>
-                  <select className="flex h-16 w-full rounded-md bg-slate-900/40 border-2 border-slate-700/50 px-3 py-2 text-lg hover:border-slate-600/60 focus:border-primary focus:outline-none backdrop-blur">
+                  <select className="flex h-16 w-full rounded-md bg-slate-900/50 border-2 border-slate-700/50 px-3 py-2 text-lg hover:border-slate-600/60 focus:border-primary focus:outline-none backdrop-blur">
                     <option>Select gender</option>
                     <option>Male</option>
                     <option>Female</option>
@@ -1787,18 +2034,18 @@ export default function IntakeDemo() {
               </CardContent>
             </Card>
 
-            {/* Style 4: Warm Beige */}
+            {/* Style 4: Warm Beige - Darker */}
             <Card className="border-2 border-primary/20">
               <CardHeader>
-                <CardTitle>Style 4: Warm Beige</CardTitle>
-                <p className="text-sm text-muted-foreground">Warm tone - inviting appearance</p>
+                <CardTitle>Style 4: Warm Beige (Darker)</CardTitle>
+                <p className="text-sm text-muted-foreground">Warm tone, 35% opacity - warmer appearance</p>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
                   <Label>Full Name</Label>
                   <Input 
                     placeholder="Enter your name" 
-                    className="h-16 text-lg bg-amber-50/20 dark:bg-amber-950/20 border-2 border-amber-200/40 dark:border-amber-800/40 hover:border-amber-300/60 dark:hover:border-amber-700/60 focus:border-amber-500"
+                    className="h-16 text-lg bg-amber-50/35 dark:bg-amber-950/30 border-2 border-amber-200/40 dark:border-amber-800/40 hover:border-amber-300/60 dark:hover:border-amber-700/60 focus:border-amber-500"
                   />
                 </div>
                 <div>
@@ -1806,12 +2053,12 @@ export default function IntakeDemo() {
                   <Input 
                     type="text" 
                     placeholder="DD.MM.YYYY" 
-                    className="h-16 text-lg bg-amber-50/20 dark:bg-amber-950/20 border-2 border-amber-200/40 dark:border-amber-800/40 hover:border-amber-300/60 dark:hover:border-amber-700/60 focus:border-amber-500"
+                    className="h-16 text-lg bg-amber-50/35 dark:bg-amber-950/30 border-2 border-amber-200/40 dark:border-amber-800/40 hover:border-amber-300/60 dark:hover:border-amber-700/60 focus:border-amber-500"
                   />
                 </div>
                 <div>
                   <Label>Gender</Label>
-                  <select className="flex h-16 w-full rounded-md bg-amber-50/20 dark:bg-amber-950/20 border-2 border-amber-200/40 dark:border-amber-800/40 px-3 py-2 text-lg hover:border-amber-300/60 dark:hover:border-amber-700/60 focus:border-amber-500 focus:outline-none">
+                  <select className="flex h-16 w-full rounded-md bg-amber-50/35 dark:bg-amber-950/30 border-2 border-amber-200/40 dark:border-amber-800/40 px-3 py-2 text-lg hover:border-amber-300/60 dark:hover:border-amber-700/60 focus:border-amber-500 focus:outline-none">
                     <option>Select gender</option>
                     <option>Male</option>
                     <option>Female</option>
@@ -1820,18 +2067,18 @@ export default function IntakeDemo() {
               </CardContent>
             </Card>
 
-            {/* Style 5: Cool Blue Tint */}
+            {/* Style 5: Cool Blue Tint - Darker */}
             <Card className="border-2 border-primary/20">
               <CardHeader>
-                <CardTitle>Style 5: Cool Blue Tint</CardTitle>
-                <p className="text-sm text-muted-foreground">Cool blue tone - professional tech-feel</p>
+                <CardTitle>Style 5: Cool Blue Tint (Darker)</CardTitle>
+                <p className="text-sm text-muted-foreground">Cool blue, 45% opacity - professional tech-feel</p>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
                   <Label>Full Name</Label>
                   <Input 
                     placeholder="Enter your name" 
-                    className="h-16 text-lg bg-blue-50/30 dark:bg-blue-950/30 border-2 border-blue-200/50 dark:border-blue-800/50 hover:border-blue-300/70 dark:hover:border-blue-700/70 focus:border-blue-500"
+                    className="h-16 text-lg bg-blue-50/45 dark:bg-blue-950/40 border-2 border-blue-200/50 dark:border-blue-800/50 hover:border-blue-300/70 dark:hover:border-blue-700/70 focus:border-blue-500"
                   />
                 </div>
                 <div>
@@ -1839,12 +2086,12 @@ export default function IntakeDemo() {
                   <Input 
                     type="text" 
                     placeholder="DD.MM.YYYY" 
-                    className="h-16 text-lg bg-blue-50/30 dark:bg-blue-950/30 border-2 border-blue-200/50 dark:border-blue-800/50 hover:border-blue-300/70 dark:hover:border-blue-700/70 focus:border-blue-500"
+                    className="h-16 text-lg bg-blue-50/45 dark:bg-blue-950/40 border-2 border-blue-200/50 dark:border-blue-800/50 hover:border-blue-300/70 dark:hover:border-blue-700/70 focus:border-blue-500"
                   />
                 </div>
                 <div>
                   <Label>Gender</Label>
-                  <select className="flex h-16 w-full rounded-md bg-blue-50/30 dark:bg-blue-950/30 border-2 border-blue-200/50 dark:border-blue-800/50 px-3 py-2 text-lg hover:border-blue-300/70 dark:hover:border-blue-700/70 focus:border-blue-500 focus:outline-none">
+                  <select className="flex h-16 w-full rounded-md bg-blue-50/45 dark:bg-blue-950/40 border-2 border-blue-200/50 dark:border-blue-800/50 px-3 py-2 text-lg hover:border-blue-300/70 dark:hover:border-blue-700/70 focus:border-blue-500 focus:outline-none">
                     <option>Select gender</option>
                     <option>Male</option>
                     <option>Female</option>
@@ -1853,18 +2100,18 @@ export default function IntakeDemo() {
               </CardContent>
             </Card>
 
-            {/* Style 6: Elevated Card */}
+            {/* Style 6: Elevated Card - Darker */}
             <Card className="border-2 border-primary/20">
               <CardHeader>
-                <CardTitle>Style 6: Elevated Card</CardTitle>
-                <p className="text-sm text-muted-foreground">Material design - raised fields</p>
+                <CardTitle>Style 6: Elevated Card (Darker)</CardTitle>
+                <p className="text-sm text-muted-foreground">Material design, 95% opacity - raised fields</p>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
                   <Label>Full Name</Label>
                   <Input 
                     placeholder="Enter your name" 
-                    className="h-16 text-lg bg-card border border-border shadow-md hover:shadow-lg focus:shadow-xl transition-shadow"
+                    className="h-16 text-lg bg-card/95 border border-border shadow-md hover:shadow-lg focus:shadow-xl transition-shadow"
                   />
                 </div>
                 <div>
@@ -1872,12 +2119,12 @@ export default function IntakeDemo() {
                   <Input 
                     type="text" 
                     placeholder="DD.MM.YYYY" 
-                    className="h-16 text-lg bg-card border border-border shadow-md hover:shadow-lg focus:shadow-xl transition-shadow"
+                    className="h-16 text-lg bg-card/95 border border-border shadow-md hover:shadow-lg focus:shadow-xl transition-shadow"
                   />
                 </div>
                 <div>
                   <Label>Gender</Label>
-                  <select className="flex h-16 w-full rounded-md bg-card border border-border shadow-md px-3 py-2 text-lg hover:shadow-lg focus:shadow-xl focus:outline-none transition-shadow">
+                  <select className="flex h-16 w-full rounded-md bg-card/95 border border-border shadow-md px-3 py-2 text-lg hover:shadow-lg focus:shadow-xl focus:outline-none transition-shadow">
                     <option>Select gender</option>
                     <option>Male</option>
                     <option>Female</option>
@@ -1886,18 +2133,18 @@ export default function IntakeDemo() {
               </CardContent>
             </Card>
 
-            {/* Style 7: Frosted Glass Dark */}
+            {/* Style 7: Frosted Glass Dark - Darker */}
             <Card className="border-2 border-primary/20">
               <CardHeader>
-                <CardTitle>Style 7: Frosted Glass Dark</CardTitle>
-                <p className="text-sm text-muted-foreground">Modern frosted glass - very dark</p>
+                <CardTitle>Style 7: Frosted Glass (Darker)</CardTitle>
+                <p className="text-sm text-muted-foreground">Modern frosted, 85% opacity - darker glass</p>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
                   <Label>Full Name</Label>
                   <Input 
                     placeholder="Enter your name" 
-                    className="h-16 text-lg bg-background/80 border-2 border-primary/20 backdrop-blur-xl hover:border-primary/40 focus:border-primary/60"
+                    className="h-16 text-lg bg-background/85 border-2 border-primary/20 backdrop-blur-xl hover:border-primary/40 focus:border-primary/60"
                   />
                 </div>
                 <div>
@@ -1905,12 +2152,12 @@ export default function IntakeDemo() {
                   <Input 
                     type="text" 
                     placeholder="DD.MM.YYYY" 
-                    className="h-16 text-lg bg-background/80 border-2 border-primary/20 backdrop-blur-xl hover:border-primary/40 focus:border-primary/60"
+                    className="h-16 text-lg bg-background/85 border-2 border-primary/20 backdrop-blur-xl hover:border-primary/40 focus:border-primary/60"
                   />
                 </div>
                 <div>
                   <Label>Gender</Label>
-                  <select className="flex h-16 w-full rounded-md bg-background/80 border-2 border-primary/20 backdrop-blur-xl px-3 py-2 text-lg hover:border-primary/40 focus:border-primary/60 focus:outline-none">
+                  <select className="flex h-16 w-full rounded-md bg-background/85 border-2 border-primary/20 backdrop-blur-xl px-3 py-2 text-lg hover:border-primary/40 focus:border-primary/60 focus:outline-none">
                     <option>Select gender</option>
                     <option>Male</option>
                     <option>Female</option>
@@ -1919,11 +2166,11 @@ export default function IntakeDemo() {
               </CardContent>
             </Card>
 
-            {/* Style 8: Gradient Border */}
+            {/* Style 8: Gradient Border - Darker */}
             <Card className="border-2 border-primary/20">
               <CardHeader>
-                <CardTitle>Style 8: Gradient Border</CardTitle>
-                <p className="text-sm text-muted-foreground">Modern gradient - eye-catching</p>
+                <CardTitle>Style 8: Gradient Border (Darker)</CardTitle>
+                <p className="text-sm text-muted-foreground">Modern gradient, 80% opacity - eye-catching</p>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
@@ -1931,7 +2178,7 @@ export default function IntakeDemo() {
                   <div className="relative">
                     <Input 
                       placeholder="Enter your name" 
-                      className="h-16 text-lg bg-card/70 border-2 border-transparent bg-gradient-to-r from-primary/30 to-accent/30 hover:from-primary/50 hover:to-accent/50 focus:from-primary focus:to-accent"
+                      className="h-16 text-lg bg-card/80 border-2 border-transparent bg-gradient-to-r from-primary/30 to-accent/30 hover:from-primary/50 hover:to-accent/50 focus:from-primary focus:to-accent"
                     />
                   </div>
                 </div>
@@ -1940,12 +2187,12 @@ export default function IntakeDemo() {
                   <Input 
                     type="text" 
                     placeholder="DD.MM.YYYY" 
-                    className="h-16 text-lg bg-card/70 border-2 border-transparent bg-gradient-to-r from-primary/30 to-accent/30 hover:from-primary/50 hover:to-accent/50 focus:from-primary focus:to-accent"
+                    className="h-16 text-lg bg-card/80 border-2 border-transparent bg-gradient-to-r from-primary/30 to-accent/30 hover:from-primary/50 hover:to-accent/50 focus:from-primary focus:to-accent"
                   />
                 </div>
                 <div>
                   <Label>Gender</Label>
-                  <select className="flex h-16 w-full rounded-md bg-card/70 border-2 border-transparent bg-gradient-to-r from-primary/30 to-accent/30 px-3 py-2 text-lg hover:from-primary/50 hover:to-accent/50 focus:from-primary focus:to-accent focus:outline-none">
+                  <select className="flex h-16 w-full rounded-md bg-card/80 border-2 border-transparent bg-gradient-to-r from-primary/30 to-accent/30 px-3 py-2 text-lg hover:from-primary/50 hover:to-accent/50 focus:from-primary focus:to-accent focus:outline-none">
                     <option>Select gender</option>
                     <option>Male</option>
                     <option>Female</option>
@@ -1954,18 +2201,18 @@ export default function IntakeDemo() {
               </CardContent>
             </Card>
 
-            {/* Style 9: Solid Contrast */}
+            {/* Style 9: Solid Contrast - Darker */}
             <Card className="border-2 border-primary/20">
               <CardHeader>
-                <CardTitle>Style 9: Solid Contrast</CardTitle>
-                <p className="text-sm text-muted-foreground">High contrast - very visible</p>
+                <CardTitle>Style 9: Solid Contrast (Darker)</CardTitle>
+                <p className="text-sm text-muted-foreground">High contrast, 95% opacity - very visible</p>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
                   <Label>Full Name</Label>
                   <Input 
                     placeholder="Enter your name" 
-                    className="h-16 text-lg bg-secondary border-2 border-secondary-foreground/20 hover:border-secondary-foreground/40 focus:border-primary"
+                    className="h-16 text-lg bg-secondary opacity-95 border-2 border-secondary-foreground/20 hover:border-secondary-foreground/40 focus:border-primary"
                   />
                 </div>
                 <div>
@@ -1973,12 +2220,12 @@ export default function IntakeDemo() {
                   <Input 
                     type="text" 
                     placeholder="DD.MM.YYYY" 
-                    className="h-16 text-lg bg-secondary border-2 border-secondary-foreground/20 hover:border-secondary-foreground/40 focus:border-primary"
+                    className="h-16 text-lg bg-secondary opacity-95 border-2 border-secondary-foreground/20 hover:border-secondary-foreground/40 focus:border-primary"
                   />
                 </div>
                 <div>
                   <Label>Gender</Label>
-                  <select className="flex h-16 w-full rounded-md bg-secondary border-2 border-secondary-foreground/20 px-3 py-2 text-lg hover:border-secondary-foreground/40 focus:border-primary focus:outline-none">
+                  <select className="flex h-16 w-full rounded-md bg-secondary opacity-95 border-2 border-secondary-foreground/20 px-3 py-2 text-lg hover:border-secondary-foreground/40 focus:border-primary focus:outline-none">
                     <option>Select gender</option>
                     <option>Male</option>
                     <option>Female</option>
@@ -1987,18 +2234,18 @@ export default function IntakeDemo() {
               </CardContent>
             </Card>
 
-            {/* Style 10: Minimal Underline */}
+            {/* Style 10: Minimal Underline - Darker */}
             <Card className="border-2 border-primary/20">
               <CardHeader>
-                <CardTitle>Style 10: Minimal Underline</CardTitle>
-                <p className="text-sm text-muted-foreground">Clean minimal - modern style</p>
+                <CardTitle>Style 10: Minimal Underline (Darker)</CardTitle>
+                <p className="text-sm text-muted-foreground">Clean minimal, 10% bg - subtle depth</p>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
                   <Label>Full Name</Label>
                   <Input 
                     placeholder="Enter your name" 
-                    className="h-16 text-lg bg-transparent border-0 border-b-2 border-border rounded-none hover:border-primary/60 focus:border-primary px-0"
+                    className="h-16 text-lg bg-background/10 border-0 border-b-2 border-border rounded-none hover:border-primary/60 focus:border-primary px-0"
                   />
                 </div>
                 <div>
@@ -2006,12 +2253,12 @@ export default function IntakeDemo() {
                   <Input 
                     type="text" 
                     placeholder="DD.MM.YYYY" 
-                    className="h-16 text-lg bg-transparent border-0 border-b-2 border-border rounded-none hover:border-primary/60 focus:border-primary px-0"
+                    className="h-16 text-lg bg-background/10 border-0 border-b-2 border-border rounded-none hover:border-primary/60 focus:border-primary px-0"
                   />
                 </div>
                 <div>
                   <Label>Gender</Label>
-                  <select className="flex h-16 w-full bg-transparent border-0 border-b-2 border-border rounded-none px-0 py-2 text-lg hover:border-primary/60 focus:border-primary focus:outline-none">
+                  <select className="flex h-16 w-full bg-background/10 border-0 border-b-2 border-border rounded-none px-0 py-2 text-lg hover:border-primary/60 focus:border-primary focus:outline-none">
                     <option>Select gender</option>
                     <option>Male</option>
                     <option>Female</option>
