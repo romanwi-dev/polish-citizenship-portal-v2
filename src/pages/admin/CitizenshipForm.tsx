@@ -424,8 +424,8 @@ export default function CitizenshipForm() {
                         <SelectValue placeholder="Select..." />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-50">
-                        <SelectItem value="Male / Mężczyzna" className="text-base cursor-pointer">Male / Mężczyzna</SelectItem>
-                        <SelectItem value="Female / Kobieta" className="text-base cursor-pointer">Female / Kobieta</SelectItem>
+                        <SelectItem value="M" className="text-base cursor-pointer">Male / Mężczyzna</SelectItem>
+                        <SelectItem value="F" className="text-base cursor-pointer">Female / Kobieta</SelectItem>
                       </SelectContent>
                     </Select>
                   </motion.div>

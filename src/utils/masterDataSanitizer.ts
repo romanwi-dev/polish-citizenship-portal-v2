@@ -4,6 +4,15 @@
  */
 import { getDbColumnForFormField, getFieldsForTable } from '@/config/fieldMappings';
 
+// Normalize gender/sex values to M/F
+const normalizeGender = (value: any): string | null => {
+  if (!value) return null;
+  const val = String(value).toUpperCase();
+  if (val.includes('MALE') || val.includes('MĘZCZYZNA') || val === 'M') return 'M';
+  if (val.includes('FEMALE') || val.includes('KOBIETA') || val === 'F') return 'F';
+  return null;
+};
+
 export const sanitizeMasterData = (formData: any): any => {
   const sanitized: any = {};
   
@@ -64,6 +73,15 @@ export const sanitizeMasterData = (formData: any): any => {
             sanitized[dbColumn] = value === true || value === 'true';
             break;
             
+          case 'text':
+            // Special handling for gender/sex fields
+            if (formField.includes('_sex') || formField === 'sex') {
+              sanitized[dbColumn] = normalizeGender(value);
+            } else {
+              sanitized[dbColumn] = value === '' ? null : value;
+            }
+            break;
+            
           case 'number':
             sanitized[dbColumn] = value === '' || value === null ? null : Number(value);
             break;
@@ -82,8 +100,8 @@ export const sanitizeMasterData = (formData: any): any => {
             break;
             
           default:
-            // text fields
-            sanitized[dbColumn] = value === '' ? null : value;
+            // Other types - no special handling needed
+            break;
         }
       }
     } else {

@@ -8,6 +8,15 @@ import { ALL_FIELD_MAPPINGS } from '@/config/fieldMappings';
  */
 export const useBidirectionalSync = (caseId: string | undefined) => {
   
+  // Normalize gender/sex values
+  const normalizeGender = (value: any): string | null => {
+    if (!value) return null;
+    const val = String(value).toUpperCase();
+    if (val.includes('MALE') || val.includes('MĘZCZYZNA') || val === 'M') return 'M';
+    if (val.includes('FEMALE') || val.includes('KOBIETA') || val === 'F') return 'F';
+    return null;
+  };
+
   // Sync intake_data -> master_table
   const syncIntakeToMaster = useCallback(async (intakeData: any) => {
     if (!caseId || !intakeData) return;
@@ -24,7 +33,12 @@ export const useBidirectionalSync = (caseId: string | undefined) => {
         );
         
         if (masterMapping) {
-          masterUpdates[masterMapping.dbColumn] = intakeData[mapping.dbColumn];
+          let value = intakeData[mapping.dbColumn];
+          // Normalize gender/sex values
+          if (mapping.dbColumn === 'sex' || mapping.dbColumn === 'applicant_sex') {
+            value = normalizeGender(value);
+          }
+          masterUpdates[masterMapping.dbColumn] = value;
         }
       }
     });
@@ -49,7 +63,12 @@ export const useBidirectionalSync = (caseId: string | undefined) => {
 
     Object.entries(directMappings).forEach(([intakeField, masterField]) => {
       if (intakeData[intakeField] !== undefined) {
-        masterUpdates[masterField] = intakeData[intakeField];
+        let value = intakeData[intakeField];
+        // Normalize gender/sex values
+        if (intakeField === 'sex') {
+          value = normalizeGender(value);
+        }
+        masterUpdates[masterField] = value;
       }
     });
 

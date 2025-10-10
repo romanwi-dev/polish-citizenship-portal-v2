@@ -32,8 +32,8 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
               <SelectValue placeholder="Select..." />
             </SelectTrigger>
             <SelectContent className="bg-background border-2 z-50">
-              <SelectItem value="Male" className="text-base cursor-pointer">Male</SelectItem>
-              <SelectItem value="Female" className="text-base cursor-pointer">Female</SelectItem>
+              <SelectItem value="M" className="text-base cursor-pointer">Male</SelectItem>
+              <SelectItem value="F" className="text-base cursor-pointer">Female</SelectItem>
             </SelectContent>
           </Select>
         </motion.div>

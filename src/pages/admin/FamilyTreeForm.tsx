@@ -234,7 +234,7 @@ export default function FamilyTreeForm() {
                 <Label htmlFor={field.name} className={isLargeFonts ? "text-2xl" : ""}>
                   {field.label}
                 </Label>
-                <Select value={formData[field.name] || ""} onValueChange={(value) => handleInputChange(field.name, value)}>
+                     <Select value={formData[field.name] || ""} onValueChange={(value) => handleInputChange(field.name, value)}>
                   <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur" style={{ fontSize: '1.125rem', fontWeight: '400' }}>
                     <SelectValue placeholder="Select..." />
                   </SelectTrigger>
@@ -552,8 +552,8 @@ export default function FamilyTreeForm() {
                         <SelectValue placeholder="Select..." />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-50">
-                        <SelectItem value="Male / Mężczyzna" className="text-base cursor-pointer">Male / Mężczyzna</SelectItem>
-                        <SelectItem value="Female / Kobieta" className="text-base cursor-pointer">Female / Kobieta</SelectItem>
+                        <SelectItem value="M" className="text-base cursor-pointer">Male / Mężczyzna</SelectItem>
+                        <SelectItem value="F" className="text-base cursor-pointer">Female / Kobieta</SelectItem>
                       </SelectContent>
                     </Select>
                   </motion.div>
@@ -708,8 +708,8 @@ export default function FamilyTreeForm() {
                 label: "Sex",
                 isSelect: true,
                 selectOptions: [
-                  { value: "MALE", label: "Male" },
-                  { value: "FEMALE", label: "Female" }
+                  { value: "M", label: "Male" },
+                  { value: "F", label: "Female" }
                 ]
               }, {
                 name: "applicant_email",
@@ -783,7 +783,7 @@ export default function FamilyTreeForm() {
                     </div>
                     
                     {/* Military record - only for males */}
-                    {(formData?.applicant_sex?.includes('Male') || formData?.applicant_sex?.includes('Mężczyzna') || formData?.applicant_sex === 'MALE') && (
+                    {formData?.applicant_sex === 'M' && (
                       <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
                         <Checkbox
                           id="applicant_has_military_record"
@@ -843,8 +843,8 @@ export default function FamilyTreeForm() {
                   {renderFieldGroup([
                     { name: "spouse_maiden_name", label: "Maiden name / Nazwisko rodowe", isNameField: true },
                     { name: "spouse_sex", label: "Sex", isSelect: true, selectOptions: [
-                      { value: "MALE", label: "Male" },
-                      { value: "FEMALE", label: "Female" }
+                      { value: "M", label: "Male" },
+                      { value: "F", label: "Female" }
                     ]}
                   ])}
 
