@@ -10,11 +10,16 @@ export const useFormSync = (caseId: string | undefined) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
 
-  // Load data once on mount
+  // Load data when caseId changes
   useEffect(() => {
-    if (!caseId || caseId === ':id') return;
+    if (!caseId || caseId === ':id') {
+      setFormData({});
+      setIsLoading(false);
+      return;
+    }
 
     const loadData = async () => {
+      setIsLoading(true);
       console.log('📥 Loading data for case:', caseId);
       
       const { data, error } = await supabase
@@ -36,7 +41,7 @@ export const useFormSync = (caseId: string | undefined) => {
     };
 
     loadData();
-  }, []); // Load once only
+  }, [caseId]); // Re-load when caseId changes
 
   // Save function
   const saveData = useCallback(async (updates: any) => {

@@ -26,13 +26,12 @@ export const useMasterData = (caseId: string | undefined) => {
       return data;
     },
     enabled: !!caseId && caseId !== ':id',
-    // Load once on initial mount, then rely on realtime sync
-    staleTime: Infinity, // Never auto-refetch
-    gcTime: Infinity, // Keep in cache
-    refetchOnMount: false, // Don't refetch when component mounts
+    // Fresh data on case change, then rely on realtime sync
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes  
+    refetchOnMount: true, // Refetch when component mounts with new case
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
-    refetchInterval: false, // Never auto-refetch
   });
 };
 

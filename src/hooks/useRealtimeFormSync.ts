@@ -13,19 +13,21 @@ export const useRealtimeFormSync = (
   setFormData: React.Dispatch<React.SetStateAction<any>>
 ) => {
   const queryClient = useQueryClient();
-  const isInitialized = useRef(false);
+  const isInitialized = useRef<string | null>(null);
 
-  // Initialize form with master data when it loads - ONLY ONCE on mount
+  // Initialize form with master data when it loads OR when caseId changes
   useEffect(() => {
-    console.log('🔍 useEffect triggered - isLoading:', isLoading, 'isInitialized:', isInitialized.current, 'masterData keys:', masterData ? Object.keys(masterData).length : 'null');
+    console.log('🔍 useEffect triggered - caseId:', caseId, 'isLoading:', isLoading, 'lastInitialized:', isInitialized.current, 'masterData keys:', masterData ? Object.keys(masterData).length : 'null');
     
     if (isLoading) return;
-    if (isInitialized.current) return;
     
-    console.log('✅ ONE-TIME INITIALIZATION - Setting form data');
-    setFormData(masterData || {});
-    isInitialized.current = true;
-  }, [isLoading]); // NEVER watch masterData here!
+    // Re-initialize when switching to a different case
+    if (isInitialized.current !== caseId) {
+      console.log('✅ INITIALIZING for case:', caseId);
+      setFormData(masterData || {});
+      isInitialized.current = caseId || null;
+    }
+  }, [isLoading, caseId]); // Watch both loading state AND caseId
 
   // Real-time sync
   useEffect(() => {
