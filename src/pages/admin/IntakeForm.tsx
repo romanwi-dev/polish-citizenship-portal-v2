@@ -150,7 +150,7 @@ export default function IntakeForm() {
           <Card className="glass-card border-primary/20">
             <CardContent className="pt-6">
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border/50 pb-2">
+                <div className="sticky top-0 z-20 border-b border-border/50 pb-2">
                   <div className="flex items-center gap-2 w-full">
                     <Button
                       variant="ghost"
