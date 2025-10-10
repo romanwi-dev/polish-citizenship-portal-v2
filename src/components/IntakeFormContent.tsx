@@ -236,7 +236,7 @@ export const ImmigrationSection = ({ formData, handleInputChange, clearField, is
 export const DocumentsSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
   <>
     <CardHeader className="border-b border-border/50 pb-6">
-      <CardTitle className="font-light text-foreground/90 text-sm">
+      <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
         Documents Required
       </CardTitle>
     </CardHeader>
