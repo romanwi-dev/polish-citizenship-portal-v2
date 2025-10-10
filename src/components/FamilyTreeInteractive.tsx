@@ -219,17 +219,26 @@ export const FamilyTreeInteractive = ({
           <p className="text-muted-foreground">Complete visualization with document tracking</p>
         </div>
         <div className="flex gap-2 flex-wrap">
-          <Button onClick={onOpenMasterTable} variant="default">
-            <Edit className="h-4 w-4 mr-2" />
-            Master Data Table
+          <Button 
+            onClick={onOpenMasterTable}
+            className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/30 opacity-50 transition-colors"
+          >
+            <Edit className="mr-2 h-4 w-4 md:h-5 md:w-5 opacity-50" />
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Master Data Table</span>
           </Button>
-          <Button onClick={handlePrint} variant="outline">
-            <Download className="h-4 w-4 mr-2" />
-            Print
+          <Button 
+            onClick={handlePrint}
+            className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/30 opacity-50 transition-colors"
+          >
+            <Download className="mr-2 h-4 w-4 md:h-5 md:w-5 opacity-50" />
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Print</span>
           </Button>
-          <Button onClick={handleExport} variant="outline">
-            <FileText className="h-4 w-4 mr-2" />
-            Export
+          <Button 
+            onClick={handleExport}
+            className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/30 opacity-50 transition-colors"
+          >
+            <FileText className="mr-2 h-4 w-4 md:h-5 md:w-5 opacity-50" />
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Export</span>
           </Button>
         </div>
       </div>
