@@ -93,29 +93,51 @@ export const useFormSync = (caseId: string | undefined) => {
     }
   }, [caseId, queryClient]);
 
-  // Clear all data
+  // Clear all data - set all fields to empty strings/null except case_id
   const clearAll = useCallback(async () => {
     if (!caseId || caseId === ':id') return;
     
-    console.log('🧹 Clearing all data - DELETING from database');
+    console.log('🧹 Clearing all data - setting all fields to empty');
     
     setIsSaving(true);
     
     try {
-      // Delete the entire record from database
+      // Get all current fields from the master_table for this case
+      const { data: currentData, error: fetchError } = await supabase
+        .from('master_table')
+        .select('*')
+        .eq('case_id', caseId)
+        .maybeSingle();
+      
+      if (fetchError) throw fetchError;
+      
+      // Create an object with all fields set to null (except case_id and system fields)
+      const clearedData: any = {};
+      if (currentData) {
+        Object.keys(currentData).forEach(key => {
+          // Skip system fields
+          if (!['id', 'case_id', 'created_at', 'updated_at'].includes(key)) {
+            clearedData[key] = null;
+          }
+        });
+      }
+      
+      console.log('🧹 Clearing', Object.keys(clearedData).length, 'fields');
+      
+      // Update the record with all fields set to null
       const { error } = await supabase
         .from('master_table')
-        .delete()
+        .update(clearedData)
         .eq('case_id', caseId);
       
       if (error) throw error;
       
-      console.log('✅ Database record deleted');
+      console.log('✅ All fields cleared in database');
       
       // Clear local state
       setFormData({});
       
-      // Invalidate cache to force refetch (will return empty)
+      // Invalidate cache to force refetch (will return empty values)
       await queryClient.invalidateQueries({ queryKey: ['masterData', caseId] });
       
       toast.success('All data cleared');
