@@ -234,10 +234,10 @@ export default function CivilRegistryForm() {
                     onClick={() => window.open('https://docs.lovable.dev', '_blank')}
                     size="lg"
                     variant="ghost"
-                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10"
+                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 text-3xl font-bold"
                     title="How to fill this form"
                   >
-                    <HelpCircle className="h-8 w-8" />
+                    ?
                   </Button>
                   <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">Civil Registry</CardTitle>
                 </motion.div>
