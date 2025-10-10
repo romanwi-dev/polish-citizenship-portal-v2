@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Loader2, Save, Download, Users, Sparkles, Type, User, ArrowLeft, TreePine, BookOpen, Baby, Heart, FileText, GitBranch, HelpCircle, Maximize2, Minimize2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
@@ -42,6 +42,33 @@ export default function FamilyTreeForm() {
   const [activeTab, setActiveTab] = useState("select");
   const [isFullView, setIsFullView] = useState(false);
   const [showClearDialog, setShowClearDialog] = useState(false);
+  
+  const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({
+    'tree-view': null,
+    select: null,
+    applicant: null,
+    spouse: null,
+    children: null,
+    father: null,
+    mother: null,
+    pgf: null,
+    pgm: null,
+    mgf: null,
+    mgm: null,
+    additional: null
+  });
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    if (isFullView && sectionRefs.current[value]) {
+      const element = sectionRefs.current[value];
+      if (element) {
+        const yOffset = -100;
+        const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }
+  };
   
   // Enable real-time sync with direct state updates
   useRealtimeFormSync(caseId, masterData, isLoading, setFormData);
@@ -367,7 +394,7 @@ export default function FamilyTreeForm() {
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }}>
           <Card className="glass-card border-primary/20">
             <CardContent className="pt-6">
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
                 <div className="sticky top-0 z-20 border-b border-border/50 pb-2">
                   <div className="flex items-center gap-2 w-full">
                     <Button
@@ -426,12 +453,14 @@ export default function FamilyTreeForm() {
 
                 {/* Full View Mode */}
               {isFullView ? (
-                <div className="space-y-6 mt-6">
+                <div className="space-y-0 mt-6">
                   {/* Tree View always shown in full view */}
                   <motion.div
+                    ref={(el) => sectionRefs.current['tree-view'] = el}
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5 }}
+                    className="border-b border-border/10"
                   >
                     <Card className="glass-card border-primary/20">
                       <CardContent className="p-6 md:p-10">
