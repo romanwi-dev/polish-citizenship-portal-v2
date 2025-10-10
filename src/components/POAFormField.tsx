@@ -42,8 +42,8 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
         onDoubleClick={handleDoubleClick}
       >
         <Label htmlFor={name} className={cn(
-          "font-light text-foreground/90",
-          isLargeFonts ? "text-xl" : "text-sm"
+          "font-normal text-foreground/90",
+          isLargeFonts ? "text-2xl" : "text-base"
         )}>
           {label}
         </Label>
@@ -66,8 +66,8 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
       onDoubleClick={handleDoubleClick}
     >
       <Label htmlFor={name} className={cn(
-        "font-light text-foreground/90",
-        isLargeFonts ? "text-xl" : "text-sm"
+        "font-normal text-foreground/90",
+        isLargeFonts ? "text-2xl" : "text-base"
       )}>
         {label}
       </Label>
@@ -77,8 +77,7 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
         value={value || ""}
         onChange={(e) => onChange(e.target.value.toUpperCase())}
         placeholder=""
-        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
-        style={{ fontSize: '1.125rem', fontWeight: '400' }}
+        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase font-normal"
       />
     </motion.div>
   );

@@ -236,8 +236,8 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
 
           {clientCase.client_code && (
             <div className="mb-4 p-2 rounded-lg bg-background/30">
-              <p className="text-xs text-muted-foreground">Case Code</p>
-              <p className="text-sm font-mono">{clientCase.client_code}</p>
+              <p className="text-sm font-normal font-label text-muted-foreground">Case Code</p>
+              <p className="text-base font-mono font-normal">{clientCase.client_code}</p>
             </div>
           )}
 
@@ -245,33 +245,33 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
             <div className="flex flex-col gap-1 p-3 rounded-lg bg-background/30">
               <div className="flex items-center gap-1">
                 <Calendar className="w-4 h-4 text-primary" />
-                <p className="text-xs text-muted-foreground">Started</p>
+                <p className="text-sm font-normal font-label text-muted-foreground">Started</p>
               </div>
-              <p className="text-sm font-medium mt-1">
+              <p className="text-base font-normal font-label mt-1">
                 {clientCase.start_date ? new Date(clientCase.start_date).toLocaleDateString() : 'N/A'}
               </p>
             </div>
             <div className="flex flex-col gap-1 p-3 rounded-lg bg-background/30">
               <div className="flex items-center gap-1">
                 <FileText className="w-4 h-4 text-secondary" />
-                <p className="text-xs text-muted-foreground">Docs</p>
+                <p className="text-sm font-normal font-label text-muted-foreground">Docs</p>
               </div>
-              <p className="text-sm font-medium mt-1">{clientCase.document_count}</p>
+              <p className="text-base font-normal font-label mt-1">{clientCase.document_count}</p>
             </div>
             <div className="flex flex-col gap-1 p-3 rounded-lg bg-background/30">
               <div className="flex items-center gap-1">
                 <TrendingUp className="w-4 h-4 text-accent" />
-                <p className="text-xs text-muted-foreground">Score</p>
+                <p className="text-sm font-normal font-label text-muted-foreground">Score</p>
               </div>
-              <p className="text-sm font-medium mt-1">{clientCase.client_score || 0}</p>
+              <p className="text-base font-normal font-label mt-1">{clientCase.client_score || 0}</p>
             </div>
           </div>
 
           <div className="space-y-3 mb-6">
-            <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center justify-between text-base">
               <div className="flex items-center gap-1">
                 <TrendingUp className="w-4 h-4 text-muted-foreground" />
-                <span className="text-muted-foreground">Progress</span>
+                <span className="font-normal font-label text-muted-foreground">Progress</span>
               </div>
               <span className="font-bold text-lg">{clientCase.progress || 0}%</span>
             </div>

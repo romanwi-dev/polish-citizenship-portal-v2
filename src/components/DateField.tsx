@@ -39,8 +39,8 @@ export function DateField({ name, label, value, onChange, delay = 0, required = 
       className="space-y-2"
     >
       <Label htmlFor={name} className={cn(
-        "font-light text-foreground/90 opacity-70",
-        isLargeFonts ? "text-xl" : "text-sm"
+        "font-normal text-foreground/90",
+        isLargeFonts ? "text-2xl" : "text-base"
       )}>
         {label} {required && <span className="text-destructive">*</span>}
       </Label>
@@ -52,8 +52,8 @@ export function DateField({ name, label, value, onChange, delay = 0, required = 
         placeholder="DD.MM.YYYY"
         maxLength={10}
         className={cn(
-          "h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur placeholder:font-light placeholder:opacity-40",
-          isLargeFonts && "text-xl",
+          "h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur font-normal placeholder:opacity-40",
+          isLargeFonts && "text-2xl",
           error && "border-destructive"
         )}
       />

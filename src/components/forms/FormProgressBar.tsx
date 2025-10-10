@@ -12,10 +12,10 @@ export const FormProgressBar = ({
 }: FormProgressBarProps) => {
   return (
     <div className={cn("w-full space-y-2", className)}>
-      <div className="flex items-center justify-between text-sm">
-        <span className="text-muted-foreground">Form Completion</span>
+      <div className="flex items-center justify-between text-base">
+        <span className="text-muted-foreground font-normal font-label">Form Completion</span>
         <span className={cn(
-          "font-medium",
+          "font-normal font-label",
           completionPercentage === 100 ? "text-green-500" : 
           completionPercentage >= 80 ? "text-blue-500" :
           completionPercentage >= 50 ? "text-amber-500" :

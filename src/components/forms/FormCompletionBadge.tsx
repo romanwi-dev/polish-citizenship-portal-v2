@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { CheckCircle2, AlertCircle } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface FormCompletionBadgeProps {
   completionPercentage: number;
@@ -28,7 +29,10 @@ export const FormCompletionBadge = ({
         )}
         <Badge 
           variant={isComplete ? "default" : isPartial ? "secondary" : "outline"}
-          className={isLargeFonts ? "text-base px-4 py-2" : ""}
+          className={cn(
+            "font-normal font-label",
+            isLargeFonts ? "text-lg px-4 py-2" : "text-base"
+          )}
         >
           {completionPercentage}% Complete ({filledCount}/{totalCount})
         </Badge>

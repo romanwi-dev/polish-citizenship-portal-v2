@@ -17,8 +17,8 @@ export const FormLabel = ({
   <Label 
     htmlFor={htmlFor}
     className={cn(
-      "font-light text-foreground/90 opacity-70",
-      isLargeFonts ? "text-xl" : "text-sm",
+      "font-normal text-foreground/90",
+      isLargeFonts ? "text-2xl" : "text-base",
       className
     )}
   >
