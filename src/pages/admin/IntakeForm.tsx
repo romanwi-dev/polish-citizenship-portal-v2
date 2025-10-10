@@ -148,20 +148,57 @@ export default function IntakeForm() {
           transition={{ duration: 0.5 }}
         >
           <Card className="glass-card border-primary/20">
-            {isFullView ? (
-              // Full View - All sections visible
-              <>
-                <div className="border-b border-border/50 flex items-center gap-2">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setIsFullView(false)}
-                    className="ml-2 flex-shrink-0"
-                    title="Switch to tabbed view"
-                  >
-                    <Minimize2 className="h-5 w-5" />
-                  </Button>
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border/50 flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setIsFullView(!isFullView)}
+                  className="ml-2 flex-shrink-0"
+                  title={isFullView ? "Switch to tabbed view" : "Show all sections"}
+                >
+                  {isFullView ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
+                </Button>
+                <div className="flex-1">
+                  <TabsList className="w-full grid grid-cols-2 md:grid-cols-8 h-auto p-2 bg-transparent">
+                    <TabsTrigger value="select" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                      <Users className="h-4 w-4 mr-2" />
+                      <span className="hidden sm:inline">Select...</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="applicant" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                      <User className="h-4 w-4 mr-2" />
+                      <span className="hidden sm:inline">Applicant</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="contact" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                      <Phone className="h-4 w-4 mr-2" />
+                      <span className="hidden sm:inline">Contact</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="address" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                      <MapPin className="h-4 w-4 mr-2" />
+                      <span className="hidden sm:inline">Address</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="passport" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                      <Plane className="h-4 w-4 mr-2" />
+                      <span className="hidden sm:inline">Passport</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="immigration" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                      <Users className="h-4 w-4 mr-2" />
+                      <span className="hidden sm:inline">Immigration</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="documents" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                      <FolderOpen className="h-4 w-4 mr-2" />
+                      <span className="hidden sm:inline">Documents</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="notes" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                      <MessageSquare className="h-4 w-4 mr-2" />
+                      <span className="hidden sm:inline">Notes</span>
+                    </TabsTrigger>
+                  </TabsList>
                 </div>
+              </div>
+
+              {isFullView ? (
+                // Full View - All sections visible
                 <div className="space-y-0">
                   <div className="border-b border-border/10">
                     <SelectSection {...contentProps} />
@@ -188,84 +225,36 @@ export default function IntakeForm() {
                     <NotesSection {...contentProps} />
                   </div>
                 </div>
-              </>
-            ) : (
-              // Tabbed View
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border/50 flex items-center gap-2">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setIsFullView(true)}
-                    className="ml-2 flex-shrink-0"
-                    title="Show all sections"
-                  >
-                    <Maximize2 className="h-5 w-5" />
-                  </Button>
-                  <div className="flex-1">
-                    <TabsList className="w-full grid grid-cols-2 md:grid-cols-8 h-auto p-2 bg-transparent">
-                      <TabsTrigger value="select" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                        <Users className="h-4 w-4 mr-2" />
-                        <span className="hidden sm:inline">Select...</span>
-                      </TabsTrigger>
-                      <TabsTrigger value="applicant" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                        <User className="h-4 w-4 mr-2" />
-                        <span className="hidden sm:inline">Applicant</span>
-                      </TabsTrigger>
-                      <TabsTrigger value="contact" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                        <Phone className="h-4 w-4 mr-2" />
-                        <span className="hidden sm:inline">Contact</span>
-                      </TabsTrigger>
-                      <TabsTrigger value="address" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                        <MapPin className="h-4 w-4 mr-2" />
-                        <span className="hidden sm:inline">Address</span>
-                      </TabsTrigger>
-                      <TabsTrigger value="passport" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                        <Plane className="h-4 w-4 mr-2" />
-                        <span className="hidden sm:inline">Passport</span>
-                      </TabsTrigger>
-                      <TabsTrigger value="immigration" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                        <Users className="h-4 w-4 mr-2" />
-                        <span className="hidden sm:inline">Immigration</span>
-                      </TabsTrigger>
-                      <TabsTrigger value="documents" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                        <FolderOpen className="h-4 w-4 mr-2" />
-                        <span className="hidden sm:inline">Documents</span>
-                      </TabsTrigger>
-                      <TabsTrigger value="notes" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                        <MessageSquare className="h-4 w-4 mr-2" />
-                        <span className="hidden sm:inline">Notes</span>
-                      </TabsTrigger>
-                    </TabsList>
-                  </div>
-                </div>
-
-                <TabsContent value="select" className="mt-0">
-                  <SelectSection {...contentProps} />
-                </TabsContent>
-                <TabsContent value="applicant" className="mt-0">
-                  <ApplicantSection {...contentProps} />
-                </TabsContent>
-                <TabsContent value="contact" className="mt-0">
-                  <ContactSection {...contentProps} />
-                </TabsContent>
-                <TabsContent value="address" className="mt-0">
-                  <AddressSection {...contentProps} />
-                </TabsContent>
-                <TabsContent value="passport" className="mt-0">
-                  <PassportSection {...contentProps} />
-                </TabsContent>
-                <TabsContent value="immigration" className="mt-0">
-                  <ImmigrationSection {...contentProps} />
-                </TabsContent>
-                <TabsContent value="documents" className="mt-0">
-                  <DocumentsSection {...contentProps} />
-                </TabsContent>
-                <TabsContent value="notes" className="mt-0">
-                  <NotesSection {...contentProps} />
-                </TabsContent>
-              </Tabs>
-            )}
+              ) : (
+                // Tabbed View
+                <>
+                  <TabsContent value="select" className="mt-0">
+                    <SelectSection {...contentProps} />
+                  </TabsContent>
+                  <TabsContent value="applicant" className="mt-0">
+                    <ApplicantSection {...contentProps} />
+                  </TabsContent>
+                  <TabsContent value="contact" className="mt-0">
+                    <ContactSection {...contentProps} />
+                  </TabsContent>
+                  <TabsContent value="address" className="mt-0">
+                    <AddressSection {...contentProps} />
+                  </TabsContent>
+                  <TabsContent value="passport" className="mt-0">
+                    <PassportSection {...contentProps} />
+                  </TabsContent>
+                  <TabsContent value="immigration" className="mt-0">
+                    <ImmigrationSection {...contentProps} />
+                  </TabsContent>
+                  <TabsContent value="documents" className="mt-0">
+                    <DocumentsSection {...contentProps} />
+                  </TabsContent>
+                  <TabsContent value="notes" className="mt-0">
+                    <NotesSection {...contentProps} />
+                  </TabsContent>
+                </>
+              )}
+            </Tabs>
           </Card>
         </motion.div>
       </div>
