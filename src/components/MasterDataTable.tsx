@@ -64,10 +64,28 @@ export const MasterDataTable = ({ open, onOpenChange, caseId }: MasterDataTableP
       fields: ["pgfFirstName", "pgfLastName", "pgfDOB", "pgfPOB", "pgmFirstName", "pgmLastName", "pgmMaidenName", "pgmDOB", "pgmPOB", "mgfFirstName", "mgfLastName", "mgfDOB", "mgfPOB", "mgmFirstName", "mgmLastName", "mgmMaidenName", "mgmDOB", "mgmPOB"]
     },
     {
-      id: "documents",
-      label: "Documents",
+      id: "applicant_documents",
+      label: "Applicant Docs",
       icon: FileText,
-      fields: ["birthCertificate", "marriageCertificate", "passportCopy", "naturalizationDocs"]
+      fields: ["applicant_has_polish_documents", "applicant_has_passport", "applicant_has_birth_cert", "applicant_has_marriage_cert", "applicant_has_naturalization", "applicant_has_military_record", "applicant_has_foreign_documents", "applicant_has_additional_documents"]
+    },
+    {
+      id: "spouse_documents",
+      label: "Spouse Docs",
+      icon: FileText,
+      fields: ["spouse_has_polish_documents", "spouse_has_passport", "spouse_has_birth_cert", "spouse_has_marriage_cert", "spouse_has_naturalization", "spouse_has_military_record", "spouse_has_foreign_documents", "spouse_has_additional_documents"]
+    },
+    {
+      id: "father_documents",
+      label: "Father Docs",
+      icon: FileText,
+      fields: ["father_has_polish_documents", "father_has_passport", "father_has_birth_cert", "father_has_marriage_cert", "father_has_naturalization", "father_has_military_record", "father_has_foreign_documents", "father_has_additional_documents"]
+    },
+    {
+      id: "mother_documents",
+      label: "Mother Docs",
+      icon: FileText,
+      fields: ["mother_has_polish_documents", "mother_has_passport", "mother_has_birth_cert", "mother_has_marriage_cert", "mother_has_naturalization", "mother_has_military_record", "mother_has_foreign_documents", "mother_has_additional_documents"]
     }
   ];
 
@@ -133,7 +151,7 @@ export const MasterDataTable = ({ open, onOpenChange, caseId }: MasterDataTableP
 
   const renderField = (fieldName: string) => {
     const isDateField = fieldName.toLowerCase().includes('date') || fieldName.toLowerCase().includes('dob');
-    const isDocumentField = sections.find(s => s.id === 'documents')?.fields.includes(fieldName);
+    const isDocumentField = fieldName.includes('_has_');
     const isSelectField = fieldName === 'sex' || fieldName === 'currentCitizenship';
     
     const fieldLabel = fieldName
@@ -308,7 +326,7 @@ export const MasterDataTable = ({ open, onOpenChange, caseId }: MasterDataTableP
         )}
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 overflow-hidden flex flex-col">
-          <TabsList className="grid grid-cols-6 w-full">
+          <TabsList className="grid grid-cols-3 lg:grid-cols-9 w-full">
             {sections.map(section => {
               const completion = calculateCompletion(section.id);
               const Icon = section.icon;

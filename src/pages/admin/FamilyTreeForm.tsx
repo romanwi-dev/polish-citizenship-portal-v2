@@ -829,30 +829,30 @@ export default function FamilyTreeForm() {
                     <div className="pt-4">
                       <h4 className="text-lg font-semibold mb-4 text-foreground">Documents required</h4>
                       {renderCheckboxGroup([{
-                    name: `child_${num}_has_polish_documents`,
-                    label: "Polish documents"
-                  }, {
-                    name: `child_${num}_has_passport`,
-                    label: "Passport copy"
-                  }, {
-                    name: `child_${num}_has_birth_cert`,
-                    label: "Birth certificate"
-                  }, {
-                    name: `child_${num}_has_marriage_cert`,
-                    label: "Marriage certificate"
-                  }, {
-                    name: `child_${num}_has_naturalization`,
-                    label: "Naturalization certificate"
-                  }, {
-                    name: `child_${num}_has_military_record`,
-                    label: "Military service record"
-                  }, {
-                    name: `child_${num}_has_foreign_documents`,
-                    label: "Foreign documents"
-                  }, {
-                    name: `child_${num}_has_additional_documents`,
-                    label: "Additional documents"
-                  }])}
+                        name: `child_${num}_has_polish_documents`,
+                        label: "Polish documents"
+                      }, {
+                        name: `child_${num}_has_passport`,
+                        label: "Passport copy"
+                      }, {
+                        name: `child_${num}_has_birth_cert`,
+                        label: "Birth certificate"
+                      }, {
+                        name: `child_${num}_has_marriage_cert`,
+                        label: "Marriage certificate"
+                      }, {
+                        name: `child_${num}_has_naturalization`,
+                        label: "Naturalization certificate"
+                      }, {
+                        name: `child_${num}_has_military_record`,
+                        label: "Military service record"
+                      }, {
+                        name: `child_${num}_has_foreign_documents`,
+                        label: "Foreign documents"
+                      }, {
+                        name: `child_${num}_has_additional_documents`,
+                        label: "Additional documents"
+                      }])}
                     </div>
                   </div>)}
               </CardContent>
@@ -1188,30 +1188,30 @@ export default function FamilyTreeForm() {
                         <div className="pt-4">
                           <h4 className="text-lg font-semibold mb-4 text-foreground">Documents required</h4>
                           {renderCheckboxGroup([{
-                        name: `${prefix}_has_polish_documents`,
-                        label: "Polish documents"
-                      }, {
-                        name: `${prefix}_has_passport`,
-                        label: "Passport copy"
-                      }, {
-                        name: `${prefix}_has_birth_cert`,
-                        label: "Birth certificate"
-                      }, {
-                        name: `${prefix}_has_marriage_cert`,
-                        label: "Marriage certificate"
-                      }, {
-                        name: `${prefix}_has_naturalization`,
-                        label: "Naturalization certificate"
-                      }, ...(prefix === "pgf" || prefix === "mgf" ? [{
-                        name: `${prefix}_has_military_record`,
-                        label: "Military service record"
-                      }] : []), {
-                        name: `${prefix}_has_foreign_documents`,
-                        label: "Foreign documents"
-                      }, {
-                        name: `${prefix}_has_additional_documents`,
-                        label: "Additional documents"
-                      }])}
+                            name: `${prefix}_has_polish_documents`,
+                            label: "Polish documents"
+                          }, {
+                            name: `${prefix}_has_passport`,
+                            label: "Passport copy"
+                          }, {
+                            name: `${prefix}_has_birth_cert`,
+                            label: "Birth certificate"
+                          }, {
+                            name: `${prefix}_has_marriage_cert`,
+                            label: "Marriage certificate"
+                          }, {
+                            name: `${prefix}_has_naturalization`,
+                            label: "Naturalization certificate"
+                          }, {
+                            name: `${prefix}_has_military_record`,
+                            label: "Military service record"
+                          }, {
+                            name: `${prefix}_has_foreign_documents`,
+                            label: "Foreign documents"
+                          }, {
+                            name: `${prefix}_has_additional_documents`,
+                            label: "Additional documents"
+                          }])}
                         </div>
                       </CardContent>
                     </Card>;
@@ -1284,30 +1284,30 @@ export default function FamilyTreeForm() {
                         <div className="pt-4">
                           <h4 className="text-lg font-semibold mb-4 text-foreground">Documents required</h4>
                           {renderCheckboxGroup([{
-                        name: `${prefix}_has_polish_documents`,
-                        label: "Polish documents"
-                      }, {
-                        name: `${prefix}_has_passport`,
-                        label: "Passport copy"
-                      }, {
-                        name: `${prefix}_has_birth_cert`,
-                        label: "Birth certificate"
-                      }, {
-                        name: `${prefix}_has_marriage_cert`,
-                        label: "Marriage certificate"
-                      }, {
-                        name: `${prefix}_has_naturalization`,
-                        label: "Naturalization certificate"
-                      }, ...(prefix === "pggf" || prefix === "mggf" ? [{
-                        name: `${prefix}_has_military_record`,
-                        label: "Military service record"
-                      }] : []), {
-                        name: `${prefix}_has_foreign_documents`,
-                        label: "Foreign documents"
-                      }, {
-                        name: `${prefix}_has_additional_documents`,
-                        label: "Additional documents"
-                      }])}
+                            name: `${prefix}_has_polish_documents`,
+                            label: "Polish documents"
+                          }, {
+                            name: `${prefix}_has_passport`,
+                            label: "Passport copy"
+                          }, {
+                            name: `${prefix}_has_birth_cert`,
+                            label: "Birth certificate"
+                          }, {
+                            name: `${prefix}_has_marriage_cert`,
+                            label: "Marriage certificate"
+                          }, {
+                            name: `${prefix}_has_naturalization`,
+                            label: "Naturalization certificate"
+                          }, {
+                            name: `${prefix}_has_military_record`,
+                            label: "Military service record"
+                          }, {
+                            name: `${prefix}_has_foreign_documents`,
+                            label: "Foreign documents"
+                          }, {
+                            name: `${prefix}_has_additional_documents`,
+                            label: "Additional documents"
+                          }])}
                         </div>
                       </CardContent>
                     </Card>;
