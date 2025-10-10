@@ -161,7 +161,7 @@ const TimelineProcess = () => {
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          <h2 className="text-4xl md:text-5xl font-heading font-black mb-6 tracking-tight">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               Complete Legal Process Timeline
             </span>

@@ -51,7 +51,7 @@ const ServicesWeb3 = () => {
             <Zap className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium">Next-Gen Services</span>
           </div>
-          <h2 className="text-5xl md:text-6xl font-bold mb-14">
+          <h2 className="text-3xl md:text-4xl font-heading font-black mb-14 tracking-tight">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               Powered by Innovation
             </span>
@@ -78,11 +78,11 @@ const ServicesWeb3 = () => {
                     <div className={`w-12 h-12 rounded bg-gradient-to-br ${service.color} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
                       <Icon className="h-6 w-6 text-white" />
                     </div>
-                    <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">
+                    <h3 className="text-xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                       {service.title}
                     </h3>
                   </div>
-                  <p className="text-muted-foreground leading-relaxed">
+                  <p className="text-muted-foreground leading-relaxed font-bold">
                     {service.description}
                   </p>
                 </div>

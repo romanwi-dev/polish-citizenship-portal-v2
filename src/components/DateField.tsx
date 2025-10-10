@@ -52,7 +52,7 @@ export function DateField({ name, label, value, onChange, delay = 0, required = 
         placeholder="DD.MM.YYYY"
         maxLength={10}
         className={cn(
-          "h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur font-normal placeholder:opacity-40",
+          "h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur font-normal placeholder:opacity-40 text-lg",
           isLargeFonts && "text-2xl",
           error && "border-destructive"
         )}

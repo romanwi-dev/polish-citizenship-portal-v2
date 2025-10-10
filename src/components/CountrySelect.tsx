@@ -76,8 +76,8 @@ export function CountrySelect({
           value={COUNTRIES.slice(0, -1).includes(value) ? value : ""} 
           onValueChange={handleSelectChange}
         >
-          <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
-            <SelectValue placeholder={placeholder} />
+          <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur text-lg">
+            <SelectValue placeholder="" />
           </SelectTrigger>
           <SelectContent className="bg-background border-2 z-[100]">
             {COUNTRIES.map((country) => (
@@ -96,9 +96,8 @@ export function CountrySelect({
           <Input
             value={value}
             onChange={(e) => handleOtherInputChange(e.target.value)}
-            placeholder="Enter country name..."
-            className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
-            style={{ fontSize: '1.125rem', fontWeight: '400' }}
+            placeholder=""
+            className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase text-lg"
           />
           <button
             type="button"

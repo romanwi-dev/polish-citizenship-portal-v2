@@ -123,7 +123,7 @@ const ProcessWeb3 = () => {
             <Scale className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium">Complete Legal Process</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          <h2 className="text-3xl md:text-4xl font-heading font-black mb-6 tracking-tight">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               Your Journey to Polish Citizenship
             </span>

@@ -33,7 +33,7 @@ export const FormInput = ({
       value={value || ""} 
       onChange={handleChange}
       className={cn(
-        "h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur font-normal",
+        "h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur font-normal text-lg",
         isNameField && "uppercase",
         isLargeFonts && "text-2xl",
         className
