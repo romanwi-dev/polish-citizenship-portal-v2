@@ -137,7 +137,7 @@ export default function CaseDetail() {
     <AdminLayout>
       <div className="p-6 max-w-[1600px] mx-auto">
         {/* Header */}
-        <div className="flex items-center gap-3 mb-6">
+        <div className="flex items-center gap-3 mb-6 relative z-50">
           <Button
             variant="ghost"
             onClick={() => navigate("/admin/cases")}
@@ -145,8 +145,8 @@ export default function CaseDetail() {
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <div className="w-full overflow-x-auto pb-2">
-            <div className="inline-flex gap-2 w-max">
+          <div className="w-full overflow-x-auto pb-2 relative z-50">
+            <div className="inline-flex gap-2 w-max relative z-50">
               <Button 
                 onClick={() => setShowEditDialog(true)}
                 className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0 z-50"
