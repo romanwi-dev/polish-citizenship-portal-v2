@@ -360,50 +360,52 @@ export default function MasterDataTable() {
                 Additional Data
               </span>
             </Button>
-            
-            {/* Tab Navigation */}
-            <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent pb-2">
+            </div>
+          </div>
+
+          {/* Tab Navigation - Sections within Master Form */}
+          <div className="bg-gradient-to-br from-background via-background to-background/95 backdrop-blur-sm pb-6 pt-2 px-4">
+            <div className="overflow-x-auto scrollbar-thin pb-2">
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="w-max min-w-full inline-flex h-auto p-2 bg-transparent gap-2">
-                  <TabsTrigger value="applicant" className="data-[state=active]:bg-primary/20 gap-2">
+                <TabsList className="w-max min-w-full inline-flex h-12 p-1 bg-muted/50 rounded-lg gap-1">
+                  <TabsTrigger value="applicant" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground gap-2 px-4">
                     <User className="h-4 w-4" />
                     <span className="hidden sm:inline">Applicant</span>
                   </TabsTrigger>
                   {formData.applicant_is_married && (
-                    <TabsTrigger value="spouse" className="data-[state=active]:bg-primary/20 gap-2">
+                    <TabsTrigger value="spouse" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground gap-2 px-4">
                       <Heart className="h-4 w-4" />
                       <span className="hidden sm:inline">Spouse</span>
                     </TabsTrigger>
                   )}
                   {(formData.minor_children_count > 0) && (
-                    <TabsTrigger value="children" className="data-[state=active]:bg-primary/20 gap-2">
+                    <TabsTrigger value="children" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground gap-2 px-4">
                       <Baby className="h-4 w-4" />
                       <span className="hidden sm:inline">Children</span>
                     </TabsTrigger>
                   )}
-                  <TabsTrigger value="parents" className="data-[state=active]:bg-primary/20 gap-2">
+                  <TabsTrigger value="parents" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground gap-2 px-4">
                     <Users className="h-4 w-4" />
                     <span className="hidden sm:inline">Parents</span>
                   </TabsTrigger>
-                  <TabsTrigger value="grandparents" className="data-[state=active]:bg-primary/20 gap-2">
+                  <TabsTrigger value="grandparents" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground gap-2 px-4">
                     <GitBranch className="h-4 w-4" />
                     <span className="hidden sm:inline">Grandparents</span>
                   </TabsTrigger>
-                  <TabsTrigger value="great-grandparents" className="data-[state=active]:bg-primary/20 gap-2">
+                  <TabsTrigger value="great-grandparents" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground gap-2 px-4">
                     <TreePine className="h-4 w-4" />
                     <span className="hidden sm:inline">G-Grandparents</span>
                   </TabsTrigger>
-                  <TabsTrigger value="family-history" className="data-[state=active]:bg-primary/20 gap-2">
+                  <TabsTrigger value="family-history" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground gap-2 px-4">
                     <BookOpen className="h-4 w-4" />
                     <span className="hidden sm:inline">Family History</span>
                   </TabsTrigger>
-                  <TabsTrigger value="additional-data" className="data-[state=active]:bg-primary/20 gap-2">
+                  <TabsTrigger value="additional-data" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground gap-2 px-4">
                     <FolderOpen className="h-4 w-4" />
                     <span className="hidden sm:inline">Additional Data</span>
                   </TabsTrigger>
                 </TabsList>
               </Tabs>
-            </div>
             </div>
           </div>
         </motion.div>
