@@ -325,6 +325,15 @@ export default function MasterDataTable() {
               </span>
             </Button>
             <Button 
+              onClick={() => navigate(`/admin/cases/${caseId}/family-history`)}
+              variant="outline" 
+              className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[160px] md:min-w-[200px] lg:min-w-[240px] whitespace-nowrap flex-shrink-0"
+            >
+              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                Family History
+              </span>
+            </Button>
+            <Button 
               onClick={() => navigate(`/admin/cases/${caseId}/poa`)}
               variant="outline" 
               className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[180px] md:min-w-[220px] lg:min-w-[260px] whitespace-nowrap flex-shrink-0"
@@ -395,10 +404,6 @@ export default function MasterDataTable() {
                   <TabsTrigger value="great-grandparents" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground gap-2 px-4">
                     <TreePine className="h-4 w-4" />
                     <span className="hidden sm:inline">G-Grandparents</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="family-history" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground gap-2 px-4">
-                    <BookOpen className="h-4 w-4" />
-                    <span className="hidden sm:inline">Family History</span>
                   </TabsTrigger>
                   <TabsTrigger value="additional-data" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground gap-2 px-4">
                     <FolderOpen className="h-4 w-4" />
@@ -1369,41 +1374,6 @@ export default function MasterDataTable() {
               })}
               </motion.div>
             </ScrollArea>
-          )}
-
-          {/* FAMILY HISTORY TAB */}
-          {activeTab === "family-history" && (
-            <motion.div initial={{
-            opacity: 0,
-            scale: 0.95
-          }} animate={{
-            opacity: 1,
-            scale: 1
-          }} transition={{
-            duration: 0.5
-          }}>
-              <Card className="glass-card border-primary/20">
-                <CardHeader className="border-b border-border/50 pb-6">
-                  <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                    Family History
-                  </CardTitle>
-                  <CardDescription className="text-lg text-muted-foreground mt-2">
-                    Document the family's historical narrative, stories, and background
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="p-6 md:p-10">
-                  <div className="flex flex-col items-center justify-center py-12 space-y-4">
-                    <BookOpen className="h-16 w-16 text-muted-foreground/50" />
-                    <p className="text-lg text-center text-muted-foreground">
-                      This section will contain family historical information, stories, and contextual details.
-                    </p>
-                    <p className="text-sm text-center text-muted-foreground/70">
-                      Coming soon...
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
           )}
 
           {/* ADDITIONAL DATA TAB */}

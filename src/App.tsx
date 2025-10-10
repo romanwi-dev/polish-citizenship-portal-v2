@@ -18,6 +18,7 @@ const CaseDetail = lazy(() => import("./pages/admin/CaseDetail"));
 const MasterDataTable = lazy(() => import("./pages/admin/MasterDataTable"));
 const AdditionalData = lazy(() => import("./pages/admin/AdditionalData"));
 const FamilyTreeForm = lazy(() => import("./pages/admin/FamilyTreeForm"));
+const FamilyHistoryForm = lazy(() => import("./pages/admin/FamilyHistoryForm"));
 const POAForm = lazy(() => import("./pages/admin/POAForm"));
 const CitizenshipForm = lazy(() => import("./pages/admin/CitizenshipForm"));
 const CivilRegistryForm = lazy(() => import("./pages/admin/CivilRegistryForm"));
@@ -100,6 +101,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <FamilyTreeForm />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/cases/:id/family-history"
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <FamilyHistoryForm />
               </Suspense>
             } 
           />
