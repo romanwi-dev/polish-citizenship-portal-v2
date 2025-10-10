@@ -143,6 +143,17 @@ export default function IntakeForm() {
                   <ArrowLeft className="h-8 w-8" />
                 </Button>
                 <Button
+                  onClick={() => setIsFullView(!isFullView)}
+                  size="lg"
+                  variant="ghost"
+                  className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 opacity-60 ${
+                    isFullView ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:text-primary'
+                  }`}
+                  title={isFullView ? "Collapse" : "Expand All"}
+                >
+                  {isFullView ? <Minimize2 className="h-8 w-8" /> : <Maximize2 className="h-8 w-8" />}
+                </Button>
+                <Button
                   onClick={() => navigate('/login')}
                   size="lg"
                   variant="ghost"
@@ -184,18 +195,9 @@ export default function IntakeForm() {
           transition={{ duration: 0.5 }}
         >
           <Card className="glass-card border-primary/20">
-            <CardContent className="pt-6 relative">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setIsFullView(!isFullView)}
-                className="absolute top-2 left-2 z-30"
-                title={isFullView ? "Collapse" : "Expand All"}
-              >
-                {isFullView ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
-              </Button>
+            <CardContent className="pt-6">
               <Tabs defaultValue="select" value={activeTab} onValueChange={handleTabChange} className="w-full">
-                <div className="sticky top-0 z-20 border-b border-border/50 pb-2 pt-2 pl-12">
+                <div className="sticky top-0 z-20 border-b border-border/50 pb-2 pt-2">
                   <TabsList ref={tabsListRef} className="w-full inline-flex justify-start gap-2 bg-transparent p-0 overflow-x-auto scrollbar-hide">
                     <TabsTrigger value="select" className="flex-shrink-0">
                       <span>Select...</span>
