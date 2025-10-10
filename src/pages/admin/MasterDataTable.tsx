@@ -219,9 +219,8 @@ export default function MasterDataTable() {
           initial={{ opacity: 0, y: 20 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ duration: 0.5 }}
-          className="sticky top-0 z-20 bg-gradient-to-br from-background via-background to-background/95 backdrop-blur-sm border-b mb-0"
         >
-          <Card className="glass-card border-primary/20 overflow-hidden rounded-none border-x-0 border-t-0">
+          <Card className="glass-card border-primary/20 mb-6">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5" />
             <CardHeader className="relative pb-6 pt-6">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -289,7 +288,7 @@ export default function MasterDataTable() {
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }}>
           <Card className="glass-card border-primary/20">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <div className="border-b border-border/50 flex items-center gap-2">
+              <div className="sticky top-0 z-10 bg-background border-b border-border/50 flex items-center gap-2">
                 <Button
                   onClick={() => setIsFullView(!isFullView)}
                   variant="ghost"
