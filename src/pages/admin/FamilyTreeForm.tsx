@@ -269,7 +269,7 @@ export default function FamilyTreeForm() {
                     onClick={() => navigate(`/admin/case/${caseId}`)}
                     size="lg"
                     variant="ghost"
-                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10"
+                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50"
                     title="Back to Case"
                   >
                     <ArrowLeft className="h-8 w-8" />
@@ -278,7 +278,7 @@ export default function FamilyTreeForm() {
                     onClick={() => navigate('/login')}
                     size="lg"
                     variant="ghost"
-                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10"
+                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50"
                     title="Login / Register"
                   >
                     <User className="h-8 w-8" />
@@ -287,7 +287,7 @@ export default function FamilyTreeForm() {
                     onClick={toggleFontSize}
                     size="lg"
                     variant="ghost"
-                    className={`h-16 w-16 rounded-full transition-all ${
+                    className={`h-16 w-16 rounded-full transition-all z-50 ${
                       isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground'
                     }`}
                     title="Toggle font size"

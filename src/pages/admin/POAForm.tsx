@@ -330,7 +330,7 @@ export default function POAForm() {
               </CardTitle>
               <div className="flex items-center gap-3">
                 <Button onClick={toggleFontSize} size="lg" variant="ghost"
-                  className={`h-16 w-16 rounded-full transition-all ${isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground'}`} title="Toggle font size">
+                  className={`h-16 w-16 rounded-full transition-all z-50 ${isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground'}`} title="Toggle font size">
                   <Type className="h-8 w-8" />
                 </Button>
               </div>

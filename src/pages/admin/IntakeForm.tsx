@@ -88,7 +88,7 @@ export default function IntakeForm() {
                   onClick={toggleFontSize}
                   size="lg"
                   variant="ghost"
-                  className={`h-16 w-16 rounded-full transition-all ${
+                  className={`h-16 w-16 rounded-full transition-all z-50 ${
                     isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground'
                   }`}
                   title="Toggle font size"
