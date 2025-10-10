@@ -35,46 +35,40 @@ export function FormButtonsRow({
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-row gap-3 mb-8 overflow-x-auto scrollbar-hide isolate" style={{ zIndex: 9999 }}>
+    <div className="sticky top-20 flex flex-row gap-3 mb-8 overflow-x-auto scrollbar-hide bg-background/80 backdrop-blur-xl py-2 -mx-4 px-4 z-[9999]">
       {/* Action Buttons */}
-      <div className="flex gap-3 flex-shrink-0 relative z-[200]">
+      <div className="flex gap-3 flex-shrink-0 z-[10000]">
         <Button
           onClick={onSave}
           disabled={isSaving}
-          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 group relative overflow-hidden opacity-50 z-[200]"
+          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 group relative overflow-hidden opacity-50"
         >
           <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
           <span className="relative z-10 flex items-center">
             <Save className="mr-2 h-4 w-4 md:h-5 md:w-5 opacity-50" />
-            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent relative z-[300]">
-              {isSaving ? "Saving..." : saveLabel}
-            </span>
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent relative">{isSaving ? "Saving..." : saveLabel}</span>
           </span>
         </Button>
         
         <Button
           onClick={onClear}
-          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 group relative overflow-hidden opacity-50 z-[200]"
+          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 group relative overflow-hidden opacity-50"
         >
           <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
           <span className="relative z-10 flex items-center">
             <Sparkles className="mr-2 h-4 w-4 md:h-5 md:w-5 opacity-50" />
-            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent relative z-[300]">
-              Clear Data
-            </span>
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent relative">Clear Data</span>
           </span>
         </Button>
         
         <Button
           onClick={onGeneratePDF}
-          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 group relative overflow-hidden opacity-50 z-[200]"
+          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 group relative overflow-hidden opacity-50"
         >
           <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
           <span className="relative z-10 flex items-center">
             <Download className="mr-2 h-4 w-4 md:h-5 md:w-5 opacity-50" />
-            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent relative z-[300]">
-              Generate PDF
-            </span>
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent relative">Generate PDF</span>
           </span>
         </Button>
       </div>
@@ -90,7 +84,7 @@ export function FormButtonsRow({
             onClick={() => navigate(btn.path.replace(':id', caseId))}
             className={`
               h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold
-              whitespace-nowrap flex-shrink-0 backdrop-blur-md border group relative overflow-hidden opacity-50 z-[200]
+              whitespace-nowrap flex-shrink-0 backdrop-blur-md border group relative overflow-hidden opacity-50
               ${isCurrent 
                 ? 'bg-white/5 hover:bg-white/10 shadow-glow hover-glow border-white/30' 
                 : 'bg-white/5 hover:bg-white/10 border-white/20'
@@ -100,9 +94,7 @@ export function FormButtonsRow({
               <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               <span className="relative z-10 flex items-center">
                 <Icon className="mr-2 h-4 w-4 md:h-5 md:w-5 opacity-50" />
-                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent relative z-[300]">
-                  {btn.label}
-                </span>
+                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent relative">{btn.label}</span>
               </span>
             </Button>
           );
