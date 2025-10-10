@@ -1,6 +1,7 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { FormLabel } from "@/components/forms/FormLabel";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -66,9 +67,9 @@ export function CountrySelect({
       className={cn("space-y-2", className)}
     >
       {label && (
-        <Label className={cn("font-normal text-foreground/95", isLargeFonts ? "text-2xl" : "text-xl")}>
+        <FormLabel isLargeFonts={isLargeFonts}>
           {label}
-        </Label>
+        </FormLabel>
       )}
       
       {!showOtherInput ? (
