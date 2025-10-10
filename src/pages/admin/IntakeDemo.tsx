@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -7,9 +7,39 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { RequiredDocumentsSection, DocumentItem } from "@/components/RequiredDocumentsSection";
 
 export default function IntakeDemo() {
   const navigate = useNavigate();
+  
+  // Required Documents section state
+  const initialDocuments: DocumentItem[] = [
+    { id: "polish-docs", label: "Polish Documents", checked: false },
+    { id: "passport", label: "Passport Copy", checked: false },
+    { id: "birth-cert", label: "Birth Certificate", checked: false },
+    { id: "marriage-cert", label: "Marriage Certificate", checked: false },
+    { id: "naturalization", label: "Naturalization Certificate", checked: false },
+    { id: "military", label: "Military Service Record", checked: false },
+    { id: "foreign-docs", label: "Foreign Documents", checked: false },
+    { id: "additional", label: "Additional Documents", checked: false },
+  ];
+
+  const [docsVariant1, setDocsVariant1] = useState(initialDocuments);
+  const [docsVariant2, setDocsVariant2] = useState(initialDocuments);
+  const [docsVariant3, setDocsVariant3] = useState(initialDocuments);
+  const [docsVariant4, setDocsVariant4] = useState(initialDocuments);
+  const [docsVariant5, setDocsVariant5] = useState(initialDocuments);
+
+  const handleDocChange = (
+    variant: number,
+    id: string,
+    checked: boolean
+  ) => {
+    const setters = [setDocsVariant1, setDocsVariant2, setDocsVariant3, setDocsVariant4, setDocsVariant5];
+    const setter = setters[variant - 1];
+    setter((prev) => prev.map((doc) => (doc.id === id ? { ...doc, checked } : doc)));
+  };
+
   const [values1, setValues1] = useState({ gender: "", status: "", children: "" });
   const [values2, setValues2] = useState({ gender: "", status: "", children: "" });
   const [values3, setValues3] = useState({ gender: "", status: "", children: "" });
@@ -2264,6 +2294,112 @@ export default function IntakeDemo() {
                     <option>Female</option>
                   </select>
                 </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        {/* Required Documents Design Comparison */}
+        <div className="space-y-6">
+          <div>
+            <h2 className="text-3xl font-bold mb-2">Required Documents Design Comparison</h2>
+            <p className="text-muted-foreground">
+              Compare 5 different design approaches for the Required Documents section. All variants are responsive and
+              maintain our design system consistency.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+            {/* Variant 1: Subtle Glass */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Design 1: Subtle Glass</CardTitle>
+                <CardDescription>
+                  Current style with glass-morphism effect, 2-column grid, light labels with wide tracking. No
+                  individual borders.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <RequiredDocumentsSection
+                  title="Documents Required"
+                  documents={docsVariant1}
+                  onChange={(id, checked) => handleDocChange(1, id, checked)}
+                  variant="subtle-glass"
+                />
+              </CardContent>
+            </Card>
+
+            {/* Variant 2: Card Grid */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Design 2: Card Grid Layout</CardTitle>
+                <CardDescription>
+                  Each document as a mini card with hover effect, slight shadow and border. More prominent visual
+                  separation.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <RequiredDocumentsSection
+                  title="Documents Required"
+                  documents={docsVariant2}
+                  onChange={(id, checked) => handleDocChange(2, id, checked)}
+                  variant="card-grid"
+                />
+              </CardContent>
+            </Card>
+
+            {/* Variant 3: Bordered List */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Design 3: Bordered List Style</CardTitle>
+                <CardDescription>
+                  Traditional vertical list with subtle borders between items. Left border accent on hover/checked.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <RequiredDocumentsSection
+                  title="Documents Required"
+                  documents={docsVariant3}
+                  onChange={(id, checked) => handleDocChange(3, id, checked)}
+                  variant="bordered-list"
+                />
+              </CardContent>
+            </Card>
+
+            {/* Variant 4: Compact Table */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Design 4: Compact Table Style</CardTitle>
+                <CardDescription>
+                  Dense, table-like layout with alternating row backgrounds. Efficient use of space, professional
+                  appearance.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <RequiredDocumentsSection
+                  title="Documents Required"
+                  documents={docsVariant4}
+                  onChange={(id, checked) => handleDocChange(4, id, checked)}
+                  variant="compact-table"
+                />
+              </CardContent>
+            </Card>
+
+            {/* Variant 5: Gradient Blocks */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Design 5: Gradient Background Blocks</CardTitle>
+                <CardDescription>
+                  Documents in gradient background sections with rounded corners. More colorful, modern app-like feel.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <RequiredDocumentsSection
+                  title="Documents Required"
+                  documents={docsVariant5}
+                  onChange={(id, checked) => handleDocChange(5, id, checked)}
+                  variant="gradient-blocks"
+                />
               </CardContent>
             </Card>
           </div>
