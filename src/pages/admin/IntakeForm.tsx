@@ -85,12 +85,12 @@ export default function IntakeForm() {
               <div className="flex items-center gap-3">
                 <Button
                   onClick={() => window.open('https://docs.lovable.dev', '_blank')}
-                  size="lg"
+                  size="sm"
                   variant="ghost"
-                  className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 text-3xl font-bold"
+                  className="h-8 w-8 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10"
                   title="How to fill this form"
                 >
-                  ?
+                  <HelpCircle className="h-5 w-5" />
                 </Button>
                 <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Client Intake Form

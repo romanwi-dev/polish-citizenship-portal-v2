@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useState } from "react";
-import { Loader2, Save, FileText, Users, Baby, Heart, Sparkles, Download, GitBranch, Type, FilePlus, User, ArrowLeft, TreePine, BookOpen, FolderOpen } from "lucide-react";
+import { Loader2, Save, FileText, Users, Baby, Heart, Sparkles, Download, GitBranch, Type, FilePlus, User, ArrowLeft, TreePine, BookOpen, FolderOpen, HelpCircle } from "lucide-react";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -224,7 +224,16 @@ export default function MasterDataTable() {
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5" />
             <CardHeader className="relative pb-6 pt-6">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
+                <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="flex items-center gap-3">
+                  <Button
+                    onClick={() => window.open('https://docs.lovable.dev', '_blank')}
+                    size="sm"
+                    variant="ghost"
+                    className="h-8 w-8 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10"
+                    title="How to fill this form"
+                  >
+                    <HelpCircle className="h-5 w-5" />
+                  </Button>
                   <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">
                     Master Form
                   </CardTitle>
@@ -238,15 +247,6 @@ export default function MasterDataTable() {
                     title="Back to Case"
                   >
                     <ArrowLeft className="h-8 w-8" />
-                  </Button>
-                  <Button
-                    onClick={() => window.open('https://docs.lovable.dev', '_blank')}
-                    size="lg"
-                    variant="ghost"
-                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 text-3xl font-bold"
-                    title="How to fill this form"
-                  >
-                    ?
                   </Button>
                   <Button
                     onClick={() => navigate('/login')}

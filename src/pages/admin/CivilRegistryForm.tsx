@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState, useEffect } from "react";
-import { Loader2, Save, Download, FileText, Sparkles, Type, FilePlus, User, ArrowLeft } from "lucide-react";
+import { Loader2, Save, Download, FileText, Sparkles, Type, FilePlus, User, ArrowLeft, HelpCircle } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -229,7 +229,16 @@ export default function CivilRegistryForm() {
                 opacity: 1
               }} transition={{
                 delay: 0.2
-              }}>
+              }} className="flex items-center gap-3">
+                  <Button
+                    onClick={() => window.open('https://docs.lovable.dev', '_blank')}
+                    size="sm"
+                    variant="ghost"
+                    className="h-8 w-8 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10"
+                    title="How to fill this form"
+                  >
+                    <HelpCircle className="h-5 w-5" />
+                  </Button>
                   <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">Civil Registry</CardTitle>
                 </motion.div>
                 <div className="flex items-center gap-3">
@@ -241,15 +250,6 @@ export default function CivilRegistryForm() {
                     title="Back to Case"
                   >
                     <ArrowLeft className="h-8 w-8" />
-                  </Button>
-                  <Button
-                    onClick={() => window.open('https://docs.lovable.dev', '_blank')}
-                    size="lg"
-                    variant="ghost"
-                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 text-3xl font-bold"
-                    title="How to fill this form"
-                  >
-                    ?
                   </Button>
                   <Button
                     onClick={() => navigate('/login')}
