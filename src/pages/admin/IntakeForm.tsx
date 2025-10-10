@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { Loader2, Type, Maximize2, Minimize2 } from "lucide-react";
+import { Loader2, Type, Maximize2, Minimize2, User, Phone, MapPin, Plane, Users, FolderOpen, MessageSquare, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
@@ -12,7 +12,6 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { useFormSync } from "@/hooks/useFormSync";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FormButtonsRow } from "@/components/FormButtonsRow";
-import { User, Phone, MapPin, Plane, Users, FolderOpen, MessageSquare } from "lucide-react";
 import { SelectSection, ApplicantSection, ContactSection, AddressSection, PassportSection, ImmigrationSection, DocumentsSection, NotesSection } from "@/components/IntakeFormContent";
 
 export default function IntakeForm() {
