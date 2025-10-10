@@ -24,6 +24,7 @@ const CivilRegistryForm = lazy(() => import("./pages/admin/CivilRegistryForm"));
 const IntakeForm = lazy(() => import("./pages/admin/IntakeForm"));
 const FormScanner = lazy(() => import("./pages/admin/FormScanner"));
 const QAHarness = lazy(() => import("./pages/admin/QAHarness"));
+const DropboxMigration = lazy(() => import("./pages/admin/DropboxMigration"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -149,6 +150,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <QAHarness />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/dropbox-migration" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <DropboxMigration />
               </Suspense>
             } 
           />

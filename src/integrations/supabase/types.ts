@@ -1344,6 +1344,48 @@ export type Database = {
           },
         ]
       }
+      migration_logs: {
+        Row: {
+          can_undo: boolean | null
+          changes_made: Json | null
+          error_message: string | null
+          executed_at: string
+          executed_by: string | null
+          id: string
+          metadata: Json | null
+          migration_type: string
+          status: string
+          undone_at: string | null
+          undone_by: string | null
+        }
+        Insert: {
+          can_undo?: boolean | null
+          changes_made?: Json | null
+          error_message?: string | null
+          executed_at?: string
+          executed_by?: string | null
+          id?: string
+          metadata?: Json | null
+          migration_type: string
+          status?: string
+          undone_at?: string | null
+          undone_by?: string | null
+        }
+        Update: {
+          can_undo?: boolean | null
+          changes_made?: Json | null
+          error_message?: string | null
+          executed_at?: string
+          executed_by?: string | null
+          id?: string
+          metadata?: Json | null
+          migration_type?: string
+          status?: string
+          undone_at?: string | null
+          undone_by?: string | null
+        }
+        Relationships: []
+      }
       oby_forms: {
         Row: {
           auto_populated_fields: string[] | null
