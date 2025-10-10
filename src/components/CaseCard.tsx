@@ -141,7 +141,7 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
                 <User className="w-6 h-6 text-primary-foreground/70" />
               </div>
               <div>
-                <h3 className="font-bold text-3xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                <h3 className="font-heading font-bold text-3xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                   {clientCase.client_name}
                 </h3>
                 <div className="flex items-center gap-1 text-sm text-muted-foreground">
