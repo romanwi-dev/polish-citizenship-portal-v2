@@ -26,7 +26,7 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
     <CardContent className="p-6 md:p-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-2" onDoubleClick={() => clearField("applicant_sex")}>
-          <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>Gender</Label>
+          <Label className={cn("font-light opacity-50", isLargeFonts ? "text-xl" : "text-sm")}>Gender</Label>
           <Select value={formData?.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
             <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
               <SelectValue placeholder="Select..." />
@@ -39,7 +39,7 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="space-y-2" onDoubleClick={() => clearField("applicant_is_married")}>
-          <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>Civil status</Label>
+          <Label className={cn("font-light opacity-50", isLargeFonts ? "text-xl" : "text-sm")}>Civil status</Label>
           <Select value={formData?.applicant_is_married === true ? "Married" : "Single"} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
             <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
               <SelectValue placeholder="Select..." />
@@ -54,7 +54,7 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-2" onDoubleClick={() => clearField("children_count")}>
-          <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>Number of children</Label>
+          <Label className={cn("font-light opacity-50", isLargeFonts ? "text-xl" : "text-sm")}>Number of children</Label>
           <Select value={formData?.children_count?.toString() || ""} onValueChange={(value) => handleInputChange("children_count", parseInt(value))}>
             <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur z-50">
               <SelectValue placeholder="Select..." />
@@ -69,7 +69,7 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
 
         {(formData?.children_count > 0) && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="space-y-2" onDoubleClick={() => clearField("minor_children_count")}>
-            <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>Number of minor children</Label>
+            <Label className={cn("font-light opacity-50", isLargeFonts ? "text-xl" : "text-sm")}>Number of minor children</Label>
             <Select value={formData?.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
               <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
                 <SelectValue placeholder="Select..." />
@@ -97,25 +97,25 @@ export const ApplicantSection = ({ formData, handleInputChange, clearField, isLa
     <CardContent className="p-6 md:p-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="space-y-2" onDoubleClick={() => clearField("applicant_first_name")}>
-          <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>Given names</Label>
+          <Label className={cn("font-light opacity-50", isLargeFonts ? "text-xl" : "text-sm")}>Given names</Label>
           <Input value={formData?.applicant_first_name || ""} onChange={(e) => handleInputChange("applicant_first_name", e.target.value.toUpperCase())} className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase" />
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="space-y-2" onDoubleClick={() => clearField("applicant_last_name")}>
-          <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>Full last name</Label>
+          <Label className={cn("font-light opacity-50", isLargeFonts ? "text-xl" : "text-sm")}>Full last name</Label>
           <Input value={formData?.applicant_last_name || ""} onChange={(e) => handleInputChange("applicant_last_name", e.target.value.toUpperCase())} className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase" />
         </motion.div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="space-y-2" onDoubleClick={() => clearField("applicant_maiden_name")}>
-          <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>Maiden name</Label>
+          <Label className={cn("font-light opacity-50", isLargeFonts ? "text-xl" : "text-sm")}>Maiden name</Label>
           <Input value={formData?.applicant_maiden_name || ""} onChange={(e) => handleInputChange("applicant_maiden_name", e.target.value.toUpperCase())} className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase" />
         </motion.div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="space-y-2" onDoubleClick={() => clearField("applicant_pob")}>
-          <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>Place of birth</Label>
+          <Label className={cn("font-light opacity-50", isLargeFonts ? "text-xl" : "text-sm")}>Place of birth</Label>
           <Input value={formData?.applicant_pob || ""} onChange={(e) => handleInputChange("applicant_pob", e.target.value.toUpperCase())} className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase" />
         </motion.div>
         <DateField name="applicant_dob" label="Date of birth" value={formData?.applicant_dob} onChange={(value) => handleInputChange("applicant_dob", value)} />
@@ -124,7 +124,7 @@ export const ApplicantSection = ({ formData, handleInputChange, clearField, isLa
       {formData?.applicant_is_married && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("place_of_marriage")}>
-            <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>Place of marriage</Label>
+            <Label className={cn("font-light opacity-50", isLargeFonts ? "text-xl" : "text-sm")}>Place of marriage</Label>
             <Input value={formData?.place_of_marriage || ""} onChange={(e) => handleInputChange("place_of_marriage", e.target.value.toUpperCase())} className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase" style={{ fontSize: '1.125rem', fontWeight: '400' }} />
           </motion.div>
           <DateField name="date_of_marriage" label="Date of marriage" value={formData?.date_of_marriage} onChange={(value) => handleInputChange("date_of_marriage", value)} />
@@ -149,11 +149,11 @@ export const ContactSection = ({ formData, handleInputChange, clearField, isLarg
     <CardContent className="p-6 md:p-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_email")}>
-          <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>Email</Label>
+          <Label className={cn("font-light opacity-50", isLargeFonts ? "text-xl" : "text-sm")}>Email</Label>
           <Input value={formData?.applicant_email || ""} onChange={(e) => handleInputChange("applicant_email", e.target.value)} type="email" className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur" style={{ fontSize: '1.125rem', fontWeight: '400' }} />
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_phone")}>
-          <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>Phone</Label>
+          <Label className={cn("font-light opacity-50", isLargeFonts ? "text-xl" : "text-sm")}>Phone</Label>
           <Input value={formData?.applicant_phone || ""} onChange={(e) => handleInputChange("applicant_phone", e.target.value)} className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur" style={{ fontSize: '1.125rem', fontWeight: '400' }} />
         </motion.div>
       </div>
@@ -171,24 +171,24 @@ export const AddressSection = ({ formData, handleInputChange, clearField, isLarg
     <CardContent className="p-6 md:p-10">
       <div className="grid grid-cols-1 gap-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_street")}>
-          <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>Street address</Label>
+          <Label className={cn("font-light opacity-50", isLargeFonts ? "text-xl" : "text-sm")}>Street address</Label>
           <Input value={formData?.applicant_street || ""} onChange={(e) => handleInputChange("applicant_street", e.target.value.toUpperCase())} className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase" style={{ fontSize: '1.125rem', fontWeight: '400' }} />
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_city")}>
-            <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>City</Label>
+            <Label className={cn("font-light opacity-50", isLargeFonts ? "text-xl" : "text-sm")}>City</Label>
             <Input value={formData?.applicant_city || ""} onChange={(e) => handleInputChange("applicant_city", e.target.value.toUpperCase())} className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase" style={{ fontSize: '1.125rem', fontWeight: '400' }} />
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_state")}>
-            <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>State / Province</Label>
+            <Label className={cn("font-light opacity-50", isLargeFonts ? "text-xl" : "text-sm")}>State / Province</Label>
             <Input value={formData?.applicant_state || ""} onChange={(e) => handleInputChange("applicant_state", e.target.value.toUpperCase())} className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase" style={{ fontSize: '1.125rem', fontWeight: '400' }} />
           </motion.div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_postal_code")}>
-            <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>Postal / ZIP code</Label>
+            <Label className={cn("font-light opacity-50", isLargeFonts ? "text-xl" : "text-sm")}>Postal / ZIP code</Label>
             <Input value={formData?.applicant_postal_code || ""} onChange={(e) => handleInputChange("applicant_postal_code", e.target.value.toUpperCase())} className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase" style={{ fontSize: '1.125rem', fontWeight: '400' }} />
           </motion.div>
           <CountrySelect value={formData?.applicant_country || ""} onChange={(value) => handleInputChange("applicant_country", value)} label="Country" isLargeFonts={isLargeFonts} delay={0} />
@@ -208,7 +208,7 @@ export const PassportSection = ({ formData, handleInputChange, clearField, isLar
     <CardContent className="p-6 md:p-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_passport_number")}>
-          <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>Passport number</Label>
+          <Label className={cn("font-light opacity-50", isLargeFonts ? "text-xl" : "text-sm")}>Passport number</Label>
           <Input value={formData?.applicant_passport_number || ""} onChange={(e) => handleInputChange("applicant_passport_number", e.target.value.toUpperCase())} className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase" style={{ fontSize: '1.125rem', fontWeight: '400' }} />
         </motion.div>
         <DateField name="applicant_passport_expiry_date" label="Passport expiry date" value={formData?.applicant_passport_expiry_date} onChange={(value) => handleInputChange("applicant_passport_expiry_date", value)} />
@@ -289,7 +289,7 @@ export const NotesSection = ({ formData, handleInputChange, clearField, isLargeF
       </CardTitle>
     </CardHeader>
     <CardContent className="p-6 md:p-10">
-      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+      <Label className={cn("font-light opacity-50", isLargeFonts ? "text-xl" : "text-sm")}>
         Additional notes
       </Label>
       <Textarea value={formData?.applicant_notes || ""} onChange={(e) => handleInputChange("applicant_notes", e.target.value.toUpperCase())} className="mt-2 min-h-[150px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase" style={{ fontSize: '1.125rem', fontWeight: '400' }} />
