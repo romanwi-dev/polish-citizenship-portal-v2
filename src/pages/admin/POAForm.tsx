@@ -25,6 +25,7 @@ import { FormButtonsRow } from "@/components/FormButtonsRow";
 
 export default function POAForm() {
   const { id: caseId } = useParams();
+  const navigate = useNavigate();
   const { data: masterData, isLoading } = useMasterData(caseId);
   const updateMutation = useUpdateMasterData();
   const { isLargeFonts, toggleFontSize } = useAccessibility();
@@ -329,6 +330,33 @@ export default function POAForm() {
                 Power of Attorney
               </CardTitle>
               <div className="flex items-center gap-3">
+                <Button
+                  onClick={() => navigate(`/admin/case/${caseId}`)}
+                  size="lg"
+                  variant="ghost"
+                  className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50"
+                  title="Back to Case"
+                >
+                  <ArrowLeft className="h-8 w-8" />
+                </Button>
+                <Button
+                  onClick={() => window.open('https://docs.lovable.dev', '_blank')}
+                  size="lg"
+                  variant="ghost"
+                  className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 text-3xl font-bold"
+                  title="How to fill this form"
+                >
+                  ?
+                </Button>
+                <Button
+                  onClick={() => navigate('/login')}
+                  size="lg"
+                  variant="ghost"
+                  className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50"
+                  title="Login / Register"
+                >
+                  <User className="h-8 w-8" />
+                </Button>
                 <Button onClick={toggleFontSize} size="lg" variant="ghost"
                   className={`h-16 w-16 rounded-full transition-all z-50 ${isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground'}`} title="Toggle font size">
                   <Type className="h-8 w-8" />

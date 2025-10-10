@@ -89,6 +89,15 @@ export default function FamilyHistoryForm() {
               </div>
               <div className="flex gap-4">
                 <Button
+                  onClick={() => window.open('https://docs.lovable.dev', '_blank')}
+                  size="lg"
+                  variant="ghost"
+                  className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 text-3xl font-bold"
+                  title="How to fill this form"
+                >
+                  ?
+                </Button>
+                <Button
                   onClick={() => navigate('/login')}
                   size="lg"
                   variant="ghost"
