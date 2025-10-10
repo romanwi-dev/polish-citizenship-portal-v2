@@ -107,140 +107,120 @@ export default function IntakeDemo() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-            {/* Design 2.1: Dark Slate Glow */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Design 2.1: Dark Slate with Glow</CardTitle>
-                <CardDescription>
-                  Premium modern feel with deep dark background, purple/blue glow, and high contrast white text.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={() => toggleAllDocs(2)}
-                  className="w-full"
-                >
-                  {docsVariant2.every(d => d.checked) ? "Reset All" : "Mark All Complete"}
-                </Button>
-                <RequiredDocumentsSection
-                  title="Documents Required"
-                  documents={docsVariant2}
-                  onChange={(id, checked) => handleDocChange(2, id, checked)}
-                  variant="card-grid"
-                  backgroundStyle="dark-slate-glow"
-                />
-              </CardContent>
-            </Card>
+            {/* Design 2.1: Slate Gray */}
+            <div className={`p-6 rounded-lg border-2 ${
+              docsVariant2.every(d => d.checked) 
+                ? 'bg-green-100 dark:bg-green-900/30 border-green-500' 
+                : 'bg-slate-100 dark:bg-slate-800/50 border-slate-300 dark:border-slate-700'
+            }`}>
+              <h3 className="text-lg font-semibold mb-4">Design 2.1: Slate Gray</h3>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => toggleAllDocs(2)}
+                className="w-full mb-4"
+              >
+                {docsVariant2.every(d => d.checked) ? "Reset All" : "Mark All Complete"}
+              </Button>
+              <RequiredDocumentsSection
+                title="Required Documents"
+                documents={docsVariant2}
+                onChange={(id, checked) => handleDocChange(2, id, checked)}
+                colorScheme="slate"
+              />
+            </div>
 
-            {/* Design 2.2: Vibrant Gradient Mesh */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Design 2.2: Vibrant Gradient Mesh</CardTitle>
-                <CardDescription>
-                  Eye-catching modern web3 aesthetic with bold animated gradients and smooth transitions.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={() => toggleAllDocs(3)}
-                  className="w-full"
-                >
-                  {docsVariant3.every(d => d.checked) ? "Reset All" : "Mark All Complete"}
-                </Button>
-                <RequiredDocumentsSection
-                  title="Documents Required"
-                  documents={docsVariant3}
-                  onChange={(id, checked) => handleDocChange(3, id, checked)}
-                  variant="card-grid"
-                  backgroundStyle="vibrant-gradient-mesh"
-                />
-              </CardContent>
-            </Card>
+            {/* Design 2.2: Ocean Blue */}
+            <div className={`p-6 rounded-lg border-2 ${
+              docsVariant3.every(d => d.checked) 
+                ? 'bg-green-100 dark:bg-green-900/30 border-green-500' 
+                : 'bg-blue-50 dark:bg-blue-900/30 border-blue-300 dark:border-blue-700'
+            }`}>
+              <h3 className="text-lg font-semibold mb-4">Design 2.2: Ocean Blue</h3>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => toggleAllDocs(3)}
+                className="w-full mb-4"
+              >
+                {docsVariant3.every(d => d.checked) ? "Reset All" : "Mark All Complete"}
+              </Button>
+              <RequiredDocumentsSection
+                title="Required Documents"
+                documents={docsVariant3}
+                onChange={(id, checked) => handleDocChange(3, id, checked)}
+                colorScheme="blue"
+              />
+            </div>
 
-            {/* Design 2.3: Paper Texture Warm */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Design 2.3: Paper Texture (Warm)</CardTitle>
-                <CardDescription>
-                  Professional government-form aesthetic with warm beige/cream tones and subtle texture overlay.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={() => toggleAllDocs(4)}
-                  className="w-full"
-                >
-                  {docsVariant4.every(d => d.checked) ? "Reset All" : "Mark All Complete"}
-                </Button>
-                <RequiredDocumentsSection
-                  title="Documents Required"
-                  documents={docsVariant4}
-                  onChange={(id, checked) => handleDocChange(4, id, checked)}
-                  variant="card-grid"
-                  backgroundStyle="paper-texture-warm"
-                />
-              </CardContent>
-            </Card>
+            {/* Design 2.3: Warm Amber */}
+            <div className={`p-6 rounded-lg border-2 ${
+              docsVariant4.every(d => d.checked) 
+                ? 'bg-green-100 dark:bg-green-900/30 border-green-500' 
+                : 'bg-amber-50 dark:bg-amber-900/30 border-amber-300 dark:border-amber-700'
+            }`}>
+              <h3 className="text-lg font-semibold mb-4">Design 2.3: Warm Amber</h3>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => toggleAllDocs(4)}
+                className="w-full mb-4"
+              >
+                {docsVariant4.every(d => d.checked) ? "Reset All" : "Mark All Complete"}
+              </Button>
+              <RequiredDocumentsSection
+                title="Required Documents"
+                documents={docsVariant4}
+                onChange={(id, checked) => handleDocChange(4, id, checked)}
+                colorScheme="amber"
+              />
+            </div>
 
-            {/* Design 2.4: Glass Neumorphism */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Design 2.4: Glass Neumorphism</CardTitle>
-                <CardDescription>
-                  Ultra-modern iOS/macOS style with strong frosted glass effect and heavy backdrop blur.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={() => toggleAllDocs(5)}
-                  className="w-full"
-                >
-                  {docsVariant5.every(d => d.checked) ? "Reset All" : "Mark All Complete"}
-                </Button>
-                <RequiredDocumentsSection
-                  title="Documents Required"
-                  documents={docsVariant5}
-                  onChange={(id, checked) => handleDocChange(5, id, checked)}
-                  variant="card-grid"
-                  backgroundStyle="glass-neumorphism"
-                />
-              </CardContent>
-            </Card>
+            {/* Design 2.4: Fresh Green */}
+            <div className={`p-6 rounded-lg border-2 ${
+              docsVariant5.every(d => d.checked) 
+                ? 'bg-green-200 dark:bg-green-800/40 border-green-600' 
+                : 'bg-green-50 dark:bg-green-900/30 border-green-300 dark:border-green-700'
+            }`}>
+              <h3 className="text-lg font-semibold mb-4">Design 2.4: Fresh Green</h3>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => toggleAllDocs(5)}
+                className="w-full mb-4"
+              >
+                {docsVariant5.every(d => d.checked) ? "Reset All" : "Mark All Complete"}
+              </Button>
+              <RequiredDocumentsSection
+                title="Required Documents"
+                documents={docsVariant5}
+                onChange={(id, checked) => handleDocChange(5, id, checked)}
+                colorScheme="green"
+              />
+            </div>
 
-            {/* Design 2.5: Bordered Grid Minimal */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Design 2.5: Bordered Grid Minimal</CardTitle>
-                <CardDescription>
-                  Clean architectural blueprint feel with no background fill, strong borders, and maximum content focus.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={() => toggleAllDocs(6)}
-                  className="w-full"
-                >
-                  {docsVariant6.every(d => d.checked) ? "Reset All" : "Mark All Complete"}
-                </Button>
-                <RequiredDocumentsSection
-                  title="Documents Required"
-                  documents={docsVariant6}
-                  onChange={(id, checked) => handleDocChange(6, id, checked)}
-                  variant="card-grid"
-                  backgroundStyle="bordered-grid-minimal"
-                />
-              </CardContent>
-            </Card>
+            {/* Design 2.5: Royal Purple */}
+            <div className={`p-6 rounded-lg border-2 ${
+              docsVariant6.every(d => d.checked) 
+                ? 'bg-green-100 dark:bg-green-900/30 border-green-500' 
+                : 'bg-purple-50 dark:bg-purple-900/30 border-purple-300 dark:border-purple-700'
+            }`}>
+              <h3 className="text-lg font-semibold mb-4">Design 2.5: Royal Purple</h3>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => toggleAllDocs(6)}
+                className="w-full mb-4"
+              >
+                {docsVariant6.every(d => d.checked) ? "Reset All" : "Mark All Complete"}
+              </Button>
+              <RequiredDocumentsSection
+                title="Required Documents"
+                documents={docsVariant6}
+                onChange={(id, checked) => handleDocChange(6, id, checked)}
+                colorScheme="purple"
+              />
+            </div>
           </div>
         </div>
 
