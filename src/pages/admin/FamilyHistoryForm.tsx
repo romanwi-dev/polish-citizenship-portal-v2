@@ -81,12 +81,12 @@ export default function FamilyHistoryForm() {
                 <div className="flex items-center gap-3">
                   <Button
                     onClick={() => window.open('https://docs.lovable.dev', '_blank')}
-                    size="sm"
+                    size="lg"
                     variant="ghost"
-                    className="h-8 w-8 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10"
+                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10"
                     title="How to fill this form"
                   >
-                    <HelpCircle className="h-5 w-5" />
+                    <HelpCircle className="h-8 w-8" />
                   </Button>
                   <div>
                     <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
