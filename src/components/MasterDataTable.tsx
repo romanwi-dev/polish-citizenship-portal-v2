@@ -409,12 +409,12 @@ export const MasterDataTable = ({ open, onOpenChange, caseId }: MasterDataTableP
               >
                 {isFullView ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
               </Button>
-              <TabsList className="flex-1 grid grid-cols-2 lg:grid-cols-6">
+              <TabsList className="flex-1 grid grid-cols-2 md:grid-cols-4 h-auto p-2">
             {sections.map(section => {
               const completion = calculateCompletion(section.id);
               const Icon = section.icon;
               return (
-                <TabsTrigger key={section.id} value={section.id} className="relative">
+                <TabsTrigger key={section.id} value={section.id} className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3 relative">
                   <Icon className="h-4 w-4 mr-2" />
                   <span className="hidden sm:inline">{section.label}</span>
                   <Badge 
@@ -427,7 +427,7 @@ export const MasterDataTable = ({ open, onOpenChange, caseId }: MasterDataTableP
               );
             })}
           </TabsList>
-          </div>
+            </div>
           </div>
 
           <div className="flex-1 overflow-y-auto mt-4">
