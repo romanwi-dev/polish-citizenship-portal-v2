@@ -116,12 +116,46 @@ export default function IntakeDemo() {
             />
 
             {/* Design 2.2: Ocean Blue */}
-            <RequiredDocumentsSection
-              title="Design 2.2: Ocean Blue"
-              documents={docsVariant3}
-              onChange={(id, checked) => handleDocChange(3, id, checked)}
-              colorScheme="blue"
-            />
+            <div className="space-y-6">
+              <div className="flex items-center space-x-3">
+                <Checkbox
+                  id="completed-ocean-blue"
+                  checked={docsVariant3.every(doc => doc.checked)}
+                  onCheckedChange={(checked) => toggleAllDocs(3)}
+                  className="h-5 w-5 shrink-0"
+                />
+                <label
+                  htmlFor="completed-ocean-blue"
+                  className="text-sm font-light tracking-[0.15em] cursor-pointer text-foreground/60"
+                >
+                  Completed
+                </label>
+              </div>
+              
+              <div className="space-y-3">
+                <h3 className="text-sm font-light tracking-[0.15em] text-foreground/60 mb-4">
+                  DOCUMENTS REQUIRED
+                </h3>
+                <div className="grid grid-cols-2 gap-3">
+                  {docsVariant3.map((doc) => (
+                    <div key={doc.id} className="flex items-center space-x-3">
+                      <Checkbox
+                        id={doc.id}
+                        checked={doc.checked}
+                        onCheckedChange={(checked) => handleDocChange(3, doc.id, checked as boolean)}
+                        className="h-5 w-5 shrink-0"
+                      />
+                      <label
+                        htmlFor={doc.id}
+                        className="text-sm font-light tracking-[0.15em] cursor-pointer text-foreground/60"
+                      >
+                        {doc.label}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
 
             {/* Design 2.3: Warm Amber */}
             <RequiredDocumentsSection
