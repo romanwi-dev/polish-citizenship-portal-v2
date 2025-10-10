@@ -192,7 +192,7 @@ export default function IntakeForm() {
             ) : (
               // Tabbed View
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <div className="sticky top-0 z-10 bg-background border-b border-border/50 flex items-center gap-2">
+                <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border/50 flex items-center gap-2">
                   <Button
                     variant="ghost"
                     size="icon"

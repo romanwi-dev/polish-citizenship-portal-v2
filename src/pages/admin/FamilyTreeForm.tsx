@@ -367,7 +367,7 @@ export default function FamilyTreeForm() {
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }}>
           <Card className="glass-card border-primary/20">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <div className="sticky top-0 z-10 bg-background border-b border-border/50">
+              <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border/50">
                 <div className="flex items-center gap-2">
                   <Button
                     onClick={() => setIsFullView(!isFullView)}
