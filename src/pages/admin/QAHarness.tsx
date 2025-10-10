@@ -73,10 +73,10 @@ export default function QAHarness() {
     const rlsStart = Date.now();
     updateResult('RLS Policies', 'running', 'Testing row-level security...');
     try {
-      const tables = ['cases', 'master_table', 'documents', 'tasks', 'poa', 'oby_forms'];
+      const tables = ['cases', 'master_table', 'documents', 'tasks', 'poa', 'oby_forms'] as const;
       let allPassed = true;
       for (const table of tables) {
-        const { error } = await supabase.from(table).select('count').limit(1);
+        const { error } = await supabase.from(table as any).select('count').limit(1);
         if (error && error.message.includes('permission denied')) {
           allPassed = false;
           break;
