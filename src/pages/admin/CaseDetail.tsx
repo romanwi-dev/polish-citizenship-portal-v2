@@ -307,13 +307,43 @@ export default function CaseDetail() {
           {/* FORMS TAB */}
           <TabsContent value="forms" className="space-y-6">
             <Tabs defaultValue={defaultFormSection} onValueChange={(value) => setSearchParams({ tab: "forms", section: value })}>
-              <TabsList className="grid w-full grid-cols-3 md:grid-cols-6 gap-2 bg-muted/50 p-2">
-                <TabsTrigger value="intake">Intake</TabsTrigger>
-                <TabsTrigger value="master-data">Master Data</TabsTrigger>
-                <TabsTrigger value="family-tree">Family Tree</TabsTrigger>
-                <TabsTrigger value="poa">POA</TabsTrigger>
-                <TabsTrigger value="citizenship">Citizenship</TabsTrigger>
-                <TabsTrigger value="civil-registry">Civil Registry</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-3 md:grid-cols-6 gap-2 bg-transparent p-0">
+                <TabsTrigger 
+                  value="intake"
+                  className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors"
+                >
+                  Intake
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="master-data"
+                  className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors"
+                >
+                  Master Data
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="family-tree"
+                  className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors"
+                >
+                  Family Tree
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="poa"
+                  className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors"
+                >
+                  POA
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="citizenship"
+                  className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors"
+                >
+                  Citizenship
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="civil-registry"
+                  className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors"
+                >
+                  Civil Registry
+                </TabsTrigger>
               </TabsList>
 
               <TabsContent value="intake" className="mt-6">

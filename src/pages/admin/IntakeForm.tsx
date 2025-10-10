@@ -184,36 +184,60 @@ export default function IntakeForm() {
                     >
                       {isFullView ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
                     </Button>
-                    <TabsList className="flex-1 grid grid-cols-2 md:grid-cols-8 h-auto p-2">
-                    <TabsTrigger value="select" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                    <TabsList className="flex-1 grid grid-cols-2 md:grid-cols-8 gap-2 bg-transparent p-0">
+                    <TabsTrigger 
+                      value="select" 
+                      className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors text-sm md:text-base py-3"
+                    >
                       <Users className="h-4 w-4 mr-2" />
                       <span className="hidden sm:inline">Select...</span>
                     </TabsTrigger>
-                    <TabsTrigger value="applicant" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                    <TabsTrigger 
+                      value="applicant" 
+                      className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors text-sm md:text-base py-3"
+                    >
                       <User className="h-4 w-4 mr-2" />
                       <span className="hidden sm:inline">Applicant</span>
                     </TabsTrigger>
-                    <TabsTrigger value="contact" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                    <TabsTrigger 
+                      value="contact" 
+                      className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors text-sm md:text-base py-3"
+                    >
                       <Phone className="h-4 w-4 mr-2" />
                       <span className="hidden sm:inline">Contact</span>
                     </TabsTrigger>
-                    <TabsTrigger value="address" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                    <TabsTrigger 
+                      value="address" 
+                      className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors text-sm md:text-base py-3"
+                    >
                       <MapPin className="h-4 w-4 mr-2" />
                       <span className="hidden sm:inline">Address</span>
                     </TabsTrigger>
-                    <TabsTrigger value="passport" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                    <TabsTrigger 
+                      value="passport" 
+                      className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors text-sm md:text-base py-3"
+                    >
                       <Plane className="h-4 w-4 mr-2" />
                       <span className="hidden sm:inline">Passport</span>
                     </TabsTrigger>
-                    <TabsTrigger value="immigration" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                    <TabsTrigger 
+                      value="immigration" 
+                      className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors text-sm md:text-base py-3"
+                    >
                       <Users className="h-4 w-4 mr-2" />
                       <span className="hidden sm:inline">Immigration</span>
                     </TabsTrigger>
-                    <TabsTrigger value="documents" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                    <TabsTrigger 
+                      value="documents" 
+                      className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors text-sm md:text-base py-3"
+                    >
                       <FolderOpen className="h-4 w-4 mr-2" />
                       <span className="hidden sm:inline">Documents</span>
                     </TabsTrigger>
-                    <TabsTrigger value="notes" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                    <TabsTrigger 
+                      value="notes" 
+                      className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors text-sm md:text-base py-3"
+                    >
                       <MessageSquare className="h-4 w-4 mr-2" />
                       <span className="hidden sm:inline">Notes</span>
                     </TabsTrigger>

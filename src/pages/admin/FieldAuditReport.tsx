@@ -100,11 +100,31 @@ export default function FieldAuditReport() {
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="intake">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="intake">Intake ({intakeFields.length})</TabsTrigger>
-              <TabsTrigger value="master">Master ({masterFields.length})</TabsTrigger>
-              <TabsTrigger value="intake_db">intake_data ({intakeDataFields.length})</TabsTrigger>
-              <TabsTrigger value="master_db">master_table ({masterTableFields.length})</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-4 gap-2 bg-transparent p-0">
+              <TabsTrigger 
+                value="intake"
+                className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors"
+              >
+                Intake ({intakeFields.length})
+              </TabsTrigger>
+              <TabsTrigger 
+                value="master"
+                className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors"
+              >
+                Master ({masterFields.length})
+              </TabsTrigger>
+              <TabsTrigger 
+                value="intake_db"
+                className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors"
+              >
+                intake_data ({intakeDataFields.length})
+              </TabsTrigger>
+              <TabsTrigger 
+                value="master_db"
+                className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors"
+              >
+                master_table ({masterTableFields.length})
+              </TabsTrigger>
             </TabsList>
             
             <TabsContent value="intake" className="space-y-2 mt-4">

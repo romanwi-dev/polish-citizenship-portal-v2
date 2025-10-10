@@ -406,44 +406,71 @@ export default function FamilyTreeForm() {
                     >
                       {isFullView ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
                     </Button>
-                    <TabsList className="flex-1 w-full h-auto p-2 justify-start flex-wrap">
-                      <TabsTrigger value="tree-view" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                    <TabsList className="flex-1 w-full gap-2 bg-transparent p-0 justify-start flex-wrap">
+                      <TabsTrigger 
+                        value="tree-view" 
+                        className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors text-sm md:text-base py-3"
+                      >
                         <TreePine className="h-4 w-4 mr-2" />
                         <span className="hidden sm:inline">Tree View</span>
                       </TabsTrigger>
-                      <TabsTrigger value="select" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                      <TabsTrigger 
+                        value="select" 
+                        className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors text-sm md:text-base py-3"
+                      >
                         <Users className="h-4 w-4 mr-2" />
                         <span className="hidden sm:inline">Select...</span>
                       </TabsTrigger>
-                      <TabsTrigger value="applicant" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                      <TabsTrigger 
+                        value="applicant" 
+                        className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors text-sm md:text-base py-3"
+                      >
                         <User className="h-4 w-4 mr-2" />
                         <span className="hidden sm:inline">Applicant</span>
                       </TabsTrigger>
                       {formData.applicant_is_married && (
-                        <TabsTrigger value="spouse" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                        <TabsTrigger 
+                          value="spouse" 
+                          className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors text-sm md:text-base py-3"
+                        >
                           <Heart className="h-4 w-4 mr-2" />
                           <span className="hidden sm:inline">Spouse</span>
                         </TabsTrigger>
                       )}
                       {(formData.minor_children_count > 0) && (
-                        <TabsTrigger value="children" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                        <TabsTrigger 
+                          value="children" 
+                          className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors text-sm md:text-base py-3"
+                        >
                           <Baby className="h-4 w-4 mr-2" />
                           <span className="hidden sm:inline">Children</span>
                         </TabsTrigger>
                       )}
-                      <TabsTrigger value="parents" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                      <TabsTrigger 
+                        value="parents" 
+                        className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors text-sm md:text-base py-3"
+                      >
                         <Users className="h-4 w-4 mr-2" />
                         <span className="hidden sm:inline">Parents</span>
                       </TabsTrigger>
-                      <TabsTrigger value="grandparents" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                      <TabsTrigger 
+                        value="grandparents" 
+                        className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors text-sm md:text-base py-3"
+                      >
                         <GitBranch className="h-4 w-4 mr-2" />
                         <span className="hidden sm:inline">Grandparents</span>
                       </TabsTrigger>
-                      <TabsTrigger value="great-grandparents" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                      <TabsTrigger 
+                        value="great-grandparents" 
+                        className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors text-sm md:text-base py-3"
+                      >
                         <TreePine className="h-4 w-4 mr-2" />
                         <span className="hidden sm:inline">Great Grandparents</span>
                       </TabsTrigger>
-                      <TabsTrigger value="additional" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                      <TabsTrigger 
+                        value="additional" 
+                        className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors text-sm md:text-base py-3"
+                      >
                         <FileText className="h-4 w-4 mr-2" />
                         <span className="hidden sm:inline">Additional Info</span>
                       </TabsTrigger>
