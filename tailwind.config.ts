@@ -16,7 +16,7 @@ export default {
       fontFamily: {
         'heading': ['Montserrat', 'sans-serif'],
         'sans': ['Montserrat', 'sans-serif'],
-        'label': ['Inter', 'sans-serif'],
+        'label': ['DM Sans', 'Inter', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
