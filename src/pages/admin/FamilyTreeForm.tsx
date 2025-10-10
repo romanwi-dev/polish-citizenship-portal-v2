@@ -9,7 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState, useEffect } from "react";
-import { Loader2, Save, Download, Users, Sparkles, Type, User, ArrowLeft, TreePine, BookOpen, Baby, Heart, FileText, GitBranch, HelpCircle } from "lucide-react";
+import { Loader2, Save, Download, Users, Sparkles, Type, User, ArrowLeft, TreePine, BookOpen, Baby, Heart, FileText, GitBranch, HelpCircle, Maximize2, Minimize2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { motion } from "framer-motion";
@@ -40,6 +40,7 @@ export default function FamilyTreeForm() {
   const [formData, setFormData] = useState<any>({});
   const [isGenerating, setIsGenerating] = useState(false);
   const [activeTab, setActiveTab] = useState("select");
+  const [isFullView, setIsFullView] = useState(false);
   const [showClearDialog, setShowClearDialog] = useState(false);
   
   // Enable real-time sync with direct state updates
@@ -369,53 +370,67 @@ export default function FamilyTreeForm() {
           <Card className="glass-card border-primary/20">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <div className="border-b border-border/50">
-                <TabsList className="w-full h-auto p-2 bg-transparent justify-start flex-wrap">
-                  <TabsTrigger value="tree-view" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                    <TreePine className="h-4 w-4 mr-2" />
-                    <span className="hidden sm:inline">Tree View</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="select" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                    <Users className="h-4 w-4 mr-2" />
-                    <span className="hidden sm:inline">Select...</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="applicant" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                    <User className="h-4 w-4 mr-2" />
-                    <span className="hidden sm:inline">Applicant</span>
-                  </TabsTrigger>
-                  {formData.applicant_is_married && (
-                    <TabsTrigger value="spouse" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                      <Heart className="h-4 w-4 mr-2" />
-                      <span className="hidden sm:inline">Spouse</span>
-                    </TabsTrigger>
-                  )}
-                  {(formData.minor_children_count > 0) && (
-                    <TabsTrigger value="children" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                      <Baby className="h-4 w-4 mr-2" />
-                      <span className="hidden sm:inline">Children</span>
-                    </TabsTrigger>
-                  )}
-                  <TabsTrigger value="parents" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                    <Users className="h-4 w-4 mr-2" />
-                    <span className="hidden sm:inline">Polish Parent</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="grandparents" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                    <GitBranch className="h-4 w-4 mr-2" />
-                    <span className="hidden sm:inline">Grandparents</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="great-grandparents" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                    <TreePine className="h-4 w-4 mr-2" />
-                    <span className="hidden sm:inline">Great Grandparents</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="additional" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                    <FileText className="h-4 w-4 mr-2" />
-                    <span className="hidden sm:inline">Additional Info</span>
-                  </TabsTrigger>
-                </TabsList>
+                <div className="flex items-center gap-2">
+                  <Button
+                    onClick={() => setIsFullView(!isFullView)}
+                    variant="ghost"
+                    size="sm"
+                    className="ml-2 flex-shrink-0"
+                    title={isFullView ? "Show tabs" : "Show all sections"}
+                  >
+                    {isFullView ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
+                  </Button>
+                  <div className="flex-1">
+                    <TabsList className="w-full h-auto p-2 bg-transparent justify-start flex-wrap">
+                      <TabsTrigger value="tree-view" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                        <TreePine className="h-4 w-4 mr-2" />
+                        <span className="hidden sm:inline">Tree View</span>
+                      </TabsTrigger>
+                      <TabsTrigger value="select" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                        <Users className="h-4 w-4 mr-2" />
+                        <span className="hidden sm:inline">Select...</span>
+                      </TabsTrigger>
+                      <TabsTrigger value="applicant" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                        <User className="h-4 w-4 mr-2" />
+                        <span className="hidden sm:inline">Applicant</span>
+                      </TabsTrigger>
+                      {formData.applicant_is_married && (
+                        <TabsTrigger value="spouse" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                          <Heart className="h-4 w-4 mr-2" />
+                          <span className="hidden sm:inline">Spouse</span>
+                        </TabsTrigger>
+                      )}
+                      {(formData.minor_children_count > 0) && (
+                        <TabsTrigger value="children" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                          <Baby className="h-4 w-4 mr-2" />
+                          <span className="hidden sm:inline">Children</span>
+                        </TabsTrigger>
+                      )}
+                      <TabsTrigger value="parents" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                        <Users className="h-4 w-4 mr-2" />
+                        <span className="hidden sm:inline">Polish Parent</span>
+                      </TabsTrigger>
+                      <TabsTrigger value="grandparents" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                        <GitBranch className="h-4 w-4 mr-2" />
+                        <span className="hidden sm:inline">Grandparents</span>
+                      </TabsTrigger>
+                      <TabsTrigger value="great-grandparents" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                        <TreePine className="h-4 w-4 mr-2" />
+                        <span className="hidden sm:inline">Great Grandparents</span>
+                      </TabsTrigger>
+                      <TabsTrigger value="additional" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                        <FileText className="h-4 w-4 mr-2" />
+                        <span className="hidden sm:inline">Additional Info</span>
+                      </TabsTrigger>
+                    </TabsList>
+                  </div>
+                </div>
               </div>
 
-              {/* Tree View Tab */}
-              <TabsContent value="tree-view" className="mt-0">
-                {activeTab === 'tree-view' && (
+              {/* Full View Mode */}
+              {isFullView ? (
+                <div className="space-y-6 mt-6">
+                  {/* Tree View always shown in full view */}
                   <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -445,8 +460,45 @@ export default function FamilyTreeForm() {
                       </CardContent>
                     </Card>
                   </motion.div>
-                )}
-              </TabsContent>
+                </div>
+              ) : (
+                <>
+                  {/* Tree View Tab */}
+                  <TabsContent value="tree-view" className="mt-0">
+                    {activeTab === 'tree-view' && (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        <Card className="glass-card border-primary/20">
+                          <CardContent className="p-6 md:p-10">
+                            <FamilyTreeInteractive
+                              clientData={{
+                                ...mapPersonData('applicant'),
+                                sex: formData.applicant_sex
+                              }}
+                              spouse={mapPersonData('spouse')}
+                              father={mapPersonData('father')}
+                              mother={mapPersonData('mother')}
+                              paternalGrandfather={mapPersonData('pgf')}
+                              paternalGrandmother={mapPersonData('pgm')}
+                              maternalGrandfather={mapPersonData('mgf')}
+                              maternalGrandmother={mapPersonData('mgm')}
+                              paternalGreatGrandfather={mapPersonData('pggf')}
+                              paternalGreatGrandmother={mapPersonData('pggm')}
+                              maternalGreatGrandfather={mapPersonData('mggf')}
+                              maternalGreatGrandmother={mapPersonData('mggm')}
+                              onEdit={handlePersonEdit}
+                              onOpenMasterTable={() => navigate(`/admin/master-data/${caseId}`)}
+                            />
+                          </CardContent>
+                        </Card>
+                      </motion.div>
+                    )}
+                  </TabsContent>
+                </>
+              )}
 
               <TabsContent value="select" className="mt-0">
           {activeTab === 'select' && (
