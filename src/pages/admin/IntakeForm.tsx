@@ -128,7 +128,7 @@ export default function IntakeForm() {
                 >
                   ?
                 </Button>
-                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">
                   Client Intake Form
                 </CardTitle>
               </div>
