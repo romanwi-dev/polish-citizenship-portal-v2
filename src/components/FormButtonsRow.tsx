@@ -35,7 +35,7 @@ export function FormButtonsRow({
   const navigate = useNavigate();
 
   return (
-    <div className="sticky top-20 flex flex-row gap-3 mb-8 overflow-x-auto scrollbar-hide bg-background py-2 -mx-4 px-4 z-[9999]">
+    <div className="sticky top-20 flex flex-row gap-3 mb-8 overflow-x-auto scrollbar-hide py-2 -mx-4 px-4 z-[9999]">
       {/* Action Buttons */}
       <div className="flex gap-3 flex-shrink-0 z-[10000]">
         <Button
