@@ -6,7 +6,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
-import { Loader2, Save, FileText, Sparkles, Type, User, ArrowLeft } from "lucide-react";
+import { Loader2, Save, Download, FileText, Sparkles, Type, User, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -394,14 +394,14 @@ export default function POAForm() {
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Clear Data</span>
             </Button>
 
-            <Button onClick={handleGenerateAllPOAs} disabled={isGenerating} size="default"
+            <Button onClick={handleGenerateAllPOAs} disabled={isGenerating} variant="outline"
               className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[160px] md:min-w-[200px] lg:min-w-[240px] whitespace-nowrap flex-shrink-0">
               {isGenerating ? (
                 <><Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
                   <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generating...</span></>
               ) : (
-                <><FileText className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-                  <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generate PDFs</span></>
+                <><Download className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generate PDF</span></>
               )}
             </Button>
 
