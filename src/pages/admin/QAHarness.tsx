@@ -135,13 +135,10 @@ export default function QAHarness() {
   };
 
   const getStatusBadge = (status: TestResult['status']) => {
-    const variants = {
-      pass: 'default',
-      fail: 'destructive',
-      warn: 'secondary',
-      running: 'outline'
-    } as const;
-    return <Badge variant={variants[status]}>{status.toUpperCase()}</Badge>;
+    if (status === 'pass') return <Badge variant="default">PASS</Badge>;
+    if (status === 'fail') return <Badge variant="destructive">FAIL</Badge>;
+    if (status === 'warn') return <Badge variant="secondary">WARN</Badge>;
+    return <Badge variant="outline">RUNNING</Badge>;
   };
 
   const passCount = results.filter(r => r.status === 'pass').length;

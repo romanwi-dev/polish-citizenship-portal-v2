@@ -23,6 +23,7 @@ const CitizenshipForm = lazy(() => import("./pages/admin/CitizenshipForm"));
 const CivilRegistryForm = lazy(() => import("./pages/admin/CivilRegistryForm"));
 const IntakeForm = lazy(() => import("./pages/admin/IntakeForm"));
 const FormScanner = lazy(() => import("./pages/admin/FormScanner"));
+const QAHarness = lazy(() => import("./pages/admin/QAHarness"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -140,6 +141,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <FormScanner />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/qa-harness" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <QAHarness />
               </Suspense>
             } 
           />

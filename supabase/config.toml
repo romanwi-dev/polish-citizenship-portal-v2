@@ -32,3 +32,6 @@ verify_jwt = false
 
 [functions.get-form-code]
 verify_jwt = false
+
+[functions.dropbox-diag]
+verify_jwt = false
