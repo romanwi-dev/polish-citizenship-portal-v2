@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { Loader2, Type, Maximize2, Minimize2, User, Phone, MapPin, Plane, Users, FolderOpen, MessageSquare, ArrowLeft } from "lucide-react";
+import { Loader2, Type, Maximize2, Minimize2, User, Phone, MapPin, Plane, Users, FolderOpen, MessageSquare, ArrowLeft, HelpCircle } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
@@ -15,6 +15,7 @@ import { FormButtonsRow } from "@/components/FormButtonsRow";
 import { SelectSection, ApplicantSection, ContactSection, AddressSection, PassportSection, ImmigrationSection, DocumentsSection, NotesSection } from "@/components/IntakeFormContent";
 
 export default function IntakeForm() {
+  const navigate = useNavigate();
   const { id: caseId } = useParams();
   const { formData, setFormData, isLoading, isSaving, saveData, clearAll, clearField } = useFormSync(caseId);
   const [showClearDialog, setShowClearDialog] = useState(false);
@@ -81,9 +82,20 @@ export default function IntakeForm() {
           <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5" />
           <CardHeader className="relative pb-6 pt-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-              <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Client Intake Form
-              </CardTitle>
+              <div className="flex items-center gap-4">
+                <Button
+                  onClick={() => window.open('https://docs.lovable.dev', '_blank')}
+                  size="lg"
+                  variant="ghost"
+                  className="h-12 w-12 rounded-full transition-all text-primary hover:bg-primary/10"
+                  title="How to fill this form"
+                >
+                  <HelpCircle className="h-6 w-6" />
+                </Button>
+                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                  Client Intake Form
+                </CardTitle>
+              </div>
               <div className="flex items-center gap-3">
                 <Button
                   onClick={toggleFontSize}
@@ -131,11 +143,6 @@ export default function IntakeForm() {
                   >
                     <Minimize2 className="h-5 w-5" />
                   </Button>
-                  <div className="flex-1 p-4">
-                    <h2 className="text-2xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                      Complete Intake Form
-                    </h2>
-                  </div>
                 </div>
                 <div className="space-y-0">
                   <div className="border-b border-border/10">
