@@ -37,7 +37,7 @@ export const MasterDataTable = ({ open, onOpenChange, caseId }: MasterDataTableP
       id: "applicant",
       label: "Applicant",
       icon: User,
-      fields: ["firstName", "lastName", "maidenName", "dateOfBirth", "placeOfBirth", "sex", "currentCitizenship", "passportNumber", "email", "phone"]
+      fields: ["firstName", "lastName", "maidenName", "placeOfBirth", "dateOfBirth", "placeOfMarriage", "dateOfMarriage", "dateOfEmigration", "dateOfNaturalization", "sex", "currentCitizenship", "passportNumber", "email", "phone"]
     },
     {
       id: "spouse",

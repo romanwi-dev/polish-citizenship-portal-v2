@@ -434,71 +434,69 @@ export default function FamilyTreeForm() {
                   )}
                 </div>
 
-                {/* 1st row - Name fields */}
+                {/* Row 1: Names */}
                 {renderFieldGroup([{
-                name: "applicant_first_name",
-                label: "Given names / Imię/ imiona",
-                isNameField: true
-              }, {
-                name: "applicant_last_name",
-                label: "Full last name / Nazwisko",
-                isNameField: true
-              }, ...(formData.applicant_sex?.toLowerCase() === 'f' || formData.applicant_sex?.toLowerCase() === 'female' ? [{
-                name: "applicant_maiden_name",
-                label: "Maiden name / Nazwisko rodowe",
-                isNameField: true
-              }] : [])])}
+                  name: "applicant_first_name",
+                  label: "Given names / Imię/ imiona",
+                  isNameField: true
+                }, {
+                  name: "applicant_last_name",
+                  label: "Full last name / Nazwisko",
+                  isNameField: true
+                }])}
 
-                {/* 2nd row - Places and emigration */}
-                {formData.applicant_is_married ? (
-                  renderFieldGroup([{
-                    name: "applicant_pob",
-                    label: "Place of birth"
-                  }, {
-                    name: "place_of_marriage",
-                    label: "Place of marriage"
-                  }, {
-                    name: "applicant_date_of_emigration",
-                    label: "Date of emigration",
-                    type: "date"
-                  }])
-                ) : (
-                  renderFieldGroup([{
-                    name: "applicant_pob",
-                    label: "Place of birth"
-                  }, {
-                    name: "applicant_date_of_emigration",
-                    label: "Date of emigration",
-                    type: "date"
-                  }])
-                )}
+                {/* Row 2: Maiden name */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    className="space-y-2"
+                  >
+                    <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                      Maiden name / Nazwisko rodowe
+                    </Label>
+                    <Input
+                      value={formData.applicant_maiden_name || ""}
+                      onChange={(e) => handleInputChange("applicant_maiden_name", e.target.value.toUpperCase())}
+                      className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                      style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                    />
+                  </motion.div>
+                </div>
 
-                {/* 3rd row - Dates */}
-                {formData.applicant_is_married ? (
-                  renderFieldGroup([{
-                    name: "applicant_dob",
-                    label: "Date of birth",
-                    type: "date"
-                  }, {
-                    name: "date_of_marriage",
-                    label: "Date of marriage",
-                    type: "date"
-                  }, {
-                    name: "applicant_date_of_naturalization",
-                    label: "Date of naturalization",
-                    type: "date"
-                  }])
-                ) : (
-                  renderFieldGroup([{
-                    name: "applicant_dob",
-                    label: "Date of birth",
-                    type: "date"
-                  }, {
-                    name: "applicant_date_of_naturalization",
-                    label: "Date of naturalization",
-                    type: "date"
-                  }])
-                )}
+                {/* Row 3: Birth fields */}
+                {renderFieldGroup([{
+                  name: "applicant_pob",
+                  label: "Place of birth",
+                  isNameField: true
+                }, {
+                  name: "applicant_dob",
+                  label: "Date of birth",
+                  type: "date"
+                }])}
+
+                {/* Row 4: Marriage fields (conditional) */}
+                {formData.applicant_is_married && renderFieldGroup([{
+                  name: "place_of_marriage",
+                  label: "Place of marriage",
+                  isNameField: true
+                }, {
+                  name: "date_of_marriage",
+                  label: "Date of marriage",
+                  type: "date"
+                }])}
+
+                {/* Row 5: Emigration and Naturalization */}
+                {renderFieldGroup([{
+                  name: "applicant_date_of_emigration",
+                  label: "Date of emigration",
+                  type: "date"
+                }, {
+                  name: "applicant_date_of_naturalization",
+                  label: "Date of naturalization",
+                  type: "date"
+                }])}
 
                 {/* Other fields */}
                 {renderFieldGroup([{

@@ -345,12 +345,6 @@ export default function IntakeForm() {
 
               {/* Place and Date of birth */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <DateField
-                  name="applicant_dob"
-                  label="Date of birth"
-                  value={formData?.applicant_dob}
-                  onChange={(value) => handleInputChange("applicant_dob", value)}
-                />
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -367,6 +361,12 @@ export default function IntakeForm() {
                     className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
                   />
                 </motion.div>
+                <DateField
+                  name="applicant_dob"
+                  label="Date of birth"
+                  value={formData?.applicant_dob}
+                  onChange={(value) => handleInputChange("applicant_dob", value)}
+                />
               </div>
 
               {/* Marriage fields */}
@@ -396,6 +396,22 @@ export default function IntakeForm() {
                   />
                 </div>
               )}
+
+              {/* Emigration and Naturalization */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <DateField
+                  name="applicant_date_of_emigration"
+                  label="Date of emigration"
+                  value={formData?.applicant_date_of_emigration}
+                  onChange={(value) => handleInputChange("applicant_date_of_emigration", value)}
+                />
+                <DateField
+                  name="applicant_date_of_naturalization"
+                  label="Date of naturalization"
+                  value={formData?.applicant_date_of_naturalization}
+                  onChange={(value) => handleInputChange("applicant_date_of_naturalization", value)}
+                />
+              </div>
                 </CardContent>
               </TabsContent>
 
