@@ -9,7 +9,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState, useEffect } from "react";
-import { Loader2, Save, Download, Users, Sparkles, Type, User, ArrowLeft } from "lucide-react";
+import { Loader2, Save, Download, Users, Sparkles, Type, User, ArrowLeft, TreePine, BookOpen, Baby, Heart, FileText, GitBranch } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
@@ -423,86 +424,43 @@ export default function FamilyTreeForm() {
                 Additional Data
               </span>
             </Button>
-            {(formData.minor_children_count > 0) && (
-              <Button 
-                onClick={() => setActiveTab('children')}
-                variant={activeTab === 'children' ? 'default' : 'outline'}
-                className={`text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg ${
-                  activeTab === 'children' 
-                    ? 'bg-gradient-to-r from-primary to-secondary text-white' 
-                    : 'bg-white/5 hover:bg-white/10'
-                } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap`}
-              >
-                <span className={activeTab === 'children' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
-                  Children
-                </span>
-              </Button>
-            )}
-            <Button 
-              onClick={() => setActiveTab('applicant')}
-              variant={activeTab === 'applicant' ? 'default' : 'outline'}
-              className={`text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg ${
-                activeTab === 'applicant' 
-                  ? 'bg-gradient-to-r from-primary to-secondary text-white' 
-                  : 'bg-white/5 hover:bg-white/10'
-              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap`}
-            >
-              <span className={activeTab === 'applicant' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
-                Applicant
-              </span>
-            </Button>
-            <Button 
-              onClick={() => setActiveTab('parents')}
-              variant={activeTab === 'parents' ? 'default' : 'outline'}
-              className={`text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg ${
-                activeTab === 'parents' 
-                  ? 'bg-gradient-to-r from-primary to-secondary text-white' 
-                  : 'bg-white/5 hover:bg-white/10'
-              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap`}
-            >
-              <span className={activeTab === 'parents' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
-                Parents
-              </span>
-            </Button>
-            <Button 
-              onClick={() => setActiveTab('grandparents')}
-              variant={activeTab === 'grandparents' ? 'default' : 'outline'}
-              className={`text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg ${
-                activeTab === 'grandparents' 
-                  ? 'bg-gradient-to-r from-primary to-secondary text-white' 
-                  : 'bg-white/5 hover:bg-white/10'
-              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap`}
-            >
-              <span className={activeTab === 'grandparents' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
-                Grandparents
-              </span>
-            </Button>
-            <Button 
-              onClick={() => setActiveTab('great-grandparents')}
-              variant={activeTab === 'great-grandparents' ? 'default' : 'outline'}
-              className={`text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg ${
-                activeTab === 'great-grandparents' 
-                  ? 'bg-gradient-to-r from-primary to-secondary text-white' 
-                  : 'bg-white/5 hover:bg-white/10'
-              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[180px] md:min-w-[220px] lg:min-w-[260px] whitespace-nowrap`}
-            >
-              <span className={activeTab === 'great-grandparents' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
-                Great Grandparents
-              </span>
-            </Button>
-            <Button 
-              onClick={() => setActiveTab('additional')}
-              variant={activeTab === 'additional' ? 'default' : 'outline'}
-              className={`text-sm md:text-base lg:text-xl font-bold px-4 md:px-6 h-10 md:h-12 lg:h-14 rounded-lg ${
-                activeTab === 'additional' 
-                  ? 'bg-gradient-to-r from-primary to-secondary text-white' 
-                  : 'bg-white/5 hover:bg-white/10'
-              } shadow-glow hover-glow backdrop-blur-md border border-white/30 min-w-[120px] md:min-w-[180px] lg:min-w-[200px] whitespace-nowrap`}
-            >
-              <span className={activeTab === 'additional' ? 'text-white' : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'}>
-                Additional Info
-              </span>
-            </Button>
+            {/* Tab Navigation */}
+            <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent pb-2">
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <TabsList className="w-max min-w-full inline-flex h-auto p-2 bg-transparent gap-2">
+                  <TabsTrigger value="applicant" className="data-[state=active]:bg-primary/20 gap-2">
+                    <User className="h-4 w-4" />
+                    <span className="hidden sm:inline">Applicant</span>
+                  </TabsTrigger>
+                  {(formData.minor_children_count > 0) && (
+                    <TabsTrigger value="children" className="data-[state=active]:bg-primary/20 gap-2">
+                      <Baby className="h-4 w-4" />
+                      <span className="hidden sm:inline">Children</span>
+                    </TabsTrigger>
+                  )}
+                  <TabsTrigger value="parents" className="data-[state=active]:bg-primary/20 gap-2">
+                    <Users className="h-4 w-4" />
+                    <span className="hidden sm:inline">Polish Parent</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="grandparents" className="data-[state=active]:bg-primary/20 gap-2">
+                    <GitBranch className="h-4 w-4" />
+                    <span className="hidden sm:inline">Grandparents</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="great-grandparents" className="data-[state=active]:bg-primary/20 gap-2">
+                    <TreePine className="h-4 w-4" />
+                    <span className="hidden sm:inline">G-Grandparents</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="family-history" className="data-[state=active]:bg-primary/20 gap-2">
+                    <BookOpen className="h-4 w-4" />
+                    <span className="hidden sm:inline">Family History</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="additional" className="data-[state=active]:bg-primary/20 gap-2">
+                    <FileText className="h-4 w-4" />
+                    <span className="hidden sm:inline">Additional Info</span>
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </div>
             </div>
           </div>
         </motion.div>
@@ -1272,6 +1230,37 @@ export default function FamilyTreeForm() {
                       </CardContent>
                     </Card>;
               })}
+              </CardContent>
+            </Card>
+          </motion.div>
+          )}
+
+          {/* Family History Section */}
+          {activeTab === 'family-history' && (
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }} 
+            animate={{ opacity: 1, scale: 1 }} 
+            transition={{ duration: 0.5 }}
+          >
+            <Card className="glass-card border-primary/20">
+              <CardHeader className="border-b border-border/50 pb-6">
+                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                  Family History
+                </CardTitle>
+                <CardDescription className="text-lg text-muted-foreground mt-2">
+                  Document the family's historical narrative, stories, and background
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="p-6 md:p-10">
+                <div className="flex flex-col items-center justify-center py-12 space-y-4">
+                  <BookOpen className="h-16 w-16 text-muted-foreground/50" />
+                  <p className="text-lg text-center text-muted-foreground">
+                    This section will contain family historical information, stories, and contextual details.
+                  </p>
+                  <p className="text-sm text-center text-muted-foreground/70">
+                    Coming soon...
+                  </p>
+                </div>
               </CardContent>
             </Card>
           </motion.div>
