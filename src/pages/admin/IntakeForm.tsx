@@ -181,18 +181,9 @@ export default function IntakeForm() {
           <Card className="glass-card border-primary/20">
             <CardContent className="pt-6">
               <Tabs defaultValue="select" value={activeTab} onValueChange={handleTabChange} className="w-full">
-                <div className="sticky top-0 z-20 border-b border-border/50 pb-2 pt-2 -mx-6 px-6">
-                  <div className="flex items-start gap-2 w-full overflow-visible">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => setIsFullView(!isFullView)}
-                      className="flex-shrink-0 h-auto mt-1"
-                      title={isFullView ? "Collapse" : "Expand All"}
-                    >
-                      {isFullView ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
-                    </Button>
-                    <TabsList ref={tabsListRef} className="flex-1 inline-flex flex-wrap justify-start gap-2 bg-transparent p-0 h-auto">
+                <div className="sticky top-0 z-20 border-b border-border/50 pb-2 pt-2">
+                  <div className="flex items-center justify-between gap-2 w-full">
+                    <TabsList ref={tabsListRef} className="flex-1 inline-flex justify-start gap-2 bg-transparent p-0 overflow-x-auto scrollbar-hide">
                     <TabsTrigger value="select" className="flex-shrink-0">
                       <span>Select...</span>
                     </TabsTrigger>
@@ -218,6 +209,15 @@ export default function IntakeForm() {
                       <span>Notes</span>
                     </TabsTrigger>
                   </TabsList>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => setIsFullView(!isFullView)}
+                      className="flex-shrink-0"
+                      title={isFullView ? "Collapse" : "Expand All"}
+                    >
+                      {isFullView ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+                    </Button>
                   </div>
                 </div>
 
