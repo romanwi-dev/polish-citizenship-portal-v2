@@ -108,119 +108,44 @@ export default function IntakeDemo() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
             {/* Design 2.1: Slate Gray */}
-            <div className={`p-6 rounded-lg border-2 ${
-              docsVariant2.every(d => d.checked) 
-                ? 'bg-green-100 dark:bg-green-900/30 border-green-500' 
-                : 'bg-slate-100 dark:bg-slate-800/50 border-slate-300 dark:border-slate-700'
-            }`}>
-              <h3 className="text-lg font-semibold mb-4">Design 2.1: Slate Gray</h3>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={() => toggleAllDocs(2)}
-                className="w-full mb-4"
-              >
-                {docsVariant2.every(d => d.checked) ? "Reset All" : "Mark All Complete"}
-              </Button>
-              <RequiredDocumentsSection
-                title="Required Documents"
-                documents={docsVariant2}
-                onChange={(id, checked) => handleDocChange(2, id, checked)}
-                colorScheme="slate"
-              />
-            </div>
+            <RequiredDocumentsSection
+              title="Design 2.1: Slate Gray"
+              documents={docsVariant2}
+              onChange={(id, checked) => handleDocChange(2, id, checked)}
+              colorScheme="slate"
+            />
 
             {/* Design 2.2: Ocean Blue */}
-            <div className={`p-6 rounded-lg border-2 ${
-              docsVariant3.every(d => d.checked) 
-                ? 'bg-green-100 dark:bg-green-900/30 border-green-500' 
-                : 'bg-blue-50 dark:bg-blue-900/30 border-blue-300 dark:border-blue-700'
-            }`}>
-              <h3 className="text-lg font-semibold mb-4">Design 2.2: Ocean Blue</h3>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={() => toggleAllDocs(3)}
-                className="w-full mb-4"
-              >
-                {docsVariant3.every(d => d.checked) ? "Reset All" : "Mark All Complete"}
-              </Button>
-              <RequiredDocumentsSection
-                title="Required Documents"
-                documents={docsVariant3}
-                onChange={(id, checked) => handleDocChange(3, id, checked)}
-                colorScheme="blue"
-              />
-            </div>
+            <RequiredDocumentsSection
+              title="Design 2.2: Ocean Blue"
+              documents={docsVariant3}
+              onChange={(id, checked) => handleDocChange(3, id, checked)}
+              colorScheme="blue"
+            />
 
             {/* Design 2.3: Warm Amber */}
-            <div className={`p-6 rounded-lg border-2 ${
-              docsVariant4.every(d => d.checked) 
-                ? 'bg-green-100 dark:bg-green-900/30 border-green-500' 
-                : 'bg-amber-50 dark:bg-amber-900/30 border-amber-300 dark:border-amber-700'
-            }`}>
-              <h3 className="text-lg font-semibold mb-4">Design 2.3: Warm Amber</h3>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={() => toggleAllDocs(4)}
-                className="w-full mb-4"
-              >
-                {docsVariant4.every(d => d.checked) ? "Reset All" : "Mark All Complete"}
-              </Button>
-              <RequiredDocumentsSection
-                title="Required Documents"
-                documents={docsVariant4}
-                onChange={(id, checked) => handleDocChange(4, id, checked)}
-                colorScheme="amber"
-              />
-            </div>
+            <RequiredDocumentsSection
+              title="Design 2.3: Warm Amber"
+              documents={docsVariant4}
+              onChange={(id, checked) => handleDocChange(4, id, checked)}
+              colorScheme="amber"
+            />
 
             {/* Design 2.4: Fresh Green */}
-            <div className={`p-6 rounded-lg border-2 ${
-              docsVariant5.every(d => d.checked) 
-                ? 'bg-green-200 dark:bg-green-800/40 border-green-600' 
-                : 'bg-green-50 dark:bg-green-900/30 border-green-300 dark:border-green-700'
-            }`}>
-              <h3 className="text-lg font-semibold mb-4">Design 2.4: Fresh Green</h3>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={() => toggleAllDocs(5)}
-                className="w-full mb-4"
-              >
-                {docsVariant5.every(d => d.checked) ? "Reset All" : "Mark All Complete"}
-              </Button>
-              <RequiredDocumentsSection
-                title="Required Documents"
-                documents={docsVariant5}
-                onChange={(id, checked) => handleDocChange(5, id, checked)}
-                colorScheme="green"
-              />
-            </div>
+            <RequiredDocumentsSection
+              title="Design 2.4: Fresh Green"
+              documents={docsVariant5}
+              onChange={(id, checked) => handleDocChange(5, id, checked)}
+              colorScheme="green"
+            />
 
             {/* Design 2.5: Royal Purple */}
-            <div className={`p-6 rounded-lg border-2 ${
-              docsVariant6.every(d => d.checked) 
-                ? 'bg-green-100 dark:bg-green-900/30 border-green-500' 
-                : 'bg-purple-50 dark:bg-purple-900/30 border-purple-300 dark:border-purple-700'
-            }`}>
-              <h3 className="text-lg font-semibold mb-4">Design 2.5: Royal Purple</h3>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={() => toggleAllDocs(6)}
-                className="w-full mb-4"
-              >
-                {docsVariant6.every(d => d.checked) ? "Reset All" : "Mark All Complete"}
-              </Button>
-              <RequiredDocumentsSection
-                title="Required Documents"
-                documents={docsVariant6}
-                onChange={(id, checked) => handleDocChange(6, id, checked)}
-                colorScheme="purple"
-              />
-            </div>
+            <RequiredDocumentsSection
+              title="Design 2.5: Royal Purple"
+              documents={docsVariant6}
+              onChange={(id, checked) => handleDocChange(6, id, checked)}
+              colorScheme="purple"
+            />
           </div>
         </div>
 
