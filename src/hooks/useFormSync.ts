@@ -1,11 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { useQueryClient } from '@tanstack/react-query';
 
 /**
  * Simple, reliable form sync - load once, save on demand
  */
 export const useFormSync = (caseId: string | undefined) => {
+  const queryClient = useQueryClient();
   const [formData, setFormData] = useState<any>({});
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -72,8 +74,14 @@ export const useFormSync = (caseId: string | undefined) => {
         if (error) throw error;
       }
 
-      console.log('✅ Data saved successfully');
-      setFormData(updates);
+      console.log('✅ Data saved successfully - invalidating cache');
+      
+      // Update local state with merged data
+      setFormData((prev: any) => ({ ...prev, ...updates }));
+      
+      // Invalidate React Query cache to force refetch
+      await queryClient.invalidateQueries({ queryKey: ['masterData', caseId] });
+      
       toast.success('Saved');
       setIsSaving(false);
       return true;
@@ -83,15 +91,25 @@ export const useFormSync = (caseId: string | undefined) => {
       setIsSaving(false);
       return false;
     }
-  }, [caseId]);
+  }, [caseId, queryClient]);
 
   // Clear all data
   const clearAll = useCallback(async () => {
     console.log('🧹 Clearing all data');
-    const cleared = {};
-    setFormData(cleared);
-    await saveData(cleared);
-  }, [saveData]);
+    
+    // Clear in database by updating all fields to null/empty
+    const cleared = { 
+      case_id: caseId,
+      // Keep only case_id, clear everything else
+    };
+    
+    setFormData({});
+    const success = await saveData(cleared);
+    
+    if (success) {
+      console.log('✅ All data cleared and saved to DB');
+    }
+  }, [caseId, saveData]);
 
   // Clear single field
   const clearField = useCallback(async (field: string) => {

@@ -26,10 +26,10 @@ export const useMasterData = (caseId: string | undefined) => {
       return data;
     },
     enabled: !!caseId && caseId !== ':id',
-    // Fresh data on case change, then rely on realtime sync
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 10 * 60 * 1000, // 10 minutes  
-    refetchOnMount: true, // Refetch when component mounts with new case
+    // Always fetch fresh data - no caching issues
+    staleTime: 0, // Always considered stale
+    gcTime: 0, // Don't keep in cache
+    refetchOnMount: true, // Always refetch on mount
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
@@ -84,8 +84,9 @@ export const useUpdateMasterData = () => {
       console.log('✅ SAVED TO DB SUCCESSFULLY');
     },
     onSuccess: (_, variables) => {
-      console.log('✅ Data saved - NOT refetching (realtime will handle updates)');
-      // DO NOT refetch - let realtime sync handle it
+      console.log('✅ Data saved - invalidating query cache');
+      // Force refetch of data after save
+      queryClient.invalidateQueries({ queryKey: ['masterData', variables.caseId] });
       toast.success("Master data updated successfully");
     },
     onError: (error: any) => {
