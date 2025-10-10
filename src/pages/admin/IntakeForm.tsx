@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { Loader2, Save, Sparkles, CheckCircle2, Type, User, FileText, GitBranch, Download, Heart, ArrowLeft, Users, MapPin, Phone, Plane, FolderOpen, MessageSquare } from "lucide-react";
+import { Loader2, Save, Sparkles, CheckCircle2, Type, User, FileText, GitBranch, Download, Heart, ArrowLeft, Users, MapPin, Phone, Plane, FolderOpen, MessageSquare, Maximize2, Minimize2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -30,6 +30,7 @@ export default function IntakeForm() {
   const [showClearDialog, setShowClearDialog] = useState(false);
   const { isLargeFonts, toggleFontSize } = useAccessibility();
   const [activeTab, setActiveTab] = useState("applicant");
+  const [isFullView, setIsFullView] = useState(false);
 
 
   const handleInputChange = (field: string, value: any) => {
@@ -122,44 +123,67 @@ export default function IntakeForm() {
       }}>
           <Card className="glass-card border-primary/20">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <div className="border-b border-border/50">
-                <TabsList className="w-full grid grid-cols-2 md:grid-cols-8 h-auto p-2 bg-transparent">
-                  <TabsTrigger value="select" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                    <Users className="h-4 w-4 mr-2" />
-                    <span className="hidden sm:inline">Select...</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="applicant" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                    <User className="h-4 w-4 mr-2" />
-                    <span className="hidden sm:inline">Applicant</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="contact" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                    <Phone className="h-4 w-4 mr-2" />
-                    <span className="hidden sm:inline">Contact</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="address" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                    <MapPin className="h-4 w-4 mr-2" />
-                    <span className="hidden sm:inline">Address</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="passport" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                    <Plane className="h-4 w-4 mr-2" />
-                    <span className="hidden sm:inline">Passport</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="immigration" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                    <Users className="h-4 w-4 mr-2" />
-                    <span className="hidden sm:inline">Immigration</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="documents" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                    <FolderOpen className="h-4 w-4 mr-2" />
-                    <span className="hidden sm:inline">Documents</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="notes" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                    <MessageSquare className="h-4 w-4 mr-2" />
-                    <span className="hidden sm:inline">Notes</span>
-                  </TabsTrigger>
-                </TabsList>
+              <div className="border-b border-border/50 flex items-center gap-2">
+                {/* Expand/Collapse Button */}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setIsFullView(!isFullView)}
+                  className="ml-2 flex-shrink-0"
+                  title={isFullView ? "Switch to tabbed view" : "Show all sections"}
+                >
+                  {isFullView ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
+                </Button>
+
+                {/* Tabs List - Hidden in full view */}
+                {!isFullView && (
+                  <TabsList className="flex-1 grid grid-cols-2 md:grid-cols-8 h-auto p-2 bg-transparent">
+                    <TabsTrigger value="select" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                      <Users className="h-4 w-4 mr-2" />
+                      <span className="hidden sm:inline">Select...</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="applicant" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                      <User className="h-4 w-4 mr-2" />
+                      <span className="hidden sm:inline">Applicant</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="contact" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                      <Phone className="h-4 w-4 mr-2" />
+                      <span className="hidden sm:inline">Contact</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="address" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                      <MapPin className="h-4 w-4 mr-2" />
+                      <span className="hidden sm:inline">Address</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="passport" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                      <Plane className="h-4 w-4 mr-2" />
+                      <span className="hidden sm:inline">Passport</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="immigration" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                      <Users className="h-4 w-4 mr-2" />
+                      <span className="hidden sm:inline">Immigration</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="documents" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                      <FolderOpen className="h-4 w-4 mr-2" />
+                      <span className="hidden sm:inline">Documents</span>
+                    </TabsTrigger>
+                    <TabsTrigger value="notes" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                      <MessageSquare className="h-4 w-4 mr-2" />
+                      <span className="hidden sm:inline">Notes</span>
+                    </TabsTrigger>
+                  </TabsList>
+                )}
+
+                {/* Full View Title */}
+                {isFullView && (
+                  <div className="flex-1 p-4">
+                    <h2 className="text-2xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                      Complete Intake Form
+                    </h2>
+                  </div>
+                )}
               </div>
 
-              <TabsContent value="select" className="mt-0">
+              <TabsContent value="select" className="mt-0" style={isFullView ? { display: 'block' } : undefined}>
                 <CardHeader className="border-b border-border/50 pb-6">
                   <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                     Select Information
@@ -293,7 +317,7 @@ export default function IntakeForm() {
                 </CardContent>
               </TabsContent>
 
-              <TabsContent value="applicant" className="mt-0">
+              <TabsContent value="applicant" className="mt-0" style={isFullView ? { display: 'block' } : undefined}>
                 <CardHeader className="border-b border-border/50 pb-6">
                   <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                     Applicant Information
@@ -427,7 +451,7 @@ export default function IntakeForm() {
                 </CardContent>
               </TabsContent>
 
-              <TabsContent value="contact" className="mt-0">
+              <TabsContent value="contact" className="mt-0" style={isFullView ? { display: 'block' } : undefined}>
                 <CardHeader className="border-b border-border/50 pb-6">
                   <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                     Contact Information
@@ -472,7 +496,7 @@ export default function IntakeForm() {
                 </CardContent>
               </TabsContent>
 
-              <TabsContent value="address" className="mt-0">
+              <TabsContent value="address" className="mt-0" style={isFullView ? { display: 'block' } : undefined}>
                 <CardHeader className="border-b border-border/50 pb-6">
                   <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                     Address Information
@@ -563,7 +587,7 @@ export default function IntakeForm() {
                 </CardContent>
               </TabsContent>
 
-              <TabsContent value="passport" className="mt-0">
+              <TabsContent value="passport" className="mt-0" style={isFullView ? { display: 'block' } : undefined}>
                 <CardHeader className="border-b border-border/50 pb-6">
                   <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                     Passport Information
@@ -597,7 +621,7 @@ export default function IntakeForm() {
               </CardContent>
             </TabsContent>
 
-            <TabsContent value="immigration" className="mt-0">
+            <TabsContent value="immigration" className="mt-0" style={isFullView ? { display: 'block' } : undefined}>
               <CardHeader className="border-b border-border/50 pb-6">
                 <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Immigration Information
@@ -621,7 +645,7 @@ export default function IntakeForm() {
             </CardContent>
           </TabsContent>
 
-          <TabsContent value="documents" className="mt-0">
+          <TabsContent value="documents" className="mt-0" style={isFullView ? { display: 'block' } : undefined}>
             <CardHeader className="border-b border-border/50 pb-6">
               <CardTitle className="font-light text-foreground/90 text-sm">
                 Documents Required
@@ -711,7 +735,7 @@ export default function IntakeForm() {
             </CardContent>
           </TabsContent>
 
-          <TabsContent value="notes" className="mt-0">
+          <TabsContent value="notes" className="mt-0" style={isFullView ? { display: 'block' } : undefined}>
             <CardHeader className="border-b border-border/50 pb-6">
               <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 Additional Notes
@@ -753,5 +777,5 @@ export default function IntakeForm() {
         </AlertDialogContent>
       </AlertDialog>
 
-    </div>;
+    </div>
 }
