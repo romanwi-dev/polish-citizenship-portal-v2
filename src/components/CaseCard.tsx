@@ -137,11 +137,11 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
         <div className="absolute inset-0 w-full backface-hidden glass-card p-6 rounded-lg hover-glow flex flex-col" style={{ minHeight: '580px' }}>
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center flex-shrink-0">
-                <User className="w-6 h-6 text-primary-foreground" />
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/60 to-accent/60 flex items-center justify-center flex-shrink-0">
+                <User className="w-6 h-6 text-primary-foreground/70" />
               </div>
               <div>
-                <h3 className="font-bold text-lg bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                <h3 className="font-bold text-3xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                   {clientCase.client_name}
                 </h3>
                 <div className="flex items-center gap-1 text-sm text-muted-foreground">
@@ -256,14 +256,14 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
                 <FileText className="w-4 h-4 text-secondary" />
                 <p className="text-sm font-normal font-label text-muted-foreground">Docs</p>
               </div>
-              <p className="text-base font-normal font-label mt-1">{clientCase.document_count}</p>
+              <p className="text-base font-bold font-label mt-1 text-cyan-400">{clientCase.document_count}</p>
             </div>
             <div className="flex flex-col gap-1 p-3 rounded-lg bg-background/30">
               <div className="flex items-center gap-1">
                 <TrendingUp className="w-4 h-4 text-accent" />
                 <p className="text-sm font-normal font-label text-muted-foreground">Score</p>
               </div>
-              <p className="text-base font-normal font-label mt-1">{clientCase.client_score || 0}</p>
+              <p className="text-base font-bold font-label mt-1 text-cyan-400">{clientCase.client_score || 0}</p>
             </div>
           </div>
 
@@ -273,11 +273,11 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
                 <TrendingUp className="w-4 h-4 text-muted-foreground" />
                 <span className="font-normal font-label text-muted-foreground">Progress</span>
               </div>
-              <span className="font-bold text-lg">{clientCase.progress || 0}%</span>
+              <span className="font-bold text-lg text-cyan-400">{clientCase.progress || 0}%</span>
             </div>
-            <div className="h-3 bg-background/50 rounded-full overflow-hidden">
+            <div className="h-3 bg-background/50 opacity-50 rounded-full overflow-hidden">
               <div 
-                className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-500 rounded-full"
+                className="h-full bg-gradient-to-r from-primary/80 to-accent/80 transition-all duration-500 rounded-full"
                 style={{ width: `${clientCase.progress || 0}%` }}
               />
             </div>
@@ -407,7 +407,7 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
               {clientCase.client_code && (
                 <div className="p-3 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
                   <p className="text-xs text-muted-foreground mb-1">Case Reference</p>
-                  <p className="font-bold text-lg text-primary">{clientCase.client_code}</p>
+                  <p className="font-bold text-lg text-cyan-400">{clientCase.client_code}</p>
                 </div>
               )}
 
@@ -441,7 +441,7 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
                         <Clock className="w-3 h-3 text-secondary" />
                         Days Active
                       </span>
-                      <span className="text-xs font-bold">
+                      <span className="text-xs font-bold text-cyan-400">
                         {Math.floor((Date.now() - new Date(clientCase.start_date).getTime()) / (1000 * 60 * 60 * 24))} days
                       </span>
                     </div>
@@ -451,7 +451,7 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
                       <TrendingUp className="w-3 h-3 text-accent" />
                       Completion
                     </span>
-                    <span className="text-xs font-bold text-primary">{clientCase.progress || 0}%</span>
+                    <span className="text-xs font-bold text-cyan-400">{clientCase.progress || 0}%</span>
                   </div>
                 </div>
               </div>
@@ -463,7 +463,7 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
                     <FileText className="w-4 h-4 text-accent" />
                     <span className="text-xs">Total Submitted</span>
                   </div>
-                  <span className="text-xl font-bold text-primary">{clientCase.document_count}</span>
+                  <span className="text-xl font-bold text-cyan-400">{clientCase.document_count}</span>
                 </div>
               </div>
 
