@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminLayout } from "@/components/AdminLayout";
@@ -19,9 +19,18 @@ import {
   ArrowLeft,
   Upload,
   Edit,
-  Bot
+  Bot,
+  FileText,
+  Loader2
 } from "lucide-react";
 import { toast } from "sonner";
+
+// Lazy load form components
+const IntakeFormContent = lazy(() => import("./IntakeForm"));
+const FamilyTreeFormContent = lazy(() => import("./FamilyTreeForm"));
+const POAFormContent = lazy(() => import("./POAForm"));
+const CitizenshipFormContent = lazy(() => import("./CitizenshipForm"));
+const CivilRegistryFormContent = lazy(() => import("./CivilRegistryForm"));
 
 interface CaseData {
   id: string;
@@ -50,8 +59,9 @@ interface CaseData {
 export default function CaseDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const defaultTab = searchParams.get('tab') || 'overview';
+  const defaultFormSection = searchParams.get('section') || 'intake';
   const [caseData, setCaseData] = useState<CaseData | null>(null);
   const [intakeData, setIntakeData] = useState<any>(null);
   const [documents, setDocuments] = useState<any[]>([]);
@@ -209,7 +219,7 @@ export default function CaseDetail() {
         </div>
 
         {/* Tabs */}
-        <Tabs defaultValue={defaultTab} className="space-y-6">
+        <Tabs defaultValue={defaultTab} className="space-y-6" onValueChange={(value) => setSearchParams({ tab: value })}>
           <div className="w-full overflow-x-auto pb-4">
             <TabsList className="inline-flex gap-3 bg-transparent h-auto p-0 w-max">
               <TabsTrigger 
@@ -227,6 +237,15 @@ export default function CaseDetail() {
               >
                 <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Overview
+                </span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="forms"
+                className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-card/80 hover:bg-card/90 hover:shadow-[0_0_40px_hsl(221_83%_53%_/_0.4)] transition-all group relative backdrop-blur-md border border-white/30 data-[state=active]:bg-card flex-shrink-0 md:flex-1"
+              >
+                <FileText className="h-4 w-4 mr-2" />
+                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                  Forms
                 </span>
               </TabsTrigger>
               <TabsTrigger 
@@ -283,6 +302,64 @@ export default function CaseDetail() {
           {/* AI AGENT TAB */}
           <TabsContent value="ai-agent" className="space-y-6">
             <AIAgentPanel caseId={id!} />
+          </TabsContent>
+
+          {/* FORMS TAB */}
+          <TabsContent value="forms" className="space-y-6">
+            <Tabs defaultValue={defaultFormSection} onValueChange={(value) => setSearchParams({ tab: "forms", section: value })}>
+              <TabsList className="grid w-full grid-cols-3 md:grid-cols-6 gap-2 bg-muted/50 p-2">
+                <TabsTrigger value="intake">Intake</TabsTrigger>
+                <TabsTrigger value="master-data">Master Data</TabsTrigger>
+                <TabsTrigger value="family-tree">Family Tree</TabsTrigger>
+                <TabsTrigger value="poa">POA</TabsTrigger>
+                <TabsTrigger value="citizenship">Citizenship</TabsTrigger>
+                <TabsTrigger value="civil-registry">Civil Registry</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="intake" className="mt-6">
+                <Suspense fallback={<div className="flex items-center justify-center p-12"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
+                  <IntakeFormContent />
+                </Suspense>
+              </TabsContent>
+
+              <TabsContent value="master-data" className="mt-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Master Data Table</CardTitle>
+                    <CardDescription>Click below to open the master data dialog</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Button onClick={() => setMasterTableOpen(true)} size="lg">
+                      Open Master Data Table
+                    </Button>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="family-tree" className="mt-6">
+                <Suspense fallback={<div className="flex items-center justify-center p-12"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
+                  <FamilyTreeFormContent />
+                </Suspense>
+              </TabsContent>
+
+              <TabsContent value="poa" className="mt-6">
+                <Suspense fallback={<div className="flex items-center justify-center p-12"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
+                  <POAFormContent />
+                </Suspense>
+              </TabsContent>
+
+              <TabsContent value="citizenship" className="mt-6">
+                <Suspense fallback={<div className="flex items-center justify-center p-12"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
+                  <CitizenshipFormContent />
+                </Suspense>
+              </TabsContent>
+
+              <TabsContent value="civil-registry" className="mt-6">
+                <Suspense fallback={<div className="flex items-center justify-center p-12"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
+                  <CivilRegistryFormContent />
+                </Suspense>
+              </TabsContent>
+            </Tabs>
           </TabsContent>
 
           {/* OVERVIEW TAB - Finalized from Replit */}

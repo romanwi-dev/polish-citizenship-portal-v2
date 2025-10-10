@@ -137,14 +137,6 @@ const App = () => (
             } 
           />
           <Route 
-            path="/admin/cases/:id/intake" 
-            element={
-              <Suspense fallback={<AdminLoader />}>
-                <IntakeForm />
-              </Suspense>
-            } 
-          />
-          <Route 
             path="/admin/form-scanner" 
             element={
               <Suspense fallback={<AdminLoader />}>
