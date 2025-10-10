@@ -20,30 +20,28 @@ export default function IntakeDemo() {
           Back to Intake Form
         </Button>
 
-        <h1 className="text-3xl font-bold">Select Field Design Comparison</h1>
-        <p className="text-muted-foreground">Choose your preferred design style for form labels and inputs</p>
+        <h1 className="text-3xl font-bold">Label Typography Comparison</h1>
+        <p className="text-muted-foreground">Choose your preferred font style for form labels</p>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* OPTION 1: Minimalist Clean */}
+          {/* OPTION 1: Classic Serif */}
           <Card className="border-2">
             <CardHeader>
-              <CardTitle>Option 1: Minimalist Clean</CardTitle>
-              <p className="text-sm text-muted-foreground">Material Design inspired - Professional & clean</p>
+              <CardTitle>Option 1: Classic Serif</CardTitle>
+              <p className="text-sm text-muted-foreground">Elegant & traditional - Georgia/serif font family</p>
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Gender */}
               <div className="space-y-2">
                 <Label 
                   htmlFor="gender-1"
-                  className="text-xs uppercase tracking-wider text-muted-foreground font-medium"
+                  className="text-lg font-serif font-normal tracking-wide"
+                  style={{ fontFamily: 'Georgia, serif' }}
                 >
                   Gender
                 </Label>
                 <Select value={values1.gender} onValueChange={(v) => setValues1({...values1, gender: v})}>
-                  <SelectTrigger 
-                    id="gender-1"
-                    className="h-12 border border-border hover:border-primary/50 transition-colors"
-                  >
+                  <SelectTrigger id="gender-1" className="h-12">
                     <SelectValue placeholder="Select gender" />
                   </SelectTrigger>
                   <SelectContent>
@@ -57,15 +55,13 @@ export default function IntakeDemo() {
               <div className="space-y-2">
                 <Label 
                   htmlFor="status-1"
-                  className="text-xs uppercase tracking-wider text-muted-foreground font-medium"
+                  className="text-lg font-serif font-normal tracking-wide"
+                  style={{ fontFamily: 'Georgia, serif' }}
                 >
                   Civil Status
                 </Label>
                 <Select value={values1.status} onValueChange={(v) => setValues1({...values1, status: v})}>
-                  <SelectTrigger 
-                    id="status-1"
-                    className="h-12 border border-border hover:border-primary/50 transition-colors"
-                  >
+                  <SelectTrigger id="status-1" className="h-12">
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                   <SelectContent>
@@ -81,15 +77,13 @@ export default function IntakeDemo() {
               <div className="space-y-2">
                 <Label 
                   htmlFor="children-1"
-                  className="text-xs uppercase tracking-wider text-muted-foreground font-medium"
+                  className="text-lg font-serif font-normal tracking-wide"
+                  style={{ fontFamily: 'Georgia, serif' }}
                 >
                   Number of Children
                 </Label>
                 <Select value={values1.children} onValueChange={(v) => setValues1({...values1, children: v})}>
-                  <SelectTrigger 
-                    id="children-1"
-                    className="h-12 border border-border hover:border-primary/50 transition-colors"
-                  >
+                  <SelectTrigger id="children-1" className="h-12">
                     <SelectValue placeholder="Select number" />
                   </SelectTrigger>
                   <SelectContent>
@@ -104,27 +98,24 @@ export default function IntakeDemo() {
             </CardContent>
           </Card>
 
-          {/* OPTION 2: Modern Bold */}
+          {/* OPTION 2: Modern Sans-Serif */}
           <Card className="border-2 border-primary/20 bg-primary/5">
             <CardHeader>
-              <CardTitle>Option 2: Modern Bold</CardTitle>
-              <p className="text-sm text-muted-foreground">Current style refined - Confident & modern</p>
+              <CardTitle>Option 2: Modern Sans-Serif</CardTitle>
+              <p className="text-sm text-muted-foreground">Clean & contemporary - System UI font stack</p>
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Gender */}
-              <div className="space-y-3">
+              <div className="space-y-2">
                 <Label 
                   htmlFor="gender-2"
-                  className="text-sm font-semibold flex items-center gap-2"
+                  className="text-base font-medium tracking-tight"
+                  style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}
                 >
-                  <span className="w-1 h-4 bg-primary rounded-full"></span>
                   Gender
                 </Label>
                 <Select value={values2.gender} onValueChange={(v) => setValues2({...values2, gender: v})}>
-                  <SelectTrigger 
-                    id="gender-2"
-                    className="h-14 border-2 border-border hover:border-primary hover:shadow-md transition-all rounded-lg"
-                  >
+                  <SelectTrigger id="gender-2" className="h-12">
                     <SelectValue placeholder="Select gender" />
                   </SelectTrigger>
                   <SelectContent>
@@ -135,19 +126,16 @@ export default function IntakeDemo() {
               </div>
 
               {/* Civil Status */}
-              <div className="space-y-3">
+              <div className="space-y-2">
                 <Label 
                   htmlFor="status-2"
-                  className="text-sm font-semibold flex items-center gap-2"
+                  className="text-base font-medium tracking-tight"
+                  style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}
                 >
-                  <span className="w-1 h-4 bg-primary rounded-full"></span>
                   Civil Status
                 </Label>
                 <Select value={values2.status} onValueChange={(v) => setValues2({...values2, status: v})}>
-                  <SelectTrigger 
-                    id="status-2"
-                    className="h-14 border-2 border-border hover:border-primary hover:shadow-md transition-all rounded-lg"
-                  >
+                  <SelectTrigger id="status-2" className="h-12">
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                   <SelectContent>
@@ -160,19 +148,16 @@ export default function IntakeDemo() {
               </div>
 
               {/* Number of Children */}
-              <div className="space-y-3">
+              <div className="space-y-2">
                 <Label 
                   htmlFor="children-2"
-                  className="text-sm font-semibold flex items-center gap-2"
+                  className="text-base font-medium tracking-tight"
+                  style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}
                 >
-                  <span className="w-1 h-4 bg-primary rounded-full"></span>
                   Number of Children
                 </Label>
                 <Select value={values2.children} onValueChange={(v) => setValues2({...values2, children: v})}>
-                  <SelectTrigger 
-                    id="children-2"
-                    className="h-14 border-2 border-border hover:border-primary hover:shadow-md transition-all rounded-lg"
-                  >
+                  <SelectTrigger id="children-2" className="h-12">
                     <SelectValue placeholder="Select number" />
                   </SelectTrigger>
                   <SelectContent>
@@ -187,26 +172,24 @@ export default function IntakeDemo() {
             </CardContent>
           </Card>
 
-          {/* OPTION 3: Soft & Friendly */}
+          {/* OPTION 3: Relaxed Rounded */}
           <Card className="border-2">
             <CardHeader>
-              <CardTitle>Option 3: Soft & Friendly</CardTitle>
-              <p className="text-sm text-muted-foreground">Approachable design - Warm & welcoming</p>
+              <CardTitle>Option 3: Relaxed Rounded</CardTitle>
+              <p className="text-sm text-muted-foreground">Friendly & approachable - Rounded sans-serif</p>
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Gender */}
               <div className="space-y-2">
                 <Label 
                   htmlFor="gender-3"
-                  className="text-xs font-normal text-muted-foreground/80 px-1"
+                  className="text-lg font-normal tracking-wider"
+                  style={{ fontFamily: 'Verdana, Geneva, sans-serif' }}
                 >
                   Gender
                 </Label>
                 <Select value={values3.gender} onValueChange={(v) => setValues3({...values3, gender: v})}>
-                  <SelectTrigger 
-                    id="gender-3"
-                    className="h-12 rounded-full border-0 bg-muted/50 hover:bg-muted transition-colors"
-                  >
+                  <SelectTrigger id="gender-3" className="h-12">
                     <SelectValue placeholder="Select gender" />
                   </SelectTrigger>
                   <SelectContent>
@@ -220,15 +203,13 @@ export default function IntakeDemo() {
               <div className="space-y-2">
                 <Label 
                   htmlFor="status-3"
-                  className="text-xs font-normal text-muted-foreground/80 px-1"
+                  className="text-lg font-normal tracking-wider"
+                  style={{ fontFamily: 'Verdana, Geneva, sans-serif' }}
                 >
                   Civil Status
                 </Label>
                 <Select value={values3.status} onValueChange={(v) => setValues3({...values3, status: v})}>
-                  <SelectTrigger 
-                    id="status-3"
-                    className="h-12 rounded-full border-0 bg-muted/50 hover:bg-muted transition-colors"
-                  >
+                  <SelectTrigger id="status-3" className="h-12">
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                   <SelectContent>
@@ -244,15 +225,13 @@ export default function IntakeDemo() {
               <div className="space-y-2">
                 <Label 
                   htmlFor="children-3"
-                  className="text-xs font-normal text-muted-foreground/80 px-1"
+                  className="text-lg font-normal tracking-wider"
+                  style={{ fontFamily: 'Verdana, Geneva, sans-serif' }}
                 >
                   Number of Children
                 </Label>
                 <Select value={values3.children} onValueChange={(v) => setValues3({...values3, children: v})}>
-                  <SelectTrigger 
-                    id="children-3"
-                    className="h-12 rounded-full border-0 bg-muted/50 hover:bg-muted transition-colors"
-                  >
+                  <SelectTrigger id="children-3" className="h-12">
                     <SelectValue placeholder="Select number" />
                   </SelectTrigger>
                   <SelectContent>
