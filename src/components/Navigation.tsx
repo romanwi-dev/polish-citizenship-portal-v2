@@ -53,7 +53,7 @@ const Navigation = () => {
               variant="ghost" 
               size="icon"
               className="text-foreground hover:text-primary"
-              onClick={() => navigate('/admin/dashboard')}
+              onClick={() => navigate('/admin')}
               title="Control Room"
             >
               <User className="h-14 w-14" />
