@@ -101,29 +101,17 @@ export default function FieldAuditReport() {
         <CardContent>
           <Tabs defaultValue="intake">
             <TabsList className="grid w-full grid-cols-4 gap-2 bg-transparent p-0">
-              <TabsTrigger 
-                value="intake"
-                className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors"
-              >
-                Intake ({intakeFields.length})
+              <TabsTrigger value="intake">
+                <span>Intake ({intakeFields.length})</span>
               </TabsTrigger>
-              <TabsTrigger 
-                value="master"
-                className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors"
-              >
-                Master ({masterFields.length})
+              <TabsTrigger value="master">
+                <span>Master ({masterFields.length})</span>
               </TabsTrigger>
-              <TabsTrigger 
-                value="intake_db"
-                className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors"
-              >
-                intake_data ({intakeDataFields.length})
+              <TabsTrigger value="intake_db">
+                <span>intake_data ({intakeDataFields.length})</span>
               </TabsTrigger>
-              <TabsTrigger 
-                value="master_db"
-                className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors"
-              >
-                master_table ({masterTableFields.length})
+              <TabsTrigger value="master_db">
+                <span>master_table ({masterTableFields.length})</span>
               </TabsTrigger>
             </TabsList>
             

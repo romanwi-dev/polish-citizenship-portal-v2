@@ -412,18 +412,15 @@ export const MasterDataTable = ({ open, onOpenChange, caseId }: MasterDataTableP
               <TabsList className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-2 bg-transparent p-0">
             {sections.map(section => {
               const completion = calculateCompletion(section.id);
-              const Icon = section.icon;
               return (
                 <TabsTrigger 
                   key={section.id} 
-                  value={section.id} 
-                  className="rounded border border-input bg-background hover:bg-accent hover:text-accent-foreground data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-colors text-sm md:text-base py-3 relative"
+                  value={section.id}
                 >
-                  <Icon className="h-4 w-4 mr-2" />
-                  <span className="hidden sm:inline">{section.label}</span>
+                  <span>{section.label}</span>
                   <Badge 
                     variant={completion === 100 ? "default" : "secondary"} 
-                    className="absolute -top-2 -right-2 h-5 w-5 p-0 flex items-center justify-center text-[10px]"
+                    className="ml-2 h-5 w-5 p-0 flex items-center justify-center text-[10px]"
                   >
                     {completion}
                   </Badge>
