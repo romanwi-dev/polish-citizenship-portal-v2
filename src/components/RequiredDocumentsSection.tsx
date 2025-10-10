@@ -21,13 +21,29 @@ export function RequiredDocumentsSection({
 }: RequiredDocumentsSectionProps) {
   const isComplete = documents.every(doc => doc.checked);
   
+  // Color scheme backgrounds
+  const getBackgroundColor = () => {
+    if (isComplete) return 'bg-green-900/40 border-green-700/50';
+    
+    switch (colorScheme) {
+      case 'slate':
+        return 'bg-slate-800/30 border-slate-700/50';
+      case 'blue':
+        return 'bg-blue-950/30 border-blue-800/50';
+      case 'amber':
+        return 'bg-amber-900/30 border-amber-800/50';
+      case 'green':
+        return 'bg-green-900/30 border-green-800/50';
+      case 'purple':
+        return 'bg-purple-900/30 border-purple-800/50';
+      default:
+        return 'bg-blue-950/30 border-blue-800/50';
+    }
+  };
+  
   return (
-    <div className={`p-6 border-2 rounded-lg transition-all ${
-      isComplete 
-        ? 'bg-green-900/40 border-green-700/50' 
-        : 'bg-blue-950/30 border-blue-800/50'
-    }`}>
-      <h3 className="text-xs font-light uppercase tracking-[0.2em] text-foreground/90 mb-6">
+    <div className={`p-6 border-2 rounded-lg transition-all ${getBackgroundColor()}`}>
+      <h3 className="text-xs font-light tracking-[0.2em] text-foreground/90 mb-6">
         {title}
       </h3>
       
@@ -45,7 +61,7 @@ export function RequiredDocumentsSection({
             />
             <label
               htmlFor={doc.id}
-              className="text-xs font-light uppercase tracking-[0.2em] cursor-pointer text-foreground/90"
+              className="text-xs font-light tracking-[0.2em] cursor-pointer text-foreground/90"
             >
               {doc.label}
             </label>
