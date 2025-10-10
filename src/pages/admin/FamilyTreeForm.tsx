@@ -735,8 +735,8 @@ export default function FamilyTreeForm() {
 
                 <div className="pt-8">
                   <h3 className="font-light text-foreground/50 text-sm mb-4">Documents required</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 bg-card/30 backdrop-blur">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 border-2 border-border/50 bg-card/30 backdrop-blur p-4 rounded-xl">
+                    <div className="flex items-center space-x-4 p-5 rounded-xl">
                       <Checkbox
                         id="applicant_has_polish_documents"
                         checked={formData?.applicant_has_polish_documents || false}
@@ -745,7 +745,7 @@ export default function FamilyTreeForm() {
                       />
                       <Label htmlFor="applicant_has_polish_documents" className="cursor-pointer text-sm font-normal">Polish documents</Label>
                     </div>
-                    <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 bg-card/30 backdrop-blur">
+                    <div className="flex items-center space-x-4 p-5 rounded-xl">
                       <Checkbox
                         id="applicant_has_passport"
                         checked={formData?.applicant_has_passport || false}
@@ -754,7 +754,7 @@ export default function FamilyTreeForm() {
                       />
                       <Label htmlFor="applicant_has_passport" className="cursor-pointer text-sm font-normal">Passport copy</Label>
                     </div>
-                    <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                    <div className="flex items-center space-x-4 p-5 rounded-xl">
                       <Checkbox
                         id="applicant_has_birth_cert"
                         checked={formData?.applicant_has_birth_cert || false}
@@ -763,7 +763,7 @@ export default function FamilyTreeForm() {
                       />
                       <Label htmlFor="applicant_has_birth_cert" className="cursor-pointer text-sm font-normal">Birth certificate</Label>
                     </div>
-                    <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                    <div className="flex items-center space-x-4 p-5 rounded-xl">
                       <Checkbox
                         id="applicant_has_marriage_cert"
                         checked={formData?.applicant_has_marriage_cert || false}
@@ -772,7 +772,7 @@ export default function FamilyTreeForm() {
                       />
                       <Label htmlFor="applicant_has_marriage_cert" className="cursor-pointer text-sm font-normal">Marriage certificate</Label>
                     </div>
-                    <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                    <div className="flex items-center space-x-4 p-5 rounded-xl">
                       <Checkbox
                         id="applicant_has_naturalization"
                         checked={formData?.applicant_has_naturalization || false}
@@ -784,7 +784,7 @@ export default function FamilyTreeForm() {
                     
                     {/* Military record - only for males */}
                     {formData?.applicant_sex === 'M' && (
-                      <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                      <div className="flex items-center space-x-4 p-5 rounded-xl">
                         <Checkbox
                           id="applicant_has_military_record"
                           checked={formData?.applicant_has_military_record || false}
@@ -795,7 +795,7 @@ export default function FamilyTreeForm() {
                       </div>
                     )}
                     
-                    <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                    <div className="flex items-center space-x-4 p-5 rounded-xl">
                       <Checkbox
                         id="applicant_has_foreign_documents"
                         checked={formData?.applicant_has_foreign_documents || false}
@@ -805,7 +805,7 @@ export default function FamilyTreeForm() {
                       <Label htmlFor="applicant_has_foreign_documents" className="cursor-pointer text-sm font-normal">Foreign documents</Label>
                     </div>
                     
-                    <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                    <div className="flex items-center space-x-4 p-5 rounded-xl">
                       <Checkbox
                         id="applicant_has_additional_documents"
                         checked={formData?.applicant_has_additional_documents || false}
@@ -889,8 +889,8 @@ export default function FamilyTreeForm() {
                   {/* Documents */}
                   <div className="pt-8">
                     <h3 className="font-light text-foreground/50 text-sm mb-4">Documents required</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 bg-card/30 backdrop-blur">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 border-2 border-border/50 bg-card/30 backdrop-blur p-4 rounded-xl">
+                      <div className="flex items-center space-x-4 p-5 rounded-xl">
                         <Checkbox
                           id="spouse_has_polish_documents"
                           checked={formData?.spouse_has_polish_documents || false}
@@ -899,7 +899,7 @@ export default function FamilyTreeForm() {
                         />
                         <Label htmlFor="spouse_has_polish_documents" className="cursor-pointer text-sm font-normal">Polish documents</Label>
                       </div>
-                      <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                      <div className="flex items-center space-x-4 p-5 rounded-xl">
                         <Checkbox
                           id="spouse_has_passport"
                           checked={formData?.spouse_has_passport || false}
@@ -908,7 +908,7 @@ export default function FamilyTreeForm() {
                         />
                         <Label htmlFor="spouse_has_passport" className="cursor-pointer text-sm font-normal">Passport copy</Label>
                       </div>
-                      <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                      <div className="flex items-center space-x-4 p-5 rounded-xl">
                         <Checkbox
                           id="spouse_has_birth_cert"
                           checked={formData?.spouse_has_birth_cert || false}
@@ -917,7 +917,7 @@ export default function FamilyTreeForm() {
                         />
                         <Label htmlFor="spouse_has_birth_cert" className="cursor-pointer text-sm font-normal">Birth certificate</Label>
                       </div>
-                      <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                      <div className="flex items-center space-x-4 p-5 rounded-xl">
                         <Checkbox
                           id="spouse_has_marriage_cert"
                           checked={formData?.spouse_has_marriage_cert || false}
@@ -926,7 +926,7 @@ export default function FamilyTreeForm() {
                         />
                         <Label htmlFor="spouse_has_marriage_cert" className="cursor-pointer text-sm font-normal">Marriage certificate</Label>
                       </div>
-                      <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                      <div className="flex items-center space-x-4 p-5 rounded-xl">
                         <Checkbox
                           id="spouse_has_naturalization"
                           checked={formData?.spouse_has_naturalization || false}
@@ -938,7 +938,7 @@ export default function FamilyTreeForm() {
                       
                       {/* Military record - only for males */}
                       {(formData?.spouse_sex?.includes('Male') || formData?.spouse_sex?.includes('Mężczyzna') || formData?.spouse_sex === 'MALE') && (
-                        <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                        <div className="flex items-center space-x-4 p-5 rounded-xl">
                           <Checkbox
                             id="spouse_has_military_record"
                             checked={formData?.spouse_has_military_record || false}
@@ -949,7 +949,7 @@ export default function FamilyTreeForm() {
                         </div>
                       )}
                       
-                      <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                      <div className="flex items-center space-x-4 p-5 rounded-xl">
                         <Checkbox
                           id="spouse_has_foreign_documents"
                           checked={formData?.spouse_has_foreign_documents || false}
@@ -1042,8 +1042,8 @@ export default function FamilyTreeForm() {
                     </div>
                     <div className="pt-4">
                       <h4 className="font-light text-foreground/50 text-sm mb-4">Documents required</h4>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 bg-card/30 backdrop-blur">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 border-2 border-border/50 bg-card/30 backdrop-blur p-4 rounded-xl">
+                        <div className="flex items-center space-x-4 p-5 rounded-xl">
                           <Checkbox
                             id={`child_${num}_has_polish_documents`}
                             checked={formData?.[`child_${num}_has_polish_documents`] || false}
@@ -1221,8 +1221,8 @@ export default function FamilyTreeForm() {
                     </div>
                     <div className="pt-4">
                       <h4 className="font-light text-foreground/50 text-sm mb-4">Documents required</h4>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 bg-card/30 backdrop-blur">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 border-2 border-border/50 bg-card/30 backdrop-blur p-4 rounded-xl">
+                        <div className="flex items-center space-x-4 p-5 rounded-xl">
                           <Checkbox
                             id="father_has_polish_documents"
                             checked={formData?.father_has_polish_documents || false}
@@ -1378,8 +1378,8 @@ export default function FamilyTreeForm() {
                     </div>
                     <div className="pt-4">
                       <h4 className="font-light text-foreground/50 text-sm mb-4">Documents required</h4>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 bg-card/30 backdrop-blur">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 border-2 border-border/50 bg-card/30 backdrop-blur p-4 rounded-xl">
+                        <div className="flex items-center space-x-4 p-5 rounded-xl">
                           <Checkbox
                             id="mother_has_polish_documents"
                             checked={formData?.mother_has_polish_documents || false}
@@ -1554,8 +1554,8 @@ export default function FamilyTreeForm() {
                         </div>
                         <div className="pt-4">
                           <h4 className="font-light text-foreground/50 text-sm mb-4">Documents required</h4>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 bg-card/30 backdrop-blur">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 border-2 border-border/50 bg-card/30 backdrop-blur p-4 rounded-xl">
+                            <div className="flex items-center space-x-4 p-5 rounded-xl">
                               <Checkbox
                                 id={`${prefix}_has_polish_documents`}
                                 checked={formData?.[`${prefix}_has_polish_documents`] || false}
@@ -1708,8 +1708,8 @@ export default function FamilyTreeForm() {
                         </div>
                         <div className="pt-4">
                           <h4 className="font-light text-foreground/50 text-sm mb-4">Documents required</h4>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 bg-card/30 backdrop-blur">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 border-2 border-border/50 bg-card/30 backdrop-blur p-4 rounded-xl">
+                            <div className="flex items-center space-x-4 p-5 rounded-xl">
                               <Checkbox
                                 id={`${prefix}_has_polish_documents`}
                                 checked={formData?.[`${prefix}_has_polish_documents`] || false}
@@ -1718,7 +1718,7 @@ export default function FamilyTreeForm() {
                               />
                               <Label htmlFor={`${prefix}_has_polish_documents`} className="cursor-pointer text-sm font-normal">Polish documents</Label>
                             </div>
-                            <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                            <div className="flex items-center space-x-4 p-5 rounded-xl">
                               <Checkbox
                                 id={`${prefix}_has_passport`}
                                 checked={formData?.[`${prefix}_has_passport`] || false}
