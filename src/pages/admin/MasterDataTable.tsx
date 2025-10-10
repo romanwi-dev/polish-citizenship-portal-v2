@@ -405,7 +405,7 @@ export default function MasterDataTable() {
                   </TabsTrigger>
                   <TabsTrigger value="great-grandparents" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
                     <TreePine className="h-4 w-4 mr-2" />
-                    <span className="hidden sm:inline">G-GP</span>
+                    <span className="hidden sm:inline">Great Grandparents</span>
                   </TabsTrigger>
                   <TabsTrigger value="additional-data" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
                     <FolderOpen className="h-4 w-4 mr-2" />

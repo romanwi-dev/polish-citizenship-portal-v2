@@ -35,7 +35,7 @@ export function CountrySelect({
   value = "", 
   onChange, 
   label = "Country",
-  placeholder = "Select country...",
+  placeholder = "Select...",
   className,
   isLargeFonts = false,
   delay = 0

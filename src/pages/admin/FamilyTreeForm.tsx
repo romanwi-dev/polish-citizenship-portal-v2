@@ -471,7 +471,7 @@ export default function FamilyTreeForm() {
               </Tabs>
             </div>
             </div>
-          </Card>
+          </div>
         </motion.div>
 
         {/* Form with Tabs */}
@@ -701,12 +701,25 @@ export default function FamilyTreeForm() {
                 <div className="pt-8">
                   <h3 className="text-xl font-semibold mb-6 text-foreground">Documents required</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <motion.div 
-                      initial={{ opacity: 0, scale: 0.95 }} 
-                      animate={{ opacity: 1, scale: 1 }} 
-                      transition={{ delay: 0 }}
-                      className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur"
-                    >
+                    <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                      <Checkbox
+                        id="applicant_has_polish_documents"
+                        checked={formData?.applicant_has_polish_documents || false}
+                        onCheckedChange={(checked) => handleInputChange("applicant_has_polish_documents", checked)}
+                        className="h-6 w-6"
+                      />
+                      <Label htmlFor="applicant_has_polish_documents" className="cursor-pointer text-sm font-normal">Polish documents</Label>
+                    </div>
+                    <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
+                      <Checkbox
+                        id="applicant_has_passport"
+                        checked={formData?.applicant_has_passport || false}
+                        onCheckedChange={(checked) => handleInputChange("applicant_has_passport", checked)}
+                        className="h-6 w-6"
+                      />
+                      <Label htmlFor="applicant_has_passport" className="cursor-pointer text-sm font-normal">Passport copy</Label>
+                    </div>
+                    <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
                       <Checkbox
                         id="applicant_has_birth_cert"
                         checked={formData?.applicant_has_birth_cert || false}
@@ -714,27 +727,17 @@ export default function FamilyTreeForm() {
                         className="h-6 w-6"
                       />
                       <Label htmlFor="applicant_has_birth_cert" className="cursor-pointer text-sm font-normal">Birth certificate</Label>
-                    </motion.div>
-                    <motion.div 
-                      initial={{ opacity: 0, scale: 0.95 }} 
-                      animate={{ opacity: 1, scale: 1 }} 
-                      transition={{ delay: 0.05 }}
-                      className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur"
-                    >
+                    </div>
+                    <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
                       <Checkbox
-                        id="applicant_has_passport"
-                        checked={formData?.applicant_has_passport || false}
-                        onCheckedChange={(checked) => handleInputChange("applicant_has_passport", checked)}
+                        id="applicant_has_marriage_cert"
+                        checked={formData?.applicant_has_marriage_cert || false}
+                        onCheckedChange={(checked) => handleInputChange("applicant_has_marriage_cert", checked)}
                         className="h-6 w-6"
                       />
-                      <Label htmlFor="applicant_has_passport" className="cursor-pointer text-sm font-normal">Passport</Label>
-                    </motion.div>
-                    <motion.div 
-                      initial={{ opacity: 0, scale: 0.95 }} 
-                      animate={{ opacity: 1, scale: 1 }} 
-                      transition={{ delay: 0.1 }}
-                      className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur"
-                    >
+                      <Label htmlFor="applicant_has_marriage_cert" className="cursor-pointer text-sm font-normal">Marriage certificate</Label>
+                    </div>
+                    <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
                       <Checkbox
                         id="applicant_has_naturalization"
                         checked={formData?.applicant_has_naturalization || false}
@@ -742,11 +745,8 @@ export default function FamilyTreeForm() {
                         className="h-6 w-6"
                       />
                       <Label htmlFor="applicant_has_naturalization" className="cursor-pointer text-sm font-normal">Naturalization certificate</Label>
-                    </motion.div>
-                    <motion.div 
-                      initial={{ opacity: 0, scale: 0.95 }} 
-                      animate={{ opacity: 1, scale: 1 }} 
-                      transition={{ delay: 0.15 }}
+                    </div>
+                    <div
                       className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur"
                     >
                       <Checkbox
@@ -756,7 +756,7 @@ export default function FamilyTreeForm() {
                         className="h-6 w-6"
                       />
                       <Label htmlFor="applicant_has_additional_documents" className="cursor-pointer text-sm font-normal">Additional documents</Label>
-                    </motion.div>
+                    </div>
                   </div>
                 </div>
               </CardContent>
