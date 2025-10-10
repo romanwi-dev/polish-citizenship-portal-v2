@@ -1552,6 +1552,127 @@ export default function IntakeDemo() {
               </div>
             </CardContent>
           </Card>
+
+          {/* NEW SECTION: Documents Required Font Testing */}
+          <div className="col-span-full pt-8 border-t-4 border-primary/30">
+            <h2 className="text-2xl font-bold mb-2">"Documents Required" Font Tests</h2>
+            <p className="text-muted-foreground mb-6">Testing different darkness and transparency levels - same size</p>
+          </div>
+
+          {/* Test 1: Light - 50% opacity */}
+          <Card className="border-2 border-cyan-500/30 bg-cyan-500/5">
+            <CardHeader>
+              <CardTitle>Test 1: Light (50% opacity)</CardTitle>
+              <p className="text-sm text-muted-foreground">Very subtle and light</p>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="pt-4">
+                <h3 className="font-light text-foreground/50 text-sm mb-4">Documents required</h3>
+                <div className="grid grid-cols-1 gap-3">
+                  <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 bg-card/30 backdrop-blur">
+                    <div className="w-6 h-6 rounded border-2 border-primary/50" />
+                    <span className="text-sm">Birth certificate</span>
+                  </div>
+                  <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 bg-card/30 backdrop-blur">
+                    <div className="w-6 h-6 rounded border-2 border-primary/50" />
+                    <span className="text-sm">Marriage certificate</span>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Test 2: Medium Light - 60% opacity */}
+          <Card className="border-2 border-cyan-500/30 bg-cyan-500/5">
+            <CardHeader>
+              <CardTitle>Test 2: Medium Light (60% opacity)</CardTitle>
+              <p className="text-sm text-muted-foreground">Slightly more visible</p>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="pt-4">
+                <h3 className="font-light text-foreground/60 text-sm mb-4">Documents required</h3>
+                <div className="grid grid-cols-1 gap-3">
+                  <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 bg-card/30 backdrop-blur">
+                    <div className="w-6 h-6 rounded border-2 border-primary/50" />
+                    <span className="text-sm">Birth certificate</span>
+                  </div>
+                  <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 bg-card/30 backdrop-blur">
+                    <div className="w-6 h-6 rounded border-2 border-primary/50" />
+                    <span className="text-sm">Marriage certificate</span>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Test 3: Medium - 70% opacity */}
+          <Card className="border-2 border-primary/30 bg-primary/10">
+            <CardHeader>
+              <CardTitle>Test 3: Medium (70% opacity)</CardTitle>
+              <p className="text-sm text-muted-foreground">Balanced visibility - RECOMMENDED</p>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="pt-4">
+                <h3 className="font-light text-foreground/70 text-sm mb-4">Documents required</h3>
+                <div className="grid grid-cols-1 gap-3">
+                  <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 bg-card/30 backdrop-blur">
+                    <div className="w-6 h-6 rounded border-2 border-primary/50" />
+                    <span className="text-sm">Birth certificate</span>
+                  </div>
+                  <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 bg-card/30 backdrop-blur">
+                    <div className="w-6 h-6 rounded border-2 border-primary/50" />
+                    <span className="text-sm">Marriage certificate</span>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Test 4: Medium Dark - 80% opacity */}
+          <Card className="border-2 border-cyan-500/30 bg-cyan-500/5">
+            <CardHeader>
+              <CardTitle>Test 4: Medium Dark (80% opacity)</CardTitle>
+              <p className="text-sm text-muted-foreground">More prominent</p>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="pt-4">
+                <h3 className="font-light text-foreground/80 text-sm mb-4">Documents required</h3>
+                <div className="grid grid-cols-1 gap-3">
+                  <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 bg-card/30 backdrop-blur">
+                    <div className="w-6 h-6 rounded border-2 border-primary/50" />
+                    <span className="text-sm">Birth certificate</span>
+                  </div>
+                  <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 bg-card/30 backdrop-blur">
+                    <div className="w-6 h-6 rounded border-2 border-primary/50" />
+                    <span className="text-sm">Marriage certificate</span>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Test 5: Current/Full - 90% opacity */}
+          <Card className="border-2 border-cyan-500/30 bg-cyan-500/5">
+            <CardHeader>
+              <CardTitle>Test 5: Current Style (90% opacity)</CardTitle>
+              <p className="text-sm text-muted-foreground">Existing style for comparison</p>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="pt-4">
+                <h3 className="font-light text-foreground/90 text-sm mb-4">Documents required</h3>
+                <div className="grid grid-cols-1 gap-3">
+                  <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 bg-card/30 backdrop-blur">
+                    <div className="w-6 h-6 rounded border-2 border-primary/50" />
+                    <span className="text-sm">Birth certificate</span>
+                  </div>
+                  <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 bg-card/30 backdrop-blur">
+                    <div className="w-6 h-6 rounded border-2 border-primary/50" />
+                    <span className="text-sm">Marriage certificate</span>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
