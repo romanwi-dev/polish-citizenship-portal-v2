@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
-import { RefreshCw, Database, CheckCircle2, AlertCircle } from "lucide-react";
+import { RefreshCw } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 export const DropboxSync = () => {
@@ -72,53 +71,20 @@ export const DropboxSync = () => {
   };
 
   return (
-    <Card className="border-primary/20">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Database className="h-5 w-5" />
-          Dropbox Synchronization
-        </CardTitle>
-        <CardDescription>
-          Sync your cases and documents with Dropbox storage
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="space-y-1">
-            <p className="text-sm font-medium">Last Sync</p>
-            <p className="text-sm text-muted-foreground">
-              {lastSync ? (
-                <span className="flex items-center gap-1">
-                  <CheckCircle2 className="h-4 w-4 text-green-500" />
-                  {lastSync.toLocaleString()}
-                </span>
-              ) : (
-                <span className="flex items-center gap-1">
-                  <AlertCircle className="h-4 w-4 text-yellow-500" />
-                  Never synced
-                </span>
-              )}
-            </p>
-          </div>
-          <Button onClick={handleSync} disabled={isSyncing} size="lg">
-            {isSyncing ? (
-              <>
-                <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-                Syncing...
-              </>
-            ) : (
-              <>
-                <RefreshCw className="mr-2 h-4 w-4" />
-                Sync Now
-              </>
-            )}
-          </Button>
-        </div>
-        <p className="text-xs text-muted-foreground">
-          This will scan your Dropbox /CASES folder and import all client cases and documents
-          into the database. Existing cases will be updated.
-        </p>
-      </CardContent>
-    </Card>
+    <div className="flex justify-center">
+      <Button onClick={handleSync} disabled={isSyncing} size="lg">
+        {isSyncing ? (
+          <>
+            <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
+            Syncing...
+          </>
+        ) : (
+          <>
+            <RefreshCw className="mr-2 h-4 w-4" />
+            Sync Dropbox
+          </>
+        )}
+      </Button>
+    </div>
   );
 };

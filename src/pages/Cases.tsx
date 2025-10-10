@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Briefcase, Database } from "lucide-react";
+import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Database } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { DropboxSync } from "@/components/DropboxSync";
@@ -178,14 +178,8 @@ const Cases = () => {
       <section className="relative py-32 overflow-hidden">
         <div className="container px-4 mx-auto">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-6">
-              <Briefcase className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium">Client Portfolio</span>
-            </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Cases Management
-              </span>
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text mb-6">
+              Cases Management
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Track and manage all client citizenship applications in one place
