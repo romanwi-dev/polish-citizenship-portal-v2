@@ -15,7 +15,6 @@ import NotFound from "./pages/NotFound";
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
 const CasesManagement = lazy(() => import("./pages/admin/CasesManagement"));
 const CaseDetail = lazy(() => import("./pages/admin/CaseDetail"));
-const MasterDataTable = lazy(() => import("./pages/admin/MasterDataTable"));
 const AdditionalData = lazy(() => import("./pages/admin/AdditionalData"));
 const FamilyTreeForm = lazy(() => import("./pages/admin/FamilyTreeForm"));
 const FamilyHistoryForm = lazy(() => import("./pages/admin/FamilyHistoryForm"));
@@ -81,15 +80,7 @@ const App = () => (
             } 
           />
           <Route 
-            path="/admin/cases/:id/master-data" 
-            element={
-              <Suspense fallback={<AdminLoader />}>
-                <MasterDataTable />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/cases/:id/additional-data" 
+            path="/admin/cases/:id/additional-data"
             element={
               <Suspense fallback={<AdminLoader />}>
                 <AdditionalData />

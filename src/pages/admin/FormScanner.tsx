@@ -22,7 +22,6 @@ const FORMS_TO_SCAN = [
   { name: 'FamilyTreeForm', path: 'src/pages/admin/FamilyTreeForm.tsx' },
   { name: 'POAForm', path: 'src/pages/admin/POAForm.tsx' },
   { name: 'CivilRegistryForm', path: 'src/pages/admin/CivilRegistryForm.tsx' },
-  { name: 'MasterDataTable', path: 'src/pages/admin/MasterDataTable.tsx' },
 ];
 
 // Schema columns from master_table

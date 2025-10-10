@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 interface FormButtonsRowProps {
   caseId: string;
-  currentForm: 'intake' | 'master-data' | 'family-tree' | 'family-history' | 'poa' | 'citizenship' | 'civil-registry' | 'additional-data';
+  currentForm: 'intake' | 'family-tree' | 'family-history' | 'poa' | 'citizenship' | 'civil-registry' | 'additional-data';
   onSave: () => void;
   onClear: () => void;
   onGeneratePDF: () => void;
@@ -14,7 +14,6 @@ interface FormButtonsRowProps {
 
 const navigationButtons = [
   { id: 'intake', label: 'Client Intake', icon: FileText, path: '/admin/cases/:id/intake' },
-  { id: 'master-data', label: 'Master Form', icon: Database, path: '/admin/cases/:id/master-data' },
   { id: 'family-tree', label: 'Family Tree', icon: GitBranch, path: '/admin/cases/:id/family-tree' },
   { id: 'family-history', label: 'Family History', icon: BookOpen, path: '/admin/cases/:id/family-history' },
   { id: 'poa', label: 'Power of Attorney', icon: FileCheck, path: '/admin/cases/:id/poa' },

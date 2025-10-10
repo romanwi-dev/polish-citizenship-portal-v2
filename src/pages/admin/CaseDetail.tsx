@@ -10,7 +10,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { CaseStageVisualization } from "@/components/CaseStageVisualization";
 import { FamilyTree } from "@/components/FamilyTree";
 import { FamilyTreeInteractive } from "@/components/FamilyTreeInteractive";
-import { MasterDataTable } from "@/components/MasterDataTable";
 import { EditCaseDialog } from "@/components/EditCaseDialog";
 import { AIAgentPanel } from "@/components/AIAgentPanel";
 import { 
@@ -68,8 +67,6 @@ export default function CaseDetail() {
   const [tasks, setTasks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showEditDialog, setShowEditDialog] = useState(false);
-  const [masterTableOpen, setMasterTableOpen] = useState(false);
-  const [editingPerson, setEditingPerson] = useState<string | null>(null);
 
   useEffect(() => {
     loadCaseData();
@@ -165,14 +162,6 @@ export default function CaseDetail() {
                 </span>
               </Button>
               <Button 
-                onClick={() => navigate(`/admin/cases/${id}/master-data`)}
-                className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0 relative z-50"
-              >
-                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                  Master Data
-                </span>
-              </Button>
-              <Button 
                 onClick={() => navigate(`/admin/cases/${id}/family-tree`)}
                 className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0 relative z-50"
               >
@@ -180,7 +169,7 @@ export default function CaseDetail() {
                   Family Tree
                 </span>
               </Button>
-              <Button 
+              <Button
                 onClick={() => navigate(`/admin/cases/${id}/poa`)}
                 className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0 relative z-50"
               >
@@ -311,9 +300,6 @@ export default function CaseDetail() {
                 <TabsTrigger value="intake" className="flex-shrink-0">
                   <span>Intake</span>
                 </TabsTrigger>
-                <TabsTrigger value="master-data" className="flex-shrink-0">
-                  <span>Master Data</span>
-                </TabsTrigger>
                 <TabsTrigger value="family-tree" className="flex-shrink-0">
                   <span>Family Tree</span>
                 </TabsTrigger>
@@ -332,20 +318,6 @@ export default function CaseDetail() {
                 <Suspense fallback={<div className="flex items-center justify-center p-12"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
                   <IntakeFormContent />
                 </Suspense>
-              </TabsContent>
-
-              <TabsContent value="master-data" className="mt-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Master Data Table</CardTitle>
-                    <CardDescription>Click below to open the master data dialog</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Button onClick={() => setMasterTableOpen(true)} size="lg">
-                      Open Master Data Table
-                    </Button>
-                  </CardContent>
-                </Card>
               </TabsContent>
 
               <TabsContent value="family-tree" className="mt-6">
@@ -691,10 +663,10 @@ export default function CaseDetail() {
                   }
                 } : undefined}
                 onEdit={(personType) => {
-                  setEditingPerson(personType);
-                  setMasterTableOpen(true);
+                  // Navigate to family tree form
+                  navigate(`/admin/cases/${id}/family-tree`);
                 }}
-                onOpenMasterTable={() => setMasterTableOpen(true)}
+                onOpenMasterTable={() => navigate(`/admin/cases/${id}/family-tree`)}
               />
             ) : (
               <Card>
@@ -705,8 +677,8 @@ export default function CaseDetail() {
                 <CardContent>
                   <div className="text-center py-12 text-muted-foreground">
                     <p>Complete the intake form to populate family tree data</p>
-                    <Button onClick={() => setMasterTableOpen(true)} className="mt-4">
-                      Open Master Data Table
+                    <Button onClick={() => navigate(`/admin/cases/${id}/family-tree`)} className="mt-4">
+                      Go to Family Tree
                     </Button>
                   </div>
                 </CardContent>
@@ -739,12 +711,6 @@ export default function CaseDetail() {
         />
       )}
 
-      {/* Master Data Table */}
-      <MasterDataTable
-        open={masterTableOpen}
-        onOpenChange={setMasterTableOpen}
-        caseId={id || ""}
-      />
     </AdminLayout>
   );
 }
