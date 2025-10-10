@@ -14,7 +14,7 @@ const AboutSection = () => {
             <span className="text-sm font-medium">Legal Expertise Since 2003</span>
           </div>
           
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-black mb-14 tracking-tight">
+          <h2 className="text-4xl md:text-5xl font-heading font-black mb-14 tracking-tight">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               The Most Comprehensive Online Legal Service for Polish Citizenship and Polish European Passport
             </span>
