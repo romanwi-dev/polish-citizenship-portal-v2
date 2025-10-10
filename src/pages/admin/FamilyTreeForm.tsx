@@ -829,14 +829,29 @@ export default function FamilyTreeForm() {
                     <div className="pt-4">
                       <h4 className="text-lg font-semibold mb-4 text-foreground">Documents required</h4>
                       {renderCheckboxGroup([{
+                    name: `child_${num}_has_polish_documents`,
+                    label: "Polish documents"
+                  }, {
                     name: `child_${num}_has_passport`,
-                    label: "Passport Copy"
+                    label: "Passport copy"
                   }, {
                     name: `child_${num}_has_birth_cert`,
                     label: "Birth certificate"
                   }, {
-                    name: `child_${num}_has_poa_minor`,
-                    label: "POA Minor"
+                    name: `child_${num}_has_marriage_cert`,
+                    label: "Marriage certificate"
+                  }, {
+                    name: `child_${num}_has_naturalization`,
+                    label: "Naturalization certificate"
+                  }, {
+                    name: `child_${num}_has_military_record`,
+                    label: "Military service record"
+                  }, {
+                    name: `child_${num}_has_foreign_documents`,
+                    label: "Foreign documents"
+                  }, {
+                    name: `child_${num}_has_additional_documents`,
+                    label: "Additional documents"
                   }])}
                     </div>
                   </div>)}
@@ -1055,6 +1070,9 @@ export default function FamilyTreeForm() {
                     }, {
                       name: "mother_has_naturalization",
                       label: "Naturalization certificate"
+                    }, {
+                      name: "mother_has_military_record",
+                      label: "Military service record"
                     }, {
                       name: "mother_has_foreign_documents",
                       label: "Foreign documents"
