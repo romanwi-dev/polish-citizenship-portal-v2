@@ -82,21 +82,39 @@ export default function IntakeForm() {
           <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5" />
           <CardHeader className="relative pb-6 pt-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
                 <Button
                   onClick={() => window.open('https://docs.lovable.dev', '_blank')}
                   size="lg"
                   variant="ghost"
-                  className="h-12 w-12 rounded-full transition-all text-primary hover:bg-primary/10"
+                  className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10"
                   title="How to fill this form"
                 >
-                  <HelpCircle className="h-6 w-6" />
+                  <HelpCircle className="h-8 w-8" />
                 </Button>
                 <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Client Intake Form
                 </CardTitle>
               </div>
               <div className="flex items-center gap-3">
+                <Button
+                  onClick={() => navigate(`/admin/cases/${caseId}`)}
+                  size="lg"
+                  variant="ghost"
+                  className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10"
+                  title="Back to Case"
+                >
+                  <ArrowLeft className="h-8 w-8" />
+                </Button>
+                <Button
+                  onClick={() => navigate('/login')}
+                  size="lg"
+                  variant="ghost"
+                  className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10"
+                  title="Login / Register"
+                >
+                  <User className="h-8 w-8" />
+                </Button>
                 <Button
                   onClick={toggleFontSize}
                   size="lg"
