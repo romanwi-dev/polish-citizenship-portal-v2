@@ -184,8 +184,8 @@ export default function IntakeForm() {
                     >
                       {isFullView ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
                     </Button>
-                    <TabsList className="flex-1 flex gap-2 bg-transparent p-0 overflow-x-auto scrollbar-hide">
-                    <TabsTrigger value="select" className="flex-shrink-0">
+                    <TabsList className="flex-1 flex gap-2 bg-transparent p-0 overflow-x-auto scrollbar-hide scroll-smooth">
+                    <TabsTrigger value="select" className="flex-shrink-0" style={{ scrollMarginLeft: '0' }}>
                       <span>Select...</span>
                     </TabsTrigger>
                     <TabsTrigger value="applicant" className="flex-shrink-0">
