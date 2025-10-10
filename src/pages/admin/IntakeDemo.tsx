@@ -11,6 +11,7 @@ export default function IntakeDemo() {
   const [values1, setValues1] = useState({ gender: "", status: "", children: "" });
   const [values2, setValues2] = useState({ gender: "", status: "", children: "" });
   const [values3, setValues3] = useState({ gender: "", status: "", children: "" });
+  const [values4, setValues4] = useState({ gender: "", status: "", children: "" });
 
   return (
     <div className="min-h-screen bg-background p-8">
@@ -23,7 +24,7 @@ export default function IntakeDemo() {
         <h1 className="text-3xl font-bold">Label Typography Comparison</h1>
         <p className="text-muted-foreground">Choose your preferred font style for form labels</p>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6">
           {/* OPTION 1: Classic Serif */}
           <Card className="border-2">
             <CardHeader>
@@ -232,6 +233,80 @@ export default function IntakeDemo() {
                 </Label>
                 <Select value={values3.children} onValueChange={(v) => setValues3({...values3, children: v})}>
                   <SelectTrigger id="children-3" className="h-12">
+                    <SelectValue placeholder="Select number" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="0">0</SelectItem>
+                    <SelectItem value="1">1</SelectItem>
+                    <SelectItem value="2">2</SelectItem>
+                    <SelectItem value="3">3</SelectItem>
+                    <SelectItem value="4+">4+</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* OPTION 4: Professional Serif (from website) */}
+          <Card className="border-2 border-primary/30 bg-primary/10">
+            <CardHeader>
+              <CardTitle>Option 4: Professional Serif</CardTitle>
+              <p className="text-sm text-muted-foreground">Website style - Professional & trustworthy</p>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Gender */}
+              <div className="space-y-2">
+                <Label 
+                  htmlFor="gender-4"
+                  className="text-base font-normal tracking-normal"
+                  style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
+                >
+                  Gender
+                </Label>
+                <Select value={values4.gender} onValueChange={(v) => setValues4({...values4, gender: v})}>
+                  <SelectTrigger id="gender-4" className="h-12">
+                    <SelectValue placeholder="Select gender" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="M">Male</SelectItem>
+                    <SelectItem value="F">Female</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Civil Status */}
+              <div className="space-y-2">
+                <Label 
+                  htmlFor="status-4"
+                  className="text-base font-normal tracking-normal"
+                  style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
+                >
+                  Civil Status
+                </Label>
+                <Select value={values4.status} onValueChange={(v) => setValues4({...values4, status: v})}>
+                  <SelectTrigger id="status-4" className="h-12">
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="single">Single</SelectItem>
+                    <SelectItem value="married">Married</SelectItem>
+                    <SelectItem value="divorced">Divorced</SelectItem>
+                    <SelectItem value="widowed">Widowed</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Number of Children */}
+              <div className="space-y-2">
+                <Label 
+                  htmlFor="children-4"
+                  className="text-base font-normal tracking-normal"
+                  style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
+                >
+                  Number of Children
+                </Label>
+                <Select value={values4.children} onValueChange={(v) => setValues4({...values4, children: v})}>
+                  <SelectTrigger id="children-4" className="h-12">
                     <SelectValue placeholder="Select number" />
                   </SelectTrigger>
                   <SelectContent>
