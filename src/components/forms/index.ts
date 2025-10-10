@@ -6,3 +6,6 @@ export { FormLabel } from './FormLabel';
 export { FormInput } from './FormInput';
 export { FormSection } from './FormSection';
 export { FormFieldGroup } from './FormFieldGroup';
+export { FormCompletionBadge } from './FormCompletionBadge';
+export { FormProgressBar } from './FormProgressBar';
+export { FormHeader } from './FormHeader';

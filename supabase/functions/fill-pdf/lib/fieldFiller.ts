@@ -36,8 +36,21 @@ export const fillPDFFields = (
     result.totalFields++;
 
     try {
-      // Get value from database (supports nested JSONB with dot notation)
-      const rawValue = getNestedValue(data, dbColumn);
+      // Handle special combined name fields (e.g., 'applicantName' = first + last)
+      let rawValue;
+      if (pdfFieldName.toLowerCase().includes('name') && 
+          !pdfFieldName.toLowerCase().includes('first') && 
+          !pdfFieldName.toLowerCase().includes('last') &&
+          !pdfFieldName.toLowerCase().includes('maiden')) {
+        // This is a combined name field - construct from first and last
+        const prefix = dbColumn.replace('_first_name', '');
+        const firstName = data[`${prefix}_first_name`] || data[dbColumn] || '';
+        const lastName = data[`${prefix}_last_name`] || '';
+        rawValue = `${firstName} ${lastName}`.trim();
+      } else {
+        // Get value from database (supports nested JSONB with dot notation)
+        rawValue = getNestedValue(data, dbColumn);
+      }
       
       if (rawValue === null || rawValue === undefined || rawValue === '') {
         result.emptyFields.push(pdfFieldName);
@@ -53,32 +66,38 @@ export const fillPDFFields = (
       }
 
       // Try to get the field from the form
-      const field = form.getTextField(pdfFieldName);
-      
-      if (field) {
-        field.setText(formattedValue);
-        result.filledFields++;
-      } else {
-        // Try as checkbox
-        try {
-          const checkboxField = form.getCheckBox(pdfFieldName);
-          if (checkboxField) {
-            if (rawValue === true || rawValue === 'true' || rawValue === 'Yes') {
-              checkboxField.check();
+      try {
+        const field = form.getTextField(pdfFieldName);
+        if (field) {
+          field.setText(formattedValue);
+          result.filledFields++;
+        } else {
+          // Try as checkbox
+          try {
+            const checkboxField = form.getCheckBox(pdfFieldName);
+            if (checkboxField) {
+              if (rawValue === true || rawValue === 'true' || rawValue === 'Yes') {
+                checkboxField.check();
+              }
+              result.filledFields++;
+            } else {
+              result.errors.push({
+                field: pdfFieldName,
+                error: 'Field not found in PDF',
+              });
             }
-            result.filledFields++;
-          } else {
+          } catch (e) {
             result.errors.push({
               field: pdfFieldName,
               error: 'Field not found in PDF',
             });
           }
-        } catch (e) {
-          result.errors.push({
-            field: pdfFieldName,
-            error: 'Field not found in PDF',
-          });
         }
+      } catch (error) {
+        result.errors.push({
+          field: pdfFieldName,
+          error: error instanceof Error ? error.message : 'Unknown error',
+        });
       }
     } catch (error) {
       result.errors.push({

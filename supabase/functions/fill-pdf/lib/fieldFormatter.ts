@@ -74,6 +74,13 @@ export const getNestedValue = (obj: any, path: string): any => {
 export const formatFieldValue = (value: any, fieldName: string): string => {
   if (value === null || value === undefined) return '';
   
+  // Special case: combined name fields
+  if (fieldName.includes('Name') && !fieldName.includes('First') && !fieldName.includes('Last') && !fieldName.includes('Maiden')) {
+    // For fields like 'applicantName', 'fatherName', etc., we need to handle this specially
+    // This will be handled by the field filler to combine first + last names
+    return String(value);
+  }
+  
   // Date fields
   if (fieldName.includes('_date') || fieldName.includes('_dob') || 
       fieldName.includes('DOB') || fieldName.includes('Date') ||
@@ -96,6 +103,6 @@ export const formatFieldValue = (value: any, fieldName: string): string => {
     return formatBoolean(value);
   }
   
-  // Default: convert to string
-  return String(value);
+  // Default: convert to string and trim
+  return String(value).trim();
 };

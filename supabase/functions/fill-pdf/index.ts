@@ -3,7 +3,12 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { PDFDocument } from "https://esm.sh/pdf-lib@1.17.1";
 import { fillPDFFields, calculateCoverage } from './lib/fieldFiller.ts';
 import { POA_ADULT_PDF_MAP } from './mappings/poaAdult.ts';
+import { POA_MINOR_PDF_MAP } from './mappings/poaMinor.ts';
+import { POA_SPOUSES_PDF_MAP } from './mappings/poaSpouses.ts';
 import { CITIZENSHIP_PDF_MAP } from './mappings/citizenship.ts';
+import { FAMILY_TREE_PDF_MAP } from './mappings/familyTree.ts';
+import { REGISTRATION_PDF_MAP } from './mappings/registration.ts';
+import { UZUPELNIENIE_PDF_MAP } from './mappings/uzupelnienie.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -69,12 +74,12 @@ serve(async (req) => {
     // Get the appropriate field mapping for this template
     const fieldMappings: Record<string, Record<string, string>> = {
       'poa-adult': POA_ADULT_PDF_MAP,
+      'poa-minor': POA_MINOR_PDF_MAP,
+      'poa-spouses': POA_SPOUSES_PDF_MAP,
       'citizenship': CITIZENSHIP_PDF_MAP,
-      'poa-minor': {},
-      'poa-spouses': {},
-      'family-tree': {},
-      'registration': {},
-      'uzupelnienie': {},
+      'family-tree': FAMILY_TREE_PDF_MAP,
+      'registration': REGISTRATION_PDF_MAP,
+      'uzupelnienie': UZUPELNIENIE_PDF_MAP,
     };
     
     const fieldMap = fieldMappings[templateType];
