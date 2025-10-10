@@ -35,13 +35,13 @@ export function FormButtonsRow({
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-row gap-3 mb-8 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
+    <div className="flex flex-row gap-3 mb-8 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent z-50 relative">
       {/* Action Buttons */}
       <div className="flex gap-3 flex-shrink-0">
         <Button
           onClick={onSave}
           disabled={isSaving}
-          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 group relative overflow-hidden opacity-50"
+          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 group relative overflow-hidden opacity-50 z-50"
         >
           <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
           <span className="relative z-10 flex items-center">
@@ -54,7 +54,7 @@ export function FormButtonsRow({
         
         <Button
           onClick={onClear}
-          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 group relative overflow-hidden opacity-50"
+          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 group relative overflow-hidden opacity-50 z-50"
         >
           <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
           <span className="relative z-10 flex items-center">
@@ -67,7 +67,7 @@ export function FormButtonsRow({
         
         <Button
           onClick={onGeneratePDF}
-          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 group relative overflow-hidden opacity-50"
+          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 group relative overflow-hidden opacity-50 z-50"
         >
           <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
           <span className="relative z-10 flex items-center">
@@ -90,7 +90,7 @@ export function FormButtonsRow({
               onClick={() => navigate(btn.path.replace(':id', caseId))}
               className={`
                 h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold
-                whitespace-nowrap flex-shrink-0 backdrop-blur-md border group relative overflow-hidden opacity-50
+                whitespace-nowrap flex-shrink-0 backdrop-blur-md border group relative overflow-hidden opacity-50 z-50
                 ${isCurrent 
                   ? 'bg-white/5 hover:bg-white/10 shadow-glow hover-glow border-white/30' 
                   : 'bg-white/5 hover:bg-white/10 border-white/20'
