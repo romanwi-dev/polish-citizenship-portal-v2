@@ -48,6 +48,21 @@ export default function IntakeDemo() {
     setter((prev) => prev.map((doc) => (doc.id === id ? { ...doc, checked } : doc)));
   };
 
+  const toggleAllDocs = (variant: number) => {
+    const getters = [
+      docsVariant1, docsVariant2, docsVariant3, docsVariant4, docsVariant5,
+      docsVariant6, docsVariant7, docsVariant8, docsVariant9, docsVariant10
+    ];
+    const setters = [
+      setDocsVariant1, setDocsVariant2, setDocsVariant3, setDocsVariant4, setDocsVariant5,
+      setDocsVariant6, setDocsVariant7, setDocsVariant8, setDocsVariant9, setDocsVariant10
+    ];
+    const current = getters[variant - 1];
+    const setter = setters[variant - 1];
+    const allChecked = current.every(doc => doc.checked);
+    setter(current.map(doc => ({ ...doc, checked: !allChecked })));
+  };
+
   const [values1, setValues1] = useState({ gender: "", status: "", children: "" });
   const [values2, setValues2] = useState({ gender: "", status: "", children: "" });
   const [values3, setValues3] = useState({ gender: "", status: "", children: "" });
@@ -81,6 +96,153 @@ export default function IntakeDemo() {
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Intake Form
         </Button>
+
+        {/* Required Documents Design Comparison - MOVED TO TOP */}
+        <div className="space-y-6 border-2 border-primary/20 p-6 rounded-lg bg-card/50">
+          <div>
+            <h2 className="text-3xl font-bold mb-2">Required Documents Design Comparison</h2>
+            <p className="text-muted-foreground">
+              Compare 5 different design approaches for the Required Documents section. All variants show completion status with green styling when all documents are checked.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+            {/* Design 2.1: Dark Slate Glow */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Design 2.1: Dark Slate with Glow</CardTitle>
+                <CardDescription>
+                  Premium modern feel with deep dark background, purple/blue glow, and high contrast white text.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => toggleAllDocs(2)}
+                  className="w-full"
+                >
+                  {docsVariant2.every(d => d.checked) ? "Reset All" : "Mark All Complete"}
+                </Button>
+                <RequiredDocumentsSection
+                  title="Documents Required"
+                  documents={docsVariant2}
+                  onChange={(id, checked) => handleDocChange(2, id, checked)}
+                  variant="card-grid"
+                  backgroundStyle="dark-slate-glow"
+                />
+              </CardContent>
+            </Card>
+
+            {/* Design 2.2: Vibrant Gradient Mesh */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Design 2.2: Vibrant Gradient Mesh</CardTitle>
+                <CardDescription>
+                  Eye-catching modern web3 aesthetic with bold animated gradients and smooth transitions.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => toggleAllDocs(3)}
+                  className="w-full"
+                >
+                  {docsVariant3.every(d => d.checked) ? "Reset All" : "Mark All Complete"}
+                </Button>
+                <RequiredDocumentsSection
+                  title="Documents Required"
+                  documents={docsVariant3}
+                  onChange={(id, checked) => handleDocChange(3, id, checked)}
+                  variant="card-grid"
+                  backgroundStyle="vibrant-gradient-mesh"
+                />
+              </CardContent>
+            </Card>
+
+            {/* Design 2.3: Paper Texture Warm */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Design 2.3: Paper Texture (Warm)</CardTitle>
+                <CardDescription>
+                  Professional government-form aesthetic with warm beige/cream tones and subtle texture overlay.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => toggleAllDocs(4)}
+                  className="w-full"
+                >
+                  {docsVariant4.every(d => d.checked) ? "Reset All" : "Mark All Complete"}
+                </Button>
+                <RequiredDocumentsSection
+                  title="Documents Required"
+                  documents={docsVariant4}
+                  onChange={(id, checked) => handleDocChange(4, id, checked)}
+                  variant="card-grid"
+                  backgroundStyle="paper-texture-warm"
+                />
+              </CardContent>
+            </Card>
+
+            {/* Design 2.4: Glass Neumorphism */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Design 2.4: Glass Neumorphism</CardTitle>
+                <CardDescription>
+                  Ultra-modern iOS/macOS style with strong frosted glass effect and heavy backdrop blur.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => toggleAllDocs(5)}
+                  className="w-full"
+                >
+                  {docsVariant5.every(d => d.checked) ? "Reset All" : "Mark All Complete"}
+                </Button>
+                <RequiredDocumentsSection
+                  title="Documents Required"
+                  documents={docsVariant5}
+                  onChange={(id, checked) => handleDocChange(5, id, checked)}
+                  variant="card-grid"
+                  backgroundStyle="glass-neumorphism"
+                />
+              </CardContent>
+            </Card>
+
+            {/* Design 2.5: Bordered Grid Minimal */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Design 2.5: Bordered Grid Minimal</CardTitle>
+                <CardDescription>
+                  Clean architectural blueprint feel with no background fill, strong borders, and maximum content focus.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => toggleAllDocs(6)}
+                  className="w-full"
+                >
+                  {docsVariant6.every(d => d.checked) ? "Reset All" : "Mark All Complete"}
+                </Button>
+                <RequiredDocumentsSection
+                  title="Documents Required"
+                  documents={docsVariant6}
+                  onChange={(id, checked) => handleDocChange(6, id, checked)}
+                  variant="card-grid"
+                  backgroundStyle="bordered-grid-minimal"
+                />
+              </CardContent>
+            </Card>
+          </div>
+        </div>
 
         <h1 className="text-3xl font-bold">Label Typography Comparison</h1>
         <p className="text-muted-foreground">Choose your preferred font style for form labels</p>
@@ -2307,132 +2469,6 @@ export default function IntakeDemo() {
           </div>
         </div>
 
-        {/* Required Documents Design Comparison */}
-        <div className="space-y-6">
-          <div>
-            <h2 className="text-3xl font-bold mb-2">Required Documents Design Comparison</h2>
-            <p className="text-muted-foreground">
-              Compare 5 different design approaches for the Required Documents section. All variants are responsive and
-              maintain our design system consistency.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-            {/* Variant 1: Subtle Glass */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Design 1: Subtle Glass</CardTitle>
-                <CardDescription>
-                  Current style with glass-morphism effect, 2-column grid, light labels with wide tracking. No
-                  individual borders.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <RequiredDocumentsSection
-                  title="Documents Required"
-                  documents={docsVariant1}
-                  onChange={(id, checked) => handleDocChange(1, id, checked)}
-                  variant="subtle-glass"
-                />
-              </CardContent>
-            </Card>
-
-            {/* Design 2.1: Dark Slate Glow */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Design 2.1: Dark Slate with Glow</CardTitle>
-                <CardDescription>
-                  Premium modern feel with deep dark background, purple/blue glow, and high contrast white text.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <RequiredDocumentsSection
-                  title="Documents Required"
-                  documents={docsVariant2}
-                  onChange={(id, checked) => handleDocChange(2, id, checked)}
-                  variant="card-grid"
-                  backgroundStyle="dark-slate-glow"
-                />
-              </CardContent>
-            </Card>
-
-            {/* Design 2.2: Vibrant Gradient Mesh */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Design 2.2: Vibrant Gradient Mesh</CardTitle>
-                <CardDescription>
-                  Eye-catching modern web3 aesthetic with bold animated gradients and smooth transitions.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <RequiredDocumentsSection
-                  title="Documents Required"
-                  documents={docsVariant3}
-                  onChange={(id, checked) => handleDocChange(3, id, checked)}
-                  variant="card-grid"
-                  backgroundStyle="vibrant-gradient-mesh"
-                />
-              </CardContent>
-            </Card>
-
-            {/* Design 2.3: Paper Texture Warm */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Design 2.3: Paper Texture (Warm)</CardTitle>
-                <CardDescription>
-                  Professional government-form aesthetic with warm beige/cream tones and subtle texture overlay.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <RequiredDocumentsSection
-                  title="Documents Required"
-                  documents={docsVariant4}
-                  onChange={(id, checked) => handleDocChange(4, id, checked)}
-                  variant="card-grid"
-                  backgroundStyle="paper-texture-warm"
-                />
-              </CardContent>
-            </Card>
-
-            {/* Design 2.4: Glass Neumorphism */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Design 2.4: Glass Neumorphism</CardTitle>
-                <CardDescription>
-                  Ultra-modern iOS/macOS style with strong frosted glass effect and heavy backdrop blur.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <RequiredDocumentsSection
-                  title="Documents Required"
-                  documents={docsVariant5}
-                  onChange={(id, checked) => handleDocChange(5, id, checked)}
-                  variant="card-grid"
-                  backgroundStyle="glass-neumorphism"
-                />
-              </CardContent>
-            </Card>
-
-            {/* Design 2.5: Bordered Grid Minimal */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Design 2.5: Bordered Grid Minimal</CardTitle>
-                <CardDescription>
-                  Clean architectural blueprint feel with no background fill, strong borders, and maximum content focus.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <RequiredDocumentsSection
-                  title="Documents Required"
-                  documents={docsVariant6}
-                  onChange={(id, checked) => handleDocChange(6, id, checked)}
-                  variant="card-grid"
-                  backgroundStyle="bordered-grid-minimal"
-                />
-              </CardContent>
-            </Card>
-          </div>
-        </div>
       </div>
     </div>
   );

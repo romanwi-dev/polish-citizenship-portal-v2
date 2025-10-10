@@ -1,5 +1,6 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { Check } from "lucide-react";
 
 export interface DocumentItem {
   id: string;
@@ -22,8 +23,27 @@ export function RequiredDocumentsSection({
   variant = "subtle-glass",
   backgroundStyle = "dark-slate-glow",
 }: RequiredDocumentsSectionProps) {
+  const isComplete = documents.every(doc => doc.checked);
+  
   const getBackgroundClass = () => {
     if (variant !== "card-grid") return "";
+    
+    if (isComplete) {
+      switch (backgroundStyle) {
+        case "dark-slate-glow":
+          return "bg-slate-900/95 p-6 rounded-lg shadow-2xl shadow-green-500/30 border-2 border-green-500";
+        case "vibrant-gradient-mesh":
+          return "bg-gradient-to-br from-green-500/20 via-primary/20 to-green-500/20 p-6 rounded-lg backdrop-blur-sm border-2 border-green-500/60 shadow-xl";
+        case "paper-texture-warm":
+          return "bg-green-50/80 dark:bg-green-900/20 p-6 rounded-lg shadow-lg border-2 border-green-400/70";
+        case "glass-neumorphism":
+          return "bg-green-500/10 backdrop-blur-2xl p-6 rounded-2xl shadow-[inset_0_2px_22px_rgba(34,197,94,0.2)] border-2 border-green-400/40";
+        case "bordered-grid-minimal":
+          return "p-6 rounded-none border-4 border-green-500/70";
+        default:
+          return "p-6";
+      }
+    }
     
     switch (backgroundStyle) {
       case "dark-slate-glow":
@@ -78,10 +98,18 @@ export function RequiredDocumentsSection({
   };
   if (variant === "subtle-glass") {
     return (
-      <div className="space-y-4">
-        <h3 className="font-light text-foreground/50 text-sm uppercase tracking-wider">
-          {title}
-        </h3>
+      <div className={`space-y-4 relative ${isComplete ? 'border-2 border-green-500/50 p-4 rounded-lg shadow-lg shadow-green-500/20' : ''}`}>
+        <div className="flex items-center justify-between">
+          <h3 className={`font-light text-sm uppercase tracking-wider ${isComplete ? 'text-green-500' : 'text-foreground/50'}`}>
+            {title}
+          </h3>
+          {isComplete && (
+            <div className="flex items-center gap-1.5 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wide animate-in fade-in slide-in-from-right-2 duration-300">
+              <Check className="h-3 w-3" />
+              Completed
+            </div>
+          )}
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 bg-card/30 backdrop-blur p-6 rounded-none">
           {documents.map((doc) => (
             <div key={doc.id} className="flex items-center space-x-4">
@@ -106,10 +134,18 @@ export function RequiredDocumentsSection({
 
   if (variant === "card-grid") {
     return (
-      <div className="space-y-4">
-        <h3 className="font-light text-foreground/50 text-sm uppercase tracking-wider">
-          {title}
-        </h3>
+      <div className="space-y-4 relative">
+        <div className="flex items-center justify-between">
+          <h3 className={`font-light text-sm uppercase tracking-wider ${isComplete ? 'text-green-500' : 'text-foreground/50'}`}>
+            {title}
+          </h3>
+          {isComplete && (
+            <div className="flex items-center gap-1.5 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wide animate-in fade-in slide-in-from-right-2 duration-300">
+              <Check className="h-3 w-3" />
+              Completed
+            </div>
+          )}
+        </div>
         <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${getBackgroundClass()}`}>
           {documents.map((doc) => (
             <div
@@ -139,10 +175,18 @@ export function RequiredDocumentsSection({
 
   if (variant === "bordered-list") {
     return (
-      <div className="space-y-4">
-        <h3 className="font-light text-foreground/50 text-sm uppercase tracking-wider">
-          {title}
-        </h3>
+      <div className={`space-y-4 relative ${isComplete ? 'border-2 border-green-500/50 p-4 rounded-lg shadow-lg shadow-green-500/20' : ''}`}>
+        <div className="flex items-center justify-between">
+          <h3 className={`font-light text-sm uppercase tracking-wider ${isComplete ? 'text-green-500' : 'text-foreground/50'}`}>
+            {title}
+          </h3>
+          {isComplete && (
+            <div className="flex items-center gap-1.5 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wide animate-in fade-in slide-in-from-right-2 duration-300">
+              <Check className="h-3 w-3" />
+              Completed
+            </div>
+          )}
+        </div>
         <div className="space-y-0 border-t border-border/30">
           {documents.map((doc, index) => (
             <div
@@ -174,10 +218,18 @@ export function RequiredDocumentsSection({
 
   if (variant === "compact-table") {
     return (
-      <div className="space-y-4">
-        <h3 className="font-light text-foreground/50 text-sm uppercase tracking-wider">
-          {title}
-        </h3>
+      <div className={`space-y-4 relative ${isComplete ? 'border-2 border-green-500/50 p-4 rounded-lg shadow-lg shadow-green-500/20' : ''}`}>
+        <div className="flex items-center justify-between">
+          <h3 className={`font-light text-sm uppercase tracking-wider ${isComplete ? 'text-green-500' : 'text-foreground/50'}`}>
+            {title}
+          </h3>
+          {isComplete && (
+            <div className="flex items-center gap-1.5 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wide animate-in fade-in slide-in-from-right-2 duration-300">
+              <Check className="h-3 w-3" />
+              Completed
+            </div>
+          )}
+        </div>
         <div className="space-y-0 overflow-hidden rounded-md border border-border/30">
           {documents.map((doc, index) => (
             <div
@@ -209,10 +261,18 @@ export function RequiredDocumentsSection({
 
   if (variant === "gradient-blocks") {
     return (
-      <div className="space-y-4">
-        <h3 className="font-light text-foreground/50 text-sm uppercase tracking-wider">
-          {title}
-        </h3>
+      <div className={`space-y-4 relative ${isComplete ? 'border-2 border-green-500/50 p-4 rounded-lg shadow-lg shadow-green-500/20' : ''}`}>
+        <div className="flex items-center justify-between">
+          <h3 className={`font-light text-sm uppercase tracking-wider ${isComplete ? 'text-green-500' : 'text-foreground/50'}`}>
+            {title}
+          </h3>
+          {isComplete && (
+            <div className="flex items-center gap-1.5 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wide animate-in fade-in slide-in-from-right-2 duration-300">
+              <Check className="h-3 w-3" />
+              Completed
+            </div>
+          )}
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 p-2">
           {documents.map((doc) => (
             <div
