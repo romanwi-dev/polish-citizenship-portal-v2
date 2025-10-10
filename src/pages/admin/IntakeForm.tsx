@@ -148,19 +148,30 @@ export default function IntakeForm() {
           transition={{ duration: 0.5 }}
         >
           <Card className="glass-card border-primary/20">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border/50 flex items-center gap-2">
+            <CardContent className="pt-6">
+              <div className="flex justify-end mb-4">
                 <Button
-                  variant="ghost"
-                  size="icon"
+                  variant="outline"
+                  size="sm"
                   onClick={() => setIsFullView(!isFullView)}
-                  className="ml-2 flex-shrink-0"
-                  title={isFullView ? "Switch to tabbed view" : "Show all sections"}
                 >
-                  {isFullView ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
+                  {isFullView ? (
+                    <>
+                      <Minimize2 className="h-4 w-4 mr-2" />
+                      Collapse
+                    </>
+                  ) : (
+                    <>
+                      <Maximize2 className="h-4 w-4 mr-2" />
+                      Expand All
+                    </>
+                  )}
                 </Button>
-                <div className="flex-1">
-                  <TabsList className="w-full grid grid-cols-2 md:grid-cols-8 h-auto p-2 bg-transparent">
+              </div>
+
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border/50 pb-2">
+                  <TabsList className="w-full grid grid-cols-2 md:grid-cols-8 h-auto p-2">
                     <TabsTrigger value="select" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
                       <Users className="h-4 w-4 mr-2" />
                       <span className="hidden sm:inline">Select...</span>
@@ -195,7 +206,6 @@ export default function IntakeForm() {
                     </TabsTrigger>
                   </TabsList>
                 </div>
-              </div>
 
               {isFullView ? (
                 // Full View - All sections visible
@@ -254,7 +264,8 @@ export default function IntakeForm() {
                   </TabsContent>
                 </>
               )}
-            </Tabs>
+              </Tabs>
+            </CardContent>
           </Card>
         </motion.div>
       </div>

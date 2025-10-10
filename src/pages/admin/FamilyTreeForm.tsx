@@ -366,20 +366,30 @@ export default function FamilyTreeForm() {
         {/* Form with Tabs */}
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }}>
           <Card className="glass-card border-primary/20">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border/50">
-                <div className="flex items-center gap-2">
-                  <Button
-                    onClick={() => setIsFullView(!isFullView)}
-                    variant="ghost"
-                    size="sm"
-                    className="ml-2 flex-shrink-0"
-                    title={isFullView ? "Show tabs" : "Show all sections"}
-                  >
-                    {isFullView ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
-                  </Button>
-                  <div className="flex-1">
-                    <TabsList className="w-full h-auto p-2 bg-transparent justify-start flex-wrap">
+            <CardContent className="pt-6">
+              <div className="flex justify-end mb-4">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsFullView(!isFullView)}
+                >
+                  {isFullView ? (
+                    <>
+                      <Minimize2 className="h-4 w-4 mr-2" />
+                      Collapse
+                    </>
+                  ) : (
+                    <>
+                      <Maximize2 className="h-4 w-4 mr-2" />
+                      Expand All
+                    </>
+                  )}
+                </Button>
+              </div>
+
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border/50 pb-2">
+                  <TabsList className="w-full h-auto p-2 justify-start flex-wrap">
                       <TabsTrigger value="tree-view" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
                         <TreePine className="h-4 w-4 mr-2" />
                         <span className="hidden sm:inline">Tree View</span>
@@ -422,10 +432,8 @@ export default function FamilyTreeForm() {
                       </TabsTrigger>
                     </TabsList>
                   </div>
-                </div>
-              </div>
 
-              {/* Full View Mode */}
+                {/* Full View Mode */}
               {isFullView ? (
                 <div className="space-y-6 mt-6">
                   {/* Tree View always shown in full view */}
@@ -1806,7 +1814,8 @@ export default function FamilyTreeForm() {
         </TabsContent>
                 </>
               )}
-            </Tabs>
+              </Tabs>
+            </CardContent>
           </Card>
         </motion.div>
       </div>

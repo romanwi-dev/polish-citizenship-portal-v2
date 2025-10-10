@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Mic, Save, Download, Upload, CheckCircle2, AlertCircle, User, Users, FileText, Baby } from "lucide-react";
+import { Mic, Save, Download, Upload, CheckCircle2, AlertCircle, User, Users, FileText, Baby, Maximize2, Minimize2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { DateField } from "@/components/DateField";
@@ -31,6 +31,7 @@ export const MasterDataTable = ({ open, onOpenChange, caseId }: MasterDataTableP
   const [activeField, setActiveField] = useState<string | null>(null);
   const [formData, setFormData] = useState<Record<string, any>>({});
   const [activeTab, setActiveTab] = useState("applicant");
+  const [isFullView, setIsFullView] = useState(false);
 
   const sections: FormSection[] = [
     {
@@ -377,8 +378,29 @@ export const MasterDataTable = ({ open, onOpenChange, caseId }: MasterDataTableP
           </Card>
         )}
 
+        <div className="flex justify-end mb-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setIsFullView(!isFullView)}
+          >
+            {isFullView ? (
+              <>
+                <Minimize2 className="h-4 w-4 mr-2" />
+                Collapse
+              </>
+            ) : (
+              <>
+                <Maximize2 className="h-4 w-4 mr-2" />
+                Expand All
+              </>
+            )}
+          </Button>
+        </div>
+
         <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 overflow-hidden flex flex-col">
-          <TabsList className="grid grid-cols-2 lg:grid-cols-6 w-full">
+          <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border/50 pb-2">
+            <TabsList className="grid grid-cols-2 lg:grid-cols-6 w-full">
             {sections.map(section => {
               const completion = calculateCompletion(section.id);
               const Icon = section.icon;
@@ -396,6 +418,7 @@ export const MasterDataTable = ({ open, onOpenChange, caseId }: MasterDataTableP
               );
             })}
           </TabsList>
+          </div>
 
           <div className="flex-1 overflow-y-auto mt-4">
             {sections.map(section => (
