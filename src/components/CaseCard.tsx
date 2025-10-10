@@ -290,28 +290,28 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
             </div>
           )}
 
-          <div className="space-y-3 mt-auto">
+          <div className="space-y-3 mt-auto pt-4">
             {/* Control Room Button - Premium Feature */}
             <Button
               size="lg"
               variant="outline"
-              className="w-full bg-background/10 border-primary/20 hover:bg-background/20 h-14 perspective-1000 group relative overflow-hidden preserve-3d transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_40px_rgba(var(--primary),0.3)]"
+              className="w-full bg-background/10 border-primary/20 hover:bg-background/20 h-12 perspective-1000 group relative overflow-hidden preserve-3d transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_40px_rgba(var(--primary),0.3)]"
               onClick={(e) => {
                 e.stopPropagation();
                 navigate(`/admin/cases/${clientCase.id}`);
               }}
             >
-              <span className="text-base font-normal text-foreground/40 group-hover:text-foreground/60 transition-colors relative z-10">
+              <span className="text-sm font-normal text-foreground/40 group-hover:text-foreground/60 transition-colors relative z-10">
                 CONTROL ROOM
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-fade-in" />
             </Button>
 
             {/* Action Buttons - 2 rows of 3 */}
-            <div className="grid grid-cols-3 gap-3 pt-4 border-t border-border/30">
+            <div className="grid grid-cols-3 gap-2 pt-2 border-t border-border/30">
               <Button
-                size="default"
-                className="text-sm font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-10 flex items-center justify-center"
+                size="sm"
+                className="text-xs font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-9 flex items-center justify-center px-2"
                 onClick={(e) => {
                   e.stopPropagation();
                   navigate(`/admin/cases/${clientCase.id}`);
@@ -323,8 +323,8 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               </Button>
               <Button
-                size="default"
-                className="text-sm font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-10 flex items-center justify-center"
+                size="sm"
+                className="text-xs font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-9 flex items-center justify-center px-2"
                 onClick={(e) => {
                   e.stopPropagation();
                   window.open('/family-tree.pdf', '_blank');
@@ -336,8 +336,8 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               </Button>
               <Button
-                size="default"
-                className="text-sm font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-10 flex items-center justify-center"
+                size="sm"
+                className="text-xs font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-9 flex items-center justify-center px-2"
                 onClick={(e) => {
                   e.stopPropagation();
                   navigate(`/admin/cases/${clientCase.id}?tab=documents`);
@@ -349,10 +349,10 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               </Button>
             </div>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-3 gap-2">
               <Button
-                size="default"
-                className="text-sm font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-10 flex items-center justify-center"
+                size="sm"
+                className="text-xs font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-9 flex items-center justify-center px-2"
                 onClick={(e) => {
                   e.stopPropagation();
                   navigate(`/admin/cases/${clientCase.id}?tab=tasks`);
@@ -364,8 +364,8 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               </Button>
               <Button
-                size="default"
-                className="text-sm font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-10 flex items-center justify-center"
+                size="sm"
+                className="text-xs font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-9 flex items-center justify-center px-2"
                 onClick={(e) => {
                   e.stopPropagation();
                   navigate(`/admin/cases/${clientCase.id}?tab=authority`);
@@ -377,8 +377,8 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               </Button>
               <Button
-                size="default"
-                className="text-sm font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-10 flex items-center justify-center"
+                size="sm"
+                className="text-xs font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-9 flex items-center justify-center px-2"
                 onClick={(e) => {
                   e.stopPropagation();
                   navigate(`/admin/cases/${clientCase.id}?tab=stage`);
