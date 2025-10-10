@@ -231,7 +231,7 @@ export default function FamilyTreeForm() {
         duration: 0.4
       }} className="space-y-2" onDoubleClick={() => !field.type || field.type === "text" ? handleInputChange(field.name, "") : null}>
             {field.type === "date" ? renderDateField(field.name, field.label) : field.isSelect ? <>
-                <Label htmlFor={field.name} className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                <Label htmlFor={field.name} className={isLargeFonts ? "text-2xl" : ""}>
                   {field.label}
                 </Label>
                 <Select value={formData[field.name] || ""} onValueChange={(value) => handleInputChange(field.name, value)}>
@@ -247,7 +247,7 @@ export default function FamilyTreeForm() {
                   </SelectContent>
                 </Select>
               </> : <>
-                <Label htmlFor={field.name} className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                <Label htmlFor={field.name} className={isLargeFonts ? "text-2xl" : ""}>
                   {field.label}
                 </Label>
                 <Input 
@@ -544,7 +544,7 @@ export default function FamilyTreeForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Gender */}
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-2">
-                    <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                    <Label className={isLargeFonts ? "text-2xl" : ""}>
                       Gender / Płeć
                     </Label>
                     <Select value={formData.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
@@ -560,7 +560,7 @@ export default function FamilyTreeForm() {
 
                   {/* Civil Status */}
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="space-y-2">
-                    <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                    <Label className={isLargeFonts ? "text-2xl" : ""}>
                       Civil status / Stan cywilny
                     </Label>
                     <Select value={formData.applicant_is_married === true ? "Married" : "Single"} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
@@ -654,7 +654,7 @@ export default function FamilyTreeForm() {
                     transition={{ delay: 0.4 }}
                     className="space-y-2"
                   >
-                    <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                    <Label className={isLargeFonts ? "text-2xl" : ""}>
                       Maiden name / Nazwisko rodowe
                     </Label>
                     <Input
@@ -721,7 +721,7 @@ export default function FamilyTreeForm() {
               }])}
 
                 <div className="space-y-2">
-                  <Label htmlFor="applicant_notes" className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                  <Label htmlFor="applicant_notes" className={isLargeFonts ? "text-2xl" : ""}>
                     Relevant additional information
                   </Label>
                   <Textarea
@@ -874,7 +874,7 @@ export default function FamilyTreeForm() {
 
                   {/* Notes */}
                   <div className="space-y-2">
-                    <Label htmlFor="spouse_notes" className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                    <Label htmlFor="spouse_notes" className={isLargeFonts ? "text-2xl" : ""}>
                       Relevant additional information
                     </Label>
                     <Textarea
@@ -1029,7 +1029,7 @@ export default function FamilyTreeForm() {
                   type: "date"
                 }])}
                     <div className="space-y-2">
-                      <Label htmlFor={`child_${num}_notes`} className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                      <Label htmlFor={`child_${num}_notes`} className={isLargeFonts ? "text-2xl" : ""}>
                         Relevant additional information
                       </Label>
                       <Textarea
@@ -1208,7 +1208,7 @@ export default function FamilyTreeForm() {
                     type: "date"
                   }])}
                     <div className="space-y-2">
-                      <Label htmlFor="father_notes" className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                      <Label htmlFor="father_notes" className={isLargeFonts ? "text-2xl" : ""}>
                         Relevant additional information
                       </Label>
                       <Textarea
@@ -1365,7 +1365,7 @@ export default function FamilyTreeForm() {
                     type: "date"
                   }])}
                     <div className="space-y-2">
-                      <Label htmlFor="mother_notes" className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                      <Label htmlFor="mother_notes" className={isLargeFonts ? "text-2xl" : ""}>
                         Relevant additional information
                       </Label>
                       <Textarea
@@ -1541,7 +1541,7 @@ export default function FamilyTreeForm() {
                       type: "date"
                     }])}
                         <div className="space-y-2">
-                          <Label htmlFor={`${prefix}_notes`} className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                          <Label htmlFor={`${prefix}_notes`} className={isLargeFonts ? "text-2xl" : ""}>
                             Relevant additional information
                           </Label>
                           <Textarea
@@ -1695,7 +1695,7 @@ export default function FamilyTreeForm() {
                       type: "date"
                     }])}
                         <div className="space-y-2">
-                          <Label htmlFor={`${prefix}_notes`} className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                          <Label htmlFor={`${prefix}_notes`} className={isLargeFonts ? "text-2xl" : ""}>
                             Relevant additional information
                           </Label>
                           <Textarea
@@ -1815,7 +1815,7 @@ export default function FamilyTreeForm() {
               </CardHeader>
               <CardContent className="p-6 md:p-10">
                 <div className="space-y-2">
-                  <Label htmlFor="additional_info" className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                  <Label htmlFor="additional_info" className={isLargeFonts ? "text-2xl" : ""}>
                     Additional relevant information
                   </Label>
                   <Textarea

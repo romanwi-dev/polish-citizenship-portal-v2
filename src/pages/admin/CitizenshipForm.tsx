@@ -416,7 +416,7 @@ export default function CitizenshipForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Gender */}
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-2">
-                    <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                    <Label className={isLargeFonts ? "text-2xl" : ""}>
                       Gender / Płeć
                     </Label>
                     <Select value={formData.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
@@ -432,7 +432,7 @@ export default function CitizenshipForm() {
 
                   {/* Civil Status */}
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="space-y-2">
-                    <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                    <Label className={isLargeFonts ? "text-2xl" : ""}>
                       Civil status / Stan cywilny
                     </Label>
                     <Select value={formData.applicant_is_married === true ? "Married" : "Single"} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
@@ -451,7 +451,7 @@ export default function CitizenshipForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Number of children */}
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-2">
-                    <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                    <Label className={isLargeFonts ? "text-2xl" : ""}>
                       Number of children
                     </Label>
                     <Select value={formData.children_count?.toString() || ""} onValueChange={(value) => { const count = parseInt(value); handleInputChange("children_count", count); }}>
@@ -467,7 +467,7 @@ export default function CitizenshipForm() {
                   {/* Number of minor children - only show if children_count > 0 */}
                   {(formData.children_count > 0) && (
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="space-y-2">
-                      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
+                      <Label className={isLargeFonts ? "text-2xl" : ""}>
                         Number of minor children
                       </Label>
                       <Select value={formData.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
