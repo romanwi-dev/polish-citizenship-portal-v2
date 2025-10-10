@@ -76,7 +76,7 @@ export function CountrySelect({
           value={COUNTRIES.slice(0, -1).includes(value) ? value : ""} 
           onValueChange={handleSelectChange}
         >
-          <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur" style={{ fontSize: '1.125rem', fontWeight: '400' }}>
+          <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
             <SelectValue placeholder={placeholder} />
           </SelectTrigger>
           <SelectContent className="bg-background border-2 z-[100]">
