@@ -378,7 +378,7 @@ export default function MasterDataTable() {
           <Card className="glass-card border-primary/20">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <div className="border-b border-border/50">
-                <TabsList className="w-full grid grid-cols-3 md:grid-cols-8 h-auto p-2 bg-transparent">
+                <TabsList className="w-full h-auto p-2 bg-transparent flex flex-wrap justify-start gap-1">
                   <TabsTrigger value="applicant" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
                     <User className="h-4 w-4 mr-2" />
                     <span className="hidden sm:inline">Applicant</span>

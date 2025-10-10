@@ -479,7 +479,7 @@ export default function FamilyTreeForm() {
           <Card className="glass-card border-primary/20">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <div className="border-b border-border/50">
-                <TabsList className="w-full grid grid-cols-3 md:grid-cols-7 h-auto p-2 bg-transparent">
+                <TabsList className="w-full h-auto p-2 bg-transparent justify-start">
                   <TabsTrigger value="applicant" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
                     <User className="h-4 w-4 mr-2" />
                     <span className="hidden sm:inline">Applicant</span>
@@ -940,20 +940,26 @@ export default function FamilyTreeForm() {
                       name: "father_has_polish_documents",
                       label: "Polish documents"
                     }, {
+                      name: "father_has_passport",
+                      label: "Passport copy"
+                    }, {
                       name: "father_has_birth_cert",
                       label: "Birth certificate"
                     }, {
                       name: "father_has_marriage_cert",
                       label: "Marriage certificate"
                     }, {
-                      name: "father_has_naturalization_papers",
-                      label: "Naturalization Papers"
+                      name: "father_has_naturalization",
+                      label: "Naturalization certificate"
+                    }, {
+                      name: "father_has_military_record",
+                      label: "Military service record"
                     }, {
                       name: "father_has_foreign_documents",
-                      label: "Foreign Documents"
+                      label: "Foreign documents"
                     }, {
-                      name: "father_has_military_records",
-                      label: "Military Records"
+                      name: "father_has_additional_documents",
+                      label: "Additional documents"
                     }])}
                     </div>
                   </CardContent>
@@ -1038,17 +1044,23 @@ export default function FamilyTreeForm() {
                       name: "mother_has_polish_documents",
                       label: "Polish documents"
                     }, {
+                      name: "mother_has_passport",
+                      label: "Passport copy"
+                    }, {
                       name: "mother_has_birth_cert",
                       label: "Birth certificate"
                     }, {
                       name: "mother_has_marriage_cert",
                       label: "Marriage certificate"
                     }, {
-                      name: "mother_has_naturalization_papers",
-                      label: "Naturalization Papers"
+                      name: "mother_has_naturalization",
+                      label: "Naturalization certificate"
                     }, {
                       name: "mother_has_foreign_documents",
-                      label: "Foreign Documents"
+                      label: "Foreign documents"
+                    }, {
+                      name: "mother_has_additional_documents",
+                      label: "Additional documents"
                     }])}
                     </div>
                   </CardContent>
@@ -1161,21 +1173,27 @@ export default function FamilyTreeForm() {
                         name: `${prefix}_has_polish_documents`,
                         label: "Polish documents"
                       }, {
+                        name: `${prefix}_has_passport`,
+                        label: "Passport copy"
+                      }, {
                         name: `${prefix}_has_birth_cert`,
                         label: "Birth certificate"
                       }, {
                         name: `${prefix}_has_marriage_cert`,
                         label: "Marriage certificate"
                       }, {
-                        name: `${prefix}_has_naturalization_papers`,
-                        label: "Naturalization Papers"
-                      }, {
-                        name: `${prefix}_has_foreign_documents`,
-                        label: "Foreign Documents"
+                        name: `${prefix}_has_naturalization`,
+                        label: "Naturalization certificate"
                       }, ...(prefix === "pgf" || prefix === "mgf" ? [{
-                        name: `${prefix}_has_military_records`,
-                        label: "Military Records"
-                      }] : []), ...(prefix === "pgm" || prefix === "mgm" ? [] : [])])}
+                        name: `${prefix}_has_military_record`,
+                        label: "Military service record"
+                      }] : []), {
+                        name: `${prefix}_has_foreign_documents`,
+                        label: "Foreign documents"
+                      }, {
+                        name: `${prefix}_has_additional_documents`,
+                        label: "Additional documents"
+                      }])}
                         </div>
                       </CardContent>
                     </Card>;
@@ -1247,28 +1265,31 @@ export default function FamilyTreeForm() {
                         </div>
                         <div className="pt-4">
                           <h4 className="text-lg font-semibold mb-4 text-foreground">Documents required</h4>
-                          {renderCheckboxGroup([...(prefix === "pggf" || prefix === "mggf" ? [{
+                          {renderCheckboxGroup([{
                         name: `${prefix}_has_polish_documents`,
                         label: "Polish documents"
-                      }] : []), ...(prefix === "pggm" || prefix === "mggm" ? [{
-                        name: `${prefix}_has_polish_documents`,
-                        label: "Polish documents"
-                      }] : []), {
+                      }, {
+                        name: `${prefix}_has_passport`,
+                        label: "Passport copy"
+                      }, {
                         name: `${prefix}_has_birth_cert`,
                         label: "Birth certificate"
                       }, {
                         name: `${prefix}_has_marriage_cert`,
                         label: "Marriage certificate"
                       }, {
-                        name: `${prefix}_has_naturalization_papers`,
-                        label: "Naturalization Papers"
-                      }, {
-                        name: `${prefix}_has_foreign_documents`,
-                        label: "Foreign Documents"
+                        name: `${prefix}_has_naturalization`,
+                        label: "Naturalization certificate"
                       }, ...(prefix === "pggf" || prefix === "mggf" ? [{
-                        name: `${prefix}_has_military_records`,
-                        label: "Military Records"
-                      }] : [])])}
+                        name: `${prefix}_has_military_record`,
+                        label: "Military service record"
+                      }] : []), {
+                        name: `${prefix}_has_foreign_documents`,
+                        label: "Foreign documents"
+                      }, {
+                        name: `${prefix}_has_additional_documents`,
+                        label: "Additional documents"
+                      }])}
                         </div>
                       </CardContent>
                     </Card>;
