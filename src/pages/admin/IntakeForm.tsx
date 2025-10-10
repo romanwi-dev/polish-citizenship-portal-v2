@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { Loader2, Save, Sparkles, CheckCircle2, Type, User, FileText, GitBranch, Download, Heart, ArrowLeft, Users, MapPin, Plane, FolderOpen, MessageSquare } from "lucide-react";
+import { Loader2, Save, Sparkles, CheckCircle2, Type, User, FileText, GitBranch, Download, Heart, ArrowLeft, Users, MapPin, Phone, Plane, FolderOpen, MessageSquare } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -286,14 +286,18 @@ export default function IntakeForm() {
           <Card className="glass-card border-primary/20">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <div className="border-b border-border/50">
-                <TabsList className="w-full grid grid-cols-2 md:grid-cols-6 h-auto p-2 bg-transparent">
+                <TabsList className="w-full grid grid-cols-2 md:grid-cols-7 h-auto p-2 bg-transparent">
                   <TabsTrigger value="applicant" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
                     <User className="h-4 w-4 mr-2" />
                     <span className="hidden sm:inline">Applicant</span>
                   </TabsTrigger>
                   <TabsTrigger value="contact" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
-                    <MapPin className="h-4 w-4 mr-2" />
+                    <Phone className="h-4 w-4 mr-2" />
                     <span className="hidden sm:inline">Contact</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="address" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
+                    <MapPin className="h-4 w-4 mr-2" />
+                    <span className="hidden sm:inline">Address</span>
                   </TabsTrigger>
                   <TabsTrigger value="passport" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">
                     <Plane className="h-4 w-4 mr-2" />
@@ -561,12 +565,10 @@ export default function IntakeForm() {
               <TabsContent value="contact" className="mt-0">
                 <CardHeader className="border-b border-border/50 pb-6">
                   <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                    Contact & Address
+                    Contact Information
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-6 md:p-10">
-
-              {/* Contact information */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -602,10 +604,16 @@ export default function IntakeForm() {
                   />
                 </motion.div>
               </div>
+                </CardContent>
+              </TabsContent>
 
-              {/* Address information */}
-              <div className="pt-8">
-                <h3 className="text-xl font-semibold mb-6 text-foreground">Address</h3>
+              <TabsContent value="address" className="mt-0">
+                <CardHeader className="border-b border-border/50 pb-6">
+                  <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                    Address Information
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6 md:p-10">
                 <div className="grid grid-cols-1 gap-6">
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -687,7 +695,6 @@ export default function IntakeForm() {
                     />
                   </div>
                 </div>
-              </div>
                 </CardContent>
               </TabsContent>
 

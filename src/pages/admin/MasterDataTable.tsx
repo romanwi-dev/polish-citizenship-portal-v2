@@ -715,7 +715,7 @@ export default function MasterDataTable() {
                 </CardContent>
               </Card>
             </motion.div>
-          )}
+          </TabsContent>
 
           {/* SPOUSE TAB - Always accessible */}
           {activeTab === "spouse" && (
@@ -1399,7 +1399,9 @@ export default function MasterDataTable() {
               </Card>
             </motion.div>
           )}
-        </div>
+            </Tabs>
+          </Card>
+        </motion.div>
       </div>
 
       {/* Clear All Confirmation Dialog */}
