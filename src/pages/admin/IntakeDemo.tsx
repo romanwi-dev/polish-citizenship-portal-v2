@@ -23,6 +23,16 @@ export default function IntakeDemo() {
   const [values13, setValues13] = useState({ gender: "", status: "", children: "" });
   const [values14, setValues14] = useState({ gender: "", status: "", children: "" });
   const [values15, setValues15] = useState({ gender: "", status: "", children: "" });
+  const [values16, setValues16] = useState({ gender: "", status: "", children: "" });
+  const [values17, setValues17] = useState({ gender: "", status: "", children: "" });
+  const [values18, setValues18] = useState({ gender: "", status: "", children: "" });
+  const [values19, setValues19] = useState({ gender: "", status: "", children: "" });
+  const [values20, setValues20] = useState({ gender: "", status: "", children: "" });
+  const [values21, setValues21] = useState({ gender: "", status: "", children: "" });
+  const [values22, setValues22] = useState({ gender: "", status: "", children: "" });
+  const [values23, setValues23] = useState({ gender: "", status: "", children: "" });
+  const [values24, setValues24] = useState({ gender: "", status: "", children: "" });
+  const [values25, setValues25] = useState({ gender: "", status: "", children: "" });
 
   return (
     <div className="min-h-screen bg-background p-8">
@@ -959,6 +969,576 @@ export default function IntakeDemo() {
                 </Label>
                 <Select value={values15.children} onValueChange={(v) => setValues15({...values15, children: v})}>
                   <SelectTrigger id="children-15" className="h-12">
+                    <SelectValue placeholder="Select number" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="0">0</SelectItem>
+                    <SelectItem value="1">1</SelectItem>
+                    <SelectItem value="2">2</SelectItem>
+                    <SelectItem value="3">3</SelectItem>
+                    <SelectItem value="4+">4+</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* OPTION 16: Extra Bold Condensed */}
+          <Card className="border-2">
+            <CardHeader>
+              <CardTitle>Option 16: Extra Bold Condensed</CardTitle>
+              <p className="text-sm text-muted-foreground">Powerful & space-efficient</p>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="gender-16" className="text-base font-extrabold tracking-tighter">
+                  Gender
+                </Label>
+                <Select value={values16.gender} onValueChange={(v) => setValues16({...values16, gender: v})}>
+                  <SelectTrigger id="gender-16" className="h-12">
+                    <SelectValue placeholder="Select gender" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="M">Male</SelectItem>
+                    <SelectItem value="F">Female</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="status-16" className="text-base font-extrabold tracking-tighter">
+                  Civil Status
+                </Label>
+                <Select value={values16.status} onValueChange={(v) => setValues16({...values16, status: v})}>
+                  <SelectTrigger id="status-16" className="h-12">
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="single">Single</SelectItem>
+                    <SelectItem value="married">Married</SelectItem>
+                    <SelectItem value="divorced">Divorced</SelectItem>
+                    <SelectItem value="widowed">Widowed</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="children-16" className="text-base font-extrabold tracking-tighter">
+                  Number of Children
+                </Label>
+                <Select value={values16.children} onValueChange={(v) => setValues16({...values16, children: v})}>
+                  <SelectTrigger id="children-16" className="h-12">
+                    <SelectValue placeholder="Select number" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="0">0</SelectItem>
+                    <SelectItem value="1">1</SelectItem>
+                    <SelectItem value="2">2</SelectItem>
+                    <SelectItem value="3">3</SelectItem>
+                    <SelectItem value="4+">4+</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* OPTION 17: Thin Elegant */}
+          <Card className="border-2">
+            <CardHeader>
+              <CardTitle>Option 17: Thin Elegant</CardTitle>
+              <p className="text-sm text-muted-foreground">Delicate & sophisticated</p>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="gender-17" className="text-xl font-thin tracking-wide text-foreground/85">
+                  Gender
+                </Label>
+                <Select value={values17.gender} onValueChange={(v) => setValues17({...values17, gender: v})}>
+                  <SelectTrigger id="gender-17" className="h-12">
+                    <SelectValue placeholder="Select gender" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="M">Male</SelectItem>
+                    <SelectItem value="F">Female</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="status-17" className="text-xl font-thin tracking-wide text-foreground/85">
+                  Civil Status
+                </Label>
+                <Select value={values17.status} onValueChange={(v) => setValues17({...values17, status: v})}>
+                  <SelectTrigger id="status-17" className="h-12">
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="single">Single</SelectItem>
+                    <SelectItem value="married">Married</SelectItem>
+                    <SelectItem value="divorced">Divorced</SelectItem>
+                    <SelectItem value="widowed">Widowed</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="children-17" className="text-xl font-thin tracking-wide text-foreground/85">
+                  Number of Children
+                </Label>
+                <Select value={values17.children} onValueChange={(v) => setValues17({...values17, children: v})}>
+                  <SelectTrigger id="children-17" className="h-12">
+                    <SelectValue placeholder="Select number" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="0">0</SelectItem>
+                    <SelectItem value="1">1</SelectItem>
+                    <SelectItem value="2">2</SelectItem>
+                    <SelectItem value="3">3</SelectItem>
+                    <SelectItem value="4+">4+</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* OPTION 18: All Caps Light */}
+          <Card className="border-2">
+            <CardHeader>
+              <CardTitle>Option 18: All Caps Light</CardTitle>
+              <p className="text-sm text-muted-foreground">Structured & airy</p>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="gender-18" className="text-xs font-light uppercase tracking-[0.2em]">
+                  Gender
+                </Label>
+                <Select value={values18.gender} onValueChange={(v) => setValues18({...values18, gender: v})}>
+                  <SelectTrigger id="gender-18" className="h-12">
+                    <SelectValue placeholder="Select gender" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="M">Male</SelectItem>
+                    <SelectItem value="F">Female</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="status-18" className="text-xs font-light uppercase tracking-[0.2em]">
+                  Civil Status
+                </Label>
+                <Select value={values18.status} onValueChange={(v) => setValues18({...values18, status: v})}>
+                  <SelectTrigger id="status-18" className="h-12">
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="single">Single</SelectItem>
+                    <SelectItem value="married">Married</SelectItem>
+                    <SelectItem value="divorced">Divorced</SelectItem>
+                    <SelectItem value="widowed">Widowed</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="children-18" className="text-xs font-light uppercase tracking-[0.2em]">
+                  Number of Children
+                </Label>
+                <Select value={values18.children} onValueChange={(v) => setValues18({...values18, children: v})}>
+                  <SelectTrigger id="children-18" className="h-12">
+                    <SelectValue placeholder="Select number" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="0">0</SelectItem>
+                    <SelectItem value="1">1</SelectItem>
+                    <SelectItem value="2">2</SelectItem>
+                    <SelectItem value="3">3</SelectItem>
+                    <SelectItem value="4+">4+</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* OPTION 19: Serif Bold Large */}
+          <Card className="border-2">
+            <CardHeader>
+              <CardTitle>Option 19: Serif Bold Large</CardTitle>
+              <p className="text-sm text-muted-foreground">Traditional & prominent</p>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="gender-19" className="text-xl font-bold tracking-normal" style={{ fontFamily: 'Georgia, serif' }}>
+                  Gender
+                </Label>
+                <Select value={values19.gender} onValueChange={(v) => setValues19({...values19, gender: v})}>
+                  <SelectTrigger id="gender-19" className="h-12">
+                    <SelectValue placeholder="Select gender" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="M">Male</SelectItem>
+                    <SelectItem value="F">Female</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="status-19" className="text-xl font-bold tracking-normal" style={{ fontFamily: 'Georgia, serif' }}>
+                  Civil Status
+                </Label>
+                <Select value={values19.status} onValueChange={(v) => setValues19({...values19, status: v})}>
+                  <SelectTrigger id="status-19" className="h-12">
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="single">Single</SelectItem>
+                    <SelectItem value="married">Married</SelectItem>
+                    <SelectItem value="divorced">Divorced</SelectItem>
+                    <SelectItem value="widowed">Widowed</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="children-19" className="text-xl font-bold tracking-normal" style={{ fontFamily: 'Georgia, serif' }}>
+                  Number of Children
+                </Label>
+                <Select value={values19.children} onValueChange={(v) => setValues19({...values19, children: v})}>
+                  <SelectTrigger id="children-19" className="h-12">
+                    <SelectValue placeholder="Select number" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="0">0</SelectItem>
+                    <SelectItem value="1">1</SelectItem>
+                    <SelectItem value="2">2</SelectItem>
+                    <SelectItem value="3">3</SelectItem>
+                    <SelectItem value="4+">4+</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* OPTION 20: Sans Medium Primary Accent */}
+          <Card className="border-2">
+            <CardHeader>
+              <CardTitle>Option 20: Sans Medium Primary</CardTitle>
+              <p className="text-sm text-muted-foreground">Modern with color accent</p>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="gender-20" className="text-base font-medium tracking-normal text-primary">
+                  Gender
+                </Label>
+                <Select value={values20.gender} onValueChange={(v) => setValues20({...values20, gender: v})}>
+                  <SelectTrigger id="gender-20" className="h-12">
+                    <SelectValue placeholder="Select gender" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="M">Male</SelectItem>
+                    <SelectItem value="F">Female</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="status-20" className="text-base font-medium tracking-normal text-primary">
+                  Civil Status
+                </Label>
+                <Select value={values20.status} onValueChange={(v) => setValues20({...values20, status: v})}>
+                  <SelectTrigger id="status-20" className="h-12">
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="single">Single</SelectItem>
+                    <SelectItem value="married">Married</SelectItem>
+                    <SelectItem value="divorced">Divorced</SelectItem>
+                    <SelectItem value="widowed">Widowed</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="children-20" className="text-base font-medium tracking-normal text-primary">
+                  Number of Children
+                </Label>
+                <Select value={values20.children} onValueChange={(v) => setValues20({...values20, children: v})}>
+                  <SelectTrigger id="children-20" className="h-12">
+                    <SelectValue placeholder="Select number" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="0">0</SelectItem>
+                    <SelectItem value="1">1</SelectItem>
+                    <SelectItem value="2">2</SelectItem>
+                    <SelectItem value="3">3</SelectItem>
+                    <SelectItem value="4+">4+</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* OPTION 21: Large Relaxed Sans */}
+          <Card className="border-2">
+            <CardHeader>
+              <CardTitle>Option 21: Large Relaxed Sans</CardTitle>
+              <p className="text-sm text-muted-foreground">Spacious & comfortable</p>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="gender-21" className="text-2xl font-normal tracking-wide">
+                  Gender
+                </Label>
+                <Select value={values21.gender} onValueChange={(v) => setValues21({...values21, gender: v})}>
+                  <SelectTrigger id="gender-21" className="h-12">
+                    <SelectValue placeholder="Select gender" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="M">Male</SelectItem>
+                    <SelectItem value="F">Female</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="status-21" className="text-2xl font-normal tracking-wide">
+                  Civil Status
+                </Label>
+                <Select value={values21.status} onValueChange={(v) => setValues21({...values21, status: v})}>
+                  <SelectTrigger id="status-21" className="h-12">
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="single">Single</SelectItem>
+                    <SelectItem value="married">Married</SelectItem>
+                    <SelectItem value="divorced">Divorced</SelectItem>
+                    <SelectItem value="widowed">Widowed</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="children-21" className="text-2xl font-normal tracking-wide">
+                  Number of Children
+                </Label>
+                <Select value={values21.children} onValueChange={(v) => setValues21({...values21, children: v})}>
+                  <SelectTrigger id="children-21" className="h-12">
+                    <SelectValue placeholder="Select number" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="0">0</SelectItem>
+                    <SelectItem value="1">1</SelectItem>
+                    <SelectItem value="2">2</SelectItem>
+                    <SelectItem value="3">3</SelectItem>
+                    <SelectItem value="4+">4+</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* OPTION 22: Small Tight Modern */}
+          <Card className="border-2">
+            <CardHeader>
+              <CardTitle>Option 22: Small Tight Modern</CardTitle>
+              <p className="text-sm text-muted-foreground">Compact & efficient</p>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="gender-22" className="text-xs font-semibold tracking-tight uppercase">
+                  Gender
+                </Label>
+                <Select value={values22.gender} onValueChange={(v) => setValues22({...values22, gender: v})}>
+                  <SelectTrigger id="gender-22" className="h-12">
+                    <SelectValue placeholder="Select gender" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="M">Male</SelectItem>
+                    <SelectItem value="F">Female</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="status-22" className="text-xs font-semibold tracking-tight uppercase">
+                  Civil Status
+                </Label>
+                <Select value={values22.status} onValueChange={(v) => setValues22({...values22, status: v})}>
+                  <SelectTrigger id="status-22" className="h-12">
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="single">Single</SelectItem>
+                    <SelectItem value="married">Married</SelectItem>
+                    <SelectItem value="divorced">Divorced</SelectItem>
+                    <SelectItem value="widowed">Widowed</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="children-22" className="text-xs font-semibold tracking-tight uppercase">
+                  Number of Children
+                </Label>
+                <Select value={values22.children} onValueChange={(v) => setValues22({...values22, children: v})}>
+                  <SelectTrigger id="children-22" className="h-12">
+                    <SelectValue placeholder="Select number" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="0">0</SelectItem>
+                    <SelectItem value="1">1</SelectItem>
+                    <SelectItem value="2">2</SelectItem>
+                    <SelectItem value="3">3</SelectItem>
+                    <SelectItem value="4+">4+</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* OPTION 23: Rounded Font Medium */}
+          <Card className="border-2">
+            <CardHeader>
+              <CardTitle>Option 23: Rounded Medium</CardTitle>
+              <p className="text-sm text-muted-foreground">Friendly & approachable</p>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="gender-23" className="text-base font-medium tracking-normal" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+                  Gender
+                </Label>
+                <Select value={values23.gender} onValueChange={(v) => setValues23({...values23, gender: v})}>
+                  <SelectTrigger id="gender-23" className="h-12">
+                    <SelectValue placeholder="Select gender" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="M">Male</SelectItem>
+                    <SelectItem value="F">Female</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="status-23" className="text-base font-medium tracking-normal" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+                  Civil Status
+                </Label>
+                <Select value={values23.status} onValueChange={(v) => setValues23({...values23, status: v})}>
+                  <SelectTrigger id="status-23" className="h-12">
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="single">Single</SelectItem>
+                    <SelectItem value="married">Married</SelectItem>
+                    <SelectItem value="divorced">Divorced</SelectItem>
+                    <SelectItem value="widowed">Widowed</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="children-23" className="text-base font-medium tracking-normal" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+                  Number of Children
+                </Label>
+                <Select value={values23.children} onValueChange={(v) => setValues23({...values23, children: v})}>
+                  <SelectTrigger id="children-23" className="h-12">
+                    <SelectValue placeholder="Select number" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="0">0</SelectItem>
+                    <SelectItem value="1">1</SelectItem>
+                    <SelectItem value="2">2</SelectItem>
+                    <SelectItem value="3">3</SelectItem>
+                    <SelectItem value="4+">4+</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* OPTION 24: Ultra Wide Spacing */}
+          <Card className="border-2">
+            <CardHeader>
+              <CardTitle>Option 24: Ultra Wide Spacing</CardTitle>
+              <p className="text-sm text-muted-foreground">Dramatic letter spacing</p>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="gender-24" className="text-sm font-semibold uppercase tracking-[0.3em]">
+                  Gender
+                </Label>
+                <Select value={values24.gender} onValueChange={(v) => setValues24({...values24, gender: v})}>
+                  <SelectTrigger id="gender-24" className="h-12">
+                    <SelectValue placeholder="Select gender" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="M">Male</SelectItem>
+                    <SelectItem value="F">Female</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="status-24" className="text-sm font-semibold uppercase tracking-[0.3em]">
+                  Civil Status
+                </Label>
+                <Select value={values24.status} onValueChange={(v) => setValues24({...values24, status: v})}>
+                  <SelectTrigger id="status-24" className="h-12">
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="single">Single</SelectItem>
+                    <SelectItem value="married">Married</SelectItem>
+                    <SelectItem value="divorced">Divorced</SelectItem>
+                    <SelectItem value="widowed">Widowed</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="children-24" className="text-sm font-semibold uppercase tracking-[0.3em]">
+                  Number of Children
+                </Label>
+                <Select value={values24.children} onValueChange={(v) => setValues24({...values24, children: v})}>
+                  <SelectTrigger id="children-24" className="h-12">
+                    <SelectValue placeholder="Select number" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="0">0</SelectItem>
+                    <SelectItem value="1">1</SelectItem>
+                    <SelectItem value="2">2</SelectItem>
+                    <SelectItem value="3">3</SelectItem>
+                    <SelectItem value="4+">4+</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* OPTION 25: Balanced Sans Medium */}
+          <Card className="border-2 border-primary">
+            <CardHeader>
+              <CardTitle>Option 25: Balanced Sans Medium</CardTitle>
+              <p className="text-sm text-muted-foreground">Perfect all-around choice</p>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="gender-25" className="text-base font-medium tracking-normal">
+                  Gender
+                </Label>
+                <Select value={values25.gender} onValueChange={(v) => setValues25({...values25, gender: v})}>
+                  <SelectTrigger id="gender-25" className="h-12">
+                    <SelectValue placeholder="Select gender" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="M">Male</SelectItem>
+                    <SelectItem value="F">Female</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="status-25" className="text-base font-medium tracking-normal">
+                  Civil Status
+                </Label>
+                <Select value={values25.status} onValueChange={(v) => setValues25({...values25, status: v})}>
+                  <SelectTrigger id="status-25" className="h-12">
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="single">Single</SelectItem>
+                    <SelectItem value="married">Married</SelectItem>
+                    <SelectItem value="divorced">Divorced</SelectItem>
+                    <SelectItem value="widowed">Widowed</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="children-25" className="text-base font-medium tracking-normal">
+                  Number of Children
+                </Label>
+                <Select value={values25.children} onValueChange={(v) => setValues25({...values25, children: v})}>
+                  <SelectTrigger id="children-25" className="h-12">
                     <SelectValue placeholder="Select number" />
                   </SelectTrigger>
                   <SelectContent>
