@@ -209,7 +209,7 @@ export default function CaseDetail() {
         </div>
 
         {/* Client Info Header */}
-        <div className="mb-6">
+        <div className="mb-6 relative z-10">
           <h1 className="text-3xl font-bold mb-2">{caseData.client_name}</h1>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <span>Email: {intakeData?.email || 'test@example.com'}</span>
@@ -219,7 +219,7 @@ export default function CaseDetail() {
         </div>
 
         {/* Tabs */}
-        <Tabs defaultValue={defaultTab} className="space-y-6" onValueChange={(value) => setSearchParams({ tab: value })}>
+        <Tabs defaultValue={defaultTab} className="space-y-6 relative z-10" onValueChange={(value) => setSearchParams({ tab: value })}>
           <div className="w-full overflow-x-auto pb-4">
             <TabsList className="inline-flex gap-3 bg-transparent h-auto p-0 w-max">
               <TabsTrigger 
