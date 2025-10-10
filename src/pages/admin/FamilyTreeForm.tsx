@@ -471,7 +471,8 @@ export default function FamilyTreeForm() {
               </Tabs>
             </div>
             </div>
-          </div>
+          </Card>
+        </motion.div>
 
         {/* Form with Tabs */}
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }}>
@@ -509,7 +510,6 @@ export default function FamilyTreeForm() {
               </div>
 
               <TabsContent value="applicant" className="mt-0">
-        <div className="space-y-8">
           {/* Applicant Section */}
           {activeTab === 'applicant' && (
           <motion.div initial={{
@@ -1306,7 +1306,9 @@ export default function FamilyTreeForm() {
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
+          </motion.div>
+          )}
+              </TabsContent>
             </Tabs>
           </Card>
         </motion.div>
