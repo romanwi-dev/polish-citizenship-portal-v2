@@ -37,7 +37,12 @@ export default function IntakeForm() {
   const handleTabChange = (value: string) => {
     setActiveTab(value);
     if (isFullView && sectionRefs.current[value]) {
-      sectionRefs.current[value]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const element = sectionRefs.current[value];
+      if (element) {
+        const yOffset = -100; // Offset for sticky header
+        const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
     }
   };
 
