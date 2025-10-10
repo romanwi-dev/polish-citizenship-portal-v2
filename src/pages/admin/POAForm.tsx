@@ -360,7 +360,7 @@ export default function POAForm() {
                   <User className="h-8 w-8" />
                 </Button>
                 <Button onClick={toggleFontSize} size="lg" variant="ghost"
-                  className={`h-16 w-16 rounded-full transition-all z-50 opacity-60 ${isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground'}`} title="Toggle font size">
+                  className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 z-50 opacity-60 ${isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:text-primary'}`} title="Toggle font size">
                   <Type className="h-8 w-8" />
                 </Button>
               </div>

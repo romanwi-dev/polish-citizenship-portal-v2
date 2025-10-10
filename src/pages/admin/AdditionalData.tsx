@@ -81,8 +81,8 @@ export default function AdditionalData() {
                     onClick={toggleFontSize}
                     size="lg"
                     variant="ghost"
-                    className={`h-16 w-16 rounded-full transition-all opacity-60 ${
-                      isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground'
+                    className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 opacity-60 ${
+                      isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:text-primary'
                     }`}
                     title="Toggle font size"
                   >
