@@ -139,6 +139,35 @@ export const ALL_FIELD_MAPPINGS: FieldMapping[] = [
   ...META_FIELDS,
 ];
 
+// GREAT-GRANDPARENTS FIELDS
+export const GREAT_GRANDPARENT_FIELDS: FieldMapping[] = [
+  // Paternal Great-Grandfather
+  { formField: 'pggf_first_name', dbColumn: 'pggf_first_name', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
+  { formField: 'pggf_last_name', dbColumn: 'pggf_last_name', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
+  { formField: 'pggf_pob', dbColumn: 'pggf_pob', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
+  { formField: 'pggf_notes', dbColumn: 'pggf_notes', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
+  
+  // Paternal Great-Grandmother
+  { formField: 'pggm_first_name', dbColumn: 'pggm_first_name', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
+  { formField: 'pggm_last_name', dbColumn: 'pggm_last_name', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
+  { formField: 'pggm_maiden_name', dbColumn: 'pggm_maiden_name', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
+  { formField: 'pggm_pob', dbColumn: 'pggm_pob', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
+  { formField: 'pggm_notes', dbColumn: 'pggm_notes', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
+  
+  // Maternal Great-Grandfather
+  { formField: 'mggf_first_name', dbColumn: 'mggf_first_name', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
+  { formField: 'mggf_last_name', dbColumn: 'mggf_last_name', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
+  { formField: 'mggf_pob', dbColumn: 'mggf_pob', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
+  { formField: 'mggf_notes', dbColumn: 'mggf_notes', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
+  
+  // Maternal Great-Grandmother
+  { formField: 'mggm_first_name', dbColumn: 'mggm_first_name', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
+  { formField: 'mggm_last_name', dbColumn: 'mggm_last_name', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
+  { formField: 'mggm_maiden_name', dbColumn: 'mggm_maiden_name', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
+  { formField: 'mggm_pob', dbColumn: 'mggm_pob', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
+  { formField: 'mggm_notes', dbColumn: 'mggm_notes', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
+];
+
 // UTILITY FUNCTIONS
 export const getDbColumnForFormField = (formField: string, dbTable?: string): string | null => {
   const mapping = ALL_FIELD_MAPPINGS.find(m => 
