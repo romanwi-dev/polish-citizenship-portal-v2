@@ -10,6 +10,7 @@ import { useLongPressWithFeedback } from "@/hooks/useLongPressWithFeedback";
 import { validateEmail, validatePassport } from "@/utils/validators";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { useFormSync } from "@/hooks/useFormSync";
+import { useBidirectionalSync } from "@/hooks/useBidirectionalSync";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FormButtonsRow } from "@/components/FormButtonsRow";
 import { SelectSection, ApplicantSection, ContactSection, AddressSection, PassportSection, ImmigrationSection, DocumentsSection, NotesSection } from "@/components/IntakeFormContent";
@@ -18,6 +19,7 @@ export default function IntakeForm() {
   const navigate = useNavigate();
   const { id: caseId } = useParams();
   const { formData, setFormData, isLoading, isSaving, saveData, clearAll, clearField } = useFormSync(caseId);
+  const { syncIntakeToMaster } = useBidirectionalSync(caseId);
   const [showClearDialog, setShowClearDialog] = useState(false);
   const { isLargeFonts, toggleFontSize } = useAccessibility();
   const [activeTab, setActiveTab] = useState("select");
@@ -69,6 +71,9 @@ export default function IntakeForm() {
     }
 
     await saveData(formData);
+    
+    // Auto-sync to master_table after save
+    await syncIntakeToMaster(formData);
   };
 
   const titleLongPress = useLongPressWithFeedback({
