@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Download, Eye } from "lucide-react";
+import { Download, Eye, AlertTriangle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useState } from "react";
@@ -10,7 +10,18 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { PDFPreviewDialog } from "./PDFPreviewDialog";
+import { validatePDFGeneration, formatFieldName, ValidationResult } from "@/utils/pdfValidation";
 
 interface PDFGenerationButtonsProps {
   caseId: string;
@@ -22,6 +33,9 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
   const [previewUrl, setPreviewUrl] = useState("");
   const [currentTemplate, setCurrentTemplate] = useState({ type: "", label: "" });
   const [formData, setFormData] = useState<any>(null);
+  const [validationDialogOpen, setValidationDialogOpen] = useState(false);
+  const [validationResult, setValidationResult] = useState<ValidationResult | null>(null);
+  const [pendingGeneration, setPendingGeneration] = useState<{ templateType: string; label: string; preview: boolean } | null>(null);
 
   const handleGeneratePDF = async (templateType: string, label: string, preview: boolean = false) => {
     try {
@@ -34,6 +48,26 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
         .select("*")
         .eq("case_id", caseId)
         .maybeSingle();
+
+      // Validate before generation
+      if (masterData) {
+        const validation = validatePDFGeneration(masterData, templateType);
+        
+        if (!validation.isValid && validation.coverage < 80) {
+          // Show validation warning if coverage is low
+          setValidationResult(validation);
+          setPendingGeneration({ templateType, label, preview });
+          setValidationDialogOpen(true);
+          toast.dismiss(loadingToast);
+          setIsGenerating(false);
+          return;
+        } else if (!validation.isValid) {
+          // Show toast warning but continue
+          toast.warning(`${validation.missingFields.length} fields missing (${validation.coverage}% complete)`, {
+            duration: 3000,
+          });
+        }
+      }
 
       console.log('Invoking fill-pdf function with:', { caseId, templateType });
       
@@ -170,6 +204,56 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
         onDownload={handleDownloadFromPreview}
         documentTitle={currentTemplate.label}
       />
+
+      <AlertDialog open={validationDialogOpen} onOpenChange={setValidationDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-amber-500" />
+              Missing Required Fields
+            </AlertDialogTitle>
+            <AlertDialogDescription className="space-y-4">
+              <p>
+                The PDF is only <strong>{validationResult?.coverage}% complete</strong>. 
+                {validationResult && validationResult.missingFields.length > 0 && (
+                  <span> Missing {validationResult.missingFields.length} required field(s):</span>
+                )}
+              </p>
+              {validationResult && validationResult.missingFields.length > 0 && (
+                <ul className="list-disc list-inside space-y-1 text-sm">
+                  {validationResult.missingFields.slice(0, 10).map(field => (
+                    <li key={field}>{formatFieldName(field)}</li>
+                  ))}
+                  {validationResult.missingFields.length > 10 && (
+                    <li className="text-muted-foreground">
+                      ...and {validationResult.missingFields.length - 10} more
+                    </li>
+                  )}
+                </ul>
+              )}
+              <p className="text-sm text-muted-foreground">
+                Continue anyway or go back to fill in the missing information?
+              </p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setPendingGeneration(null)}>
+              Go Back & Fill Data
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (pendingGeneration) {
+                  setValidationDialogOpen(false);
+                  handleGeneratePDF(pendingGeneration.templateType, pendingGeneration.label, pendingGeneration.preview);
+                  setPendingGeneration(null);
+                }
+              }}
+            >
+              Continue Anyway
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </DropdownMenu>
   );
 }

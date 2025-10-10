@@ -1,23 +1,13 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { PDFDocument } from "https://esm.sh/pdf-lib@1.17.1";
+import { fillPDFFields, calculateCoverage } from './lib/fieldFiller.ts';
+import { POA_ADULT_PDF_MAP } from './mappings/poaAdult.ts';
+import { CITIZENSHIP_PDF_MAP } from './mappings/citizenship.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
-
-const formatDate = (date: string | null) => {
-  if (!date) return '';
-  try {
-    const d = new Date(date);
-    const day = String(d.getDate()).padStart(2, '0');
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const year = d.getFullYear();
-    return `${day}.${month}.${year}`;
-  } catch {
-    return date;
-  }
 };
 
 serve(async (req) => {
@@ -76,95 +66,51 @@ serve(async (req) => {
       console.log(`Field: ${fieldName}`);
     });
 
-    // Fill the PDF based on template type
-    if (templateType === 'poa-adult') {
-      // Power of Attorney - Adult fields
-      try {
-        // Try to fill common fields - these are examples, adjust based on your actual PDF field names
-        form.getTextField('firstName')?.setText(masterData.applicant_first_name || '');
-        form.getTextField('lastName')?.setText(masterData.applicant_last_name || '');
-        form.getTextField('dateOfBirth')?.setText(formatDate(masterData.applicant_dob));
-        form.getTextField('placeOfBirth')?.setText(masterData.applicant_pob || '');
-        form.getTextField('passportNumber')?.setText(masterData.applicant_passport_number || '');
-        form.getTextField('fatherFirstName')?.setText(masterData.father_first_name || '');
-        form.getTextField('fatherLastName')?.setText(masterData.father_last_name || '');
-        form.getTextField('motherFirstName')?.setText(masterData.mother_first_name || '');
-        form.getTextField('motherLastName')?.setText(masterData.mother_last_name || '');
-      } catch (e) {
-        console.log('Some fields could not be filled:', (e as Error).message);
-      }
-    } else if (templateType === 'poa-minor') {
-      // Power of Attorney - Minor fields
-      try {
-        form.getTextField('parentFirstName')?.setText(masterData.applicant_first_name || '');
-        form.getTextField('parentLastName')?.setText(masterData.father_last_name || '');
-        form.getTextField('childFirstName')?.setText(masterData.child_1_first_name || '');
-        form.getTextField('childLastName')?.setText(masterData.child_1_last_name || '');
-        form.getTextField('childDateOfBirth')?.setText(formatDate(masterData.child_1_dob));
-      } catch (e) {
-        console.log('Some fields could not be filled:', (e as Error).message);
-      }
-    } else if (templateType === 'poa-spouses') {
-      // Power of Attorney - Spouses fields
-      try {
-        form.getTextField('husbandFirstName')?.setText(masterData.applicant_first_name || '');
-        form.getTextField('husbandLastName')?.setText(masterData.father_last_name || '');
-        form.getTextField('wifeFirstName')?.setText(masterData.spouse_first_name || '');
-        form.getTextField('wifeLastName')?.setText(masterData.spouse_last_name || '');
-      } catch (e) {
-        console.log('Some fields could not be filled:', (e as Error).message);
-      }
-    } else if (templateType === 'citizenship') {
-      // Citizenship Application fields
-      try {
-        form.getTextField('OBY-A-GN')?.setText(masterData.applicant_first_name || '');
-        form.getTextField('OBY-A-SN')?.setText(masterData.applicant_last_name || '');
-        form.getTextField('OBY-A-BD')?.setText(formatDate(masterData.applicant_dob));
-        form.getTextField('OBY-A-BP')?.setText(masterData.applicant_pob || '');
-        form.getTextField('OBY-F-GN')?.setText(masterData.father_first_name || '');
-        form.getTextField('OBY-F-SN')?.setText(masterData.father_last_name || '');
-        form.getTextField('OBY-M-GN')?.setText(masterData.mother_first_name || '');
-        form.getTextField('OBY-M-SN')?.setText(masterData.mother_last_name || '');
-      } catch (e) {
-        console.log('Some fields could not be filled:', (e as Error).message);
-      }
-    } else if (templateType === 'family-tree') {
-      // Family Tree fields
-      try {
-        console.log('Filling family-tree PDF fields...');
+    // Get the appropriate field mapping for this template
+    const fieldMappings: Record<string, Record<string, string>> = {
+      'poa-adult': POA_ADULT_PDF_MAP,
+      'citizenship': CITIZENSHIP_PDF_MAP,
+      'poa-minor': {},
+      'poa-spouses': {},
+      'family-tree': {},
+      'registration': {},
+      'uzupelnienie': {},
+    };
+    
+    const fieldMap = fieldMappings[templateType];
+    
+    if (!fieldMap || Object.keys(fieldMap).length === 0) {
+      console.warn(`⚠️ No field mapping defined for template: ${templateType}`);
+      console.warn('Falling back to legacy field filling (may not be complete)');
+      
+      // Legacy fallback for unmapped templates
+      if (templateType === 'family-tree') {
         form.getTextField('applicantName')?.setText(`${masterData.applicant_first_name || ''} ${masterData.applicant_last_name || ''}`.trim());
         form.getTextField('fatherName')?.setText(`${masterData.father_first_name || ''} ${masterData.father_last_name || ''}`.trim());
         form.getTextField('motherName')?.setText(`${masterData.mother_first_name || ''} ${masterData.mother_last_name || ''}`.trim());
-        form.getTextField('pgfName')?.setText(`${masterData.pgf_first_name || ''} ${masterData.pgf_last_name || ''}`.trim());
-        form.getTextField('pgmName')?.setText(`${masterData.pgm_first_name || ''} ${masterData.pgm_last_name || ''}`.trim());
-        form.getTextField('mgfName')?.setText(`${masterData.mgf_first_name || ''} ${masterData.mgf_last_name || ''}`.trim());
-        form.getTextField('mgmName')?.setText(`${masterData.mgm_first_name || ''} ${masterData.mgm_last_name || ''}`.trim());
-        console.log('Family tree PDF fields filled successfully');
-      } catch (e) {
-        console.log('Some family tree fields could not be filled:', (e as Error).message);
-      }
-    } else if (templateType === 'registration') {
-      // Civil Registry fields
-      try {
-        form.getTextField('applicantFirstName')?.setText(masterData.applicant_first_name || '');
-        form.getTextField('applicantLastName')?.setText(masterData.applicant_last_name || '');
-        form.getTextField('applicantDOB')?.setText(formatDate(masterData.applicant_dob));
-        form.getTextField('applicantPOB')?.setText(masterData.applicant_pob || '');
-      } catch (e) {
-        console.log('Some fields could not be filled:', (e as Error).message);
-      }
-    } else if (templateType === 'uzupelnienie') {
-      // Uzupełnienie fields (supplementary documents)
-      try {
-        console.log('Filling uzupelnienie PDF fields...');
-        form.getTextField('applicantName')?.setText(`${masterData.applicant_first_name || ''} ${masterData.applicant_last_name || ''}`.trim());
-        form.getTextField('dateOfBirth')?.setText(formatDate(masterData.applicant_dob));
-        console.log('Uzupelnienie PDF fields filled successfully');
-      } catch (e) {
-        console.log('Some uzupelnienie fields could not be filled:', (e as Error).message);
       }
     } else {
-      throw new Error(`Unsupported template type: ${templateType}. Supported types: poa-adult, poa-minor, poa-spouses, citizenship, family-tree, registration, uzupelnienie`);
+      // Use the universal field filler with mapping
+      const fillResult = fillPDFFields(form, masterData, fieldMap);
+      const coverage = calculateCoverage(fillResult);
+      
+      console.log(`✅ PDF Generation Complete for ${templateType}`);
+      console.log(`   Total fields: ${fillResult.totalFields}`);
+      console.log(`   Filled fields: ${fillResult.filledFields}`);
+      console.log(`   Coverage: ${coverage}%`);
+      
+      if (fillResult.emptyFields.length > 0 && fillResult.emptyFields.length <= 10) {
+        console.log(`   Empty fields: ${fillResult.emptyFields.join(', ')}`);
+      } else if (fillResult.emptyFields.length > 10) {
+        console.log(`   Empty fields (${fillResult.emptyFields.length}): ${fillResult.emptyFields.slice(0, 5).join(', ')}...`);
+      }
+      
+      if (fillResult.errors.length > 0) {
+        console.warn(`   ⚠️ Errors (${fillResult.errors.length})`);
+        fillResult.errors.slice(0, 3).forEach(err => {
+          console.warn(`     - ${err.field}: ${err.error}`);
+        });
+      }
     }
 
     // Flatten form (make fields non-editable)
