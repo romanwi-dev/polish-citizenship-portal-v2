@@ -41,10 +41,7 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
         className="space-y-4"
         onDoubleClick={handleDoubleClick}
       >
-        <Label htmlFor={name} className={cn(
-          "font-normal text-foreground/90",
-          isLargeFonts ? "text-2xl" : "text-base"
-        )}>
+        <Label htmlFor={name} className={isLargeFonts ? "text-2xl" : ""}>
           {label}
         </Label>
         <div
@@ -65,10 +62,7 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
       className="space-y-4"
       onDoubleClick={handleDoubleClick}
     >
-      <Label htmlFor={name} className={cn(
-        "font-normal text-foreground/90",
-        isLargeFonts ? "text-2xl" : "text-base"
-      )}>
+      <Label htmlFor={name} className={isLargeFonts ? "text-2xl" : ""}>
         {label}
       </Label>
       <Input

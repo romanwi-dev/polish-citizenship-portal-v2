@@ -38,10 +38,7 @@ export function DateField({ name, label, value, onChange, delay = 0, required = 
       transition={{ delay, duration: 0.4 }}
       className="space-y-2"
     >
-      <Label htmlFor={name} className={cn(
-        "font-normal text-foreground/90",
-        isLargeFonts ? "text-2xl" : "text-base"
-      )}>
+      <Label htmlFor={name} className={isLargeFonts ? "text-2xl" : ""}>
         {label} {required && <span className="text-destructive">*</span>}
       </Label>
       <Input
