@@ -230,7 +230,7 @@ export default function CasesManagement() {
             }
           />
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 gap-6">
             {filteredCases.map((caseItem) => (
               <CaseCard 
                 key={caseItem.id}
