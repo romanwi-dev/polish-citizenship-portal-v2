@@ -2,23 +2,33 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import { Loader2, Save, Sparkles, Type, User, ArrowLeft, BookOpen, Download, HelpCircle } from "lucide-react";
+import { Sparkles, Type, User, ArrowLeft, BookOpen } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
-import { useFormSync } from "@/hooks/useFormSync";
+import { useFormManager } from "@/hooks/useFormManager";
 import { FormButtonsRow } from "@/components/FormButtonsRow";
+import { FormHeader, FormLabel } from "@/components/forms";
 
 export default function FamilyHistoryForm() {
   const { id: caseId } = useParams();
   const navigate = useNavigate();
-  const { formData, setFormData, isLoading, isSaving, saveData } = useFormSync(caseId);
-  const [showClearDialog, setShowClearDialog] = useState(false);
   const { isLargeFonts, toggleFontSize } = useAccessibility();
+  const [showClearDialog, setShowClearDialog] = useState(false);
+  
+  // Use the universal form manager
+  const {
+    formData,
+    isLoading,
+    isSaving,
+    completion,
+    handleInputChange,
+    handleSave,
+    handleClearAll,
+  } = useFormManager(caseId, []);
 
   if (!caseId || caseId === ':id') {
     return (
@@ -38,16 +48,8 @@ export default function FamilyHistoryForm() {
     );
   }
 
-  const handleInputChange = (field: string, value: any) => {
-    setFormData((prev: any) => ({ ...prev, [field]: value }));
-  };
-
-  const handleSave = async () => {
-    await saveData(formData);
-  };
-
-  const handleClearData = () => {
-    setFormData({});
+  const handleClearData = async () => {
+    await handleClearAll();
     setShowClearDialog(false);
     toast.success('All family history data cleared');
   };
@@ -155,79 +157,79 @@ export default function FamilyHistoryForm() {
             <CardContent className="p-6 md:p-10 space-y-8">
               {/* Family Origin Story */}
               <div className="space-y-4">
-                <Label className={cn("text-lg font-semibold text-foreground", isLargeFonts && "text-2xl")}>
+                <FormLabel isLargeFonts={isLargeFonts} className="text-lg font-semibold">
                   Family Origin Story
-                </Label>
+                </FormLabel>
                 <Textarea
                   value={formData.family_origin_story || ""}
                   onChange={(e) => handleInputChange("family_origin_story", e.target.value)}
                   placeholder="Describe where the family came from, when they emigrated, why they left Poland..."
-                  className="min-h-[200px] text-base"
+                  className={cn("min-h-[200px] text-base", isLargeFonts && "text-xl")}
                 />
               </div>
 
               {/* Emigration Journey */}
               <div className="space-y-4">
-                <Label className={cn("text-lg font-semibold text-foreground", isLargeFonts && "text-2xl")}>
+                <FormLabel isLargeFonts={isLargeFonts} className="text-lg font-semibold">
                   Emigration Journey
-                </Label>
+                </FormLabel>
                 <Textarea
                   value={formData.family_immigration_journey || ""}
                   onChange={(e) => handleInputChange("family_immigration_journey", e.target.value)}
                   placeholder="Details about how the family traveled, ports of entry, first settlements..."
-                  className="min-h-[200px] text-base"
+                  className={cn("min-h-[200px] text-base", isLargeFonts && "text-xl")}
                 />
               </div>
 
               {/* Cultural Traditions */}
               <div className="space-y-4">
-                <Label className={cn("text-lg font-semibold text-foreground", isLargeFonts && "text-2xl")}>
+                <FormLabel isLargeFonts={isLargeFonts} className="text-lg font-semibold">
                   Polish Cultural Traditions & Heritage
-                </Label>
+                </FormLabel>
                 <Textarea
                   value={formData.family_cultural_traditions || ""}
                   onChange={(e) => handleInputChange("family_cultural_traditions", e.target.value)}
                   placeholder="Polish traditions maintained, language spoken, religious practices, holidays celebrated..."
-                  className="min-h-[200px] text-base"
+                  className={cn("min-h-[200px] text-base", isLargeFonts && "text-xl")}
                 />
               </div>
 
               {/* Family Stories */}
               <div className="space-y-4">
-                <Label className={cn("text-lg font-semibold text-foreground", isLargeFonts && "text-2xl")}>
+                <FormLabel isLargeFonts={isLargeFonts} className="text-lg font-semibold">
                   Notable Family Stories & Anecdotes
-                </Label>
+                </FormLabel>
                 <Textarea
                   value={formData.family_stories || ""}
                   onChange={(e) => handleInputChange("family_stories", e.target.value)}
                   placeholder="Memorable stories passed down through generations, family legends, significant events..."
-                  className="min-h-[200px] text-base"
+                  className={cn("min-h-[200px] text-base", isLargeFonts && "text-xl")}
                 />
               </div>
 
               {/* Historical Context */}
               <div className="space-y-4">
-                <Label className={cn("text-lg font-semibold text-foreground", isLargeFonts && "text-2xl")}>
+                <FormLabel isLargeFonts={isLargeFonts} className="text-lg font-semibold">
                   Historical Context
-                </Label>
+                </FormLabel>
                 <Textarea
                   value={formData.family_historical_context || ""}
                   onChange={(e) => handleInputChange("family_historical_context", e.target.value)}
                   placeholder="Historical events that affected the family (wars, political changes, economic conditions)..."
-                  className="min-h-[200px] text-base"
+                  className={cn("min-h-[200px] text-base", isLargeFonts && "text-xl")}
                 />
               </div>
 
               {/* Additional Notes */}
               <div className="space-y-4">
-                <Label className={cn("text-lg font-semibold text-foreground", isLargeFonts && "text-2xl")}>
+                <FormLabel isLargeFonts={isLargeFonts} className="text-lg font-semibold">
                   Additional Notes & Information
-                </Label>
+                </FormLabel>
                 <Textarea
                   value={formData.family_history_notes || ""}
                   onChange={(e) => handleInputChange("family_history_notes", e.target.value)}
                   placeholder="Any other relevant information about the family history..."
-                  className="min-h-[200px] text-base"
+                  className={cn("min-h-[200px] text-base", isLargeFonts && "text-xl")}
                 />
               </div>
             </CardContent>
