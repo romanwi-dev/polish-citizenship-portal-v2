@@ -496,10 +496,8 @@ export default function FamilyTreeForm() {
                       </motion.div>
                     )}
                   </TabsContent>
-                </>
-              )}
 
-              <TabsContent value="select" className="mt-0">
+                  <TabsContent value="select" className="mt-0">
           {activeTab === 'select' && (
           <motion.div initial={{
           opacity: 0,
@@ -1806,7 +1804,9 @@ export default function FamilyTreeForm() {
             </Card>
           </motion.div>
           )}
-              </TabsContent>
+        </TabsContent>
+                </>
+              )}
             </Tabs>
           </Card>
         </motion.div>
