@@ -22,6 +22,7 @@ const POAForm = lazy(() => import("./pages/admin/POAForm"));
 const CitizenshipForm = lazy(() => import("./pages/admin/CitizenshipForm"));
 const CivilRegistryForm = lazy(() => import("./pages/admin/CivilRegistryForm"));
 const IntakeForm = lazy(() => import("./pages/admin/IntakeForm"));
+const IntakeDemo = lazy(() => import("./pages/admin/IntakeDemo"));
 const FormScanner = lazy(() => import("./pages/admin/FormScanner"));
 const QAHarness = lazy(() => import("./pages/admin/QAHarness"));
 const DropboxMigration = lazy(() => import("./pages/admin/DropboxMigration"));
@@ -138,7 +139,15 @@ const App = () => (
             } 
           />
           <Route 
-            path="/admin/form-scanner" 
+            path="/admin/intake-demo" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <IntakeDemo />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/form-scanner"
             element={
               <Suspense fallback={<AdminLoader />}>
                 <FormScanner />
