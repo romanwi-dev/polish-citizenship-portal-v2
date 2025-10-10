@@ -12,6 +12,7 @@ interface RequiredDocumentsSectionProps {
   documents: DocumentItem[];
   onChange: (id: string, checked: boolean) => void;
   variant?: "subtle-glass" | "card-grid" | "bordered-list" | "compact-table" | "gradient-blocks";
+  backgroundStyle?: "transparent" | "gradient" | "glass-strong" | "solid" | "bordered";
 }
 
 export function RequiredDocumentsSection({
@@ -19,7 +20,25 @@ export function RequiredDocumentsSection({
   documents,
   onChange,
   variant = "subtle-glass",
+  backgroundStyle = "transparent",
 }: RequiredDocumentsSectionProps) {
+  const getBackgroundClass = () => {
+    if (variant !== "card-grid") return "";
+    
+    switch (backgroundStyle) {
+      case "gradient":
+        return "bg-gradient-to-br from-primary/5 via-background to-secondary/5 p-6 rounded-lg";
+      case "glass-strong":
+        return "bg-card/50 backdrop-blur-xl border border-border/30 p-6 rounded-lg shadow-lg";
+      case "solid":
+        return "bg-muted/30 p-6 rounded-lg";
+      case "bordered":
+        return "border-2 border-border/40 p-6 rounded-lg";
+      case "transparent":
+      default:
+        return "p-2";
+    }
+  };
   if (variant === "subtle-glass") {
     return (
       <div className="space-y-4">
@@ -54,7 +73,7 @@ export function RequiredDocumentsSection({
         <h3 className="font-light text-foreground/50 text-sm uppercase tracking-wider">
           {title}
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-2">
+        <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${getBackgroundClass()}`}>
           {documents.map((doc) => (
             <div
               key={doc.id}

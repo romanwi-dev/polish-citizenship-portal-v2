@@ -29,13 +29,21 @@ export default function IntakeDemo() {
   const [docsVariant3, setDocsVariant3] = useState(initialDocuments);
   const [docsVariant4, setDocsVariant4] = useState(initialDocuments);
   const [docsVariant5, setDocsVariant5] = useState(initialDocuments);
+  const [docsVariant6, setDocsVariant6] = useState(initialDocuments);
+  const [docsVariant7, setDocsVariant7] = useState(initialDocuments);
+  const [docsVariant8, setDocsVariant8] = useState(initialDocuments);
+  const [docsVariant9, setDocsVariant9] = useState(initialDocuments);
+  const [docsVariant10, setDocsVariant10] = useState(initialDocuments);
 
   const handleDocChange = (
     variant: number,
     id: string,
     checked: boolean
   ) => {
-    const setters = [setDocsVariant1, setDocsVariant2, setDocsVariant3, setDocsVariant4, setDocsVariant5];
+    const setters = [
+      setDocsVariant1, setDocsVariant2, setDocsVariant3, setDocsVariant4, setDocsVariant5,
+      setDocsVariant6, setDocsVariant7, setDocsVariant8, setDocsVariant9, setDocsVariant10
+    ];
     const setter = setters[variant - 1];
     setter((prev) => prev.map((doc) => (doc.id === id ? { ...doc, checked } : doc)));
   };
@@ -2329,13 +2337,12 @@ export default function IntakeDemo() {
               </CardContent>
             </Card>
 
-            {/* Variant 2: Card Grid */}
+            {/* Design 2.1: Transparent Background */}
             <Card>
               <CardHeader>
-                <CardTitle>Design 2: Card Grid Layout</CardTitle>
+                <CardTitle>Design 2.1: Card Grid - Transparent</CardTitle>
                 <CardDescription>
-                  Each document as a mini card with hover effect, slight shadow and border. More prominent visual
-                  separation.
+                  Clean, minimal background with no container styling. Cards float freely.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -2344,16 +2351,17 @@ export default function IntakeDemo() {
                   documents={docsVariant2}
                   onChange={(id, checked) => handleDocChange(2, id, checked)}
                   variant="card-grid"
+                  backgroundStyle="transparent"
                 />
               </CardContent>
             </Card>
 
-            {/* Variant 3: Bordered List */}
+            {/* Design 2.2: Gradient Background */}
             <Card>
               <CardHeader>
-                <CardTitle>Design 3: Bordered List Style</CardTitle>
+                <CardTitle>Design 2.2: Card Grid - Gradient</CardTitle>
                 <CardDescription>
-                  Traditional vertical list with subtle borders between items. Left border accent on hover/checked.
+                  Subtle gradient background from primary to secondary with rounded container.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -2361,18 +2369,18 @@ export default function IntakeDemo() {
                   title="Documents Required"
                   documents={docsVariant3}
                   onChange={(id, checked) => handleDocChange(3, id, checked)}
-                  variant="bordered-list"
+                  variant="card-grid"
+                  backgroundStyle="gradient"
                 />
               </CardContent>
             </Card>
 
-            {/* Variant 4: Compact Table */}
+            {/* Design 2.3: Strong Glass Morphism */}
             <Card>
               <CardHeader>
-                <CardTitle>Design 4: Compact Table Style</CardTitle>
+                <CardTitle>Design 2.3: Card Grid - Glass Strong</CardTitle>
                 <CardDescription>
-                  Dense, table-like layout with alternating row backgrounds. Efficient use of space, professional
-                  appearance.
+                  Strong glass effect with backdrop blur, border and shadow for elevated appearance.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -2380,17 +2388,18 @@ export default function IntakeDemo() {
                   title="Documents Required"
                   documents={docsVariant4}
                   onChange={(id, checked) => handleDocChange(4, id, checked)}
-                  variant="compact-table"
+                  variant="card-grid"
+                  backgroundStyle="glass-strong"
                 />
               </CardContent>
             </Card>
 
-            {/* Variant 5: Gradient Blocks */}
+            {/* Design 2.4: Solid Muted Background */}
             <Card>
               <CardHeader>
-                <CardTitle>Design 5: Gradient Background Blocks</CardTitle>
+                <CardTitle>Design 2.4: Card Grid - Solid Muted</CardTitle>
                 <CardDescription>
-                  Documents in gradient background sections with rounded corners. More colorful, modern app-like feel.
+                  Solid muted background for clear separation and professional appearance.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -2398,7 +2407,27 @@ export default function IntakeDemo() {
                   title="Documents Required"
                   documents={docsVariant5}
                   onChange={(id, checked) => handleDocChange(5, id, checked)}
-                  variant="gradient-blocks"
+                  variant="card-grid"
+                  backgroundStyle="solid"
+                />
+              </CardContent>
+            </Card>
+
+            {/* Design 2.5: Bordered Container */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Design 2.5: Card Grid - Bordered</CardTitle>
+                <CardDescription>
+                  Clean border without background fill for defined boundary without weight.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <RequiredDocumentsSection
+                  title="Documents Required"
+                  documents={docsVariant6}
+                  onChange={(id, checked) => handleDocChange(6, id, checked)}
+                  variant="card-grid"
+                  backgroundStyle="bordered"
                 />
               </CardContent>
             </Card>
