@@ -20,6 +20,14 @@ export function RequiredDocumentsSection({
   colorScheme = "slate",
 }: RequiredDocumentsSectionProps) {
   const isComplete = documents.every(doc => doc.checked);
+  const someChecked = documents.some(doc => doc.checked) && !isComplete;
+  
+  // Toggle all documents
+  const handleMasterToggle = (checked: boolean) => {
+    documents.forEach(doc => {
+      onChange(doc.id, checked as boolean);
+    });
+  };
   
   // Color scheme backgrounds
   const getBackgroundColor = () => {
@@ -43,9 +51,21 @@ export function RequiredDocumentsSection({
   
   return (
     <div className={`p-6 border-2 rounded-lg transition-all ${getBackgroundColor()}`}>
-      <h3 className="text-xs font-light tracking-[0.2em] text-foreground/90 mb-6">
-        {title}
-      </h3>
+      <div className="flex items-center space-x-3 mb-6 p-4 bg-blue-950/40 border-2 border-blue-800/50 rounded-none">
+        <Checkbox
+          id={`${title}-master`}
+          checked={isComplete}
+          onCheckedChange={handleMasterToggle}
+          className="h-5 w-5 shrink-0"
+          aria-label="Toggle all documents"
+        />
+        <label
+          htmlFor={`${title}-master`}
+          className="text-xs font-light tracking-[0.2em] cursor-pointer text-foreground/90"
+        >
+          {title}
+        </label>
+      </div>
       
       <div className="grid grid-cols-2 gap-4">
         {documents.map((doc) => (
