@@ -1,5 +1,4 @@
 import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import { Check } from "lucide-react";
 
 export interface DocumentItem {
@@ -24,11 +23,13 @@ export function RequiredDocumentsSection({
   const isComplete = documents.every(doc => doc.checked);
   
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h3 className={`text-base font-medium ${
-          isComplete ? 'text-green-600 dark:text-green-400' : 'text-foreground'
-        }`}>
+    <div className={`p-6 border-2 rounded-lg transition-all ${
+      isComplete 
+        ? 'bg-green-900/40 border-green-700/50' 
+        : 'bg-blue-950/30 border-blue-800/50'
+    }`}>
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-xs font-light uppercase tracking-[0.2em] text-foreground/90">
           {title}
         </h3>
         {isComplete && (
@@ -38,21 +39,25 @@ export function RequiredDocumentsSection({
           </div>
         )}
       </div>
-      <div className="space-y-3">
+      
+      <div className="grid grid-cols-2 gap-4">
         {documents.map((doc) => (
-          <div key={doc.id} className="flex items-center space-x-3">
+          <div 
+            key={doc.id} 
+            className="flex items-center space-x-3 p-4 bg-blue-950/40 border-2 border-blue-800/50 rounded-none hover:border-blue-700/70 transition-all"
+          >
             <Checkbox
               id={doc.id}
               checked={doc.checked}
               onCheckedChange={(checked) => onChange(doc.id, checked as boolean)}
-              className="h-5 w-5"
+              className="h-5 w-5 shrink-0"
             />
-            <Label
+            <label
               htmlFor={doc.id}
-              className="text-sm font-normal cursor-pointer"
+              className="text-xs font-light uppercase tracking-[0.2em] cursor-pointer text-foreground/90"
             >
               {doc.label}
-            </Label>
+            </label>
           </div>
         ))}
       </div>
