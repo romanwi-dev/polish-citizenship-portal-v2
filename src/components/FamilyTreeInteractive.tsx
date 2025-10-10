@@ -109,15 +109,15 @@ const PersonCardInteractive = ({
       <div className="mt-1">
         <div className="flex items-start justify-between gap-2 mb-2">
           <div className="flex-1 min-w-0">
-            <p className="text-[10px] text-muted-foreground mb-1">{title}</p>
-            <h4 className="font-semibold text-xs leading-tight mb-1">{displayName}</h4>
+            <p className="text-[10px] text-muted-foreground font-light opacity-70 mb-1">{title}</p>
+            <h4 className="font-light text-xs leading-tight mb-1 opacity-90">{displayName}</h4>
           </div>
           <Badge variant={completionRate === 100 ? "default" : "destructive"} className="text-[9px] px-1 py-0">
             {completedDocs}/{totalDocs}
           </Badge>
         </div>
         
-        <div className="space-y-1 text-[10px] text-muted-foreground">
+        <div className="space-y-1 text-[10px] text-muted-foreground font-light opacity-70">
           {person.dateOfBirth && (
             <div className="flex items-center gap-1">
               <span className="font-medium">DOB:</span>
@@ -221,24 +221,24 @@ export const FamilyTreeInteractive = ({
         <div className="flex gap-2 flex-wrap">
           <Button 
             onClick={onOpenMasterTable}
-            className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/30 opacity-50 transition-colors"
+            className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-light bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/30 opacity-50 transition-colors"
           >
             <Edit className="mr-2 h-4 w-4 md:h-5 md:w-5 opacity-50" />
-            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Master Data</span>
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-light">Master Data</span>
           </Button>
           <Button 
             onClick={handlePrint}
-            className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/30 opacity-50 transition-colors"
+            className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-light bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/30 opacity-50 transition-colors"
           >
             <Download className="mr-2 h-4 w-4 md:h-5 md:w-5 opacity-50" />
-            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Print</span>
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-light">Print</span>
           </Button>
           <Button 
             onClick={handleExport}
-            className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/30 opacity-50 transition-colors"
+            className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-light bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/30 opacity-50 transition-colors"
           >
             <FileText className="mr-2 h-4 w-4 md:h-5 md:w-5 opacity-50" />
-            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Export</span>
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-light">Export</span>
           </Button>
         </div>
       </div>

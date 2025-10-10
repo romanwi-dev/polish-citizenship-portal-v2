@@ -41,19 +41,19 @@ const HeroWeb3 = () => {
             <span className="text-sm font-medium">Web3 Legal Services</span>
           </div>
           
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-14 leading-tight animate-fade-in">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-light mb-14 leading-tight animate-fade-in">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
               Polish Citizenship by Descent
             </span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-muted-foreground mb-16 leading-relaxed w-[95%] animate-fade-in mx-auto my-[65px] py-[10px]">
+          <p className="text-xl md:text-2xl text-muted-foreground font-light mb-16 leading-relaxed w-[95%] animate-fade-in mx-auto my-[65px] py-[10px]">
             Expert legal guidance for people of Polish and Polish-Jewish descent from around the world for obtaining Polish citizenship and EU passports through Polish ancestry - unmatched success rate, true realistic timeline, transparent pricing
           </p>
           
           <div className="flex justify-center animate-fade-in mb-20">
-            <Button size="lg" className="text-2xl font-bold px-20 py-6 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30" onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}>
-              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            <Button size="lg" className="text-2xl font-light px-20 py-6 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30" onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}>
+              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-light">
                 Polish Citizenship Test
               </span>
               <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -72,10 +72,10 @@ const HeroWeb3 = () => {
             value: "100%",
             label: "Unmatched Success Rate"
           }].map((stat, i) => <div key={i} className="glass-card p-6 rounded-lg hover-glow w-full max-w-[280px] mx-auto md:max-w-none">
-                <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
+                <div className="text-3xl md:text-4xl font-light bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
                   {stat.value}
                 </div>
-                <div className="text-sm text-muted-foreground">{stat.label}</div>
+                <div className="text-sm text-muted-foreground font-light">{stat.label}</div>
               </div>)}
           </div>
         </div>

@@ -311,39 +311,39 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
             <div className="grid grid-cols-3 gap-3 pt-4 border-t border-border/30">
               <Button
                 size="default"
-                className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-12 flex items-center justify-center"
+                className="text-sm font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-10 flex items-center justify-center"
                 onClick={(e) => {
                   e.stopPropagation();
                   navigate(`/admin/cases/${clientCase.id}`);
                 }}
               >
-                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full">
+                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-light opacity-90">
                   View Case
                 </span>
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               </Button>
               <Button
                 size="default"
-                className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-12 flex items-center justify-center"
+                className="text-sm font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-10 flex items-center justify-center"
                 onClick={(e) => {
                   e.stopPropagation();
                   window.open('/family-tree.pdf', '_blank');
                 }}
               >
-                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full">
+                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-light opacity-90">
                   Family Tree
                 </span>
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               </Button>
               <Button
                 size="default"
-                className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-12 flex items-center justify-center"
+                className="text-sm font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-10 flex items-center justify-center"
                 onClick={(e) => {
                   e.stopPropagation();
                   navigate(`/admin/cases/${clientCase.id}?tab=documents`);
                 }}
               >
-                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full">
+                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-light opacity-90">
                   Documents
                 </span>
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -352,39 +352,39 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
             <div className="grid grid-cols-3 gap-3">
               <Button
                 size="default"
-                className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-12 flex items-center justify-center"
+                className="text-sm font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-10 flex items-center justify-center"
                 onClick={(e) => {
                   e.stopPropagation();
                   navigate(`/admin/cases/${clientCase.id}?tab=tasks`);
                 }}
               >
-                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full">
+                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-light opacity-90">
                   Tasks
                 </span>
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               </Button>
               <Button
                 size="default"
-                className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-12 flex items-center justify-center"
+                className="text-sm font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-10 flex items-center justify-center"
                 onClick={(e) => {
                   e.stopPropagation();
                   navigate(`/admin/cases/${clientCase.id}?tab=authority`);
                 }}
               >
-                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full">
+                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-light opacity-90">
                   Authority
                 </span>
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               </Button>
               <Button
                 size="default"
-                className="text-sm font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-12 flex items-center justify-center"
+                className="text-sm font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-10 flex items-center justify-center"
                 onClick={(e) => {
                   e.stopPropagation();
                   navigate(`/admin/cases/${clientCase.id}?tab=stage`);
                 }}
               >
-                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full">
+                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-light opacity-90">
                   Stage
                 </span>
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
