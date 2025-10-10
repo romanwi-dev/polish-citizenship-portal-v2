@@ -581,7 +581,7 @@ export default function MasterDataTable() {
                   </div>
 
                   <div className="pt-8">
-                    <h3 className="text-xl font-semibold mb-6 text-foreground">Documents required</h3>
+                    <h3 className="font-light text-foreground/90 text-sm mb-6">Documents required</h3>
                     {renderCheckboxGroup([{
                     name: "applicant_has_polish_documents",
                     label: "Polish documents"
@@ -783,7 +783,7 @@ export default function MasterDataTable() {
 
                   {/* Documents required */}
                   <div className="pt-8">
-                    <h3 className="text-xl font-semibold mb-6 text-foreground">Documents required</h3>
+                    <h3 className="font-light text-foreground/90 text-sm mb-6">Documents required</h3>
                     {renderCheckboxGroup([{
                       name: "spouse_has_polish_documents",
                       label: "Polish documents"

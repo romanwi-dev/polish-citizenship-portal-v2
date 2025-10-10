@@ -535,7 +535,7 @@ export default function FamilyTreeForm() {
                 </div>
 
                 <div className="pt-8">
-                  <h3 className="text-xl font-semibold mb-6 text-foreground">Documents required</h3>
+                  <h3 className="font-light text-foreground/90 text-sm mb-6">Documents required</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
                       <Checkbox
@@ -685,7 +685,7 @@ export default function FamilyTreeForm() {
                       />
                     </div>
                     <div className="pt-4">
-                      <h4 className="text-lg font-semibold mb-4 text-foreground">Documents required</h4>
+                      <h4 className="font-light text-foreground/90 text-sm mb-4">Documents required</h4>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
                           <Checkbox
@@ -863,7 +863,7 @@ export default function FamilyTreeForm() {
                       />
                     </div>
                     <div className="pt-4">
-                      <h4 className="text-lg font-semibold mb-4 text-foreground">Documents required</h4>
+                      <h4 className="font-light text-foreground/90 text-sm mb-4">Documents required</h4>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
                           <Checkbox
@@ -1019,7 +1019,7 @@ export default function FamilyTreeForm() {
                       />
                     </div>
                     <div className="pt-4">
-                      <h4 className="text-lg font-semibold mb-4 text-foreground">Documents required</h4>
+                      <h4 className="font-light text-foreground/90 text-sm mb-4">Documents required</h4>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
                           <Checkbox
@@ -1203,7 +1203,7 @@ export default function FamilyTreeForm() {
                           />
                         </div>
                         <div className="pt-4">
-                          <h4 className="text-lg font-semibold mb-4 text-foreground">Documents required</h4>
+                          <h4 className="font-light text-foreground/90 text-sm mb-4">Documents required</h4>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
                               <Checkbox
@@ -1354,7 +1354,7 @@ export default function FamilyTreeForm() {
                           />
                         </div>
                         <div className="pt-4">
-                          <h4 className="text-lg font-semibold mb-4 text-foreground">Documents required</h4>
+                          <h4 className="font-light text-foreground/90 text-sm mb-4">Documents required</h4>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <div className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur">
                               <Checkbox
