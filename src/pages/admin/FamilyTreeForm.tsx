@@ -369,15 +369,15 @@ export default function FamilyTreeForm() {
             <CardContent className="pt-6">
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
                 <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border/50 pb-2">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 w-full">
                     <Button
                       onClick={() => setIsFullView(!isFullView)}
                       variant="ghost"
                       size="icon"
-                      className="flex-shrink-0"
+                      className="flex-shrink-0 h-auto"
                       title={isFullView ? "Collapse" : "Expand All"}
                     >
-                      {isFullView ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
+                      {isFullView ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
                     </Button>
                     <TabsList className="flex-1 w-full h-auto p-2 justify-start flex-wrap">
                       <TabsTrigger value="tree-view" className="data-[state=active]:bg-primary/20 text-sm md:text-base py-3">

@@ -380,15 +380,15 @@ export const MasterDataTable = ({ open, onOpenChange, caseId }: MasterDataTableP
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 overflow-hidden flex flex-col">
           <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border/50 pb-2">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-full">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsFullView(!isFullView)}
-                className="flex-shrink-0"
+                className="flex-shrink-0 h-auto"
                 title={isFullView ? "Collapse" : "Expand All"}
               >
-                {isFullView ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
+                {isFullView ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
               </Button>
               <TabsList className="flex-1 grid grid-cols-2 lg:grid-cols-6">
             {sections.map(section => {
