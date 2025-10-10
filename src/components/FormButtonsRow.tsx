@@ -41,7 +41,7 @@ export function FormButtonsRow({
         <Button
           onClick={onSave}
           disabled={isSaving}
-          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 opacity-50"
+          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/30 opacity-50 transition-colors"
         >
           <Save className="mr-2 h-4 w-4 md:h-5 md:w-5 opacity-50" />
           <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{isSaving ? "Saving..." : saveLabel}</span>
@@ -49,7 +49,7 @@ export function FormButtonsRow({
         
         <Button
           onClick={onClear}
-          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 opacity-50"
+          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/30 opacity-50 transition-colors"
         >
           <Sparkles className="mr-2 h-4 w-4 md:h-5 md:w-5 opacity-50" />
           <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Clear Data</span>
@@ -57,7 +57,7 @@ export function FormButtonsRow({
         
         <Button
           onClick={onGeneratePDF}
-          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30 opacity-50"
+          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/30 opacity-50 transition-colors"
         >
           <Download className="mr-2 h-4 w-4 md:h-5 md:w-5 opacity-50" />
           <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generate PDF</span>
@@ -75,10 +75,10 @@ export function FormButtonsRow({
             onClick={() => navigate(btn.path.replace(':id', caseId))}
             className={`
               h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold
-              whitespace-nowrap flex-shrink-0 backdrop-blur-md border opacity-50
+              whitespace-nowrap flex-shrink-0 backdrop-blur-md border transition-colors
               ${isCurrent 
-                ? 'bg-white/5 hover:bg-white/10 shadow-glow hover-glow border-white/30' 
-                : 'bg-white/5 hover:bg-white/10 border-white/20'
+                ? 'bg-white/10 hover:bg-white/15 border-white/40 opacity-60' 
+                : 'bg-white/5 hover:bg-white/10 border-white/20 opacity-50'
               }
             `}
           >
