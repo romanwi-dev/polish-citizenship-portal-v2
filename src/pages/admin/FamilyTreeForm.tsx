@@ -363,6 +363,17 @@ export default function FamilyTreeForm() {
                   <ArrowLeft className="h-8 w-8" />
                 </Button>
                 <Button
+                  onClick={() => setIsFullView(!isFullView)}
+                  size="lg"
+                  variant="ghost"
+                  className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 opacity-60 ${
+                    isFullView ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:text-primary'
+                  }`}
+                  title={isFullView ? "Collapse" : "Expand All"}
+                >
+                  {isFullView ? <Minimize2 className="h-8 w-8" /> : <Maximize2 className="h-8 w-8" />}
+                </Button>
+                <Button
                   onClick={() => navigate('/login')}
                   size="lg"
                   variant="ghost"
