@@ -528,9 +528,86 @@ export default function FamilyTreeForm() {
         }}>
             <Card className="glass-card border-primary/20">
               <CardHeader className="border-b border-border/50 pb-6">
-                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Select
+                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Import from Intake Form
 
               </CardTitle>
+                <div className="mt-4">
+                  <Button 
+                    onClick={async () => {
+                      try {
+                        // Fetch intake data
+                        const { data: intakeData, error } = await supabase
+                          .from('intake_data')
+                          .select('*')
+                          .eq('case_id', caseId)
+                          .maybeSingle();
+                        
+                        if (error) throw error;
+                        
+                        if (!intakeData) {
+                          toast.error('No intake data found');
+                          return;
+                        }
+
+                        // Map intake fields to master_table fields
+                        const mappedData = {
+                          applicant_first_name: intakeData.first_name,
+                          applicant_last_name: intakeData.last_name,
+                          applicant_maiden_name: intakeData.maiden_name,
+                          applicant_sex: intakeData.sex,
+                          applicant_pob: intakeData.place_of_birth,
+                          applicant_dob: intakeData.date_of_birth,
+                          applicant_email: intakeData.email,
+                          applicant_phone: intakeData.phone,
+                          applicant_passport_number: intakeData.passport_number,
+                          applicant_passport_issuing_country: intakeData.passport_issuing_country,
+                          applicant_passport_issue_date: intakeData.passport_issue_date,
+                          applicant_passport_expiry_date: intakeData.passport_expiry_date,
+                          father_first_name: intakeData.father_first_name,
+                          father_last_name: intakeData.father_last_name,
+                          father_pob: intakeData.father_pob,
+                          father_dob: intakeData.father_dob,
+                          mother_first_name: intakeData.mother_first_name,
+                          mother_last_name: intakeData.mother_last_name,
+                          mother_maiden_name: intakeData.mother_maiden_name,
+                          mother_pob: intakeData.mother_pob,
+                          mother_dob: intakeData.mother_dob,
+                          pgf_first_name: intakeData.pgf_first_name,
+                          pgf_last_name: intakeData.pgf_last_name,
+                          pgf_pob: intakeData.pgf_pob,
+                          pgf_dob: intakeData.pgf_dob,
+                          pgm_first_name: intakeData.pgm_first_name,
+                          pgm_last_name: intakeData.pgm_last_name,
+                          pgm_maiden_name: intakeData.pgm_maiden_name,
+                          pgm_pob: intakeData.pgm_pob,
+                          pgm_dob: intakeData.pgm_dob,
+                          mgf_first_name: intakeData.mgf_first_name,
+                          mgf_last_name: intakeData.mgf_last_name,
+                          mgf_pob: intakeData.mgf_pob,
+                          mgf_dob: intakeData.mgf_dob,
+                          mgm_first_name: intakeData.mgm_first_name,
+                          mgm_last_name: intakeData.mgm_last_name,
+                          mgm_maiden_name: intakeData.mgm_maiden_name,
+                          mgm_pob: intakeData.mgm_pob,
+                          mgm_dob: intakeData.mgm_dob,
+                        };
+
+                        // Update form data
+                        setFormData((prev: any) => ({ ...prev, ...mappedData }));
+                        
+                        // Save to master_table
+                        updateMutation.mutate({ caseId: caseId!, updates: mappedData });
+                        
+                        toast.success('Data imported from Intake form');
+                      } catch (error: any) {
+                        toast.error(`Failed to import: ${error.message}`);
+                      }
+                    }}
+                    className="w-full h-16 text-lg bg-primary hover:bg-primary/90"
+                  >
+                    Import Data from Intake Form
+                  </Button>
+                </div>
               </CardHeader>
               <CardContent className="p-6 md:p-10 space-y-10">
                 {/* Row 1: Gender and Civil Status */}
