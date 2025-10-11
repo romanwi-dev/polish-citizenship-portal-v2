@@ -71,7 +71,7 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
           }}
           className="scale-125"
         />
-        <h3 className="text-2xl font-black font-heading bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+        <h3 className="text-5xl md:text-6xl font-black font-heading bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
           {title}
         </h3>
       </div>
@@ -98,7 +98,7 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
                 onClick={() => toggleFlip(doc.id)}
               >
                 {/* Title at top */}
-                <h4 className="text-base font-black mb-3 text-center leading-tight font-heading bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                <h4 className="text-lg font-black mb-3 text-center leading-tight font-heading text-foreground">
                   {doc.label}
                 </h4>
 
