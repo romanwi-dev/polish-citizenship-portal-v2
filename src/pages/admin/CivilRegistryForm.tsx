@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Loader2, Save, Download, FileText, Sparkles, Type, FilePlus, User, ArrowLeft, HelpCircle, Maximize2, Minimize2 } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { supabase } from "@/integrations/supabase/client";
@@ -37,27 +37,55 @@ export default function CivilRegistryForm() {
     toggleFontSize
   } = useAccessibility();
   const [formData, setFormData] = useState<any>({});
+  // Track the absolute latest form values to avoid race conditions
+  const latestFormData = useRef<any>({});
   const [isGenerating, setIsGenerating] = useState(false);
   const [showClearDialog, setShowClearDialog] = useState(false);
   const [isFullView, setIsFullView] = useState(true); // Default to full view since it doesn't have tabs
   
   // Enable real-time sync with direct state updates
   useRealtimeFormSync(caseId, masterData, isLoading, setFormData);
+  
+  // Keep ref synchronized with state
+  useEffect(() => {
+    latestFormData.current = formData;
+  }, [formData]);
   const handleInputChange = (field: string, value: any) => {
     setFormData((prev: any) => ({
       ...prev,
       [field]: value
     }));
   };
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!caseId) return;
-    const sanitizedData = sanitizeMasterData(formData);
-    updateMutation.mutate({
-      caseId,
-      updates: sanitizedData
-    });
+    // Use the ref to get the absolute latest state
+    const dataToSave = latestFormData.current;
+    const sanitizedData = sanitizeMasterData(dataToSave);
+    
+    try {
+      await updateMutation.mutateAsync({
+        caseId,
+        updates: sanitizedData
+      });
+      return true;
+    } catch (error) {
+      console.error('Save error:', error);
+      return false;
+    }
   };
   const handleGeneratePDF = async () => {
+    if (!caseId || caseId === ':id') {
+      toast.error('Invalid case ID');
+      return;
+    }
+
+    // Validate critical fields before proceeding
+    const data = latestFormData.current;
+    if (!data.applicant_first_name || !data.applicant_last_name) {
+      toast.error('Please enter applicant name before generating PDF');
+      return;
+    }
+
     try {
       setIsGenerating(true);
       toast.loading("Generating Civil Registry Application PDF...");

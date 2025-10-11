@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Loader2, Save, Download, FileCheck, Sparkles, Type, FilePlus, User, ArrowLeft, HelpCircle, Maximize2, Minimize2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -37,12 +37,19 @@ export default function CitizenshipForm() {
   const updateMutation = useUpdateMasterData();
   const { isLargeFonts, toggleFontSize } = useAccessibility();
   const [formData, setFormData] = useState<any>({});
+  // Track the absolute latest form values to avoid race conditions
+  const latestFormData = useRef<any>({});
   const [isGenerating, setIsGenerating] = useState(false);
   const [showClearAllDialog, setShowClearAllDialog] = useState(false);
   const [isFullView, setIsFullView] = useState(true); // Default to full view since it doesn't have tabs
   
   // Enable real-time sync with direct state updates
   useRealtimeFormSync(caseId, masterData, isLoading, setFormData);
+  
+  // Keep ref synchronized with state
+  useEffect(() => {
+    latestFormData.current = formData;
+  }, [formData]);
 
   const handleInputChange = (field: string, value: any) => {
     setFormData((prev: any) => ({ ...prev, [field]: value }));
@@ -63,12 +70,33 @@ export default function CitizenshipForm() {
     setShowClearAllDialog(false);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!caseId) return;
-    updateMutation.mutate({ caseId, updates: formData });
+    // Use the ref to get the absolute latest state
+    const dataToSave = latestFormData.current;
+    
+    try {
+      await updateMutation.mutateAsync({ caseId, updates: { ...dataToSave } });
+      return true;
+    } catch (error) {
+      console.error('Save error:', error);
+      return false;
+    }
   };
 
   const handleGeneratePDF = async () => {
+    if (!caseId || caseId === ':id') {
+      toast.error('Invalid case ID');
+      return;
+    }
+
+    // Validate critical fields before proceeding
+    const data = latestFormData.current;
+    if (!data.applicant_first_name || !data.applicant_last_name) {
+      toast.error('Please enter applicant name before generating PDF');
+      return;
+    }
+
     try {
       setIsGenerating(true);
       toast.loading("Generating Citizenship Application PDF...");

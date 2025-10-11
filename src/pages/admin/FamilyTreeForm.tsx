@@ -40,6 +40,8 @@ export default function FamilyTreeForm() {
     toggleFontSize
   } = useAccessibility();
   const [formData, setFormData] = useState<any>({});
+  // Track the absolute latest form values to avoid race conditions
+  const latestFormData = useRef<any>({});
   const [isGenerating, setIsGenerating] = useState(false);
   const [activeTab, setActiveTab] = useState("select");
   const [isFullView, setIsFullView] = useState(false);
@@ -75,6 +77,11 @@ export default function FamilyTreeForm() {
   // Enable real-time sync with direct state updates
   useRealtimeFormSync(caseId, masterData, isLoading, setFormData);
   
+  // Keep ref synchronized with state
+  useEffect(() => {
+    latestFormData.current = formData;
+  }, [formData]);
+  
   // Enable bidirectional sync
   const { syncMasterToIntake } = useBidirectionalSync(caseId);
   
@@ -86,16 +93,37 @@ export default function FamilyTreeForm() {
   };
   const handleSave = async () => {
     if (!caseId) return;
-    const sanitizedData = sanitizeMasterData(formData);
-    updateMutation.mutate({
-      caseId,
-      updates: sanitizedData
-    });
+    // Use the ref to get the absolute latest state
+    const dataToSave = latestFormData.current;
+    const sanitizedData = sanitizeMasterData(dataToSave);
     
-    // Auto-sync to intake after save
-    await syncMasterToIntake(sanitizedData);
+    try {
+      await updateMutation.mutateAsync({
+        caseId,
+        updates: sanitizedData
+      });
+      
+      // Auto-sync to intake after save
+      await syncMasterToIntake(sanitizedData);
+      return true;
+    } catch (error) {
+      console.error('Save error:', error);
+      return false;
+    }
   };
   const handleGeneratePDF = async () => {
+    if (!caseId || caseId === ':id') {
+      toast.error('Invalid case ID');
+      return;
+    }
+
+    // Validate critical fields before proceeding
+    const data = latestFormData.current;
+    if (!data.applicant_first_name || !data.applicant_last_name) {
+      toast.error('Please enter applicant name before generating PDF');
+      return;
+    }
+
     try {
       setIsGenerating(true);
       toast.loading("Generating Family Tree PDF...");
