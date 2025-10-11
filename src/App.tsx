@@ -11,6 +11,10 @@ import Cases from "./pages/Cases";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 
+// Client portal pages
+const ClientLogin = lazy(() => import("./pages/ClientLogin"));
+const ClientDashboard = lazy(() => import("./pages/ClientDashboard"));
+
 // Lazy load admin pages to avoid loading Sidebar on home page
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
 const CasesManagement = lazy(() => import("./pages/admin/CasesManagement"));
@@ -56,8 +60,26 @@ const App = () => (
           <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/cases" element={<Cases />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/cases" element={<Cases />} />
+            
+            {/* Client Portal Routes */}
+            <Route 
+              path="/client/login" 
+              element={
+                <Suspense fallback={<AdminLoader />}>
+                  <ClientLogin />
+                </Suspense>
+              } 
+            />
+            <Route
+              path="/client/dashboard/:caseId"
+              element={
+                <Suspense fallback={<AdminLoader />}>
+                  <ClientDashboard />
+                </Suspense>
+              }
+            />
           
           {/* Admin Routes - Lazy Loaded */}
           <Route 
