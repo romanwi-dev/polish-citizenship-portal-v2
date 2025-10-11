@@ -1,13 +1,17 @@
 import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { FileText, ExternalLink } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { FolderOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface DocumentItem {
   id: string;
   label: string;
   checked: boolean;
+  importance?: 'critical' | 'high' | 'medium' | 'low';
+  difficulty?: 'easy' | 'medium' | 'hard';
+  description?: string;
 }
 
 interface FlippableCardsDarkGlowProps {
@@ -32,22 +36,39 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
 
   const allChecked = documents.every(doc => doc.checked);
 
+  const getImportanceBadge = (importance?: string) => {
+    switch (importance) {
+      case 'critical': return <Badge variant="destructive">Critical</Badge>;
+      case 'high': return <Badge variant="vip">High</Badge>;
+      case 'medium': return <Badge variant="expedited">Medium</Badge>;
+      case 'low': return <Badge variant="standard">Low</Badge>;
+      default: return null;
+    }
+  };
+
+  const getDifficultyBadge = (difficulty?: string) => {
+    switch (difficulty) {
+      case 'hard': return <Badge variant="vipPlus">Hard</Badge>;
+      case 'medium': return <Badge variant="expedited">Medium</Badge>;
+      case 'easy': return <Badge variant="standard">Easy</Badge>;
+      default: return null;
+    }
+  };
+
   return (
     <div className={cn(
-      "p-8 rounded-xl transition-all duration-700 relative overflow-hidden",
+      "p-8 rounded-xl transition-all duration-700",
       allChecked 
-        ? "bg-gradient-to-br from-green-950/50 to-emerald-950/40" 
-        : "bg-gradient-to-br from-slate-900/50 to-slate-800/40"
+        ? "bg-gradient-to-br from-green-950/40 to-emerald-900/30 border border-green-500/20" 
+        : "bg-gradient-to-br from-slate-950/40 to-indigo-950/30 border border-slate-700/20"
     )}>
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 pointer-events-none" />
-      
-      <h3 className="text-2xl font-semibold mb-8 text-center relative z-10 glow-text">
+      <h3 className="text-2xl font-semibold mb-8 text-center">
         {title}
       </h3>
       
-      <div className="grid grid-cols-2 gap-6 relative z-10">
+      <div className="grid grid-cols-2 gap-6">
         {documents.map((doc) => (
-          <div key={doc.id} className="relative h-56">
+          <div key={doc.id} className="relative" style={{ aspectRatio: '1/1.414' }}>
             <div 
               className={cn(
                 "relative w-full h-full transition-transform duration-700",
@@ -58,52 +79,75 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
               {/* Front */}
               <div 
                 className={cn(
-                  "absolute inset-0 glass-card rounded-xl p-6 flex flex-col items-center justify-center gap-4 cursor-pointer transition-all",
+                  "absolute inset-0 backdrop-blur-md rounded-xl p-6 flex flex-col cursor-pointer border transition-all",
                   doc.checked
-                    ? "border-green-500/50 shadow-[0_0_30px_rgba(34,197,94,0.3)]"
-                    : "hover:shadow-[0_0_30px_rgba(59,130,246,0.2)] hover:border-primary/50"
+                    ? "bg-green-900/20 border-green-500/30 shadow-[0_0_40px_rgba(34,197,94,0.2)]"
+                    : "bg-slate-900/20 border-slate-700/30 hover:border-primary/40 hover:shadow-[0_0_40px_rgba(59,130,246,0.15)]"
                 )}
                 style={{ backfaceVisibility: "hidden" }}
                 onClick={() => toggleFlip(doc.id)}
               >
-                <div className={cn(
-                  "w-16 h-16 rounded-full flex items-center justify-center backdrop-blur-sm",
-                  doc.checked 
-                    ? "bg-green-500/20 shadow-[0_0_20px_rgba(34,197,94,0.3)]" 
-                    : "bg-primary/20 shadow-[0_0_20px_rgba(59,130,246,0.2)]"
-                )}>
-                  <FileText className={cn("w-8 h-8", doc.checked ? "text-green-400" : "text-primary")} />
+                {/* Title at top */}
+                <h4 className="text-xl font-bold mb-4 text-center leading-tight" style={{ fontFamily: 'var(--font-heading)' }}>
+                  {doc.label}
+                </h4>
+
+                {/* Description in middle */}
+                <div className="flex-1 flex items-center justify-center px-2">
+                  <p className="text-sm text-muted-foreground text-center leading-relaxed">
+                    {doc.description || "Document required for citizenship application processing."}
+                  </p>
                 </div>
-                <p className="font-medium text-center leading-tight">{doc.label}</p>
-                <Checkbox
-                  checked={doc.checked}
-                  onCheckedChange={(checked) => handleToggle(doc.id, checked as boolean)}
-                  onClick={(e) => e.stopPropagation()}
-                  className="scale-125"
-                />
+
+                {/* Badges and checkbox at bottom */}
+                <div className="space-y-3 mt-auto">
+                  <div className="flex gap-2 justify-center flex-wrap">
+                    {getImportanceBadge(doc.importance)}
+                    {getDifficultyBadge(doc.difficulty)}
+                  </div>
+                  <div className="flex justify-center">
+                    <Checkbox
+                      checked={doc.checked}
+                      onCheckedChange={(checked) => handleToggle(doc.id, checked as boolean)}
+                      onClick={(e) => e.stopPropagation()}
+                      className="scale-125"
+                    />
+                  </div>
+                </div>
               </div>
 
               {/* Back */}
               <div 
-                className="absolute inset-0 glass-card rounded-xl p-6 flex flex-col justify-between cursor-pointer border-primary/50 shadow-[0_0_30px_rgba(59,130,246,0.3)]"
+                className="absolute inset-0 backdrop-blur-md bg-primary/15 rounded-xl p-6 flex flex-col cursor-pointer border border-primary/30 shadow-[0_0_40px_rgba(59,130,246,0.2)]"
                 style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
                 onClick={() => toggleFlip(doc.id)}
               >
-                <div className="space-y-3">
-                  <h4 className="font-semibold text-lg glow-text">Secured Archive</h4>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {doc.label} safely stored in your encrypted vault.
-                  </p>
+                {/* Title at top */}
+                <h4 className="text-xl font-bold mb-4 text-center" style={{ fontFamily: 'var(--font-heading)' }}>
+                  {doc.label}
+                </h4>
+
+                {/* Document copy placeholder in middle */}
+                <div className="flex-1 overflow-auto">
+                  <div className="bg-background/5 rounded-lg p-4 border border-primary/20">
+                    <p className="text-xs text-muted-foreground/80 leading-relaxed">
+                      [Document Copy Placeholder]
+                      <br /><br />
+                      This area will display the actual document content, scanned copy, or official certificate once uploaded to the secure vault.
+                    </p>
+                  </div>
                 </div>
+
+                {/* Button at bottom */}
                 <Button
                   variant="outline"
-                  className="w-full hover-glow border-primary/50"
+                  className="w-full mt-4 bg-primary/10 border-primary/40 hover:bg-primary/20"
                   onClick={(e) => {
                     e.stopPropagation();
-                    console.log("Navigate to folder");
+                    console.log("Access folder for:", doc.label);
                   }}
                 >
-                  <ExternalLink className="w-4 h-4 mr-2" />
+                  <FolderOpen className="w-4 h-4 mr-2" />
                   Access Folder
                 </Button>
               </div>

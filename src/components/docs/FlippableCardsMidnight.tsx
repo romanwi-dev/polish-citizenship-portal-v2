@@ -1,13 +1,17 @@
 import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { FileCheck, FolderOpen } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { FolderOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface DocumentItem {
   id: string;
   label: string;
   checked: boolean;
+  importance?: 'critical' | 'high' | 'medium' | 'low';
+  difficulty?: 'easy' | 'medium' | 'hard';
+  description?: string;
 }
 
 interface FlippableCardsMidnightProps {
@@ -32,6 +36,25 @@ export const FlippableCardsMidnight = ({ title, documents, onChange }: Flippable
 
   const allChecked = documents.every(doc => doc.checked);
 
+  const getImportanceBadge = (importance?: string) => {
+    switch (importance) {
+      case 'critical': return <Badge variant="destructive">Critical</Badge>;
+      case 'high': return <Badge variant="vip">High</Badge>;
+      case 'medium': return <Badge variant="expedited">Medium</Badge>;
+      case 'low': return <Badge variant="standard">Low</Badge>;
+      default: return null;
+    }
+  };
+
+  const getDifficultyBadge = (difficulty?: string) => {
+    switch (difficulty) {
+      case 'hard': return <Badge variant="vipPlus">Hard</Badge>;
+      case 'medium': return <Badge variant="expedited">Medium</Badge>;
+      case 'easy': return <Badge variant="standard">Easy</Badge>;
+      default: return null;
+    }
+  };
+
   return (
     <div className={cn(
       "p-8 rounded-xl transition-all duration-700 relative",
@@ -51,7 +74,7 @@ export const FlippableCardsMidnight = ({ title, documents, onChange }: Flippable
       
       <div className="grid grid-cols-2 gap-6 relative z-10">
         {documents.map((doc) => (
-          <div key={doc.id} className="relative h-56">
+          <div key={doc.id} className="relative" style={{ aspectRatio: '1/1.414' }}>
             <div 
               className={cn(
                 "relative w-full h-full transition-transform duration-700",
@@ -62,7 +85,7 @@ export const FlippableCardsMidnight = ({ title, documents, onChange }: Flippable
               {/* Front */}
               <div 
                 className={cn(
-                  "absolute inset-0 backdrop-blur-md rounded-xl p-6 flex flex-col items-center justify-center gap-4 cursor-pointer border transition-all",
+                  "absolute inset-0 backdrop-blur-md rounded-xl p-6 flex flex-col cursor-pointer border transition-all",
                   doc.checked
                     ? "bg-green-900/30 border-green-500/40 shadow-[0_8px_32px_rgba(34,197,94,0.25)]"
                     : "bg-slate-900/30 border-slate-700/40 hover:border-primary/50 hover:shadow-[0_8px_32px_rgba(59,130,246,0.15)]"
@@ -70,41 +93,64 @@ export const FlippableCardsMidnight = ({ title, documents, onChange }: Flippable
                 style={{ backfaceVisibility: "hidden" }}
                 onClick={() => toggleFlip(doc.id)}
               >
-                <div className={cn(
-                  "w-14 h-14 rounded-lg flex items-center justify-center border",
-                  doc.checked 
-                    ? "bg-green-500/10 border-green-500/30" 
-                    : "bg-primary/10 border-primary/30"
-                )}>
-                  <FileCheck className={cn("w-7 h-7", doc.checked ? "text-green-400" : "text-primary")} />
+                {/* Title at top */}
+                <h4 className="text-xl font-bold mb-4 text-center leading-tight" style={{ fontFamily: 'var(--font-heading)' }}>
+                  {doc.label}
+                </h4>
+
+                {/* Description in middle */}
+                <div className="flex-1 flex items-center justify-center px-2">
+                  <p className="text-sm text-muted-foreground text-center leading-relaxed">
+                    {doc.description || "Required documentation for Polish citizenship verification and processing."}
+                  </p>
                 </div>
-                <p className="font-medium text-center text-sm leading-tight">{doc.label}</p>
-                <Checkbox
-                  checked={doc.checked}
-                  onCheckedChange={(checked) => handleToggle(doc.id, checked as boolean)}
-                  onClick={(e) => e.stopPropagation()}
-                  className="scale-125"
-                />
+
+                {/* Badges and checkbox at bottom */}
+                <div className="space-y-3 mt-auto">
+                  <div className="flex gap-2 justify-center flex-wrap">
+                    {getImportanceBadge(doc.importance)}
+                    {getDifficultyBadge(doc.difficulty)}
+                  </div>
+                  <div className="flex justify-center">
+                    <Checkbox
+                      checked={doc.checked}
+                      onCheckedChange={(checked) => handleToggle(doc.id, checked as boolean)}
+                      onClick={(e) => e.stopPropagation()}
+                      className="scale-125"
+                    />
+                  </div>
+                </div>
               </div>
 
               {/* Back */}
               <div 
-                className="absolute inset-0 backdrop-blur-md bg-primary/20 rounded-xl p-6 flex flex-col justify-between cursor-pointer border border-primary/40 shadow-[0_8px_32px_rgba(59,130,246,0.25)]"
+                className="absolute inset-0 backdrop-blur-md bg-primary/20 rounded-xl p-6 flex flex-col cursor-pointer border border-primary/40 shadow-[0_8px_32px_rgba(59,130,246,0.25)]"
                 style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
                 onClick={() => toggleFlip(doc.id)}
               >
-                <div className="space-y-3">
-                  <h4 className="font-semibold text-base">Document Vault</h4>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    {doc.label} protected in secure storage.
-                  </p>
+                {/* Title at top */}
+                <h4 className="text-xl font-bold mb-4 text-center" style={{ fontFamily: 'var(--font-heading)' }}>
+                  {doc.label}
+                </h4>
+
+                {/* Document copy placeholder in middle */}
+                <div className="flex-1 overflow-auto">
+                  <div className="bg-background/5 rounded-lg p-4 border border-primary/20">
+                    <p className="text-xs text-muted-foreground/80 leading-relaxed">
+                      [Secure Document Vault]
+                      <br /><br />
+                      Protected storage contains: official certificates, translated documents, verified copies, and supporting evidence for {doc.label}.
+                    </p>
+                  </div>
                 </div>
+
+                {/* Button at bottom */}
                 <Button
                   variant="outline"
-                  className="w-full bg-primary/10 border-primary/40 hover:bg-primary/20"
+                  className="w-full mt-4 bg-primary/10 border-primary/40 hover:bg-primary/20"
                   onClick={(e) => {
                     e.stopPropagation();
-                    console.log("Navigate to folder");
+                    console.log("Open vault for:", doc.label);
                   }}
                 >
                   <FolderOpen className="w-4 h-4 mr-2" />
