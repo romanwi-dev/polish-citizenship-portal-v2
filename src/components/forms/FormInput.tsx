@@ -33,11 +33,27 @@ export const FormInput = ({
       value={value || ""} 
       onChange={handleChange}
       className={cn(
-        "h-16 text-lg bg-blue-50/45 dark:bg-blue-950/40 border-2 border-blue-200/50 dark:border-blue-800/50 hover:border-blue-300/70 dark:hover:border-blue-700/70 focus:border-blue-500 transition-all duration-300 backdrop-blur font-normal font-input-work w-full shadow-lg shadow-blue-500/20 hover:shadow-2xl hover:shadow-blue-500/40 focus:shadow-2xl focus:shadow-blue-500/50",
+        "h-16 text-lg bg-blue-50/45 dark:bg-blue-950/40 border-2 border-blue-200/50 dark:border-blue-800/50 hover:border-blue-300/70 dark:hover:border-blue-700/70 focus:border-blue-500 transition-all duration-300 backdrop-blur font-normal font-input-work w-full",
         isNameField && "uppercase",
         isLargeFonts && "text-2xl",
         className
       )}
+      style={{
+        boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
+        transition: "all 0.3s ease"
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+      }}
+      onFocus={(e) => {
+        e.currentTarget.style.boxShadow = "0 0 60px hsla(221, 83%, 53%, 0.4)";
+      }}
+      onBlur={(e) => {
+        e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+      }}
       {...props}
     />
   );
