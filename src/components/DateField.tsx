@@ -1,5 +1,6 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
@@ -13,9 +14,22 @@ interface DateFieldProps {
   onChange: (value: string) => void;
   delay?: number;
   required?: boolean;
+  showNotApplicable?: boolean;
+  notApplicableValue?: boolean;
+  onNotApplicableChange?: (checked: boolean) => void;
 }
 
-export function DateField({ name, label, value, onChange, delay = 0, required = false }: DateFieldProps) {
+export function DateField({ 
+  name, 
+  label, 
+  value, 
+  onChange, 
+  delay = 0, 
+  required = false,
+  showNotApplicable = false,
+  notApplicableValue = false,
+  onNotApplicableChange
+}: DateFieldProps) {
   const { isLargeFonts } = useAccessibility();
   const [error, setError] = useState<string>("");
 
@@ -38,9 +52,32 @@ export function DateField({ name, label, value, onChange, delay = 0, required = 
       transition={{ delay, duration: 0.4 }}
       className="space-y-2"
     >
-      <Label htmlFor={name} className={isLargeFonts ? "text-2xl" : ""}>
-        {label} {required && <span className="text-destructive">*</span>}
-      </Label>
+      <div className="flex items-center justify-between">
+        <Label htmlFor={name} className={isLargeFonts ? "text-2xl" : ""}>
+          {label} {required && <span className="text-destructive">*</span>}
+        </Label>
+        {showNotApplicable && (
+          <div className="flex items-center gap-2">
+            <Checkbox
+              id={`${name}-na`}
+              checked={notApplicableValue}
+              onCheckedChange={(checked) => {
+                onNotApplicableChange?.(checked as boolean);
+                if (checked) {
+                  onChange("");
+                }
+              }}
+              className="border-cyan-600"
+            />
+            <Label 
+              htmlFor={`${name}-na`} 
+              className="text-sm text-muted-foreground cursor-pointer"
+            >
+              N/A
+            </Label>
+          </div>
+        )}
+      </div>
       <Input
         id={name}
         type="text"
@@ -48,10 +85,12 @@ export function DateField({ name, label, value, onChange, delay = 0, required = 
         onChange={(e) => handleChange(e.target.value)}
         placeholder="DD.MM.YYYY"
         maxLength={10}
+        disabled={notApplicableValue}
         className={cn(
           "h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur font-normal placeholder:opacity-40 text-lg font-input-work",
           isLargeFonts && "text-2xl",
-          error && "border-destructive"
+          error && "border-destructive",
+          notApplicableValue && "bg-cyan-950/30 border-cyan-700 text-cyan-300 cursor-not-allowed"
         )}
       />
       {error && (
