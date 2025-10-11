@@ -4,25 +4,14 @@
 
 export const POA_MINOR_PDF_MAP: Record<string, string> = {
   // Parent/Guardian Information
-  'parentFirstName': 'applicant_first_name',
-  'parentLastName': 'applicant_last_name',
-  'parentEmail': 'applicant_email',
-  'parentPhone': 'applicant_phone',
-  'parentPassport': 'applicant_passport_number',
+  'applicant_given_names': 'applicant_first_name',
+  'applicant_surname': 'applicant_last_name',
+  'passport_number': 'applicant_passport_number',
   
-  // Child Information
-  'childFirstName': 'child_1_first_name',
-  'childLastName': 'child_1_last_name',
-  'childDOB': 'child_1_dob',
-  'childPOB': 'child_1_pob',
-  'childSex': 'child_1_sex',
+  // Minor Information
+  'minor_given_names': 'child_1_first_name',
+  'minor_surname': 'child_1_last_name',
   
-  // Additional Children
-  'child2FirstName': 'child_2_first_name',
-  'child2LastName': 'child_2_last_name',
-  'child2DOB': 'child_2_dob',
-  
-  'child3FirstName': 'child_3_first_name',
-  'child3LastName': 'child_3_last_name',
-  'child3DOB': 'child_3_dob',
+  // POA Date
+  'poa_date': 'poa_date_filed',
 };
