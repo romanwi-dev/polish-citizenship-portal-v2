@@ -4,74 +4,67 @@
 
 export const FAMILY_TREE_PDF_MAP: Record<string, string> = {
   // Applicant
-  'applicantName': 'applicant_first_name', // Will be combined with last_name in formatter
-  'applicantFirstName': 'applicant_first_name',
-  'applicantLastName': 'applicant_last_name',
-  'applicantDOB': 'applicant_dob',
-  'applicantPOB': 'applicant_pob',
+  'applicant_full_name': 'applicant_full_name',
+  'applicant_date_of_birth': 'applicant_dob',
+  'applicant_date_of_marriage': 'date_of_marriage',
+  'applicant_place_of_birth': 'applicant_pob',
+  'applicant_place_of_marriage': 'place_of_marriage',
   
-  // Father
-  'fatherName': 'father_first_name',
-  'fatherFirstName': 'father_first_name',
-  'fatherLastName': 'father_last_name',
-  'fatherDOB': 'father_dob',
-  'fatherPOB': 'father_pob',
+  // Applicant's Spouse
+  'applicant_spouse_full_name': 'spouse_full_name',
   
-  // Mother
-  'motherName': 'mother_first_name',
-  'motherFirstName': 'mother_first_name',
-  'motherLastName': 'mother_last_name',
-  'motherMaidenName': 'mother_maiden_name',
-  'motherDOB': 'mother_dob',
-  'motherPOB': 'mother_pob',
+  // Children/Minors
+  'minor_1_full_name': 'child_1_full_name',
+  'minor_1_date_of_birth': 'child_1_dob',
+  'minor_1_place_of_birth': 'child_1_pob',
   
-  // Paternal Grandfather
-  'pgfName': 'pgf_first_name',
-  'pgfFirstName': 'pgf_first_name',
-  'pgfLastName': 'pgf_last_name',
-  'pgfDOB': 'pgf_dob',
-  'pgfPOB': 'pgf_pob',
+  'minor_2_full_name': 'child_2_full_name',
+  'minor_2_date_of_birth': 'child_2_dob',
+  'minor_2_place_of_birth': 'child_2_pob',
   
-  // Paternal Grandmother
-  'pgmName': 'pgm_first_name',
-  'pgmFirstName': 'pgm_first_name',
-  'pgmLastName': 'pgm_last_name',
-  'pgmMaidenName': 'pgm_maiden_name',
-  'pgmDOB': 'pgm_dob',
-  'pgmPOB': 'pgm_pob',
+  'minor_3_full_name': 'child_3_full_name',
+  'minor_3_date_of_birth': 'child_3_dob',
+  'minor_3_place_of_birth': 'child_3_pob',
   
-  // Maternal Grandfather
-  'mgfName': 'mgf_first_name',
-  'mgfFirstName': 'mgf_first_name',
-  'mgfLastName': 'mgf_last_name',
-  'mgfDOB': 'mgf_dob',
-  'mgfPOB': 'mgf_pob',
+  // Polish Parent (Father or Mother depending on ancestry line)
+  'polish_parent_full_name': 'polish_parent_full_name',
+  'polish_parent_date_of_birth': 'polish_parent_dob',
+  'polish_parent_date_of_marriage': 'polish_parent_marriage_date',
+  'polish_parent_date_of_emigration': 'polish_parent_emigration_date',
+  'polish_parent_place_of_birth': 'polish_parent_pob',
+  'polish_parent_place_of_marriage': 'polish_parent_marriage_place',
+  'polish_parent_date_of_naturalization': 'polish_parent_naturalization_date',
   
-  // Maternal Grandmother
-  'mgmName': 'mgm_first_name',
-  'mgmFirstName': 'mgm_first_name',
-  'mgmLastName': 'mgm_last_name',
-  'mgmMaidenName': 'mgm_maiden_name',
-  'mgmDOB': 'mgm_dob',
-  'mgmPOB': 'mgm_pob',
+  // Polish Parent's Spouse
+  'polish_parent_spouse_full_name': 'polish_parent_spouse_full_name',
   
-  // Great-Grandparents (Paternal)
-  'pggfName': 'pggf_first_name',
-  'pggfFirstName': 'pggf_first_name',
-  'pggfLastName': 'pggf_last_name',
+  // Polish Grandparent
+  'polish_grandparent_full_name': 'polish_grandparent_full_name',
+  'polish_grandparent_date_of_birth': 'polish_grandparent_dob',
+  'polish_grandparent_date_of_marriage': 'polish_grandparent_marriage_date',
+  'polish_grandparent_date_of_emigration': 'polish_grandparent_emigration_date',
+  'polish_grandparent_place_of_birth': 'polish_grandparent_pob',
+  'polish_grandparent_place_of_marriage': 'polish_grandparent_marriage_place',
+  'polish_grandparent_date_of_naturalization': 'polish_grandparent_naturalization_date',
   
-  'pggmName': 'pggm_first_name',
-  'pggmFirstName': 'pggm_first_name',
-  'pggmLastName': 'pggm_last_name',
-  'pggmMaidenName': 'pggm_maiden_name',
+  // Polish Grandparent's Spouse
+  'polish_grandparent_spouse_full_name': 'polish_grandparent_spouse_full_name',
   
-  // Great-Grandparents (Maternal)
-  'mggfName': 'mggf_first_name',
-  'mggfFirstName': 'mggf_first_name',
-  'mggfLastName': 'mggf_last_name',
+  // Great Grandfather
+  'great_grandfather_full_name': 'great_grandfather_full_name',
+  'great_grandfather_date_of_birth': 'great_grandfather_dob',
+  'great_grandfather_date_of_marriage': 'great_grandfather_marriage_date',
+  'great_grandfather_date_of_emigration': 'great_grandfather_emigration_date',
+  'great_grandfather_place_of_birth': 'great_grandfather_pob',
+  'great_grandfather_place_of_marriage': 'great_grandfather_marriage_place',
+  'great_grandfather_date_of_naturalization': 'great_grandfather_naturalization_date',
   
-  'mggmName': 'mggm_first_name',
-  'mggmFirstName': 'mggm_first_name',
-  'mggmLastName': 'mggm_last_name',
-  'mggmMaidenName': 'mggm_maiden_name',
+  // Great Grandmother
+  'great_grandmother_full_name': 'great_grandmother_full_name',
+  'great_grandmother_date_of_birth': 'great_grandmother_dob',
+  'great_grandmother_date_of_marriage': 'great_grandmother_marriage_date',
+  'great_grandmother_date_of_emigration': 'great_grandmother_emigration_date',
+  'great_grandmother_place_of_birth': 'great_grandmother_pob',
+  'great_grandmother_place_of_marriage': 'great_grandmother_marriage_place',
+  'great_grandmother_date_of_naturalization': 'great_grandmother_naturalization_date',
 };
