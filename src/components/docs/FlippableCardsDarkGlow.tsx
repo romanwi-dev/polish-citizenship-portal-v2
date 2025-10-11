@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { FolderOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 
 interface DocumentItem {
   id: string;
@@ -76,82 +77,120 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
         </h3>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-        {documents.map((doc) => (
-          <div key={doc.id} className="relative mx-auto w-full max-w-[280px]" style={{ aspectRatio: '1/1.414' }}>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 w-full">
+        {documents.map((doc, index) => (
+          <motion.div 
+            key={doc.id} 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: index * 0.1 }}
+            className="relative mx-auto w-full max-w-[400px]"
+          >
             <div 
-              className={cn(
-                "relative w-full h-full transition-transform duration-700",
-                flippedCards[doc.id] ? "[transform:rotateY(180deg)]" : ""
-              )}
-              style={{ transformStyle: "preserve-3d" }}
+              className="relative w-full h-[450px]"
+              style={{ perspective: '1000px' }}
             >
-              {/* Front */}
               <div 
-                className={cn(
-                  "absolute inset-0 backdrop-blur-md rounded-xl p-5 flex flex-col cursor-pointer border transition-all",
-                  doc.checked
-                    ? "bg-green-950/70 border-green-500/50 shadow-[0_0_30px_rgba(34,197,94,0.4)]"
-                    : "bg-slate-900/70 border-slate-700/30 hover:border-primary/40 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]"
-                )}
-                style={{ backfaceVisibility: "hidden" }}
                 onClick={() => toggleFlip(doc.id)}
+                className="absolute inset-0 cursor-pointer transition-transform duration-700"
+                style={{ 
+                  transformStyle: 'preserve-3d',
+                  transform: flippedCards[doc.id] ? 'rotateY(180deg)' : 'rotateY(0deg)'
+                }}
               >
-                {/* Checkbox at top left corner */}
-                <div className="absolute top-2 left-2">
-                  <Checkbox
-                    checked={doc.checked}
-                    onCheckedChange={(checked) => handleToggle(doc.id, checked as boolean)}
-                    onClick={(e) => e.stopPropagation()}
-                    className="scale-110 opacity-40"
-                  />
-                </div>
-
-                {/* Title at top center */}
-                <h4 className="text-lg font-black mb-3 text-center leading-tight font-heading text-blue-950 dark:text-blue-300 opacity-40 mt-6">
-                  {doc.label}
-                </h4>
-
-                {/* Empty space in middle */}
-                <div className="flex-1" />
-
-                {/* Badges at bottom */}
-                <div className="flex gap-1.5 justify-center flex-wrap text-xs mt-auto opacity-20">
-                  {getImportanceBadge(doc.importance)}
-                  {getDifficultyBadge(doc.difficulty)}
-                </div>
-              </div>
-
-              {/* Back */}
-              <div 
-                className="absolute inset-0 backdrop-blur-md bg-primary/15 rounded-xl p-6 flex flex-col cursor-pointer border border-primary/30 shadow-[0_0_40px_rgba(59,130,246,0.2)]"
-                style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
-                onClick={() => toggleFlip(doc.id)}
-              >
-                {/* Document copy placeholder - full height */}
-                <div className="flex-1 overflow-auto mb-4">
-                  <div className="bg-background/5 rounded-lg p-4 border border-primary/20 h-full">
-                    <p className="text-sm text-muted-foreground/80 leading-relaxed italic">
-                      [Admin: Add detailed information about this step here. This content will be customized for each timeline step to provide additional context, requirements, or important notes for clients.]
-                    </p>
-                  </div>
-                </div>
-
-                {/* Button at bottom */}
-                <Button
-                  variant="outline"
-                  className="w-full bg-primary/10 border-primary/40 hover:bg-primary/20"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    console.log("Access folder for:", doc.label);
+                {/* Front Side */}
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
+                  className={cn(
+                    "absolute inset-0 glass-card p-6 rounded-lg hover-glow group",
+                    doc.checked && "border-green-500/40"
+                  )}
+                  style={{ 
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden'
                   }}
                 >
-                  <FolderOpen className="w-4 h-4 mr-2" />
-                  Access Folder
-                </Button>
+                  <div className="flex flex-col gap-3 h-full">
+                    {/* Checkbox at top left corner */}
+                    <div className="absolute top-3 left-3">
+                      <Checkbox
+                        checked={doc.checked}
+                        onCheckedChange={(checked) => handleToggle(doc.id, checked as boolean)}
+                        onClick={(e) => e.stopPropagation()}
+                        className="scale-125 opacity-60 hover:opacity-100 transition-opacity"
+                      />
+                    </div>
+
+                    {/* Title at top center */}
+                    <motion.h4 
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ 
+                        duration: 0.5, 
+                        delay: index * 0.08,
+                        type: "spring",
+                        stiffness: 60,
+                        damping: 15
+                      }}
+                      className="text-xl md:text-2xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-105 transition-all duration-300 drop-shadow-lg text-center mt-8 mb-3 leading-tight"
+                    >
+                      {doc.label}
+                    </motion.h4>
+
+                    {/* Empty space in middle */}
+                    <div className="flex-1" />
+
+                    {/* Badges at bottom */}
+                    <div className="flex gap-2 justify-center flex-wrap text-xs mt-auto">
+                      {getImportanceBadge(doc.importance)}
+                      {getDifficultyBadge(doc.difficulty)}
+                    </div>
+                    
+                    <p className="text-xs text-muted-foreground/60 mt-2 text-center">Tap to see details</p>
+                  </div>
+                </motion.div>
+
+                {/* Back Side */}
+                <div 
+                  className="absolute inset-0 glass-card p-6 rounded-lg hover-glow"
+                  style={{ 
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                    transform: 'rotateY(180deg)'
+                  }}
+                >
+                  <div className="flex flex-col gap-3 h-full">
+                    <h4 className="text-xl font-heading font-bold tracking-tight text-card-foreground mb-2">
+                      More Information
+                    </h4>
+                    
+                    <div className="flex-1 overflow-auto">
+                      <div className="bg-background/5 rounded-lg p-4 border border-primary/20 h-full">
+                        <p className="text-sm text-muted-foreground italic">
+                          [Admin: Add detailed information about this document here. This content will be customized for each document to provide additional context, requirements, or important notes for clients.]
+                        </p>
+                      </div>
+                    </div>
+
+                    <Button
+                      variant="outline"
+                      className="w-full bg-primary/10 border-primary/40 hover:bg-primary/20 mt-2"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        console.log("Access folder for:", doc.label);
+                      }}
+                    >
+                      <FolderOpen className="w-4 h-4 mr-2" />
+                      Access Folder
+                    </Button>
+                    
+                    <p className="text-xs text-muted-foreground/60 text-center">Tap to flip back</p>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>
