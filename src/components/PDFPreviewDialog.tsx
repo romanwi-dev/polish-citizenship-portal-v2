@@ -67,6 +67,11 @@ export function PDFPreviewDialog({
             src={pdfUrl}
             className="w-full h-full"
             title="PDF Preview"
+            onLoad={() => console.log('✅ PDF iframe loaded')}
+            onError={(e) => {
+              console.error('❌ PDF iframe error:', e);
+              toast.error('Failed to load PDF in preview. Try downloading instead.');
+            }}
           />
         </div>
 
