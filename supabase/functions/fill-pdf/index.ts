@@ -2,6 +2,15 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { PDFDocument } from "https://esm.sh/pdf-lib@1.17.1";
 
+// Import PDF field mappings
+import { POA_ADULT_PDF_MAP } from './mappings/poaAdult.ts';
+import { POA_MINOR_PDF_MAP } from './mappings/poaMinor.ts';
+import { POA_SPOUSES_PDF_MAP } from './mappings/poaSpouses.ts';
+import { CITIZENSHIP_PDF_MAP } from './mappings/citizenship.ts';
+import { FAMILY_TREE_PDF_MAP } from './mappings/familyTree.ts';
+import { UMIEJSCOWIENIE_PDF_MAP } from './mappings/umiejscowienie.ts';
+import { UZUPELNIENIE_PDF_MAP } from './mappings/uzupelnienie.ts';
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -310,15 +319,7 @@ const calculateCoverage = (result: FillResult): number => {
   return Math.round((result.filledFields / result.totalFields) * 100);
 };
 
-// ============ PDF FIELD MAPPINGS ============
-// Import correct mappings from dedicated mapping files
-import { POA_ADULT_PDF_MAP } from './mappings/poaAdult.ts';
-import { POA_MINOR_PDF_MAP } from './mappings/poaMinor.ts';
-import { POA_SPOUSES_PDF_MAP } from './mappings/poaSpouses.ts';
-import { CITIZENSHIP_PDF_MAP } from './mappings/citizenship.ts';
-import { FAMILY_TREE_PDF_MAP } from './mappings/familyTree.ts';
-import { UMIEJSCOWIENIE_PDF_MAP } from './mappings/umiejscowienie.ts';
-import { UZUPELNIENIE_PDF_MAP } from './mappings/uzupelnienie.ts';
+// ============ MAIN EDGE FUNCTION ============
 
 // ============ MAIN EDGE FUNCTION ============
 
