@@ -134,17 +134,17 @@ export default function POAForm() {
     if (!caseId) return;
     
     console.log('💾 Saving form data:', Object.keys(formData).length, 'fields');
-    console.log('📋 Sample cleared fields:', {
-      applicant_first_name: formData.applicant_first_name,
-      applicant_last_name: formData.applicant_last_name,
-      applicant_email: formData.applicant_email
-    });
+    console.log('📋 Saving last_name:', formData.applicant_last_name);
     
     try {
-      // Send ALL formData to ensure cleared fields are saved as null
+      // Wait for the mutation to complete AND the cache to invalidate
       await updateMutation.mutateAsync({ caseId, updates: { ...formData } });
+      // The mutation's onSuccess already invalidates the cache
+      console.log('✅ Save complete, cache invalidated');
+      return true;
     } catch (error) {
-      console.error('Save failed:', error);
+      console.error('❌ Save failed:', error);
+      throw error;
     }
   };
 
@@ -157,15 +157,12 @@ export default function POAForm() {
     setIsGenerating(true);
     setActivePOAType(templateType.replace('poa-', ''));
     try {
-      // Save first and wait for confirmation
+      // Save and wait for full completion
       toast.info('Saving changes...');
       await handleSave();
-      
-      // Give the database a moment to fully commit
-      await new Promise(resolve => setTimeout(resolve, 500));
       toast.success('Saved! Generating PDF...');
 
-      // Generate PDF
+      // Generate PDF - it will fetch fresh data from DB
       const response = await fetch(
         `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/fill-pdf`,
         {
