@@ -23,8 +23,13 @@ serve(async (req) => {
   try {
     const { caseId, templateType, inspectOnly } = await req.json();
     
+    // Validate template type
+    const validTemplates = ['poa-adult', 'poa-minor', 'poa-spouses', 'citizenship', 'family-tree', 'umiejscowienie', 'uzupelnienie'];
     if (!templateType) {
       throw new Error('templateType is required');
+    }
+    if (!validTemplates.includes(templateType)) {
+      throw new Error(`Invalid templateType: ${templateType}. Must be one of: ${validTemplates.join(', ')}`);
     }
 
     // Inspection mode - just return field names
@@ -98,10 +103,11 @@ serve(async (req) => {
     
     try {
       pdfBytes = await Deno.readFile(templatePath);
-      console.log(`Loaded template: ${templatePath} (${pdfBytes.length} bytes)`);
+      console.log(`✅ Loaded template: ${templatePath} (${pdfBytes.length} bytes)`);
     } catch (error) {
-      console.error(`Failed to load template: ${templatePath}`, error);
-      throw new Error(`Template not found: ${templateType}`);
+      console.error(`❌ Failed to load template: ${templatePath}`, error);
+      const availableTemplates = ['poa-adult', 'poa-minor', 'poa-spouses', 'citizenship', 'family-tree', 'umiejscowienie', 'uzupelnienie'];
+      throw new Error(`Template file not found: ${templateType}.pdf. Available templates: ${availableTemplates.join(', ')}`);
     }
 
     // Load the PDF
