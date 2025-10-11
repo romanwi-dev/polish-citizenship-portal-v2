@@ -31,9 +31,16 @@ export default function POAForm() {
   const { isLargeFonts, toggleFontSize } = useAccessibility();
   
   const [formData, setFormData] = useState<any>({});
+  // Track the absolute latest form values to avoid race conditions
+  const latestFormData = useRef<any>({});
   
   // Enable real-time sync with direct state updates
   useRealtimeFormSync(caseId, masterData, isLoading, setFormData);
+  
+  // Keep ref synchronized with state
+  useEffect(() => {
+    latestFormData.current = formData;
+  }, [formData]);
   
   const [isGenerating, setIsGenerating] = useState(false);
   const [showClearAllDialog, setShowClearAllDialog] = useState(false);
@@ -133,13 +140,19 @@ export default function POAForm() {
   const handleSave = async () => {
     if (!caseId) return;
     
-    console.log('💾 Saving form data:', Object.keys(formData).length, 'fields');
-    console.log('📋 Saving last_name:', formData.applicant_last_name);
+    // Use the ref to get the absolute latest state
+    const dataToSave = latestFormData.current;
+    
+    console.log('💾 Saving form data:', Object.keys(dataToSave).length, 'fields');
+    console.log('📋 Critical fields:', {
+      applicant_first_name: dataToSave.applicant_first_name,
+      applicant_last_name: dataToSave.applicant_last_name,
+      applicant_passport_number: dataToSave.applicant_passport_number
+    });
     
     try {
       // Wait for the mutation to complete AND the cache to invalidate
-      await updateMutation.mutateAsync({ caseId, updates: { ...formData } });
-      // The mutation's onSuccess already invalidates the cache
+      await updateMutation.mutateAsync({ caseId, updates: { ...dataToSave } });
       console.log('✅ Save complete, cache invalidated');
       return true;
     } catch (error) {
@@ -151,6 +164,13 @@ export default function POAForm() {
   const handleGenerateAndPreview = async (templateType: 'poa-adult' | 'poa-minor' | 'poa-spouses') => {
     if (!caseId || caseId === ':id') {
       toast.error('Invalid case ID');
+      return;
+    }
+
+    // Validate critical fields before proceeding
+    const data = latestFormData.current;
+    if (!data.applicant_first_name || !data.applicant_last_name) {
+      toast.error('Please enter applicant name before generating PDF');
       return;
     }
 
