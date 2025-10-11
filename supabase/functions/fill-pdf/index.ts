@@ -398,6 +398,42 @@ const fillPDFFields = (
     result.totalFields++;
 
     try {
+      // Check if this is a pipe-delimited mapping (for date splitting)
+      if (dbColumn.includes('|')) {
+        const pdfFields = pdfFieldName.split('|');
+        const dbField = dbColumn;
+        
+        let rawValue = getNestedValue(data, dbField);
+        
+        // Handle date splitting into day|month|year
+        if (rawValue && pdfFields.length === 3) {
+          const date = new Date(rawValue);
+          if (!isNaN(date.getTime())) {
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear().toString();
+            
+            // Fill each pipe-delimited field
+            const values = [day, month, year];
+            for (let i = 0; i < pdfFields.length && i < values.length; i++) {
+              try {
+                const textField = form.getTextField(pdfFields[i]);
+                if (textField) {
+                  textField.setText(values[i]);
+                  result.filledFields++;
+                }
+              } catch {
+                result.emptyFields.push(pdfFields[i]);
+              }
+            }
+            continue;
+          }
+        }
+        
+        result.emptyFields.push(pdfFieldName);
+        continue;
+      }
+      
       let rawValue;
       
       if (isFullNameField(pdfFieldName)) {

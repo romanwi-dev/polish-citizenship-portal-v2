@@ -38,7 +38,6 @@ const PDFFieldInspector = lazy(() => import("./pages/admin/PDFFieldInspector"));
 const ZeroErrorsChecklist = lazy(() => import("./pages/admin/ZeroErrorsChecklist"));
 const UploadPDFTemplates = lazy(() => import("./pages/admin/UploadPDFTemplates"));
 const ManualPDFUpload = lazy(() => import("./pages/admin/ManualPDFUpload"));
-const RenamePDFFields = lazy(() => import("./pages/admin/RenamePDFFields"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -262,14 +261,6 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <ManualPDFUpload />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/rename-pdf-fields" 
-            element={
-              <Suspense fallback={<AdminLoader />}>
-                <RenamePDFFields />
               </Suspense>
             } 
           />

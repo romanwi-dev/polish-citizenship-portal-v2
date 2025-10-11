@@ -7,30 +7,30 @@
  */
 
 export const UZUPELNIENIE_PDF_MAP: Record<string, string> = {
+  // Map English DB columns → Polish PDF field names
+  
   // Applicant info
-  'applicant_full_name': 'applicant_full_name',
-  'applicant_country': 'applicant_country',
+  'applicant_full_name': 'imie_nazwisko_wnioskodawcy',
+  'applicant_country': 'kraj_wnioskodawcy',
   
   // Representative info
-  'representative_full_name': 'representative_full_name',
-  'representative_address_line1': 'representative_address_line1',
-  'representative_address_line2': 'representative_address_line2',
-  'representative_phone': 'representative_phone',
-  'representative_email': 'representative_email',
+  'representative_full_name': 'imie_nazwisko_pelnomocnika',
+  'representative_address_line1': 'adres_pelnomocnika_linia1',
+  'representative_address_line2': 'adres_pelnomocnika_linia2',
+  'representative_phone': 'telefon_pelnomocnika',
+  'representative_email': 'email_pelnomocnika',
   
-  // Submission location and date
-  'submission_location': 'submission_location',
-  'submission_day': 'submission_date.day',
-  'submission_month': 'submission_date.month',
-  'submission_year': 'submission_date.year',
+  // Submission location and date (pipe-delimited for date split)
+  'submission_location': 'miejscowosc_zlozenia',
+  'submission_date': 'dzien_zlozenia|miesiac_zlozenia|rok_zlozenia',
   
-  // Birth act supplement
-  'birth_act_number': 'birth_act_number',
-  'birth_act_year': 'birth_act_year',
-  'father_last_name': 'father_last_name',
-  'mother_maiden_name': 'mother_maiden_name',
-  'foreign_act_location': 'foreign_act_location',
-  'polish_birth_act_number': 'polish_birth_act_number',
+  // Birth act supplement fields
+  'birth_act_number': 'numer_aktu_urodzenia',
+  'birth_act_year': 'rok_aktu_urodzenia',
+  'father_last_name': 'nazwisko_ojca',
+  'mother_maiden_name': 'nazwisko_rodowe_matki',
+  'foreign_act_location': 'miejsce_aktu_zagranicznego',
+  'polish_birth_act_number': 'numer_polskiego_aktu_urodzenia',
 };
 
 export const UZUPELNIENIE_REQUIRED_FIELDS = [
