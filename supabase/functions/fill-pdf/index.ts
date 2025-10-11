@@ -7,8 +7,8 @@ import { POA_MINOR_PDF_MAP } from './mappings/poaMinor.ts';
 import { POA_SPOUSES_PDF_MAP } from './mappings/poaSpouses.ts';
 import { CITIZENSHIP_PDF_MAP } from './mappings/citizenship.ts';
 import { FAMILY_TREE_PDF_MAP } from './mappings/familyTree.ts';
-import { UMIEJSCOWIENIE_PDF_MAP } from './mappings/umiejscowienie.ts';
 import { UZUPELNIENIE_PDF_MAP } from './mappings/uzupelnienie.ts';
+import { UMIEJSCOWIENIE_PDF_MAP } from './mappings/umiejscowienie.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
