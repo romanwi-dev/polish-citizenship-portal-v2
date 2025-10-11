@@ -76,9 +76,9 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
         </h3>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-none">
         {documents.map((doc) => (
-          <div key={doc.id} className="relative mx-auto w-full" style={{ aspectRatio: '1/1.414', maxWidth: 'min(100%, 280px)' }}>
+          <div key={doc.id} className="relative mx-auto w-full md:w-auto" style={{ aspectRatio: '1/1.414', maxWidth: 'min(100%, 280px)' }}>
             <div 
               className={cn(
                 "relative w-full h-full transition-transform duration-700",
@@ -91,8 +91,8 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
                 className={cn(
                   "absolute inset-0 backdrop-blur-md rounded-xl p-5 flex flex-col cursor-pointer border transition-all",
                   doc.checked
-                    ? "bg-green-950/90 border-green-500/50 shadow-[0_0_30px_rgba(34,197,94,0.4)]"
-                    : "bg-slate-900/90 border-slate-700/30 hover:border-primary/40 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]"
+                    ? "bg-green-950/70 border-green-500/50 shadow-[0_0_30px_rgba(34,197,94,0.4)]"
+                    : "bg-slate-900/70 border-slate-700/30 hover:border-primary/40 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]"
                 )}
                 style={{ backfaceVisibility: "hidden" }}
                 onClick={() => toggleFlip(doc.id)}
