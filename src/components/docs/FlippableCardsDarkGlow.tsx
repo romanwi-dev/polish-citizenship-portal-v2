@@ -76,7 +76,7 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
         </h3>
       </div>
       
-      <div className="grid grid-cols-2 gap-6 max-w-4xl mx-auto">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
         {documents.map((doc) => (
           <div key={doc.id} className="relative" style={{ aspectRatio: '1/1.414', maxWidth: '280px' }}>
             <div 
@@ -98,7 +98,7 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
                 onClick={() => toggleFlip(doc.id)}
               >
                 {/* Title at top */}
-                <h4 className="text-base font-bold mb-3 text-center leading-tight" style={{ fontFamily: 'var(--font-heading)' }}>
+                <h4 className="text-base font-black mb-3 text-center leading-tight font-heading">
                   {doc.label}
                 </h4>
 
@@ -133,7 +133,7 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
                 onClick={() => toggleFlip(doc.id)}
               >
                 {/* Title at top */}
-                <h4 className="text-xl font-bold mb-4 text-center" style={{ fontFamily: 'var(--font-heading)' }}>
+                <h4 className="text-base font-black mb-4 text-center font-heading">
                   {doc.label}
                 </h4>
 
