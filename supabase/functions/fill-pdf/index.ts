@@ -501,7 +501,7 @@ serve(async (req) => {
   }
 
   try {
-    const { caseId, templateType } = await req.json();
+    const { caseId, templateType, preview = false } = await req.json();
     
     const validTemplates = ['poa-adult', 'poa-minor', 'poa-spouses', 'citizenship', 'family-tree', 'umiejscowienie', 'uzupelnienie'];
     
@@ -587,7 +587,10 @@ serve(async (req) => {
       }
     }
 
-    form.flatten();
+    // Only flatten for final downloads, keep editable for preview
+    if (!preview) {
+      form.flatten();
+    }
     
     const filledPdfBytes = await pdfDoc.save();
     

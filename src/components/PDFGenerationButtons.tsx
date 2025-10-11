@@ -79,7 +79,7 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
           },
-          body: JSON.stringify({ caseId, templateType }),
+          body: JSON.stringify({ caseId, templateType, preview }),
         }
       );
 
@@ -137,13 +137,10 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
     await handleGeneratePDF(currentTemplate.type, currentTemplate.label, true);
   };
 
-  const handleDownloadFromPreview = () => {
-    const link = document.createElement('a');
-    link.href = previewUrl;
-    link.download = `${currentTemplate.type}-${caseId}.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const handleDownloadFromPreview = async () => {
+    // Generate a flattened PDF for download
+    await handleGeneratePDF(currentTemplate.type, currentTemplate.label, false);
+    setPreviewOpen(false);
   };
 
   return (
