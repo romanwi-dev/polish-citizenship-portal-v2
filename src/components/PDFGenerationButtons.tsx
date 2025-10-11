@@ -185,9 +185,9 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
           Preview POA - Spouses
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => handleGeneratePDF('registration', 'Civil Registry Application', true)}>
+        <DropdownMenuItem onClick={() => handleGeneratePDF('umiejscowienie', 'Civil Registry Entry (Umiejscowienie)', true)}>
           <Eye className="h-4 w-4 mr-2" />
-          Preview Civil Registry Application
+          Preview Civil Registry Entry (Umiejscowienie)
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => handleGeneratePDF('uzupelnienie', 'Birth Certificate Supplementation', true)}>
           <Eye className="h-4 w-4 mr-2" />

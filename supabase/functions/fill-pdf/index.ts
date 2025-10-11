@@ -95,7 +95,8 @@ serve(async (req) => {
     if (masterError) throw masterError;
     if (!masterData) throw new Error('Master data not found');
 
-    console.log('Master data retrieved, loading PDF template...');
+    console.log('[fill-pdf] Master data retrieved successfully');
+    console.log('[fill-pdf] Loading PDF template:', templateType);
 
     // Load the PDF template
     const templatePath = `./templates/${templateType}.pdf`;

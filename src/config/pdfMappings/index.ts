@@ -9,6 +9,18 @@ export { CITIZENSHIP_PDF_MAP, CITIZENSHIP_REQUIRED_FIELDS } from './citizenship'
 export { UMIEJSCOWIENIE_PDF_MAP, UMIEJSCOWIENIE_REQUIRED_FIELDS } from './umiejscowienie';
 export { UZUPELNIENIE_PDF_MAP, UZUPELNIENIE_REQUIRED_FIELDS } from './uzupelnienie';
 
+// Family Tree mapping (only exists in edge function mappings)
+export const FAMILY_TREE_REQUIRED_FIELDS = [
+  'applicant_first_name',
+  'applicant_last_name',
+  'applicant_dob',
+  'father_first_name',
+  'father_last_name',
+  'mother_first_name',
+  'mother_last_name',
+  'mother_maiden_name',
+];
+
 export type PDFTemplateType = 
   | 'poa-adult'
   | 'poa-minor'

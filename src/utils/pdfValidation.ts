@@ -47,7 +47,7 @@ export const TEMPLATE_REQUIRED_FIELDS: Record<string, string[]> = {
   'poa-spouses': ['applicant_first_name', 'applicant_last_name', 'spouse_first_name', 'spouse_last_name'],
   'citizenship': CITIZENSHIP_REQUIRED,
   'family-tree': ['applicant_first_name', 'applicant_last_name', 'father_first_name', 'mother_first_name'],
-  'registration': ['applicant_first_name', 'applicant_last_name', 'applicant_dob'],
+  'umiejscowienie': ['applicant_first_name', 'applicant_last_name', 'applicant_dob'],
   'uzupelnienie': ['applicant_first_name', 'applicant_last_name'],
 };
 
