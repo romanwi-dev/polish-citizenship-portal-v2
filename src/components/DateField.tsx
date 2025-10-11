@@ -57,25 +57,17 @@ export function DateField({
           {label} {required && <span className="text-destructive">*</span>}
         </Label>
         {showNotApplicable && (
-          <div className="flex items-center gap-2">
-            <Checkbox
-              id={`${name}-na`}
-              checked={notApplicableValue}
-              onCheckedChange={(checked) => {
-                onNotApplicableChange?.(checked as boolean);
-                if (checked) {
-                  onChange("");
-                }
-              }}
-              className="border-cyan-600"
-            />
-            <Label 
-              htmlFor={`${name}-na`} 
-              className="text-sm text-muted-foreground cursor-pointer"
-            >
-              N/A
-            </Label>
-          </div>
+          <Checkbox
+            id={`${name}-na`}
+            checked={notApplicableValue}
+            onCheckedChange={(checked) => {
+              onNotApplicableChange?.(checked as boolean);
+              if (checked) {
+                onChange("");
+              }
+            }}
+            className="border-cyan-600"
+          />
         )}
       </div>
       <Input
