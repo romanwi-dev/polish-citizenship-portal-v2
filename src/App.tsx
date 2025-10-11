@@ -18,6 +18,7 @@ const ClientDashboard = lazy(() => import("./pages/ClientDashboard"));
 // Lazy load admin pages to avoid loading Sidebar on home page
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
 const CasesManagement = lazy(() => import("./pages/admin/CasesManagement"));
+const NewCase = lazy(() => import("./pages/admin/NewCase"));
 const CaseDetail = lazy(() => import("./pages/admin/CaseDetail"));
 const AdditionalData = lazy(() => import("./pages/admin/AdditionalData"));
 const FamilyTreeForm = lazy(() => import("./pages/admin/FamilyTreeForm"));
@@ -99,7 +100,15 @@ const App = () => (
             } 
           />
           <Route 
-            path="/admin/cases/:id" 
+            path="/admin/cases/new" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <NewCase />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/cases/:id"
             element={
               <Suspense fallback={<AdminLoader />}>
                 <CaseDetail />
