@@ -104,6 +104,10 @@ export const formatBoolean = (value: any): string => {
  * Get nested JSONB value using dot notation
  * FIXED: More robust handling of null/undefined intermediate values
  * Example: getNestedValue(data, 'applicant_address.street')
+ * 
+ * ENHANCED: Special handling for date splits (e.g., 'applicant_dob.day')
+ * If the path ends with .day, .month, or .year and the parent is a date,
+ * it will extract the appropriate component.
  */
 export const getNestedValue = (obj: any, path: string): any => {
   if (!obj || !path) return undefined;
@@ -113,8 +117,25 @@ export const getNestedValue = (obj: any, path: string): any => {
     return obj[path];
   }
   
-  // Navigate nested path safely
   const keys = path.split('.');
+  
+  // Check if this is a date component request (e.g., 'applicant_dob.day')
+  if (keys.length === 2 && ['day', 'month', 'year'].includes(keys[1])) {
+    const dateValue = obj[keys[0]];
+    if (dateValue) {
+      const date = new Date(dateValue);
+      if (!isNaN(date.getTime())) {
+        switch (keys[1]) {
+          case 'day': return date.getDate().toString().padStart(2, '0');
+          case 'month': return (date.getMonth() + 1).toString().padStart(2, '0');
+          case 'year': return date.getFullYear().toString();
+        }
+      }
+    }
+    return undefined;
+  }
+  
+  // Navigate nested path safely
   let current = obj;
   
   for (const key of keys) {

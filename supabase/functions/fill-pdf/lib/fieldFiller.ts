@@ -26,46 +26,74 @@ const isTruthyForCheckbox = (value: any): boolean => {
 
 /**
  * Extract name components from database column prefix
- * FIXED: More robust name extraction with fallback strategies
+ * ENHANCED: Handles all person types (applicant, spouse, father, child_1, pgf, etc.)
  */
 const extractNameComponents = (data: any, dbColumn: string): { firstName: string; lastName: string } => {
-  // Strategy 1: Try the direct mapping pattern (e.g., 'applicant_first_name' -> 'applicant')
-  let prefix = dbColumn.replace(/_first_name$/, '').replace(/_last_name$/, '');
+  // Remove common suffixes to get base prefix
+  let prefix = dbColumn
+    .replace(/_first_name$/, '')
+    .replace(/_last_name$/, '')
+    .replace(/_given_names$/, '')
+    .replace(/_surname$/, '')
+    .replace(/_full_name$/, '');
   
-  let firstName = data[`${prefix}_first_name`] || data[dbColumn] || '';
-  let lastName = data[`${prefix}_last_name`] || '';
+  // Try multiple name field patterns
+  let firstName = 
+    data[`${prefix}_first_name`] || 
+    data[`${prefix}_given_names`] || 
+    data[dbColumn] || 
+    '';
   
-  // Strategy 2: If no match, try extracting from the dbColumn directly
+  let lastName = 
+    data[`${prefix}_last_name`] || 
+    data[`${prefix}_surname`] || 
+    '';
+  
+  // Fallback: Try extracting from first part of dbColumn (e.g., 'child_1' from 'child_1_first_name')
   if (!firstName && !lastName) {
-    // Try to find any related first/last name in the data
     const columnParts = dbColumn.split('_');
-    const possiblePrefix = columnParts[0]; // e.g., 'applicant', 'father', 'mother'
+    // Handle compound prefixes like 'child_1', 'child_2', etc.
+    const possiblePrefix = columnParts.length >= 2 && !isNaN(Number(columnParts[1]))
+      ? `${columnParts[0]}_${columnParts[1]}`
+      : columnParts[0];
     
     firstName = data[`${possiblePrefix}_first_name`] || '';
     lastName = data[`${possiblePrefix}_last_name`] || '';
   }
   
   return { 
-    firstName: String(firstName).trim(), 
-    lastName: String(lastName).trim() 
+    firstName: String(firstName || '').trim(), 
+    lastName: String(lastName || '').trim() 
   };
 };
 
 /**
  * Determine if a PDF field should be treated as a full name field
- * FIXED: Better pattern detection for combined name fields
+ * ENHANCED: Catches more patterns including Polish field names
  */
 const isFullNameField = (pdfFieldName: string): boolean => {
   const lower = pdfFieldName.toLowerCase();
   
-  // It's a full name if it contains 'name' but NOT 'first', 'last', 'maiden', or 'middle'
-  const hasName = lower.includes('name') || lower.includes('full');
+  // Explicit full name indicators (Polish and English)
+  const fullNameIndicators = [
+    'full_name',
+    'imie_nazwisko',  // Polish: first name and last name
+    'imie_nazw',      // Shortened version
+  ];
+  
+  if (fullNameIndicators.some(indicator => lower.includes(indicator))) {
+    return true;
+  }
+  
+  // It's a full name if it contains 'name' but NOT component indicators
+  const hasName = lower.includes('name');
   const isNotComponent = !lower.includes('first') && 
                          !lower.includes('last') && 
                          !lower.includes('maiden') && 
                          !lower.includes('middle') &&
                          !lower.includes('given') &&
-                         !lower.includes('surname');
+                         !lower.includes('surname') &&
+                         !lower.includes('rodowe'); // Polish: maiden name
   
   return hasName && isNotComponent;
 };
@@ -106,8 +134,18 @@ export const fillPDFFields = (
         if (!rawValue) {
           console.log(`⚠️ Could not construct full name for ${pdfFieldName} from ${dbColumn}`);
         }
-      } else {
-        // Get value from database (supports nested JSONB with dot notation)
+      } 
+      // Auto-detect if dbColumn ends with _first_name and try to append last_name
+      else if (dbColumn.endsWith('_first_name') || dbColumn.endsWith('_given_names')) {
+        const { firstName, lastName } = extractNameComponents(data, dbColumn);
+        if (firstName && lastName) {
+          rawValue = `${firstName} ${lastName}`.trim();
+        } else {
+          rawValue = getNestedValue(data, dbColumn);
+        }
+      }
+      else {
+        // Get value from database (supports nested JSONB with dot notation + date splits)
         rawValue = getNestedValue(data, dbColumn);
       }
       
