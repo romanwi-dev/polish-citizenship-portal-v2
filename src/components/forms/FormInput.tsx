@@ -33,7 +33,7 @@ export const FormInput = ({
       value={value || ""} 
       onChange={handleChange}
       className={cn(
-        "h-16 text-lg bg-blue-50/45 dark:bg-blue-950/40 border-2 border-blue-200/50 dark:border-blue-800/50 hover:border-blue-300/70 dark:hover:border-blue-700/70 focus:border-blue-500 transition-all duration-300 backdrop-blur font-normal font-input-work w-full shadow-lg shadow-blue-500/10 hover:shadow-xl hover:shadow-blue-500/20 focus:shadow-2xl focus:shadow-blue-500/30",
+        "h-16 text-lg bg-blue-50/45 dark:bg-blue-950/40 border-2 border-blue-200/50 dark:border-blue-800/50 hover:border-blue-300/70 dark:hover:border-blue-700/70 focus:border-blue-500 transition-all duration-300 backdrop-blur font-normal font-input-work w-full shadow-lg shadow-blue-500/20 hover:shadow-2xl hover:shadow-blue-500/40 focus:shadow-2xl focus:shadow-blue-500/50",
         isNameField && "uppercase",
         isLargeFonts && "text-2xl",
         className

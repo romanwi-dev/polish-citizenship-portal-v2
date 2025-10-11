@@ -26,7 +26,7 @@ export const FormSection = ({
     : null;
 
   return (
-    <Card className={cn("border-2 hover-glow w-full", className)}>
+    <Card className={cn("border-2 shadow-xl shadow-primary/20 hover:shadow-2xl hover:shadow-primary/40 transition-all duration-300 w-full", className)}>
       <CardHeader
         {...(longPress ? longPress.handlers : {})}
         className={onClearSection ? "cursor-pointer" : ""}
