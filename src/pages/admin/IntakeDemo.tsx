@@ -23,6 +23,11 @@ import { FlippableCardsGradient } from "@/components/docs/FlippableCardsGradient
 import { FlippableCardsMinimal } from "@/components/docs/FlippableCardsMinimal";
 import { FlippableCardsBold } from "@/components/docs/FlippableCardsBold";
 import { FlippableCardsElegant } from "@/components/docs/FlippableCardsElegant";
+import { FlippableCardsNeon } from "@/components/docs/FlippableCardsNeon";
+import { FlippableCardsGlass } from "@/components/docs/FlippableCardsGlass";
+import { FlippableCardsRetro } from "@/components/docs/FlippableCardsRetro";
+import { FlippableCardsFuturistic } from "@/components/docs/FlippableCardsFuturistic";
+import { FlippableCardsNeumorphic } from "@/components/docs/FlippableCardsNeumorphic";
 
 export default function IntakeDemo() {
   const navigate = useNavigate();
@@ -49,6 +54,11 @@ export default function IntakeDemo() {
   const [docsVariant8, setDocsVariant8] = useState(initialDocuments);
   const [docsVariant9, setDocsVariant9] = useState(initialDocuments);
   const [docsVariant10, setDocsVariant10] = useState(initialDocuments);
+  const [docsFlipNeon, setDocsFlipNeon] = useState(initialDocuments);
+  const [docsFlipGlass, setDocsFlipGlass] = useState(initialDocuments);
+  const [docsFlipRetro, setDocsFlipRetro] = useState(initialDocuments);
+  const [docsFlipFuturistic, setDocsFlipFuturistic] = useState(initialDocuments);
+  const [docsFlipNeumorphic, setDocsFlipNeumorphic] = useState(initialDocuments);
 
   const handleDocChange = (
     variant: number,
@@ -111,6 +121,79 @@ export default function IntakeDemo() {
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Intake Form
         </Button>
+
+        {/* NEW: 5 Additional Flippable Card Designs at TOP */}
+        <div className="space-y-8 border-2 border-primary/20 p-6 rounded-lg bg-card/50">
+          <div>
+            <h2 className="text-4xl font-bold mb-3 text-primary">NEW: 5 More Flippable Card Designs</h2>
+            <p className="text-muted-foreground text-lg">
+              Additional flippable card variations with unique visual styles and animations.
+            </p>
+          </div>
+
+          {/* Neon Style */}
+          <div className="space-y-3">
+            <h3 className="text-2xl font-semibold text-primary/90">1. Neon Glow Style</h3>
+            <p className="text-sm text-muted-foreground mb-4">Cyberpunk-inspired design with neon borders and holographic effects</p>
+            <FlippableCardsNeon
+              title="Required Documents - Neon Edition"
+              documents={docsFlipNeon}
+              onChange={setDocsFlipNeon}
+            />
+          </div>
+
+          <div className="border-t border-border my-8" />
+
+          {/* Glass Morphism */}
+          <div className="space-y-3">
+            <h3 className="text-2xl font-semibold text-primary/90">2. Glass Morphism</h3>
+            <p className="text-sm text-muted-foreground mb-4">Frosted glass effect with backdrop blur and transparency</p>
+            <FlippableCardsGlass
+              title="Required Documents - Glass Edition"
+              documents={docsFlipGlass}
+              onChange={setDocsFlipGlass}
+            />
+          </div>
+
+          <div className="border-t border-border my-8" />
+
+          {/* Retro/Vintage */}
+          <div className="space-y-3">
+            <h3 className="text-2xl font-semibold text-primary/90">3. Retro Vintage Paper</h3>
+            <p className="text-sm text-muted-foreground mb-4">Classic filing cabinet aesthetic with paper-like texture and sharp shadows</p>
+            <FlippableCardsRetro
+              title="Required Documents - Retro Edition"
+              documents={docsFlipRetro}
+              onChange={setDocsFlipRetro}
+            />
+          </div>
+
+          <div className="border-t border-border my-8" />
+
+          {/* Futuristic */}
+          <div className="space-y-3">
+            <h3 className="text-2xl font-semibold text-primary/90">4. Futuristic Sci-Fi</h3>
+            <p className="text-sm text-muted-foreground mb-4">High-tech interface with geometric patterns and monospace typography</p>
+            <FlippableCardsFuturistic
+              title="Required Documents - Futuristic Edition"
+              documents={docsFlipFuturistic}
+              onChange={setDocsFlipFuturistic}
+            />
+          </div>
+
+          <div className="border-t border-border my-8" />
+
+          {/* Neumorphic */}
+          <div className="space-y-3">
+            <h3 className="text-2xl font-semibold text-primary/90">5. Neumorphic Soft UI</h3>
+            <p className="text-sm text-muted-foreground mb-4">Soft shadows and subtle depth with gentle color palette</p>
+            <FlippableCardsNeumorphic
+              title="Required Documents - Neumorphic Edition"
+              documents={docsFlipNeumorphic}
+              onChange={setDocsFlipNeumorphic}
+            />
+          </div>
+        </div>
 
         {/* Font Comparison for Form Inputs */}
         <div className="space-y-6 border-2 border-primary/20 p-6 rounded-lg bg-card/50">
