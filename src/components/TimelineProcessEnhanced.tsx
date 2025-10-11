@@ -96,7 +96,7 @@ const timelineSteps = [{
 }, {
   number: "11",
   title: "INITIAL RESPONSE",
-  description: "Receiving initial response from Masovian Voivoda's office and extending procedure term",
+  description: "Receiving initial response from Masovian Voivoda's office and extending procedure term if needed",
   duration: "Month 10-18",
   keyAction: "Government Processing",
   priority: "Major Milestone",
@@ -267,7 +267,7 @@ export default function TimelineProcessEnhanced() {
                           {step.title}
                         </motion.h3>
                         <p className="text-sm text-muted-foreground mb-3 flex-1">
-                          {step.description}...extending procedure term "if needed"
+                          {step.description}
                         </p>
                         <div className="flex flex-wrap gap-2">
                           <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
