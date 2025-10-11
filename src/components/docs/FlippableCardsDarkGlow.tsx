@@ -97,26 +97,30 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
                 style={{ backfaceVisibility: "hidden" }}
                 onClick={() => toggleFlip(doc.id)}
               >
-                {/* Title at top */}
-                <h4 className="text-lg font-black mb-3 text-center leading-tight font-heading text-blue-950 dark:text-blue-300 opacity-40">
+                {/* Checkbox at top left corner */}
+                <div className="absolute top-2 left-2">
+                  <Checkbox
+                    checked={doc.checked}
+                    onCheckedChange={(checked) => handleToggle(doc.id, checked as boolean)}
+                    onClick={(e) => e.stopPropagation()}
+                    className="scale-110 opacity-40"
+                  />
+                </div>
+
+                {/* Title at top center */}
+                <h4 className="text-lg font-black mb-3 text-center leading-tight font-heading text-blue-950 dark:text-blue-300 opacity-40 mt-6">
                   {doc.label}
                 </h4>
 
                 {/* Empty space in middle */}
                 <div className="flex-1" />
 
-                {/* Checkbox and badges at bottom */}
-                <div className="space-y-2 mt-auto">
-                  <div className="flex justify-center">
-                    <Checkbox
-                      checked={doc.checked}
-                      onCheckedChange={(checked) => handleToggle(doc.id, checked as boolean)}
-                      onClick={(e) => e.stopPropagation()}
-                      className="scale-110 opacity-40"
-                    />
-                  </div>
-                  <div className="flex gap-1.5 justify-center flex-wrap text-xs">
+                {/* Badges at bottom */}
+                <div className="flex gap-1.5 justify-center flex-wrap text-xs mt-auto">
+                  <div className="opacity-20">
                     {getImportanceBadge(doc.importance)}
+                  </div>
+                  <div className="opacity-20">
                     {getDifficultyBadge(doc.difficulty)}
                   </div>
                 </div>
