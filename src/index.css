@@ -194,8 +194,16 @@ All colors MUST be HSL.
     animation: slowBlink 3s ease-in-out infinite;
   }
 
+  .hover-glow {
+    @apply transition-shadow duration-300 hover:shadow-lg hover:shadow-primary/20;
+  }
+
   .perspective-1000 {
     perspective: 1000px;
+  }
+
+  .transform-style-3d {
+    transform-style: preserve-3d;
   }
 
   .preserve-3d {

@@ -18,6 +18,11 @@ import { TwoColumnModern } from "@/components/docs/TwoColumnModern";
 import { TwoColumnCompact } from "@/components/docs/TwoColumnCompact";
 import { TwoColumnElegant } from "@/components/docs/TwoColumnElegant";
 import { TwoColumnBold } from "@/components/docs/TwoColumnBold";
+import { FlippableCards3D } from "@/components/docs/FlippableCards3D";
+import { FlippableCardsGradient } from "@/components/docs/FlippableCardsGradient";
+import { FlippableCardsMinimal } from "@/components/docs/FlippableCardsMinimal";
+import { FlippableCardsBold } from "@/components/docs/FlippableCardsBold";
+import { FlippableCardsElegant } from "@/components/docs/FlippableCardsElegant";
 
 export default function IntakeDemo() {
   const navigate = useNavigate();
@@ -340,6 +345,79 @@ export default function IntakeDemo() {
               title="Documents Required"
               documents={docsVariant8}
               onChange={(id, checked) => handleDocChange(8, id, checked)}
+            />
+          </div>
+
+          <div className="border-t border-border my-8" />
+
+          {/* FLIPPABLE CARD DESIGNS */}
+          <div className="text-center space-y-2 my-12">
+            <h2 className="text-4xl font-bold mb-3 text-primary">FLIPPABLE CARD DESIGNS - Timeline Style</h2>
+            <p className="text-muted-foreground text-lg">
+              Interactive flip cards with document details on back, inspired by timeline section
+            </p>
+          </div>
+
+          {/* Design 1: 3D Flippable Cards */}
+          <div className="space-y-3">
+            <h3 className="text-2xl font-semibold text-primary/90">1. 3D Flippable Cards</h3>
+            <p className="text-sm text-muted-foreground mb-4">Classic 3D flip effect with perspective transform</p>
+            <FlippableCards3D
+              title="Required Documents"
+              documents={docsVariant9}
+              onChange={(updated) => setDocsVariant9(updated)}
+            />
+          </div>
+
+          <div className="border-t border-border my-8" />
+
+          {/* Design 2: Gradient Flippable Cards */}
+          <div className="space-y-3">
+            <h3 className="text-2xl font-semibold text-primary/90">2. Gradient Flippable Cards</h3>
+            <p className="text-sm text-muted-foreground mb-4">Vibrant gradients with smooth flip animations</p>
+            <FlippableCardsGradient
+              title="Required Documents"
+              documents={docsVariant9}
+              onChange={(updated) => setDocsVariant9(updated)}
+            />
+          </div>
+
+          <div className="border-t border-border my-8" />
+
+          {/* Design 3: Minimal Flippable Cards */}
+          <div className="space-y-3">
+            <h3 className="text-2xl font-semibold text-primary/90">3. Minimal Flippable Cards</h3>
+            <p className="text-sm text-muted-foreground mb-4">Clean minimal design with subtle transitions</p>
+            <FlippableCardsMinimal
+              title="Required Documents"
+              documents={docsVariant9}
+              onChange={(updated) => setDocsVariant9(updated)}
+            />
+          </div>
+
+          <div className="border-t border-border my-8" />
+
+          {/* Design 4: Bold Flippable Cards */}
+          <div className="space-y-3">
+            <h3 className="text-2xl font-semibold text-primary/90">4. Bold Flippable Cards</h3>
+            <p className="text-sm text-muted-foreground mb-4">Strong typography with completion counter</p>
+            <FlippableCardsBold
+              title="Required Documents"
+              documents={docsVariant9}
+              onChange={(updated) => setDocsVariant9(updated)}
+            />
+          </div>
+
+          <div className="border-t border-border my-8" />
+
+          {/* Design 5: Elegant Flippable Cards */}
+          <div className="space-y-3">
+            <h3 className="text-2xl font-semibold text-primary/90">5. Elegant Flippable Cards</h3>
+            <p className="text-sm text-muted-foreground mb-4">Sophisticated with decorative elements and serif fonts</p>
+            <FlippableCardsElegant
+              title="Required Documents"
+              documents={docsVariant9}
+              onChange={(updated) => setDocsVariant9(updated)}
             />
           </div>
 
