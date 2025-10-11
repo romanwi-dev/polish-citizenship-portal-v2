@@ -125,7 +125,7 @@ export function PDFPreviewDialog({
           <div className="flex items-center justify-between">
             <DialogTitle className="text-2xl font-bold flex items-center gap-2">
               <FileText className="h-6 w-6 text-primary" />
-              {documentTitle} - Preview & Edit
+              {documentTitle} - Preview
             </DialogTitle>
             <Button variant="ghost" size="icon" onClick={onClose}>
               <X className="h-5 w-5" />
@@ -133,90 +133,61 @@ export function PDFPreviewDialog({
           </div>
         </DialogHeader>
 
-        <Tabs defaultValue="preview" className="flex-1 flex flex-col">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="preview">PDF Preview</TabsTrigger>
-            <TabsTrigger value="edit">Edit Data</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="preview" className="flex-1 flex flex-col">
-            <div className="flex items-center justify-between mb-2 px-2">
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setScale(s => Math.max(0.5, s - 0.1))}
-                >
-                  <ZoomOut className="h-4 w-4" />
-                </Button>
-                <span className="text-sm text-muted-foreground min-w-[60px] text-center">
-                  {Math.round(scale * 100)}%
-                </span>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setScale(s => Math.min(2, s + 0.1))}
-                >
-                  <ZoomIn className="h-4 w-4" />
-                </Button>
-              </div>
-              <div className="text-sm text-muted-foreground">
-                Page {pageNumber} of {numPages}
-              </div>
+        <div className="flex-1 flex flex-col">
+          <div className="flex items-center justify-between mb-2 px-2">
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setScale(s => Math.max(0.5, s - 0.1))}
+              >
+                <ZoomOut className="h-4 w-4" />
+              </Button>
+              <span className="text-sm text-muted-foreground min-w-[60px] text-center">
+                {Math.round(scale * 100)}%
+              </span>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setScale(s => Math.min(2, s + 0.1))}
+              >
+                <ZoomIn className="h-4 w-4" />
+              </Button>
             </div>
-            <ScrollArea className="flex-1 border rounded-lg bg-muted/20">
-              <div className="flex justify-center p-4">
-                <Document
-                  file={pdfUrl}
-                  onLoadSuccess={onDocumentLoadSuccess}
-                  loading={
-                    <div className="flex items-center justify-center p-8">
-                      <div className="text-muted-foreground">Loading PDF template...</div>
-                    </div>
-                  }
-                  error={
-                    <div className="flex items-center justify-center p-8">
-                      <div className="text-destructive">Failed to load PDF. Please try downloading it.</div>
-                    </div>
-                  }
-                >
-                  {Array.from(new Array(numPages), (_, index) => (
-                    <Page
-                      key={`page_${index + 1}`}
-                      pageNumber={index + 1}
-                      scale={scale}
-                      className="mb-4 shadow-lg"
-                      renderTextLayer={true}
-                      renderAnnotationLayer={true}
-                    />
-                  ))}
-                </Document>
-              </div>
-            </ScrollArea>
-          </TabsContent>
-
-          <TabsContent value="edit" className="flex-1">
-            <div className="border rounded-lg p-6 bg-card">
-              <div className="mb-4">
-                <h3 className="text-lg font-semibold mb-2">Edit Form Data</h3>
-                <p className="text-sm text-muted-foreground">
-                  Make changes to the data below and click "Regenerate PDF" to update the preview.
-                </p>
-              </div>
-              {renderEditableFields()}
-              <div className="mt-6 flex justify-end">
-                <Button
-                  onClick={handleRegenerate}
-                  disabled={isRegenerating}
-                  className="gap-2"
-                >
-                  <Edit className="h-4 w-4" />
-                  {isRegenerating ? "Regenerating..." : "Regenerate PDF"}
-                </Button>
-              </div>
+            <div className="text-sm text-muted-foreground">
+              Page {pageNumber} of {numPages}
             </div>
-          </TabsContent>
-        </Tabs>
+          </div>
+          <ScrollArea className="flex-1 border rounded-lg bg-muted/20">
+            <div className="flex justify-center p-4">
+              <Document
+                file={pdfUrl}
+                onLoadSuccess={onDocumentLoadSuccess}
+                loading={
+                  <div className="flex items-center justify-center p-8">
+                    <div className="text-muted-foreground">Loading PDF template...</div>
+                  </div>
+                }
+                error={
+                  <div className="flex items-center justify-center p-8">
+                    <div className="text-destructive">Failed to load PDF. Please try downloading it.</div>
+                  </div>
+                }
+              >
+                {Array.from(new Array(numPages), (_, index) => (
+                  <Page
+                    key={`page_${index + 1}`}
+                    pageNumber={index + 1}
+                    scale={scale}
+                    className="mb-4 shadow-lg"
+                    renderTextLayer={true}
+                    renderAnnotationLayer={true}
+                  />
+                ))}
+              </Document>
+            </div>
+          </ScrollArea>
+        </div>
 
         <DialogFooter className="flex gap-2">
           <Button variant="outline" onClick={onClose}>
