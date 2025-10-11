@@ -736,6 +736,7 @@ export default function FamilyTreeForm() {
                   formData={formData}
                   handleInputChange={handleInputChange}
                   personType="applicant"
+                  sex={formData.applicant_sex}
                 />
               </CardContent>
             </Card>
@@ -813,6 +814,7 @@ export default function FamilyTreeForm() {
                     formData={formData}
                     handleInputChange={handleInputChange}
                     personType="spouse"
+                    sex={formData.spouse_sex}
                   />
                 </CardContent>
               </Card>
@@ -890,6 +892,7 @@ export default function FamilyTreeForm() {
                       formData={formData}
                       handleInputChange={handleInputChange}
                       personType="child"
+                      sex={formData[`child_${num}_sex`]}
                     />
                   </div>)}
               </CardContent>
@@ -993,6 +996,7 @@ export default function FamilyTreeForm() {
                       formData={formData}
                       handleInputChange={handleInputChange}
                       personType="parent"
+                      sex="M"
                     />
                   </CardContent>
                 </Card>
@@ -1076,6 +1080,7 @@ export default function FamilyTreeForm() {
                       formData={formData}
                       handleInputChange={handleInputChange}
                       personType="parent"
+                      sex="F"
                     />
                   </CardContent>
                 </Card>
@@ -1190,6 +1195,7 @@ export default function FamilyTreeForm() {
                           formData={formData}
                           handleInputChange={handleInputChange}
                           personType="grandparent"
+                          sex={prefix === 'pgf' || prefix === 'mgf' ? 'M' : 'F'}
                         />
                       </CardContent>
                     </Card>;
@@ -1268,6 +1274,7 @@ export default function FamilyTreeForm() {
                           formData={formData}
                           handleInputChange={handleInputChange}
                           personType="grandparent"
+                          sex={prefix === 'ggf_p' || prefix === 'ggf_m' ? 'M' : 'F'}
                         />
                       </CardContent>
                     </Card>;

@@ -15,6 +15,7 @@ interface FamilyMemberDocumentsSectionProps {
   formData: any;
   handleInputChange: (field: string, value: any) => void;
   personType: 'applicant' | 'spouse' | 'parent' | 'grandparent' | 'child';
+  sex?: string;
 }
 
 export const FamilyMemberDocumentsSection = ({
@@ -23,135 +24,91 @@ export const FamilyMemberDocumentsSection = ({
   formData,
   handleInputChange,
   personType,
+  sex,
 }: FamilyMemberDocumentsSectionProps) => {
   
+  const shouldShowMilitary = (): boolean => {
+    // Check explicit sex prop first
+    if (sex) return sex === 'M';
+    
+    // Check formData for sex field
+    const sexField = `${prefix}_sex`;
+    if (formData?.[sexField]) return formData[sexField] === 'M';
+    
+    // For specific known roles
+    if (prefix === 'father' || prefix === 'pgf' || prefix === 'mgf') return true;
+    if (prefix === 'mother' || prefix === 'pgm' || prefix === 'mgm') return false;
+    
+    // Default: show it (can be manually unchecked)
+    return true;
+  };
+
   const getDocumentsForPersonType = (): DocumentItem[] => {
-    const baseDocuments: DocumentItem[] = [];
+    // Universal document list - same for all family members
+    const allDocuments: DocumentItem[] = [
+      {
+        id: `${prefix}_has_polish_documents`,
+        label: 'Polish Documents',
+        checked: formData?.[`${prefix}_has_polish_documents`] || false,
+        importance: 'high' as const,
+        difficulty: 'hard' as const,
+      },
+      {
+        id: `${prefix}_has_passport`,
+        label: 'Passport Copy',
+        checked: formData?.[`${prefix}_has_passport`] || false,
+        importance: 'critical' as const,
+        difficulty: 'easy' as const,
+      },
+      {
+        id: `${prefix}_has_birth_cert`,
+        label: 'Birth Certificate',
+        checked: formData?.[`${prefix}_has_birth_cert`] || false,
+        importance: 'critical' as const,
+        difficulty: 'medium' as const,
+      },
+      {
+        id: `${prefix}_has_marriage_cert`,
+        label: 'Marriage Certificate',
+        checked: formData?.[`${prefix}_has_marriage_cert`] || false,
+        importance: 'high' as const,
+        difficulty: 'medium' as const,
+      },
+      {
+        id: `${prefix}_has_naturalization`,
+        label: 'Naturalization Certificate',
+        checked: formData?.[`${prefix}_has_naturalization`] || false,
+        importance: 'critical' as const,
+        difficulty: 'hard' as const,
+      },
+      {
+        id: `${prefix}_has_foreign_docs`,
+        label: 'Foreign Documents',
+        checked: formData?.[`${prefix}_has_foreign_docs`] || false,
+        importance: 'medium' as const,
+        difficulty: 'medium' as const,
+      },
+      {
+        id: `${prefix}_has_additional_docs`,
+        label: 'Additional Documents',
+        checked: formData?.[`${prefix}_has_additional_docs`] || false,
+        importance: 'low' as const,
+        difficulty: 'easy' as const,
+      },
+    ];
 
-    if (personType === 'applicant' || personType === 'spouse') {
-      // Full document set for applicant/spouse
-      return [
-        {
-          id: `${prefix}_has_polish_documents`,
-          label: 'Polish Documents',
-          checked: formData?.[`${prefix}_has_polish_documents`] || false,
-          importance: 'high' as const,
-          difficulty: 'hard' as const,
-        },
-        {
-          id: `${prefix}_has_passport`,
-          label: 'Passport Copy',
-          checked: formData?.[`${prefix}_has_passport`] || false,
-          importance: 'critical' as const,
-          difficulty: 'easy' as const,
-        },
-        {
-          id: `${prefix}_has_birth_cert`,
-          label: 'Birth Certificate',
-          checked: formData?.[`${prefix}_has_birth_cert`] || false,
-          importance: 'critical' as const,
-          difficulty: 'medium' as const,
-        },
-        {
-          id: `${prefix}_has_marriage_cert`,
-          label: 'Marriage Certificate',
-          checked: formData?.[`${prefix}_has_marriage_cert`] || false,
-          importance: 'high' as const,
-          difficulty: 'medium' as const,
-        },
-        {
-          id: `${prefix}_has_naturalization`,
-          label: 'Naturalization Certificate',
-          checked: formData?.[`${prefix}_has_naturalization`] || false,
-          importance: 'critical' as const,
-          difficulty: 'hard' as const,
-        },
-        {
-          id: `${prefix}_has_military_record`,
-          label: 'Military Service Record',
-          checked: formData?.[`${prefix}_has_military_record`] || false,
-          importance: 'medium' as const,
-          difficulty: 'hard' as const,
-        },
-        {
-          id: `${prefix}_has_foreign_docs`,
-          label: 'Foreign Documents',
-          checked: formData?.[`${prefix}_has_foreign_docs`] || false,
-          importance: 'medium' as const,
-          difficulty: 'medium' as const,
-        },
-        {
-          id: `${prefix}_has_additional_docs`,
-          label: 'Additional Documents',
-          checked: formData?.[`${prefix}_has_additional_docs`] || false,
-          importance: 'low' as const,
-          difficulty: 'easy' as const,
-        },
-      ];
+    // Add Military Service Record only for males
+    if (shouldShowMilitary()) {
+      allDocuments.splice(5, 0, {
+        id: `${prefix}_has_military_record`,
+        label: 'Military Service Record',
+        checked: formData?.[`${prefix}_has_military_record`] || false,
+        importance: 'medium' as const,
+        difficulty: 'hard' as const,
+      });
     }
 
-    if (personType === 'parent' || personType === 'grandparent') {
-      // Simplified set for parents/grandparents
-      return [
-        {
-          id: `${prefix}_has_birth_cert`,
-          label: 'Birth Certificate',
-          checked: formData?.[`${prefix}_has_birth_cert`] || false,
-          importance: 'critical' as const,
-          difficulty: 'medium' as const,
-        },
-        {
-          id: `${prefix}_has_marriage_cert`,
-          label: 'Marriage Certificate',
-          checked: formData?.[`${prefix}_has_marriage_cert`] || false,
-          importance: 'high' as const,
-          difficulty: 'medium' as const,
-        },
-        {
-          id: `${prefix}_has_passport`,
-          label: 'Passport Copy',
-          checked: formData?.[`${prefix}_has_passport`] || false,
-          importance: 'medium' as const,
-          difficulty: 'easy' as const,
-        },
-        {
-          id: `${prefix}_has_naturalization`,
-          label: 'Naturalization Certificate',
-          checked: formData?.[`${prefix}_has_naturalization`] || false,
-          importance: 'high' as const,
-          difficulty: 'hard' as const,
-        },
-        {
-          id: `${prefix}_has_military_record`,
-          label: 'Military Service Record',
-          checked: formData?.[`${prefix}_has_military_record`] || false,
-          importance: 'medium' as const,
-          difficulty: 'hard' as const,
-        },
-      ];
-    }
-
-    if (personType === 'child') {
-      // Minimal set for children
-      return [
-        {
-          id: `${prefix}_has_birth_cert`,
-          label: 'Birth Certificate',
-          checked: formData?.[`${prefix}_has_birth_cert`] || false,
-          importance: 'critical' as const,
-          difficulty: 'easy' as const,
-        },
-        {
-          id: `${prefix}_has_passport`,
-          label: 'Passport Copy',
-          checked: formData?.[`${prefix}_has_passport`] || false,
-          importance: 'high' as const,
-          difficulty: 'easy' as const,
-        },
-      ];
-    }
-
-    return baseDocuments;
+    return allDocuments;
   };
 
   const documents = getDocumentsForPersonType();
