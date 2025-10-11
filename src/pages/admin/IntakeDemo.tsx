@@ -28,6 +28,11 @@ import { FlippableCardsGlass } from "@/components/docs/FlippableCardsGlass";
 import { FlippableCardsRetro } from "@/components/docs/FlippableCardsRetro";
 import { FlippableCardsFuturistic } from "@/components/docs/FlippableCardsFuturistic";
 import { FlippableCardsNeumorphic } from "@/components/docs/FlippableCardsNeumorphic";
+import { FlippableCardsDarkGlow } from "@/components/docs/FlippableCardsDarkGlow";
+import { FlippableCardsMidnight } from "@/components/docs/FlippableCardsMidnight";
+import { FlippableCardsShadow } from "@/components/docs/FlippableCardsShadow";
+import { FlippableCardsAura } from "@/components/docs/FlippableCardsAura";
+import { FlippableCardsDeep } from "@/components/docs/FlippableCardsDeep";
 
 export default function IntakeDemo() {
   const navigate = useNavigate();
@@ -59,6 +64,11 @@ export default function IntakeDemo() {
   const [docsFlipRetro, setDocsFlipRetro] = useState(initialDocuments);
   const [docsFlipFuturistic, setDocsFlipFuturistic] = useState(initialDocuments);
   const [docsFlipNeumorphic, setDocsFlipNeumorphic] = useState(initialDocuments);
+  const [docsDarkGlow, setDocsDarkGlow] = useState(initialDocuments);
+  const [docsMidnight, setDocsMidnight] = useState(initialDocuments);
+  const [docsShadow, setDocsShadow] = useState(initialDocuments);
+  const [docsAura, setDocsAura] = useState(initialDocuments);
+  const [docsDeep, setDocsDeep] = useState(initialDocuments);
 
   const handleDocChange = (
     variant: number,
@@ -122,10 +132,83 @@ export default function IntakeDemo() {
           Back to Intake Form
         </Button>
 
-        {/* NEW: 5 Additional Flippable Card Designs at TOP */}
+        {/* NEW: 5 Dark Timeline-Style Flippable Cards at TOP */}
         <div className="space-y-8 border-2 border-primary/20 p-6 rounded-lg bg-card/50">
           <div>
-            <h2 className="text-4xl font-bold mb-3 text-primary">NEW: 5 More Flippable Card Designs</h2>
+            <h2 className="text-4xl font-bold mb-3 text-primary">TIMELINE STYLE: Dark Minimalistic with Lighting Effects</h2>
+            <p className="text-muted-foreground text-lg">
+              Matching the homepage timeline aesthetic - dark, elegant, glass-morphic with glow effects.
+            </p>
+          </div>
+
+          {/* Dark Glow */}
+          <div className="space-y-3">
+            <h3 className="text-2xl font-semibold text-primary/90">1. Dark Glow Glass</h3>
+            <p className="text-sm text-muted-foreground mb-4">Glass-card effect with radial glows and backdrop blur like timeline cards</p>
+            <FlippableCardsDarkGlow
+              title="Required Documents"
+              documents={docsDarkGlow}
+              onChange={setDocsDarkGlow}
+            />
+          </div>
+
+          <div className="border-t border-border my-8" />
+
+          {/* Midnight */}
+          <div className="space-y-3">
+            <h3 className="text-2xl font-semibold text-primary/90">2. Midnight Radial</h3>
+            <p className="text-sm text-muted-foreground mb-4">Deep backgrounds with centered radial glow effect</p>
+            <FlippableCardsMidnight
+              title="Required Documents"
+              documents={docsMidnight}
+              onChange={setDocsMidnight}
+            />
+          </div>
+
+          <div className="border-t border-border my-8" />
+
+          {/* Shadow Deep */}
+          <div className="space-y-3">
+            <h3 className="text-2xl font-semibold text-primary/90">3. Shadow Deep</h3>
+            <p className="text-sm text-muted-foreground mb-4">Layered shadows with gradient depth and inset lighting</p>
+            <FlippableCardsShadow
+              title="Required Documents"
+              documents={docsShadow}
+              onChange={setDocsShadow}
+            />
+          </div>
+
+          <div className="border-t border-border my-8" />
+
+          {/* Aura Overlay */}
+          <div className="space-y-3">
+            <h3 className="text-2xl font-semibold text-primary/90">4. Aura Overlay</h3>
+            <p className="text-sm text-muted-foreground mb-4">Multiple overlapping colored glows with hover effects</p>
+            <FlippableCardsAura
+              title="Required Documents"
+              documents={docsAura}
+              onChange={setDocsAura}
+            />
+          </div>
+
+          <div className="border-t border-border my-8" />
+
+          {/* Deep Glass */}
+          <div className="space-y-3">
+            <h3 className="text-2xl font-semibold text-primary/90">5. Deep Glass Premium</h3>
+            <p className="text-sm text-muted-foreground mb-4">Maximum glass-card effect with dual shadow layers and vertical accent line</p>
+            <FlippableCardsDeep
+              title="Required Documents"
+              documents={docsDeep}
+              onChange={setDocsDeep}
+            />
+          </div>
+        </div>
+
+        {/* PREVIOUS: 5 Additional Flippable Card Designs */}
+        <div className="space-y-8 border-2 border-primary/20 p-6 rounded-lg bg-card/50">
+          <div>
+            <h2 className="text-4xl font-bold mb-3 text-primary">ALTERNATIVE STYLES: 5 More Flippable Card Designs</h2>
             <p className="text-muted-foreground text-lg">
               Additional flippable card variations with unique visual styles and animations.
             </p>
