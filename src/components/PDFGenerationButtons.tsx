@@ -138,8 +138,8 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
   };
 
   const handleDownloadFromPreview = async () => {
-    // Generate a flattened PDF for download
-    await handleGeneratePDF(currentTemplate.type, currentTemplate.label, false);
+    // Generate an editable PDF for download
+    await handleGeneratePDF(currentTemplate.type, currentTemplate.label, true);
     setPreviewOpen(false);
   };
 
