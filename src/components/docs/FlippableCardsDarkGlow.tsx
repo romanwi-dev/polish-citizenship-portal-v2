@@ -71,7 +71,7 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
           }}
           className="scale-125"
         />
-        <h3 className="text-2xl font-bold" style={{ fontFamily: 'var(--font-heading)' }}>
+        <h3 className="text-2xl font-black font-heading bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
           {title}
         </h3>
       </div>
@@ -91,14 +91,14 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
                 className={cn(
                   "absolute inset-0 backdrop-blur-md rounded-xl p-5 flex flex-col cursor-pointer border transition-all",
                   doc.checked
-                    ? "bg-green-900/40 border-green-500/40 shadow-[0_0_30px_rgba(34,197,94,0.3)]"
+                    ? "bg-green-950/60 border-green-500/50 shadow-[0_0_30px_rgba(34,197,94,0.4)]"
                     : "bg-slate-900/20 border-slate-700/30 hover:border-primary/40 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]"
                 )}
                 style={{ backfaceVisibility: "hidden" }}
                 onClick={() => toggleFlip(doc.id)}
               >
                 {/* Title at top */}
-                <h4 className="text-base font-black mb-3 text-center leading-tight font-heading">
+                <h4 className="text-base font-black mb-3 text-center leading-tight font-heading bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   {doc.label}
                 </h4>
 
@@ -132,18 +132,11 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
                 style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
                 onClick={() => toggleFlip(doc.id)}
               >
-                {/* Title at top */}
-                <h4 className="text-base font-black mb-4 text-center font-heading">
-                  {doc.label}
-                </h4>
-
-                {/* Document copy placeholder in middle */}
-                <div className="flex-1 overflow-auto">
-                  <div className="bg-background/5 rounded-lg p-4 border border-primary/20">
-                    <p className="text-xs text-muted-foreground/80 leading-relaxed">
-                      [Document Copy Placeholder]
-                      <br /><br />
-                      This area will display the actual document content, scanned copy, or official certificate once uploaded to the secure vault.
+                {/* Document copy placeholder - full height */}
+                <div className="flex-1 overflow-auto mb-4">
+                  <div className="bg-background/5 rounded-lg p-4 border border-primary/20 h-full">
+                    <p className="text-sm text-muted-foreground/80 leading-relaxed italic">
+                      [Admin: Add detailed information about this step here. This content will be customized for each timeline step to provide additional context, requirements, or important notes for clients.]
                     </p>
                   </div>
                 </div>
@@ -151,7 +144,7 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
                 {/* Button at bottom */}
                 <Button
                   variant="outline"
-                  className="w-full mt-4 bg-primary/10 border-primary/40 hover:bg-primary/20"
+                  className="w-full bg-primary/10 border-primary/40 hover:bg-primary/20"
                   onClick={(e) => {
                     e.stopPropagation();
                     console.log("Access folder for:", doc.label);
