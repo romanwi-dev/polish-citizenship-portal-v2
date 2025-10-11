@@ -17,7 +17,7 @@ const corsHeaders = {
 
 /**
  * Fill PDF Edge Function
- * Supports both PDF generation (with caseId) and field inspection (inspectOnly mode)
+ * Generates filled PDFs from master_table data
  */
 
 serve(async (req) => {
@@ -26,68 +26,21 @@ serve(async (req) => {
   }
 
   try {
-    const { caseId, templateType, inspectOnly } = await req.json();
+    const { caseId, templateType } = await req.json();
     
-    // Validate template type
+    // Validate inputs
     const validTemplates = ['poa-adult', 'poa-minor', 'poa-spouses', 'citizenship', 'family-tree', 'umiejscowienie', 'uzupelnienie'];
-    if (!templateType) {
+    
+    if (!templateType || !validTemplates.includes(templateType)) {
       return new Response(
-        JSON.stringify({ error: 'templateType is required' }),
+        JSON.stringify({ error: 'Valid templateType is required' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
-    if (!validTemplates.includes(templateType)) {
-      return new Response(
-        JSON.stringify({ error: `Invalid templateType: ${templateType}. Must be one of: ${validTemplates.join(', ')}` }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
-
-    // Inspection mode - just return field names
-    if (inspectOnly) {
-      console.log(`🔍 Inspecting PDF fields: ${templateType}`);
-      
-      const templatePath = `./templates/${templateType}.pdf`;
-      let pdfBytes: Uint8Array;
-      
-      try {
-        pdfBytes = await Deno.readFile(templatePath);
-        console.log(`✅ Loaded template: ${templatePath} (${pdfBytes.length} bytes)`);
-      } catch (error) {
-        console.error(`❌ Failed to load template: ${templatePath}`, error);
-        throw new Error(`Template not found: ${templateType}`);
-      }
-
-      const pdfDoc = await PDFDocument.load(pdfBytes);
-      const form = pdfDoc.getForm();
-      const fields = form.getFields();
-      
-      const fieldInfo = fields.map(field => ({
-        name: field.getName(),
-        type: field.constructor.name,
-      }));
-
-      console.log(`Found ${fieldInfo.length} fields in ${templateType}`);
-
-      return new Response(
-        JSON.stringify({
-          templateType,
-          templatePath,
-          totalFields: fieldInfo.length,
-          fields: fieldInfo,
-        }, null, 2),
-        {
-          headers: {
-            ...corsHeaders,
-            'Content-Type': 'application/json',
-          },
-        }
       );
     }
     
     if (!caseId) {
       return new Response(
-        JSON.stringify({ error: 'caseId is required for PDF generation' }),
+        JSON.stringify({ error: 'caseId is required' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
