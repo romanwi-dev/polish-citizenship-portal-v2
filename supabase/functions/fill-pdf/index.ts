@@ -519,16 +519,20 @@ serve(async (req) => {
 
     console.log('[fill-pdf] Master data retrieved');
 
-    const templatePath = `./templates/${templateType}.pdf`;
-    let pdfBytes: Uint8Array;
+    // Fetch PDF template from Supabase Storage
+    console.log(`Fetching template from storage: ${templateType}.pdf`);
     
-    try {
-      pdfBytes = await Deno.readFile(templatePath);
-      console.log(`✅ Template loaded: ${templatePath} (${pdfBytes.length} bytes)`);
-    } catch (error) {
-      console.error(`❌ Template not found: ${templatePath}`, error);
-      throw new Error(`Template file not found: ${templateType}.pdf`);
+    const { data: pdfBlob, error: storageError } = await supabaseClient.storage
+      .from('pdf-templates')
+      .download(`${templateType}.pdf`);
+    
+    if (storageError || !pdfBlob) {
+      console.error(`❌ Storage error for ${templateType}.pdf:`, storageError);
+      throw new Error(`Failed to load PDF template: ${templateType}`);
     }
+    
+    const pdfBytes = new Uint8Array(await pdfBlob.arrayBuffer());
+    console.log(`✅ Template loaded from storage: ${templateType}.pdf (${pdfBytes.length} bytes)`);
 
     const pdfDoc = await PDFDocument.load(pdfBytes);
     const form = pdfDoc.getForm();
