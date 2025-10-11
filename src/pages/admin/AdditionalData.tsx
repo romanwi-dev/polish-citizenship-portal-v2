@@ -1,7 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, User, Type } from "lucide-react";
+import { useState } from "react";
+import { ArrowLeft, User, Type, Maximize2, Minimize2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { FormButtonsRow } from "@/components/FormButtonsRow";
@@ -10,6 +11,7 @@ export default function AdditionalData() {
   const { id: caseId } = useParams();
   const navigate = useNavigate();
   const { isLargeFonts, toggleFontSize } = useAccessibility();
+  const [isFullView, setIsFullView] = useState(false);
 
   if (!caseId || caseId === ':id') {
     return (
@@ -43,8 +45,13 @@ export default function AdditionalData() {
           <Card className="glass-card border-primary/20 overflow-hidden rounded-none border-x-0 border-t-0">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5" />
             <CardHeader className="relative pb-6 pt-6">
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="flex items-center gap-3">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
+                  <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">
+                    Additional Data
+                  </CardTitle>
+                </motion.div>
+                <div className="flex items-center gap-3">
                   <Button
                     onClick={() => window.open('https://docs.lovable.dev', '_blank')}
                     size="lg"
@@ -54,11 +61,6 @@ export default function AdditionalData() {
                   >
                     ?
                   </Button>
-                  <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">
-                    Additional Data
-                  </CardTitle>
-                </motion.div>
-                <div className="flex items-center gap-3">
                   <Button
                     onClick={() => navigate(`/admin/case/${caseId}`)}
                     size="lg"
@@ -67,6 +69,17 @@ export default function AdditionalData() {
                     title="Back to Case"
                   >
                     <ArrowLeft className="h-8 w-8" />
+                  </Button>
+                  <Button
+                    onClick={() => setIsFullView(!isFullView)}
+                    size="lg"
+                    variant="ghost"
+                    className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 opacity-60 ${
+                      isFullView ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:text-primary'
+                    }`}
+                    title={isFullView ? "Collapse" : "Expand All"}
+                  >
+                    {isFullView ? <Minimize2 className="h-8 w-8" /> : <Maximize2 className="h-8 w-8" />}
                   </Button>
                   <Button
                     onClick={() => navigate('/login')}

@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
-import { Sparkles, Type, User, ArrowLeft, BookOpen } from "lucide-react";
+import { Sparkles, Type, User, ArrowLeft, BookOpen, Maximize2, Minimize2 } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -18,6 +18,7 @@ export default function FamilyHistoryForm() {
   const navigate = useNavigate();
   const { isLargeFonts, toggleFontSize } = useAccessibility();
   const [showClearDialog, setShowClearDialog] = useState(false);
+  const [isFullView, setIsFullView] = useState(false);
   
   // Use the universal form manager
   const {
@@ -67,40 +68,44 @@ export default function FamilyHistoryForm() {
       {/* Header Card */}
       <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
         <Card className="glass-card border-primary/20 rounded-none border-x-0 border-t-0">
-          <CardHeader className="relative overflow-hidden">
+        <CardHeader className="relative overflow-hidden pb-6 pt-6">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-accent/5" />
-            <div className="relative flex items-center justify-between">
-              <div className="flex items-center gap-4">
+            <div className="relative flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
+                <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">
+                  Family History
+                </CardTitle>
+              </motion.div>
+              <div className="flex items-center gap-3">
                 <Button
-                  onClick={() => navigate(`/admin/cases/${caseId}`)}
+                  onClick={() => window.open('https://docs.lovable.dev', '_blank')}
                   size="lg"
                   variant="ghost"
-                  className="h-16 w-16 rounded-full transition-all hover:bg-primary/10 z-50 opacity-60"
-                  title="Back to case"
+                  className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 text-2xl font-light opacity-60"
+                  title="How to fill this form"
+                >
+                  ?
+                </Button>
+                <Button
+                  onClick={() => navigate(`/admin/case/${caseId}`)}
+                  size="lg"
+                  variant="ghost"
+                  className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50 opacity-60"
+                  title="Back to Case"
                 >
                   <ArrowLeft className="h-8 w-8" />
                 </Button>
-                <div className="flex items-center gap-3">
-                  <Button
-                    onClick={() => window.open('https://docs.lovable.dev', '_blank')}
-                    size="lg"
-                    variant="ghost"
-                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 text-2xl font-light opacity-60"
-                    title="How to fill this form"
-                  >
-                    ?
-                  </Button>
-                  <div>
-                    <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                      Family History
-                    </CardTitle>
-                    <CardDescription className="text-lg mt-2 text-muted-foreground">
-                      Document the family's historical narrative, stories, and background
-                    </CardDescription>
-                  </div>
-                </div>
-              </div>
-              <div className="flex gap-4">
+                <Button
+                  onClick={() => setIsFullView(!isFullView)}
+                  size="lg"
+                  variant="ghost"
+                  className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 opacity-60 ${
+                    isFullView ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:text-primary'
+                  }`}
+                  title={isFullView ? "Collapse" : "Expand All"}
+                >
+                  {isFullView ? <Minimize2 className="h-8 w-8" /> : <Maximize2 className="h-8 w-8" />}
+                </Button>
                 <Button
                   onClick={() => navigate('/login')}
                   size="lg"
