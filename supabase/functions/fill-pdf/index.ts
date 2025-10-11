@@ -31,10 +31,16 @@ serve(async (req) => {
     // Validate template type
     const validTemplates = ['poa-adult', 'poa-minor', 'poa-spouses', 'citizenship', 'family-tree', 'umiejscowienie', 'uzupelnienie'];
     if (!templateType) {
-      throw new Error('templateType is required');
+      return new Response(
+        JSON.stringify({ error: 'templateType is required' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
     if (!validTemplates.includes(templateType)) {
-      throw new Error(`Invalid templateType: ${templateType}. Must be one of: ${validTemplates.join(', ')}`);
+      return new Response(
+        JSON.stringify({ error: `Invalid templateType: ${templateType}. Must be one of: ${validTemplates.join(', ')}` }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     // Inspection mode - just return field names
@@ -80,7 +86,10 @@ serve(async (req) => {
     }
     
     if (!caseId) {
-      throw new Error('caseId is required for PDF generation');
+      return new Response(
+        JSON.stringify({ error: 'caseId is required for PDF generation' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     console.log(`Generating PDF: ${templateType} for case: ${caseId}`);
