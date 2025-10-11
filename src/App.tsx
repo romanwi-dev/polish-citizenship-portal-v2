@@ -36,6 +36,7 @@ const SystemHealth = lazy(() => import("./pages/admin/SystemHealth"));
 const PDFInspector = lazy(() => import("./pages/admin/PDFInspector"));
 const PDFFieldInspector = lazy(() => import("./pages/admin/PDFFieldInspector"));
 const ZeroErrorsChecklist = lazy(() => import("./pages/admin/ZeroErrorsChecklist"));
+const UploadPDFTemplates = lazy(() => import("./pages/admin/UploadPDFTemplates"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -243,6 +244,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <ZeroErrorsChecklist />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/upload-pdf-templates" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <UploadPDFTemplates />
               </Suspense>
             } 
           />
