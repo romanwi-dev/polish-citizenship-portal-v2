@@ -38,7 +38,7 @@ export const FormSection = ({
           {title}
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6 px-3 sm:px-6">
+      <CardContent className="space-y-6 px-2 sm:px-6">
         {children}
       </CardContent>
     </Card>

@@ -50,7 +50,7 @@ export function DateField({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.4 }}
-      className="space-y-2"
+      className="space-y-2 w-full"
     >
       <div className="flex items-center justify-between">
         <Label htmlFor={name} className={isLargeFonts ? "text-2xl" : ""}>

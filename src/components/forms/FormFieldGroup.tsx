@@ -23,7 +23,7 @@ export const FormFieldGroup = ({
   id,
 }: FormFieldGroupProps) => {
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 w-full">
       <FormLabel isLargeFonts={isLargeFonts} htmlFor={id}>
         {label}
       </FormLabel>
