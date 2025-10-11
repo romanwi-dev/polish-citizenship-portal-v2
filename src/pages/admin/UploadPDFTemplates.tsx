@@ -6,13 +6,13 @@ import { toast } from 'sonner';
 import { Upload, CheckCircle, XCircle, Loader2, Eye } from 'lucide-react';
 
 const TEMPLATES = [
-  'poa-adult',
-  'poa-minor',
-  'poa-spouses',
-  'citizenship',
-  'family-tree',
-  'umiejscowienie',
-  'uzupelnienie',
+  { file: 'poa-adult', display: 'POA - Adult' },
+  { file: 'poa-minor', display: 'POA - Minor' },
+  { file: 'poa-spouses', display: 'POA - Spouses' },
+  { file: 'citizenship', display: 'Citizenship Application' },
+  { file: 'family-tree', display: 'Family Tree' },
+  { file: 'umiejscowienie', display: 'Registration (Umiejscowienie)' },
+  { file: 'uzupelnienie', display: 'Supplement (Uzupełnienie)' },
 ];
 
 export default function UploadPDFTemplates() {
@@ -25,13 +25,13 @@ export default function UploadPDFTemplates() {
 
     for (const template of TEMPLATES) {
       try {
-        newResults[template] = 'pending';
+        newResults[template.file] = 'pending';
         setResults({ ...newResults });
 
         // Fetch PDF from public folder
-        const response = await fetch(`/templates/${template}.pdf`);
+        const response = await fetch(`/templates/${template.file}.pdf`);
         if (!response.ok) {
-          throw new Error(`Failed to fetch ${template}.pdf`);
+          throw new Error(`Failed to fetch ${template.file}.pdf`);
         }
 
         const blob = await response.blob();
@@ -39,21 +39,21 @@ export default function UploadPDFTemplates() {
         // Upload to Supabase Storage
         const { error } = await supabase.storage
           .from('pdf-templates')
-          .upload(`${template}.pdf`, blob, {
+          .upload(`${template.file}.pdf`, blob, {
             upsert: true,
             contentType: 'application/pdf',
           });
 
         if (error) throw error;
 
-        newResults[template] = 'success';
+        newResults[template.file] = 'success';
         setResults({ ...newResults });
-        toast.success(`Uploaded ${template}.pdf`);
+        toast.success(`Uploaded ${template.display}`);
       } catch (error) {
-        console.error(`Error uploading ${template}:`, error);
-        newResults[template] = 'error';
+        console.error(`Error uploading ${template.file}:`, error);
+        newResults[template.file] = 'error';
         setResults({ ...newResults });
-        toast.error(`Failed to upload ${template}.pdf`);
+        toast.error(`Failed to upload ${template.display}`);
       }
     }
 
@@ -61,8 +61,8 @@ export default function UploadPDFTemplates() {
     toast.success('Upload process complete!');
   };
 
-  const handlePreviewPDF = (template: string) => {
-    window.open(`/templates/${template}.pdf`, '_blank');
+  const handlePreviewPDF = (templateFile: string) => {
+    window.open(`/templates/${templateFile}.pdf`, '_blank');
   };
 
   return (
@@ -94,27 +94,30 @@ export default function UploadPDFTemplates() {
         <div className="space-y-2">
           {TEMPLATES.map((template) => (
             <div
-              key={template}
+              key={template.file}
               className="flex items-center justify-between p-3 border rounded gap-3"
             >
-              <span className="font-mono flex-1">{template}.pdf</span>
+              <span className="flex-1">
+                <span className="font-semibold">{template.display}</span>
+                <span className="text-xs text-muted-foreground ml-2">({template.file}.pdf)</span>
+              </span>
               <div className="flex items-center gap-2">
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => handlePreviewPDF(template)}
+                  onClick={() => handlePreviewPDF(template.file)}
                   className="flex items-center gap-2"
                 >
                   <Eye className="h-4 w-4" />
                   Preview PDF
                 </Button>
-                {results[template] === 'success' && (
+                {results[template.file] === 'success' && (
                   <CheckCircle className="h-5 w-5 text-green-500" />
                 )}
-                {results[template] === 'error' && (
+                {results[template.file] === 'error' && (
                   <XCircle className="h-5 w-5 text-red-500" />
                 )}
-                {results[template] === 'pending' && (
+                {results[template.file] === 'pending' && (
                   <Loader2 className="h-5 w-5 animate-spin text-blue-500" />
                 )}
               </div>
