@@ -7,30 +7,31 @@
  */
 
 export const UZUPELNIENIE_PDF_MAP: Record<string, string> = {
-  // Map English DB columns → Polish PDF field names
+  // Map PDF field names → Database columns
   
   // Applicant info
-  'applicant_full_name': 'imie_nazwisko_wnioskodawcy',
-  'applicant_country': 'kraj_wnioskodawcy',
+  'imie_nazwisko_wniosko': 'applicant_first_name|applicant_last_name',
+  'kraj_wniosko': 'applicant_country',
   
   // Representative info
-  'representative_full_name': 'imie_nazwisko_pelnomocnika',
-  'representative_address_line1': 'adres_pelnomocnika_linia1',
-  'representative_address_line2': 'adres_pelnomocnika_linia2',
-  'representative_phone': 'telefon_pelnomocnika',
-  'representative_email': 'email_pelnomocnika',
+  'imie_nazwisko_pelnomocnik': 'representative_full_name',
+  'miejsce_zamieszkania_pelnomocnik': 'representative_address_line1',
+  'miejsce_zamieszkania_pelnomocnik_cd': 'representative_address_line2',
+  'telefon_pelnomocnik': 'representative_phone',
+  'email_pelnomocnik': 'representative_email',
   
-  // Submission location and date (pipe-delimited for date split)
-  'submission_location': 'miejscowosc_zlozenia',
-  'submission_date': 'dzien_zlozenia|miesiac_zlozenia|rok_zlozenia',
+  // Submission details (date split)
+  'miejscowosc_zloz': 'submission_location',
+  'dzien_zloz': 'submission_date.day',
+  'miesiac_zloz': 'submission_date.month',
+  'rok_zloz': 'submission_date.year',
   
   // Birth act supplement fields
-  'birth_act_number': 'numer_aktu_urodzenia',
-  'birth_act_year': 'rok_aktu_urodzenia',
-  'father_last_name': 'nazwisko_ojca',
-  'mother_maiden_name': 'nazwisko_rodowe_matki',
-  'foreign_act_location': 'miejsce_aktu_zagranicznego',
-  'polish_birth_act_number': 'numer_polskiego_aktu_urodzenia',
+  'nazwisko_rodowe_ojca': 'father_last_name',
+  'nazwisko_rodowe_matki': 'mother_maiden_name',
+  'miejsce_sporządzenia_aktu_zagranicznego': 'foreign_act_location',
+  'nr_aktu_urodzenia_polskiego': 'polish_birth_act_number',
+  'rok_aktu_urodzenia_polskiego': 'birth_act_year',
 };
 
 export const UZUPELNIENIE_REQUIRED_FIELDS = [

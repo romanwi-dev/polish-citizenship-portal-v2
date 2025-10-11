@@ -7,39 +7,45 @@
  */
 
 export const UMIEJSCOWIENIE_PDF_MAP: Record<string, string> = {
-  // Map English DB columns → Polish PDF field names
+  // Map PDF field names → Database columns
   
   // Applicant info
-  'applicant_full_name': 'imie_nazwisko_wnioskodawcy',
-  'applicant_country': 'kraj_wnioskodawcy',
+  'imie_nazwisko_wniosko': 'applicant_first_name|applicant_last_name',
+  'kraj_wniosko': 'applicant_country',
   
   // Representative info
-  'representative_full_name': 'imie_nazwisko_pelnomocnika',
-  'representative_address_line1': 'adres_pelnomocnika_linia1',
-  'representative_address_line2': 'adres_pelnomocnika_linia2',
-  'representative_phone': 'telefon_pelnomocnika',
-  'representative_email': 'email_pelnomocnika',
+  'imie_nazwisko_pelnomocnik': 'representative_full_name',
+  'miejsce_zamieszkania_pelnomocnik': 'representative_address_line1',
+  'miejsce_zamieszkania_pelnomocnik_cd': 'representative_address_line2',
+  'telefon_pelnomocnik': 'representative_phone',
+  'email_pelnomocnik': 'representative_email',
   
-  // Submission location and date (pipe-delimited for date split)
-  'submission_location': 'miejscowosc_zlozenia',
-  'submission_date': 'dzien_zlozenia|miesiac_zlozenia|rok_zlozenia',
-  'sending_method': 'sposob_przeslania',
+  // Submission details (date split)
+  'miejscowosc_zloz': 'submission_location',
+  'dzien_zloz': 'submission_date.day',
+  'miesiac_zloz': 'submission_date.month',
+  'rok_zloz': 'submission_date.year',
+  'wyslanie': 'sending_method',
   
   // Act type checkboxes
-  'act_type_birth': 'checkbox_akt_urodzenia',
-  'act_type_marriage': 'checkbox_akt_malzenstwa',
+  'akt_uro': 'act_type_birth',
+  'akt_malz': 'act_type_marriage',
   
   // Birth act fields
-  'birth_act_location': 'miejsce_sporz_aktu_urodzenia',
-  'birth_person_full_name': 'imie_nazwisko_osoby_urodzenia',
-  'birth_place': 'miejsce_urodzenia',
-  'birth_date': 'dzien_urodzenia|miesiac_urodzenia|rok_urodzenia',
+  'miejsce_sporz_aktu_u': 'birth_act_location',
+  'imie_nazwisko_u': 'birth_person_full_name',
+  'miejsce_urodzenia': 'birth_place',
+  'dzien_urodzenia': 'birth_date.day',
+  'miesiac_urodzenia': 'birth_date.month',
+  'rok_urodzenia': 'birth_date.year',
   
   // Marriage act fields
-  'marriage_act_location': 'miejsce_sporz_aktu_malzenstwa',
-  'spouse_full_name': 'imie_nazwisko_malzonka',
-  'place_of_marriage': 'miejsce_zawarcia_malzenstwa',
-  'date_of_marriage': 'dzien_malzenstwa|miesiac_malzenstwa|rok_malzenstwa',
+  'miejsce_sporz_aktu_m': 'marriage_act_location',
+  'imie_nazwisko_malzonka': 'spouse_full_name',
+  'miejsce_malzenstwa_wniosko': 'place_of_marriage',
+  'dzien_malzenstwa_wniosko': 'date_of_marriage.day',
+  'miesiac_malzenstwa_wniosko': 'date_of_marriage.month',
+  'rok_malzenstwa_wniosko': 'date_of_marriage.year',
 };
 
 export const UMIEJSCOWIENIE_REQUIRED_FIELDS = [
