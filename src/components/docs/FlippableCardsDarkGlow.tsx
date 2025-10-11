@@ -57,18 +57,28 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
 
   return (
     <div className={cn(
-      "p-8 rounded-xl transition-all duration-700",
+      "p-8 rounded-xl transition-all duration-700 relative",
       allChecked 
-        ? "bg-gradient-to-br from-green-950/40 to-emerald-900/30 border border-green-500/20" 
+        ? "bg-green-950/30 border border-green-500/30" 
         : "bg-gradient-to-br from-slate-950/40 to-indigo-950/30 border border-slate-700/20"
     )}>
-      <h3 className="text-2xl font-semibold mb-8 text-center">
-        {title}
-      </h3>
+      <div className="flex items-center gap-3 mb-6">
+        <Checkbox
+          checked={allChecked}
+          onCheckedChange={(checked) => {
+            const updated = documents.map(doc => ({ ...doc, checked: checked as boolean }));
+            onChange(updated);
+          }}
+          className="scale-125"
+        />
+        <h3 className="text-2xl font-bold" style={{ fontFamily: 'var(--font-heading)' }}>
+          {title}
+        </h3>
+      </div>
       
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-2 gap-6 max-w-4xl mx-auto">
         {documents.map((doc) => (
-          <div key={doc.id} className="relative" style={{ aspectRatio: '1/1.414' }}>
+          <div key={doc.id} className="relative" style={{ aspectRatio: '1/1.414', maxWidth: '280px' }}>
             <div 
               className={cn(
                 "relative w-full h-full transition-transform duration-700",
@@ -79,39 +89,39 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
               {/* Front */}
               <div 
                 className={cn(
-                  "absolute inset-0 backdrop-blur-md rounded-xl p-6 flex flex-col cursor-pointer border transition-all",
+                  "absolute inset-0 backdrop-blur-md rounded-xl p-5 flex flex-col cursor-pointer border transition-all",
                   doc.checked
-                    ? "bg-green-900/20 border-green-500/30 shadow-[0_0_40px_rgba(34,197,94,0.2)]"
-                    : "bg-slate-900/20 border-slate-700/30 hover:border-primary/40 hover:shadow-[0_0_40px_rgba(59,130,246,0.15)]"
+                    ? "bg-green-900/40 border-green-500/40 shadow-[0_0_30px_rgba(34,197,94,0.3)]"
+                    : "bg-slate-900/20 border-slate-700/30 hover:border-primary/40 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]"
                 )}
                 style={{ backfaceVisibility: "hidden" }}
                 onClick={() => toggleFlip(doc.id)}
               >
                 {/* Title at top */}
-                <h4 className="text-xl font-bold mb-4 text-center leading-tight" style={{ fontFamily: 'var(--font-heading)' }}>
+                <h4 className="text-base font-bold mb-3 text-center leading-tight" style={{ fontFamily: 'var(--font-heading)' }}>
                   {doc.label}
                 </h4>
 
                 {/* Description in middle */}
                 <div className="flex-1 flex items-center justify-center px-2">
-                  <p className="text-sm text-muted-foreground text-center leading-relaxed">
+                  <p className="text-xs text-muted-foreground text-center leading-relaxed">
                     {doc.description || "Document required for citizenship application processing."}
                   </p>
                 </div>
 
-                {/* Badges and checkbox at bottom */}
-                <div className="space-y-3 mt-auto">
-                  <div className="flex gap-2 justify-center flex-wrap">
-                    {getImportanceBadge(doc.importance)}
-                    {getDifficultyBadge(doc.difficulty)}
-                  </div>
+                {/* Checkbox and badges at bottom */}
+                <div className="space-y-2 mt-auto">
                   <div className="flex justify-center">
                     <Checkbox
                       checked={doc.checked}
                       onCheckedChange={(checked) => handleToggle(doc.id, checked as boolean)}
                       onClick={(e) => e.stopPropagation()}
-                      className="scale-125"
+                      className="scale-110"
                     />
+                  </div>
+                  <div className="flex gap-1.5 justify-center flex-wrap text-xs">
+                    {getImportanceBadge(doc.importance)}
+                    {getDifficultyBadge(doc.difficulty)}
                   </div>
                 </div>
               </div>
