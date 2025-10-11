@@ -87,7 +87,7 @@ export function DateField({
         maxLength={10}
         disabled={notApplicableValue}
         className={cn(
-          "h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur font-normal placeholder:opacity-40 text-lg font-input-work",
+          "h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur font-normal placeholder:opacity-40 text-lg font-input-work w-full max-w-full",
           isLargeFonts && "text-2xl",
           error && "border-destructive",
           notApplicableValue && "bg-cyan-950/30 border-cyan-700 text-cyan-300 cursor-not-allowed"
