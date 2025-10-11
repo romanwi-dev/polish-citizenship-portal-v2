@@ -50,44 +50,46 @@ export function DateField({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.4 }}
-      className="space-y-2 w-full"
+      className="w-full"
     >
-      <div className="flex items-center justify-between">
-        <Label htmlFor={name} className={isLargeFonts ? "text-2xl" : ""}>
-          {label} {required && <span className="text-destructive">*</span>}
-        </Label>
-        {showNotApplicable && (
-          <Checkbox
-            id={`${name}-na`}
-            checked={notApplicableValue}
-            onCheckedChange={(checked) => {
-              onNotApplicableChange?.(checked as boolean);
-              if (checked) {
-                onChange("");
-              }
-            }}
-            className="border-cyan-600"
-          />
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <Label htmlFor={name} className={isLargeFonts ? "text-2xl" : ""}>
+            {label} {required && <span className="text-destructive">*</span>}
+          </Label>
+          {showNotApplicable && (
+            <Checkbox
+              id={`${name}-na`}
+              checked={notApplicableValue}
+              onCheckedChange={(checked) => {
+                onNotApplicableChange?.(checked as boolean);
+                if (checked) {
+                  onChange("");
+                }
+              }}
+              className="border-cyan-600"
+            />
+          )}
+        </div>
+        <Input
+          id={name}
+          type="text"
+          value={value || ""}
+          onChange={(e) => handleChange(e.target.value)}
+          placeholder="DD.MM.YYYY"
+          maxLength={10}
+          disabled={notApplicableValue}
+          className={cn(
+            "h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur font-normal placeholder:opacity-40 text-lg font-input-work w-full max-w-full",
+            isLargeFonts && "text-2xl",
+            error && "border-destructive",
+            notApplicableValue && "bg-cyan-950/30 border-cyan-700 text-cyan-300 cursor-not-allowed"
+          )}
+        />
+        {error && (
+          <p className="text-sm text-destructive">{error}</p>
         )}
       </div>
-      <Input
-        id={name}
-        type="text"
-        value={value || ""}
-        onChange={(e) => handleChange(e.target.value)}
-        placeholder="DD.MM.YYYY"
-        maxLength={10}
-        disabled={notApplicableValue}
-        className={cn(
-          "h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur font-normal placeholder:opacity-40 text-lg font-input-work w-full max-w-full",
-          isLargeFonts && "text-2xl",
-          error && "border-destructive",
-          notApplicableValue && "bg-cyan-950/30 border-cyan-700 text-cyan-300 cursor-not-allowed"
-        )}
-      />
-      {error && (
-        <p className="text-sm text-destructive">{error}</p>
-      )}
     </motion.div>
   );
 }
