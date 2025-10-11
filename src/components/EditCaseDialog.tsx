@@ -8,8 +8,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
-import { X } from "lucide-react";
+import { X, Upload, Camera } from "lucide-react";
 import { useUpdateCase } from "@/hooks/useCases";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 interface EditCaseDialogProps {
   caseData: {
@@ -22,6 +25,7 @@ interface EditCaseDialogProps {
     is_vip: boolean;
     notes?: string;
     progress: number;
+    client_photo_url?: string | null;
   };
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -40,6 +44,9 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
     notes: caseData.notes || "",
     progress: caseData.progress,
   });
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(caseData.client_photo_url || null);
+  const [isUploading, setIsUploading] = useState(false);
   const [showOtherCountry, setShowOtherCountry] = useState(
     !["USA", "UK", "Canada", "Australia", "South Africa", "Brazil", "Argentina", "Mexico", "Venezuela", "Israel", "Germany", "France"].includes(caseData.country)
   );
@@ -95,10 +102,65 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
     (caseAgeFilter !== "all" ? 1 : 0) +
     (paymentDueFilter ? 1 : 0);
 
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        toast.error("Photo must be less than 2MB");
+        return;
+      }
+      setPhotoFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPhotoPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemovePhoto = () => {
+    setPhotoFile(null);
+    setPhotoPreview(null);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const countryValue = showOtherCountry ? otherCountry : formData.country;
+    
+    let client_photo_url = caseData.client_photo_url;
+
+    // Upload photo if new file selected
+    if (photoFile) {
+      setIsUploading(true);
+      try {
+        const fileExt = photoFile.name.split('.').pop();
+        const fileName = `${caseData.id}-${Date.now()}.${fileExt}`;
+        const filePath = `${fileName}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('client-photos')
+          .upload(filePath, photoFile, { upsert: true });
+
+        if (uploadError) throw uploadError;
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('client-photos')
+          .getPublicUrl(filePath);
+
+        client_photo_url = publicUrl;
+        toast.success("Photo uploaded successfully");
+      } catch (error) {
+        console.error("Photo upload error:", error);
+        toast.error("Failed to upload photo");
+        setIsUploading(false);
+        return;
+      }
+      setIsUploading(false);
+    } else if (photoPreview === null && caseData.client_photo_url) {
+      // Photo was removed
+      client_photo_url = null;
+    }
     
     updateCaseMutation.mutate(
       {
@@ -112,6 +174,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
           is_vip: formData.is_vip,
           notes: formData.notes,
           progress: formData.progress,
+          client_photo_url,
         },
       },
       {
@@ -140,6 +203,41 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Client Photo Upload */}
+          <div className="space-y-2 p-4 border border-border rounded-lg bg-background/50">
+            <Label>Client Photo</Label>
+            <div className="flex items-center gap-4">
+              <Avatar className="h-20 w-20">
+                <AvatarImage src={photoPreview || undefined} alt={formData.client_name} />
+                <AvatarFallback className="bg-gradient-to-br from-primary/60 to-accent/60">
+                  <Camera className="h-8 w-8 text-primary-foreground/70" />
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1 space-y-2">
+                <Input
+                  type="file"
+                  accept="image/jpeg,image/jpg,image/png,image/webp"
+                  onChange={handlePhotoChange}
+                  className="cursor-pointer"
+                />
+                <p className="text-xs text-muted-foreground">
+                  JPG, PNG or WEBP (max 2MB)
+                </p>
+              </div>
+              {photoPreview && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={handleRemovePhoto}
+                >
+                  <X className="h-4 w-4 mr-1" />
+                  Remove
+                </Button>
+              )}
+            </div>
+          </div>
+
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="client_name">Client Name</Label>
@@ -488,8 +586,8 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
               Cancel
             </Button>
-            <Button type="submit" disabled={updateCaseMutation.isPending}>
-              {updateCaseMutation.isPending ? "Saving..." : "Save Changes"}
+            <Button type="submit" disabled={updateCaseMutation.isPending || isUploading}>
+              {isUploading ? "Uploading..." : updateCaseMutation.isPending ? "Saving..." : "Save Changes"}
             </Button>
           </div>
         </form>

@@ -19,6 +19,7 @@ export type Database = {
           ancestry: Json | null
           client_code: string | null
           client_name: string
+          client_photo_url: string | null
           client_score: number | null
           country: string | null
           created_at: string
@@ -49,6 +50,7 @@ export type Database = {
           ancestry?: Json | null
           client_code?: string | null
           client_name: string
+          client_photo_url?: string | null
           client_score?: number | null
           country?: string | null
           created_at?: string
@@ -81,6 +83,7 @@ export type Database = {
           ancestry?: Json | null
           client_code?: string | null
           client_name?: string
+          client_photo_url?: string | null
           client_score?: number | null
           country?: string | null
           created_at?: string

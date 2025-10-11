@@ -2,6 +2,7 @@ import { useState, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Edit, MoreVertical, Copy, Pause, Ban, Archive, Trash2, Eye, Radio, FileEdit, Award, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { toast } from "sonner";
 import { STATUS_COLORS, PROCESSING_MODE_COLORS, PROCESSING_MODE_LABELS } from "@/lib/constants";
 import { useUpdateProcessingMode } from "@/hooks/useCaseMutations";
@@ -48,6 +49,7 @@ interface CaseCardProps {
     kpi_tasks_total?: number;
     kpi_tasks_completed?: number;
     kpi_docs_percentage?: number;
+    client_photo_url?: string | null;
   };
   onEdit: (clientCase: any) => void;
   onDelete: (id: string) => void;
@@ -144,9 +146,12 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
         <div className="absolute inset-0 w-full backface-hidden glass-card p-6 rounded-lg hover-glow flex flex-col" style={{ minHeight: '580px' }}>
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/60 to-accent/60 flex items-center justify-center flex-shrink-0">
-                <User className="w-6 h-6 text-primary-foreground/70" />
-              </div>
+              <Avatar className="w-12 h-12 flex-shrink-0">
+                <AvatarImage src={clientCase.client_photo_url || undefined} alt={clientCase.client_name} />
+                <AvatarFallback className="bg-gradient-to-br from-primary/60 to-accent/60">
+                  <User className="w-6 h-6 text-primary-foreground/70" />
+                </AvatarFallback>
+              </Avatar>
               <div>
                 <h3 className="font-heading font-bold text-3xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                   {clientCase.client_name}
