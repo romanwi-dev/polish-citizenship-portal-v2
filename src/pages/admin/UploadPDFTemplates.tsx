@@ -67,7 +67,9 @@ export default function UploadPDFTemplates() {
       .getPublicUrl(`${templateFile}.pdf`);
     
     if (data?.publicUrl) {
-      window.open(data.publicUrl, '_blank');
+      // Add timestamp to bypass browser cache
+      const cacheBustedUrl = `${data.publicUrl}?t=${Date.now()}`;
+      window.open(cacheBustedUrl, '_blank');
     } else {
       toast.error('Could not load PDF preview');
     }
