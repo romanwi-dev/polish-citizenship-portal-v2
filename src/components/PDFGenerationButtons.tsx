@@ -93,21 +93,28 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
       
       // Get the PDF as a blob
       const blob = await response.blob();
-
-      const url = window.URL.createObjectURL(blob);
-      console.log('Blob URL created:', url);
+      console.log(`📊 PDF Stats: ${blob.size} bytes, ${blob.type}`);
 
       toast.dismiss(loadingToast);
 
       if (preview) {
-        // Open preview dialog
-        setPreviewUrl(url);
-        setCurrentTemplate({ type: templateType, label });
-        setFormData(masterData);
-        setPreviewOpen(true);
-        toast.success(`${label} ready for preview!`);
+        // Convert to base64 for reliable iframe rendering
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const base64Url = reader.result as string;
+          setPreviewUrl(base64Url);
+          setCurrentTemplate({ type: templateType, label });
+          setFormData(masterData);
+          setPreviewOpen(true);
+          toast.success(`${label} ready for preview!`);
+        };
+        reader.onerror = () => {
+          toast.error('Failed to prepare PDF preview');
+        };
+        reader.readAsDataURL(blob);
       } else {
-        // Direct download
+        // Direct download using blob URL
+        const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
         link.download = `${templateType}-${caseId}.pdf`;

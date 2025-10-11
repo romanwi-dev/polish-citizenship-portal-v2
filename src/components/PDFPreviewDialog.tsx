@@ -27,13 +27,44 @@ export function PDFPreviewDialog({
 
   const handlePrint = () => {
     setIsPrinting(true);
-    const iframe = document.querySelector('iframe[title="PDF Preview"]') as HTMLIFrameElement;
-    if (iframe?.contentWindow) {
-      iframe.contentWindow.print();
-      toast.success("Print dialog opened");
+    
+    // Handle base64 data URLs
+    if (pdfUrl.startsWith('data:application/pdf')) {
+      try {
+        const byteString = atob(pdfUrl.split(',')[1]);
+        const ab = new ArrayBuffer(byteString.length);
+        const ia = new Uint8Array(ab);
+        for (let i = 0; i < byteString.length; i++) {
+          ia[i] = byteString.charCodeAt(i);
+        }
+        const blob = new Blob([ab], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        
+        const printWindow = window.open(url, '_blank');
+        if (printWindow) {
+          printWindow.onload = () => {
+            printWindow.print();
+            URL.revokeObjectURL(url);
+          };
+          toast.success("Print dialog opened");
+        } else {
+          toast.error("Unable to open print window. Please check popup blocker.");
+        }
+      } catch (error) {
+        console.error('Print error:', error);
+        toast.error("Unable to print. Please download and print manually.");
+      }
     } else {
-      toast.error("Unable to print. Please download and print manually.");
+      // Handle blob URLs via iframe
+      const iframe = document.querySelector('iframe[title="PDF Preview"]') as HTMLIFrameElement;
+      if (iframe?.contentWindow) {
+        iframe.contentWindow.print();
+        toast.success("Print dialog opened");
+      } else {
+        toast.error("Unable to print. Please download and print manually.");
+      }
     }
+    
     setIsPrinting(false);
   };
 

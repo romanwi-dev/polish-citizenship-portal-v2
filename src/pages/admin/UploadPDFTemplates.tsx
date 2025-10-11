@@ -67,26 +67,25 @@ export default function UploadPDFTemplates() {
 
   const handlePreviewPDF = async (templateFile: string, displayName: string) => {
     try {
-      console.log('🔍 Attempting to preview:', templateFile);
-      
-      const { data } = supabase.storage
+      const { data, error } = await supabase.storage
         .from('pdf-templates')
-        .getPublicUrl(`${templateFile}.pdf`);
-      
-      console.log('📄 Generated URL:', data?.publicUrl);
-      
-      if (data?.publicUrl) {
-        const cacheBustedUrl = `${data.publicUrl}?t=${Date.now()}`;
-        console.log('✅ Opening preview with URL:', cacheBustedUrl);
-        setPreviewUrl(cacheBustedUrl);
+        .download(`${templateFile}.pdf`);
+
+      if (error) throw error;
+
+      // Convert to base64 for reliable preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result as string);
         setPreviewTitle(displayName);
         setPreviewOpen(true);
-      } else {
-        console.error('❌ No public URL generated');
-        toast.error('Could not load PDF preview');
-      }
+      };
+      reader.onerror = () => {
+        toast.error('Failed to prepare PDF preview');
+      };
+      reader.readAsDataURL(data);
     } catch (error) {
-      console.error('❌ Preview error:', error);
+      console.error('Preview error:', error);
       toast.error(`Failed to preview: ${error.message}`);
     }
   };

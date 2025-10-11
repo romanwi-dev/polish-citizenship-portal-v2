@@ -594,18 +594,26 @@ serve(async (req) => {
       const fillResult = fillPDFFields(form, masterData, fieldMap);
       const coverage = calculateCoverage(fillResult);
       
-      console.log(`✅ PDF Complete for ${templateType}`);
-      console.log(`   Total: ${fillResult.totalFields} | Filled: ${fillResult.filledFields} | Coverage: ${coverage}%`);
+      console.log(`📄 PDF Generation Results for ${templateType}:`);
+      console.log(`   ✅ Filled: ${fillResult.filledFields}/${fillResult.totalFields} fields (${coverage}%)`);
       
-      if (fillResult.emptyFields.length > 0 && fillResult.emptyFields.length <= 5) {
-        console.log(`   Empty: ${fillResult.emptyFields.join(', ')}`);
+      if (fillResult.emptyFields.length > 0) {
+        console.log(`   ⚠️  Empty fields (${fillResult.emptyFields.length}):`);
+        const emptyToShow = fillResult.emptyFields.slice(0, 10);
+        console.log(`       ${emptyToShow.join(', ')}`);
+        if (fillResult.emptyFields.length > 10) {
+          console.log(`       ... and ${fillResult.emptyFields.length - 10} more`);
+        }
       }
       
       if (fillResult.errors.length > 0) {
-        console.warn(`   ⚠️ Errors: ${fillResult.errors.length}`);
-        fillResult.errors.slice(0, 3).forEach(err => {
-          console.warn(`     - ${err.field}: ${err.error}`);
+        console.log(`   ❌ Errors (${fillResult.errors.length}):`);
+        fillResult.errors.slice(0, 5).forEach(err => {
+          console.log(`       ${err.field}: ${err.error}`);
         });
+        if (fillResult.errors.length > 5) {
+          console.log(`       ... and ${fillResult.errors.length - 5} more errors`);
+        }
       }
     }
 
