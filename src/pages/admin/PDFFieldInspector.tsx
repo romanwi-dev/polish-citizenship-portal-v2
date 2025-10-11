@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import { Loader2, CheckCircle2, AlertCircle, Search } from 'lucide-react';
+import { inspectPDFFields } from '@/utils/pdfInspector';
 import {
   POA_ADULT_PDF_MAP,
   POA_MINOR_PDF_MAP,
@@ -52,21 +52,8 @@ export default function PDFFieldInspector() {
       try {
         toast.loading(`Inspecting ${template.name}...`, { id: template.id });
 
-        const { data, error } = await supabase.functions.invoke('inspect-pdf-simple', {
-          body: {
-            templateType: template.id,
-          },
-        });
-
-        if (error) {
-          console.error('Supabase function error:', error);
-          throw new Error(error.message || 'Failed to inspect PDF');
-        }
-        
-        if (!data || !data.fields) {
-          console.error('Invalid response:', data);
-          throw new Error('Invalid response from PDF inspector');
-        }
+        // CLIENT-SIDE inspection - no edge functions!
+        const data = await inspectPDFFields(template.id);
 
         const pdfFieldNames = data.fields.map((f: FieldInfo) => f.name);
         const mappedFieldNames = Object.keys(template.mapping);
@@ -91,7 +78,7 @@ export default function PDFFieldInspector() {
         toast.success(`${template.name}: ${data.totalFields} fields found`, { id: template.id });
       } catch (error) {
         console.error(`Error inspecting ${template.id}:`, error);
-        toast.error(`Failed to inspect ${template.name}`, { id: template.id });
+        toast.error(`Failed to inspect ${template.name}: ${error instanceof Error ? error.message : 'Unknown error'}`, { id: template.id });
       }
     }
 
