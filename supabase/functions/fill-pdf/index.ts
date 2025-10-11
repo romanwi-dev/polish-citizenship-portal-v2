@@ -16,8 +16,8 @@ const corsHeaders = {
 };
 
 /**
- * Fill PDF Edge Function
- * Generates filled PDFs from master_table data
+ * Fill PDF Edge Function - Generates filled PDFs from master_table data
+ * Updated: 2025-10-11
  */
 
 serve(async (req) => {
