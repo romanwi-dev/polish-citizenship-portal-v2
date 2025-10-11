@@ -51,7 +51,7 @@ const ServicesWeb3 = () => {
             <Zap className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium">Next-Gen Services</span>
           </div>
-          <h2 className="text-3xl md:text-4xl font-heading font-black mb-14 tracking-tight">
+          <h2 className="text-4xl md:text-5xl font-heading font-black mb-14 tracking-tight">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               Powered by Innovation
             </span>
