@@ -2,14 +2,170 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { PDFDocument } from "https://esm.sh/pdf-lib@1.17.1";
 
-// Import PDF field mappings
-import { POA_ADULT_PDF_MAP } from './mappings/poaAdult.ts';
-import { POA_MINOR_PDF_MAP } from './mappings/poaMinor.ts';
-import { POA_SPOUSES_PDF_MAP } from './mappings/poaSpouses.ts';
-import { CITIZENSHIP_PDF_MAP } from './mappings/citizenship.ts';
-import { FAMILY_TREE_PDF_MAP } from './mappings/familyTree.ts';
-import { UMIEJSCOWIENIE_PDF_MAP } from './mappings/umiejscowienie.ts';
-import { UZUPELNIENIE_PDF_MAP } from './mappings/uzupelnienie.ts';
+// ============ PDF FIELD MAPPINGS (INLINE) ============
+
+const POA_ADULT_PDF_MAP: Record<string, string> = {
+  'applicant_given_names': 'applicant_first_name',
+  'applicant_surname': 'applicant_last_name',
+  'passport_number': 'applicant_passport_number',
+  'poa_date': 'poa_date_filed',
+};
+
+const POA_MINOR_PDF_MAP: Record<string, string> = {
+  'applicant_given_names': 'applicant_first_name',
+  'applicant_surname': 'applicant_last_name',
+  'passport_number': 'applicant_passport_number',
+  'minor_given_names': 'child_1_first_name',
+  'minor_surname': 'child_1_last_name',
+  'poa_date': 'poa_date_filed',
+};
+
+const POA_SPOUSES_PDF_MAP: Record<string, string> = {
+  'applicant_given_names': 'applicant_first_name',
+  'applicant_surname': 'applicant_last_name',
+  'spouse_given_names': 'spouse_first_name',
+  'spouse_surname': 'spouse_last_name',
+  'passport_number': 'applicant_passport_number',
+  'spouse_passport_number': 'spouse_passport_number',
+  'husband_surname': 'applicant_last_name',
+  'wife_surname': 'spouse_last_name',
+  'minor_surname': 'child_1_last_name',
+};
+
+const CITIZENSHIP_PDF_MAP: Record<string, string> = {
+  'miejscowosc_zl': 'applicant_address.city',
+  'app_date_dzien': 'application_submission_date.day',
+  'app_date_miesia': 'application_submission_date.month',
+  'app_date_rok': 'application_submission_date.year',
+  'wojewoda_name': 'voivodeship',
+  'imie_nazwisko_wniosko': 'applicant_full_name',
+  'imie_nazwisko_wniosko_cd': 'applicant_full_name_cont',
+  'kraj_zam': 'applicant_address.country',
+  'miasto_zam': 'applicant_address.city',
+  'nr_domu1': 'applicant_address.house_number',
+  'nr_mieszkz': 'applicant_address.apartment_number',
+  'kod_pocztowy': 'applicant_address.postal_code',
+  'miejscowosc_zamieszkania': 'applicant_address.locality',
+  'telefon': 'applicant_phone',
+  'imie_nazw_3': 'citizenship_through_name_1',
+  'imie_nazw_4': 'citizenship_through_name_2',
+  'posiadaniei': 'additional_citizenship_info',
+  'cel_ubieganie': 'application_purpose',
+  'nazwisko_wniosko': 'applicant_last_name',
+  'nazwisko_rodowe_wniosko': 'applicant_maiden_name',
+  'imie_wniosko': 'applicant_first_name',
+  'imie_nazwisko_ojca': 'applicant_father_full_name',
+  'imie_nazwisko_rodowe_matki': 'applicant_mother_full_name_maiden',
+  'uzywane_nazwiska': 'applicant_previous_names',
+  'uzywane_nazwiska_cd': 'applicant_previous_names_cont',
+  'app_dob_dzien': 'applicant_dob.day',
+  'app_dob_miesia': 'applicant_dob.month',
+  'app_dob_rok': 'applicant_dob.year',
+  'app_sex_male': 'applicant_sex_male',
+  'app_sex_female': 'applicant_sex_female',
+  'miejsce_uro': 'applicant_pob',
+  'obce_obywatelstwa': 'applicant_current_citizenships',
+  'obce_obywatelstwa_cd1': 'applicant_current_citizenships_cont1',
+  'obce_obywatelstwa_cd2': 'applicant_current_citizenships_cont2',
+  'stan_cywilny': 'applicant_marital_status',
+  'nr_pesel': 'applicant_pesel',
+  'nazwisko_matki': 'mother_last_name',
+  'nazwisko_rodowe_matki': 'mother_maiden_name',
+  'imie_matki': 'mother_first_name',
+  'mother_dob_dzien': 'mother_dob.day',
+  'mother_dob_miesia': 'mother_dob.month',
+  'mother_dob_rok': 'mother_dob.year',
+  'miejsce_uro_matki': 'mother_pob',
+  'nazwisko_ojca': 'father_last_name',
+  'imie_ojca': 'father_first_name',
+  'father_dob_dzien': 'father_dob.day',
+  'father_dob_miesia': 'father_dob.month',
+  'father_dob_rok': 'father_dob.year',
+  'miejsce_uro_ojca': 'father_pob',
+  'nazwisko_dziadka_m': 'mgf_last_name',
+  'imie_dziadka_m': 'mgf_first_name',
+  'mgf_dob_dzien': 'mgf_dob.day',
+  'mgf_dob_miesia': 'mgf_dob.month',
+  'mgf_dob_rok': 'mgf_dob.year',
+  'nazwisko_babki_m': 'mgm_last_name',
+  'imie_babki_m': 'mgm_first_name',
+  'mgm_dob_dzien': 'mgm_dob.day',
+  'mgm_dob_miesia': 'mgm_dob.month',
+  'mgm_dob_rok': 'mgm_dob.year',
+  'nazwisko_dziadka_o': 'pgf_last_name',
+  'imie_dziadka_o': 'pgf_first_name',
+  'pgf_dob_dzien': 'pgf_dob.day',
+  'pgf_dob_miesia': 'pgf_dob.month',
+  'pgf_dob_rok': 'pgf_dob.year',
+  'nazwisko_babki_o': 'pgm_last_name',
+  'imie_babki_o': 'pgm_first_name',
+};
+
+const FAMILY_TREE_PDF_MAP: Record<string, string> = {
+  'applicant_full_name': 'applicant_first_name',
+  'applicant_date_of_birth': 'applicant_dob',
+  'applicant_place_of_birth': 'applicant_pob',
+  'father_full_name': 'father_first_name',
+  'father_date_of_birth': 'father_dob',
+  'father_place_of_birth': 'father_pob',
+  'mother_full_name': 'mother_first_name',
+  'mother_maiden_name': 'mother_maiden_name',
+  'mother_date_of_birth': 'mother_dob',
+  'mother_place_of_birth': 'mother_pob',
+  'pgf_full_name': 'pgf_first_name',
+  'pgf_date_of_birth': 'pgf_dob',
+  'pgf_place_of_birth': 'pgf_pob',
+  'pgm_full_name': 'pgm_first_name',
+  'pgm_maiden_name': 'pgm_maiden_name',
+  'pgm_date_of_birth': 'pgm_dob',
+  'pgm_place_of_birth': 'pgm_pob',
+  'mgf_full_name': 'mgf_first_name',
+  'mgf_date_of_birth': 'mgf_dob',
+  'mgf_place_of_birth': 'mgf_pob',
+  'mgm_full_name': 'mgm_first_name',
+  'mgm_maiden_name': 'mgm_maiden_name',
+  'mgm_date_of_birth': 'mgm_dob',
+  'mgm_place_of_birth': 'mgm_pob',
+};
+
+const UMIEJSCOWIENIE_PDF_MAP: Record<string, string> = {
+  'imie_nazwisko_wniosko': 'applicant_first_name',
+  'imie_nazwisko_pelnomocnik': 'representative_full_name',
+  'miejsce_zamieszkania_pelnomocnik': 'representative_address',
+  'miejscowosc_zloz': 'submission_location',
+  'dzien_zloz': 'submission_date.day',
+  'miesiac_zloz': 'submission_date.month',
+  'rok_zloz': 'submission_date.year',
+  'akt_uro_checkbox': 'act_type_birth',
+  'miejsce_sporz_aktu_u': 'birth_act_location',
+  'imie_nazwisko_u': 'applicant_first_name',
+  'miejsce_urodzenia': 'applicant_pob',
+  'birth_dzien': 'applicant_dob.day',
+  'birth_miesia': 'applicant_dob.month',
+  'birth_rok': 'applicant_dob.year',
+  'akt_malz_checkbox': 'act_type_marriage',
+  'miejsce_sporz_aktu_m': 'marriage_act_location',
+  'imie_nazwisko_malzonka': 'spouse_first_name',
+  'miejsce_malzenstwa_wniosko': 'place_of_marriage',
+  'marriage_dzien': 'date_of_marriage.day',
+  'marriage_miesia': 'date_of_marriage.month',
+  'marriage_rok': 'date_of_marriage.year',
+};
+
+const UZUPELNIENIE_PDF_MAP: Record<string, string> = {
+  'imie_nazwisko_wniosko': 'applicant_first_name',
+  'imie_nazwisko_pelnomocnik': 'representative_full_name',
+  'miejsce_zamieszkania_pelnomocnik': 'representative_address',
+  'miejscowosc_zloz': 'submission_location',
+  'dzien_zloz': 'submission_date.day',
+  'miesiac_zloz': 'submission_date.month',
+  'rok_zloz': 'submission_date.year',
+  'miejsce_sporzadzenia_aktu_zagranicznego': 'foreign_act_location',
+  'rok_aktu_urodzenia_polskiego': 'birth_act_year',
+  'nr_aktu_urod': 'birth_act_number',
+  'nazwisko_rodowe_ojca': 'father_maiden_name',
+  'nazwisko_rodowe_matki': 'mother_maiden_name',
+};
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
