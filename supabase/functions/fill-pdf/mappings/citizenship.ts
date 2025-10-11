@@ -2,15 +2,17 @@
  * PDF Field Mappings for Citizenship (OBY) Template
  * Maps database columns from master_table to PDF form field names
  * 12-page Polish citizenship application form
+ * 
+ * Note: PDF field names are prefixed with context to avoid duplicates
  */
 
 export const CITIZENSHIP_PDF_MAP: Record<string, string> = {
   // Page 1 - Header & Voivoda
   'miejscowosc_zl': 'applicant_address.city',
-  'dzien_': 'application_submission_date.day',
-  'miesia': 'application_submission_date.month',
-  '2 rok_zloz 7': 'application_submission_date.year',
-  'MA wojewoda CKI': 'voivodeship',
+  'app_date_dzien': 'application_submission_date.day',
+  'app_date_miesia': 'application_submission_date.month',
+  'app_date_rok': 'application_submission_date.year',
+  'wojewoda_name': 'voivodeship',
   
   // Applicant Section
   'imie_nazwisko_wniosko': 'applicant_full_name',
@@ -25,12 +27,12 @@ export const CITIZENSHIP_PDF_MAP: Record<string, string> = {
   'miejscowosc_zamieszkania': 'applicant_address.locality',
   'telefon': 'applicant_phone',
   
-  // Decision request names (people through whom citizenship is requested)
+  // Decision request names
   'imie_nazw_3': 'citizenship_through_name_1',
   'imie_nazw_4': 'citizenship_through_name_2',
   
   // Page 2 - Additional Info
-  'N posiadaniei Y': 'additional_citizenship_info',
+  'posiadaniei': 'additional_citizenship_info',
   'cel_ubieganie': 'application_purpose',
   
   // CZĘŚĆ I - Applicant Personal Data
@@ -43,11 +45,11 @@ export const CITIZENSHIP_PDF_MAP: Record<string, string> = {
   'uzywane_nazwiska_cd': 'applicant_previous_names_cont',
   
   // Birth data
-  'dzien': 'applicant_dob.day',
-  'miesia': 'applicant_dob.month',
-  'rok_uro': 'applicant_dob.year',
-  'al': 'applicant_sex_male',
-  'nl': 'applicant_sex_female',
+  'app_dob_dzien': 'applicant_dob.day',
+  'app_dob_miesia': 'applicant_dob.month',
+  'app_dob_rok': 'applicant_dob.year',
+  'app_sex_male': 'applicant_sex_male',
+  'app_sex_female': 'applicant_sex_female',
   'miejsce_uro': 'applicant_pob',
   
   // Citizenship data
@@ -71,14 +73,14 @@ export const CITIZENSHIP_PDF_MAP: Record<string, string> = {
   'uzywane_nazwiska_matki': 'mother_previous_names',
   
   // Mother birth & marriage
-  'dzien': 'mother_dob.day',
-  'miesia': 'mother_dob.month',
-  'rok_uro_matki': 'mother_dob.year',
+  'mother_dob_dzien': 'mother_dob.day',
+  'mother_dob_miesia': 'mother_dob.month',
+  'mother_dob_rok': 'mother_dob.year',
   'miejsce_uro_matki': 'mother_pob',
   'stan_cywilny_matki': 'mother_marital_status',
-  'dzien': 'mother_marriage_date.day',
-  'miesia': 'mother_marriage_date.month',
-  'rok_zaw_zwiaz': 'mother_marriage_date.year',
+  'mother_marriage_dzien': 'mother_marriage_date.day',
+  'mother_marriage_miesia': 'mother_marriage_date.month',
+  'mother_marriage_rok': 'mother_marriage_date.year',
   'miejsce_zaw_zwiazku_matki': 'mother_marriage_place',
   
   // Mother citizenship
@@ -94,16 +96,15 @@ export const CITIZENSHIP_PDF_MAP: Record<string, string> = {
   'imie_nazw_rod_matki_ojca': 'father_mother_full_name_maiden',
   'uzywane_nazwiska_ojca': 'father_previous_names',
   
-  // Father birth & marriage - note: some field names repeat, need unique context
-  'dzien_': 'father_dob.day',
-  'miesia': 'father_dob.month',
-  'rok_uro_o': 'father_dob.year',
-  'uzywane_nazwiska_ojca': 'father_previous_names',
+  // Father birth & marriage
+  'father_dob_dzien': 'father_dob.day',
+  'father_dob_miesia': 'father_dob.month',
+  'father_dob_rok': 'father_dob.year',
   'miejsce_uro_ojca': 'father_pob',
   'stan_cywilny_ojca': 'father_marital_status',
-  'dzien': 'father_marriage_date.day',
-  'miesia': 'father_marriage_date.month',
-  'rok_zaw_zwiaz': 'father_marriage_date.year',
+  'father_marriage_dzien': 'father_marriage_date.day',
+  'father_marriage_miesia': 'father_marriage_date.month',
+  'father_marriage_rok': 'father_marriage_date.year',
   'miejsce_zaw_zwiazku_ojca': 'father_marriage_place',
   
   // Father citizenship
@@ -111,16 +112,15 @@ export const CITIZENSHIP_PDF_MAP: Record<string, string> = {
   'posiadane_obywatel_ojca_uro_wniosko_cd': 'father_citizenship_at_birth_cont',
   'pesel_ojca': 'father_pesel',
   
-  // Page 5 - Other ancestors
-  // Maternal grandfather
+  // Page 5 - Maternal grandfather
   'nazwisko_dziadka_m': 'mgf_last_name',
   'nazwisko_rodowe_dziadka_m': 'mgf_maiden_name',
   'imie_dziadka_m': 'mgf_first_name',
   'imie_nazw_pradziadek_d_m': 'mgf_father_full_name',
   'imie_nazw_prababka_d_m': 'mgf_mother_full_name',
-  'dzien_': 'mgf_dob.day',
-  'miesia': 'mgf_dob.month',
-  'rok_uro_dziad': 'mgf_dob.year',
+  'mgf_dob_dzien': 'mgf_dob.day',
+  'mgf_dob_miesia': 'mgf_dob.month',
+  'mgf_dob_rok': 'mgf_dob.year',
   'miejsce_uro_dziadka_m': 'mgf_pob',
   'pesel_dziadka_m': 'mgf_pesel',
   
@@ -130,9 +130,9 @@ export const CITIZENSHIP_PDF_MAP: Record<string, string> = {
   'imie_babki_m': 'mgm_first_name',
   'imie_nazw_pradziadek_b_m': 'mgm_father_full_name',
   'imie_nazw_rod_prababka_b_m': 'mgm_mother_full_name_maiden',
-  'dzien_': 'mgm_dob.day',
-  'miesia': 'mgm_dob.month',
-  'rok_uro_babki': 'mgm_dob.year',
+  'mgm_dob_dzien': 'mgm_dob.day',
+  'mgm_dob_miesia': 'mgm_dob.month',
+  'mgm_dob_rok': 'mgm_dob.year',
   'miejsce_uro_babki_m': 'mgm_pob',
   'pesel_babki_m': 'mgm_pesel',
   
@@ -142,9 +142,9 @@ export const CITIZENSHIP_PDF_MAP: Record<string, string> = {
   'imie_dziadka_o': 'pgf_first_name',
   'imie_nazw_pradziadek_d_o': 'pgf_father_full_name',
   'imie_nazw_rod_prababka_d_o': 'pgf_mother_full_name_maiden',
-  'dzien_': 'pgf_dob.day',
-  'miesia': 'pgf_dob.month',
-  'rok_uro_dziad': 'pgf_dob.year',
+  'pgf_dob_dzien': 'pgf_dob.day',
+  'pgf_dob_miesia': 'pgf_dob.month',
+  'pgf_dob_rok': 'pgf_dob.year',
   'miejsce_uro_dziadka_o': 'pgf_pob',
   'pesel_dziadka_o': 'pgf_pesel',
   
