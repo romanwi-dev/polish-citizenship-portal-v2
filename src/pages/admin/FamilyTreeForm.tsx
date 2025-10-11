@@ -705,13 +705,9 @@ export default function FamilyTreeForm() {
                 name: "applicant_passport_number",
                 label: "Passport number"
               }, {
-                name: "applicant_sex",
-                label: "Sex",
-                isSelect: true,
-                selectOptions: [
-                  { value: "M", label: "Male" },
-                  { value: "F", label: "Female" }
-                ]
+                name: "applicant_passport_expiry_date",
+                label: "Passport expiry date",
+                type: "date"
               }, {
                 name: "applicant_email",
                 label: "Email",
