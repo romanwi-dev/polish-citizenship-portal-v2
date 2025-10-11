@@ -3,7 +3,7 @@
  */
 
 export const FAMILY_TREE_PDF_MAP: Record<string, string> = {
-  // Applicant (REMOVED: emigration/naturalization - not in PDF)
+  // Applicant
   'applicant_full_name': 'applicant_first_name',
   'applicant_date_of_birth': 'applicant_dob',
   'applicant_place_of_birth': 'applicant_pob',
@@ -15,7 +15,7 @@ export const FAMILY_TREE_PDF_MAP: Record<string, string> = {
   'spouse_date_of_birth': 'spouse_dob',
   'spouse_place_of_birth': 'spouse_pob',
   
-  // Children/Minors (FIXED: already had pob fields)
+  // Children/Minors (FIXED: added place of birth for minors 1-3)
   'minor_1_full_name': 'child_1_first_name',
   'minor_1_date_of_birth': 'child_1_dob',
   'minor_1_place_of_birth': 'child_1_pob',
@@ -28,7 +28,7 @@ export const FAMILY_TREE_PDF_MAP: Record<string, string> = {
   'minor_3_date_of_birth': 'child_3_dob',
   'minor_3_place_of_birth': 'child_3_pob',
   
-  // Father
+  // Father (Polish Parent)
   'father_full_name': 'father_first_name',
   'father_date_of_birth': 'father_dob',
   'father_place_of_birth': 'father_pob',
@@ -36,6 +36,9 @@ export const FAMILY_TREE_PDF_MAP: Record<string, string> = {
   'father_place_of_marriage': 'father_mother_marriage_place',
   'father_date_of_emigration': 'father_date_of_emigration',
   'father_date_of_naturalization': 'father_date_of_naturalization',
+  
+  // Polish parent aliases
+  'polish_parent_place_of_marriage': 'father_mother_marriage_place',
   
   // Mother
   'mother_full_name': 'mother_first_name',
@@ -45,7 +48,7 @@ export const FAMILY_TREE_PDF_MAP: Record<string, string> = {
   'mother_date_of_emigration': 'mother_date_of_emigration',
   'mother_date_of_naturalization': 'mother_date_of_naturalization',
   
-  // Paternal Grandfather (PGF)
+  // Paternal Grandfather (PGF) - Polish Grandparent
   'pgf_full_name': 'pgf_first_name',
   'pgf_date_of_birth': 'pgf_dob',
   'pgf_place_of_birth': 'pgf_pob',
@@ -53,6 +56,9 @@ export const FAMILY_TREE_PDF_MAP: Record<string, string> = {
   'pgf_place_of_marriage': 'pgf_pgm_marriage_place',
   'pgf_date_of_emigration': 'pgf_date_of_emigration',
   'pgf_date_of_naturalization': 'pgf_date_of_naturalization',
+  
+  // Polish grandparent aliases
+  'polish_grandparent_date_of_marriage': 'pgf_pgm_marriage_date',
   
   // Paternal Grandmother (PGM)
   'pgm_full_name': 'pgm_first_name',
@@ -110,10 +116,6 @@ export const FAMILY_TREE_PDF_MAP: Record<string, string> = {
   'mggm_place_of_birth': 'mggm_pob',
   'mggm_date_of_emigration': 'mggm_date_of_emigration',
   'mggm_date_of_naturalization': 'mggm_date_of_naturalization',
-  
-  // Special fields (aliases for consistency)
-  'polish_grandparent_date_of_marriage': 'pgf_pgm_marriage_date',
-  'polish_parent_place_of_marriage': 'father_mother_marriage_place',
 };
 
 export const FAMILY_TREE_REQUIRED_FIELDS = [
