@@ -57,12 +57,7 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
   };
 
   return (
-    <div className={cn(
-      "p-4 md:p-8 rounded-xl transition-all duration-700 relative w-full",
-      allChecked 
-        ? "bg-green-950/30 border border-green-500/30" 
-        : "bg-gradient-to-br from-slate-950/40 to-indigo-950/30 border border-slate-700/20"
-    )}>
+    <div className="w-full p-4 md:p-6">
       <div className="flex items-center gap-3 mb-6">
         <Checkbox
           checked={allChecked}
@@ -100,15 +95,17 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
               >
                 {/* Front Side */}
                 <motion.div
-                  whileHover={{ scale: 1.02 }}
+                  whileHover={doc.checked ? {} : { scale: 1.02 }}
                   transition={{ duration: 0.3 }}
                   className={cn(
-                    "absolute inset-0 glass-card p-6 rounded-lg hover-glow group",
-                    doc.checked && "border-green-500/40"
+                    "absolute inset-0 glass-card p-6 rounded-lg group",
+                    !doc.checked && "hover-glow",
+                    doc.checked && "border-green-500/40 opacity-60"
                   )}
                   style={{ 
                     backfaceVisibility: 'hidden',
-                    WebkitBackfaceVisibility: 'hidden'
+                    WebkitBackfaceVisibility: 'hidden',
+                    boxShadow: doc.checked ? 'none' : undefined
                   }}
                 >
                   <div className="flex flex-col gap-3 h-full">

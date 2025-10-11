@@ -6,6 +6,7 @@ interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   isNameField?: boolean;
   isLargeFonts?: boolean;
+  isChecked?: boolean;
 }
 
 export const FormInput = ({ 
@@ -13,6 +14,7 @@ export const FormInput = ({
   onChange, 
   isNameField = false,
   isLargeFonts = false,
+  isChecked = false,
   className,
   ...props 
 }: FormInputProps) => {
@@ -36,23 +38,32 @@ export const FormInput = ({
         "h-16 text-lg bg-blue-50/45 dark:bg-blue-950/40 border-2 border-blue-200/50 dark:border-blue-800/50 hover:border-blue-300/70 dark:hover:border-blue-700/70 focus:border-blue-500 transition-all duration-300 backdrop-blur font-normal font-input-work w-full max-w-full",
         isNameField && "uppercase",
         isLargeFonts && "text-2xl",
+        isChecked && "opacity-60",
         className
       )}
       style={{
-        boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
+        boxShadow: isChecked ? "none" : "0 0 30px hsla(221, 83%, 53%, 0.15)",
         transition: "all 0.3s ease"
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
+        if (!isChecked) {
+          e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
+        }
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+        if (!isChecked) {
+          e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+        }
       }}
       onFocus={(e) => {
-        e.currentTarget.style.boxShadow = "0 0 60px hsla(221, 83%, 53%, 0.4)";
+        if (!isChecked) {
+          e.currentTarget.style.boxShadow = "0 0 60px hsla(221, 83%, 53%, 0.4)";
+        }
       }}
       onBlur={(e) => {
-        e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+        if (!isChecked) {
+          e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+        }
       }}
       {...props}
     />

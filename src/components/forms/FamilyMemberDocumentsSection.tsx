@@ -169,7 +169,7 @@ export const FamilyMemberDocumentsSection = ({
           {title}
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-6 md:p-10">
+      <CardContent className="p-0">
         <FlippableCardsDarkGlow
           title=""
           documents={documents}
