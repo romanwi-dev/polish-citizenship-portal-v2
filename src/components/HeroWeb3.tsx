@@ -18,7 +18,7 @@ const HeroWeb3 = () => {
       behavior: 'smooth'
     });
   };
-  return <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
+  return <section ref={heroRef} className="relative min-h-[60vh] md:min-h-screen flex items-center justify-center overflow-hidden">
       {/* 3D Background */}
       <div className="absolute inset-0 z-0">
         <Suspense fallback={<div className="w-full h-full bg-gradient-to-b from-primary/5 to-background" />}>

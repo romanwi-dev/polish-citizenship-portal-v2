@@ -22,7 +22,7 @@ export const useFormSync = (caseId: string | undefined) => {
 
     const loadData = async () => {
       setIsLoading(true);
-      console.log('📥 Loading data for case:', caseId);
+      // Removed production console.log
       
       const { data, error } = await supabase
         .from('master_table')
@@ -37,7 +37,7 @@ export const useFormSync = (caseId: string | undefined) => {
         return;
       }
 
-      console.log('✅ Data loaded:', data ? Object.keys(data).length + ' fields' : 'empty');
+      // Removed production console.log
       setFormData(data || {});
       setIsLoading(false);
     };
@@ -50,7 +50,7 @@ export const useFormSync = (caseId: string | undefined) => {
     if (!caseId || caseId === ':id') return false;
 
     setIsSaving(true);
-    console.log('💾 Saving data:', Object.keys(updates).length, 'fields');
+    // Removed production console.log
 
     try {
       const { data: existing } = await supabase
@@ -74,7 +74,7 @@ export const useFormSync = (caseId: string | undefined) => {
         if (error) throw error;
       }
 
-      console.log('✅ Data saved successfully - invalidating cache');
+      // Removed production console.log
       
       // Update local state with merged data
       setFormData((prev: any) => ({ ...prev, ...updates }));
@@ -97,7 +97,7 @@ export const useFormSync = (caseId: string | undefined) => {
   const clearAll = useCallback(async () => {
     if (!caseId || caseId === ':id') return;
     
-    console.log('🧹 Clearing all data - setting all fields to empty');
+    // Removed production console.log
     
     setIsSaving(true);
     
@@ -122,7 +122,7 @@ export const useFormSync = (caseId: string | undefined) => {
         });
       }
       
-      console.log('🧹 Clearing', Object.keys(clearedData).length, 'fields');
+      // Removed production console.log
       
       // Update the record with all fields set to null
       const { error } = await supabase
@@ -132,7 +132,7 @@ export const useFormSync = (caseId: string | undefined) => {
       
       if (error) throw error;
       
-      console.log('✅ All fields cleared in database');
+      // Removed production console.log
       
       // Clear local state
       setFormData({});
@@ -151,7 +151,7 @@ export const useFormSync = (caseId: string | undefined) => {
 
   // Clear single field
   const clearField = useCallback(async (field: string) => {
-    console.log('🧹 Clearing field:', field);
+    // Removed production console.log
     const updated = { ...formData, [field]: null };
     setFormData(updated);
     await saveData({ [field]: null });

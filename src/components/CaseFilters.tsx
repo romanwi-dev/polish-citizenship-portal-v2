@@ -67,12 +67,12 @@ export const CaseFilters = ({
           />
         </div>
         
-        {/* Filters Sheet */}
+        {/* Filters Sheet - Mobile Optimized */}
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="outline" className="relative">
+            <Button variant="outline" className="relative min-w-[44px] min-h-[44px]">
               <SlidersHorizontal className="h-4 w-4 mr-2" />
-              Filters
+              <span className="hidden sm:inline">Filters</span>
               {activeFiltersCount > 0 && (
                 <Badge className="ml-2 bg-primary text-primary-foreground">
                   {activeFiltersCount}
@@ -80,7 +80,7 @@ export const CaseFilters = ({
               )}
             </Button>
           </SheetTrigger>
-          <SheetContent className="overflow-y-auto bg-background border-border">
+          <SheetContent className="overflow-y-auto bg-background border-border w-[90vw] sm:w-[400px]">
             <SheetHeader>
               <SheetTitle className="text-foreground">Filter Cases</SheetTitle>
               <SheetDescription className="text-muted-foreground">

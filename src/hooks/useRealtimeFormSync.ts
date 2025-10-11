@@ -36,7 +36,7 @@ export const useRealtimeFormSync = (
           filter: `case_id=eq.${caseId}`,
         },
         (payload) => {
-          console.log('Real-time update received:', payload);
+          // Removed production console.log
           const newData = payload.new;
           
           // Update local form state

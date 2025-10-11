@@ -9,7 +9,7 @@ export const useMasterData = (caseId: string | undefined) => {
     queryFn: async () => {
       if (!caseId || caseId === ':id') throw new Error("Invalid case ID");
 
-      console.log('🔍 FETCHING FRESH DATA FROM DB - Case:', caseId);
+      // Removed production console.log
 
       const { data, error } = await supabase
         .from("master_table")
@@ -22,7 +22,7 @@ export const useMasterData = (caseId: string | undefined) => {
         throw error;
       }
       
-      console.log('✅ FRESH DATA FROM DB:', data ? Object.keys(data).length + ' fields' : 'NO DATA');
+      // Removed production console.log
       return data;
     },
     enabled: !!caseId && caseId !== ':id',
@@ -44,11 +44,11 @@ export const useUpdateMasterData = () => {
         throw new Error("Invalid case ID");
       }
 
-      console.log('💾 SAVING TO DB - Case:', caseId);
-      console.log('📦 Updates:', Object.keys(updates).length, 'fields');
+      // Removed production console.log
+      // Removed production console.log
 
       const sanitizedUpdates = sanitizeMasterData(updates);
-      console.log('🧹 After sanitization:', Object.keys(sanitizedUpdates).length, 'fields');
+      // Removed production console.log
 
       const { data: existing, error: checkError } = await supabase
         .from("master_table")
@@ -81,10 +81,10 @@ export const useUpdateMasterData = () => {
         }
       }
 
-      console.log('✅ SAVED TO DB SUCCESSFULLY');
+      // Removed production console.log
     },
     onSuccess: (_, variables) => {
-      console.log('✅ Data saved - invalidating query cache');
+      // Removed production console.log
       // Force refetch of data after save
       queryClient.invalidateQueries({ queryKey: ['masterData', variables.caseId] });
       toast.success("Master data updated successfully");

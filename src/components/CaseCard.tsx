@@ -241,11 +241,11 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
             )}
           </div>
 
-          {/* KPI Strip */}
+          {/* KPI Strip - Mobile Optimized */}
           <div className="mb-4 p-3 rounded-lg bg-background/20 border border-border/30">
-            <div className="flex flex-wrap gap-2">
+            <div className="grid grid-cols-2 md:flex md:flex-wrap gap-2">
               {/* POA Status */}
-              <div className={`px-2 py-1 rounded text-xs font-medium flex items-center gap-1 ${
+              <div className={`px-2 py-1 rounded text-xs font-medium flex items-center gap-1 justify-center ${
                 clientCase.poa_approved 
                   ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
                   : 'bg-muted/20 text-muted-foreground border border-border/30'
@@ -255,7 +255,7 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
               </div>
 
               {/* OBY Filed */}
-              <div className={`px-2 py-1 rounded text-xs font-medium flex items-center gap-1 ${
+              <div className={`px-2 py-1 rounded text-xs font-medium flex items-center gap-1 justify-center ${
                 clientCase.oby_filed 
                   ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' 
                   : 'bg-muted/20 text-muted-foreground border border-border/30'
@@ -265,7 +265,7 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
               </div>
 
               {/* WSC Letter */}
-              <div className={`px-2 py-1 rounded text-xs font-medium flex items-center gap-1 ${
+              <div className={`px-2 py-1 rounded text-xs font-medium flex items-center gap-1 justify-center ${
                 clientCase.wsc_received 
                   ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30' 
                   : 'bg-muted/20 text-muted-foreground border border-border/30'
@@ -275,7 +275,7 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
               </div>
 
               {/* Decision */}
-              <div className={`px-2 py-1 rounded text-xs font-medium flex items-center gap-1 ${
+              <div className={`px-2 py-1 rounded text-xs font-medium flex items-center gap-1 justify-center ${
                 clientCase.decision_received 
                   ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' 
                   : 'bg-muted/20 text-muted-foreground border border-border/30'
@@ -286,14 +286,14 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
 
               {/* Tasks Progress */}
               {(clientCase.kpi_tasks_total ?? 0) > 0 && (
-                <div className="px-2 py-1 rounded text-xs font-medium bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
+                <div className="px-2 py-1 rounded text-xs font-medium bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 col-span-1">
                   Tasks: {clientCase.kpi_tasks_completed}/{clientCase.kpi_tasks_total}
                 </div>
               )}
 
               {/* Docs Percentage */}
               {(clientCase.kpi_docs_percentage ?? 0) > 0 && (
-                <div className="px-2 py-1 rounded text-xs font-medium bg-orange-500/20 text-orange-400 border border-orange-500/30">
+                <div className="px-2 py-1 rounded text-xs font-medium bg-orange-500/20 text-orange-400 border border-orange-500/30 col-span-1">
                   Docs: {clientCase.kpi_docs_percentage}%
                 </div>
               )}

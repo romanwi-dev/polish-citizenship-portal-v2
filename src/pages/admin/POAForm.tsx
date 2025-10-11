@@ -74,7 +74,7 @@ export default function POAForm() {
   const minorChildrenCount = formData.minor_children_count || 0;
 
   const handleInputChange = (field: string, value: any) => {
-    console.log(`🔄 Field changed: ${field} = "${value}"`);
+    // Removed production console.log
     setFormData((prev: any) => {
       const updated = { ...prev, [field]: value };
       
@@ -113,8 +113,8 @@ export default function POAForm() {
   };
 
   const clearAllFields = () => {
-    console.log(`🗑️ CLEARING ALL FIELDS`);
-    console.log(`📊 Before clear: ${Object.keys(formData).length} fields`);
+    // Removed production console.log
+    // Removed production console.log
     
     // Build cleared version keeping ALL fields but setting non-dates to ""
     const clearedData: any = { ...formData };
@@ -125,12 +125,8 @@ export default function POAForm() {
       }
     });
     
-    console.log(`📊 After clear: ${Object.keys(clearedData).length} fields`);
-    console.log(`📋 Sample cleared fields:`, {
-      applicant_first_name: clearedData.applicant_first_name,
-      applicant_last_name: clearedData.applicant_last_name,
-      applicant_email: clearedData.applicant_email
-    });
+    // Removed production console.log
+    // Removed production console.log
     
     setFormData(clearedData);
     toast.success("Cleared all fields (except dates)");
@@ -143,17 +139,13 @@ export default function POAForm() {
     // Use the ref to get the absolute latest state
     const dataToSave = latestFormData.current;
     
-    console.log('💾 Saving form data:', Object.keys(dataToSave).length, 'fields');
-    console.log('📋 Critical fields:', {
-      applicant_first_name: dataToSave.applicant_first_name,
-      applicant_last_name: dataToSave.applicant_last_name,
-      applicant_passport_number: dataToSave.applicant_passport_number
-    });
+    // Removed production console.log
+    // Removed production console.log
     
     try {
       // Wait for the mutation to complete AND the cache to invalidate
       await updateMutation.mutateAsync({ caseId, updates: { ...dataToSave } });
-      console.log('✅ Save complete, cache invalidated');
+      // Removed production console.log
       return true;
     } catch (error) {
       console.error('❌ Save failed:', error);
