@@ -65,11 +65,13 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
             const updated = documents.map(doc => ({ ...doc, checked: checked as boolean }));
             onChange(updated);
           }}
-          className="scale-125 opacity-40"
+          className="scale-125"
         />
-        <h3 className="text-5xl md:text-6xl font-black font-heading bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-          {title}
-        </h3>
+        {title && (
+          <h3 className="text-5xl md:text-6xl font-black font-heading bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            {title}
+          </h3>
+        )}
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 w-full">
