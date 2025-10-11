@@ -1,62 +1,55 @@
 /**
  * PDF Field Mappings for Umiejscowienie (Civil Registry Entry) Template
  * Maps database columns from master_table to PDF form field names
- * Request for entry of foreign civil registry acts into Polish registry
  * 
- * ACTUAL PDF FIELDS (26 total) - Added 12 unmapped fields
+ * SIMPLIFIED 1:1 MAPPINGS after PDF field renaming
+ * PDF fields have been renamed from Polish to English
  */
 
 export const UMIEJSCOWIENIE_PDF_MAP: Record<string, string> = {
   // Applicant info
-  'imie_nazwisko_wniosko': 'applicant_full_name',
-  'kraj_wniosko': 'applicant_country',
+  'applicant_full_name': 'applicant_full_name',
+  'applicant_country': 'applicant_country',
   
-  // Representative info (pełnomocnik)
-  'imie_nazwisko_pelnomocnik': 'representative_full_name',
-  'miejsce_zamieszkania_pelnomocnik': 'representative_address',
-  'miejsce_zamieszkania_pelnomocnik_cd': 'representative_address_cont',
-  'telefon_pelnomocnik': 'representative_phone',
-  'email_pelnomocnik': 'representative_email',
+  // Representative info
+  'representative_full_name': 'representative_full_name',
+  'representative_address_line1': 'representative_address_line1',
+  'representative_address_line2': 'representative_address_line2',
+  'representative_phone': 'representative_phone',
+  'representative_email': 'representative_email',
   
   // Submission location and date
-  'miejscowosc_zloz': 'submission_location',
-  'sub_date_dzien': 'submission_date.day',
-  'sub_date_miesia': 'submission_date.month',
-  'sub_date_rok': 'submission_date.year',
+  'submission_location': 'submission_location',
+  'submission_day': 'submission_date.day',
+  'submission_month': 'submission_date.month',
+  'submission_year': 'submission_date.year',
+  'sending_method': 'sending_method',
   
-  // NEW FIELDS from PDF inspection
-  'dzien_zloz': 'submission_date.day',
-  'miesiac_zloz': 'submission_date.month',
-  'rok_zloz': 'submission_date.year',
-  'wyslanie': 'sending_method',
-  'akt_uro': 'birth_act_checkbox',
-  'akt_malz': 'marriage_act_checkbox',
+  // Act type checkboxes
+  'birth_act_checkbox': 'birth_act_checkbox',
+  'marriage_act_checkbox': 'marriage_act_checkbox',
   
-  // Civil registry details
-  'dzien_malzenstwa_wniosko': 'marriage_date.day',
-  'miesiac_malzenstwa_wniosko': 'marriage_date.month',
-  'rok_malzenstwa_wniosko': 'marriage_date.year',
-  'rok_urodzenia': 'birth_year',
-  'miesiac_urodzenia': 'birth_month',
-  'dzien_urodzenia': 'birth_day',
+  // Birth act fields
+  'birth_act_location': 'birth_act_location',
+  'birth_person_full_name': 'birth_person_full_name',
+  'birth_place': 'birth_place',
+  'birth_day': 'birth_date.day',
+  'birth_month': 'birth_date.month',
+  'birth_year': 'birth_date.year',
+  'birth_year_alt': 'birth_year',
+  'birth_month_alt': 'birth_month',
+  'birth_day_alt': 'birth_day',
   
-  // Birth act (akt urodzenia) fields
-  'akt_uro_checkbox': 'act_type_birth',
-  'miejsce_sporz_aktu_u': 'birth_act_location',
-  'imie_nazwisko_u': 'birth_person_full_name',
-  'miejsce_urodzenia': 'birth_place',
-  'birth_dzien': 'birth_date.day',
-  'birth_miesia': 'birth_date.month',
-  'birth_rok': 'birth_date.year',
-  
-  // Marriage act (akt małżeństwa) fields
-  'akt_malz_checkbox': 'act_type_marriage',
-  'miejsce_sporz_aktu_m': 'marriage_act_location',
-  'imie_nazwisko_malzonka': 'spouse_full_name',
-  'miejsce_malzenstwa_wniosko': 'marriage_place',
-  'marriage_dzien': 'marriage_date.day',
-  'marriage_miesia': 'marriage_date.month',
-  'marriage_rok': 'marriage_date.year',
+  // Marriage act fields
+  'marriage_act_location': 'marriage_act_location',
+  'spouse_full_name': 'spouse_full_name',
+  'marriage_place': 'marriage_place',
+  'marriage_day': 'marriage_date.day',
+  'marriage_month': 'marriage_date.month',
+  'marriage_year': 'marriage_date.year',
+  'marriage_day_alt': 'marriage_day',
+  'marriage_month_alt': 'marriage_month',
+  'marriage_year_alt': 'marriage_year',
 };
 
 export const UMIEJSCOWIENIE_REQUIRED_FIELDS = [

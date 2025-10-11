@@ -1,5 +1,8 @@
 project_id = "oogmuakyqadpynnrasnd"
 
+[functions.rename-pdf-fields]
+verify_jwt = false
+
 [functions.dropbox-sync]
 verify_jwt = false
 
