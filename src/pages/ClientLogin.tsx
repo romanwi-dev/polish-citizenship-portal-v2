@@ -99,6 +99,39 @@ export default function ClientLogin() {
     }
   };
 
+  const handleDevAccess = async () => {
+    setLoading(true);
+    try {
+      // Fetch first available case for testing
+      const { data: cases } = await supabase
+        .from("cases")
+        .select("id, client_name")
+        .limit(1)
+        .single();
+
+      if (!cases) {
+        toast.error("No test cases available. Create a case first.");
+        setLoading(false);
+        return;
+      }
+
+      // Create dev session
+      localStorage.setItem("client_session", JSON.stringify({
+        caseId: cases.id,
+        userId: "dev-user",
+        loginTime: new Date().toISOString(),
+      }));
+
+      toast.success(`Dev Mode: Accessing ${cases.client_name}'s portal`);
+      navigate(`/client/dashboard/${cases.id}`);
+    } catch (error) {
+      console.error("Error accessing dev mode:", error);
+      toast.error("Failed to access dev mode");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-accent/5 p-4">
       <Card className="w-full max-w-md">
@@ -170,6 +203,24 @@ export default function ClientLogin() {
                 Back to Email
               </Button>
             </form>
+          )}
+
+          {/* Dev Mode Access - Only in Development */}
+          {import.meta.env.DEV && (
+            <div className="mt-6 pt-6 border-t">
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full"
+                onClick={handleDevAccess}
+                disabled={loading}
+              >
+                🔧 Dev Mode: Quick Access (Test Only)
+              </Button>
+              <p className="text-xs text-muted-foreground text-center mt-2">
+                Development only - bypasses authentication
+              </p>
+            </div>
           )}
         </CardContent>
       </Card>
