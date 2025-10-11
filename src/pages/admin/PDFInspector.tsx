@@ -39,8 +39,11 @@ export default function PDFInspector() {
   const handleInspect = async () => {
     setIsInspecting(true);
     try {
-      const { data, error } = await supabase.functions.invoke('inspect-pdf-fields', {
-        body: { templateType: selectedTemplate }
+      const { data, error } = await supabase.functions.invoke('fill-pdf', {
+        body: { 
+          templateType: selectedTemplate,
+          inspectOnly: true 
+        }
       });
 
       if (error) throw error;

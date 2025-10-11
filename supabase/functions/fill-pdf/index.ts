@@ -21,10 +21,56 @@ serve(async (req) => {
   }
 
   try {
-    const { caseId, templateType } = await req.json();
+    const { caseId, templateType, inspectOnly } = await req.json();
     
-    if (!caseId || !templateType) {
-      throw new Error('caseId and templateType are required');
+    if (!templateType) {
+      throw new Error('templateType is required');
+    }
+
+    // Inspection mode - just return field names
+    if (inspectOnly) {
+      console.log(`🔍 Inspecting PDF fields: ${templateType}`);
+      
+      const templatePath = `./templates/${templateType}.pdf`;
+      let pdfBytes: Uint8Array;
+      
+      try {
+        pdfBytes = await Deno.readFile(templatePath);
+        console.log(`✅ Loaded template: ${templatePath} (${pdfBytes.length} bytes)`);
+      } catch (error) {
+        console.error(`❌ Failed to load template: ${templatePath}`, error);
+        throw new Error(`Template not found: ${templateType}`);
+      }
+
+      const pdfDoc = await PDFDocument.load(pdfBytes);
+      const form = pdfDoc.getForm();
+      const fields = form.getFields();
+      
+      const fieldInfo = fields.map(field => ({
+        name: field.getName(),
+        type: field.constructor.name,
+      }));
+
+      console.log(`Found ${fieldInfo.length} fields in ${templateType}`);
+
+      return new Response(
+        JSON.stringify({
+          templateType,
+          templatePath,
+          totalFields: fieldInfo.length,
+          fields: fieldInfo,
+        }, null, 2),
+        {
+          headers: {
+            ...corsHeaders,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+    }
+    
+    if (!caseId) {
+      throw new Error('caseId is required for PDF generation');
     }
 
     console.log(`Generating PDF: ${templateType} for case: ${caseId}`);
