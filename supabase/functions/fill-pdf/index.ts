@@ -3,6 +3,12 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { PDFDocument } from "https://esm.sh/pdf-lib@1.17.1";
 
 // Import PDF field mappings
+try {
+  console.log('Loading PDF mappings...');
+} catch (e) {
+  console.error('Error loading mappings:', e);
+}
+
 import { POA_ADULT_PDF_MAP } from './mappings/poaAdult.ts';
 import { POA_MINOR_PDF_MAP } from './mappings/poaMinor.ts';
 import { POA_SPOUSES_PDF_MAP } from './mappings/poaSpouses.ts';
@@ -10,6 +16,8 @@ import { CITIZENSHIP_PDF_MAP } from './mappings/citizenship.ts';
 import { FAMILY_TREE_PDF_MAP } from './mappings/familyTree.ts';
 import { UMIEJSCOWIENIE_PDF_MAP } from './mappings/umiejscowienie.ts';
 import { UZUPELNIENIE_PDF_MAP } from './mappings/uzupelnienie.ts';
+
+console.log('✅ All PDF mappings loaded successfully');
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
