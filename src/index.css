@@ -138,12 +138,16 @@ All colors MUST be HSL.
   }
 
   .hover-glow {
+    box-shadow: 0 0 30px hsla(221, 83%, 53%, 0.15);
     transition: all 0.3s ease;
   }
 
   .hover-glow:hover {
-    box-shadow: 0 0 40px hsl(221 83% 53% / 0.4), 0 0 80px hsl(221 83% 53% / 0.2);
-    transform: translateY(-2px);
+    box-shadow: 0 0 50px hsla(221, 83%, 53%, 0.3);
+  }
+
+  .hover-glow:focus {
+    box-shadow: 0 0 60px hsla(221, 83%, 53%, 0.4);
   }
 
   @keyframes float {
@@ -194,9 +198,6 @@ All colors MUST be HSL.
     animation: slowBlink 3s ease-in-out infinite;
   }
 
-  .hover-glow {
-    @apply transition-shadow duration-300 hover:shadow-lg hover:shadow-primary/20;
-  }
 
   .perspective-1000 {
     perspective: 1000px;
