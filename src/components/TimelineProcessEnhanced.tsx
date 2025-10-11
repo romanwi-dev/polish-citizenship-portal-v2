@@ -267,7 +267,7 @@ export default function TimelineProcessEnhanced() {
                           {step.title}
                         </motion.h3>
                         <p className="text-sm text-muted-foreground mb-3 flex-1">
-                          {step.description}
+                          {step.description}...extending procedure term "if needed"
                         </p>
                         <div className="flex flex-wrap gap-2">
                           <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
