@@ -52,10 +52,9 @@ export default function PDFFieldInspector() {
       try {
         toast.loading(`Inspecting ${template.name}...`, { id: template.id });
 
-        const { data, error } = await supabase.functions.invoke('fill-pdf', {
+        const { data, error } = await supabase.functions.invoke('inspect-pdf-simple', {
           body: {
             templateType: template.id,
-            inspectOnly: true,
           },
         });
 
@@ -65,6 +64,7 @@ export default function PDFFieldInspector() {
         }
         
         if (!data || !data.fields) {
+          console.error('Invalid response:', data);
           throw new Error('Invalid response from PDF inspector');
         }
 
