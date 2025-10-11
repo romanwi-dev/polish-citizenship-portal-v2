@@ -20,9 +20,9 @@ const PricingSection = () => {
               <span className="text-sm font-medium">Transparent Real Pricing</span>
             </div>
             
-            <h2 className="text-4xl md:text-5xl font-bold mb-14">
+            <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-14">
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Choose Your Path
+                True Transparent Pricing
               </span>
             </h2>
             
