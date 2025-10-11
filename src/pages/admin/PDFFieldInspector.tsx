@@ -59,7 +59,14 @@ export default function PDFFieldInspector() {
           },
         });
 
-        if (error) throw error;
+        if (error) {
+          console.error('Supabase function error:', error);
+          throw new Error(error.message || 'Failed to inspect PDF');
+        }
+        
+        if (!data || !data.fields) {
+          throw new Error('Invalid response from PDF inspector');
+        }
 
         const pdfFieldNames = data.fields.map((f: FieldInfo) => f.name);
         const mappedFieldNames = Object.keys(template.mapping);
