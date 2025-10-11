@@ -40,26 +40,26 @@ export function FormButtonsRow({
         <Button
           onClick={onSave}
           disabled={isSaving}
-          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/30 opacity-50 transition-colors"
+          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-green-500/20 hover:bg-green-500/30 backdrop-blur-md border border-green-400/40 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]"
         >
-          <Save className="mr-2 h-4 w-4 md:h-5 md:w-5 opacity-50" />
-          <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{isSaving ? "Saving..." : saveLabel}</span>
+          <Save className="mr-2 h-4 w-4 md:h-5 md:w-5" />
+          <span className="text-green-100 font-bold">{isSaving ? "Saving..." : saveLabel}</span>
         </Button>
         
         <Button
           onClick={onClear}
-          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/30 opacity-50 transition-colors"
+          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-red-500/20 hover:bg-red-500/30 backdrop-blur-md border border-red-400/40 transition-all shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]"
         >
-          <Sparkles className="mr-2 h-4 w-4 md:h-5 md:w-5 opacity-50" />
-          <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Clear Data</span>
+          <Sparkles className="mr-2 h-4 w-4 md:h-5 md:w-5" />
+          <span className="text-red-100 font-bold">Clear Data</span>
         </Button>
         
         <Button
           onClick={onGeneratePDF}
-          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/30 opacity-50 transition-colors"
+          className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold bg-blue-500/20 hover:bg-blue-500/30 backdrop-blur-md border border-blue-400/40 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]"
         >
-          <Download className="mr-2 h-4 w-4 md:h-5 md:w-5 opacity-50" />
-          <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generate PDF</span>
+          <Download className="mr-2 h-4 w-4 md:h-5 md:w-5" />
+          <span className="text-blue-100 font-bold">Generate PDF</span>
         </Button>
       </div>
 
