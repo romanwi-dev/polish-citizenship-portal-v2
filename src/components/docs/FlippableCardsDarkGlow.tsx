@@ -57,7 +57,7 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
 
   return (
     <div className={cn(
-      "p-8 rounded-xl transition-all duration-700 relative",
+      "p-4 md:p-8 rounded-xl transition-all duration-700 relative w-full",
       allChecked 
         ? "bg-green-950/30 border border-green-500/30" 
         : "bg-gradient-to-br from-slate-950/40 to-indigo-950/30 border border-slate-700/20"
@@ -76,9 +76,9 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
         </h3>
       </div>
       
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
         {documents.map((doc) => (
-          <div key={doc.id} className="relative" style={{ aspectRatio: '1/1.414', maxWidth: '280px' }}>
+          <div key={doc.id} className="relative mx-auto w-full" style={{ aspectRatio: '1/1.414', maxWidth: 'min(100%, 280px)' }}>
             <div 
               className={cn(
                 "relative w-full h-full transition-transform duration-700",
