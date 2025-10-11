@@ -92,7 +92,7 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
                   "absolute inset-0 backdrop-blur-md rounded-xl p-5 flex flex-col cursor-pointer border transition-all",
                   doc.checked
                     ? "bg-green-950/60 border-green-500/50 shadow-[0_0_30px_rgba(34,197,94,0.4)]"
-                    : "bg-slate-900/20 border-slate-700/30 hover:border-primary/40 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]"
+                    : "bg-slate-900/50 border-slate-700/30 hover:border-primary/40 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]"
                 )}
                 style={{ backfaceVisibility: "hidden" }}
                 onClick={() => toggleFlip(doc.id)}
@@ -116,13 +116,9 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
                 <div className="flex-1" />
 
                 {/* Badges at bottom */}
-                <div className="flex gap-1.5 justify-center flex-wrap text-xs mt-auto">
-                  <div className="opacity-20">
-                    {getImportanceBadge(doc.importance)}
-                  </div>
-                  <div className="opacity-20">
-                    {getDifficultyBadge(doc.difficulty)}
-                  </div>
+                <div className="flex gap-1.5 justify-center flex-wrap text-xs mt-auto opacity-20">
+                  {getImportanceBadge(doc.importance)}
+                  {getDifficultyBadge(doc.difficulty)}
                 </div>
               </div>
 
