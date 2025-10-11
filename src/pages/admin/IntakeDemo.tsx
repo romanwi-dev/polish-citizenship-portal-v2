@@ -8,6 +8,11 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { RequiredDocumentsSection, DocumentItem } from "@/components/RequiredDocumentsSection";
+import { MinimalistCardsDocuments } from "@/components/docs/MinimalistCardsDocuments";
+import { KanbanBoardDocuments } from "@/components/docs/KanbanBoardDocuments";
+import { TimelineDocuments } from "@/components/docs/TimelineDocuments";
+import { GridMatrixDocuments } from "@/components/docs/GridMatrixDocuments";
+import { AccordionDocuments } from "@/components/docs/AccordionDocuments";
 
 export default function IntakeDemo() {
   const navigate = useNavigate();
@@ -214,12 +219,85 @@ export default function IntakeDemo() {
           </div>
         </div>
 
-        {/* Required Documents Design Comparison - MOVED TO TOP */}
-        <div className="space-y-6 border-2 border-primary/20 p-6 rounded-lg bg-card/50">
+        {/* NEW: 5 Completely Different Document Section Designs */}
+        <div className="space-y-8 border-2 border-primary/20 p-6 rounded-lg bg-card/50">
           <div>
-            <h2 className="text-3xl font-bold mb-2">Required Documents Design Comparison</h2>
-            <p className="text-muted-foreground">
-              Compare 5 different design approaches for the Required Documents section. All variants show completion status with green styling when all documents are checked.
+            <h2 className="text-4xl font-bold mb-3 text-primary">NEW: 5 Revolutionary Document Section Designs</h2>
+            <p className="text-muted-foreground text-lg">
+              Each design offers a completely unique approach to document management with different UX patterns, animations, and visual styles.
+            </p>
+          </div>
+
+          {/* Design 1: Minimalist Cards with Progress Ring */}
+          <div className="space-y-3">
+            <h3 className="text-2xl font-semibold text-primary/90">1. Minimalist Cards with Circular Progress</h3>
+            <p className="text-sm text-muted-foreground mb-4">Clean floating cards with animated circular progress ring and smooth transitions</p>
+            <MinimalistCardsDocuments
+              title="Required Documents"
+              documents={docsVariant1}
+              onChange={(id, checked) => handleDocChange(1, id, checked)}
+            />
+          </div>
+
+          <div className="border-t border-border my-8" />
+
+          {/* Design 2: Kanban Board Style */}
+          <div className="space-y-3">
+            <h3 className="text-2xl font-semibold text-primary/90">2. Kanban Board with Pending/Completed Columns</h3>
+            <p className="text-sm text-muted-foreground mb-4">Two-column layout that visually moves documents from pending to completed</p>
+            <KanbanBoardDocuments
+              title="Document Collection Status"
+              documents={docsVariant2}
+              onChange={(id, checked) => handleDocChange(2, id, checked)}
+            />
+          </div>
+
+          <div className="border-t border-border my-8" />
+
+          {/* Design 3: Timeline Checklist */}
+          <div className="space-y-3">
+            <h3 className="text-2xl font-semibold text-primary/90">3. Progressive Timeline Checklist</h3>
+            <p className="text-sm text-muted-foreground mb-4">Vertical timeline that fills progressively with gradient effects and step-by-step completion</p>
+            <TimelineDocuments
+              title="Document Collection Timeline"
+              documents={docsVariant3}
+              onChange={(id, checked) => handleDocChange(3, id, checked)}
+            />
+          </div>
+
+          <div className="border-t border-border my-8" />
+
+          {/* Design 4: Grid Matrix with Status Icons */}
+          <div className="space-y-3">
+            <h3 className="text-2xl font-semibold text-primary/90">4. Dense Grid Matrix with Live Statistics</h3>
+            <p className="text-sm text-muted-foreground mb-4">Compact 3-column grid with status icons, statistics dashboard, and hover effects</p>
+            <GridMatrixDocuments
+              title="Document Matrix"
+              documents={docsVariant4}
+              onChange={(id, checked) => handleDocChange(4, id, checked)}
+            />
+          </div>
+
+          <div className="border-t border-border my-8" />
+
+          {/* Design 5: Expandable Accordion */}
+          <div className="space-y-3">
+            <h3 className="text-2xl font-semibold text-primary/90">5. Collapsible Accordion with Categorized Folders</h3>
+            <p className="text-sm text-muted-foreground mb-4">Multi-level accordion with folder categories, completion tracking per section</p>
+            <AccordionDocuments
+              title="Document Collection Center"
+              documents={docsVariant5}
+              onChange={(id, checked) => handleDocChange(5, id, checked)}
+            />
+          </div>
+        </div>
+
+        {/* OLD: Required Documents Design Comparison */}
+        <div className="space-y-6 border-2 border-muted/20 p-6 rounded-lg bg-muted/5">
+          <div>
+            <h2 className="text-2xl font-bold mb-2 opacity-60">OLD: Previous Document Section Designs</h2>
+            <p className="text-muted-foreground text-sm">
+              Original design comparisons (kept for reference)
             </p>
           </div>
 
