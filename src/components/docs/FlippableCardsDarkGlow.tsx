@@ -98,16 +98,12 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
                 onClick={() => toggleFlip(doc.id)}
               >
                 {/* Title at top */}
-                <h4 className="text-lg font-black mb-3 text-center leading-tight font-heading text-foreground">
+                <h4 className="text-lg font-black mb-3 text-center leading-tight font-heading text-blue-400">
                   {doc.label}
                 </h4>
 
-                {/* Description in middle */}
-                <div className="flex-1 flex items-center justify-center px-2">
-                  <p className="text-xs text-muted-foreground text-center leading-relaxed">
-                    {doc.description || "Document required for citizenship application processing."}
-                  </p>
-                </div>
+                {/* Empty space in middle */}
+                <div className="flex-1" />
 
                 {/* Checkbox and badges at bottom */}
                 <div className="space-y-2 mt-auto">
