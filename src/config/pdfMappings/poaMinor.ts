@@ -11,10 +11,12 @@ export const POA_MINOR_PDF_MAP: Record<string, string> = {
   'applicant_surname': 'applicant_last_name',
   'passport_number': 'applicant_passport_number',
   
-  // Minor - 3 fields
+  // Minor - 2 fields
   'minor_given_names': 'child_1_first_name',
   'minor_surname': 'child_1_last_name',
-  'minor_date_of_birth': 'child_1_dob',
+  
+  // POA date - auto-filled
+  'poa_date': 'poa_date_filed',
 };
 
 export const POA_MINOR_REQUIRED_FIELDS = [
