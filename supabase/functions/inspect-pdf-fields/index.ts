@@ -18,8 +18,6 @@ serve(async (req) => {
       throw new Error('templateType is required');
     }
 
-    const origin = req.headers.get('origin') || 'https://98b4e1c7-7682-4f23-9f68-2a61bbec99a9.lovableproject.com';
-    
     const templateFileMap: Record<string, string> = {
       'poa-adult': 'poa-adult.pdf',
       'poa-minor': 'poa-minor.pdf',
@@ -35,15 +33,17 @@ serve(async (req) => {
       throw new Error(`Unknown template type: ${templateType}`);
     }
 
-    const templateUrl = `${origin}/templates/${templateFileName}`;
-    console.log(`Inspecting template from: ${templateUrl}`);
+    const templatePath = `./templates/${templateFileName}`;
+    console.log(`Inspecting template from: ${templatePath}`);
     
-    const templateResponse = await fetch(templateUrl);
-    if (!templateResponse.ok) {
-      throw new Error(`Failed to fetch template: ${templateResponse.statusText}`);
+    let templateBytes: Uint8Array;
+    try {
+      templateBytes = await Deno.readFile(templatePath);
+      console.log(`Loaded template: ${templatePath} (${templateBytes.length} bytes)`);
+    } catch (error) {
+      console.error(`Failed to load template: ${templatePath}`, error);
+      throw new Error(`Template not found: ${templateType}`);
     }
-    
-    const templateBytes = await templateResponse.arrayBuffer();
     const pdfDoc = await PDFDocument.load(templateBytes);
     const form = pdfDoc.getForm();
     
@@ -61,7 +61,7 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({
         templateType,
-        templateUrl,
+        templatePath,
         totalFields: fieldInfo.length,
         fields: fieldInfo,
       }, null, 2),
