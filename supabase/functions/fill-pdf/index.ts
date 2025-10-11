@@ -587,7 +587,8 @@ serve(async (req) => {
       }
     }
 
-    form.flatten();
+    // Keep form fields editable (do not flatten)
+    // form.flatten();
     
     const filledPdfBytes = await pdfDoc.save();
     
