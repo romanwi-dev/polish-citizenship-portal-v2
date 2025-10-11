@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { toast } from 'sonner';
-import { Upload, CheckCircle, XCircle, Loader2, Eye } from 'lucide-react';
+import { Upload, CheckCircle, XCircle, Loader2, Eye, Download } from 'lucide-react';
 
 const TEMPLATES = [
   { file: 'poa-adult', display: 'POA - Adult' },
@@ -62,7 +62,6 @@ export default function UploadPDFTemplates() {
   };
 
   const handlePreviewPDF = async (templateFile: string) => {
-    // Get public URL from Supabase Storage instead of public folder
     const { data } = supabase.storage
       .from('pdf-templates')
       .getPublicUrl(`${templateFile}.pdf`);
@@ -71,6 +70,31 @@ export default function UploadPDFTemplates() {
       window.open(data.publicUrl, '_blank');
     } else {
       toast.error('Could not load PDF preview');
+    }
+  };
+
+  const handleDownloadPDF = async (templateFile: string, displayName: string) => {
+    try {
+      const { data, error } = await supabase.storage
+        .from('pdf-templates')
+        .download(`${templateFile}.pdf`);
+
+      if (error) throw error;
+
+      // Create download link
+      const url = URL.createObjectURL(data);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${templateFile}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      toast.success(`Downloaded ${displayName}`);
+    } catch (error) {
+      console.error('Download error:', error);
+      toast.error(`Failed to download ${displayName}`);
     }
   };
 
@@ -114,11 +138,20 @@ export default function UploadPDFTemplates() {
                 <Button
                   variant="outline"
                   size="sm"
+                  onClick={() => handleDownloadPDF(template.file, template.display)}
+                  className="flex items-center gap-2"
+                >
+                  <Download className="h-4 w-4" />
+                  Download
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
                   onClick={() => handlePreviewPDF(template.file)}
                   className="flex items-center gap-2"
                 >
                   <Eye className="h-4 w-4" />
-                  Preview PDF
+                  Preview
                 </Button>
                 {results[template.file] === 'success' && (
                   <CheckCircle className="h-5 w-5 text-green-500" />
