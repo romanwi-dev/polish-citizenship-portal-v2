@@ -47,7 +47,7 @@ const HeroWeb3 = () => {
             </span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-muted-foreground font-light mb-16 leading-relaxed w-[95%] animate-fade-in mx-auto my-[65px] py-[10px]">
+          <p className="text-xl md:text-2xl text-muted-foreground font-light mb-16 leading-relaxed w-[95%] animate-fade-in my-[65px] py-[10px] mx-0">
             Expert legal guidance for people of Polish and Polish-Jewish descent from around the world for obtaining Polish citizenship and EU passports through Polish ancestry - unmatched success rate, true realistic timeline, transparent pricing
           </p>
           
@@ -71,7 +71,7 @@ const HeroWeb3 = () => {
           }, {
             value: "100%",
             label: "Unmatched Success Rate"
-              }].map((stat, i) => <div key={i} className="glass-card p-6 rounded-lg hover-glow w-full max-w-[280px] mx-auto md:max-w-none">
+          }].map((stat, i) => <div key={i} className="glass-card p-6 rounded-lg hover-glow w-full max-w-[280px] mx-auto md:max-w-none">
                 <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
                   {stat.value}
                 </div>
