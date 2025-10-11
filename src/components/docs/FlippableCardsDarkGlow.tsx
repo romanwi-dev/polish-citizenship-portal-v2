@@ -69,7 +69,7 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
             const updated = documents.map(doc => ({ ...doc, checked: checked as boolean }));
             onChange(updated);
           }}
-          className="scale-125"
+          className="scale-125 opacity-40"
         />
         <h3 className="text-5xl md:text-6xl font-black font-heading bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
           {title}
@@ -112,7 +112,7 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
                       checked={doc.checked}
                       onCheckedChange={(checked) => handleToggle(doc.id, checked as boolean)}
                       onClick={(e) => e.stopPropagation()}
-                      className="scale-110"
+                      className="scale-110 opacity-40"
                     />
                   </div>
                   <div className="flex gap-1.5 justify-center flex-wrap text-xs">
