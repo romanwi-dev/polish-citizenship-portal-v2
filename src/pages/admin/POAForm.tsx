@@ -157,8 +157,13 @@ export default function POAForm() {
     setIsGenerating(true);
     setActivePOAType(templateType.replace('poa-', ''));
     try {
-      // Save first
+      // Save first and wait for confirmation
+      toast.info('Saving changes...');
       await handleSave();
+      
+      // Give the database a moment to fully commit
+      await new Promise(resolve => setTimeout(resolve, 500));
+      toast.success('Saved! Generating PDF...');
 
       // Generate PDF
       const response = await fetch(
