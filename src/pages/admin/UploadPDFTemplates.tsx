@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { toast } from 'sonner';
 import { Upload, CheckCircle, XCircle, Loader2, Eye, Download } from 'lucide-react';
+import { PDFPreviewDialog } from '@/components/PDFPreviewDialog';
 
 const TEMPLATES = [
   { file: 'poa-adult', display: 'POA - Adult' },
@@ -18,6 +19,9 @@ const TEMPLATES = [
 export default function UploadPDFTemplates() {
   const [uploading, setUploading] = useState(false);
   const [results, setResults] = useState<Record<string, 'success' | 'error' | 'pending'>>({});
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState('');
+  const [previewTitle, setPreviewTitle] = useState('');
 
   const uploadAllTemplates = async () => {
     setUploading(true);
@@ -61,7 +65,7 @@ export default function UploadPDFTemplates() {
     toast.success('Upload process complete!');
   };
 
-  const handlePreviewPDF = async (templateFile: string) => {
+  const handlePreviewPDF = async (templateFile: string, displayName: string) => {
     const { data } = supabase.storage
       .from('pdf-templates')
       .getPublicUrl(`${templateFile}.pdf`);
@@ -69,7 +73,9 @@ export default function UploadPDFTemplates() {
     if (data?.publicUrl) {
       // Add timestamp to bypass browser cache
       const cacheBustedUrl = `${data.publicUrl}?t=${Date.now()}`;
-      window.open(cacheBustedUrl, '_blank');
+      setPreviewUrl(cacheBustedUrl);
+      setPreviewTitle(displayName);
+      setPreviewOpen(true);
     } else {
       toast.error('Could not load PDF preview');
     }
@@ -149,7 +155,7 @@ export default function UploadPDFTemplates() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => handlePreviewPDF(template.file)}
+                  onClick={() => handlePreviewPDF(template.file, template.display)}
                   className="flex items-center gap-2"
                 >
                   <Eye className="h-4 w-4" />
@@ -169,6 +175,19 @@ export default function UploadPDFTemplates() {
           ))}
         </div>
       </Card>
+
+      <PDFPreviewDialog
+        open={previewOpen}
+        onClose={() => setPreviewOpen(false)}
+        pdfUrl={previewUrl}
+        onDownload={() => {
+          const link = document.createElement('a');
+          link.href = previewUrl;
+          link.download = `${previewTitle}.pdf`;
+          link.click();
+        }}
+        documentTitle={previewTitle}
+      />
     </div>
   );
 }

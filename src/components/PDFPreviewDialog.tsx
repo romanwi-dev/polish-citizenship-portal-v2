@@ -8,8 +8,8 @@ interface PDFPreviewDialogProps {
   open: boolean;
   onClose: () => void;
   pdfUrl: string;
-  formData: any;
-  onRegeneratePDF: (updatedData: any) => Promise<void>;
+  formData?: any;
+  onRegeneratePDF?: (updatedData: any) => Promise<void>;
   onDownload: () => void;
   documentTitle: string;
 }
@@ -49,15 +49,17 @@ export function PDFPreviewDialog({
         <DialogHeader>
           <div className="flex items-center justify-between">
             <DialogTitle className="text-xl font-semibold">
-              {documentTitle} - Preview & Edit
+              {documentTitle} - Preview
             </DialogTitle>
             <Button variant="ghost" size="icon" onClick={onClose}>
               <X className="h-4 w-4" />
             </Button>
           </div>
-          <p className="text-sm text-muted-foreground mt-2">
-            Click on any field in the PDF below to edit it directly. When done, use Print or Download.
-          </p>
+          {formData && (
+            <p className="text-sm text-muted-foreground mt-2">
+              Click on any field in the PDF below to edit it directly. When done, use Print or Download.
+            </p>
+          )}
         </DialogHeader>
 
         <div className="flex-1 border rounded-lg overflow-hidden bg-muted/10">
