@@ -3,7 +3,7 @@
  * Fills PDF form fields based on a mapping configuration
  */
 
-import { formatFieldValue, getNestedValue } from './fieldFormatter.ts';
+import { formatFieldValue, getNestedValue, formatBoolean } from './fieldFormatter.ts';
 
 export interface FillResult {
   totalFields: number;
@@ -11,6 +11,64 @@ export interface FillResult {
   emptyFields: string[];
   errors: Array<{ field: string; error: string }>;
 }
+
+/**
+ * Check if a value is truthy for checkbox purposes
+ * FIXED: Comprehensive truthy value detection
+ */
+const isTruthyForCheckbox = (value: any): boolean => {
+  if (value === null || value === undefined || value === '') return false;
+  if (typeof value === 'boolean') return value;
+  
+  const stringValue = String(value).toLowerCase().trim();
+  return ['true', 'yes', '1', 'y', 'tak', 'checked', 'on'].includes(stringValue);
+};
+
+/**
+ * Extract name components from database column prefix
+ * FIXED: More robust name extraction with fallback strategies
+ */
+const extractNameComponents = (data: any, dbColumn: string): { firstName: string; lastName: string } => {
+  // Strategy 1: Try the direct mapping pattern (e.g., 'applicant_first_name' -> 'applicant')
+  let prefix = dbColumn.replace(/_first_name$/, '').replace(/_last_name$/, '');
+  
+  let firstName = data[`${prefix}_first_name`] || data[dbColumn] || '';
+  let lastName = data[`${prefix}_last_name`] || '';
+  
+  // Strategy 2: If no match, try extracting from the dbColumn directly
+  if (!firstName && !lastName) {
+    // Try to find any related first/last name in the data
+    const columnParts = dbColumn.split('_');
+    const possiblePrefix = columnParts[0]; // e.g., 'applicant', 'father', 'mother'
+    
+    firstName = data[`${possiblePrefix}_first_name`] || '';
+    lastName = data[`${possiblePrefix}_last_name`] || '';
+  }
+  
+  return { 
+    firstName: String(firstName).trim(), 
+    lastName: String(lastName).trim() 
+  };
+};
+
+/**
+ * Determine if a PDF field should be treated as a full name field
+ * FIXED: Better pattern detection for combined name fields
+ */
+const isFullNameField = (pdfFieldName: string): boolean => {
+  const lower = pdfFieldName.toLowerCase();
+  
+  // It's a full name if it contains 'name' but NOT 'first', 'last', 'maiden', or 'middle'
+  const hasName = lower.includes('name') || lower.includes('full');
+  const isNotComponent = !lower.includes('first') && 
+                         !lower.includes('last') && 
+                         !lower.includes('maiden') && 
+                         !lower.includes('middle') &&
+                         !lower.includes('given') &&
+                         !lower.includes('surname');
+  
+  return hasName && isNotComponent;
+};
 
 /**
  * Fill PDF form fields using a field mapping configuration
@@ -36,17 +94,18 @@ export const fillPDFFields = (
     result.totalFields++;
 
     try {
-      // Handle special combined name fields (e.g., 'applicantName' = first + last)
+      // Determine raw value based on field type
       let rawValue;
-      if (pdfFieldName.toLowerCase().includes('name') && 
-          !pdfFieldName.toLowerCase().includes('first') && 
-          !pdfFieldName.toLowerCase().includes('last') &&
-          !pdfFieldName.toLowerCase().includes('maiden')) {
+      
+      if (isFullNameField(pdfFieldName)) {
         // This is a combined name field - construct from first and last
-        const prefix = dbColumn.replace('_first_name', '');
-        const firstName = data[`${prefix}_first_name`] || data[dbColumn] || '';
-        const lastName = data[`${prefix}_last_name`] || '';
+        const { firstName, lastName } = extractNameComponents(data, dbColumn);
         rawValue = `${firstName} ${lastName}`.trim();
+        
+        // Log if we couldn't construct a name
+        if (!rawValue) {
+          console.log(`⚠️ Could not construct full name for ${pdfFieldName} from ${dbColumn}`);
+        }
       } else {
         // Get value from database (supports nested JSONB with dot notation)
         rawValue = getNestedValue(data, dbColumn);
@@ -65,40 +124,41 @@ export const fillPDFFields = (
         continue;
       }
 
-      // Try to get the field from the form
+      // Try to fill the field in the PDF
       try {
-        const field = form.getTextField(pdfFieldName);
-        if (field) {
-          field.setText(formattedValue);
+        // Try text field first
+        const textField = form.getTextField(pdfFieldName);
+        if (textField) {
+          textField.setText(formattedValue);
           result.filledFields++;
-        } else {
-          // Try as checkbox
-          try {
-            const checkboxField = form.getCheckBox(pdfFieldName);
-            if (checkboxField) {
-              if (rawValue === true || rawValue === 'true' || rawValue === 'Yes') {
-                checkboxField.check();
-              }
-              result.filledFields++;
-            } else {
-              result.errors.push({
-                field: pdfFieldName,
-                error: 'Field not found in PDF',
-              });
-            }
-          } catch (e) {
-            result.errors.push({
-              field: pdfFieldName,
-              error: 'Field not found in PDF',
-            });
-          }
+          continue;
         }
-      } catch (error) {
-        result.errors.push({
-          field: pdfFieldName,
-          error: error instanceof Error ? error.message : 'Unknown error',
-        });
+      } catch (e) {
+        // Not a text field, try checkbox
       }
+      
+      // Try checkbox field
+      try {
+        const checkboxField = form.getCheckBox(pdfFieldName);
+        if (checkboxField) {
+          if (isTruthyForCheckbox(rawValue)) {
+            checkboxField.check();
+          } else {
+            checkboxField.uncheck();
+          }
+          result.filledFields++;
+          continue;
+        }
+      } catch (e) {
+        // Not a checkbox either
+      }
+      
+      // Field not found in PDF template
+      result.errors.push({
+        field: pdfFieldName,
+        error: `Field "${pdfFieldName}" not found in PDF template`,
+      });
+      
     } catch (error) {
       result.errors.push({
         field: pdfFieldName,
