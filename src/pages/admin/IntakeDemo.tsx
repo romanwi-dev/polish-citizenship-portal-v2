@@ -13,6 +13,11 @@ import { KanbanBoardDocuments } from "@/components/docs/KanbanBoardDocuments";
 import { TimelineDocuments } from "@/components/docs/TimelineDocuments";
 import { GridMatrixDocuments } from "@/components/docs/GridMatrixDocuments";
 import { AccordionDocuments } from "@/components/docs/AccordionDocuments";
+import { TwoColumnClassic } from "@/components/docs/TwoColumnClassic";
+import { TwoColumnModern } from "@/components/docs/TwoColumnModern";
+import { TwoColumnCompact } from "@/components/docs/TwoColumnCompact";
+import { TwoColumnElegant } from "@/components/docs/TwoColumnElegant";
+import { TwoColumnBold } from "@/components/docs/TwoColumnBold";
 
 export default function IntakeDemo() {
   const navigate = useNavigate();
@@ -288,6 +293,79 @@ export default function IntakeDemo() {
               title="Document Collection Center"
               documents={docsVariant5}
               onChange={(id, checked) => handleDocChange(5, id, checked)}
+            />
+          </div>
+        </div>
+
+        {/* NEW: 5 Two-Column Designs with Dark Green Completion */}
+        <div className="space-y-8 border-2 border-primary/20 p-6 rounded-lg bg-card/50">
+          <div>
+            <h2 className="text-4xl font-bold mb-3 text-primary">NEW: Two-Column Layouts with Dark Green Completion</h2>
+            <p className="text-muted-foreground text-lg">
+              All designs feature 2 documents per row and transform to dark green background when completed.
+            </p>
+          </div>
+
+          {/* Design 6: Classic Two-Column */}
+          <div className="space-y-3">
+            <h3 className="text-2xl font-semibold text-primary/90">6. Classic Two-Column with Master Checkbox</h3>
+            <p className="text-sm text-muted-foreground mb-4">Clean and straightforward design with dark green completion state</p>
+            <TwoColumnClassic
+              title="Required Documents"
+              documents={docsVariant6}
+              onChange={(id, checked) => handleDocChange(6, id, checked)}
+            />
+          </div>
+
+          <div className="border-t border-border my-8" />
+
+          {/* Design 7: Modern Two-Column */}
+          <div className="space-y-3">
+            <h3 className="text-2xl font-semibold text-primary/90">7. Modern Two-Column with Gradient Effects</h3>
+            <p className="text-sm text-muted-foreground mb-4">Gradient backgrounds and smooth animations with emerald completion glow</p>
+            <TwoColumnModern
+              title="Document Checklist"
+              documents={docsVariant7}
+              onChange={(id, checked) => handleDocChange(7, id, checked)}
+            />
+          </div>
+
+          <div className="border-t border-border my-8" />
+
+          {/* Design 8: Compact Two-Column */}
+          <div className="space-y-3">
+            <h3 className="text-2xl font-semibold text-primary/90">8. Compact Two-Column with Progress Badge</h3>
+            <p className="text-sm text-muted-foreground mb-4">Space-efficient design with completion counter and dark green success state</p>
+            <TwoColumnCompact
+              title="Documents Required"
+              documents={docsVariant8}
+              onChange={(id, checked) => handleDocChange(8, id, checked)}
+            />
+          </div>
+
+          <div className="border-t border-border my-8" />
+
+          {/* Design 9: Elegant Two-Column */}
+          <div className="space-y-3">
+            <h3 className="text-2xl font-semibold text-primary/90">9. Elegant Two-Column with Decorative Effects</h3>
+            <p className="text-sm text-muted-foreground mb-4">Sophisticated design with radial gradients and green emerald completion</p>
+            <TwoColumnElegant
+              title="Documentation Center"
+              documents={docsVariant9}
+              onChange={(id, checked) => handleDocChange(9, id, checked)}
+            />
+          </div>
+
+          <div className="border-t border-border my-8" />
+
+          {/* Design 10: Bold Two-Column */}
+          <div className="space-y-3">
+            <h3 className="text-2xl font-semibold text-primary/90">10. Bold Two-Column with Achievement Style</h3>
+            <p className="text-sm text-muted-foreground mb-4">Strong typography with progress bar and bold green completion with award icon</p>
+            <TwoColumnBold
+              title="Document Collection"
+              documents={docsVariant10}
+              onChange={(id, checked) => handleDocChange(10, id, checked)}
             />
           </div>
         </div>
