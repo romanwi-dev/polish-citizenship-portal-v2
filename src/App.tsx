@@ -35,6 +35,7 @@ const AuthorityReview = lazy(() => import("./pages/admin/AuthorityReview"));
 const SystemHealth = lazy(() => import("./pages/admin/SystemHealth"));
 const PDFInspector = lazy(() => import("./pages/admin/PDFInspector"));
 const PDFFieldInspector = lazy(() => import("./pages/admin/PDFFieldInspector"));
+const ZeroErrorsChecklist = lazy(() => import("./pages/admin/ZeroErrorsChecklist"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -234,6 +235,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <PDFFieldInspector />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/zero-errors-checklist" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <ZeroErrorsChecklist />
               </Suspense>
             } 
           />
