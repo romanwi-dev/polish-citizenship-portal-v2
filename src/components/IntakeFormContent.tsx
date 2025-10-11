@@ -51,7 +51,7 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="space-y-2" onDoubleClick={() => clearField("applicant_is_married")}>
-          <Label className={isLargeFonts ? "text-2xl" : ""}>Civil status</Label>
+          <Label className={isLargeFonts ? "text-2xl" : ""}>Marital status</Label>
           <Select value={formData?.applicant_is_married === true ? "Married" : "Single"} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
             <SelectTrigger 
               className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur"
@@ -142,11 +142,11 @@ export const ApplicantSection = ({ formData, handleInputChange, clearField, isLa
     <CardContent className="p-3 md:p-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="space-y-2" onDoubleClick={() => clearField("applicant_first_name")}>
-          <Label className={isLargeFonts ? "text-2xl" : ""}>Given names</Label>
+          <Label className={isLargeFonts ? "text-2xl" : ""}>First name</Label>
           <Input value={formData?.applicant_first_name || ""} onChange={(e) => handleInputChange("applicant_first_name", e.target.value.toUpperCase())} className="uppercase" />
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="space-y-2" onDoubleClick={() => clearField("applicant_last_name")}>
-          <Label className={isLargeFonts ? "text-2xl" : ""}>Full last name</Label>
+          <Label className={isLargeFonts ? "text-2xl" : ""}>Last name</Label>
           <Input value={formData?.applicant_last_name || ""} onChange={(e) => handleInputChange("applicant_last_name", e.target.value.toUpperCase())} className="uppercase" />
         </motion.div>
       </div>
