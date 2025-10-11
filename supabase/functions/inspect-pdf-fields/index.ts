@@ -39,10 +39,18 @@ serve(async (req) => {
     let templateBytes: Uint8Array;
     try {
       templateBytes = await Deno.readFile(templatePath);
-      console.log(`Loaded template: ${templatePath} (${templateBytes.length} bytes)`);
+      console.log(`✅ Loaded template: ${templatePath} (${templateBytes.length} bytes)`);
+      
+      // Verify it's a valid PDF
+      const pdfHeader = new TextDecoder().decode(templateBytes.slice(0, 8));
+      console.log(`PDF Header: ${pdfHeader}`);
+      
+      if (!pdfHeader.startsWith('%PDF-')) {
+        throw new Error(`Invalid PDF file: header is "${pdfHeader}" instead of "%PDF-"`);
+      }
     } catch (error) {
-      console.error(`Failed to load template: ${templatePath}`, error);
-      throw new Error(`Template not found: ${templateType}`);
+      console.error(`❌ Failed to load template: ${templatePath}`, error);
+      throw new Error(`Template not found or invalid: ${templateType} - ${(error as Error).message}`);
     }
     const pdfDoc = await PDFDocument.load(templateBytes);
     const form = pdfDoc.getForm();
