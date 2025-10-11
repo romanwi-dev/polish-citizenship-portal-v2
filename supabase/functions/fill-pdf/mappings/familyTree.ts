@@ -112,6 +112,10 @@ export const FAMILY_TREE_PDF_MAP: Record<string, string> = {
   'mggm_place_of_birth': 'mggm_pob',
   'mggm_date_of_emigration': 'mggm_date_of_emigration',
   'mggm_date_of_naturalization': 'mggm_date_of_naturalization',
+  
+  // NEW: Missing PDF fields from inspector
+  'polish_grandparent_date_of_marriage': 'pgf_pgm_marriage_date',
+  'polish_parent_place_of_marriage': 'father_mother_marriage_place',
 };
 
 export const FAMILY_TREE_REQUIRED_FIELDS = [

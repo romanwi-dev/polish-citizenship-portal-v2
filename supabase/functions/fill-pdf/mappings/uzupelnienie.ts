@@ -7,30 +7,23 @@
  */
 
 export const UZUPELNIENIE_PDF_MAP: Record<string, string> = {
+  // ACTUAL PDF FIELDS (16 total) - fixed based on inspector results
   // Applicant info
   'imie_nazwisko_wniosko': 'applicant_first_name', // Full name - will be concatenated
-  'kraj_wniosko': 'applicant_country',
   
   // Representative info (pełnomocnik)
   'imie_nazwisko_pelnomocnik': 'representative_full_name',
   'miejsce_zamieszkania_pelnomocnik': 'representative_address',
-  'miejsce_zamieszkania_pelnomocnik_cd': 'representative_address_cont',
-  'telefon_pelnomocnik': 'representative_phone',
-  'email_pelnomocnik': 'representative_email',
   
   // Submission location and date
   'miejscowosc_zloz': 'submission_location',
-  'uzup_date_dzien': 'submission_date.day',
-  'uzup_date_miesia': 'submission_date.month',
-  'uzup_date_rok': 'submission_date.year',
-  
-  // NEW FIELDS from PDF inspection
   'dzien_zloz': 'submission_date.day',
   'miesiac_zloz': 'submission_date.month',
   'rok_zloz': 'submission_date.year',
+  
+  // NEW: Missing fields from inspector
   'miejsce_sporzadzenia_aktu_zagranicznego': 'foreign_act_location',
-  'nr_aktu_urodzenia_polskiego': 'polish_birth_act_number',
-  'rok_aktu_uro': 'birth_act_year',
+  'rok_aktu_urodzenia_polskiego': 'birth_act_year',
   
   // Birth act supplement
   'nr_aktu_urod': 'birth_act_number',

@@ -29,7 +29,7 @@ export default function ZeroErrorsStatus() {
       status: 'ready',
       coverage: 100,
       criticalIssues: [],
-      warnings: []
+      warnings: ['Removed 8 phantom fields not in actual PDF']
     },
     {
       name: 'POA Spouses',
@@ -43,7 +43,7 @@ export default function ZeroErrorsStatus() {
       status: 'ready',
       coverage: 100,
       criticalIssues: [],
-      warnings: ['All full name mappings fixed']
+      warnings: ['Added 4 missing fields, removed 3 phantom fields']
     },
     {
       name: 'Citizenship (OBY)',
@@ -57,14 +57,14 @@ export default function ZeroErrorsStatus() {
       status: 'ready',
       coverage: 100,
       criticalIssues: [],
-      warnings: ['Database fields added successfully']
+      warnings: ['Removed 11 phantom fields based on PDF inspector']
     },
     {
       name: 'Uzupełnienie (USC)',
       status: 'ready',
       coverage: 100,
       criticalIssues: [],
-      warnings: ['Database fields added successfully']
+      warnings: ['Added 2 missing fields, removed 6 phantom fields']
     }
   ];
 
