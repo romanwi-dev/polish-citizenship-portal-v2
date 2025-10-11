@@ -667,29 +667,29 @@ export default function FamilyTreeForm() {
                   </motion.div>
                 </div>
 
-                {/* Row 3: Birth fields */}
+                {/* Row 3: Places - Birth & Marriage */}
                 {renderFieldGroup([{
                   name: "applicant_pob",
                   label: "Place of birth",
                   isNameField: true
                 }, {
-                  name: "applicant_dob",
-                  label: "Date of birth",
-                  type: "date"
-                }])}
-
-                {/* Row 4: Marriage fields (conditional) */}
-                {formData.applicant_is_married && renderFieldGroup([{
                   name: "place_of_marriage",
                   label: "Place of marriage",
                   isNameField: true
+                }])}
+
+                {/* Row 4: Dates - Birth & Marriage */}
+                {renderFieldGroup([{
+                  name: "applicant_dob",
+                  label: "Date of birth",
+                  type: "date"
                 }, {
                   name: "date_of_marriage",
                   label: "Date of marriage",
                   type: "date"
                 }])}
 
-                {/* Row 5: Emigration and Naturalization */}
+                {/* Row 5: Dates - Emigration & Naturalization */}
                 {renderFieldGroup([{
                   name: "applicant_date_of_emigration",
                   label: "Date of emigration",
@@ -770,19 +770,19 @@ export default function FamilyTreeForm() {
                     ]}
                   ])}
 
-                  {/* Birth info */}
+                  {/* Places: Birth & Marriage */}
                   {renderFieldGroup([
                     { name: "spouse_pob", label: "Place of birth", isNameField: true },
-                    { name: "spouse_dob", label: "Date of birth", type: "date" }
+                    { name: "place_of_marriage", label: "Place of marriage", isNameField: true }
                   ])}
 
-                  {/* Marriage */}
+                  {/* Dates: Birth & Marriage */}
                   {renderFieldGroup([
-                    { name: "place_of_marriage", label: "Place of marriage", isNameField: true },
+                    { name: "spouse_dob", label: "Date of birth", type: "date" },
                     { name: "date_of_marriage", label: "Date of marriage", type: "date" }
                   ])}
 
-                  {/* Emigration and Naturalization */}
+                  {/* Dates: Emigration & Naturalization */}
                   {renderFieldGroup([
                     { name: "spouse_date_of_emigration", label: "Date of emigration", type: "date" },
                     { name: "spouse_date_of_naturalization", label: "Date of naturalization", type: "date" }
@@ -951,20 +951,16 @@ export default function FamilyTreeForm() {
                     isNameField: true
                   }])}
 
-                    {/* 2nd row - Places and emigration */}
+                    {/* 2nd row - Places: Birth & Marriage */}
                     {renderFieldGroup([{
                     name: "father_pob",
                     label: "Place of birth"
                   }, {
                     name: "father_mother_marriage_place",
                     label: "Place of marriage"
-                  }, {
-                    name: "father_date_of_emigration",
-                    label: "Date of emigration",
-                    type: "date"
                   }])}
 
-                    {/* 3rd row - Dates */}
+                    {/* 3rd row - Dates: Birth & Marriage */}
                     {renderFieldGroup([{
                     name: "father_dob",
                     label: "Date of birth",
@@ -972,6 +968,13 @@ export default function FamilyTreeForm() {
                   }, {
                     name: "father_mother_marriage_date",
                     label: "Date of marriage",
+                    type: "date"
+                  }])}
+
+                    {/* 4th row - Dates: Emigration & Naturalization */}
+                    {renderFieldGroup([{
+                    name: "father_date_of_emigration",
+                    label: "Date of emigration",
                     type: "date"
                   }, {
                     name: "father_date_of_naturalization",
@@ -1035,20 +1038,16 @@ export default function FamilyTreeForm() {
                     isNameField: true
                   }])}
 
-                    {/* 2nd row - Places and emigration */}
+                    {/* 2nd row - Places: Birth & Marriage */}
                     {renderFieldGroup([{
                     name: "mother_pob",
                     label: "Place of birth"
                   }, {
                     name: "father_mother_marriage_place",
                     label: "Place of marriage"
-                  }, {
-                    name: "mother_date_of_emigration",
-                    label: "Date of emigration",
-                    type: "date"
                   }])}
 
-                    {/* 3rd row - Dates */}
+                    {/* 3rd row - Dates: Birth & Marriage */}
                     {renderFieldGroup([{
                     name: "mother_dob",
                     label: "Date of birth",
@@ -1056,6 +1055,13 @@ export default function FamilyTreeForm() {
                   }, {
                     name: "father_mother_marriage_date",
                     label: "Date of marriage",
+                    type: "date"
+                  }])}
+
+                    {/* 4th row - Dates: Emigration & Naturalization */}
+                    {renderFieldGroup([{
+                    name: "mother_date_of_emigration",
+                    label: "Date of emigration",
                     type: "date"
                   }, {
                     name: "mother_date_of_naturalization",
@@ -1150,20 +1156,16 @@ export default function FamilyTreeForm() {
                       isNameField: true
                     }] : [])])}
 
-                        {/* 2nd row - Places and emigration */}
+                        {/* 2nd row - Places: Birth & Marriage */}
                         {renderFieldGroup([{
                       name: `${prefix}_pob`,
                       label: "Place of birth"
                     }, {
                       name: `${prefix === 'pgf' || prefix === 'pgm' ? 'pgf_pgm_marriage_place' : 'mgf_mgm_marriage_place'}`,
                       label: "Place of marriage"
-                    }, {
-                      name: `${prefix}_date_of_emigration`,
-                      label: "Date of emigration",
-                      type: "date"
                     }])}
 
-                        {/* 3rd row - Dates */}
+                        {/* 3rd row - Dates: Birth & Marriage */}
                         {renderFieldGroup([{
                       name: `${prefix}_dob`,
                       label: "Date of birth",
@@ -1171,6 +1173,13 @@ export default function FamilyTreeForm() {
                     }, {
                       name: `${prefix === 'pgf' || prefix === 'pgm' ? 'pgf_pgm_marriage_date' : 'mgf_mgm_marriage_date'}`,
                       label: "Date of marriage",
+                      type: "date"
+                    }])}
+
+                        {/* 4th row - Dates: Emigration & Naturalization */}
+                        {renderFieldGroup([{
+                      name: `${prefix}_date_of_emigration`,
+                      label: "Date of emigration",
                       type: "date"
                     }, {
                       name: `${prefix}_date_of_naturalization`,
@@ -1239,21 +1248,49 @@ export default function FamilyTreeForm() {
                         </CardTitle>
                       </CardHeader>
                       <CardContent className="p-6 md:p-8 space-y-8">
+                        {/* 1st row - Names */}
                         {renderFieldGroup([{
                       name: `${prefix}_first_name`,
-                      label: "Given names / Imię/ imiona"
+                      label: "Given names / Imię/ imiona",
+                      isNameField: true
                     }, {
                       name: `${prefix}_last_name`,
-                      label: "Full last name / Nazwisko"
+                      label: "Full last name / Nazwisko",
+                      isNameField: true
                     }, ...(prefix.includes("ggm") ? [{
                       name: `${prefix}_maiden_name`,
-                      label: "Maiden name"
-                    }] : []), {
+                      label: "Maiden name",
+                      isNameField: true
+                    }] : [])])}
+
+                        {/* 2nd row - Places: Birth & Marriage */}
+                        {renderFieldGroup([{
                       name: `${prefix}_pob`,
                       label: "Place of birth"
                     }, {
+                      name: `${prefix === 'pggf' || prefix === 'pggm' ? 'pggf_pggm_marriage_place' : 'mggf_mggm_marriage_place'}`,
+                      label: "Place of marriage"
+                    }])}
+
+                        {/* 3rd row - Dates: Birth & Marriage */}
+                        {renderFieldGroup([{
                       name: `${prefix}_dob`,
                       label: "Date of birth",
+                      type: "date"
+                    }, {
+                      name: `${prefix === 'pggf' || prefix === 'pggm' ? 'pggf_pggm_marriage_date' : 'mggf_mggm_marriage_date'}`,
+                      label: "Date of marriage",
+                      type: "date"
+                    }])}
+
+                        {/* 4th row - Dates: Emigration & Naturalization */}
+                        {renderFieldGroup([{
+                      name: `${prefix}_date_of_emigration`,
+                      label: "Date of emigration",
+                      type: "date"
+                    }, {
+                      name: `${prefix}_date_of_naturalization`,
+                      label: "Date of naturalization",
                       type: "date"
                     }])}
                         <div className="space-y-2">
