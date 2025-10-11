@@ -19,6 +19,7 @@ export const FAMILY_TREE_PDF_MAP: Record<string, string> = {
   
   // Polish parent info
   'polish_parent_full_name': 'father_first_name',
+  'polish_parent_spouse_full_name': 'mother_first_name',
   'polish_parent_date_of_birth': 'father_dob',
   'polish_parent_place_of_birth': 'father_pob',
   'polish_parent_date_of_marriage': 'father_mother_marriage_date',

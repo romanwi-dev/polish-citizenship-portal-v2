@@ -39,6 +39,7 @@ export const FAMILY_TREE_PDF_MAP: Record<string, string> = {
   
   // Polish parent aliases
   'polish_parent_place_of_marriage': 'father_mother_marriage_place',
+  'polish_parent_spouse_full_name': 'mother_first_name',
   
   // Mother
   'mother_full_name': 'mother_first_name',

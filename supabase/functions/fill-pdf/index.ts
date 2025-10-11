@@ -392,6 +392,7 @@ const FAMILY_TREE_PDF_MAP: Record<string, string> = {
   'father_date_of_emigration': 'father_date_of_emigration',
   'father_date_of_naturalization': 'father_date_of_naturalization',
   'polish_parent_place_of_marriage': 'father_mother_marriage_place',
+  'polish_parent_spouse_full_name': 'mother_first_name',
   'mother_full_name': 'mother_first_name',
   'mother_maiden_name': 'mother_maiden_name',
   'mother_date_of_birth': 'mother_dob',
