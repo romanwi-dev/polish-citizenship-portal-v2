@@ -61,8 +61,17 @@ export default function UploadPDFTemplates() {
     toast.success('Upload process complete!');
   };
 
-  const handlePreviewPDF = (templateFile: string) => {
-    window.open(`/templates/${templateFile}.pdf`, '_blank');
+  const handlePreviewPDF = async (templateFile: string) => {
+    // Get public URL from Supabase Storage instead of public folder
+    const { data } = supabase.storage
+      .from('pdf-templates')
+      .getPublicUrl(`${templateFile}.pdf`);
+    
+    if (data?.publicUrl) {
+      window.open(data.publicUrl, '_blank');
+    } else {
+      toast.error('Could not load PDF preview');
+    }
   };
 
   return (
