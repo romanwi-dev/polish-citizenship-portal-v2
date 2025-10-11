@@ -163,9 +163,9 @@ export const ApplicantSection = ({ formData, handleInputChange, clearField, isLa
           <Label className={isLargeFonts ? "text-2xl" : ""}>Place of birth</Label>
           <Input value={formData?.applicant_pob || ""} onChange={(e) => handleInputChange("applicant_pob", e.target.value.toUpperCase())} className="uppercase" />
         </motion.div>
-        <div className="mt-0">
-          <DateField name="applicant_dob" label="Date of birth" value={formData?.applicant_dob} onChange={(value) => handleInputChange("applicant_dob", value)} />
-        </div>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="space-y-2">
+          <DateField name="applicant_dob" label="Date of birth" value={formData?.applicant_dob} onChange={(value) => handleInputChange("applicant_dob", value)} delay={0} />
+        </motion.div>
       </div>
 
       {formData?.applicant_is_married && (
@@ -174,9 +174,9 @@ export const ApplicantSection = ({ formData, handleInputChange, clearField, isLa
             <Label className={isLargeFonts ? "text-2xl" : ""}>Place of marriage</Label>
             <Input value={formData?.place_of_marriage || ""} onChange={(e) => handleInputChange("place_of_marriage", e.target.value.toUpperCase())} className="uppercase" />
           </motion.div>
-          <div className="mt-0">
-            <DateField name="date_of_marriage" label="Date of marriage" value={formData?.date_of_marriage} onChange={(value) => handleInputChange("date_of_marriage", value)} />
-          </div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
+            <DateField name="date_of_marriage" label="Date of marriage" value={formData?.date_of_marriage} onChange={(value) => handleInputChange("date_of_marriage", value)} delay={0} />
+          </motion.div>
         </div>
       )}
 
