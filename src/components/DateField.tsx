@@ -52,47 +52,54 @@ export function DateField({
       transition={{ delay, duration: 0.4 }}
       className="space-y-2 w-full"
     >
-      <div className="flex items-center justify-between">
-        <Label htmlFor={name} className={isLargeFonts ? "text-2xl" : ""}>
+      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 w-full">
+        <Label htmlFor={name} className={cn(
+          "sm:min-w-[200px]",
+          isLargeFonts ? "text-2xl" : ""
+        )}>
           {label} {required && <span className="text-destructive">*</span>}
         </Label>
-        {showNotApplicable && (
-          <div className="flex items-center gap-2">
-            <Checkbox
-              id={`${name}-na`}
-              checked={notApplicableValue}
-              onCheckedChange={(checked) => {
-                onNotApplicableChange?.(checked as boolean);
-                if (checked) {
-                  onChange("");
-                }
-              }}
-              className="border-cyan-600"
-            />
-            <Label 
-              htmlFor={`${name}-na`} 
-              className="text-sm text-muted-foreground cursor-pointer"
-            >
-              N/A
-            </Label>
-          </div>
-        )}
+        
+        <div className="flex-1 flex items-center gap-2 w-full">
+          <Input
+            id={name}
+            type="text"
+            value={value || ""}
+            onChange={(e) => handleChange(e.target.value)}
+            placeholder="DD.MM.YYYY"
+            maxLength={10}
+            disabled={notApplicableValue}
+            className={cn(
+              "h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur font-normal placeholder:opacity-40 text-lg font-input-work w-full max-w-full flex-1",
+              isLargeFonts && "text-2xl",
+              error && "border-destructive",
+              notApplicableValue && "bg-cyan-950/30 border-cyan-700 text-cyan-300 cursor-not-allowed"
+            )}
+          />
+          
+          {showNotApplicable && (
+            <div className="flex items-center gap-2 shrink-0">
+              <Checkbox
+                id={`${name}-na`}
+                checked={notApplicableValue}
+                onCheckedChange={(checked) => {
+                  onNotApplicableChange?.(checked as boolean);
+                  if (checked) {
+                    onChange("");
+                  }
+                }}
+                className="border-cyan-600"
+              />
+              <Label 
+                htmlFor={`${name}-na`} 
+                className="text-sm text-muted-foreground cursor-pointer whitespace-nowrap"
+              >
+                N/A
+              </Label>
+            </div>
+          )}
+        </div>
       </div>
-      <Input
-        id={name}
-        type="text"
-        value={value || ""}
-        onChange={(e) => handleChange(e.target.value)}
-        placeholder="DD.MM.YYYY"
-        maxLength={10}
-        disabled={notApplicableValue}
-        className={cn(
-          "h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur font-normal placeholder:opacity-40 text-lg font-input-work w-full max-w-full",
-          isLargeFonts && "text-2xl",
-          error && "border-destructive",
-          notApplicableValue && "bg-cyan-950/30 border-cyan-700 text-cyan-300 cursor-not-allowed"
-        )}
-      />
       {error && (
         <p className="text-sm text-destructive">{error}</p>
       )}
