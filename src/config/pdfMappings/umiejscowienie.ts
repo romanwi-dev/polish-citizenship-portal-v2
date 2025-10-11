@@ -2,6 +2,8 @@
  * PDF Field Mappings for Umiejscowienie (Civil Registry Entry) Template
  * Maps database columns from master_table to PDF form field names
  * Request for entry of foreign civil registry acts into Polish registry
+ * 
+ * ACTUAL PDF FIELDS (26 total) - Added 12 unmapped fields
  */
 
 export const UMIEJSCOWIENIE_PDF_MAP: Record<string, string> = {
@@ -21,6 +23,22 @@ export const UMIEJSCOWIENIE_PDF_MAP: Record<string, string> = {
   'sub_date_dzien': 'submission_date.day',
   'sub_date_miesia': 'submission_date.month',
   'sub_date_rok': 'submission_date.year',
+  
+  // NEW FIELDS from PDF inspection
+  'dzien_zloz': 'submission_date.day',
+  'miesiac_zloz': 'submission_date.month',
+  'rok_zloz': 'submission_date.year',
+  'wyslanie': 'sending_method',
+  'akt_uro': 'birth_act_checkbox',
+  'akt_malz': 'marriage_act_checkbox',
+  
+  // Civil registry details
+  'dzien_malzenstwa_wniosko': 'marriage_date.day',
+  'miesiac_malzenstwa_wniosko': 'marriage_date.month',
+  'rok_malzenstwa_wniosko': 'marriage_date.year',
+  'rok_urodzenia': 'birth_year',
+  'miesiac_urodzenia': 'birth_month',
+  'dzien_urodzenia': 'birth_day',
   
   // Birth act (akt urodzenia) fields
   'akt_uro_checkbox': 'act_type_birth',
