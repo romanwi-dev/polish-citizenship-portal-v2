@@ -20,7 +20,7 @@ interface IntakeFormContentProps {
 export const SelectSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
   <>
     <CardHeader className="border-b border-border/50 pb-6">
-      <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+      <CardTitle className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
         First Questions
       </CardTitle>
     </CardHeader>
@@ -91,7 +91,7 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
 export const ApplicantSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
   <>
     <CardHeader className="border-b border-border/50 pb-6">
-      <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+      <CardTitle className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
         Applicant Information
       </CardTitle>
     </CardHeader>
@@ -143,7 +143,7 @@ export const ApplicantSection = ({ formData, handleInputChange, clearField, isLa
 export const ContactSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
   <>
     <CardHeader className="border-b border-border/50 pb-6">
-      <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+      <CardTitle className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
         Contact Information
       </CardTitle>
     </CardHeader>
@@ -165,7 +165,7 @@ export const ContactSection = ({ formData, handleInputChange, clearField, isLarg
 export const AddressSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
   <>
     <CardHeader className="border-b border-border/50 pb-6">
-      <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+      <CardTitle className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
         Address Information
       </CardTitle>
     </CardHeader>
@@ -202,7 +202,7 @@ export const AddressSection = ({ formData, handleInputChange, clearField, isLarg
 export const PassportSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
   <>
     <CardHeader className="border-b border-border/50 pb-6">
-      <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+      <CardTitle className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
         Passport Information
       </CardTitle>
     </CardHeader>
@@ -221,7 +221,7 @@ export const PassportSection = ({ formData, handleInputChange, clearField, isLar
 export const ImmigrationSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
   <>
     <CardHeader className="border-b border-border/50 pb-6">
-      <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+      <CardTitle className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
         Emigration Information
       </CardTitle>
     </CardHeader>
@@ -303,7 +303,7 @@ export const DocumentsSection = ({ formData, handleInputChange, clearField, isLa
   return (
     <>
       <CardHeader className="border-b border-border/50 pb-6">
-        <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+        <CardTitle className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
           Required Documents
         </CardTitle>
       </CardHeader>
@@ -321,7 +321,7 @@ export const DocumentsSection = ({ formData, handleInputChange, clearField, isLa
 export const NotesSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
   <>
     <CardHeader className="border-b border-border/50 pb-6">
-      <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+      <CardTitle className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
         Additional Notes
       </CardTitle>
     </CardHeader>
