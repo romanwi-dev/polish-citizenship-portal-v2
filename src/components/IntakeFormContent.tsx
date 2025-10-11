@@ -24,8 +24,8 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
         First Questions
       </CardTitle>
     </CardHeader>
-    <CardContent className="p-6 md:p-10">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    <CardContent className="p-3 md:p-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-2" onDoubleClick={() => clearField("applicant_sex")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Gender</Label>
           <Select value={formData?.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
@@ -139,8 +139,8 @@ export const ApplicantSection = ({ formData, handleInputChange, clearField, isLa
         Applicant Information
       </CardTitle>
     </CardHeader>
-    <CardContent className="p-6 md:p-10">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    <CardContent className="p-3 md:p-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="space-y-2" onDoubleClick={() => clearField("applicant_first_name")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Given names</Label>
           <Input value={formData?.applicant_first_name || ""} onChange={(e) => handleInputChange("applicant_first_name", e.target.value.toUpperCase())} className="uppercase" />
@@ -207,8 +207,8 @@ export const ContactSection = ({ formData, handleInputChange, clearField, isLarg
         Contact Information
       </CardTitle>
     </CardHeader>
-    <CardContent className="p-6 md:p-10">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <CardContent className="p-3 md:p-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_email")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Email</Label>
           <Input value={formData?.applicant_email || ""} onChange={(e) => handleInputChange("applicant_email", e.target.value)} type="email" />
@@ -229,8 +229,8 @@ export const AddressSection = ({ formData, handleInputChange, clearField, isLarg
         Address Information
       </CardTitle>
     </CardHeader>
-    <CardContent className="p-6 md:p-10">
-      <div className="grid grid-cols-1 gap-6">
+    <CardContent className="p-3 md:p-10">
+      <div className="grid grid-cols-1 gap-6 w-full">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_street")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Street address</Label>
           <Input value={formData?.applicant_street || ""} onChange={(e) => handleInputChange("applicant_street", e.target.value.toUpperCase())} className="uppercase" />
@@ -266,8 +266,8 @@ export const PassportSection = ({ formData, handleInputChange, clearField, isLar
         Passport Information
       </CardTitle>
     </CardHeader>
-    <CardContent className="p-6 md:p-10">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <CardContent className="p-3 md:p-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_passport_number")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Passport number</Label>
           <Input value={formData?.applicant_passport_number || ""} onChange={(e) => handleInputChange("applicant_passport_number", e.target.value.toUpperCase())} className="uppercase" />
@@ -285,8 +285,8 @@ export const ImmigrationSection = ({ formData, handleInputChange, clearField, is
         Emigration Information
       </CardTitle>
     </CardHeader>
-    <CardContent className="p-6 md:p-10">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <CardContent className="p-3 md:p-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
         <DateField name="applicant_date_of_naturalization" label="Date of naturalization" value={formData?.applicant_date_of_naturalization} onChange={(value) => handleInputChange("applicant_date_of_naturalization", value)} />
         <DateField name="applicant_date_of_emigration" label="Date of emigration" value={formData?.applicant_date_of_emigration} onChange={(value) => handleInputChange("applicant_date_of_emigration", value)} />
       </div>
@@ -367,7 +367,7 @@ export const DocumentsSection = ({ formData, handleInputChange, clearField, isLa
           Required Documents
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-6 md:p-10">
+      <CardContent className="p-3 md:p-10">
         <FlippableCardsDarkGlow
           title=""
           documents={documents}
@@ -385,7 +385,7 @@ export const NotesSection = ({ formData, handleInputChange, clearField, isLargeF
         Additional Notes
       </CardTitle>
     </CardHeader>
-    <CardContent className="p-6 md:p-10">
+    <CardContent className="p-3 md:p-10">
       <Label className={isLargeFonts ? "text-2xl" : ""}>
         Additional notes
       </Label>
