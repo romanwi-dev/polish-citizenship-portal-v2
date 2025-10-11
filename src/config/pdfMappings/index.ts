@@ -15,7 +15,7 @@ export type PDFTemplateType =
   | 'poa-spouses'
   | 'citizenship'
   | 'family-tree'
-  | 'registration'
+  | 'umiejscowienie'
   | 'uzupelnienie';
 
 export interface PDFMappingConfig {
@@ -44,7 +44,7 @@ export const PDF_MAPPINGS: Record<PDFTemplateType, PDFMappingConfig> = {
     fieldMap: {},
     requiredFields: [],
   },
-  'registration': {
+  'umiejscowienie': {
     fieldMap: {},
     requiredFields: [],
   },
