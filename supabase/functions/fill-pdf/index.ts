@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { PDFDocument, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1";
+import { PDFDocument } from "https://esm.sh/pdf-lib@1.17.1";
 
 // Import PDF field mappings
 try {
@@ -234,31 +234,17 @@ const isFullNameField = (pdfFieldName: string): boolean => {
   return hasName && isNotComponent;
 };
 
-const fillPDFFields = async (
-  pdfDoc: any,
+const fillPDFFields = (
   form: any,
   data: any,
   fieldMap: Record<string, string>
-): Promise<FillResult> => {
+): FillResult => {
   const result: FillResult = {
     totalFields: 0,
     filledFields: 0,
     emptyFields: [],
     errors: [],
   };
-
-  // Fetch and embed Unicode font that supports Polish characters
-  let unicodeFont;
-  try {
-    const fontUrl = 'https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxK.ttf';
-    const fontResponse = await fetch(fontUrl);
-    const fontBytes = await fontResponse.arrayBuffer();
-    unicodeFont = await pdfDoc.embedFont(fontBytes);
-    console.log('✅ Unicode font embedded (supports Polish characters)');
-  } catch (error) {
-    console.warn('⚠️ Could not embed Unicode font, falling back to standard font:', error);
-    unicodeFont = null;
-  }
 
   for (const [pdfFieldName, dbColumn] of Object.entries(fieldMap)) {
     result.totalFields++;
@@ -298,14 +284,6 @@ const fillPDFFields = async (
         const textField = form.getTextField(pdfFieldName);
         if (textField) {
           textField.setText(formattedValue);
-          // Apply Unicode font if embedded successfully
-          if (unicodeFont) {
-            try {
-              textField.updateAppearances(unicodeFont);
-            } catch (e) {
-              console.warn(`Could not apply Unicode font to ${pdfFieldName}`);
-            }
-          }
           result.filledFields++;
           continue;
         }
@@ -427,7 +405,7 @@ serve(async (req) => {
     if (!fieldMap || Object.keys(fieldMap).length === 0) {
       console.warn(`⚠️ No field mapping for: ${templateType}`);
     } else {
-      const fillResult = await fillPDFFields(pdfDoc, form, masterData, fieldMap);
+      const fillResult = fillPDFFields(form, masterData, fieldMap);
       const coverage = calculateCoverage(fillResult);
       
       console.log(`✅ PDF Complete for ${templateType}`);
