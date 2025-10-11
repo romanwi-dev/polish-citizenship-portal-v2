@@ -15,6 +15,11 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+/**
+ * Fill PDF Edge Function
+ * Supports both PDF generation (with caseId) and field inspection (inspectOnly mode)
+ */
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
