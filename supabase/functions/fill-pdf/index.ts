@@ -126,6 +126,23 @@ const getNestedValue = (obj: any, path: string): any => {
   return current;
 };
 
+// Transliterate Polish characters to ASCII for PDF compatibility
+const transliteratePolish = (text: string): string => {
+  const polishMap: Record<string, string> = {
+    'Ą': 'A', 'ą': 'a',
+    'Ć': 'C', 'ć': 'c',
+    'Ę': 'E', 'ę': 'e',
+    'Ł': 'L', 'ł': 'l',
+    'Ń': 'N', 'ń': 'n',
+    'Ó': 'O', 'ó': 'o',
+    'Ś': 'S', 'ś': 's',
+    'Ź': 'Z', 'ź': 'z',
+    'Ż': 'Z', 'ż': 'z',
+  };
+  
+  return text.replace(/[ĄąĆćĘęŁłŃńÓóŚśŹźŻż]/g, char => polishMap[char] || char);
+};
+
 const formatFieldValue = (value: any, fieldName: string): string => {
   if (value === null || value === undefined) return '';
   
@@ -154,7 +171,8 @@ const formatFieldValue = (value: any, fieldName: string): string => {
     return formatBoolean(value);
   }
   
-  return String(value).trim();
+  // Transliterate Polish characters for PDF compatibility
+  return transliteratePolish(String(value).trim());
 };
 
 // ============ FIELD FILLING UTILITIES ============
