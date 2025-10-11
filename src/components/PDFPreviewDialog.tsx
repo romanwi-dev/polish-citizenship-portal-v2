@@ -1,12 +1,18 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Download, X, Edit, FileText, Printer } from "lucide-react";
-import { useState } from "react";
+import { Download, X, Edit, FileText, Printer, ZoomIn, ZoomOut } from "lucide-react";
+import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { Document, Page, pdfjs } from 'react-pdf';
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+import 'react-pdf/dist/esm/Page/TextLayer.css';
+
+// Configure PDF.js worker
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 interface PDFPreviewDialogProps {
   open: boolean;
@@ -29,13 +35,21 @@ export function PDFPreviewDialog({
 }: PDFPreviewDialogProps) {
   const [editedData, setEditedData] = useState(formData || {});
   const [isRegenerating, setIsRegenerating] = useState(false);
+  const [numPages, setNumPages] = useState<number>(0);
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [scale, setScale] = useState<number>(1.2);
 
   // Update editedData when formData changes
-  useState(() => {
+  useEffect(() => {
     if (formData) {
       setEditedData(formData);
     }
-  });
+  }, [formData]);
+
+  const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
+    setNumPages(numPages);
+    setPageNumber(1);
+  };
 
   const handleFieldChange = (field: string, value: any) => {
     setEditedData((prev: any) => ({ ...prev, [field]: value }));
@@ -127,14 +141,60 @@ export function PDFPreviewDialog({
             <TabsTrigger value="edit">Edit Data</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="preview" className="flex-1">
-            <div className="h-full border rounded-lg overflow-hidden bg-gray-100">
-              <iframe
-                src={pdfUrl}
-                className="w-full h-full"
-                title="PDF Preview"
-              />
+          <TabsContent value="preview" className="flex-1 flex flex-col">
+            <div className="flex items-center justify-between mb-2 px-2">
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setScale(s => Math.max(0.5, s - 0.1))}
+                >
+                  <ZoomOut className="h-4 w-4" />
+                </Button>
+                <span className="text-sm text-muted-foreground min-w-[60px] text-center">
+                  {Math.round(scale * 100)}%
+                </span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setScale(s => Math.min(2, s + 0.1))}
+                >
+                  <ZoomIn className="h-4 w-4" />
+                </Button>
+              </div>
+              <div className="text-sm text-muted-foreground">
+                Page {pageNumber} of {numPages}
+              </div>
             </div>
+            <ScrollArea className="flex-1 border rounded-lg bg-muted/20">
+              <div className="flex justify-center p-4">
+                <Document
+                  file={pdfUrl}
+                  onLoadSuccess={onDocumentLoadSuccess}
+                  loading={
+                    <div className="flex items-center justify-center p-8">
+                      <div className="text-muted-foreground">Loading PDF template...</div>
+                    </div>
+                  }
+                  error={
+                    <div className="flex items-center justify-center p-8">
+                      <div className="text-destructive">Failed to load PDF. Please try downloading it.</div>
+                    </div>
+                  }
+                >
+                  {Array.from(new Array(numPages), (_, index) => (
+                    <Page
+                      key={`page_${index + 1}`}
+                      pageNumber={index + 1}
+                      scale={scale}
+                      className="mb-4 shadow-lg"
+                      renderTextLayer={true}
+                      renderAnnotationLayer={true}
+                    />
+                  ))}
+                </Document>
+              </div>
+            </ScrollArea>
           </TabsContent>
 
           <TabsContent value="edit" className="flex-1">
