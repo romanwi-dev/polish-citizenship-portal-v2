@@ -181,6 +181,8 @@ export default function POAForm() {
 
       // Get the PDF as a blob
       const blob = await response.blob();
+      // Revoke old URL to prevent memory leaks
+      if (pdfPreviewUrl) URL.revokeObjectURL(pdfPreviewUrl);
       const url = URL.createObjectURL(blob);
       
       setPdfPreviewUrl(url);
