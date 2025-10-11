@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { toast } from 'sonner';
-import { Upload, CheckCircle, XCircle, Loader2 } from 'lucide-react';
+import { Upload, CheckCircle, XCircle, Loader2, Eye } from 'lucide-react';
 
 const TEMPLATES = [
   'poa-adult',
@@ -61,6 +61,10 @@ export default function UploadPDFTemplates() {
     toast.success('Upload process complete!');
   };
 
+  const handlePreviewPDF = (template: string) => {
+    window.open(`/templates/${template}.pdf`, '_blank');
+  };
+
   return (
     <div className="container mx-auto p-8">
       <Card className="p-6">
@@ -91,18 +95,29 @@ export default function UploadPDFTemplates() {
           {TEMPLATES.map((template) => (
             <div
               key={template}
-              className="flex items-center justify-between p-3 border rounded"
+              className="flex items-center justify-between p-3 border rounded gap-3"
             >
-              <span className="font-mono">{template}.pdf</span>
-              {results[template] === 'success' && (
-                <CheckCircle className="h-5 w-5 text-green-500" />
-              )}
-              {results[template] === 'error' && (
-                <XCircle className="h-5 w-5 text-red-500" />
-              )}
-              {results[template] === 'pending' && (
-                <Loader2 className="h-5 w-5 animate-spin text-blue-500" />
-              )}
+              <span className="font-mono flex-1">{template}.pdf</span>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handlePreviewPDF(template)}
+                  className="flex items-center gap-2"
+                >
+                  <Eye className="h-4 w-4" />
+                  Preview PDF
+                </Button>
+                {results[template] === 'success' && (
+                  <CheckCircle className="h-5 w-5 text-green-500" />
+                )}
+                {results[template] === 'error' && (
+                  <XCircle className="h-5 w-5 text-red-500" />
+                )}
+                {results[template] === 'pending' && (
+                  <Loader2 className="h-5 w-5 animate-spin text-blue-500" />
+                )}
+              </div>
             </div>
           ))}
         </div>
