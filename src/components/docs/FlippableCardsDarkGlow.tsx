@@ -91,8 +91,8 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
                 className={cn(
                   "absolute inset-0 backdrop-blur-md rounded-xl p-5 flex flex-col cursor-pointer border transition-all",
                   doc.checked
-                    ? "bg-green-950/60 border-green-500/50 shadow-[0_0_30px_rgba(34,197,94,0.4)]"
-                    : "bg-slate-900/50 border-slate-700/30 hover:border-primary/40 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]"
+                    ? "bg-green-950/90 border-green-500/50 shadow-[0_0_30px_rgba(34,197,94,0.4)]"
+                    : "bg-slate-900/90 border-slate-700/30 hover:border-primary/40 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]"
                 )}
                 style={{ backfaceVisibility: "hidden" }}
                 onClick={() => toggleFlip(doc.id)}
