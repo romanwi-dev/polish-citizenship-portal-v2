@@ -41,6 +41,13 @@ interface CaseCardProps {
     processing_mode: string;
     client_score: number;
     scheme_introduced?: string;
+    poa_approved?: boolean;
+    oby_filed?: boolean;
+    wsc_received?: boolean;
+    decision_received?: boolean;
+    kpi_tasks_total?: number;
+    kpi_tasks_completed?: number;
+    kpi_docs_percentage?: number;
   };
   onEdit: (clientCase: any) => void;
   onDelete: (id: string) => void;
@@ -232,6 +239,65 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
                 {clientCase.scheme_introduced}
               </span>
             )}
+          </div>
+
+          {/* KPI Strip */}
+          <div className="mb-4 p-3 rounded-lg bg-background/20 border border-border/30">
+            <div className="flex flex-wrap gap-2">
+              {/* POA Status */}
+              <div className={`px-2 py-1 rounded text-xs font-medium flex items-center gap-1 ${
+                clientCase.poa_approved 
+                  ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
+                  : 'bg-muted/20 text-muted-foreground border border-border/30'
+              }`}>
+                <CheckCircle2 className="w-3 h-3" />
+                POA
+              </div>
+
+              {/* OBY Filed */}
+              <div className={`px-2 py-1 rounded text-xs font-medium flex items-center gap-1 ${
+                clientCase.oby_filed 
+                  ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' 
+                  : 'bg-muted/20 text-muted-foreground border border-border/30'
+              }`}>
+                <FileText className="w-3 h-3" />
+                OBY
+              </div>
+
+              {/* WSC Letter */}
+              <div className={`px-2 py-1 rounded text-xs font-medium flex items-center gap-1 ${
+                clientCase.wsc_received 
+                  ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30' 
+                  : 'bg-muted/20 text-muted-foreground border border-border/30'
+              }`}>
+                <FileEdit className="w-3 h-3" />
+                WSC
+              </div>
+
+              {/* Decision */}
+              <div className={`px-2 py-1 rounded text-xs font-medium flex items-center gap-1 ${
+                clientCase.decision_received 
+                  ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' 
+                  : 'bg-muted/20 text-muted-foreground border border-border/30'
+              }`}>
+                <Award className="w-3 h-3" />
+                Decision
+              </div>
+
+              {/* Tasks Progress */}
+              {(clientCase.kpi_tasks_total ?? 0) > 0 && (
+                <div className="px-2 py-1 rounded text-xs font-medium bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
+                  Tasks: {clientCase.kpi_tasks_completed}/{clientCase.kpi_tasks_total}
+                </div>
+              )}
+
+              {/* Docs Percentage */}
+              {(clientCase.kpi_docs_percentage ?? 0) > 0 && (
+                <div className="px-2 py-1 rounded text-xs font-medium bg-orange-500/20 text-orange-400 border border-orange-500/30">
+                  Docs: {clientCase.kpi_docs_percentage}%
+                </div>
+              )}
+            </div>
           </div>
 
           {clientCase.client_code && (
