@@ -37,7 +37,7 @@ const navItems = [
   { title: "Analytics", url: "/admin/analytics", icon: BarChart3 },
   { title: "Dropbox Sync", url: "/admin/dropbox", icon: FolderSync },
   { title: "Migration Scanner", url: "/admin/dropbox-migration", icon: GitCompare },
-  { title: "System Health", url: "/admin/health", icon: Shield },
+  { title: "System Health", url: "/admin/system-health", icon: Shield },
   { title: "Settings", url: "/admin/settings", icon: Settings },
 ];
 

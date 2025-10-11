@@ -89,7 +89,12 @@ export const CASE_STAGES: Stage[] = [
   { id: 'extend_term', name: 'Extend Term', description: 'Extending term of citizenship procedure', part: 11, isClientVisible: true, isMilestone: true, priority: 'high', order: 53 },
   { id: 'await_additional_evidence', name: 'Awaiting Additional Evidence', description: 'Awaiting additional documents and info from client', part: 11, isClientVisible: true, isMilestone: false, priority: 'medium', order: 54 },
 
-  // PART 12 - PUSH SCHEMES (5 stages)
+  // PART 11.5 - WSC LETTER STAGE (NEW - Between Initial Response and Push Schemes)
+  { id: 'wsc_letter_received', name: 'WSC Letter Received', description: 'Letter from WSC (Masovian Voivoda) received', part: 11.5, isClientVisible: true, isMilestone: true, priority: 'critical', order: 54.5 },
+  { id: 'wsc_letter_review', name: 'WSC Letter Review', description: 'HAC reviewing letter content and deadline', part: 11.5, isClientVisible: false, isMilestone: false, priority: 'high', order: 54.6 },
+  { id: 'wsc_strategy_set', name: 'WSC Strategy Set', description: 'Response strategy determined (PUSH/NUDGE/SITDOWN)', part: 11.5, isClientVisible: true, isMilestone: true, priority: 'high', order: 54.7 },
+
+  // PART 12 - PUSH SCHEMES (6 stages)
   { id: 'offer_push_schemes', name: 'Offer Push Schemes', description: 'Offering pushing schemes to client: PUSH, NUDGE, SIT-DOWN', part: 12, isClientVisible: true, isMilestone: false, priority: 'medium', order: 55 },
   { id: 'explain_schemes', name: 'Explain Schemes', description: 'Explaining schemes in detail', part: 12, isClientVisible: true, isMilestone: false, priority: 'medium', order: 56 },
   { id: 'schemes_payment', name: 'Schemes Payment', description: 'Payments for push schemes', part: 12, isClientVisible: true, isMilestone: false, priority: 'medium', order: 57 },
@@ -126,6 +131,7 @@ export const PART_NAMES = [
   'Filing Documents',
   'Civil Acts',
   'Initial Response',
+  'WSC Letter', // NEW
   'Push Schemes',
   'Citizenship Decision',
   'Polish Passport',
