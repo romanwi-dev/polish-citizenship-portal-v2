@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Download, X, Printer } from "lucide-react";
+import { Download, X, Printer, Eye } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -62,7 +62,7 @@ export function PDFPreviewDialog({
           )}
         </DialogHeader>
 
-        <div className="flex-1 border rounded-lg overflow-hidden bg-muted/10">
+        <div className="flex-1 border rounded-lg overflow-hidden bg-muted/10 relative">
           <iframe
             src={pdfUrl}
             className="w-full h-full"
@@ -73,6 +73,17 @@ export function PDFPreviewDialog({
               toast.error('Failed to load PDF in preview. Try downloading instead.');
             }}
           />
+          <div className="absolute bottom-4 right-4">
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => window.open(pdfUrl, '_blank')}
+              className="gap-2"
+            >
+              <Eye className="h-4 w-4" />
+              Open in New Tab
+            </Button>
+          </div>
         </div>
 
         <DialogFooter className="flex gap-2">
