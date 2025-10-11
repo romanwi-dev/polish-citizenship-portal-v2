@@ -493,6 +493,8 @@ export type Database = {
       }
       master_table: {
         Row: {
+          act_type_birth: boolean | null
+          act_type_marriage: boolean | null
           ancestry_line: string | null
           applicant_address: Json | null
           applicant_current_citizenship: string[] | null
@@ -520,6 +522,9 @@ export type Database = {
           applicant_pob: string | null
           applicant_previous_names: Json | null
           applicant_sex: string | null
+          birth_act_location: string | null
+          birth_act_number: string | null
+          birth_act_year: string | null
           case_id: string
           child_1_dob: string | null
           child_1_first_name: string | null
@@ -611,8 +616,10 @@ export type Database = {
           father_mother_marriage_place: string | null
           father_notes: string | null
           father_pob: string | null
+          foreign_act_location: string | null
           id: string
           language_preference: string | null
+          marriage_act_location: string | null
           mgf_date_of_emigration: string | null
           mgf_date_of_naturalization: string | null
           mgf_dob: string | null
@@ -740,6 +747,12 @@ export type Database = {
           pgm_pob: string | null
           place_of_marriage: string | null
           poa_date_filed: string | null
+          polish_birth_act_number: string | null
+          representative_address: string | null
+          representative_address_cont: string | null
+          representative_email: string | null
+          representative_full_name: string | null
+          representative_phone: string | null
           spouse_current_citizenship: string[] | null
           spouse_date_of_emigration: string | null
           spouse_date_of_naturalization: string | null
@@ -757,9 +770,13 @@ export type Database = {
           spouse_phone: string | null
           spouse_pob: string | null
           spouse_sex: string | null
+          submission_date: string | null
+          submission_location: string | null
           updated_at: string
         }
         Insert: {
+          act_type_birth?: boolean | null
+          act_type_marriage?: boolean | null
           ancestry_line?: string | null
           applicant_address?: Json | null
           applicant_current_citizenship?: string[] | null
@@ -787,6 +804,9 @@ export type Database = {
           applicant_pob?: string | null
           applicant_previous_names?: Json | null
           applicant_sex?: string | null
+          birth_act_location?: string | null
+          birth_act_number?: string | null
+          birth_act_year?: string | null
           case_id: string
           child_1_dob?: string | null
           child_1_first_name?: string | null
@@ -878,8 +898,10 @@ export type Database = {
           father_mother_marriage_place?: string | null
           father_notes?: string | null
           father_pob?: string | null
+          foreign_act_location?: string | null
           id?: string
           language_preference?: string | null
+          marriage_act_location?: string | null
           mgf_date_of_emigration?: string | null
           mgf_date_of_naturalization?: string | null
           mgf_dob?: string | null
@@ -1007,6 +1029,12 @@ export type Database = {
           pgm_pob?: string | null
           place_of_marriage?: string | null
           poa_date_filed?: string | null
+          polish_birth_act_number?: string | null
+          representative_address?: string | null
+          representative_address_cont?: string | null
+          representative_email?: string | null
+          representative_full_name?: string | null
+          representative_phone?: string | null
           spouse_current_citizenship?: string[] | null
           spouse_date_of_emigration?: string | null
           spouse_date_of_naturalization?: string | null
@@ -1024,9 +1052,13 @@ export type Database = {
           spouse_phone?: string | null
           spouse_pob?: string | null
           spouse_sex?: string | null
+          submission_date?: string | null
+          submission_location?: string | null
           updated_at?: string
         }
         Update: {
+          act_type_birth?: boolean | null
+          act_type_marriage?: boolean | null
           ancestry_line?: string | null
           applicant_address?: Json | null
           applicant_current_citizenship?: string[] | null
@@ -1054,6 +1086,9 @@ export type Database = {
           applicant_pob?: string | null
           applicant_previous_names?: Json | null
           applicant_sex?: string | null
+          birth_act_location?: string | null
+          birth_act_number?: string | null
+          birth_act_year?: string | null
           case_id?: string
           child_1_dob?: string | null
           child_1_first_name?: string | null
@@ -1145,8 +1180,10 @@ export type Database = {
           father_mother_marriage_place?: string | null
           father_notes?: string | null
           father_pob?: string | null
+          foreign_act_location?: string | null
           id?: string
           language_preference?: string | null
+          marriage_act_location?: string | null
           mgf_date_of_emigration?: string | null
           mgf_date_of_naturalization?: string | null
           mgf_dob?: string | null
@@ -1274,6 +1311,12 @@ export type Database = {
           pgm_pob?: string | null
           place_of_marriage?: string | null
           poa_date_filed?: string | null
+          polish_birth_act_number?: string | null
+          representative_address?: string | null
+          representative_address_cont?: string | null
+          representative_email?: string | null
+          representative_full_name?: string | null
+          representative_phone?: string | null
           spouse_current_citizenship?: string[] | null
           spouse_date_of_emigration?: string | null
           spouse_date_of_naturalization?: string | null
@@ -1291,6 +1334,8 @@ export type Database = {
           spouse_phone?: string | null
           spouse_pob?: string | null
           spouse_sex?: string | null
+          submission_date?: string | null
+          submission_location?: string | null
           updated_at?: string
         }
         Relationships: [

@@ -9,20 +9,14 @@ export interface ValidationResult {
   coverage: number;
 }
 
+// POA Adult - Only 4 fields in actual PDF
 export const POA_ADULT_REQUIRED = [
   'applicant_first_name',
   'applicant_last_name',
-  'applicant_dob',
-  'applicant_pob',
   'applicant_passport_number',
-  'applicant_email',
-  'father_first_name',
-  'father_last_name',
-  'mother_first_name',
-  'mother_last_name',
-  'mother_maiden_name',
 ];
 
+// Citizenship - Core fields (most fields can be N/A in practice)
 export const CITIZENSHIP_REQUIRED = [
   'applicant_first_name',
   'applicant_last_name',
@@ -31,24 +25,56 @@ export const CITIZENSHIP_REQUIRED = [
   'applicant_sex',
   'father_first_name',
   'father_last_name',
-  'father_dob',
-  'father_pob',
   'mother_first_name',
   'mother_last_name',
   'mother_maiden_name',
-  'mother_dob',
-  'mother_pob',
-  'ancestry_line',
 ];
 
 export const TEMPLATE_REQUIRED_FIELDS: Record<string, string[]> = {
   'poa-adult': POA_ADULT_REQUIRED,
-  'poa-minor': ['applicant_first_name', 'applicant_last_name', 'child_1_first_name', 'child_1_last_name', 'child_1_dob'],
-  'poa-spouses': ['applicant_first_name', 'applicant_last_name', 'spouse_first_name', 'spouse_last_name'],
+  'poa-minor': [
+    'applicant_first_name',
+    'applicant_last_name',
+    'applicant_passport_number',
+    'child_1_first_name',
+    'child_1_last_name',
+    'child_1_dob'
+  ],
+  'poa-spouses': [
+    'applicant_first_name',
+    'applicant_last_name',
+    'applicant_passport_number',
+    'spouse_first_name',
+    'spouse_last_name',
+    'spouse_passport_number'
+  ],
   'citizenship': CITIZENSHIP_REQUIRED,
-  'family-tree': ['applicant_first_name', 'applicant_last_name', 'father_first_name', 'mother_first_name'],
-  'umiejscowienie': ['applicant_first_name', 'applicant_last_name', 'applicant_dob'],
-  'uzupelnienie': ['applicant_first_name', 'applicant_last_name'],
+  'family-tree': [
+    'applicant_first_name',
+    'applicant_last_name',
+    'applicant_dob',
+    'father_first_name',
+    'father_last_name',
+    'mother_first_name',
+    'mother_last_name',
+    'mother_maiden_name'
+  ],
+  'umiejscowienie': [
+    'applicant_first_name',
+    'applicant_last_name',
+    'representative_full_name',
+    'representative_address',
+    'submission_location',
+    'submission_date'
+  ],
+  'uzupelnienie': [
+    'applicant_first_name',
+    'applicant_last_name',
+    'representative_full_name',
+    'representative_address',
+    'submission_location',
+    'submission_date'
+  ],
 };
 
 /**
