@@ -76,9 +76,9 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
         </h3>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-none">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
         {documents.map((doc) => (
-          <div key={doc.id} className="relative mx-auto w-full md:w-auto" style={{ aspectRatio: '1/1.414', maxWidth: 'min(100%, 280px)' }}>
+          <div key={doc.id} className="relative mx-auto w-full max-w-[280px]" style={{ aspectRatio: '1/1.414' }}>
             <div 
               className={cn(
                 "relative w-full h-full transition-transform duration-700",
