@@ -36,7 +36,7 @@ export default function ZeroErrorsStatus() {
       status: 'ready',
       coverage: 100,
       criticalIssues: [],
-      warnings: ['Full name construction logic updated']
+      warnings: ['Corrected to 9 fields (was incorrectly showing 14)']
     },
     {
       name: 'Family Tree',
