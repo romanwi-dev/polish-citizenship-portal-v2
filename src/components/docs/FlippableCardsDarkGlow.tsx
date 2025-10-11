@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+
 import { FolderOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
@@ -39,19 +39,19 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
 
   const getImportanceBadge = (importance?: string) => {
     switch (importance) {
-      case 'critical': return <Badge variant="destructive">Critical</Badge>;
-      case 'high': return <Badge variant="vip">High</Badge>;
-      case 'medium': return <Badge variant="expedited">Medium</Badge>;
-      case 'low': return <Badge variant="standard">Low</Badge>;
+      case 'critical': return <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">Critical</span>;
+      case 'high': return <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">High</span>;
+      case 'medium': return <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">Medium</span>;
+      case 'low': return <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">Low</span>;
       default: return null;
     }
   };
 
   const getDifficultyBadge = (difficulty?: string) => {
     switch (difficulty) {
-      case 'hard': return <Badge variant="vipPlus">Hard</Badge>;
-      case 'medium': return <Badge variant="expedited">Medium</Badge>;
-      case 'easy': return <Badge variant="standard">Easy</Badge>;
+      case 'hard': return <span className="text-xs px-3 py-1 rounded-full bg-secondary/10 text-secondary border border-secondary/20">Hard</span>;
+      case 'medium': return <span className="text-xs px-3 py-1 rounded-full bg-secondary/10 text-secondary border border-secondary/20">Medium</span>;
+      case 'easy': return <span className="text-xs px-3 py-1 rounded-full bg-secondary/10 text-secondary border border-secondary/20">Easy</span>;
       default: return null;
     }
   };
