@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { DateField } from "@/components/DateField";
 import { CountrySelect } from "@/components/CountrySelect";
+import { FlippableCardsDarkGlow } from "@/components/docs/FlippableCardsDarkGlow";
 import { cn } from "@/lib/utils";
 
 interface IntakeFormContentProps {
@@ -233,51 +234,89 @@ export const ImmigrationSection = ({ formData, handleInputChange, clearField, is
   </>
 );
 
-export const DocumentsSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
-  <>
-    <CardHeader className="border-b border-border/50 pb-6">
-      <Label className={cn("font-light text-foreground/50 text-sm uppercase tracking-wider", isLargeFonts && "text-base")}>Documents required</Label>
-    </CardHeader>
-    <CardContent className="p-6 md:p-10">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 bg-card/30 backdrop-blur p-6 rounded-none">
-        <div className="flex items-center space-x-4">
-          <Checkbox id="applicant_has_polish_documents" checked={formData?.applicant_has_polish_documents || false} onCheckedChange={(checked) => handleInputChange("applicant_has_polish_documents", checked)} className="h-6 w-6" />
-          <Label htmlFor="applicant_has_polish_documents" className="cursor-pointer font-light text-foreground/50 text-sm uppercase tracking-wider">Polish documents</Label>
-        </div>
-        <div className="flex items-center space-x-4">
-          <Checkbox id="applicant_has_passport" checked={formData?.applicant_has_passport || false} onCheckedChange={(checked) => handleInputChange("applicant_has_passport", checked)} className="h-6 w-6" />
-          <Label htmlFor="applicant_has_passport" className="cursor-pointer font-light text-foreground/50 text-sm uppercase tracking-wider">Passport copy</Label>
-        </div>
-        <div className="flex items-center space-x-4">
-          <Checkbox id="applicant_has_birth_cert" checked={formData?.applicant_has_birth_cert || false} onCheckedChange={(checked) => handleInputChange("applicant_has_birth_cert", checked)} className="h-6 w-6" />
-          <Label htmlFor="applicant_has_birth_cert" className="cursor-pointer font-light text-foreground/50 text-sm uppercase tracking-wider">Birth certificate</Label>
-        </div>
-        <div className="flex items-center space-x-4">
-          <Checkbox id="applicant_has_marriage_cert" checked={formData?.applicant_has_marriage_cert || false} onCheckedChange={(checked) => handleInputChange("applicant_has_marriage_cert", checked)} className="h-6 w-6" />
-          <Label htmlFor="applicant_has_marriage_cert" className="cursor-pointer font-light text-foreground/50 text-sm uppercase tracking-wider">Marriage certificate</Label>
-        </div>
-        <div className="flex items-center space-x-4">
-          <Checkbox id="applicant_has_naturalization" checked={formData?.applicant_has_naturalization || false} onCheckedChange={(checked) => handleInputChange("applicant_has_naturalization", checked)} className="h-6 w-6" />
-          <Label htmlFor="applicant_has_naturalization" className="cursor-pointer font-light text-foreground/50 text-sm uppercase tracking-wider">Naturalization certificate</Label>
-        </div>
-        {(formData?.applicant_sex?.includes('Male') || formData?.applicant_sex?.includes('Mężczyzna')) && (
-          <div className="flex items-center space-x-4">
-            <Checkbox id="applicant_has_military_record" checked={formData?.applicant_has_military_record || false} onCheckedChange={(checked) => handleInputChange("applicant_has_military_record", checked)} className="h-6 w-6" />
-            <Label htmlFor="applicant_has_military_record" className="cursor-pointer font-light text-foreground/50 text-sm uppercase tracking-wider">Military service record</Label>
-          </div>
-        )}
-        <div className="flex items-center space-x-4">
-          <Checkbox id="applicant_has_foreign_documents" checked={formData?.applicant_has_foreign_documents || false} onCheckedChange={(checked) => handleInputChange("applicant_has_foreign_documents", checked)} className="h-6 w-6" />
-          <Label htmlFor="applicant_has_foreign_documents" className="cursor-pointer font-light text-foreground/50 text-sm uppercase tracking-wider">Foreign documents</Label>
-        </div>
-        <div className="flex items-center space-x-4">
-          <Checkbox id="applicant_has_additional_documents" checked={formData?.applicant_has_additional_documents || false} onCheckedChange={(checked) => handleInputChange("applicant_has_additional_documents", checked)} className="h-6 w-6" />
-          <Label htmlFor="applicant_has_additional_documents" className="cursor-pointer font-light text-foreground/50 text-sm uppercase tracking-wider">Additional documents</Label>
-        </div>
-      </div>
-    </CardContent>
-  </>
-);
+export const DocumentsSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => {
+  const documents = [
+    {
+      id: 'applicant_has_polish_documents',
+      label: 'Polish Documents',
+      checked: formData?.applicant_has_polish_documents || false,
+      importance: 'high' as const,
+      difficulty: 'hard' as const,
+    },
+    {
+      id: 'applicant_has_passport',
+      label: 'Passport Copy',
+      checked: formData?.applicant_has_passport || false,
+      importance: 'critical' as const,
+      difficulty: 'easy' as const,
+    },
+    {
+      id: 'applicant_has_birth_cert',
+      label: 'Birth Certificate',
+      checked: formData?.applicant_has_birth_cert || false,
+      importance: 'critical' as const,
+      difficulty: 'medium' as const,
+    },
+    {
+      id: 'applicant_has_marriage_cert',
+      label: 'Marriage Certificate',
+      checked: formData?.applicant_has_marriage_cert || false,
+      importance: 'high' as const,
+      difficulty: 'medium' as const,
+    },
+    {
+      id: 'applicant_has_naturalization',
+      label: 'Naturalization Certificate',
+      checked: formData?.applicant_has_naturalization || false,
+      importance: 'critical' as const,
+      difficulty: 'hard' as const,
+    },
+    ...(formData?.applicant_sex === 'M' ? [{
+      id: 'applicant_has_military_record',
+      label: 'Military Service Record',
+      checked: formData?.applicant_has_military_record || false,
+      importance: 'medium' as const,
+      difficulty: 'hard' as const,
+    }] : []),
+    {
+      id: 'applicant_has_foreign_docs',
+      label: 'Foreign Documents',
+      checked: formData?.applicant_has_foreign_docs || false,
+      importance: 'medium' as const,
+      difficulty: 'medium' as const,
+    },
+    {
+      id: 'applicant_has_additional_docs',
+      label: 'Additional Documents',
+      checked: formData?.applicant_has_additional_docs || false,
+      importance: 'low' as const,
+      difficulty: 'easy' as const,
+    },
+  ];
+
+  const handleDocumentsChange = (updatedDocuments: typeof documents) => {
+    updatedDocuments.forEach(doc => {
+      handleInputChange(doc.id, doc.checked);
+    });
+  };
+
+  return (
+    <>
+      <CardHeader className="border-b border-border/50 pb-6">
+        <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+          Required Documents
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="p-6 md:p-10">
+        <FlippableCardsDarkGlow
+          title=""
+          documents={documents}
+          onChange={handleDocumentsChange}
+        />
+      </CardContent>
+    </>
+  );
+};
 
 export const NotesSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
   <>

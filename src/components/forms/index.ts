@@ -9,3 +9,4 @@ export { FormFieldGroup } from './FormFieldGroup';
 export { FormCompletionBadge } from './FormCompletionBadge';
 export { FormProgressBar } from './FormProgressBar';
 export { FormHeader } from './FormHeader';
+export { FamilyMemberDocumentsSection } from './FamilyMemberDocumentsSection';
