@@ -3,21 +3,19 @@
  */
 
 export const FAMILY_TREE_PDF_MAP: Record<string, string> = {
-  // Applicant
+  // Applicant (REMOVED: emigration/naturalization - not in PDF)
   'applicant_full_name': 'applicant_first_name',
   'applicant_date_of_birth': 'applicant_dob',
   'applicant_place_of_birth': 'applicant_pob',
   'applicant_date_of_marriage': 'date_of_marriage',
   'applicant_place_of_marriage': 'place_of_marriage',
-  'applicant_date_of_emigration': 'applicant_date_of_emigration',
-  'applicant_date_of_naturalization': 'applicant_date_of_naturalization',
   
   // Applicant's Spouse
   'applicant_spouse_full_name': 'spouse_first_name',
   'spouse_date_of_birth': 'spouse_dob',
   'spouse_place_of_birth': 'spouse_pob',
   
-  // Children/Minors
+  // Children/Minors (FIXED: already had pob fields)
   'minor_1_full_name': 'child_1_first_name',
   'minor_1_date_of_birth': 'child_1_dob',
   'minor_1_place_of_birth': 'child_1_pob',
@@ -113,7 +111,7 @@ export const FAMILY_TREE_PDF_MAP: Record<string, string> = {
   'mggm_date_of_emigration': 'mggm_date_of_emigration',
   'mggm_date_of_naturalization': 'mggm_date_of_naturalization',
   
-  // NEW: Missing PDF fields from inspector
+  // Special fields (aliases for consistency)
   'polish_grandparent_date_of_marriage': 'pgf_pgm_marriage_date',
   'polish_parent_place_of_marriage': 'father_mother_marriage_place',
 };

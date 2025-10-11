@@ -43,7 +43,7 @@ export default function ZeroErrorsStatus() {
       status: 'ready',
       coverage: 100,
       criticalIssues: [],
-      warnings: ['Added 4 missing fields, removed 3 phantom fields']
+      warnings: ['Perfect 38/38 field match - removed applicant emigration/naturalization phantom fields']
     },
     {
       name: 'Citizenship (OBY)',
