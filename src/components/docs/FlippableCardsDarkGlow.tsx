@@ -98,7 +98,7 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
                 onClick={() => toggleFlip(doc.id)}
               >
                 {/* Title at top */}
-                <h4 className="text-lg font-black mb-3 text-center leading-tight font-heading text-blue-950 dark:text-blue-300">
+                <h4 className="text-lg font-black mb-3 text-center leading-tight font-heading text-blue-950 dark:text-blue-300 opacity-40">
                   {doc.label}
                 </h4>
 
