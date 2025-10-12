@@ -71,7 +71,7 @@ export function RequiredDocumentsSection({
         {documents.map((doc) => (
           <div 
             key={doc.id} 
-            className="flex items-center space-x-3 p-4 bg-blue-950/40 border-2 border-blue-800/50 rounded-none hover:border-blue-700/70 transition-all"
+            className="flex items-center space-x-3 p-4 bg-[#0a1929] border-2 border-blue-900/70 rounded-none hover:border-blue-700/70 transition-all"
           >
             <Checkbox
               id={doc.id}
