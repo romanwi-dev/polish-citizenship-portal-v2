@@ -112,7 +112,7 @@ export default function IntakeForm() {
 
   return (
     <div className="relative">
-      <div className="container mx-auto py-12 px-4 md:px-6 lg:px-8 relative z-10 max-w-7xl">
+      <div className="container mx-auto py-12 px-2 md:px-6 lg:px-8 relative z-10 max-w-7xl">
         {/* Header */}
         <motion.div 
           initial={{ opacity: 0, y: -50 }} 

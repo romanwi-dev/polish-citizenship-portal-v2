@@ -81,7 +81,7 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: index * 0.1 }}
-            className="relative mx-auto w-full max-w-[400px]"
+            className="relative w-full"
           >
             <div 
               className="relative w-full h-[450px]"
