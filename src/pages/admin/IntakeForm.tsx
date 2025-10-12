@@ -202,18 +202,18 @@ export default function IntakeForm() {
                   <Button
                     onClick={handleSave}
                     disabled={isSaving}
-                    className="h-10 px-4 text-sm font-bold bg-green-500/20 hover:bg-green-500/30 backdrop-blur-md border border-green-400/40 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]"
+                    className="h-9 px-3 text-sm font-medium bg-green-500/20 hover:bg-green-500/30 backdrop-blur-md border border-green-400/40 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]"
                   >
                     <Save className="mr-2 h-4 w-4" />
-                    <span className="text-green-100 font-bold">{isSaving ? "Saving..." : "Save"}</span>
+                    <span className="text-green-100">{isSaving ? "Saving..." : "Save"}</span>
                   </Button>
                   
                   <Button
                     onClick={() => setShowClearDialog(true)}
-                    className="h-10 px-4 text-sm font-bold bg-red-500/20 hover:bg-red-500/30 backdrop-blur-md border border-red-400/40 transition-all shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]"
+                    className="h-9 px-3 text-sm font-medium bg-red-500/20 hover:bg-red-500/30 backdrop-blur-md border border-red-400/40 transition-all shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]"
                   >
                     <Sparkles className="mr-2 h-4 w-4" />
-                    <span className="text-red-100 font-bold">Clear</span>
+                    <span className="text-red-100">Clear</span>
                   </Button>
                 </div>
 
