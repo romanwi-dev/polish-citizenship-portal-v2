@@ -206,29 +206,29 @@ export default function IntakeDemo() {
           </div>
 
           <div className="flex items-center gap-4">
-            <label className="w-48 font-semibold">PARENTS (Green):</label>
+            <label className="w-48 font-semibold">PARENTS (Teal):</label>
             <Input
               value={parentsInputs.field1}
               onChange={(e) => setParentsInputs(prev => ({ ...prev, field1: e.target.value }))}
-              className="h-16 bg-green-50/45 dark:bg-green-950/45 border border-green-400/30 dark:border-green-600/30 hover:border-transparent focus:border-transparent transition-all duration-300"
+              className="h-16 bg-teal-50/45 dark:bg-teal-950/45 border border-teal-400/30 dark:border-teal-600/30 hover:border-transparent focus:border-transparent transition-all duration-300"
               style={{
-                boxShadow: "0 0 30px rgba(34,197,94,0.25)",
+                boxShadow: "0 0 30px rgba(20,184,166,0.25)",
                 transition: "all 0.3s ease"
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 50px rgba(34,197,94,0.4)";
+                e.currentTarget.style.boxShadow = "0 0 50px rgba(20,184,166,0.4)";
                 e.currentTarget.style.transform = "translateY(-2px)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 30px rgba(34,197,94,0.25)";
+                e.currentTarget.style.boxShadow = "0 0 30px rgba(20,184,166,0.25)";
                 e.currentTarget.style.transform = "translateY(0)";
               }}
               onFocus={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 60px rgba(34,197,94,0.5)";
+                e.currentTarget.style.boxShadow = "0 0 60px rgba(20,184,166,0.5)";
                 e.currentTarget.style.transform = "translateY(-2px)";
               }}
               onBlur={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 30px rgba(34,197,94,0.25)";
+                e.currentTarget.style.boxShadow = "0 0 30px rgba(20,184,166,0.25)";
                 e.currentTarget.style.transform = "translateY(0)";
               }}
             />
@@ -351,29 +351,29 @@ export default function IntakeDemo() {
           </div>
 
           <div className="flex items-center gap-4">
-            <label className="w-48 font-semibold">CIVIL REG (Teal):</label>
+            <label className="w-48 font-semibold">CIVIL REG (Green):</label>
             <Input
               value={civilRegistryInputs.field1}
               onChange={(e) => setCivilRegistryInputs(prev => ({ ...prev, field1: e.target.value }))}
-              className="h-16 bg-teal-50/45 dark:bg-teal-950/45 border border-teal-400/30 dark:border-teal-600/30 hover:border-transparent focus:border-transparent transition-all duration-300"
+              className="h-16 bg-green-50/45 dark:bg-green-950/45 border border-green-400/30 dark:border-green-600/30 hover:border-transparent focus:border-transparent transition-all duration-300"
               style={{
-                boxShadow: "0 0 30px rgba(20,184,166,0.25)",
+                boxShadow: "0 0 30px rgba(34,197,94,0.25)",
                 transition: "all 0.3s ease"
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 50px rgba(20,184,166,0.4)";
+                e.currentTarget.style.boxShadow = "0 0 50px rgba(34,197,94,0.4)";
                 e.currentTarget.style.transform = "translateY(-2px)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 30px rgba(20,184,166,0.25)";
+                e.currentTarget.style.boxShadow = "0 0 30px rgba(34,197,94,0.25)";
                 e.currentTarget.style.transform = "translateY(0)";
               }}
               onFocus={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 60px rgba(20,184,166,0.5)";
+                e.currentTarget.style.boxShadow = "0 0 60px rgba(34,197,94,0.5)";
                 e.currentTarget.style.transform = "translateY(-2px)";
               }}
               onBlur={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 30px rgba(20,184,166,0.25)";
+                e.currentTarget.style.boxShadow = "0 0 30px rgba(34,197,94,0.25)";
                 e.currentTarget.style.transform = "translateY(0)";
               }}
             />
