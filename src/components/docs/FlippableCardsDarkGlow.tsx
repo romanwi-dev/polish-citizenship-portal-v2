@@ -149,7 +149,7 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange, colorScheme
                     scheme.cardBg,
                     scheme.cardBorder,
                     !doc.checked && "hover-glow",
-                    doc.checked && "border-green-500/40 opacity-60"
+                    doc.checked && "border-green-500/40"
                   )}
                   style={{ 
                     backfaceVisibility: 'hidden',
