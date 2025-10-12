@@ -13,7 +13,7 @@ import { useFormSync } from "@/hooks/useFormSync";
 import { useBidirectionalSync } from "@/hooks/useBidirectionalSync";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FormButtonsRow } from "@/components/FormButtonsRow";
-import { SelectSection, ApplicantSection, ContactSection, AddressSection, PassportSection, ImmigrationSection, DocumentsSection, NotesSection } from "@/components/IntakeFormContent";
+import { SelectSection, ApplicantSection, ContactSection, AddressSection, PassportSection, NotesSection } from "@/components/IntakeFormContent";
 
 export default function IntakeForm() {
   const navigate = useNavigate();
@@ -32,8 +32,6 @@ export default function IntakeForm() {
     contact: null,
     address: null,
     passport: null,
-    immigration: null,
-    documents: null,
     notes: null
   });
 
@@ -213,12 +211,6 @@ export default function IntakeForm() {
                 <TabsTrigger value="passport" className="flex-shrink-0">
                   <span>Passport</span>
                 </TabsTrigger>
-                <TabsTrigger value="immigration" className="flex-shrink-0">
-                  <span>Emigration</span>
-                </TabsTrigger>
-                <TabsTrigger value="documents" className="flex-shrink-0">
-                  <span>Documents</span>
-                </TabsTrigger>
                 <TabsTrigger value="notes" className="flex-shrink-0">
                   <span>Notes</span>
                 </TabsTrigger>
@@ -243,12 +235,6 @@ export default function IntakeForm() {
                 <div ref={(el) => sectionRefs.current.passport = el} className="border-b border-border/10">
                   <PassportSection {...contentProps} />
                 </div>
-                <div ref={(el) => sectionRefs.current.immigration = el} className="border-b border-border/10">
-                  <ImmigrationSection {...contentProps} />
-                </div>
-                <div ref={(el) => sectionRefs.current.documents = el} className="border-b border-border/10">
-                  <DocumentsSection {...contentProps} />
-                </div>
                 <div ref={(el) => sectionRefs.current.notes = el}>
                   <NotesSection {...contentProps} />
                 </div>
@@ -270,12 +256,6 @@ export default function IntakeForm() {
                 </TabsContent>
                 <TabsContent value="passport" className="mt-0">
                   <PassportSection {...contentProps} />
-                </TabsContent>
-                <TabsContent value="immigration" className="mt-0">
-                  <ImmigrationSection {...contentProps} />
-                </TabsContent>
-                <TabsContent value="documents" className="mt-0">
-                  <DocumentsSection {...contentProps} />
                 </TabsContent>
                 <TabsContent value="notes" className="mt-0">
                   <NotesSection {...contentProps} />

@@ -178,27 +178,6 @@ export const ApplicantSection = ({ formData, handleInputChange, clearField, isLa
           </div>
         </div>
       )}
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <DateField 
-          name="applicant_date_of_emigration" 
-          label="Date of emigration" 
-          value={formData?.applicant_date_of_emigration} 
-          onChange={(value) => handleInputChange("applicant_date_of_emigration", value)}
-          showNotApplicable
-          notApplicableValue={formData?.did_not_emigrate}
-          onNotApplicableChange={(checked) => handleInputChange("did_not_emigrate", checked)}
-        />
-        <DateField 
-          name="applicant_date_of_naturalization" 
-          label="Date of naturalization" 
-          value={formData?.applicant_date_of_naturalization} 
-          onChange={(value) => handleInputChange("applicant_date_of_naturalization", value)}
-          showNotApplicable
-          notApplicableValue={formData?.did_not_naturalize}
-          onNotApplicableChange={(checked) => handleInputChange("did_not_naturalize", checked)}
-        />
-      </div>
     </div>
   </>
 );
