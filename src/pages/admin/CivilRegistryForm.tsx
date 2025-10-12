@@ -325,13 +325,13 @@ export default function CivilRegistryForm() {
         }} transition={{
           duration: 0.5
         }}>
-            <Card className="glass-card border-primary/20">
-              <CardHeader className="border-b border-border/50 pb-6">
-                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            <div>
+              <div className="border-b border-border/50 pb-6">
+                <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Applicant Information / Dane wnioskodawcy
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6 md:p-10 space-y-10">
+                </h2>
+              </div>
+              <div className="p-6 md:p-10 space-y-10">
                 {/* Row 1: Gender and Civil Status */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Gender */}
@@ -450,8 +450,8 @@ export default function CivilRegistryForm() {
                 name: "applicant_passport_number",
                 label: "Passport number / Nr paszportu"
               }])}
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </motion.div>
 
           {/* Document Information */}
@@ -465,13 +465,13 @@ export default function CivilRegistryForm() {
           duration: 0.5,
           delay: 0.1
         }}>
-            <Card className="glass-card border-primary/20">
-              <CardHeader className="border-b border-border/50 pb-6">
-                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            <div>
+              <div className="border-b border-border/50 pb-6">
+                <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Document to Register / Dokument do rejestracji
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6 md:p-10 space-y-10">
+                </h2>
+              </div>
+              <div className="p-6 md:p-10 space-y-10">
                 {renderFieldGroup([
                   {
                     name: "document_type",
@@ -609,8 +609,8 @@ export default function CivilRegistryForm() {
                   </motion.div>
                 </div>
 
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </motion.div>
         </div>
       </div>

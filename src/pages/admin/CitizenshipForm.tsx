@@ -432,19 +432,19 @@ export default function CitizenshipForm() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <Card className={cn(
-              "glass-card border-primary/20 transition-opacity",
+            <div className={cn(
+              "transition-opacity",
               isSection1Pressed && "opacity-70"
             )}>
-              <CardHeader 
+              <div 
                 className="border-b border-border/50 pb-6 cursor-pointer"
                 {...section1LongPressHandlers}
               >
-                <CardTitle className="text-4xl md:text-5xl font-heading font-bold text-primary">
+                <h2 className="text-4xl md:text-5xl font-heading font-bold text-primary">
                   CZĘŚĆ I - Dane osoby, której dotyczy wniosek
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6 md:p-10 space-y-10">
+                </h2>
+              </div>
+              <div className="p-6 md:p-10 space-y-10">
                 {/* Row 1: Gender and Civil Status */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Gender */}
@@ -548,8 +548,8 @@ export default function CitizenshipForm() {
                 <div className="pt-6">
                   {renderTextarea("applicant_other_citizenships", "Posiadane obce obywatelstwa wraz z datą nabycia / Foreign citizenships with acquisition date", 3)}
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </motion.div>
 
           {/* Part I - Parents Data */}
@@ -558,19 +558,19 @@ export default function CitizenshipForm() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <Card className={cn(
-              "glass-card border-primary/20 transition-opacity",
+            <div className={cn(
+              "transition-opacity",
               isSection2Pressed && "opacity-70"
             )}>
-              <CardHeader 
+              <div 
                 className="border-b border-border/50 pb-6 cursor-pointer"
                 {...section2LongPressHandlers}
               >
-                <CardTitle className="text-4xl md:text-5xl font-heading font-bold text-primary">
+                <h2 className="text-4xl md:text-5xl font-heading font-bold text-primary">
                   Dane osobowe rodziców / Parents Personal Data
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6 md:p-10 space-y-10">
+                </h2>
+              </div>
+              <div className="p-6 md:p-10 space-y-10">
                 {/* Mother */}
                 <div className="space-y-6">
                   <h3 className="text-2xl font-semibold text-foreground border-b pb-2">Dane dotyczące matki / Mother's Data</h3>
@@ -595,8 +595,8 @@ export default function CitizenshipForm() {
                     { name: "father_mother_marriage_place", label: "Miejsce zawarcia związku małżeńskiego / Place of marriage" },
                   ])}
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </motion.div>
 
           {/* Part I - Grandparents Data */}
@@ -605,19 +605,19 @@ export default function CitizenshipForm() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <Card className={cn(
-              "glass-card border-primary/20 transition-opacity",
+            <div className={cn(
+              "transition-opacity",
               isSection3Pressed && "opacity-70"
             )}>
-              <CardHeader 
+              <div 
                 className="border-b border-border/50 pb-6 cursor-pointer"
                 {...section3LongPressHandlers}
               >
-                <CardTitle className="text-4xl md:text-5xl font-heading font-bold text-primary">
+                <h2 className="text-4xl md:text-5xl font-heading font-bold text-primary">
                   Dane osobowe dalszych wstępnych / Grandparents Data
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6 md:p-10 space-y-10">
+                </h2>
+              </div>
+              <div className="p-6 md:p-10 space-y-10">
                 {/* Maternal Grandfather */}
                 <div className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
                   <h3 className="text-2xl font-semibold text-foreground">Dziadek ze strony matki / Maternal Grandfather</h3>
@@ -663,8 +663,8 @@ export default function CitizenshipForm() {
                     { name: "pgm_pob", label: "Miejsce urodzenia / Place of birth" },
                   ])}
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </motion.div>
 
           {/* Part II & III - Additional Information */}
@@ -673,19 +673,19 @@ export default function CitizenshipForm() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <Card className={cn(
-              "glass-card border-primary/20 transition-opacity",
+            <div className={cn(
+              "transition-opacity",
               isSection6Pressed && "opacity-70"
             )}>
-              <CardHeader 
+              <div 
                 className="border-b border-border/50 pb-6 cursor-pointer"
                 {...section6LongPressHandlers}
               >
-                <CardTitle className="text-4xl md:text-5xl font-heading font-bold text-primary">
+                <h2 className="text-4xl md:text-5xl font-heading font-bold text-primary">
                   CZĘŚĆ II & III - Dodatkowe informacje / Additional Information
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6 md:p-10 space-y-10">
+                </h2>
+              </div>
+              <div className="p-6 md:p-10 space-y-10">
                 {renderTextarea("applicant_notes", "Życiorys osoby / Person's Biography", 6)}
                 {renderTextarea("mother_notes", "Życiorys matki / Mother's Biography", 6)}
                 {renderTextarea("father_notes", "Życiorys ojca / Father's Biography", 6)}
@@ -693,8 +693,8 @@ export default function CitizenshipForm() {
                 {renderTextarea("mgm_notes", "Życiorys babki ze strony matki / Maternal Grandmother's Biography", 6)}
                 {renderTextarea("pgf_notes", "Życiorys dziadka ze strony ojca / Paternal Grandfather's Biography", 6)}
                 {renderTextarea("pgm_notes", "Życiorys babki ze strony ojca / Paternal Grandmother's Biography", 6)}
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </motion.div>
         </div>
 
