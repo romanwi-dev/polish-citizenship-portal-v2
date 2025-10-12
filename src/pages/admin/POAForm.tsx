@@ -544,7 +544,7 @@ export default function POAForm() {
                     onChange={(value) => handleInputChange("applicant_passport_number", value)}
                   />
                 </div>
-                <div className="mt-6 flex justify-end">
+                <div className="mt-10 flex justify-end">
                   <Button onClick={() => handleGenerateAndPreview('poa-adult')} disabled={isGenerating}
                     className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30">
                     {isGenerating && activePOAType === 'adult' ? (
@@ -552,7 +552,7 @@ export default function POAForm() {
                         <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generating...</span></>
                     ) : (
                       <><FileText className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generate POA Adult</span></>
+                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generate POA</span></>
                     )}
                   </Button>
                 </div>
@@ -608,7 +608,7 @@ export default function POAForm() {
                     onChange={(value) => handleInputChange(`child_${index + 1}_last_name`, value)}
                   />
                 </div>
-                <div className="mt-6 flex justify-end">
+                <div className="mt-10 flex justify-end">
                   <Button onClick={() => handleGenerateAndPreview('poa-minor')} disabled={isGenerating}
                     className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30">
                     {isGenerating && activePOAType === 'minor' ? (
@@ -616,7 +616,7 @@ export default function POAForm() {
                         <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generating...</span></>
                     ) : (
                       <><FileText className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generate POA Minor {minorChildrenCount > 1 ? `(Child ${index + 1})` : ''}</span></>
+                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generate POA</span></>
                     )}
                   </Button>
                 </div>
@@ -726,7 +726,7 @@ export default function POAForm() {
                     onChange={(value) => handleInputChange("child_1_last_name", value)}
                   />
                 </div>
-                <div className="mt-6 flex justify-end">
+                <div className="mt-10 flex justify-end">
                   <Button onClick={() => handleGenerateAndPreview('poa-spouses')} disabled={isGenerating}
                     className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30">
                     {isGenerating && activePOAType === 'spouses' ? (
@@ -734,7 +734,7 @@ export default function POAForm() {
                         <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generating...</span></>
                     ) : (
                       <><FileText className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generate POA Spouses</span></>
+                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generate POA</span></>
                     )}
                   </Button>
                 </div>
