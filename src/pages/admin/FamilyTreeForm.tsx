@@ -489,11 +489,9 @@ export default function FamilyTreeForm() {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5 }}
-                    className="border-b border-border/10"
+                    className="border-b border-border/10 p-6 md:p-10"
                   >
-                    <Card className="glass-card border-primary/20">
-                      <CardContent className="p-6 md:p-10">
-                        <FamilyTreeInteractive
+                    <FamilyTreeInteractive
                           clientData={{
                             ...mapPersonData('applicant'),
                             sex: formData.applicant_sex
@@ -512,8 +510,6 @@ export default function FamilyTreeForm() {
                           onEdit={handlePersonEdit}
                           onOpenMasterTable={() => navigate(`/admin/master-data/${caseId}`)}
                         />
-                      </CardContent>
-                    </Card>
                   </motion.div>
                 </div>
               ) : (
@@ -525,10 +521,9 @@ export default function FamilyTreeForm() {
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.5 }}
+                        className="p-6 md:p-10"
                       >
-                        <Card className="glass-card border-primary/20">
-                          <CardContent className="p-6 md:p-10">
-                            <FamilyTreeInteractive
+                        <FamilyTreeInteractive
                               clientData={{
                                 ...mapPersonData('applicant'),
                                 sex: formData.applicant_sex
@@ -547,8 +542,6 @@ export default function FamilyTreeForm() {
                               onEdit={handlePersonEdit}
                               onOpenMasterTable={() => navigate(`/admin/master-data/${caseId}`)}
                             />
-                          </CardContent>
-                        </Card>
                       </motion.div>
                     )}
                   </TabsContent>
@@ -563,13 +556,10 @@ export default function FamilyTreeForm() {
           scale: 1
         }} transition={{
           duration: 0.5
-        }}>
-            <Card className="glass-card border-primary/20">
-              <CardHeader className="border-b border-border/50 pb-6">
-                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Basic Information
-              </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6 md:p-10 space-y-10">
+        }} className="p-6 md:p-10 space-y-10">
+            <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent border-b border-border/50 pb-6">
+              Basic Information
+            </h2>
                 {/* Row 1: Gender and Civil Status */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Gender */}
@@ -639,8 +629,6 @@ export default function FamilyTreeForm() {
                     </motion.div>
                   )}
                 </div>
-              </CardContent>
-            </Card>
           </motion.div>
           )}
         </TabsContent>
@@ -656,14 +644,10 @@ export default function FamilyTreeForm() {
           scale: 1
         }} transition={{
           duration: 0.5
-        }}>
-            <Card className="glass-card border-primary/20">
-              <CardHeader className="border-b border-border/50 pb-6">
-                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Applicant
-
-              </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6 md:p-10 space-y-10">
+        }} className="p-6 md:p-10 space-y-10">
+            <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent border-b border-border/50 pb-6">
+              Applicant
+            </h2>
 
                 {/* Row 1: Names */}
                 {renderFieldGroup([{
@@ -759,16 +743,14 @@ export default function FamilyTreeForm() {
                   />
                 </div>
 
-                <FamilyMemberDocumentsSection
-                  prefix="applicant"
-                  title="Required Documents"
-                  formData={formData}
-                  handleInputChange={handleInputChange}
-                  personType="applicant"
-                  sex={formData.applicant_sex}
-                />
-              </CardContent>
-            </Card>
+            <FamilyMemberDocumentsSection
+              prefix="applicant"
+              title="Required Documents"
+              formData={formData}
+              handleInputChange={handleInputChange}
+              personType="applicant"
+              sex={formData.applicant_sex}
+            />
           </motion.div>
           )}
         </TabsContent>
