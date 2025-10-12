@@ -15,7 +15,7 @@ const FAQSection = () => {
   const faqCategories = [
     {
       id: "eligibility",
-      title: "ELIGIBILITY & REQUIREMENTS",
+      title: "ELIGIBILITY",
       icon: Users,
       questions: [
         {
@@ -42,7 +42,7 @@ const FAQSection = () => {
     },
     {
       id: "process",
-      title: "PROCESS & TIMELINE",
+      title: "TIMELINE",
       icon: Clock,
       questions: [
         {
@@ -69,7 +69,7 @@ const FAQSection = () => {
     },
     {
       id: "costs",
-      title: "COSTS & INVESTMENT",
+      title: "COSTS",
       icon: DollarSign,
       questions: [
         {
@@ -96,7 +96,7 @@ const FAQSection = () => {
     },
     {
       id: "documents",
-      title: "DOCUMENTS & REQUIREMENTS",
+      title: "DOCUMENTS",
       icon: FileText,
       questions: [
         {
@@ -123,7 +123,7 @@ const FAQSection = () => {
     },
     {
       id: "common-issues",
-      title: "ISSUES & SOLUTIONS",
+      title: "ISSUES",
       icon: AlertCircle,
       questions: [
         {
