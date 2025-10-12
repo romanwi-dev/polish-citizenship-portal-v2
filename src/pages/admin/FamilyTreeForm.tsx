@@ -24,6 +24,9 @@ import { FormButtonsRow } from "@/components/FormButtonsRow";
 import { FamilyTreeInteractive } from "@/components/FamilyTreeInteractive";
 import { useBidirectionalSync } from "@/hooks/useBidirectionalSync";
 import { FamilyMemberDocumentsSection } from "@/components/forms/FamilyMemberDocumentsSection";
+import { FormInput } from "@/components/forms/FormInput";
+
+type ColorScheme = 'children' | 'applicant' | 'parents' | 'grandparents' | 'ggp' | 'poa' | 'citizenship' | 'civil-reg';
 
 export default function FamilyTreeForm() {
   const {
@@ -241,7 +244,7 @@ export default function FamilyTreeForm() {
     isNameField?: boolean;
     isSelect?: boolean;
     selectOptions?: Array<{ value: string; label: string }>;
-  }>) => {
+  }>, colorScheme: ColorScheme = 'applicant') => {
     return <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
         {fields.map((field, idx) => <motion.div key={field.name} initial={{
         opacity: 0,
@@ -273,7 +276,7 @@ export default function FamilyTreeForm() {
                 <Label htmlFor={field.name} className={isLargeFonts ? "text-2xl" : ""}>
                   {field.label}
                 </Label>
-                <Input 
+                <FormInput 
                   id={field.name} 
                   type={field.type || "text"} 
                   value={formData[field.name] || ""} 
@@ -283,11 +286,9 @@ export default function FamilyTreeForm() {
                     handleInputChange(field.name, shouldUppercase ? e.target.value.toUpperCase() : e.target.value);
                   }} 
                   placeholder="" 
-                  className={cn(
-                    "h-16 md:h-20 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur", 
-                    field.isNameField && field.type !== "email" && "uppercase"
-                  )} 
-                  style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                  isNameField={field.isNameField}
+                  isLargeFonts={isLargeFonts}
+                  colorScheme={colorScheme}
                 />
               </>}
           </motion.div>)}
@@ -622,7 +623,7 @@ export default function FamilyTreeForm() {
                   name: "applicant_last_name",
                   label: "Full last name / Nazwisko",
                   isNameField: true
-                }])}
+                }], 'applicant')}
 
                 {/* Row 2: Maiden name */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -653,7 +654,7 @@ export default function FamilyTreeForm() {
                   name: "place_of_marriage",
                   label: "Place of marriage",
                   isNameField: true
-                }])}
+                }], 'applicant')}
 
                 {/* Row 4: Dates - Birth & Marriage */}
                 {renderFieldGroup([{
@@ -664,7 +665,7 @@ export default function FamilyTreeForm() {
                   name: "date_of_marriage",
                   label: "Date of marriage",
                   type: "date"
-                }])}
+                }], 'applicant')}
 
                 {/* Row 5: Dates - Emigration & Naturalization */}
                 {renderFieldGroup([{
@@ -675,7 +676,7 @@ export default function FamilyTreeForm() {
                   name: "applicant_date_of_naturalization",
                   label: "Date of naturalization",
                   type: "date"
-                }])}
+                }], 'applicant')}
 
                 {/* Other fields */}
                 {renderFieldGroup([{
@@ -692,7 +693,7 @@ export default function FamilyTreeForm() {
               }, {
                 name: "applicant_phone",
                 label: "Phone"
-              }])}
+              }], 'applicant')}
 
                 <FamilyMemberDocumentsSection
                   prefix="applicant"
@@ -731,7 +732,7 @@ export default function FamilyTreeForm() {
               {renderFieldGroup([
                 { name: "spouse_first_name", label: "Given names / Imię/ imiona", isNameField: true },
                 { name: "spouse_last_name", label: "Full last name / Nazwisko", isNameField: true }
-              ])}
+              ], 'applicant')}
 
               {/* Maiden name */}
               {renderFieldGroup([
@@ -740,31 +741,31 @@ export default function FamilyTreeForm() {
                   { value: "M", label: "Male" },
                   { value: "F", label: "Female" }
                 ]}
-              ])}
+              ], 'applicant')}
 
               {/* Places: Birth & Marriage */}
               {renderFieldGroup([
                 { name: "spouse_pob", label: "Place of birth", isNameField: true },
                 { name: "place_of_marriage", label: "Place of marriage", isNameField: true }
-              ])}
+              ], 'applicant')}
 
               {/* Dates: Birth & Marriage */}
               {renderFieldGroup([
                 { name: "spouse_dob", label: "Date of birth", type: "date" },
                 { name: "date_of_marriage", label: "Date of marriage", type: "date" }
-              ])}
+              ], 'applicant')}
 
               {/* Dates: Emigration & Naturalization */}
               {renderFieldGroup([
                 { name: "spouse_date_of_emigration", label: "Date of emigration", type: "date" },
                 { name: "spouse_date_of_naturalization", label: "Date of naturalization", type: "date" }
-              ])}
+              ], 'applicant')}
 
               {/* Contact */}
               {renderFieldGroup([
                 { name: "spouse_email", label: "Email", type: "email" },
                 { name: "spouse_phone", label: "Phone" }
-              ])}
+              ], 'applicant')}
 
               <FamilyMemberDocumentsSection
                 prefix="spouse"
@@ -827,20 +828,20 @@ export default function FamilyTreeForm() {
               name: `child_${num}_last_name`,
               label: "Full last name / Nazwisko",
               isNameField: true
-            }])}
+            }], 'children')}
 
                 {/* 2nd row - Places */}
                 {renderFieldGroup([{
               name: `child_${num}_pob`,
               label: "Place of birth"
-            }])}
+            }], 'children')}
 
                 {/* 3rd row - Dates */}
                 {renderFieldGroup([{
               name: `child_${num}_dob`,
               label: "Date of birth",
               type: "date"
-            }])}
+            }], 'children')}
                 <FamilyMemberDocumentsSection
                   prefix={`child_${num}`}
                   title="Required Documents"
@@ -909,7 +910,7 @@ export default function FamilyTreeForm() {
                 name: "father_last_name",
                 label: "Full last name / Nazwisko",
                 isNameField: true
-              }])}
+              }], 'parents')}
 
                 {/* 2nd row - Places: Birth & Marriage */}
                 {renderFieldGroup([{
@@ -918,7 +919,7 @@ export default function FamilyTreeForm() {
               }, {
                 name: "father_mother_marriage_place",
                 label: "Place of marriage"
-              }])}
+              }], 'parents')}
 
                 {/* 3rd row - Dates: Birth & Marriage */}
                 {renderFieldGroup([{
@@ -929,7 +930,7 @@ export default function FamilyTreeForm() {
                 name: "father_mother_marriage_date",
                 label: "Date of marriage",
                 type: "date"
-              }])}
+              }], 'parents')}
 
                 {/* 4th row - Dates: Emigration & Naturalization */}
                 {renderFieldGroup([{
@@ -940,7 +941,7 @@ export default function FamilyTreeForm() {
                 name: "father_date_of_naturalization",
                 label: "Date of naturalization",
                 type: "date"
-              }])}
+              }], 'parents')}
                 <FamilyMemberDocumentsSection
                   prefix="father"
                   title="Required Documents"
@@ -992,7 +993,7 @@ export default function FamilyTreeForm() {
                 name: "mother_maiden_name",
                 label: "Maiden name",
                 isNameField: true
-              }])}
+              }], 'parents')}
 
                 {/* 2nd row - Places: Birth & Marriage */}
                 {renderFieldGroup([{
@@ -1001,7 +1002,7 @@ export default function FamilyTreeForm() {
               }, {
                 name: "father_mother_marriage_place",
                 label: "Place of marriage"
-              }])}
+              }], 'parents')}
 
                 {/* 3rd row - Dates: Birth & Marriage */}
                 {renderFieldGroup([{
@@ -1012,7 +1013,7 @@ export default function FamilyTreeForm() {
                 name: "father_mother_marriage_date",
                 label: "Date of marriage",
                 type: "date"
-              }])}
+              }], 'parents')}
 
                 {/* 4th row - Dates: Emigration & Naturalization */}
                 {renderFieldGroup([{
@@ -1023,7 +1024,7 @@ export default function FamilyTreeForm() {
                 name: "mother_date_of_naturalization",
                 label: "Date of naturalization",
                 type: "date"
-              }])}
+              }], 'parents')}
                 <FamilyMemberDocumentsSection
                   prefix="mother"
                   title="Required Documents"
@@ -1103,7 +1104,7 @@ export default function FamilyTreeForm() {
                 name: `${prefix}_maiden_name`,
                 label: "Maiden name",
                 isNameField: true
-              }] : [])])}
+              }] : [])], 'grandparents')}
 
                   {/* 2nd row - Places: Birth & Marriage */}
                   {renderFieldGroup([{
@@ -1112,7 +1113,7 @@ export default function FamilyTreeForm() {
               }, {
                 name: `${prefix === 'pgf' || prefix === 'pgm' ? 'pgf_pgm_marriage_place' : 'mgf_mgm_marriage_place'}`,
                 label: "Place of marriage"
-              }])}
+              }], 'grandparents')}
 
                   {/* 3rd row - Dates: Birth & Marriage */}
                   {renderFieldGroup([{
@@ -1123,7 +1124,7 @@ export default function FamilyTreeForm() {
                 name: `${prefix === 'pgf' || prefix === 'pgm' ? 'pgf_pgm_marriage_date' : 'mgf_mgm_marriage_date'}`,
                 label: "Date of marriage",
                 type: "date"
-              }])}
+              }], 'grandparents')}
 
                   {/* 4th row - Dates: Emigration & Naturalization */}
                   {renderFieldGroup([{
@@ -1134,7 +1135,7 @@ export default function FamilyTreeForm() {
                 name: `${prefix}_date_of_naturalization`,
                 label: "Date of naturalization",
                 type: "date"
-              }])}
+              }], 'grandparents')}
 
                   <FamilyMemberDocumentsSection
                     prefix={prefix}
@@ -1216,7 +1217,7 @@ export default function FamilyTreeForm() {
                 name: `${prefix}_last_name`,
                 label: "Full last name / Nazwisko",
                 isNameField: true
-              }])}
+              }], 'ggp')}
 
                   {/* 2nd row - Places: Birth & Marriage */}
                   {renderFieldGroup([{
@@ -1225,7 +1226,7 @@ export default function FamilyTreeForm() {
               }, {
                 name: `${prefix === 'pggf' ? 'pggf_pggm_marriage_place' : 'mggf_mggm_marriage_place'}`,
                 label: "Place of marriage"
-              }])}
+              }], 'ggp')}
 
                   {/* 3rd row - Dates: Birth & Marriage */}
                   {renderFieldGroup([{
@@ -1236,7 +1237,7 @@ export default function FamilyTreeForm() {
                 name: `${prefix === 'pggf' ? 'pggf_pggm_marriage_date' : 'mggf_mggm_marriage_date'}`,
                 label: "Date of marriage",
                 type: "date"
-              }])}
+              }], 'ggp')}
 
                   {/* 4th row - Dates: Emigration & Naturalization */}
                   {renderFieldGroup([{
@@ -1247,7 +1248,7 @@ export default function FamilyTreeForm() {
                 name: `${prefix}_date_of_naturalization`,
                 label: "Date of naturalization",
                 type: "date"
-              }])}
+              }], 'ggp')}
                   
                   <FamilyMemberDocumentsSection
                     prefix={prefix}
