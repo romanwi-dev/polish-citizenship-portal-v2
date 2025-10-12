@@ -851,6 +851,7 @@ export default function FamilyTreeForm() {
                   handleInputChange={handleInputChange}
                   personType="child"
                   sex={formData[`child_${num}_sex`]}
+                  colorScheme="children"
                 />
 
                 <div className="space-y-2 mt-8">
@@ -1262,6 +1263,7 @@ export default function FamilyTreeForm() {
                     handleInputChange={handleInputChange}
                     personType="grandparent"
                     sex={sex}
+                    colorScheme="ggp"
                   />
 
                   <div className="space-y-2 mt-8">
