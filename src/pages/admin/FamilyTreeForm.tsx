@@ -877,7 +877,7 @@ export default function FamilyTreeForm() {
 
               {/* Father */}
               <div className="space-y-8">
-                <div className="flex items-center gap-4">
+                <div className="flex items-start gap-4">
                   <h3 className={cn(
                     "text-3xl font-heading font-bold text-teal-600/80 dark:text-teal-400/80 mt-10",
                     formData.father_is_polish && "text-red-400"
@@ -888,7 +888,7 @@ export default function FamilyTreeForm() {
                     id="father_is_polish"
                     checked={formData.father_is_polish || false}
                     onCheckedChange={(checked) => handleInputChange("father_is_polish", checked)}
-                    className="h-8 w-8 border-2 border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                    className="h-8 w-8 mt-10 border-2 border-primary/50 rounded-sm data-[state=checked]:bg-primary data-[state=checked]:border-primary"
                   />
                 </div>
 
@@ -959,7 +959,7 @@ export default function FamilyTreeForm() {
               </div>
 
               {/* Mother */}
-              <div className="flex items-center gap-4">
+              <div className="flex items-start gap-4">
                 <h3 className={cn(
                   "text-3xl font-heading font-bold text-teal-600/80 dark:text-teal-400/80 mt-10",
                   formData.mother_is_polish && "text-red-400"
@@ -970,7 +970,7 @@ export default function FamilyTreeForm() {
                   id="mother_is_polish"
                   checked={formData.mother_is_polish || false}
                   onCheckedChange={(checked) => handleInputChange("mother_is_polish", checked)}
-                  className="h-8 w-8 border-2 border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                  className="h-8 w-8 mt-10 border-2 border-primary/50 rounded-sm data-[state=checked]:bg-primary data-[state=checked]:border-primary"
                 />
               </div>
 
@@ -1070,7 +1070,7 @@ export default function FamilyTreeForm() {
                 };
                 const sex = prefix.endsWith('f') ? 'M' : 'F';
                 return <Fragment key={prefix}>
-                  <div className="flex items-center gap-4 mb-6">
+                  <div className="flex items-start gap-4 mb-6">
                     <h3 className={cn(
                       "text-3xl font-heading font-bold text-red-600/80 dark:text-red-400/80",
                       prefix === "pgf" && "mt-10",
@@ -1082,7 +1082,7 @@ export default function FamilyTreeForm() {
                       id={`${prefix}_is_polish`}
                       checked={formData[`${prefix}_is_polish`] || false}
                       onCheckedChange={(checked) => handleInputChange(`${prefix}_is_polish`, checked)}
-                      className="h-8 w-8 border-2 border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                      className={cn("h-8 w-8 border-2 border-primary/50 rounded-sm data-[state=checked]:bg-primary data-[state=checked]:border-primary", prefix === "pgf" && "mt-10")}
                     />
                   </div>
 
@@ -1183,7 +1183,7 @@ export default function FamilyTreeForm() {
                 };
                 const sex = 'M'; // Great-grandfathers are always male
                 return <Fragment key={prefix}>
-                  <div className="flex items-center gap-4 mb-6">
+                  <div className="flex items-start gap-4 mb-6">
                     <h3 className={cn(
                       "text-3xl font-heading font-bold text-gray-600/80 dark:text-gray-400/80",
                       formData[`${prefix}_is_polish`] && "text-red-400"
@@ -1194,7 +1194,7 @@ export default function FamilyTreeForm() {
                       id={`${prefix}_is_polish`}
                       checked={formData[`${prefix}_is_polish`] || false}
                       onCheckedChange={(checked) => handleInputChange(`${prefix}_is_polish`, checked)}
-                      className="h-8 w-8 border-2 border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                      className="h-8 w-8 border-2 border-primary/50 rounded-sm data-[state=checked]:bg-primary data-[state=checked]:border-primary"
                     />
                   </div>
                   
