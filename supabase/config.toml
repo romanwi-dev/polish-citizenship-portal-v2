@@ -1,5 +1,8 @@
 project_id = "oogmuakyqadpynnrasnd"
 
+[functions.inspect-citizenship]
+verify_jwt = false
+
 [functions.rename-pdf-fields]
 verify_jwt = false
 

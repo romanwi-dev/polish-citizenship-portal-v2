@@ -176,6 +176,7 @@ export default function FamilyTreeForm() {
     dateOfEmigration: formData[`${prefix}_date_of_emigration`],
     dateOfNaturalization: formData[`${prefix}_date_of_naturalization`],
     isAlive: formData[`${prefix}_is_alive`],
+    notes: formData[`${prefix}_notes`], // Biographical notes
     documents: {
       birthCertificate: formData[`${prefix}_has_birth_cert`] || false,
       marriageCertificate: formData[`${prefix}_has_marriage_cert`] || false,
@@ -1245,7 +1246,7 @@ export default function FamilyTreeForm() {
 
         <TabsContent value="great-grandparents" className="mt-0">
 
-          {/* Great-Grandparents Section */}
+          {/* Polish Great-Grandfathers Section - Only the 2 Polish Ancestors */}
           {activeTab === 'great-grandparents' && (
           <motion.div initial={{
           opacity: 0,
@@ -1259,23 +1260,39 @@ export default function FamilyTreeForm() {
         }}>
             <Card className="glass-card border-primary/20">
               <CardHeader className="border-b border-border/50 pb-6">
-                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Polish Great-Grandparents</CardTitle>
+                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                  Polish Great-Grandfathers
+                </CardTitle>
+                <CardDescription className="text-base mt-2">
+                  Focus on the 2 Polish great-grandfathers only. Great-grandmothers are not relevant for this process.
+                </CardDescription>
               </CardHeader>
               <CardContent className="p-6 md:p-10 space-y-8">
-                {["pggf", "pggm", "mggf", "mggm"].map(prefix => {
+                {["pggf", "mggf"].map(prefix => {
                 const labels = {
-                  pggf: "Pat. Great-Grandfather (Father's Side)",
-                  pggm: "Pat. Great-Grandmother (Father's Side)",
-                  mggf: "Mat. Great-Grandfather (Mother's Side)",
-                  mggm: "Mat. Great-Grandmother (Mother's Side)"
+                  pggf: "Paternal Great-Grandfather (Father's Line)",
+                  mggf: "Maternal Great-Grandfather (Mother's Line)"
                 };
-                return <Card key={prefix} className="glass-card border-primary/20">
+                return <Card key={prefix} className={cn(
+                  "glass-card border-primary/20",
+                  formData[`${prefix}_is_polish`] && "bg-red-950/30 border-red-900/50"
+                )}>
                       <CardHeader className="border-b border-border/50">
-                        <CardTitle className="text-2xl md:text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                        <CardTitle className={cn(
+                          "text-2xl md:text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent",
+                          formData[`${prefix}_is_polish`] && "text-red-400"
+                        )}>
                           {labels[prefix as keyof typeof labels]}
                         </CardTitle>
                       </CardHeader>
                       <CardContent className="p-6 md:p-8 space-y-8">
+                        <div className="mb-6 p-4 bg-primary/10 rounded-lg border-2 border-primary/30">
+                          {renderCheckboxGroup([{
+                            name: `${prefix}_is_polish`,
+                            label: "Polish Ancestor"
+                          }])}
+                        </div>
+                        
                         {/* 1st row - Names */}
                         {renderFieldGroup([{
                       name: `${prefix}_first_name`,
@@ -1285,18 +1302,14 @@ export default function FamilyTreeForm() {
                       name: `${prefix}_last_name`,
                       label: "Full last name / Nazwisko",
                       isNameField: true
-                    }, ...(prefix.includes("ggm") ? [{
-                      name: `${prefix}_maiden_name`,
-                      label: "Maiden name",
-                      isNameField: true
-                    }] : [])])}
+                    }])}
 
                         {/* 2nd row - Places: Birth & Marriage */}
                         {renderFieldGroup([{
                       name: `${prefix}_pob`,
                       label: "Place of birth"
                     }, {
-                      name: `${prefix === 'pggf' || prefix === 'pggm' ? 'pggf_pggm_marriage_place' : 'mggf_mggm_marriage_place'}`,
+                      name: `${prefix === 'pggf' ? 'pggf_pggm_marriage_place' : 'mggf_mggm_marriage_place'}`,
                       label: "Place of marriage"
                     }])}
 
@@ -1306,7 +1319,7 @@ export default function FamilyTreeForm() {
                       label: "Date of birth",
                       type: "date"
                     }, {
-                      name: `${prefix === 'pggf' || prefix === 'pggm' ? 'pggf_pggm_marriage_date' : 'mggf_mggm_marriage_date'}`,
+                      name: `${prefix === 'pggf' ? 'pggf_pggm_marriage_date' : 'mggf_mggm_marriage_date'}`,
                       label: "Date of marriage",
                       type: "date"
                     }])}
@@ -1321,25 +1334,31 @@ export default function FamilyTreeForm() {
                       label: "Date of naturalization",
                       type: "date"
                     }])}
+                        
+                        {/* Biographical Notes - Polish Family Debris */}
                         <div className="space-y-2">
                           <Label htmlFor={`${prefix}_notes`} className={isLargeFonts ? "text-2xl" : ""}>
-                            Relevant additional information
+                            Biographical Notes / Życiorys
                           </Label>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            Family history, immigration journey, Polish heritage details, important life events
+                          </p>
                           <Textarea
                             id={`${prefix}_notes`}
                             value={formData[`${prefix}_notes`] || ""}
                             onChange={e => handleInputChange(`${prefix}_notes`, e.target.value.toUpperCase())}
-                            placeholder=""
-                            className={cn("min-h-[150px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                            placeholder="Enter biographical information and family history details..."
+                            className={cn("min-h-[200px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
                           />
                         </div>
+                        
                         <FamilyMemberDocumentsSection
                           prefix={prefix}
                           title="Required Documents"
                           formData={formData}
                           handleInputChange={handleInputChange}
                           personType="grandparent"
-                          sex={prefix === 'ggf_p' || prefix === 'ggf_m' ? 'M' : 'F'}
+                          sex="M"
                         />
                       </CardContent>
                     </Card>;

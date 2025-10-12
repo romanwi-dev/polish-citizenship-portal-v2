@@ -18,6 +18,7 @@ interface Person {
   dateOfEmigration?: string;
   dateOfNaturalization?: string;
   isAlive?: boolean;
+  notes?: string; // Biographical notes
   documents?: {
     birthCertificate?: boolean;
     marriageCertificate?: boolean;
@@ -155,6 +156,13 @@ const PersonCardInteractive = ({
             <AlertCircle className="h-3 w-3 text-orange-600" />
           )}
         </div>
+        
+        {/* Biographical Notes Preview */}
+        {person.notes && (
+          <div className="text-[9px] text-muted-foreground mt-2 p-1 bg-muted/50 rounded">
+            <strong>Notes:</strong> {person.notes.substring(0, 50)}{person.notes.length > 50 ? '...' : ''}
+          </div>
+        )}
       </div>
     </Card>
   );
@@ -280,51 +288,30 @@ export const FamilyTreeInteractive = ({
 
       {/* Tree Visualization */}
       <div className="relative space-y-8">
-        {/* Great Grandparents Layer */}
+        {/* Polish Great Grandfathers Only */}
         <div>
           <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
             <Users className="h-4 w-4" />
-            Great Grandparents (4th Generation)
+            Polish Great Grandfathers (4th Generation)
           </h3>
-          <div className="grid grid-cols-2 gap-6">
-            <div>
-              <p className="text-xs text-muted-foreground mb-3 font-medium">Paternal Line</p>
-              <div className="grid grid-cols-2 gap-3">
-                <PersonCardInteractive 
-                  person={paternalGreatGrandfather}
-                  title="Paternal Great Grandfather"
-                  personType="paternalGreatGrandfather"
-                  variant="greatgrandparent"
-                  onEdit={onEdit}
-                />
-                <PersonCardInteractive 
-                  person={paternalGreatGrandmother}
-                  title="Paternal Great Grandmother"
-                  personType="paternalGreatGrandmother"
-                  variant="greatgrandparent"
-                  onEdit={onEdit}
-                />
-              </div>
-            </div>
-            <div>
-              <p className="text-xs text-muted-foreground mb-3 font-medium">Maternal Line</p>
-              <div className="grid grid-cols-2 gap-3">
-                <PersonCardInteractive 
-                  person={maternalGreatGrandfather}
-                  title="Maternal Great Grandfather"
-                  personType="maternalGreatGrandfather"
-                  variant="greatgrandparent"
-                  onEdit={onEdit}
-                />
-                <PersonCardInteractive 
-                  person={maternalGreatGrandmother}
-                  title="Maternal Great Grandmother"
-                  personType="maternalGreatGrandmother"
-                  variant="greatgrandparent"
-                  onEdit={onEdit}
-                />
-              </div>
-            </div>
+          <p className="text-xs text-muted-foreground mb-4">
+            Only the 2 Polish great-grandfathers are relevant. Great-grandmothers excluded per process requirements.
+          </p>
+          <div className="grid grid-cols-2 gap-6 max-w-3xl mx-auto">
+            <PersonCardInteractive 
+              person={paternalGreatGrandfather}
+              title="Paternal Great Grandfather"
+              personType="paternalGreatGrandfather"
+              variant="greatgrandparent"
+              onEdit={onEdit}
+            />
+            <PersonCardInteractive 
+              person={maternalGreatGrandfather}
+              title="Maternal Great Grandfather"
+              personType="maternalGreatGrandfather"
+              variant="greatgrandparent"
+              onEdit={onEdit}
+            />
           </div>
         </div>
 

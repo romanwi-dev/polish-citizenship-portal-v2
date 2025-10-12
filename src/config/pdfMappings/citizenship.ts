@@ -196,6 +196,16 @@ export const CITIZENSHIP_PDF_MAP: Record<string, string> = {
   'miejsce_uro_babki_o': 'pgm_pob',
   'pesel_babki_o': 'pgm_pesel',
   
+  // ========== BIOGRAPHICAL NOTES (Życiorysy) ==========
+  'zyciorys_wniosko': 'applicant_notes',
+  'zyciorys_matki': 'mother_notes',
+  'zyciorys_ojca': 'father_notes',
+  'zyciorys_dziadka_m': 'mgf_notes',
+  'zyciorys_babki_m': 'mgm_notes',
+  'zyciorys_dziadka_o': 'pgf_notes',
+  'zyciorys_babki_o': 'pgm_notes',
+  'pradziadkowie': 'pggf_notes|mggf_notes', // Combined field for both Polish great-grandfathers
+  
   // ========== PAGE 11 - ATTACHMENTS (CRITICAL) ==========
   'zal1': 'attachment_1_included',
   'zal2': 'attachment_2_included',
