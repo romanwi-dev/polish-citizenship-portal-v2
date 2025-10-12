@@ -297,54 +297,54 @@ export default function IntakeDemo() {
             <Input
               value={poaInputs.field1}
               onChange={(e) => setPoaInputs(prev => ({ ...prev, field1: e.target.value }))}
-              className="h-16 bg-gray-50/45 dark:bg-gray-900/45 border border-gray-300/30 dark:border-gray-600/30 hover:border-transparent focus:border-transparent transition-all duration-300"
+              className="h-16 bg-gray-100/45 dark:bg-gray-800/45 border border-gray-200/30 dark:border-gray-500/30 hover:border-transparent focus:border-transparent transition-all duration-300"
               style={{
-                boxShadow: "0 0 30px rgba(156,163,175,0.25)",
+                boxShadow: "0 0 30px rgba(209,213,219,0.25)",
                 transition: "all 0.3s ease"
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 50px rgba(156,163,175,0.4)";
+                e.currentTarget.style.boxShadow = "0 0 50px rgba(209,213,219,0.4)";
                 e.currentTarget.style.transform = "translateY(-2px)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 30px rgba(156,163,175,0.25)";
+                e.currentTarget.style.boxShadow = "0 0 30px rgba(209,213,219,0.25)";
                 e.currentTarget.style.transform = "translateY(0)";
               }}
               onFocus={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 60px rgba(156,163,175,0.5)";
+                e.currentTarget.style.boxShadow = "0 0 60px rgba(209,213,219,0.5)";
                 e.currentTarget.style.transform = "translateY(-2px)";
               }}
               onBlur={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 30px rgba(156,163,175,0.25)";
+                e.currentTarget.style.boxShadow = "0 0 30px rgba(209,213,219,0.25)";
                 e.currentTarget.style.transform = "translateY(0)";
               }}
             />
           </div>
 
           <div className="flex items-center gap-4">
-            <label className="w-48 font-semibold">CITIZENSHIP (Sky Blue):</label>
+            <label className="w-48 font-semibold">CITIZENSHIP (Blue):</label>
             <Input
               value={citizenshipInputs.field1}
               onChange={(e) => setCitizenshipInputs(prev => ({ ...prev, field1: e.target.value }))}
-              className="h-16 bg-sky-50/45 dark:bg-sky-950/45 border border-sky-400/30 dark:border-sky-600/30 hover:border-transparent focus:border-transparent transition-all duration-300"
+              className="h-16 bg-blue-100/45 dark:bg-blue-900/45 border border-blue-300/30 dark:border-blue-500/30 hover:border-transparent focus:border-transparent transition-all duration-300"
               style={{
-                boxShadow: "0 0 30px rgba(56,189,248,0.25)",
+                boxShadow: "0 0 30px rgba(59,130,246,0.25)",
                 transition: "all 0.3s ease"
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 50px rgba(56,189,248,0.4)";
+                e.currentTarget.style.boxShadow = "0 0 50px rgba(59,130,246,0.4)";
                 e.currentTarget.style.transform = "translateY(-2px)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 30px rgba(56,189,248,0.25)";
+                e.currentTarget.style.boxShadow = "0 0 30px rgba(59,130,246,0.25)";
                 e.currentTarget.style.transform = "translateY(0)";
               }}
               onFocus={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 60px rgba(56,189,248,0.5)";
+                e.currentTarget.style.boxShadow = "0 0 60px rgba(59,130,246,0.5)";
                 e.currentTarget.style.transform = "translateY(-2px)";
               }}
               onBlur={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 30px rgba(56,189,248,0.25)";
+                e.currentTarget.style.boxShadow = "0 0 30px rgba(59,130,246,0.25)";
                 e.currentTarget.style.transform = "translateY(0)";
               }}
             />
