@@ -1,5 +1,5 @@
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+import { FormInput } from "@/components/forms/FormInput";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -45,8 +45,12 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
           {label}
         </Label>
         <div
-          className="w-full h-16 px-3 flex items-center border-2 rounded-md hover-glow bg-card/50 backdrop-blur"
-          style={{ fontSize: '1.125rem', fontWeight: '400' }}
+          className="w-full h-16 px-3 flex items-center border rounded-md hover-glow bg-gray-200/45 dark:bg-gray-700/45 border-gray-300/30 dark:border-gray-500/30 backdrop-blur transition-all"
+          style={{ 
+            fontSize: '1.125rem', 
+            fontWeight: '400',
+            boxShadow: '0 0 30px rgba(156,163,175,0.25)'
+          }}
         >
           {displayDate}
         </div>
@@ -65,13 +69,14 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
       <Label htmlFor={name} className={isLargeFonts ? "text-2xl" : ""}>
         {label}
       </Label>
-      <Input
+      <FormInput
         id={name}
         type={type}
         value={value || ""}
         onChange={(e) => onChange(e.target.value.toUpperCase())}
-        placeholder=""
-        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase font-normal text-lg font-input-work"
+        isNameField={true}
+        isLargeFonts={isLargeFonts}
+        colorScheme="poa"
       />
     </motion.div>
   );
