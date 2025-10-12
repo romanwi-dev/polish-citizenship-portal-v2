@@ -120,14 +120,8 @@ export const FamilyMemberDocumentsSection = ({
   };
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      viewport={{ once: true }}
-      className="glass-card p-8 rounded-lg hover-glow mb-8"
-    >
-      <h3 className="text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-6">
+    <div className="space-y-6 py-4">
+      <h3 className="text-2xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-4">
         {title}
       </h3>
       <FlippableCardsDarkGlow
@@ -135,6 +129,6 @@ export const FamilyMemberDocumentsSection = ({
         documents={documents}
         onChange={handleDocumentsChange}
       />
-    </motion.div>
+    </div>
   );
 };
