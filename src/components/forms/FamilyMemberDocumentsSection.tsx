@@ -1,4 +1,5 @@
 import { FlippableCardsDarkGlow } from "@/components/docs/FlippableCardsDarkGlow";
+import { motion } from "framer-motion";
 
 interface DocumentItem {
   id: string;
@@ -119,17 +120,21 @@ export const FamilyMemberDocumentsSection = ({
   };
 
   return (
-    <div className="relative">
-      <div className="mb-6">
-        <h3 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-          {title}
-        </h3>
-      </div>
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      viewport={{ once: true }}
+      className="glass-card p-8 rounded-lg hover-glow mb-8"
+    >
+      <h3 className="text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-6">
+        {title}
+      </h3>
       <FlippableCardsDarkGlow
         title=""
         documents={documents}
         onChange={handleDocumentsChange}
       />
-    </div>
+    </motion.div>
   );
 };

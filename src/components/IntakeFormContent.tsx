@@ -364,20 +364,22 @@ export const DocumentsSection = ({ formData, handleInputChange, clearField, isLa
   };
 
   return (
-    <>
-      <div className="border-b border-border/50 pb-6 pt-6">
-        <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
-          Required Documents
-        </h3>
-      </div>
-      <div className="p-3 md:p-10">
-        <FlippableCardsDarkGlow
-          title=""
-          documents={documents}
-          onChange={handleDocumentsChange}
-        />
-      </div>
-    </>
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      viewport={{ once: true }}
+      className="glass-card p-8 rounded-lg hover-glow mb-8"
+    >
+      <h3 className="text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-6">
+        Required Documents
+      </h3>
+      <FlippableCardsDarkGlow
+        title=""
+        documents={documents}
+        onChange={handleDocumentsChange}
+      />
+    </motion.div>
   );
 };
 
