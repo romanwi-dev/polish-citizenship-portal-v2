@@ -531,7 +531,7 @@ export default function FamilyTreeForm() {
                   {/* Gender */}
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-2">
                     <Label className={isLargeFonts ? "text-2xl" : ""}>
-                      Gender / Płeć
+                      Gender
                     </Label>
                     <Select value={formData.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
                       <SelectTrigger className="h-16 md:h-20 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
@@ -547,7 +547,7 @@ export default function FamilyTreeForm() {
                   {/* Civil Status */}
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="space-y-2">
                     <Label className={isLargeFonts ? "text-2xl" : ""}>
-                      Civil status / Stan cywilny
+                      Civil Status
                     </Label>
                     <Select value={formData.applicant_is_married === true ? "Married" : "Single"} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
                       <SelectTrigger className="h-16 md:h-20 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
