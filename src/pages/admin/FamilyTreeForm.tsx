@@ -877,18 +877,19 @@ export default function FamilyTreeForm() {
 
               {/* Father */}
               <div className="space-y-8">
-                <h3 className={cn(
-                  "text-3xl font-heading font-bold text-teal-600/80 dark:text-teal-400/80 mt-10",
-                  formData.father_is_polish && "text-red-400"
-                )}>
-                  Father
-                </h3>
-
-                <div className="mb-6 p-4 bg-primary/10 rounded-lg border-2 border-primary/30">
-                  {renderCheckboxGroup([{
-                    name: "father_is_polish",
-                    label: "Polish Ancestor"
-                  }])}
+                <div className="flex items-center gap-4">
+                  <h3 className={cn(
+                    "text-3xl font-heading font-bold text-teal-600/80 dark:text-teal-400/80 mt-10",
+                    formData.father_is_polish && "text-red-400"
+                  )}>
+                    Father
+                  </h3>
+                  <Checkbox
+                    id="father_is_polish"
+                    checked={formData.father_is_polish || false}
+                    onCheckedChange={(checked) => handleInputChange("father_is_polish", checked)}
+                    className="h-6 w-6 border-2 border-primary/10"
+                  />
                 </div>
 
                 {/* 1st row - Name fields */}
@@ -958,19 +959,20 @@ export default function FamilyTreeForm() {
               </div>
 
               {/* Mother */}
-              <h3 className={cn(
-                "text-3xl font-heading font-bold text-teal-600/80 dark:text-teal-400/80 mt-10",
-                formData.mother_is_polish && "text-red-400"
-              )}>
-                Mother
-              </h3>
-
-                <div className="mb-6 p-4 bg-primary/10 rounded-lg border-2 border-primary/30">
-                  {renderCheckboxGroup([{
-                    name: "mother_is_polish",
-                    label: "Polish Ancestor"
-                  }])}
-                </div>
+              <div className="flex items-center gap-4">
+                <h3 className={cn(
+                  "text-3xl font-heading font-bold text-teal-600/80 dark:text-teal-400/80 mt-10",
+                  formData.mother_is_polish && "text-red-400"
+                )}>
+                  Mother
+                </h3>
+                <Checkbox
+                  id="mother_is_polish"
+                  checked={formData.mother_is_polish || false}
+                  onCheckedChange={(checked) => handleInputChange("mother_is_polish", checked)}
+                  className="h-6 w-6 border-2 border-primary/10"
+                />
+              </div>
 
                 {/* 1st row - Name fields */}
                 {renderFieldGroup([{
@@ -1068,7 +1070,7 @@ export default function FamilyTreeForm() {
                 };
                 const sex = prefix.endsWith('f') ? 'M' : 'F';
                 return <Fragment key={prefix}>
-                  <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-4 mb-6">
                     <h3 className={cn(
                       "text-3xl font-heading font-bold text-red-600/80 dark:text-red-400/80",
                       prefix === "pgf" && "mt-10",
@@ -1076,13 +1078,12 @@ export default function FamilyTreeForm() {
                     )}>
                       {labels[prefix as keyof typeof labels]}
                     </h3>
-                    
-                    <div className="p-4 bg-primary/10 rounded-lg border-2 border-primary/30">
-                      {renderCheckboxGroup([{
-                        name: `${prefix}_is_polish`,
-                        label: "Polish Ancestor"
-                      }])}
-                    </div>
+                    <Checkbox
+                      id={`${prefix}_is_polish`}
+                      checked={formData[`${prefix}_is_polish`] || false}
+                      onCheckedChange={(checked) => handleInputChange(`${prefix}_is_polish`, checked)}
+                      className="h-6 w-6 border-2 border-primary/10"
+                    />
                   </div>
 
                   {/* 1st row - Name fields */}
@@ -1182,18 +1183,19 @@ export default function FamilyTreeForm() {
                 };
                 const sex = 'M'; // Great-grandfathers are always male
                 return <Fragment key={prefix}>
-                  <h3 className={cn(
-                    "text-3xl font-heading font-bold text-gray-600/80 dark:text-gray-400/80",
-                    formData[`${prefix}_is_polish`] && "text-red-400"
-                  )}>
-                    {labels[prefix as keyof typeof labels]}
-                  </h3>
-
-                  <div className="mb-6 p-4 bg-primary/10 rounded-lg border-2 border-primary/30">
-                    {renderCheckboxGroup([{
-                      name: `${prefix}_is_polish`,
-                      label: "Polish Ancestor"
-                    }])}
+                  <div className="flex items-center gap-4 mb-6">
+                    <h3 className={cn(
+                      "text-3xl font-heading font-bold text-gray-600/80 dark:text-gray-400/80",
+                      formData[`${prefix}_is_polish`] && "text-red-400"
+                    )}>
+                      {labels[prefix as keyof typeof labels]}
+                    </h3>
+                    <Checkbox
+                      id={`${prefix}_is_polish`}
+                      checked={formData[`${prefix}_is_polish`] || false}
+                      onCheckedChange={(checked) => handleInputChange(`${prefix}_is_polish`, checked)}
+                      className="h-6 w-6 border-2 border-primary/10"
+                    />
                   </div>
                   
                   {/* 1st row - Names */}
