@@ -1070,6 +1070,7 @@ export default function FamilyTreeForm() {
                 return <Fragment key={prefix}>
                   <h3 className={cn(
                     "text-3xl font-heading font-bold text-red-600/80 dark:text-red-400/80",
+                    prefix === "pgf" && "mt-10",
                     formData[`${prefix}_is_polish`] && "text-red-400"
                   )}>
                     {labels[prefix as keyof typeof labels]}
