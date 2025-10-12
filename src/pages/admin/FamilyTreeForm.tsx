@@ -470,9 +470,6 @@ export default function FamilyTreeForm() {
                       <TabsTrigger value="great-grandparents" className="flex-shrink-0">
                         <span className="text-gray-600 dark:text-gray-400">Great Grandparents</span>
                       </TabsTrigger>
-                      <TabsTrigger value="additional" className="flex-shrink-0">
-                        <span>Additional Info</span>
-                      </TabsTrigger>
                     </TabsList>
                   </div>
                 )}
@@ -1276,39 +1273,6 @@ export default function FamilyTreeForm() {
           )}
         </TabsContent>
 
-        <TabsContent value="additional" className="mt-0" {...(isFullView ? { forceMount: true } : {})}>
-
-          {/* Additional Info Section */}
-          {(activeTab === 'additional' || isFullView) && (
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }} 
-            animate={{ opacity: 1, scale: 1 }} 
-            transition={{ duration: 0.5 }}
-          >
-            <Card className="glass-card border-primary/20">
-              <CardHeader className="border-b border-border/50 pb-6">
-                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                  Additional Information
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6 md:p-10">
-                <div className="space-y-2">
-                  <Label htmlFor="additional_info" className={isLargeFonts ? "text-2xl" : ""}>
-                    Additional relevant information
-                  </Label>
-                  <Textarea
-                    id="additional_info"
-                    value={formData.additional_info || ""}
-                    onChange={e => handleInputChange("additional_info", e.target.value.toUpperCase())}
-                    placeholder=""
-                    className={cn("min-h-[200px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
-                  />
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-          )}
-        </TabsContent>
                 </>
               ) : null}
           </Tabs>
