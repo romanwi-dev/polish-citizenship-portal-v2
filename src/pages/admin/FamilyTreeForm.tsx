@@ -785,7 +785,7 @@ export default function FamilyTreeForm() {
                   onChange={e => handleInputChange("spouse_notes", e.target.value.toUpperCase())}
                   placeholder=""
                   colorScheme="applicant"
-                  className={cn("min-h-[200px] border-2 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase")}
+                  className={cn("min-h-[200px] border-2 border-blue-300/10 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase")}
                 />
               </div>
             </motion.div>
@@ -862,7 +862,7 @@ export default function FamilyTreeForm() {
                     onChange={e => handleInputChange(`child_${num}_notes`, e.target.value.toUpperCase())}
                     placeholder=""
                     colorScheme="children"
-                    className={cn("min-h-[200px] border-2 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase")}
+                    className={cn("min-h-[200px] border-2 border-purple-300/10 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase")}
                   />
                 </div>
               </Fragment>)}
