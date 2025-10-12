@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { PDFDocument } from "https://esm.sh/pdf-lib@1.17.1";
+import { PDFDocument, PDFName, PDFBool } from "https://esm.sh/pdf-lib@1.17.1";
 
 // ============ PDF FIELD MAPPINGS (INLINE) ============
 
@@ -387,6 +387,12 @@ const extractNameComponents = (data: any, dbColumn: string): { firstName: string
 const isFullNameField = (pdfFieldName: string): boolean => {
   const lower = pdfFieldName.toLowerCase();
   
+  // IMPORTANT: Exclude these - they are SEPARATE fields, not full names!
+  const excludeIndicators = ['given_names', 'surname', 'last_name', 'first_name'];
+  if (excludeIndicators.some(ex => lower.includes(ex))) {
+    return false;
+  }
+  
   const fullNameIndicators = [
     'full_name',
     'imie_nazwisko',
@@ -402,8 +408,6 @@ const isFullNameField = (pdfFieldName: string): boolean => {
                          !lower.includes('last') && 
                          !lower.includes('maiden') && 
                          !lower.includes('middle') &&
-                         !lower.includes('given') &&
-                         !lower.includes('surname') &&
                          !lower.includes('rodowe');
   
   return hasName && isNotComponent;
@@ -467,15 +471,8 @@ const fillPDFFields = (
         const { firstName, lastName } = extractNameComponents(data, dbColumn);
         rawValue = `${firstName} ${lastName}`.trim();
       } 
-      else if (dbColumn.endsWith('_first_name') || dbColumn.endsWith('_given_names')) {
-        const { firstName, lastName } = extractNameComponents(data, dbColumn);
-        if (firstName && lastName) {
-          rawValue = `${firstName} ${lastName}`.trim();
-        } else {
-          rawValue = getNestedValue(data, dbColumn);
-        }
-      }
       else {
+        // Direct mapping - no name concatenation for single fields
         rawValue = getNestedValue(data, dbColumn);
       }
       
@@ -546,7 +543,7 @@ serve(async (req) => {
   }
 
   try {
-    const { caseId, templateType, preview = false } = await req.json();
+    const { caseId, templateType, flatten = false } = await req.json();
     
     const validTemplates = ['poa-adult', 'poa-minor', 'poa-spouses', 'citizenship', 'family-tree', 'umiejscowienie', 'uzupelnienie'];
     
@@ -644,12 +641,24 @@ serve(async (req) => {
       }
     }
 
-    // Only flatten for final downloads, keep editable for preview
-    if (!preview) {
+    // Preserve Adobe's AUTO font sizing by using needAppearances
+    pdfDoc.getForm().acroForm.dict.set(
+      PDFName.of('NeedAppearances'), 
+      PDFBool.True
+    );
+
+    // Only flatten for final locked PDFs, keep editable otherwise
+    if (flatten) {
       form.flatten();
+      console.log('🔒 PDF flattened - fields are now static text (not editable)');
+    } else {
+      console.log('✏️ PDF kept editable - can be filled in PDF viewer software');
     }
     
-    const filledPdfBytes = await pdfDoc.save();
+    const filledPdfBytes = await pdfDoc.save({
+      useObjectStreams: false,
+      updateFieldAppearances: false  // Don't force font changes!
+    });
     
     console.log(`PDF generated: ${filledPdfBytes.length} bytes`);
     

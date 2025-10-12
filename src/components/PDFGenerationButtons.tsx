@@ -3,6 +3,7 @@ import { Download, Eye, AlertTriangle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,6 +29,7 @@ interface PDFGenerationButtonsProps {
 }
 
 export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
+  const navigate = useNavigate();
   const [isGenerating, setIsGenerating] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewUrl, setPreviewUrl] = useState("");
@@ -35,9 +37,9 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
   const [formData, setFormData] = useState<any>(null);
   const [validationDialogOpen, setValidationDialogOpen] = useState(false);
   const [validationResult, setValidationResult] = useState<ValidationResult | null>(null);
-  const [pendingGeneration, setPendingGeneration] = useState<{ templateType: string; label: string; preview: boolean } | null>(null);
+  const [pendingGeneration, setPendingGeneration] = useState<{ templateType: string; label: string; flatten: boolean } | null>(null);
 
-  const handleGeneratePDF = async (templateType: string, label: string, preview: boolean = false) => {
+  const handleGeneratePDF = async (templateType: string, label: string, flatten: boolean = false) => {
     try {
       setIsGenerating(true);
       const loadingToast = toast.loading(`Generating ${label}...`);
@@ -56,7 +58,7 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
         if (!validation.isValid && validation.coverage < 80) {
           // Show validation warning if coverage is low
           setValidationResult(validation);
-          setPendingGeneration({ templateType, label, preview });
+          setPendingGeneration({ templateType, label, flatten });
           setValidationDialogOpen(true);
           toast.dismiss(loadingToast);
           setIsGenerating(false);
@@ -79,7 +81,7 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
           },
-          body: JSON.stringify({ caseId, templateType, preview }),
+          body: JSON.stringify({ caseId, templateType, flatten }),
         }
       );
 
@@ -97,8 +99,8 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
 
       toast.dismiss(loadingToast);
 
-      if (preview) {
-        // Convert to base64 for reliable iframe rendering
+      if (!flatten) {
+        // For preview and editable download - show in dialog
         const reader = new FileReader();
         reader.onloadend = () => {
           const base64Url = reader.result as string;
@@ -106,23 +108,23 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
           setCurrentTemplate({ type: templateType, label });
           setFormData(masterData);
           setPreviewOpen(true);
-          toast.success(`${label} ready for preview!`);
+          toast.success(`${label} ready!`);
         };
         reader.onerror = () => {
           toast.error('Failed to prepare PDF preview');
         };
         reader.readAsDataURL(blob);
       } else {
-        // Direct download using blob URL
+        // For final locked download - direct download
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = `${templateType}-${caseId}.pdf`;
+        link.download = `${templateType}-${caseId}-final.pdf`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
-        toast.success(`${label} downloaded successfully!`);
+        toast.success(`${label} (final locked) downloaded!`);
       }
     } catch (error: any) {
       console.error('PDF generation error:', error);
@@ -140,12 +142,19 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
       .update(updatedData)
       .eq("case_id", caseId);
 
-    // Regenerate PDF
-    await handleGeneratePDF(currentTemplate.type, currentTemplate.label, true);
+    // Regenerate PDF (editable)
+    await handleGeneratePDF(currentTemplate.type, currentTemplate.label, false);
   };
 
-  const handleDownloadFromPreview = async () => {
-    // Generate an editable PDF for download
+  const handleDownloadEditable = async () => {
+    // Generate editable PDF for offline editing (flatten: false)
+    await handleGeneratePDF(currentTemplate.type, currentTemplate.label, false);
+    toast.success("Editable PDF downloaded - you can fill it in Adobe Acrobat");
+    setPreviewOpen(false);
+  };
+
+  const handleDownloadFinal = async () => {
+    // Generate final locked PDF for submission (flatten: true)
     await handleGeneratePDF(currentTemplate.type, currentTemplate.label, true);
     setPreviewOpen(false);
   };
@@ -166,34 +175,34 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-72 bg-background/95 backdrop-blur-sm border-primary/20 z-50">
-        <DropdownMenuItem onClick={() => handleGeneratePDF('family-tree', 'Family Tree', true)}>
+        <DropdownMenuItem onClick={() => handleGeneratePDF('family-tree', 'Family Tree', false)}>
           <Eye className="h-4 w-4 mr-2" />
           Preview Family Tree
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => handleGeneratePDF('citizenship', 'Citizenship Application', true)}>
+        <DropdownMenuItem onClick={() => handleGeneratePDF('citizenship', 'Citizenship Application', false)}>
           <Eye className="h-4 w-4 mr-2" />
           Preview Citizenship Application
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => handleGeneratePDF('poa-adult', 'POA - Adult', true)}>
+        <DropdownMenuItem onClick={() => handleGeneratePDF('poa-adult', 'POA - Adult', false)}>
           <Eye className="h-4 w-4 mr-2" />
           Preview POA - Adult
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleGeneratePDF('poa-minor', 'POA - Minor', true)}>
+        <DropdownMenuItem onClick={() => handleGeneratePDF('poa-minor', 'POA - Minor', false)}>
           <Eye className="h-4 w-4 mr-2" />
           Preview POA - Minor
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleGeneratePDF('poa-spouses', 'POA - Spouses', true)}>
+        <DropdownMenuItem onClick={() => handleGeneratePDF('poa-spouses', 'POA - Spouses', false)}>
           <Eye className="h-4 w-4 mr-2" />
           Preview POA - Spouses
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => handleGeneratePDF('umiejscowienie', 'Civil Registry Entry (Umiejscowienie)', true)}>
+        <DropdownMenuItem onClick={() => handleGeneratePDF('umiejscowienie', 'Civil Registry Entry (Umiejscowienie)', false)}>
           <Eye className="h-4 w-4 mr-2" />
           Preview Civil Registry Entry (Umiejscowienie)
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleGeneratePDF('uzupelnienie', 'Birth Certificate Supplementation', true)}>
+        <DropdownMenuItem onClick={() => handleGeneratePDF('uzupelnienie', 'Birth Certificate Supplementation', false)}>
           <Eye className="h-4 w-4 mr-2" />
           Preview Birth Certificate Supplementation
         </DropdownMenuItem>
@@ -205,7 +214,8 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
         pdfUrl={previewUrl}
         formData={formData}
         onRegeneratePDF={handleRegeneratePDF}
-        onDownload={handleDownloadFromPreview}
+        onDownloadEditable={handleDownloadEditable}
+        onDownloadFinal={handleDownloadFinal}
         documentTitle={currentTemplate.label}
       />
 
@@ -241,14 +251,19 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setPendingGeneration(null)}>
+            <AlertDialogCancel 
+              onClick={() => {
+                setPendingGeneration(null);
+                navigate(`/admin/cases/${caseId}?tab=forms`);
+              }}
+            >
               Go Back & Fill Data
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
                 if (pendingGeneration) {
                   setValidationDialogOpen(false);
-                  handleGeneratePDF(pendingGeneration.templateType, pendingGeneration.label, pendingGeneration.preview);
+                  handleGeneratePDF(pendingGeneration.templateType, pendingGeneration.label, pendingGeneration.flatten);
                   setPendingGeneration(null);
                 }
               }}

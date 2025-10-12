@@ -1,8 +1,14 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Download, X, Printer, Eye } from "lucide-react";
+import { Download, X, Printer, Eye, Edit, Lock } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface PDFPreviewDialogProps {
   open: boolean;
@@ -10,7 +16,8 @@ interface PDFPreviewDialogProps {
   pdfUrl: string;
   formData?: any;
   onRegeneratePDF?: (updatedData: any) => Promise<void>;
-  onDownload: () => void;
+  onDownloadEditable: () => void;
+  onDownloadFinal: () => void;
   documentTitle: string;
 }
 
@@ -20,7 +27,8 @@ export function PDFPreviewDialog({
   pdfUrl,
   formData,
   onRegeneratePDF,
-  onDownload,
+  onDownloadEditable,
+  onDownloadFinal,
   documentTitle
 }: PDFPreviewDialogProps) {
   const [isPrinting, setIsPrinting] = useState(false);
@@ -68,11 +76,6 @@ export function PDFPreviewDialog({
     setIsPrinting(false);
   };
 
-  const handleDownloadAndClose = () => {
-    onDownload();
-    toast.success("PDF downloaded - you can now print it from your PDF viewer");
-    onClose();
-  };
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -86,11 +89,17 @@ export function PDFPreviewDialog({
               <X className="h-4 w-4" />
             </Button>
           </div>
-          {formData && (
-            <p className="text-sm text-muted-foreground mt-2">
-              Click on any field in the PDF below to edit it directly. When done, use Print or Download.
-            </p>
-          )}
+          <p className="text-sm text-muted-foreground mt-2">
+            This PDF preview shows filled form fields. You can:
+            <br />
+            • <strong>Print</strong> directly from here
+            <br />
+            • <strong>Download Editable</strong> as editable PDF to fill/sign offline in Adobe Acrobat
+            <br />
+            • <strong>Download Final</strong> as locked PDF for submission (fields cannot be changed)
+            <br />
+            • <strong>Edit data</strong> → Close preview, update forms, regenerate
+          </p>
         </DialogHeader>
 
         <div className="flex-1 border rounded-lg overflow-hidden bg-muted/10 relative">
@@ -130,10 +139,25 @@ export function PDFPreviewDialog({
             <Printer className="h-4 w-4" />
             Print
           </Button>
-          <Button onClick={handleDownloadAndClose} className="gap-2">
-            <Download className="h-4 w-4" />
-            Download
-          </Button>
+          
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button className="gap-2">
+                <Download className="h-4 w-4" />
+                Download
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={onDownloadEditable}>
+                <Edit className="h-4 w-4 mr-2" />
+                Editable (for offline editing)
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={onDownloadFinal}>
+                <Lock className="h-4 w-4 mr-2" />
+                Final (locked fields)
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </DialogFooter>
       </DialogContent>
     </Dialog>

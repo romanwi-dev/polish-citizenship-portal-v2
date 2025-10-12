@@ -189,10 +189,16 @@ export default function UploadPDFTemplates() {
         open={previewOpen}
         onClose={() => setPreviewOpen(false)}
         pdfUrl={previewUrl}
-        onDownload={() => {
+        onDownloadEditable={() => {
           const link = document.createElement('a');
           link.href = previewUrl;
           link.download = `${previewTitle}.pdf`;
+          link.click();
+        }}
+        onDownloadFinal={() => {
+          const link = document.createElement('a');
+          link.href = previewUrl;
+          link.download = `${previewTitle}-final.pdf`;
           link.click();
         }}
         documentTitle={previewTitle}

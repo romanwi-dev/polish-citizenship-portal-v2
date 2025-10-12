@@ -767,7 +767,11 @@ export default function POAForm() {
         pdfUrl={pdfPreviewUrl || ""}
         formData={previewFormData}
         onRegeneratePDF={handleRegeneratePDF}
-        onDownload={handleDownloadPDF}
+        onDownloadEditable={handleDownloadPDF}
+        onDownloadFinal={() => {
+          // For POAForm, we only have editable download - final can be same
+          handleDownloadPDF();
+        }}
         documentTitle="POA Adult"
       />
     </div>
