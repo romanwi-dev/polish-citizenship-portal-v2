@@ -1068,19 +1068,21 @@ export default function FamilyTreeForm() {
                 };
                 const sex = prefix.endsWith('f') ? 'M' : 'F';
                 return <Fragment key={prefix}>
-                  <h3 className={cn(
-                    "text-3xl font-heading font-bold text-red-600/80 dark:text-red-400/80",
-                    prefix === "pgf" && "mt-10",
-                    formData[`${prefix}_is_polish`] && "text-red-400"
-                  )}>
-                    {labels[prefix as keyof typeof labels]}
-                  </h3>
-
-                  <div className="mb-6 p-4 bg-primary/10 rounded-lg border-2 border-primary/30">
-                    {renderCheckboxGroup([{
-                  name: `${prefix}_is_polish`,
-                  label: "Polish Ancestor"
-                }])}
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className={cn(
+                      "text-3xl font-heading font-bold text-red-600/80 dark:text-red-400/80",
+                      prefix === "pgf" && "mt-10",
+                      formData[`${prefix}_is_polish`] && "text-red-400"
+                    )}>
+                      {labels[prefix as keyof typeof labels]}
+                    </h3>
+                    
+                    <div className="p-4 bg-primary/10 rounded-lg border-2 border-primary/30">
+                      {renderCheckboxGroup([{
+                        name: `${prefix}_is_polish`,
+                        label: "Polish Ancestor"
+                      }])}
+                    </div>
                   </div>
 
                   {/* 1st row - Name fields */}
