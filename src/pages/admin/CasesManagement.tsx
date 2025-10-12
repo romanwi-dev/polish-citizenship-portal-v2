@@ -21,8 +21,11 @@ import { LoadingState } from "@/components/LoadingState";
 import { EmptyState } from "@/components/EmptyState";
 import { ErrorState } from "@/components/ErrorState";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { GlobalSearch } from "@/components/GlobalSearch";
+import { BulkActionsToolbar } from "@/components/BulkActionsToolbar";
 import { toast } from "sonner";
 import { toastSuccess, toastError } from "@/utils/toastNotifications";
+import { useBulkCaseActions } from "@/hooks/useBulkCaseActions";
 
 export default function CasesManagement() {
   const navigate = useNavigate();
@@ -35,7 +38,21 @@ export default function CasesManagement() {
   const [progressFilter, setProgressFilter] = useState<[number, number]>([0, 100]);
   const [editCase, setEditCase] = useState<any>(null);
   const [showShortcuts, setShowShortcuts] = useState(false);
+  const [showGlobalSearch, setShowGlobalSearch] = useState(false);
   const [sortBy, setSortBy] = useState<"default" | "name" | "date" | "progress">("default");
+  
+  // Bulk actions
+  const {
+    selectedCaseIds,
+    selectedCount,
+    toggleSelection,
+    selectAll,
+    clearSelection,
+    bulkStatusUpdate,
+    bulkDelete,
+    exportToCSV,
+    isSelected,
+  } = useBulkCaseActions();
   
   // Authentication and authorization
   const { user, loading: authLoading } = useAuth(true);
@@ -69,8 +86,13 @@ export default function CasesManagement() {
     {
       key: "k",
       ctrlKey: true,
+      handler: () => setShowGlobalSearch(true),
+      description: "Global search",
+    },
+    {
+      key: "/",
       handler: () => searchInputRef.current?.focus(),
-      description: "Focus search",
+      description: "Focus filter search",
     },
     {
       key: "r",
@@ -337,6 +359,8 @@ export default function CasesManagement() {
                 onUpdateStatus={handleUpdateStatus}
                 isFavorite={isFavorite(caseItem.id)}
                 onToggleFavorite={() => toggleFavorite(caseItem.id)}
+                isSelected={isSelected(caseItem.id)}
+                onToggleSelection={() => toggleSelection(caseItem.id)}
               />
             ))}
           </div>
@@ -368,6 +392,19 @@ export default function CasesManagement() {
       <KeyboardShortcutsDialog
         open={showShortcuts}
         onOpenChange={setShowShortcuts}
+      />
+
+      <GlobalSearch
+        open={showGlobalSearch}
+        onOpenChange={setShowGlobalSearch}
+      />
+
+      <BulkActionsToolbar
+        selectedCount={selectedCount}
+        onClearSelection={clearSelection}
+        onBulkStatusUpdate={bulkStatusUpdate}
+        onBulkDelete={bulkDelete}
+        onBulkExport={() => exportToCSV(cases)}
       />
       </AdminLayout>
     </ErrorBoundary>

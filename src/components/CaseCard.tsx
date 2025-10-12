@@ -58,9 +58,20 @@ interface CaseCardProps {
   onUpdateStatus: (id: string, status: string) => void;
   isFavorite?: boolean;
   onToggleFavorite?: () => void;
+  isSelected?: boolean;
+  onToggleSelection?: () => void;
 }
 
-export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus, isFavorite, onToggleFavorite }: CaseCardProps) => {
+export const CaseCard = memo(({ 
+  clientCase, 
+  onEdit, 
+  onDelete, 
+  onUpdateStatus, 
+  isFavorite, 
+  onToggleFavorite,
+  isSelected,
+  onToggleSelection 
+}: CaseCardProps) => {
   const navigate = useNavigate();
   const [isFlipped, setIsFlipped] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -151,6 +162,23 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus, is
         <div className="absolute inset-0 w-full backface-hidden glass-card p-6 rounded-lg hover-glow flex flex-col" style={{ minHeight: '580px' }}>
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-3">
+              {onToggleSelection && (
+                <div 
+                  className="flex items-center"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onToggleSelection();
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={isSelected}
+                    onChange={onToggleSelection}
+                    className="h-4 w-4 rounded border-border bg-background text-primary focus:ring-2 focus:ring-primary cursor-pointer"
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                </div>
+              )}
               <ClientPhotoUpload
                 caseId={clientCase.id}
                 currentPhotoUrl={photoUrl}

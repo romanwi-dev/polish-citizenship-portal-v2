@@ -253,4 +253,41 @@ All colors MUST be HSL.
     scrollbar-width: thin;
     scrollbar-color: rgba(139, 92, 246, 0.2) transparent;
   }
+
+  /* Focus Visible Improvements for Accessibility */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  /* Dark Mode Contrast Improvements */
+  .dark .text-muted-foreground {
+    color: hsl(217 19% 70%);
+  }
+
+  .dark .bg-muted {
+    background-color: hsl(215 28% 20%);
+  }
+
+  .dark input,
+  .dark textarea,
+  .dark select {
+    background-color: hsl(215 28% 18%);
+    border-color: hsl(215 28% 25%);
+  }
+
+  /* Animation for bulk actions toolbar */
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translate(-50%, 20px);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  }
+
+  .animate-slide-up {
+    animation: slide-up 0.3s ease-out;
+  }
 }
