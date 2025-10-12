@@ -384,7 +384,13 @@ export default function FamilyTreeForm() {
                 <ArrowLeft className="h-8 w-8" />
               </Button>
               <Button
-                onClick={() => setIsFullView(!isFullView)}
+                onClick={() => {
+                  setIsFullView(!isFullView);
+                  // When expanding, switch to the "select" tab to show all form sections
+                  if (!isFullView) {
+                    setActiveTab('select');
+                  }
+                }}
                 size="lg"
                 variant="ghost"
                 className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 opacity-60 ${
@@ -430,7 +436,9 @@ export default function FamilyTreeForm() {
         {/* Form with Tabs */}
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }}>
           <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-                <div className="sticky top-0 z-20 border-b border-border/50 pb-2 pt-2">
+                {/* Hide tabs navigation when in full view mode */}
+                {!isFullView && (
+                  <div className="sticky top-0 z-20 border-b border-border/50 pb-2 pt-2">
                     <TabsList className="w-full inline-flex justify-start gap-2 bg-transparent p-0 overflow-x-auto scrollbar-hide">
                       <TabsTrigger value="tree-view" className="flex-shrink-0">
                         <span>Tree View</span>
@@ -465,40 +473,10 @@ export default function FamilyTreeForm() {
                       </TabsTrigger>
                     </TabsList>
                   </div>
+                )}
 
-                {/* Full View Mode */}
-              {isFullView ? (
-                <div className="space-y-0 mt-6">
-                  {/* Tree View always shown in full view */}
-                  <motion.div
-                    ref={(el) => sectionRefs.current['tree-view'] = el}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
-                    className="border-b border-border/10 p-6 md:p-10"
-                  >
-                    <FamilyTreeInteractive
-                          clientData={{
-                            ...mapPersonData('applicant'),
-                            sex: formData.applicant_sex
-                          }}
-                          spouse={mapPersonData('spouse')}
-                          father={mapPersonData('father')}
-                          mother={mapPersonData('mother')}
-                          paternalGrandfather={mapPersonData('pgf')}
-                          paternalGrandmother={mapPersonData('pgm')}
-                          maternalGrandfather={mapPersonData('mgf')}
-                          maternalGrandmother={mapPersonData('mgm')}
-                          paternalGreatGrandfather={mapPersonData('pggf')}
-                          paternalGreatGrandmother={mapPersonData('pggm')}
-                          maternalGreatGrandfather={mapPersonData('mggf')}
-                          maternalGreatGrandmother={mapPersonData('mggm')}
-                          onEdit={handlePersonEdit}
-                          onOpenMasterTable={() => navigate(`/admin/master-data/${caseId}`)}
-                        />
-                  </motion.div>
-                </div>
-              ) : (
+                {/* Normal Tab Mode */}
+              {!isFullView ? (
                 <>
                   {/* Tree View Tab */}
                   <TabsContent value="tree-view" className="mt-0">
@@ -532,8 +510,8 @@ export default function FamilyTreeForm() {
                     )}
                   </TabsContent>
 
-                  <TabsContent value="select" className="mt-0">
-          {activeTab === 'select' && (
+                  <TabsContent value="select" className="mt-0" {...(isFullView ? { forceMount: true } : {})}>
+          {(activeTab === 'select' || isFullView) && (
           <motion.div initial={{
           opacity: 0,
           scale: 0.95
@@ -619,9 +597,9 @@ export default function FamilyTreeForm() {
           )}
         </TabsContent>
 
-              <TabsContent value="applicant" className="mt-0">
+              <TabsContent value="applicant" className="mt-0" {...(isFullView ? { forceMount: true } : {})}>
           {/* Applicant Section */}
-          {activeTab === 'applicant' && (
+          {(activeTab === 'applicant' || isFullView) && (
           <motion.div initial={{
           opacity: 0,
           scale: 0.95
@@ -742,8 +720,8 @@ export default function FamilyTreeForm() {
         </TabsContent>
 
         {/* Spouse Tab */}
-        <TabsContent value="spouse" className="mt-0">
-          {activeTab === 'spouse' && (
+        <TabsContent value="spouse" className="mt-0" {...(isFullView ? { forceMount: true } : {})}>
+          {(activeTab === 'spouse' || isFullView) && (
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="p-6 md:p-10 space-y-10">
               <h2 className="text-4xl md:text-5xl font-heading font-bold text-blue-600 dark:text-blue-400 border-b border-border/50 pb-6">
                 Spouse
@@ -813,9 +791,9 @@ export default function FamilyTreeForm() {
           )}
         </TabsContent>
 
-        <TabsContent value="children" className="mt-0">
+        <TabsContent value="children" className="mt-0" {...(isFullView ? { forceMount: true } : {})}>
           {/* Children Section - Only Minor Children */}
-          {activeTab === 'children' && (formData.minor_children_count > 0) && (
+          {(activeTab === 'children' || isFullView) && (formData.minor_children_count > 0) && (
           <motion.div initial={{
           opacity: 0,
           scale: 0.95
@@ -889,9 +867,9 @@ export default function FamilyTreeForm() {
           )}
         </TabsContent>
 
-        <TabsContent value="parents" className="mt-0">
+        <TabsContent value="parents" className="mt-0" {...(isFullView ? { forceMount: true } : {})}>
           {/* Parents Section */}
-          {activeTab === 'parents' && (
+          {(activeTab === 'parents' || isFullView) && (
           <motion.div initial={{
           opacity: 0,
           scale: 0.95
@@ -1185,10 +1163,10 @@ export default function FamilyTreeForm() {
           )}
         </TabsContent>
 
-        <TabsContent value="great-grandparents" className="mt-0">
+        <TabsContent value="great-grandparents" className="mt-0" {...(isFullView ? { forceMount: true } : {})}>
 
           {/* Polish Great-Grandfathers Section - Only the 2 Polish Ancestors */}
-          {activeTab === 'great-grandparents' && (
+          {(activeTab === 'great-grandparents' || isFullView) && (
           <motion.div initial={{
           opacity: 0,
           scale: 0.95
@@ -1301,10 +1279,10 @@ export default function FamilyTreeForm() {
           )}
         </TabsContent>
 
-        <TabsContent value="additional" className="mt-0">
+        <TabsContent value="additional" className="mt-0" {...(isFullView ? { forceMount: true } : {})}>
 
           {/* Additional Info Section */}
-          {activeTab === 'additional' && (
+          {(activeTab === 'additional' || isFullView) && (
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }} 
             animate={{ opacity: 1, scale: 1 }} 
@@ -1335,7 +1313,7 @@ export default function FamilyTreeForm() {
           )}
         </TabsContent>
                 </>
-              )}
+              ) : null}
           </Tabs>
         </motion.div>
       </div>
