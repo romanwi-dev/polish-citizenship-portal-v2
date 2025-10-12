@@ -353,7 +353,7 @@ export default function CitizenshipForm() {
           initial={{ opacity: 0, y: -50 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ duration: 0.8 }}
-          className="sticky top-0 z-20 mb-0"
+          className="mb-0"
         >
           <div className="border-0 rounded-none shadow-none bg-transparent">
             <div className="relative pb-6 pt-6">
