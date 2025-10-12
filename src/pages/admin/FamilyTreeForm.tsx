@@ -386,13 +386,7 @@ export default function FamilyTreeForm() {
                 <ArrowLeft className="h-8 w-8" />
               </Button>
               <Button
-                onClick={() => {
-                  setIsFullView(!isFullView);
-                  // When collapsing to tabs, switch to the "select" tab
-                  if (isFullView) {
-                    setActiveTab('select');
-                  }
-                }}
+                onClick={() => setIsFullView(!isFullView)}
                 size="lg"
                 variant="ghost"
                 className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 opacity-60 ${
