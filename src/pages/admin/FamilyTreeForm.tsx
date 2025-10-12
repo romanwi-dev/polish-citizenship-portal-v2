@@ -887,7 +887,7 @@ export default function FamilyTreeForm() {
               {/* Father */}
               <div className="space-y-8">
                 <h3 className={cn(
-                  "text-3xl font-heading font-bold text-teal-600/80 dark:text-teal-400/80",
+                  "text-3xl font-heading font-bold text-teal-600/80 dark:text-teal-400/80 mt-10",
                   formData.father_is_polish && "text-red-400"
                 )}>
                   Father
