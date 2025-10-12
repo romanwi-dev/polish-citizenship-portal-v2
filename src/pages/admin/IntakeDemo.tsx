@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Sun, Droplets, Sunset, Trees, Crown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { RequiredDocumentsSection, DocumentItem } from "@/components/RequiredDocumentsSection";
 import { MinimalistCardsDocuments } from "@/components/docs/MinimalistCardsDocuments";
@@ -36,6 +36,7 @@ import { FlippableCardsDeep } from "@/components/docs/FlippableCardsDeep";
 
 export default function IntakeDemo() {
   const navigate = useNavigate();
+  const [activeThemePreview, setActiveThemePreview] = useState("light");
   
   // Required Documents section state
   const initialDocuments: DocumentItem[] = [
@@ -134,6 +135,19 @@ export default function IntakeDemo() {
   const [citizenshipInputs, setCitizenshipInputs] = useState({ field1: "", field2: "" });
   const [civilRegistryInputs, setCivilRegistryInputs] = useState({ field1: "", field2: "" });
 
+  const lightThemes = [
+    { name: "Light Elegant", className: "light", icon: Sun, description: "Clean professional design with blue accents" },
+    { name: "Ocean Breeze", className: "ocean", icon: Droplets, description: "Fresh aqua tones, perfect for maritime feel" },
+    { name: "Sunset Warmth", className: "sunset", icon: Sunset, description: "Warm coral and orange, energetic and inviting" },
+    { name: "Forest Calm", className: "forest", icon: Trees, description: "Natural green palette, peaceful and organic" },
+    { name: "Royal Purple", className: "royal", icon: Crown, description: "Sophisticated purple with elegant touches" },
+  ];
+
+  const applyTheme = (themeClass: string) => {
+    setActiveThemePreview(themeClass);
+    document.documentElement.className = themeClass;
+  };
+
   return (
     <div className="min-h-screen bg-background p-8">
       <div className="max-w-7xl mx-auto space-y-6">
@@ -142,8 +156,100 @@ export default function IntakeDemo() {
           Back to Intake Form
         </Button>
 
+        {/* STUNNING LIGHT MODE THEMES SHOWCASE */}
+        <div className="space-y-6 mb-12">
+          <div className="text-center space-y-2">
+            <h2 className="text-5xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-fade-in-up">
+              ✨ Light Mode Theme Gallery
+            </h2>
+            <p className="text-xl text-muted-foreground">Click any theme to preview it instantly</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+            {lightThemes.map((theme) => {
+              const Icon = theme.icon;
+              const isActive = activeThemePreview === theme.className;
+              
+              return (
+                <Card 
+                  key={theme.className}
+                  className={`cursor-pointer transition-all duration-500 hover:scale-105 ${
+                    isActive 
+                      ? 'ring-4 ring-primary shadow-[0_0_50px_rgba(var(--primary),0.4)] scale-105' 
+                      : 'hover:shadow-[0_0_30px_rgba(var(--primary),0.2)]'
+                  }`}
+                  onClick={() => applyTheme(theme.className)}
+                >
+                  <CardHeader className="text-center pb-3">
+                    <div className={`mx-auto p-4 rounded-2xl mb-3 ${
+                      theme.className === 'light' ? 'bg-gradient-to-br from-blue-100 to-blue-200' :
+                      theme.className === 'ocean' ? 'bg-gradient-to-br from-cyan-100 to-teal-200' :
+                      theme.className === 'sunset' ? 'bg-gradient-to-br from-orange-100 to-pink-200' :
+                      theme.className === 'forest' ? 'bg-gradient-to-br from-green-100 to-emerald-200' :
+                      'bg-gradient-to-br from-purple-100 to-indigo-200'
+                    }`}>
+                      <Icon className={`w-12 h-12 ${
+                        theme.className === 'light' ? 'text-blue-600' :
+                        theme.className === 'ocean' ? 'text-cyan-600' :
+                        theme.className === 'sunset' ? 'text-orange-600' :
+                        theme.className === 'forest' ? 'text-green-600' :
+                        'text-purple-600'
+                      }`} />
+                    </div>
+                    <CardTitle className="text-xl font-bold">{theme.name}</CardTitle>
+                    <CardDescription className="text-sm leading-snug">
+                      {theme.description}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <div className="space-y-2">
+                      <div className={`h-3 rounded-full ${
+                        theme.className === 'light' ? 'bg-gradient-to-r from-blue-400 to-blue-600' :
+                        theme.className === 'ocean' ? 'bg-gradient-to-r from-cyan-400 to-teal-500' :
+                        theme.className === 'sunset' ? 'bg-gradient-to-r from-orange-400 to-pink-500' :
+                        theme.className === 'forest' ? 'bg-gradient-to-r from-green-400 to-emerald-500' :
+                        'bg-gradient-to-r from-purple-400 to-indigo-600'
+                      }`} />
+                      <div className="grid grid-cols-3 gap-2">
+                        <div className={`h-8 rounded ${
+                          theme.className === 'light' ? 'bg-blue-100' :
+                          theme.className === 'ocean' ? 'bg-cyan-100' :
+                          theme.className === 'sunset' ? 'bg-orange-100' :
+                          theme.className === 'forest' ? 'bg-green-100' :
+                          'bg-purple-100'
+                        }`} />
+                        <div className={`h-8 rounded ${
+                          theme.className === 'light' ? 'bg-blue-200' :
+                          theme.className === 'ocean' ? 'bg-cyan-200' :
+                          theme.className === 'sunset' ? 'bg-orange-200' :
+                          theme.className === 'forest' ? 'bg-green-200' :
+                          'bg-purple-200'
+                        }`} />
+                        <div className={`h-8 rounded ${
+                          theme.className === 'light' ? 'bg-blue-300' :
+                          theme.className === 'ocean' ? 'bg-cyan-300' :
+                          theme.className === 'sunset' ? 'bg-orange-300' :
+                          theme.className === 'forest' ? 'bg-green-300' :
+                          'bg-purple-300'
+                        }`} />
+                      </div>
+                    </div>
+                    {isActive && (
+                      <div className="mt-4 text-center">
+                        <span className="inline-block px-3 py-1 bg-primary text-primary-foreground text-sm font-semibold rounded-full animate-pulse">
+                          ✓ Active
+                        </span>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
+
       {/* INPUT FIELD COLORS ONLY */}
-      <div className="mb-12 p-6 border-2 border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900">
+      <div className="mb-12 p-6 border-2 border-border bg-card">
         <h2 className="text-2xl font-bold mb-6">INPUT FIELD COLORS</h2>
         <div className="space-y-4">
           

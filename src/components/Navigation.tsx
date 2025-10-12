@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, User, LogOut, Type } from "lucide-react";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
+import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import logo from "@/assets/logo.png";
 import { useAuth } from "@/hooks/useAuth";
 import {
@@ -40,6 +41,7 @@ const Navigation = () => {
 
           {/* User Icon & Mobile Menu */}
           <div className="flex items-center gap-2">
+            <ThemeSwitcher />
             <Button 
               variant="ghost" 
               size="icon"
