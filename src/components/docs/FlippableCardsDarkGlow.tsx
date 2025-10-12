@@ -103,21 +103,11 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange, colorScheme
 
   return (
     <div className="w-full">
-      <div className="flex items-center gap-3 mb-6">
-        <Checkbox
-          checked={allChecked}
-          onCheckedChange={(checked) => {
-            const updated = documents.map(doc => ({ ...doc, checked: checked as boolean }));
-            onChange(updated);
-          }}
-          className="scale-125"
-        />
-        {title && (
-          <h3 className="text-5xl md:text-6xl font-black font-heading bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-            {title}
-          </h3>
-        )}
-      </div>
+      {title && (
+        <h3 className="text-5xl md:text-6xl font-black font-heading bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-6">
+          {title}
+        </h3>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 w-full auto-rows-fr">
         {documents.map((doc, index) => (
