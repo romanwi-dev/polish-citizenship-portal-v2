@@ -98,7 +98,7 @@ export const FlippableCardsMidnight = ({ title, documents, onChange }: Flippable
                   "absolute inset-0 backdrop-blur-md rounded-xl p-5 flex flex-col cursor-pointer border transition-all",
                   doc.checked
                     ? "bg-green-950/60 border-green-500/50 shadow-[0_8px_32px_rgba(34,197,94,0.4)]"
-                    : "bg-slate-900/30 border-slate-700/40 hover:border-primary/50 hover:shadow-[0_8px_32px_rgba(59,130,246,0.15)]"
+                    : "bg-[#0a1929] border-slate-700/40 hover:border-primary/50 hover:shadow-[0_8px_32px_rgba(59,130,246,0.15)]"
                 )}
                 style={{ backfaceVisibility: "hidden" }}
                 onClick={() => toggleFlip(doc.id)}
