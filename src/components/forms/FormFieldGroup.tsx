@@ -1,6 +1,8 @@
 import { FormLabel } from "./FormLabel";
 import { FormInput } from "./FormInput";
 
+type ColorScheme = 'children' | 'applicant' | 'parents' | 'grandparents' | 'ggp' | 'poa' | 'citizenship' | 'civil-reg';
+
 interface FormFieldGroupProps {
   label: string;
   value: string;
@@ -10,6 +12,7 @@ interface FormFieldGroupProps {
   placeholder?: string;
   type?: string;
   id?: string;
+  colorScheme?: ColorScheme;
 }
 
 export const FormFieldGroup = ({
@@ -21,6 +24,7 @@ export const FormFieldGroup = ({
   placeholder,
   type = "text",
   id,
+  colorScheme = 'applicant',
 }: FormFieldGroupProps) => {
   return (
     <div className="space-y-3 w-full">
@@ -35,6 +39,7 @@ export const FormFieldGroup = ({
         isNameField={isNameField}
         isLargeFonts={isLargeFonts}
         placeholder={placeholder}
+        colorScheme={colorScheme}
       />
     </div>
   );
