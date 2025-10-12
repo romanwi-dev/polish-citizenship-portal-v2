@@ -33,7 +33,7 @@ export const FAMILY_TREE_PDF_MAP: Record<string, string> = {
   'polish_grandparent_date_of_birth': 'pgf_dob',
   'polish_grandparent_place_of_birth': 'pgf_pob',
   'polish_grandparent_date_of_marriage': 'pgf_pgm_marriage_date',
-  'polish_grandparent_place_of_mariage': 'pgf_pgm_marriage_place',
+  'polish_grandparent_place_of_marriage': 'pgf_pgm_marriage_place',
   'polish_grandparent_date_of_emigration': 'pgf_date_of_emigration',
   'polish_grandparent_date_of_naturalization': 'pgf_date_of_naturalization',
   

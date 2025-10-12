@@ -521,10 +521,21 @@ export type Database = {
           applicant_passport_issuing_authority: string | null
           applicant_passport_issuing_country: string | null
           applicant_passport_number: string | null
+          applicant_pesel: string | null
           applicant_phone: string | null
           applicant_pob: string | null
           applicant_previous_names: Json | null
           applicant_sex: string | null
+          attachment_1_included: boolean | null
+          attachment_10_included: boolean | null
+          attachment_2_included: boolean | null
+          attachment_3_included: boolean | null
+          attachment_4_included: boolean | null
+          attachment_5_included: boolean | null
+          attachment_6_included: boolean | null
+          attachment_7_included: boolean | null
+          attachment_8_included: boolean | null
+          attachment_9_included: boolean | null
           birth_act_location: string | null
           birth_act_number: string | null
           birth_act_year: string | null
@@ -600,6 +611,7 @@ export type Database = {
           child_9_pob: string | null
           child_9_sex: string | null
           children_count: number | null
+          citizenship_change_permission: string | null
           completion_percentage: number | null
           created_at: string
           date_of_marriage: string | null
@@ -615,14 +627,19 @@ export type Database = {
           father_is_alive: boolean | null
           father_last_name: string | null
           father_maiden_name: string | null
+          father_marital_status: string | null
           father_mother_marriage_date: string | null
           father_mother_marriage_place: string | null
           father_notes: string | null
+          father_pesel: string | null
           father_pob: string | null
+          father_previous_names: string | null
           foreign_act_location: string | null
           id: string
+          important_additional_info: string | null
           language_preference: string | null
           marriage_act_location: string | null
+          mgf_citizenship_at_birth: string | null
           mgf_date_of_emigration: string | null
           mgf_date_of_naturalization: string | null
           mgf_dob: string | null
@@ -636,6 +653,7 @@ export type Database = {
           mgf_mgm_marriage_date: string | null
           mgf_mgm_marriage_place: string | null
           mgf_notes: string | null
+          mgf_pesel: string | null
           mgf_pob: string | null
           mggf_date_of_emigration: string | null
           mggf_date_of_naturalization: string | null
@@ -676,6 +694,7 @@ export type Database = {
           mgm_last_name: string | null
           mgm_maiden_name: string | null
           mgm_notes: string | null
+          mgm_pesel: string | null
           mgm_pob: string | null
           minor_children_count: number | null
           mother_date_of_emigration: string | null
@@ -689,11 +708,15 @@ export type Database = {
           mother_is_alive: boolean | null
           mother_last_name: string | null
           mother_maiden_name: string | null
+          mother_marital_status: string | null
           mother_notes: string | null
+          mother_pesel: string | null
           mother_pob: string | null
+          mother_previous_names: string | null
           parents_has_marriage_additional_docs: boolean | null
           parents_has_marriage_cert: boolean | null
           parents_has_marriage_foreign_docs: boolean | null
+          pgf_citizenship_at_birth: string | null
           pgf_date_of_emigration: string | null
           pgf_date_of_naturalization: string | null
           pgf_dob: string | null
@@ -705,6 +728,7 @@ export type Database = {
           pgf_is_alive: boolean | null
           pgf_last_name: string | null
           pgf_notes: string | null
+          pgf_pesel: string | null
           pgf_pgm_marriage_date: string | null
           pgf_pgm_marriage_place: string | null
           pgf_pob: string | null
@@ -751,11 +775,15 @@ export type Database = {
           place_of_marriage: string | null
           poa_date_filed: string | null
           polish_birth_act_number: string | null
+          polish_citizenship_deprivation: boolean | null
+          polish_preliminary_docs_info: string | null
+          previous_decision_info: string | null
           representative_address: string | null
           representative_address_cont: string | null
           representative_email: string | null
           representative_full_name: string | null
           representative_phone: string | null
+          sibling_decision_info: string | null
           spouse_current_citizenship: string[] | null
           spouse_date_of_emigration: string | null
           spouse_date_of_naturalization: string | null
@@ -803,10 +831,21 @@ export type Database = {
           applicant_passport_issuing_authority?: string | null
           applicant_passport_issuing_country?: string | null
           applicant_passport_number?: string | null
+          applicant_pesel?: string | null
           applicant_phone?: string | null
           applicant_pob?: string | null
           applicant_previous_names?: Json | null
           applicant_sex?: string | null
+          attachment_1_included?: boolean | null
+          attachment_10_included?: boolean | null
+          attachment_2_included?: boolean | null
+          attachment_3_included?: boolean | null
+          attachment_4_included?: boolean | null
+          attachment_5_included?: boolean | null
+          attachment_6_included?: boolean | null
+          attachment_7_included?: boolean | null
+          attachment_8_included?: boolean | null
+          attachment_9_included?: boolean | null
           birth_act_location?: string | null
           birth_act_number?: string | null
           birth_act_year?: string | null
@@ -882,6 +921,7 @@ export type Database = {
           child_9_pob?: string | null
           child_9_sex?: string | null
           children_count?: number | null
+          citizenship_change_permission?: string | null
           completion_percentage?: number | null
           created_at?: string
           date_of_marriage?: string | null
@@ -897,14 +937,19 @@ export type Database = {
           father_is_alive?: boolean | null
           father_last_name?: string | null
           father_maiden_name?: string | null
+          father_marital_status?: string | null
           father_mother_marriage_date?: string | null
           father_mother_marriage_place?: string | null
           father_notes?: string | null
+          father_pesel?: string | null
           father_pob?: string | null
+          father_previous_names?: string | null
           foreign_act_location?: string | null
           id?: string
+          important_additional_info?: string | null
           language_preference?: string | null
           marriage_act_location?: string | null
+          mgf_citizenship_at_birth?: string | null
           mgf_date_of_emigration?: string | null
           mgf_date_of_naturalization?: string | null
           mgf_dob?: string | null
@@ -918,6 +963,7 @@ export type Database = {
           mgf_mgm_marriage_date?: string | null
           mgf_mgm_marriage_place?: string | null
           mgf_notes?: string | null
+          mgf_pesel?: string | null
           mgf_pob?: string | null
           mggf_date_of_emigration?: string | null
           mggf_date_of_naturalization?: string | null
@@ -958,6 +1004,7 @@ export type Database = {
           mgm_last_name?: string | null
           mgm_maiden_name?: string | null
           mgm_notes?: string | null
+          mgm_pesel?: string | null
           mgm_pob?: string | null
           minor_children_count?: number | null
           mother_date_of_emigration?: string | null
@@ -971,11 +1018,15 @@ export type Database = {
           mother_is_alive?: boolean | null
           mother_last_name?: string | null
           mother_maiden_name?: string | null
+          mother_marital_status?: string | null
           mother_notes?: string | null
+          mother_pesel?: string | null
           mother_pob?: string | null
+          mother_previous_names?: string | null
           parents_has_marriage_additional_docs?: boolean | null
           parents_has_marriage_cert?: boolean | null
           parents_has_marriage_foreign_docs?: boolean | null
+          pgf_citizenship_at_birth?: string | null
           pgf_date_of_emigration?: string | null
           pgf_date_of_naturalization?: string | null
           pgf_dob?: string | null
@@ -987,6 +1038,7 @@ export type Database = {
           pgf_is_alive?: boolean | null
           pgf_last_name?: string | null
           pgf_notes?: string | null
+          pgf_pesel?: string | null
           pgf_pgm_marriage_date?: string | null
           pgf_pgm_marriage_place?: string | null
           pgf_pob?: string | null
@@ -1033,11 +1085,15 @@ export type Database = {
           place_of_marriage?: string | null
           poa_date_filed?: string | null
           polish_birth_act_number?: string | null
+          polish_citizenship_deprivation?: boolean | null
+          polish_preliminary_docs_info?: string | null
+          previous_decision_info?: string | null
           representative_address?: string | null
           representative_address_cont?: string | null
           representative_email?: string | null
           representative_full_name?: string | null
           representative_phone?: string | null
+          sibling_decision_info?: string | null
           spouse_current_citizenship?: string[] | null
           spouse_date_of_emigration?: string | null
           spouse_date_of_naturalization?: string | null
@@ -1085,10 +1141,21 @@ export type Database = {
           applicant_passport_issuing_authority?: string | null
           applicant_passport_issuing_country?: string | null
           applicant_passport_number?: string | null
+          applicant_pesel?: string | null
           applicant_phone?: string | null
           applicant_pob?: string | null
           applicant_previous_names?: Json | null
           applicant_sex?: string | null
+          attachment_1_included?: boolean | null
+          attachment_10_included?: boolean | null
+          attachment_2_included?: boolean | null
+          attachment_3_included?: boolean | null
+          attachment_4_included?: boolean | null
+          attachment_5_included?: boolean | null
+          attachment_6_included?: boolean | null
+          attachment_7_included?: boolean | null
+          attachment_8_included?: boolean | null
+          attachment_9_included?: boolean | null
           birth_act_location?: string | null
           birth_act_number?: string | null
           birth_act_year?: string | null
@@ -1164,6 +1231,7 @@ export type Database = {
           child_9_pob?: string | null
           child_9_sex?: string | null
           children_count?: number | null
+          citizenship_change_permission?: string | null
           completion_percentage?: number | null
           created_at?: string
           date_of_marriage?: string | null
@@ -1179,14 +1247,19 @@ export type Database = {
           father_is_alive?: boolean | null
           father_last_name?: string | null
           father_maiden_name?: string | null
+          father_marital_status?: string | null
           father_mother_marriage_date?: string | null
           father_mother_marriage_place?: string | null
           father_notes?: string | null
+          father_pesel?: string | null
           father_pob?: string | null
+          father_previous_names?: string | null
           foreign_act_location?: string | null
           id?: string
+          important_additional_info?: string | null
           language_preference?: string | null
           marriage_act_location?: string | null
+          mgf_citizenship_at_birth?: string | null
           mgf_date_of_emigration?: string | null
           mgf_date_of_naturalization?: string | null
           mgf_dob?: string | null
@@ -1200,6 +1273,7 @@ export type Database = {
           mgf_mgm_marriage_date?: string | null
           mgf_mgm_marriage_place?: string | null
           mgf_notes?: string | null
+          mgf_pesel?: string | null
           mgf_pob?: string | null
           mggf_date_of_emigration?: string | null
           mggf_date_of_naturalization?: string | null
@@ -1240,6 +1314,7 @@ export type Database = {
           mgm_last_name?: string | null
           mgm_maiden_name?: string | null
           mgm_notes?: string | null
+          mgm_pesel?: string | null
           mgm_pob?: string | null
           minor_children_count?: number | null
           mother_date_of_emigration?: string | null
@@ -1253,11 +1328,15 @@ export type Database = {
           mother_is_alive?: boolean | null
           mother_last_name?: string | null
           mother_maiden_name?: string | null
+          mother_marital_status?: string | null
           mother_notes?: string | null
+          mother_pesel?: string | null
           mother_pob?: string | null
+          mother_previous_names?: string | null
           parents_has_marriage_additional_docs?: boolean | null
           parents_has_marriage_cert?: boolean | null
           parents_has_marriage_foreign_docs?: boolean | null
+          pgf_citizenship_at_birth?: string | null
           pgf_date_of_emigration?: string | null
           pgf_date_of_naturalization?: string | null
           pgf_dob?: string | null
@@ -1269,6 +1348,7 @@ export type Database = {
           pgf_is_alive?: boolean | null
           pgf_last_name?: string | null
           pgf_notes?: string | null
+          pgf_pesel?: string | null
           pgf_pgm_marriage_date?: string | null
           pgf_pgm_marriage_place?: string | null
           pgf_pob?: string | null
@@ -1315,11 +1395,15 @@ export type Database = {
           place_of_marriage?: string | null
           poa_date_filed?: string | null
           polish_birth_act_number?: string | null
+          polish_citizenship_deprivation?: boolean | null
+          polish_preliminary_docs_info?: string | null
+          previous_decision_info?: string | null
           representative_address?: string | null
           representative_address_cont?: string | null
           representative_email?: string | null
           representative_full_name?: string | null
           representative_phone?: string | null
+          sibling_decision_info?: string | null
           spouse_current_citizenship?: string[] | null
           spouse_date_of_emigration?: string | null
           spouse_date_of_naturalization?: string | null
