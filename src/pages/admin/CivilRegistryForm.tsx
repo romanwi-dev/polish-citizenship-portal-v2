@@ -1,19 +1,19 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useMasterData, useUpdateMasterData } from "@/hooks/useMasterData";
 import { sanitizeMasterData } from "@/utils/masterDataSanitizer";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { FormInput } from "@/components/forms/FormInput";
+import { FormHeader } from "@/components/forms/FormHeader";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState, useEffect, useRef } from "react";
-import { Loader2, Save, Download, FileText, Sparkles, Type, FilePlus, User, ArrowLeft, HelpCircle, Maximize2, Minimize2 } from "lucide-react";
+import { Sparkles, Type, ArrowLeft } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { DateField } from "@/components/DateField";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
@@ -21,6 +21,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useRealtimeFormSync } from "@/hooks/useRealtimeFormSync";
 import { CountrySelect } from "@/components/CountrySelect";
 import { FormButtonsRow } from "@/components/FormButtonsRow";
+import { useFormCompletion } from "@/hooks/useFormCompletion";
+import { CIVIL_REGISTRY_FORM_REQUIRED_FIELDS } from "@/config/formRequiredFields";
 
 export default function CivilRegistryForm() {
   const {
@@ -45,6 +47,9 @@ export default function CivilRegistryForm() {
   
   // Enable real-time sync with direct state updates
   useRealtimeFormSync(caseId, masterData, isLoading, setFormData);
+  
+  // Calculate form completion
+  const completion = useFormCompletion(formData, CIVIL_REGISTRY_FORM_REQUIRED_FIELDS);
   
   // Keep ref synchronized with state
   useEffect(() => {
@@ -173,7 +178,7 @@ export default function CivilRegistryForm() {
                 <Label htmlFor={field.name} className={isLargeFonts ? "text-2xl" : ""}>
                   {field.label}
                 </Label>
-                <Input 
+                <FormInput
                   id={field.name} 
                   type={field.type || "text"} 
                   value={formData[field.name] || ""} 
@@ -183,11 +188,9 @@ export default function CivilRegistryForm() {
                     const shouldUppercase = isNameOrPlace && field.type !== "email";
                     handleInputChange(field.name, shouldUppercase ? e.target.value.toUpperCase() : e.target.value);
                   }} 
-                  placeholder="" 
-                  className={cn(
-                    "h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur", 
-                    (field.name.includes('_name') || field.name.includes('_pob') || field.name === 'place_of_marriage') && field.type !== "email" && "uppercase"
-                  )} 
+                  isNameField={(field.name.includes('_name') || field.name.includes('_pob') || field.name === 'place_of_marriage') && field.type !== "email"}
+                  isLargeFonts={isLargeFonts}
+                  colorScheme="civil-reg"
                 />
               </>}
           </motion.div>)}
@@ -239,76 +242,51 @@ export default function CivilRegistryForm() {
         y: 0
       }} transition={{
         duration: 0.8
-      }} className="sticky top-0 z-20 bg-gradient-to-br from-background via-background to-background/95 backdrop-blur-sm border-b mb-0">
-          <Card className="glass-card border-primary/20 overflow-hidden rounded-none border-x-0 border-t-0 relative z-0">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5" />
-            <CardHeader className="relative pb-6 pt-6 z-0">
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <motion.div initial={{
-                x: -20,
-                opacity: 0
-              }} animate={{
-                x: 0,
-                opacity: 1
-              }} transition={{
-                delay: 0.2
-              }}>
-                  <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">Civil Registry</CardTitle>
-                </motion.div>
+      }} className="sticky top-0 z-20 bg-gradient-to-br from-background via-background to-background/95 backdrop-blur-sm border-b mb-8">
+          <Card className="glass-card border-emerald-300/20 overflow-hidden rounded-none border-x-0 border-t-0">
+            <FormHeader
+              title="Civil Registry"
+              completionPercentage={completion.completionPercentage}
+              filledCount={completion.filledCount}
+              totalCount={completion.totalCount}
+              isLargeFonts={isLargeFonts}
+              isFullView={isFullView}
+              onToggleFullView={() => setIsFullView(!isFullView)}
+              onLoginClick={() => navigate('/login')}
+            />
+            <CardContent className="pt-2 pb-6">
+              <div className="flex items-center justify-between gap-4">
+                <Button
+                  onClick={() => navigate(`/admin/case/${caseId}`)}
+                  variant="outline"
+                  size="lg"
+                  className="gap-2"
+                >
+                  <ArrowLeft className="h-5 w-5" />
+                  Back to Case
+                </Button>
                 <div className="flex items-center gap-3">
-                  <Button
-                    onClick={() => window.open('https://docs.lovable.dev', '_blank')}
+                  <Button 
+                    onClick={toggleFontSize} 
+                    variant="outline"
                     size="lg"
-                    variant="ghost"
-                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 text-2xl font-light opacity-60"
-                    title="How to fill this form"
+                    className={`gap-2 ${isLargeFonts ? 'bg-primary/20 text-primary' : ''}`}
                   >
-                    ?
-                  </Button>
-                  <Button
-                    onClick={() => navigate(`/admin/case/${caseId}`)}
-                    size="lg"
-                    variant="ghost"
-                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50 opacity-60"
-                    title="Back to Case"
-                  >
-                    <ArrowLeft className="h-8 w-8" />
-                  </Button>
-                  <Button
-                    onClick={() => setIsFullView(!isFullView)}
-                    size="lg"
-                    variant="ghost"
-                    className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 opacity-60 ${
-                      isFullView ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:text-primary'
-                    }`}
-                    title={isFullView ? "Collapse" : "Expand All"}
-                  >
-                    {isFullView ? <Minimize2 className="h-8 w-8" /> : <Maximize2 className="h-8 w-8" />}
-                  </Button>
-                  <Button
-                    onClick={() => navigate('/login')}
-                    size="lg"
-                    variant="ghost"
-                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50 opacity-60"
-                    title="Login / Register"
-                  >
-                    <User className="h-8 w-8" />
-                  </Button>
-                  <Button onClick={toggleFontSize} size="lg" variant="ghost" className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 z-50 opacity-60 ${isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:text-primary'}`} title="Toggle font size">
-                    <Type className="h-8 w-8" />
+                    <Type className="h-5 w-5" />
+                    {isLargeFonts ? 'Normal' : 'Large'} Font
                   </Button>
                 </div>
               </div>
-            </CardHeader>
-            <CardContent className="pt-6 pb-6">
-              <FormButtonsRow 
-                caseId={caseId!}
-                currentForm="civil-registry"
-                onSave={handleSave}
-                onClear={() => setShowClearDialog(true)}
-                onGeneratePDF={handleGeneratePDF}
-                isSaving={updateMutation.isPending || isGenerating}
-              />
+              <div className="mt-6">
+                <FormButtonsRow 
+                  caseId={caseId!}
+                  currentForm="civil-registry"
+                  onSave={handleSave}
+                  onClear={() => setShowClearDialog(true)}
+                  onGeneratePDF={handleGeneratePDF}
+                  isSaving={updateMutation.isPending}
+                />
+              </div>
             </CardContent>
           </Card>
         </motion.div>
@@ -326,8 +304,8 @@ export default function CivilRegistryForm() {
           duration: 0.5
         }}>
             <div>
-              <div className="border-b border-border/50 pb-6">
-                <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              <div className="border-b border-emerald-200/20 pb-6">
+                <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-400 bg-clip-text text-transparent">
                   Applicant Information / Dane wnioskodawcy
                 </h2>
               </div>
@@ -340,7 +318,7 @@ export default function CivilRegistryForm() {
                       Gender
                     </Label>
                     <Select value={formData.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
-                      <SelectTrigger className="h-16 md:h-20 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                      <SelectTrigger className="h-20 border-emerald-300/10 dark:border-emerald-500/10 bg-emerald-50/45 dark:bg-emerald-900/45 hover-glow focus:shadow-lg transition-all backdrop-blur">
                         <SelectValue placeholder="Select..." />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-50">
@@ -356,7 +334,7 @@ export default function CivilRegistryForm() {
                       Civil Status
                     </Label>
                     <Select value={formData.applicant_is_married === true ? "Married" : "Single"} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
-                      <SelectTrigger className="h-16 md:h-20 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                      <SelectTrigger className="h-20 border-emerald-300/10 dark:border-emerald-500/10 bg-emerald-50/45 dark:bg-emerald-900/45 hover-glow focus:shadow-lg transition-all backdrop-blur">
                         <SelectValue placeholder="Select..." />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-50">
@@ -375,7 +353,7 @@ export default function CivilRegistryForm() {
                       Number of children
                     </Label>
                     <Select value={formData.children_count?.toString() || ""} onValueChange={(value) => { const count = parseInt(value); handleInputChange("children_count", count); }}>
-                      <SelectTrigger className="h-16 md:h-20 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur z-50">
+                      <SelectTrigger className="h-20 border-emerald-300/10 dark:border-emerald-500/10 bg-emerald-50/45 dark:bg-emerald-900/45 hover-glow focus:shadow-lg transition-all backdrop-blur z-50">
                         <SelectValue placeholder="Select..." />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-50">
@@ -391,7 +369,7 @@ export default function CivilRegistryForm() {
                         Number of minor children
                       </Label>
                       <Select value={formData.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
-                        <SelectTrigger className="h-16 md:h-20 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                        <SelectTrigger className="h-20 border-emerald-300/10 dark:border-emerald-500/10 bg-emerald-50/45 dark:bg-emerald-900/45 hover-glow focus:shadow-lg transition-all backdrop-blur">
                           <SelectValue placeholder="Select..." />
                         </SelectTrigger>
                         <SelectContent className="bg-background border-2 z-50">
@@ -602,7 +580,7 @@ export default function CivilRegistryForm() {
                       onChange={(e) => handleInputChange("civil_registry_notes", e.target.value.toUpperCase())}
                       placeholder=""
                       className={cn(
-                        "min-h-32 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase",
+                        "min-h-32 border-emerald-300/10 dark:border-emerald-500/10 bg-emerald-50/45 dark:bg-emerald-900/45 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase",
                         isLargeFonts ? "text-lg" : "text-base"
                       )}
                     />
