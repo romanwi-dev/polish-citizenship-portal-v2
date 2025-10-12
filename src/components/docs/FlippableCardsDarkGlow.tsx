@@ -58,6 +58,8 @@ const colorSchemes = {
 export const FlippableCardsDarkGlow = ({ title, documents, onChange, colorScheme = 'applicant' }: FlippableCardsDarkGlowProps) => {
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
   const scheme = colorSchemes[colorScheme];
+  
+  console.log('[FlippableCardsDarkGlow] Rendering with colorScheme:', colorScheme, 'scheme:', scheme);
 
   const toggleFlip = (id: string) => {
     setFlippedCards(prev => ({ ...prev, [id]: !prev[id] }));
