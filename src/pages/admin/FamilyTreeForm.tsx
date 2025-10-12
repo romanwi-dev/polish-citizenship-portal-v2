@@ -758,10 +758,14 @@ export default function FamilyTreeForm() {
         {/* Spouse Tab */}
         <TabsContent value="spouse" className="mt-0">
           {activeTab === 'spouse' && (
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="p-6 md:p-10 space-y-10">
-              <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent border-b border-border/50 pb-6">
-                Spouse
-              </h2>
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }}>
+              <Card className="glass-card border-primary/20">
+                <CardHeader className="border-b border-border/50 pb-6">
+                  <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                    Spouse
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6 md:p-10 space-y-10">
                   {/* Names */}
                   {renderFieldGroup([
                     { name: "spouse_first_name", label: "Given names / Imię/ imiona", isNameField: true },
@@ -823,6 +827,8 @@ export default function FamilyTreeForm() {
                     personType="spouse"
                     sex={formData.spouse_sex}
                   />
+                </CardContent>
+              </Card>
             </motion.div>
           )}
         </TabsContent>
@@ -1006,20 +1012,22 @@ export default function FamilyTreeForm() {
                       personType="parent"
                       sex="M"
                     />
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
 
-                <div className={cn(
-                  "space-y-8 p-6 md:p-8 rounded-lg border-2",
-                  formData.mother_is_polish ? "bg-red-950/30 border-red-900/50" : "border-primary/20"
+                <Card className={cn(
+                  "glass-card border-primary/20",
+                  formData.mother_is_polish && "bg-red-950/30 border-red-900/50"
                 )}>
-                    <h3 className={cn(
-                      "text-3xl md:text-4xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent border-b border-border/30 pb-4",
+                  <CardHeader className="border-b border-border/50">
+                    <CardTitle className={cn(
+                      "text-3xl md:text-4xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent",
                       formData.mother_is_polish && "text-red-400"
                     )}>
                       Mother
-                    </h3>
-                  <div className="space-y-8">
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-6 md:p-8 space-y-8">
                     <div className="mb-6 p-4 bg-primary/10 rounded-lg border-2 border-primary/30">
                       {renderCheckboxGroup([{
                         name: "mother_is_polish",
@@ -1091,8 +1099,10 @@ export default function FamilyTreeForm() {
                       personType="parent"
                       sex="F"
                     />
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
+              </CardContent>
+            </Card>
           </motion.div>
           )}
         </TabsContent>
@@ -1110,11 +1120,12 @@ export default function FamilyTreeForm() {
         }} transition={{
           duration: 0.5,
           delay: 0.4
-        }} className="p-6 md:p-10 space-y-12">
-            <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent border-b border-border/50 pb-6">
-              Polish Grandparents
-            </h2>
-              <div className="space-y-8">
+        }}>
+            <Card className="glass-card border-primary/20">
+              <CardHeader className="border-b border-border/50 pb-6">
+                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Polish Grandparents</CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 md:p-10 space-y-8">
                 {["pgf", "pgm", "mgf", "mgm"].map(prefix => {
                 const labels = {
                   pgf: "Paternal Grandfather",
@@ -1122,17 +1133,19 @@ export default function FamilyTreeForm() {
                   mgf: "Maternal Grandfather",
                   mgm: "Maternal Grandmother"
                 };
-                return <div key={prefix} className={cn(
-                  "space-y-8 p-6 md:p-8 rounded-lg border-2",
-                  formData[`${prefix}_is_polish`] ? "bg-red-950/30 border-red-900/50" : "border-primary/20"
+                return <Card key={prefix} className={cn(
+                  "glass-card border-primary/20",
+                  formData[`${prefix}_is_polish`] && "bg-red-950/30 border-red-900/50"
                 )}>
-                        <h3 className={cn(
-                          "text-2xl md:text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent border-b border-border/30 pb-4",
+                      <CardHeader className="border-b border-border/50">
+                        <CardTitle className={cn(
+                          "text-2xl md:text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent",
                           formData[`${prefix}_is_polish`] && "text-red-400"
                         )}>
                           {labels[prefix as keyof typeof labels]}
-                        </h3>
-                      <div className="space-y-8">
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-6 md:p-8 space-y-8">
                         <div className="mb-6 p-4 bg-primary/10 rounded-lg border-2 border-primary/30">
                           {renderCheckboxGroup([{
                         name: `${prefix}_is_polish`,
@@ -1204,10 +1217,11 @@ export default function FamilyTreeForm() {
                           personType="grandparent"
                           sex={prefix === 'pgf' || prefix === 'mgf' ? 'M' : 'F'}
                         />
-                      </div>
-                    </div>;
+                      </CardContent>
+                    </Card>;
               })}
-              </div>
+              </CardContent>
+            </Card>
           </motion.div>
           )}
         </TabsContent>
