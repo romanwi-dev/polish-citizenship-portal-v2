@@ -157,14 +157,12 @@ export const ApplicantSection = ({ formData, handleInputChange, clearField, isLa
         </motion.div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 md:items-start">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="space-y-2" onDoubleClick={() => clearField("applicant_pob")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Place of birth</Label>
           <Input value={formData?.applicant_pob || ""} onChange={(e) => handleInputChange("applicant_pob", e.target.value.toUpperCase())} className="uppercase" />
         </motion.div>
-        <div>
-          <DateField name="applicant_dob" label="Date of birth" value={formData?.applicant_dob} onChange={(value) => handleInputChange("applicant_dob", value)} delay={0.45} />
-        </div>
+        <DateField name="applicant_dob" label="Date of birth" value={formData?.applicant_dob} onChange={(value) => handleInputChange("applicant_dob", value)} delay={0.45} />
       </div>
 
       {formData?.applicant_is_married && (
@@ -249,7 +247,7 @@ export const PassportSection = ({ formData, handleInputChange, clearField, isLar
       </h3>
     </div>
     <div className="px-4 py-6 md:p-10">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_passport_number")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Passport number</Label>
           <Input value={formData?.applicant_passport_number || ""} onChange={(e) => handleInputChange("applicant_passport_number", e.target.value.toUpperCase())} className="uppercase" />
