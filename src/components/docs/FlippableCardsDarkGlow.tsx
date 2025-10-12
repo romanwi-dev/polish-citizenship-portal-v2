@@ -74,17 +74,17 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 w-full auto-rows-fr">
         {documents.map((doc, index) => (
           <motion.div 
             key={doc.id} 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: index * 0.1 }}
-            className="relative w-full"
+            className="relative w-full min-h-0"
           >
             <div 
-              className="relative w-full h-[450px]"
+              className="relative w-full h-[380px]"
               style={{ perspective: '1000px' }}
             >
               <div 
