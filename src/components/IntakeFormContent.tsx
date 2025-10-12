@@ -23,7 +23,7 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
         First Questions
       </h3>
     </div>
-    <div className="p-3 md:p-10">
+    <div className="px-4 py-6 md:p-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-2" onDoubleClick={() => clearField("applicant_sex")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Gender</Label>
@@ -138,7 +138,7 @@ export const ApplicantSection = ({ formData, handleInputChange, clearField, isLa
         Applicant Information
       </h3>
     </div>
-    <div className="p-3 md:p-10">
+    <div className="px-4 py-6 md:p-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="space-y-2" onDoubleClick={() => clearField("applicant_first_name")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>First name</Label>
@@ -210,7 +210,7 @@ export const ContactSection = ({ formData, handleInputChange, clearField, isLarg
         Contact Information
       </h3>
     </div>
-    <div className="p-3 md:p-10">
+    <div className="px-4 py-6 md:p-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_email")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Email</Label>
@@ -232,7 +232,7 @@ export const AddressSection = ({ formData, handleInputChange, clearField, isLarg
         Address Information
       </h3>
     </div>
-    <div className="p-3 md:p-10">
+    <div className="px-4 py-6 md:p-10">
       <div className="grid grid-cols-1 gap-6 w-full">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_street")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Street address</Label>
@@ -269,7 +269,7 @@ export const PassportSection = ({ formData, handleInputChange, clearField, isLar
         Passport Information
       </h3>
     </div>
-    <div className="p-3 md:p-10">
+    <div className="px-4 py-6 md:p-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_passport_number")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Passport number</Label>
@@ -288,7 +288,7 @@ export const ImmigrationSection = ({ formData, handleInputChange, clearField, is
         Emigration Information
       </h3>
     </div>
-    <div className="p-3 md:p-10">
+    <div className="px-4 py-6 md:p-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
         <DateField name="applicant_date_of_naturalization" label="Date of naturalization" value={formData?.applicant_date_of_naturalization} onChange={(value) => handleInputChange("applicant_date_of_naturalization", value)} />
         <DateField name="applicant_date_of_emigration" label="Date of emigration" value={formData?.applicant_date_of_emigration} onChange={(value) => handleInputChange("applicant_date_of_emigration", value)} />
@@ -370,7 +370,7 @@ export const DocumentsSection = ({ formData, handleInputChange, clearField, isLa
           Required Documents
         </h3>
       </div>
-      <div className="p-3 md:p-10">
+      <div className="px-4 py-6 md:p-10">
         <FlippableCardsDarkGlow
           title=""
           documents={documents}
@@ -388,7 +388,7 @@ export const NotesSection = ({ formData, handleInputChange, clearField, isLargeF
         Additional Notes
       </h3>
     </div>
-    <div className="p-3 md:p-10">
+    <div className="px-4 py-6 md:p-10">
       <Label className={isLargeFonts ? "text-2xl" : ""}>
         Additional notes
       </Label>
