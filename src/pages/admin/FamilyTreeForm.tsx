@@ -425,18 +425,14 @@ export default function FamilyTreeForm() {
           </div>
         </motion.div>
 
-        <Card className="glass-card border-primary/20 mb-6">
-          <CardContent className="pt-6 pb-6">
-            <FormButtonsRow 
-              caseId={caseId!}
-              currentForm="family-tree"
-              onSave={handleSave}
-              onClear={() => setShowClearDialog(true)}
-              onGeneratePDF={handleGeneratePDF}
-              isSaving={updateMutation.isPending}
-            />
-          </CardContent>
-        </Card>
+        <FormButtonsRow 
+          caseId={caseId!}
+          currentForm="family-tree"
+          onSave={handleSave}
+          onClear={() => setShowClearDialog(true)}
+          onGeneratePDF={handleGeneratePDF}
+          isSaving={updateMutation.isPending}
+        />
 
         {/* Form with Tabs */}
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }}>

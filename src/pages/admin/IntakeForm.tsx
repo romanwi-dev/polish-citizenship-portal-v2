@@ -184,18 +184,14 @@ export default function IntakeForm() {
           </div>
         </motion.div>
 
-        <Card className="glass-card border-primary/20 mb-6">
-          <CardContent className="pt-6 pb-6">
-            <FormButtonsRow 
-              caseId={caseId!}
-              currentForm="intake"
-              onSave={handleSave}
-              onClear={() => setShowClearDialog(true)}
-              onGeneratePDF={() => {}}
-              isSaving={isSaving}
-            />
-          </CardContent>
-        </Card>
+        <FormButtonsRow 
+          caseId={caseId!}
+          currentForm="intake"
+          onSave={handleSave}
+          onClear={() => setShowClearDialog(true)}
+          onGeneratePDF={() => {}}
+          isSaving={isSaving}
+        />
 
         {/* Form with Tabs or Full View */}
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="space-y-8">

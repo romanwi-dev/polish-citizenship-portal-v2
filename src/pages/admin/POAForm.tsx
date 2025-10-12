@@ -402,18 +402,14 @@ export default function POAForm() {
           </div>
         </motion.div>
 
-        <Card className="glass-card border-primary/20 mb-6">
-          <CardContent className="pt-6 pb-6">
-          <FormButtonsRow 
-            caseId={caseId!}
-            currentForm="poa"
-            onSave={handleSave}
-            onClear={() => setShowClearAllDialog(true)}
-            onGeneratePDF={handleGenerateAllPOAs}
-            isSaving={updateMutation.isPending || isGenerating}
-          />
-        </CardContent>
-      </Card>
+        <FormButtonsRow 
+          caseId={caseId!}
+          currentForm="poa"
+          onSave={handleSave}
+          onClear={() => setShowClearAllDialog(true)}
+          onGeneratePDF={handleGenerateAllPOAs}
+          isSaving={updateMutation.isPending || isGenerating}
+        />
 
         {/* POA Forms */}
         <div className="space-y-8">
