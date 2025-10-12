@@ -38,6 +38,7 @@ const PDFFieldInspector = lazy(() => import("./pages/admin/PDFFieldInspector"));
 const ZeroErrorsChecklist = lazy(() => import("./pages/admin/ZeroErrorsChecklist"));
 const UploadPDFTemplates = lazy(() => import("./pages/admin/UploadPDFTemplates"));
 const ManualPDFUpload = lazy(() => import("./pages/admin/ManualPDFUpload"));
+const CitizenshipFieldReview = lazy(() => import("./pages/admin/CitizenshipFieldReview"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -261,6 +262,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <ManualPDFUpload />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/citizenship-field-review" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <CitizenshipFieldReview />
               </Suspense>
             } 
           />
