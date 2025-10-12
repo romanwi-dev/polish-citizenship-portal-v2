@@ -4,6 +4,7 @@ import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, E
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { toast } from "sonner";
+import { ClientPhotoUpload } from "@/components/ClientPhotoUpload";
 import { STATUS_COLORS, PROCESSING_MODE_COLORS, PROCESSING_MODE_LABELS } from "@/lib/constants";
 import { useUpdateProcessingMode } from "@/hooks/useCaseMutations";
 import {
@@ -60,6 +61,7 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
   const navigate = useNavigate();
   const [isFlipped, setIsFlipped] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [photoUrl, setPhotoUrl] = useState<string | null>(clientCase.client_photo_url || null);
   const updateProcessingMode = useUpdateProcessingMode();
 
   const getStatusBadge = (status: string) => {
@@ -146,12 +148,12 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
         <div className="absolute inset-0 w-full backface-hidden glass-card p-6 rounded-lg hover-glow flex flex-col" style={{ minHeight: '580px' }}>
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-3">
-              <Avatar className="w-12 h-12 flex-shrink-0">
-                <AvatarImage src={clientCase.client_photo_url || undefined} alt={clientCase.client_name} />
-                <AvatarFallback className="bg-gradient-to-br from-primary/60 to-accent/60">
-                  <User className="w-6 h-6 text-primary-foreground/70" />
-                </AvatarFallback>
-              </Avatar>
+              <ClientPhotoUpload
+                caseId={clientCase.id}
+                currentPhotoUrl={photoUrl}
+                clientName={clientCase.client_name}
+                onPhotoUpdated={setPhotoUrl}
+              />
               <div>
                 <h3 className="font-heading font-bold text-3xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                   {clientCase.client_name}
