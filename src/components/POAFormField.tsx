@@ -45,11 +45,17 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
           {label}
         </Label>
         <div
-          className="w-full h-16 px-3 flex items-center border rounded-md hover-glow bg-gray-200/45 dark:bg-gray-700/45 border-gray-300/30 dark:border-gray-500/30 backdrop-blur transition-all"
+          className="w-full h-16 md:h-20 px-3 flex items-center border rounded-md hover-glow bg-gray-200/45 dark:bg-gray-700/45 border-gray-300/30 dark:border-gray-500/30 backdrop-blur transition-all text-lg font-normal font-input-work"
           style={{ 
-            fontSize: '1.125rem', 
-            fontWeight: '400',
             boxShadow: '0 0 30px rgba(156,163,175,0.25)'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.boxShadow = '0 0 50px rgba(156,163,175,0.4)';
+            e.currentTarget.style.transform = 'translateY(-2px)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.boxShadow = '0 0 30px rgba(156,163,175,0.25)';
+            e.currentTarget.style.transform = 'translateY(0)';
           }}
         >
           {displayDate}

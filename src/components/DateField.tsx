@@ -80,11 +80,39 @@ export function DateField({
           maxLength={10}
           disabled={notApplicableValue}
           className={cn(
-            "h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur font-normal placeholder:opacity-40 text-lg font-input-work w-full max-w-full",
+            "h-16 md:h-20 text-lg border-2 border-blue-200/50 dark:border-blue-800/50 hover:border-blue-300/70 dark:hover:border-blue-700/70 focus:border-blue-500 transition-all duration-300 bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur font-normal placeholder:opacity-40 font-input-work w-full max-w-full",
             isLargeFonts && "text-2xl",
             error && "border-destructive",
             notApplicableValue && "bg-cyan-950/30 border-cyan-700 text-cyan-300 cursor-not-allowed"
           )}
+          style={{
+            boxShadow: notApplicableValue ? "none" : "0 0 30px hsla(221, 83%, 53%, 0.15)",
+            transition: "all 0.3s ease"
+          }}
+          onMouseEnter={(e) => {
+            if (!notApplicableValue) {
+              e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
+              e.currentTarget.style.transform = "translateY(-2px)";
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!notApplicableValue) {
+              e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+              e.currentTarget.style.transform = "translateY(0)";
+            }
+          }}
+          onFocus={(e) => {
+            if (!notApplicableValue) {
+              e.currentTarget.style.boxShadow = "0 0 60px hsla(221, 83%, 53%, 0.4)";
+              e.currentTarget.style.transform = "translateY(-2px)";
+            }
+          }}
+          onBlur={(e) => {
+            if (!notApplicableValue) {
+              e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+              e.currentTarget.style.transform = "translateY(0)";
+            }
+          }}
         />
         {error && (
           <p className="text-sm text-destructive">{error}</p>
