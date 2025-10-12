@@ -30,6 +30,7 @@ const FamilyTreeFormContent = lazy(() => import("./FamilyTreeForm"));
 const POAFormContent = lazy(() => import("./POAForm"));
 const CitizenshipFormContent = lazy(() => import("./CitizenshipForm"));
 const CivilRegistryFormContent = lazy(() => import("./CivilRegistryForm"));
+const FamilyHistoryFormContent = lazy(() => import("./FamilyHistoryForm"));
 
 interface CaseData {
   id: string;
@@ -193,6 +194,14 @@ export default function CaseDetail() {
                   Civil Registry
                 </span>
               </Button>
+              <Button 
+                onClick={() => navigate(`/admin/cases/${id}/family-history`)}
+                className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0 relative z-50"
+              >
+                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                  Family History
+                </span>
+              </Button>
             </div>
           </div>
         </div>
@@ -312,6 +321,9 @@ export default function CaseDetail() {
                 <TabsTrigger value="civil-registry" className="flex-shrink-0">
                   <span>Civil Registry</span>
                 </TabsTrigger>
+                <TabsTrigger value="family-history" className="flex-shrink-0">
+                  <span>Family History</span>
+                </TabsTrigger>
               </TabsList>
 
               <TabsContent value="intake" className="mt-6">
@@ -341,6 +353,12 @@ export default function CaseDetail() {
               <TabsContent value="civil-registry" className="mt-6">
                 <Suspense fallback={<div className="flex items-center justify-center p-12"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
                   <CivilRegistryFormContent />
+                </Suspense>
+              </TabsContent>
+
+              <TabsContent value="family-history" className="mt-6">
+                <Suspense fallback={<div className="flex items-center justify-center p-12"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
+                  <FamilyHistoryFormContent />
                 </Suspense>
               </TabsContent>
             </Tabs>
