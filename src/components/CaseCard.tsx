@@ -1,6 +1,7 @@
 import { useState, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Edit, MoreVertical, Copy, Pause, Ban, Archive, Trash2, Eye, Radio, FileEdit, Award, Zap, Star } from "lucide-react";
+import { CollapsibleKPIStrip } from "@/components/CollapsibleKPIStrip";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { toast } from "sonner";
@@ -266,9 +267,10 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus, is
           </div>
 
           {/* KPI Strip - Mobile Optimized */}
-          <div className="mb-4 p-3 rounded-lg bg-background/20 border border-border/30">
-            <div className="grid grid-cols-2 md:flex md:flex-wrap gap-2">
-              {/* POA Status */}
+          <CollapsibleKPIStrip className="mb-4">
+            <div className="p-3 rounded-lg bg-background/20 border border-border/30">
+              <div className="grid grid-cols-2 md:flex md:flex-wrap gap-2">
+                {/* POA Status */}
               <div className={`px-2 py-1 rounded text-xs font-medium flex items-center gap-1 justify-center ${
                 clientCase.poa_approved 
                   ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
@@ -321,8 +323,9 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus, is
                   Docs: {clientCase.kpi_docs_percentage}%
                 </div>
               )}
+              </div>
             </div>
-          </div>
+          </CollapsibleKPIStrip>
 
           {clientCase.client_code && (
             <div className="mb-4 p-2 rounded-lg bg-background/30">

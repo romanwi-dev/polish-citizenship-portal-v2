@@ -20,7 +20,9 @@ import { useFavoriteCases } from "@/hooks/useFavoriteCases";
 import { LoadingState } from "@/components/LoadingState";
 import { EmptyState } from "@/components/EmptyState";
 import { ErrorState } from "@/components/ErrorState";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { toast } from "sonner";
+import { toastSuccess, toastError } from "@/utils/toastNotifications";
 
 export default function CasesManagement() {
   const navigate = useNavigate();
@@ -75,7 +77,7 @@ export default function CasesManagement() {
       ctrlKey: true,
       handler: () => {
         refetch();
-        toast.success("Cases refreshed");
+        toastSuccess.refreshed("Cases");
       },
       description: "Refresh cases",
     },
@@ -245,7 +247,8 @@ export default function CasesManagement() {
   }
 
   return (
-    <AdminLayout>
+    <ErrorBoundary>
+      <AdminLayout>
       <div className="p-8 bg-background min-h-screen">
         <div className="flex justify-between items-center mb-8">
           <div>
@@ -366,6 +369,7 @@ export default function CasesManagement() {
         open={showShortcuts}
         onOpenChange={setShowShortcuts}
       />
-    </AdminLayout>
+      </AdminLayout>
+    </ErrorBoundary>
   );
 }
