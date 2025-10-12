@@ -387,11 +387,11 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
                 className="text-xs font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-9 flex items-center justify-center px-2"
                 onClick={(e) => {
                   e.stopPropagation();
-                  navigate(`/admin/cases/${clientCase.id}`);
+                  navigate(`/admin/cases/${clientCase.id}?tab=ai-agent`);
                 }}
               >
                 <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-light opacity-90">
-                  View Case
+                  Ask AI
                 </span>
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               </Button>
