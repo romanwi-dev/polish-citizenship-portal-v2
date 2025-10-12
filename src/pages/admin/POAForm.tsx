@@ -501,23 +501,20 @@ export default function POAForm() {
                 
                 {/* Marriage information - Only show if married */}
                 {formData.applicant_is_married && (
-                  <div className="mt-6">
-                    <h3 className="text-xl font-semibold mb-4 text-foreground">Marriage information</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                      <POAFormField
-                        name="place_of_marriage"
-                        label="Place of marriage / Miejsce zawarcia związku małżeńskiego"
-                        value={formData?.place_of_marriage || ""}
-                        onChange={(value) => handleInputChange("place_of_marriage", value)}
-                      />
-                      <DateField
-                        name="date_of_marriage"
-                        label="Date of marriage / Data zawarcia związku małżeńskiego"
-                        value={formData?.date_of_marriage || ""}
-                        onChange={(value) => handleInputChange("date_of_marriage", value)}
-                        colorScheme="poa"
-                      />
-                    </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-6">
+                    <POAFormField
+                      name="place_of_marriage"
+                      label="Place of marriage / Miejsce zawarcia związku małżeńskiego"
+                      value={formData?.place_of_marriage || ""}
+                      onChange={(value) => handleInputChange("place_of_marriage", value)}
+                    />
+                    <DateField
+                      name="date_of_marriage"
+                      label="Date of marriage / Data zawarcia związku małżeńskiego"
+                      value={formData?.date_of_marriage || ""}
+                      onChange={(value) => handleInputChange("date_of_marriage", value)}
+                      colorScheme="poa"
+                    />
                   </div>
                 )}
                 
