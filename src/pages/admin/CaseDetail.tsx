@@ -135,23 +135,23 @@ export default function CaseDetail() {
     <AdminLayout>
       <div className="p-6 max-w-[1600px] mx-auto">
         {/* Header */}
-        <div className="flex items-center gap-3 mb-6">
-          <Button
-            variant="ghost"
-            onClick={() => navigate("/admin/cases")}
-            className="h-10 w-10 p-0"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-        </div>
-
-        {/* Client Info Header */}
-        <div className="mb-6 relative z-10">
-          <h1 className="text-3xl font-bold mb-2">{caseData.client_name}</h1>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <span>Email: {intakeData?.email || 'test@example.com'}</span>
-            <span>•</span>
-            <span>Updated: {new Date(caseData.updated_at).toLocaleDateString()}</span>
+        <div className="mb-8">
+          <div className="flex items-center gap-4 mb-4">
+            <Button
+              variant="ghost"
+              onClick={() => navigate("/admin/cases")}
+              className="h-12 w-12 p-0"
+            >
+              <ArrowLeft className="h-6 w-6" />
+            </Button>
+            <div>
+              <h1 className="text-5xl md:text-6xl font-bold mb-2">{caseData.client_name}</h1>
+              <div className="flex items-center gap-3 text-base text-muted-foreground">
+                <span>Email: {intakeData?.email || 'test@example.com'}</span>
+                <span>•</span>
+                <span>Updated: {new Date(caseData.updated_at).toLocaleDateString()}</span>
+              </div>
+            </div>
           </div>
         </div>
 
