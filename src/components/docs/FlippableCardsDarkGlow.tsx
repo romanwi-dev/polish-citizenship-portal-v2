@@ -169,7 +169,7 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange, colorScheme
                         stiffness: 60,
                         damping: 15
                       }}
-                      className={`text-xl md:text-2xl font-heading font-black tracking-tight bg-gradient-to-r ${scheme.bg} bg-clip-text text-transparent group-hover:scale-105 transition-all duration-300 drop-shadow-lg text-center mt-8 mb-3 leading-tight`}
+                      className={`text-xl md:text-2xl font-heading font-black tracking-tight bg-gradient-to-r ${scheme.bg} bg-clip-text text-transparent group-hover:scale-105 transition-all duration-300 text-center mt-8 mb-3 leading-tight`}
                     >
                       {doc.label}
                     </motion.h4>
