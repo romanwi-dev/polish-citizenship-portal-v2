@@ -1741,6 +1741,35 @@ export type Database = {
           },
         ]
       }
+      user_favorites: {
+        Row: {
+          case_id: string
+          created_at: string | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          case_id: string
+          created_at?: string | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          case_id?: string
+          created_at?: string | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_favorites_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string

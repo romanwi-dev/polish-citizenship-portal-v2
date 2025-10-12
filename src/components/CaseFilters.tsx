@@ -35,6 +35,7 @@ interface CaseFiltersProps {
   onProgressChange: (value: [number, number]) => void;
   onClearFilters: () => void;
   activeFiltersCount: number;
+  searchInputRef?: React.RefObject<HTMLInputElement>;
 }
 
 export const CaseFilters = ({
@@ -52,6 +53,7 @@ export const CaseFilters = ({
   onProgressChange,
   onClearFilters,
   activeFiltersCount,
+  searchInputRef,
 }: CaseFiltersProps) => {
   return (
     <div className="space-y-4 mb-6">
@@ -60,6 +62,7 @@ export const CaseFilters = ({
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
+            ref={searchInputRef}
             placeholder="Search by client name or case code..."
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}

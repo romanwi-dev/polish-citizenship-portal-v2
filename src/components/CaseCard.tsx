@@ -1,6 +1,6 @@
 import { useState, memo } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Edit, MoreVertical, Copy, Pause, Ban, Archive, Trash2, Eye, Radio, FileEdit, Award, Zap } from "lucide-react";
+import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Edit, MoreVertical, Copy, Pause, Ban, Archive, Trash2, Eye, Radio, FileEdit, Award, Zap, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { toast } from "sonner";
@@ -55,9 +55,11 @@ interface CaseCardProps {
   onEdit: (clientCase: any) => void;
   onDelete: (id: string) => void;
   onUpdateStatus: (id: string, status: string) => void;
+  isFavorite?: boolean;
+  onToggleFavorite?: () => void;
 }
 
-export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: CaseCardProps) => {
+export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus, isFavorite, onToggleFavorite }: CaseCardProps) => {
   const navigate = useNavigate();
   const [isFlipped, setIsFlipped] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -164,44 +166,59 @@ export const CaseCard = memo(({ clientCase, onEdit, onDelete, onUpdateStatus }: 
                 </div>
               </div>
             </div>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                <Button variant="ghost" size="icon" className="h-8 w-8">
-                  <MoreVertical className="h-4 w-4" />
+            <div className="flex items-center gap-2">
+              {onToggleFavorite && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onToggleFavorite();
+                  }}
+                >
+                  <Star className={`h-4 w-4 ${isFavorite ? 'fill-yellow-400 text-yellow-400' : ''}`} />
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48 bg-popover border border-border z-50">
-                <DropdownMenuItem onClick={handleEdit}>
-                  <Edit className="mr-2 h-4 w-4" />
-                  Edit
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleCopyId}>
-                  <Copy className="mr-2 h-4 w-4" />
-                  Copy ID
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={handlePostpone}>
-                  <Pause className="mr-2 h-4 w-4" />
-                  Postpone
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleSuspend}>
-                  <Ban className="mr-2 h-4 w-4" />
-                  Suspend
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleCancel}>
-                  <X className="mr-2 h-4 w-4" />
-                  Cancel
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleArchive}>
-                  <Archive className="mr-2 h-4 w-4" />
-                  Archive
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleDeleteClick} className="text-destructive">
-                  <Trash2 className="mr-2 h-4 w-4" />
-                  Delete
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+              )}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                  <Button variant="ghost" size="icon" className="h-8 w-8">
+                    <MoreVertical className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48 bg-popover border border-border z-50">
+                  <DropdownMenuItem onClick={handleEdit}>
+                    <Edit className="mr-2 h-4 w-4" />
+                    Edit
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleCopyId}>
+                    <Copy className="mr-2 h-4 w-4" />
+                    Copy ID
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handlePostpone}>
+                    <Pause className="mr-2 h-4 w-4" />
+                    Postpone
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleSuspend}>
+                    <Ban className="mr-2 h-4 w-4" />
+                    Suspend
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleCancel}>
+                    <X className="mr-2 h-4 w-4" />
+                    Cancel
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleArchive}>
+                    <Archive className="mr-2 h-4 w-4" />
+                    Archive
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleDeleteClick} className="text-destructive">
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    Delete
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </div>
 
           {/* Badges Row */}
