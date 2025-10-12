@@ -90,13 +90,6 @@ export default function CitizenshipForm() {
       return;
     }
 
-    // Validate critical fields before proceeding
-    const data = latestFormData.current;
-    if (!data.applicant_first_name || !data.applicant_last_name) {
-      toast.error('Please enter applicant name before generating PDF');
-      return;
-    }
-
     try {
       setIsGenerating(true);
       toast.loading("Generating Citizenship Application PDF...");
