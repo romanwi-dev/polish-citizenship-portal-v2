@@ -22,6 +22,7 @@ export default {
         'input-work': ['Work Sans', 'sans-serif'],
         'input-source': ['Source Sans 3', 'sans-serif'],
         'input-ibm': ['IBM Plex Sans', 'sans-serif'],
+        'faq-light': ['Inter', 'system-ui', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
