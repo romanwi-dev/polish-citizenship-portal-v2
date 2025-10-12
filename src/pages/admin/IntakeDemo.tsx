@@ -169,15 +169,15 @@ export default function IntakeDemo() {
             <Input
               value={applicantInputs.field1}
               onChange={(e) => setApplicantInputs(prev => ({ ...prev, field1: e.target.value }))}
-              className="h-16 bg-blue-50/50 dark:bg-blue-950/30 border-2 border-blue-400/50 dark:border-blue-600/50 hover:border-blue-500 focus:border-blue-500"
+              className="h-16 bg-blue-50/45 dark:bg-blue-950/40 border-2 border-blue-200/50 dark:border-blue-800/50 hover:border-blue-300/70 dark:hover:border-blue-700/70 focus:border-blue-500"
               style={{
-                boxShadow: "0 0 30px rgba(59,130,246,0.25)",
+                boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
                 transition: "all 0.3s ease"
               }}
-              onMouseEnter={(e) => e.currentTarget.style.boxShadow = "0 0 50px rgba(59,130,246,0.4)"}
-              onMouseLeave={(e) => e.currentTarget.style.boxShadow = "0 0 30px rgba(59,130,246,0.25)"}
-              onFocus={(e) => e.currentTarget.style.boxShadow = "0 0 60px rgba(59,130,246,0.5)"}
-              onBlur={(e) => e.currentTarget.style.boxShadow = "0 0 30px rgba(59,130,246,0.25)"}
+              onMouseEnter={(e) => e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)"}
+              onMouseLeave={(e) => e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)"}
+              onFocus={(e) => e.currentTarget.style.boxShadow = "0 0 60px hsla(221, 83%, 53%, 0.4)"}
+              onBlur={(e) => e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)"}
             />
           </div>
 
