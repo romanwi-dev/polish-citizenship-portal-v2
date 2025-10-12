@@ -436,9 +436,7 @@ export default function FamilyTreeForm() {
 
         {/* Form with Tabs */}
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }}>
-          <Card className="glass-card border-primary/20">
-            <CardContent className="pt-6">
-              <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
+          <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
                 <div className="sticky top-0 z-20 border-b border-border/50 pb-2 pt-2">
                     <TabsList className="w-full inline-flex justify-start gap-2 bg-transparent p-0 overflow-x-auto scrollbar-hide">
                       <TabsTrigger value="tree-view" className="flex-shrink-0">
@@ -1342,9 +1340,7 @@ export default function FamilyTreeForm() {
         </TabsContent>
                 </>
               )}
-              </Tabs>
-            </CardContent>
-          </Card>
+          </Tabs>
         </motion.div>
       </div>
 
