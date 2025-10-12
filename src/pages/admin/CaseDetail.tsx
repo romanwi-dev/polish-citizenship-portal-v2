@@ -145,7 +145,11 @@ export default function CaseDetail() {
               <ArrowLeft className="h-6 w-6" />
             </Button>
             <div>
-              <h1 className="text-5xl md:text-6xl font-bold mb-2">{caseData.client_name}</h1>
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-black mb-2 leading-tight tracking-tight">
+                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
+                  {caseData.client_name}
+                </span>
+              </h1>
               <div className="flex items-center gap-3 text-base text-muted-foreground">
                 <span>Email: {intakeData?.email || 'test@example.com'}</span>
                 <span>•</span>
