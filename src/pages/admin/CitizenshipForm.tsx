@@ -355,7 +355,6 @@ export default function CitizenshipForm() {
           className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border/10 mb-0"
         >
           <Card className="border-0 rounded-none shadow-none bg-transparent">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/3 via-secondary/3 to-primary/3" />
             <CardHeader className="relative pb-6 pt-6">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
