@@ -355,8 +355,8 @@ export default function CitizenshipForm() {
           transition={{ duration: 0.8 }}
           className="sticky top-0 z-20 mb-0"
         >
-          <Card className="border-0 rounded-none shadow-none bg-transparent">
-            <CardHeader className="relative pb-6 pt-6">
+          <div className="border-0 rounded-none shadow-none bg-transparent">
+            <div className="relative pb-6 pt-6">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
                   <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">
@@ -413,8 +413,8 @@ export default function CitizenshipForm() {
                   </Button>
                 </div>
               </div>
-            </CardHeader>
-            <CardContent className="pt-6 pb-6">
+            </div>
+            <div className="pt-6 pb-6">
               <FormButtonsRow 
                 caseId={caseId!}
                 currentForm="citizenship"
@@ -423,8 +423,8 @@ export default function CitizenshipForm() {
                 onGeneratePDF={handleGeneratePDF}
                 isSaving={updateMutation.isPending || isGenerating}
               />
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </motion.div>
 
         {/* Form Sections */}
