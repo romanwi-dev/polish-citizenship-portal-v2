@@ -723,17 +723,27 @@ export default function FamilyTreeForm() {
                 label: "Phone"
               }])}
 
-                <div className="space-y-2">
-                  <Label htmlFor="applicant_notes" className={isLargeFonts ? "text-2xl" : ""}>
-                    Relevant additional information
-                  </Label>
-                  <Textarea
-                    id="applicant_notes"
-                    value={formData.applicant_notes || ""}
-                    onChange={e => handleInputChange("applicant_notes", e.target.value.toUpperCase())}
-                    placeholder=""
-                    className={cn("min-h-[150px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 items-start">
+                  <FamilyMemberDocumentsSection
+                    prefix="applicant"
+                    title="Required Documents"
+                    formData={formData}
+                    handleInputChange={handleInputChange}
+                    personType="applicant"
+                    sex={formData.applicant_sex}
                   />
+                  <div className="space-y-2">
+                    <Label htmlFor="applicant_notes" className={isLargeFonts ? "text-2xl" : ""}>
+                      ADDITIONAL NOTES
+                    </Label>
+                    <Textarea
+                      id="applicant_notes"
+                      value={formData.applicant_notes || ""}
+                      onChange={e => handleInputChange("applicant_notes", e.target.value.toUpperCase())}
+                      placeholder=""
+                      className={cn("min-h-[400px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                    />
+                  </div>
                 </div>
 
             <FamilyMemberDocumentsSection
@@ -795,18 +805,28 @@ export default function FamilyTreeForm() {
                 { name: "spouse_phone", label: "Phone" }
               ])}
 
-              {/* Notes */}
-              <div className="space-y-2">
-                <Label htmlFor="spouse_notes" className={isLargeFonts ? "text-2xl" : ""}>
-                  Relevant additional information
-                </Label>
-                <Textarea
-                  id="spouse_notes"
-                  value={formData.spouse_notes || ""}
-                  onChange={e => handleInputChange("spouse_notes", e.target.value.toUpperCase())}
-                  placeholder=""
-                  className={cn("min-h-[150px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+              {/* Notes and Documents Side-by-Side */}
+              <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 items-start">
+                <FamilyMemberDocumentsSection
+                  prefix="spouse"
+                  title="Required Documents"
+                  formData={formData}
+                  handleInputChange={handleInputChange}
+                  personType="spouse"
+                  sex={formData.spouse_sex}
                 />
+                <div className="space-y-2">
+                  <Label htmlFor="spouse_notes" className={isLargeFonts ? "text-2xl" : ""}>
+                    ADDITIONAL NOTES
+                  </Label>
+                  <Textarea
+                    id="spouse_notes"
+                    value={formData.spouse_notes || ""}
+                    onChange={e => handleInputChange("spouse_notes", e.target.value.toUpperCase())}
+                    placeholder=""
+                    className={cn("min-h-[400px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                  />
+                </div>
               </div>
 
               <FamilyMemberDocumentsSection
@@ -871,17 +891,27 @@ export default function FamilyTreeForm() {
               label: "Date of birth",
               type: "date"
             }])}
-                <div className="space-y-2">
-                  <Label htmlFor={`child_${num}_notes`} className={isLargeFonts ? "text-2xl" : ""}>
-                    Relevant additional information
-                  </Label>
-                  <Textarea
-                    id={`child_${num}_notes`}
-                    value={formData[`child_${num}_notes`] || ""}
-                    onChange={e => handleInputChange(`child_${num}_notes`, e.target.value.toUpperCase())}
-                    placeholder=""
-                    className={cn("min-h-[150px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 items-start">
+                  <FamilyMemberDocumentsSection
+                    prefix={`child_${num}`}
+                    title="Required Documents"
+                    formData={formData}
+                    handleInputChange={handleInputChange}
+                    personType="child"
+                    sex={formData[`child_${num}_sex`]}
                   />
+                  <div className="space-y-2">
+                    <Label htmlFor={`child_${num}_notes`} className={isLargeFonts ? "text-2xl" : ""}>
+                      ADDITIONAL NOTES
+                    </Label>
+                    <Textarea
+                      id={`child_${num}_notes`}
+                      value={formData[`child_${num}_notes`] || ""}
+                      onChange={e => handleInputChange(`child_${num}_notes`, e.target.value.toUpperCase())}
+                      placeholder=""
+                      className={cn("min-h-[400px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                    />
+                  </div>
                 </div>
                 <FamilyMemberDocumentsSection
                   prefix={`child_${num}`}
@@ -970,17 +1000,27 @@ export default function FamilyTreeForm() {
                 label: "Date of naturalization",
                 type: "date"
               }])}
-                <div className="space-y-2">
-                  <Label htmlFor="father_notes" className={isLargeFonts ? "text-2xl" : ""}>
-                    Relevant additional information
-                  </Label>
-                  <Textarea
-                    id="father_notes"
-                    value={formData.father_notes || ""}
-                    onChange={e => handleInputChange("father_notes", e.target.value.toUpperCase())}
-                    placeholder=""
-                    className={cn("min-h-[150px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 items-start">
+                  <FamilyMemberDocumentsSection
+                    prefix="father"
+                    title="Required Documents"
+                    formData={formData}
+                    handleInputChange={handleInputChange}
+                    personType="parent"
+                    sex="M"
                   />
+                  <div className="space-y-2">
+                    <Label htmlFor="father_notes" className={isLargeFonts ? "text-2xl" : ""}>
+                      ADDITIONAL NOTES
+                    </Label>
+                    <Textarea
+                      id="father_notes"
+                      value={formData.father_notes || ""}
+                      onChange={e => handleInputChange("father_notes", e.target.value.toUpperCase())}
+                      placeholder=""
+                      className={cn("min-h-[400px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                    />
+                  </div>
                 </div>
                 <FamilyMemberDocumentsSection
                   prefix="father"
@@ -1052,17 +1092,27 @@ export default function FamilyTreeForm() {
                 label: "Date of naturalization",
                 type: "date"
               }])}
-                <div className="space-y-2">
-                  <Label htmlFor="mother_notes" className={isLargeFonts ? "text-2xl" : ""}>
-                    Relevant additional information
-                  </Label>
-                  <Textarea
-                    id="mother_notes"
-                    value={formData.mother_notes || ""}
-                    onChange={e => handleInputChange("mother_notes", e.target.value.toUpperCase())}
-                    placeholder=""
-                    className={cn("min-h-[150px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 items-start">
+                  <FamilyMemberDocumentsSection
+                    prefix="mother"
+                    title="Required Documents"
+                    formData={formData}
+                    handleInputChange={handleInputChange}
+                    personType="parent"
+                    sex="F"
                   />
+                  <div className="space-y-2">
+                    <Label htmlFor="mother_notes" className={isLargeFonts ? "text-2xl" : ""}>
+                      ADDITIONAL NOTES
+                    </Label>
+                    <Textarea
+                      id="mother_notes"
+                      value={formData.mother_notes || ""}
+                      onChange={e => handleInputChange("mother_notes", e.target.value.toUpperCase())}
+                      placeholder=""
+                      className={cn("min-h-[400px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                    />
+                  </div>
                 </div>
                 <FamilyMemberDocumentsSection
                   prefix="mother"
@@ -1101,6 +1151,7 @@ export default function FamilyTreeForm() {
                   mgf: "Maternal Grandfather",
                   mgm: "Maternal Grandmother"
                 };
+                const sex = prefix.endsWith('f') ? 'M' : 'F';
                 return <Fragment key={prefix}>
                   <h3 className={cn(
                     "text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent",
@@ -1162,17 +1213,27 @@ export default function FamilyTreeForm() {
                 type: "date"
               }])}
 
-                  <div className="space-y-2">
-                    <Label htmlFor={`${prefix}_notes`} className={isLargeFonts ? "text-2xl" : ""}>
-                      Relevant additional information
-                    </Label>
-                    <Textarea
-                      id={`${prefix}_notes`}
-                      value={formData[`${prefix}_notes`] || ""}
-                      onChange={e => handleInputChange(`${prefix}_notes`, e.target.value.toUpperCase())}
-                      placeholder=""
-                      className={cn("min-h-[150px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                  <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 items-start">
+                    <FamilyMemberDocumentsSection
+                      prefix={prefix}
+                      title="Required Documents"
+                      formData={formData}
+                      handleInputChange={handleInputChange}
+                      personType="grandparent"
+                      sex={sex}
                     />
+                    <div className="space-y-2">
+                      <Label htmlFor={`${prefix}_notes`} className={isLargeFonts ? "text-2xl" : ""}>
+                        ADDITIONAL NOTES
+                      </Label>
+                      <Textarea
+                        id={`${prefix}_notes`}
+                        value={formData[`${prefix}_notes`] || ""}
+                        onChange={e => handleInputChange(`${prefix}_notes`, e.target.value.toUpperCase())}
+                        placeholder=""
+                        className={cn("min-h-[400px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                      />
+                    </div>
                   </div>
 
                   <FamilyMemberDocumentsSection
@@ -1217,6 +1278,7 @@ export default function FamilyTreeForm() {
                   pggf: "Paternal Great-Grandfather (Father's Line)",
                   mggf: "Maternal Great-Grandfather (Mother's Line)"
                 };
+                const sex = 'M'; // Great-grandfathers are always male
                 return <Fragment key={prefix}>
                   <h3 className={cn(
                     "text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent",
@@ -1274,21 +1336,31 @@ export default function FamilyTreeForm() {
                 type: "date"
               }])}
                   
-                  {/* Biographical Notes - Polish Family Debris */}
-                  <div className="space-y-2">
-                    <Label htmlFor={`${prefix}_notes`} className={isLargeFonts ? "text-2xl" : ""}>
-                      Biographical Notes / Życiorys
-                    </Label>
-                    <p className="text-sm text-muted-foreground mb-2">
-                      Family history, immigration journey, Polish heritage details, important life events
-                    </p>
-                    <Textarea
-                      id={`${prefix}_notes`}
-                      value={formData[`${prefix}_notes`] || ""}
-                      onChange={e => handleInputChange(`${prefix}_notes`, e.target.value.toUpperCase())}
-                      placeholder="Enter biographical information and family history details..."
-                      className={cn("min-h-[200px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                  {/* Biographical Notes and Documents Side-by-Side */}
+                  <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 items-start">
+                    <FamilyMemberDocumentsSection
+                      prefix={prefix}
+                      title="Required Documents"
+                      formData={formData}
+                      handleInputChange={handleInputChange}
+                      personType="grandparent"
+                      sex={sex}
                     />
+                    <div className="space-y-2">
+                      <Label htmlFor={`${prefix}_notes`} className={isLargeFonts ? "text-2xl" : ""}>
+                        ADDITIONAL NOTES
+                      </Label>
+                      <p className="text-sm text-muted-foreground mb-2">
+                        Family history, immigration journey, Polish heritage details, important life events
+                      </p>
+                      <Textarea
+                        id={`${prefix}_notes`}
+                        value={formData[`${prefix}_notes`] || ""}
+                        onChange={e => handleInputChange(`${prefix}_notes`, e.target.value.toUpperCase())}
+                        placeholder="Enter biographical information and family history details..."
+                        className={cn("min-h-[400px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                      />
+                    </div>
                   </div>
                   
                   <FamilyMemberDocumentsSection
