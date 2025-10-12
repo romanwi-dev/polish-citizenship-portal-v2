@@ -1,4 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useLongPressWithFeedback } from "@/hooks/useLongPressWithFeedback";
 
@@ -26,21 +25,20 @@ export const FormSection = ({
     : null;
 
   return (
-    <Card className={cn("border-2 hover-glow w-full", className)}>
-      <CardHeader
+    <div className={cn("space-y-6 w-full", className)}>
+      <h3
         {...(longPress ? longPress.handlers : {})}
-        className={onClearSection ? "cursor-pointer px-3 sm:px-6" : "px-3 sm:px-6"}
+        className={cn(
+          "font-heading font-bold text-primary border-b border-border/30 pb-3",
+          isLargeFonts ? "text-3xl" : "text-xl",
+          onClearSection && "cursor-pointer hover:text-primary/80 transition-colors"
+        )}
       >
-        <CardTitle className={cn(
-          "flex items-center gap-2",
-          isLargeFonts ? "text-3xl" : "text-xl"
-        )}>
-          {title}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-6 px-3 sm:px-6">
+        {title}
+      </h3>
+      <div className="space-y-6">
         {children}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
