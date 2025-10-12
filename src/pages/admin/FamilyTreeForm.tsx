@@ -618,11 +618,11 @@ export default function FamilyTreeForm() {
                 {/* Row 1: Names */}
                 {renderFieldGroup([{
                   name: "applicant_first_name",
-                  label: "Given names / Imię/ imiona",
+                  label: "Given names",
                   isNameField: true
                 }, {
                   name: "applicant_last_name",
-                  label: "Full last name / Nazwisko",
+                  label: "Full last name",
                   isNameField: true
                 }], 'applicant')}
 
@@ -635,7 +635,7 @@ export default function FamilyTreeForm() {
                     className="space-y-2"
                   >
                     <Label className={isLargeFonts ? "text-2xl" : ""}>
-                      Maiden name / Nazwisko rodowe
+                      Maiden name
                     </Label>
                     <Input
                       value={formData.applicant_maiden_name || ""}
@@ -732,17 +732,13 @@ export default function FamilyTreeForm() {
               
               {/* Names */}
               {renderFieldGroup([
-                { name: "spouse_first_name", label: "Given names / Imię/ imiona", isNameField: true },
-                { name: "spouse_last_name", label: "Full last name / Nazwisko", isNameField: true }
+                { name: "spouse_first_name", label: "Given names", isNameField: true },
+                { name: "spouse_last_name", label: "Full last name", isNameField: true }
               ], 'applicant')}
 
               {/* Maiden name */}
               {renderFieldGroup([
-                { name: "spouse_maiden_name", label: "Maiden name / Nazwisko rodowe", isNameField: true },
-                { name: "spouse_sex", label: "Sex", isSelect: true, selectOptions: [
-                  { value: "M", label: "Male" },
-                  { value: "F", label: "Female" }
-                ]}
+                { name: "spouse_maiden_name", label: "Maiden name", isNameField: true }
               ], 'applicant')}
 
               {/* Places: Birth & Marriage */}
@@ -826,11 +822,11 @@ export default function FamilyTreeForm() {
                 {/* 1st row - Name fields */}
                 {renderFieldGroup([{
               name: `child_${num}_first_name`,
-              label: "Given names / Imię/ imiona",
+              label: "Given names",
               isNameField: true
             }, {
               name: `child_${num}_last_name`,
-              label: "Full last name / Nazwisko",
+              label: "Full last name",
               isNameField: true
             }], 'children')}
 
@@ -907,11 +903,11 @@ export default function FamilyTreeForm() {
                 {/* 1st row - Name fields */}
                 {renderFieldGroup([{
                 name: "father_first_name",
-                label: "Given names / Imię/ imiona",
+                label: "Given names",
                 isNameField: true
               }, {
                 name: "father_last_name",
-                label: "Full last name / Nazwisko",
+                label: "Full last name",
                 isNameField: true
               }], 'parents')}
 
@@ -988,11 +984,11 @@ export default function FamilyTreeForm() {
                 {/* 1st row - Name fields */}
                 {renderFieldGroup([{
                 name: "mother_first_name",
-                label: "Given names / Imię/ imiona",
+                label: "Given names",
                 isNameField: true
               }, {
                 name: "mother_last_name",
-                label: "Full last name / Nazwisko",
+                label: "Full last name",
                 isNameField: true
               }, {
                 name: "mother_maiden_name",
@@ -1098,11 +1094,11 @@ export default function FamilyTreeForm() {
                   {/* 1st row - Name fields */}
                   {renderFieldGroup([{
                 name: `${prefix}_first_name`,
-                label: "Given names / Imię/ imiona",
+                label: "Given names",
                 isNameField: true
               }, {
                 name: `${prefix}_last_name`,
-                label: "Full last name / Nazwisko",
+                label: "Full last name",
                 isNameField: true
               }, ...(prefix.includes("gm") ? [{
                 name: `${prefix}_maiden_name`,
@@ -1209,11 +1205,11 @@ export default function FamilyTreeForm() {
                   {/* 1st row - Names */}
                   {renderFieldGroup([{
                 name: `${prefix}_first_name`,
-                label: "Given names / Imię/ imiona",
+                label: "Given names",
                 isNameField: true
               }, {
                 name: `${prefix}_last_name`,
-                label: "Full last name / Nazwisko",
+                label: "Full last name",
                 isNameField: true
               }], 'ggp')}
 
