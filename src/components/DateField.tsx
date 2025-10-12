@@ -119,7 +119,7 @@ export function DateField({
       transition={{ delay, duration: 0.4 }}
       className="w-full"
     >
-      <div className="space-y-2">
+      <div>
         <Label htmlFor={name} className={isLargeFonts ? "text-2xl" : ""}>
           {label} {required && <span className="text-destructive">*</span>}
         </Label>
@@ -145,10 +145,10 @@ export function DateField({
           maxLength={10}
           disabled={notApplicableValue}
           className={cn(
-            "h-16 md:h-20 text-lg border-2 transition-all duration-300 backdrop-blur font-normal placeholder:opacity-40 font-input-work w-full max-w-full",
+            "h-16 md:h-20 text-2xl border-2 transition-all duration-300 backdrop-blur font-normal placeholder:opacity-40 font-input-work w-full max-w-full",
             scheme.bg,
             scheme.border,
-            isLargeFonts && "text-2xl",
+            isLargeFonts && "text-3xl",
             error && "border-destructive",
             notApplicableValue && "bg-cyan-950/30 border-cyan-700 text-cyan-300 cursor-not-allowed"
           )}

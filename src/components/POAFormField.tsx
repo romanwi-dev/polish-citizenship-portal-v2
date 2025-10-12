@@ -38,14 +38,16 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay, duration: 0.4 }}
-        className="space-y-4"
         onDoubleClick={handleDoubleClick}
       >
         <Label htmlFor={name} className={isLargeFonts ? "text-2xl" : ""}>
           {label}
         </Label>
         <div
-          className="w-full h-16 md:h-20 px-3 flex items-center border rounded-md hover-glow bg-gray-200/45 dark:bg-gray-700/45 border-gray-300/30 dark:border-gray-500/30 backdrop-blur transition-all text-lg font-normal font-input-work"
+          className={cn(
+            "w-full h-16 md:h-20 px-3 flex items-center border rounded-md hover-glow bg-gray-200/45 dark:bg-gray-700/45 border-gray-300/30 dark:border-gray-500/30 backdrop-blur transition-all text-2xl font-normal font-input-work",
+            isLargeFonts && "text-3xl"
+          )}
           style={{ 
             boxShadow: '0 0 30px rgba(156,163,175,0.25)'
           }}
@@ -69,7 +71,6 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.4 }}
-      className="space-y-4"
       onDoubleClick={handleDoubleClick}
     >
       <Label htmlFor={name} className={isLargeFonts ? "text-2xl" : ""}>
