@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+import { FormInput } from "@/components/forms/FormInput";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -142,25 +142,25 @@ export const ApplicantSection = ({ formData, handleInputChange, clearField, isLa
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="space-y-2" onDoubleClick={() => clearField("applicant_first_name")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>First name</Label>
-          <Input value={formData?.applicant_first_name || ""} onChange={(e) => handleInputChange("applicant_first_name", e.target.value.toUpperCase())} className="uppercase" />
+          <FormInput value={formData?.applicant_first_name || ""} onChange={(e) => handleInputChange("applicant_first_name", e.target.value.toUpperCase())} isNameField colorScheme="applicant" />
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="space-y-2" onDoubleClick={() => clearField("applicant_last_name")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Last name</Label>
-          <Input value={formData?.applicant_last_name || ""} onChange={(e) => handleInputChange("applicant_last_name", e.target.value.toUpperCase())} className="uppercase" />
+          <FormInput value={formData?.applicant_last_name || ""} onChange={(e) => handleInputChange("applicant_last_name", e.target.value.toUpperCase())} isNameField colorScheme="applicant" />
         </motion.div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="space-y-2" onDoubleClick={() => clearField("applicant_maiden_name")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Maiden name</Label>
-          <Input value={formData?.applicant_maiden_name || ""} onChange={(e) => handleInputChange("applicant_maiden_name", e.target.value.toUpperCase())} className="uppercase" />
+          <FormInput value={formData?.applicant_maiden_name || ""} onChange={(e) => handleInputChange("applicant_maiden_name", e.target.value.toUpperCase())} isNameField colorScheme="applicant" />
         </motion.div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="space-y-2" onDoubleClick={() => clearField("applicant_pob")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Place of birth</Label>
-          <Input value={formData?.applicant_pob || ""} onChange={(e) => handleInputChange("applicant_pob", e.target.value.toUpperCase())} className="uppercase" />
+          <FormInput value={formData?.applicant_pob || ""} onChange={(e) => handleInputChange("applicant_pob", e.target.value.toUpperCase())} isNameField colorScheme="applicant" />
         </motion.div>
         <DateField name="applicant_dob" label="Date of birth" value={formData?.applicant_dob} onChange={(value) => handleInputChange("applicant_dob", value)} delay={0.45} />
       </div>
@@ -169,7 +169,7 @@ export const ApplicantSection = ({ formData, handleInputChange, clearField, isLa
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 md:items-start">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("place_of_marriage")}>
             <Label className={isLargeFonts ? "text-2xl" : ""}>Place of marriage</Label>
-            <Input value={formData?.place_of_marriage || ""} onChange={(e) => handleInputChange("place_of_marriage", e.target.value.toUpperCase())} className="uppercase" />
+            <FormInput value={formData?.place_of_marriage || ""} onChange={(e) => handleInputChange("place_of_marriage", e.target.value.toUpperCase())} isNameField colorScheme="applicant" />
           </motion.div>
           <div>
             <DateField name="date_of_marriage" label="Date of marriage" value={formData?.date_of_marriage} onChange={(value) => handleInputChange("date_of_marriage", value)} delay={0.5} />
@@ -191,11 +191,11 @@ export const ContactSection = ({ formData, handleInputChange, clearField, isLarg
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_email")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Email</Label>
-          <Input value={formData?.applicant_email || ""} onChange={(e) => handleInputChange("applicant_email", e.target.value)} type="email" />
+          <FormInput value={formData?.applicant_email || ""} onChange={(e) => handleInputChange("applicant_email", e.target.value)} type="email" colorScheme="applicant" />
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_phone")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Phone</Label>
-          <Input value={formData?.applicant_phone || ""} onChange={(e) => handleInputChange("applicant_phone", e.target.value)} />
+          <FormInput value={formData?.applicant_phone || ""} onChange={(e) => handleInputChange("applicant_phone", e.target.value)} colorScheme="applicant" />
         </motion.div>
       </div>
     </div>
@@ -213,24 +213,24 @@ export const AddressSection = ({ formData, handleInputChange, clearField, isLarg
       <div className="grid grid-cols-1 gap-6 w-full">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_street")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Street address</Label>
-          <Input value={formData?.applicant_street || ""} onChange={(e) => handleInputChange("applicant_street", e.target.value.toUpperCase())} className="uppercase" />
+          <FormInput value={formData?.applicant_street || ""} onChange={(e) => handleInputChange("applicant_street", e.target.value.toUpperCase())} isNameField colorScheme="applicant" />
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_city")}>
             <Label className={isLargeFonts ? "text-2xl" : ""}>City</Label>
-            <Input value={formData?.applicant_city || ""} onChange={(e) => handleInputChange("applicant_city", e.target.value.toUpperCase())} className="uppercase" />
+            <FormInput value={formData?.applicant_city || ""} onChange={(e) => handleInputChange("applicant_city", e.target.value.toUpperCase())} isNameField colorScheme="applicant" />
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_state")}>
             <Label className={isLargeFonts ? "text-2xl" : ""}>State / Province</Label>
-            <Input value={formData?.applicant_state || ""} onChange={(e) => handleInputChange("applicant_state", e.target.value.toUpperCase())} className="uppercase" />
+            <FormInput value={formData?.applicant_state || ""} onChange={(e) => handleInputChange("applicant_state", e.target.value.toUpperCase())} isNameField colorScheme="applicant" />
           </motion.div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_postal_code")}>
             <Label className={isLargeFonts ? "text-2xl" : ""}>Postal / ZIP code</Label>
-            <Input value={formData?.applicant_postal_code || ""} onChange={(e) => handleInputChange("applicant_postal_code", e.target.value.toUpperCase())} className="uppercase" />
+            <FormInput value={formData?.applicant_postal_code || ""} onChange={(e) => handleInputChange("applicant_postal_code", e.target.value.toUpperCase())} isNameField colorScheme="applicant" />
           </motion.div>
           <CountrySelect value={formData?.applicant_country || ""} onChange={(value) => handleInputChange("applicant_country", value)} label="Country" isLargeFonts={isLargeFonts} delay={0} />
         </div>
@@ -250,7 +250,7 @@ export const PassportSection = ({ formData, handleInputChange, clearField, isLar
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_passport_number")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Passport number</Label>
-          <Input value={formData?.applicant_passport_number || ""} onChange={(e) => handleInputChange("applicant_passport_number", e.target.value.toUpperCase())} className="uppercase" />
+          <FormInput value={formData?.applicant_passport_number || ""} onChange={(e) => handleInputChange("applicant_passport_number", e.target.value.toUpperCase())} isNameField colorScheme="applicant" />
         </motion.div>
         <DateField name="applicant_passport_expiry_date" label="Passport expiry date" value={formData?.applicant_passport_expiry_date} onChange={(value) => handleInputChange("applicant_passport_expiry_date", value)} />
       </div>
