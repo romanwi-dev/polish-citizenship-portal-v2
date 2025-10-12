@@ -199,22 +199,22 @@ export default function IntakeForm() {
               <div className="flex gap-3 items-center overflow-x-auto scrollbar-hide">
                 {/* Save and Clear Buttons */}
                 <div className="flex gap-2 flex-shrink-0">
-                  <Button
+                  <button
                     onClick={handleSave}
                     disabled={isSaving}
-                    className="inline-flex items-center justify-center px-4 md:px-6 lg:px-8 py-2 text-sm md:text-base lg:text-lg font-medium rounded backdrop-blur-md border transition-all bg-green-500/20 hover:bg-green-500/30 border-green-400/40 shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]"
+                    className="inline-flex items-center justify-center whitespace-nowrap px-4 md:px-6 lg:px-8 py-2 text-sm md:text-base lg:text-lg font-bold rounded backdrop-blur-md border transition-all bg-green-500/20 hover:bg-green-500/30 border-green-400/40 shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)] disabled:opacity-50"
                   >
                     <Save className="mr-2 h-4 w-4" />
                     <span className="text-green-100">{isSaving ? "Saving..." : "Save"}</span>
-                  </Button>
+                  </button>
                   
-                  <Button
+                  <button
                     onClick={() => setShowClearDialog(true)}
-                    className="inline-flex items-center justify-center px-4 md:px-6 lg:px-8 py-2 text-sm md:text-base lg:text-lg font-medium rounded backdrop-blur-md border transition-all bg-red-500/20 hover:bg-red-500/30 border-red-400/40 shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]"
+                    className="inline-flex items-center justify-center whitespace-nowrap px-4 md:px-6 lg:px-8 py-2 text-sm md:text-base lg:text-lg font-bold rounded backdrop-blur-md border transition-all bg-red-500/20 hover:bg-red-500/30 border-red-400/40 shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]"
                   >
                     <Sparkles className="mr-2 h-4 w-4" />
                     <span className="text-red-100">Clear</span>
-                  </Button>
+                  </button>
                 </div>
 
                 {/* Tabs */}
