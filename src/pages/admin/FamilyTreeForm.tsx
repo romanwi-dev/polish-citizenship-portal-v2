@@ -1064,7 +1064,7 @@ export default function FamilyTreeForm() {
           delay: 0.4
         }} className="space-y-10">
               <h2 className="text-4xl md:text-5xl font-heading font-bold text-red-600 dark:text-red-400 border-b border-border/50 pb-6 mb-10">
-                Polish Grandparents
+                Grandparents
               </h2>
 
               {["pgf", "pgm", "mgf", "mgm"].map(prefix => {
@@ -1179,7 +1179,7 @@ export default function FamilyTreeForm() {
         }} className="space-y-10">
               <div className="border-b border-border/50 pb-6 mb-10">
                 <h2 className="text-4xl md:text-5xl font-heading font-bold text-gray-600 dark:text-gray-400">
-                  Polish Great-Grandfathers
+                  Great Grandfathers
                 </h2>
                 <p className="text-base mt-2">
                   Focus on the 2 Polish great-grandfathers only. Great-grandmothers are not relevant for this process.
