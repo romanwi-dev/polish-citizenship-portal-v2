@@ -745,15 +745,6 @@ export default function FamilyTreeForm() {
                     />
                   </div>
                 </div>
-
-            <FamilyMemberDocumentsSection
-              prefix="applicant"
-              title="Required Documents"
-              formData={formData}
-              handleInputChange={handleInputChange}
-              personType="applicant"
-              sex={formData.applicant_sex}
-            />
           </motion.div>
           )}
         </TabsContent>
@@ -828,15 +819,6 @@ export default function FamilyTreeForm() {
                   />
                 </div>
               </div>
-
-              <FamilyMemberDocumentsSection
-                prefix="spouse"
-                title="Required Documents"
-                formData={formData}
-                handleInputChange={handleInputChange}
-                personType="spouse"
-                sex={formData.spouse_sex}
-              />
             </motion.div>
           )}
         </TabsContent>
@@ -913,14 +895,6 @@ export default function FamilyTreeForm() {
                     />
                   </div>
                 </div>
-                <FamilyMemberDocumentsSection
-                  prefix={`child_${num}`}
-                  title="Required Documents"
-                  formData={formData}
-                  handleInputChange={handleInputChange}
-                  personType="child"
-                  sex={formData[`child_${num}_sex`]}
-                />
               </Fragment>)}
           </motion.div>
           )}
@@ -1022,14 +996,6 @@ export default function FamilyTreeForm() {
                     />
                   </div>
                 </div>
-                <FamilyMemberDocumentsSection
-                  prefix="father"
-                  title="Required Documents"
-                  formData={formData}
-                  handleInputChange={handleInputChange}
-                  personType="parent"
-                  sex="M"
-                />
               </div>
 
               {/* Mother */}
@@ -1114,14 +1080,6 @@ export default function FamilyTreeForm() {
                     />
                   </div>
                 </div>
-                <FamilyMemberDocumentsSection
-                  prefix="mother"
-                  title="Required Documents"
-                  formData={formData}
-                  handleInputChange={handleInputChange}
-                  personType="parent"
-                  sex="F"
-                />
           </motion.div>
           )}
         </TabsContent>
@@ -1235,15 +1193,6 @@ export default function FamilyTreeForm() {
                       />
                     </div>
                   </div>
-
-                  <FamilyMemberDocumentsSection
-                    prefix={prefix}
-                    title="Required Documents"
-                    formData={formData}
-                    handleInputChange={handleInputChange}
-                    personType="grandparent"
-                    sex={prefix === 'pgf' || prefix === 'mgf' ? 'M' : 'F'}
-                  />
                 </Fragment>;
               })}
           </motion.div>
@@ -1362,15 +1311,6 @@ export default function FamilyTreeForm() {
                       />
                     </div>
                   </div>
-                  
-                  <FamilyMemberDocumentsSection
-                    prefix={prefix}
-                    title="Required Documents"
-                    formData={formData}
-                    handleInputChange={handleInputChange}
-                    personType="grandparent"
-                    sex="M"
-                  />
                 </Fragment>;
               })}
           </motion.div>
