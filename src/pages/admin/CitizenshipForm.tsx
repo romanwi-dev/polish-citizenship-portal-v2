@@ -1,7 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useMasterData, useUpdateMasterData } from "@/hooks/useMasterData";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -14,6 +13,7 @@ import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { DateField } from "@/components/DateField";
+import { FormInput } from "@/components/forms/FormInput";
 import { useLongPressWithFeedback } from "@/hooks/useLongPressWithFeedback";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { useRealtimeFormSync } from "@/hooks/useRealtimeFormSync";
@@ -266,13 +266,15 @@ export default function CitizenshipForm() {
                 )}>
                   {field.label}
                 </Label>
-                <Input
+                <FormInput
                   id={field.name}
                   type={field.type || "text"}
                   value={formData[field.name] || ""}
                   onChange={(e) => handleInputChange(field.name, e.target.value.toUpperCase())}
                   placeholder={field.placeholder || ""}
-                  className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                  colorScheme="citizenship"
+                  isLargeFonts={isLargeFonts}
+                  isNameField={true}
                 />
               </>
             )}
@@ -300,7 +302,8 @@ export default function CitizenshipForm() {
           value={formData[name] || ""}
           onChange={(e) => handleInputChange(name, e.target.value.toUpperCase())}
           rows={rows}
-          className="border-2 hover-glow focus:shadow-lg transition-all resize-vertical bg-card/50 backdrop-blur uppercase"
+          colorScheme="citizenship"
+          className="uppercase"
         />
       </motion.div>
     );
@@ -349,10 +352,10 @@ export default function CitizenshipForm() {
           initial={{ opacity: 0, y: -50 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ duration: 0.8 }}
-          className="sticky top-0 z-20 bg-gradient-to-br from-background via-background to-background/95 backdrop-blur-sm border-b mb-0"
+          className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border/10 mb-0"
         >
-          <Card className="glass-card border-primary/20 overflow-hidden rounded-none border-x-0 border-t-0">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5" />
+          <Card className="border-0 rounded-none shadow-none bg-transparent">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/3 via-secondary/3 to-primary/3" />
             <CardHeader className="relative pb-6 pt-6">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
@@ -619,8 +622,8 @@ export default function CitizenshipForm() {
               </div>
               <div className="p-6 md:p-10 space-y-10">
                 {/* Maternal Grandfather */}
-                <div className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
-                  <h3 className="text-2xl font-semibold text-foreground">Dziadek ze strony matki / Maternal Grandfather</h3>
+                <div className="space-y-6">
+                  <h3 className="text-2xl font-semibold text-foreground border-b pb-2">Dziadek ze strony matki / Maternal Grandfather</h3>
                   {renderFieldGroup([
                     { name: "mgf_last_name", label: "Nazwisko / Full last name" },
                     { name: "mgf_first_name", label: "Imię/ imiona / Given names" },
@@ -630,8 +633,8 @@ export default function CitizenshipForm() {
                 </div>
 
                 {/* Maternal Grandmother */}
-                <div className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
-                  <h3 className="text-2xl font-semibold text-foreground">Babka ze strony matki / Maternal Grandmother</h3>
+                <div className="space-y-6">
+                  <h3 className="text-2xl font-semibold text-foreground border-b pb-2">Babka ze strony matki / Maternal Grandmother</h3>
                   {renderFieldGroup([
                     { name: "mgm_last_name", label: "Nazwisko / Full last name" },
                     { name: "mgm_maiden_name", label: "Nazwisko rodowe / Maiden name" },
@@ -642,8 +645,8 @@ export default function CitizenshipForm() {
                 </div>
 
                 {/* Paternal Grandfather */}
-                <div className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
-                  <h3 className="text-2xl font-semibold text-foreground">Dziadek ze strony ojca / Paternal Grandfather</h3>
+                <div className="space-y-6">
+                  <h3 className="text-2xl font-semibold text-foreground border-b pb-2">Dziadek ze strony ojca / Paternal Grandfather</h3>
                   {renderFieldGroup([
                     { name: "pgf_last_name", label: "Nazwisko / Full last name" },
                     { name: "pgf_first_name", label: "Imię/ imiona / Given names" },
@@ -653,8 +656,8 @@ export default function CitizenshipForm() {
                 </div>
 
                 {/* Paternal Grandmother */}
-                <div className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
-                  <h3 className="text-2xl font-semibold text-foreground">Babka ze strony ojca / Paternal Grandmother</h3>
+                <div className="space-y-6">
+                  <h3 className="text-2xl font-semibold text-foreground border-b pb-2">Babka ze strony ojca / Paternal Grandmother</h3>
                   {renderFieldGroup([
                     { name: "pgm_last_name", label: "Nazwisko / Full last name" },
                     { name: "pgm_maiden_name", label: "Nazwisko rodowe / Maiden name" },
