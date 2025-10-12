@@ -196,7 +196,7 @@ export default function IntakeForm() {
         {/* Form with Tabs or Full View */}
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="space-y-8">
           <Tabs defaultValue="select" value={activeTab} onValueChange={handleTabChange} className="w-full">
-            <div className="sticky top-0 z-20 bg-background/80 backdrop-blur-lg border-b border-border/50 pb-2 pt-2 rounded-t-lg">
+            <div className="sticky top-0 z-20 border-b border-border/50 pb-2 pt-2">
               <TabsList ref={tabsListRef} className="w-full inline-flex justify-start gap-2 bg-transparent p-0 overflow-x-auto scrollbar-hide">
                 <TabsTrigger value="select" className="flex-shrink-0">
                   <span>Select...</span>
