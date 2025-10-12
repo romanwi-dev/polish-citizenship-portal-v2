@@ -39,6 +39,13 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
   const [validationResult, setValidationResult] = useState<ValidationResult | null>(null);
   const [pendingGeneration, setPendingGeneration] = useState<{ templateType: string; label: string; flatten: boolean } | null>(null);
 
+  const cleanupPreviewUrl = () => {
+    if (previewUrl && previewUrl.startsWith('blob:')) {
+      window.URL.revokeObjectURL(previewUrl);
+      console.log('🧹 Cleaned up blob URL');
+    }
+  };
+
   const handleGeneratePDF = async (templateType: string, label: string, flatten: boolean = false) => {
     try {
       setIsGenerating(true);
@@ -101,19 +108,14 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
 
       if (!flatten) {
         // For preview and editable download - show in dialog
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          const base64Url = reader.result as string;
-          setPreviewUrl(base64Url);
-          setCurrentTemplate({ type: templateType, label });
-          setFormData(masterData);
-          setPreviewOpen(true);
-          toast.success(`${label} ready!`);
-        };
-        reader.onerror = () => {
-          toast.error('Failed to prepare PDF preview');
-        };
-        reader.readAsDataURL(blob);
+        // Use Object URL (blob://) instead of base64 for better performance
+        const url = window.URL.createObjectURL(blob);
+        console.log('✅ Created blob URL for preview:', url);
+        setPreviewUrl(url);
+        setCurrentTemplate({ type: templateType, label });
+        setFormData(masterData);
+        setPreviewOpen(true);
+        toast.success(`${label} ready!`);
       } else {
         // For final locked download - direct download
         const url = window.URL.createObjectURL(blob);
@@ -151,12 +153,14 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
     await handleGeneratePDF(currentTemplate.type, currentTemplate.label, false);
     toast.success("Editable PDF downloaded - you can fill it in Adobe Acrobat");
     setPreviewOpen(false);
+    cleanupPreviewUrl();
   };
 
   const handleDownloadFinal = async () => {
     // Generate final locked PDF for submission (flatten: true)
     await handleGeneratePDF(currentTemplate.type, currentTemplate.label, true);
     setPreviewOpen(false);
+    cleanupPreviewUrl();
   };
 
   return (
@@ -210,7 +214,10 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
       
       <PDFPreviewDialog
         open={previewOpen}
-        onClose={() => setPreviewOpen(false)}
+        onClose={() => {
+          setPreviewOpen(false);
+          cleanupPreviewUrl();
+        }}
         pdfUrl={previewUrl}
         formData={formData}
         onRegeneratePDF={handleRegeneratePDF}
