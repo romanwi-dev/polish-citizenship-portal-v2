@@ -196,26 +196,49 @@ export default function IntakeForm() {
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="space-y-8">
           <Tabs defaultValue="select" value={activeTab} onValueChange={handleTabChange} className="w-full">
             <div className="sticky top-0 z-20 border-b border-border/50 pb-2 pt-2">
-              <TabsList ref={tabsListRef} className="w-full inline-flex justify-start gap-2 bg-transparent p-0 overflow-x-auto scrollbar-hide">
-                <TabsTrigger value="select" className="flex-shrink-0">
-                  <span>Select...</span>
-                </TabsTrigger>
-                <TabsTrigger value="applicant" className="flex-shrink-0">
-                  <span>Applicant</span>
-                </TabsTrigger>
-                <TabsTrigger value="contact" className="flex-shrink-0">
-                  <span>Contact</span>
-                </TabsTrigger>
-                <TabsTrigger value="address" className="flex-shrink-0">
-                  <span>Address</span>
-                </TabsTrigger>
-                <TabsTrigger value="passport" className="flex-shrink-0">
-                  <span>Passport</span>
-                </TabsTrigger>
-                <TabsTrigger value="notes" className="flex-shrink-0">
-                  <span>Notes</span>
-                </TabsTrigger>
-              </TabsList>
+              <div className="flex gap-3 items-center overflow-x-auto scrollbar-hide">
+                {/* Save and Clear Buttons */}
+                <div className="flex gap-2 flex-shrink-0">
+                  <Button
+                    onClick={handleSave}
+                    disabled={isSaving}
+                    className="h-10 px-4 text-sm font-bold bg-green-500/20 hover:bg-green-500/30 backdrop-blur-md border border-green-400/40 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]"
+                  >
+                    <Save className="mr-2 h-4 w-4" />
+                    <span className="text-green-100 font-bold">{isSaving ? "Saving..." : "Save"}</span>
+                  </Button>
+                  
+                  <Button
+                    onClick={() => setShowClearDialog(true)}
+                    className="h-10 px-4 text-sm font-bold bg-red-500/20 hover:bg-red-500/30 backdrop-blur-md border border-red-400/40 transition-all shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]"
+                  >
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    <span className="text-red-100 font-bold">Clear</span>
+                  </Button>
+                </div>
+
+                {/* Tabs */}
+                <TabsList ref={tabsListRef} className="inline-flex justify-start gap-2 bg-transparent p-0">
+                  <TabsTrigger value="select" className="flex-shrink-0">
+                    <span>Select...</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="applicant" className="flex-shrink-0">
+                    <span>Applicant</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="contact" className="flex-shrink-0">
+                    <span>Contact</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="address" className="flex-shrink-0">
+                    <span>Address</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="passport" className="flex-shrink-0">
+                    <span>Passport</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="notes" className="flex-shrink-0">
+                    <span>Notes</span>
+                  </TabsTrigger>
+                </TabsList>
+              </div>
             </div>
 
             {isFullView ? (
@@ -265,28 +288,6 @@ export default function IntakeForm() {
             )}
           </Tabs>
         </motion.div>
-
-        {/* Sticky Bottom Row with Save and Clear Buttons */}
-        <div className="sticky bottom-0 left-0 right-0 bg-background/95 backdrop-blur-md border-t border-border/50 py-4 px-4 z-50">
-          <div className="container mx-auto max-w-7xl flex gap-3">
-            <Button
-              onClick={handleSave}
-              disabled={isSaving}
-              className="h-12 lg:h-14 px-6 lg:px-8 text-base lg:text-lg font-bold bg-green-500/20 hover:bg-green-500/30 backdrop-blur-md border border-green-400/40 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]"
-            >
-              <Save className="mr-2 h-5 w-5" />
-              <span className="text-green-100 font-bold">{isSaving ? "Saving..." : "Save data"}</span>
-            </Button>
-            
-            <Button
-              onClick={() => setShowClearDialog(true)}
-              className="h-12 lg:h-14 px-6 lg:px-8 text-base lg:text-lg font-bold bg-red-500/20 hover:bg-red-500/30 backdrop-blur-md border border-red-400/40 transition-all shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]"
-            >
-              <Sparkles className="mr-2 h-5 w-5" />
-              <span className="text-red-100 font-bold">Clear Data</span>
-            </Button>
-          </div>
-        </div>
       </div>
 
       {/* Clear All Confirmation Dialog */}
