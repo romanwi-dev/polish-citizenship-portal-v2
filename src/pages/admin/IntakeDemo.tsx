@@ -142,562 +142,151 @@ export default function IntakeDemo() {
           Back to Intake Form
         </Button>
 
-        {/* INPUT FIELD COLOR SCHEMES */}
-        <div className="space-y-8 border-4 border-primary/30 p-8 rounded-lg bg-gradient-to-br from-card/80 to-card/40 backdrop-blur-sm">
-          <div>
-            <h2 className="text-5xl font-bold mb-4 text-primary">INPUT FIELD COLOR SCHEMES</h2>
-            <p className="text-muted-foreground text-xl font-medium">
-              Family Members & Form Types - Interactive Color Palette
-            </p>
+      {/* INPUT FIELD COLORS ONLY */}
+      <div className="mb-12 p-6 border-2 border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900">
+        <h2 className="text-2xl font-bold mb-6">INPUT FIELD COLORS</h2>
+        <div className="space-y-4">
+          
+          <div className="flex items-center gap-4">
+            <label className="w-48 font-semibold">CHILDREN (Cyan):</label>
+            <Input
+              value={childrenInputs.field1}
+              onChange={(e) => setChildrenInputs(prev => ({ ...prev, field1: e.target.value }))}
+              className="h-16 bg-cyan-500/20 border-2 border-cyan-400/40 hover:border-cyan-500/60 focus:border-cyan-500"
+              style={{
+                boxShadow: "0 0 30px rgba(6,182,212,0.3)",
+                transition: "all 0.3s ease"
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.boxShadow = "0 0 50px rgba(6,182,212,0.4)"}
+              onMouseLeave={(e) => e.currentTarget.style.boxShadow = "0 0 30px rgba(6,182,212,0.3)"}
+              onFocus={(e) => e.currentTarget.style.boxShadow = "0 0 60px rgba(6,182,212,0.5)"}
+              onBlur={(e) => e.currentTarget.style.boxShadow = "0 0 30px rgba(6,182,212,0.3)"}
+            />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* CHILDREN - Cyan */}
-            <Card className="border-2 border-cyan-300/50 shadow-[0_0_30px_rgba(6,182,212,0.2)] hover:shadow-[0_0_50px_rgba(6,182,212,0.4)] transition-all">
-              <CardHeader>
-                <CardTitle className="text-cyan-600 dark:text-cyan-400 text-2xl flex items-center gap-2">
-                  🧒 CHILDREN
-                  <span className="text-sm font-normal text-muted-foreground">(Cyan Scheme)</span>
-                </CardTitle>
-                <CardDescription className="font-mono text-xs">
-                  bg-cyan-50/45 • border-cyan-200/50 • focus:border-cyan-500
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label className="text-cyan-700 dark:text-cyan-300">First Name</Label>
-                  <Input
-                    value={childrenInputs.field1}
-                    onChange={(e) => setChildrenInputs(prev => ({ ...prev, field1: e.target.value }))}
-                    placeholder="Enter first name..."
-                    className="h-16 text-lg bg-cyan-50/45 dark:bg-cyan-950/40 border-2 border-cyan-200/50 dark:border-cyan-800/50 hover:border-cyan-300/70 dark:hover:border-cyan-700/70 focus:border-cyan-500"
-                    style={{ boxShadow: "0 0 30px rgba(6, 182, 212, 0.15)" }}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-cyan-700 dark:text-cyan-300">Last Name</Label>
-                  <Input
-                    value={childrenInputs.field2}
-                    onChange={(e) => setChildrenInputs(prev => ({ ...prev, field2: e.target.value }))}
-                    placeholder="Enter last name..."
-                    className="h-16 text-lg bg-cyan-50/45 dark:bg-cyan-950/40 border-2 border-cyan-200/50 dark:border-cyan-800/50 hover:border-cyan-300/70 dark:hover:border-cyan-700/70 focus:border-cyan-500"
-                    style={{ boxShadow: "0 0 30px rgba(6, 182, 212, 0.15)" }}
-                  />
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* APPLICANT - Blue (current default) */}
-            <Card className="border-2 border-blue-300/50 shadow-[0_0_30px_rgba(59,130,246,0.2)] hover:shadow-[0_0_50px_rgba(59,130,246,0.4)] transition-all">
-              <CardHeader>
-                <CardTitle className="text-blue-600 dark:text-blue-400 text-2xl flex items-center gap-2">
-                  👤 APPLICANT
-                  <span className="text-sm font-normal text-muted-foreground">(Blue Scheme - Current Default)</span>
-                </CardTitle>
-                <CardDescription className="font-mono text-xs">
-                  bg-blue-50/45 • border-blue-200/50 • focus:border-blue-500
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label className="text-blue-700 dark:text-blue-300">Full Name</Label>
-                  <Input
-                    value={applicantInputs.field1}
-                    onChange={(e) => setApplicantInputs(prev => ({ ...prev, field1: e.target.value }))}
-                    placeholder="Enter full name..."
-                    className="h-16 text-lg bg-blue-50/45 dark:bg-blue-950/40 border-2 border-blue-200/50 dark:border-blue-800/50 hover:border-blue-300/70 dark:hover:border-blue-700/70 focus:border-blue-500"
-                    style={{ boxShadow: "0 0 30px rgba(59, 130, 246, 0.15)" }}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-blue-700 dark:text-blue-300">Email Address</Label>
-                  <Input
-                    value={applicantInputs.field2}
-                    onChange={(e) => setApplicantInputs(prev => ({ ...prev, field2: e.target.value }))}
-                    placeholder="Enter email..."
-                    className="h-16 text-lg bg-blue-50/45 dark:bg-blue-950/40 border-2 border-blue-200/50 dark:border-blue-800/50 hover:border-blue-300/70 dark:hover:border-blue-700/70 focus:border-blue-500"
-                    style={{ boxShadow: "0 0 30px rgba(59, 130, 246, 0.15)" }}
-                  />
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* PARENTS - Green */}
-            <Card className="border-2 border-green-300/50 shadow-[0_0_30px_rgba(34,197,94,0.2)] hover:shadow-[0_0_50px_rgba(34,197,94,0.4)] transition-all">
-              <CardHeader>
-                <CardTitle className="text-green-600 dark:text-green-400 text-2xl flex items-center gap-2">
-                  👨‍👩‍👧 PARENTS
-                  <span className="text-sm font-normal text-muted-foreground">(Green Scheme)</span>
-                </CardTitle>
-                <CardDescription className="font-mono text-xs">
-                  bg-green-50/45 • border-green-200/50 • focus:border-green-500
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label className="text-green-700 dark:text-green-300">Father's Name</Label>
-                  <Input
-                    value={parentsInputs.field1}
-                    onChange={(e) => setParentsInputs(prev => ({ ...prev, field1: e.target.value }))}
-                    placeholder="Enter father's name..."
-                    className="h-16 text-lg bg-green-50/45 dark:bg-green-950/40 border-2 border-green-200/50 dark:border-green-800/50 hover:border-green-300/70 dark:hover:border-green-700/70 focus:border-green-500"
-                    style={{ boxShadow: "0 0 30px rgba(34, 197, 94, 0.15)" }}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-green-700 dark:text-green-300">Mother's Name</Label>
-                  <Input
-                    value={parentsInputs.field2}
-                    onChange={(e) => setParentsInputs(prev => ({ ...prev, field2: e.target.value }))}
-                    placeholder="Enter mother's name..."
-                    className="h-16 text-lg bg-green-50/45 dark:bg-green-950/40 border-2 border-green-200/50 dark:border-green-800/50 hover:border-green-300/70 dark:hover:border-green-700/70 focus:border-green-500"
-                    style={{ boxShadow: "0 0 30px rgba(34, 197, 94, 0.15)" }}
-                  />
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* GRANDPARENTS - Rose/Red */}
-            <Card className="border-2 border-rose-300/50 shadow-[0_0_30px_rgba(244,63,94,0.2)] hover:shadow-[0_0_50px_rgba(244,63,94,0.4)] transition-all">
-              <CardHeader>
-                <CardTitle className="text-rose-600 dark:text-rose-400 text-2xl flex items-center gap-2">
-                  👴👵 GRANDPARENTS
-                  <span className="text-sm font-normal text-muted-foreground">(Rose Scheme)</span>
-                </CardTitle>
-                <CardDescription className="font-mono text-xs">
-                  bg-rose-50/45 • border-rose-200/50 • focus:border-rose-500
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label className="text-rose-700 dark:text-rose-300">Grandfather's Name</Label>
-                  <Input
-                    value={grandparentsInputs.field1}
-                    onChange={(e) => setGrandparentsInputs(prev => ({ ...prev, field1: e.target.value }))}
-                    placeholder="Enter grandfather's name..."
-                    className="h-16 text-lg bg-rose-50/45 dark:bg-rose-950/40 border-2 border-rose-200/50 dark:border-rose-800/50 hover:border-rose-300/70 dark:hover:border-rose-700/70 focus:border-rose-500"
-                    style={{ boxShadow: "0 0 30px rgba(244, 63, 94, 0.15)" }}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-rose-700 dark:text-rose-300">Grandmother's Name</Label>
-                  <Input
-                    value={grandparentsInputs.field2}
-                    onChange={(e) => setGrandparentsInputs(prev => ({ ...prev, field2: e.target.value }))}
-                    placeholder="Enter grandmother's name..."
-                    className="h-16 text-lg bg-rose-50/45 dark:bg-rose-950/40 border-2 border-rose-200/50 dark:border-rose-800/50 hover:border-rose-300/70 dark:hover:border-rose-700/70 focus:border-rose-500"
-                    style={{ boxShadow: "0 0 30px rgba(244, 63, 94, 0.15)" }}
-                  />
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* GREAT GRANDPARENTS - Slate/Gray */}
-            <Card className="border-2 border-slate-300/50 shadow-[0_0_30px_rgba(100,116,139,0.2)] hover:shadow-[0_0_50px_rgba(100,116,139,0.4)] transition-all">
-              <CardHeader>
-                <CardTitle className="text-slate-600 dark:text-slate-400 text-2xl flex items-center gap-2">
-                  🧓 GREAT GRANDPARENTS
-                  <span className="text-sm font-normal text-muted-foreground">(Slate Scheme)</span>
-                </CardTitle>
-                <CardDescription className="font-mono text-xs">
-                  bg-slate-50/45 • border-slate-300/50 • focus:border-slate-500
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label className="text-slate-700 dark:text-slate-300">Great Grandfather</Label>
-                  <Input
-                    value={greatGrandparentsInputs.field1}
-                    onChange={(e) => setGreatGrandparentsInputs(prev => ({ ...prev, field1: e.target.value }))}
-                    placeholder="Enter name..."
-                    className="h-16 text-lg bg-slate-50/45 dark:bg-slate-950/40 border-2 border-slate-300/50 dark:border-slate-800/50 hover:border-slate-400/70 dark:hover:border-slate-700/70 focus:border-slate-500"
-                    style={{ boxShadow: "0 0 30px rgba(100, 116, 139, 0.15)" }}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-slate-700 dark:text-slate-300">Great Grandmother</Label>
-                  <Input
-                    value={greatGrandparentsInputs.field2}
-                    onChange={(e) => setGreatGrandparentsInputs(prev => ({ ...prev, field2: e.target.value }))}
-                    placeholder="Enter name..."
-                    className="h-16 text-lg bg-slate-50/45 dark:bg-slate-950/40 border-2 border-slate-300/50 dark:border-slate-800/50 hover:border-slate-400/70 dark:hover:border-slate-700/70 focus:border-slate-500"
-                    style={{ boxShadow: "0 0 30px rgba(100, 116, 139, 0.15)" }}
-                  />
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* POA FORM - Purple */}
-            <Card className="border-2 border-purple-300/50 shadow-[0_0_30px_rgba(168,85,247,0.2)] hover:shadow-[0_0_50px_rgba(168,85,247,0.4)] transition-all">
-              <CardHeader>
-                <CardTitle className="text-purple-600 dark:text-purple-400 text-2xl flex items-center gap-2">
-                  📄 POA FORM
-                  <span className="text-sm font-normal text-muted-foreground">(Purple Scheme)</span>
-                </CardTitle>
-                <CardDescription className="font-mono text-xs">
-                  bg-purple-50/45 • border-purple-200/50 • focus:border-purple-500
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label className="text-purple-700 dark:text-purple-300">Attorney Name</Label>
-                  <Input
-                    value={poaInputs.field1}
-                    onChange={(e) => setPoaInputs(prev => ({ ...prev, field1: e.target.value }))}
-                    placeholder="Enter attorney name..."
-                    className="h-16 text-lg bg-purple-50/45 dark:bg-purple-950/40 border-2 border-purple-200/50 dark:border-purple-800/50 hover:border-purple-300/70 dark:hover:border-purple-700/70 focus:border-purple-500"
-                    style={{ boxShadow: "0 0 30px rgba(168, 85, 247, 0.15)" }}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-purple-700 dark:text-purple-300">Power of Attorney Number</Label>
-                  <Input
-                    value={poaInputs.field2}
-                    onChange={(e) => setPoaInputs(prev => ({ ...prev, field2: e.target.value }))}
-                    placeholder="Enter POA number..."
-                    className="h-16 text-lg bg-purple-50/45 dark:bg-purple-950/40 border-2 border-purple-200/50 dark:border-purple-800/50 hover:border-purple-300/70 dark:hover:border-purple-700/70 focus:border-purple-500"
-                    style={{ boxShadow: "0 0 30px rgba(168, 85, 247, 0.15)" }}
-                  />
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* CITIZENSHIP FORM - Amber/Gold */}
-            <Card className="border-2 border-amber-300/50 shadow-[0_0_30px_rgba(245,158,11,0.2)] hover:shadow-[0_0_50px_rgba(245,158,11,0.4)] transition-all">
-              <CardHeader>
-                <CardTitle className="text-amber-600 dark:text-amber-400 text-2xl flex items-center gap-2">
-                  🏛️ CITIZENSHIP FORM
-                  <span className="text-sm font-normal text-muted-foreground">(Amber Scheme)</span>
-                </CardTitle>
-                <CardDescription className="font-mono text-xs">
-                  bg-amber-50/45 • border-amber-200/50 • focus:border-amber-500
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label className="text-amber-700 dark:text-amber-300">Application Number</Label>
-                  <Input
-                    value={citizenshipInputs.field1}
-                    onChange={(e) => setCitizenshipInputs(prev => ({ ...prev, field1: e.target.value }))}
-                    placeholder="Enter application number..."
-                    className="h-16 text-lg bg-amber-50/45 dark:bg-amber-950/40 border-2 border-amber-200/50 dark:border-amber-800/50 hover:border-amber-300/70 dark:hover:border-amber-700/70 focus:border-amber-500"
-                    style={{ boxShadow: "0 0 30px rgba(245, 158, 11, 0.15)" }}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-amber-700 dark:text-amber-300">Country of Origin</Label>
-                  <Input
-                    value={citizenshipInputs.field2}
-                    onChange={(e) => setCitizenshipInputs(prev => ({ ...prev, field2: e.target.value }))}
-                    placeholder="Enter country..."
-                    className="h-16 text-lg bg-amber-50/45 dark:bg-amber-950/40 border-2 border-amber-200/50 dark:border-amber-800/50 hover:border-amber-300/70 dark:hover:border-amber-700/70 focus:border-amber-500"
-                    style={{ boxShadow: "0 0 30px rgba(245, 158, 11, 0.15)" }}
-                  />
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* CIVIL REGISTRY FORM - Teal */}
-            <Card className="border-2 border-teal-300/50 shadow-[0_0_30px_rgba(20,184,166,0.2)] hover:shadow-[0_0_50px_rgba(20,184,166,0.4)] transition-all">
-              <CardHeader>
-                <CardTitle className="text-teal-600 dark:text-teal-400 text-2xl flex items-center gap-2">
-                  📋 CIVIL REGISTRY FORM
-                  <span className="text-sm font-normal text-muted-foreground">(Teal Scheme)</span>
-                </CardTitle>
-                <CardDescription className="font-mono text-xs">
-                  bg-teal-50/45 • border-teal-200/50 • focus:border-teal-500
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label className="text-teal-700 dark:text-teal-300">Registry Office</Label>
-                  <Input
-                    value={civilRegistryInputs.field1}
-                    onChange={(e) => setCivilRegistryInputs(prev => ({ ...prev, field1: e.target.value }))}
-                    placeholder="Enter registry office..."
-                    className="h-16 text-lg bg-teal-50/45 dark:bg-teal-950/40 border-2 border-teal-200/50 dark:border-teal-800/50 hover:border-teal-300/70 dark:hover:border-teal-700/70 focus:border-teal-500"
-                    style={{ boxShadow: "0 0 30px rgba(20, 184, 166, 0.15)" }}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-teal-700 dark:text-teal-300">Document Type</Label>
-                  <Input
-                    value={civilRegistryInputs.field2}
-                    onChange={(e) => setCivilRegistryInputs(prev => ({ ...prev, field2: e.target.value }))}
-                    placeholder="Enter document type..."
-                    className="h-16 text-lg bg-teal-50/45 dark:bg-teal-950/40 border-2 border-teal-200/50 dark:border-teal-800/50 hover:border-teal-300/70 dark:hover:border-teal-700/70 focus:border-teal-500"
-                    style={{ boxShadow: "0 0 30px rgba(20, 184, 166, 0.15)" }}
-                  />
-                </div>
-              </CardContent>
-            </Card>
+          <div className="flex items-center gap-4">
+            <label className="w-48 font-semibold">APPLICANT (Blue):</label>
+            <Input
+              value={applicantInputs.field1}
+              onChange={(e) => setApplicantInputs(prev => ({ ...prev, field1: e.target.value }))}
+              className="h-16 bg-blue-50/45 dark:bg-blue-950/40 border-2 border-blue-200/50 hover:border-blue-300/70 focus:border-blue-500"
+              style={{
+                boxShadow: "0 0 30px rgba(59,130,246,0.3)",
+                transition: "all 0.3s ease"
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.boxShadow = "0 0 50px rgba(59,130,246,0.4)"}
+              onMouseLeave={(e) => e.currentTarget.style.boxShadow = "0 0 30px rgba(59,130,246,0.3)"}
+              onFocus={(e) => e.currentTarget.style.boxShadow = "0 0 60px rgba(59,130,246,0.5)"}
+              onBlur={(e) => e.currentTarget.style.boxShadow = "0 0 30px rgba(59,130,246,0.3)"}
+            />
           </div>
+
+          <div className="flex items-center gap-4">
+            <label className="w-48 font-semibold">PARENTS (Green):</label>
+            <Input
+              value={parentsInputs.field1}
+              onChange={(e) => setParentsInputs(prev => ({ ...prev, field1: e.target.value }))}
+              className="h-16 bg-green-500/20 border-2 border-green-400/40 hover:border-green-500/60 focus:border-green-500"
+              style={{
+                boxShadow: "0 0 30px rgba(34,197,94,0.3)",
+                transition: "all 0.3s ease"
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.boxShadow = "0 0 50px rgba(34,197,94,0.4)"}
+              onMouseLeave={(e) => e.currentTarget.style.boxShadow = "0 0 30px rgba(34,197,94,0.3)"}
+              onFocus={(e) => e.currentTarget.style.boxShadow = "0 0 60px rgba(34,197,94,0.5)"}
+              onBlur={(e) => e.currentTarget.style.boxShadow = "0 0 30px rgba(34,197,94,0.3)"}
+            />
+          </div>
+
+          <div className="flex items-center gap-4">
+            <label className="w-48 font-semibold">GRANDPARENTS (Red):</label>
+            <Input
+              value={grandparentsInputs.field1}
+              onChange={(e) => setGrandparentsInputs(prev => ({ ...prev, field1: e.target.value }))}
+              className="h-16 bg-red-500/20 border-2 border-red-400/40 hover:border-red-500/60 focus:border-red-500"
+              style={{
+                boxShadow: "0 0 30px rgba(239,68,68,0.3)",
+                transition: "all 0.3s ease"
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.boxShadow = "0 0 50px rgba(239,68,68,0.4)"}
+              onMouseLeave={(e) => e.currentTarget.style.boxShadow = "0 0 30px rgba(239,68,68,0.3)"}
+              onFocus={(e) => e.currentTarget.style.boxShadow = "0 0 60px rgba(239,68,68,0.5)"}
+              onBlur={(e) => e.currentTarget.style.boxShadow = "0 0 30px rgba(239,68,68,0.3)"}
+            />
+          </div>
+
+          <div className="flex items-center gap-4">
+            <label className="w-48 font-semibold">GGP (Gray):</label>
+            <Input
+              value={greatGrandparentsInputs.field1}
+              onChange={(e) => setGreatGrandparentsInputs(prev => ({ ...prev, field1: e.target.value }))}
+              className="h-16 bg-slate-500/20 border-2 border-slate-400/40 hover:border-slate-500/60 focus:border-slate-500"
+              style={{
+                boxShadow: "0 0 30px rgba(100,116,139,0.3)",
+                transition: "all 0.3s ease"
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.boxShadow = "0 0 50px rgba(100,116,139,0.4)"}
+              onMouseLeave={(e) => e.currentTarget.style.boxShadow = "0 0 30px rgba(100,116,139,0.3)"}
+              onFocus={(e) => e.currentTarget.style.boxShadow = "0 0 60px rgba(100,116,139,0.5)"}
+              onBlur={(e) => e.currentTarget.style.boxShadow = "0 0 30px rgba(100,116,139,0.3)"}
+            />
+          </div>
+
+          <div className="flex items-center gap-4">
+            <label className="w-48 font-semibold">POA (Purple):</label>
+            <Input
+              value={poaInputs.field1}
+              onChange={(e) => setPoaInputs(prev => ({ ...prev, field1: e.target.value }))}
+              className="h-16 bg-purple-500/20 border-2 border-purple-400/40 hover:border-purple-500/60 focus:border-purple-500"
+              style={{
+                boxShadow: "0 0 30px rgba(168,85,247,0.3)",
+                transition: "all 0.3s ease"
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.boxShadow = "0 0 50px rgba(168,85,247,0.4)"}
+              onMouseLeave={(e) => e.currentTarget.style.boxShadow = "0 0 30px rgba(168,85,247,0.3)"}
+              onFocus={(e) => e.currentTarget.style.boxShadow = "0 0 60px rgba(168,85,247,0.5)"}
+              onBlur={(e) => e.currentTarget.style.boxShadow = "0 0 30px rgba(168,85,247,0.3)"}
+            />
+          </div>
+
+          <div className="flex items-center gap-4">
+            <label className="w-48 font-semibold">CITIZENSHIP (Gold):</label>
+            <Input
+              value={citizenshipInputs.field1}
+              onChange={(e) => setCitizenshipInputs(prev => ({ ...prev, field1: e.target.value }))}
+              className="h-16 bg-amber-500/20 border-2 border-amber-400/40 hover:border-amber-500/60 focus:border-amber-500"
+              style={{
+                boxShadow: "0 0 30px rgba(245,158,11,0.3)",
+                transition: "all 0.3s ease"
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.boxShadow = "0 0 50px rgba(245,158,11,0.4)"}
+              onMouseLeave={(e) => e.currentTarget.style.boxShadow = "0 0 30px rgba(245,158,11,0.3)"}
+              onFocus={(e) => e.currentTarget.style.boxShadow = "0 0 60px rgba(245,158,11,0.5)"}
+              onBlur={(e) => e.currentTarget.style.boxShadow = "0 0 30px rgba(245,158,11,0.3)"}
+            />
+          </div>
+
+          <div className="flex items-center gap-4">
+            <label className="w-48 font-semibold">CIVIL REG (Teal):</label>
+            <Input
+              value={civilRegistryInputs.field1}
+              onChange={(e) => setCivilRegistryInputs(prev => ({ ...prev, field1: e.target.value }))}
+              className="h-16 bg-teal-500/20 border-2 border-teal-400/40 hover:border-teal-500/60 focus:border-teal-500"
+              style={{
+                boxShadow: "0 0 30px rgba(20,184,166,0.3)",
+                transition: "all 0.3s ease"
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.boxShadow = "0 0 50px rgba(20,184,166,0.4)"}
+              onMouseLeave={(e) => e.currentTarget.style.boxShadow = "0 0 30px rgba(20,184,166,0.3)"}
+              onFocus={(e) => e.currentTarget.style.boxShadow = "0 0 60px rgba(20,184,166,0.5)"}
+              onBlur={(e) => e.currentTarget.style.boxShadow = "0 0 30px rgba(20,184,166,0.3)"}
+            />
+          </div>
+
         </div>
+      </div>
 
-        {/* NEW: 5 Dark Timeline-Style Flippable Cards at TOP */}
-        <div className="space-y-8 border-2 border-primary/20 p-6 rounded-lg bg-card/50">
-          <div>
-            <h2 className="text-4xl font-bold mb-3 text-primary">TIMELINE STYLE: Dark Minimalistic with Lighting Effects</h2>
-            <p className="text-muted-foreground text-lg">
-              Matching the homepage timeline aesthetic - dark, elegant, glass-morphic with glow effects.
-            </p>
-          </div>
-
-          {/* Dark Glow */}
-          <div className="space-y-3">
-            <h3 className="text-2xl font-semibold text-primary/90">1. Dark Glow Glass</h3>
-            <p className="text-sm text-muted-foreground mb-4">Glass-card effect with radial glows and backdrop blur like timeline cards</p>
-            <FlippableCardsDarkGlow
-              title="Required Documents"
-              documents={docsDarkGlow}
-              onChange={setDocsDarkGlow}
-            />
-          </div>
-
-          <div className="border-t border-border my-8" />
-
-          {/* Midnight */}
-          <div className="space-y-3">
-            <h3 className="text-2xl font-semibold text-primary/90">2. Midnight Radial</h3>
-            <p className="text-sm text-muted-foreground mb-4">Deep backgrounds with centered radial glow effect</p>
-            <FlippableCardsMidnight
-              title="Required Documents"
-              documents={docsMidnight}
-              onChange={setDocsMidnight}
-            />
-          </div>
-
-          <div className="border-t border-border my-8" />
-
-          {/* Shadow Deep */}
-          <div className="space-y-3">
-            <h3 className="text-2xl font-semibold text-primary/90">3. Shadow Deep</h3>
-            <p className="text-sm text-muted-foreground mb-4">Layered shadows with gradient depth and inset lighting</p>
-            <FlippableCardsShadow
-              title="Required Documents"
-              documents={docsShadow}
-              onChange={setDocsShadow}
-            />
-          </div>
-
-          <div className="border-t border-border my-8" />
-
-          {/* Aura Overlay */}
-          <div className="space-y-3">
-            <h3 className="text-2xl font-semibold text-primary/90">4. Aura Overlay</h3>
-            <p className="text-sm text-muted-foreground mb-4">Multiple overlapping colored glows with hover effects</p>
-            <FlippableCardsAura
-              title="Required Documents"
-              documents={docsAura}
-              onChange={setDocsAura}
-            />
-          </div>
-
-          <div className="border-t border-border my-8" />
-
-          {/* Deep Glass */}
-          <div className="space-y-3">
-            <h3 className="text-2xl font-semibold text-primary/90">5. Deep Glass Premium</h3>
-            <p className="text-sm text-muted-foreground mb-4">Maximum glass-card effect with dual shadow layers and vertical accent line</p>
-            <FlippableCardsDeep
-              title="Required Documents"
-              documents={docsDeep}
-              onChange={setDocsDeep}
-            />
-          </div>
-        </div>
-
-        {/* PREVIOUS: 5 Additional Flippable Card Designs */}
-        <div className="space-y-8 border-2 border-primary/20 p-6 rounded-lg bg-card/50">
-          <div>
-            <h2 className="text-4xl font-bold mb-3 text-primary">ALTERNATIVE STYLES: 5 More Flippable Card Designs</h2>
-            <p className="text-muted-foreground text-lg">
-              Additional flippable card variations with unique visual styles and animations.
-            </p>
-          </div>
-
-          {/* Neon Style */}
-          <div className="space-y-3">
-            <h3 className="text-2xl font-semibold text-primary/90">1. Neon Glow Style</h3>
-            <p className="text-sm text-muted-foreground mb-4">Cyberpunk-inspired design with neon borders and holographic effects</p>
-            <FlippableCardsNeon
-              title="Required Documents - Neon Edition"
-              documents={docsFlipNeon}
-              onChange={setDocsFlipNeon}
-            />
-          </div>
-
-          <div className="border-t border-border my-8" />
-
-          {/* Glass Morphism */}
-          <div className="space-y-3">
-            <h3 className="text-2xl font-semibold text-primary/90">2. Glass Morphism</h3>
-            <p className="text-sm text-muted-foreground mb-4">Frosted glass effect with backdrop blur and transparency</p>
-            <FlippableCardsGlass
-              title="Required Documents - Glass Edition"
-              documents={docsFlipGlass}
-              onChange={setDocsFlipGlass}
-            />
-          </div>
-
-          <div className="border-t border-border my-8" />
-
-          {/* Retro/Vintage */}
-          <div className="space-y-3">
-            <h3 className="text-2xl font-semibold text-primary/90">3. Retro Vintage Paper</h3>
-            <p className="text-sm text-muted-foreground mb-4">Classic filing cabinet aesthetic with paper-like texture and sharp shadows</p>
-            <FlippableCardsRetro
-              title="Required Documents - Retro Edition"
-              documents={docsFlipRetro}
-              onChange={setDocsFlipRetro}
-            />
-          </div>
-
-          <div className="border-t border-border my-8" />
-
-          {/* Futuristic */}
-          <div className="space-y-3">
-            <h3 className="text-2xl font-semibold text-primary/90">4. Futuristic Sci-Fi</h3>
-            <p className="text-sm text-muted-foreground mb-4">High-tech interface with geometric patterns and monospace typography</p>
-            <FlippableCardsFuturistic
-              title="Required Documents - Futuristic Edition"
-              documents={docsFlipFuturistic}
-              onChange={setDocsFlipFuturistic}
-            />
-          </div>
-
-          <div className="border-t border-border my-8" />
-
-          {/* Neumorphic */}
-          <div className="space-y-3">
-            <h3 className="text-2xl font-semibold text-primary/90">5. Neumorphic Soft UI</h3>
-            <p className="text-sm text-muted-foreground mb-4">Soft shadows and subtle depth with gentle color palette</p>
-            <FlippableCardsNeumorphic
-              title="Required Documents - Neumorphic Edition"
-              documents={docsFlipNeumorphic}
-              onChange={setDocsFlipNeumorphic}
-            />
-          </div>
-        </div>
-
-        {/* Font Comparison for Form Inputs */}
-        <div className="space-y-6 border-2 border-primary/20 p-6 rounded-lg bg-card/50">
-          <div>
-            <h2 className="text-3xl font-bold mb-2">Form Input Font Comparison</h2>
-            <p className="text-muted-foreground">
-              Compare 5 professional fonts optimized for form data input with full Polish character support.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-            {/* Font 1: Inter */}
-            <div className="space-y-3">
-              <h3 className="text-xs font-light tracking-[0.2em] text-foreground/70">INTER</h3>
-              <div className="space-y-2">
-                <Label className="text-xs font-light tracking-[0.15em] text-foreground/60">FULL LAST NAME / NAZWISKO</Label>
-                <Input 
-                  value="WIŚNIEWSKI" 
-                  readOnly
-                  className="font-input-inter text-base bg-blue-950/40 border-2 border-blue-800/50 rounded-none h-12"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label className="text-xs font-light tracking-[0.15em] text-foreground/60">GIVEN NAMES / IMIĘ</Label>
-                <Input 
-                  value="JÓZEF" 
-                  readOnly
-                  className="font-input-inter text-base bg-blue-950/40 border-2 border-blue-800/50 rounded-none h-12"
-                />
-              </div>
-            </div>
-
-            {/* Font 2: Roboto */}
-            <div className="space-y-3">
-              <h3 className="text-xs font-light tracking-[0.2em] text-foreground/70">ROBOTO</h3>
-              <div className="space-y-2">
-                <Label className="text-xs font-light tracking-[0.15em] text-foreground/60">FULL LAST NAME / NAZWISKO</Label>
-                <Input 
-                  value="WIŚNIEWSKI" 
-                  readOnly
-                  className="font-input-roboto text-base bg-blue-950/40 border-2 border-blue-800/50 rounded-none h-12"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label className="text-xs font-light tracking-[0.15em] text-foreground/60">GIVEN NAMES / IMIĘ</Label>
-                <Input 
-                  value="JÓZEF" 
-                  readOnly
-                  className="font-input-roboto text-base bg-blue-950/40 border-2 border-blue-800/50 rounded-none h-12"
-                />
-              </div>
-            </div>
-
-            {/* Font 3: Work Sans */}
-            <div className="space-y-3">
-              <h3 className="text-xs font-light tracking-[0.2em] text-foreground/70">WORK SANS</h3>
-              <div className="space-y-2">
-                <Label className="text-xs font-light tracking-[0.15em] text-foreground/60">FULL LAST NAME / NAZWISKO</Label>
-                <Input 
-                  value="WIŚNIEWSKI" 
-                  readOnly
-                  className="font-input-work text-base bg-blue-950/40 border-2 border-blue-800/50 rounded-none h-12"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label className="text-xs font-light tracking-[0.15em] text-foreground/60">GIVEN NAMES / IMIĘ</Label>
-                <Input 
-                  value="JÓZEF" 
-                  readOnly
-                  className="font-input-work text-base bg-blue-950/40 border-2 border-blue-800/50 rounded-none h-12"
-                />
-              </div>
-            </div>
-
-            {/* Font 4: Source Sans 3 */}
-            <div className="space-y-3">
-              <h3 className="text-xs font-light tracking-[0.2em] text-foreground/70">SOURCE SANS 3</h3>
-              <div className="space-y-2">
-                <Label className="text-xs font-light tracking-[0.15em] text-foreground/60">FULL LAST NAME / NAZWISKO</Label>
-                <Input 
-                  value="WIŚNIEWSKI" 
-                  readOnly
-                  className="font-input-source text-base bg-blue-950/40 border-2 border-blue-800/50 rounded-none h-12"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label className="text-xs font-light tracking-[0.15em] text-foreground/60">GIVEN NAMES / IMIĘ</Label>
-                <Input 
-                  value="JÓZEF" 
-                  readOnly
-                  className="font-input-source text-base bg-blue-950/40 border-2 border-blue-800/50 rounded-none h-12"
-                />
-              </div>
-            </div>
-
-            {/* Font 5: IBM Plex Sans */}
-            <div className="space-y-3">
-              <h3 className="text-xs font-light tracking-[0.2em] text-foreground/70">IBM PLEX SANS</h3>
-              <div className="space-y-2">
-                <Label className="text-xs font-light tracking-[0.15em] text-foreground/60">FULL LAST NAME / NAZWISKO</Label>
-                <Input 
-                  value="WIŚNIEWSKI" 
-                  readOnly
-                  className="font-input-ibm text-base bg-blue-950/40 border-2 border-blue-800/50 rounded-none h-12"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label className="text-xs font-light tracking-[0.15em] text-foreground/60">GIVEN NAMES / IMIĘ</Label>
-                <Input 
-                  value="JÓZEF" 
-                  readOnly
-                  className="font-input-ibm text-base bg-blue-950/40 border-2 border-blue-800/50 rounded-none h-12"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* NEW: 5 Completely Different Document Section Designs */}
+      {/* NEW: 5 Completely Different Document Section Designs */}
         <div className="space-y-8 border-2 border-primary/20 p-6 rounded-lg bg-card/50">
           <div>
             <h2 className="text-4xl font-bold mb-3 text-primary">NEW: 5 Revolutionary Document Section Designs</h2>
