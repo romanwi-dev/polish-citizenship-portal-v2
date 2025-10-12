@@ -758,83 +758,77 @@ export default function FamilyTreeForm() {
         {/* Spouse Tab */}
         <TabsContent value="spouse" className="mt-0">
           {activeTab === 'spouse' && (
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }}>
-              <Card className="glass-card border-primary/20">
-                <CardHeader className="border-b border-border/50 pb-6">
-                  <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                    Spouse
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-6 md:p-10 space-y-10">
-                  {/* Names */}
-                  {renderFieldGroup([
-                    { name: "spouse_first_name", label: "Given names / Imię/ imiona", isNameField: true },
-                    { name: "spouse_last_name", label: "Full last name / Nazwisko", isNameField: true }
-                  ])}
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="p-6 md:p-10 space-y-10">
+              <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent border-b border-border/50 pb-6">
+                Spouse
+              </h2>
+              
+              {/* Names */}
+              {renderFieldGroup([
+                { name: "spouse_first_name", label: "Given names / Imię/ imiona", isNameField: true },
+                { name: "spouse_last_name", label: "Full last name / Nazwisko", isNameField: true }
+              ])}
 
-                  {/* Maiden name */}
-                  {renderFieldGroup([
-                    { name: "spouse_maiden_name", label: "Maiden name / Nazwisko rodowe", isNameField: true },
-                    { name: "spouse_sex", label: "Sex", isSelect: true, selectOptions: [
-                      { value: "M", label: "Male" },
-                      { value: "F", label: "Female" }
-                    ]}
-                  ])}
+              {/* Maiden name */}
+              {renderFieldGroup([
+                { name: "spouse_maiden_name", label: "Maiden name / Nazwisko rodowe", isNameField: true },
+                { name: "spouse_sex", label: "Sex", isSelect: true, selectOptions: [
+                  { value: "M", label: "Male" },
+                  { value: "F", label: "Female" }
+                ]}
+              ])}
 
-                  {/* Places: Birth & Marriage */}
-                  {renderFieldGroup([
-                    { name: "spouse_pob", label: "Place of birth", isNameField: true },
-                    { name: "place_of_marriage", label: "Place of marriage", isNameField: true }
-                  ])}
+              {/* Places: Birth & Marriage */}
+              {renderFieldGroup([
+                { name: "spouse_pob", label: "Place of birth", isNameField: true },
+                { name: "place_of_marriage", label: "Place of marriage", isNameField: true }
+              ])}
 
-                  {/* Dates: Birth & Marriage */}
-                  {renderFieldGroup([
-                    { name: "spouse_dob", label: "Date of birth", type: "date" },
-                    { name: "date_of_marriage", label: "Date of marriage", type: "date" }
-                  ])}
+              {/* Dates: Birth & Marriage */}
+              {renderFieldGroup([
+                { name: "spouse_dob", label: "Date of birth", type: "date" },
+                { name: "date_of_marriage", label: "Date of marriage", type: "date" }
+              ])}
 
-                  {/* Dates: Emigration & Naturalization */}
-                  {renderFieldGroup([
-                    { name: "spouse_date_of_emigration", label: "Date of emigration", type: "date" },
-                    { name: "spouse_date_of_naturalization", label: "Date of naturalization", type: "date" }
-                  ])}
+              {/* Dates: Emigration & Naturalization */}
+              {renderFieldGroup([
+                { name: "spouse_date_of_emigration", label: "Date of emigration", type: "date" },
+                { name: "spouse_date_of_naturalization", label: "Date of naturalization", type: "date" }
+              ])}
 
-                  {/* Contact */}
-                  {renderFieldGroup([
-                    { name: "spouse_email", label: "Email", type: "email" },
-                    { name: "spouse_phone", label: "Phone" }
-                  ])}
+              {/* Contact */}
+              {renderFieldGroup([
+                { name: "spouse_email", label: "Email", type: "email" },
+                { name: "spouse_phone", label: "Phone" }
+              ])}
 
-                  {/* Notes */}
-                  <div className="space-y-2">
-                    <Label htmlFor="spouse_notes" className={isLargeFonts ? "text-2xl" : ""}>
-                      Relevant additional information
-                    </Label>
-                    <Textarea
-                      id="spouse_notes"
-                      value={formData.spouse_notes || ""}
-                      onChange={e => handleInputChange("spouse_notes", e.target.value.toUpperCase())}
-                      placeholder=""
-                      className={cn("min-h-[150px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
-                    />
-                  </div>
+              {/* Notes */}
+              <div className="space-y-2">
+                <Label htmlFor="spouse_notes" className={isLargeFonts ? "text-2xl" : ""}>
+                  Relevant additional information
+                </Label>
+                <Textarea
+                  id="spouse_notes"
+                  value={formData.spouse_notes || ""}
+                  onChange={e => handleInputChange("spouse_notes", e.target.value.toUpperCase())}
+                  placeholder=""
+                  className={cn("min-h-[150px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                />
+              </div>
 
-                  <FamilyMemberDocumentsSection
-                    prefix="spouse"
-                    title="Required Documents"
-                    formData={formData}
-                    handleInputChange={handleInputChange}
-                    personType="spouse"
-                    sex={formData.spouse_sex}
-                  />
-                </CardContent>
-              </Card>
+              <FamilyMemberDocumentsSection
+                prefix="spouse"
+                title="Required Documents"
+                formData={formData}
+                handleInputChange={handleInputChange}
+                personType="spouse"
+                sex={formData.spouse_sex}
+              />
             </motion.div>
           )}
         </TabsContent>
 
         <TabsContent value="children" className="mt-0">
-
           {/* Children Section - Only Minor Children */}
           {activeTab === 'children' && (formData.minor_children_count > 0) && (
           <motion.div initial={{
@@ -846,68 +840,65 @@ export default function FamilyTreeForm() {
         }} transition={{
           duration: 0.5,
           delay: 0.1
-        }}>
-            <Card className="glass-card border-primary/20">
-              <CardHeader className="border-b border-border/50 pb-6">
-                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                  Applicant's Minor Children
-                </CardTitle>
-                <CardDescription className="text-base mt-2">
-                  Enter details for <span className="font-semibold text-primary">{formData.minor_children_count || 0} minor {formData.minor_children_count === 1 ? 'child' : 'children'}</span> (under 18 years old).
-                  <span className="block mt-1 text-muted-foreground">
-                    Note: Adult children should be processed as separate applicants.
-                  </span>
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="p-6 md:p-10 space-y-10">
-                {Array.from({ length: formData.minor_children_count || 0 }, (_, i) => i + 1).map(num => <div key={num} className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
-                    <h3 className="text-xl font-semibold text-foreground">Minor Child {num}</h3>
-                    {/* 1st row - Name fields */}
-                    {renderFieldGroup([{
-                  name: `child_${num}_first_name`,
-                  label: "Given names / Imię/ imiona",
-                  isNameField: true
-                }, {
-                  name: `child_${num}_last_name`,
-                  label: "Full last name / Nazwisko",
-                  isNameField: true
-                }])}
+        }} className="p-6 md:p-10 space-y-10">
+            <div className="border-b border-border/50 pb-6">
+              <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                Applicant's Minor Children
+              </h2>
+              <p className="text-base mt-2">
+                Enter details for <span className="font-semibold text-primary">{formData.minor_children_count || 0} minor {formData.minor_children_count === 1 ? 'child' : 'children'}</span> (under 18 years old).
+                <span className="block mt-1 text-muted-foreground">
+                  Note: Adult children should be processed as separate applicants.
+                </span>
+              </p>
+            </div>
 
-                    {/* 2nd row - Places */}
-                    {renderFieldGroup([{
-                  name: `child_${num}_pob`,
-                  label: "Place of birth"
-                }])}
+            {Array.from({ length: formData.minor_children_count || 0 }, (_, i) => i + 1).map(num => <div key={num} className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
+                <h3 className="text-xl font-semibold text-foreground">Minor Child {num}</h3>
+                {/* 1st row - Name fields */}
+                {renderFieldGroup([{
+              name: `child_${num}_first_name`,
+              label: "Given names / Imię/ imiona",
+              isNameField: true
+            }, {
+              name: `child_${num}_last_name`,
+              label: "Full last name / Nazwisko",
+              isNameField: true
+            }])}
 
-                    {/* 3rd row - Dates */}
-                    {renderFieldGroup([{
-                  name: `child_${num}_dob`,
-                  label: "Date of birth",
-                  type: "date"
-                }])}
-                    <div className="space-y-2">
-                      <Label htmlFor={`child_${num}_notes`} className={isLargeFonts ? "text-2xl" : ""}>
-                        Relevant additional information
-                      </Label>
-                      <Textarea
-                        id={`child_${num}_notes`}
-                        value={formData[`child_${num}_notes`] || ""}
-                        onChange={e => handleInputChange(`child_${num}_notes`, e.target.value.toUpperCase())}
-                        placeholder=""
-                        className={cn("min-h-[150px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
-                      />
-                    </div>
-                    <FamilyMemberDocumentsSection
-                      prefix={`child_${num}`}
-                      title="Required Documents"
-                      formData={formData}
-                      handleInputChange={handleInputChange}
-                      personType="child"
-                      sex={formData[`child_${num}_sex`]}
-                    />
-                  </div>)}
-              </CardContent>
-            </Card>
+                {/* 2nd row - Places */}
+                {renderFieldGroup([{
+              name: `child_${num}_pob`,
+              label: "Place of birth"
+            }])}
+
+                {/* 3rd row - Dates */}
+                {renderFieldGroup([{
+              name: `child_${num}_dob`,
+              label: "Date of birth",
+              type: "date"
+            }])}
+                <div className="space-y-2">
+                  <Label htmlFor={`child_${num}_notes`} className={isLargeFonts ? "text-2xl" : ""}>
+                    Relevant additional information
+                  </Label>
+                  <Textarea
+                    id={`child_${num}_notes`}
+                    value={formData[`child_${num}_notes`] || ""}
+                    onChange={e => handleInputChange(`child_${num}_notes`, e.target.value.toUpperCase())}
+                    placeholder=""
+                    className={cn("min-h-[150px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                  />
+                </div>
+                <FamilyMemberDocumentsSection
+                  prefix={`child_${num}`}
+                  title="Required Documents"
+                  formData={formData}
+                  handleInputChange={handleInputChange}
+                  personType="child"
+                  sex={formData[`child_${num}_sex`]}
+                />
+              </div>)}
           </motion.div>
           )}
         </TabsContent>
@@ -925,184 +916,183 @@ export default function FamilyTreeForm() {
           duration: 0.5,
           delay: 0.3
         }}>
-            <Card className="glass-card border-primary/20">
-              <CardHeader className="border-b border-border/50 pb-6">
-                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                  Parents
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6 md:p-10 space-y-10">
-                <Card className={cn(
-                  "glass-card border-primary/20 mb-6",
-                  formData.father_is_polish && "bg-red-950/30 border-red-900/50"
+            <div className="p-6 md:p-10 space-y-10">
+              <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent border-b border-border/50 pb-6 mb-10">
+                Parents
+              </h2>
+
+              {/* Father */}
+              <div className={cn(
+                "p-8 rounded-lg border-2 space-y-8",
+                formData.father_is_polish 
+                  ? "bg-red-950/30 border-red-900/50" 
+                  : "bg-card/30 border-border/50"
+              )}>
+                <h3 className={cn(
+                  "text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent",
+                  formData.father_is_polish && "text-red-400"
                 )}>
-                  <CardHeader className="border-b border-border/50">
-                    <CardTitle className={cn(
-                      "text-3xl md:text-4xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent",
-                      formData.father_is_polish && "text-red-400"
-                    )}>
-                      Father
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-6 md:p-8 space-y-8">
-                    <div className="mb-6 p-4 bg-primary/10 rounded-lg border-2 border-primary/30">
-                      {renderCheckboxGroup([{
-                        name: "father_is_polish",
-                        label: "Polish Ancestor"
-                      }])}
-                    </div>
-                    {/* 1st row - Name fields */}
-                    {renderFieldGroup([{
-                    name: "father_first_name",
-                    label: "Given names / Imię/ imiona",
-                    isNameField: true
-                  }, {
-                    name: "father_last_name",
-                    label: "Full last name / Nazwisko",
-                    isNameField: true
-                  }])}
+                  Father
+                </h3>
 
-                    {/* 2nd row - Places: Birth & Marriage */}
-                    {renderFieldGroup([{
-                    name: "father_pob",
-                    label: "Place of birth"
-                  }, {
-                    name: "father_mother_marriage_place",
-                    label: "Place of marriage"
+                <div className="mb-6 p-4 bg-primary/10 rounded-lg border-2 border-primary/30">
+                  {renderCheckboxGroup([{
+                    name: "father_is_polish",
+                    label: "Polish Ancestor"
                   }])}
+                </div>
 
-                    {/* 3rd row - Dates: Birth & Marriage */}
-                    {renderFieldGroup([{
-                    name: "father_dob",
-                    label: "Date of birth",
-                    type: "date"
-                  }, {
-                    name: "father_mother_marriage_date",
-                    label: "Date of marriage",
-                    type: "date"
-                  }])}
+                {/* 1st row - Name fields */}
+                {renderFieldGroup([{
+                name: "father_first_name",
+                label: "Given names / Imię/ imiona",
+                isNameField: true
+              }, {
+                name: "father_last_name",
+                label: "Full last name / Nazwisko",
+                isNameField: true
+              }])}
 
-                    {/* 4th row - Dates: Emigration & Naturalization */}
-                    {renderFieldGroup([{
-                    name: "father_date_of_emigration",
-                    label: "Date of emigration",
-                    type: "date"
-                  }, {
-                    name: "father_date_of_naturalization",
-                    label: "Date of naturalization",
-                    type: "date"
-                  }])}
-                    <div className="space-y-2">
-                      <Label htmlFor="father_notes" className={isLargeFonts ? "text-2xl" : ""}>
-                        Relevant additional information
-                      </Label>
-                      <Textarea
-                        id="father_notes"
-                        value={formData.father_notes || ""}
-                        onChange={e => handleInputChange("father_notes", e.target.value.toUpperCase())}
-                        placeholder=""
-                        className={cn("min-h-[150px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
-                      />
-                    </div>
-                    <FamilyMemberDocumentsSection
-                      prefix="father"
-                      title="Required Documents"
-                      formData={formData}
-                      handleInputChange={handleInputChange}
-                      personType="parent"
-                      sex="M"
-                    />
-                  </CardContent>
-                </Card>
+                {/* 2nd row - Places: Birth & Marriage */}
+                {renderFieldGroup([{
+                name: "father_pob",
+                label: "Place of birth"
+              }, {
+                name: "father_mother_marriage_place",
+                label: "Place of marriage"
+              }])}
 
-                <Card className={cn(
-                  "glass-card border-primary/20",
-                  formData.mother_is_polish && "bg-red-950/30 border-red-900/50"
+                {/* 3rd row - Dates: Birth & Marriage */}
+                {renderFieldGroup([{
+                name: "father_dob",
+                label: "Date of birth",
+                type: "date"
+              }, {
+                name: "father_mother_marriage_date",
+                label: "Date of marriage",
+                type: "date"
+              }])}
+
+                {/* 4th row - Dates: Emigration & Naturalization */}
+                {renderFieldGroup([{
+                name: "father_date_of_emigration",
+                label: "Date of emigration",
+                type: "date"
+              }, {
+                name: "father_date_of_naturalization",
+                label: "Date of naturalization",
+                type: "date"
+              }])}
+                <div className="space-y-2">
+                  <Label htmlFor="father_notes" className={isLargeFonts ? "text-2xl" : ""}>
+                    Relevant additional information
+                  </Label>
+                  <Textarea
+                    id="father_notes"
+                    value={formData.father_notes || ""}
+                    onChange={e => handleInputChange("father_notes", e.target.value.toUpperCase())}
+                    placeholder=""
+                    className={cn("min-h-[150px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                  />
+                </div>
+                <FamilyMemberDocumentsSection
+                  prefix="father"
+                  title="Required Documents"
+                  formData={formData}
+                  handleInputChange={handleInputChange}
+                  personType="parent"
+                  sex="M"
+                />
+              </div>
+
+              {/* Mother */}
+              <div className={cn(
+                "p-8 rounded-lg border-2 space-y-8",
+                formData.mother_is_polish 
+                  ? "bg-red-950/30 border-red-900/50" 
+                  : "bg-card/30 border-border/50"
+              )}>
+                <h3 className={cn(
+                  "text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent",
+                  formData.mother_is_polish && "text-red-400"
                 )}>
-                  <CardHeader className="border-b border-border/50">
-                    <CardTitle className={cn(
-                      "text-3xl md:text-4xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent",
-                      formData.mother_is_polish && "text-red-400"
-                    )}>
-                      Mother
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-6 md:p-8 space-y-8">
-                    <div className="mb-6 p-4 bg-primary/10 rounded-lg border-2 border-primary/30">
-                      {renderCheckboxGroup([{
-                        name: "mother_is_polish",
-                        label: "Polish Ancestor"
-                      }])}
-                    </div>
-                    {/* 1st row - Name fields */}
-                    {renderFieldGroup([{
-                    name: "mother_first_name",
-                    label: "Given names / Imię/ imiona",
-                    isNameField: true
-                  }, {
-                    name: "mother_last_name",
-                    label: "Full last name / Nazwisko",
-                    isNameField: true
-                  }, {
-                    name: "mother_maiden_name",
-                    label: "Maiden name",
-                    isNameField: true
-                  }])}
+                  Mother
+                </h3>
 
-                    {/* 2nd row - Places: Birth & Marriage */}
-                    {renderFieldGroup([{
-                    name: "mother_pob",
-                    label: "Place of birth"
-                  }, {
-                    name: "father_mother_marriage_place",
-                    label: "Place of marriage"
+                <div className="mb-6 p-4 bg-primary/10 rounded-lg border-2 border-primary/30">
+                  {renderCheckboxGroup([{
+                    name: "mother_is_polish",
+                    label: "Polish Ancestor"
                   }])}
+                </div>
 
-                    {/* 3rd row - Dates: Birth & Marriage */}
-                    {renderFieldGroup([{
-                    name: "mother_dob",
-                    label: "Date of birth",
-                    type: "date"
-                  }, {
-                    name: "father_mother_marriage_date",
-                    label: "Date of marriage",
-                    type: "date"
-                  }])}
+                {/* 1st row - Name fields */}
+                {renderFieldGroup([{
+                name: "mother_first_name",
+                label: "Given names / Imię/ imiona",
+                isNameField: true
+              }, {
+                name: "mother_last_name",
+                label: "Full last name / Nazwisko",
+                isNameField: true
+              }, {
+                name: "mother_maiden_name",
+                label: "Maiden name",
+                isNameField: true
+              }])}
 
-                    {/* 4th row - Dates: Emigration & Naturalization */}
-                    {renderFieldGroup([{
-                    name: "mother_date_of_emigration",
-                    label: "Date of emigration",
-                    type: "date"
-                  }, {
-                    name: "mother_date_of_naturalization",
-                    label: "Date of naturalization",
-                    type: "date"
-                  }])}
-                    <div className="space-y-2">
-                      <Label htmlFor="mother_notes" className={isLargeFonts ? "text-2xl" : ""}>
-                        Relevant additional information
-                      </Label>
-                      <Textarea
-                        id="mother_notes"
-                        value={formData.mother_notes || ""}
-                        onChange={e => handleInputChange("mother_notes", e.target.value.toUpperCase())}
-                        placeholder=""
-                        className={cn("min-h-[150px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
-                      />
-                    </div>
-                    <FamilyMemberDocumentsSection
-                      prefix="mother"
-                      title="Required Documents"
-                      formData={formData}
-                      handleInputChange={handleInputChange}
-                      personType="parent"
-                      sex="F"
-                    />
-                  </CardContent>
-                </Card>
-              </CardContent>
-            </Card>
+                {/* 2nd row - Places: Birth & Marriage */}
+                {renderFieldGroup([{
+                name: "mother_pob",
+                label: "Place of birth"
+              }, {
+                name: "father_mother_marriage_place",
+                label: "Place of marriage"
+              }])}
+
+                {/* 3rd row - Dates: Birth & Marriage */}
+                {renderFieldGroup([{
+                name: "mother_dob",
+                label: "Date of birth",
+                type: "date"
+              }, {
+                name: "father_mother_marriage_date",
+                label: "Date of marriage",
+                type: "date"
+              }])}
+
+                {/* 4th row - Dates: Emigration & Naturalization */}
+                {renderFieldGroup([{
+                name: "mother_date_of_emigration",
+                label: "Date of emigration",
+                type: "date"
+              }, {
+                name: "mother_date_of_naturalization",
+                label: "Date of naturalization",
+                type: "date"
+              }])}
+                <div className="space-y-2">
+                  <Label htmlFor="mother_notes" className={isLargeFonts ? "text-2xl" : ""}>
+                    Relevant additional information
+                  </Label>
+                  <Textarea
+                    id="mother_notes"
+                    value={formData.mother_notes || ""}
+                    onChange={e => handleInputChange("mother_notes", e.target.value.toUpperCase())}
+                    placeholder=""
+                    className={cn("min-h-[150px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                  />
+                </div>
+                <FamilyMemberDocumentsSection
+                  prefix="mother"
+                  title="Required Documents"
+                  formData={formData}
+                  handleInputChange={handleInputChange}
+                  personType="parent"
+                  sex="F"
+                />
+              </div>
+            </div>
           </motion.div>
           )}
         </TabsContent>
@@ -1121,107 +1111,108 @@ export default function FamilyTreeForm() {
           duration: 0.5,
           delay: 0.4
         }}>
-            <Card className="glass-card border-primary/20">
-              <CardHeader className="border-b border-border/50 pb-6">
-                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Polish Grandparents</CardTitle>
-              </CardHeader>
-              <CardContent className="p-6 md:p-10 space-y-8">
-                {["pgf", "pgm", "mgf", "mgm"].map(prefix => {
+            <div className="p-6 md:p-10 space-y-10">
+              <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent border-b border-border/50 pb-6 mb-10">
+                Polish Grandparents
+              </h2>
+
+              {["pgf", "pgm", "mgf", "mgm"].map(prefix => {
                 const labels = {
                   pgf: "Paternal Grandfather",
                   pgm: "Paternal Grandmother",
                   mgf: "Maternal Grandfather",
                   mgm: "Maternal Grandmother"
                 };
-                return <Card key={prefix} className={cn(
-                  "glass-card border-primary/20",
-                  formData[`${prefix}_is_polish`] && "bg-red-950/30 border-red-900/50"
+                return <div key={prefix} className={cn(
+                  "p-8 rounded-lg border-2 space-y-8 mb-8",
+                  formData[`${prefix}_is_polish`] 
+                    ? "bg-red-950/30 border-red-900/50" 
+                    : "bg-card/30 border-border/50"
                 )}>
-                      <CardHeader className="border-b border-border/50">
-                        <CardTitle className={cn(
-                          "text-2xl md:text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent",
-                          formData[`${prefix}_is_polish`] && "text-red-400"
-                        )}>
-                          {labels[prefix as keyof typeof labels]}
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="p-6 md:p-8 space-y-8">
-                        <div className="mb-6 p-4 bg-primary/10 rounded-lg border-2 border-primary/30">
-                          {renderCheckboxGroup([{
-                        name: `${prefix}_is_polish`,
-                        label: "Polish Ancestor"
-                      }])}
-                        </div>
-                        {/* 1st row - Name fields */}
-                        {renderFieldGroup([{
-                      name: `${prefix}_first_name`,
-                      label: "Given names / Imię/ imiona",
-                      isNameField: true
-                    }, {
-                      name: `${prefix}_last_name`,
-                      label: "Full last name / Nazwisko",
-                      isNameField: true
-                    }, ...(prefix.includes("gm") ? [{
-                      name: `${prefix}_maiden_name`,
-                      label: "Maiden name",
-                      isNameField: true
-                    }] : [])])}
+                  <h3 className={cn(
+                    "text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent",
+                    formData[`${prefix}_is_polish`] && "text-red-400"
+                  )}>
+                    {labels[prefix as keyof typeof labels]}
+                  </h3>
 
-                        {/* 2nd row - Places: Birth & Marriage */}
-                        {renderFieldGroup([{
-                      name: `${prefix}_pob`,
-                      label: "Place of birth"
-                    }, {
-                      name: `${prefix === 'pgf' || prefix === 'pgm' ? 'pgf_pgm_marriage_place' : 'mgf_mgm_marriage_place'}`,
-                      label: "Place of marriage"
-                    }])}
+                  <div className="mb-6 p-4 bg-primary/10 rounded-lg border-2 border-primary/30">
+                    {renderCheckboxGroup([{
+                  name: `${prefix}_is_polish`,
+                  label: "Polish Ancestor"
+                }])}
+                  </div>
 
-                        {/* 3rd row - Dates: Birth & Marriage */}
-                        {renderFieldGroup([{
-                      name: `${prefix}_dob`,
-                      label: "Date of birth",
-                      type: "date"
-                    }, {
-                      name: `${prefix === 'pgf' || prefix === 'pgm' ? 'pgf_pgm_marriage_date' : 'mgf_mgm_marriage_date'}`,
-                      label: "Date of marriage",
-                      type: "date"
-                    }])}
+                  {/* 1st row - Name fields */}
+                  {renderFieldGroup([{
+                name: `${prefix}_first_name`,
+                label: "Given names / Imię/ imiona",
+                isNameField: true
+              }, {
+                name: `${prefix}_last_name`,
+                label: "Full last name / Nazwisko",
+                isNameField: true
+              }, ...(prefix.includes("gm") ? [{
+                name: `${prefix}_maiden_name`,
+                label: "Maiden name",
+                isNameField: true
+              }] : [])])}
 
-                        {/* 4th row - Dates: Emigration & Naturalization */}
-                        {renderFieldGroup([{
-                      name: `${prefix}_date_of_emigration`,
-                      label: "Date of emigration",
-                      type: "date"
-                    }, {
-                      name: `${prefix}_date_of_naturalization`,
-                      label: "Date of naturalization",
-                      type: "date"
-                    }])}
-                        <div className="space-y-2">
-                          <Label htmlFor={`${prefix}_notes`} className={isLargeFonts ? "text-2xl" : ""}>
-                            Relevant additional information
-                          </Label>
-                          <Textarea
-                            id={`${prefix}_notes`}
-                            value={formData[`${prefix}_notes`] || ""}
-                            onChange={e => handleInputChange(`${prefix}_notes`, e.target.value.toUpperCase())}
-                            placeholder=""
-                            className={cn("min-h-[150px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
-                          />
-                        </div>
-                        <FamilyMemberDocumentsSection
-                          prefix={prefix}
-                          title="Required Documents"
-                          formData={formData}
-                          handleInputChange={handleInputChange}
-                          personType="grandparent"
-                          sex={prefix === 'pgf' || prefix === 'mgf' ? 'M' : 'F'}
-                        />
-                      </CardContent>
-                    </Card>;
+                  {/* 2nd row - Places: Birth & Marriage */}
+                  {renderFieldGroup([{
+                name: `${prefix}_pob`,
+                label: "Place of birth"
+              }, {
+                name: `${prefix === 'pgf' || prefix === 'pgm' ? 'pgf_pgm_marriage_place' : 'mgf_mgm_marriage_place'}`,
+                label: "Place of marriage"
+              }])}
+
+                  {/* 3rd row - Dates: Birth & Marriage */}
+                  {renderFieldGroup([{
+                name: `${prefix}_dob`,
+                label: "Date of birth",
+                type: "date"
+              }, {
+                name: `${prefix === 'pgf' || prefix === 'pgm' ? 'pgf_pgm_marriage_date' : 'mgf_mgm_marriage_date'}`,
+                label: "Date of marriage",
+                type: "date"
+              }])}
+
+                  {/* 4th row - Dates: Emigration & Naturalization */}
+                  {renderFieldGroup([{
+                name: `${prefix}_date_of_emigration`,
+                label: "Date of emigration",
+                type: "date"
+              }, {
+                name: `${prefix}_date_of_naturalization`,
+                label: "Date of naturalization",
+                type: "date"
+              }])}
+
+                  <div className="space-y-2">
+                    <Label htmlFor={`${prefix}_notes`} className={isLargeFonts ? "text-2xl" : ""}>
+                      Relevant additional information
+                    </Label>
+                    <Textarea
+                      id={`${prefix}_notes`}
+                      value={formData[`${prefix}_notes`] || ""}
+                      onChange={e => handleInputChange(`${prefix}_notes`, e.target.value.toUpperCase())}
+                      placeholder=""
+                      className={cn("min-h-[150px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                    />
+                  </div>
+
+                  <FamilyMemberDocumentsSection
+                    prefix={prefix}
+                    title="Required Documents"
+                    formData={formData}
+                    handleInputChange={handleInputChange}
+                    personType="grandparent"
+                    sex={prefix === 'pgf' || prefix === 'mgf' ? 'M' : 'F'}
+                  />
+                </div>;
               })}
-              </CardContent>
-            </Card>
+            </div>
           </motion.div>
           )}
         </TabsContent>
@@ -1240,114 +1231,111 @@ export default function FamilyTreeForm() {
           duration: 0.5,
           delay: 0.5
         }}>
-            <Card className="glass-card border-primary/20">
-              <CardHeader className="border-b border-border/50 pb-6">
-                <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            <div className="p-6 md:p-10 space-y-10">
+              <div className="border-b border-border/50 pb-6 mb-10">
+                <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Polish Great-Grandfathers
-                </CardTitle>
-                <CardDescription className="text-base mt-2">
+                </h2>
+                <p className="text-base mt-2">
                   Focus on the 2 Polish great-grandfathers only. Great-grandmothers are not relevant for this process.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="p-6 md:p-10 space-y-8">
-                {["pggf", "mggf"].map(prefix => {
+                </p>
+              </div>
+
+              {["pggf", "mggf"].map(prefix => {
                 const labels = {
                   pggf: "Paternal Great-Grandfather (Father's Line)",
                   mggf: "Maternal Great-Grandfather (Mother's Line)"
                 };
-                return <Card key={prefix} className={cn(
-                  "glass-card border-primary/20",
-                  formData[`${prefix}_is_polish`] && "bg-red-950/30 border-red-900/50"
+                return <div key={prefix} className={cn(
+                  "p-8 rounded-lg border-2 space-y-8 mb-8",
+                  formData[`${prefix}_is_polish`] 
+                    ? "bg-red-950/30 border-red-900/50" 
+                    : "bg-card/30 border-border/50"
                 )}>
-                      <CardHeader className="border-b border-border/50">
-                        <CardTitle className={cn(
-                          "text-2xl md:text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent",
-                          formData[`${prefix}_is_polish`] && "text-red-400"
-                        )}>
-                          {labels[prefix as keyof typeof labels]}
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="p-6 md:p-8 space-y-8">
-                        <div className="mb-6 p-4 bg-primary/10 rounded-lg border-2 border-primary/30">
-                          {renderCheckboxGroup([{
-                            name: `${prefix}_is_polish`,
-                            label: "Polish Ancestor"
-                          }])}
-                        </div>
-                        
-                        {/* 1st row - Names */}
-                        {renderFieldGroup([{
-                      name: `${prefix}_first_name`,
-                      label: "Given names / Imię/ imiona",
-                      isNameField: true
-                    }, {
-                      name: `${prefix}_last_name`,
-                      label: "Full last name / Nazwisko",
-                      isNameField: true
-                    }])}
+                  <h3 className={cn(
+                    "text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent",
+                    formData[`${prefix}_is_polish`] && "text-red-400"
+                  )}>
+                    {labels[prefix as keyof typeof labels]}
+                  </h3>
 
-                        {/* 2nd row - Places: Birth & Marriage */}
-                        {renderFieldGroup([{
-                      name: `${prefix}_pob`,
-                      label: "Place of birth"
-                    }, {
-                      name: `${prefix === 'pggf' ? 'pggf_pggm_marriage_place' : 'mggf_mggm_marriage_place'}`,
-                      label: "Place of marriage"
+                  <div className="mb-6 p-4 bg-primary/10 rounded-lg border-2 border-primary/30">
+                    {renderCheckboxGroup([{
+                      name: `${prefix}_is_polish`,
+                      label: "Polish Ancestor"
                     }])}
+                  </div>
+                  
+                  {/* 1st row - Names */}
+                  {renderFieldGroup([{
+                name: `${prefix}_first_name`,
+                label: "Given names / Imię/ imiona",
+                isNameField: true
+              }, {
+                name: `${prefix}_last_name`,
+                label: "Full last name / Nazwisko",
+                isNameField: true
+              }])}
 
-                        {/* 3rd row - Dates: Birth & Marriage */}
-                        {renderFieldGroup([{
-                      name: `${prefix}_dob`,
-                      label: "Date of birth",
-                      type: "date"
-                    }, {
-                      name: `${prefix === 'pggf' ? 'pggf_pggm_marriage_date' : 'mggf_mggm_marriage_date'}`,
-                      label: "Date of marriage",
-                      type: "date"
-                    }])}
+                  {/* 2nd row - Places: Birth & Marriage */}
+                  {renderFieldGroup([{
+                name: `${prefix}_pob`,
+                label: "Place of birth"
+              }, {
+                name: `${prefix === 'pggf' ? 'pggf_pggm_marriage_place' : 'mggf_mggm_marriage_place'}`,
+                label: "Place of marriage"
+              }])}
 
-                        {/* 4th row - Dates: Emigration & Naturalization */}
-                        {renderFieldGroup([{
-                      name: `${prefix}_date_of_emigration`,
-                      label: "Date of emigration",
-                      type: "date"
-                    }, {
-                      name: `${prefix}_date_of_naturalization`,
-                      label: "Date of naturalization",
-                      type: "date"
-                    }])}
-                        
-                        {/* Biographical Notes - Polish Family Debris */}
-                        <div className="space-y-2">
-                          <Label htmlFor={`${prefix}_notes`} className={isLargeFonts ? "text-2xl" : ""}>
-                            Biographical Notes / Życiorys
-                          </Label>
-                          <p className="text-sm text-muted-foreground mb-2">
-                            Family history, immigration journey, Polish heritage details, important life events
-                          </p>
-                          <Textarea
-                            id={`${prefix}_notes`}
-                            value={formData[`${prefix}_notes`] || ""}
-                            onChange={e => handleInputChange(`${prefix}_notes`, e.target.value.toUpperCase())}
-                            placeholder="Enter biographical information and family history details..."
-                            className={cn("min-h-[200px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
-                          />
-                        </div>
-                        
-                        <FamilyMemberDocumentsSection
-                          prefix={prefix}
-                          title="Required Documents"
-                          formData={formData}
-                          handleInputChange={handleInputChange}
-                          personType="grandparent"
-                          sex="M"
-                        />
-                      </CardContent>
-                    </Card>;
+                  {/* 3rd row - Dates: Birth & Marriage */}
+                  {renderFieldGroup([{
+                name: `${prefix}_dob`,
+                label: "Date of birth",
+                type: "date"
+              }, {
+                name: `${prefix === 'pggf' ? 'pggf_pggm_marriage_date' : 'mggf_mggm_marriage_date'}`,
+                label: "Date of marriage",
+                type: "date"
+              }])}
+
+                  {/* 4th row - Dates: Emigration & Naturalization */}
+                  {renderFieldGroup([{
+                name: `${prefix}_date_of_emigration`,
+                label: "Date of emigration",
+                type: "date"
+              }, {
+                name: `${prefix}_date_of_naturalization`,
+                label: "Date of naturalization",
+                type: "date"
+              }])}
+                  
+                  {/* Biographical Notes - Polish Family Debris */}
+                  <div className="space-y-2">
+                    <Label htmlFor={`${prefix}_notes`} className={isLargeFonts ? "text-2xl" : ""}>
+                      Biographical Notes / Życiorys
+                    </Label>
+                    <p className="text-sm text-muted-foreground mb-2">
+                      Family history, immigration journey, Polish heritage details, important life events
+                    </p>
+                    <Textarea
+                      id={`${prefix}_notes`}
+                      value={formData[`${prefix}_notes`] || ""}
+                      onChange={e => handleInputChange(`${prefix}_notes`, e.target.value.toUpperCase())}
+                      placeholder="Enter biographical information and family history details..."
+                      className={cn("min-h-[200px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                    />
+                  </div>
+                  
+                  <FamilyMemberDocumentsSection
+                    prefix={prefix}
+                    title="Required Documents"
+                    formData={formData}
+                    handleInputChange={handleInputChange}
+                    personType="grandparent"
+                    sex="M"
+                  />
+                </div>;
               })}
-
-              </CardContent>
-            </Card>
+            </div>
           </motion.div>
           )}
         </TabsContent>
