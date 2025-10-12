@@ -388,8 +388,8 @@ export default function FamilyTreeForm() {
               <Button
                 onClick={() => {
                   setIsFullView(!isFullView);
-                  // When expanding, switch to the "select" tab to show all form sections
-                  if (!isFullView) {
+                  // When collapsing to tabs, switch to the "select" tab
+                  if (isFullView) {
                     setActiveTab('select');
                   }
                 }}
@@ -398,7 +398,7 @@ export default function FamilyTreeForm() {
                 className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 opacity-60 ${
                   isFullView ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:text-primary'
                 }`}
-                title={isFullView ? "Collapse" : "Expand All"}
+                title={isFullView ? "Show Tabs" : "Show All Sections"}
               >
                 {isFullView ? <Minimize2 className="h-8 w-8" /> : <Maximize2 className="h-8 w-8" />}
               </Button>
