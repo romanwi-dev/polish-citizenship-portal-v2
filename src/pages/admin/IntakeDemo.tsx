@@ -322,29 +322,29 @@ export default function IntakeDemo() {
           </div>
 
           <div className="flex items-center gap-4">
-            <label className="w-48 font-semibold">CITIZENSHIP (Amber):</label>
+            <label className="w-48 font-semibold">CITIZENSHIP (Sky Blue):</label>
             <Input
               value={citizenshipInputs.field1}
               onChange={(e) => setCitizenshipInputs(prev => ({ ...prev, field1: e.target.value }))}
-              className="h-16 bg-amber-50/45 dark:bg-amber-950/45 border border-amber-400/30 dark:border-amber-600/30 hover:border-transparent focus:border-transparent transition-all duration-300"
+              className="h-16 bg-sky-50/45 dark:bg-sky-950/45 border border-sky-400/30 dark:border-sky-600/30 hover:border-transparent focus:border-transparent transition-all duration-300"
               style={{
-                boxShadow: "0 0 30px rgba(245,158,11,0.25)",
+                boxShadow: "0 0 30px rgba(56,189,248,0.25)",
                 transition: "all 0.3s ease"
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 50px rgba(245,158,11,0.4)";
+                e.currentTarget.style.boxShadow = "0 0 50px rgba(56,189,248,0.4)";
                 e.currentTarget.style.transform = "translateY(-2px)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 30px rgba(245,158,11,0.25)";
+                e.currentTarget.style.boxShadow = "0 0 30px rgba(56,189,248,0.25)";
                 e.currentTarget.style.transform = "translateY(0)";
               }}
               onFocus={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 60px rgba(245,158,11,0.5)";
+                e.currentTarget.style.boxShadow = "0 0 60px rgba(56,189,248,0.5)";
                 e.currentTarget.style.transform = "translateY(-2px)";
               }}
               onBlur={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 30px rgba(245,158,11,0.25)";
+                e.currentTarget.style.boxShadow = "0 0 30px rgba(56,189,248,0.25)";
                 e.currentTarget.style.transform = "translateY(0)";
               }}
             />
