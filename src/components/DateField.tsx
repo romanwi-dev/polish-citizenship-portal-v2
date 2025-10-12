@@ -20,6 +20,7 @@ interface DateFieldProps {
   notApplicableValue?: boolean;
   onNotApplicableChange?: (checked: boolean) => void;
   colorScheme?: ColorScheme;
+  isLargeFonts?: boolean;
 }
 
 const colorSchemes = {
@@ -91,9 +92,11 @@ export function DateField({
   showNotApplicable = false,
   notApplicableValue = false,
   onNotApplicableChange,
-  colorScheme = 'applicant'
+  colorScheme = 'applicant',
+  isLargeFonts: customLargeFonts
 }: DateFieldProps) {
-  const { isLargeFonts } = useAccessibility();
+  const { isLargeFonts: contextLargeFonts } = useAccessibility();
+  const isLargeFonts = customLargeFonts ?? contextLargeFonts;
   const [error, setError] = useState<string>("");
   const scheme = colorSchemes[colorScheme];
 

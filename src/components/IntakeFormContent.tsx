@@ -252,7 +252,9 @@ export const PassportSection = ({ formData, handleInputChange, clearField, isLar
           <Label className={isLargeFonts ? "text-2xl" : ""}>Passport number</Label>
           <FormInput value={formData?.applicant_passport_number || ""} onChange={(e) => handleInputChange("applicant_passport_number", e.target.value.toUpperCase())} isNameField colorScheme="applicant" />
         </motion.div>
-        <DateField name="applicant_passport_expiry_date" label="Passport expiry date" value={formData?.applicant_passport_expiry_date} onChange={(value) => handleInputChange("applicant_passport_expiry_date", value)} colorScheme="applicant" />
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
+          <DateField name="applicant_passport_expiry_date" label="Passport expiry date" value={formData?.applicant_passport_expiry_date} onChange={(value) => handleInputChange("applicant_passport_expiry_date", value)} colorScheme="applicant" isLargeFonts={isLargeFonts} />
+        </motion.div>
       </div>
     </div>
   </>
