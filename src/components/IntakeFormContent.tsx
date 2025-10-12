@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -19,12 +18,12 @@ interface IntakeFormContentProps {
 
 export const SelectSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
   <>
-    <CardHeader className="border-b border-border/50 pb-6">
-      <CardTitle className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
+    <div className="border-b border-border/50 pb-6 pt-6">
+      <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
         First Questions
-      </CardTitle>
-    </CardHeader>
-    <CardContent className="p-3 md:p-10">
+      </h3>
+    </div>
+    <div className="p-3 md:p-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-2" onDoubleClick={() => clearField("applicant_sex")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Gender</Label>
@@ -128,18 +127,18 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
           </motion.div>
         )}
       </div>
-    </CardContent>
+    </div>
   </>
 );
 
 export const ApplicantSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
   <>
-    <CardHeader className="border-b border-border/50 pb-6">
-      <CardTitle className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
+    <div className="border-b border-border/50 pb-6 pt-6">
+      <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
         Applicant Information
-      </CardTitle>
-    </CardHeader>
-    <CardContent className="p-3 md:p-10">
+      </h3>
+    </div>
+    <div className="p-3 md:p-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="space-y-2" onDoubleClick={() => clearField("applicant_first_name")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>First name</Label>
@@ -200,18 +199,18 @@ export const ApplicantSection = ({ formData, handleInputChange, clearField, isLa
           onNotApplicableChange={(checked) => handleInputChange("did_not_naturalize", checked)}
         />
       </div>
-    </CardContent>
+    </div>
   </>
 );
 
 export const ContactSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
   <>
-    <CardHeader className="border-b border-border/50 pb-6">
-      <CardTitle className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
+    <div className="border-b border-border/50 pb-6 pt-6">
+      <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
         Contact Information
-      </CardTitle>
-    </CardHeader>
-    <CardContent className="p-3 md:p-10">
+      </h3>
+    </div>
+    <div className="p-3 md:p-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_email")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Email</Label>
@@ -222,18 +221,18 @@ export const ContactSection = ({ formData, handleInputChange, clearField, isLarg
           <Input value={formData?.applicant_phone || ""} onChange={(e) => handleInputChange("applicant_phone", e.target.value)} />
         </motion.div>
       </div>
-    </CardContent>
+    </div>
   </>
 );
 
 export const AddressSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
   <>
-    <CardHeader className="border-b border-border/50 pb-6">
-      <CardTitle className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
+    <div className="border-b border-border/50 pb-6 pt-6">
+      <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
         Address Information
-      </CardTitle>
-    </CardHeader>
-    <CardContent className="p-3 md:p-10">
+      </h3>
+    </div>
+    <div className="p-3 md:p-10">
       <div className="grid grid-cols-1 gap-6 w-full">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_street")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Street address</Label>
@@ -259,18 +258,18 @@ export const AddressSection = ({ formData, handleInputChange, clearField, isLarg
           <CountrySelect value={formData?.applicant_country || ""} onChange={(value) => handleInputChange("applicant_country", value)} label="Country" isLargeFonts={isLargeFonts} delay={0} />
         </div>
       </div>
-    </CardContent>
+    </div>
   </>
 );
 
 export const PassportSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
   <>
-    <CardHeader className="border-b border-border/50 pb-6">
-      <CardTitle className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
+    <div className="border-b border-border/50 pb-6 pt-6">
+      <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
         Passport Information
-      </CardTitle>
-    </CardHeader>
-    <CardContent className="p-3 md:p-10">
+      </h3>
+    </div>
+    <div className="p-3 md:p-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_passport_number")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Passport number</Label>
@@ -278,23 +277,23 @@ export const PassportSection = ({ formData, handleInputChange, clearField, isLar
         </motion.div>
         <DateField name="applicant_passport_expiry_date" label="Passport expiry date" value={formData?.applicant_passport_expiry_date} onChange={(value) => handleInputChange("applicant_passport_expiry_date", value)} />
       </div>
-    </CardContent>
+    </div>
   </>
 );
 
 export const ImmigrationSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
   <>
-    <CardHeader className="border-b border-border/50 pb-6">
-      <CardTitle className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
+    <div className="border-b border-border/50 pb-6 pt-6">
+      <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
         Emigration Information
-      </CardTitle>
-    </CardHeader>
-    <CardContent className="p-3 md:p-10">
+      </h3>
+    </div>
+    <div className="p-3 md:p-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
         <DateField name="applicant_date_of_naturalization" label="Date of naturalization" value={formData?.applicant_date_of_naturalization} onChange={(value) => handleInputChange("applicant_date_of_naturalization", value)} />
         <DateField name="applicant_date_of_emigration" label="Date of emigration" value={formData?.applicant_date_of_emigration} onChange={(value) => handleInputChange("applicant_date_of_emigration", value)} />
       </div>
-    </CardContent>
+    </div>
   </>
 );
 
@@ -366,34 +365,34 @@ export const DocumentsSection = ({ formData, handleInputChange, clearField, isLa
 
   return (
     <>
-      <CardHeader className="border-b border-border/50 pb-6">
-        <CardTitle className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
+      <div className="border-b border-border/50 pb-6 pt-6">
+        <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
           Required Documents
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="p-3 md:p-10">
+        </h3>
+      </div>
+      <div className="p-3 md:p-10">
         <FlippableCardsDarkGlow
           title=""
           documents={documents}
           onChange={handleDocumentsChange}
         />
-      </CardContent>
+      </div>
     </>
   );
 };
 
 export const NotesSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
   <>
-    <CardHeader className="border-b border-border/50 pb-6">
-      <CardTitle className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
+    <div className="border-b border-border/50 pb-6 pt-6">
+      <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
         Additional Notes
-      </CardTitle>
-    </CardHeader>
-    <CardContent className="p-3 md:p-10">
+      </h3>
+    </div>
+    <div className="p-3 md:p-10">
       <Label className={isLargeFonts ? "text-2xl" : ""}>
         Additional notes
       </Label>
       <Textarea value={formData?.applicant_notes || ""} onChange={(e) => handleInputChange("applicant_notes", e.target.value.toUpperCase())} className="mt-2 min-h-[150px] uppercase" />
-    </CardContent>
+    </div>
   </>
 );
