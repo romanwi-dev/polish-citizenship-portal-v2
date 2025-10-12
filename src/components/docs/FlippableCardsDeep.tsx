@@ -59,10 +59,10 @@ export const FlippableCardsDeep = ({ title, documents, onChange }: FlippableCard
               {/* Front */}
               <div 
                 className={cn(
-                  "absolute inset-0 rounded-xl p-6 flex flex-col items-center justify-center gap-4 cursor-pointer border transition-all",
+                  "absolute inset-0 rounded-xl p-6 flex flex-col items-center justify-center gap-4 cursor-pointer border transition-all glass-card hover-glow",
                   doc.checked
                     ? "bg-green-900/50 border-green-600/40 shadow-[0_0_40px_rgba(34,197,94,0.25),inset_0_1px_0_rgba(255,255,255,0.1)]"
-                    : "bg-[#0a1929]/80 hover:shadow-[0_0_40px_rgba(59,130,246,0.2),inset_0_1px_0_rgba(255,255,255,0.1)] hover:border-primary/40 border-blue-900/50"
+                    : "border-border/50 hover:shadow-[0_0_40px_rgba(59,130,246,0.2),inset_0_1px_0_rgba(255,255,255,0.1)] hover:border-primary/40"
                 )}
                 style={{ backfaceVisibility: "hidden" }}
                 onClick={() => toggleFlip(doc.id)}
@@ -84,9 +84,8 @@ export const FlippableCardsDeep = ({ title, documents, onChange }: FlippableCard
                 />
               </div>
 
-              {/* Back */}
               <div 
-                className="absolute inset-0 glass-card rounded-xl p-6 flex flex-col justify-between cursor-pointer border border-primary/50 shadow-[0_0_40px_rgba(59,130,246,0.3),inset_0_1px_0_rgba(255,255,255,0.1)]"
+                className="absolute inset-0 glass-card rounded-xl p-6 flex flex-col justify-between cursor-pointer border border-primary/50 shadow-[0_0_40px_rgba(59,130,246,0.3),inset_0_1px_0_rgba(255,255,255,0.1)] hover-glow"
                 style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
                 onClick={() => toggleFlip(doc.id)}
               >

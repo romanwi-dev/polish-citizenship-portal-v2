@@ -95,10 +95,10 @@ export const FlippableCardsMidnight = ({ title, documents, onChange }: Flippable
               {/* Front */}
               <div 
                 className={cn(
-                  "absolute inset-0 rounded-xl p-5 flex flex-col cursor-pointer border transition-all",
+                  "absolute inset-0 rounded-xl p-5 flex flex-col cursor-pointer border transition-all glass-card hover-glow",
                   doc.checked
                     ? "bg-green-950/60 border-green-500/50 shadow-[0_8px_32px_rgba(34,197,94,0.4)]"
-                    : "bg-[#0a1929]/80 border-slate-700/40 hover:border-primary/50 hover:shadow-[0_8px_32px_rgba(59,130,246,0.15)]"
+                    : "border-border/50 hover:border-primary/50 hover:shadow-[0_8px_32px_rgba(59,130,246,0.15)]"
                 )}
                 style={{ backfaceVisibility: "hidden" }}
                 onClick={() => toggleFlip(doc.id)}
@@ -134,7 +134,7 @@ export const FlippableCardsMidnight = ({ title, documents, onChange }: Flippable
 
               {/* Back */}
               <div 
-                className="absolute inset-0 bg-primary/20 rounded-xl p-6 flex flex-col cursor-pointer border border-primary/40 shadow-[0_8px_32px_rgba(59,130,246,0.25)]"
+                className="absolute inset-0 glass-card bg-primary/20 rounded-xl p-6 flex flex-col cursor-pointer border border-primary/40 shadow-[0_8px_32px_rgba(59,130,246,0.25)] hover-glow"
                 style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
                 onClick={() => toggleFlip(doc.id)}
               >
