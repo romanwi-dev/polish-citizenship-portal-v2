@@ -19,6 +19,9 @@ interface IntakeFormContentProps {
 export const SelectSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
   <>
     <div className="border-b border-border/50 pb-6 pt-6">
+      <h2 className="text-2xl md:text-3xl font-heading font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+        Main Applicant
+      </h2>
       <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
         First Questions
       </h3>
