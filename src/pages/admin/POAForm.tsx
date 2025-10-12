@@ -409,16 +409,12 @@ export default function POAForm() {
         {/* POA Forms */}
         <div className="space-y-8">
           {/* POA Adult */}
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0 }}>
-            <Card className="glass-card border-primary/20">
-              <CardHeader className="border-b border-border/50 pb-6">
-                <div {...adultCardLongPress.handlers} className="cursor-pointer select-none hover:opacity-80 transition-opacity">
-                  <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                    {poaFormConfigs.adult.title}
-                  </CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent className="pt-6">
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0 }} className="space-y-6">
+            <div {...adultCardLongPress.handlers} className="cursor-pointer select-none hover:opacity-80 transition-opacity border-b border-border/50 pb-6">
+              <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                {poaFormConfigs.adult.title}
+              </h2>
+            </div>
                 {/* Row 1: Gender and Civil Status */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                   {/* Gender */}
@@ -546,8 +542,6 @@ export default function POAForm() {
                     )}
                   </Button>
                 </div>
-              </CardContent>
-            </Card>
           </motion.div>
 
           {/* POA Minor - Show as many forms as minor children count */}
@@ -557,16 +551,13 @@ export default function POAForm() {
               initial={{ opacity: 0, scale: 0.95 }} 
               animate={{ opacity: 1, scale: 1 }} 
               transition={{ duration: 0.5, delay: 0.1 + (index * 0.1) }}
+              className="space-y-6"
             >
-              <Card className="glass-card border-primary/20">
-              <CardHeader className="border-b border-border/50 pb-6">
-                <div {...minorCardLongPress.handlers} className="cursor-pointer select-none hover:opacity-80 transition-opacity">
-                  <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                    {poaFormConfigs.minor.title} {minorChildrenCount > 1 ? `- Child ${index + 1}` : ''}
-                  </CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent className="pt-6">
+              <div {...minorCardLongPress.handlers} className="cursor-pointer select-none hover:opacity-80 transition-opacity border-b border-border/50 pb-6">
+                <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                  {poaFormConfigs.minor.title} {minorChildrenCount > 1 ? `- Child ${index + 1}` : ''}
+                </h2>
+              </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                   <POAFormField
                     name="applicant_first_name"
@@ -615,23 +606,17 @@ export default function POAForm() {
                     )}
                   </Button>
                 </div>
-              </CardContent>
-            </Card>
           </motion.div>
           ))}
 
           {/* POA Spouses - Only show if married */}
           {showSpousePOA && (
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.2 }}>
-              <Card className="glass-card border-primary/20">
-              <CardHeader className="border-b border-border/50 pb-6">
-                <div {...spousesCardLongPress.handlers} className="cursor-pointer select-none hover:opacity-80 transition-opacity">
-                  <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                    {poaFormConfigs.spouses.title}
-                  </CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent className="pt-6">
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.2 }} className="space-y-6">
+              <div {...spousesCardLongPress.handlers} className="cursor-pointer select-none hover:opacity-80 transition-opacity border-b border-border/50 pb-6">
+                <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                  {poaFormConfigs.spouses.title}
+                </h2>
+              </div>
                 {/* Primary Applicant Fields - labels based on master_table applicant_sex */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                   <POAFormField
@@ -739,8 +724,6 @@ export default function POAForm() {
                     )}
                   </Button>
                 </div>
-              </CardContent>
-            </Card>
           </motion.div>
           )}
         </div>

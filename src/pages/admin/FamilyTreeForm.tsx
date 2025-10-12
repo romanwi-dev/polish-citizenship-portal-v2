@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Fragment } from "react";
 import { Loader2, Save, Download, Users, Sparkles, Type, User, ArrowLeft, TreePine, BookOpen, Baby, Heart, FileText, GitBranch, HelpCircle, Maximize2, Minimize2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
@@ -840,7 +840,7 @@ export default function FamilyTreeForm() {
         }} transition={{
           duration: 0.5,
           delay: 0.1
-        }} className="p-6 md:p-10 space-y-10">
+        }} className="space-y-10">
             <div className="border-b border-border/50 pb-6">
               <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 Applicant's Minor Children
@@ -853,7 +853,7 @@ export default function FamilyTreeForm() {
               </p>
             </div>
 
-            {Array.from({ length: formData.minor_children_count || 0 }, (_, i) => i + 1).map(num => <div key={num} className="space-y-6 mb-12">
+            {Array.from({ length: formData.minor_children_count || 0 }, (_, i) => i + 1).map(num => <Fragment key={num}>
                 <h3 className="text-2xl md:text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Minor Child {num}</h3>
                 {/* 1st row - Name fields */}
                 {renderFieldGroup([{
@@ -898,7 +898,7 @@ export default function FamilyTreeForm() {
                   personType="child"
                   sex={formData[`child_${num}_sex`]}
                 />
-              </div>)}
+              </Fragment>)}
           </motion.div>
           )}
         </TabsContent>
@@ -915,8 +915,7 @@ export default function FamilyTreeForm() {
         }} transition={{
           duration: 0.5,
           delay: 0.3
-        }}>
-            <div className="p-6 md:p-10 space-y-10">
+        }} className="space-y-10">
               <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent border-b border-border/50 pb-6 mb-10">
                 Parents
               </h2>
@@ -1001,13 +1000,12 @@ export default function FamilyTreeForm() {
               </div>
 
               {/* Mother */}
-              <div className="space-y-8">
-                <h3 className={cn(
-                  "text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent",
-                  formData.mother_is_polish && "text-red-400"
-                )}>
-                  Mother
-                </h3>
+              <h3 className={cn(
+                "text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mt-10",
+                formData.mother_is_polish && "text-red-400"
+              )}>
+                Mother
+              </h3>
 
                 <div className="mb-6 p-4 bg-primary/10 rounded-lg border-2 border-primary/30">
                   {renderCheckboxGroup([{
@@ -1081,8 +1079,6 @@ export default function FamilyTreeForm() {
                   personType="parent"
                   sex="F"
                 />
-              </div>
-            </div>
           </motion.div>
           )}
         </TabsContent>
@@ -1100,8 +1096,7 @@ export default function FamilyTreeForm() {
         }} transition={{
           duration: 0.5,
           delay: 0.4
-        }}>
-            <div className="p-6 md:p-10 space-y-10">
+        }} className="space-y-10">
               <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent border-b border-border/50 pb-6 mb-10">
                 Polish Grandparents
               </h2>
@@ -1113,7 +1108,7 @@ export default function FamilyTreeForm() {
                   mgf: "Maternal Grandfather",
                   mgm: "Maternal Grandmother"
                 };
-                return <div key={prefix} className="space-y-8 mb-12">
+                return <Fragment key={prefix}>
                   <h3 className={cn(
                     "text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent",
                     formData[`${prefix}_is_polish`] && "text-red-400"
@@ -1195,9 +1190,8 @@ export default function FamilyTreeForm() {
                     personType="grandparent"
                     sex={prefix === 'pgf' || prefix === 'mgf' ? 'M' : 'F'}
                   />
-                </div>;
+                </Fragment>;
               })}
-            </div>
           </motion.div>
           )}
         </TabsContent>
@@ -1215,8 +1209,7 @@ export default function FamilyTreeForm() {
         }} transition={{
           duration: 0.5,
           delay: 0.5
-        }}>
-            <div className="p-6 md:p-10 space-y-10">
+        }} className="space-y-10">
               <div className="border-b border-border/50 pb-6 mb-10">
                 <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Polish Great-Grandfathers
@@ -1231,7 +1224,7 @@ export default function FamilyTreeForm() {
                   pggf: "Paternal Great-Grandfather (Father's Line)",
                   mggf: "Maternal Great-Grandfather (Mother's Line)"
                 };
-                return <div key={prefix} className="space-y-8 mb-12">
+                return <Fragment key={prefix}>
                   <h3 className={cn(
                     "text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent",
                     formData[`${prefix}_is_polish`] && "text-red-400"
@@ -1313,9 +1306,8 @@ export default function FamilyTreeForm() {
                     personType="grandparent"
                     sex="M"
                   />
-                </div>;
+                </Fragment>;
               })}
-            </div>
           </motion.div>
           )}
         </TabsContent>
