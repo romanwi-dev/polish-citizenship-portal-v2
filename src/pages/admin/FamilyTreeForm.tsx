@@ -203,7 +203,7 @@ export default function FamilyTreeForm() {
       toast.success(`Editing ${personType.replace(/([A-Z])/g, ' $1').trim()}`);
     }
   };
-  const renderDateField = (name: string, label: string, delay = 0) => {
+  const renderDateField = (name: string, label: string, delay = 0, colorScheme: ColorScheme = 'applicant') => {
     // Convert ISO format to DD.MM.YYYY for display
     const isoValue = formData[name] || "";
     let displayValue = "";
@@ -787,7 +787,8 @@ export default function FamilyTreeForm() {
                   value={formData.spouse_notes || ""}
                   onChange={e => handleInputChange("spouse_notes", e.target.value.toUpperCase())}
                   placeholder=""
-                  className={cn("min-h-[200px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                  colorScheme="applicant"
+                  className={cn("min-h-[200px] border-2 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase")}
                 />
               </div>
             </motion.div>
@@ -863,7 +864,8 @@ export default function FamilyTreeForm() {
                     value={formData[`child_${num}_notes`] || ""}
                     onChange={e => handleInputChange(`child_${num}_notes`, e.target.value.toUpperCase())}
                     placeholder=""
-                    className={cn("min-h-[200px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                    colorScheme="children"
+                    className={cn("min-h-[200px] border-2 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase")}
                   />
                 </div>
               </Fragment>)}
@@ -964,7 +966,8 @@ export default function FamilyTreeForm() {
                     value={formData.father_notes || ""}
                     onChange={e => handleInputChange("father_notes", e.target.value.toUpperCase())}
                     placeholder=""
-                    className={cn("min-h-[200px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                    colorScheme="parents"
+                    className={cn("min-h-[200px] border-2 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase")}
                   />
                 </div>
               </div>
@@ -1048,7 +1051,8 @@ export default function FamilyTreeForm() {
                     value={formData.mother_notes || ""}
                     onChange={e => handleInputChange("mother_notes", e.target.value.toUpperCase())}
                     placeholder=""
-                    className={cn("min-h-[200px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                    colorScheme="parents"
+                    className={cn("min-h-[200px] border-2 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase")}
                   />
                 </div>
           </motion.div>
@@ -1158,10 +1162,11 @@ export default function FamilyTreeForm() {
                     </Label>
                     <Textarea
                       id={`${prefix}_notes`}
+                      colorScheme="grandparents"
                       value={formData[`${prefix}_notes`] || ""}
                       onChange={e => handleInputChange(`${prefix}_notes`, e.target.value.toUpperCase())}
                       placeholder=""
-                      className={cn("min-h-[200px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                      className={cn("min-h-[200px] border-2 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase")}
                     />
                   </div>
                 </Fragment>;
@@ -1278,7 +1283,8 @@ export default function FamilyTreeForm() {
                       value={formData[`${prefix}_notes`] || ""}
                       onChange={e => handleInputChange(`${prefix}_notes`, e.target.value.toUpperCase())}
                       placeholder="Enter biographical information and family history details..."
-                      className={cn("min-h-[200px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                      colorScheme="ggp"
+                      className={cn("min-h-[200px] border-2 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase")}
                     />
                   </div>
                 </Fragment>;
