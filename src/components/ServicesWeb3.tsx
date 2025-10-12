@@ -1,4 +1,5 @@
 import { FileText, Users, CheckCircle, Globe, Cpu, Shield, Zap } from "lucide-react";
+import { useState } from "react";
 
 const services = [
   {
@@ -39,6 +40,51 @@ const services = [
   },
 ];
 
+const FlippableServiceCard = ({ service, index }: { service: typeof services[0]; index: number }) => {
+  const [isFlipped, setIsFlipped] = useState(false);
+  const Icon = service.icon;
+
+  return (
+    <div 
+      className="perspective-1000 h-[280px]"
+      style={{ animationDelay: `${index * 100}ms` }}
+      onMouseEnter={() => setIsFlipped(true)}
+      onMouseLeave={() => setIsFlipped(false)}
+    >
+      <div className={`relative w-full h-full transition-transform duration-700 transform-style-3d ${isFlipped ? 'rotate-y-180' : ''}`}>
+        {/* Front of card */}
+        <div className="absolute inset-0 backface-hidden glass-card p-8 rounded-lg hover-glow group overflow-hidden">
+          <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
+          
+          <div className="relative z-10 h-full flex flex-col justify-center">
+            <div className="flex items-center gap-4 mb-4">
+              <div className={`w-12 h-12 rounded bg-gradient-to-br ${service.color} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                <Icon className="h-6 w-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                {service.title}
+              </h3>
+            </div>
+          </div>
+
+          <div className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-br ${service.color} opacity-20 blur-2xl rounded-full`} />
+        </div>
+
+        {/* Back of card */}
+        <div className="absolute inset-0 backface-hidden rotate-y-180 glass-card p-8 rounded-lg overflow-hidden">
+          <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-20`} />
+          
+          <div className="relative z-10 h-full flex flex-col justify-center">
+            <p className="text-foreground leading-relaxed font-medium">
+              {service.description}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const ServicesWeb3 = () => {
   return (
     <section id="services" className="py-32 relative overflow-hidden">
@@ -62,36 +108,9 @@ const ServicesWeb3 = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-          {services.map((service, index) => {
-            const Icon = service.icon;
-            return (
-              <div 
-                key={index} 
-                className="glass-card p-8 rounded-lg hover-glow group relative overflow-hidden"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                {/* Gradient Background on Hover */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
-                
-                <div className="relative z-10">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className={`w-12 h-12 rounded bg-gradient-to-br ${service.color} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
-                      <Icon className="h-6 w-6 text-white" />
-                    </div>
-                    <h3 className="text-xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                      {service.title}
-                    </h3>
-                  </div>
-                  <p className="text-muted-foreground leading-relaxed font-bold">
-                    {service.description}
-                  </p>
-                </div>
-
-                {/* Corner Accent */}
-                <div className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-br ${service.color} opacity-20 blur-2xl rounded-full`} />
-              </div>
-            );
-          })}
+          {services.map((service, index) => (
+            <FlippableServiceCard key={index} service={service} index={index} />
+          ))}
         </div>
       </div>
     </section>
