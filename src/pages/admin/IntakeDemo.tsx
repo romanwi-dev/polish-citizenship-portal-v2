@@ -268,25 +268,25 @@ export default function IntakeDemo() {
             <Input
               value={greatGrandparentsInputs.field1}
               onChange={(e) => setGreatGrandparentsInputs(prev => ({ ...prev, field1: e.target.value }))}
-              className="h-16 bg-slate-50/45 dark:bg-slate-950/45 border border-slate-400/30 dark:border-slate-600/30 hover:border-transparent focus:border-transparent transition-all duration-300"
+              className="h-16 bg-slate-100/45 dark:bg-slate-800/45 border border-slate-300/30 dark:border-slate-500/30 hover:border-transparent focus:border-transparent transition-all duration-300"
               style={{
-                boxShadow: "0 0 30px rgba(100,116,139,0.25)",
+                boxShadow: "0 0 30px rgba(148,163,184,0.25)",
                 transition: "all 0.3s ease"
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 50px rgba(100,116,139,0.4)";
+                e.currentTarget.style.boxShadow = "0 0 50px rgba(148,163,184,0.4)";
                 e.currentTarget.style.transform = "translateY(-2px)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 30px rgba(100,116,139,0.25)";
+                e.currentTarget.style.boxShadow = "0 0 30px rgba(148,163,184,0.25)";
                 e.currentTarget.style.transform = "translateY(0)";
               }}
               onFocus={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 60px rgba(100,116,139,0.5)";
+                e.currentTarget.style.boxShadow = "0 0 60px rgba(148,163,184,0.5)";
                 e.currentTarget.style.transform = "translateY(-2px)";
               }}
               onBlur={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 30px rgba(100,116,139,0.25)";
+                e.currentTarget.style.boxShadow = "0 0 30px rgba(148,163,184,0.25)";
                 e.currentTarget.style.transform = "translateY(0)";
               }}
             />
