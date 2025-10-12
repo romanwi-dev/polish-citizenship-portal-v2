@@ -162,14 +162,6 @@ export default function CaseDetail() {
                   Intake Form
                 </span>
               </Button>
-              <Button 
-                onClick={() => navigate(`/admin/cases/${id}/family-tree`)}
-                className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0 relative z-50"
-              >
-                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                  Family Tree
-                </span>
-              </Button>
               <Button
                 onClick={() => navigate(`/admin/cases/${id}/poa`)}
                 className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0 relative z-50"
