@@ -160,23 +160,25 @@ export const ApplicantSection = ({ formData, handleInputChange, clearField, isLa
         </motion.div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 md:items-start">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="space-y-4" onDoubleClick={() => clearField("applicant_pob")}>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="space-y-2" onDoubleClick={() => clearField("applicant_pob")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Place of birth</Label>
           <FormInput value={formData?.applicant_pob || ""} onChange={(e) => handleInputChange("applicant_pob", e.target.value.toUpperCase())} isNameField colorScheme="applicant" />
         </motion.div>
-        <DateField name="applicant_dob" label="Date of birth" value={formData?.applicant_dob} onChange={(value) => handleInputChange("applicant_dob", value)} delay={0.45} colorScheme="applicant" isLargeFonts={isLargeFonts} />
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }}>
+          <DateField name="applicant_dob" label="Date of birth" value={formData?.applicant_dob} onChange={(value) => handleInputChange("applicant_dob", value)} colorScheme="applicant" isLargeFonts={isLargeFonts} />
+        </motion.div>
       </div>
 
       {formData?.applicant_is_married && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 md:items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("place_of_marriage")}>
             <Label className={isLargeFonts ? "text-2xl" : ""}>Place of marriage</Label>
             <FormInput value={formData?.place_of_marriage || ""} onChange={(e) => handleInputChange("place_of_marriage", e.target.value.toUpperCase())} isNameField colorScheme="applicant" />
           </motion.div>
-          <div>
-            <DateField name="date_of_marriage" label="Date of marriage" value={formData?.date_of_marriage} onChange={(value) => handleInputChange("date_of_marriage", value)} delay={0.5} colorScheme="applicant" isLargeFonts={isLargeFonts} />
-          </div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <DateField name="date_of_marriage" label="Date of marriage" value={formData?.date_of_marriage} onChange={(value) => handleInputChange("date_of_marriage", value)} colorScheme="applicant" isLargeFonts={isLargeFonts} />
+          </motion.div>
         </div>
       )}
     </div>
@@ -255,7 +257,7 @@ export const PassportSection = ({ formData, handleInputChange, clearField, isLar
           <Label className={isLargeFonts ? "text-2xl" : ""}>Passport number</Label>
           <FormInput value={formData?.applicant_passport_number || ""} onChange={(e) => handleInputChange("applicant_passport_number", e.target.value.toUpperCase())} isNameField colorScheme="applicant" />
         </motion.div>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <DateField name="applicant_passport_expiry_date" label="Passport expiry date" value={formData?.applicant_passport_expiry_date} onChange={(value) => handleInputChange("applicant_passport_expiry_date", value)} colorScheme="applicant" isLargeFonts={isLargeFonts} />
         </motion.div>
       </div>
