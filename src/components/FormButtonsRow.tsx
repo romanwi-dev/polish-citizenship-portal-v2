@@ -66,26 +66,28 @@ export function FormButtonsRow({
       )}
 
       {/* Navigation Buttons */}
-      {navigationButtons.map((btn) => {
-        const isCurrent = btn.id === currentForm;
-        const Icon = btn.icon;
-        
-        return (
-          <Button
-            key={btn.id}
-            onClick={() => navigate(btn.path.replace(':id', caseId))}
-            className={`
-              h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold
-              whitespace-nowrap flex-shrink-0 backdrop-blur-md border transition-colors
-              ${isCurrent 
-                ? 'bg-white/10 hover:bg-white/15 border-white/40 opacity-60' 
-                : 'bg-white/5 hover:bg-white/10 border-white/20 opacity-50'
-              }
-            `}
-          >
-            <Icon className="mr-2 h-4 w-4 md:h-5 md:w-5 opacity-50" />
-            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{btn.label}</span>
-          </Button>
+      {navigationButtons
+        .filter(btn => !(currentForm === 'intake' && btn.id === 'additional-data'))
+        .map((btn) => {
+          const isCurrent = btn.id === currentForm;
+          const Icon = btn.icon;
+          
+          return (
+            <Button
+              key={btn.id}
+              onClick={() => navigate(btn.path.replace(':id', caseId))}
+              className={`
+                h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-bold
+                whitespace-nowrap flex-shrink-0 backdrop-blur-md border transition-colors
+                ${isCurrent 
+                  ? 'bg-white/10 hover:bg-white/15 border-white/40 opacity-60' 
+                  : 'bg-white/5 hover:bg-white/10 border-white/20 opacity-50'
+                }
+              `}
+            >
+              <Icon className="mr-2 h-4 w-4 md:h-5 md:w-5 opacity-50" />
+              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{btn.label}</span>
+            </Button>
           );
         })}
     </div>
