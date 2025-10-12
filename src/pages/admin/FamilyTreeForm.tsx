@@ -1186,6 +1186,7 @@ export default function FamilyTreeForm() {
                   <div className="flex items-start gap-4 mb-6">
                     <h3 className={cn(
                       "text-3xl font-heading font-bold text-gray-600/80 dark:text-gray-400/80",
+                      prefix === "pggf" && "mt-10",
                       formData[`${prefix}_is_polish`] && "text-red-400"
                     )}>
                       {labels[prefix as keyof typeof labels]}
@@ -1194,7 +1195,7 @@ export default function FamilyTreeForm() {
                       id={`${prefix}_is_polish`}
                       checked={formData[`${prefix}_is_polish`] || false}
                       onCheckedChange={(checked) => handleInputChange(`${prefix}_is_polish`, checked)}
-                      className="h-8 w-8 border-2 border-primary/50 rounded-sm data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                      className={cn("h-8 w-8 border-2 border-primary/50 rounded-sm data-[state=checked]:bg-primary data-[state=checked]:border-primary", prefix === "pggf" && "mt-10")}
                     />
                   </div>
                   
