@@ -116,7 +116,7 @@ export function DateField({
       transition={{ delay, duration: 0.4 }}
       className="w-full"
     >
-      <div className="space-y-4">
+      <div className="space-y-2">
         <div className="flex items-center justify-between">
           <Label htmlFor={name} className={isLargeFonts ? "text-2xl" : ""}>
             {label} {required && <span className="text-destructive">*</span>}

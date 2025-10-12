@@ -157,8 +157,8 @@ export const ApplicantSection = ({ formData, handleInputChange, clearField, isLa
         </motion.div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="space-y-2" onDoubleClick={() => clearField("applicant_pob")}>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 md:items-start">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="space-y-4" onDoubleClick={() => clearField("applicant_pob")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Place of birth</Label>
           <FormInput value={formData?.applicant_pob || ""} onChange={(e) => handleInputChange("applicant_pob", e.target.value.toUpperCase())} isNameField colorScheme="applicant" />
         </motion.div>
