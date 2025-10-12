@@ -370,7 +370,7 @@ export const DocumentsSection = ({ formData, handleInputChange, clearField, isLa
           Required Documents
         </h3>
       </div>
-      <div className="px-4 py-6 md:p-10">
+      <div className="px-2 md:px-4 py-8">
         <FlippableCardsDarkGlow
           title=""
           documents={documents}

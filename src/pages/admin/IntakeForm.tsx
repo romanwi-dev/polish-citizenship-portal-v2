@@ -195,99 +195,95 @@ export default function IntakeForm() {
       </motion.div>
 
         {/* Form with Tabs or Full View */}
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }}>
-          <Card className="glass-card border-primary/20">
-            <CardContent className="pt-6">
-              <Tabs defaultValue="select" value={activeTab} onValueChange={handleTabChange} className="w-full">
-                <div className="sticky top-0 z-20 border-b border-border/50 pb-2 pt-2">
-                  <TabsList ref={tabsListRef} className="w-full inline-flex justify-start gap-2 bg-transparent p-0 overflow-x-auto scrollbar-hide">
-                    <TabsTrigger value="select" className="flex-shrink-0">
-                      <span>Select...</span>
-                    </TabsTrigger>
-                    <TabsTrigger value="applicant" className="flex-shrink-0">
-                      <span>Applicant</span>
-                    </TabsTrigger>
-                    <TabsTrigger value="contact" className="flex-shrink-0">
-                      <span>Contact</span>
-                    </TabsTrigger>
-                    <TabsTrigger value="address" className="flex-shrink-0">
-                      <span>Address</span>
-                    </TabsTrigger>
-                    <TabsTrigger value="passport" className="flex-shrink-0">
-                      <span>Passport</span>
-                    </TabsTrigger>
-                    <TabsTrigger value="immigration" className="flex-shrink-0">
-                      <span>Emigration</span>
-                    </TabsTrigger>
-                    <TabsTrigger value="documents" className="flex-shrink-0">
-                      <span>Documents</span>
-                    </TabsTrigger>
-                    <TabsTrigger value="notes" className="flex-shrink-0">
-                      <span>Notes</span>
-                    </TabsTrigger>
-                  </TabsList>
-                </div>
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="space-y-8">
+          <Tabs defaultValue="select" value={activeTab} onValueChange={handleTabChange} className="w-full">
+            <div className="sticky top-0 z-20 bg-background/80 backdrop-blur-lg border-b border-border/50 pb-2 pt-2 rounded-t-lg">
+              <TabsList ref={tabsListRef} className="w-full inline-flex justify-start gap-2 bg-transparent p-0 overflow-x-auto scrollbar-hide">
+                <TabsTrigger value="select" className="flex-shrink-0">
+                  <span>Select...</span>
+                </TabsTrigger>
+                <TabsTrigger value="applicant" className="flex-shrink-0">
+                  <span>Applicant</span>
+                </TabsTrigger>
+                <TabsTrigger value="contact" className="flex-shrink-0">
+                  <span>Contact</span>
+                </TabsTrigger>
+                <TabsTrigger value="address" className="flex-shrink-0">
+                  <span>Address</span>
+                </TabsTrigger>
+                <TabsTrigger value="passport" className="flex-shrink-0">
+                  <span>Passport</span>
+                </TabsTrigger>
+                <TabsTrigger value="immigration" className="flex-shrink-0">
+                  <span>Emigration</span>
+                </TabsTrigger>
+                <TabsTrigger value="documents" className="flex-shrink-0">
+                  <span>Documents</span>
+                </TabsTrigger>
+                <TabsTrigger value="notes" className="flex-shrink-0">
+                  <span>Notes</span>
+                </TabsTrigger>
+              </TabsList>
+            </div>
 
-              {isFullView ? (
-                // Full View - All sections visible
-                <div className="space-y-0">
-                  <div ref={(el) => sectionRefs.current.select = el} className="border-b border-border/10">
-                    <SelectSection {...contentProps} />
-                  </div>
-                  <div ref={(el) => sectionRefs.current.applicant = el} className="border-b border-border/10">
-                    <ApplicantSection {...contentProps} />
-                  </div>
-                  <div ref={(el) => sectionRefs.current.contact = el} className="border-b border-border/10">
-                    <ContactSection {...contentProps} />
-                  </div>
-                  <div ref={(el) => sectionRefs.current.address = el} className="border-b border-border/10">
-                    <AddressSection {...contentProps} />
-                  </div>
-                  <div ref={(el) => sectionRefs.current.passport = el} className="border-b border-border/10">
-                    <PassportSection {...contentProps} />
-                  </div>
-                  <div ref={(el) => sectionRefs.current.immigration = el} className="border-b border-border/10">
-                    <ImmigrationSection {...contentProps} />
-                  </div>
-                  <div ref={(el) => sectionRefs.current.documents = el} className="border-b border-border/10">
-                    <DocumentsSection {...contentProps} />
-                  </div>
-                  <div ref={(el) => sectionRefs.current.notes = el}>
-                    <NotesSection {...contentProps} />
-                  </div>
+            {isFullView ? (
+              // Full View - All sections visible
+              <div className="space-y-0">
+                <div ref={(el) => sectionRefs.current.select = el} className="border-b border-border/10">
+                  <SelectSection {...contentProps} />
                 </div>
-              ) : (
-                // Tabbed View
-                <>
-                  <TabsContent value="select" className="mt-0">
-                    <SelectSection {...contentProps} />
-                  </TabsContent>
-                  <TabsContent value="applicant" className="mt-0">
-                    <ApplicantSection {...contentProps} />
-                  </TabsContent>
-                  <TabsContent value="contact" className="mt-0">
-                    <ContactSection {...contentProps} />
-                  </TabsContent>
-                  <TabsContent value="address" className="mt-0">
-                    <AddressSection {...contentProps} />
-                  </TabsContent>
-                  <TabsContent value="passport" className="mt-0">
-                    <PassportSection {...contentProps} />
-                  </TabsContent>
-                  <TabsContent value="immigration" className="mt-0">
-                    <ImmigrationSection {...contentProps} />
-                  </TabsContent>
-                  <TabsContent value="documents" className="mt-0">
-                    <DocumentsSection {...contentProps} />
-                  </TabsContent>
-                  <TabsContent value="notes" className="mt-0">
-                    <NotesSection {...contentProps} />
-                  </TabsContent>
-                </>
-              )}
-            </Tabs>
-            </CardContent>
-          </Card>
+                <div ref={(el) => sectionRefs.current.applicant = el} className="border-b border-border/10">
+                  <ApplicantSection {...contentProps} />
+                </div>
+                <div ref={(el) => sectionRefs.current.contact = el} className="border-b border-border/10">
+                  <ContactSection {...contentProps} />
+                </div>
+                <div ref={(el) => sectionRefs.current.address = el} className="border-b border-border/10">
+                  <AddressSection {...contentProps} />
+                </div>
+                <div ref={(el) => sectionRefs.current.passport = el} className="border-b border-border/10">
+                  <PassportSection {...contentProps} />
+                </div>
+                <div ref={(el) => sectionRefs.current.immigration = el} className="border-b border-border/10">
+                  <ImmigrationSection {...contentProps} />
+                </div>
+                <div ref={(el) => sectionRefs.current.documents = el} className="border-b border-border/10">
+                  <DocumentsSection {...contentProps} />
+                </div>
+                <div ref={(el) => sectionRefs.current.notes = el}>
+                  <NotesSection {...contentProps} />
+                </div>
+              </div>
+            ) : (
+              // Tabbed View
+              <>
+                <TabsContent value="select" className="mt-0">
+                  <SelectSection {...contentProps} />
+                </TabsContent>
+                <TabsContent value="applicant" className="mt-0">
+                  <ApplicantSection {...contentProps} />
+                </TabsContent>
+                <TabsContent value="contact" className="mt-0">
+                  <ContactSection {...contentProps} />
+                </TabsContent>
+                <TabsContent value="address" className="mt-0">
+                  <AddressSection {...contentProps} />
+                </TabsContent>
+                <TabsContent value="passport" className="mt-0">
+                  <PassportSection {...contentProps} />
+                </TabsContent>
+                <TabsContent value="immigration" className="mt-0">
+                  <ImmigrationSection {...contentProps} />
+                </TabsContent>
+                <TabsContent value="documents" className="mt-0">
+                  <DocumentsSection {...contentProps} />
+                </TabsContent>
+                <TabsContent value="notes" className="mt-0">
+                  <NotesSection {...contentProps} />
+                </TabsContent>
+              </>
+            )}
+          </Tabs>
         </motion.div>
       </div>
 

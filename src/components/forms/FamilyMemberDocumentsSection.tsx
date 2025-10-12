@@ -120,8 +120,8 @@ export const FamilyMemberDocumentsSection = ({
   };
 
   return (
-    <div className="space-y-6 py-4">
-      <h3 className="text-2xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-4">
+    <>
+      <h3 className="text-2xl md:text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mt-6 mb-4">
         {title}
       </h3>
       <FlippableCardsDarkGlow
@@ -129,6 +129,6 @@ export const FamilyMemberDocumentsSection = ({
         documents={documents}
         onChange={handleDocumentsChange}
       />
-    </div>
+    </>
   );
 };

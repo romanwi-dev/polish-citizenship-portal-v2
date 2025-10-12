@@ -853,8 +853,8 @@ export default function FamilyTreeForm() {
               </p>
             </div>
 
-            {Array.from({ length: formData.minor_children_count || 0 }, (_, i) => i + 1).map(num => <div key={num} className="p-6 border-2 border-border/50 rounded-xl bg-card/30 backdrop-blur space-y-6">
-                <h3 className="text-xl font-semibold text-foreground">Minor Child {num}</h3>
+            {Array.from({ length: formData.minor_children_count || 0 }, (_, i) => i + 1).map(num => <div key={num} className="space-y-6 mb-12">
+                <h3 className="text-2xl md:text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Minor Child {num}</h3>
                 {/* 1st row - Name fields */}
                 {renderFieldGroup([{
               name: `child_${num}_first_name`,
@@ -922,12 +922,7 @@ export default function FamilyTreeForm() {
               </h2>
 
               {/* Father */}
-              <div className={cn(
-                "p-8 rounded-lg border-2 space-y-8",
-                formData.father_is_polish 
-                  ? "bg-red-950/30 border-red-900/50" 
-                  : "bg-card/30 border-border/50"
-              )}>
+              <div className="space-y-8">
                 <h3 className={cn(
                   "text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent",
                   formData.father_is_polish && "text-red-400"
@@ -1006,12 +1001,7 @@ export default function FamilyTreeForm() {
               </div>
 
               {/* Mother */}
-              <div className={cn(
-                "p-8 rounded-lg border-2 space-y-8",
-                formData.mother_is_polish 
-                  ? "bg-red-950/30 border-red-900/50" 
-                  : "bg-card/30 border-border/50"
-              )}>
+              <div className="space-y-8">
                 <h3 className={cn(
                   "text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent",
                   formData.mother_is_polish && "text-red-400"
@@ -1123,12 +1113,7 @@ export default function FamilyTreeForm() {
                   mgf: "Maternal Grandfather",
                   mgm: "Maternal Grandmother"
                 };
-                return <div key={prefix} className={cn(
-                  "p-8 rounded-lg border-2 space-y-8 mb-8",
-                  formData[`${prefix}_is_polish`] 
-                    ? "bg-red-950/30 border-red-900/50" 
-                    : "bg-card/30 border-border/50"
-                )}>
+                return <div key={prefix} className="space-y-8 mb-12">
                   <h3 className={cn(
                     "text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent",
                     formData[`${prefix}_is_polish`] && "text-red-400"
@@ -1246,12 +1231,7 @@ export default function FamilyTreeForm() {
                   pggf: "Paternal Great-Grandfather (Father's Line)",
                   mggf: "Maternal Great-Grandfather (Mother's Line)"
                 };
-                return <div key={prefix} className={cn(
-                  "p-8 rounded-lg border-2 space-y-8 mb-8",
-                  formData[`${prefix}_is_polish`] 
-                    ? "bg-red-950/30 border-red-900/50" 
-                    : "bg-card/30 border-border/50"
-                )}>
+                return <div key={prefix} className="space-y-8 mb-12">
                   <h3 className={cn(
                     "text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent",
                     formData[`${prefix}_is_polish`] && "text-red-400"
