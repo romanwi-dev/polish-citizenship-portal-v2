@@ -297,25 +297,25 @@ export default function IntakeDemo() {
             <Input
               value={poaInputs.field1}
               onChange={(e) => setPoaInputs(prev => ({ ...prev, field1: e.target.value }))}
-              className="h-16 bg-slate-100/45 dark:bg-slate-800/45 border border-slate-300/30 dark:border-slate-500/30 hover:border-transparent focus:border-transparent transition-all duration-300"
+              className="h-16 bg-slate-50/45 dark:bg-slate-800/45 border border-slate-200/30 dark:border-slate-500/30 hover:border-transparent focus:border-transparent transition-all duration-300"
               style={{
-                boxShadow: "0 0 30px rgba(148,163,184,0.25)",
+                boxShadow: "0 0 30px rgba(203,213,225,0.25)",
                 transition: "all 0.3s ease"
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 50px rgba(148,163,184,0.4)";
+                e.currentTarget.style.boxShadow = "0 0 50px rgba(203,213,225,0.4)";
                 e.currentTarget.style.transform = "translateY(-2px)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 30px rgba(148,163,184,0.25)";
+                e.currentTarget.style.boxShadow = "0 0 30px rgba(203,213,225,0.25)";
                 e.currentTarget.style.transform = "translateY(0)";
               }}
               onFocus={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 60px rgba(148,163,184,0.5)";
+                e.currentTarget.style.boxShadow = "0 0 60px rgba(203,213,225,0.5)";
                 e.currentTarget.style.transform = "translateY(-2px)";
               }}
               onBlur={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 30px rgba(148,163,184,0.25)";
+                e.currentTarget.style.boxShadow = "0 0 30px rgba(203,213,225,0.25)";
                 e.currentTarget.style.transform = "translateY(0)";
               }}
             />
@@ -355,25 +355,25 @@ export default function IntakeDemo() {
             <Input
               value={civilRegistryInputs.field1}
               onChange={(e) => setCivilRegistryInputs(prev => ({ ...prev, field1: e.target.value }))}
-              className="h-16 bg-green-100/45 dark:bg-green-900/45 border border-green-300/30 dark:border-green-500/30 hover:border-transparent focus:border-transparent transition-all duration-300"
+              className="h-16 bg-emerald-50/45 dark:bg-emerald-900/45 border border-emerald-300/30 dark:border-emerald-500/30 hover:border-transparent focus:border-transparent transition-all duration-300"
               style={{
-                boxShadow: "0 0 30px rgba(134,239,172,0.25)",
+                boxShadow: "0 0 30px rgba(110,231,183,0.25)",
                 transition: "all 0.3s ease"
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 50px rgba(134,239,172,0.4)";
+                e.currentTarget.style.boxShadow = "0 0 50px rgba(110,231,183,0.4)";
                 e.currentTarget.style.transform = "translateY(-2px)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 30px rgba(134,239,172,0.25)";
+                e.currentTarget.style.boxShadow = "0 0 30px rgba(110,231,183,0.25)";
                 e.currentTarget.style.transform = "translateY(0)";
               }}
               onFocus={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 60px rgba(134,239,172,0.5)";
+                e.currentTarget.style.boxShadow = "0 0 60px rgba(110,231,183,0.5)";
                 e.currentTarget.style.transform = "translateY(-2px)";
               }}
               onBlur={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 30px rgba(134,239,172,0.25)";
+                e.currentTarget.style.boxShadow = "0 0 30px rgba(110,231,183,0.25)";
                 e.currentTarget.style.transform = "translateY(0)";
               }}
             />
