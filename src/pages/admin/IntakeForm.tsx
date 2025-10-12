@@ -111,7 +111,11 @@ export default function IntakeForm() {
   }
 
   return (
-    <div className="relative">
+    <div className="relative min-h-screen">
+      {/* Background Effects */}
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+      
       <div className="container mx-auto py-12 px-2 md:px-6 lg:px-8 relative z-10 max-w-7xl">
         {/* Header */}
         <motion.div 

@@ -336,7 +336,11 @@ export default function POAForm() {
   }
 
   return (
-    <div className="relative">
+    <div className="relative min-h-screen">
+      {/* Background Effects */}
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+      
       <div className="py-6 px-4 md:px-6 lg:px-8 relative z-10 max-w-7xl mx-auto">
         {/* Header */}
         <Card className="glass-card border-primary/20 mb-6">
