@@ -29,7 +29,7 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
           <Label className={isLargeFonts ? "text-2xl" : ""}>Gender</Label>
           <Select value={formData?.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
             <SelectTrigger 
-              className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur"
+              className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
               style={{
                 boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
               }}
@@ -53,7 +53,7 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
           <Label className={isLargeFonts ? "text-2xl" : ""}>Marital status</Label>
           <Select value={formData?.applicant_is_married === true ? "Married" : "Single"} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
             <SelectTrigger 
-              className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur"
+              className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
               style={{
                 boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
               }}
@@ -79,7 +79,7 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
           <Label className={isLargeFonts ? "text-2xl" : ""}>Number of children</Label>
           <Select value={formData?.children_count?.toString() || ""} onValueChange={(value) => handleInputChange("children_count", parseInt(value))}>
             <SelectTrigger 
-              className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur z-50"
+              className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur z-50"
               style={{
                 boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
               }}
@@ -105,7 +105,7 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
             <Label className={isLargeFonts ? "text-2xl" : ""}>Number of minor children</Label>
             <Select value={formData?.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
               <SelectTrigger 
-                className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur"
+                className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
                 style={{
                   boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
                 }}
