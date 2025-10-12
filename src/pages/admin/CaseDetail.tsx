@@ -133,7 +133,7 @@ export default function CaseDetail() {
 
   return (
     <AdminLayout>
-      <div className="p-6 max-w-[1600px] mx-auto">
+      <div className="p-6 max-w-[1600px] mx-auto relative">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-4 mb-4">
