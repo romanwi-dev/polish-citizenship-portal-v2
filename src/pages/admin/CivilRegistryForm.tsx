@@ -149,6 +149,7 @@ export default function CivilRegistryForm() {
         }
       }}
       delay={delay}
+      colorScheme="civil-reg"
     />;
   };
   const renderFieldGroup = (fields: Array<{

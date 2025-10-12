@@ -510,12 +510,12 @@ export default function POAForm() {
                         value={formData?.place_of_marriage || ""}
                         onChange={(value) => handleInputChange("place_of_marriage", value)}
                       />
-                      <POAFormField
+                      <DateField
                         name="date_of_marriage"
                         label="Date of marriage / Data zawarcia związku małżeńskiego"
                         value={formData?.date_of_marriage || ""}
                         onChange={(value) => handleInputChange("date_of_marriage", value)}
-                        type="date"
+                        colorScheme="poa"
                       />
                     </div>
                   </div>

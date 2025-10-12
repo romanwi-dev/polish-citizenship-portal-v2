@@ -240,6 +240,7 @@ export default function CitizenshipForm() {
         }
       }}
       delay={delay}
+      colorScheme="citizenship"
     />;
   };
 

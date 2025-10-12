@@ -25,30 +25,40 @@ interface FlippableCardsDarkGlowProps {
 const colorSchemes = {
   children: {
     bg: 'from-cyan-400 to-teal-500',
+    cardBg: 'bg-cyan-100/45 dark:bg-cyan-900/45',
+    cardBorder: 'border-cyan-300/30 dark:border-cyan-500/30',
     badge: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20',
     button: 'bg-cyan-500/10 border-cyan-500/40 hover:bg-cyan-500/20',
     glow: 'rgba(34, 211, 238, 0.3)',
   },
   applicant: {
     bg: 'from-blue-400 to-blue-600',
+    cardBg: 'bg-blue-50/45 dark:bg-blue-950/40',
+    cardBorder: 'border-blue-200/30 dark:border-blue-800/30',
     badge: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
     button: 'bg-blue-500/10 border-blue-500/40 hover:bg-blue-500/20',
     glow: 'rgba(59, 130, 246, 0.3)',
   },
   parents: {
     bg: 'from-teal-400 to-teal-600',
+    cardBg: 'bg-teal-50/45 dark:bg-teal-950/45',
+    cardBorder: 'border-teal-400/30 dark:border-teal-600/30',
     badge: 'bg-teal-500/10 text-teal-400 border-teal-500/20',
     button: 'bg-teal-500/10 border-teal-500/40 hover:bg-teal-500/20',
     glow: 'rgba(20, 184, 166, 0.3)',
   },
   grandparents: {
     bg: 'from-red-400 to-red-600',
+    cardBg: 'bg-red-50/45 dark:bg-red-950/45',
+    cardBorder: 'border-red-400/30 dark:border-red-600/30',
     badge: 'bg-red-500/10 text-red-400 border-red-500/20',
     button: 'bg-red-500/10 border-red-500/40 hover:bg-red-500/20',
     glow: 'rgba(239, 68, 68, 0.3)',
   },
   ggp: {
     bg: 'from-gray-400 to-gray-600',
+    cardBg: 'bg-gray-100/45 dark:bg-gray-800/45',
+    cardBorder: 'border-gray-200/30 dark:border-gray-600/30',
     badge: 'bg-gray-500/10 text-gray-400 border-gray-500/20',
     button: 'bg-gray-500/10 border-gray-500/40 hover:bg-gray-500/20',
     glow: 'rgba(156, 163, 175, 0.3)',
@@ -135,14 +145,16 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange, colorScheme
                   whileHover={doc.checked ? {} : { scale: 1.02 }}
                   transition={{ duration: 0.3 }}
                   className={cn(
-                    "absolute inset-0 glass-card p-6 rounded-lg group",
+                    "absolute inset-0 p-6 rounded-lg group border-2",
+                    scheme.cardBg,
+                    scheme.cardBorder,
                     !doc.checked && "hover-glow",
                     doc.checked && "border-green-500/40 opacity-60"
                   )}
                   style={{ 
                     backfaceVisibility: 'hidden',
                     WebkitBackfaceVisibility: 'hidden',
-                    boxShadow: doc.checked ? 'none' : undefined
+                    boxShadow: doc.checked ? 'none' : `0 8px 32px ${scheme.glow}`
                   }}
                 >
                   <div className="flex flex-col gap-3 h-full">

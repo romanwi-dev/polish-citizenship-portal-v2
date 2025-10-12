@@ -234,6 +234,7 @@ export default function FamilyTreeForm() {
         }
       }}
       delay={delay}
+      colorScheme={colorScheme}
     />;
   };
   const renderFieldGroup = (fields: Array<{
