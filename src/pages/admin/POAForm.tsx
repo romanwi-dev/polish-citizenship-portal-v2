@@ -409,7 +409,7 @@ export default function POAForm() {
           {/* POA Adult */}
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0 }} className="space-y-6">
             <div {...adultCardLongPress.handlers} className="cursor-pointer select-none hover:opacity-80 transition-opacity border-b border-border/50 pb-6">
-              <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              <h2 className="text-4xl md:text-5xl font-heading font-bold text-gray-600 dark:text-gray-400">
                 {poaFormConfigs.adult.title}
               </h2>
             </div>
@@ -553,7 +553,7 @@ export default function POAForm() {
               className="space-y-6"
             >
               <div {...minorCardLongPress.handlers} className="cursor-pointer select-none hover:opacity-80 transition-opacity border-b border-border/50 pb-6">
-                <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                <h2 className="text-4xl md:text-5xl font-heading font-bold text-gray-600 dark:text-gray-400">
                   {poaFormConfigs.minor.title} {minorChildrenCount > 1 ? `- Child ${index + 1}` : ''}
                 </h2>
               </div>
@@ -612,7 +612,7 @@ export default function POAForm() {
           {showSpousePOA && (
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.2 }} className="space-y-6">
               <div {...spousesCardLongPress.handlers} className="cursor-pointer select-none hover:opacity-80 transition-opacity border-b border-border/50 pb-6">
-                <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                <h2 className="text-4xl md:text-5xl font-heading font-bold text-gray-600 dark:text-gray-400">
                   {poaFormConfigs.spouses.title}
                 </h2>
               </div>
