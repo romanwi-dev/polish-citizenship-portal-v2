@@ -715,7 +715,7 @@ export default function FamilyTreeForm() {
                     value={formData.applicant_notes || ""}
                     onChange={e => handleInputChange("applicant_notes", e.target.value.toUpperCase())}
                     placeholder=""
-                    className={cn("min-h-[200px] border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                    className={cn("min-h-[200px] border-2 border-blue-300/10 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
                   />
                 </div>
           </motion.div>
@@ -887,14 +887,11 @@ export default function FamilyTreeForm() {
           duration: 0.5,
           delay: 0.3
         }} className="space-y-10">
-              <h2 className="text-4xl md:text-5xl font-heading font-bold text-teal-600 dark:text-teal-400 border-b border-border/50 pb-6 mb-10">
-                Parents
-              </h2>
 
               {/* Father */}
               <div className="space-y-8">
                 <h3 className={cn(
-                  "text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent",
+                  "text-3xl font-heading font-bold text-teal-600/80 dark:text-teal-400/80",
                   formData.father_is_polish && "text-red-400"
                 )}>
                   Father
@@ -968,14 +965,14 @@ export default function FamilyTreeForm() {
                     onChange={e => handleInputChange("father_notes", e.target.value.toUpperCase())}
                     placeholder=""
                     colorScheme="parents"
-                    className={cn("min-h-[200px] border-2 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase")}
+                    className={cn("min-h-[200px] border-2 border-teal-300/10 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase")}
                   />
                 </div>
               </div>
 
               {/* Mother */}
               <h3 className={cn(
-                "text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mt-10",
+                "text-3xl font-heading font-bold text-teal-600/80 dark:text-teal-400/80 mt-10",
                 formData.mother_is_polish && "text-red-400"
               )}>
                 Mother
@@ -1053,7 +1050,7 @@ export default function FamilyTreeForm() {
                     onChange={e => handleInputChange("mother_notes", e.target.value.toUpperCase())}
                     placeholder=""
                     colorScheme="parents"
-                    className={cn("min-h-[200px] border-2 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase")}
+                    className={cn("min-h-[200px] border-2 border-teal-300/10 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase")}
                   />
                 </div>
           </motion.div>
@@ -1074,9 +1071,6 @@ export default function FamilyTreeForm() {
           duration: 0.5,
           delay: 0.4
         }} className="space-y-10">
-              <h2 className="text-4xl md:text-5xl font-heading font-bold text-red-600 dark:text-red-400 border-b border-border/50 pb-6 mb-10">
-                Grandparents
-              </h2>
 
               {["pgf", "pgm", "mgf", "mgm"].map(prefix => {
                 const labels = {
@@ -1088,7 +1082,7 @@ export default function FamilyTreeForm() {
                 const sex = prefix.endsWith('f') ? 'M' : 'F';
                 return <Fragment key={prefix}>
                   <h3 className={cn(
-                    "text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent",
+                    "text-3xl font-heading font-bold text-red-600/80 dark:text-red-400/80",
                     formData[`${prefix}_is_polish`] && "text-red-400"
                   )}>
                     {labels[prefix as keyof typeof labels]}
@@ -1167,7 +1161,7 @@ export default function FamilyTreeForm() {
                       value={formData[`${prefix}_notes`] || ""}
                       onChange={e => handleInputChange(`${prefix}_notes`, e.target.value.toUpperCase())}
                       placeholder=""
-                      className={cn("min-h-[200px] border-2 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase")}
+                      className={cn("min-h-[200px] border-2 border-red-300/10 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase")}
                     />
                   </div>
                 </Fragment>;
@@ -1190,14 +1184,6 @@ export default function FamilyTreeForm() {
           duration: 0.5,
           delay: 0.5
         }} className="space-y-10">
-              <div className="border-b border-border/50 pb-6 mb-10">
-                <h2 className="text-4xl md:text-5xl font-heading font-bold text-gray-600 dark:text-gray-400">
-                  Great Grandfathers
-                </h2>
-                <p className="text-base mt-2">
-                  Focus on the 2 Polish great-grandfathers only. Great-grandmothers are not relevant for this process.
-                </p>
-              </div>
 
               {["pggf", "mggf"].map(prefix => {
                 const labels = {
@@ -1207,7 +1193,7 @@ export default function FamilyTreeForm() {
                 const sex = 'M'; // Great-grandfathers are always male
                 return <Fragment key={prefix}>
                   <h3 className={cn(
-                    "text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent",
+                    "text-3xl font-heading font-bold text-gray-600/80 dark:text-gray-400/80",
                     formData[`${prefix}_is_polish`] && "text-red-400"
                   )}>
                     {labels[prefix as keyof typeof labels]}
@@ -1285,7 +1271,7 @@ export default function FamilyTreeForm() {
                       onChange={e => handleInputChange(`${prefix}_notes`, e.target.value.toUpperCase())}
                       placeholder="Enter biographical information and family history details..."
                       colorScheme="ggp"
-                      className={cn("min-h-[200px] border-2 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase")}
+                      className={cn("min-h-[200px] border-2 border-gray-300/10 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase")}
                     />
                   </div>
                 </Fragment>;

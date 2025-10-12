@@ -19,7 +19,6 @@ const navigationButtons = [
   { id: 'poa', label: 'Power of Attorney', icon: FileCheck, path: '/admin/cases/:id/poa' },
   { id: 'citizenship', label: 'Citizenship Application', icon: Award, path: '/admin/cases/:id/citizenship' },
   { id: 'civil-registry', label: 'Civil Registry', icon: Building, path: '/admin/cases/:id/civil-registry' },
-  { id: 'additional-data', label: 'Additional Data', icon: FolderOpen, path: '/admin/cases/:id/additional-data' },
 ];
 
 export function FormButtonsRow({ 
@@ -67,7 +66,7 @@ export function FormButtonsRow({
 
       {/* Navigation Buttons */}
       {navigationButtons
-        .filter(btn => btn.id !== currentForm && !((currentForm === 'intake' || currentForm === 'poa') && btn.id === 'additional-data'))
+        .filter(btn => btn.id !== currentForm)
         .map((btn) => {
           const isCurrent = btn.id === currentForm;
           const Icon = btn.icon;
