@@ -888,7 +888,7 @@ export default function FamilyTreeForm() {
                     id="father_is_polish"
                     checked={formData.father_is_polish || false}
                     onCheckedChange={(checked) => handleInputChange("father_is_polish", checked)}
-                    className="h-6 w-6 border-2 border-primary/10"
+                    className="h-8 w-8 border-2 border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
                   />
                 </div>
 
@@ -970,7 +970,7 @@ export default function FamilyTreeForm() {
                   id="mother_is_polish"
                   checked={formData.mother_is_polish || false}
                   onCheckedChange={(checked) => handleInputChange("mother_is_polish", checked)}
-                  className="h-6 w-6 border-2 border-primary/10"
+                  className="h-8 w-8 border-2 border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
                 />
               </div>
 
@@ -1082,7 +1082,7 @@ export default function FamilyTreeForm() {
                       id={`${prefix}_is_polish`}
                       checked={formData[`${prefix}_is_polish`] || false}
                       onCheckedChange={(checked) => handleInputChange(`${prefix}_is_polish`, checked)}
-                      className="h-6 w-6 border-2 border-primary/10"
+                      className="h-8 w-8 border-2 border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
                     />
                   </div>
 
@@ -1194,7 +1194,7 @@ export default function FamilyTreeForm() {
                       id={`${prefix}_is_polish`}
                       checked={formData[`${prefix}_is_polish`] || false}
                       onCheckedChange={(checked) => handleInputChange(`${prefix}_is_polish`, checked)}
-                      className="h-6 w-6 border-2 border-primary/10"
+                      className="h-8 w-8 border-2 border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
                     />
                   </div>
                   
