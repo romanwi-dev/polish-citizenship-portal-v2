@@ -135,67 +135,14 @@ export default function CaseDetail() {
     <AdminLayout>
       <div className="p-6 max-w-[1600px] mx-auto">
         {/* Header */}
-        <div className="flex items-center gap-3 mb-6 relative z-50">
+        <div className="flex items-center gap-3 mb-6">
           <Button
             variant="ghost"
             onClick={() => navigate("/admin/cases")}
-            className="h-10 w-10 p-0 flex-shrink-0 relative z-[100]"
+            className="h-10 w-10 p-0"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <div className="w-full overflow-x-auto pb-2 relative z-50">
-            <div className="inline-flex gap-2 w-max relative z-50">
-              <Button 
-                onClick={() => setShowEditDialog(true)}
-                className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0 relative z-[100]"
-              >
-                <Edit className="h-3.5 w-3.5 mr-2" />
-                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                  Edit
-                </span>
-              </Button>
-              <Button 
-                onClick={() => navigate(`/admin/cases/${id}/intake`)}
-                className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0 relative z-[100]"
-              >
-                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                  Intake Form
-                </span>
-              </Button>
-              <Button
-                onClick={() => navigate(`/admin/cases/${id}/poa`)}
-                className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0 relative z-50"
-              >
-                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                  POA Forms
-                </span>
-              </Button>
-              <Button 
-                onClick={() => navigate(`/admin/cases/${id}/citizenship`)}
-                className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0 relative z-50"
-              >
-                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                  Citizenship
-                </span>
-              </Button>
-              <Button 
-                onClick={() => navigate(`/admin/cases/${id}/civil-registry`)}
-                className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0 relative z-50"
-              >
-                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                  Civil Registry
-                </span>
-              </Button>
-              <Button 
-                onClick={() => navigate(`/admin/cases/${id}/family-history`)}
-                className="min-w-[140px] font-semibold px-6 py-3 h-auto rounded-lg bg-card/60 hover:bg-card/70 hover:shadow-[0_0_30px_hsl(221_83%_53%_/_0.3)] transition-all backdrop-blur-md border border-white/20 flex-shrink-0 relative z-50"
-              >
-                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                  Family History
-                </span>
-              </Button>
-            </div>
-          </div>
         </div>
 
         {/* Client Info Header */}
@@ -212,6 +159,16 @@ export default function CaseDetail() {
         <Tabs defaultValue={defaultTab} className="space-y-6 relative z-10" onValueChange={(value) => setSearchParams({ tab: value })}>
           <div className="w-full overflow-x-auto pb-4">
             <TabsList className="inline-flex gap-3 bg-transparent h-auto p-0 w-max">
+              <TabsTrigger 
+                value="edit"
+                onClick={() => setShowEditDialog(true)}
+                className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-card/80 hover:bg-card/90 hover:shadow-[0_0_40px_hsl(221_83%_53%_/_0.4)] transition-all group relative backdrop-blur-md border border-white/30 data-[state=active]:bg-card flex-shrink-0 md:flex-1"
+              >
+                <Edit className="h-4 w-4 mr-2" />
+                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                  Edit
+                </span>
+              </TabsTrigger>
               <TabsTrigger 
                 value="ai-agent"
                 className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-card/80 hover:bg-card/90 hover:shadow-[0_0_40px_hsl(221_83%_53%_/_0.4)] transition-all group relative backdrop-blur-md border border-white/30 data-[state=active]:bg-card flex-shrink-0 md:flex-1"
