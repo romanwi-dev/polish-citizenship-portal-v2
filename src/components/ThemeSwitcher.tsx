@@ -11,10 +11,6 @@ import { useEffect, useState } from "react";
 const themes = [
   { name: "Dark", icon: Moon, className: "dark" },
   { name: "Light", icon: Sun, className: "light" },
-  { name: "Ocean", icon: Droplets, className: "ocean" },
-  { name: "Sunset", icon: Sunset, className: "sunset" },
-  { name: "Forest", icon: Trees, className: "forest" },
-  { name: "Royal", icon: Crown, className: "royal" },
 ];
 
 export function ThemeSwitcher() {
