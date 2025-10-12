@@ -96,8 +96,6 @@ export function DateField({
   const { isLargeFonts } = useAccessibility();
   const [error, setError] = useState<string>("");
   const scheme = colorSchemes[colorScheme];
-  
-  console.log('[DateField] Rendering with colorScheme:', colorScheme, 'scheme:', scheme);
 
   const handleChange = (newValue: string) => {
     onChange(newValue);
