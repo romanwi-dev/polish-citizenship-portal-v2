@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Save, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useRef, useEffect } from "react";
 import { Loader2, Type, Maximize2, Minimize2, User, Phone, MapPin, Plane, Users, FolderOpen, MessageSquare, ArrowLeft, HelpCircle } from "lucide-react";
@@ -185,10 +186,10 @@ export default function IntakeForm() {
         <FormButtonsRow 
           caseId={caseId!}
           currentForm="intake"
-          onSave={handleSave}
-          onClear={() => setShowClearDialog(true)}
+          onSave={() => {}}
+          onClear={() => {}}
           onGeneratePDF={() => {}}
-          isSaving={isSaving}
+          isSaving={false}
         />
 
         {/* Form with Tabs or Full View */}
@@ -264,6 +265,28 @@ export default function IntakeForm() {
             )}
           </Tabs>
         </motion.div>
+
+        {/* Sticky Bottom Row with Save and Clear Buttons */}
+        <div className="sticky bottom-0 left-0 right-0 bg-background/95 backdrop-blur-md border-t border-border/50 py-4 px-4 z-50">
+          <div className="container mx-auto max-w-7xl flex gap-3">
+            <Button
+              onClick={handleSave}
+              disabled={isSaving}
+              className="h-12 lg:h-14 px-6 lg:px-8 text-base lg:text-lg font-bold bg-green-500/20 hover:bg-green-500/30 backdrop-blur-md border border-green-400/40 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]"
+            >
+              <Save className="mr-2 h-5 w-5" />
+              <span className="text-green-100 font-bold">{isSaving ? "Saving..." : "Save data"}</span>
+            </Button>
+            
+            <Button
+              onClick={() => setShowClearDialog(true)}
+              className="h-12 lg:h-14 px-6 lg:px-8 text-base lg:text-lg font-bold bg-red-500/20 hover:bg-red-500/30 backdrop-blur-md border border-red-400/40 transition-all shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]"
+            >
+              <Sparkles className="mr-2 h-5 w-5" />
+              <span className="text-red-100 font-bold">Clear Data</span>
+            </Button>
+          </div>
+        </div>
       </div>
 
       {/* Clear All Confirmation Dialog */}
