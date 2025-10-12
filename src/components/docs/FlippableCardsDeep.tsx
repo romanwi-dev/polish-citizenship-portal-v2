@@ -33,20 +33,22 @@ export const FlippableCardsDeep = ({ title, documents, onChange }: FlippableCard
   const allChecked = documents.every(doc => doc.checked);
 
   return (
-    <div className={cn(
-      "p-8 rounded-xl transition-all duration-700 relative",
-      allChecked 
-        ? "bg-gradient-to-br from-green-950 to-emerald-950/80" 
-        : "bg-gradient-to-br from-slate-950 to-slate-900/80"
-    )}>
-      {/* Subtle animated gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-primary/5 to-transparent opacity-50 animate-pulse" />
+    <div className="relative p-8 rounded-xl overflow-hidden">
+      {/* Background effects - matching timeline */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
+      <div className="absolute inset-0" style={{
+        backgroundImage: `radial-gradient(circle at 2px 2px, hsl(var(--primary) / 0.1) 1px, transparent 0)`,
+        backgroundSize: '48px 48px'
+      }} />
       
-      <h3 className="text-2xl font-semibold mb-8 text-center relative z-10">
+      {/* Content */}
+      <div className="relative z-10">
+      
+      <h3 className="text-2xl font-semibold mb-8 text-center">
         {title}
       </h3>
-      
-      <div className="grid grid-cols-2 gap-6 relative z-10">
+
+      <div className="grid grid-cols-2 gap-6">
         {documents.map((doc) => (
           <div key={doc.id} className="relative h-56">
             <div 
@@ -113,6 +115,7 @@ export const FlippableCardsDeep = ({ title, documents, onChange }: FlippableCard
             </div>
           </div>
         ))}
+      </div>
       </div>
     </div>
   );
