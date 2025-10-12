@@ -1059,10 +1059,10 @@ export default function FamilyTreeForm() {
           )}
         </TabsContent>
 
-        <TabsContent value="grandparents" className="mt-0">
+        <TabsContent value="grandparents" className="mt-0" {...(isFullView ? { forceMount: true } : {})}>
 
           {/* Grandparents Section */}
-          {activeTab === 'grandparents' && (
+          {(activeTab === 'grandparents' || isFullView) && (
           <motion.div initial={{
           opacity: 0,
           scale: 0.95
