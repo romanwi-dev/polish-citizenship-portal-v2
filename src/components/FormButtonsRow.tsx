@@ -67,7 +67,7 @@ export function FormButtonsRow({
 
       {/* Navigation Buttons */}
       {navigationButtons
-        .filter(btn => btn.id !== currentForm && !(currentForm === 'intake' && btn.id === 'additional-data'))
+        .filter(btn => btn.id !== currentForm && !((currentForm === 'intake' || currentForm === 'poa') && btn.id === 'additional-data'))
         .map((btn) => {
           const isCurrent = btn.id === currentForm;
           const Icon = btn.icon;
