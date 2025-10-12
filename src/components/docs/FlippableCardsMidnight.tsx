@@ -56,22 +56,7 @@ export const FlippableCardsMidnight = ({ title, documents, onChange }: Flippable
   };
 
   return (
-    <div className="relative p-8 rounded-xl overflow-hidden">
-      {/* Background effects - matching timeline */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
-      <div className="absolute inset-0" style={{
-        backgroundImage: `radial-gradient(circle at 2px 2px, hsl(var(--primary) / 0.1) 1px, transparent 0)`,
-        backgroundSize: '48px 48px'
-      }} />
-      
-      {/* Content */}
-      <div className="relative z-10">
-      {/* Radial glow effect */}
-      <div className={cn(
-        "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full blur-3xl transition-all duration-700",
-        allChecked ? "bg-green-500/10" : "bg-primary/10"
-      )} />
-
+    <div className="w-full">
       <div className="flex items-center gap-3 mb-6 relative z-10">
         <Checkbox
           checked={allChecked}
@@ -85,7 +70,7 @@ export const FlippableCardsMidnight = ({ title, documents, onChange }: Flippable
           {title}
         </h3>
       </div>
-      
+
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 relative z-10 max-w-7xl mx-auto">
         {documents.map((doc) => (
           <div key={doc.id} className="relative" style={{ aspectRatio: '1/1.414', maxWidth: '280px' }}>
@@ -167,7 +152,6 @@ export const FlippableCardsMidnight = ({ title, documents, onChange }: Flippable
             </div>
           </div>
         ))}
-      </div>
       </div>
     </div>
   );

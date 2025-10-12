@@ -33,17 +33,7 @@ export const FlippableCardsDeep = ({ title, documents, onChange }: FlippableCard
   const allChecked = documents.every(doc => doc.checked);
 
   return (
-    <div className="relative p-8 rounded-xl overflow-hidden">
-      {/* Background effects - matching timeline */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
-      <div className="absolute inset-0" style={{
-        backgroundImage: `radial-gradient(circle at 2px 2px, hsl(var(--primary) / 0.1) 1px, transparent 0)`,
-        backgroundSize: '48px 48px'
-      }} />
-      
-      {/* Content */}
-      <div className="relative z-10">
-      
+    <div className="w-full">
       <h3 className="text-2xl font-semibold mb-8 text-center">
         {title}
       </h3>
@@ -115,7 +105,6 @@ export const FlippableCardsDeep = ({ title, documents, onChange }: FlippableCard
             </div>
           </div>
         ))}
-      </div>
       </div>
     </div>
   );
