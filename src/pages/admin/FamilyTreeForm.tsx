@@ -256,7 +256,7 @@ export default function FamilyTreeForm() {
         delay: idx * 0.05,
         duration: 0.4
       }} className="space-y-2" onDoubleClick={() => !field.type || field.type === "text" ? handleInputChange(field.name, "") : null}>
-            {field.type === "date" ? renderDateField(field.name, field.label) : field.isSelect ? <>
+            {field.type === "date" ? renderDateField(field.name, field.label, idx * 0.05, colorScheme) : field.isSelect ? <>
                 <Label htmlFor={field.name} className={isLargeFonts ? "text-2xl" : ""}>
                   {field.label}
                 </Label>
