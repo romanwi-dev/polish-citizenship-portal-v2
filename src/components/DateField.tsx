@@ -120,24 +120,22 @@ export function DateField({
       className="w-full"
     >
       <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <Label htmlFor={name} className={isLargeFonts ? "text-2xl" : ""}>
-            {label} {required && <span className="text-destructive">*</span>}
-          </Label>
-          {showNotApplicable && (
-            <Checkbox
-              id={`${name}-na`}
-              checked={notApplicableValue}
-              onCheckedChange={(checked) => {
-                onNotApplicableChange?.(checked as boolean);
-                if (checked) {
-                  onChange("");
-                }
-              }}
-              className="border-cyan-600"
-            />
-          )}
-        </div>
+        <Label htmlFor={name} className={isLargeFonts ? "text-2xl" : ""}>
+          {label} {required && <span className="text-destructive">*</span>}
+        </Label>
+        {showNotApplicable && (
+          <Checkbox
+            id={`${name}-na`}
+            checked={notApplicableValue}
+            onCheckedChange={(checked) => {
+              onNotApplicableChange?.(checked as boolean);
+              if (checked) {
+                onChange("");
+              }
+            }}
+            className="border-cyan-600"
+          />
+        )}
         <Input
           id={name}
           type="text"
