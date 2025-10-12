@@ -6,7 +6,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
-import { Loader2, Save, Download, FileText, Sparkles, Type, User, ArrowLeft, HelpCircle, Maximize2, Minimize2 } from "lucide-react";
+import { Loader2, Save, Download, FileText, Sparkles, Type, User, ArrowLeft, HelpCircle, Maximize2, Minimize2, Languages } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -48,6 +48,7 @@ export default function POAForm() {
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null);
   const [previewFormData, setPreviewFormData] = useState<any>(null);
   const [isFullView, setIsFullView] = useState(true); // Default to full view since it doesn't have tabs
+  const [showPolish, setShowPolish] = useState(true); // Toggle for Polish labels
 
   // Form will be initialized by useRealtimeFormSync hook
 
@@ -68,6 +69,12 @@ export default function POAForm() {
       }
     }
     return false;
+  };
+
+  // Helper function to format labels with optional Polish translation
+  const formatLabel = (english: string, polish?: string) => {
+    if (!polish || !showPolish) return english;
+    return `${english} / ${polish}`;
   };
 
   const showSpousePOA = formData.applicant_is_married === true;
@@ -379,6 +386,17 @@ export default function POAForm() {
                 {isFullView ? <Minimize2 className="h-8 w-8" /> : <Maximize2 className="h-8 w-8" />}
               </Button>
               <Button
+                onClick={() => setShowPolish(!showPolish)}
+                size="lg"
+                variant="ghost"
+                className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 opacity-60 ${
+                  showPolish ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:text-primary'
+                }`}
+                title={showPolish ? "Hide Polish" : "Show Polish"}
+              >
+                <Languages className="h-8 w-8" />
+              </Button>
+              <Button
                 onClick={() => navigate('/login')}
                 size="lg"
                 variant="ghost"
@@ -487,13 +505,13 @@ export default function POAForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                   <POAFormField
                     name="applicant_first_name"
-                    label="Applicant given names / Imię/ imiona"
+                    label={formatLabel("Applicant given names", "Imię/ imiona")}
                     value={formData?.applicant_first_name || ""}
                     onChange={(value) => handleInputChange("applicant_first_name", value)}
                   />
                   <POAFormField
                     name="applicant_last_name"
-                    label="Applicant full last name / Nazwisko"
+                    label={formatLabel("Applicant full last name", "Nazwisko")}
                     value={formData?.applicant_last_name || ""}
                     onChange={(value) => handleInputChange("applicant_last_name", value)}
                   />
@@ -504,13 +522,13 @@ export default function POAForm() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-6">
                     <POAFormField
                       name="place_of_marriage"
-                      label="Place of marriage / Miejsce zawarcia związku małżeńskiego"
+                      label={formatLabel("Place of marriage", "Miejsce zawarcia związku małżeńskiego")}
                       value={formData?.place_of_marriage || ""}
                       onChange={(value) => handleInputChange("place_of_marriage", value)}
                     />
                     <DateField
                       name="date_of_marriage"
-                      label="Date of marriage / Data zawarcia związku małżeńskiego"
+                      label={formatLabel("Date of marriage", "Data zawarcia związku małżeńskiego")}
                       value={formData?.date_of_marriage || ""}
                       onChange={(value) => handleInputChange("date_of_marriage", value)}
                       colorScheme="poa"
@@ -521,7 +539,7 @@ export default function POAForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-6">
                   <POAFormField
                     name="applicant_passport_number"
-                    label="ID/ passport number / Nr dokumentu tożsamości"
+                    label={formatLabel("ID/ passport number", "Nr dokumentu tożsamości")}
                     value={formData?.applicant_passport_number || ""}
                     onChange={(value) => handleInputChange("applicant_passport_number", value)}
                   />
@@ -557,13 +575,13 @@ export default function POAForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                   <POAFormField
                     name="applicant_first_name"
-                    label="Parent given names / Imię/ imiona rodzica"
+                    label={formatLabel("Parent given names", "Imię/ imiona rodzica")}
                     value={formData?.applicant_first_name || ""}
                     onChange={(value) => handleInputChange("applicant_first_name", value)}
                   />
                   <POAFormField
                     name="applicant_last_name"
-                    label="Parent full last name / Nazwisko rodzica"
+                    label={formatLabel("Parent full last name", "Nazwisko rodzica")}
                     value={formData?.applicant_last_name || ""}
                     onChange={(value) => handleInputChange("applicant_last_name", value)}
                   />
@@ -571,7 +589,7 @@ export default function POAForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
                   <POAFormField
                     name="applicant_passport_number"
-                    label="Parent ID/ passport number / Nr dokumentu tożsamości"
+                    label={formatLabel("Parent ID/ passport number", "Nr dokumentu tożsamości")}
                     value={formData?.applicant_passport_number || ""}
                     onChange={(value) => handleInputChange("applicant_passport_number", value)}
                   />
@@ -579,13 +597,13 @@ export default function POAForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
                   <POAFormField
                     name={`child_${index + 1}_first_name`}
-                    label="Child given names / Imię/ imiona dziecka"
+                    label={formatLabel("Child given names", "Imię/ imiona dziecka")}
                     value={formData?.[`child_${index + 1}_first_name`] || ""}
                     onChange={(value) => handleInputChange(`child_${index + 1}_first_name`, value)}
                   />
                   <POAFormField
                     name={`child_${index + 1}_last_name`}
-                    label="Child full last name / Nazwisko dziecka"
+                    label={formatLabel("Child full last name", "Nazwisko dziecka")}
                     value={formData?.[`child_${index + 1}_last_name`] || ""}
                     onChange={(value) => handleInputChange(`child_${index + 1}_last_name`, value)}
                   />
@@ -651,8 +669,8 @@ export default function POAForm() {
                   <POAFormField
                     name="spouse_first_name"
                     label={formData?.applicant_sex === 'F'
-                      ? "Husband given names / Imię/ imiona męża"
-                      : "Wife given names / Imię/ imiona żony"
+                      ? formatLabel("Husband given names", "Imię/ imiona męża")
+                      : formatLabel("Wife given names", "Imię/ imiona żony")
                     }
                     value={formData?.spouse_first_name || ""}
                     onChange={(value) => handleInputChange("spouse_first_name", value)}
@@ -660,8 +678,8 @@ export default function POAForm() {
                   <POAFormField
                     name="spouse_last_name"
                     label={formData?.applicant_sex === 'F'
-                      ? "Husband full last name / Nazwisko męża"
-                      : "Wife full last name / Nazwisko żony"
+                      ? formatLabel("Husband full last name", "Nazwisko męża")
+                      : formatLabel("Wife full last name", "Nazwisko żony")
                     }
                     value={formData?.spouse_last_name || ""}
                     onChange={(value) => handleInputChange("spouse_last_name", value)}
@@ -671,8 +689,8 @@ export default function POAForm() {
                   <POAFormField
                     name="spouse_passport_number"
                     label={formData?.applicant_sex === 'F'
-                      ? "Husband ID/passport number / Nr dokumentu tożsamości męża"
-                      : "Wife ID/passport number / Nr dokumentu tożsamości żony"
+                      ? formatLabel("Husband ID/passport number", "Nr dokumentu tożsamości męża")
+                      : formatLabel("Wife ID/passport number", "Nr dokumentu tożsamości żony")
                     }
                     value={formData?.spouse_passport_number || ""}
                     onChange={(value) => handleInputChange("spouse_passport_number", value)}
@@ -684,8 +702,8 @@ export default function POAForm() {
                   <POAFormField
                     name="applicant_last_name_after_marriage"
                     label={formData?.applicant_sex === 'F'
-                      ? "Wife's full last name after marriage / Nazwisko żony po zawarciu małżeństwa"
-                      : "Husband's full last name after marriage / Nazwisko męża po zawarciu małżeństwa"
+                      ? formatLabel("Wife's full last name after marriage", "Nazwisko żony po zawarciu małżeństwa")
+                      : formatLabel("Husband's full last name after marriage", "Nazwisko męża po zawarciu małżeństwa")
                     }
                     value={formData?.applicant_last_name_after_marriage || ""}
                     onChange={(value) => handleInputChange("applicant_last_name_after_marriage", value)}
@@ -693,8 +711,8 @@ export default function POAForm() {
                   <POAFormField
                     name="spouse_last_name_after_marriage"
                     label={formData?.applicant_sex === 'F'
-                      ? "Husband's full last name after marriage / Nazwisko męża po zawarciu małżeństwa"
-                      : "Wife's full last name after marriage / Nazwisko żony po zawarciu małżeństwa"
+                      ? formatLabel("Husband's full last name after marriage", "Nazwisko męża po zawarciu małżeństwa")
+                      : formatLabel("Wife's full last name after marriage", "Nazwisko żony po zawarciu małżeństwa")
                     }
                     value={formData?.spouse_last_name_after_marriage || (formData?.applicant_sex === 'M' ? formData?.applicant_last_name || "" : "")}
                     onChange={(value) => handleInputChange("spouse_last_name_after_marriage", value)}
@@ -703,7 +721,7 @@ export default function POAForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
                   <POAFormField
                     name="child_1_last_name"
-                    label="Children's full last name(s) / Nazwisko/a dzieci"
+                    label={formatLabel("Children's full last name(s)", "Nazwisko/a dzieci")}
                     value={formData?.child_1_last_name || ""}
                     onChange={(value) => handleInputChange("child_1_last_name", value)}
                   />
