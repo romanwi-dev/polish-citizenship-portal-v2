@@ -62,7 +62,7 @@ export const FlippableCardsDeep = ({ title, documents, onChange }: FlippableCard
                   "absolute inset-0 rounded-xl p-6 flex flex-col items-center justify-center gap-4 cursor-pointer border transition-all",
                   doc.checked
                     ? "bg-green-900/50 border-green-600/40 shadow-[0_0_40px_rgba(34,197,94,0.25),inset_0_1px_0_rgba(255,255,255,0.1)]"
-                    : "bg-[#0a1929] hover:shadow-[0_0_40px_rgba(59,130,246,0.2),inset_0_1px_0_rgba(255,255,255,0.1)] hover:border-primary/40 border-blue-900/50"
+                    : "bg-[#0a1929]/80 hover:shadow-[0_0_40px_rgba(59,130,246,0.2),inset_0_1px_0_rgba(255,255,255,0.1)] hover:border-primary/40 border-blue-900/50"
                 )}
                 style={{ backfaceVisibility: "hidden" }}
                 onClick={() => toggleFlip(doc.id)}
