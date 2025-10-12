@@ -195,8 +195,8 @@ const Cases = () => {
         <div className="absolute bottom-20 right-20 w-96 h-96 bg-secondary/20 rounded-full blur-[150px] animate-pulse delay-700" />
       </div>
       
-      <section className="relative py-32 overflow-hidden z-10">
-        <div className="container px-4 mx-auto">
+      <section className="relative py-16 overflow-hidden z-10">
+        <div className="px-4 md:px-8 lg:px-12 mx-auto w-full">
           <div className="text-center mb-16">
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">
               Cases Management

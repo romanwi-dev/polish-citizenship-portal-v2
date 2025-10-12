@@ -16,6 +16,7 @@ interface FamilyMemberDocumentsSectionProps {
   handleInputChange: (field: string, value: any) => void;
   personType: 'applicant' | 'spouse' | 'parent' | 'grandparent' | 'child';
   sex?: string;
+  colorScheme?: 'children' | 'applicant' | 'parents' | 'grandparents' | 'ggp';
 }
 
 export const FamilyMemberDocumentsSection = ({
@@ -25,6 +26,7 @@ export const FamilyMemberDocumentsSection = ({
   handleInputChange,
   personType,
   sex,
+  colorScheme = 'applicant',
 }: FamilyMemberDocumentsSectionProps) => {
   
   const shouldShowMilitary = (): boolean => {
@@ -128,6 +130,7 @@ export const FamilyMemberDocumentsSection = ({
         title=""
         documents={documents}
         onChange={handleDocumentsChange}
+        colorScheme={colorScheme}
       />
     </>
   );

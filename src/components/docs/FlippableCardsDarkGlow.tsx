@@ -19,10 +19,45 @@ interface FlippableCardsDarkGlowProps {
   title: string;
   documents: DocumentItem[];
   onChange: (documents: DocumentItem[]) => void;
+  colorScheme?: 'children' | 'applicant' | 'parents' | 'grandparents' | 'ggp';
 }
 
-export const FlippableCardsDarkGlow = ({ title, documents, onChange }: FlippableCardsDarkGlowProps) => {
+const colorSchemes = {
+  children: {
+    bg: 'from-cyan-400 to-teal-500',
+    badge: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20',
+    button: 'bg-cyan-500/10 border-cyan-500/40 hover:bg-cyan-500/20',
+    glow: 'rgba(34, 211, 238, 0.3)',
+  },
+  applicant: {
+    bg: 'from-blue-400 to-blue-600',
+    badge: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+    button: 'bg-blue-500/10 border-blue-500/40 hover:bg-blue-500/20',
+    glow: 'rgba(59, 130, 246, 0.3)',
+  },
+  parents: {
+    bg: 'from-teal-400 to-teal-600',
+    badge: 'bg-teal-500/10 text-teal-400 border-teal-500/20',
+    button: 'bg-teal-500/10 border-teal-500/40 hover:bg-teal-500/20',
+    glow: 'rgba(20, 184, 166, 0.3)',
+  },
+  grandparents: {
+    bg: 'from-red-400 to-red-600',
+    badge: 'bg-red-500/10 text-red-400 border-red-500/20',
+    button: 'bg-red-500/10 border-red-500/40 hover:bg-red-500/20',
+    glow: 'rgba(239, 68, 68, 0.3)',
+  },
+  ggp: {
+    bg: 'from-gray-400 to-gray-600',
+    badge: 'bg-gray-500/10 text-gray-400 border-gray-500/20',
+    button: 'bg-gray-500/10 border-gray-500/40 hover:bg-gray-500/20',
+    glow: 'rgba(156, 163, 175, 0.3)',
+  },
+};
+
+export const FlippableCardsDarkGlow = ({ title, documents, onChange, colorScheme = 'applicant' }: FlippableCardsDarkGlowProps) => {
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
+  const scheme = colorSchemes[colorScheme];
 
   const toggleFlip = (id: string) => {
     setFlippedCards(prev => ({ ...prev, [id]: !prev[id] }));
@@ -39,19 +74,19 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
 
   const getImportanceBadge = (importance?: string) => {
     switch (importance) {
-      case 'critical': return <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">Critical</span>;
-      case 'high': return <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">High</span>;
-      case 'medium': return <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">Medium</span>;
-      case 'low': return <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">Low</span>;
+      case 'critical': return <span className={`text-xs px-3 py-1 rounded-full ${scheme.badge}`}>Critical</span>;
+      case 'high': return <span className={`text-xs px-3 py-1 rounded-full ${scheme.badge}`}>High</span>;
+      case 'medium': return <span className={`text-xs px-3 py-1 rounded-full ${scheme.badge}`}>Medium</span>;
+      case 'low': return <span className={`text-xs px-3 py-1 rounded-full ${scheme.badge}`}>Low</span>;
       default: return null;
     }
   };
 
   const getDifficultyBadge = (difficulty?: string) => {
     switch (difficulty) {
-      case 'hard': return <span className="text-xs px-3 py-1 rounded-full bg-secondary/10 text-secondary border border-secondary/20">Hard</span>;
-      case 'medium': return <span className="text-xs px-3 py-1 rounded-full bg-secondary/10 text-secondary border border-secondary/20">Medium</span>;
-      case 'easy': return <span className="text-xs px-3 py-1 rounded-full bg-secondary/10 text-secondary border border-secondary/20">Easy</span>;
+      case 'hard': return <span className={`text-xs px-3 py-1 rounded-full ${scheme.badge}`}>Hard</span>;
+      case 'medium': return <span className={`text-xs px-3 py-1 rounded-full ${scheme.badge}`}>Medium</span>;
+      case 'easy': return <span className={`text-xs px-3 py-1 rounded-full ${scheme.badge}`}>Easy</span>;
       default: return null;
     }
   };
@@ -132,7 +167,7 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
                         stiffness: 60,
                         damping: 15
                       }}
-                      className="text-xl md:text-2xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-105 transition-all duration-300 drop-shadow-lg text-center mt-8 mb-3 leading-tight"
+                      className={`text-xl md:text-2xl font-heading font-black tracking-tight bg-gradient-to-r ${scheme.bg} bg-clip-text text-transparent group-hover:scale-105 transition-all duration-300 drop-shadow-lg text-center mt-8 mb-3 leading-tight`}
                     >
                       {doc.label}
                     </motion.h4>
@@ -165,7 +200,7 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
                     </h4>
                     
                     <div className="flex-1 overflow-auto">
-                      <div className="bg-background/5 rounded-lg p-4 border border-primary/20 h-full">
+                      <div className={`bg-background/5 rounded-lg p-4 border ${scheme.badge.split(' ').find(c => c.startsWith('border-'))} h-full`}>
                         <p className="text-sm text-muted-foreground italic">
                           [Admin: Add detailed information about this document here. This content will be customized for each document to provide additional context, requirements, or important notes for clients.]
                         </p>
@@ -174,7 +209,7 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
 
                     <Button
                       variant="outline"
-                      className="w-full bg-primary/10 border-primary/40 hover:bg-primary/20 mt-2"
+                      className={`w-full ${scheme.button} mt-2`}
                       onClick={(e) => {
                         e.stopPropagation();
                         console.log("Access folder for:", doc.label);
