@@ -1,5 +1,4 @@
 import { FlippableCardsDarkGlow } from "@/components/docs/FlippableCardsDarkGlow";
-import { CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
 interface DocumentItem {
   id: string;
@@ -120,19 +119,17 @@ export const FamilyMemberDocumentsSection = ({
   };
 
   return (
-    <>
-      <CardHeader className="border-b border-border/50 pb-6">
-        <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+    <div className="relative">
+      <div className="mb-6">
+        <h3 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
           {title}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="p-0">
-        <FlippableCardsDarkGlow
-          title=""
-          documents={documents}
-          onChange={handleDocumentsChange}
-        />
-      </CardContent>
-    </>
+        </h3>
+      </div>
+      <FlippableCardsDarkGlow
+        title=""
+        documents={documents}
+        onChange={handleDocumentsChange}
+      />
+    </div>
   );
 };

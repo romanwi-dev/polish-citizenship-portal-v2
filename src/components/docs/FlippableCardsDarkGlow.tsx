@@ -57,23 +57,32 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
   };
 
   return (
-    <div className="w-full p-4 md:p-6">
-      <div className="flex items-center gap-3 mb-6">
-        <Checkbox
-          checked={allChecked}
-          onCheckedChange={(checked) => {
-            const updated = documents.map(doc => ({ ...doc, checked: checked as boolean }));
-            onChange(updated);
-          }}
-          className="scale-125"
-        />
-        {title && (
-          <h3 className="text-5xl md:text-6xl font-black font-heading bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-            {title}
-          </h3>
-        )}
-      </div>
+    <div className="relative p-8 rounded-xl overflow-hidden">
+      {/* Background effects - matching timeline */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
+      <div className="absolute inset-0" style={{
+        backgroundImage: `radial-gradient(circle at 2px 2px, hsl(var(--primary) / 0.1) 1px, transparent 0)`,
+        backgroundSize: '48px 48px'
+      }} />
       
+      {/* Content */}
+      <div className="relative z-10">
+        <div className="flex items-center gap-3 mb-6">
+          <Checkbox
+            checked={allChecked}
+            onCheckedChange={(checked) => {
+              const updated = documents.map(doc => ({ ...doc, checked: checked as boolean }));
+              onChange(updated);
+            }}
+            className="scale-125"
+          />
+          {title && (
+            <h3 className="text-5xl md:text-6xl font-black font-heading bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              {title}
+            </h3>
+          )}
+        </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 w-full">
         {documents.map((doc, index) => (
           <motion.div 
@@ -189,8 +198,9 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange }: Flippable
                 </div>
               </div>
             </div>
-          </motion.div>
-        ))}
+            </motion.div>
+          ))}
+        </div>
       </div>
     </div>
   );
