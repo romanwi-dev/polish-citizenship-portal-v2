@@ -264,39 +264,10 @@ export default function IntakeDemo() {
           </div>
 
           <div className="flex items-center gap-4">
-            <label className="w-48 font-semibold">GGP (Gray):</label>
+            <label className="w-48 font-semibold">GGP (Light Gray):</label>
             <Input
               value={greatGrandparentsInputs.field1}
               onChange={(e) => setGreatGrandparentsInputs(prev => ({ ...prev, field1: e.target.value }))}
-              className="h-16 bg-slate-100/45 dark:bg-slate-800/45 border border-slate-300/30 dark:border-slate-500/30 hover:border-transparent focus:border-transparent transition-all duration-300"
-              style={{
-                boxShadow: "0 0 30px rgba(148,163,184,0.25)",
-                transition: "all 0.3s ease"
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 50px rgba(148,163,184,0.4)";
-                e.currentTarget.style.transform = "translateY(-2px)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 30px rgba(148,163,184,0.25)";
-                e.currentTarget.style.transform = "translateY(0)";
-              }}
-              onFocus={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 60px rgba(148,163,184,0.5)";
-                e.currentTarget.style.transform = "translateY(-2px)";
-              }}
-              onBlur={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 30px rgba(148,163,184,0.25)";
-                e.currentTarget.style.transform = "translateY(0)";
-              }}
-            />
-          </div>
-
-          <div className="flex items-center gap-4">
-            <label className="w-48 font-semibold">POA (Light Gray):</label>
-            <Input
-              value={poaInputs.field1}
-              onChange={(e) => setPoaInputs(prev => ({ ...prev, field1: e.target.value }))}
               className="h-16 bg-gray-100/45 dark:bg-gray-800/45 border border-gray-200/30 dark:border-gray-500/30 hover:border-transparent focus:border-transparent transition-all duration-300"
               style={{
                 boxShadow: "0 0 30px rgba(209,213,219,0.25)",
@@ -316,6 +287,35 @@ export default function IntakeDemo() {
               }}
               onBlur={(e) => {
                 e.currentTarget.style.boxShadow = "0 0 30px rgba(209,213,219,0.25)";
+                e.currentTarget.style.transform = "translateY(0)";
+              }}
+            />
+          </div>
+
+          <div className="flex items-center gap-4">
+            <label className="w-48 font-semibold">POA (Gray):</label>
+            <Input
+              value={poaInputs.field1}
+              onChange={(e) => setPoaInputs(prev => ({ ...prev, field1: e.target.value }))}
+              className="h-16 bg-slate-100/45 dark:bg-slate-800/45 border border-slate-300/30 dark:border-slate-500/30 hover:border-transparent focus:border-transparent transition-all duration-300"
+              style={{
+                boxShadow: "0 0 30px rgba(148,163,184,0.25)",
+                transition: "all 0.3s ease"
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.boxShadow = "0 0 50px rgba(148,163,184,0.4)";
+                e.currentTarget.style.transform = "translateY(-2px)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.boxShadow = "0 0 30px rgba(148,163,184,0.25)";
+                e.currentTarget.style.transform = "translateY(0)";
+              }}
+              onFocus={(e) => {
+                e.currentTarget.style.boxShadow = "0 0 60px rgba(148,163,184,0.5)";
+                e.currentTarget.style.transform = "translateY(-2px)";
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.boxShadow = "0 0 30px rgba(148,163,184,0.25)";
                 e.currentTarget.style.transform = "translateY(0)";
               }}
             />
