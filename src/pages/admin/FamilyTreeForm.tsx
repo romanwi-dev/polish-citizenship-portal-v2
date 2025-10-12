@@ -436,29 +436,29 @@ export default function FamilyTreeForm() {
                         <span>Tree View</span>
                       </TabsTrigger>
                       <TabsTrigger value="select" className="flex-shrink-0">
-                        <span>Select...</span>
+                        <span className="text-blue-600 dark:text-blue-400">Select...</span>
                       </TabsTrigger>
                       <TabsTrigger value="applicant" className="flex-shrink-0">
-                        <span>Applicant</span>
+                        <span className="text-blue-600 dark:text-blue-400">Applicant</span>
                       </TabsTrigger>
                       {formData.applicant_is_married && (
                         <TabsTrigger value="spouse" className="flex-shrink-0">
-                          <span>Spouse</span>
+                          <span className="text-blue-600 dark:text-blue-400">Spouse</span>
                         </TabsTrigger>
                       )}
                       {(formData.minor_children_count > 0) && (
                         <TabsTrigger value="children" className="flex-shrink-0">
-                          <span>Children</span>
+                          <span className="text-cyan-600 dark:text-cyan-400">Children</span>
                         </TabsTrigger>
                       )}
                       <TabsTrigger value="parents" className="flex-shrink-0">
-                        <span>Parents</span>
+                        <span className="text-teal-600 dark:text-teal-400">Parents</span>
                       </TabsTrigger>
                       <TabsTrigger value="grandparents" className="flex-shrink-0">
-                        <span>Grandparents</span>
+                        <span className="text-red-600 dark:text-red-400">Grandparents</span>
                       </TabsTrigger>
                       <TabsTrigger value="great-grandparents" className="flex-shrink-0">
-                        <span>Great Grandparents</span>
+                        <span className="text-gray-600 dark:text-gray-400">Great Grandparents</span>
                       </TabsTrigger>
                       <TabsTrigger value="additional" className="flex-shrink-0">
                         <span>Additional Info</span>
@@ -543,7 +543,7 @@ export default function FamilyTreeForm() {
         }} transition={{
           duration: 0.5
         }} className="p-6 md:p-10 space-y-10">
-            <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent border-b border-border/50 pb-6">
+            <h2 className="text-4xl md:text-5xl font-heading font-bold text-blue-600 dark:text-blue-400 border-b border-border/50 pb-6">
               Basic Information
             </h2>
                 {/* Row 1: Gender and Civil Status */}
@@ -631,7 +631,7 @@ export default function FamilyTreeForm() {
         }} transition={{
           duration: 0.5
         }} className="p-6 md:p-10 space-y-10">
-            <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent border-b border-border/50 pb-6">
+            <h2 className="text-4xl md:text-5xl font-heading font-bold text-blue-600 dark:text-blue-400 border-b border-border/50 pb-6">
               Applicant
             </h2>
 
@@ -745,7 +745,7 @@ export default function FamilyTreeForm() {
         <TabsContent value="spouse" className="mt-0">
           {activeTab === 'spouse' && (
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="p-6 md:p-10 space-y-10">
-              <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent border-b border-border/50 pb-6">
+              <h2 className="text-4xl md:text-5xl font-heading font-bold text-blue-600 dark:text-blue-400 border-b border-border/50 pb-6">
                 Spouse
               </h2>
               
@@ -827,7 +827,7 @@ export default function FamilyTreeForm() {
           delay: 0.1
         }} className="space-y-10">
             <div className="border-b border-border/50 pb-6">
-              <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              <h2 className="text-4xl md:text-5xl font-heading font-bold text-cyan-600 dark:text-cyan-400">
                 Applicant's Minor Children
               </h2>
               <p className="text-base mt-2">
@@ -902,7 +902,7 @@ export default function FamilyTreeForm() {
           duration: 0.5,
           delay: 0.3
         }} className="space-y-10">
-              <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent border-b border-border/50 pb-6 mb-10">
+              <h2 className="text-4xl md:text-5xl font-heading font-bold text-teal-600 dark:text-teal-400 border-b border-border/50 pb-6 mb-10">
                 Parents
               </h2>
 
@@ -1085,7 +1085,7 @@ export default function FamilyTreeForm() {
           duration: 0.5,
           delay: 0.4
         }} className="space-y-10">
-              <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent border-b border-border/50 pb-6 mb-10">
+              <h2 className="text-4xl md:text-5xl font-heading font-bold text-red-600 dark:text-red-400 border-b border-border/50 pb-6 mb-10">
                 Polish Grandparents
               </h2>
 
@@ -1200,7 +1200,7 @@ export default function FamilyTreeForm() {
           delay: 0.5
         }} className="space-y-10">
               <div className="border-b border-border/50 pb-6 mb-10">
-                <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                <h2 className="text-4xl md:text-5xl font-heading font-bold text-gray-600 dark:text-gray-400">
                   Polish Great-Grandfathers
                 </h2>
                 <p className="text-base mt-2">

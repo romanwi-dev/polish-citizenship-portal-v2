@@ -220,22 +220,22 @@ export default function IntakeForm() {
                 {/* Tabs */}
                 <TabsList ref={tabsListRef} className="inline-flex justify-start gap-2 bg-transparent p-0">
                   <TabsTrigger value="select" className="flex-shrink-0">
-                    <span>Select...</span>
+                    <span className="text-blue-600 dark:text-blue-400">Select...</span>
                   </TabsTrigger>
                   <TabsTrigger value="applicant" className="flex-shrink-0">
-                    <span>Applicant</span>
+                    <span className="text-blue-600 dark:text-blue-400">Applicant</span>
                   </TabsTrigger>
                   <TabsTrigger value="contact" className="flex-shrink-0">
-                    <span>Contact</span>
+                    <span className="text-blue-600 dark:text-blue-400">Contact</span>
                   </TabsTrigger>
                   <TabsTrigger value="address" className="flex-shrink-0">
-                    <span>Address</span>
+                    <span className="text-blue-600 dark:text-blue-400">Address</span>
                   </TabsTrigger>
                   <TabsTrigger value="passport" className="flex-shrink-0">
-                    <span>Passport</span>
+                    <span className="text-blue-600 dark:text-blue-400">Passport</span>
                   </TabsTrigger>
                   <TabsTrigger value="notes" className="flex-shrink-0">
-                    <span>Notes</span>
+                    <span className="text-blue-600 dark:text-blue-400">Notes</span>
                   </TabsTrigger>
                 </TabsList>
               </div>
