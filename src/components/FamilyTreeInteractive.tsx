@@ -297,7 +297,7 @@ export const FamilyTreeInteractive = ({
           <p className="text-xs text-muted-foreground mb-4">
             Only the 2 Polish great-grandfathers are relevant. Great-grandmothers excluded per process requirements.
           </p>
-          <div className="grid grid-cols-2 gap-6 max-w-3xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-3xl mx-auto">
             <PersonCardInteractive 
               person={paternalGreatGrandfather}
               title="Paternal Great Grandfather"
@@ -321,10 +321,10 @@ export const FamilyTreeInteractive = ({
             <Users className="h-4 w-4" />
             Grandparents (3rd Generation)
           </h3>
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             <div>
               <p className="text-xs text-muted-foreground mb-3 font-medium">Paternal</p>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <PersonCardInteractive 
                   person={paternalGrandfather}
                   title="Paternal Grandfather"
@@ -343,7 +343,7 @@ export const FamilyTreeInteractive = ({
             </div>
             <div>
               <p className="text-xs text-muted-foreground mb-3 font-medium">Maternal</p>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <PersonCardInteractive 
                   person={maternalGrandfather}
                   title="Maternal Grandfather"
@@ -369,7 +369,7 @@ export const FamilyTreeInteractive = ({
             <Users className="h-4 w-4" />
             Parents (2nd Generation)
           </h3>
-          <div className="grid grid-cols-2 gap-6 max-w-3xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-3xl mx-auto">
             <PersonCardInteractive 
               person={father}
               title="Father"
@@ -393,7 +393,7 @@ export const FamilyTreeInteractive = ({
             <User className="h-4 w-4" />
             Applicant & Spouse (1st Generation)
           </h3>
-          <div className="grid grid-cols-2 gap-6 max-w-3xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-3xl mx-auto">
             <PersonCardInteractive 
               person={clientData}
               title={clientData.sex === 'M' ? 'Male Applicant' : clientData.sex === 'F' ? 'Female Applicant' : 'Applicant'}
