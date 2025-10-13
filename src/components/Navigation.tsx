@@ -77,6 +77,34 @@ const Navigation = () => {
               <div className="flex flex-col gap-2">
                 <DropdownMenuItem asChild>
                   <Button
+                    onClick={() => navigate('/admin/documents')}
+                    variant="ghost"
+                    className="w-full justify-start text-base font-medium rounded-md hover:bg-primary/10 transition-colors"
+                  >
+                    Documents
+                  </Button>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Button
+                    onClick={() => navigate('/admin/law')}
+                    variant="ghost"
+                    className="w-full justify-start text-base font-medium rounded-md hover:bg-primary/10 transition-colors"
+                  >
+                    Law
+                  </Button>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Button
+                    onClick={() => navigate('/admin/passport')}
+                    variant="ghost"
+                    className="w-full justify-start text-base font-medium rounded-md hover:bg-primary/10 transition-colors"
+                  >
+                    Passport
+                  </Button>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Button
                     onClick={() => scrollToSection('services')}
                     variant="ghost"
                     className="w-full justify-start text-base font-medium rounded-md hover:bg-primary/10 transition-colors"
@@ -120,16 +148,7 @@ const Navigation = () => {
                     Contact
                   </Button>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Button
-                    onClick={() => navigate('/cases')}
-                    variant="ghost"
-                    className="w-full justify-start text-base font-medium rounded-md hover:bg-primary/10 transition-colors"
-                  >
-                    <User className="w-4 h-4 mr-2" />
-                    Cases Management
-                  </Button>
-                </DropdownMenuItem>
+                <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                   <Button
                     onClick={() => navigate('/admin/ai-agent')}
@@ -160,27 +179,33 @@ const Navigation = () => {
                     Client Intake
                   </Button>
                 </DropdownMenuItem>
-                {user && (
-                  <>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild>
-                      <Button
-                        onClick={handleSignOut}
-                        variant="ghost"
-                        className="w-full justify-start text-base font-medium rounded-md hover:bg-destructive/10 text-destructive transition-colors"
-                      >
-                        <LogOut className="w-4 h-4 mr-2" />
-                        Sign Out
-                      </Button>
-                    </DropdownMenuItem>
-                  </>
-                )}
+                <DropdownMenuItem asChild>
+                  <Button
+                    onClick={() => navigate('/cases')}
+                    variant="ghost"
+                    className="w-full justify-start text-base font-medium rounded-md hover:bg-primary/10 transition-colors"
+                  >
+                    <User className="w-4 h-4 mr-2" />
+                    Management
+                  </Button>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Button
+                    onClick={user ? handleSignOut : () => navigate('/login')}
+                    variant="ghost"
+                    className="w-full justify-start text-base font-medium rounded-md hover:bg-destructive/10 text-destructive transition-colors"
+                  >
+                    <LogOut className="w-4 h-4 mr-2" />
+                    {user ? 'Sign Out' : 'Sign In'}
+                  </Button>
+                </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Button 
                     onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
-                    className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground rounded-md mt-2"
+                    className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white font-semibold rounded-md mt-2 shadow-lg"
                   >
-                    Take Full Test
+                    Citizenship Test
                   </Button>
                 </DropdownMenuItem>
               </div>
