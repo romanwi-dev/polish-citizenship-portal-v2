@@ -18,6 +18,7 @@ export const NavigationSearch = ({ value, onChange, className }: NavigationSearc
           value={value}
           onChange={(e) => onChange(e.target.value)}
           className="pl-10 h-14 text-sm bg-background/50 border-border/10 focus:border-primary placeholder:opacity-10"
+          inputMode="none"
         />
       </div>
     </div>

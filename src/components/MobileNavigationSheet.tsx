@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Menu, Sparkles, LogIn, LogOut, Plus, Image, Mic, Zap, MoreVertical, Upload, Share2, Settings } from 'lucide-react';
+import { Menu, Sparkles, LogIn, LogOut, Plus, Image, Mic, Zap, Upload, Share2, Settings } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
@@ -72,7 +72,7 @@ export const MobileNavigationSheet = () => {
       </SheetTrigger>
 
       <SheetContent side="right" className="w-full p-0 border-0 transition-all duration-300 ease-in-out">
-        <DesignComponent>
+        <ParticleDesign>
           <div className="flex flex-col h-full">
             {/* Header */}
             <div className="flex items-center gap-2 p-4 border-b border-border/50">
@@ -83,32 +83,14 @@ export const MobileNavigationSheet = () => {
             {/* Scrollable Content */}
             <ScrollArea className="flex-1">
               <div className="p-4 space-y-4">
-                {/* Search */}
-                <NavigationSearch
-                  value={searchQuery}
-                  onChange={setSearchQuery}
-                />
-
-                {/* Login/Register Button */}
-                <Button
-                  onClick={handleAuthAction}
-                  className="w-full h-14 bg-green-500/20 text-white font-bold text-lg border-2 border-green-500/30 hover:bg-green-500/30 hover:shadow-[0_0_30px_rgba(34,197,94,0.3)] transition-all"
-                >
-                  {user ? (
-                    <>
-                      <LogOut className="mr-2 h-4 w-4" />
-                      Sign Out
-                    </>
-                  ) : (
-                    <>
-                      <LogIn className="mr-2 h-4 w-4" />
-                      Register / Login
-                    </>
-                  )}
-                </Button>
-
-                {/* Icon Row */}
+                {/* Icon Row - At the very top, Settings first */}
                 <div className="flex items-center justify-center gap-3 py-2 flex-wrap">
+                  <button 
+                    className="h-12 w-12 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+                    aria-label="Settings"
+                  >
+                    <Settings className="h-5 w-5 text-foreground/30" />
+                  </button>
                   <button 
                     className="h-12 w-12 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
                     aria-label="Add new item"
@@ -135,12 +117,6 @@ export const MobileNavigationSheet = () => {
                   </button>
                   <button 
                     className="h-12 w-12 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
-                    aria-label="More options"
-                  >
-                    <MoreVertical className="h-5 w-5 text-foreground/30" />
-                  </button>
-                  <button 
-                    className="h-12 w-12 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
                     aria-label="Upload file"
                   >
                     <Upload className="h-5 w-5 text-foreground/30" />
@@ -151,13 +127,31 @@ export const MobileNavigationSheet = () => {
                   >
                     <Share2 className="h-5 w-5 text-foreground/30" />
                   </button>
-                  <button 
-                    className="h-12 w-12 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
-                    aria-label="Settings"
-                  >
-                    <Settings className="h-5 w-5 text-foreground/30" />
-                  </button>
                 </div>
+
+                {/* Login/Register Button */}
+                <Button
+                  onClick={handleAuthAction}
+                  className="w-full h-14 bg-green-500/20 text-white font-bold text-lg border-2 border-green-500/30 hover:bg-green-500/30 hover:shadow-[0_0_30px_rgba(34,197,94,0.3)] transition-all"
+                >
+                  {user ? (
+                    <>
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Sign Out
+                    </>
+                  ) : (
+                    <>
+                      <LogIn className="mr-2 h-4 w-4" />
+                      Register / Login
+                    </>
+                  )}
+                </Button>
+
+                {/* Search - Below the green button */}
+                <NavigationSearch
+                  value={searchQuery}
+                  onChange={setSearchQuery}
+                />
 
                 <div className="h-px bg-border/50" />
 
@@ -183,7 +177,7 @@ export const MobileNavigationSheet = () => {
               </Button>
             </div>
           </div>
-        </DesignComponent>
+        </ParticleDesign>
       </SheetContent>
     </Sheet>
   );

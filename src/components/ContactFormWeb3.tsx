@@ -64,19 +64,9 @@ const ContactFormWeb3 = () => {
 
   return (
     <section id="contact" className="py-32 relative overflow-hidden">
-      {/* 3D Background */}
-      <div className="absolute inset-0 z-0 opacity-60">
-        <Suspense fallback={<div className="w-full h-full bg-gradient-to-b from-primary/5 to-background" />}>
-          {shouldLoadMap && <Hero3DMap />}
-        </Suspense>
-      </div>
-
-      {/* Subtle Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background/60 z-[1]" />
-      
-      {/* Soft Glow Effects */}
-      <div className="absolute top-20 left-20 w-72 h-72 bg-primary/10 rounded-full blur-[100px] z-[1]" />
-      <div className="absolute bottom-20 right-20 w-72 h-72 bg-secondary/10 rounded-full blur-[100px] z-[1]" />
+      {/* Background Effects - Same as Footer */}
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
       
       <div className="container px-4 mx-auto relative z-10">
         <div className="text-center mb-20">
@@ -105,14 +95,14 @@ const ContactFormWeb3 = () => {
             >
               {/* Front Side - Form */}
               <div 
-                className="glass-card p-4 md:p-12 rounded-3xl w-full"
+                className="glass-card p-4 md:p-12 rounded-lg w-full"
                 style={{ 
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden'
                 }}
               >
                 {/* Background Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 rounded-3xl" />
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 rounded-lg" />
                 
                 <form 
                   onSubmit={handleSubmit} 
@@ -177,7 +167,7 @@ const ContactFormWeb3 = () => {
 
               {/* Back Side - Thank You Message */}
               <div 
-                className="glass-card p-4 md:p-12 rounded-3xl w-full absolute top-0 left-0 flex flex-col items-center justify-center text-center min-h-[600px]"
+                className="glass-card p-4 md:p-12 rounded-lg w-full absolute top-0 left-0 flex flex-col items-center justify-center text-center min-h-[600px]"
                 style={{ 
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden',
@@ -185,7 +175,7 @@ const ContactFormWeb3 = () => {
                 }}
               >
                 {/* Background Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 rounded-3xl" />
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 rounded-lg" />
                 
                 <div className="relative z-10">
                   <h3 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
