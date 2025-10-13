@@ -126,7 +126,17 @@ const ContactFormWeb3 = () => {
                         placeholder=""
                         required
                         className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
-                        style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                        style={{ 
+                          fontSize: '1.125rem', 
+                          fontWeight: '400',
+                          boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+                        }}
                       />
                     </div>
                     <div className="space-y-3 animate-fade-in" style={{ animationDelay: '0.1s' }} onDoubleClick={() => setFormData({ ...formData, email: "" })}>
@@ -140,7 +150,17 @@ const ContactFormWeb3 = () => {
                         placeholder=""
                         required
                         className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
-                        style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                        style={{ 
+                          fontSize: '1.125rem', 
+                          fontWeight: '400',
+                          boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+                        }}
                       />
                     </div>
                   </div>
@@ -154,7 +174,17 @@ const ContactFormWeb3 = () => {
                       onChange={handleChange}
                       placeholder=""
                       className="min-h-[240px] border-2 hover-glow focus:shadow-lg transition-all resize-none bg-card/50 backdrop-blur"
-                      style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                      style={{ 
+                        fontSize: '1.125rem', 
+                        fontWeight: '400',
+                        boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+                      }}
                     />
                   </div>
 
