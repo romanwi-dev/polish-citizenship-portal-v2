@@ -1,6 +1,4 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useMasterData, useUpdateMasterData } from "@/hooks/useMasterData";
-import { sanitizeMasterData } from "@/utils/masterDataSanitizer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,36 +17,38 @@ import { supabase } from "@/integrations/supabase/client";
 import { DateField } from "@/components/DateField";
 import { toast } from "sonner";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
-import { useRealtimeFormSync } from "@/hooks/useRealtimeFormSync";
 import { FormButtonsRow } from "@/components/FormButtonsRow";
 import { FamilyTreeInteractive } from "@/components/FamilyTreeInteractive";
-import { useBidirectionalSync } from "@/hooks/useBidirectionalSync";
 import { FamilyMemberDocumentsSection } from "@/components/forms/FamilyMemberDocumentsSection";
 import { FormInput } from "@/components/forms/FormInput";
+import { useFormManager } from "@/hooks/useFormManager";
+import { FAMILY_TREE_FORM_REQUIRED_FIELDS, FAMILY_TREE_DATE_FIELDS } from "@/config/formRequiredFields";
+import { AutosaveIndicator } from "@/components/AutosaveIndicator";
 
 type ColorScheme = 'children' | 'applicant' | 'parents' | 'grandparents' | 'ggp' | 'poa' | 'citizenship' | 'civil-reg';
 
 export default function FamilyTreeForm() {
-  const {
-    id: caseId
-  } = useParams();
+  const { id: caseId } = useParams();
   const navigate = useNavigate();
-  const {
-    data: masterData,
-    isLoading
-  } = useMasterData(caseId);
-  const updateMutation = useUpdateMasterData();
-  const {
-    isLargeFonts,
-    toggleFontSize
-  } = useAccessibility();
-  const [formData, setFormData] = useState<any>({});
-  // Track the absolute latest form values to avoid race conditions
-  const latestFormData = useRef<any>({});
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [activeTab, setActiveTab] = useState("select");
-  const [isFullView, setIsFullView] = useState(false);
+  const { isLargeFonts, toggleFontSize } = useAccessibility();
   const [showClearDialog, setShowClearDialog] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  const {
+    formData,
+    isLoading,
+    isSaving,
+    activeTab,
+    setActiveTab,
+    isFullView,
+    setIsFullView,
+    completion,
+    validation,
+    autoSave,
+    handleInputChange,
+    handleSave: formManagerSave,
+    handleClearAll,
+  } = useFormManager(caseId, FAMILY_TREE_FORM_REQUIRED_FIELDS, FAMILY_TREE_DATE_FIELDS);
   
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({
     'tree-view': null,
@@ -74,44 +74,6 @@ export default function FamilyTreeForm() {
         const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
         window.scrollTo({ top: y, behavior: 'smooth' });
       }
-    }
-  };
-  
-  // Enable real-time sync with direct state updates
-  useRealtimeFormSync(caseId, masterData, isLoading, setFormData);
-  
-  // Keep ref synchronized with state
-  useEffect(() => {
-    latestFormData.current = formData;
-  }, [formData]);
-  
-  // Enable bidirectional sync
-  const { syncMasterToIntake } = useBidirectionalSync(caseId);
-  
-  const handleInputChange = (field: string, value: any) => {
-    setFormData((prev: any) => ({
-      ...prev,
-      [field]: value
-    }));
-  };
-  const handleSave = async () => {
-    if (!caseId) return;
-    // Use the ref to get the absolute latest state
-    const dataToSave = latestFormData.current;
-    const sanitizedData = sanitizeMasterData(dataToSave);
-    
-    try {
-      await updateMutation.mutateAsync({
-        caseId,
-        updates: sanitizedData
-      });
-      
-      // Auto-sync to intake after save
-      await syncMasterToIntake(sanitizedData);
-      return true;
-    } catch (error) {
-      console.error('Save error:', error);
-      return false;
     }
   };
   const handleGeneratePDF = async () => {
@@ -154,9 +116,8 @@ export default function FamilyTreeForm() {
     }
   };
 
-  const handleClearData = () => {
-    setFormData({});
-    toast.success('All form data cleared');
+  const handleClearData = async () => {
+    await handleClearAll();
     setShowClearDialog(false);
   };
 
@@ -423,10 +384,10 @@ export default function FamilyTreeForm() {
         <FormButtonsRow 
           caseId={caseId!}
           currentForm="family-tree"
-          onSave={handleSave}
+          onSave={formManagerSave}
           onClear={() => setShowClearDialog(true)}
           onGeneratePDF={handleGeneratePDF}
-          isSaving={updateMutation.isPending}
+          isSaving={isSaving}
         />
 
         {/* Form with Tabs */}

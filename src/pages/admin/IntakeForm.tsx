@@ -7,25 +7,37 @@ import { Loader2, Type, Maximize2, Minimize2, User, Phone, MapPin, Plane, Users,
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
-import { useLongPressWithFeedback } from "@/hooks/useLongPressWithFeedback";
 import { validateEmail, validatePassport } from "@/utils/validators";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { useFormSync } from "@/hooks/useFormSync";
-import { useBidirectionalSync } from "@/hooks/useBidirectionalSync";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FormButtonsRow } from "@/components/FormButtonsRow";
 import { SelectSection, ApplicantSection, ContactSection, AddressSection, PassportSection, NotesSection } from "@/components/IntakeFormContent";
+import { useFormManager } from "@/hooks/useFormManager";
+import { INTAKE_FORM_REQUIRED_FIELDS, INTAKE_DATE_FIELDS } from "@/config/formRequiredFields";
+import { AutosaveIndicator } from "@/components/AutosaveIndicator";
 
 export default function IntakeForm() {
   const navigate = useNavigate();
   const { id: caseId } = useParams();
-  const { formData, setFormData, isLoading, isSaving, saveData, clearAll, clearField } = useFormSync(caseId);
-  const { syncIntakeToMaster } = useBidirectionalSync(caseId);
-  const [showClearDialog, setShowClearDialog] = useState(false);
   const { isLargeFonts, toggleFontSize } = useAccessibility();
-  const [activeTab, setActiveTab] = useState("select");
-  const [isFullView, setIsFullView] = useState(false);
+  const [showClearDialog, setShowClearDialog] = useState(false);
   const tabsListRef = useRef<HTMLDivElement>(null);
+
+  const {
+    formData,
+    isLoading,
+    isSaving,
+    activeTab,
+    setActiveTab,
+    isFullView,
+    setIsFullView,
+    completion,
+    validation,
+    autoSave,
+    handleInputChange,
+    handleSave,
+    handleClearAll,
+  } = useFormManager(caseId, INTAKE_FORM_REQUIRED_FIELDS, INTAKE_DATE_FIELDS);
 
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({
     select: null,
@@ -41,56 +53,17 @@ export default function IntakeForm() {
     if (isFullView && sectionRefs.current[value]) {
       const element = sectionRefs.current[value];
       if (element) {
-        const yOffset = -100; // Offset for sticky header
+        const yOffset = -100;
         const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
         window.scrollTo({ top: y, behavior: 'smooth' });
       }
     }
   };
 
-  const handleInputChange = (field: string, value: any) => {
-    setFormData((prev: any) => ({ ...prev, [field]: value }));
-  };
-
-  const handleSave = async () => {
-    if (formData.applicant_email) {
-      const emailValidation = validateEmail(formData.applicant_email);
-      if (!emailValidation.valid) {
-        toast.error(emailValidation.error);
-        return;
-      }
-    }
-
-    if (formData.applicant_passport_number) {
-      const passportValidation = validatePassport(formData.applicant_passport_number);
-      if (!passportValidation.valid) {
-        toast.error(passportValidation.error);
-        return;
-      }
-    }
-
-    await saveData(formData);
-    
-    // Auto-sync to master_table after save
-    await syncIntakeToMaster(formData);
-  };
-
-  const titleLongPress = useLongPressWithFeedback({
-    onLongPress: clearAll,
-    duration: 2000,
-    feedbackMessage: "Hold to clear all fields..."
-  });
-
-  const backgroundLongPress = useLongPressWithFeedback({
-    onLongPress: () => setShowClearDialog(true),
-    duration: 5000,
-    feedbackMessage: "Hold to clear entire form..."
-  });
-
   const contentProps = {
     formData,
     handleInputChange,
-    clearField,
+    clearField: (field: string) => handleInputChange(field, null),
     isLargeFonts
   };
 
@@ -301,7 +274,7 @@ export default function IntakeForm() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={clearAll}>
+            <AlertDialogAction onClick={() => { handleClearAll(); setShowClearDialog(false); }}>
               Clear all fields
             </AlertDialogAction>
           </AlertDialogFooter>
