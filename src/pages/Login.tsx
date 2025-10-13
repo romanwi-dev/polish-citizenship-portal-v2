@@ -66,7 +66,7 @@ const Login = () => {
           return;
         }
 
-        const redirectUrl = `${window.location.origin}/cases`;
+        const redirectUrl = `${window.location.origin}/admin/cases`;
         const { error } = await supabase.auth.signUp({
           email,
           password,
@@ -75,8 +75,8 @@ const Login = () => {
           }
         });
         if (error) throw error;
-        toast.success("Account created! Check your email for confirmation.");
-        navigate("/cases");
+        toast.success("Account created successfully!");
+        navigate("/admin/cases", { replace: true });
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email,
@@ -84,7 +84,7 @@ const Login = () => {
         });
         if (error) throw error;
         toast.success("Logged in successfully!");
-        navigate("/cases");
+        navigate("/admin/cases", { replace: true });
       }
     } catch (error: any) {
       toast.error(error.message);
