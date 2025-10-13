@@ -17,7 +17,7 @@ export const NavigationSearch = ({ value, onChange, className }: NavigationSearc
           placeholder="Search services, pages..."
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="pl-10 bg-background/50 border-border/50 focus:border-primary"
+          className="pl-10 h-10 bg-background/50 border-border/50 focus:border-primary placeholder:opacity-30"
         />
       </div>
     </div>

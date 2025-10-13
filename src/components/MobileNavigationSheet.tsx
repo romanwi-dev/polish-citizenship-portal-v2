@@ -77,21 +77,17 @@ export const MobileNavigationSheet = () => {
 
             {/* Scrollable Content */}
             <ScrollArea className="flex-1">
-              <div className="p-4 space-y-6">
+              <div className="p-4 space-y-4">
                 {/* Search */}
                 <NavigationSearch
                   value={searchQuery}
                   onChange={setSearchQuery}
                 />
 
-                {/* Last Visited */}
-                <LastVisitedLinks onNavigate={() => setOpen(false)} />
-
                 {/* Login/Register Button */}
                 <Button
                   onClick={handleAuthAction}
-                  className="w-full bg-gradient-to-r from-primary via-accent to-primary text-white font-semibold shadow-lg hover:shadow-xl transition-all"
-                  size="lg"
+                  className="w-full h-14 bg-gradient-to-r from-primary via-accent to-primary text-white font-semibold shadow-lg hover:shadow-xl transition-all"
                 >
                   {user ? (
                     <>
@@ -106,7 +102,21 @@ export const MobileNavigationSheet = () => {
                   )}
                 </Button>
 
+                {/* Intake Demo Button */}
+                <Button
+                  onClick={() => {
+                    navigate('/admin/intake-demo');
+                    setOpen(false);
+                  }}
+                  className="w-full h-14 bg-gradient-to-r from-primary via-accent to-primary text-white font-semibold shadow-lg hover:shadow-xl transition-all"
+                >
+                  Intake Demo
+                </Button>
+
                 <div className="h-px bg-border/50" />
+
+                {/* Last Visited */}
+                <LastVisitedLinks onNavigate={() => setOpen(false)} />
 
                 {/* Navigation Links */}
                 <NavigationLinks
