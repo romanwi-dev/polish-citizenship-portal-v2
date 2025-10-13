@@ -113,7 +113,7 @@ function drawStar(
 
 export const WavingEUFlag = () => {
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full opacity-10 blur-sm">
       <Canvas camera={{ position: [0, 0, 12], fov: 75 }}>
         <ambientLight intensity={0.6} />
         <directionalLight position={[10, 10, 5]} intensity={1} color="#ffffff" />
