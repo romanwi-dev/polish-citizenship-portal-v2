@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Menu, Sparkles, LogIn, LogOut, Plus, Image, Mic, Zap, MoreVertical, Upload } from 'lucide-react';
+import { Menu, Sparkles, LogIn, LogOut, Plus, Image, Mic, Zap, MoreVertical, Upload, Share2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
@@ -113,14 +113,17 @@ export const MobileNavigationSheet = () => {
                   <button className="h-12 w-12 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
                     <Mic className="h-5 w-5 text-foreground/30" />
                   </button>
-                  <button className="h-12 w-12 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center hover:bg-primary/20 transition-all">
-                    <Zap className="h-5 w-5 text-primary/50" />
+                  <button className="h-12 w-12 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
+                    <Zap className="h-5 w-5 text-foreground/30" />
                   </button>
                   <button className="h-12 w-12 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
                     <MoreVertical className="h-5 w-5 text-foreground/30" />
                   </button>
                   <button className="h-12 w-12 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
                     <Upload className="h-5 w-5 text-foreground/30" />
+                  </button>
+                  <button className="h-12 w-12 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
+                    <Share2 className="h-5 w-5 text-foreground/30" />
                   </button>
                 </div>
 
