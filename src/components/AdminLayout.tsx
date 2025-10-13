@@ -23,7 +23,8 @@ import {
   BarChart3,
   FolderSync,
   GitCompare,
-  Target
+  Target,
+  FlaskConical
 } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -33,6 +34,7 @@ const navItems = [
   { title: "Dashboard", url: "/admin", icon: LayoutDashboard, exact: true },
   { title: "Cases", url: "/admin/cases", icon: Users },
   { title: "Big Plan Tracker", url: "/admin/big-plan-tracker", icon: Target },
+  { title: "Testing Dashboard", url: "/admin/testing-dashboard", icon: FlaskConical },
   { title: "Tasks", url: "/admin/tasks", icon: CheckSquare },
   { title: "Documents", url: "/admin/documents", icon: FileText },
   { title: "Messages", url: "/admin/messages", icon: Mail },
