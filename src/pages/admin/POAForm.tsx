@@ -92,6 +92,13 @@ export default function POAForm() {
     setIsGenerating(true);
     setActivePOAType(templateType.replace('poa-', ''));
     try {
+      // Auto-populate POA date if not set
+      if (!formData.poa_date_filed) {
+        const today = new Date();
+        const formattedDate = `${String(today.getDate()).padStart(2, '0')}.${String(today.getMonth() + 1).padStart(2, '0')}.${today.getFullYear()}`;
+        handleInputChange('poa_date_filed', formattedDate);
+      }
+      
       // Save and wait for full completion
       toast.info('Saving changes...');
       await handlePOASave();
