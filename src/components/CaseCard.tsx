@@ -159,7 +159,7 @@ export const CaseCard = memo(({
         style={{ transformStyle: 'preserve-3d', minHeight: '750px' }}
       >
         {/* Front of Card */}
-        <div className="absolute inset-0 w-full backface-hidden glass-card p-5 sm:p-6 rounded-lg hover-glow flex flex-col" style={{ minHeight: '750px' }}>
+        <div className="absolute inset-0 w-full backface-hidden bg-background border border-border hover:border-primary/50 transition-colors p-5 sm:p-6 rounded-lg flex flex-col" style={{ minHeight: '750px' }}>
           <div className="flex items-start justify-between mb-5">
             <div className="flex items-center gap-3">
               {onToggleSelection && (
@@ -516,7 +516,7 @@ export const CaseCard = memo(({
 
         {/* Back of Card */}
         <div
-          className="absolute inset-0 w-full backface-hidden rotate-y-180 glass-card p-6 rounded-lg bg-gradient-to-br from-primary/10 to-secondary/10 backdrop-blur-sm"
+          className="absolute inset-0 w-full backface-hidden rotate-y-180 bg-primary/10 border border-primary p-6 rounded-lg"
           style={{ transform: 'rotateY(180deg)', minHeight: '750px' }}
         >
           <div className="h-full flex flex-col" style={{ minHeight: '580px' }}>
