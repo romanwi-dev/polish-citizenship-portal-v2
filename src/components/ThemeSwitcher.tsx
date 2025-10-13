@@ -23,7 +23,7 @@ export function ThemeSwitcher() {
       variant="ghost" 
       size="icon" 
       onClick={toggleTheme}
-      className="relative"
+      className="relative h-11 w-11"
     >
       {currentTheme === "dark" ? (
         <Moon className="h-5 w-5 transition-all" />

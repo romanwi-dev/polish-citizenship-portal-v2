@@ -44,7 +44,7 @@ const Navigation = () => {
             <Button 
               variant="ghost" 
               size="icon"
-              className="text-foreground hover:text-primary"
+              className="text-foreground hover:text-primary h-11 w-11"
               onClick={() => navigate('/cases')}
               title="Control Room"
             >
