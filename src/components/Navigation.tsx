@@ -42,7 +42,7 @@ const Navigation = () => {
           </a>
 
           {/* User Icon & Desktop/Mobile Menu */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-0.5 md:gap-2">
             <DesignSelector />
             <ThemeSwitcher />
             <Button
@@ -52,7 +52,7 @@ const Navigation = () => {
               onClick={toggleFontSize}
               title={isLargeFonts ? "Normal font size" : "Large font size"}
             >
-              <Type className="h-8 w-8" />
+              <Type className="h-5 w-5" />
             </Button>
             <Button 
               variant="ghost" 
@@ -61,7 +61,7 @@ const Navigation = () => {
               onClick={() => navigate('/cases')}
               title="Control Room"
             >
-              <User className="h-14 w-14" />
+              <User className="h-5 w-5" />
             </Button>
             
             {/* Mobile Navigation - Full Screen Sheet */}

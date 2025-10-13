@@ -32,10 +32,11 @@ export const DesignSelector = () => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
-          variant="outline"
+          variant="ghost"
           size="icon"
+          className="text-foreground hover:text-primary"
         >
-          <Palette className="h-4 w-4" />
+          <Palette className="h-5 w-5" />
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
