@@ -1,16 +1,14 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useMasterData, useUpdateMasterData } from "@/hooks/useMasterData";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { Loader2, Save, Download, FileText, Sparkles, Type, User, ArrowLeft, HelpCircle, Maximize2, Minimize2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { format } from "date-fns";
 import { POAFormField } from "@/components/POAFormField";
 import { poaFormConfigs } from "@/config/poaFormConfig";
 import { DateField } from "@/components/DateField";
@@ -19,37 +17,42 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { PDFPreviewDialog } from "@/components/PDFPreviewDialog";
 import { sanitizeMasterData } from "@/utils/masterDataSanitizer";
-import { useRealtimeFormSync } from "@/hooks/useRealtimeFormSync";
 import { cn } from "@/lib/utils";
 import { FormButtonsRow } from "@/components/FormButtonsRow";
+import { useFormManager } from "@/hooks/useFormManager";
+import {
+  POA_FORM_REQUIRED_FIELDS,
+  POA_DATE_FIELDS
+} from "@/config/formRequiredFields";
 
 export default function POAForm() {
   const { id: caseId } = useParams();
   const navigate = useNavigate();
-  const { data: masterData, isLoading } = useMasterData(caseId);
-  const updateMutation = useUpdateMasterData();
   const { isLargeFonts, toggleFontSize } = useAccessibility();
-  
-  const [formData, setFormData] = useState<any>({});
-  // Track the absolute latest form values to avoid race conditions
   const latestFormData = useRef<any>({});
-  
-  // Enable real-time sync with direct state updates
-  useRealtimeFormSync(caseId, masterData, isLoading, setFormData);
-  
-  // Keep ref synchronized with state
-  useEffect(() => {
-    latestFormData.current = formData;
-  }, [formData]);
-  
   const [isGenerating, setIsGenerating] = useState(false);
   const [showClearAllDialog, setShowClearAllDialog] = useState(false);
   const [activePOAType, setActivePOAType] = useState('adult');
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null);
   const [previewFormData, setPreviewFormData] = useState<any>(null);
-  const [isFullView, setIsFullView] = useState(true); // Default to full view since it doesn't have tabs
-
-  // Form will be initialized by useRealtimeFormSync hook
+  const [isFullView, setIsFullView] = useState(true);
+  
+  // Use universal form manager (auto-save + validation + unsaved changes)
+  const {
+    formData,
+    isLoading,
+    isSaving,
+    completion,
+    validation,
+    autoSave,
+    handleInputChange,
+    handleSave,
+    handleClearAll,
+  } = useFormManager(
+    caseId,
+    POA_FORM_REQUIRED_FIELDS,
+    POA_DATE_FIELDS
+  );
 
   // Calculate if there are minor children (under 18)
   const hasMinorChildren = () => {
@@ -73,84 +76,11 @@ export default function POAForm() {
   const showSpousePOA = formData.applicant_is_married === true;
   const minorChildrenCount = formData.minor_children_count || 0;
 
-  const handleInputChange = (field: string, value: any) => {
-    // Removed production console.log
-    setFormData((prev: any) => {
-      const updated = { ...prev, [field]: value };
-      
-      // If applicant_last_name or applicant_sex changes and applicant is male, update all child last names
-      if ((field === 'applicant_last_name' || field === 'applicant_sex') && updated.applicant_sex === 'M' && updated.applicant_last_name) {
-        for (let i = 1; i <= 10; i++) {
-          updated[`child_${i}_last_name`] = updated.applicant_last_name;
-        }
-      }
-      
-      return updated;
-    });
-  };
-
-  const clearField = (fieldName: string) => {
-    console.log(`🗑️ Clearing single field: ${fieldName}`);
-    setFormData((prev: any) => ({ ...prev, [fieldName]: "" }));
-    toast.success(`Cleared ${fieldName}`);
-  };
-
-  const clearCardFields = (config: any) => {
-    console.log(`🗑️ Clearing card: ${config.title}`);
-    const clearedFields: any = {};
-    config.fields.forEach((field: any) => {
-      if (field.type !== "date") {
-        clearedFields[field.name] = "";
-        console.log(`  - Clearing: ${field.name}`);
-      }
-    });
-    setFormData((prev: any) => {
-      const updated = { ...prev, ...clearedFields };
-      console.log(`✅ After clear - formData has ${Object.keys(updated).length} fields`);
-      return updated;
-    });
-    toast.success(`Cleared all fields in ${config.title}`);
-  };
-
-  const clearAllFields = () => {
-    // Removed production console.log
-    // Removed production console.log
-    
-    // Build cleared version keeping ALL fields but setting non-dates to ""
-    const clearedData: any = { ...formData };
-    Object.keys(clearedData).forEach(key => {
-      // Keep dates, clear everything else
-      if (!key.includes('_date') && !key.includes('_dob') && key !== 'poa_date_filed') {
-        clearedData[key] = "";
-      }
-    });
-    
-    // Removed production console.log
-    // Removed production console.log
-    
-    setFormData(clearedData);
-    toast.success("Cleared all fields (except dates)");
-    setShowClearAllDialog(false);
-  };
-
-  const handleSave = async () => {
-    if (!caseId) return;
-    
-    // Use the ref to get the absolute latest state
-    const dataToSave = latestFormData.current;
-    
-    // Removed production console.log
-    // Removed production console.log
-    
-    try {
-      // Wait for the mutation to complete AND the cache to invalidate
-      await updateMutation.mutateAsync({ caseId, updates: { ...dataToSave } });
-      // Removed production console.log
-      return true;
-    } catch (error) {
-      console.error('❌ Save failed:', error);
-      throw error;
-    }
+  // Custom save handler for POA (includes latest formData ref for PDF generation)
+  const handlePOASave = async () => {
+    if (!caseId) return false;
+    latestFormData.current = formData;
+    return await handleSave();
   };
 
   const handleGenerateAndPreview = async (templateType: 'poa-adult' | 'poa-minor' | 'poa-spouses') => {
@@ -164,7 +94,7 @@ export default function POAForm() {
     try {
       // Save and wait for full completion
       toast.info('Saving changes...');
-      await handleSave();
+      await handlePOASave();
       toast.success('Saved! Generating PDF...');
 
       // Generate PDF - it will fetch fresh data from DB
@@ -259,7 +189,7 @@ export default function POAForm() {
 
     setIsGenerating(true);
     try {
-      await handleSave();
+      await handlePOASave();
 
       const templates: Array<'poa-adult' | 'poa-minor' | 'poa-spouses'> = ['poa-adult'];
       if (hasMinorChildren() && minorChildrenCount > 0) templates.push('poa-minor');
@@ -298,29 +228,6 @@ export default function POAForm() {
     }
   };
 
-  const { handlers: formLongPressHandlers } = useLongPressWithFeedback({
-    onLongPress: () => setShowClearAllDialog(true),
-    duration: 5000,
-    feedbackMessage: "Hold for 5 seconds to clear entire form..."
-  });
-
-  const adultCardLongPress = useLongPressWithFeedback({
-    onLongPress: () => clearCardFields(poaFormConfigs.adult),
-    duration: 2000,
-    feedbackMessage: "Hold for 2 seconds to clear POA Adult..."
-  });
-
-  const minorCardLongPress = useLongPressWithFeedback({
-    onLongPress: () => clearCardFields(poaFormConfigs.minor),
-    duration: 2000,
-    feedbackMessage: "Hold for 2 seconds to clear POA Minor..."
-  });
-
-  const spousesCardLongPress = useLongPressWithFeedback({
-    onLongPress: () => clearCardFields(poaFormConfigs.spouses),
-    duration: 2000,
-    feedbackMessage: "Hold for 2 seconds to clear POA Spouses..."
-  });
 
   if (isLoading) {
     return <div className="flex items-center justify-center p-12">
@@ -398,17 +305,17 @@ export default function POAForm() {
         <FormButtonsRow 
           caseId={caseId!}
           currentForm="poa"
-          onSave={handleSave}
+          onSave={handlePOASave}
           onClear={() => setShowClearAllDialog(true)}
           onGeneratePDF={handleGenerateAllPOAs}
-          isSaving={updateMutation.isPending || isGenerating}
+          isSaving={isSaving || isGenerating}
         />
 
         {/* POA Forms */}
         <div className="space-y-8">
           {/* POA Adult */}
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0 }} className="space-y-6">
-            <div {...adultCardLongPress.handlers} className="cursor-pointer select-none hover:opacity-80 transition-opacity border-b border-border/50 pb-6">
+            <div className="cursor-pointer select-none hover:opacity-80 transition-opacity border-b border-border/50 pb-6">
               <h2 className="text-4xl md:text-5xl font-heading font-bold text-gray-600 dark:text-gray-400">
                 {poaFormConfigs.adult.title}
               </h2>
@@ -549,7 +456,7 @@ export default function POAForm() {
               transition={{ duration: 0.5, delay: 0.1 + (index * 0.1) }}
               className="space-y-6"
             >
-              <div {...minorCardLongPress.handlers} className="cursor-pointer select-none hover:opacity-80 transition-opacity border-b border-border/50 pb-6">
+              <div className="cursor-pointer select-none hover:opacity-80 transition-opacity border-b border-border/50 pb-6">
                 <h2 className="text-4xl md:text-5xl font-heading font-bold text-gray-600 dark:text-gray-400">
                   {poaFormConfigs.minor.title} {minorChildrenCount > 1 ? `- Child ${index + 1}` : ''}
                 </h2>
@@ -608,7 +515,7 @@ export default function POAForm() {
           {/* POA Spouses - Only show if married */}
           {showSpousePOA && (
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.2 }} className="space-y-6">
-              <div {...spousesCardLongPress.handlers} className="cursor-pointer select-none hover:opacity-80 transition-opacity border-b border-border/50 pb-6">
+              <div className="cursor-pointer select-none hover:opacity-80 transition-opacity border-b border-border/50 pb-6">
                 <h2 className="text-4xl md:text-5xl font-heading font-bold text-gray-600 dark:text-gray-400">
                   {poaFormConfigs.spouses.title}
                 </h2>
@@ -735,7 +642,7 @@ export default function POAForm() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={clearAllFields}>Clear Data</AlertDialogAction>
+            <AlertDialogAction onClick={async () => { await handleClearAll(); setShowClearAllDialog(false); }}>Clear Data</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

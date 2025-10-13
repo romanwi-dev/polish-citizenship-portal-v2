@@ -1,23 +1,25 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useMasterData, useUpdateMasterData } from "@/hooks/useMasterData";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useState, useEffect, useRef } from "react";
-import { Loader2, Save, Download, FileCheck, Sparkles, Type, FilePlus, User, ArrowLeft, HelpCircle, Maximize2, Minimize2 } from "lucide-react";
+import { useState } from "react";
+import { Loader2, Sparkles, Type, User, ArrowLeft, Maximize2, Minimize2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { DateField } from "@/components/DateField";
 import { FormInput } from "@/components/forms/FormInput";
 import { useLongPressWithFeedback } from "@/hooks/useLongPressWithFeedback";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
-import { useRealtimeFormSync } from "@/hooks/useRealtimeFormSync";
 import { FormButtonsRow } from "@/components/FormButtonsRow";
+import { useFormManager } from "@/hooks/useFormManager";
+import {
+  CITIZENSHIP_FORM_REQUIRED_FIELDS,
+  CITIZENSHIP_DATE_FIELDS
+} from "@/config/formRequiredFields";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -33,56 +35,28 @@ import {
 export default function CitizenshipForm() {
   const { id: caseId } = useParams();
   const navigate = useNavigate();
-  const { data: masterData, isLoading } = useMasterData(caseId);
-  const updateMutation = useUpdateMasterData();
   const { isLargeFonts, toggleFontSize } = useAccessibility();
-  const [formData, setFormData] = useState<any>({});
-  // Track the absolute latest form values to avoid race conditions
-  const latestFormData = useRef<any>({});
   const [isGenerating, setIsGenerating] = useState(false);
   const [showClearAllDialog, setShowClearAllDialog] = useState(false);
-  const [isFullView, setIsFullView] = useState(true); // Default to full view since it doesn't have tabs
+  const [isFullView, setIsFullView] = useState(true);
   
-  // Enable real-time sync with direct state updates
-  useRealtimeFormSync(caseId, masterData, isLoading, setFormData);
-  
-  // Keep ref synchronized with state
-  useEffect(() => {
-    latestFormData.current = formData;
-  }, [formData]);
+  // Use universal form manager (auto-save + validation + unsaved changes)
+  const {
+    formData,
+    isLoading,
+    isSaving,
+    completion,
+    validation,
+    autoSave,
+    handleInputChange,
+    handleSave,
+    handleClearAll,
+  } = useFormManager(
+    caseId,
+    CITIZENSHIP_FORM_REQUIRED_FIELDS,
+    CITIZENSHIP_DATE_FIELDS
+  );
 
-  const handleInputChange = (field: string, value: any) => {
-    setFormData((prev: any) => ({ ...prev, [field]: value }));
-  };
-
-  const clearCardFields = (fieldNames: string[], cardTitle: string) => {
-    const clearedFields: any = {};
-    fieldNames.forEach((name) => {
-      clearedFields[name] = "";
-    });
-    setFormData((prev: any) => ({ ...prev, ...clearedFields }));
-    toast.success(`Cleared all fields in ${cardTitle}`);
-  };
-
-  const clearAllFields = () => {
-    setFormData({});
-    toast.success("Cleared all fields");
-    setShowClearAllDialog(false);
-  };
-
-  const handleSave = async () => {
-    if (!caseId) return;
-    // Use the ref to get the absolute latest state
-    const dataToSave = latestFormData.current;
-    
-    try {
-      await updateMutation.mutateAsync({ caseId, updates: { ...dataToSave } });
-      return true;
-    } catch (error) {
-      console.error('Save error:', error);
-      return false;
-    }
-  };
 
   const handleGeneratePDF = async () => {
     if (!caseId || caseId === ':id') {
@@ -127,86 +101,6 @@ export default function CitizenshipForm() {
     onLongPress: () => setShowClearAllDialog(true),
     duration: 5000,
     feedbackMessage: "Hold for 5 seconds to clear entire form..."
-  });
-
-  // Section 1: Person Data
-  const {
-    handlers: section1LongPressHandlers,
-    isPressed: isSection1Pressed
-  } = useLongPressWithFeedback({
-    onLongPress: () => clearCardFields([
-      "applicant_last_name", "applicant_maiden_name", "applicant_first_name",
-      "father_first_name", "mother_first_name", "applicant_sex", "applicant_pob",
-      "applicant_other_citizenships"
-    ], "Person Data"),
-    duration: 2000,
-    feedbackMessage: "Hold for 2 seconds to clear this section..."
-  });
-
-  // Section 2: Parents Data
-  const {
-    handlers: section2LongPressHandlers,
-    isPressed: isSection2Pressed
-  } = useLongPressWithFeedback({
-    onLongPress: () => clearCardFields([
-      "mother_last_name", "mother_maiden_name", "mother_first_name", "mother_pob",
-      "father_last_name", "father_first_name", "father_pob", "father_mother_marriage_place"
-    ], "Parents Data"),
-    duration: 2000,
-    feedbackMessage: "Hold for 2 seconds to clear this section..."
-  });
-
-  // Section 3: Grandparents Data
-  const {
-    handlers: section3LongPressHandlers,
-    isPressed: isSection3Pressed
-  } = useLongPressWithFeedback({
-    onLongPress: () => clearCardFields([
-      "mgf_last_name", "mgf_first_name", "mgf_pob",
-      "mgm_last_name", "mgm_maiden_name", "mgm_first_name", "mgm_pob",
-      "pgf_last_name", "pgf_first_name", "pgf_pob",
-      "pgm_last_name", "pgm_maiden_name", "pgm_first_name", "pgm_pob"
-    ], "Grandparents Data"),
-    duration: 2000,
-    feedbackMessage: "Hold for 2 seconds to clear this section..."
-  });
-
-  // Section 4: Address Data
-  const {
-    handlers: section4LongPressHandlers,
-    isPressed: isSection4Pressed
-  } = useLongPressWithFeedback({
-    onLongPress: () => clearCardFields([
-      "applicant_address_street", "applicant_address_city", "applicant_address_state",
-      "applicant_address_postal", "applicant_address_country", "applicant_phone", "applicant_email"
-    ], "Address Data"),
-    duration: 2000,
-    feedbackMessage: "Hold for 2 seconds to clear this section..."
-  });
-
-  // Section 5: Additional Info
-  const {
-    handlers: section5LongPressHandlers,
-    isPressed: isSection5Pressed
-  } = useLongPressWithFeedback({
-    onLongPress: () => clearCardFields([
-      "applicant_notes"
-    ], "Additional Information"),
-    duration: 2000,
-    feedbackMessage: "Hold for 2 seconds to clear this section..."
-  });
-
-  // Section 6: Biographies
-  const {
-    handlers: section6LongPressHandlers,
-    isPressed: isSection6Pressed
-  } = useLongPressWithFeedback({
-    onLongPress: () => clearCardFields([
-      "applicant_notes", "mother_notes", "father_notes",
-      "mgf_notes", "mgm_notes", "pgf_notes", "pgm_notes"
-    ], "Biographies"),
-    duration: 2000,
-    feedbackMessage: "Hold for 2 seconds to clear this section..."
   });
 
   const renderDateField = (name: string, label: string, delay = 0) => {
@@ -421,7 +315,7 @@ export default function CitizenshipForm() {
                 onSave={handleSave}
                 onClear={() => setShowClearAllDialog(true)}
                 onGeneratePDF={handleGeneratePDF}
-                isSaving={updateMutation.isPending || isGenerating}
+                isSaving={isSaving}
               />
             </div>
           </div>
@@ -435,14 +329,8 @@ export default function CitizenshipForm() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <div className={cn(
-              "transition-opacity",
-              isSection1Pressed && "opacity-70"
-            )}>
-              <div 
-                className="border-b border-border/50 pb-6 cursor-pointer"
-                {...section1LongPressHandlers}
-              >
+            <div>
+              <div className="border-b border-border/50 pb-6">
                 <h2 className="text-4xl md:text-5xl font-heading font-bold text-primary">
                   CZĘŚĆ I - Dane osoby, której dotyczy wniosek
                 </h2>
@@ -561,13 +449,9 @@ export default function CitizenshipForm() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <div className={cn(
-              "transition-opacity",
-              isSection2Pressed && "opacity-70"
-            )}>
+            <div>
               <div 
                 className="border-b border-border/50 pb-6 cursor-pointer"
-                {...section2LongPressHandlers}
               >
                 <h2 className="text-4xl md:text-5xl font-heading font-bold text-primary">
                   Dane osobowe rodziców / Parents Personal Data
@@ -608,13 +492,9 @@ export default function CitizenshipForm() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <div className={cn(
-              "transition-opacity",
-              isSection3Pressed && "opacity-70"
-            )}>
+            <div>
               <div 
                 className="border-b border-border/50 pb-6 cursor-pointer"
-                {...section3LongPressHandlers}
               >
                 <h2 className="text-4xl md:text-5xl font-heading font-bold text-primary">
                   Dane osobowe dalszych wstępnych / Grandparents Data
@@ -676,13 +556,9 @@ export default function CitizenshipForm() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <div className={cn(
-              "transition-opacity",
-              isSection6Pressed && "opacity-70"
-            )}>
+            <div>
               <div 
                 className="border-b border-border/50 pb-6 cursor-pointer"
-                {...section6LongPressHandlers}
               >
                 <h2 className="text-4xl md:text-5xl font-heading font-bold text-primary">
                   CZĘŚĆ II & III - Dodatkowe informacje / Additional Information
@@ -711,7 +587,7 @@ export default function CitizenshipForm() {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={clearAllFields}>
+              <AlertDialogAction onClick={async () => { await handleClearAll(); setShowClearAllDialog(false); }}>
                 Clear Data
               </AlertDialogAction>
             </AlertDialogFooter>
