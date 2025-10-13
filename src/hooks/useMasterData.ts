@@ -44,11 +44,13 @@ export const useUpdateMasterData = () => {
         throw new Error("Invalid case ID");
       }
 
-      // Removed production console.log
-      // Removed production console.log
+      // Check authentication
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        throw new Error("You must be logged in to save data. Please log in and try again.");
+      }
 
       const sanitizedUpdates = sanitizeMasterData(updates);
-      // Removed production console.log
 
       const { data: existing, error: checkError } = await supabase
         .from("master_table")
@@ -57,7 +59,8 @@ export const useUpdateMasterData = () => {
         .maybeSingle();
 
       if (checkError) {
-        throw checkError;
+        console.error('❌ CHECK ERROR:', checkError);
+        throw new Error(`Database error: ${checkError.message}`);
       }
 
       if (existing) {
@@ -68,7 +71,10 @@ export const useUpdateMasterData = () => {
         
         if (error) {
           console.error('❌ UPDATE ERROR:', error);
-          throw error;
+          if (error.code === '42501') {
+            throw new Error("Permission denied. Please ensure you're logged in as an admin or assistant.");
+          }
+          throw new Error(`Update failed: ${error.message}`);
         }
       } else {
         const { error } = await supabase
@@ -77,21 +83,21 @@ export const useUpdateMasterData = () => {
         
         if (error) {
           console.error('❌ INSERT ERROR:', error);
-          throw error;
+          if (error.code === '42501') {
+            throw new Error("Permission denied. Please ensure you're logged in as an admin or assistant.");
+          }
+          throw new Error(`Insert failed: ${error.message}`);
         }
       }
-
-      // Removed production console.log
     },
     onSuccess: (_, variables) => {
-      // Removed production console.log
       // Force refetch of data after save
       queryClient.invalidateQueries({ queryKey: ['masterData', variables.caseId] });
-      toast.success("Master data updated successfully");
+      toast.success("Data saved successfully");
     },
     onError: (error: any) => {
       console.error('❌ SAVE FAILED:', error);
-      toast.error(`Failed to update: ${error.message}`);
+      toast.error(error.message || "Failed to save data");
     },
   });
 };
