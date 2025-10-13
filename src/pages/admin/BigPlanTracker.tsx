@@ -355,21 +355,23 @@ export default function BigPlanTracker() {
     <AdminLayout>
       <div className="container mx-auto p-6 space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-              Big Plan Implementation Tracker
+            <h1 className="text-2xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+              Big Plan Tracker
             </h1>
-            <p className="text-muted-foreground mt-2">
-              AI Agent Build Sequence - Live Progress Monitor
+            <p className="text-sm sm:text-base text-muted-foreground mt-2">
+              AI Agent Build Sequence
             </p>
           </div>
           <Button
             variant="outline"
+            size="sm"
+            className="w-full sm:w-auto"
             onClick={() => window.open("/BIG_PLAN_STATUS.md", "_blank")}
           >
-            <FileText className="h-4 w-4 mr-2" />
-            View Full Documentation
+            <FileText className="h-4 w-4 sm:mr-2" />
+            <span className="hidden sm:inline">View Full Documentation</span>
           </Button>
         </div>
 
@@ -387,23 +389,23 @@ export default function BigPlanTracker() {
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Total Completion</span>
-                <span className="text-2xl font-bold">{overallProgress}%</span>
+                <span className="text-xs sm:text-sm font-medium">Total Completion</span>
+                <span className="text-xl sm:text-2xl font-bold">{overallProgress}%</span>
               </div>
-              <Progress value={overallProgress} className="h-3" />
+              <Progress value={overallProgress} className="h-2 sm:h-3" />
             </div>
-            <div className="grid grid-cols-3 gap-4 pt-2">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 pt-2">
               <div className="text-center">
-                <div className="text-2xl font-bold text-green-500">{completedSteps}</div>
-                <div className="text-xs text-muted-foreground">Completed</div>
+                <div className="text-lg sm:text-2xl font-bold text-green-500">{completedSteps}</div>
+                <div className="text-[10px] sm:text-xs text-muted-foreground">Complete</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-yellow-500">{partialSteps}</div>
-                <div className="text-xs text-muted-foreground">Partial</div>
+                <div className="text-lg sm:text-2xl font-bold text-yellow-500">{partialSteps}</div>
+                <div className="text-[10px] sm:text-xs text-muted-foreground">Partial</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-gray-400">{totalSteps - completedSteps - partialSteps}</div>
-                <div className="text-xs text-muted-foreground">Not Started</div>
+                <div className="text-lg sm:text-2xl font-bold text-gray-400">{totalSteps - completedSteps - partialSteps}</div>
+                <div className="text-[10px] sm:text-xs text-muted-foreground">Not Started</div>
               </div>
             </div>
           </CardContent>
@@ -417,13 +419,14 @@ export default function BigPlanTracker() {
               Filters
             </CardTitle>
           </CardHeader>
-          <CardContent className="flex flex-wrap gap-4">
+          <CardContent className="space-y-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium">Status</label>
-              <div className="flex gap-2">
+              <label className="text-xs sm:text-sm font-medium">Status</label>
+              <div className="flex flex-wrap gap-1.5 sm:gap-2">
                 <Button
                   variant={filterStatus === "all" ? "default" : "outline"}
                   size="sm"
+                  className="text-xs h-8 px-2 sm:px-3"
                   onClick={() => setFilterStatus("all")}
                 >
                   All
@@ -431,6 +434,7 @@ export default function BigPlanTracker() {
                 <Button
                   variant={filterStatus === "complete" ? "default" : "outline"}
                   size="sm"
+                  className="text-xs h-8 px-2 sm:px-3"
                   onClick={() => setFilterStatus("complete")}
                 >
                   Complete
@@ -438,6 +442,7 @@ export default function BigPlanTracker() {
                 <Button
                   variant={filterStatus === "partial" ? "default" : "outline"}
                   size="sm"
+                  className="text-xs h-8 px-2 sm:px-3"
                   onClick={() => setFilterStatus("partial")}
                 >
                   Partial
@@ -445,6 +450,7 @@ export default function BigPlanTracker() {
                 <Button
                   variant={filterStatus === "not-started" ? "default" : "outline"}
                   size="sm"
+                  className="text-xs h-8 px-2 sm:px-3"
                   onClick={() => setFilterStatus("not-started")}
                 >
                   Not Started
@@ -452,11 +458,12 @@ export default function BigPlanTracker() {
               </div>
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium">Priority</label>
-              <div className="flex gap-2">
+              <label className="text-xs sm:text-sm font-medium">Priority</label>
+              <div className="flex flex-wrap gap-1.5 sm:gap-2">
                 <Button
                   variant={filterPriority === "all" ? "default" : "outline"}
                   size="sm"
+                  className="text-xs h-8 px-2 sm:px-3"
                   onClick={() => setFilterPriority("all")}
                 >
                   All
@@ -464,6 +471,7 @@ export default function BigPlanTracker() {
                 <Button
                   variant={filterPriority === "critical" ? "destructive" : "outline"}
                   size="sm"
+                  className="text-xs h-8 px-2 sm:px-3"
                   onClick={() => setFilterPriority("critical")}
                 >
                   Critical
@@ -471,6 +479,7 @@ export default function BigPlanTracker() {
                 <Button
                   variant={filterPriority === "high" ? "default" : "outline"}
                   size="sm"
+                  className="text-xs h-8 px-2 sm:px-3"
                   onClick={() => setFilterPriority("high")}
                 >
                   High
@@ -478,6 +487,7 @@ export default function BigPlanTracker() {
                 <Button
                   variant={filterPriority === "medium" ? "secondary" : "outline"}
                   size="sm"
+                  className="text-xs h-8 px-2 sm:px-3"
                   onClick={() => setFilterPriority("medium")}
                 >
                   Medium

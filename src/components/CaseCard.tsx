@@ -156,10 +156,10 @@ export const CaseCard = memo(({
     >
       <div
         className={`relative w-full transition-transform duration-700 preserve-3d ${isFlipped ? 'rotate-y-180' : ''}`}
-        style={{ transformStyle: 'preserve-3d', minHeight: '580px' }}
+        style={{ transformStyle: 'preserve-3d', minHeight: '500px' }}
       >
         {/* Front of Card */}
-        <div className="absolute inset-0 w-full backface-hidden glass-card p-6 rounded-lg hover-glow flex flex-col" style={{ minHeight: '580px' }}>
+        <div className="absolute inset-0 w-full backface-hidden glass-card p-3 sm:p-6 rounded-lg hover-glow flex flex-col" style={{ minHeight: '500px' }}>
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-3">
               {onToggleSelection && (
@@ -186,11 +186,11 @@ export const CaseCard = memo(({
                 onPhotoUpdated={setPhotoUrl}
               />
               <div>
-                <h3 className="font-heading font-bold text-3xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                <h3 className="font-heading font-bold text-xl sm:text-3xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                   {clientCase.client_name}
                 </h3>
-                <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                  <MapPin className="w-3 h-3" />
+                <div className="flex items-center gap-1 text-xs sm:text-sm text-muted-foreground">
+                  <MapPin className="w-3 h-3 sm:w-4 sm:h-4" />
                   {clientCase.country || 'N/A'}
                 </div>
               </div>
@@ -251,15 +251,15 @@ export const CaseCard = memo(({
           </div>
 
           {/* Badges Row */}
-          <div className="flex flex-wrap gap-2 mb-4">
-            <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusBadge(clientCase.status)} capitalize`}>
+          <div className="flex flex-nowrap gap-1.5 sm:gap-2 mb-3 sm:mb-4 overflow-x-auto pb-1 scrollbar-thin">
+            <span className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium border ${getStatusBadge(clientCase.status)} capitalize whitespace-nowrap`}>
               {clientCase.status.replace(/_/g, ' ')}
             </span>
             
             {/* Processing Mode Badge with Dropdown - no VIP badge if VIP mode */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                <span className={`px-3 py-1 rounded-full text-xs font-medium border cursor-pointer hover:opacity-80 transition-opacity flex items-center gap-1 ${
+                <span className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium border cursor-pointer hover:opacity-80 transition-opacity flex items-center gap-1 whitespace-nowrap ${
                   PROCESSING_MODE_COLORS[clientCase.processing_mode as keyof typeof PROCESSING_MODE_COLORS]
                 }`}>
                   {getProcessingModeIcon()}
@@ -288,14 +288,14 @@ export const CaseCard = memo(({
             </DropdownMenu>
 
             {clientCase.scheme_introduced && (
-              <span className="px-3 py-1 rounded-full text-xs font-medium border bg-cyan-500/20 text-cyan-400 border-cyan-500/30">
+              <span className="px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium border bg-cyan-500/20 text-cyan-400 border-cyan-500/30 whitespace-nowrap">
                 {clientCase.scheme_introduced}
               </span>
             )}
           </div>
 
           {/* KPI Strip - Mobile Optimized */}
-          <CollapsibleKPIStrip className="mb-4">
+          <CollapsibleKPIStrip className="mb-3 sm:mb-4">
             <div className="p-3 rounded-lg bg-background/20 border border-border/30">
               <div className="grid grid-cols-2 md:flex md:flex-wrap gap-2">
                 {/* POA Status */}
@@ -356,47 +356,47 @@ export const CaseCard = memo(({
           </CollapsibleKPIStrip>
 
           {clientCase.client_code && (
-            <div className="mb-4 p-2 rounded-lg bg-background/30">
-              <p className="text-sm font-normal font-label text-muted-foreground">Case Code</p>
-              <p className="text-base font-mono font-normal">{clientCase.client_code}</p>
+            <div className="mb-3 sm:mb-4 p-2 rounded-lg bg-background/30">
+              <p className="text-xs sm:text-sm font-normal font-label text-muted-foreground">Case Code</p>
+              <p className="text-sm sm:text-base font-mono font-normal">{clientCase.client_code}</p>
             </div>
           )}
 
-          <div className="grid grid-cols-3 gap-2 mb-6">
-            <div className="flex flex-col gap-1 p-3 rounded-lg bg-background/30">
-              <div className="flex items-center gap-1">
-                <Calendar className="w-4 h-4 text-primary" />
-                <p className="text-sm font-normal font-label text-muted-foreground">Started</p>
+          <div className="grid grid-cols-3 gap-1.5 sm:gap-2 mb-4 sm:mb-6">
+            <div className="flex flex-col gap-0.5 sm:gap-1 p-2 sm:p-3 rounded-lg bg-background/30">
+              <div className="flex items-center gap-0.5 sm:gap-1">
+                <Calendar className="w-3 h-3 sm:w-4 sm:h-4 text-primary" />
+                <p className="text-[10px] sm:text-sm font-normal font-label text-muted-foreground">Started</p>
               </div>
-              <p className="text-base font-normal font-label mt-1">
+              <p className="text-xs sm:text-base font-normal font-label mt-0.5 sm:mt-1">
                 {clientCase.start_date ? new Date(clientCase.start_date).toLocaleDateString() : 'N/A'}
               </p>
             </div>
-            <div className="flex flex-col gap-1 p-3 rounded-lg bg-background/30">
-              <div className="flex items-center gap-1">
-                <FileText className="w-4 h-4 text-secondary" />
-                <p className="text-sm font-normal font-label text-muted-foreground">Docs</p>
+            <div className="flex flex-col gap-0.5 sm:gap-1 p-2 sm:p-3 rounded-lg bg-background/30">
+              <div className="flex items-center gap-0.5 sm:gap-1">
+                <FileText className="w-3 h-3 sm:w-4 sm:h-4 text-secondary" />
+                <p className="text-[10px] sm:text-sm font-normal font-label text-muted-foreground">Docs</p>
               </div>
-              <p className="text-base font-bold font-label mt-1 text-cyan-400">{clientCase.document_count}</p>
+              <p className="text-xs sm:text-base font-bold font-label mt-0.5 sm:mt-1 text-cyan-400">{clientCase.document_count}</p>
             </div>
-            <div className="flex flex-col gap-1 p-3 rounded-lg bg-background/30">
-              <div className="flex items-center gap-1">
-                <TrendingUp className="w-4 h-4 text-accent" />
-                <p className="text-sm font-normal font-label text-muted-foreground">Score</p>
+            <div className="flex flex-col gap-0.5 sm:gap-1 p-2 sm:p-3 rounded-lg bg-background/30">
+              <div className="flex items-center gap-0.5 sm:gap-1">
+                <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-accent" />
+                <p className="text-[10px] sm:text-sm font-normal font-label text-muted-foreground">Score</p>
               </div>
-              <p className="text-base font-bold font-label mt-1 text-cyan-400">{clientCase.client_score || 0}</p>
+              <p className="text-xs sm:text-base font-bold font-label mt-0.5 sm:mt-1 text-cyan-400">{clientCase.client_score || 0}</p>
             </div>
           </div>
 
-          <div className="space-y-3 mb-6">
-            <div className="flex items-center justify-between text-base">
-              <div className="flex items-center gap-1">
-                <TrendingUp className="w-4 h-4 text-muted-foreground" />
-                <span className="font-normal font-label text-muted-foreground">Progress</span>
+          <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6">
+            <div className="flex items-center justify-between text-sm sm:text-base">
+              <div className="flex items-center gap-0.5 sm:gap-1">
+                <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground" />
+                <span className="font-normal font-label text-muted-foreground text-xs sm:text-base">Progress</span>
               </div>
-              <span className="font-bold text-lg text-cyan-400">{clientCase.progress || 0}%</span>
+              <span className="font-bold text-base sm:text-lg text-cyan-400">{clientCase.progress || 0}%</span>
             </div>
-            <div className="h-3 bg-background/50 opacity-50 rounded-full overflow-hidden">
+            <div className="h-2 sm:h-3 bg-background/50 opacity-50 rounded-full overflow-hidden">
               <div 
                 className="h-full bg-gradient-to-r from-primary/80 to-accent/80 transition-all duration-500 rounded-full"
                 style={{ width: `${clientCase.progress || 0}%` }}
@@ -405,24 +405,24 @@ export const CaseCard = memo(({
           </div>
 
           {clientCase.status === "finished" && (
-            <div className="mb-6 flex items-center justify-center gap-2 p-3 rounded-lg bg-green-500/10 border border-green-500/30">
-              <CheckCircle2 className="w-5 h-5 text-green-400" />
-              <span className="text-base font-medium text-green-400">Citizenship Granted</span>
+            <div className="mb-4 sm:mb-6 flex items-center justify-center gap-1.5 sm:gap-2 p-2 sm:p-3 rounded-lg bg-green-500/10 border border-green-500/30">
+              <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-green-400" />
+              <span className="text-sm sm:text-base font-medium text-green-400">Citizenship Granted</span>
             </div>
           )}
 
-          <div className="space-y-3 mt-auto pt-4">
+          <div className="space-y-2 sm:space-y-3 mt-auto pt-3 sm:pt-4">
             {/* Control Room Button - Premium Feature */}
             <Button
               size="lg"
               variant="outline"
-              className="w-full bg-background/10 border-primary/20 hover:bg-background/20 h-12 perspective-1000 group relative overflow-hidden preserve-3d transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_40px_rgba(var(--primary),0.3)]"
+              className="w-full bg-background/10 border-primary/20 hover:bg-background/20 h-10 sm:h-12 perspective-1000 group relative overflow-hidden preserve-3d transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_40px_rgba(var(--primary),0.3)]"
               onClick={(e) => {
                 e.stopPropagation();
                 navigate(`/admin/cases/${clientCase.id}`);
               }}
             >
-              <span className="text-sm font-normal text-foreground/40 group-hover:text-foreground/60 transition-colors relative z-10">
+              <span className="text-xs sm:text-sm font-normal text-foreground/40 group-hover:text-foreground/60 transition-colors relative z-10">
                 CONTROL ROOM
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-fade-in" />
