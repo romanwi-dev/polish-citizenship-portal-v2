@@ -103,27 +103,27 @@ export const MobileNavigationSheet = () => {
                 </Button>
 
                 {/* Icon Row */}
-                <div className="flex items-center justify-center gap-4 py-2">
-                  <button className="h-12 w-12 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
-                    <Plus className="h-5 w-5 text-foreground/30" />
+                <div className="flex items-center justify-center gap-2 py-2 flex-wrap">
+                  <button className="h-10 w-10 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
+                    <Plus className="h-4 w-4 text-foreground/30" />
                   </button>
-                  <button className="h-12 w-12 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
-                    <Image className="h-5 w-5 text-foreground/30" />
+                  <button className="h-10 w-10 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
+                    <Image className="h-4 w-4 text-foreground/30" />
                   </button>
-                  <button className="h-12 w-12 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
-                    <Mic className="h-5 w-5 text-foreground/30" />
+                  <button className="h-10 w-10 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
+                    <Mic className="h-4 w-4 text-foreground/30" />
                   </button>
-                  <button className="h-12 w-12 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
-                    <Zap className="h-5 w-5 text-foreground/30" />
+                  <button className="h-10 w-10 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
+                    <Zap className="h-4 w-4 text-foreground/30" />
                   </button>
-                  <button className="h-12 w-12 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
-                    <MoreVertical className="h-5 w-5 text-foreground/30" />
+                  <button className="h-10 w-10 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
+                    <MoreVertical className="h-4 w-4 text-foreground/30" />
                   </button>
-                  <button className="h-12 w-12 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
-                    <Upload className="h-5 w-5 text-foreground/30" />
+                  <button className="h-10 w-10 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
+                    <Upload className="h-4 w-4 text-foreground/30" />
                   </button>
-                  <button className="h-12 w-12 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
-                    <Share2 className="h-5 w-5 text-foreground/30" />
+                  <button className="h-10 w-10 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
+                    <Share2 className="h-4 w-4 text-foreground/30" />
                   </button>
                 </div>
 
