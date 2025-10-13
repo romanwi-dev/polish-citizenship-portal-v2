@@ -799,6 +799,7 @@ export type Database = {
           spouse_last_name: string | null
           spouse_maiden_name: string | null
           spouse_notes: string | null
+          spouse_passport_number: string | null
           spouse_phone: string | null
           spouse_pob: string | null
           spouse_sex: string | null
@@ -1111,6 +1112,7 @@ export type Database = {
           spouse_last_name?: string | null
           spouse_maiden_name?: string | null
           spouse_notes?: string | null
+          spouse_passport_number?: string | null
           spouse_phone?: string | null
           spouse_pob?: string | null
           spouse_sex?: string | null
@@ -1423,6 +1425,7 @@ export type Database = {
           spouse_last_name?: string | null
           spouse_maiden_name?: string | null
           spouse_notes?: string | null
+          spouse_passport_number?: string | null
           spouse_phone?: string | null
           spouse_pob?: string | null
           spouse_sex?: string | null
