@@ -79,3 +79,45 @@ export const CIVIL_REGISTRY_FORM_REQUIRED_FIELDS = [
   'mother_first_name',
   'mother_last_name',
 ];
+
+// Date fields for each form
+export const INTAKE_DATE_FIELDS = [
+  'applicant_dob',
+  'applicant_passport_issue_date',
+  'applicant_passport_expiry_date',
+];
+
+export const FAMILY_TREE_DATE_FIELDS = [
+  'applicant_dob',
+  'father_dob',
+  'mother_dob',
+  'pgf_dob',
+  'pgm_dob',
+  'mgf_dob',
+  'mgm_dob',
+  'date_of_marriage',
+  'applicant_date_of_emigration',
+  'father_date_of_emigration',
+  'mother_date_of_emigration',
+];
+
+export const CITIZENSHIP_DATE_FIELDS = [
+  'applicant_dob',
+  'father_dob',
+  'mother_dob',
+  'applicant_passport_issue_date',
+  'applicant_passport_expiry_date',
+];
+
+export const POA_DATE_FIELDS = [
+  'applicant_dob',
+  'spouse_dob',
+  'poa_date_filed',
+];
+
+export const CIVIL_REGISTRY_DATE_FIELDS = [
+  'applicant_dob',
+  'date_of_marriage',
+  'father_dob',
+  'mother_dob',
+];
