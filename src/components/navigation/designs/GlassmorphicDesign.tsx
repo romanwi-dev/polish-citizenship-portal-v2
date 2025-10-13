@@ -6,9 +6,11 @@ export const GlassmorphicDesign = ({ children }: { children: ReactNode }) => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="h-full w-full relative overflow-hidden"
+      transition={{ duration: 0.3 }}
+      className="h-full w-full relative overflow-hidden bg-gradient-to-t from-background via-primary/5 to-background"
       style={{
-        background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 50%, rgba(236, 72, 153, 0.1) 100%)',
+        backgroundImage: 'linear-gradient(to right, #80808012 1px, transparent 1px), linear-gradient(to bottom, #80808012 1px, transparent 1px)',
+        backgroundSize: '24px 24px',
       }}
     >
       {/* Animated Aurora Background */}

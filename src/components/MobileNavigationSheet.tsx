@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Menu, X, Sparkles, LogIn, LogOut } from 'lucide-react';
+import { Menu, Sparkles, LogIn, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
@@ -66,23 +66,13 @@ export const MobileNavigationSheet = () => {
         </Button>
       </SheetTrigger>
 
-      <SheetContent side="right" className="w-full p-0 border-0">
+      <SheetContent side="right" className="w-full p-0 border-0 transition-all duration-300 ease-in-out">
         <DesignComponent>
           <div className="flex flex-col h-full">
             {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-border/50">
-              <div className="flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-primary" />
-                <span className="font-semibold text-lg">Navigation</span>
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setOpen(false)}
-                className="h-8 w-8"
-              >
-                <X className="h-5 w-5" />
-              </Button>
+            <div className="flex items-center gap-2 p-4 border-b border-border/50">
+              <Sparkles className="h-5 w-5 text-primary" />
+              <span className="font-semibold text-lg">Navigation</span>
             </div>
 
             {/* Scrollable Content */}

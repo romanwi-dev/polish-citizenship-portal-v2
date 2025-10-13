@@ -3,7 +3,13 @@ import { motion } from 'framer-motion';
 
 export const CyberpunkDesign = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="h-full w-full relative overflow-hidden bg-black">
+    <div 
+      className="h-full w-full relative overflow-hidden bg-gradient-to-t from-background via-primary/5 to-background transition-all duration-300"
+      style={{
+        backgroundImage: 'linear-gradient(to right, #80808012 1px, transparent 1px), linear-gradient(to bottom, #80808012 1px, transparent 1px)',
+        backgroundSize: '24px 24px',
+      }}
+    >
       {/* Scanline Effect */}
       <div className="absolute inset-0 pointer-events-none z-10 opacity-10"
         style={{

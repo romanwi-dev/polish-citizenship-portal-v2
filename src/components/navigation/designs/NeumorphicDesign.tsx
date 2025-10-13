@@ -6,7 +6,12 @@ export const NeumorphicDesign = ({ children }: { children: ReactNode }) => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="h-full w-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-800"
+      transition={{ duration: 0.3 }}
+      className="h-full w-full bg-gradient-to-t from-background via-primary/5 to-background"
+      style={{
+        backgroundImage: 'linear-gradient(to right, #80808012 1px, transparent 1px), linear-gradient(to bottom, #80808012 1px, transparent 1px)',
+        backgroundSize: '24px 24px',
+      }}
     >
       {children}
 

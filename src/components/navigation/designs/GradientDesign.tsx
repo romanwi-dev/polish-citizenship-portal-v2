@@ -3,7 +3,13 @@ import { motion } from 'framer-motion';
 
 export const GradientDesign = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="h-full w-full relative overflow-hidden">
+    <div 
+      className="h-full w-full relative overflow-hidden bg-gradient-to-t from-background via-primary/5 to-background transition-all duration-300"
+      style={{
+        backgroundImage: 'linear-gradient(to right, #80808012 1px, transparent 1px), linear-gradient(to bottom, #80808012 1px, transparent 1px)',
+        backgroundSize: '24px 24px',
+      }}
+    >
       {/* Animated Mesh Gradient Background */}
       <motion.div
         className="absolute inset-0"

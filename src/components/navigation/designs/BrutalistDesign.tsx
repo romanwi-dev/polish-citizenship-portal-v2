@@ -2,7 +2,13 @@ import { ReactNode } from 'react';
 
 export const BrutalistDesign = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="h-full w-full bg-white dark:bg-black">
+    <div 
+      className="h-full w-full bg-gradient-to-t from-background via-primary/5 to-background transition-all duration-300"
+      style={{
+        backgroundImage: 'linear-gradient(to right, #80808012 1px, transparent 1px), linear-gradient(to bottom, #80808012 1px, transparent 1px)',
+        backgroundSize: '24px 24px',
+      }}
+    >
       {children}
 
       <style>{`
