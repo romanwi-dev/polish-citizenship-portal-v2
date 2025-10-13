@@ -4,8 +4,9 @@ import { lazy, Suspense, useState, useEffect, useRef } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
-// Lazy load 3D component to reduce initial bundle blocking time
+// Lazy load 3D components
 const Hero3DMap = lazy(() => import("./Hero3DMap"));
+const Enhanced3DScene = lazy(() => import("./Enhanced3DScene").then(module => ({ default: module.Enhanced3DScene })));
 
 const HeroWeb3 = () => {
   const [shouldLoadMap, setShouldLoadMap] = useState(false);
@@ -41,11 +42,11 @@ const HeroWeb3 = () => {
     });
   };
   return <section ref={heroRef} className="relative min-h-[60vh] md:min-h-screen flex items-center justify-center overflow-hidden">
-      {/* 3D Background - Desktop only */}
+      {/* 3D Background */}
       {shouldShow3D ? (
         <div className="absolute inset-0 z-0">
           <Suspense fallback={<div className="w-full h-full bg-gradient-to-b from-primary/5 to-background" />}>
-            {shouldLoadMap && <Hero3DMap />}
+            {shouldLoadMap && <Enhanced3DScene />}
           </Suspense>
         </div>
       ) : (
