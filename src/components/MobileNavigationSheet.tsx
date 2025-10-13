@@ -64,7 +64,7 @@ export const MobileNavigationSheet = () => {
         <Button 
           variant="ghost" 
           size="icon" 
-          className="md:hidden h-12 w-12"
+          className="md:hidden h-11 w-11"
           aria-label="Open navigation menu"
         >
           <Menu className="h-5 w-5" />

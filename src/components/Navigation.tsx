@@ -62,9 +62,9 @@ const Navigation = () => {
                 <Button 
                   variant="ghost" 
                   size="icon"
-                  className="text-foreground hover:text-primary"
+                  className="text-foreground hover:text-primary h-11 w-11"
                 >
-                  <Menu className="h-14 w-14" />
+                  <Menu className="h-5 w-5" />
                 </Button>
               </DropdownMenuTrigger>
             <DropdownMenuContent 
