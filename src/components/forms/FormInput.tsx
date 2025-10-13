@@ -10,6 +10,8 @@ interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   isLargeFonts?: boolean;
   isChecked?: boolean;
   colorScheme?: ColorScheme;
+  error?: string;
+  required?: boolean;
 }
 
 const colorSchemes = {
@@ -78,6 +80,8 @@ export const FormInput = ({
   isLargeFonts = false,
   isChecked = false,
   colorScheme = 'applicant',
+  error,
+  required = false,
   className,
   ...props 
 }: FormInputProps) => {
@@ -96,47 +100,58 @@ export const FormInput = ({
   const scheme = colorSchemes[colorScheme];
 
   return (
-    <Input 
-      value={value || ""} 
-      onChange={handleChange}
-      className={cn(
-        "h-20 text-2xl border-2 hover:border-transparent focus:border-transparent transition-all duration-300 backdrop-blur font-normal font-input-work w-full max-w-full",
-        scheme.bg,
-        scheme.border,
-        isNameField && "uppercase",
-        isLargeFonts && "text-3xl",
-        isChecked && "opacity-60",
-        className
+    <div className="w-full">
+      <Input 
+        value={value || ""} 
+        onChange={handleChange}
+        aria-invalid={error ? "true" : "false"}
+        aria-required={required}
+        className={cn(
+          "h-20 text-2xl border-2 hover:border-transparent focus:border-transparent transition-all duration-300 backdrop-blur font-normal font-input-work w-full max-w-full",
+          scheme.bg,
+          scheme.border,
+          isNameField && "uppercase",
+          isLargeFonts && "text-3xl",
+          isChecked && "opacity-60",
+          error && "border-destructive focus:border-destructive",
+          className
+        )}
+        style={{
+          boxShadow: isChecked ? "none" : error ? "0 0 30px rgba(239, 68, 68, 0.3)" : `0 0 30px ${scheme.glow}`,
+          transition: "all 0.3s ease"
+        }}
+        onMouseEnter={(e) => {
+          if (!isChecked && !error) {
+            e.currentTarget.style.boxShadow = `0 0 50px ${scheme.glowHover}`;
+            e.currentTarget.style.transform = "translateY(-2px)";
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (!isChecked && !error) {
+            e.currentTarget.style.boxShadow = `0 0 30px ${scheme.glow}`;
+            e.currentTarget.style.transform = "translateY(0)";
+          }
+        }}
+        onFocus={(e) => {
+          if (!isChecked && !error) {
+            e.currentTarget.style.boxShadow = `0 0 60px ${scheme.glowFocus}`;
+            e.currentTarget.style.transform = "translateY(-2px)";
+          }
+        }}
+        onBlur={(e) => {
+          if (!isChecked && !error) {
+            e.currentTarget.style.boxShadow = `0 0 30px ${scheme.glow}`;
+            e.currentTarget.style.transform = "translateY(0)";
+          }
+        }}
+        {...props}
+      />
+      {error && (
+        <p className="text-sm text-destructive mt-2 flex items-center gap-1.5 animate-fade-in">
+          <span className="inline-block w-1.5 h-1.5 rounded-full bg-destructive" />
+          {error}
+        </p>
       )}
-      style={{
-        boxShadow: isChecked ? "none" : `0 0 30px ${scheme.glow}`,
-        transition: "all 0.3s ease"
-      }}
-      onMouseEnter={(e) => {
-        if (!isChecked) {
-          e.currentTarget.style.boxShadow = `0 0 50px ${scheme.glowHover}`;
-          e.currentTarget.style.transform = "translateY(-2px)";
-        }
-      }}
-      onMouseLeave={(e) => {
-        if (!isChecked) {
-          e.currentTarget.style.boxShadow = `0 0 30px ${scheme.glow}`;
-          e.currentTarget.style.transform = "translateY(0)";
-        }
-      }}
-      onFocus={(e) => {
-        if (!isChecked) {
-          e.currentTarget.style.boxShadow = `0 0 60px ${scheme.glowFocus}`;
-          e.currentTarget.style.transform = "translateY(-2px)";
-        }
-      }}
-      onBlur={(e) => {
-        if (!isChecked) {
-          e.currentTarget.style.boxShadow = `0 0 30px ${scheme.glow}`;
-          e.currentTarget.style.transform = "translateY(0)";
-        }
-      }}
-      {...props}
-    />
+    </div>
   );
 };

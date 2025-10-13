@@ -2,8 +2,8 @@ import { CheckCircle2, Loader2, CloudOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface AutosaveIndicatorProps {
-  status: "saving" | "saved" | "error";
-  lastSaved?: Date;
+  status: "idle" | "saving" | "saved" | "error";
+  lastSaved?: Date | null;
   className?: string;
 }
 
@@ -14,6 +14,8 @@ export const AutosaveIndicator = ({
 }: AutosaveIndicatorProps) => {
   const getStatusConfig = () => {
     switch (status) {
+      case "idle":
+        return null;
       case "saving":
         return {
           icon: Loader2,
@@ -41,6 +43,9 @@ export const AutosaveIndicator = ({
   };
 
   const config = getStatusConfig();
+  
+  if (!config) return null;
+  
   const Icon = config.icon;
 
   return (

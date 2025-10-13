@@ -6,13 +6,15 @@ interface FormLabelProps {
   isLargeFonts?: boolean;
   htmlFor?: string;
   className?: string;
+  required?: boolean;
 }
 
 export const FormLabel = ({ 
   children, 
   isLargeFonts = false, 
   htmlFor,
-  className 
+  className,
+  required = false
 }: FormLabelProps) => (
   <Label 
     htmlFor={htmlFor}
@@ -23,5 +25,6 @@ export const FormLabel = ({
     )}
   >
     {children}
+    {required && <span className="text-destructive ml-1">*</span>}
   </Label>
 );

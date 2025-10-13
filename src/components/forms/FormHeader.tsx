@@ -6,7 +6,9 @@ import { Button } from "@/components/ui/button";
 import { CardHeader, CardTitle } from "@/components/ui/card";
 import { HelpCircle, Maximize2, Minimize2, LogIn } from "lucide-react";
 import { FormCompletionBadge } from "./FormCompletionBadge";
+import { AutosaveIndicator } from "../AutosaveIndicator";
 import { cn } from "@/lib/utils";
+import type { AutoSaveStatus } from "@/hooks/useAutoSave";
 
 interface FormHeaderProps {
   title: string;
@@ -20,6 +22,8 @@ interface FormHeaderProps {
   showLogin?: boolean;
   onLoginClick?: () => void;
   className?: string;
+  autoSaveStatus?: AutoSaveStatus;
+  lastSaved?: Date | null;
 }
 
 export const FormHeader = ({
@@ -34,6 +38,8 @@ export const FormHeader = ({
   showLogin = true,
   onLoginClick,
   className,
+  autoSaveStatus = 'idle',
+  lastSaved,
 }: FormHeaderProps) => {
   return (
     <CardHeader className={cn("space-y-4", className)}>
@@ -119,12 +125,15 @@ export const FormHeader = ({
             )}>
               {title}
             </CardTitle>
-            <FormCompletionBadge
-              completionPercentage={completionPercentage}
-              filledCount={filledCount}
-              totalCount={totalCount}
-              isLargeFonts={isLargeFonts}
-            />
+            <div className="flex items-center gap-3 flex-wrap">
+              <FormCompletionBadge
+                completionPercentage={completionPercentage}
+                filledCount={filledCount}
+                totalCount={totalCount}
+                isLargeFonts={isLargeFonts}
+              />
+              <AutosaveIndicator status={autoSaveStatus} lastSaved={lastSaved} />
+            </div>
           </div>
         </div>
 

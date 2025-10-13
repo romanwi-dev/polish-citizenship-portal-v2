@@ -13,6 +13,8 @@ interface FormFieldGroupProps {
   type?: string;
   id?: string;
   colorScheme?: ColorScheme;
+  error?: string;
+  required?: boolean;
 }
 
 export const FormFieldGroup = ({
@@ -25,10 +27,12 @@ export const FormFieldGroup = ({
   type = "text",
   id,
   colorScheme = 'applicant',
+  error,
+  required = false,
 }: FormFieldGroupProps) => {
   return (
     <div className="space-y-3 w-full">
-      <FormLabel isLargeFonts={isLargeFonts} htmlFor={id}>
+      <FormLabel isLargeFonts={isLargeFonts} htmlFor={id} required={required}>
         {label}
       </FormLabel>
       <FormInput
@@ -40,6 +44,8 @@ export const FormFieldGroup = ({
         isLargeFonts={isLargeFonts}
         placeholder={placeholder}
         colorScheme={colorScheme}
+        error={error}
+        required={required}
       />
     </div>
   );
