@@ -321,14 +321,14 @@ export default function POAForm() {
               </h2>
             </div>
                 {/* Row 1: Gender and Civil Status */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="grid grid-cols-2 gap-6 mb-6">
                   {/* Gender */}
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-2">
                     <Label className={isLargeFonts ? "text-2xl" : ""}>
                       Gender
                     </Label>
                     <Select value={formData.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
-                      <SelectTrigger className="h-16 md:h-20 border hover:border-transparent focus:border-transparent hover-glow focus:shadow-lg transition-all bg-gray-200/45 dark:bg-gray-700/45 border-gray-300/30 dark:border-gray-500/30 backdrop-blur" style={{ boxShadow: '0 0 30px rgba(156,163,175,0.25)' }}>
+                      <SelectTrigger className="h-20 text-2xl border hover:border-transparent focus:border-transparent hover-glow focus:shadow-lg transition-all bg-gray-200/45 dark:bg-gray-700/45 border-gray-300/30 dark:border-gray-500/30 backdrop-blur" style={{ boxShadow: '0 0 30px rgba(156,163,175,0.25)' }}>
                         <SelectValue placeholder="Select..." />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-50">
@@ -344,7 +344,7 @@ export default function POAForm() {
                       Civil Status
                     </Label>
                     <Select value={formData.applicant_is_married === true ? "Married" : "Single"} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
-                      <SelectTrigger className="h-16 md:h-20 border hover:border-transparent focus:border-transparent hover-glow focus:shadow-lg transition-all bg-gray-200/45 dark:bg-gray-700/45 border-gray-300/30 dark:border-gray-500/30 backdrop-blur" style={{ boxShadow: '0 0 30px rgba(156,163,175,0.25)' }}>
+                      <SelectTrigger className="h-20 text-2xl border hover:border-transparent focus:border-transparent hover-glow focus:shadow-lg transition-all bg-gray-200/45 dark:bg-gray-700/45 border-gray-300/30 dark:border-gray-500/30 backdrop-blur" style={{ boxShadow: '0 0 30px rgba(156,163,175,0.25)' }}>
                         <SelectValue placeholder="Select..." />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-50">
@@ -357,14 +357,14 @@ export default function POAForm() {
 
 
                 {/* Row 2: Children counts */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="grid grid-cols-2 gap-6 mb-6">
                   {/* Number of children */}
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-2">
                     <Label className={isLargeFonts ? "text-2xl" : ""}>
                       Number of children
                     </Label>
                     <Select value={formData.children_count?.toString() || ""} onValueChange={(value) => { const count = parseInt(value); handleInputChange("children_count", count); }}>
-                      <SelectTrigger className="h-16 md:h-20 border hover:border-transparent focus:border-transparent hover-glow focus:shadow-lg transition-all bg-gray-200/45 dark:bg-gray-700/45 border-gray-300/30 dark:border-gray-500/30 backdrop-blur z-50" style={{ boxShadow: '0 0 30px rgba(156,163,175,0.25)' }}>
+                      <SelectTrigger className="h-20 text-2xl border hover:border-transparent focus:border-transparent hover-glow focus:shadow-lg transition-all bg-gray-200/45 dark:bg-gray-700/45 border-gray-300/30 dark:border-gray-500/30 backdrop-blur z-50" style={{ boxShadow: '0 0 30px rgba(156,163,175,0.25)' }}>
                         <SelectValue placeholder="Select..." />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-50">
@@ -380,7 +380,7 @@ export default function POAForm() {
                         Number of minor children
                       </Label>
                       <Select value={formData.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
-                        <SelectTrigger className="h-16 md:h-20 border hover:border-transparent focus:border-transparent hover-glow focus:shadow-lg transition-all bg-gray-200/45 dark:bg-gray-700/45 border-gray-300/30 dark:border-gray-500/30 backdrop-blur" style={{ boxShadow: '0 0 30px rgba(156,163,175,0.25)' }}>
+                        <SelectTrigger className="h-20 text-2xl border hover:border-transparent focus:border-transparent hover-glow focus:shadow-lg transition-all bg-gray-200/45 dark:bg-gray-700/45 border-gray-300/30 dark:border-gray-500/30 backdrop-blur" style={{ boxShadow: '0 0 30px rgba(156,163,175,0.25)' }}>
                           <SelectValue placeholder="Select..." />
                         </SelectTrigger>
                         <SelectContent className="bg-background border-2 z-50">

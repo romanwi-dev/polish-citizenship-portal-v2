@@ -41,10 +41,13 @@ export const FormSection = ({
     : null;
 
   return (
-    <Card className={cn("border-2 hover-glow w-full", colorSchemes[colorScheme], className)}>
+    <Card className={cn("border-2 sm:border-2 border-0 hover-glow w-full", colorSchemes[colorScheme], className)}>
       <CardHeader
         {...(longPress ? longPress.handlers : {})}
-        className={onClearSection ? "cursor-pointer px-3 sm:px-6" : "px-3 sm:px-6"}
+        className={cn(
+          "px-3 sm:px-6 py-4 sm:py-6",
+          onClearSection && "cursor-pointer"
+        )}
       >
         <CardTitle className={cn(
           "flex items-center gap-2",
@@ -53,7 +56,7 @@ export const FormSection = ({
           {title}
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6 px-3 sm:px-6">
+      <CardContent className="space-y-6 px-3 sm:px-6 pb-6">
         {children}
       </CardContent>
     </Card>
