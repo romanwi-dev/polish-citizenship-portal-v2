@@ -67,82 +67,85 @@ export const BulkActionsToolbar = ({
 
           <div className="h-6 w-px bg-border" />
 
-          <div className="flex items-center gap-2">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled={isProcessing}
-                  className="h-8"
-                >
-                  <Send className="mr-2 h-3.5 w-3.5" />
-                  Change Status
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start">
-                <DropdownMenuItem onClick={() => handleBulkAction(
-                  () => onBulkStatusUpdate("active"),
-                  "Cases updated to active"
-                )}>
-                  Set as Active
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleBulkAction(
-                  () => onBulkStatusUpdate("on_hold"),
-                  "Cases put on hold"
-                )}>
-                  Put On Hold
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleBulkAction(
-                  () => onBulkStatusUpdate("review"),
-                  "Cases moved to review"
-                )}>
-                  Move to Review
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => handleBulkAction(
-                  () => onBulkStatusUpdate("archived"),
-                  "Cases archived"
-                )}>
-                  <Archive className="mr-2 h-4 w-4" />
-                  Archive
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={isProcessing}
+                    className="h-8"
+                  >
+                    <Send className="mr-2 h-3.5 w-3.5" />
+                    Change Status
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start">
+                  <DropdownMenuItem onClick={() => handleBulkAction(
+                    () => onBulkStatusUpdate("active"),
+                    "Cases updated to active"
+                  )}>
+                    Set as Active
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleBulkAction(
+                    () => onBulkStatusUpdate("on_hold"),
+                    "Cases put on hold"
+                  )}>
+                    Put On Hold
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleBulkAction(
+                    () => onBulkStatusUpdate("review"),
+                    "Cases moved to review"
+                  )}>
+                    Move to Review
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => handleBulkAction(
+                    () => onBulkStatusUpdate("archived"),
+                    "Cases archived"
+                  )}>
+                    <Archive className="mr-2 h-4 w-4" />
+                    Archive
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
 
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={onBulkExport}
-              disabled={isProcessing}
-              className="h-8"
-            >
-              <Download className="mr-2 h-3.5 w-3.5" />
-              Export CSV
-            </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={onBulkExport}
+                disabled={isProcessing}
+                className="h-8"
+              >
+                <Download className="mr-2 h-3.5 w-3.5" />
+                Export CSV
+              </Button>
+            </div>
 
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowDeleteDialog(true)}
-              disabled={isProcessing}
-              className="h-8 text-destructive hover:text-destructive"
-            >
-              <Trash2 className="mr-2 h-3.5 w-3.5" />
-              Delete
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowDeleteDialog(true)}
+                disabled={isProcessing}
+                className="h-8 text-destructive hover:text-destructive"
+              >
+                <Trash2 className="mr-2 h-3.5 w-3.5" />
+                Delete
+              </Button>
 
-            <div className="h-6 w-px bg-border" />
-
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onClearSelection}
-              disabled={isProcessing}
-              className="h-8"
-            >
-              <X className="h-4 w-4" />
-            </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onClearSelection}
+                disabled={isProcessing}
+                className="h-8"
+              >
+                <X className="h-4 w-4" />
+                Clear
+              </Button>
+            </div>
           </div>
         </div>
       </div>

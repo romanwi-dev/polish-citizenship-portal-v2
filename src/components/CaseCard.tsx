@@ -429,25 +429,24 @@ export const CaseCard = memo(({
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-fade-in" />
               </Button>
 
-              {/* Action Buttons - 2 rows of 3 - Scrollable */}
-              <div className="overflow-x-auto scrollbar-hide -mx-1 px-1">
-                <div className="flex flex-nowrap gap-2 pt-3 border-t border-border/30 min-w-max">
-                  <Button
-                    size="sm"
-                    className="text-xs font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-11 flex items-center justify-center px-3 whitespace-nowrap flex-shrink-0"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/admin/cases/${clientCase.id}?tab=ai-agent`);
-                    }}
-                  >
-                    <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-light opacity-90">
-                      Ask AI
-                    </span>
-                    <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </Button>
-                  <Button
-                    size="sm"
-                    className="text-xs font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-11 flex items-center justify-center px-3 whitespace-nowrap flex-shrink-0"
+              {/* Action Buttons - 2 rows of 3 */}
+              <div className="grid grid-cols-3 gap-2 pt-3 border-t border-border/30">
+                <Button
+                  size="sm"
+                  className="text-xs font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-11 flex items-center justify-center"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/admin/cases/${clientCase.id}?tab=ai-agent`);
+                  }}
+                >
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-light opacity-90">
+                    Ask AI
+                  </span>
+                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </Button>
+                <Button
+                  size="sm"
+                  className="text-xs font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-11 flex items-center justify-center"
                     onClick={(e) => {
                       e.stopPropagation();
                       window.open('/family-tree.pdf', '_blank');
@@ -511,7 +510,6 @@ export const CaseCard = memo(({
                     <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </Button>
                 </div>
-              </div>
             </div>
           )}
         </div>
