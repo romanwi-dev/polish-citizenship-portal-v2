@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, User, LogOut, Type } from "lucide-react";
+import { Menu, User, LogOut, Type, Bot, GitBranch, ClipboardList } from "lucide-react";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import logo from "@/assets/logo.png";
@@ -128,6 +128,36 @@ const Navigation = () => {
                   >
                     <User className="w-4 h-4 mr-2" />
                     Cases Management
+                  </Button>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Button
+                    onClick={() => navigate('/admin/ai-agent')}
+                    variant="ghost"
+                    className="w-full justify-start text-base font-medium rounded-md hover:bg-primary/10 transition-colors"
+                  >
+                    <Bot className="w-4 h-4 mr-2" />
+                    AI Agent
+                  </Button>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Button
+                    onClick={() => navigate('/admin/family-tree')}
+                    variant="ghost"
+                    className="w-full justify-start text-base font-medium rounded-md hover:bg-primary/10 transition-colors"
+                  >
+                    <GitBranch className="w-4 h-4 mr-2" />
+                    Family Tree
+                  </Button>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Button
+                    onClick={() => navigate('/admin/intake-form')}
+                    variant="ghost"
+                    className="w-full justify-start text-base font-medium rounded-md hover:bg-primary/10 transition-colors"
+                  >
+                    <ClipboardList className="w-4 h-4 mr-2" />
+                    Client Intake
                   </Button>
                 </DropdownMenuItem>
                 {user && (
