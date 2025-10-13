@@ -130,10 +130,9 @@ export const MobileNavigationSheet = () => {
             <div className="p-4 border-t border-border/50">
               <Button
                 onClick={handleCitizenshipTest}
-                className="w-full bg-gradient-to-r from-primary via-accent to-primary text-white font-bold text-lg shadow-2xl border-2 border-white/20 hover:shadow-[0_0_30px_rgba(var(--primary),0.5)] transition-all"
-                size="lg"
+                className="w-full h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all"
               >
-                Citizenship Test
+                Take Polish Citizenship Test
               </Button>
             </div>
           </div>
