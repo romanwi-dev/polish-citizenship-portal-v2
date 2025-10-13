@@ -7,46 +7,8 @@ export const CyberpunkDesign = ({ children }: { children: ReactNode }) => {
       {/* Footer-matching background */}
       <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
-      {/* Scanline Effect */}
-      <div className="absolute inset-0 pointer-events-none z-10 opacity-10"
-        style={{
-          backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, #00ff41 2px, #00ff41 4px)',
-        }}
-      />
 
-      {/* Neon Grid */}
-      <div className="absolute inset-0 pointer-events-none opacity-20"
-        style={{
-          backgroundImage: 'linear-gradient(#00d4ff 1px, transparent 1px), linear-gradient(90deg, #00d4ff 1px, transparent 1px)',
-          backgroundSize: '50px 50px',
-        }}
-      />
-
-      {/* Animated Neon Borders */}
-      <motion.div
-        className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#00ff41] to-transparent"
-        animate={{
-          opacity: [0.5, 1, 0.5],
-        }}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-        }}
-      />
-      <motion.div
-        className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#ff00ff] to-transparent"
-        animate={{
-          opacity: [0.5, 1, 0.5],
-        }}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-          delay: 1,
-        }}
-      />
-
-      {/* Content */}
-      <div className="relative h-full bg-gradient-to-b from-black/90 to-black/95">
+      <div className="relative h-full">
         {children}
       </div>
 

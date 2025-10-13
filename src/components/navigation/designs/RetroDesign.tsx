@@ -7,25 +7,6 @@ export const RetroDesign = ({ children }: { children: ReactNode }) => {
       {/* Footer-matching background */}
       <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
-      {/* CRT Scanlines */}
-      <div className="absolute inset-0 pointer-events-none z-10"
-        style={{
-          backgroundImage: 'repeating-linear-gradient(0deg, rgba(0, 255, 0, 0.03) 0px, rgba(0, 255, 0, 0.03) 1px, transparent 1px, transparent 2px)',
-        }}
-      />
-
-      {/* CRT Flicker */}
-      <motion.div
-        className="absolute inset-0 bg-[#00ff00] pointer-events-none z-10"
-        animate={{
-          opacity: [0, 0.03, 0],
-        }}
-        transition={{
-          duration: 0.1,
-          repeat: Infinity,
-          repeatDelay: 3,
-        }}
-      />
 
       <div className="relative h-full">
         {children}

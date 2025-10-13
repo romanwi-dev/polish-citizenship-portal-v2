@@ -7,26 +7,6 @@ export const LuxuryDesign = ({ children }: { children: ReactNode }) => {
       {/* Footer-matching background */}
       <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
-      {/* Floating Particles */}
-      {[...Array(20)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute w-1 h-1 bg-[#FFD700] rounded-full"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-          }}
-          animate={{
-            y: [0, -30, 0],
-            opacity: [0.3, 0.8, 0.3],
-          }}
-          transition={{
-            duration: 3 + Math.random() * 2,
-            repeat: Infinity,
-            delay: Math.random() * 2,
-          }}
-        />
-      ))}
 
       <div className="relative h-full">
         {children}

@@ -12,44 +12,8 @@ export const GlassmorphicDesign = ({ children }: { children: ReactNode }) => {
       {/* Footer-matching background */}
       <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
-      {/* Animated Aurora Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          className="absolute w-[500px] h-[500px] rounded-full blur-3xl opacity-30"
-          style={{
-            background: 'radial-gradient(circle, rgba(99, 102, 241, 0.6) 0%, transparent 70%)',
-          }}
-          animate={{
-            x: [0, 100, 0],
-            y: [0, 50, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-        />
-        <motion.div
-          className="absolute w-[400px] h-[400px] rounded-full blur-3xl opacity-30"
-          style={{
-            background: 'radial-gradient(circle, rgba(236, 72, 153, 0.6) 0%, transparent 70%)',
-            right: 0,
-            bottom: 0,
-          }}
-          animate={{
-            x: [0, -80, 0],
-            y: [0, -60, 0],
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-        />
-      </div>
 
-      {/* Glass Content Container */}
-      <div className="relative h-full backdrop-blur-xl bg-background/40 border-l border-white/10">
+      <div className="relative h-full">
         {children}
       </div>
 

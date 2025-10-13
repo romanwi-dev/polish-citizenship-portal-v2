@@ -7,24 +7,8 @@ export const GradientDesign = ({ children }: { children: ReactNode }) => {
       {/* Footer-matching background */}
       <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
-      {/* Animated Mesh Gradient Background */}
-      <motion.div
-        className="absolute inset-0"
-        animate={{
-          background: [
-            'radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.4) 0%, transparent 50%), radial-gradient(circle at 100% 100%, rgba(236, 72, 153, 0.4) 0%, transparent 50%)',
-            'radial-gradient(circle at 100% 0%, rgba(236, 72, 153, 0.4) 0%, transparent 50%), radial-gradient(circle at 0% 100%, rgba(99, 102, 241, 0.4) 0%, transparent 50%)',
-            'radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.4) 0%, transparent 50%), radial-gradient(circle at 100% 100%, rgba(236, 72, 153, 0.4) 0%, transparent 50%)',
-          ],
-        }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-      />
 
-      <div className="relative h-full bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-xl">
+      <div className="relative h-full">
         {children}
       </div>
 
