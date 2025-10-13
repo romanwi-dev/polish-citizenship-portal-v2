@@ -332,8 +332,8 @@ export default function POAForm() {
                         <SelectValue placeholder="Select..." className="text-xs opacity-50" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-50">
-                        <SelectItem value="Male / Mężczyzna" className="text-base cursor-pointer">Male / Mężczyzna</SelectItem>
-                        <SelectItem value="Female / Kobieta" className="text-base cursor-pointer">Female / Kobieta</SelectItem>
+                        <SelectItem value="Male" className="text-base cursor-pointer">Male</SelectItem>
+                        <SelectItem value="Female" className="text-base cursor-pointer">Female</SelectItem>
                       </SelectContent>
                     </Select>
                   </motion.div>
