@@ -3,6 +3,8 @@ import { useState } from "react";
 import { FileText, CheckCircle, CreditCard, FileCheck, Send, FolderSearch, Archive, Languages, Upload, Stamp, Clock, Zap, Award, Book, Users, Shield } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 const timelineSteps = [{
   number: "1",
   title: "FIRST STEPS",
@@ -141,6 +143,9 @@ const timelineSteps = [{
 }];
 export default function TimelineProcessEnhanced() {
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
+  const isMobile = useIsMobile();
+  const prefersReducedMotion = useReducedMotion();
+
   const toggleFlip = (stepNumber: string) => {
     setFlippedCards(prev => ({
       ...prev,
@@ -209,13 +214,13 @@ export default function TimelineProcessEnhanced() {
           {/* Center line */}
           <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block" />
 
-          {timelineSteps.map((step, index) => <motion.div key={step.number} initial={{
+          {timelineSteps.map((step, index) => <motion.div key={step.number} initial={prefersReducedMotion ? {} : {
           opacity: 0,
           x: index % 2 === 0 ? -50 : 50
-        }} whileInView={{
+        }} whileInView={prefersReducedMotion ? {} : {
           opacity: 1,
           x: 0
-        }} transition={{
+        }} transition={prefersReducedMotion ? {} : {
           duration: 0.6,
           delay: index * 0.1
         }} viewport={{
@@ -224,10 +229,22 @@ export default function TimelineProcessEnhanced() {
         }} className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-8 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
               {/* Content Card */}
               <div className="w-full md:w-5/12">
-                <div className="relative h-[400px]" style={{
+                <div className="relative h-[280px] md:h-[400px]" style={{
               perspective: '1000px'
             }}>
-                  <div onClick={() => toggleFlip(step.number)} className="absolute inset-0 cursor-pointer transition-transform duration-700" style={{
+                  <div 
+                    onClick={() => toggleFlip(step.number)} 
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggleFlip(step.number);
+                      }
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`${step.title} - ${isMobile ? 'Tap' : 'Click'} to view details`}
+                    className="absolute inset-0 cursor-pointer transition-transform duration-700 focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-lg" 
+                    style={{
                 transformStyle: 'preserve-3d',
                 transform: flippedCards[step.number] ? 'rotateY(180deg)' : 'rotateY(0deg)'
               }}>
@@ -242,20 +259,20 @@ export default function TimelineProcessEnhanced() {
                 }}>
                       <div className="flex flex-col gap-3 h-full">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className={`text-base md:text-xs font-bold px-3 py-1.5 md:px-2 md:py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
+                          <span className={`text-sm md:text-xs font-bold px-3 py-1.5 md:px-2 md:py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
                             {step.number}
                           </span>
-                          <span className="text-xs text-muted-foreground">{step.duration}</span>
+                          <span className="text-[10px] md:text-xs text-muted-foreground">{step.duration}</span>
                         </div>
-                        <motion.h3 initial={{
+                        <motion.h3 initial={prefersReducedMotion ? {} : {
                       opacity: 0,
                       x: -20,
                       scale: 0.95
-                    }} whileInView={{
+                    }} whileInView={prefersReducedMotion ? {} : {
                       opacity: 1,
                       x: 0,
                       scale: 1
-                    }} transition={{
+                    }} transition={prefersReducedMotion ? {} : {
                       duration: 2,
                       delay: index * 0.08,
                       type: "spring",
@@ -263,21 +280,21 @@ export default function TimelineProcessEnhanced() {
                       damping: 15
                     }} viewport={{
                       once: true
-                    }} className="text-2xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-lg">
+                    }} className="text-xl md:text-2xl lg:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-lg">
                           {step.title}
                         </motion.h3>
-                        <p className="text-sm text-muted-foreground mb-3 flex-1">
+                        <p className="text-xs md:text-sm text-muted-foreground mb-3 flex-1 line-clamp-3 md:line-clamp-none">
                           {step.description}
                         </p>
-                        <div className="flex flex-wrap gap-2">
-                          <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
+                        <div className="flex flex-wrap gap-1.5 md:gap-2">
+                          <span className="text-[10px] md:text-xs px-2 py-1 md:px-3 md:py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
                             {step.keyAction}
                           </span>
-                          <span className="text-xs px-3 py-1 rounded-full bg-secondary/10 text-secondary border border-secondary/20">
+                          <span className="text-[10px] md:text-xs px-2 py-1 md:px-3 md:py-1 rounded-full bg-secondary/10 text-secondary border border-secondary/20">
                             {step.priority}
                           </span>
                         </div>
-                        <p className="text-xs text-muted-foreground/60 mt-2 text-center">Tap to see details</p>
+                        <p className="text-[10px] md:text-xs text-muted-foreground/60 mt-2 text-center">{isMobile ? 'Tap' : 'Click'} to see details</p>
                       </div>
                     </motion.div>
 
@@ -363,20 +380,25 @@ export default function TimelineProcessEnhanced() {
         </motion.div>
 
         {/* CTA */}
-        <motion.div initial={{
+        <motion.div initial={prefersReducedMotion ? {} : {
         opacity: 0,
         scale: 0.9
-      }} whileInView={{
+      }} whileInView={prefersReducedMotion ? {} : {
         opacity: 1,
         scale: 1
-      }} transition={{
+      }} transition={prefersReducedMotion ? {} : {
         duration: 0.6
       }} viewport={{
         once: true
       }} className="text-center mt-12">
-          <Button size="lg" className="text-2xl font-bold px-20 py-6 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30" onClick={() => document.getElementById('contact')?.scrollIntoView({
-          behavior: 'smooth'
-        })}>
+          <Button 
+            size="lg" 
+            className="text-lg md:text-2xl font-bold px-8 py-4 md:px-20 md:py-6 h-auto min-h-[48px] rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30" 
+            onClick={() => document.getElementById('contact')?.scrollIntoView({
+              behavior: 'smooth'
+            })}
+            aria-label="Check your eligibility for Polish citizenship"
+          >
             <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               Check Your Eligibility
             </span>

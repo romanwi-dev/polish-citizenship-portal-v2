@@ -3,13 +3,14 @@ import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import { Float, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import heroEuFlag from '@/assets/hero-eu-flag.jpg';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
-const MapPlane = memo(function MapPlane() {
+const MapPlane = memo(function MapPlane({ prefersReducedMotion }: { prefersReducedMotion: boolean }) {
   const meshRef = useRef<THREE.Mesh>(null);
   const texture = useLoader(THREE.TextureLoader, heroEuFlag);
 
   useFrame((state) => {
-    if (meshRef.current) {
+    if (meshRef.current && !prefersReducedMotion) {
       meshRef.current.rotation.y = Math.sin(state.clock.getElapsedTime() * 0.2) * 0.1;
       meshRef.current.position.y = Math.sin(state.clock.getElapsedTime() * 0.5) * 0.2;
     }
@@ -33,6 +34,8 @@ const MapPlane = memo(function MapPlane() {
 });
 
 const Hero3DMap = memo(() => {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <div className="w-full h-full">
       <Canvas 
@@ -44,12 +47,12 @@ const Hero3DMap = memo(() => {
         <pointLight position={[10, 10, 10]} intensity={1} color="#ffffff" />
         <pointLight position={[-10, -10, -10]} intensity={0.6} color="#5b8dce" />
         
-        <MapPlane />
+        <MapPlane prefersReducedMotion={prefersReducedMotion} />
         
         <OrbitControls 
           enableZoom={false} 
           enablePan={false} 
-          autoRotate
+          autoRotate={!prefersReducedMotion}
           autoRotateSpeed={0.2}
           maxPolarAngle={Math.PI / 1.8} 
           minPolarAngle={Math.PI / 2.2}

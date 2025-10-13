@@ -61,7 +61,12 @@ export const MobileNavigationSheet = () => {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="md:hidden">
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="md:hidden h-12 w-12"
+          aria-label="Open navigation menu"
+        >
           <Menu className="h-5 w-5" />
         </Button>
       </SheetTrigger>
@@ -103,29 +108,53 @@ export const MobileNavigationSheet = () => {
                 </Button>
 
                 {/* Icon Row */}
-                <div className="flex items-center justify-center gap-2 py-2 flex-wrap">
-                  <button className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
+                <div className="flex items-center justify-center gap-3 py-2 flex-wrap">
+                  <button 
+                    className="h-12 w-12 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+                    aria-label="Add new item"
+                  >
                     <Plus className="h-5 w-5 text-foreground/30" />
                   </button>
-                  <button className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
+                  <button 
+                    className="h-12 w-12 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+                    aria-label="Upload image"
+                  >
                     <Image className="h-5 w-5 text-foreground/30" />
                   </button>
-                  <button className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
+                  <button 
+                    className="h-12 w-12 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+                    aria-label="Voice input"
+                  >
                     <Mic className="h-5 w-5 text-foreground/30" />
                   </button>
-                  <button className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
+                  <button 
+                    className="h-12 w-12 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+                    aria-label="Quick actions"
+                  >
                     <Zap className="h-5 w-5 text-foreground/30" />
                   </button>
-                  <button className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
+                  <button 
+                    className="h-12 w-12 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+                    aria-label="More options"
+                  >
                     <MoreVertical className="h-5 w-5 text-foreground/30" />
                   </button>
-                  <button className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
+                  <button 
+                    className="h-12 w-12 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+                    aria-label="Upload file"
+                  >
                     <Upload className="h-5 w-5 text-foreground/30" />
                   </button>
-                  <button className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
+                  <button 
+                    className="h-12 w-12 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+                    aria-label="Share"
+                  >
                     <Share2 className="h-5 w-5 text-foreground/30" />
                   </button>
-                  <button className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
+                  <button 
+                    className="h-12 w-12 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+                    aria-label="Settings"
+                  >
                     <Settings className="h-5 w-5 text-foreground/30" />
                   </button>
                 </div>
@@ -147,7 +176,8 @@ export const MobileNavigationSheet = () => {
             <div className="p-4 border-t border-border/50">
               <Button
                 onClick={handleCitizenshipTest}
-                className="w-full h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all"
+                className="w-full h-14 min-h-[48px] bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all"
+                aria-label="Take the Polish Citizenship Test to check your eligibility"
               >
                 Take Polish Citizenship Test
               </Button>
