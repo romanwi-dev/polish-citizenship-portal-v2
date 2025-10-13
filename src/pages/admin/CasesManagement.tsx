@@ -43,7 +43,7 @@ export default function CasesManagement() {
   const [showShortcuts, setShowShortcuts] = useState(false);
   const [showGlobalSearch, setShowGlobalSearch] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
-  const [sortBy, setSortBy] = useState<"default" | "name" | "date" | "progress">("default");
+  const [sortBy, setSortBy] = useState<"default" | "name" | "date" | "progress" | "mode" | "score" | "stage" | "pay">("default");
   
   // Bulk actions
   const {
@@ -201,6 +201,34 @@ export default function CasesManagement() {
       }
       if (sortBy === "progress") {
         return (b.progress || 0) - (a.progress || 0);
+      }
+      if (sortBy === "mode") {
+        const modeOrder = { vip_plus: 4, vip: 3, expedited: 2, standard: 1 };
+        const modeA = modeOrder[a.processing_mode as keyof typeof modeOrder] || 0;
+        const modeB = modeOrder[b.processing_mode as keyof typeof modeOrder] || 0;
+        return modeB - modeA;
+      }
+      if (sortBy === "score") {
+        return (b.client_score || 0) - (a.client_score || 0);
+      }
+      if (sortBy === "stage") {
+        // Sort by completion/stage status
+        const stageScore = (c: any) => {
+          let score = 0;
+          if (c.decision_received) score += 4;
+          else if (c.wsc_received) score += 3;
+          else if (c.oby_filed) score += 2;
+          else if (c.poa_approved) score += 1;
+          return score;
+        };
+        return stageScore(b) - stageScore(a);
+      }
+      if (sortBy === "pay") {
+        // Sort by processing mode as proxy for payment tier
+        const payOrder = { vip_plus: 4, vip: 3, expedited: 2, standard: 1 };
+        const payA = payOrder[a.processing_mode as keyof typeof payOrder] || 0;
+        const payB = payOrder[b.processing_mode as keyof typeof payOrder] || 0;
+        return payB - payA;
       }
 
       // Default sorting
@@ -375,20 +403,23 @@ export default function CasesManagement() {
 
           {/* Sort Controls */}
           {filteredCases.length > 0 && (
-            <div className="flex flex-wrap items-center gap-2">
-              <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">Sort by:</span>
+            <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-2">
               {[
                 { value: "default", label: "Default" },
                 { value: "name", label: "Name" },
                 { value: "date", label: "Date" },
                 { value: "progress", label: "Progress" },
+                { value: "mode", label: "Mode" },
+                { value: "score", label: "Score" },
+                { value: "stage", label: "Stage" },
+                { value: "pay", label: "Pay" },
               ].map((option) => (
                 <Button
                   key={option.value}
                   variant={sortBy === option.value ? "default" : "outline"}
                   size="sm"
                   onClick={() => setSortBy(option.value as any)}
+                  className="whitespace-nowrap flex-shrink-0"
                 >
                   {option.label}
                 </Button>
