@@ -173,10 +173,9 @@ const FAQSection = () => {
               <HelpCircle className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium">FAQ</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-14">
-              Find Answers{" "}
-              <span className="bg-gradient-to-r from-primary via-purple-400 to-primary bg-clip-text text-transparent">
-                Instantly
+            <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-14">
+              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                Find Answers Instantly
               </span>
             </h2>
             <div className="mb-16" />

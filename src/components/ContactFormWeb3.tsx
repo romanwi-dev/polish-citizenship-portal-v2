@@ -84,7 +84,7 @@ const ContactFormWeb3 = () => {
             <Mail className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium">Connect With Us</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-6">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               Ready to Check Your Eligibility?
             </span>
