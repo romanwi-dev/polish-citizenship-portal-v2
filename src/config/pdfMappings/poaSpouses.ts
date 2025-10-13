@@ -12,21 +12,23 @@
  */
 
 export const POA_SPOUSES_PDF_MAP: Record<string, string> = {
-  // Applicant (Spouse 1)
+  // Applicant fields
   'imie_nazwisko_wniosko': 'applicant_first_name', // Full name field
   'applicant_given_names': 'applicant_first_name',
   'applicant_surname': 'applicant_last_name',
   'passport_number': 'applicant_passport_number',
   'nr_dok_tozsamosci': 'applicant_passport_number', // ID document number
   
-  // Spouse 2
+  // Spouse fields
   'spouse_given_names': 'spouse_first_name',
   'spouse_surname': 'spouse_last_name',
   'spouse_passport_number': 'spouse_passport_number',
   
-  // Post-marriage surnames
-  'husband_surname': 'applicant_last_name',
-  'wife_surname': 'spouse_last_name',
+  // Post-marriage surnames - dynamically mapped based on applicant_sex
+  // If applicant is male (M): husband_surname = applicant_last_name, wife_surname = spouse_last_name
+  // If applicant is female (F): husband_surname = spouse_last_name, wife_surname = applicant_last_name
+  'husband_surname': 'applicant_last_name', // Will be mapped dynamically in fill-pdf
+  'wife_surname': 'spouse_last_name', // Will be mapped dynamically in fill-pdf
   
   // Children from marriage
   'minor_surname': 'child_1_last_name',

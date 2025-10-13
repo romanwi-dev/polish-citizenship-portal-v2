@@ -327,7 +327,10 @@ export default function POAForm() {
                     <Label className={isLargeFonts ? "text-2xl" : ""}>
                       Gender
                     </Label>
-                    <Select value={formData.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
+                    <Select 
+                      value={formData.applicant_sex === 'M' ? 'Male' : formData.applicant_sex === 'F' ? 'Female' : ''} 
+                      onValueChange={(value) => handleInputChange("applicant_sex", value === 'Male' ? 'M' : 'F')}
+                    >
                       <SelectTrigger className="h-10 text-2xl border hover:border-transparent focus:border-transparent hover-glow focus:shadow-lg transition-all bg-gray-200/45 dark:bg-gray-700/45 border-gray-300/30 dark:border-gray-500/30 backdrop-blur normal-case" style={{ boxShadow: '0 0 30px rgba(156,163,175,0.25)' }}>
                         <SelectValue placeholder="Select..." className="text-xs opacity-50 normal-case" />
                       </SelectTrigger>
@@ -405,25 +408,6 @@ export default function POAForm() {
                     onChange={(value) => handleInputChange("applicant_last_name", value)}
                   />
                 </div>
-                
-                {/* Marriage information - Only show if married */}
-                {formData.applicant_is_married && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-6">
-                    <POAFormField
-                      name="place_of_marriage"
-                      label="Place of marriage"
-                      value={formData?.place_of_marriage || ""}
-                      onChange={(value) => handleInputChange("place_of_marriage", value)}
-                    />
-                    <DateField
-                      name="date_of_marriage"
-                      label="Date of marriage"
-                      value={formData?.date_of_marriage || ""}
-                      onChange={(value) => handleInputChange("date_of_marriage", value)}
-                      colorScheme="poa"
-                    />
-                  </div>
-                )}
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-6">
                   <POAFormField
@@ -586,25 +570,19 @@ export default function POAForm() {
                   />
                 </div>
 
-                {/* Marriage Names */}
+                {/* Marriage Names - Show wife's name after marriage */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
                   <POAFormField
-                    name="applicant_last_name_after_marriage"
-                    label={formData?.applicant_sex === 'F'
-                      ? "Wife's full last name after marriage"
-                      : "Husband's full last name after marriage"
-                    }
-                    value={formData?.applicant_last_name_after_marriage || ""}
-                    onChange={(value) => handleInputChange("applicant_last_name_after_marriage", value)}
+                    name={formData?.applicant_sex === 'F' ? "applicant_last_name" : "spouse_last_name"}
+                    label="Wife's full last name after marriage / Nazwisko żony po zawarciu małżeństwa"
+                    value={formData?.applicant_sex === 'F' ? (formData?.applicant_last_name || "") : (formData?.spouse_last_name || "")}
+                    onChange={(value) => handleInputChange(formData?.applicant_sex === 'F' ? "applicant_last_name" : "spouse_last_name", value)}
                   />
                   <POAFormField
-                    name="spouse_last_name_after_marriage"
-                    label={formData?.applicant_sex === 'F'
-                      ? "Husband's full last name after marriage"
-                      : "Wife's full last name after marriage"
-                    }
-                    value={formData?.spouse_last_name_after_marriage || (formData?.applicant_sex === 'M' ? formData?.applicant_last_name || "" : "")}
-                    onChange={(value) => handleInputChange("spouse_last_name_after_marriage", value)}
+                    name={formData?.applicant_sex === 'M' ? "applicant_last_name" : "spouse_last_name"}
+                    label="Husband's full last name after marriage / Nazwisko męża po zawarciu małżeństwa"
+                    value={formData?.applicant_sex === 'M' ? (formData?.applicant_last_name || "") : (formData?.spouse_last_name || "")}
+                    onChange={(value) => handleInputChange(formData?.applicant_sex === 'M' ? "applicant_last_name" : "spouse_last_name", value)}
                   />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">

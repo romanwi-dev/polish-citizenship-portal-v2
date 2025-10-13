@@ -31,15 +31,11 @@ export const sanitizeMasterData = (formData: any): any => {
     // Children flags (derived from children_count)
     'has_children',
     'has_minor_children',
-    'minor_children_count',
     'applicant_has_children',
     'applicant_has_minor_children',
     'applicant_minor_children_count',
     'has_child_1', 'has_child_2', 'has_child_3', 'has_child_4', 'has_child_5',
     'has_child_6', 'has_child_7', 'has_child_8', 'has_child_9', 'has_child_10',
-    // Non-existent fields
-    'applicant_last_name_after_marriage',
-    'spouse_last_name_after_marriage',
   ];
 
   // Process each field in the form data
