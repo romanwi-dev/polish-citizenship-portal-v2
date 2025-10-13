@@ -158,8 +158,8 @@ export const CaseCard = memo(({
         className={`relative w-full transition-transform duration-700 preserve-3d ${isFlipped ? 'rotate-y-180' : ''}`}
         style={{ transformStyle: 'preserve-3d', minHeight: '750px' }}
       >
-        {/* Front of Card */}
-        <div className="absolute inset-0 w-full backface-hidden bg-background border border-border hover:border-primary/50 transition-colors p-5 sm:p-6 rounded-lg flex flex-col" style={{ minHeight: '750px' }}>
+          {/* Front of Card */}
+        <div className="absolute inset-0 w-full backface-hidden border border-border hover:border-primary/50 transition-colors p-5 sm:p-6 rounded-lg flex flex-col" style={{ minHeight: '750px' }}>
           <div className="flex items-start justify-between mb-5">
             <div className="flex items-center gap-3">
               <ClientPhotoUpload
@@ -169,11 +169,11 @@ export const CaseCard = memo(({
                 onPhotoUpdated={setPhotoUrl}
               />
               <div>
-                <h3 className="font-heading font-bold text-4xl sm:text-5xl md:text-6xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                <h3 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                   {clientCase.client_name}
                 </h3>
-                <div className="flex items-center gap-1 text-xs sm:text-sm text-muted-foreground">
-                  <MapPin className="w-3 h-3 sm:w-4 sm:h-4" />
+                <div className="flex items-center gap-1 text-sm sm:text-base text-muted-foreground">
+                  <MapPin className="w-4 h-4" />
                   {clientCase.country || 'N/A'}
                 </div>
               </div>
@@ -249,15 +249,15 @@ export const CaseCard = memo(({
           </div>
 
           {/* Badges Row */}
-          <div className="flex flex-nowrap gap-1.5 sm:gap-2 mb-4 sm:mb-5 overflow-x-auto pb-1 scrollbar-thin">
-            <span className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium border ${getStatusBadge(clientCase.status)} capitalize whitespace-nowrap`}>
+          <div className="flex flex-wrap gap-2 mb-4 sm:mb-5">
+            <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusBadge(clientCase.status)} capitalize whitespace-nowrap min-h-[44px] flex items-center justify-center`}>
               {clientCase.status.replace(/_/g, ' ')}
             </span>
             
             {/* Processing Mode Badge with Dropdown - no VIP badge if VIP mode */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                <span className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium border cursor-pointer hover:opacity-80 transition-opacity flex items-center gap-1 whitespace-nowrap ${
+                <span className={`px-3 py-1 rounded-full text-xs font-medium border cursor-pointer hover:opacity-80 transition-opacity flex items-center gap-1 whitespace-nowrap min-h-[44px] ${
                   PROCESSING_MODE_COLORS[clientCase.processing_mode as keyof typeof PROCESSING_MODE_COLORS]
                 }`}>
                   {getProcessingModeIcon()}
@@ -286,7 +286,7 @@ export const CaseCard = memo(({
             </DropdownMenu>
 
             {clientCase.scheme_introduced && (
-              <span className="px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium border bg-cyan-500/20 text-cyan-400 border-cyan-500/30 whitespace-nowrap">
+              <span className="px-3 py-1 rounded-full text-xs font-medium border bg-cyan-500/20 text-cyan-400 border-cyan-500/30 whitespace-nowrap min-h-[44px] flex items-center justify-center">
                 {clientCase.scheme_introduced}
               </span>
             )}
@@ -294,8 +294,8 @@ export const CaseCard = memo(({
 
           {/* KPI Strip - Mobile Optimized */}
           <CollapsibleKPIStrip className="mb-4 sm:mb-5">
-            <div className="p-3 rounded-lg bg-background/20 border border-border/30">
-              <div className="grid grid-cols-2 md:flex md:flex-wrap gap-2">
+            <div className="p-3 rounded-lg border border-border/30">
+              <div className="flex flex-wrap gap-2">
                 {/* POA Status */}
               <div className={`px-2 py-1 rounded text-xs font-medium flex items-center gap-1 justify-center ${
                 clientCase.poa_approved 
@@ -354,47 +354,47 @@ export const CaseCard = memo(({
           </CollapsibleKPIStrip>
 
           {clientCase.client_code && (
-            <div className="mb-3 sm:mb-4 p-2 rounded-lg bg-background/30">
+            <div className="mb-3 sm:mb-4 p-2 rounded-lg border border-border/20">
               <p className="text-xs sm:text-sm font-normal font-label text-muted-foreground">Case Code</p>
               <p className="text-sm sm:text-base font-mono font-normal">{clientCase.client_code}</p>
             </div>
           )}
 
           <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-5 sm:mb-6">
-            <div className="flex flex-col gap-0.5 sm:gap-1 p-2 sm:p-3 rounded-lg bg-background/30">
-              <div className="flex items-center gap-0.5 sm:gap-1">
-                <Calendar className="w-3 h-3 sm:w-4 sm:h-4 text-primary" />
-                <p className="text-[10px] sm:text-sm font-normal font-label text-muted-foreground">Started</p>
+            <div className="flex flex-col gap-1 p-3 rounded-lg border border-border/20">
+              <div className="flex items-center gap-1">
+                <Calendar className="w-4 h-4 text-primary" />
+                <p className="text-xs sm:text-sm font-normal font-label text-muted-foreground">Started</p>
               </div>
-              <p className="text-xs sm:text-base font-normal font-label mt-0.5 sm:mt-1">
+              <p className="text-sm sm:text-base font-normal font-label mt-1">
                 {clientCase.start_date ? new Date(clientCase.start_date).toLocaleDateString() : 'N/A'}
               </p>
             </div>
-            <div className="flex flex-col gap-0.5 sm:gap-1 p-2 sm:p-3 rounded-lg bg-background/30">
-              <div className="flex items-center gap-0.5 sm:gap-1">
-                <FileText className="w-3 h-3 sm:w-4 sm:h-4 text-secondary" />
-                <p className="text-[10px] sm:text-sm font-normal font-label text-muted-foreground">Docs</p>
+            <div className="flex flex-col gap-1 p-3 rounded-lg border border-border/20">
+              <div className="flex items-center gap-1">
+                <FileText className="w-4 h-4 text-secondary" />
+                <p className="text-xs sm:text-sm font-normal font-label text-muted-foreground">Docs</p>
               </div>
-              <p className="text-xs sm:text-base font-bold font-label mt-0.5 sm:mt-1 text-cyan-400">{clientCase.document_count}</p>
+              <p className="text-sm sm:text-base font-bold font-label mt-1 text-cyan-400">{clientCase.document_count}</p>
             </div>
-            <div className="flex flex-col gap-0.5 sm:gap-1 p-2 sm:p-3 rounded-lg bg-background/30">
-              <div className="flex items-center gap-0.5 sm:gap-1">
-                <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-accent" />
-                <p className="text-[10px] sm:text-sm font-normal font-label text-muted-foreground">Score</p>
+            <div className="flex flex-col gap-1 p-3 rounded-lg border border-border/20">
+              <div className="flex items-center gap-1">
+                <TrendingUp className="w-4 h-4 text-accent" />
+                <p className="text-xs sm:text-sm font-normal font-label text-muted-foreground">Score</p>
               </div>
-              <p className="text-xs sm:text-base font-bold font-label mt-0.5 sm:mt-1 text-cyan-400">{clientCase.client_score || 0}</p>
+              <p className="text-sm sm:text-base font-bold font-label mt-1 text-cyan-400">{clientCase.client_score || 0}</p>
             </div>
           </div>
 
           <div className="space-y-2 sm:space-y-3 mb-5 sm:mb-6">
             <div className="flex items-center justify-between text-sm sm:text-base">
-              <div className="flex items-center gap-0.5 sm:gap-1">
-                <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground" />
-                <span className="font-normal font-label text-muted-foreground text-xs sm:text-base">Progress</span>
+              <div className="flex items-center gap-1">
+                <TrendingUp className="w-4 h-4 text-muted-foreground" />
+                <span className="font-normal font-label text-muted-foreground text-sm sm:text-base">Progress</span>
               </div>
               <span className="font-bold text-base sm:text-lg text-cyan-400">{clientCase.progress || 0}%</span>
             </div>
-            <div className="h-2 sm:h-3 bg-background/50 opacity-50 rounded-full overflow-hidden">
+            <div className="h-3 border border-border/20 rounded-full overflow-hidden">
               <div 
                 className="h-full bg-gradient-to-r from-primary/80 to-accent/80 transition-all duration-500 rounded-full"
                 style={{ width: `${clientCase.progress || 0}%` }}
@@ -403,8 +403,8 @@ export const CaseCard = memo(({
           </div>
 
           {clientCase.status === "finished" && (
-            <div className="mb-5 sm:mb-6 flex items-center justify-center gap-1.5 sm:gap-2 p-3 sm:p-4 rounded-lg bg-green-500/10 border border-green-500/30">
-              <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-green-400" />
+            <div className="mb-5 sm:mb-6 flex items-center justify-center gap-2 p-4 rounded-lg border border-green-500/30">
+              <CheckCircle2 className="w-5 h-5 text-green-400" />
               <span className="text-sm sm:text-base font-medium text-green-400">Citizenship Granted</span>
             </div>
           )}
@@ -415,23 +415,22 @@ export const CaseCard = memo(({
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full bg-background/10 border-primary/20 hover:bg-background/20 h-12 sm:h-12 perspective-1000 group relative overflow-hidden preserve-3d transition-all duration-300 hover:scale-105 hover:shadow-[0_10px_40px_rgba(var(--primary),0.3)]"
+                className="w-full border-primary/20 h-12 perspective-1000 group relative overflow-hidden preserve-3d transition-all duration-300 hover:scale-105"
                 onClick={(e) => {
                   e.stopPropagation();
                   navigate(`/admin/cases/${clientCase.id}`);
                 }}
               >
-                <span className="text-sm sm:text-sm font-normal text-foreground/40 group-hover:text-foreground/60 transition-colors relative z-10">
+                <span className="text-sm font-normal text-foreground/40 group-hover:text-foreground/60 transition-colors relative z-10">
                   CONTROL ROOM
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-fade-in" />
               </Button>
 
               {/* Action Buttons - 2 rows of 3 */}
               <div className="grid grid-cols-3 gap-2 pt-3 border-t border-border/30">
                 <Button
                   size="sm"
-                  className="text-xs font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-11 flex items-center justify-center"
+                  className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 min-h-[44px] flex items-center justify-center"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate(`/admin/cases/${clientCase.id}?tab=ai-agent`);
@@ -440,11 +439,10 @@ export const CaseCard = memo(({
                   <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-light opacity-90">
                     Ask AI
                   </span>
-                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </Button>
                 <Button
                   size="sm"
-                  className="text-xs font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-11 flex items-center justify-center"
+                  className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 min-h-[44px] flex items-center justify-center"
                     onClick={(e) => {
                       e.stopPropagation();
                       window.open('/family-tree.pdf', '_blank');
@@ -453,11 +451,10 @@ export const CaseCard = memo(({
                     <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-light opacity-90">
                       Family Tree
                     </span>
-                    <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </Button>
                   <Button
                     size="sm"
-                    className="text-xs font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-11 flex items-center justify-center px-3 whitespace-nowrap flex-shrink-0"
+                    className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 min-h-[44px] flex items-center justify-center px-3 whitespace-nowrap flex-shrink-0"
                     onClick={(e) => {
                       e.stopPropagation();
                       navigate(`/admin/cases/${clientCase.id}?tab=documents`);
@@ -466,11 +463,10 @@ export const CaseCard = memo(({
                     <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-light opacity-90">
                       Documents
                     </span>
-                    <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </Button>
                   <Button
                     size="sm"
-                    className="text-xs font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-11 flex items-center justify-center px-3 whitespace-nowrap flex-shrink-0"
+                    className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 min-h-[44px] flex items-center justify-center px-3 whitespace-nowrap flex-shrink-0"
                     onClick={(e) => {
                       e.stopPropagation();
                       navigate(`/admin/cases/${clientCase.id}?tab=tasks`);
@@ -479,11 +475,10 @@ export const CaseCard = memo(({
                     <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-light opacity-90">
                       Intake
                     </span>
-                    <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </Button>
                   <Button
                     size="sm"
-                    className="text-xs font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-11 flex items-center justify-center px-3 whitespace-nowrap flex-shrink-0"
+                    className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 min-h-[44px] flex items-center justify-center px-3 whitespace-nowrap flex-shrink-0"
                     onClick={(e) => {
                       e.stopPropagation();
                       navigate(`/admin/cases/${clientCase.id}?tab=authority`);
@@ -492,11 +487,10 @@ export const CaseCard = memo(({
                     <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-light opacity-90">
                       Upload
                     </span>
-                    <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </Button>
                   <Button
                     size="sm"
-                    className="text-xs font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-11 flex items-center justify-center px-3 whitespace-nowrap flex-shrink-0"
+                    className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 min-h-[44px] flex items-center justify-center px-3 whitespace-nowrap flex-shrink-0"
                     onClick={(e) => {
                       e.stopPropagation();
                       navigate(`/admin/cases/${clientCase.id}?tab=stage`);
@@ -505,7 +499,6 @@ export const CaseCard = memo(({
                     <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-light opacity-90">
                       Stage
                     </span>
-                    <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </Button>
                 </div>
             </div>
@@ -514,7 +507,7 @@ export const CaseCard = memo(({
 
         {/* Back of Card */}
         <div
-          className="absolute inset-0 w-full backface-hidden rotate-y-180 bg-primary/10 border border-primary p-6 rounded-lg"
+          className="absolute inset-0 w-full backface-hidden rotate-y-180 border border-primary p-6 rounded-lg"
           style={{ transform: 'rotateY(180deg)', minHeight: '750px' }}
         >
           <div className="h-full flex flex-col" style={{ minHeight: '580px' }}>
@@ -524,25 +517,25 @@ export const CaseCard = memo(({
             
             <div className="space-y-3 flex-1 overflow-y-auto">
               {clientCase.client_code && (
-                <div className="p-3 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
-                  <p className="text-xs text-muted-foreground mb-1">Case Reference</p>
-                  <p className="font-bold text-lg text-cyan-400">{clientCase.client_code}</p>
-                </div>
+              <div className="p-3 rounded-lg border border-border/50">
+                <p className="text-xs text-muted-foreground mb-1">Case Reference</p>
+                <p className="font-bold text-lg text-cyan-400">{clientCase.client_code}</p>
+              </div>
               )}
 
-              <div className="p-3 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
+              <div className="p-3 rounded-lg border border-border/50">
                 <p className="text-xs text-muted-foreground mb-1">Processing Mode</p>
                 <p className="font-bold text-base capitalize">{PROCESSING_MODE_LABELS[clientCase.processing_mode as keyof typeof PROCESSING_MODE_LABELS]}</p>
               </div>
 
               {clientCase.scheme_introduced && (
-                <div className="p-3 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
+                <div className="p-3 rounded-lg border border-border/50">
                   <p className="text-xs text-muted-foreground mb-1">Scheme Introduced</p>
                   <p className="font-bold text-base">{clientCase.scheme_introduced}</p>
                 </div>
               )}
 
-              <div className="p-3 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
+              <div className="p-3 rounded-lg border border-border/50">
                 <p className="text-xs text-muted-foreground mb-2">Timeline Details</p>
                 <div className="space-y-1.5">
                   <div className="flex justify-between items-center py-1 border-b border-border/30">
@@ -575,7 +568,7 @@ export const CaseCard = memo(({
                 </div>
               </div>
 
-              <div className="p-3 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
+              <div className="p-3 rounded-lg border border-border/50">
                 <p className="text-xs text-muted-foreground mb-2">Documents Status</p>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -586,7 +579,7 @@ export const CaseCard = memo(({
                 </div>
               </div>
 
-              <div className="p-3 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
+              <div className="p-3 rounded-lg border border-border/50">
                 <p className="text-xs text-muted-foreground mb-1">Current Location</p>
                 <div className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-secondary" />
@@ -595,7 +588,7 @@ export const CaseCard = memo(({
               </div>
 
               {clientCase.status === "finished" && (
-                <div className="p-3 rounded-lg bg-green-500/20 border border-green-500/40">
+                <div className="p-3 rounded-lg border border-green-500/40">
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-5 h-5 text-green-400" />
                     <div>
@@ -620,7 +613,7 @@ export const CaseCard = memo(({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmDelete} className="bg-destructive hover:bg-destructive/90">
+            <AlertDialogAction onClick={confirmDelete}>
               Delete
             </AlertDialogAction>
           </AlertDialogFooter>
