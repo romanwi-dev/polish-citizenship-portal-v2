@@ -1,5 +1,6 @@
 import { FileText, Users, CheckCircle, Globe, Cpu, Shield, Zap } from "lucide-react";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 const services = [
   {
@@ -55,11 +56,11 @@ const FlippableServiceCard = ({ service, index }: { service: typeof services[0];
       onMouseLeave={() => setIsFlipped(false)}
     >
       <div 
-        className="relative w-full h-full transition-transform duration-700"
-        style={{
-          transformStyle: 'preserve-3d',
-          transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
-        }}
+        className={cn(
+          "relative w-full h-full transition-transform duration-700",
+          "[transform-style:preserve-3d]",
+          isFlipped && "[transform:rotateY(180deg)]"
+        )}
       >
         {/* Front of card */}
         <div 
