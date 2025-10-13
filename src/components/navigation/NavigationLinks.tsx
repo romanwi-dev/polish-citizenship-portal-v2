@@ -18,14 +18,6 @@ const NAVIGATION_SECTIONS: Array<{
   links: NavLink[];
 }> = [
   {
-    title: 'Quick Links',
-    links: [
-      { label: 'Documents', href: '#documents' },
-      { label: 'Law', href: '#law' },
-      { label: 'Passport', href: '#passport' },
-    ]
-  },
-  {
     title: 'Featured',
     links: [
       { label: 'Intake Demo', href: '/admin/intake-demo', featured: true },
@@ -44,6 +36,9 @@ const NAVIGATION_SECTIONS: Array<{
   {
     title: 'Resources',
     links: [
+      { label: 'Documents', href: '#documents' },
+      { label: 'Law', href: '#law' },
+      { label: 'Passport', href: '#passport' },
       { label: 'Resources', href: '#resources' },
       { label: 'Paperwork', href: '#paperwork' },
       { label: 'Testimonials', href: '#testimonials' },
