@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Menu, Sparkles, LogIn, LogOut } from 'lucide-react';
+import { Menu, Sparkles, LogIn, LogOut, Plus, Image, Mic, Zap, Upload } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
@@ -101,6 +101,25 @@ export const MobileNavigationSheet = () => {
                     </>
                   )}
                 </Button>
+
+                {/* Icon Row */}
+                <div className="flex items-center justify-center gap-4 py-2">
+                  <button className="h-12 w-12 rounded-full bg-background/50 border border-border/20 flex items-center justify-center hover:border-primary/50 transition-all">
+                    <Plus className="h-5 w-5 text-foreground/70" />
+                  </button>
+                  <button className="h-12 w-12 rounded-full bg-background/50 border border-border/20 flex items-center justify-center hover:border-primary/50 transition-all">
+                    <Image className="h-5 w-5 text-foreground/70" />
+                  </button>
+                  <button className="h-12 w-12 rounded-full bg-background/50 border border-border/20 flex items-center justify-center hover:border-primary/50 transition-all">
+                    <Mic className="h-5 w-5 text-foreground/70" />
+                  </button>
+                  <button className="h-12 w-12 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center hover:bg-primary/30 transition-all">
+                    <Zap className="h-5 w-5 text-primary" />
+                  </button>
+                  <button className="h-12 w-12 rounded-full bg-background/50 border border-border/20 flex items-center justify-center hover:border-primary/50 transition-all">
+                    <Upload className="h-5 w-5 text-foreground/70" />
+                  </button>
+                </div>
 
                 <div className="h-px bg-border/50" />
 

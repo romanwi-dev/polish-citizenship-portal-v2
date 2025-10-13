@@ -18,12 +18,6 @@ const NAVIGATION_SECTIONS: Array<{
   links: NavLink[];
 }> = [
   {
-    title: 'Featured',
-    links: [
-      { label: 'Intake Demo', href: '/admin/intake-demo', featured: true },
-    ]
-  },
-  {
     title: 'Main',
     links: [
       { label: 'FAQ', href: '#faq' },
@@ -100,14 +94,10 @@ export const NavigationLinks = ({ onNavigate, searchQuery }: NavigationLinksProp
                     key={link.href}
                     to={link.href}
                     onClick={() => handleClick(link.href)}
-                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group ${
-                      isFeatured
-                        ? 'bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 hover:from-primary/30 hover:via-accent/30 hover:to-primary/30 border border-primary/30'
-                        : 'hover:bg-accent/50'
-                    }`}
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg"
                   >
-                    {Icon && <Icon className="h-4 w-4 text-primary group-hover:scale-110 transition-transform" />}
-                    <span className={`font-medium ${isFeatured ? 'text-primary font-semibold' : 'group-hover:text-primary'} transition-colors`}>
+                    {Icon && <Icon className="h-4 w-4 text-primary" />}
+                    <span className="font-medium">
                       {link.label}
                     </span>
                   </Link>
