@@ -24,11 +24,9 @@ export const POA_SPOUSES_PDF_MAP: Record<string, string> = {
   'spouse_surname': 'spouse_last_name',
   'spouse_passport_number': 'spouse_passport_number',
   
-  // Post-marriage surnames - dynamically mapped based on applicant_sex
-  // If applicant is male (M): husband_surname = applicant_last_name, wife_surname = spouse_last_name
-  // If applicant is female (F): husband_surname = spouse_last_name, wife_surname = applicant_last_name
-  'husband_surname': 'applicant_last_name', // Will be mapped dynamically in fill-pdf
-  'wife_surname': 'spouse_last_name', // Will be mapped dynamically in fill-pdf
+  // Post-marriage surnames - separate independent fields
+  'husband_surname': 'husband_last_name_after_marriage',
+  'wife_surname': 'wife_last_name_after_marriage',
   
   // Children from marriage
   'minor_surname': 'child_1_last_name',

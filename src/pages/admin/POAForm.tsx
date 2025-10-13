@@ -570,19 +570,19 @@ export default function POAForm() {
                   />
                 </div>
 
-                {/* Marriage Names - Show wife's name after marriage */}
+                {/* Post-Marriage Last Names - separate fields for wife and husband */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
                   <POAFormField
-                    name={formData?.applicant_sex === 'F' ? "applicant_last_name" : "spouse_last_name"}
+                    name="wife_last_name_after_marriage"
                     label="Wife's full last name after marriage / Nazwisko żony po zawarciu małżeństwa"
-                    value={formData?.applicant_sex === 'F' ? (formData?.applicant_last_name || "") : (formData?.spouse_last_name || "")}
-                    onChange={(value) => handleInputChange(formData?.applicant_sex === 'F' ? "applicant_last_name" : "spouse_last_name", value)}
+                    value={formData?.wife_last_name_after_marriage || ""}
+                    onChange={(value) => handleInputChange("wife_last_name_after_marriage", value)}
                   />
                   <POAFormField
-                    name={formData?.applicant_sex === 'M' ? "applicant_last_name" : "spouse_last_name"}
+                    name="husband_last_name_after_marriage"
                     label="Husband's full last name after marriage / Nazwisko męża po zawarciu małżeństwa"
-                    value={formData?.applicant_sex === 'M' ? (formData?.applicant_last_name || "") : (formData?.spouse_last_name || "")}
-                    onChange={(value) => handleInputChange(formData?.applicant_sex === 'M' ? "applicant_last_name" : "spouse_last_name", value)}
+                    value={formData?.husband_last_name_after_marriage || ""}
+                    onChange={(value) => handleInputChange("husband_last_name_after_marriage", value)}
                   />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">

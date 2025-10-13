@@ -635,6 +635,7 @@ export type Database = {
           father_pob: string | null
           father_previous_names: string | null
           foreign_act_location: string | null
+          husband_last_name_after_marriage: string | null
           id: string
           important_additional_info: string | null
           language_preference: string | null
@@ -804,6 +805,7 @@ export type Database = {
           submission_date: string | null
           submission_location: string | null
           updated_at: string
+          wife_last_name_after_marriage: string | null
         }
         Insert: {
           act_type_birth?: boolean | null
@@ -945,6 +947,7 @@ export type Database = {
           father_pob?: string | null
           father_previous_names?: string | null
           foreign_act_location?: string | null
+          husband_last_name_after_marriage?: string | null
           id?: string
           important_additional_info?: string | null
           language_preference?: string | null
@@ -1114,6 +1117,7 @@ export type Database = {
           submission_date?: string | null
           submission_location?: string | null
           updated_at?: string
+          wife_last_name_after_marriage?: string | null
         }
         Update: {
           act_type_birth?: boolean | null
@@ -1255,6 +1259,7 @@ export type Database = {
           father_pob?: string | null
           father_previous_names?: string | null
           foreign_act_location?: string | null
+          husband_last_name_after_marriage?: string | null
           id?: string
           important_additional_info?: string | null
           language_preference?: string | null
@@ -1424,6 +1429,7 @@ export type Database = {
           submission_date?: string | null
           submission_location?: string | null
           updated_at?: string
+          wife_last_name_after_marriage?: string | null
         }
         Relationships: [
           {
