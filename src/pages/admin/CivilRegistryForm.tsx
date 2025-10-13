@@ -21,63 +21,36 @@ import { Textarea } from "@/components/ui/textarea";
 import { useRealtimeFormSync } from "@/hooks/useRealtimeFormSync";
 import { CountrySelect } from "@/components/CountrySelect";
 import { FormButtonsRow } from "@/components/FormButtonsRow";
-import { useFormCompletion } from "@/hooks/useFormCompletion";
-import { CIVIL_REGISTRY_FORM_REQUIRED_FIELDS } from "@/config/formRequiredFields";
+import { useFormManager } from "@/hooks/useFormManager";
+import { 
+  CIVIL_REGISTRY_FORM_REQUIRED_FIELDS,
+  CIVIL_REGISTRY_DATE_FIELDS 
+} from "@/config/formRequiredFields";
 
 export default function CivilRegistryForm() {
-  const {
-    id: caseId
-  } = useParams();
+  const { id: caseId } = useParams();
   const navigate = useNavigate();
-  const {
-    data: masterData,
-    isLoading
-  } = useMasterData(caseId);
-  const updateMutation = useUpdateMasterData();
-  const {
-    isLargeFonts,
-    toggleFontSize
-  } = useAccessibility();
-  const [formData, setFormData] = useState<any>({});
-  // Track the absolute latest form values to avoid race conditions
-  const latestFormData = useRef<any>({});
+  const { isLargeFonts, toggleFontSize } = useAccessibility();
   const [isGenerating, setIsGenerating] = useState(false);
   const [showClearDialog, setShowClearDialog] = useState(false);
-  const [isFullView, setIsFullView] = useState(true); // Default to full view since it doesn't have tabs
+  const [isFullView, setIsFullView] = useState(true);
   
-  // Enable real-time sync with direct state updates
-  useRealtimeFormSync(caseId, masterData, isLoading, setFormData);
-  
-  // Calculate form completion
-  const completion = useFormCompletion(formData, CIVIL_REGISTRY_FORM_REQUIRED_FIELDS);
-  
-  // Keep ref synchronized with state
-  useEffect(() => {
-    latestFormData.current = formData;
-  }, [formData]);
-  const handleInputChange = (field: string, value: any) => {
-    setFormData((prev: any) => ({
-      ...prev,
-      [field]: value
-    }));
-  };
-  const handleSave = async () => {
-    if (!caseId) return;
-    // Use the ref to get the absolute latest state
-    const dataToSave = latestFormData.current;
-    const sanitizedData = sanitizeMasterData(dataToSave);
-    
-    try {
-      await updateMutation.mutateAsync({
-        caseId,
-        updates: sanitizedData
-      });
-      return true;
-    } catch (error) {
-      console.error('Save error:', error);
-      return false;
-    }
-  };
+  // Use universal form manager (auto-save + validation + unsaved changes)
+  const {
+    formData,
+    isLoading,
+    isSaving,
+    completion,
+    validation,
+    autoSave,
+    handleInputChange,
+    handleSave,
+    handleClearAll,
+  } = useFormManager(
+    caseId,
+    CIVIL_REGISTRY_FORM_REQUIRED_FIELDS,
+    CIVIL_REGISTRY_DATE_FIELDS
+  );
   const handleGeneratePDF = async () => {
     if (!caseId || caseId === ':id') {
       toast.error('Invalid case ID');
@@ -118,10 +91,10 @@ export default function CivilRegistryForm() {
     }
   };
 
-  const handleClearData = () => {
-    setFormData({});
-    toast.success('All form data cleared');
+  const handleClearData = async () => {
+    await handleClearAll();
     setShowClearDialog(false);
+    toast.success('All form data cleared');
   };
   const renderDateField = (name: string, label: string, delay = 0) => {
     // Convert ISO format to DD.MM.YYYY for display
@@ -249,6 +222,8 @@ export default function CivilRegistryForm() {
               completionPercentage={completion.completionPercentage}
               filledCount={completion.filledCount}
               totalCount={completion.totalCount}
+              autoSaveStatus={autoSave.status}
+              lastSaved={autoSave.lastSaved}
               isLargeFonts={isLargeFonts}
               isFullView={isFullView}
               onToggleFullView={() => setIsFullView(!isFullView)}
@@ -284,7 +259,7 @@ export default function CivilRegistryForm() {
                   onSave={handleSave}
                   onClear={() => setShowClearDialog(true)}
                   onGeneratePDF={handleGeneratePDF}
-                  isSaving={updateMutation.isPending}
+                  isSaving={isSaving}
                 />
               </div>
             </CardContent>
