@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Menu, Sparkles, LogIn, LogOut, Plus, Image, Mic, Zap, MoreVertical, Upload, Share2 } from 'lucide-react';
+import { Menu, Sparkles, LogIn, LogOut, Plus, Image, Mic, Zap, MoreVertical, Upload, Share2, Settings } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
@@ -124,6 +124,9 @@ export const MobileNavigationSheet = () => {
                   </button>
                   <button className="h-10 w-10 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
                     <Share2 className="h-4 w-4 text-foreground/30" />
+                  </button>
+                  <button className="h-10 w-10 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all">
+                    <Settings className="h-4 w-4 text-foreground/30" />
                   </button>
                 </div>
 
