@@ -339,6 +339,24 @@ All colors MUST be HSL.
     transition: all 0.3s ease;
   }
 
+  /* 3D Flip Card Utilities */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .transform-style-3d {
+    transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+
   .hover-glow:hover {
     box-shadow: 0 0 50px hsla(221, 83%, 53%, 0.3);
   }

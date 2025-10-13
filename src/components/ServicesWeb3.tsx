@@ -47,25 +47,22 @@ const FlippableServiceCard = ({ service, index }: { service: typeof services[0];
 
   return (
     <div 
-      className="h-[280px]"
+      className="h-[280px] perspective-1000"
       style={{ 
-        animationDelay: `${index * 100}ms`,
-        perspective: '1000px'
+        animationDelay: `${index * 100}ms`
       }}
       onMouseEnter={() => setIsFlipped(true)}
       onMouseLeave={() => setIsFlipped(false)}
     >
       <div 
         className={cn(
-          "relative w-full h-full transition-transform duration-700",
-          "[transform-style:preserve-3d]",
-          isFlipped && "[transform:rotateY(180deg)]"
+          "relative w-full h-full transition-transform duration-700 transform-style-3d",
+          isFlipped && "rotate-y-180"
         )}
       >
         {/* Front of card */}
         <div 
-          className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group overflow-hidden"
-          style={{ backfaceVisibility: 'hidden' }}
+          className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group overflow-hidden backface-hidden"
         >
           <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
           
@@ -88,11 +85,7 @@ const FlippableServiceCard = ({ service, index }: { service: typeof services[0];
 
         {/* Back of card - Placeholder for admin editing */}
         <div 
-          className="absolute inset-0 glass-card p-8 rounded-lg overflow-hidden flex items-center justify-center"
-          style={{ 
-            backfaceVisibility: 'hidden',
-            transform: 'rotateY(180deg)'
-          }}
+          className="absolute inset-0 glass-card p-8 rounded-lg overflow-hidden flex items-center justify-center backface-hidden rotate-y-180"
         >
           <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-20`} />
           
