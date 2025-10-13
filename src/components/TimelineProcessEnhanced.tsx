@@ -5,6 +5,23 @@ import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+
+// Optimized WebP images for better performance
+import timeline01 from "@/assets/timeline-01-first-steps.webp";
+import timeline02 from "@/assets/timeline-02-terms-pricing.webp";
+import timeline03 from "@/assets/timeline-03-advance-account.webp";
+import timeline04 from "@/assets/timeline-04-poa.webp";
+import timeline05 from "@/assets/timeline-05-application.webp";
+import timeline06 from "@/assets/timeline-06-local-docs.webp";
+import timeline07 from "@/assets/timeline-07-polish-docs.webp";
+import timeline08 from "@/assets/timeline-08-translation.webp";
+import timeline09 from "@/assets/timeline-09-filing.webp";
+import timeline10 from "@/assets/timeline-10-civil-acts.webp";
+import timeline11 from "@/assets/timeline-11-initial-response.webp";
+import timeline12 from "@/assets/timeline-12-push-schemes.webp";
+import timeline13 from "@/assets/timeline-13-citizenship.webp";
+import timeline14 from "@/assets/timeline-14-passport.webp";
+import timeline15 from "@/assets/timeline-15-extended.webp";
 const timelineSteps = [{
   number: "1",
   title: "FIRST STEPS",
@@ -13,7 +30,8 @@ const timelineSteps = [{
   keyAction: "Initial Setup & Payment",
   priority: "Major Milestone",
   icon: FileText,
-  gradient: "from-blue-500 to-cyan-500"
+  gradient: "from-blue-500 to-cyan-500",
+  image: timeline01
 }, {
   number: "2",
   title: "TERMS & PRICING",
@@ -22,7 +40,8 @@ const timelineSteps = [{
   keyAction: "Initial Setup & Payment",
   priority: "Foundation Building",
   icon: CreditCard,
-  gradient: "from-cyan-500 to-blue-500"
+  gradient: "from-cyan-500 to-blue-500",
+  image: timeline02
 }, {
   number: "3",
   title: "ADVANCE & ACCOUNT",
@@ -31,7 +50,8 @@ const timelineSteps = [{
   keyAction: "Initial Setup & Payment",
   priority: "Major Milestone",
   icon: CheckCircle,
-  gradient: "from-blue-500 to-indigo-500"
+  gradient: "from-blue-500 to-indigo-500",
+  image: timeline03
 }, {
   number: "4",
   title: "DETAILS & POAs",
@@ -40,7 +60,8 @@ const timelineSteps = [{
   keyAction: "Details & Application",
   priority: "Foundation Building",
   icon: FileCheck,
-  gradient: "from-indigo-500 to-purple-500"
+  gradient: "from-indigo-500 to-purple-500",
+  image: timeline04
 }, {
   number: "5",
   title: "DATA & APPLICATION",
@@ -49,7 +70,8 @@ const timelineSteps = [{
   keyAction: "Details & Application",
   priority: "Major Milestone",
   icon: Send,
-  gradient: "from-purple-500 to-pink-500"
+  gradient: "from-purple-500 to-pink-500",
+  image: timeline05
 }, {
   number: "6",
   title: "LOCAL DOCUMENTS",
@@ -58,7 +80,8 @@ const timelineSteps = [{
   keyAction: "Documentation & Translation",
   priority: "Major Milestone",
   icon: FolderSearch,
-  gradient: "from-pink-500 to-rose-500"
+  gradient: "from-pink-500 to-rose-500",
+  image: timeline06
 }, {
   number: "7",
   title: "POLISH DOCUMENTS",
@@ -67,7 +90,8 @@ const timelineSteps = [{
   keyAction: "Documentation & Translation",
   priority: "Major Milestone",
   icon: Archive,
-  gradient: "from-rose-500 to-red-500"
+  gradient: "from-rose-500 to-red-500",
+  image: timeline07
 }, {
   number: "8",
   title: "TRANSLATIONS",
@@ -76,7 +100,8 @@ const timelineSteps = [{
   keyAction: "Documentation & Translation",
   priority: "Major Milestone",
   icon: Languages,
-  gradient: "from-red-500 to-orange-500"
+  gradient: "from-red-500 to-orange-500",
+  image: timeline08
 }, {
   number: "9",
   title: "FILING DOCUMENTS",
@@ -85,7 +110,8 @@ const timelineSteps = [{
   keyAction: "Filing & Civil Acts",
   priority: "Active Processing",
   icon: Upload,
-  gradient: "from-orange-500 to-amber-500"
+  gradient: "from-orange-500 to-amber-500",
+  image: timeline09
 }, {
   number: "10",
   title: "CIVIL ACTS",
@@ -94,7 +120,8 @@ const timelineSteps = [{
   keyAction: "Filing & Civil Acts",
   priority: "Major Milestone",
   icon: Stamp,
-  gradient: "from-amber-500 to-yellow-500"
+  gradient: "from-amber-500 to-yellow-500",
+  image: timeline10
 }, {
   number: "11",
   title: "INITIAL RESPONSE",
@@ -103,7 +130,8 @@ const timelineSteps = [{
   keyAction: "Government Processing",
   priority: "Major Milestone",
   icon: Clock,
-  gradient: "from-yellow-500 to-lime-500"
+  gradient: "from-yellow-500 to-lime-500",
+  image: timeline11
 }, {
   number: "12",
   title: "PUSH SCHEMES",
@@ -112,7 +140,8 @@ const timelineSteps = [{
   keyAction: "Government Processing",
   priority: "Major Milestone",
   icon: Zap,
-  gradient: "from-lime-500 to-green-500"
+  gradient: "from-lime-500 to-green-500",
+  image: timeline12
 }, {
   number: "13",
   title: "CITIZENSHIP DECISION",
@@ -121,7 +150,8 @@ const timelineSteps = [{
   keyAction: "Citizenship Confirmation",
   priority: "Critical Milestone",
   icon: Award,
-  gradient: "from-green-500 to-emerald-500"
+  gradient: "from-green-500 to-emerald-500",
+  image: timeline13
 }, {
   number: "14",
   title: "POLISH PASSPORT",
@@ -130,7 +160,8 @@ const timelineSteps = [{
   keyAction: "Passport & Extended Services",
   priority: "Major Milestone",
   icon: Book,
-  gradient: "from-emerald-500 to-teal-500"
+  gradient: "from-emerald-500 to-teal-500",
+  image: timeline14
 }, {
   number: "15",
   title: "EXTENDED SERVICES",
@@ -139,7 +170,8 @@ const timelineSteps = [{
   keyAction: "Passport & Extended Services",
   priority: "Final Achievement",
   icon: Users,
-  gradient: "from-teal-500 to-cyan-500"
+  gradient: "from-teal-500 to-cyan-500",
+  image: timeline15
 }];
 export default function TimelineProcessEnhanced() {
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});

@@ -2,6 +2,11 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { PDFDocument, PDFName, PDFBool } from "https://esm.sh/pdf-lib@1.17.1";
 
+// ============ IN-MEMORY CACHE FOR PDF TEMPLATES ============
+const pdfTemplateCache = new Map<string, Uint8Array>();
+const CACHE_MAX_AGE = 3600000; // 1 hour in milliseconds
+const cacheTimestamps = new Map<string, number>();
+
 // ============ PDF FIELD MAPPINGS (INLINE) ============
 
 const POA_ADULT_PDF_MAP: Record<string, string> = {
@@ -579,20 +584,36 @@ serve(async (req) => {
 
     console.log('[fill-pdf] Master data retrieved');
 
-    // Fetch PDF template from Supabase Storage
-    console.log(`Fetching template from storage: ${templateType}.pdf`);
+    // Check cache first
+    const cacheKey = `${templateType}.pdf`;
+    const cachedTime = cacheTimestamps.get(cacheKey);
+    const isCacheValid = cachedTime && (Date.now() - cachedTime < CACHE_MAX_AGE);
     
-    const { data: pdfBlob, error: storageError } = await supabaseClient.storage
-      .from('pdf-templates')
-      .download(`${templateType}.pdf`);
+    let pdfBytes: Uint8Array;
     
-    if (storageError || !pdfBlob) {
-      console.error(`❌ Storage error for ${templateType}.pdf:`, storageError);
-      throw new Error(`Failed to load PDF template: ${templateType}`);
+    if (isCacheValid && pdfTemplateCache.has(cacheKey)) {
+      console.log(`✅ Using cached template: ${cacheKey}`);
+      pdfBytes = pdfTemplateCache.get(cacheKey)!;
+    } else {
+      // Fetch PDF template from Supabase Storage
+      console.log(`Fetching template from storage: ${templateType}.pdf`);
+      
+      const { data: pdfBlob, error: storageError } = await supabaseClient.storage
+        .from('pdf-templates')
+        .download(`${templateType}.pdf`);
+      
+      if (storageError || !pdfBlob) {
+        console.error(`❌ Storage error for ${templateType}.pdf:`, storageError);
+        throw new Error(`Failed to load PDF template: ${templateType}`);
+      }
+      
+      pdfBytes = new Uint8Array(await pdfBlob.arrayBuffer());
+      
+      // Store in cache
+      pdfTemplateCache.set(cacheKey, pdfBytes);
+      cacheTimestamps.set(cacheKey, Date.now());
+      console.log(`✅ Template loaded and cached: ${templateType}.pdf (${pdfBytes.length} bytes)`);
     }
-    
-    const pdfBytes = new Uint8Array(await pdfBlob.arrayBuffer());
-    console.log(`✅ Template loaded from storage: ${templateType}.pdf (${pdfBytes.length} bytes)`);
 
     const pdfDoc = await PDFDocument.load(pdfBytes);
     const form = pdfDoc.getForm();
