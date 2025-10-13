@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Palette } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -27,6 +28,11 @@ const DESIGNS: Array<{ id: NavigationDesign; name: string; description: string }
 export const DesignSelector = () => {
   const { design, changeDesign } = useNavigationDesign();
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handlePaletteClick = () => {
+    navigate('/admin/intake-demo');
+  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -35,6 +41,7 @@ export const DesignSelector = () => {
           variant="ghost"
           size="icon"
           className="text-foreground hover:text-primary"
+          onClick={handlePaletteClick}
         >
           <Palette className="h-5 w-5" />
         </Button>
