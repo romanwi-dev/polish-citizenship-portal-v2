@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, User, LogOut, Bot, GitBranch, ClipboardList } from "lucide-react";
-import { ThemeSwitcher } from "@/components/ThemeSwitcher";
+import { Menu, User, LogOut, Bot, GitBranch, ClipboardList, Moon, Sun } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { useAuth } from "@/hooks/useAuth";
 import { MobileNavigationSheet } from "@/components/MobileNavigationSheet";
@@ -39,17 +38,29 @@ const Navigation = () => {
           </a>
 
           {/* User Icon & Desktop/Mobile Menu */}
-          <div className="flex items-center gap-0.5 md:gap-2">
-            <ThemeSwitcher />
-            <Button 
-              variant="ghost" 
-              size="icon"
-              className="text-foreground hover:text-primary h-11 w-11"
-              onClick={() => navigate('/cases')}
-              title="Control Room"
+          <div className="flex items-center gap-1.5 md:gap-2">
+            <button
+              onClick={() => {
+                const newTheme = document.documentElement.className === "dark" ? "light" : "dark";
+                document.documentElement.className = newTheme;
+                localStorage.setItem("theme", newTheme);
+              }}
+              className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+              aria-label="Toggle theme"
             >
-              <User className="h-5 w-5" />
-            </Button>
+              {document.documentElement.className === "dark" ? (
+                <Moon className="h-5 w-5 text-foreground/70" />
+              ) : (
+                <Sun className="h-5 w-5 text-foreground/70" />
+              )}
+            </button>
+            <button
+              onClick={() => navigate('/cases')}
+              className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+              aria-label="Control Room"
+            >
+              <User className="h-5 w-5 text-foreground/70" />
+            </button>
             
             {/* Mobile Navigation - Full Screen Sheet */}
             <div className="md:hidden">
@@ -59,13 +70,12 @@ const Navigation = () => {
             {/* Desktop Navigation - Dropdown Menu */}
             <DropdownMenu open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <DropdownMenuTrigger asChild className="hidden md:flex">
-                <Button 
-                  variant="ghost" 
-                  size="icon"
-                  className="text-foreground hover:text-primary h-11 w-11"
+                <button
+                  className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+                  aria-label="Open menu"
                 >
-                  <Menu className="h-5 w-5" />
-                </Button>
+                  <Menu className="h-5 w-5 text-foreground/70" />
+                </button>
               </DropdownMenuTrigger>
             <DropdownMenuContent 
               align="end" 

@@ -61,14 +61,12 @@ export const MobileNavigationSheet = () => {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          className="md:hidden h-11 w-11"
+        <button
+          className="md:hidden h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
           aria-label="Open navigation menu"
         >
-          <Menu className="h-5 w-5" />
-        </Button>
+          <Menu className="h-5 w-5 text-foreground/70" />
+        </button>
       </SheetTrigger>
 
       <SheetContent side="right" className="w-full p-0 border-0 transition-all duration-300 ease-in-out">
