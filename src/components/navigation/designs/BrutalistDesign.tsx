@@ -2,13 +2,10 @@ import { ReactNode } from 'react';
 
 export const BrutalistDesign = ({ children }: { children: ReactNode }) => {
   return (
-    <div 
-      className="h-full w-full bg-gradient-to-t from-background via-primary/5 to-background transition-all duration-300"
-      style={{
-        backgroundImage: 'linear-gradient(to right, #80808012 1px, transparent 1px), linear-gradient(to bottom, #80808012 1px, transparent 1px)',
-        backgroundSize: '24px 24px',
-      }}
-    >
+    <div className="h-full w-full relative overflow-hidden">
+      {/* Footer-matching background */}
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
       {children}
 
       <style>{`

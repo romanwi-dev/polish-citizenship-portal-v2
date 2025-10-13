@@ -7,12 +7,11 @@ export const MinimalDesign = ({ children }: { children: ReactNode }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
-      className="h-full w-full bg-gradient-to-t from-background via-primary/5 to-background"
-      style={{
-        backgroundImage: 'linear-gradient(to right, #80808012 1px, transparent 1px), linear-gradient(to bottom, #80808012 1px, transparent 1px)',
-        backgroundSize: '24px 24px',
-      }}
+      className="h-full w-full relative overflow-hidden"
     >
+      {/* Footer-matching background */}
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
       {children}
 
       <style>{`
