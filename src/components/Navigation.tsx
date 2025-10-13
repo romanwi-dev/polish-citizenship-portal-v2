@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, User, LogOut, Type, Bot, GitBranch, ClipboardList } from "lucide-react";
-import { useAccessibility } from "@/contexts/AccessibilityContext";
+import { Menu, User, LogOut, Bot, GitBranch, ClipboardList } from "lucide-react";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
-import { DesignSelector } from "@/components/navigation/DesignSelector";
 import logo from "@/assets/logo.png";
 import { useAuth } from "@/hooks/useAuth";
 import { MobileNavigationSheet } from "@/components/MobileNavigationSheet";
@@ -20,7 +18,6 @@ const Navigation = () => {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user, signOut } = useAuth(false);
-  const { isLargeFonts, toggleFontSize } = useAccessibility();
 
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -43,17 +40,7 @@ const Navigation = () => {
 
           {/* User Icon & Desktop/Mobile Menu */}
           <div className="flex items-center gap-0.5 md:gap-2">
-            <DesignSelector />
             <ThemeSwitcher />
-            <Button
-              variant="ghost" 
-              size="icon"
-              className={`text-foreground hover:text-primary ${isLargeFonts ? 'bg-primary/10' : ''}`}
-              onClick={toggleFontSize}
-              title={isLargeFonts ? "Normal font size" : "Large font size"}
-            >
-              <Type className="h-5 w-5" />
-            </Button>
             <Button 
               variant="ghost" 
               size="icon"
