@@ -4,8 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Menu, User, LogOut, Type, Bot, GitBranch, ClipboardList } from "lucide-react";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
+import { DesignSelector } from "@/components/navigation/DesignSelector";
 import logo from "@/assets/logo.png";
 import { useAuth } from "@/hooks/useAuth";
+import { MobileNavigationSheet } from "@/components/MobileNavigationSheet";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -39,10 +41,11 @@ const Navigation = () => {
             <img src={logo} alt="PolishCitizenship.pl" className="h-8 w-auto" />
           </a>
 
-          {/* User Icon & Mobile Menu */}
+          {/* User Icon & Desktop/Mobile Menu */}
           <div className="flex items-center gap-2">
+            <DesignSelector />
             <ThemeSwitcher />
-            <Button 
+            <Button
               variant="ghost" 
               size="icon"
               className={`text-foreground hover:text-primary ${isLargeFonts ? 'bg-primary/10' : ''}`}
@@ -60,8 +63,15 @@ const Navigation = () => {
             >
               <User className="h-14 w-14" />
             </Button>
+            
+            {/* Mobile Navigation - Full Screen Sheet */}
+            <div className="md:hidden">
+              <MobileNavigationSheet />
+            </div>
+
+            {/* Desktop Navigation - Dropdown Menu */}
             <DropdownMenu open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-              <DropdownMenuTrigger asChild>
+              <DropdownMenuTrigger asChild className="hidden md:flex">
                 <Button 
                   variant="ghost" 
                   size="icon"
