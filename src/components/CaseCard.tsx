@@ -162,23 +162,6 @@ export const CaseCard = memo(({
         <div className="absolute inset-0 w-full backface-hidden bg-background border border-border hover:border-primary/50 transition-colors p-5 sm:p-6 rounded-lg flex flex-col" style={{ minHeight: '750px' }}>
           <div className="flex items-start justify-between mb-5">
             <div className="flex items-center gap-3">
-              {onToggleSelection && (
-                <div 
-                  className="flex items-center"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onToggleSelection();
-                  }}
-                >
-                  <input
-                    type="checkbox"
-                    checked={isSelected}
-                    onChange={onToggleSelection}
-                    className="h-4 w-4 rounded border-border bg-background text-primary focus:ring-2 focus:ring-primary cursor-pointer"
-                    onClick={(e) => e.stopPropagation()}
-                  />
-                </div>
-              )}
               <ClientPhotoUpload
                 caseId={clientCase.id}
                 currentPhotoUrl={photoUrl}
@@ -216,6 +199,21 @@ export const CaseCard = memo(({
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48 bg-popover border border-border z-50">
+                  {onToggleSelection && (
+                    <>
+                      <DropdownMenuItem onClick={(e) => { e.stopPropagation(); onToggleSelection(); }}>
+                        <input
+                          type="checkbox"
+                          checked={isSelected}
+                          onChange={onToggleSelection}
+                          className="mr-2 h-4 w-4 rounded border-border bg-background text-primary cursor-pointer"
+                          onClick={(e) => e.stopPropagation()}
+                        />
+                        {isSelected ? 'Deselect' : 'Select'}
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                    </>
+                  )}
                   <DropdownMenuItem onClick={handleEdit}>
                     <Edit className="mr-2 h-4 w-4" />
                     Edit
