@@ -229,11 +229,13 @@ export default function CasesManagement() {
   if (loading) {
     return (
       <AdminLayout>
-        <div className="p-8 bg-background min-h-screen">
-          <div className="flex justify-between items-center mb-8">
+        <div className="p-4 sm:p-8 bg-background min-h-screen">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 sm:mb-8 gap-4 sm:gap-0">
             <div>
-              <h1 className="text-3xl font-bold mb-2 text-foreground">Cases Management</h1>
-              <p className="text-muted-foreground">Manage all client cases</p>
+              <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2 text-foreground bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                Cases Management
+              </h1>
+              <p className="text-xs sm:text-sm text-muted-foreground">Manage all client cases</p>
             </div>
           </div>
           <CaseCardSkeletonGrid count={6} />
@@ -271,13 +273,20 @@ export default function CasesManagement() {
   return (
     <ErrorBoundary>
       <AdminLayout>
-      <div className="p-8 bg-background min-h-screen">
-        <div className="flex justify-between items-center mb-8">
+      <div className="p-4 sm:p-8 bg-background min-h-screen">
+        {/* Header - Mobile Optimized */}
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 sm:mb-8 gap-4 sm:gap-0">
           <div>
-            <h1 className="text-3xl font-bold mb-2 text-foreground">Cases Management</h1>
-            <p className="text-muted-foreground">Manage all client cases</p>
+            <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2 text-foreground bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              Cases Management
+            </h1>
+            <p className="text-xs sm:text-sm text-muted-foreground">Manage all client cases</p>
           </div>
-          <Button onClick={() => navigate("/admin/cases/new")}>
+          <Button 
+            onClick={() => navigate("/admin/cases/new")}
+            className="w-full sm:w-auto"
+            size="default"
+          >
             <Plus className="h-4 w-4 mr-2" />
             New Case
           </Button>
