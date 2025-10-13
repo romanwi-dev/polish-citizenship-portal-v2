@@ -156,11 +156,11 @@ export const CaseCard = memo(({
     >
       <div
         className={`relative w-full transition-transform duration-700 preserve-3d ${isFlipped ? 'rotate-y-180' : ''}`}
-        style={{ transformStyle: 'preserve-3d', minHeight: '650px' }}
+        style={{ transformStyle: 'preserve-3d', minHeight: '750px' }}
       >
         {/* Front of Card */}
-        <div className="absolute inset-0 w-full backface-hidden glass-card p-4 sm:p-6 rounded-lg hover-glow flex flex-col" style={{ minHeight: '650px' }}>
-          <div className="flex items-start justify-between mb-4">
+        <div className="absolute inset-0 w-full backface-hidden glass-card p-5 sm:p-6 rounded-lg hover-glow flex flex-col" style={{ minHeight: '750px' }}>
+          <div className="flex items-start justify-between mb-5">
             <div className="flex items-center gap-3">
               {onToggleSelection && (
                 <div 
@@ -251,7 +251,7 @@ export const CaseCard = memo(({
           </div>
 
           {/* Badges Row */}
-          <div className="flex flex-nowrap gap-1.5 sm:gap-2 mb-3 sm:mb-4 overflow-x-auto pb-1 scrollbar-thin">
+          <div className="flex flex-nowrap gap-1.5 sm:gap-2 mb-4 sm:mb-5 overflow-x-auto pb-1 scrollbar-thin">
             <span className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium border ${getStatusBadge(clientCase.status)} capitalize whitespace-nowrap`}>
               {clientCase.status.replace(/_/g, ' ')}
             </span>
@@ -295,7 +295,7 @@ export const CaseCard = memo(({
           </div>
 
           {/* KPI Strip - Mobile Optimized */}
-          <CollapsibleKPIStrip className="mb-3 sm:mb-4">
+          <CollapsibleKPIStrip className="mb-4 sm:mb-5">
             <div className="p-3 rounded-lg bg-background/20 border border-border/30">
               <div className="grid grid-cols-2 md:flex md:flex-wrap gap-2">
                 {/* POA Status */}
@@ -362,7 +362,7 @@ export const CaseCard = memo(({
             </div>
           )}
 
-          <div className="grid grid-cols-3 gap-1.5 sm:gap-2 mb-4 sm:mb-6">
+          <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-5 sm:mb-6">
             <div className="flex flex-col gap-0.5 sm:gap-1 p-2 sm:p-3 rounded-lg bg-background/30">
               <div className="flex items-center gap-0.5 sm:gap-1">
                 <Calendar className="w-3 h-3 sm:w-4 sm:h-4 text-primary" />
@@ -388,7 +388,7 @@ export const CaseCard = memo(({
             </div>
           </div>
 
-          <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6">
+          <div className="space-y-2 sm:space-y-3 mb-5 sm:mb-6">
             <div className="flex items-center justify-between text-sm sm:text-base">
               <div className="flex items-center gap-0.5 sm:gap-1">
                 <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground" />
@@ -405,13 +405,13 @@ export const CaseCard = memo(({
           </div>
 
           {clientCase.status === "finished" && (
-            <div className="mb-4 sm:mb-6 flex items-center justify-center gap-1.5 sm:gap-2 p-2 sm:p-3 rounded-lg bg-green-500/10 border border-green-500/30">
+            <div className="mb-5 sm:mb-6 flex items-center justify-center gap-1.5 sm:gap-2 p-3 sm:p-4 rounded-lg bg-green-500/10 border border-green-500/30">
               <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-green-400" />
               <span className="text-sm sm:text-base font-medium text-green-400">Citizenship Granted</span>
             </div>
           )}
 
-          <div className="space-y-3 sm:space-y-3 mt-auto pt-4 sm:pt-4">
+          <div className="space-y-3 sm:space-y-4 mt-auto pt-5 sm:pt-5">
             {/* Control Room Button - Premium Feature */}
             <Button
               size="lg"
@@ -429,7 +429,7 @@ export const CaseCard = memo(({
             </Button>
 
             {/* Action Buttons - 2 rows of 3 */}
-            <div className="grid grid-cols-3 gap-2 pt-2 border-t border-border/30">
+            <div className="grid grid-cols-3 gap-2 pt-3 border-t border-border/30">
               <Button
                 size="sm"
                 className="text-xs font-light bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 h-11 flex items-center justify-center px-2"
@@ -517,7 +517,7 @@ export const CaseCard = memo(({
         {/* Back of Card */}
         <div
           className="absolute inset-0 w-full backface-hidden rotate-y-180 glass-card p-6 rounded-lg bg-gradient-to-br from-primary/10 to-secondary/10 backdrop-blur-sm"
-          style={{ transform: 'rotateY(180deg)', minHeight: '650px' }}
+          style={{ transform: 'rotateY(180deg)', minHeight: '750px' }}
         >
           <div className="h-full flex flex-col" style={{ minHeight: '580px' }}>
             <h3 className="text-2xl font-bold mb-6 text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
