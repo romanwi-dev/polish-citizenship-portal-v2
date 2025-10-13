@@ -71,16 +71,22 @@ export function PDFPreviewDialog({
       </DialogHeader>
 
       <div className="flex-1 border rounded-lg overflow-hidden bg-muted/10">
-        <iframe
-          src={pdfUrl}
+        <object
+          data={pdfUrl}
+          type="application/pdf"
           className="w-full h-full"
-          title="PDF Preview"
-          onLoad={() => console.log('✅ PDF iframe loaded')}
-          onError={(e) => {
-            console.error('❌ PDF iframe error:', e);
-            toast.error('Failed to load PDF in preview. Try downloading instead.');
-          }}
-        />
+          aria-label="PDF Preview"
+        >
+          <div className="flex flex-col items-center justify-center h-full gap-4 p-8">
+            <p className="text-muted-foreground">
+              Unable to display PDF preview in this browser.
+            </p>
+            <Button onClick={() => window.open(pdfUrl, '_blank')} className="gap-2">
+              <Eye className="h-4 w-4" />
+              Open in New Tab
+            </Button>
+          </div>
+        </object>
       </div>
 
       <DialogFooter className="flex gap-2">
