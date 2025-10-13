@@ -5,8 +5,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 // Lazy load 3D components
-const Hero3DMap = lazy(() => import("./Hero3DMap"));
-const Enhanced3DScene = lazy(() => import("./Enhanced3DScene").then(module => ({ default: module.Enhanced3DScene })));
+const WavingEUFlag = lazy(() => import("./WavingEUFlag").then(module => ({ default: module.WavingEUFlag })));
 
 const HeroWeb3 = () => {
   const [shouldLoadMap, setShouldLoadMap] = useState(false);
@@ -45,7 +44,7 @@ const HeroWeb3 = () => {
       {shouldShow3D ? (
         <div className="absolute inset-0 z-0">
           <Suspense fallback={<div className="w-full h-full bg-gradient-to-b from-primary/5 to-background" />}>
-            {shouldLoadMap && <Enhanced3DScene />}
+            {shouldLoadMap && <WavingEUFlag />}
           </Suspense>
         </div>
       ) : (

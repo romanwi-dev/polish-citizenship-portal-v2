@@ -9,7 +9,7 @@ import { Send, Zap, CheckCircle2 } from "lucide-react";
 import { z } from "zod";
 
 // Lazy load 3D component
-const Enhanced3DScene = lazy(() => import("./Enhanced3DScene").then(module => ({ default: module.Enhanced3DScene })));
+const WavingEUFlag = lazy(() => import("./WavingEUFlag").then(module => ({ default: module.WavingEUFlag })));
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, { message: "Name is required" }).max(100),
@@ -67,7 +67,7 @@ const ContactFormWeb3 = () => {
       {/* 3D Background */}
       <div className="absolute inset-0 z-0">
         <Suspense fallback={<div className="w-full h-full bg-gradient-to-t from-background via-primary/5 to-background" />}>
-          {shouldLoadMap && <Enhanced3DScene />}
+          {shouldLoadMap && <WavingEUFlag />}
         </Suspense>
       </div>
 
