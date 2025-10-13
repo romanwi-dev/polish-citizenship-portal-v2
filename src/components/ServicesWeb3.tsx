@@ -46,17 +46,29 @@ const FlippableServiceCard = ({ service, index }: { service: typeof services[0];
 
   return (
     <div 
-      className="perspective-1000 h-[280px]"
-      style={{ animationDelay: `${index * 100}ms` }}
+      className="h-[280px]"
+      style={{ 
+        animationDelay: `${index * 100}ms`,
+        perspective: '1000px'
+      }}
       onMouseEnter={() => setIsFlipped(true)}
       onMouseLeave={() => setIsFlipped(false)}
     >
-      <div className={`relative w-full h-full transition-transform duration-700 transform-style-3d ${isFlipped ? 'rotate-y-180' : ''}`}>
+      <div 
+        className="relative w-full h-full transition-transform duration-700"
+        style={{
+          transformStyle: 'preserve-3d',
+          transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
+        }}
+      >
         {/* Front of card */}
-        <div className="absolute inset-0 backface-hidden glass-card p-8 rounded-lg hover-glow group overflow-hidden">
+        <div 
+          className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group overflow-hidden"
+          style={{ backfaceVisibility: 'hidden' }}
+        >
           <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
           
-          <div className="relative z-10 h-full flex flex-col justify-center">
+          <div className="relative z-10">
             <div className="flex items-center gap-4 mb-4">
               <div className={`w-12 h-12 rounded bg-gradient-to-br ${service.color} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
                 <Icon className="h-6 w-6 text-white" />
@@ -65,18 +77,27 @@ const FlippableServiceCard = ({ service, index }: { service: typeof services[0];
                 {service.title}
               </h3>
             </div>
+            <p className="text-muted-foreground leading-relaxed font-medium">
+              {service.description}
+            </p>
           </div>
 
           <div className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-br ${service.color} opacity-20 blur-2xl rounded-full`} />
         </div>
 
-        {/* Back of card */}
-        <div className="absolute inset-0 backface-hidden rotate-y-180 glass-card p-8 rounded-lg overflow-hidden">
+        {/* Back of card - Placeholder for admin editing */}
+        <div 
+          className="absolute inset-0 glass-card p-8 rounded-lg overflow-hidden flex items-center justify-center"
+          style={{ 
+            backfaceVisibility: 'hidden',
+            transform: 'rotateY(180deg)'
+          }}
+        >
           <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-20`} />
           
-          <div className="relative z-10 h-full flex flex-col justify-center">
-            <p className="text-foreground leading-relaxed font-medium">
-              {service.description}
+          <div className="relative z-10 text-center">
+            <p className="text-muted-foreground italic">
+              [Admin: Add custom content here]
             </p>
           </div>
         </div>
