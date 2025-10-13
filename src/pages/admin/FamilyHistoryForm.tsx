@@ -67,7 +67,7 @@ export default function FamilyHistoryForm() {
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/80">
       {/* Header Card */}
       <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-        <Card className="glass-card border-primary/20 rounded-none border-x-0 border-t-0">
+        <Card className="md:glass-card md:border-primary/20 rounded-none border-x-0 border-t-0 border-none md:border-b bg-transparent md:bg-card">
         <CardHeader className="relative overflow-hidden pb-6 pt-6">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-accent/5" />
             <div className="relative flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -145,7 +145,7 @@ export default function FamilyHistoryForm() {
       {/* Form Content */}
       <div className="w-full px-4 py-6">
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }}>
-          <Card className="glass-card border-primary/20">
+          <Card className="md:glass-card md:border-primary/20 border-none bg-transparent md:bg-card">
             <CardHeader className="border-b border-border/50 pb-6">
               <div className="flex items-center gap-4">
                 <BookOpen className="h-12 w-12 text-primary" />

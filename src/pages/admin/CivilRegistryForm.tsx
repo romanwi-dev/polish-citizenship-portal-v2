@@ -216,7 +216,7 @@ export default function CivilRegistryForm() {
       }} transition={{
         duration: 0.8
       }} className="sticky top-0 z-20 bg-gradient-to-br from-background via-background to-background/95 backdrop-blur-sm border-b mb-8">
-          <Card className="glass-card border-emerald-300/20 overflow-hidden rounded-none border-x-0 border-t-0">
+          <Card className="md:glass-card md:border-emerald-300/20 overflow-hidden rounded-none border-x-0 border-t-0 border-none md:border-b bg-transparent md:bg-card">
             <FormHeader
               title="Civil Registry"
               completionPercentage={completion.completionPercentage}

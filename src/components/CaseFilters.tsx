@@ -60,7 +60,7 @@ export const CaseFilters = ({
       {/* Filters Sheet - Mobile Optimized */}
       <Sheet>
           <SheetTrigger asChild>
-            <Button variant="outline" size="lg" className="relative h-12">
+            <Button variant="outline" size="lg" className="relative h-12 w-full sm:w-auto">
               <SlidersHorizontal className="h-4 w-4 mr-2" />
               Filters
               {activeFiltersCount > 0 && (

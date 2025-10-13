@@ -280,52 +280,97 @@ export default function CasesManagement() {
       <div className="p-4 sm:p-8 bg-background min-h-screen">
         {/* Header - Mobile Optimized */}
         <div className="mb-6 sm:mb-8">
-          <div className="mb-4">
-            <h1 className="text-2xl sm:text-3xl font-bold mb-1 text-foreground bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              Management
+          <div className="mb-4 mt-8">
+            <h1 className="text-4xl md:text-5xl font-heading font-black tracking-tight">
+              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                Management
+              </span>
             </h1>
-            <p className="text-xs sm:text-sm text-muted-foreground">Manage all client cases</p>
           </div>
 
           {/* Action Buttons Row - Mobile Optimized */}
-          <div className="grid grid-cols-1 sm:grid-cols-[auto_1fr_auto] gap-3 mb-4">
-            <Button 
-              onClick={() => navigate("/admin/cases/new")}
-              className="w-full sm:w-auto h-12"
-              size="lg"
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              New Case
-            </Button>
+          <div className="flex flex-col gap-3 mb-4">
+            {/* Mobile layout */}
+            <div className="grid grid-cols-1 gap-3 sm:hidden">
+              <Button 
+                onClick={() => navigate("/admin/cases/new")}
+                className="w-full h-12"
+                size="lg"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                New Case
+              </Button>
 
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground z-10" />
-              <Input
-                ref={searchInputRef}
-                placeholder="Search by client name or case code..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 h-12"
+              <CaseFilters
+                searchTerm={searchTerm}
+                onSearchChange={setSearchTerm}
+                statusFilter={statusFilter}
+                onStatusChange={setStatusFilter}
+                processingModeFilter={processingModeFilter}
+                onProcessingModeChange={setProcessingModeFilter}
+                scoreFilter={scoreFilter}
+                onScoreChange={setScoreFilter}
+                ageFilter={ageFilter}
+                onAgeChange={setAgeFilter}
+                progressFilter={progressFilter}
+                onProgressChange={setProgressFilter}
+                onClearFilters={handleClearFilters}
+                activeFiltersCount={activeFiltersCount}
+                searchInputRef={searchInputRef}
               />
+
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-40 z-10" />
+                <Input
+                  ref={searchInputRef}
+                  placeholder=""
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10 h-12"
+                />
+              </div>
             </div>
 
-            <CaseFilters
-              searchTerm={searchTerm}
-              onSearchChange={setSearchTerm}
-              statusFilter={statusFilter}
-              onStatusChange={setStatusFilter}
-              processingModeFilter={processingModeFilter}
-              onProcessingModeChange={setProcessingModeFilter}
-              scoreFilter={scoreFilter}
-              onScoreChange={setScoreFilter}
-              ageFilter={ageFilter}
-              onAgeChange={setAgeFilter}
-              progressFilter={progressFilter}
-              onProgressChange={setProgressFilter}
-              onClearFilters={handleClearFilters}
-              activeFiltersCount={activeFiltersCount}
-              searchInputRef={searchInputRef}
-            />
+            {/* Desktop layout */}
+            <div className="hidden sm:flex sm:flex-row gap-3">
+              <Button 
+                onClick={() => navigate("/admin/cases/new")}
+                className="h-12"
+                size="lg"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                New Case
+              </Button>
+
+              <div className="relative flex-1 max-w-md">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-40 z-10" />
+                <Input
+                  ref={searchInputRef}
+                  placeholder=""
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10 h-12"
+                />
+              </div>
+
+              <CaseFilters
+                searchTerm={searchTerm}
+                onSearchChange={setSearchTerm}
+                statusFilter={statusFilter}
+                onStatusChange={setStatusFilter}
+                processingModeFilter={processingModeFilter}
+                onProcessingModeChange={setProcessingModeFilter}
+                scoreFilter={scoreFilter}
+                onScoreChange={setScoreFilter}
+                ageFilter={ageFilter}
+                onAgeChange={setAgeFilter}
+                progressFilter={progressFilter}
+                onProgressChange={setProgressFilter}
+                onClearFilters={handleClearFilters}
+                activeFiltersCount={activeFiltersCount}
+                searchInputRef={searchInputRef}
+              />
+            </div>
           </div>
 
           {/* Sort Controls */}
