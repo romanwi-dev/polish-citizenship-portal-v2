@@ -39,6 +39,7 @@ const ZeroErrorsChecklist = lazy(() => import("./pages/admin/ZeroErrorsChecklist
 const UploadPDFTemplates = lazy(() => import("./pages/admin/UploadPDFTemplates"));
 const ManualPDFUpload = lazy(() => import("./pages/admin/ManualPDFUpload"));
 const CitizenshipFieldReview = lazy(() => import("./pages/admin/CitizenshipFieldReview"));
+const BigPlanTracker = lazy(() => import("./pages/admin/BigPlanTracker"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -270,6 +271,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <CitizenshipFieldReview />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/big-plan-tracker" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <BigPlanTracker />
               </Suspense>
             } 
           />
