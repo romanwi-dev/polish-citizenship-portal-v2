@@ -462,11 +462,11 @@ export default function TestingDashboard() {
   ];
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      <div className="flex justify-between items-start">
+    <div className="container mx-auto p-3 md:p-6 space-y-4 md:space-y-6 pb-20">
+      <div className="flex flex-col gap-2 md:gap-0 md:flex-row md:justify-between md:items-start">
         <div>
-          <h1 className="text-4xl font-bold mb-2">Testing Dashboard</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-2xl md:text-4xl font-bold mb-1 md:mb-2">Testing Dashboard</h1>
+          <p className="text-sm md:text-base text-muted-foreground">
             Comprehensive testing suite for all implemented features
           </p>
         </div>
@@ -478,31 +478,31 @@ export default function TestingDashboard() {
           <CardTitle>Overall Testing Progress</CardTitle>
           <CardDescription>Track completion of all test procedures</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-3 md:space-y-4">
           <div className="space-y-2">
-            <div className="flex justify-between text-sm">
+            <div className="flex justify-between text-xs md:text-sm">
               <span>Progress</span>
               <span className="font-semibold">{passedTests}/{totalTests} tests passed</span>
             </div>
-            <Progress value={overallProgress} className="h-3" />
+            <Progress value={overallProgress} className="h-2 md:h-3" />
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
             <div className="space-y-1">
-              <p className="text-sm text-muted-foreground">Passed</p>
-              <p className="text-2xl font-bold text-green-600">{passedTests}</p>
+              <p className="text-xs md:text-sm text-muted-foreground">Passed</p>
+              <p className="text-xl md:text-2xl font-bold text-green-600">{passedTests}</p>
             </div>
             <div className="space-y-1">
-              <p className="text-sm text-muted-foreground">Failed</p>
-              <p className="text-2xl font-bold text-red-600">{failedTests}</p>
+              <p className="text-xs md:text-sm text-muted-foreground">Failed</p>
+              <p className="text-xl md:text-2xl font-bold text-red-600">{failedTests}</p>
             </div>
             <div className="space-y-1">
-              <p className="text-sm text-muted-foreground">In Progress</p>
-              <p className="text-2xl font-bold text-blue-600">{inProgressTests}</p>
+              <p className="text-xs md:text-sm text-muted-foreground">In Progress</p>
+              <p className="text-xl md:text-2xl font-bold text-blue-600">{inProgressTests}</p>
             </div>
             <div className="space-y-1">
-              <p className="text-sm text-muted-foreground">Not Started</p>
-              <p className="text-2xl font-bold text-muted-foreground">
+              <p className="text-xs md:text-sm text-muted-foreground">Not Started</p>
+              <p className="text-xl md:text-2xl font-bold text-muted-foreground">
                 {totalTests - passedTests - failedTests - inProgressTests}
               </p>
             </div>
@@ -510,17 +510,19 @@ export default function TestingDashboard() {
         </CardContent>
       </Card>
 
-      {/* Filters */}
+      {/* Filters - Scrollable Tabs on Mobile */}
       <Card>
-        <CardContent className="pt-6">
+        <CardContent className="pt-4 md:pt-6">
           <Tabs value={filterCategory} onValueChange={(v) => setFilterCategory(v as TestCategory | "all")}>
-            <TabsList className="grid w-full grid-cols-7">
-              {categories.map(cat => (
-                <TabsTrigger key={cat.id} value={cat.id}>
-                  {cat.label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
+            <div className="overflow-x-auto -mx-3 px-3 md:mx-0 md:px-0">
+              <TabsList className="inline-flex md:grid md:w-full md:grid-cols-7 min-w-max md:min-w-0">
+                {categories.map(cat => (
+                  <TabsTrigger key={cat.id} value={cat.id} className="whitespace-nowrap text-xs md:text-sm px-3 md:px-4">
+                    {cat.label}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </div>
           </Tabs>
         </CardContent>
       </Card>
@@ -533,72 +535,74 @@ export default function TestingDashboard() {
               open={expandedTests.has(test.id)}
               onOpenChange={() => toggleExpanded(test.id)}
             >
-              <CardHeader className="cursor-pointer" onClick={() => toggleExpanded(test.id)}>
-                <div className="flex items-start justify-between">
-                  <div className="flex items-start gap-3 flex-1">
-                    {getStatusIcon(test.status)}
-                    <div className="space-y-1 flex-1">
+              <CardHeader className="cursor-pointer p-3 md:p-6" onClick={() => toggleExpanded(test.id)}>
+                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
+                  <div className="flex items-start gap-2 md:gap-3 flex-1 min-w-0">
+                    <div className="flex-shrink-0 mt-1">{getStatusIcon(test.status)}</div>
+                    <div className="space-y-1 md:space-y-1 flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <CardTitle className="text-xl">{test.title}</CardTitle>
+                        <CardTitle className="text-base md:text-xl truncate">{test.title}</CardTitle>
                         {expandedTests.has(test.id) ? 
-                          <ChevronDown className="h-5 w-5" /> : 
-                          <ChevronRight className="h-5 w-5" />
+                          <ChevronDown className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" /> : 
+                          <ChevronRight className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" />
                         }
                       </div>
-                      <div className="flex items-center gap-2 flex-wrap">
+                      <div className="flex items-center gap-1.5 md:gap-2 flex-wrap">
                         {getStatusBadge(test.status)}
-                        <Badge variant="outline">{test.category.replace("_", " ")}</Badge>
-                        <Badge variant="outline">
+                        <Badge variant="outline" className="text-xs">{test.category.replace("_", " ")}</Badge>
+                        <Badge variant="outline" className="text-xs">
                           <Clock className="h-3 w-3 mr-1" />
                           {test.duration}
                         </Badge>
-                        <Badge variant="outline">{test.completionLevel}% Complete</Badge>
+                        <Badge variant="outline" className="text-xs">{test.completionLevel}% Complete</Badge>
                       </div>
-                      <CardDescription className="flex items-center gap-2">
-                        <span>{test.location}</span>
+                      <CardDescription className="flex items-center gap-2 text-xs md:text-sm truncate">
+                        <span className="truncate">{test.location}</span>
                         {test.route && (
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="h-6 px-2"
+                            className="h-5 md:h-6 px-1.5 md:px-2 flex-shrink-0"
                             onClick={(e) => {
                               e.stopPropagation();
                               navigate(test.route!);
                             }}
                           >
-                            <ExternalLink className="h-3 w-3 mr-1" />
-                            Open
+                            <ExternalLink className="h-3 w-3 md:mr-1" />
+                            <span className="hidden md:inline">Open</span>
                           </Button>
                         )}
                       </CardDescription>
                     </div>
                   </div>
                   
-                  <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
+                  {/* Action Buttons - Vertical Stack on Mobile */}
+                  <div className="flex md:flex-row flex-col gap-1.5 md:gap-2 w-full md:w-auto" onClick={(e) => e.stopPropagation()}>
                     <Button
                       size="sm"
                       variant="outline"
+                      className="w-full md:w-auto text-xs md:text-sm h-8 md:h-9"
                       onClick={() => updateTestStatus(test.id, "in_progress")}
                     >
-                      <Play className="h-4 w-4 mr-1" />
+                      <Play className="h-3 w-3 md:h-4 md:w-4 mr-1" />
                       Start
                     </Button>
                     <Button
                       size="sm"
                       variant="outline"
-                      className="text-green-600 hover:text-green-700"
+                      className="w-full md:w-auto text-xs md:text-sm h-8 md:h-9 text-green-600 hover:text-green-700"
                       onClick={() => updateTestStatus(test.id, "passed")}
                     >
-                      <CheckCircle2 className="h-4 w-4 mr-1" />
+                      <CheckCircle2 className="h-3 w-3 md:h-4 md:w-4 mr-1" />
                       Pass
                     </Button>
                     <Button
                       size="sm"
                       variant="outline"
-                      className="text-red-600 hover:text-red-700"
+                      className="w-full md:w-auto text-xs md:text-sm h-8 md:h-9 text-red-600 hover:text-red-700"
                       onClick={() => updateTestStatus(test.id, "failed")}
                     >
-                      <XCircle className="h-4 w-4 mr-1" />
+                      <XCircle className="h-3 w-3 md:h-4 md:w-4 mr-1" />
                       Fail
                     </Button>
                   </div>
@@ -606,16 +610,16 @@ export default function TestingDashboard() {
               </CardHeader>
 
               <CollapsibleContent>
-                <CardContent className="space-y-6 pt-0">
+                <CardContent className="space-y-4 md:space-y-6 pt-0 p-3 md:p-6">
                   {/* Test Procedures */}
                   <div>
-                    <h4 className="font-semibold mb-2 flex items-center gap-2">
+                    <h4 className="font-semibold mb-2 flex items-center gap-2 text-sm md:text-base">
                       <span className="text-blue-600">1.</span>
                       Test Procedures
                     </h4>
-                    <ul className="space-y-1 ml-6">
+                    <ul className="space-y-1 ml-4 md:ml-6">
                       {test.procedures.map((proc, idx) => (
-                        <li key={idx} className="text-sm text-muted-foreground list-disc">
+                        <li key={idx} className="text-xs md:text-sm text-muted-foreground list-disc">
                           {proc}
                         </li>
                       ))}
@@ -624,13 +628,13 @@ export default function TestingDashboard() {
 
                   {/* Expected Results */}
                   <div>
-                    <h4 className="font-semibold mb-2 flex items-center gap-2">
+                    <h4 className="font-semibold mb-2 flex items-center gap-2 text-sm md:text-base">
                       <span className="text-green-600">2.</span>
                       Expected Results
                     </h4>
-                    <ul className="space-y-1 ml-6">
+                    <ul className="space-y-1 ml-4 md:ml-6">
                       {test.expectedResults.map((result, idx) => (
-                        <li key={idx} className="text-sm text-muted-foreground list-disc">
+                        <li key={idx} className="text-xs md:text-sm text-muted-foreground list-disc">
                           {result}
                         </li>
                       ))}
@@ -639,13 +643,13 @@ export default function TestingDashboard() {
 
                   {/* Acceptance Criteria */}
                   <div>
-                    <h4 className="font-semibold mb-2 flex items-center gap-2">
+                    <h4 className="font-semibold mb-2 flex items-center gap-2 text-sm md:text-base">
                       <span className="text-purple-600">3.</span>
                       Acceptance Criteria
                     </h4>
-                    <ul className="space-y-1 ml-6">
+                    <ul className="space-y-1 ml-4 md:ml-6">
                       {test.acceptanceCriteria.map((criteria, idx) => (
-                        <li key={idx} className="text-sm text-muted-foreground list-disc">
+                        <li key={idx} className="text-xs md:text-sm text-muted-foreground list-disc">
                           {criteria}
                         </li>
                       ))}
@@ -654,14 +658,14 @@ export default function TestingDashboard() {
 
                   {/* Missing Features (if partial) */}
                   {test.missingFeatures && test.missingFeatures.length > 0 && (
-                    <div className="bg-yellow-50 dark:bg-yellow-950 p-4 rounded-lg">
-                      <h4 className="font-semibold mb-2 flex items-center gap-2 text-yellow-700 dark:text-yellow-300">
-                        <AlertCircle className="h-4 w-4" />
+                    <div className="bg-yellow-50 dark:bg-yellow-950 p-3 md:p-4 rounded-lg">
+                      <h4 className="font-semibold mb-2 flex items-center gap-2 text-yellow-700 dark:text-yellow-300 text-sm md:text-base">
+                        <AlertCircle className="h-3 w-3 md:h-4 md:w-4" />
                         Missing Features to Document
                       </h4>
-                      <ul className="space-y-1 ml-6">
+                      <ul className="space-y-1 ml-4 md:ml-6">
                         {test.missingFeatures.map((feature, idx) => (
-                          <li key={idx} className="text-sm text-yellow-700 dark:text-yellow-300 list-disc">
+                          <li key={idx} className="text-xs md:text-sm text-yellow-700 dark:text-yellow-300 list-disc">
                             {feature}
                           </li>
                         ))}
