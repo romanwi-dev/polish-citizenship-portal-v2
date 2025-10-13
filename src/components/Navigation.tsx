@@ -55,9 +55,9 @@ const Navigation = () => {
               )}
             </button>
             <button
-              onClick={() => navigate('/cases')}
+              onClick={() => navigate('/admin/cases')}
               className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
-              aria-label="Control Room"
+              aria-label="Management"
             >
               <User className="h-5 w-5 text-foreground/70" />
             </button>
@@ -188,7 +188,7 @@ const Navigation = () => {
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Button
-                    onClick={() => navigate('/cases')}
+                    onClick={() => navigate('/admin/cases')}
                     variant="ghost"
                     className="w-full justify-start text-base font-medium rounded-md hover:bg-primary/10 transition-colors"
                   >
