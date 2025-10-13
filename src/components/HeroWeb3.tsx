@@ -11,11 +11,10 @@ const Enhanced3DScene = lazy(() => import("./Enhanced3DScene").then(module => ({
 const HeroWeb3 = () => {
   const [shouldLoadMap, setShouldLoadMap] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
-  const isMobile = useIsMobile();
   const prefersReducedMotion = useReducedMotion();
 
-  // Only load 3D on desktop and when user doesn't prefer reduced motion
-  const shouldShow3D = !isMobile && !prefersReducedMotion;
+  // Load 3D when user doesn't prefer reduced motion
+  const shouldShow3D = !prefersReducedMotion;
 
   // Use IntersectionObserver for lazy loading 3D component
   useEffect(() => {

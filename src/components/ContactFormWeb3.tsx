@@ -71,9 +71,8 @@ const ContactFormWeb3 = () => {
         </Suspense>
       </div>
 
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/50 to-background/80 z-[1]" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:24px_24px] z-[1]" />
+  {/* Gradient Overlay */}
+  <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/50 to-background/80 z-[1]" />
       
       <div className="container px-4 mx-auto relative z-10">
         <div className="text-center mb-20">
