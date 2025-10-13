@@ -56,26 +56,13 @@ export const CaseFilters = ({
   searchInputRef,
 }: CaseFiltersProps) => {
   return (
-    <div className="space-y-4 mb-6">
-      {/* Search Bar */}
-      <div className="flex gap-2">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            ref={searchInputRef}
-            placeholder="Search by client name or case code..."
-            value={searchTerm}
-            onChange={(e) => onSearchChange(e.target.value)}
-            className="pl-10"
-          />
-        </div>
-        
-        {/* Filters Sheet - Mobile Optimized */}
-        <Sheet>
+    <div className="space-y-4">
+      {/* Filters Sheet - Mobile Optimized */}
+      <Sheet>
           <SheetTrigger asChild>
-            <Button variant="outline" className="relative min-w-[44px] min-h-[44px]">
+            <Button variant="outline" size="lg" className="relative h-12">
               <SlidersHorizontal className="h-4 w-4 mr-2" />
-              <span className="hidden sm:inline">Filters</span>
+              Filters
               {activeFiltersCount > 0 && (
                 <Badge className="ml-2 bg-primary text-primary-foreground">
                   {activeFiltersCount}
@@ -183,7 +170,6 @@ export const CaseFilters = ({
             </div>
           </SheetContent>
         </Sheet>
-      </div>
 
       {/* Active Filters Display */}
       {activeFiltersCount > 0 && (

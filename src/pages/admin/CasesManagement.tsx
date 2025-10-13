@@ -10,8 +10,11 @@ import { KeyboardShortcutsDialog } from "@/components/KeyboardShortcutsDialog";
 import { 
   Plus, 
   Database,
-  ArrowUpDown
+  ArrowUpDown,
+  Search,
+  SlidersHorizontal
 } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/useAuth";
 import { useIsStaff } from "@/hooks/useUserRole";
 import { useCases, useUpdateCaseStatus, useDeleteCase } from "@/hooks/useCases";
@@ -39,6 +42,7 @@ export default function CasesManagement() {
   const [editCase, setEditCase] = useState<any>(null);
   const [showShortcuts, setShowShortcuts] = useState(false);
   const [showGlobalSearch, setShowGlobalSearch] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
   const [sortBy, setSortBy] = useState<"default" | "name" | "date" | "progress">("default");
   
   // Bulk actions
@@ -275,47 +279,60 @@ export default function CasesManagement() {
       <AdminLayout>
       <div className="p-4 sm:p-8 bg-background min-h-screen">
         {/* Header - Mobile Optimized */}
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 sm:mb-8 gap-4 sm:gap-0">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2 text-foreground bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              Cases Management
+        <div className="mb-6 sm:mb-8">
+          <div className="mb-4">
+            <h1 className="text-2xl sm:text-3xl font-bold mb-1 text-foreground bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              Management
             </h1>
             <p className="text-xs sm:text-sm text-muted-foreground">Manage all client cases</p>
           </div>
-          <Button 
-            onClick={() => navigate("/admin/cases/new")}
-            className="w-full sm:w-auto"
-            size="default"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            New Case
-          </Button>
-        </div>
 
-        <CaseFilters
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-          statusFilter={statusFilter}
-          onStatusChange={setStatusFilter}
-          processingModeFilter={processingModeFilter}
-          onProcessingModeChange={setProcessingModeFilter}
-          scoreFilter={scoreFilter}
-          onScoreChange={setScoreFilter}
-          ageFilter={ageFilter}
-          onAgeChange={setAgeFilter}
-          progressFilter={progressFilter}
-          onProgressChange={setProgressFilter}
-          onClearFilters={handleClearFilters}
-          activeFiltersCount={activeFiltersCount}
-          searchInputRef={searchInputRef}
-        />
+          {/* Action Buttons Row - Mobile Optimized */}
+          <div className="grid grid-cols-1 sm:grid-cols-[auto_1fr_auto] gap-3 mb-4">
+            <Button 
+              onClick={() => navigate("/admin/cases/new")}
+              className="w-full sm:w-auto h-12"
+              size="lg"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              New Case
+            </Button>
 
-        {/* Sort Controls */}
-        {filteredCases.length > 0 && (
-          <div className="flex items-center gap-2 mb-4">
-            <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">Sort by:</span>
-            <div className="flex gap-2">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground z-10" />
+              <Input
+                ref={searchInputRef}
+                placeholder="Search by client name or case code..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 h-12"
+              />
+            </div>
+
+            <CaseFilters
+              searchTerm={searchTerm}
+              onSearchChange={setSearchTerm}
+              statusFilter={statusFilter}
+              onStatusChange={setStatusFilter}
+              processingModeFilter={processingModeFilter}
+              onProcessingModeChange={setProcessingModeFilter}
+              scoreFilter={scoreFilter}
+              onScoreChange={setScoreFilter}
+              ageFilter={ageFilter}
+              onAgeChange={setAgeFilter}
+              progressFilter={progressFilter}
+              onProgressChange={setProgressFilter}
+              onClearFilters={handleClearFilters}
+              activeFiltersCount={activeFiltersCount}
+              searchInputRef={searchInputRef}
+            />
+          </div>
+
+          {/* Sort Controls */}
+          {filteredCases.length > 0 && (
+            <div className="flex flex-wrap items-center gap-2">
+              <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
+              <span className="text-sm text-muted-foreground">Sort by:</span>
               {[
                 { value: "default", label: "Default" },
                 { value: "name", label: "Name" },
@@ -332,8 +349,8 @@ export default function CasesManagement() {
                 </Button>
               ))}
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
         {filteredCases.length === 0 ? (
           <EmptyState
