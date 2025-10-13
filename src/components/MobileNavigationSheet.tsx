@@ -87,7 +87,7 @@ export const MobileNavigationSheet = () => {
                 {/* Login/Register Button */}
                 <Button
                   onClick={handleAuthAction}
-                  className="w-full h-14 bg-gradient-to-r from-primary via-accent to-primary text-white font-semibold shadow-lg hover:shadow-xl transition-all"
+                  className="w-full h-14 bg-green-500/20 text-white font-bold text-lg border-2 border-green-500/30 hover:bg-green-500/30 hover:shadow-[0_0_30px_rgba(34,197,94,0.3)] transition-all"
                 >
                   {user ? (
                     <>
@@ -100,17 +100,6 @@ export const MobileNavigationSheet = () => {
                       Register / Login
                     </>
                   )}
-                </Button>
-
-                {/* Intake Demo Button */}
-                <Button
-                  onClick={() => {
-                    navigate('/admin/intake-demo');
-                    setOpen(false);
-                  }}
-                  className="w-full h-14 bg-gradient-to-r from-primary via-accent to-primary text-white font-semibold shadow-lg hover:shadow-xl transition-all"
-                >
-                  Intake Demo
                 </Button>
 
                 <div className="h-px bg-border/50" />
