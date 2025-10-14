@@ -19,7 +19,7 @@ export const useFormManager = (
   const { data: masterData, isLoading } = useMasterData(caseId);
   const updateMasterData = useUpdateMasterData();
   const [formData, setFormData] = useState<any>({});
-  const [activeTab, setActiveTab] = useState("applicant");
+  const [activeTab, setActiveTab] = useState("select");
   const [isFullView, setIsFullView] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
