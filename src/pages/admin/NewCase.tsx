@@ -13,6 +13,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { LoadingState } from "@/components/LoadingState";
 import { ArrowLeft, User, FileText, Mail, Key, Folder } from "lucide-react";
+import { generateHybridCaseName } from "@/utils/hybridCaseNaming";
 
 export default function NewCase() {
   const navigate = useNavigate();
@@ -62,24 +63,31 @@ export default function NewCase() {
     setIsLoading(true);
 
     try {
-      // Step 1: Generate client code
-      const clientCode = formData.auto_generate_code 
-        ? generateClientCode(formData.client_name)
-        : null;
+      // Step 1: Extract first and last name
+      const nameParts = formData.client_name.trim().split(/\s+/);
+      const firstName = nameParts[0] || 'Client';
+      const lastName = nameParts.slice(1).join(' ') || 'Name';
+      
+      // Step 2: Generate hybrid case name (e.g., USA001_John_Smith)
+      const hybridCaseName = await generateHybridCaseName(
+        formData.country || null,
+        firstName,
+        lastName
+      );
 
-      // Step 2: Prepare Dropbox path
+      // Step 3: Prepare Dropbox path using hybrid name
       const dropboxPath = formData.auto_create_dropbox_folder
-        ? `/CASES/${clientCode || formData.client_name.replace(/[^a-zA-Z0-9]/g, '_')}`
+        ? `/CASES/${hybridCaseName}`
         : `/CASES/${formData.client_name.replace(/[^a-zA-Z0-9]/g, '_')}`;
 
-      // Step 3: Create case in database
+      // Step 4: Create case in database with hybrid client_code
       const caseInsert: any = {
         client_name: formData.client_name.trim(),
+        client_code: hybridCaseName, // Hybrid format
         dropbox_path: dropboxPath,
         start_date: new Date().toISOString().split('T')[0],
       };
       
-      if (clientCode) caseInsert.client_code = clientCode;
       if (formData.country) caseInsert.country = formData.country;
       if (formData.status) caseInsert.status = formData.status;
       if (formData.generation) caseInsert.generation = formData.generation;
@@ -98,7 +106,7 @@ export default function NewCase() {
 
       toast({
         title: "Case Created",
-        description: `Created case for ${formData.client_name}${clientCode ? ` (${clientCode})` : ''}`,
+        description: `Created case: ${hybridCaseName}`,
       });
 
       // Step 4: Create Dropbox folder (background task)
@@ -365,14 +373,14 @@ export default function NewCase() {
                   <div className="space-y-3 bg-muted/50 p-4 rounded-lg">
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
-                        <Label>Auto-Generate Client Code</Label>
+                        <Label>Hybrid Case Naming (Automatic)</Label>
                         <p className="text-xs text-muted-foreground">
-                          Generate unique code (e.g., JDO-1234)
+                          Format: COUNTRY###_FirstName_LastName (e.g., USA001_John_Smith)
                         </p>
                       </div>
                       <Switch
-                        checked={formData.auto_generate_code}
-                        onCheckedChange={(checked) => handleChange("auto_generate_code", checked)}
+                        checked={true}
+                        disabled={true}
                       />
                     </div>
 
