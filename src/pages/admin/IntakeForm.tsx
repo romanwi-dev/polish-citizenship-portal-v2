@@ -184,14 +184,14 @@ export default function IntakeForm() {
                 <TabsTrigger value="children" className="flex-shrink-0 md:flex-1">
                   <span className="text-blue-600 dark:text-blue-400">Children</span>
                 </TabsTrigger>
+                <TabsTrigger value="passport" className="flex-shrink-0 md:flex-1">
+                  <span className="text-blue-600 dark:text-blue-400">Passport</span>
+                </TabsTrigger>
                 <TabsTrigger value="contact" className="flex-shrink-0 md:flex-1">
                   <span className="text-blue-600 dark:text-blue-400">Contact</span>
                 </TabsTrigger>
                 <TabsTrigger value="address" className="flex-shrink-0 md:flex-1">
                   <span className="text-blue-600 dark:text-blue-400">Address</span>
-                </TabsTrigger>
-                <TabsTrigger value="passport" className="flex-shrink-0 md:flex-1">
-                  <span className="text-blue-600 dark:text-blue-400">Passport</span>
                 </TabsTrigger>
                 <TabsTrigger value="notes" className="flex-shrink-0 md:flex-1">
                   <span className="text-blue-600 dark:text-blue-400">Notes</span>
@@ -208,14 +208,14 @@ export default function IntakeForm() {
                 <div ref={(el) => sectionRefs.current.applicant = el} className="border-b border-border/10">
                   <ApplicantSection {...contentProps} />
                 </div>
+                <div ref={(el) => sectionRefs.current.passport = el} className="border-b border-border/10">
+                  <PassportSection {...contentProps} />
+                </div>
                 <div ref={(el) => sectionRefs.current.contact = el} className="border-b border-border/10">
                   <ContactSection {...contentProps} />
                 </div>
                 <div ref={(el) => sectionRefs.current.address = el} className="border-b border-border/10">
                   <AddressSection {...contentProps} />
-                </div>
-                <div ref={(el) => sectionRefs.current.passport = el} className="border-b border-border/10">
-                  <PassportSection {...contentProps} />
                 </div>
                 <div ref={(el) => sectionRefs.current.notes = el}>
                   <NotesSection {...contentProps} />
@@ -230,14 +230,14 @@ export default function IntakeForm() {
                 <TabsContent value="applicant" className="mt-0">
                   <ApplicantSection {...contentProps} />
                 </TabsContent>
+                <TabsContent value="passport" className="mt-0">
+                  <PassportSection {...contentProps} />
+                </TabsContent>
                 <TabsContent value="contact" className="mt-0">
                   <ContactSection {...contentProps} />
                 </TabsContent>
                 <TabsContent value="address" className="mt-0">
                   <AddressSection {...contentProps} />
-                </TabsContent>
-                <TabsContent value="passport" className="mt-0">
-                  <PassportSection {...contentProps} />
                 </TabsContent>
                 <TabsContent value="notes" className="mt-0">
                   <NotesSection {...contentProps} />
