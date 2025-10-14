@@ -141,7 +141,7 @@ export default function FormsDemo() {
 
         {/* Form Dialog */}
         <Dialog open={openForm !== null} onOpenChange={() => { setOpenForm(null); setIsExpanded(false); }}>
-          <DialogContent className={`${isExpanded ? 'max-w-[98vw] max-h-[98vh]' : 'max-w-[95vw] max-h-[95vh]'} overflow-y-auto p-0`}>
+          <DialogContent className={`${isExpanded ? 'max-w-[98vw] max-h-[98vh]' : 'max-w-[95vw] max-h-[95vh]'} overflow-y-auto p-0`} hideCloseButton>
             {renderFormContent()}
           </DialogContent>
         </Dialog>

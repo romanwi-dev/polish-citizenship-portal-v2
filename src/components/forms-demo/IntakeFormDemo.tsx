@@ -49,8 +49,8 @@ export default function IntakeFormDemo({ onClose }: IntakeFormDemoProps) {
   return (
     <div className={`p-6 ${isLargeFonts ? 'text-lg' : ''}`}>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-4xl font-heading font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-          Client Intake
+        <h2 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
+          Client Intake Form
         </h2>
         <div className="flex items-center gap-2">
           <Button onClick={() => setIsExpanded(!isExpanded)} variant="ghost" size="icon" title="Toggle fullscreen">

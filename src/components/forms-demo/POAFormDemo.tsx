@@ -31,8 +31,8 @@ export default function POAFormDemo({ onClose }: POAFormDemoProps) {
   return (
     <div className={`p-6 ${isLargeFonts ? 'text-lg' : ''}`}>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-4xl font-heading font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-          Power of Attorney
+        <h2 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
+          Power of Attorney Form
         </h2>
         <div className="flex items-center gap-2">
           <Button onClick={() => setIsLargeFonts(!isLargeFonts)} variant="ghost" size="icon" title="Toggle large fonts">
