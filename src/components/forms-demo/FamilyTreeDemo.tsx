@@ -86,8 +86,206 @@ export default function FamilyTreeDemo({ onClose, isExpanded, onToggleExpand }: 
           </div>
         </div>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
-...
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <div className="sticky top-0 z-20 border-b border-border/50 pb-2 pt-2 -mx-4 md:-mx-6 px-4 md:px-6">
+            <TabsList className="w-full inline-flex justify-between gap-0.5 bg-transparent p-0">
+              <TabsTrigger value="tree-view" className="flex-shrink-0">
+                <span className="text-blue-600 dark:text-blue-400">Tree View</span>
+              </TabsTrigger>
+              <TabsTrigger value="applicant" className="flex-shrink-0">
+                <span className="text-blue-600 dark:text-blue-400">Applicant</span>
+              </TabsTrigger>
+              {formData.applicant_is_married && (
+                <TabsTrigger value="spouse" className="flex-shrink-0">
+                  <span className="text-blue-600 dark:text-blue-400">Spouse</span>
+                </TabsTrigger>
+              )}
+              <TabsTrigger value="parents" className="flex-shrink-0">
+                <span className="text-teal-600 dark:text-teal-400">Parents</span>
+              </TabsTrigger>
+              <TabsTrigger value="grandparents" className="flex-shrink-0">
+                <span className="text-red-600 dark:text-red-400">Grandparents</span>
+              </TabsTrigger>
+            </TabsList>
+          </div>
+
+          <TabsContent value="tree-view" className="mt-0">
+            <FamilyTreeInteractive
+              applicant={mapPersonData('applicant')}
+              spouse={formData.applicant_is_married ? mapPersonData('spouse') : undefined}
+              father={mapPersonData('father')}
+              mother={mapPersonData('mother')}
+              paternalGrandfather={mapPersonData('pgf')}
+              paternalGrandmother={mapPersonData('pgm')}
+              maternalGrandfather={mapPersonData('mgf')}
+              maternalGrandmother={mapPersonData('mgm')}
+              onPersonEdit={(relation) => {
+                const tabMap: Record<string, string> = {
+                  'applicant': 'applicant',
+                  'spouse': 'spouse',
+                  'father': 'parents',
+                  'mother': 'parents',
+                  'pgf': 'grandparents',
+                  'pgm': 'grandparents',
+                  'mgf': 'grandparents',
+                  'mgm': 'grandparents',
+                };
+                setActiveTab(tabMap[relation] || 'applicant');
+              }}
+            />
+          </TabsContent>
+
+          <TabsContent value="applicant" className="mt-0 p-6">
+            <div className="space-y-4">
+              <FormInput
+                label="First Name"
+                value={formData.applicant_first_name}
+                onChange={(value) => handleInputChange('applicant_first_name', value)}
+                isLargeFonts={isLargeFonts}
+              />
+              <FormInput
+                label="Last Name"
+                value={formData.applicant_last_name}
+                onChange={(value) => handleInputChange('applicant_last_name', value)}
+                isLargeFonts={isLargeFonts}
+              />
+              <DateField
+                label="Date of Birth"
+                value={formData.applicant_dob}
+                onChange={(value) => handleInputChange('applicant_dob', value)}
+                isLargeFonts={isLargeFonts}
+              />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="spouse" className="mt-0 p-6">
+            <div className="space-y-4">
+              <FormInput
+                label="First Name"
+                value={formData.spouse_first_name}
+                onChange={(value) => handleInputChange('spouse_first_name', value)}
+                isLargeFonts={isLargeFonts}
+              />
+              <FormInput
+                label="Last Name"
+                value={formData.spouse_last_name}
+                onChange={(value) => handleInputChange('spouse_last_name', value)}
+                isLargeFonts={isLargeFonts}
+              />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="parents" className="mt-0 p-6">
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Father</h3>
+                <div className="space-y-4">
+                  <FormInput
+                    label="First Name"
+                    value={formData.father_first_name}
+                    onChange={(value) => handleInputChange('father_first_name', value)}
+                    isLargeFonts={isLargeFonts}
+                  />
+                  <FormInput
+                    label="Last Name"
+                    value={formData.father_last_name}
+                    onChange={(value) => handleInputChange('father_last_name', value)}
+                    isLargeFonts={isLargeFonts}
+                  />
+                </div>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Mother</h3>
+                <div className="space-y-4">
+                  <FormInput
+                    label="First Name"
+                    value={formData.mother_first_name}
+                    onChange={(value) => handleInputChange('mother_first_name', value)}
+                    isLargeFonts={isLargeFonts}
+                  />
+                  <FormInput
+                    label="Last Name"
+                    value={formData.mother_last_name}
+                    onChange={(value) => handleInputChange('mother_last_name', value)}
+                    isLargeFonts={isLargeFonts}
+                  />
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="grandparents" className="mt-0 p-6">
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Paternal Grandfather</h3>
+                <div className="space-y-4">
+                  <FormInput
+                    label="First Name"
+                    value={formData.pgf_first_name}
+                    onChange={(value) => handleInputChange('pgf_first_name', value)}
+                    isLargeFonts={isLargeFonts}
+                  />
+                  <FormInput
+                    label="Last Name"
+                    value={formData.pgf_last_name}
+                    onChange={(value) => handleInputChange('pgf_last_name', value)}
+                    isLargeFonts={isLargeFonts}
+                  />
+                </div>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Paternal Grandmother</h3>
+                <div className="space-y-4">
+                  <FormInput
+                    label="First Name"
+                    value={formData.pgm_first_name}
+                    onChange={(value) => handleInputChange('pgm_first_name', value)}
+                    isLargeFonts={isLargeFonts}
+                  />
+                  <FormInput
+                    label="Last Name"
+                    value={formData.pgm_last_name}
+                    onChange={(value) => handleInputChange('pgm_last_name', value)}
+                    isLargeFonts={isLargeFonts}
+                  />
+                </div>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Maternal Grandfather</h3>
+                <div className="space-y-4">
+                  <FormInput
+                    label="First Name"
+                    value={formData.mgf_first_name}
+                    onChange={(value) => handleInputChange('mgf_first_name', value)}
+                    isLargeFonts={isLargeFonts}
+                  />
+                  <FormInput
+                    label="Last Name"
+                    value={formData.mgf_last_name}
+                    onChange={(value) => handleInputChange('mgf_last_name', value)}
+                    isLargeFonts={isLargeFonts}
+                  />
+                </div>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Maternal Grandmother</h3>
+                <div className="space-y-4">
+                  <FormInput
+                    label="First Name"
+                    value={formData.mgm_first_name}
+                    onChange={(value) => handleInputChange('mgm_first_name', value)}
+                    isLargeFonts={isLargeFonts}
+                  />
+                  <FormInput
+                    label="Last Name"
+                    value={formData.mgm_last_name}
+                    onChange={(value) => handleInputChange('mgm_last_name', value)}
+                    isLargeFonts={isLargeFonts}
+                  />
+                </div>
+              </div>
+            </div>
+          </TabsContent>
         </Tabs>
       </div>
     </div>

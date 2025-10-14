@@ -1790,10 +1790,9 @@ export default function FamilyTreeForm() {
           <span className="text-blue-100 font-heading font-black">{isGenerating ? "Generating..." : "Generate PDF"}</span>
         </Button>
       </div>
-    </div>
 
-    {/* Clear Data Confirmation Dialog */}
-    <AlertDialog open={showClearDialog} onOpenChange={setShowClearDialog}>
+      {/* Clear Data Confirmation Dialog */}
+      <AlertDialog open={showClearDialog} onOpenChange={setShowClearDialog}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Clear Data?</AlertDialogTitle>
