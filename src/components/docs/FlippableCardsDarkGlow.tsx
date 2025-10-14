@@ -19,7 +19,7 @@ interface FlippableCardsDarkGlowProps {
   title: string;
   documents: DocumentItem[];
   onChange: (documents: DocumentItem[]) => void;
-  colorScheme?: 'children' | 'applicant' | 'parents' | 'grandparents' | 'ggp';
+  colorScheme?: 'children' | 'applicant' | 'spouse' | 'parents' | 'grandparents' | 'ggp';
 }
 
 const colorSchemes = {
@@ -40,6 +40,15 @@ const colorSchemes = {
     button: 'bg-blue-500/10 border-blue-500/40 hover:bg-blue-500/20',
     glow: 'rgba(59, 130, 246, 0.3)',
     titleColor: 'text-blue-600/80 dark:text-blue-400/80',
+  },
+  spouse: {
+    bg: 'from-blue-300 to-blue-500',
+    cardBg: 'bg-blue-50/45 dark:bg-blue-900/45',
+    cardBorder: 'border-blue-200/8 dark:border-blue-700/8',
+    badge: 'bg-blue-400/10 text-blue-300 border-blue-400/15',
+    button: 'bg-blue-400/10 border-blue-400/30 hover:bg-blue-400/20',
+    glow: 'rgba(96, 165, 250, 0.25)',
+    titleColor: 'text-blue-400/80 dark:text-blue-300/80',
   },
   parents: {
     bg: 'from-teal-400 to-teal-600',

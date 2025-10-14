@@ -16,7 +16,7 @@ interface FamilyMemberDocumentsSectionProps {
   handleInputChange: (field: string, value: any) => void;
   personType: 'applicant' | 'spouse' | 'parent' | 'grandparent' | 'child';
   sex?: string;
-  colorScheme?: 'children' | 'applicant' | 'parents' | 'grandparents' | 'ggp';
+  colorScheme?: 'children' | 'applicant' | 'spouse' | 'parents' | 'grandparents' | 'ggp';
 }
 
 export const FamilyMemberDocumentsSection = ({

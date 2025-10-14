@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
-type ColorScheme = 'children' | 'applicant' | 'parents' | 'grandparents' | 'ggp' | 'poa' | 'citizenship' | 'civil-reg';
+type ColorScheme = 'children' | 'applicant' | 'spouse' | 'parents' | 'grandparents' | 'ggp' | 'poa' | 'citizenship' | 'civil-reg';
 
 interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   value: string;
@@ -28,6 +28,13 @@ const colorSchemes = {
     glow: 'hsla(221, 83%, 53%, 0.15)',
     glowHover: 'hsla(221, 83%, 53%, 0.3)',
     glowFocus: 'hsla(221, 83%, 53%, 0.4)',
+  },
+  spouse: {
+    bg: 'bg-blue-50/35 dark:bg-blue-900/30',
+    border: 'border-blue-200/20 dark:border-blue-700/20',
+    glow: 'hsla(210, 80%, 65%, 0.12)',
+    glowHover: 'hsla(210, 80%, 65%, 0.25)',
+    glowFocus: 'hsla(210, 80%, 65%, 0.35)',
   },
   parents: {
     bg: 'bg-teal-50/45 dark:bg-teal-950/45',

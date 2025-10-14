@@ -2,6 +2,7 @@
 export const formTextColors = {
   children: 'text-cyan-400',      // rgba(103,232,249)
   applicant: 'text-blue-500',     // hsla(221, 83%, 53%)
+  spouse: 'text-blue-300',        // Lighter blue for spouse
   parents: 'text-teal-500',       // rgba(20,184,166)
   grandparents: 'text-red-500',   // rgba(239,68,68)
   ggp: 'text-gray-400',           // rgba(209,213,219)

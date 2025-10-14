@@ -25,7 +25,7 @@ import { useFormManager } from "@/hooks/useFormManager";
 import { FAMILY_TREE_FORM_REQUIRED_FIELDS, FAMILY_TREE_DATE_FIELDS } from "@/config/formRequiredFields";
 import { AutosaveIndicator } from "@/components/AutosaveIndicator";
 
-type ColorScheme = 'children' | 'applicant' | 'parents' | 'grandparents' | 'ggp' | 'poa' | 'citizenship' | 'civil-reg';
+type ColorScheme = 'children' | 'applicant' | 'spouse' | 'parents' | 'grandparents' | 'ggp' | 'poa' | 'citizenship' | 'civil-reg';
 
 export default function FamilyTreeForm() {
   const { id: caseId } = useParams();
@@ -685,7 +685,7 @@ export default function FamilyTreeForm() {
         <TabsContent value="spouse" className="mt-0" {...(isFullView ? { forceMount: true } : {})}>
           {(activeTab === 'spouse' || isFullView) && (
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="p-6 md:p-10 space-y-10">
-              <h2 className="text-4xl md:text-5xl font-heading font-bold text-blue-600 dark:text-blue-400 border-b border-border/50 pb-6">
+              <h2 className="text-4xl md:text-5xl font-heading font-bold text-blue-300 dark:text-blue-300 border-b border-border/50 pb-6">
                 Spouse
               </h2>
               
@@ -693,36 +693,36 @@ export default function FamilyTreeForm() {
               {renderFieldGroup([
                 { name: "spouse_first_name", label: "Given names", isNameField: true },
                 { name: "spouse_last_name", label: "Full last name", isNameField: true }
-              ], 'applicant')}
+              ], 'spouse')}
 
               {/* Maiden name */}
               {renderFieldGroup([
                 { name: "spouse_maiden_name", label: "Maiden name", isNameField: true }
-              ], 'applicant')}
+              ], 'spouse')}
 
               {/* Places: Birth & Marriage */}
               {renderFieldGroup([
                 { name: "spouse_pob", label: "Place of birth", isNameField: true },
                 { name: "place_of_marriage", label: "Place of marriage", isNameField: true }
-              ], 'applicant')}
+              ], 'spouse')}
 
               {/* Dates: Birth & Marriage */}
               {renderFieldGroup([
                 { name: "spouse_dob", label: "Date of birth", type: "date" },
                 { name: "date_of_marriage", label: "Date of marriage", type: "date" }
-              ], 'applicant')}
+              ], 'spouse')}
 
               {/* Dates: Emigration & Naturalization */}
               {renderFieldGroup([
                 { name: "spouse_date_of_emigration", label: "Date of emigration", type: "date" },
                 { name: "spouse_date_of_naturalization", label: "Date of naturalization", type: "date" }
-              ], 'applicant')}
+              ], 'spouse')}
 
               {/* Contact */}
               {renderFieldGroup([
                 { name: "spouse_email", label: "Email", type: "email" },
                 { name: "spouse_phone", label: "Phone" }
-              ], 'applicant')}
+              ], 'spouse')}
 
               <FamilyMemberDocumentsSection
                 prefix="spouse"
@@ -731,7 +731,7 @@ export default function FamilyTreeForm() {
                 handleInputChange={handleInputChange}
                 personType="spouse"
                 sex={formData.spouse_sex}
-                colorScheme="applicant"
+                colorScheme="spouse"
               />
 
               <div className="space-y-2 mt-8">
@@ -743,8 +743,7 @@ export default function FamilyTreeForm() {
                   value={formData.spouse_notes || ""}
                   onChange={e => handleInputChange("spouse_notes", e.target.value.toUpperCase())}
                   placeholder=""
-                  colorScheme="applicant"
-                  className={cn("min-h-[200px] border-2 border-blue-300/10 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase")}
+                  className={cn("min-h-[200px] border-2 border-blue-200/10 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase")}
                 />
               </div>
             </motion.div>
