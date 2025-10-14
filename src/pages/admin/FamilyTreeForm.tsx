@@ -443,79 +443,96 @@ export default function FamilyTreeForm() {
           scale: 1
         }} transition={{
           duration: 0.5
-        }} className="p-6 md:p-10 space-y-10">
-            <h2 className="text-4xl md:text-5xl font-heading font-bold text-blue-600 dark:text-blue-400 border-b border-border/50 pb-6">
-              Basic Information
-            </h2>
-                {/* Row 1: Gender and Civil Status */}
-                <div className="grid grid-cols-2 gap-6">
-                  {/* Gender */}
-                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-2">
-                    <Label className={isLargeFonts ? "text-2xl" : ""}>
-                      Gender
-                    </Label>
-                    <Select value={formData.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
-                      <SelectTrigger className="h-20 text-2xl border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
-                        <SelectValue placeholder="Select" />
+        }} className="space-y-12">
+            {/* Main Applicant - First Questions */}
+            <div className="space-y-6">
+              <div className="border-b border-border/50 pb-6 pt-6">
+                <h2 className="text-2xl md:text-3xl font-heading font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                  Main Applicant
+                </h2>
+                <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
+                  First Questions
+                </h3>
+              </div>
+              <div className="px-4 py-6 md:p-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full">
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-2" onDoubleClick={() => handleInputChange("applicant_sex", null)}>
+                    <Label className={isLargeFonts ? "text-2xl" : ""}>Gender</Label>
+                    <Select value={formData?.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
+                      <SelectTrigger 
+                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs"
+                        style={{
+                          boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+                        }}
+                      >
+                        <SelectValue placeholder="Select..." className="text-xs" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-50">
-                        <SelectItem value="M" className="text-base cursor-pointer">Male / Mężczyzna</SelectItem>
-                        <SelectItem value="F" className="text-base cursor-pointer">Female / Kobieta</SelectItem>
+                        <SelectItem value="M" className="text-xs cursor-pointer">Male</SelectItem>
+                        <SelectItem value="F" className="text-xs cursor-pointer">Female</SelectItem>
                       </SelectContent>
                     </Select>
                   </motion.div>
 
-                  {/* Civil Status */}
-                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="space-y-2">
-                    <Label className={isLargeFonts ? "text-2xl" : ""}>
-                      Civil Status
-                    </Label>
-                    <Select value={formData.applicant_is_married === true ? "Married" : "Single"} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
-                      <SelectTrigger className="h-20 text-2xl border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
-                        <SelectValue placeholder="Select" />
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="space-y-2" onDoubleClick={() => handleInputChange("children_count", null)}>
+                    <Label className={isLargeFonts ? "text-2xl" : ""}>Number of children</Label>
+                    <Select value={formData?.children_count?.toString() || ""} onValueChange={(value) => handleInputChange("children_count", parseInt(value))}>
+                      <SelectTrigger 
+                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur z-50 text-xs"
+                        style={{
+                          boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+                        }}
+                      >
+                        <SelectValue placeholder="Select..." className="text-xs" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-50">
-                        <SelectItem value="Married" className="text-base cursor-pointer">Married</SelectItem>
-                        <SelectItem value="Single" className="text-base cursor-pointer">Single</SelectItem>
+                        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+                          <SelectItem key={num} value={num.toString()} className="text-xs cursor-pointer">{num}</SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </motion.div>
                 </div>
 
-                {/* Row 2: Children counts */}
-                <div className="grid grid-cols-2 gap-6">
-                  {/* Number of children */}
-                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-2">
-                    <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                      Number of children
-                    </Label>
-                    <Select value={formData.children_count?.toString() || ""} onValueChange={(value) => { const count = parseInt(value); handleInputChange("children_count", count); }}>
-                      <SelectTrigger className="h-20 text-2xl border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur z-50">
-                        <SelectValue placeholder="Select" />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-2" onDoubleClick={() => handleInputChange("applicant_is_married", null)}>
+                    <Label className={isLargeFonts ? "text-2xl" : ""}>Marital status</Label>
+                    <Select value={formData?.applicant_is_married === true ? "Married" : formData?.applicant_is_married === false ? "Single" : ""} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
+                      <SelectTrigger 
+                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs"
+                        style={{
+                          boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+                        }}
+                      >
+                        <SelectValue placeholder="Select..." className="text-xs" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-50">
-                        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (<SelectItem key={num} value={num.toString()} className="text-base cursor-pointer">{num}</SelectItem>))}
+                        <SelectItem value="Married" className="text-xs cursor-pointer">Married</SelectItem>
+                        <SelectItem value="Single" className="text-xs cursor-pointer">Single</SelectItem>
                       </SelectContent>
                     </Select>
                   </motion.div>
-
-                  {/* Number of minor children - only show if children_count > 0 */}
-                  {(formData.children_count > 0) && (
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="space-y-2">
-                      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>
-                        Number of minor children
-                      </Label>
-                      <Select value={formData.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
-                        <SelectTrigger className="h-20 text-2xl border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
-                          <SelectValue placeholder="Select" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-background border-2 z-50">
-                          {Array.from({ length: (formData.children_count || 0) + 1 }, (_, i) => i).map((num) => (<SelectItem key={num} value={num.toString()} className="text-base cursor-pointer">{num}</SelectItem>))}
-                        </SelectContent>
-                      </Select>
-                    </motion.div>
-                  )}
                 </div>
+              </div>
+            </div>
           </motion.div>
           )}
         </TabsContent>
