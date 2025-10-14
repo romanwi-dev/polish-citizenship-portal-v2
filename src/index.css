@@ -323,6 +323,13 @@ All colors MUST be HSL.
     background-image: radial-gradient(circle at 20% 20%, hsl(221 83% 53% / 0.08) 0%, transparent 50%),
                       radial-gradient(circle at 80% 80%, hsl(204 70% 53% / 0.08) 0%, transparent 50%);
     background-attachment: fixed;
+    /* Hide scrollbars globally */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  body::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
   }
 
   .glass-card {
