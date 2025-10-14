@@ -530,6 +530,33 @@ export default function FamilyTreeForm() {
                       </SelectContent>
                     </Select>
                   </motion.div>
+
+                  {(formData?.children_count > 0) && (
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="space-y-2" onDoubleClick={() => handleInputChange("minor_children_count", null)}>
+                      <Label className={isLargeFonts ? "text-2xl" : ""}>Number of minor children (under 18)</Label>
+                      <Select value={formData?.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
+                        <SelectTrigger 
+                          className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs"
+                          style={{
+                            boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+                          }}
+                        >
+                          <SelectValue placeholder="Select..." className="text-xs" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-background border-2 z-50">
+                          {Array.from({ length: (formData?.children_count || 0) + 1 }, (_, i) => i).map((num) => (
+                            <SelectItem key={num} value={num.toString()} className="text-xs cursor-pointer">{num}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </motion.div>
+                  )}
                 </div>
               </div>
             </div>
