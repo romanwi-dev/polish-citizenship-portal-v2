@@ -321,7 +321,7 @@ export default function POAForm() {
         {/* POA Forms */}
         <div className="space-y-12">
           {/* Main Applicant - First Questions */}
-          <div className="space-y-6">
+          <>
             <div className="border-b border-border/50 pb-6 pt-6">
               <h2 className="text-2xl md:text-3xl font-heading font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 Main Applicant
@@ -448,7 +448,7 @@ export default function POAForm() {
                 )}
               </div>
             </div>
-          </div>
+          </>
 
           {/* POA Adult */}
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0 }} className="space-y-6">
