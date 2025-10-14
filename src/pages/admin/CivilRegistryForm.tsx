@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState, useEffect, useRef } from "react";
-import { Sparkles, Type, ArrowLeft } from "lucide-react";
+import { Sparkles, Type, ArrowLeft, Maximize2, Minimize2, User } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -207,64 +207,80 @@ export default function CivilRegistryForm() {
       
       <div className="container mx-auto py-12 px-4 md:px-6 relative z-10 max-w-7xl">
         {/* Header */}
-        <motion.div initial={{
-        opacity: 0,
-        y: -50
-      }} animate={{
-        opacity: 1,
-        y: 0
-      }} transition={{
-        duration: 0.8
-      }} className="sticky top-0 z-20 bg-gradient-to-br from-background via-background to-background/95 backdrop-blur-sm border-b mb-8">
-          <Card className="md:glass-card md:border-emerald-300/20 overflow-hidden rounded-none border-x-0 border-t-0 border-none md:border-b">
-            <FormHeader
-              title="Civil Registry"
-              completionPercentage={completion.completionPercentage}
-              filledCount={completion.filledCount}
-              totalCount={completion.totalCount}
-              autoSaveStatus={autoSave.status}
-              lastSaved={autoSave.lastSaved}
-              isLargeFonts={isLargeFonts}
-              isFullView={isFullView}
-              onToggleFullView={() => setIsFullView(!isFullView)}
-              onLoginClick={() => navigate('/login')}
-            />
-            <CardContent className="pt-2 pb-6">
-              <div className="flex items-center justify-between gap-4">
-                <Button
-                  onClick={() => navigate(`/admin/case/${caseId}`)}
-                  variant="outline"
-                  size="lg"
-                  className="gap-2"
-                >
-                  <ArrowLeft className="h-5 w-5" />
-                  Back to Case
-                </Button>
-                <div className="flex items-center gap-3">
-                  <Button 
-                    onClick={toggleFontSize} 
-                    variant="outline"
-                    size="lg"
-                    className={`gap-2 ${isLargeFonts ? 'text-primary' : ''}`}
-                  >
-                    <Type className="h-5 w-5" />
-                    {isLargeFonts ? 'Normal' : 'Large'} Font
-                  </Button>
-                </div>
-              </div>
-              <div className="mt-6">
-                <FormButtonsRow 
-                  caseId={caseId!}
-                  currentForm="civil-registry"
-                  onSave={handleSave}
-                  onClear={() => setShowClearDialog(true)}
-                  onGeneratePDF={handleGeneratePDF}
-                  isSaving={isSaving}
-                />
-              </div>
-            </CardContent>
-          </Card>
+        <motion.div 
+          initial={{ opacity: 0, y: -50 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          transition={{ duration: 0.8 }}
+          className="mb-6"
+        >
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6">
+            <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">
+                Civil Registry
+              </h1>
+            </motion.div>
+            <div className="flex items-center gap-3">
+              <Button
+                onClick={() => window.open('https://docs.lovable.dev', '_blank')}
+                size="lg"
+                variant="ghost"
+                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 text-2xl font-light opacity-60"
+                title="How to fill this form"
+              >
+                ?
+              </Button>
+              <Button
+                onClick={() => navigate(`/admin/case/${caseId}`)}
+                size="lg"
+                variant="ghost"
+                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50 opacity-60"
+                title="Back to Case"
+              >
+                <ArrowLeft className="h-8 w-8" />
+              </Button>
+              <Button
+                onClick={() => setIsFullView(!isFullView)}
+                size="lg"
+                variant="ghost"
+                className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 ${
+                  isFullView ? 'bg-primary/20 text-primary opacity-100' : 'text-muted-foreground hover:text-primary opacity-60'
+                }`}
+                title={isFullView ? "Collapse to Tabs" : "Expand All Sections"}
+              >
+                {isFullView ? <Minimize2 className="h-8 w-8" /> : <Maximize2 className="h-8 w-8" />}
+              </Button>
+              <Button
+                onClick={() => navigate('/login')}
+                size="lg"
+                variant="ghost"
+                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50 opacity-60"
+                title="Login / Register"
+              >
+                <User className="h-8 w-8" />
+              </Button>
+              <Button
+                onClick={toggleFontSize}
+                size="lg"
+                variant="ghost"
+                className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 z-50 opacity-60 ${
+                  isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:text-primary'
+                }`}
+                title="Toggle font size"
+              >
+                <Type className="h-8 w-8" />
+              </Button>
+            </div>
+          </div>
         </motion.div>
+
+        <FormButtonsRow 
+          caseId={caseId!}
+          currentForm="civil-registry"
+          onSave={handleSave}
+          onClear={() => setShowClearDialog(true)}
+          onGeneratePDF={handleGeneratePDF}
+          isSaving={isSaving}
+        />
 
         {/* Form Sections */}
         <div className="space-y-8">

@@ -249,77 +249,74 @@ export default function CitizenshipForm() {
           transition={{ duration: 0.8 }}
           className="mb-0"
         >
-          <div className="border-0 rounded-none shadow-none bg-transparent">
-            <div className="relative pb-6 pt-6">
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
-                  <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">
-                    Citizenship Application
-                  </CardTitle>
-                </motion.div>
-                <div className="flex items-center gap-3">
-                  <Button
-                    onClick={() => window.open('https://docs.lovable.dev', '_blank')}
-                    size="lg"
-                    variant="ghost"
-                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 text-2xl font-light opacity-60"
-                    title="How to fill this form"
-                  >
-                    ?
-                  </Button>
-                  <Button
-                    onClick={() => navigate(`/admin/case/${caseId}`)}
-                    size="lg"
-                    variant="ghost"
-                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50 opacity-60"
-                    title="Back to Case"
-                  >
-                    <ArrowLeft className="h-8 w-8" />
-                  </Button>
-                  <Button
-                    onClick={() => setIsFullView(!isFullView)}
-                    size="lg"
-                    variant="ghost"
-                    className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 opacity-60 ${
-                      isFullView ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:text-primary'
-                    }`}
-                    title={isFullView ? "Collapse" : "Expand All"}
-                  >
-                    {isFullView ? <Minimize2 className="h-8 w-8" /> : <Maximize2 className="h-8 w-8" />}
-                  </Button>
-                  <Button
-                    onClick={() => navigate('/login')}
-                    size="lg"
-                    variant="ghost"
-                    className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50 opacity-60"
-                    title="Login / Register"
-                  >
-                    <User className="h-8 w-8" />
-                  </Button>
-                  <Button
-                    onClick={toggleFontSize}
-                    size="lg"
-                    variant="ghost"
-                    className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 z-50 opacity-60 ${isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:text-primary'}`}
-                    title="Toggle font size"
-                  >
-                    <Type className="h-8 w-8" />
-                  </Button>
-                </div>
-              </div>
-            </div>
-            <div className="pt-6 pb-6">
-              <FormButtonsRow 
-                caseId={caseId!}
-                currentForm="citizenship"
-                onSave={handleSave}
-                onClear={() => setShowClearAllDialog(true)}
-                onGeneratePDF={handleGeneratePDF}
-                isSaving={isSaving}
-              />
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6">
+            <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">
+                Citizenship Application
+              </h1>
+            </motion.div>
+            <div className="flex items-center gap-3">
+              <Button
+                onClick={() => window.open('https://docs.lovable.dev', '_blank')}
+                size="lg"
+                variant="ghost"
+                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 text-2xl font-light opacity-60"
+                title="How to fill this form"
+              >
+                ?
+              </Button>
+              <Button
+                onClick={() => navigate(`/admin/case/${caseId}`)}
+                size="lg"
+                variant="ghost"
+                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50 opacity-60"
+                title="Back to Case"
+              >
+                <ArrowLeft className="h-8 w-8" />
+              </Button>
+              <Button
+                onClick={() => setIsFullView(!isFullView)}
+                size="lg"
+                variant="ghost"
+                className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 ${
+                  isFullView ? 'bg-primary/20 text-primary opacity-100' : 'text-muted-foreground hover:text-primary opacity-60'
+                }`}
+                title={isFullView ? "Collapse to Tabs" : "Expand All Sections"}
+              >
+                {isFullView ? <Minimize2 className="h-8 w-8" /> : <Maximize2 className="h-8 w-8" />}
+              </Button>
+              <Button
+                onClick={() => navigate('/login')}
+                size="lg"
+                variant="ghost"
+                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50 opacity-60"
+                title="Login / Register"
+              >
+                <User className="h-8 w-8" />
+              </Button>
+              <Button
+                onClick={toggleFontSize}
+                size="lg"
+                variant="ghost"
+                className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 z-50 opacity-60 ${
+                  isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:text-primary'
+                }`}
+                title="Toggle font size"
+              >
+                <Type className="h-8 w-8" />
+              </Button>
             </div>
           </div>
         </motion.div>
+
+        <FormButtonsRow 
+          caseId={caseId!}
+          currentForm="citizenship"
+          onSave={handleSave}
+          onClear={() => setShowClearAllDialog(true)}
+          onGeneratePDF={handleGeneratePDF}
+          isSaving={isSaving}
+        />
 
         {/* Form Sections */}
         <div className="space-y-8">

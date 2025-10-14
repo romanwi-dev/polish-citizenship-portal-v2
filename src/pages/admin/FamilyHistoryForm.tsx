@@ -70,85 +70,84 @@ export default function FamilyHistoryForm() {
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
       
       <div className="relative z-10">
-      {/* Header Card */}
-      <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-        <Card className="md:glass-card md:border-primary/20 rounded-none border-x-0 border-t-0 border-none md:border-b bg-transparent md:bg-card">
-        <CardHeader className="relative overflow-hidden pb-6 pt-6">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-secondary/5 to-accent/5" />
-            <div className="relative flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
-                <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">
-                  Family History
-                </CardTitle>
-              </motion.div>
-              <div className="flex items-center gap-3">
-                <Button
-                  onClick={() => window.open('https://docs.lovable.dev', '_blank')}
-                  size="lg"
-                  variant="ghost"
-                  className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 text-2xl font-light opacity-60"
-                  title="How to fill this form"
-                >
-                  ?
-                </Button>
-                <Button
-                  onClick={() => navigate(`/admin/case/${caseId}`)}
-                  size="lg"
-                  variant="ghost"
-                  className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50 opacity-60"
-                  title="Back to Case"
-                >
-                  <ArrowLeft className="h-8 w-8" />
-                </Button>
-                <Button
-                  onClick={() => setIsFullView(!isFullView)}
-                  size="lg"
-                  variant="ghost"
-                  className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 opacity-60 ${
-                    isFullView ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:text-primary'
-                  }`}
-                  title={isFullView ? "Collapse" : "Expand All"}
-                >
-                  {isFullView ? <Minimize2 className="h-8 w-8" /> : <Maximize2 className="h-8 w-8" />}
-                </Button>
-                <Button
-                  onClick={() => navigate('/login')}
-                  size="lg"
-                  variant="ghost"
-                  className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50 opacity-60"
-                  title="Login / Register"
-                >
-                  <User className="h-8 w-8" />
-                </Button>
-                <Button
-                  onClick={toggleFontSize}
-                  size="lg"
-                  variant="ghost"
-                  className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 z-50 opacity-60 ${
-                    isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:text-primary'
-                  }`}
-                  title="Toggle font size"
-                >
-                  <Type className="h-8 w-8" />
-                </Button>
-              </div>
+      {/* Header */}
+      <div className="container mx-auto py-12 px-4 md:px-6 relative z-10 max-w-7xl">
+        <motion.div 
+          initial={{ opacity: 0, y: -50 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          transition={{ duration: 0.8 }}
+          className="mb-6"
+        >
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6">
+            <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">
+                Family History
+              </h1>
+            </motion.div>
+            <div className="flex items-center gap-3">
+              <Button
+                onClick={() => window.open('https://docs.lovable.dev', '_blank')}
+                size="lg"
+                variant="ghost"
+                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 text-2xl font-light opacity-60"
+                title="How to fill this form"
+              >
+                ?
+              </Button>
+              <Button
+                onClick={() => navigate(`/admin/case/${caseId}`)}
+                size="lg"
+                variant="ghost"
+                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50 opacity-60"
+                title="Back to Case"
+              >
+                <ArrowLeft className="h-8 w-8" />
+              </Button>
+              <Button
+                onClick={() => setIsFullView(!isFullView)}
+                size="lg"
+                variant="ghost"
+                className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 ${
+                  isFullView ? 'bg-primary/20 text-primary opacity-100' : 'text-muted-foreground hover:text-primary opacity-60'
+                }`}
+                title={isFullView ? "Collapse to Tabs" : "Expand All Sections"}
+              >
+                {isFullView ? <Minimize2 className="h-8 w-8" /> : <Maximize2 className="h-8 w-8" />}
+              </Button>
+              <Button
+                onClick={() => navigate('/login')}
+                size="lg"
+                variant="ghost"
+                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50 opacity-60"
+                title="Login / Register"
+              >
+                <User className="h-8 w-8" />
+              </Button>
+              <Button
+                onClick={toggleFontSize}
+                size="lg"
+                variant="ghost"
+                className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 z-50 opacity-60 ${
+                  isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:text-primary'
+                }`}
+                title="Toggle font size"
+              >
+                <Type className="h-8 w-8" />
+              </Button>
+            </div>
           </div>
-        </CardHeader>
-        <CardContent className="pt-6 pb-6">
-          <FormButtonsRow 
-            caseId={caseId!}
-            currentForm="family-history"
-            onSave={handleSave}
-            onClear={() => setShowClearDialog(true)}
-            onGeneratePDF={() => {}}
-            isSaving={isSaving}
-          />
-        </CardContent>
-      </Card>
-    </motion.div>
+        </motion.div>
 
-      {/* Form Content */}
-      <div className="w-full px-4 py-6">
+        <FormButtonsRow 
+          caseId={caseId!}
+          currentForm="family-history"
+          onSave={handleSave}
+          onClear={() => setShowClearDialog(true)}
+          onGeneratePDF={() => {}}
+          isSaving={isSaving}
+        />
+
+        {/* Form Content */}
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }}>
           <Card className="md:glass-card md:border-primary/20 border-none bg-transparent md:bg-card">
             <CardHeader className="border-b border-border/50 pb-6">
