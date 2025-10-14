@@ -50,62 +50,71 @@ export function FormButtonsRow({
   const navigationButtons = getNavigationButtons(formData || {});
 
   return (
-    <div className="sticky top-0 z-50 flex flex-row gap-0.5 mb-8 overflow-x-auto scrollbar-hide py-2 -mx-4 md:-mx-6 px-4 md:px-6 lg:justify-between lg:w-full">
-      {/* Action Buttons */}
-      {currentForm !== 'intake' && (
-        <div className="flex gap-0.5 flex-shrink-0 z-[10000]">
-          <Button
-            onClick={onSave}
-            disabled={isSaving}
-            className="px-3 md:px-4 lg:px-5 py-2 text-sm md:text-base font-bold bg-green-500/20 hover:bg-green-500/30 border border-green-400/40 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]"
-          >
-            <Save className="mr-1.5 h-4 w-4" />
-            <span className="text-green-100 font-bold">{isSaving ? "Saving..." : saveLabel}</span>
-          </Button>
-          
-          <Button
-            onClick={onClear}
-            className="px-3 md:px-4 lg:px-5 py-2 text-sm md:text-base font-bold bg-red-500/20 hover:bg-red-500/30 border border-red-400/40 transition-all shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]"
-          >
-            <Sparkles className="mr-1.5 h-4 w-4" />
-            <span className="text-red-100 font-bold">Clear Data</span>
-          </Button>
-          
-          <Button
-            onClick={onGeneratePDF}
-            className="px-3 md:px-4 lg:px-5 py-2 text-sm md:text-base font-bold bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]"
-          >
-            <Download className="mr-1.5 h-4 w-4" />
-            <span className="text-blue-100 font-bold">Generate PDF</span>
-          </Button>
-        </div>
-      )}
-
-      {/* Navigation Buttons */}
-      {navigationButtons
-        .filter(btn => btn.id !== currentForm)
-        .map((btn) => {
-          const isCurrent = btn.id === currentForm;
-          const Icon = btn.icon;
-          
-          return (
+    <div className="sticky top-0 z-50 flex flex-row gap-0.5 mb-8 overflow-x-auto scrollbar-hide py-2 w-screen -ml-[calc((100vw-100%)/2+1rem)] md:-ml-[calc((100vw-100%)/2+1.5rem)] px-4 md:px-6 lg:justify-between lg:px-6">
+      {/* Left spacer for desktop alignment */}
+      <div className="hidden lg:block lg:flex-1 lg:max-w-[5%]"></div>
+      
+      {/* Main content container */}
+      <div className="flex flex-row gap-0.5 w-full lg:max-w-[90%]">
+        {/* Action Buttons */}
+        {currentForm !== 'intake' && (
+          <div className="flex gap-0.5 flex-shrink-0 z-[10000]">
             <Button
-              key={btn.id}
-              onClick={() => navigate(btn.path.replace(':id', caseId))}
-              className={`
-                px-3 md:px-4 lg:px-5 py-2 text-sm md:text-base font-bold
-                whitespace-nowrap flex-shrink-0 border transition-colors
-                ${isCurrent 
-                  ? 'bg-white/10 hover:bg-white/15 border-white/40 opacity-60' 
-                  : 'bg-white/5 hover:bg-white/10 border-white/20 opacity-50'
-                }
-              `}
+              onClick={onSave}
+              disabled={isSaving}
+              className="px-3 md:px-4 lg:px-5 py-2 text-sm md:text-base font-bold bg-green-500/20 hover:bg-green-500/30 border border-green-400/40 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]"
             >
-              <Icon className="mr-1.5 h-4 w-4 opacity-50" />
-              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{btn.label}</span>
+              <Save className="mr-1.5 h-4 w-4" />
+              <span className="text-green-100 font-bold">{isSaving ? "Saving..." : saveLabel}</span>
             </Button>
-          );
-        })}
+            
+            <Button
+              onClick={onClear}
+              className="px-3 md:px-4 lg:px-5 py-2 text-sm md:text-base font-bold bg-red-500/20 hover:bg-red-500/30 border border-red-400/40 transition-all shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]"
+            >
+              <Sparkles className="mr-1.5 h-4 w-4" />
+              <span className="text-red-100 font-bold">Clear Data</span>
+            </Button>
+            
+            <Button
+              onClick={onGeneratePDF}
+              className="px-3 md:px-4 lg:px-5 py-2 text-sm md:text-base font-bold bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]"
+            >
+              <Download className="mr-1.5 h-4 w-4" />
+              <span className="text-blue-100 font-bold">Generate PDF</span>
+            </Button>
+          </div>
+        )}
+
+        {/* Navigation Buttons */}
+        {navigationButtons
+          .filter(btn => btn.id !== currentForm)
+          .map((btn) => {
+            const isCurrent = btn.id === currentForm;
+            const Icon = btn.icon;
+            
+            return (
+              <Button
+                key={btn.id}
+                onClick={() => navigate(btn.path.replace(':id', caseId))}
+                className={`
+                  px-3 md:px-4 lg:px-5 py-2 text-sm md:text-base font-bold
+                  whitespace-nowrap flex-shrink-0 border transition-colors
+                  ${isCurrent 
+                    ? 'bg-white/10 hover:bg-white/15 border-white/40 opacity-60' 
+                    : 'bg-white/5 hover:bg-white/10 border-white/20 opacity-50'
+                  }
+                `}
+              >
+                <Icon className="mr-1.5 h-4 w-4 opacity-50" />
+                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{btn.label}</span>
+              </Button>
+            );
+          })}
+      </div>
+      
+      {/* Right spacer for desktop alignment */}
+      <div className="hidden lg:block lg:flex-1 lg:max-w-[5%]"></div>
     </div>
   );
 }
