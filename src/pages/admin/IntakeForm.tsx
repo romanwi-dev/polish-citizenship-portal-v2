@@ -101,14 +101,20 @@ export default function IntakeForm() {
       </div>
 
       {/* Button rows - OUTSIDE container for full width */}
-      <FormButtonsRow 
-        caseId={caseId!}
-        currentForm="intake"
-        onSave={() => {}}
-        onClear={() => {}}
-        onGeneratePDF={() => {}}
-        isSaving={false}
-      />
+      <div className="relative z-10">
+        <div className="w-full px-4 md:px-6">
+          <div className="max-w-7xl mx-auto">
+            <FormButtonsRow 
+              caseId={caseId!}
+              currentForm="intake"
+              onSave={() => {}}
+              onClear={() => {}}
+              onGeneratePDF={() => {}}
+              isSaving={false}
+            />
+          </div>
+        </div>
+      </div>
 
       <div className="container mx-auto px-4 md:px-6 relative z-10 max-w-7xl">
         {/* Form with Tabs or Full View */}
