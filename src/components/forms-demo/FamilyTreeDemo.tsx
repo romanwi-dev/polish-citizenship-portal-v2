@@ -84,7 +84,7 @@ export default function FamilyTreeDemo({ onClose, isExpanded, onToggleExpand }: 
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="sticky top-0 z-20 border-b border-border/50 pb-2 pt-2 -mx-4 md:-mx-6 px-4 md:px-6">
-            <TabsList className="w-full inline-flex justify-between gap-0.5 bg-transparent p-0">
+            <TabsList className="w-full inline-flex justify-around gap-0.5 bg-transparent p-0">
               <TabsTrigger value="tree-view" className="flex-shrink-0">
                 <span className="text-blue-600 dark:text-blue-400">Tree View</span>
               </TabsTrigger>
