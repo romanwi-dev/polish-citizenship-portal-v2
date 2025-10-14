@@ -67,20 +67,20 @@ export default function FamilyTreeDemo({ onClose, isExpanded, onToggleExpand }: 
       <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
       
-      <div className="relative z-10 p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
+      <div className="relative z-10 p-3 md:p-6">
+        <div className="flex items-center justify-between mb-2 md:mb-6">
+          <h2 className="text-3xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
             Polish Family Tree
           </h2>
-          <div className="flex items-center gap-2">
-            <Button onClick={onToggleExpand} variant="ghost" size="icon" title="Toggle fullscreen">
-              <Maximize2 className="h-6 w-6" />
+          <div className="flex items-center gap-1 md:gap-2">
+            <Button onClick={onToggleExpand} variant="ghost" size="icon" title="Toggle fullscreen" className="h-8 w-8 md:h-10 md:w-10">
+              <Maximize2 className="h-4 w-4 md:h-6 md:w-6" />
             </Button>
-            <Button onClick={() => setIsLargeFonts(!isLargeFonts)} variant="ghost" size="icon" title="Toggle large fonts">
-              <Type className="h-6 w-6" />
+            <Button onClick={() => setIsLargeFonts(!isLargeFonts)} variant="ghost" size="icon" title="Toggle large fonts" className="h-8 w-8 md:h-10 md:w-10">
+              <Type className="h-4 w-4 md:h-6 md:w-6" />
             </Button>
-            <Button onClick={onClose} variant="ghost" size="icon">
-              <X className="h-6 w-6" />
+            <Button onClick={onClose} variant="ghost" size="icon" className="h-8 w-8 md:h-10 md:w-10">
+              <X className="h-4 w-4 md:h-6 md:w-6" />
             </Button>
           </div>
         </div>
