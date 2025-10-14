@@ -470,28 +470,37 @@ export default function CivilRegistryForm() {
                   </div>
                 </div>
 
-                <div className="rounded-lg p-6 border-2 border-primary/20">
-                  <h3 className={cn("font-semibold mb-6 text-foreground", isLargeFonts ? "text-3xl" : "text-2xl")}>Additional notes / Dodatkowe informacje</h3>
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="space-y-2"
-                  >
-                    <Label htmlFor="civil_registry_notes" className={isLargeFonts ? "text-2xl" : ""}>
-                      Notes / Uwagi
-                    </Label>
-                    <Textarea
-                      id="civil_registry_notes"
-                      value={formData.civil_registry_notes || ""}
-                      onChange={(e) => handleInputChange("civil_registry_notes", e.target.value.toUpperCase())}
-                      placeholder=""
-                      className={cn(
-                        "min-h-32 border-emerald-300/10 dark:border-emerald-500/10 hover-glow focus:shadow-lg transition-all uppercase",
-                        isLargeFonts ? "text-lg" : "text-base"
-                      )}
-                    />
-                  </motion.div>
-                </div>
+          {/* Additional Notes Section - Full Width like Family History */}
+          <motion.div initial={{
+          opacity: 0,
+          scale: 0.95
+        }} animate={{
+          opacity: 1,
+          scale: 1
+        }} transition={{
+          duration: 0.5,
+          delay: 0.2
+        }}>
+            <div>
+              <div className="border-b border-emerald-200/20 pb-6">
+                <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-400 bg-clip-text text-transparent">
+                  Additional notes / Dodatkowe informacje
+                </h2>
+              </div>
+              <div className="p-6 md:p-10">
+                <Textarea
+                  id="civil_registry_notes"
+                  value={formData.civil_registry_notes || ""}
+                  onChange={(e) => handleInputChange("civil_registry_notes", e.target.value.toUpperCase())}
+                  placeholder=""
+                  className={cn(
+                    "min-h-[500px] text-base border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase",
+                    isLargeFonts && "text-xl"
+                  )}
+                />
+              </div>
+            </div>
+          </motion.div>
 
               </div>
             </div>
@@ -499,17 +508,6 @@ export default function CivilRegistryForm() {
         </div>
       </div>
 
-      {/* Generate PDF Button at Bottom */}
-      <div className="mt-12 flex justify-center">
-        <Button
-          onClick={handleGeneratePDF}
-          disabled={isGenerating}
-          size="lg"
-          className="px-16 py-8 text-2xl md:text-3xl font-heading font-black bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] min-w-[300px] md:min-w-[400px]"
-        >
-          <span className="text-blue-100 font-heading font-black">{isGenerating ? "Generating..." : "Generate PDF"}</span>
-        </Button>
-      </div>
 
       {/* Clear Data Confirmation Dialog */}
       <AlertDialog open={showClearDialog} onOpenChange={setShowClearDialog}>
