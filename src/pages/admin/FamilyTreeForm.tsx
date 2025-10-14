@@ -21,6 +21,7 @@ import { FormButtonsRow } from "@/components/FormButtonsRow";
 import { FamilyTreeInteractive } from "@/components/FamilyTreeInteractive";
 import { FamilyMemberDocumentsSection } from "@/components/forms/FamilyMemberDocumentsSection";
 import { FormInput } from "@/components/forms/FormInput";
+import { MaskedPassportInput } from "@/components/forms/MaskedPassportInput";
 import { useFormManager } from "@/hooks/useFormManager";
 import { FAMILY_TREE_FORM_REQUIRED_FIELDS, FAMILY_TREE_DATE_FIELDS } from "@/config/formRequiredFields";
 import { AutosaveIndicator } from "@/components/AutosaveIndicator";
@@ -248,20 +249,30 @@ export default function FamilyTreeForm() {
                 <Label htmlFor={field.name} className={isLargeFonts ? "text-2xl" : ""}>
                   {field.label}
                 </Label>
-                <FormInput 
-                  id={field.name} 
-                  type={field.type || "text"} 
-                  value={formData[field.name] || ""} 
-                  onChange={e => {
-                    // Only uppercase name fields, not phone/passport numbers
-                    const shouldUppercase = field.isNameField && field.type !== "email";
-                    handleInputChange(field.name, shouldUppercase ? e.target.value.toUpperCase() : e.target.value);
-                  }} 
-                  placeholder="" 
-                  isNameField={field.isNameField}
-                  isLargeFonts={isLargeFonts}
-                  colorScheme={colorScheme}
-                />
+                {field.name.includes('passport_number') ? (
+                  <MaskedPassportInput
+                    id={field.name}
+                    value={formData[field.name] || ""}
+                    onChange={(value) => handleInputChange(field.name, value)}
+                    isLargeFonts={isLargeFonts}
+                    colorScheme={colorScheme}
+                  />
+                ) : (
+                  <FormInput 
+                    id={field.name} 
+                    type={field.type || "text"} 
+                    value={formData[field.name] || ""} 
+                    onChange={e => {
+                      // Only uppercase name fields, not phone/passport numbers
+                      const shouldUppercase = field.isNameField && field.type !== "email";
+                      handleInputChange(field.name, shouldUppercase ? e.target.value.toUpperCase() : e.target.value);
+                    }}
+                    placeholder="" 
+                    isNameField={field.isNameField}
+                    isLargeFonts={isLargeFonts}
+                    colorScheme={colorScheme}
+                  />
+                 )}
               </>}
           </motion.div>)}
       </div>;

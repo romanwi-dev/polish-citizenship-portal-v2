@@ -1,5 +1,6 @@
 import { Label } from "@/components/ui/label";
 import { FormInput } from "@/components/forms/FormInput";
+import { MaskedPassportInput } from "@/components/forms/MaskedPassportInput";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -70,6 +71,9 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
     );
   }
 
+  // Check if this is a passport field
+  const isPassportField = name.toLowerCase().includes('passport');
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -84,15 +88,25 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
       )}>
         {label}
       </Label>
-      <FormInput
-        id={name}
-        type={type}
-        value={value || ""}
-        onChange={(e) => onChange(e.target.value.toUpperCase())}
-        isNameField={true}
-        isLargeFonts={isLargeFonts}
-        colorScheme="poa"
-      />
+      {isPassportField ? (
+        <MaskedPassportInput
+          id={name}
+          value={value || ""}
+          onChange={onChange}
+          isLargeFonts={isLargeFonts}
+          colorScheme="poa"
+        />
+      ) : (
+        <FormInput
+          id={name}
+          type={type}
+          value={value || ""}
+          onChange={(e) => onChange(e.target.value.toUpperCase())}
+          isNameField={true}
+          isLargeFonts={isLargeFonts}
+          colorScheme="poa"
+        />
+      )}
     </motion.div>
   );
 }

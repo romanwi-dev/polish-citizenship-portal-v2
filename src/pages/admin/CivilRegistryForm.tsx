@@ -3,6 +3,7 @@ import { useMasterData, useUpdateMasterData } from "@/hooks/useMasterData";
 import { sanitizeMasterData } from "@/utils/masterDataSanitizer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FormInput } from "@/components/forms/FormInput";
+import { MaskedPassportInput } from "@/components/forms/MaskedPassportInput";
 import { FormHeader } from "@/components/forms/FormHeader";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";

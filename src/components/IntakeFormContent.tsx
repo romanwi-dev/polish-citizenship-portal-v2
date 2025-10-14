@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Label } from "@/components/ui/label";
 import { FormInput } from "@/components/forms/FormInput";
+import { MaskedPassportInput } from "@/components/forms/MaskedPassportInput";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -246,7 +247,12 @@ export const PassportSection = ({ formData, handleInputChange, clearField, isLar
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_passport_number")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Passport number</Label>
-          <FormInput value={formData?.applicant_passport_number || ""} onChange={(e) => handleInputChange("applicant_passport_number", e.target.value.toUpperCase())} isNameField colorScheme="applicant" />
+          <MaskedPassportInput 
+            value={formData?.applicant_passport_number || ""} 
+            onChange={(value) => handleInputChange("applicant_passport_number", value)} 
+            isLargeFonts={isLargeFonts}
+            colorScheme="applicant" 
+          />
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_passport_expiry_date")}>
           <DateField name="applicant_passport_expiry_date" label="Passport expiry date" value={formData?.applicant_passport_expiry_date} onChange={(value) => handleInputChange("applicant_passport_expiry_date", value)} colorScheme="applicant" isLargeFonts={isLargeFonts} delay={0} />

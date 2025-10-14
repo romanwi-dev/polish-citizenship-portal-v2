@@ -52,7 +52,8 @@ export const PassportUpload = ({ caseId, onDataExtracted }: PassportUploadProps)
 
       reader.readAsDataURL(file);
     } catch (error) {
-      console.error("Upload error:", error);
+      // SECURITY: Never log full error (may contain sensitive data)
+      console.error("Upload error: OCR processing failed");
       toast.error("Failed to process passport");
     } finally {
       setUploading(false);
