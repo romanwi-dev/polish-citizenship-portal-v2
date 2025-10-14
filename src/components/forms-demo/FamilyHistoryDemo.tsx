@@ -16,9 +16,11 @@ const dummyData = {
 
 interface FamilyHistoryDemoProps {
   onClose: () => void;
+  isExpanded?: boolean;
+  onToggleExpand?: () => void;
 }
 
-export default function FamilyHistoryDemo({ onClose }: FamilyHistoryDemoProps) {
+export default function FamilyHistoryDemo({ onClose, isExpanded, onToggleExpand }: FamilyHistoryDemoProps) {
   const [formData, setFormData] = useState(dummyData);
   const [isLargeFonts, setIsLargeFonts] = useState(false);
 
@@ -29,6 +31,9 @@ export default function FamilyHistoryDemo({ onClose }: FamilyHistoryDemoProps) {
           Family History
         </h2>
         <div className="flex items-center gap-2">
+          <Button onClick={onToggleExpand} variant="ghost" size="icon" title="Toggle fullscreen">
+            <Maximize2 className="h-6 w-6" />
+          </Button>
           <Button onClick={() => setIsLargeFonts(!isLargeFonts)} variant="ghost" size="icon" title="Toggle large fonts">
             <Type className="h-6 w-6" />
           </Button>

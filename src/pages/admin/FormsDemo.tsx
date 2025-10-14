@@ -58,13 +58,13 @@ export default function FormsDemo() {
       case 'familyTree':
         return <FamilyTreeDemo onClose={() => setOpenForm(null)} isExpanded={isExpanded} onToggleExpand={() => setIsExpanded(!isExpanded)} />;
       case 'familyHistory':
-        return <FamilyHistoryDemo onClose={() => setOpenForm(null)} />;
+        return <FamilyHistoryDemo onClose={() => setOpenForm(null)} isExpanded={isExpanded} onToggleExpand={() => setIsExpanded(!isExpanded)} />;
       case 'poa':
-        return <POAFormDemo onClose={() => setOpenForm(null)} />;
+        return <POAFormDemo onClose={() => setOpenForm(null)} isExpanded={isExpanded} onToggleExpand={() => setIsExpanded(!isExpanded)} />;
       case 'citizenship':
-        return <CitizenshipFormDemo onClose={() => setOpenForm(null)} />;
+        return <CitizenshipFormDemo onClose={() => setOpenForm(null)} isExpanded={isExpanded} onToggleExpand={() => setIsExpanded(!isExpanded)} />;
       case 'civilRegistry':
-        return <CivilRegistryFormDemo onClose={() => setOpenForm(null)} />;
+        return <CivilRegistryFormDemo onClose={() => setOpenForm(null)} isExpanded={isExpanded} onToggleExpand={() => setIsExpanded(!isExpanded)} />;
       default:
         return null;
     }

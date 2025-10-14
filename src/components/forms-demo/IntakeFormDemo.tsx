@@ -44,7 +44,7 @@ export default function IntakeFormDemo({ onClose, isExpanded, onToggleExpand }: 
     formData,
     handleInputChange,
     clearField,
-    isLargeFonts: false,
+    isLargeFonts,
   };
 
   return (

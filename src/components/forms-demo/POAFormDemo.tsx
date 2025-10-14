@@ -17,9 +17,11 @@ const dummyData = {
 
 interface POAFormDemoProps {
   onClose: () => void;
+  isExpanded?: boolean;
+  onToggleExpand?: () => void;
 }
 
-export default function POAFormDemo({ onClose }: POAFormDemoProps) {
+export default function POAFormDemo({ onClose, isExpanded, onToggleExpand }: POAFormDemoProps) {
   const [formData, setFormData] = useState(dummyData);
   const [poaType, setPOAType] = useState("adult");
   const [isLargeFonts, setIsLargeFonts] = useState(false);
@@ -35,6 +37,9 @@ export default function POAFormDemo({ onClose }: POAFormDemoProps) {
           Power of Attorney Form
         </h2>
         <div className="flex items-center gap-2">
+          <Button onClick={onToggleExpand} variant="ghost" size="icon" title="Toggle fullscreen">
+            <Maximize2 className="h-6 w-6" />
+          </Button>
           <Button onClick={() => setIsLargeFonts(!isLargeFonts)} variant="ghost" size="icon" title="Toggle large fonts">
             <Type className="h-6 w-6" />
           </Button>
