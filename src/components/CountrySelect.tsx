@@ -76,8 +76,8 @@ export function CountrySelect({
           value={COUNTRIES.slice(0, -1).includes(value) ? value : ""} 
           onValueChange={handleSelectChange}
         >
-          <SelectTrigger className="h-20 border-2 border-border/50 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-2xl [&>span]:text-2xl">
-            <SelectValue placeholder="Select..." className="text-2xl" />
+          <SelectTrigger className="h-20 border-2 border-border/50 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs [&>span]:text-xs">
+            <SelectValue placeholder="Select..." className="text-xs" />
           </SelectTrigger>
           <SelectContent className="bg-background border-2 z-[100]">
             {COUNTRIES.map((country) => (
@@ -97,7 +97,7 @@ export function CountrySelect({
             value={value}
             onChange={(e) => handleOtherInputChange(e.target.value)}
             placeholder=""
-            className="h-20 border-2 border-border/50 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur uppercase text-2xl"
+            className="h-20 border-2 border-border/50 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur uppercase text-xs"
           />
           <button
             type="button"
