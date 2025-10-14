@@ -644,23 +644,6 @@ export default function FamilyTreeForm() {
                   type: "date"
                 }], 'applicant')}
 
-                {/* Other fields */}
-                {renderFieldGroup([{
-                name: "applicant_passport_number",
-                label: "Passport number"
-              }, {
-                name: "applicant_passport_expiry_date",
-                label: "Passport expiry date",
-                type: "date"
-              }, {
-                name: "applicant_email",
-                label: "Email",
-                type: "email"
-              }, {
-                name: "applicant_phone",
-                label: "Phone"
-              }], 'applicant')}
-
                 <FamilyMemberDocumentsSection
                   prefix="applicant"
                   title="Required Documents"
