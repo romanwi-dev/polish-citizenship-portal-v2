@@ -573,7 +573,7 @@ export default function FamilyTreeForm() {
           scale: 1
         }} transition={{
           duration: 0.5
-        }} className="p-6 md:p-10 space-y-10">
+        }} className="space-y-10">
             <h2 className="text-4xl md:text-5xl font-heading font-bold text-blue-600 dark:text-blue-400 border-b border-border/50 pb-6">
               Applicant
             </h2>
@@ -671,7 +671,7 @@ export default function FamilyTreeForm() {
         {/* Spouse Tab */}
         <TabsContent value="spouse" className="mt-0" {...(isFullView ? { forceMount: true } : {})}>
           {(activeTab === 'spouse' || isFullView) && (
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="p-6 md:p-10 space-y-10">
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="space-y-10">
               <h2 className="text-4xl md:text-5xl font-heading font-bold text-blue-300 dark:text-blue-300 border-b border-border/50 pb-6">
                 Spouse
               </h2>
@@ -1212,7 +1212,7 @@ export default function FamilyTreeForm() {
               <div className="w-full space-y-0">
               {/* Select Section */}
               <div ref={(el) => sectionRefs.current.select = el} className="border-b border-border/10">
-                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="p-6 md:p-10 space-y-10">
+                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="space-y-10">
                   <h2 className="text-4xl md:text-5xl font-heading font-bold text-blue-600 dark:text-blue-400 border-b border-border/50 pb-6">
                     Basic Information
                   </h2>
@@ -1280,7 +1280,7 @@ export default function FamilyTreeForm() {
 
               {/* Applicant Section */}
               <div ref={(el) => sectionRefs.current.applicant = el} className="border-b border-border/10">
-                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="p-6 md:p-10 space-y-10">
+                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="space-y-10">
                   <h2 className="text-4xl md:text-5xl font-heading font-bold text-blue-600 dark:text-blue-400 border-b border-border/50 pb-6">
                     Applicant
                   </h2>
@@ -1356,7 +1356,7 @@ export default function FamilyTreeForm() {
               {/* Spouse Section */}
               {formData.applicant_is_married && (
                 <div ref={(el) => sectionRefs.current.spouse = el} className="border-b border-border/10">
-                  <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="p-6 md:p-10 space-y-10">
+                  <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="space-y-10">
                     <h2 className="text-4xl md:text-5xl font-heading font-bold text-blue-300 dark:text-blue-300 border-b border-border/50 pb-6">
                       Spouse
                     </h2>
@@ -1376,7 +1376,7 @@ export default function FamilyTreeForm() {
               {/* Children Section */}
               {(formData.minor_children_count > 0) && (
                 <div ref={(el) => sectionRefs.current.children = el} className="border-b border-border/10">
-                  <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.1 }} className="space-y-10 p-6 md:p-10">
+                  <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.1 }} className="space-y-10">
                     <div className="border-b border-border/50 pb-6">
                       <h2 className="text-4xl md:text-5xl font-heading font-bold text-cyan-600 dark:text-cyan-400">
                         Applicant's Minor Children
@@ -1437,7 +1437,7 @@ export default function FamilyTreeForm() {
 
               {/* Parents Section */}
               <div ref={(el) => sectionRefs.current.father = el} className="border-b border-border/10">
-                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="p-6 md:p-10 space-y-10">
+                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="space-y-10">
                   <h2 className="text-4xl md:text-5xl font-heading font-bold text-teal-600 dark:text-teal-400 border-b border-border/50 pb-6">
                     Parents
                   </h2>
@@ -1510,7 +1510,7 @@ export default function FamilyTreeForm() {
 
               {/* Grandparents Section */}
               <div ref={(el) => sectionRefs.current.pgf = el} className="border-b border-border/10">
-                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="p-6 md:p-10 space-y-10">
+                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="space-y-10">
                   <h2 className="text-4xl md:text-5xl font-heading font-bold text-red-600 dark:text-red-400 border-b border-border/50 pb-6">
                     Grandparents
                   </h2>
@@ -1647,7 +1647,7 @@ export default function FamilyTreeForm() {
 
               {/* Great Grandparents Section */}
               <div ref={(el) => sectionRefs.current.additional = el} className="border-b border-border/10">
-                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="p-6 md:p-10 space-y-10">
+                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="space-y-10">
                   <h2 className="text-4xl md:text-5xl font-heading font-bold text-gray-600 dark:text-gray-400 border-b border-border/50 pb-6">
                     Great Grandparents
                   </h2>
