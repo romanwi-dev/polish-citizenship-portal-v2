@@ -41,11 +41,11 @@ export const FormSection = ({
     : null;
 
   return (
-    <div className={cn("w-full space-y-6 py-6", className)}>
+    <div className={cn("w-full space-y-6 py-8 sm:py-6", className)}>
       <div
         {...(longPress ? longPress.handlers : {})}
         className={cn(
-          "px-4 sm:px-6",
+          "px-4 sm:px-6 mb-6",
           onClearSection && "cursor-pointer"
         )}
       >
