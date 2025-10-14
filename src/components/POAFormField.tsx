@@ -45,7 +45,7 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
         </Label>
         <div
           className={cn(
-            "w-full h-16 md:h-20 px-3 flex items-center border rounded-md hover-glow bg-gray-200/45 dark:bg-gray-700/45 border-gray-300/30 dark:border-gray-500/30 backdrop-blur transition-all text-2xl font-normal font-input-work",
+            "w-full h-16 md:h-20 px-3 flex items-center border rounded-md hover-glow border-gray-300/30 dark:border-gray-500/30 transition-all text-2xl font-normal font-input-work",
             isLargeFonts && "text-3xl"
           )}
           style={{ 

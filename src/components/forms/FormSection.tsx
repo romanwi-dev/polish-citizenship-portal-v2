@@ -14,14 +14,14 @@ interface FormSectionProps {
 }
 
 const colorSchemes = {
-  children: 'bg-cyan-50/30 dark:bg-cyan-950/30',
-  applicant: 'bg-blue-50/30 dark:bg-blue-950/30',
-  parents: 'bg-teal-50/30 dark:bg-teal-950/30',
-  grandparents: 'bg-red-50/30 dark:bg-red-950/30',
-  ggp: 'bg-gray-100/30 dark:bg-gray-800/30',
-  poa: 'bg-gray-200/30 dark:bg-gray-700/30',
-  citizenship: 'bg-blue-100/30 dark:bg-blue-900/30',
-  'civil-reg': 'bg-emerald-50/30 dark:bg-emerald-900/30',
+  children: '',
+  applicant: '',
+  parents: '',
+  grandparents: '',
+  ggp: '',
+  poa: '',
+  citizenship: '',
+  'civil-reg': '',
 };
 
 export const FormSection = ({ 

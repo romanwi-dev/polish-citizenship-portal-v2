@@ -267,7 +267,7 @@ export default function POAForm() {
                 onClick={() => window.open('https://docs.lovable.dev', '_blank')}
                 size="lg"
                 variant="ghost"
-                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 text-2xl font-light opacity-60"
+                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary text-2xl font-light opacity-60"
                 title="How to fill this form"
               >
                 ?
@@ -276,7 +276,7 @@ export default function POAForm() {
                 onClick={() => navigate(`/admin/case/${caseId}`)}
                 size="lg"
                 variant="ghost"
-                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50 opacity-60"
+                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary z-50 opacity-60"
                 title="Back to Case"
               >
                 <ArrowLeft className="h-8 w-8" />
@@ -285,8 +285,8 @@ export default function POAForm() {
                 onClick={() => setIsFullView(!isFullView)}
                 size="lg"
                 variant="ghost"
-                className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 opacity-60 ${
-                  isFullView ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:text-primary'
+                className={`h-16 w-16 rounded-full transition-all opacity-60 ${
+                  isFullView ? 'text-primary' : 'text-muted-foreground hover:text-primary'
                 }`}
                 title={isFullView ? "Collapse" : "Expand All"}
               >
@@ -296,13 +296,13 @@ export default function POAForm() {
                 onClick={() => navigate('/login')}
                 size="lg"
                 variant="ghost"
-                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50 opacity-60"
+                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary z-50 opacity-60"
                 title="Login / Register"
               >
                 <User className="h-8 w-8" />
               </Button>
               <Button onClick={toggleFontSize} size="lg" variant="ghost"
-                className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 z-50 opacity-60 ${isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:text-primary'}`} title="Toggle font size">
+                className={`h-16 w-16 rounded-full transition-all z-50 opacity-60 ${isLargeFonts ? 'text-primary' : 'text-muted-foreground hover:text-primary'}`} title="Toggle font size">
                 <Type className="h-8 w-8" />
               </Button>
             </div>
@@ -338,10 +338,10 @@ export default function POAForm() {
                       value={formData.applicant_sex === 'M' ? 'Male' : formData.applicant_sex === 'F' ? 'Female' : ''} 
                       onValueChange={(value) => handleInputChange("applicant_sex", value === 'Male' ? 'M' : 'F')}
                     >
-                      <SelectTrigger className="h-10 text-2xl border hover:border-transparent focus:border-transparent hover-glow focus:shadow-lg transition-all bg-gray-200/45 dark:bg-gray-700/45 border-gray-300/30 dark:border-gray-500/30 backdrop-blur normal-case" style={{ boxShadow: '0 0 30px rgba(156,163,175,0.25)' }}>
+                      <SelectTrigger className="h-10 text-2xl border hover:border-transparent focus:border-transparent hover-glow focus:shadow-lg transition-all border-gray-300/30 dark:border-gray-500/30 normal-case" style={{ boxShadow: '0 0 30px rgba(156,163,175,0.25)' }}>
                         <SelectValue placeholder="Select..." className="text-xs opacity-50 normal-case" />
                       </SelectTrigger>
-                      <SelectContent className="bg-background border-2 z-50">
+                      <SelectContent className="border-2 z-50">
                         <SelectItem value="Male" className="text-base cursor-pointer normal-case">Male</SelectItem>
                         <SelectItem value="Female" className="text-base cursor-pointer normal-case">Female</SelectItem>
                       </SelectContent>
@@ -354,10 +354,10 @@ export default function POAForm() {
                       Civil Status
                     </Label>
                     <Select value={formData.applicant_is_married === true ? "Married" : "Single"} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
-                      <SelectTrigger className="h-10 text-2xl border hover:border-transparent focus:border-transparent hover-glow focus:shadow-lg transition-all bg-gray-200/45 dark:bg-gray-700/45 border-gray-300/30 dark:border-gray-500/30 backdrop-blur normal-case" style={{ boxShadow: '0 0 30px rgba(156,163,175,0.25)' }}>
+                      <SelectTrigger className="h-10 text-2xl border hover:border-transparent focus:border-transparent hover-glow focus:shadow-lg transition-all border-gray-300/30 dark:border-gray-500/30 normal-case" style={{ boxShadow: '0 0 30px rgba(156,163,175,0.25)' }}>
                         <SelectValue placeholder="Select..." className="text-xs opacity-50 normal-case" />
                       </SelectTrigger>
-                      <SelectContent className="bg-background border-2 z-50">
+                      <SelectContent className="border-2 z-50">
                         <SelectItem value="Married" className="text-base cursor-pointer normal-case">Married</SelectItem>
                         <SelectItem value="Single" className="text-base cursor-pointer normal-case">Single</SelectItem>
                       </SelectContent>
@@ -374,10 +374,10 @@ export default function POAForm() {
                       Children
                     </Label>
                     <Select value={formData.children_count?.toString() || ""} onValueChange={(value) => { const count = parseInt(value); handleInputChange("children_count", count); }}>
-                      <SelectTrigger className="h-10 text-2xl border hover:border-transparent focus:border-transparent hover-glow focus:shadow-lg transition-all bg-gray-200/45 dark:bg-gray-700/45 border-gray-300/30 dark:border-gray-500/30 backdrop-blur z-50 normal-case" style={{ boxShadow: '0 0 30px rgba(156,163,175,0.25)' }}>
+                      <SelectTrigger className="h-10 text-2xl border hover:border-transparent focus:border-transparent hover-glow focus:shadow-lg transition-all border-gray-300/30 dark:border-gray-500/30 z-50 normal-case" style={{ boxShadow: '0 0 30px rgba(156,163,175,0.25)' }}>
                         <SelectValue placeholder="Select..." className="text-xs opacity-50 normal-case" />
                       </SelectTrigger>
-                      <SelectContent className="bg-background border-2 z-50">
+                      <SelectContent className="border-2 z-50">
                         {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (<SelectItem key={num} value={num.toString()} className="text-base cursor-pointer normal-case">{num}</SelectItem>))}
                       </SelectContent>
                     </Select>
@@ -390,10 +390,10 @@ export default function POAForm() {
                         Minor children
                       </Label>
                       <Select value={formData.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
-                        <SelectTrigger className="h-10 text-2xl border hover:border-transparent focus:border-transparent hover-glow focus:shadow-lg transition-all bg-gray-200/45 dark:bg-gray-700/45 border-gray-300/30 dark:border-gray-500/30 backdrop-blur normal-case" style={{ boxShadow: '0 0 30px rgba(156,163,175,0.25)' }}>
+                        <SelectTrigger className="h-10 text-2xl border hover:border-transparent focus:border-transparent hover-glow focus:shadow-lg transition-all border-gray-300/30 dark:border-gray-500/30 normal-case" style={{ boxShadow: '0 0 30px rgba(156,163,175,0.25)' }}>
                           <SelectValue placeholder="Select..." className="text-xs opacity-50 normal-case" />
                         </SelectTrigger>
-                        <SelectContent className="bg-background border-2 z-50">
+                        <SelectContent className="border-2 z-50">
                           {Array.from({ length: (formData.children_count || 0) + 1 }, (_, i) => i).map((num) => (<SelectItem key={num} value={num.toString()} className="text-base cursor-pointer normal-case">{num}</SelectItem>))}
                         </SelectContent>
                       </Select>
@@ -426,7 +426,7 @@ export default function POAForm() {
                 </div>
                 <div className="mt-10 flex justify-end">
                   <Button onClick={() => handleGenerateAndPreview('poa-adult')} disabled={isGenerating}
-                    className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30">
+                    className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg shadow-glow hover-glow border border-white/30">
                     {isGenerating && activePOAType === 'adult' ? (
                       <><Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
                         <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generating...</span></>
@@ -490,7 +490,7 @@ export default function POAForm() {
                 </div>
                 <div className="mt-10 flex justify-end">
                   <Button onClick={() => handleGenerateAndPreview('poa-minor')} disabled={isGenerating}
-                    className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30">
+                    className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg shadow-glow hover-glow border border-white/30">
                     {isGenerating && activePOAType === 'minor' ? (
                       <><Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
                         <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generating...</span></>
@@ -602,7 +602,7 @@ export default function POAForm() {
                 </div>
                 <div className="mt-10 flex justify-end">
                   <Button onClick={() => handleGenerateAndPreview('poa-spouses')} disabled={isGenerating}
-                    className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30">
+                    className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg shadow-glow hover-glow border border-white/30">
                     {isGenerating && activePOAType === 'spouses' ? (
                       <><Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
                         <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generating...</span></>

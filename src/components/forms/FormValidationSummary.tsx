@@ -16,7 +16,7 @@ export const FormValidationSummary = ({
       <div
         className={cn(
           "flex items-center gap-2 p-4 rounded-lg border",
-          "bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800",
+          "border-green-200 dark:border-green-800",
           "text-green-700 dark:text-green-400",
           className
         )}
@@ -31,7 +31,7 @@ export const FormValidationSummary = ({
     <div
       className={cn(
         "flex flex-col gap-3 p-4 rounded-lg border",
-        "bg-destructive/10 border-destructive/20",
+        "border-destructive/20",
         "text-destructive",
         className
       )}
