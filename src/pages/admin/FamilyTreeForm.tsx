@@ -51,7 +51,6 @@ export default function FamilyTreeForm() {
   } = useFormManager(caseId, FAMILY_TREE_FORM_REQUIRED_FIELDS, FAMILY_TREE_DATE_FIELDS);
   
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({
-    'tree-view': null,
     select: null,
     applicant: null,
     spouse: null,
@@ -408,9 +407,6 @@ export default function FamilyTreeForm() {
             <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
               <div className="sticky top-0 z-20 border-b border-border/50 pb-2 pt-2 -mx-4 md:-mx-6 px-4 md:px-6">
                 <TabsList className="w-full inline-flex justify-start gap-2 bg-transparent p-0 overflow-x-auto scrollbar-hide">
-                  <TabsTrigger value="tree-view" className="flex-shrink-0">
-                    <span>Tree View</span>
-                  </TabsTrigger>
                   <TabsTrigger value="select" className="flex-shrink-0">
                     <span className="text-blue-600 dark:text-blue-400">Select...</span>
                   </TabsTrigger>
@@ -439,38 +435,6 @@ export default function FamilyTreeForm() {
                 </TabsList>
               </div>
                 <>
-                  {/* Tree View Tab */}
-                  <TabsContent value="tree-view" className="mt-0">
-                    {activeTab === 'tree-view' && (
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.5 }}
-                        className="p-6 md:p-10"
-                      >
-                        <FamilyTreeInteractive
-                              clientData={{
-                                ...mapPersonData('applicant'),
-                                sex: formData.applicant_sex
-                              }}
-                              spouse={mapPersonData('spouse')}
-                              father={mapPersonData('father')}
-                              mother={mapPersonData('mother')}
-                              paternalGrandfather={mapPersonData('pgf')}
-                              paternalGrandmother={mapPersonData('pgm')}
-                              maternalGrandfather={mapPersonData('mgf')}
-                              maternalGrandmother={mapPersonData('mgm')}
-                              paternalGreatGrandfather={mapPersonData('pggf')}
-                              paternalGreatGrandmother={mapPersonData('pggm')}
-                              maternalGreatGrandfather={mapPersonData('mggf')}
-                              maternalGreatGrandmother={mapPersonData('mggm')}
-                              onEdit={handlePersonEdit}
-                              onOpenMasterTable={() => navigate(`/admin/master-data/${caseId}`)}
-                            />
-                      </motion.div>
-                    )}
-                  </TabsContent>
-
                   <TabsContent value="select" className="mt-0" {...(isFullView ? { forceMount: true } : {})}>
           {(activeTab === 'select' || isFullView) && (
           <motion.div initial={{

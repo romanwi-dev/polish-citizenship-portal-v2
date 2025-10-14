@@ -22,6 +22,7 @@ const NewCase = lazy(() => import("./pages/admin/NewCase"));
 const CaseDetail = lazy(() => import("./pages/admin/CaseDetail"));
 const AdditionalData = lazy(() => import("./pages/admin/AdditionalData"));
 const FamilyTreeForm = lazy(() => import("./pages/admin/FamilyTreeForm"));
+const FamilyTreePage = lazy(() => import("./pages/admin/FamilyTreePage"));
 const FamilyHistoryForm = lazy(() => import("./pages/admin/FamilyHistoryForm"));
 const POAForm = lazy(() => import("./pages/admin/POAForm"));
 const CitizenshipForm = lazy(() => import("./pages/admin/CitizenshipForm"));
@@ -271,12 +272,20 @@ const App = () => (
             } 
           />
           <Route 
+            path="/admin/family-tree-view/:id" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <FamilyTreePage />
+              </Suspense>
+            } 
+          />
+          <Route 
             path="/admin/family-history/:id" 
             element={
               <Suspense fallback={<AdminLoader />}>
                 <FamilyHistoryForm />
               </Suspense>
-            } 
+            }
           />
           <Route 
             path="/admin/poa/:id" 

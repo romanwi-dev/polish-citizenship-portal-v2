@@ -176,7 +176,7 @@ const Navigation = () => {
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Button
-                    onClick={() => navigate('/admin/family-tree')}
+                    onClick={() => navigate('/admin/family-tree-view/demo-preview')}
                     variant="ghost"
                     className="w-full justify-start text-base font-medium rounded-md hover:bg-primary/10 transition-colors"
                   >
