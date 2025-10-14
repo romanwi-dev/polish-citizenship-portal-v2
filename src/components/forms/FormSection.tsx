@@ -45,7 +45,7 @@ export const FormSection = ({
       <div
         {...(longPress ? longPress.handlers : {})}
         className={cn(
-          "px-2 sm:px-6",
+          "px-4 sm:px-6",
           onClearSection && "cursor-pointer"
         )}
       >
@@ -56,7 +56,7 @@ export const FormSection = ({
           {title}
         </h3>
       </div>
-      <div className="space-y-6 px-2 sm:px-6">
+      <div className="space-y-6 px-4 sm:px-6">
         {children}
       </div>
     </div>

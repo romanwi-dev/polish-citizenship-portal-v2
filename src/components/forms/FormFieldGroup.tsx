@@ -31,7 +31,7 @@ export const FormFieldGroup = ({
   required = false,
 }: FormFieldGroupProps) => {
   return (
-    <div className="space-y-3 w-full min-w-0">
+    <div className="space-y-2 sm:space-y-3 w-full min-w-0">
       <FormLabel isLargeFonts={isLargeFonts} htmlFor={id} required={required}>
         {label}
       </FormLabel>
