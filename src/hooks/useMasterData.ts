@@ -31,6 +31,8 @@ export const useMasterData = (caseId: string | undefined) => {
       return data;
     },
     enabled: !!caseId && caseId !== ':id',
+    // For demo-preview, load instantly
+    initialData: caseId === 'demo-preview' ? {} : undefined,
     // Always fetch fresh data - no caching issues
     staleTime: 0, // Always considered stale
     gcTime: 0, // Don't keep in cache
