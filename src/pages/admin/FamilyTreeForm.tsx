@@ -401,47 +401,43 @@ export default function FamilyTreeForm() {
           isSaving={isSaving}
         />
 
-        {/* Form with Tabs */}
+        {/* Form with Tabs or Full View */}
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }}>
-          <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-                {/* Hide tabs navigation when in full view mode */}
-                {!isFullView && (
-                  <div className="sticky top-0 z-20 border-b border-border/50 pb-2 pt-2">
-                    <TabsList className="w-full inline-flex justify-start gap-2 bg-transparent p-0 overflow-x-auto scrollbar-hide">
-                      <TabsTrigger value="tree-view" className="flex-shrink-0">
-                        <span>Tree View</span>
-                      </TabsTrigger>
-                      <TabsTrigger value="select" className="flex-shrink-0">
-                        <span className="text-blue-600 dark:text-blue-400">Select...</span>
-                      </TabsTrigger>
-                      <TabsTrigger value="applicant" className="flex-shrink-0">
-                        <span className="text-blue-600 dark:text-blue-400">Applicant</span>
-                      </TabsTrigger>
-                      {formData.applicant_is_married && (
-                        <TabsTrigger value="spouse" className="flex-shrink-0">
-                          <span className="text-blue-600 dark:text-blue-400">Spouse</span>
-                        </TabsTrigger>
-                      )}
-                      {(formData.minor_children_count > 0) && (
-                        <TabsTrigger value="children" className="flex-shrink-0">
-                          <span className="text-cyan-600 dark:text-cyan-400">Children</span>
-                        </TabsTrigger>
-                      )}
-                      <TabsTrigger value="parents" className="flex-shrink-0">
-                        <span className="text-teal-600 dark:text-teal-400">Parents</span>
-                      </TabsTrigger>
-                      <TabsTrigger value="grandparents" className="flex-shrink-0">
-                        <span className="text-red-600 dark:text-red-400">Grandparents</span>
-                      </TabsTrigger>
-                      <TabsTrigger value="great-grandparents" className="flex-shrink-0">
-                        <span className="text-gray-600 dark:text-gray-400">Great Grandparents</span>
-                      </TabsTrigger>
-                    </TabsList>
-                  </div>
-                )}
-
-                {/* Normal Tab Mode */}
-              {!isFullView ? (
+          {!isFullView ? (
+            // Tabbed View
+            <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
+              <div className="sticky top-0 z-20 border-b border-border/50 pb-2 pt-2">
+                <TabsList className="w-full inline-flex justify-start gap-2 bg-transparent p-0 overflow-x-auto scrollbar-hide">
+                  <TabsTrigger value="tree-view" className="flex-shrink-0">
+                    <span>Tree View</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="select" className="flex-shrink-0">
+                    <span className="text-blue-600 dark:text-blue-400">Select...</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="applicant" className="flex-shrink-0">
+                    <span className="text-blue-600 dark:text-blue-400">Applicant</span>
+                  </TabsTrigger>
+                  {formData.applicant_is_married && (
+                    <TabsTrigger value="spouse" className="flex-shrink-0">
+                      <span className="text-blue-600 dark:text-blue-400">Spouse</span>
+                    </TabsTrigger>
+                  )}
+                  {(formData.minor_children_count > 0) && (
+                    <TabsTrigger value="children" className="flex-shrink-0">
+                      <span className="text-cyan-600 dark:text-cyan-400">Children</span>
+                    </TabsTrigger>
+                  )}
+                  <TabsTrigger value="parents" className="flex-shrink-0">
+                    <span className="text-teal-600 dark:text-teal-400">Parents</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="grandparents" className="flex-shrink-0">
+                    <span className="text-red-600 dark:text-red-400">Grandparents</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="great-grandparents" className="flex-shrink-0">
+                    <span className="text-gray-600 dark:text-gray-400">Great Grandparents</span>
+                  </TabsTrigger>
+                </TabsList>
+              </div>
                 <>
                   {/* Tree View Tab */}
                   <TabsContent value="tree-view" className="mt-0">
@@ -1246,8 +1242,42 @@ export default function FamilyTreeForm() {
         </TabsContent>
 
                 </>
-              ) : null}
-          </Tabs>
+            </Tabs>
+          ) : (
+            // Full View Mode - All sections rendered at once
+            <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
+              {/* All sections with forceMount */}
+              <>
+                <TabsContent value="tree-view" forceMount className="mt-0 block">
+                  <Card className="border-2 border-primary/20 mb-12">
+                    <CardContent className="p-6 md:p-10">
+                      <FamilyTreeInteractive
+                        clientData={{
+                          ...mapPersonData('applicant'),
+                          sex: formData.applicant_sex
+                        }}
+                        spouse={mapPersonData('spouse')}
+                        father={mapPersonData('father')}
+                        mother={mapPersonData('mother')}
+                        paternalGrandfather={mapPersonData('pgf')}
+                        paternalGrandmother={mapPersonData('pgm')}
+                        maternalGrandfather={mapPersonData('mgf')}
+                        maternalGrandmother={mapPersonData('mgm')}
+                        paternalGreatGrandfather={mapPersonData('pggf')}
+                        paternalGreatGrandmother={mapPersonData('pggm')}
+                        maternalGreatGrandfather={mapPersonData('mggf')}
+                        maternalGreatGrandmother={mapPersonData('mggm')}
+                        onEdit={handlePersonEdit}
+                        onOpenMasterTable={() => navigate(`/admin/master-data/${caseId}`)}
+                      />
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                {/* Render all other TabsContent with forceMount - they're already defined below with this prop */}
+              </>
+            </Tabs>
+          )}
         </motion.div>
       </div>
 
