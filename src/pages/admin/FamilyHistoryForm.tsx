@@ -163,84 +163,13 @@ export default function FamilyHistoryForm() {
                 </div>
               </div>
             </CardHeader>
-            <CardContent className="p-6 md:p-10 space-y-8">
-              {/* Family Origin Story */}
-              <div className="space-y-4">
-                <FormLabel isLargeFonts={isLargeFonts} className="text-lg font-semibold">
-                  Family Origin Story
-                </FormLabel>
-                <Textarea
-                  value={formData.family_origin_story || ""}
-                  onChange={(e) => handleInputChange("family_origin_story", e.target.value)}
-                  placeholder="Describe where the family came from, when they emigrated, why they left Poland..."
-                  className={cn("min-h-[200px] text-base", isLargeFonts && "text-xl")}
-                />
-              </div>
-
-              {/* Emigration Journey */}
-              <div className="space-y-4">
-                <FormLabel isLargeFonts={isLargeFonts} className="text-lg font-semibold">
-                  Emigration Journey
-                </FormLabel>
-                <Textarea
-                  value={formData.family_immigration_journey || ""}
-                  onChange={(e) => handleInputChange("family_immigration_journey", e.target.value)}
-                  placeholder="Details about how the family traveled, ports of entry, first settlements..."
-                  className={cn("min-h-[200px] text-base", isLargeFonts && "text-xl")}
-                />
-              </div>
-
-              {/* Cultural Traditions */}
-              <div className="space-y-4">
-                <FormLabel isLargeFonts={isLargeFonts} className="text-lg font-semibold">
-                  Polish Cultural Traditions & Heritage
-                </FormLabel>
-                <Textarea
-                  value={formData.family_cultural_traditions || ""}
-                  onChange={(e) => handleInputChange("family_cultural_traditions", e.target.value)}
-                  placeholder="Polish traditions maintained, language spoken, religious practices, holidays celebrated..."
-                  className={cn("min-h-[200px] text-base", isLargeFonts && "text-xl")}
-                />
-              </div>
-
-              {/* Family Stories */}
-              <div className="space-y-4">
-                <FormLabel isLargeFonts={isLargeFonts} className="text-lg font-semibold">
-                  Notable Family Stories & Anecdotes
-                </FormLabel>
-                <Textarea
-                  value={formData.family_stories || ""}
-                  onChange={(e) => handleInputChange("family_stories", e.target.value)}
-                  placeholder="Memorable stories passed down through generations, family legends, significant events..."
-                  className={cn("min-h-[200px] text-base", isLargeFonts && "text-xl")}
-                />
-              </div>
-
-              {/* Historical Context */}
-              <div className="space-y-4">
-                <FormLabel isLargeFonts={isLargeFonts} className="text-lg font-semibold">
-                  Historical Context
-                </FormLabel>
-                <Textarea
-                  value={formData.family_historical_context || ""}
-                  onChange={(e) => handleInputChange("family_historical_context", e.target.value)}
-                  placeholder="Historical events that affected the family (wars, political changes, economic conditions)..."
-                  className={cn("min-h-[200px] text-base", isLargeFonts && "text-xl")}
-                />
-              </div>
-
-              {/* Additional Notes */}
-              <div className="space-y-4">
-                <FormLabel isLargeFonts={isLargeFonts} className="text-lg font-semibold">
-                  Additional Notes & Information
-                </FormLabel>
-                <Textarea
-                  value={formData.family_history_notes || ""}
-                  onChange={(e) => handleInputChange("family_history_notes", e.target.value)}
-                  placeholder="Any other relevant information about the family history..."
-                  className={cn("min-h-[200px] text-base", isLargeFonts && "text-xl")}
-                />
-              </div>
+            <CardContent className="p-6 md:p-10">
+              <Textarea
+                value={formData.family_history_notes || ""}
+                onChange={(e) => handleInputChange("family_history_notes", e.target.value)}
+                placeholder=""
+                className={cn("min-h-[500px] text-base", isLargeFonts && "text-xl")}
+              />
             </CardContent>
           </Card>
         </motion.div>
