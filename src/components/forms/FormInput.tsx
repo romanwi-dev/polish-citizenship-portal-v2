@@ -113,7 +113,7 @@ export const FormInput = ({
     if (!inputRef.current) return;
     
     const isMobile = window.innerWidth < 768;
-    const baseSize = isMobile ? 18 : (isLargeFonts ? 30 : 24);
+    const baseSize = isMobile ? 28 : (isLargeFonts ? 30 : 24);
     
     if (!value) {
       setFontSize(baseSize);
