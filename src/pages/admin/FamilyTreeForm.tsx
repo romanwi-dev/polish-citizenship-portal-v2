@@ -1211,34 +1211,36 @@ export default function FamilyTreeForm() {
           ) : (
             // Full View Mode - Show all tab sections with Tabs wrapper
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              {/* Keep the tabs list visible */}
-              <TabsList className="mb-6 p-2 rounded-xl shadow-lg border border-border bg-gradient-to-r from-card to-card/80 backdrop-blur-sm">
-                <TabsTrigger value="select" className="px-6 py-3 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300 hover:bg-accent text-base font-medium">
-                  Select
-                </TabsTrigger>
-                <TabsTrigger value="applicant" className="px-6 py-3 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300 hover:bg-accent text-base font-medium">
-                  Applicant
-                </TabsTrigger>
-                {formData.applicant_is_married && (
-                  <TabsTrigger value="spouse" className="px-6 py-3 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300 hover:bg-accent text-base font-medium">
-                    Spouse
+              {/* Keep the tabs list visible - matching the original style */}
+              <div className="sticky top-0 z-20 border-b border-border/50 pb-2 pt-2 -mx-4 md:-mx-6 px-4 md:px-6 bg-background/95 backdrop-blur-sm">
+                <TabsList className="w-full inline-flex justify-between gap-0.5 bg-transparent p-0">
+                  <TabsTrigger value="select" className="flex-shrink-0">
+                    <span className="text-blue-600 dark:text-blue-400">Select</span>
                   </TabsTrigger>
-                )}
-                {(Number(formData.number_of_children_minor) > 0 || Number(formData.number_of_children_adult) > 0) && (
-                  <TabsTrigger value="children" className="px-6 py-3 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300 hover:bg-accent text-base font-medium">
-                    Children
+                  <TabsTrigger value="applicant" className="flex-shrink-0">
+                    <span className="text-blue-600 dark:text-blue-400">Applicant</span>
                   </TabsTrigger>
-                )}
-                <TabsTrigger value="parents" className="px-6 py-3 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300 hover:bg-accent text-base font-medium">
-                  Parents
-                </TabsTrigger>
-                <TabsTrigger value="grandparents" className="px-6 py-3 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300 hover:bg-accent text-base font-medium">
-                  Grandparents
-                </TabsTrigger>
-                <TabsTrigger value="greatgrandparents" className="px-6 py-3 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300 hover:bg-accent text-base font-medium">
-                  Great Grandparents
-                </TabsTrigger>
-              </TabsList>
+                  {formData.applicant_is_married && (
+                    <TabsTrigger value="spouse" className="flex-shrink-0">
+                      <span className="text-blue-600 dark:text-blue-400">Spouse</span>
+                    </TabsTrigger>
+                  )}
+                  {(Number(formData.number_of_children_minor) > 0 || Number(formData.number_of_children_adult) > 0) && (
+                    <TabsTrigger value="children" className="flex-shrink-0">
+                      <span className="text-cyan-600 dark:text-cyan-400">Children</span>
+                    </TabsTrigger>
+                  )}
+                  <TabsTrigger value="parents" className="flex-shrink-0">
+                    <span className="text-teal-600 dark:text-teal-400">Parents</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="grandparents" className="flex-shrink-0">
+                    <span className="text-red-600 dark:text-red-400">Grandparents</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="great-grandparents" className="flex-shrink-0">
+                    <span className="text-gray-600 dark:text-gray-400">Great Grandparents</span>
+                  </TabsTrigger>
+                </TabsList>
+              </div>
 
               <div className="w-full space-y-0">
               {/* Select Section */}
