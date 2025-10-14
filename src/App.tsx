@@ -41,6 +41,7 @@ const ManualPDFUpload = lazy(() => import("./pages/admin/ManualPDFUpload"));
 const CitizenshipFieldReview = lazy(() => import("./pages/admin/CitizenshipFieldReview"));
 const BigPlanTracker = lazy(() => import("./pages/admin/BigPlanTracker"));
 const TestingDashboard = lazy(() => import("./pages/admin/TestingDashboard"));
+const FormsDemo = lazy(() => import("./pages/admin/FormsDemo"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -240,6 +241,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <TestingDashboard />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/forms-demo" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <FormsDemo />
               </Suspense>
             } 
           />

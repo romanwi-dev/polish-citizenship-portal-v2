@@ -24,7 +24,8 @@ import {
   FolderSync,
   GitCompare,
   Target,
-  FlaskConical
+  FlaskConical,
+  Sparkles
 } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -33,6 +34,7 @@ import logo from "@/assets/logo.png";
 const navItems = [
   { title: "Dashboard", url: "/admin", icon: LayoutDashboard, exact: true },
   { title: "Cases", url: "/admin/cases", icon: Users },
+  { title: "Forms Demo", url: "/admin/forms-demo", icon: Sparkles },
   { title: "Big Plan Tracker", url: "/admin/big-plan-tracker", icon: Target },
   { title: "Testing Dashboard", url: "/admin/testing-dashboard", icon: FlaskConical },
   { title: "Tasks", url: "/admin/tasks", icon: CheckSquare },

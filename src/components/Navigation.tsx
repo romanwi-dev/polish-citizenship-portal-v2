@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, User, LogOut, Bot, GitBranch, ClipboardList, Moon, Sun } from "lucide-react";
+import { Menu, User, LogOut, Bot, GitBranch, ClipboardList, Moon, Sun, Sparkles } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { useAuth } from "@/hooks/useAuth";
 import { MobileNavigationSheet } from "@/components/MobileNavigationSheet";
@@ -40,6 +40,21 @@ const Navigation = () => {
           {/* User Icon & Desktop/Mobile Menu */}
           <div className="flex items-center gap-1.5 md:gap-2">
             <button
+              onClick={() => navigate('/admin/forms-demo')}
+              className="h-11 w-11 rounded-full bg-gradient-to-br from-primary to-accent border border-primary/20 flex items-center justify-center hover:border-primary/50 transition-all hover:scale-110"
+              aria-label="Forms Demo"
+              title="Forms Inspection Center"
+            >
+              <Sparkles className="h-5 w-5 text-white" />
+            </button>
+            <button
+              onClick={() => navigate('/admin/cases')}
+              className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+              aria-label="Management"
+            >
+              <User className="h-5 w-5 text-foreground/70" />
+            </button>
+            <button
               onClick={() => {
                 const newTheme = document.documentElement.className === "dark" ? "light" : "dark";
                 document.documentElement.className = newTheme;
@@ -53,13 +68,6 @@ const Navigation = () => {
               ) : (
                 <Sun className="h-5 w-5 text-foreground/70" />
               )}
-            </button>
-            <button
-              onClick={() => navigate('/admin/cases')}
-              className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
-              aria-label="Management"
-            >
-              <User className="h-5 w-5 text-foreground/70" />
             </button>
             
             {/* Mobile Navigation - Full Screen Sheet */}
