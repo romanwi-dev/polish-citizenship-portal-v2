@@ -350,7 +350,7 @@ export default function POAForm() {
                           e.currentTarget.style.boxShadow = "0 0 30px rgba(156,163,175,0.25)";
                         }}
                       >
-                        <SelectValue placeholder="Select..." />
+                        <SelectValue placeholder="Select" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-50">
                         <SelectItem value="Male" className="text-base cursor-pointer">Male</SelectItem>
@@ -377,7 +377,7 @@ export default function POAForm() {
                           e.currentTarget.style.boxShadow = "0 0 30px rgba(156,163,175,0.25)";
                         }}
                       >
-                        <SelectValue placeholder="Select..." />
+                        <SelectValue placeholder="Select" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-50">
                         <SelectItem value="Married" className="text-base cursor-pointer">Married</SelectItem>
@@ -408,7 +408,7 @@ export default function POAForm() {
                           e.currentTarget.style.boxShadow = "0 0 30px rgba(156,163,175,0.25)";
                         }}
                       >
-                        <SelectValue placeholder="Select..." />
+                        <SelectValue placeholder="Select" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-50">
                         {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (<SelectItem key={num} value={num.toString()} className="text-base cursor-pointer">{num}</SelectItem>))}
@@ -435,7 +435,7 @@ export default function POAForm() {
                             e.currentTarget.style.boxShadow = "0 0 30px rgba(156,163,175,0.25)";
                           }}
                         >
-                          <SelectValue placeholder="Select..." />
+                          <SelectValue placeholder="Select" />
                         </SelectTrigger>
                         <SelectContent className="bg-background border-2 z-50">
                           {Array.from({ length: (formData.children_count || 0) + 1 }, (_, i) => i).map((num) => (<SelectItem key={num} value={num.toString()} className="text-base cursor-pointer">{num}</SelectItem>))}

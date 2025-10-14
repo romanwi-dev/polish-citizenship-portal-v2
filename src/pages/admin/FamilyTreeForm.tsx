@@ -234,7 +234,7 @@ export default function FamilyTreeForm() {
                       e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
                     }}
                   >
-                    <SelectValue placeholder="Select..." />
+                    <SelectValue placeholder="Select" />
                   </SelectTrigger>
                   <SelectContent className="bg-background border-2 z-50">
                     {field.selectOptions?.map(option => (
@@ -458,7 +458,7 @@ export default function FamilyTreeForm() {
                     </Label>
                     <Select value={formData.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
                       <SelectTrigger className="h-20 text-2xl border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
-                        <SelectValue placeholder="Select..." />
+                        <SelectValue placeholder="Select" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-50">
                         <SelectItem value="M" className="text-base cursor-pointer">Male / Mężczyzna</SelectItem>
@@ -474,7 +474,7 @@ export default function FamilyTreeForm() {
                     </Label>
                     <Select value={formData.applicant_is_married === true ? "Married" : "Single"} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
                       <SelectTrigger className="h-20 text-2xl border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
-                        <SelectValue placeholder="Select..." />
+                        <SelectValue placeholder="Select" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-50">
                         <SelectItem value="Married" className="text-base cursor-pointer">Married</SelectItem>
@@ -493,7 +493,7 @@ export default function FamilyTreeForm() {
                     </Label>
                     <Select value={formData.children_count?.toString() || ""} onValueChange={(value) => { const count = parseInt(value); handleInputChange("children_count", count); }}>
                       <SelectTrigger className="h-20 text-2xl border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur z-50">
-                        <SelectValue placeholder="Select..." />
+                        <SelectValue placeholder="Select" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-50">
                         {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (<SelectItem key={num} value={num.toString()} className="text-base cursor-pointer">{num}</SelectItem>))}
@@ -509,7 +509,7 @@ export default function FamilyTreeForm() {
                       </Label>
                       <Select value={formData.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
                         <SelectTrigger className="h-20 text-2xl border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
-                          <SelectValue placeholder="Select..." />
+                          <SelectValue placeholder="Select" />
                         </SelectTrigger>
                         <SelectContent className="bg-background border-2 z-50">
                           {Array.from({ length: (formData.children_count || 0) + 1 }, (_, i) => i).map((num) => (<SelectItem key={num} value={num.toString()} className="text-base cursor-pointer">{num}</SelectItem>))}
@@ -1252,7 +1252,7 @@ export default function FamilyTreeForm() {
                           <Label className={isLargeFonts ? "text-2xl" : ""}>Gender</Label>
                           <Select value={formData.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
                             <SelectTrigger className="h-20 text-2xl border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
-                              <SelectValue placeholder="Select..." />
+                              <SelectValue placeholder="Select" />
                             </SelectTrigger>
                             <SelectContent className="bg-background border-2 z-50">
                               <SelectItem value="M" className="text-base cursor-pointer">Male / Mężczyzna</SelectItem>
@@ -1266,7 +1266,7 @@ export default function FamilyTreeForm() {
                           <Label className={isLargeFonts ? "text-2xl" : ""}>Civil Status</Label>
                           <Select value={formData.applicant_is_married === true ? "Married" : "Single"} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
                             <SelectTrigger className="h-20 text-2xl border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
-                              <SelectValue placeholder="Select..." />
+                              <SelectValue placeholder="Select" />
                             </SelectTrigger>
                             <SelectContent className="bg-background border-2 z-50">
                               <SelectItem value="Married" className="text-base cursor-pointer">Married</SelectItem>
@@ -1282,7 +1282,7 @@ export default function FamilyTreeForm() {
                           <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>Number of children</Label>
                           <Select value={formData.children_count?.toString() || ""} onValueChange={(value) => { const count = parseInt(value); handleInputChange("children_count", count); }}>
                             <SelectTrigger className="h-20 text-2xl border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur z-50">
-                              <SelectValue placeholder="Select..." />
+                              <SelectValue placeholder="Select" />
                             </SelectTrigger>
                             <SelectContent className="bg-background border-2 z-50">
                               {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (<SelectItem key={num} value={num.toString()} className="text-base cursor-pointer">{num}</SelectItem>))}
@@ -1295,7 +1295,7 @@ export default function FamilyTreeForm() {
                             <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>Number of minor children</Label>
                             <Select value={formData.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
                               <SelectTrigger className="h-20 text-2xl border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
-                                <SelectValue placeholder="Select..." />
+                                <SelectValue placeholder="Select" />
                               </SelectTrigger>
                               <SelectContent className="bg-background border-2 z-50">
                                 {Array.from({ length: (formData.children_count || 0) + 1 }, (_, i) => i).map((num) => (<SelectItem key={num} value={num.toString()} className="text-base cursor-pointer">{num}</SelectItem>))}
