@@ -223,7 +223,18 @@ export default function FamilyTreeForm() {
                   {field.label}
                 </Label>
                      <Select value={formData[field.name] || ""} onValueChange={(value) => handleInputChange(field.name, value)}>
-                  <SelectTrigger className="h-16 md:h-20 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur" style={{ fontSize: '1.125rem', fontWeight: '400' }}>
+                  <SelectTrigger 
+                    className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+                    style={{
+                      boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+                    }}
+                  >
                     <SelectValue placeholder="Select..." />
                   </SelectTrigger>
                   <SelectContent className="bg-background border-2 z-50">

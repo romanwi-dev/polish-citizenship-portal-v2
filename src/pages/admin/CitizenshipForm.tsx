@@ -337,14 +337,25 @@ export default function CitizenshipForm() {
               </div>
               <div className="p-6 md:p-10 space-y-10">
                 {/* Row 1: Gender and Civil Status */}
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Gender */}
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-2">
                     <Label className={isLargeFonts ? "text-2xl" : ""}>
                       Gender
                     </Label>
                     <Select value={formData.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
-                      <SelectTrigger className="h-20 text-2xl border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                      <SelectTrigger 
+                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+                        style={{
+                          boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+                        }}
+                      >
                         <SelectValue placeholder="Select..." />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-50">
@@ -360,7 +371,18 @@ export default function CitizenshipForm() {
                       Civil Status
                     </Label>
                     <Select value={formData.applicant_is_married === true ? "Married" : "Single"} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
-                      <SelectTrigger className="h-20 text-2xl border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                      <SelectTrigger 
+                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+                        style={{
+                          boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+                        }}
+                      >
                         <SelectValue placeholder="Select..." />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-50">
@@ -372,14 +394,25 @@ export default function CitizenshipForm() {
                 </div>
 
                 {/* Row 2: Children counts */}
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Number of children */}
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-2">
                     <Label className={isLargeFonts ? "text-2xl" : ""}>
                       Number of children
                     </Label>
                     <Select value={formData.children_count?.toString() || ""} onValueChange={(value) => { const count = parseInt(value); handleInputChange("children_count", count); }}>
-                      <SelectTrigger className="h-20 text-2xl border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur z-50">
+                      <SelectTrigger 
+                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur z-50"
+                        style={{
+                          boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+                        }}
+                      >
                         <SelectValue placeholder="Select..." />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-50">
@@ -395,7 +428,18 @@ export default function CitizenshipForm() {
                         Number of minor children
                       </Label>
                       <Select value={formData.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
-                        <SelectTrigger className="h-20 text-2xl border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                        <SelectTrigger 
+                          className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+                          style={{
+                            boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+                          }}
+                        >
                           <SelectValue placeholder="Select..." />
                         </SelectTrigger>
                         <SelectContent className="bg-background border-2 z-50">
