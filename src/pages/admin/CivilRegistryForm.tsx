@@ -136,7 +136,7 @@ export default function CivilRegistryForm() {
     type?: string;
     placeholder?: string;
   }>) => {
-    return <div className="grid grid-cols-1 gap-6">
+    return <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {fields.map((field, idx) => <motion.div key={field.name} initial={{
         opacity: 0,
         y: 20

@@ -141,7 +141,7 @@ export default function CitizenshipForm() {
 
   const renderFieldGroup = (fields: Array<{ name: string; label: string; type?: string; placeholder?: string }>) => {
     return (
-      <div className="grid grid-cols-1 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {fields.map((field, idx) => (
           <motion.div
             key={field.name}

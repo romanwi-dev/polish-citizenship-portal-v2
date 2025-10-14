@@ -151,7 +151,7 @@ export function DateField({
           maxLength={10}
           disabled={notApplicableValue}
           className={cn(
-            "h-16 md:h-20 text-2xl border-2 transition-all duration-300 backdrop-blur font-normal placeholder:opacity-40 font-input-work w-full max-w-xl",
+            "h-16 md:h-20 text-2xl border-2 transition-all duration-300 backdrop-blur font-normal placeholder:opacity-40 font-input-work w-full",
             scheme.bg,
             scheme.border,
             isLargeFonts && "text-3xl",

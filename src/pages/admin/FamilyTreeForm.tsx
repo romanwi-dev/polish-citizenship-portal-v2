@@ -206,7 +206,7 @@ export default function FamilyTreeForm() {
     isSelect?: boolean;
     selectOptions?: Array<{ value: string; label: string }>;
   }>, colorScheme: ColorScheme = 'applicant') => {
-    return <div className="grid gap-6 grid-cols-1">
+    return <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
         {fields.map((field, idx) => <motion.div key={field.name} initial={{
         opacity: 0,
         y: 20
