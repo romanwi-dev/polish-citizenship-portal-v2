@@ -132,54 +132,6 @@ const App = () => (
             } 
           />
           <Route 
-            path="/admin/cases/:id/family-tree"
-            element={
-              <Suspense fallback={<AdminLoader />}>
-                <FamilyTreeForm />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/cases/:id/family-history"
-            element={
-              <Suspense fallback={<AdminLoader />}>
-                <FamilyHistoryForm />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/cases/:id/poa" 
-            element={
-              <Suspense fallback={<AdminLoader />}>
-                <POAForm />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/cases/:id/citizenship" 
-            element={
-              <Suspense fallback={<AdminLoader />}>
-                <CitizenshipForm />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/cases/:id/civil-registry" 
-            element={
-              <Suspense fallback={<AdminLoader />}>
-                <CivilRegistryForm />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/cases/:id/intake" 
-            element={
-              <Suspense fallback={<AdminLoader />}>
-                <IntakeForm />
-              </Suspense>
-            } 
-          />
-          <Route 
             path="/admin/intake-demo" 
             element={
               <Suspense fallback={<AdminLoader />}>
