@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X } from "lucide-react";
+import { X, Maximize2, Type } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -9,15 +9,22 @@ interface CivilRegistryFormDemoProps {
 }
 
 export default function CivilRegistryFormDemo({ onClose }: CivilRegistryFormDemoProps) {
+  const [isLargeFonts, setIsLargeFonts] = useState(false);
+
   return (
-    <div className="p-6">
+    <div className={`p-6 ${isLargeFonts ? 'text-lg' : ''}`}>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-4xl font-heading font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
           Civil Registry
         </h2>
-        <Button onClick={onClose} variant="ghost" size="icon">
-          <X className="h-6 w-6" />
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button onClick={() => setIsLargeFonts(!isLargeFonts)} variant="ghost" size="icon" title="Toggle large fonts">
+            <Type className="h-6 w-6" />
+          </Button>
+          <Button onClick={onClose} variant="ghost" size="icon">
+            <X className="h-6 w-6" />
+          </Button>
+        </div>
       </div>
 
       <Card>

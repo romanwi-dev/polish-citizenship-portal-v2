@@ -1,4 +1,5 @@
-import { X } from "lucide-react";
+import { useState } from "react";
+import { X, Maximize2, Type } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FamilyTree } from "@/components/FamilyTree";
 
@@ -67,15 +68,22 @@ interface FamilyTreeDemoProps {
 }
 
 export default function FamilyTreeDemo({ onClose }: FamilyTreeDemoProps) {
+  const [isLargeFonts, setIsLargeFonts] = useState(false);
+
   return (
-    <div className="p-6">
+    <div className={`p-6 ${isLargeFonts ? 'text-lg' : ''}`}>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-4xl font-heading font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
           Family Tree
         </h2>
-        <Button onClick={onClose} variant="ghost" size="icon">
-          <X className="h-6 w-6" />
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button onClick={() => setIsLargeFonts(!isLargeFonts)} variant="ghost" size="icon" title="Toggle large fonts">
+            <Type className="h-6 w-6" />
+          </Button>
+          <Button onClick={onClose} variant="ghost" size="icon">
+            <X className="h-6 w-6" />
+          </Button>
+        </div>
       </div>
 
       <FamilyTree

@@ -49,6 +49,7 @@ const formCards = [
 export default function FormsDemo() {
   const navigate = useNavigate();
   const [openForm, setOpenForm] = useState<FormType>(null);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const renderFormContent = () => {
     switch (openForm) {
@@ -139,8 +140,8 @@ export default function FormsDemo() {
         </div>
 
         {/* Form Dialog */}
-        <Dialog open={openForm !== null} onOpenChange={() => setOpenForm(null)}>
-          <DialogContent className="max-w-[95vw] max-h-[95vh] overflow-y-auto p-0">
+        <Dialog open={openForm !== null} onOpenChange={() => { setOpenForm(null); setIsExpanded(false); }}>
+          <DialogContent className={`${isExpanded ? 'max-w-[98vw] max-h-[98vh]' : 'max-w-[95vw] max-h-[95vh]'} overflow-y-auto p-0`}>
             {renderFormContent()}
           </DialogContent>
         </Dialog>

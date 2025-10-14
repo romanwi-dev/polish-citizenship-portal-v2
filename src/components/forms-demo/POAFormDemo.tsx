@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X } from "lucide-react";
+import { X, Maximize2, Type } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -22,20 +22,26 @@ interface POAFormDemoProps {
 export default function POAFormDemo({ onClose }: POAFormDemoProps) {
   const [formData, setFormData] = useState(dummyData);
   const [poaType, setPOAType] = useState("adult");
+  const [isLargeFonts, setIsLargeFonts] = useState(false);
 
   const handleInputChange = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   return (
-    <div className="p-6">
+    <div className={`p-6 ${isLargeFonts ? 'text-lg' : ''}`}>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-4xl font-heading font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
           Power of Attorney
         </h2>
-        <Button onClick={onClose} variant="ghost" size="icon">
-          <X className="h-6 w-6" />
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button onClick={() => setIsLargeFonts(!isLargeFonts)} variant="ghost" size="icon" title="Toggle large fonts">
+            <Type className="h-6 w-6" />
+          </Button>
+          <Button onClick={onClose} variant="ghost" size="icon">
+            <X className="h-6 w-6" />
+          </Button>
+        </div>
       </div>
 
       <div className="space-y-6">

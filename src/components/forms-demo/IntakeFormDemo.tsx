@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X } from "lucide-react";
+import { X, Maximize2, Type } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SelectSection, ApplicantSection, ContactSection, AddressSection, PassportSection, NotesSection } from "@/components/IntakeFormContent";
@@ -28,6 +28,8 @@ interface IntakeFormDemoProps {
 export default function IntakeFormDemo({ onClose }: IntakeFormDemoProps) {
   const [formData, setFormData] = useState(dummyData);
   const [activeTab, setActiveTab] = useState("select");
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isLargeFonts, setIsLargeFonts] = useState(false);
 
   const handleInputChange = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -45,14 +47,22 @@ export default function IntakeFormDemo({ onClose }: IntakeFormDemoProps) {
   };
 
   return (
-    <div className="p-6">
+    <div className={`p-6 ${isLargeFonts ? 'text-lg' : ''}`}>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-4xl font-heading font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
           Client Intake
         </h2>
-        <Button onClick={onClose} variant="ghost" size="icon">
-          <X className="h-6 w-6" />
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button onClick={() => setIsExpanded(!isExpanded)} variant="ghost" size="icon" title="Toggle fullscreen">
+            <Maximize2 className="h-6 w-6" />
+          </Button>
+          <Button onClick={() => setIsLargeFonts(!isLargeFonts)} variant="ghost" size="icon" title="Toggle large fonts">
+            <Type className="h-6 w-6" />
+          </Button>
+          <Button onClick={onClose} variant="ghost" size="icon">
+            <X className="h-6 w-6" />
+          </Button>
+        </div>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
