@@ -96,26 +96,80 @@ export default function IntakeForm() {
           transition={{ duration: 0.8 }}
           className="mb-6"
         >
-...
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6">
+            <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">
+                Client Intake Form
+              </h1>
+            </motion.div>
+            <div className="flex items-center gap-3">
+              <Button
+                onClick={() => window.open('https://docs.lovable.dev', '_blank')}
+                size="lg"
+                variant="ghost"
+                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 text-2xl font-light opacity-60"
+                title="How to fill this form"
+              >
+                ?
+              </Button>
+              <Button
+                onClick={() => navigate(`/admin/case/${caseId}`)}
+                size="lg"
+                variant="ghost"
+                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50 opacity-60"
+                title="Back to Case"
+              >
+                <ArrowLeft className="h-8 w-8" />
+              </Button>
+              <Button
+                onClick={() => setIsFullView(!isFullView)}
+                size="lg"
+                variant="ghost"
+                className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 opacity-60 ${
+                  isFullView ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:text-primary'
+                }`}
+                title={isFullView ? "Collapse" : "Expand All"}
+              >
+                {isFullView ? <Minimize2 className="h-8 w-8" /> : <Maximize2 className="h-8 w-8" />}
+              </Button>
+              <Button
+                onClick={() => navigate('/login')}
+                size="lg"
+                variant="ghost"
+                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50 opacity-60"
+                title="Login / Register"
+              >
+                <User className="h-8 w-8" />
+              </Button>
+              <Button
+                onClick={toggleFontSize}
+                size="lg"
+                variant="ghost"
+                className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 z-50 opacity-60 ${
+                  isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:text-primary'
+                }`}
+                title="Toggle font size"
+              >
+                <Type className="h-8 w-8" />
+              </Button>
+            </div>
+          </div>
         </motion.div>
-      </div>
 
-      {/* Button rows - OUTSIDE container for full width */}
-      <FormButtonsRow 
-        caseId={caseId!}
-        currentForm="intake"
-        onSave={() => {}}
-        onClear={() => {}}
-        onGeneratePDF={() => {}}
-        isSaving={false}
-      />
+        <FormButtonsRow 
+          caseId={caseId!}
+          currentForm="intake"
+          onSave={() => {}}
+          onClear={() => {}}
+          onGeneratePDF={() => {}}
+          isSaving={false}
+        />
 
-      <div className="container mx-auto px-4 md:px-6 relative z-10 max-w-7xl">
         {/* Form with Tabs or Full View */}
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="space-y-8">
           <Tabs defaultValue="select" value={activeTab} onValueChange={handleTabChange} className="w-full">
-            <div className="sticky top-0 z-50 border-b border-border/50 pb-2 pt-2 w-screen -ml-[50vw] left-[50%]">
-              <div className="flex gap-3 items-center overflow-x-auto scrollbar-hide px-4 md:px-6">
+            <div className="sticky top-0 z-50 border-b border-border/50 pb-2 pt-2">
+              <div className="flex gap-3 items-center overflow-x-auto scrollbar-hide">
                 {/* Save and Clear Buttons */}
                 <div className="flex gap-2 flex-shrink-0">
                   <button

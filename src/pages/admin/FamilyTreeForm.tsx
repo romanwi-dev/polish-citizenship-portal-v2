@@ -406,7 +406,7 @@ export default function FamilyTreeForm() {
           {!isFullView ? (
             // Tabbed View
             <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-              <div className="sticky top-0 z-20 border-b border-border/50 pb-2 pt-2 w-screen -ml-[50vw] left-[50%] px-4 md:px-6">
+              <div className="sticky top-0 z-20 border-b border-border/50 pb-2 pt-2">
                 <TabsList className="w-full inline-flex justify-start gap-2 bg-transparent p-0 overflow-x-auto scrollbar-hide">
                   <TabsTrigger value="tree-view" className="flex-shrink-0">
                     <span>Tree View</span>
