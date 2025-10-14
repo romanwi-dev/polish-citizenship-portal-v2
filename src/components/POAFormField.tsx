@@ -43,7 +43,7 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
       >
         <Label htmlFor={name} className={cn(
           "font-light text-foreground/90",
-          isLargeFonts ? "text-xl" : "text-sm"
+          isLargeFonts ? "text-2xl" : "text-xl"
         )}>
           {label}
         </Label>
@@ -80,7 +80,7 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
     >
       <Label htmlFor={name} className={cn(
         "font-light text-foreground/90",
-        isLargeFonts ? "text-xl" : "text-sm"
+        isLargeFonts ? "text-2xl" : "text-xl"
       )}>
         {label}
       </Label>

@@ -335,7 +335,7 @@ export default function POAForm() {
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-2" onDoubleClick={() => handleInputChange("applicant_sex", null)}>
                   <Label className={cn(
                     "font-light text-foreground/90",
-                    isLargeFonts ? "text-xl" : "text-sm"
+                    isLargeFonts ? "text-2xl" : "text-xl"
                   )}>Gender</Label>
                   <Select value={formData?.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
                     <SelectTrigger 
@@ -362,7 +362,7 @@ export default function POAForm() {
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="space-y-2" onDoubleClick={() => handleInputChange("children_count", null)}>
                   <Label className={cn(
                     "font-light text-foreground/90",
-                    isLargeFonts ? "text-xl" : "text-sm"
+                    isLargeFonts ? "text-2xl" : "text-xl"
                   )}>Number of children</Label>
                   <Select value={formData?.children_count?.toString() || ""} onValueChange={(value) => handleInputChange("children_count", parseInt(value))}>
                     <SelectTrigger 
@@ -392,7 +392,7 @@ export default function POAForm() {
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-2" onDoubleClick={() => handleInputChange("applicant_is_married", null)}>
                   <Label className={cn(
                     "font-light text-foreground/90",
-                    isLargeFonts ? "text-xl" : "text-sm"
+                    isLargeFonts ? "text-2xl" : "text-xl"
                   )}>Marital status</Label>
                   <Select value={formData?.applicant_is_married === true ? "Married" : formData?.applicant_is_married === false ? "Single" : ""} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
                     <SelectTrigger 
@@ -421,7 +421,7 @@ export default function POAForm() {
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="space-y-2" onDoubleClick={() => handleInputChange("minor_children_count", null)}>
                     <Label className={cn(
                       "font-light text-foreground/90",
-                      isLargeFonts ? "text-xl" : "text-sm"
+                      isLargeFonts ? "text-2xl" : "text-xl"
                     )}>Number of minor children (under 18)</Label>
                     <Select value={formData?.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
                       <SelectTrigger 

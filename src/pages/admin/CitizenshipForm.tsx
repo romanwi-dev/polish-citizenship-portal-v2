@@ -157,7 +157,7 @@ export default function CitizenshipForm() {
               <>
                 <Label htmlFor={field.name} className={cn(
                   "font-light text-foreground/90",
-                  isLargeFonts ? "text-xl" : "text-sm"
+                  isLargeFonts ? "text-2xl" : "text-xl"
                 )}>
                   {field.label}
                 </Label>
