@@ -363,7 +363,7 @@ export default function CivilRegistryForm() {
                   },
                   {
                     name: "document_issue_place",
-                    label: "Place where document was issued / Miejsce sporządzenia aktu"
+                    label: "Place of document issuance / Miejsce sporządzenia aktu"
                   },
                   {
                     name: "document_registry_number",
