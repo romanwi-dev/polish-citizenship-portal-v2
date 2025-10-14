@@ -218,7 +218,7 @@ export const AddressSection = ({ formData, handleInputChange, clearField, isLarg
       <div className="grid grid-cols-1 gap-6 w-full">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_street")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Street address</Label>
-          <FormInput value={formData?.applicant_street || ""} onChange={(e) => handleInputChange("applicant_street", e.target.value.toUpperCase())} isNameField colorScheme="applicant" className="max-w-full" />
+          <FormInput value={formData?.applicant_street || ""} onChange={(e) => handleInputChange("applicant_street", e.target.value.toUpperCase())} isNameField colorScheme="applicant" className="!max-w-full" />
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
