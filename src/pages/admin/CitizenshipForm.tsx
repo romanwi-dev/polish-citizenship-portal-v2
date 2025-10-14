@@ -624,8 +624,9 @@ export default function CitizenshipForm() {
             onClick={handleGeneratePDF}
             disabled={isGenerating}
             size="lg"
-            className="px-8 py-6 text-lg font-bold bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]"
+            className="px-16 py-8 text-2xl md:text-3xl font-bold bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] min-w-[300px] md:min-w-[400px]"
           >
+            <Download className="h-8 w-8 mr-3" />
             <span className="text-blue-100 font-bold">{isGenerating ? "Generating..." : "Generate PDF"}</span>
           </Button>
         </div>
