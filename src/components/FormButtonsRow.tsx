@@ -50,7 +50,7 @@ export function FormButtonsRow({
   const navigationButtons = getNavigationButtons(formData || {});
 
   return (
-    <div className="sticky top-0 z-50 mb-8 py-2 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <div className="sticky top-0 z-50 mb-8 -mx-4 md:-mx-6 py-2 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex flex-row gap-0.5 overflow-x-auto scrollbar-hide px-4 md:px-6">
       {currentForm !== 'intake' && (
         <div className="flex gap-0.5 flex-shrink-0">
