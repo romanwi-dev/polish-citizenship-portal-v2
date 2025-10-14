@@ -85,7 +85,7 @@ export default function FormsDemo() {
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.2 }}
             >
-              <h1 className="text-3xl md:text-4xl font-heading font-black tracking-tight" style={{
+              <h1 className="text-4xl md:text-5xl font-heading font-black tracking-tight" style={{
                 background: 'linear-gradient(135deg, hsl(221, 83%, 53%) 0%, hsl(204, 70%, 53%) 50%, hsl(221, 50%, 45%) 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
@@ -124,7 +124,12 @@ export default function FormsDemo() {
                 onClick={() => setOpenForm(form.id as FormType)}
               >
                 <CardContent className="p-8 flex items-center justify-center">
-                  <h3 className="text-3xl font-heading font-bold group-hover:text-primary transition-colors">
+                  <h3 className="text-2xl font-heading font-black tracking-tight" style={{
+                    background: 'linear-gradient(135deg, hsl(221, 83%, 53%) 0%, hsl(204, 70%, 53%) 50%, hsl(221, 50%, 45%) 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text'
+                  }}>
                     {form.title}
                   </h3>
                 </CardContent>
