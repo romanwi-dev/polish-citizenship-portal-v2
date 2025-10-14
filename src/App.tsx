@@ -14,6 +14,7 @@ import NotFound from "./pages/NotFound";
 // Client portal pages
 const ClientLogin = lazy(() => import("./pages/ClientLogin"));
 const ClientDashboard = lazy(() => import("./pages/ClientDashboard"));
+const ClientIntakeWizard = lazy(() => import("./pages/ClientIntakeWizard"));
 
 // Lazy load admin pages to avoid loading Sidebar on home page
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
@@ -91,7 +92,14 @@ const App = () => (
                 </Suspense>
               }
             />
-          
+            <Route
+              path="/client/intake/:token"
+              element={
+                <Suspense fallback={<AdminLoader />}>
+                  <ClientIntakeWizard />
+                </Suspense>
+              }
+            />
           {/* Admin Routes - Lazy Loaded */}
           <Route 
             path="/admin" 
