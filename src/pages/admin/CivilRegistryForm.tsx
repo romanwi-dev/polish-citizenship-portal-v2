@@ -377,6 +377,7 @@ export default function CivilRegistryForm() {
                     onChange={(value) => handleInputChange("document_issue_country", value)}
                     label="Country / Kraj"
                     isLargeFonts={isLargeFonts}
+                    colorScheme="civil-reg"
                   />
                 </div>
 
