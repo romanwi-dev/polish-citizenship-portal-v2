@@ -69,14 +69,6 @@ export function FormButtonsRow({
             <Sparkles className="mr-1.5 h-4 w-4" />
             <span className="text-red-100 font-bold">Clear Data</span>
           </Button>
-          
-          <Button
-            onClick={onGeneratePDF}
-            className="px-3 md:px-4 lg:px-5 py-2 text-sm md:text-base font-bold bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]"
-          >
-            <Download className="mr-1.5 h-4 w-4" />
-            <span className="text-blue-100 font-bold">Generate PDF</span>
-          </Button>
         </div>
       )}
 

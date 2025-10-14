@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
-import { Loader2, Sparkles, Type, User, ArrowLeft, Maximize2, Minimize2 } from "lucide-react";
+import { Loader2, Sparkles, Type, User, ArrowLeft, Maximize2, Minimize2, Download } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -616,6 +616,19 @@ export default function CitizenshipForm() {
               </div>
             </div>
           </motion.div>
+        </div>
+
+        {/* Generate PDF Button at Bottom */}
+        <div className="mt-12 flex justify-center">
+          <Button
+            onClick={handleGeneratePDF}
+            disabled={isGenerating}
+            size="lg"
+            className="px-8 py-6 text-lg font-bold bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]"
+          >
+            <Download className="mr-2 h-5 w-5" />
+            <span className="text-blue-100 font-bold">{isGenerating ? "Generating..." : "Generate PDF"}</span>
+          </Button>
         </div>
 
         <AlertDialog open={showClearAllDialog} onOpenChange={setShowClearAllDialog}>
