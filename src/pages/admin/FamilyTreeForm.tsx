@@ -698,60 +698,13 @@ export default function FamilyTreeForm() {
               {/* Names */}
               {renderFieldGroup([
                 { name: "spouse_first_name", label: "Given names", isNameField: true },
-                { name: "spouse_last_name", label: "Full last name", isNameField: true }
+                { name: "spouse_last_name", label: "Full family name", isNameField: true }
               ], 'spouse')}
 
               {/* Maiden name */}
               {renderFieldGroup([
                 { name: "spouse_maiden_name", label: "Maiden name", isNameField: true }
               ], 'spouse')}
-
-              {/* Places: Birth & Marriage */}
-              {renderFieldGroup([
-                { name: "spouse_pob", label: "Place of birth", isNameField: true },
-                { name: "place_of_marriage", label: "Place of marriage", isNameField: true }
-              ], 'spouse')}
-
-              {/* Dates: Birth & Marriage */}
-              {renderFieldGroup([
-                { name: "spouse_dob", label: "Date of birth", type: "date" },
-                { name: "date_of_marriage", label: "Date of marriage", type: "date" }
-              ], 'spouse')}
-
-              {/* Dates: Emigration & Naturalization */}
-              {renderFieldGroup([
-                { name: "spouse_date_of_emigration", label: "Date of emigration", type: "date" },
-                { name: "spouse_date_of_naturalization", label: "Date of naturalization", type: "date" }
-              ], 'spouse')}
-
-              {/* Contact */}
-              {renderFieldGroup([
-                { name: "spouse_email", label: "Email", type: "email" },
-                { name: "spouse_phone", label: "Phone" }
-              ], 'spouse')}
-
-              <FamilyMemberDocumentsSection
-                prefix="spouse"
-                title="Required Documents"
-                formData={formData}
-                handleInputChange={handleInputChange}
-                personType="spouse"
-                sex={formData.spouse_sex}
-                colorScheme="spouse"
-              />
-
-              <div className="space-y-2 mt-8">
-                <Label htmlFor="spouse_notes" className={isLargeFonts ? "text-2xl" : ""}>
-                  ADDITIONAL NOTES
-                </Label>
-                <Textarea
-                  id="spouse_notes"
-                  value={formData.spouse_notes || ""}
-                  onChange={e => handleInputChange("spouse_notes", e.target.value.toUpperCase())}
-                  placeholder=""
-                  className={cn("min-h-[200px] border-2 border-blue-200/10 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase")}
-                />
-              </div>
             </motion.div>
           )}
         </TabsContent>
@@ -1432,53 +1385,12 @@ export default function FamilyTreeForm() {
                     
                     {renderFieldGroup([
                       { name: "spouse_first_name", label: "Given names", isNameField: true },
-                      { name: "spouse_last_name", label: "Full last name", isNameField: true }
+                      { name: "spouse_last_name", label: "Full family name", isNameField: true }
                     ], 'spouse')}
 
                     {renderFieldGroup([
                       { name: "spouse_maiden_name", label: "Maiden name", isNameField: true }
                     ], 'spouse')}
-
-                    {renderFieldGroup([
-                      { name: "spouse_pob", label: "Place of birth", isNameField: true },
-                      { name: "place_of_marriage", label: "Place of marriage", isNameField: true }
-                    ], 'spouse')}
-
-                    {renderFieldGroup([
-                      { name: "spouse_dob", label: "Date of birth", type: "date" },
-                      { name: "date_of_marriage", label: "Date of marriage", type: "date" }
-                    ], 'spouse')}
-
-                    {renderFieldGroup([
-                      { name: "spouse_date_of_emigration", label: "Date of emigration", type: "date" },
-                      { name: "spouse_date_of_naturalization", label: "Date of naturalization", type: "date" }
-                    ], 'spouse')}
-
-                    {renderFieldGroup([
-                      { name: "spouse_email", label: "Email", type: "email" },
-                      { name: "spouse_phone", label: "Phone" }
-                    ], 'spouse')}
-
-                    <FamilyMemberDocumentsSection
-                      prefix="spouse"
-                      title="Required Documents"
-                      formData={formData}
-                      handleInputChange={handleInputChange}
-                      personType="spouse"
-                      sex={formData.spouse_sex}
-                      colorScheme="spouse"
-                    />
-
-                    <div className="space-y-2 mt-8">
-                      <Label htmlFor="spouse_notes" className={isLargeFonts ? "text-2xl" : ""}>ADDITIONAL NOTES</Label>
-                      <Textarea
-                        id="spouse_notes"
-                        value={formData.spouse_notes || ""}
-                        onChange={e => handleInputChange("spouse_notes", e.target.value.toUpperCase())}
-                        placeholder=""
-                        className={cn("min-h-[200px] border-2 border-blue-200/10 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase")}
-                      />
-                    </div>
                   </motion.div>
                 </div>
               )}
