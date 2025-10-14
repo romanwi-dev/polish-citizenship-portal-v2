@@ -318,7 +318,9 @@ export default function FamilyTreeForm() {
         </motion.div>
       </div>;
   }
-  return <div className="overflow-x-hidden min-h-screen relative">
+  
+  return (
+    <div className="overflow-x-hidden min-h-screen relative">
     {/* Checkered grid background - matching footer */}
     <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
     <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
@@ -1788,24 +1790,25 @@ export default function FamilyTreeForm() {
           <span className="text-blue-100 font-heading font-black">{isGenerating ? "Generating..." : "Generate PDF"}</span>
         </Button>
       </div>
+    </div>
 
-      {/* Clear Data Confirmation Dialog */}
-      <AlertDialog open={showClearDialog} onOpenChange={setShowClearDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Clear Data?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This will clear all fields in the Family Tree form. This action cannot be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleClearData}>
-              Clear Data
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-
-    </div>;
+    {/* Clear Data Confirmation Dialog */}
+    <AlertDialog open={showClearDialog} onOpenChange={setShowClearDialog}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Clear Data?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This will clear all fields in the Family Tree form. This action cannot be undone.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={handleClearData}>
+            Clear Data
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  </div>
+  );
 }
