@@ -247,7 +247,7 @@ export default function CitizenshipForm() {
           initial={{ opacity: 0, y: -50 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ duration: 0.8 }}
-          className="mb-0"
+          className="mb-6"
         >
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6">
             <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
