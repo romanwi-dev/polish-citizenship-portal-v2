@@ -1455,7 +1455,7 @@ export default function FamilyTreeForm() {
       </div>
 
       {/* Generate PDF Button at Bottom */}
-      <div className="mt-8 flex justify-end">
+      <div className="mt-6 flex justify-center">
         <Button
           onClick={handleGeneratePDF}
           disabled={isGenerating}
