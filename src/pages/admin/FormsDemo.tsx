@@ -85,7 +85,12 @@ export default function FormsDemo() {
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.2 }}
             >
-              <h1 className="text-3xl md:text-4xl font-heading font-black tracking-tight bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 bg-clip-text text-transparent">
+              <h1 className="text-3xl md:text-4xl font-heading font-black tracking-tight" style={{
+                background: 'linear-gradient(135deg, hsl(221, 83%, 53%) 0%, hsl(204, 70%, 53%) 50%, hsl(221, 50%, 45%) 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}>
                 Forms Inspection
               </h1>
             </motion.div>
