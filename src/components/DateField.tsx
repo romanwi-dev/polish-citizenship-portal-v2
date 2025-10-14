@@ -117,26 +117,25 @@ export function DateField({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.4 }}
-      className="w-full"
+      className="space-y-2 w-full"
     >
-      <div>
-        <Label htmlFor={name} className={isLargeFonts ? "text-2xl" : ""}>
-          {label} {required && <span className="text-destructive">*</span>}
-        </Label>
-        {showNotApplicable && (
-          <Checkbox
-            id={`${name}-na`}
-            checked={notApplicableValue}
-            onCheckedChange={(checked) => {
-              onNotApplicableChange?.(checked as boolean);
-              if (checked) {
-                onChange("");
-              }
-            }}
-            className="border-cyan-600"
-          />
-        )}
-        <Input
+      <Label htmlFor={name} className={isLargeFonts ? "text-2xl" : ""}>
+        {label} {required && <span className="text-destructive">*</span>}
+      </Label>
+      {showNotApplicable && (
+        <Checkbox
+          id={`${name}-na`}
+          checked={notApplicableValue}
+          onCheckedChange={(checked) => {
+            onNotApplicableChange?.(checked as boolean);
+            if (checked) {
+              onChange("");
+            }
+          }}
+          className="border-cyan-600"
+        />
+      )}
+      <Input
           id={name}
           type="text"
           value={value || ""}
@@ -181,10 +180,9 @@ export function DateField({
             }
           }}
         />
-        {error && (
-          <p className="text-sm text-destructive">{error}</p>
-        )}
-      </div>
+      {error && (
+        <p className="text-sm text-destructive">{error}</p>
+      )}
     </motion.div>
   );
 }
