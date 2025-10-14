@@ -50,26 +50,22 @@ export function FormButtonsRow({
   const navigationButtons = getNavigationButtons(formData || {});
 
   return (
-    <div className="sticky top-0 z-50 mb-8 py-2 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 -mx-4 md:-mx-6">
+    <div className="sticky top-0 z-50 mb-8 py-2 -mx-4 md:-mx-6">
       <div className="flex flex-row gap-0.5 overflow-x-auto md:overflow-visible md:justify-between scrollbar-hide px-4 md:px-6">
-      {currentForm !== 'intake' && (
-        <>
-          <Button
-            onClick={onSave}
-            disabled={isSaving}
-            className="px-6 py-2 text-sm md:text-base font-bold flex-shrink-0 md:flex-1 bg-green-500/20 hover:bg-green-500/30 border border-green-400/40 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]"
-          >
-            <span className="text-green-100 font-bold whitespace-nowrap">{isSaving ? "Saving..." : saveLabel}</span>
-          </Button>
-          
-          <Button
-            onClick={onClear}
-            className="px-6 py-2 text-sm md:text-base font-bold flex-shrink-0 md:flex-1 bg-red-500/20 hover:bg-red-500/30 border border-red-400/40 transition-all shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]"
-          >
-            <span className="text-red-100 font-bold whitespace-nowrap">Clear Data</span>
-          </Button>
-        </>
-      )}
+        <Button
+          onClick={onSave}
+          disabled={isSaving}
+          className="px-6 py-2 text-sm md:text-base font-bold flex-shrink-0 md:flex-1 bg-green-500/20 hover:bg-green-500/30 border border-green-400/40 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]"
+        >
+          <span className="text-green-100 font-bold whitespace-nowrap">{isSaving ? "Saving..." : saveLabel}</span>
+        </Button>
+        
+        <Button
+          onClick={onClear}
+          className="px-6 py-2 text-sm md:text-base font-bold flex-shrink-0 md:flex-1 bg-red-500/20 hover:bg-red-500/30 border border-red-400/40 transition-all shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]"
+        >
+          <span className="text-red-100 font-bold whitespace-nowrap">Clear Data</span>
+        </Button>
 
       {/* Navigation Buttons */}
       {navigationButtons
