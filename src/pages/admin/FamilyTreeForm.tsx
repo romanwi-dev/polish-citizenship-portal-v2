@@ -1817,17 +1817,6 @@ export default function FamilyTreeForm() {
         </motion.div>
       </div>
 
-      {/* Generate PDF Button at Bottom */}
-      <div className="mt-12 flex justify-center">
-        <Button
-          onClick={handleGeneratePDF}
-          disabled={isGenerating}
-          size="lg"
-          className="px-16 py-8 text-2xl md:text-3xl font-heading font-black bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] min-w-[300px] md:min-w-[400px]"
-        >
-          <span className="text-blue-100 font-heading font-black">{isGenerating ? "Generating..." : "Generate PDF"}</span>
-        </Button>
-      </div>
 
       {/* Clear Data Confirmation Dialog */}
       <AlertDialog open={showClearDialog} onOpenChange={setShowClearDialog}>
