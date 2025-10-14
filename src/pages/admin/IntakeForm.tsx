@@ -163,7 +163,6 @@ export default function IntakeForm() {
               disabled={isSaving}
               className="px-3 md:px-4 lg:px-5 py-2 text-sm md:text-base font-bold bg-green-500/20 hover:bg-green-500/30 border border-green-400/40 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]"
             >
-              <Save className="mr-1.5 h-4 w-4" />
               <span className="text-green-100 font-bold">{isSaving ? "Saving..." : "Save data"}</span>
             </Button>
             
@@ -171,28 +170,24 @@ export default function IntakeForm() {
               onClick={() => setShowClearDialog(true)}
               className="px-3 md:px-4 lg:px-5 py-2 text-sm md:text-base font-bold bg-red-500/20 hover:bg-red-500/30 border border-red-400/40 transition-all shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]"
             >
-              <Sparkles className="mr-1.5 h-4 w-4" />
               <span className="text-red-100 font-bold">Clear Data</span>
             </Button>
           </div>
 
           {/* Navigation Buttons */}
           {[
-            { id: 'family-tree', label: 'Family Tree', icon: GitBranch, path: `/admin/family-tree/${caseId}` },
-            { id: 'family-history', label: 'Family History', icon: BookOpen, path: `/admin/family-history/${caseId}` },
-            { id: 'poa', label: 'Power of Attorney', icon: FileCheck, path: `/admin/poa/${caseId}` },
-            { id: 'citizenship', label: 'Citizenship Application', icon: Award, path: `/admin/citizenship/${caseId}` },
-            { id: 'civil-registry', label: 'Civil Registry', icon: Building, path: `/admin/civil-registry/${caseId}` },
+            { id: 'family-tree', label: 'Family Tree', path: `/admin/family-tree/${caseId}` },
+            { id: 'family-history', label: 'Family History', path: `/admin/family-history/${caseId}` },
+            { id: 'poa', label: 'Power of Attorney', path: `/admin/poa/${caseId}` },
+            { id: 'citizenship', label: 'Citizenship Application', path: `/admin/citizenship/${caseId}` },
+            { id: 'civil-registry', label: 'Civil Registry', path: `/admin/civil-registry/${caseId}` },
           ].map((btn) => {
-            const Icon = btn.icon;
-            
             return (
               <Button
                 key={btn.id}
                 onClick={() => navigate(btn.path)}
                 className="px-3 md:px-4 lg:px-5 py-2 text-sm md:text-base font-bold whitespace-nowrap flex-shrink-0 border transition-colors bg-white/5 hover:bg-white/10 border-white/20 opacity-50"
               >
-                <Icon className="mr-1.5 h-4 w-4 opacity-50" />
                 <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{btn.label}</span>
               </Button>
             );
