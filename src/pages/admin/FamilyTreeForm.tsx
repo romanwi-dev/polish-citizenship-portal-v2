@@ -361,10 +361,10 @@ export default function FamilyTreeForm() {
                 onClick={() => setIsFullView(!isFullView)}
                 size="lg"
                 variant="ghost"
-                className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 opacity-60 ${
-                  isFullView ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:text-primary'
+                className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 ${
+                  isFullView ? 'bg-primary/20 text-primary opacity-100' : 'text-muted-foreground hover:text-primary opacity-60'
                 }`}
-                title={isFullView ? "Show Tabs" : "Show All Sections"}
+                title={isFullView ? "Collapse to Tabs" : "Expand All Sections"}
               >
                 {isFullView ? <Minimize2 className="h-8 w-8" /> : <Maximize2 className="h-8 w-8" />}
               </Button>
