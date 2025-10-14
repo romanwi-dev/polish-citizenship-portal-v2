@@ -9,6 +9,11 @@ export const useMasterData = (caseId: string | undefined) => {
     queryFn: async () => {
       if (!caseId || caseId === ':id') throw new Error("Invalid case ID");
 
+      // Handle demo case - return empty data without DB fetch
+      if (caseId === 'demo-preview') {
+        return {};
+      }
+
       // Removed production console.log
 
       const { data, error } = await supabase
@@ -42,6 +47,11 @@ export const useUpdateMasterData = () => {
     mutationFn: async ({ caseId, updates }: { caseId: string; updates: any }) => {
       if (!caseId || caseId === ':id') {
         throw new Error("Invalid case ID");
+      }
+
+      // Handle demo case - skip DB operations
+      if (caseId === 'demo-preview') {
+        return; // Just return without saving
       }
 
       // Check authentication
@@ -91,6 +101,12 @@ export const useUpdateMasterData = () => {
       }
     },
     onSuccess: (_, variables) => {
+      // Skip DB operations for demo
+      if (variables.caseId === 'demo-preview') {
+        toast.success("Demo mode - changes not saved");
+        return;
+      }
+      
       // Force refetch of data after save
       queryClient.invalidateQueries({ queryKey: ['masterData', variables.caseId] });
       toast.success("Data saved successfully");
