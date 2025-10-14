@@ -319,7 +319,7 @@ export default function POAForm() {
         />
 
         {/* POA Forms */}
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="space-y-12 pb-32">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="pb-32">
           {/* Main Applicant - First Questions */}
           <>
             <div className="border-b border-border/50 pb-6 pt-6">

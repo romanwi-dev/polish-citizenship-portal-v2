@@ -443,7 +443,7 @@ export default function FamilyTreeForm() {
           scale: 1
         }} transition={{
           duration: 0.5
-        }} className="space-y-12">
+        }} className="">
             {/* Main Applicant - First Questions */}
             <>
               <div className="border-b border-border/50 pb-6 pt-6">
