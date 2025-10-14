@@ -258,7 +258,7 @@ export default function CaseDetail() {
           {/* FORMS TAB */}
           <TabsContent value="forms" className="space-y-6">
             <Tabs defaultValue={defaultFormSection} onValueChange={(value) => setSearchParams({ tab: "forms", section: value })}>
-              <TabsList className="flex justify-between gap-0.5 bg-transparent p-0 overflow-x-auto scrollbar-hide w-full">
+              <TabsList className="flex justify-between gap-0.5 bg-transparent p-0 w-full">
                 <TabsTrigger value="intake" className="flex-shrink-0">
                   <span className="text-blue-600 dark:text-blue-400">Intake</span>
                 </TabsTrigger>
