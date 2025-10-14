@@ -23,17 +23,6 @@ const getNavigationButtons = (formData: any) => {
     { id: 'civil-registry', label: 'Civil Registry', icon: Building, path: '/admin/civil-registry/:id', condition: true },
   ];
   
-  // Add Spouse button if married (after intake, before family-tree)
-  if (formData?.applicant_is_married) {
-    buttons.splice(1, 0, { id: 'spouse', label: 'Spouse', icon: User, path: '/admin/intake/:id', condition: true });
-  }
-  
-  // Add Children button if children_count > 0 (after spouse if exists, otherwise after intake)
-  if (formData?.children_count > 0) {
-    const insertIndex = formData?.applicant_is_married ? 2 : 1;
-    buttons.splice(insertIndex, 0, { id: 'children', label: 'Children', icon: Users, path: '/admin/intake/:id', condition: true });
-  }
-  
   return buttons.filter(btn => btn.condition);
 };
 
