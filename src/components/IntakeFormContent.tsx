@@ -51,7 +51,9 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
             </SelectContent>
           </Select>
         </motion.div>
+      </div>
 
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="space-y-2" onDoubleClick={() => clearField("children_count")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Number of children</Label>
           <Select value={formData?.children_count?.toString() || ""} onValueChange={(value) => handleInputChange("children_count", parseInt(value))}>
@@ -76,9 +78,7 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
             </SelectContent>
           </Select>
         </motion.div>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         {(formData?.children_count > 0) && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-2" onDoubleClick={() => clearField("minor_children_count")}>
             <Label className={isLargeFonts ? "text-2xl" : ""}>Number of minor children</Label>
@@ -105,7 +105,9 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
             </Select>
           </motion.div>
         )}
+      </div>
 
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="space-y-2" onDoubleClick={() => clearField("applicant_is_married")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Marital status</Label>
           <Select value={formData?.applicant_is_married === true ? "Married" : "Single"} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
