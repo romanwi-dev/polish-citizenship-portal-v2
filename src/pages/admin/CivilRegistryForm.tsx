@@ -157,11 +157,11 @@ export default function CivilRegistryForm() {
                   value={formData[field.name] || ""} 
                   onChange={e => {
                     // Only uppercase name/POB fields, preserve phone/passport/email as-is
-                    const isNameOrPlace = field.name.includes('_name') || field.name.includes('_pob') || field.name === 'place_of_marriage';
+                    const isNameOrPlace = field.name.includes('_name') || field.name.includes('_pob');
                     const shouldUppercase = isNameOrPlace && field.type !== "email";
                     handleInputChange(field.name, shouldUppercase ? e.target.value.toUpperCase() : e.target.value);
                   }} 
-                  isNameField={(field.name.includes('_name') || field.name.includes('_pob') || field.name === 'place_of_marriage') && field.type !== "email"}
+                  isNameField={(field.name.includes('_name') || field.name.includes('_pob')) && field.type !== "email"}
                   isLargeFonts={isLargeFonts}
                   colorScheme="civil-reg"
                 />
@@ -301,76 +301,6 @@ export default function CivilRegistryForm() {
                 </h2>
               </div>
               <div className="p-6 md:p-10 space-y-10">
-                {/* Row 1: Gender and Civil Status */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Gender */}
-                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-2">
-                    <Label className={isLargeFonts ? "text-2xl" : ""}>
-                      Gender
-                    </Label>
-                    <Select value={formData.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
-                      <SelectTrigger className="h-20 text-2xl border-emerald-300/30 dark:border-emerald-500/30 hover-glow focus:shadow-lg transition-all">
-                        <SelectValue placeholder="Select" />
-                      </SelectTrigger>
-                      <SelectContent className="border-2 z-50">
-                        <SelectItem value="M" className="text-base cursor-pointer">Male / Mężczyzna</SelectItem>
-                        <SelectItem value="F" className="text-base cursor-pointer">Female / Kobieta</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </motion.div>
-
-                  {/* Civil Status */}
-                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="space-y-2">
-                    <Label className={isLargeFonts ? "text-2xl" : ""}>
-                      Civil Status
-                    </Label>
-                    <Select value={formData.applicant_is_married === true ? "Married" : "Single"} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
-                      <SelectTrigger className="h-20 text-2xl border-emerald-300/30 dark:border-emerald-500/30 hover-glow focus:shadow-lg transition-all">
-                        <SelectValue placeholder="Select" />
-                      </SelectTrigger>
-                      <SelectContent className="border-2 z-50">
-                        <SelectItem value="Married" className="text-base cursor-pointer">Married</SelectItem>
-                        <SelectItem value="Single" className="text-base cursor-pointer">Single</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </motion.div>
-                </div>
-
-                {/* Row 2: Children counts */}
-                <div className="grid grid-cols-2 gap-6">
-                  {/* Number of children */}
-                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-2">
-                    <Label className={isLargeFonts ? "text-2xl" : ""}>
-                      Number of children
-                    </Label>
-                    <Select value={formData.children_count?.toString() || ""} onValueChange={(value) => { const count = parseInt(value); handleInputChange("children_count", count); }}>
-                      <SelectTrigger className="h-20 text-2xl border-emerald-300/30 dark:border-emerald-500/30 hover-glow focus:shadow-lg transition-all z-50">
-                        <SelectValue placeholder="Select" />
-                      </SelectTrigger>
-                      <SelectContent className="border-2 z-50">
-                        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (<SelectItem key={num} value={num.toString()} className="text-base cursor-pointer">{num}</SelectItem>))}
-                      </SelectContent>
-                    </Select>
-                  </motion.div>
-
-                  {/* Number of minor children - only show if children_count > 0 */}
-                  {(formData.children_count > 0) && (
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="space-y-2">
-                      <Label className={isLargeFonts ? "text-2xl" : ""}>
-                        Number of minor children
-                      </Label>
-                      <Select value={formData.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
-                        <SelectTrigger className="h-20 text-2xl border-emerald-300/30 dark:border-emerald-500/30 hover-glow focus:shadow-lg transition-all">
-                          <SelectValue placeholder="Select" />
-                        </SelectTrigger>
-                        <SelectContent className="border-2 z-50">
-                          {Array.from({ length: (formData.children_count || 0) + 1 }, (_, i) => i).map((num) => (<SelectItem key={num} value={num.toString()} className="text-base cursor-pointer">{num}</SelectItem>))}
-                        </SelectContent>
-                      </Select>
-                    </motion.div>
-                  )}
-                </div>
-
                 {renderFieldGroup([{
                 name: "applicant_first_name",
                 label: "Given names / Imię/ imiona"
@@ -387,21 +317,6 @@ export default function CivilRegistryForm() {
                 label: "Date of birth / Data urodzenia",
                 type: "date"
               }])}
-              
-                {/* Marriage information - Only show if married */}
-                {formData.applicant_is_married && (
-                  <div className="pt-6">
-                    <h3 className="text-xl font-semibold mb-6 text-foreground">Marriage information</h3>
-                    {renderFieldGroup([{
-                      name: "place_of_marriage",
-                      label: "Place of marriage / Miejsce zawarcia związku małżeńskiego"
-                    }, {
-                      name: "date_of_marriage",
-                      label: "Date of marriage / Data zawarcia związku małżeńskiego",
-                      type: "date"
-                    }])}
-                  </div>
-                )}
               
                 {renderFieldGroup([{
                 name: "applicant_maiden_name",

@@ -457,16 +457,14 @@ export default function CitizenshipForm() {
                   { name: "applicant_dob", label: "Data urodzenia / Date of birth", type: "date" }
                 ])}
                 
-                {/* Marriage information - Only show if married */}
-                {formData.applicant_is_married && (
-                  <div className="pt-6">
-                    <h3 className="text-xl font-semibold mb-6 text-foreground">Marriage information / Dane małżeństwa</h3>
-                    {renderFieldGroup([
+                {/* Marriage information */}
+                <div className="pt-6">
+                  <h3 className="text-xl font-semibold mb-6 text-foreground">Marriage information / Dane małżeństwa</h3>
+                  {renderFieldGroup([
                       { name: "place_of_marriage", label: "Miejsce zawarcia związku małżeńskiego / Place of marriage" },
                       { name: "date_of_marriage", label: "Data zawarcia związku małżeńskiego / Date of marriage", type: "date" }
                     ])}
-                  </div>
-                )}
+                </div>
                 
                 {renderFieldGroup([
                   { name: "applicant_maiden_name", label: "Nazwisko rodowe / Maiden name" },
