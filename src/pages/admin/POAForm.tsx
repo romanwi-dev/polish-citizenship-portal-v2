@@ -319,7 +319,93 @@ export default function POAForm() {
         />
 
         {/* POA Forms */}
-        <div className="space-y-8">
+        <div className="space-y-12">
+          {/* Select Section - Matching Intake Form */}
+          <div className="space-y-6">
+            <div className="border-b border-border/50 pb-6 pt-6">
+              <h2 className="text-2xl md:text-3xl font-heading font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                Select POA Type
+              </h2>
+              <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
+                First Questions
+              </h3>
+            </div>
+            <div className="px-4 py-6 md:p-10">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 w-full">
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+                  <Button
+                    variant={activePOAType === "adult" ? "default" : "outline"}
+                    className="w-full h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-base"
+                    style={activePOAType === "adult" ? {} : {
+                      boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
+                    }}
+                    onMouseEnter={(e) => {
+                      if (activePOAType !== "adult") {
+                        e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (activePOAType !== "adult") {
+                        e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+                      }
+                    }}
+                    onClick={() => setActivePOAType("adult")}
+                  >
+                    POA Adult
+                  </Button>
+                </motion.div>
+                
+                {minorChildrenCount > 0 && (
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
+                    <Button
+                      variant={activePOAType === "minor" ? "default" : "outline"}
+                      className="w-full h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-base"
+                      style={activePOAType === "minor" ? {} : {
+                        boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
+                      }}
+                      onMouseEnter={(e) => {
+                        if (activePOAType !== "minor") {
+                          e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (activePOAType !== "minor") {
+                          e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+                        }
+                      }}
+                      onClick={() => setActivePOAType("minor")}
+                    >
+                      POA Minor ({minorChildrenCount})
+                    </Button>
+                  </motion.div>
+                )}
+                
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+                  <Button
+                    variant={activePOAType === "spouses" ? "default" : "outline"}
+                    className="w-full h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-base"
+                    style={activePOAType === "spouses" ? {} : {
+                      boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
+                    }}
+                    onMouseEnter={(e) => {
+                      if (activePOAType !== "spouses") {
+                        e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (activePOAType !== "spouses") {
+                        e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+                      }
+                    }}
+                    onClick={() => setActivePOAType("spouses")}
+                  >
+                    POA Spouses
+                  </Button>
+                </motion.div>
+              </div>
+            </div>
+          </div>
+
           {/* POA Adult */}
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0 }} className="space-y-6">
             <div className="cursor-pointer select-none hover:opacity-80 transition-opacity border-b border-border/50 pb-6">
