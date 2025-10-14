@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Save, Sparkles } from "lucide-react";
+import { Save, Sparkles, Award, Building, FileCheck, BookOpen, GitBranch } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useRef, useEffect } from "react";
 import { Loader2, Type, Maximize2, Minimize2, User, Phone, MapPin, Plane, Users, FolderOpen, MessageSquare, ArrowLeft, HelpCircle } from "lucide-react";
@@ -102,24 +102,7 @@ export default function IntakeForm() {
                 Client Intake Form
               </h1>
             </motion.div>
-            <div className="flex flex-nowrap items-center gap-3">
-              <Button
-                onClick={handleSave}
-                disabled={isSaving}
-                size="lg"
-                className="px-6 py-2 text-sm md:text-base font-bold bg-green-500/20 hover:bg-green-500/30 border border-green-400/40 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]"
-              >
-                <Save className="mr-1.5 h-4 w-4" />
-                <span className="text-green-100 font-bold">{isSaving ? "Saving..." : "Save"}</span>
-              </Button>
-              <Button
-                onClick={() => setShowClearDialog(true)}
-                size="lg"
-                className="px-6 py-2 text-sm md:text-base font-bold bg-red-500/20 hover:bg-red-500/30 border border-red-400/40 transition-all shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]"
-              >
-                <Sparkles className="mr-1.5 h-4 w-4" />
-                <span className="text-red-100 font-bold">Clear</span>
-              </Button>
+            <div className="flex items-center gap-3">
               <Button
                 onClick={() => window.open('https://docs.lovable.dev', '_blank')}
                 size="lg"
@@ -173,15 +156,48 @@ export default function IntakeForm() {
           </div>
         </motion.div>
 
-        <FormButtonsRow 
-          caseId={caseId!}
-          currentForm="intake"
-          onSave={handleSave}
-          onClear={() => setShowClearDialog(true)}
-          onGeneratePDF={() => {}}
-          isSaving={isSaving}
-          formData={formData}
-        />
+        <div className="sticky top-0 z-50 flex flex-row gap-0.5 mb-8 overflow-x-auto scrollbar-hide py-2 -mx-4 md:-mx-6 px-4 md:px-6">
+          <div className="flex gap-0.5 flex-shrink-0 z-[10000]">
+            <Button
+              onClick={handleSave}
+              disabled={isSaving}
+              className="px-3 md:px-4 lg:px-5 py-2 text-sm md:text-base font-bold bg-green-500/20 hover:bg-green-500/30 border border-green-400/40 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]"
+            >
+              <Save className="mr-1.5 h-4 w-4" />
+              <span className="text-green-100 font-bold">{isSaving ? "Saving..." : "Save data"}</span>
+            </Button>
+            
+            <Button
+              onClick={() => setShowClearDialog(true)}
+              className="px-3 md:px-4 lg:px-5 py-2 text-sm md:text-base font-bold bg-red-500/20 hover:bg-red-500/30 border border-red-400/40 transition-all shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]"
+            >
+              <Sparkles className="mr-1.5 h-4 w-4" />
+              <span className="text-red-100 font-bold">Clear Data</span>
+            </Button>
+          </div>
+
+          {/* Navigation Buttons */}
+          {[
+            { id: 'family-tree', label: 'Family Tree', icon: GitBranch, path: `/admin/family-tree/${caseId}` },
+            { id: 'family-history', label: 'Family History', icon: BookOpen, path: `/admin/family-history/${caseId}` },
+            { id: 'poa', label: 'Power of Attorney', icon: FileCheck, path: `/admin/poa/${caseId}` },
+            { id: 'citizenship', label: 'Citizenship Application', icon: Award, path: `/admin/citizenship/${caseId}` },
+            { id: 'civil-registry', label: 'Civil Registry', icon: Building, path: `/admin/civil-registry/${caseId}` },
+          ].map((btn) => {
+            const Icon = btn.icon;
+            
+            return (
+              <Button
+                key={btn.id}
+                onClick={() => navigate(btn.path)}
+                className="px-3 md:px-4 lg:px-5 py-2 text-sm md:text-base font-bold whitespace-nowrap flex-shrink-0 border transition-colors bg-white/5 hover:bg-white/10 border-white/20 opacity-50"
+              >
+                <Icon className="mr-1.5 h-4 w-4 opacity-50" />
+                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{btn.label}</span>
+              </Button>
+            );
+          })}
+        </div>
 
         {/* Form with Tabs or Full View */}
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="space-y-8">
