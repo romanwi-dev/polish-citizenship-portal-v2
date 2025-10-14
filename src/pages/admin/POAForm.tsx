@@ -333,10 +333,7 @@ export default function POAForm() {
             <div className="px-4 py-6 md:p-10">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-2" onDoubleClick={() => handleInputChange("applicant_sex", null)}>
-                  <Label className={cn(
-                    "font-light text-foreground/90",
-                    isLargeFonts ? "text-2xl" : "text-xl"
-                  )}>Gender</Label>
+                  <Label className={isLargeFonts ? "text-2xl" : ""}>Gender</Label>
                   <Select value={formData?.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
                     <SelectTrigger 
                       className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs"
@@ -360,10 +357,7 @@ export default function POAForm() {
                 </motion.div>
 
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="space-y-2" onDoubleClick={() => handleInputChange("children_count", null)}>
-                  <Label className={cn(
-                    "font-light text-foreground/90",
-                    isLargeFonts ? "text-2xl" : "text-xl"
-                  )}>Number of children</Label>
+                  <Label className={isLargeFonts ? "text-2xl" : ""}>Number of children</Label>
                   <Select value={formData?.children_count?.toString() || ""} onValueChange={(value) => handleInputChange("children_count", parseInt(value))}>
                     <SelectTrigger 
                       className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur z-50 text-xs"
