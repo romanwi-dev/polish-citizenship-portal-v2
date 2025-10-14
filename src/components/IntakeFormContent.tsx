@@ -43,7 +43,7 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
                 e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
               }}
             >
-              <SelectValue placeholder="Select..." className="text-xs" />
+              <SelectValue placeholder="Select" className="text-xs" />
             </SelectTrigger>
             <SelectContent className="bg-background border-2 z-50">
               <SelectItem value="M" className="text-xs cursor-pointer">Male</SelectItem>
@@ -67,7 +67,7 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
                 e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
               }}
             >
-              <SelectValue placeholder="Select..." className="text-xs" />
+              <SelectValue placeholder="Select" className="text-xs" />
             </SelectTrigger>
             <SelectContent className="bg-background border-2 z-50">
               {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
@@ -94,7 +94,7 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
                 e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
               }}
             >
-              <SelectValue placeholder="Select..." className="text-xs" />
+              <SelectValue placeholder="Select" className="text-xs" />
             </SelectTrigger>
             <SelectContent className="bg-background border-2 z-50">
               <SelectItem value="Married" className="text-xs cursor-pointer">Married</SelectItem>
@@ -119,7 +119,7 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
                   e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
                 }}
               >
-                <SelectValue placeholder="Select..." className="text-xs" />
+                <SelectValue placeholder="Select" className="text-xs" />
               </SelectTrigger>
               <SelectContent className="bg-background border-2 z-50">
                 {Array.from({ length: (formData?.children_count || 0) + 1 }, (_, i) => i).map((num) => (

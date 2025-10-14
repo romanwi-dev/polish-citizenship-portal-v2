@@ -35,7 +35,7 @@ export function CountrySelect({
   value = "", 
   onChange, 
   label = "Country",
-  placeholder = "Select...",
+  placeholder = "Select",
   className,
   isLargeFonts = false,
   delay = 0
@@ -77,7 +77,7 @@ export function CountrySelect({
           onValueChange={handleSelectChange}
         >
           <SelectTrigger className="h-20 border-2 border-border/50 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs [&>span]:text-xs">
-            <SelectValue placeholder="Select..." className="text-xs" />
+            <SelectValue placeholder="Select" className="text-xs" />
           </SelectTrigger>
           <SelectContent className="bg-background border-2 z-[100]">
             {COUNTRIES.map((country) => (
