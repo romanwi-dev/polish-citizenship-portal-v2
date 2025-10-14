@@ -16,25 +16,12 @@ interface FormButtonsRowProps {
 const getNavigationButtons = (formData: any) => {
   const buttons = [
     { id: 'intake', label: 'Client Intake', icon: FileText, path: '/admin/intake/:id', condition: true },
-  ];
-  
-  // Add Spouse button if married
-  if (formData?.applicant_is_married) {
-    buttons.push({ id: 'spouse', label: 'Spouse', icon: User, path: '/admin/intake/:id#spouse', condition: true });
-  }
-  
-  // Add Children button if children_count > 0
-  if (formData?.children_count > 0) {
-    buttons.push({ id: 'children', label: 'Children', icon: Users, path: '/admin/intake/:id#children', condition: true });
-  }
-  
-  buttons.push(
     { id: 'family-tree', label: 'Family Tree', icon: GitBranch, path: '/admin/family-tree/:id', condition: true },
     { id: 'family-history', label: 'Family History', icon: BookOpen, path: '/admin/family-history/:id', condition: true },
     { id: 'poa', label: 'Power of Attorney', icon: FileCheck, path: '/admin/poa/:id', condition: true },
     { id: 'citizenship', label: 'Citizenship Application', icon: Award, path: '/admin/citizenship/:id', condition: true },
-    { id: 'civil-registry', label: 'Civil Registry', icon: Building, path: '/admin/civil-registry/:id', condition: true }
-  );
+    { id: 'civil-registry', label: 'Civil Registry', icon: Building, path: '/admin/civil-registry/:id', condition: true },
+  ];
   
   return buttons.filter(btn => btn.condition);
 };
