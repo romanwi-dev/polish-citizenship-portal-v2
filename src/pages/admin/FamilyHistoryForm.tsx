@@ -149,17 +149,12 @@ export default function FamilyHistoryForm() {
 
         {/* Form Content */}
         <div className="space-y-6">
-          <div className="border-b border-border/50 pb-6">
-            <h2 className="text-2xl md:text-3xl font-heading font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              Family Historical Narrative
-            </h2>
-          </div>
           <div className="px-4 py-6 md:p-10">
             <Textarea
               value={formData.family_history_notes || ""}
               onChange={(e) => handleInputChange("family_history_notes", e.target.value)}
               placeholder=""
-              className={cn("min-h-[500px] text-base border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur", isLargeFonts && "text-xl")}
+              className={cn("min-h-[600px] text-base border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur", isLargeFonts && "text-xl")}
             />
           </div>
         </div>
