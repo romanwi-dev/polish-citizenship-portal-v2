@@ -415,16 +415,12 @@ export default function FamilyTreeForm() {
                   <TabsTrigger value="applicant" className="flex-shrink-0">
                     <span className="text-blue-600 dark:text-blue-400">Applicant</span>
                   </TabsTrigger>
-                  {formData.applicant_is_married && (
-                    <TabsTrigger value="spouse" className="flex-shrink-0">
-                      <span className="text-blue-600 dark:text-blue-400">Spouse</span>
-                    </TabsTrigger>
-                  )}
-                  {(formData.minor_children_count > 0) && (
-                    <TabsTrigger value="children" className="flex-shrink-0">
-                      <span className="text-cyan-600 dark:text-cyan-400">Children</span>
-                    </TabsTrigger>
-                  )}
+                  <TabsTrigger value="spouse" className="flex-shrink-0">
+                    <span className="text-blue-600 dark:text-blue-400">Spouse</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="children" className="flex-shrink-0">
+                    <span className="text-cyan-600 dark:text-cyan-400">Children</span>
+                  </TabsTrigger>
                   <TabsTrigger value="parents" className="flex-shrink-0">
                     <span className="text-teal-600 dark:text-teal-400">Parents</span>
                   </TabsTrigger>
@@ -1220,16 +1216,12 @@ export default function FamilyTreeForm() {
                   <TabsTrigger value="applicant" className="flex-shrink-0">
                     <span className="text-blue-600 dark:text-blue-400">Applicant</span>
                   </TabsTrigger>
-                  {formData.applicant_is_married && (
-                    <TabsTrigger value="spouse" className="flex-shrink-0">
-                      <span className="text-blue-600 dark:text-blue-400">Spouse</span>
-                    </TabsTrigger>
-                  )}
-                  {(Number(formData.number_of_children_minor) > 0 || Number(formData.number_of_children_adult) > 0) && (
-                    <TabsTrigger value="children" className="flex-shrink-0">
-                      <span className="text-cyan-600 dark:text-cyan-400">Children</span>
-                    </TabsTrigger>
-                  )}
+                  <TabsTrigger value="spouse" className="flex-shrink-0">
+                    <span className="text-blue-600 dark:text-blue-400">Spouse</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="children" className="flex-shrink-0">
+                    <span className="text-cyan-600 dark:text-cyan-400">Children</span>
+                  </TabsTrigger>
                   <TabsTrigger value="parents" className="flex-shrink-0">
                     <span className="text-teal-600 dark:text-teal-400">Parents</span>
                   </TabsTrigger>

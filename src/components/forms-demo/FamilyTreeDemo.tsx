@@ -91,11 +91,12 @@ export default function FamilyTreeDemo({ onClose, isExpanded, onToggleExpand }: 
               <TabsTrigger value="applicant" className="flex-shrink-0">
                 <span className="text-blue-600 dark:text-blue-400">Applicant</span>
               </TabsTrigger>
-              {formData.applicant_is_married && (
-                <TabsTrigger value="spouse" className="flex-shrink-0">
-                  <span className="text-blue-600 dark:text-blue-400">Spouse</span>
-                </TabsTrigger>
-              )}
+              <TabsTrigger value="spouse" className="flex-shrink-0">
+                <span className="text-blue-600 dark:text-blue-400">Spouse</span>
+              </TabsTrigger>
+              <TabsTrigger value="children" className="flex-shrink-0">
+                <span className="text-cyan-600 dark:text-cyan-400">Children</span>
+              </TabsTrigger>
               <TabsTrigger value="parents" className="flex-shrink-0">
                 <span className="text-teal-600 dark:text-teal-400">Parents</span>
               </TabsTrigger>
@@ -181,6 +182,34 @@ export default function FamilyTreeDemo({ onClose, isExpanded, onToggleExpand }: 
                   onChange={(e) => handleInputChange('spouse_last_name', e.target.value)}
                   className={isLargeFonts ? 'text-xl h-12' : ''}
                 />
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="children" className="mt-0 p-6">
+            <div className="space-y-6">
+              <div>
+                <h3 className={`font-semibold mb-4 ${isLargeFonts ? 'text-2xl' : 'text-lg'}`}>Child 1</h3>
+                <div className="space-y-4">
+                  <div>
+                    <Label className={isLargeFonts ? 'text-xl' : ''}>First Name</Label>
+                    <Input
+                      value=""
+                      onChange={(e) => {}}
+                      className={isLargeFonts ? 'text-xl h-12' : ''}
+                      placeholder="Enter child's first name"
+                    />
+                  </div>
+                  <div>
+                    <Label className={isLargeFonts ? 'text-xl' : ''}>Last Name</Label>
+                    <Input
+                      value=""
+                      onChange={(e) => {}}
+                      className={isLargeFonts ? 'text-xl h-12' : ''}
+                      placeholder="Enter child's last name"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </TabsContent>
