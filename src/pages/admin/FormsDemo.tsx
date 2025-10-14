@@ -71,7 +71,7 @@ export default function FormsDemo() {
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text'
               }}>
-                Forms Inspection
+                Forms
               </h1>
             </motion.div>
 
