@@ -32,7 +32,7 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
           <Label className={isLargeFonts ? "text-2xl" : ""}>Gender</Label>
           <Select value={formData?.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
             <SelectTrigger 
-              className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+              className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur text-xs"
               style={{
                 boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
               }}
@@ -43,11 +43,11 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
                 e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
               }}
             >
-              <SelectValue placeholder="Select..." />
+              <SelectValue placeholder="Select..." className="text-xs" />
             </SelectTrigger>
             <SelectContent className="bg-background border-2 z-50">
-              <SelectItem value="M" className="text-base cursor-pointer">Male</SelectItem>
-              <SelectItem value="F" className="text-base cursor-pointer">Female</SelectItem>
+              <SelectItem value="M" className="text-xs cursor-pointer">Male</SelectItem>
+              <SelectItem value="F" className="text-xs cursor-pointer">Female</SelectItem>
             </SelectContent>
           </Select>
         </motion.div>
@@ -56,7 +56,7 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
           <Label className={isLargeFonts ? "text-2xl" : ""}>Marital status</Label>
           <Select value={formData?.applicant_is_married === true ? "Married" : "Single"} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
             <SelectTrigger 
-              className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+              className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur text-xs"
               style={{
                 boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
               }}
@@ -67,11 +67,11 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
                 e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
               }}
             >
-              <SelectValue placeholder="Select..." />
+              <SelectValue placeholder="Select..." className="text-xs" />
             </SelectTrigger>
             <SelectContent className="bg-background border-2 z-50">
-              <SelectItem value="Married" className="text-base cursor-pointer">Married</SelectItem>
-              <SelectItem value="Single" className="text-base cursor-pointer">Single</SelectItem>
+              <SelectItem value="Married" className="text-xs cursor-pointer">Married</SelectItem>
+              <SelectItem value="Single" className="text-xs cursor-pointer">Single</SelectItem>
             </SelectContent>
           </Select>
         </motion.div>
@@ -82,7 +82,7 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
           <Label className={isLargeFonts ? "text-2xl" : ""}>Number of children</Label>
           <Select value={formData?.children_count?.toString() || ""} onValueChange={(value) => handleInputChange("children_count", parseInt(value))}>
             <SelectTrigger 
-              className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur z-50"
+              className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur z-50 text-xs"
               style={{
                 boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
               }}
@@ -93,11 +93,11 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
                 e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
               }}
             >
-              <SelectValue placeholder="Select..." />
+              <SelectValue placeholder="Select..." className="text-xs" />
             </SelectTrigger>
             <SelectContent className="bg-background border-2 z-50">
               {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-                <SelectItem key={num} value={num.toString()} className="text-base cursor-pointer">{num}</SelectItem>
+                <SelectItem key={num} value={num.toString()} className="text-xs cursor-pointer">{num}</SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -108,7 +108,7 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
             <Label className={isLargeFonts ? "text-2xl" : ""}>Number of minor children</Label>
             <Select value={formData?.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
               <SelectTrigger 
-                className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
+                className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur text-xs"
                 style={{
                   boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
                 }}
@@ -119,11 +119,11 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
                   e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
                 }}
               >
-                <SelectValue placeholder="Select..." />
+                <SelectValue placeholder="Select..." className="text-xs" />
               </SelectTrigger>
               <SelectContent className="bg-background border-2 z-50">
                 {Array.from({ length: (formData?.children_count || 0) + 1 }, (_, i) => i).map((num) => (
-                  <SelectItem key={num} value={num.toString()} className="text-base cursor-pointer">{num}</SelectItem>
+                  <SelectItem key={num} value={num.toString()} className="text-xs cursor-pointer">{num}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -165,9 +165,9 @@ export const ApplicantSection = ({ formData, handleInputChange, clearField, isLa
           <Label className={isLargeFonts ? "text-2xl" : ""}>Place of birth</Label>
           <FormInput value={formData?.applicant_pob || ""} onChange={(e) => handleInputChange("applicant_pob", e.target.value.toUpperCase())} isNameField colorScheme="applicant" />
         </motion.div>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }}>
-          <DateField name="applicant_dob" label="Date of birth" value={formData?.applicant_dob} onChange={(value) => handleInputChange("applicant_dob", value)} colorScheme="applicant" isLargeFonts={isLargeFonts} />
-        </motion.div>
+        <div className="space-y-2" onDoubleClick={() => clearField("applicant_dob")}>
+          <DateField name="applicant_dob" label="Date of birth" value={formData?.applicant_dob} onChange={(value) => handleInputChange("applicant_dob", value)} colorScheme="applicant" isLargeFonts={isLargeFonts} delay={0.45} />
+        </div>
       </div>
 
       {formData?.applicant_is_married && (
@@ -176,9 +176,9 @@ export const ApplicantSection = ({ formData, handleInputChange, clearField, isLa
             <Label className={isLargeFonts ? "text-2xl" : ""}>Place of marriage</Label>
             <FormInput value={formData?.place_of_marriage || ""} onChange={(e) => handleInputChange("place_of_marriage", e.target.value.toUpperCase())} isNameField colorScheme="applicant" />
           </motion.div>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <DateField name="date_of_marriage" label="Date of marriage" value={formData?.date_of_marriage} onChange={(value) => handleInputChange("date_of_marriage", value)} colorScheme="applicant" isLargeFonts={isLargeFonts} />
-          </motion.div>
+          <div className="space-y-2" onDoubleClick={() => clearField("date_of_marriage")}>
+            <DateField name="date_of_marriage" label="Date of marriage" value={formData?.date_of_marriage} onChange={(value) => handleInputChange("date_of_marriage", value)} colorScheme="applicant" isLargeFonts={isLargeFonts} delay={0} />
+          </div>
         </div>
       )}
     </div>
@@ -257,9 +257,9 @@ export const PassportSection = ({ formData, handleInputChange, clearField, isLar
           <Label className={isLargeFonts ? "text-2xl" : ""}>Passport number</Label>
           <FormInput value={formData?.applicant_passport_number || ""} onChange={(e) => handleInputChange("applicant_passport_number", e.target.value.toUpperCase())} isNameField colorScheme="applicant" />
         </motion.div>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <DateField name="applicant_passport_expiry_date" label="Passport expiry date" value={formData?.applicant_passport_expiry_date} onChange={(value) => handleInputChange("applicant_passport_expiry_date", value)} colorScheme="applicant" isLargeFonts={isLargeFonts} />
-        </motion.div>
+        <div className="space-y-2" onDoubleClick={() => clearField("applicant_passport_expiry_date")}>
+          <DateField name="applicant_passport_expiry_date" label="Passport expiry date" value={formData?.applicant_passport_expiry_date} onChange={(value) => handleInputChange("applicant_passport_expiry_date", value)} colorScheme="applicant" isLargeFonts={isLargeFonts} delay={0} />
+        </div>
       </div>
     </div>
   </>
