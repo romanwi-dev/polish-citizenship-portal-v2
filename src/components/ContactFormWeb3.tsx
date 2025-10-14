@@ -64,15 +64,16 @@ const ContactFormWeb3 = () => {
 
   return (
     <section id="contact" className="py-32 relative overflow-hidden">
-      {/* 3D Background */}
+      {/* Background Effects - Same as Footer */}
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+      
+      {/* 3D Background - EU Flag */}
       <div className="absolute inset-0 z-0">
-        <Suspense fallback={<div className="w-full h-full bg-gradient-to-t from-background via-primary/5 to-background" />}>
+        <Suspense fallback={null}>
           {shouldLoadMap && <WavingEUFlag />}
         </Suspense>
       </div>
-
-  {/* Gradient Overlay */}
-  <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/50 to-background/80 z-[1]" />
       
       <div className="container px-4 mx-auto relative z-10">
         <div className="text-center mb-20">
