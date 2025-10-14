@@ -157,7 +157,7 @@ export default function POAFormDemo({ onClose, isExpanded, onToggleExpand }: POA
                   POA Adult
                 </h2>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-4 px-4 py-6 md:p-10">
                 <POAFormField
                   name="applicant_given_names"
                   label="Given Names"
