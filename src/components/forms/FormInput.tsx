@@ -107,7 +107,7 @@ export const FormInput = ({
         aria-invalid={error ? "true" : "false"}
         aria-required={required}
         className={cn(
-          "h-20 text-2xl border-2 hover:border-transparent focus:border-transparent transition-all duration-300 backdrop-blur font-normal font-input-work w-full max-w-full",
+          "h-16 text-2xl border-2 hover:border-transparent focus:border-transparent transition-all duration-300 backdrop-blur font-normal font-input-work w-full max-w-full",
           scheme.bg,
           scheme.border,
           isNameField && "uppercase",

@@ -64,7 +64,7 @@ export default function FamilyHistoryForm() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/80">
+    <div className="overflow-x-hidden min-h-screen">
       {/* Header Card */}
       <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
         <Card className="md:glass-card md:border-primary/20 rounded-none border-x-0 border-t-0 border-none md:border-b bg-transparent md:bg-card">
