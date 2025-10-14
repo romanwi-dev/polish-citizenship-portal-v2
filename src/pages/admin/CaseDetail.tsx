@@ -162,7 +162,7 @@ export default function CaseDetail() {
         {/* Tabs */}
         <Tabs defaultValue={defaultTab} className="space-y-6 relative z-10" onValueChange={(value) => setSearchParams({ tab: value })}>
           <div className="w-full overflow-x-auto pb-4">
-            <TabsList className="inline-flex gap-3 bg-transparent h-auto p-0 w-max">
+            <TabsList className="inline-flex gap-0.5 bg-transparent h-auto p-0 w-max">
               <TabsTrigger 
                 value="edit"
                 onClick={() => setShowEditDialog(true)}
@@ -258,7 +258,7 @@ export default function CaseDetail() {
           {/* FORMS TAB */}
           <TabsContent value="forms" className="space-y-6">
             <Tabs defaultValue={defaultFormSection} onValueChange={(value) => setSearchParams({ tab: "forms", section: value })}>
-              <TabsList className="flex gap-2 bg-transparent p-0 overflow-x-auto scrollbar-hide w-full">
+              <TabsList className="flex gap-0.5 bg-transparent p-0 overflow-x-auto scrollbar-hide w-full">
                 <TabsTrigger value="intake" className="flex-shrink-0">
                   <span className="text-blue-600 dark:text-blue-400">Intake</span>
                 </TabsTrigger>
