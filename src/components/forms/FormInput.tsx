@@ -1,5 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { useEffect, useRef, useState } from "react";
 
 type ColorScheme = 'children' | 'applicant' | 'spouse' | 'parents' | 'grandparents' | 'ggp' | 'poa' | 'citizenship' | 'civil-reg';
 
@@ -92,6 +93,9 @@ export const FormInput = ({
   className,
   ...props 
 }: FormInputProps) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [fontSize, setFontSize] = useState<string>(isLargeFonts ? "text-3xl" : "text-2xl");
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (isNameField) {
       const uppercasedValue = e.target.value.toUpperCase();
@@ -104,21 +108,42 @@ export const FormInput = ({
     }
   };
 
+  // Auto-scale font size based on content length
+  useEffect(() => {
+    if (!inputRef.current || !value) {
+      setFontSize(isLargeFonts ? "text-3xl" : "text-2xl");
+      return;
+    }
+
+    const textLength = value.toString().length;
+    const baseFontSize = isLargeFonts ? 30 : 24; // px values for text-3xl and text-2xl
+    
+    // Scale down font size for very long names
+    if (textLength > 25) {
+      const scaleFactor = Math.max(0.5, 1 - ((textLength - 25) / 50));
+      const calculatedSize = baseFontSize * scaleFactor;
+      setFontSize(`[${calculatedSize}px]`);
+    } else {
+      setFontSize(isLargeFonts ? "text-3xl" : "text-2xl");
+    }
+  }, [value, isLargeFonts]);
+
   const scheme = colorSchemes[colorScheme];
 
   return (
     <div className="w-full">
       <Input 
+        ref={inputRef}
         value={value || ""} 
         onChange={handleChange}
         aria-invalid={error ? "true" : "false"}
         aria-required={required}
         className={cn(
-          "h-20 text-2xl border-2 hover:border-transparent focus:border-transparent transition-all duration-300 backdrop-blur font-normal font-input-work w-full max-w-full",
+          "h-20 border-2 hover:border-transparent focus:border-transparent transition-all duration-300 backdrop-blur font-normal font-input-work w-full max-w-full",
+          fontSize,
           scheme.bg,
           scheme.border,
           isNameField && "uppercase",
-          isLargeFonts && "text-3xl",
           isChecked && "opacity-60",
           error && "border-destructive focus:border-destructive",
           className
