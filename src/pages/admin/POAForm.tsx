@@ -662,7 +662,7 @@ export default function POAForm() {
       </div>
 
       {/* Generate PDFs Button at Bottom */}
-      <div className="mt-6 flex justify-center">
+      <div className="mt-12 flex justify-center">
         <Button
           onClick={handleGenerateAllPOAs}
           disabled={isGenerating}
