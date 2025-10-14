@@ -253,6 +253,56 @@ const App = () => (
             } 
           />
           
+          {/* Form Routes */}
+          <Route 
+            path="/admin/intake/:id" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <IntakeForm />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/family-tree/:id" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <FamilyTreeForm />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/family-history/:id" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <FamilyHistoryForm />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/poa/:id" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <POAForm />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/citizenship/:id" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <CitizenshipForm />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/civil-registry/:id" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <CivilRegistryForm />
+              </Suspense>
+            } 
+          />
+          
           {/* Catch-all */}
           <Route path="*" element={<NotFound />} />
           </Routes>
