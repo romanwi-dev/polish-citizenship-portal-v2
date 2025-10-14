@@ -64,7 +64,12 @@ export default function FamilyHistoryForm() {
   }
 
   return (
-    <div className="overflow-x-hidden min-h-screen">
+    <div className="overflow-x-hidden min-h-screen relative">
+      {/* Checkered grid background - matching footer */}
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+      
+      <div className="relative z-10">
       {/* Header Card */}
       <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
         <Card className="md:glass-card md:border-primary/20 rounded-none border-x-0 border-t-0 border-none md:border-b bg-transparent md:bg-card">
@@ -257,6 +262,7 @@ export default function FamilyHistoryForm() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      </div>
     </div>
   );
 }

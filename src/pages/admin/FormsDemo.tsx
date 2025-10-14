@@ -2,73 +2,48 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  ArrowLeft,
-} from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-// Import form components (we'll create demo versions)
-import IntakeFormDemo from "@/components/forms-demo/IntakeFormDemo";
-import FamilyTreeDemo from "@/components/forms-demo/FamilyTreeDemo";
-import FamilyHistoryDemo from "@/components/forms-demo/FamilyHistoryDemo";
-import POAFormDemo from "@/components/forms-demo/POAFormDemo";
-import CitizenshipFormDemo from "@/components/forms-demo/CitizenshipFormDemo";
-import CivilRegistryFormDemo from "@/components/forms-demo/CivilRegistryFormDemo";
-
-type FormType = 'intake' | 'familyTree' | 'familyHistory' | 'poa' | 'citizenship' | 'civilRegistry' | null;
+const DEMO_CASE_ID = "demo-preview";
 
 const formCards = [
   {
     id: 'intake',
     title: 'Client Intake',
+    route: `/admin/intake/${DEMO_CASE_ID}`,
   },
   {
     id: 'familyTree',
     title: 'Family Tree',
+    route: `/admin/family-tree/${DEMO_CASE_ID}`,
   },
   {
     id: 'familyHistory',
     title: 'Family History',
+    route: `/admin/family-history/${DEMO_CASE_ID}`,
   },
   {
     id: 'poa',
     title: 'Power of Attorney',
+    route: `/admin/poa/${DEMO_CASE_ID}`,
   },
   {
     id: 'citizenship',
     title: 'Citizenship Application',
+    route: `/admin/citizenship/${DEMO_CASE_ID}`,
   },
   {
     id: 'civilRegistry',
     title: 'Civil Registry',
+    route: `/admin/civil-registry/${DEMO_CASE_ID}`,
   },
 ];
 
+
 export default function FormsDemo() {
   const navigate = useNavigate();
-  const [openForm, setOpenForm] = useState<FormType>(null);
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  const renderFormContent = () => {
-    switch (openForm) {
-      case 'intake':
-        return <IntakeFormDemo onClose={() => setOpenForm(null)} isExpanded={isExpanded} onToggleExpand={() => setIsExpanded(!isExpanded)} />;
-      case 'familyTree':
-        return <FamilyTreeDemo onClose={() => setOpenForm(null)} isExpanded={isExpanded} onToggleExpand={() => setIsExpanded(!isExpanded)} />;
-      case 'familyHistory':
-        return <FamilyHistoryDemo onClose={() => setOpenForm(null)} isExpanded={isExpanded} onToggleExpand={() => setIsExpanded(!isExpanded)} />;
-      case 'poa':
-        return <POAFormDemo onClose={() => setOpenForm(null)} isExpanded={isExpanded} onToggleExpand={() => setIsExpanded(!isExpanded)} />;
-      case 'citizenship':
-        return <CitizenshipFormDemo onClose={() => setOpenForm(null)} isExpanded={isExpanded} onToggleExpand={() => setIsExpanded(!isExpanded)} />;
-      case 'civilRegistry':
-        return <CivilRegistryFormDemo onClose={() => setOpenForm(null)} isExpanded={isExpanded} onToggleExpand={() => setIsExpanded(!isExpanded)} />;
-      default:
-        return null;
-    }
-  };
 
   return (
     <div className="min-h-screen overflow-x-hidden relative">
@@ -126,7 +101,7 @@ export default function FormsDemo() {
                   "cursor-pointer group hover:shadow-2xl transition-all duration-300 border-2 hover:border-primary/50",
                   "hover:scale-105 transform"
                 )}
-                onClick={() => setOpenForm(form.id as FormType)}
+                onClick={() => navigate(form.route)}
               >
                 <CardContent className="p-8 flex items-center justify-center">
                   <h3 className="text-2xl font-heading font-black tracking-tight" style={{
@@ -142,13 +117,6 @@ export default function FormsDemo() {
             </motion.div>
           ))}
         </div>
-
-        {/* Form Dialog */}
-        <Dialog open={openForm !== null} onOpenChange={() => { setOpenForm(null); setIsExpanded(false); }}>
-          <DialogContent className={`${isExpanded ? 'max-w-[98vw] max-h-[98vh]' : 'max-w-[95vw] max-h-[95vh]'} overflow-y-auto p-0`} hideCloseButton>
-            {renderFormContent()}
-          </DialogContent>
-        </Dialog>
       </div>
     </div>
   );
