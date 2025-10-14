@@ -52,8 +52,8 @@ export default function CivilRegistryForm() {
     CIVIL_REGISTRY_DATE_FIELDS
   );
   const handleGeneratePDF = async () => {
-    if (!caseId || caseId === ':id') {
-      toast.error('Invalid case ID');
+    if (!caseId || caseId === ':id' || caseId === 'demo-preview') {
+      toast.error('PDF generation not available in demo mode');
       return;
     }
 
@@ -169,7 +169,7 @@ export default function CivilRegistryForm() {
           </motion.div>)}
       </div>;
   };
-  if (!caseId || caseId === ':id') {
+  if (caseId !== 'demo-preview' && (!caseId || caseId === ':id')) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
         <Card className="p-8 max-w-md">

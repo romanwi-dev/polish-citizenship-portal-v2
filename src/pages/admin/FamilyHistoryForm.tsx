@@ -31,7 +31,7 @@ export default function FamilyHistoryForm() {
     handleClearAll,
   } = useFormManager(caseId, []);
 
-  if (!caseId || caseId === ':id') {
+  if (caseId !== 'demo-preview' && (!caseId || caseId === ':id')) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
         <Card className="p-8 max-w-md">

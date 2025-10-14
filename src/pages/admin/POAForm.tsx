@@ -84,8 +84,8 @@ export default function POAForm() {
   };
 
   const handleGenerateAndPreview = async (templateType: 'poa-adult' | 'poa-minor' | 'poa-spouses') => {
-    if (!caseId || caseId === ':id') {
-      toast.error('Invalid case ID');
+    if (!caseId || caseId === ':id' || caseId === 'demo-preview') {
+      toast.error('PDF generation not available in demo mode');
       return;
     }
 
@@ -189,8 +189,8 @@ export default function POAForm() {
   };
 
   const handleGenerateAllPOAs = async () => {
-    if (!caseId || caseId === ':id') {
-      toast.error('Invalid case ID');
+    if (!caseId || caseId === ':id' || caseId === 'demo-preview') {
+      toast.error('PDF generation not available in demo mode');
       return;
     }
 
