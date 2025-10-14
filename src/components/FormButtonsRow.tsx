@@ -50,21 +50,21 @@ export function FormButtonsRow({
   const navigationButtons = getNavigationButtons(formData || {});
 
   return (
-    <div className="sticky top-0 z-50 mb-8 -mx-4 md:-mx-6 py-2 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="flex flex-row gap-0.5 overflow-x-auto md:overflow-x-visible scrollbar-hide px-4 md:px-6 md:flex-wrap">
+    <div className="sticky top-0 z-50 mb-8 py-2 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 -mx-4 md:-mx-6">
+      <div className="flex flex-row gap-0.5 overflow-x-auto md:overflow-visible scrollbar-hide px-4 md:px-6">
       {currentForm !== 'intake' && (
-        <div className="flex gap-0.5 flex-shrink-0">
+        <div className="flex gap-0.5 flex-shrink-0 md:flex-shrink">
           <Button
             onClick={onSave}
             disabled={isSaving}
-            className="px-6 md:px-8 lg:px-10 py-2 text-sm md:text-base font-bold bg-green-500/20 hover:bg-green-500/30 border border-green-400/40 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]"
+            className="px-6 md:px-4 lg:px-6 py-2 text-sm md:text-base font-bold bg-green-500/20 hover:bg-green-500/30 border border-green-400/40 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]"
           >
             <span className="text-green-100 font-bold">{isSaving ? "Saving..." : saveLabel}</span>
           </Button>
           
           <Button
             onClick={onClear}
-            className="px-6 md:px-8 lg:px-10 py-2 text-sm md:text-base font-bold bg-red-500/20 hover:bg-red-500/30 border border-red-400/40 transition-all shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]"
+            className="px-6 md:px-4 lg:px-6 py-2 text-sm md:text-base font-bold bg-red-500/20 hover:bg-red-500/30 border border-red-400/40 transition-all shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]"
           >
             <span className="text-red-100 font-bold">Clear Data</span>
           </Button>
@@ -83,8 +83,8 @@ export function FormButtonsRow({
               key={btn.id}
               onClick={() => navigate(btn.path.replace(':id', caseId))}
               className={`
-                px-6 md:px-8 lg:px-10 py-2 text-sm md:text-base font-bold
-                whitespace-nowrap flex-shrink-0 border transition-colors
+                px-6 md:px-4 lg:px-6 py-2 text-sm md:text-base font-bold
+                whitespace-nowrap flex-shrink-0 md:flex-shrink border transition-colors
                 ${isCurrent 
                   ? 'bg-white/10 hover:bg-white/15 border-white/40 opacity-60' 
                   : 'bg-white/5 hover:bg-white/10 border-white/20 opacity-50'
