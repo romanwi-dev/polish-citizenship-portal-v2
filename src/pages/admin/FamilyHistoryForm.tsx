@@ -148,31 +148,21 @@ export default function FamilyHistoryForm() {
         />
 
         {/* Form Content */}
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }}>
-          <Card className="md:glass-card md:border-primary/20 border-none bg-transparent md:bg-card">
-            <CardHeader className="border-b border-border/50 pb-6">
-              <div className="flex items-center gap-4">
-                <BookOpen className="h-12 w-12 text-primary" />
-                <div>
-                  <CardTitle className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                    Family Historical Narrative
-                  </CardTitle>
-                  <CardDescription className="text-base mt-2">
-                    Record stories, traditions, and historical context about the family
-                  </CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="p-6 md:p-10">
-              <Textarea
-                value={formData.family_history_notes || ""}
-                onChange={(e) => handleInputChange("family_history_notes", e.target.value)}
-                placeholder=""
-                className={cn("min-h-[500px] text-base", isLargeFonts && "text-xl")}
-              />
-            </CardContent>
-          </Card>
-        </motion.div>
+        <div className="space-y-6">
+          <div className="border-b border-border/50 pb-6">
+            <h2 className="text-2xl md:text-3xl font-heading font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              Family Historical Narrative
+            </h2>
+          </div>
+          <div className="px-4 py-6 md:p-10">
+            <Textarea
+              value={formData.family_history_notes || ""}
+              onChange={(e) => handleInputChange("family_history_notes", e.target.value)}
+              placeholder=""
+              className={cn("min-h-[500px] text-base border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur", isLargeFonts && "text-xl")}
+            />
+          </div>
+        </div>
       </div>
 
       {/* Clear Dialog */}
