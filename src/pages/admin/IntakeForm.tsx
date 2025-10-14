@@ -102,7 +102,7 @@ export default function IntakeForm() {
                 Client Intake Form
               </h1>
             </motion.div>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-nowrap items-center gap-3">
               <Button
                 onClick={handleSave}
                 disabled={isSaving}
