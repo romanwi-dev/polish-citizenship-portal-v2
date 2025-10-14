@@ -384,10 +384,7 @@ export default function POAForm() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-2" onDoubleClick={() => handleInputChange("applicant_is_married", null)}>
-                  <Label className={cn(
-                    "font-light text-foreground/90",
-                    isLargeFonts ? "text-2xl" : "text-xl"
-                  )}>Marital status</Label>
+                  <Label className={isLargeFonts ? "text-2xl" : ""}>Marital status</Label>
                   <Select value={formData?.applicant_is_married === true ? "Married" : formData?.applicant_is_married === false ? "Single" : ""} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
                     <SelectTrigger 
                       className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs"
@@ -413,13 +410,10 @@ export default function POAForm() {
                 {/* Minor Children Count - only show if children_count > 0 */}
                 {(formData?.children_count > 0) && (
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="space-y-2" onDoubleClick={() => handleInputChange("minor_children_count", null)}>
-                    <Label className={cn(
-                      "font-light text-foreground/90",
-                      isLargeFonts ? "text-2xl" : "text-xl"
-                    )}>Number of minor children (under 18)</Label>
+                    <Label className={isLargeFonts ? "text-2xl" : ""}>Number of minor children</Label>
                     <Select value={formData?.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
                       <SelectTrigger 
-                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur z-50 text-xs"
+                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs"
                         style={{
                           boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
                         }}
