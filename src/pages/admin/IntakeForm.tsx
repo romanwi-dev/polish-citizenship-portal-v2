@@ -104,23 +104,6 @@ export default function IntakeForm() {
             </motion.div>
             <div className="flex items-center gap-3">
               <Button
-                onClick={handleSave}
-                disabled={isSaving}
-                size="lg"
-                className="px-6 py-2 text-sm md:text-base font-bold bg-green-500/20 hover:bg-green-500/30 border border-green-400/40 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]"
-              >
-                <Save className="mr-1.5 h-4 w-4" />
-                <span className="text-green-100 font-bold">{isSaving ? "Saving..." : "Save"}</span>
-              </Button>
-              <Button
-                onClick={() => setShowClearDialog(true)}
-                size="lg"
-                className="px-6 py-2 text-sm md:text-base font-bold bg-red-500/20 hover:bg-red-500/30 border border-red-400/40 transition-all shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]"
-              >
-                <Sparkles className="mr-1.5 h-4 w-4" />
-                <span className="text-red-100 font-bold">Clear</span>
-              </Button>
-              <Button
                 onClick={() => window.open('https://docs.lovable.dev', '_blank')}
                 size="lg"
                 variant="ghost"
@@ -142,10 +125,10 @@ export default function IntakeForm() {
                 onClick={() => setIsFullView(!isFullView)}
                 size="lg"
                 variant="ghost"
-                className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 opacity-60 ${
-                  isFullView ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:text-primary'
+                className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 ${
+                  isFullView ? 'bg-primary/20 text-primary opacity-100' : 'text-muted-foreground hover:text-primary opacity-60'
                 }`}
-                title={isFullView ? "Collapse" : "Expand All"}
+                title={isFullView ? "Collapse to Tabs" : "Expand All Sections"}
               >
                 {isFullView ? <Minimize2 className="h-8 w-8" /> : <Maximize2 className="h-8 w-8" />}
               </Button>
@@ -172,6 +155,16 @@ export default function IntakeForm() {
             </div>
           </div>
         </motion.div>
+
+        <FormButtonsRow 
+          caseId={caseId!}
+          currentForm="intake"
+          onSave={handleSave}
+          onClear={() => setShowClearDialog(true)}
+          onGeneratePDF={() => {}}
+          isSaving={isSaving}
+          formData={formData}
+        />
 
         {/* Form with Tabs or Full View */}
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="space-y-8">
