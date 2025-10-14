@@ -1352,12 +1352,394 @@ export default function FamilyTreeForm() {
                 </motion.div>
               </div>
 
-              {/* Note: Additional sections (Spouse, Children, Parents, Grandparents, Great-Grandparents) would continue in the same pattern */}
-              <div className="p-8 bg-primary/10 rounded-lg">
-                <p className="text-center text-lg">
-                  <strong>Full View Active:</strong> Showing Select and Applicant sections. 
-                  All other generation sections (Spouse, Children, Parents, Grandparents, Great-Grandparents) will be added here.
-                </p>
+              {/* Spouse Section */}
+              {formData.applicant_is_married && (
+                <div ref={(el) => sectionRefs.current.spouse = el} className="border-b border-border/10">
+                  <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="p-6 md:p-10 space-y-10">
+                    <h2 className="text-4xl md:text-5xl font-heading font-bold text-blue-300 dark:text-blue-300 border-b border-border/50 pb-6">
+                      Spouse
+                    </h2>
+                    
+                    {renderFieldGroup([
+                      { name: "spouse_first_name", label: "Given names", isNameField: true },
+                      { name: "spouse_last_name", label: "Full last name", isNameField: true }
+                    ], 'spouse')}
+
+                    {renderFieldGroup([
+                      { name: "spouse_maiden_name", label: "Maiden name", isNameField: true }
+                    ], 'spouse')}
+
+                    {renderFieldGroup([
+                      { name: "spouse_pob", label: "Place of birth", isNameField: true },
+                      { name: "place_of_marriage", label: "Place of marriage", isNameField: true }
+                    ], 'spouse')}
+
+                    {renderFieldGroup([
+                      { name: "spouse_dob", label: "Date of birth", type: "date" },
+                      { name: "date_of_marriage", label: "Date of marriage", type: "date" }
+                    ], 'spouse')}
+
+                    {renderFieldGroup([
+                      { name: "spouse_date_of_emigration", label: "Date of emigration", type: "date" },
+                      { name: "spouse_date_of_naturalization", label: "Date of naturalization", type: "date" }
+                    ], 'spouse')}
+
+                    {renderFieldGroup([
+                      { name: "spouse_email", label: "Email", type: "email" },
+                      { name: "spouse_phone", label: "Phone" }
+                    ], 'spouse')}
+
+                    <FamilyMemberDocumentsSection
+                      prefix="spouse"
+                      title="Required Documents"
+                      formData={formData}
+                      handleInputChange={handleInputChange}
+                      personType="spouse"
+                      sex={formData.spouse_sex}
+                      colorScheme="spouse"
+                    />
+
+                    <div className="space-y-2 mt-8">
+                      <Label htmlFor="spouse_notes" className={isLargeFonts ? "text-2xl" : ""}>ADDITIONAL NOTES</Label>
+                      <Textarea
+                        id="spouse_notes"
+                        value={formData.spouse_notes || ""}
+                        onChange={e => handleInputChange("spouse_notes", e.target.value.toUpperCase())}
+                        placeholder=""
+                        className={cn("min-h-[200px] border-2 border-blue-200/10 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase")}
+                      />
+                    </div>
+                  </motion.div>
+                </div>
+              )}
+
+              {/* Children Section */}
+              {(formData.minor_children_count > 0) && (
+                <div ref={(el) => sectionRefs.current.children = el} className="border-b border-border/10">
+                  <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.1 }} className="space-y-10 p-6 md:p-10">
+                    <div className="border-b border-border/50 pb-6">
+                      <h2 className="text-4xl md:text-5xl font-heading font-bold text-cyan-600 dark:text-cyan-400">
+                        Applicant's Minor Children
+                      </h2>
+                      <p className="text-base mt-2">
+                        Enter details for <span className="font-semibold text-primary">{formData.minor_children_count || 0} minor {formData.minor_children_count === 1 ? 'child' : 'children'}</span> (under 18 years old).
+                        <span className="block mt-1 text-muted-foreground">
+                          Note: Adult children should be processed as separate applicants.
+                        </span>
+                      </p>
+                    </div>
+
+                    {Array.from({ length: formData.minor_children_count || 0 }, (_, i) => i + 1).map(num => (
+                      <Fragment key={num}>
+                        <h3 className="text-2xl md:text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Minor Child {num}</h3>
+                        {renderFieldGroup([
+                          { name: `child_${num}_first_name`, label: "Given names", isNameField: true },
+                          { name: `child_${num}_last_name`, label: "Full last name", isNameField: true }
+                        ], 'children')}
+
+                        {renderFieldGroup([
+                          { name: `child_${num}_pob`, label: "Place of birth" }
+                        ], 'children')}
+
+                        {renderFieldGroup([
+                          { name: `child_${num}_dob`, label: "Date of birth", type: "date" }
+                        ], 'children')}
+
+                        <div className="grid grid-cols-1 gap-6">
+                          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="space-y-2">
+                            <Label className={isLargeFonts ? "text-2xl" : ""}>Sex</Label>
+                            <Select value={formData[`child_${num}_sex`] || ""} onValueChange={(value) => handleInputChange(`child_${num}_sex`, value)}>
+                              <SelectTrigger className="h-20 text-2xl border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                                <SelectValue placeholder="Select" />
+                              </SelectTrigger>
+                              <SelectContent className="bg-background border-2 z-50">
+                                <SelectItem value="M" className="text-base cursor-pointer">Male / Chłopiec</SelectItem>
+                                <SelectItem value="F" className="text-base cursor-pointer">Female / Dziewczynka</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </motion.div>
+                        </div>
+
+                        <FamilyMemberDocumentsSection
+                          prefix={`child_${num}`}
+                          title={`Child ${num} Required Documents`}
+                          formData={formData}
+                          handleInputChange={handleInputChange}
+                          personType="child"
+                          sex={formData[`child_${num}_sex`]}
+                          colorScheme="children"
+                        />
+                      </Fragment>
+                    ))}
+                  </motion.div>
+                </div>
+              )}
+
+              {/* Parents Section */}
+              <div ref={(el) => sectionRefs.current.father = el} className="border-b border-border/10">
+                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="p-6 md:p-10 space-y-10">
+                  <h2 className="text-4xl md:text-5xl font-heading font-bold text-teal-600 dark:text-teal-400 border-b border-border/50 pb-6">
+                    Parents
+                  </h2>
+
+                  {/* Father */}
+                  <h3 className="text-3xl font-heading font-bold text-teal-500 dark:text-teal-300">Father</h3>
+                  {renderFieldGroup([
+                    { name: "father_first_name", label: "Given names", isNameField: true },
+                    { name: "father_last_name", label: "Full last name", isNameField: true }
+                  ], 'parents')}
+
+                  {renderFieldGroup([
+                    { name: "father_pob", label: "Place of birth", isNameField: true }
+                  ], 'parents')}
+
+                  {renderFieldGroup([
+                    { name: "father_dob", label: "Date of birth", type: "date" },
+                    { name: "father_date_of_emigration", label: "Date of emigration", type: "date" }
+                  ], 'parents')}
+
+                  {renderFieldGroup([
+                    { name: "father_date_of_naturalization", label: "Date of naturalization", type: "date" }
+                  ], 'parents')}
+
+                  <FamilyMemberDocumentsSection
+                    prefix="father"
+                    title="Father Required Documents"
+                    formData={formData}
+                    handleInputChange={handleInputChange}
+                    personType="parent"
+                    sex="M"
+                    colorScheme="parents"
+                  />
+
+                  {/* Mother */}
+                  <h3 className="text-3xl font-heading font-bold text-teal-500 dark:text-teal-300 mt-10">Mother</h3>
+                  {renderFieldGroup([
+                    { name: "mother_first_name", label: "Given names", isNameField: true },
+                    { name: "mother_last_name", label: "Full last name", isNameField: true }
+                  ], 'parents')}
+
+                  {renderFieldGroup([
+                    { name: "mother_maiden_name", label: "Maiden name", isNameField: true }
+                  ], 'parents')}
+
+                  {renderFieldGroup([
+                    { name: "mother_pob", label: "Place of birth", isNameField: true }
+                  ], 'parents')}
+
+                  {renderFieldGroup([
+                    { name: "mother_dob", label: "Date of birth", type: "date" },
+                    { name: "mother_date_of_emigration", label: "Date of emigration", type: "date" }
+                  ], 'parents')}
+
+                  {renderFieldGroup([
+                    { name: "mother_date_of_naturalization", label: "Date of naturalization", type: "date" }
+                  ], 'parents')}
+
+                  <FamilyMemberDocumentsSection
+                    prefix="mother"
+                    title="Mother Required Documents"
+                    formData={formData}
+                    handleInputChange={handleInputChange}
+                    personType="parent"
+                    sex="F"
+                    colorScheme="parents"
+                  />
+                </motion.div>
+              </div>
+
+              {/* Grandparents Section */}
+              <div ref={(el) => sectionRefs.current.pgf = el} className="border-b border-border/10">
+                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="p-6 md:p-10 space-y-10">
+                  <h2 className="text-4xl md:text-5xl font-heading font-bold text-red-600 dark:text-red-400 border-b border-border/50 pb-6">
+                    Grandparents
+                  </h2>
+
+                  {/* Paternal Grandfather */}
+                  <h3 className="text-3xl font-heading font-bold text-red-500 dark:text-red-300">Paternal Grandfather</h3>
+                  {renderFieldGroup([
+                    { name: "pgf_first_name", label: "Given names", isNameField: true },
+                    { name: "pgf_last_name", label: "Full last name", isNameField: true }
+                  ], 'grandparents')}
+
+                  {renderFieldGroup([
+                    { name: "pgf_pob", label: "Place of birth", isNameField: true }
+                  ], 'grandparents')}
+
+                  {renderFieldGroup([
+                    { name: "pgf_dob", label: "Date of birth", type: "date" },
+                    { name: "pgf_date_of_emigration", label: "Date of emigration", type: "date" }
+                  ], 'grandparents')}
+
+                  {renderFieldGroup([
+                    { name: "pgf_date_of_naturalization", label: "Date of naturalization", type: "date" }
+                  ], 'grandparents')}
+
+                  <FamilyMemberDocumentsSection
+                    prefix="pgf"
+                    title="Paternal Grandfather Documents"
+                    formData={formData}
+                    handleInputChange={handleInputChange}
+                    personType="grandparent"
+                    sex="M"
+                    colorScheme="grandparents"
+                  />
+
+                  {/* Paternal Grandmother */}
+                  <h3 className="text-3xl font-heading font-bold text-red-500 dark:text-red-300 mt-10">Paternal Grandmother</h3>
+                  {renderFieldGroup([
+                    { name: "pgm_first_name", label: "Given names", isNameField: true },
+                    { name: "pgm_last_name", label: "Full last name", isNameField: true }
+                  ], 'grandparents')}
+
+                  {renderFieldGroup([
+                    { name: "pgm_maiden_name", label: "Maiden name", isNameField: true }
+                  ], 'grandparents')}
+
+                  {renderFieldGroup([
+                    { name: "pgm_pob", label: "Place of birth", isNameField: true }
+                  ], 'grandparents')}
+
+                  {renderFieldGroup([
+                    { name: "pgm_dob", label: "Date of birth", type: "date" },
+                    { name: "pgm_date_of_emigration", label: "Date of emigration", type: "date" }
+                  ], 'grandparents')}
+
+                  {renderFieldGroup([
+                    { name: "pgm_date_of_naturalization", label: "Date of naturalization", type: "date" }
+                  ], 'grandparents')}
+
+                  <FamilyMemberDocumentsSection
+                    prefix="pgm"
+                    title="Paternal Grandmother Documents"
+                    formData={formData}
+                    handleInputChange={handleInputChange}
+                    personType="grandparent"
+                    sex="F"
+                    colorScheme="grandparents"
+                  />
+
+                  {/* Maternal Grandfather */}
+                  <h3 className="text-3xl font-heading font-bold text-red-500 dark:text-red-300 mt-10">Maternal Grandfather</h3>
+                  {renderFieldGroup([
+                    { name: "mgf_first_name", label: "Given names", isNameField: true },
+                    { name: "mgf_last_name", label: "Full last name", isNameField: true }
+                  ], 'grandparents')}
+
+                  {renderFieldGroup([
+                    { name: "mgf_pob", label: "Place of birth", isNameField: true }
+                  ], 'grandparents')}
+
+                  {renderFieldGroup([
+                    { name: "mgf_dob", label: "Date of birth", type: "date" },
+                    { name: "mgf_date_of_emigration", label: "Date of emigration", type: "date" }
+                  ], 'grandparents')}
+
+                  {renderFieldGroup([
+                    { name: "mgf_date_of_naturalization", label: "Date of naturalization", type: "date" }
+                  ], 'grandparents')}
+
+                  <FamilyMemberDocumentsSection
+                    prefix="mgf"
+                    title="Maternal Grandfather Documents"
+                    formData={formData}
+                    handleInputChange={handleInputChange}
+                    personType="grandparent"
+                    sex="M"
+                    colorScheme="grandparents"
+                  />
+
+                  {/* Maternal Grandmother */}
+                  <h3 className="text-3xl font-heading font-bold text-red-500 dark:text-red-300 mt-10">Maternal Grandmother</h3>
+                  {renderFieldGroup([
+                    { name: "mgm_first_name", label: "Given names", isNameField: true },
+                    { name: "mgm_last_name", label: "Full last name", isNameField: true }
+                  ], 'grandparents')}
+
+                  {renderFieldGroup([
+                    { name: "mgm_maiden_name", label: "Maiden name", isNameField: true }
+                  ], 'grandparents')}
+
+                  {renderFieldGroup([
+                    { name: "mgm_pob", label: "Place of birth", isNameField: true }
+                  ], 'grandparents')}
+
+                  {renderFieldGroup([
+                    { name: "mgm_dob", label: "Date of birth", type: "date" },
+                    { name: "mgm_date_of_emigration", label: "Date of emigration", type: "date" }
+                  ], 'grandparents')}
+
+                  {renderFieldGroup([
+                    { name: "mgm_date_of_naturalization", label: "Date of naturalization", type: "date" }
+                  ], 'grandparents')}
+
+                  <FamilyMemberDocumentsSection
+                    prefix="mgm"
+                    title="Maternal Grandmother Documents"
+                    formData={formData}
+                    handleInputChange={handleInputChange}
+                    personType="grandparent"
+                    sex="F"
+                    colorScheme="grandparents"
+                  />
+                </motion.div>
+              </div>
+
+              {/* Great Grandparents Section */}
+              <div ref={(el) => sectionRefs.current.additional = el} className="border-b border-border/10">
+                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="p-6 md:p-10 space-y-10">
+                  <h2 className="text-4xl md:text-5xl font-heading font-bold text-gray-600 dark:text-gray-400 border-b border-border/50 pb-6">
+                    Great Grandparents
+                  </h2>
+
+                  {/* Paternal Great Grandparents (Father's Father) */}
+                  <h3 className="text-3xl font-heading font-bold text-gray-500 dark:text-gray-300">Paternal Line (Father's Father)</h3>
+                  {renderFieldGroup([
+                    { name: "ggpff_first_name", label: "Great Grandfather - Given names", isNameField: true },
+                    { name: "ggpff_last_name", label: "Great Grandfather - Last name", isNameField: true }
+                  ], 'ggp')}
+
+                  {renderFieldGroup([
+                    { name: "ggpmff_first_name", label: "Great Grandmother - Given names", isNameField: true },
+                    { name: "ggpmff_last_name", label: "Great Grandmother - Last name", isNameField: true }
+                  ], 'ggp')}
+
+                  {/* Paternal Great Grandparents (Father's Mother) */}
+                  <h3 className="text-3xl font-heading font-bold text-gray-500 dark:text-gray-300 mt-10">Paternal Line (Father's Mother)</h3>
+                  {renderFieldGroup([
+                    { name: "ggpfm_first_name", label: "Great Grandfather - Given names", isNameField: true },
+                    { name: "ggpfm_last_name", label: "Great Grandfather - Last name", isNameField: true }
+                  ], 'ggp')}
+
+                  {renderFieldGroup([
+                    { name: "ggpmfm_first_name", label: "Great Grandmother - Given names", isNameField: true },
+                    { name: "ggpmfm_last_name", label: "Great Grandmother - Last name", isNameField: true }
+                  ], 'ggp')}
+
+                  {/* Maternal Great Grandparents (Mother's Father) */}
+                  <h3 className="text-3xl font-heading font-bold text-gray-500 dark:text-gray-300 mt-10">Maternal Line (Mother's Father)</h3>
+                  {renderFieldGroup([
+                    { name: "ggpmf_first_name", label: "Great Grandfather - Given names", isNameField: true },
+                    { name: "ggpmf_last_name", label: "Great Grandfather - Last name", isNameField: true }
+                  ], 'ggp')}
+
+                  {renderFieldGroup([
+                    { name: "ggpmmf_first_name", label: "Great Grandmother - Given names", isNameField: true },
+                    { name: "ggpmmf_last_name", label: "Great Grandmother - Last name", isNameField: true }
+                  ], 'ggp')}
+
+                  {/* Maternal Great Grandparents (Mother's Mother) */}
+                  <h3 className="text-3xl font-heading font-bold text-gray-500 dark:text-gray-300 mt-10">Maternal Line (Mother's Mother)</h3>
+                  {renderFieldGroup([
+                    { name: "ggpmm_first_name", label: "Great Grandfather - Given names", isNameField: true },
+                    { name: "ggpmm_last_name", label: "Great Grandfather - Last name", isNameField: true }
+                  ], 'ggp')}
+
+                  {renderFieldGroup([
+                    { name: "ggpmmm_first_name", label: "Great Grandmother - Given names", isNameField: true },
+                    { name: "ggpmmm_last_name", label: "Great Grandmother - Last name", isNameField: true }
+                  ], 'ggp')}
+                </motion.div>
               </div>
             </div>
           )}
