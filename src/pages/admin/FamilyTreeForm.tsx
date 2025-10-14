@@ -1162,9 +1162,6 @@ export default function FamilyTreeForm() {
                     <Label htmlFor={`${prefix}_notes`} className={isLargeFonts ? "text-2xl" : ""}>
                       ADDITIONAL NOTES
                     </Label>
-                    <p className="text-sm text-muted-foreground mb-2">
-                      Family history, immigration journey, Polish heritage details, important life events
-                    </p>
                     <Textarea
                       id={`${prefix}_notes`}
                       value={formData[`${prefix}_notes`] || ""}
