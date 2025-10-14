@@ -376,7 +376,7 @@ export const NotesSection = ({ formData, handleInputChange, clearField, isLargeF
       <Label className={isLargeFonts ? "text-2xl" : ""}>
         Additional notes
       </Label>
-      <Textarea value={formData?.applicant_notes || ""} onChange={(e) => handleInputChange("applicant_notes", e.target.value.toUpperCase())} className="mt-2 min-h-[150px] uppercase" />
+      <Textarea value={formData?.applicant_notes || ""} onChange={(e) => handleInputChange("applicant_notes", e.target.value.toUpperCase())} className="mt-2 uppercase" />
     </div>
   </>
 );
