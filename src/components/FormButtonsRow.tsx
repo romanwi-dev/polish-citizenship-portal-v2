@@ -82,7 +82,7 @@ export function FormButtonsRow({
               key={btn.id}
               onClick={() => navigate(btn.path.replace(':id', caseId))}
               className={`
-                px-3 md:px-4 lg:px-5 py-2 text-sm md:text-base font-bold
+                px-6 md:px-8 lg:px-10 py-2 text-sm md:text-base font-bold
                 whitespace-nowrap flex-shrink-0 border transition-colors
                 ${isCurrent 
                   ? 'bg-white/10 hover:bg-white/15 border-white/40 opacity-60' 
