@@ -1207,8 +1207,38 @@ export default function FamilyTreeForm() {
                 </>
             </Tabs>
           ) : (
-            // Full View Mode - Show all tab sections
-            <div className="w-full space-y-0">
+            // Full View Mode - Show all tab sections with Tabs wrapper
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              {/* Keep the tabs list visible */}
+              <TabsList className="mb-6 p-2 rounded-xl shadow-lg border border-border bg-gradient-to-r from-card to-card/80 backdrop-blur-sm">
+                <TabsTrigger value="select" className="px-6 py-3 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300 hover:bg-accent text-base font-medium">
+                  Select
+                </TabsTrigger>
+                <TabsTrigger value="applicant" className="px-6 py-3 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300 hover:bg-accent text-base font-medium">
+                  Applicant
+                </TabsTrigger>
+                {formData.applicant_is_married && (
+                  <TabsTrigger value="spouse" className="px-6 py-3 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300 hover:bg-accent text-base font-medium">
+                    Spouse
+                  </TabsTrigger>
+                )}
+                {(Number(formData.number_of_children_minor) > 0 || Number(formData.number_of_children_adult) > 0) && (
+                  <TabsTrigger value="children" className="px-6 py-3 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300 hover:bg-accent text-base font-medium">
+                    Children
+                  </TabsTrigger>
+                )}
+                <TabsTrigger value="parents" className="px-6 py-3 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300 hover:bg-accent text-base font-medium">
+                  Parents
+                </TabsTrigger>
+                <TabsTrigger value="grandparents" className="px-6 py-3 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300 hover:bg-accent text-base font-medium">
+                  Grandparents
+                </TabsTrigger>
+                <TabsTrigger value="greatgrandparents" className="px-6 py-3 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300 hover:bg-accent text-base font-medium">
+                  Great Grandparents
+                </TabsTrigger>
+              </TabsList>
+
+              <div className="w-full space-y-0">
               {/* Select Section */}
               <div ref={(el) => sectionRefs.current.select = el} className="border-b border-border/10">
                 <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="p-6 md:p-10 space-y-10">
@@ -1742,6 +1772,7 @@ export default function FamilyTreeForm() {
                 </motion.div>
               </div>
             </div>
+            </Tabs>
           )}
         </motion.div>
       </div>
