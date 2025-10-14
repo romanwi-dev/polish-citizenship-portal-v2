@@ -25,18 +25,23 @@ export default function FamilyHistoryDemo({ onClose, isExpanded, onToggleExpand 
   const [isLargeFonts, setIsLargeFonts] = useState(false);
 
   return (
-    <div className={`p-6 ${isLargeFonts ? 'text-lg' : ''}`}>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
-          Family History
-        </h2>
-        <div className="flex items-center gap-2">
-          <Button onClick={onToggleExpand} variant="ghost" size="icon" title="Toggle fullscreen">
-            <Maximize2 className="h-6 w-6" />
-          </Button>
-          <Button onClick={() => setIsLargeFonts(!isLargeFonts)} variant="ghost" size="icon" title="Toggle large fonts">
-            <Type className="h-6 w-6" />
-          </Button>
+    <div className={`relative min-h-full ${isLargeFonts ? 'text-lg' : ''}`}>
+      {/* Checkered grid background - matching footer */}
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+      
+      <div className="relative z-10 p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
+            Family History
+          </h2>
+          <div className="flex items-center gap-2">
+            <Button onClick={onToggleExpand} variant="ghost" size="icon" title="Toggle fullscreen">
+              <Maximize2 className="h-6 w-6" />
+            </Button>
+            <Button onClick={() => setIsLargeFonts(!isLargeFonts)} variant="ghost" size="icon" title="Toggle large fonts">
+              <Type className="h-6 w-6" />
+            </Button>
           <Button onClick={onClose} variant="ghost" size="icon">
             <X className="h-6 w-6" />
           </Button>
@@ -44,74 +49,9 @@ export default function FamilyHistoryDemo({ onClose, isExpanded, onToggleExpand 
       </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Family Historical Narrative</CardTitle>
-          <CardDescription>
-            Document your family's journey, traditions, and heritage
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="space-y-3">
-            <Label>Family Origin Story</Label>
-            <Textarea
-              value={formData.family_origin_story}
-              onChange={(e) => setFormData({ ...formData, family_origin_story: e.target.value })}
-              rows={4}
-              className="resize-none"
-            />
-          </div>
-
-          <div className="space-y-3">
-            <Label>Emigration Journey</Label>
-            <Textarea
-              value={formData.emigration_journey}
-              onChange={(e) => setFormData({ ...formData, emigration_journey: e.target.value })}
-              rows={4}
-              className="resize-none"
-            />
-          </div>
-
-          <div className="space-y-3">
-            <Label>Polish Cultural Traditions & Heritage</Label>
-            <Textarea
-              value={formData.cultural_traditions}
-              onChange={(e) => setFormData({ ...formData, cultural_traditions: e.target.value })}
-              rows={4}
-              className="resize-none"
-            />
-          </div>
-
-          <div className="space-y-3">
-            <Label>Notable Family Stories & Anecdotes</Label>
-            <Textarea
-              value={formData.notable_stories}
-              onChange={(e) => setFormData({ ...formData, notable_stories: e.target.value })}
-              rows={4}
-              className="resize-none"
-            />
-          </div>
-
-          <div className="space-y-3">
-            <Label>Historical Context</Label>
-            <Textarea
-              value={formData.historical_context}
-              onChange={(e) => setFormData({ ...formData, historical_context: e.target.value })}
-              rows={4}
-              className="resize-none"
-            />
-          </div>
-
-          <div className="space-y-3">
-            <Label>Additional Notes & Information</Label>
-            <Textarea
-              value={formData.additional_notes}
-              onChange={(e) => setFormData({ ...formData, additional_notes: e.target.value })}
-              rows={4}
-              className="resize-none"
-            />
-          </div>
-        </CardContent>
+...
       </Card>
+      </div>
     </div>
   );
 }

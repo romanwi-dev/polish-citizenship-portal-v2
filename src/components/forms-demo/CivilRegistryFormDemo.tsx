@@ -14,18 +14,23 @@ export default function CivilRegistryFormDemo({ onClose, isExpanded, onToggleExp
   const [isLargeFonts, setIsLargeFonts] = useState(false);
 
   return (
-    <div className={`p-6 ${isLargeFonts ? 'text-lg' : ''}`}>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
-          Civil Registry
-        </h2>
-        <div className="flex items-center gap-2">
-          <Button onClick={onToggleExpand} variant="ghost" size="icon" title="Toggle fullscreen">
-            <Maximize2 className="h-6 w-6" />
-          </Button>
-          <Button onClick={() => setIsLargeFonts(!isLargeFonts)} variant="ghost" size="icon" title="Toggle large fonts">
-            <Type className="h-6 w-6" />
-          </Button>
+    <div className={`relative min-h-full ${isLargeFonts ? 'text-lg' : ''}`}>
+      {/* Checkered grid background - matching footer */}
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+      
+      <div className="relative z-10 p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
+            Civil Registry
+          </h2>
+          <div className="flex items-center gap-2">
+            <Button onClick={onToggleExpand} variant="ghost" size="icon" title="Toggle fullscreen">
+              <Maximize2 className="h-6 w-6" />
+            </Button>
+            <Button onClick={() => setIsLargeFonts(!isLargeFonts)} variant="ghost" size="icon" title="Toggle large fonts">
+              <Type className="h-6 w-6" />
+            </Button>
           <Button onClick={onClose} variant="ghost" size="icon">
             <X className="h-6 w-6" />
           </Button>
@@ -33,19 +38,9 @@ export default function CivilRegistryFormDemo({ onClose, isExpanded, onToggleExp
       </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Civil Registry Form</CardTitle>
-          <CardDescription>
-            Civil registry applications and documentation
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="text-center text-muted-foreground py-8">
-            <p className="text-lg">Form coming soon...</p>
-            <p className="text-sm mt-2">Civil registry form will be implemented with full field validation</p>
-          </div>
-        </CardContent>
+...
       </Card>
+      </div>
     </div>
   );
 }

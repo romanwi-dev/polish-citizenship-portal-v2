@@ -31,18 +31,23 @@ export default function POAFormDemo({ onClose, isExpanded, onToggleExpand }: POA
   };
 
   return (
-    <div className={`p-6 ${isLargeFonts ? 'text-lg' : ''}`}>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
-          Power of Attorney Form
-        </h2>
-        <div className="flex items-center gap-2">
-          <Button onClick={onToggleExpand} variant="ghost" size="icon" title="Toggle fullscreen">
-            <Maximize2 className="h-6 w-6" />
-          </Button>
-          <Button onClick={() => setIsLargeFonts(!isLargeFonts)} variant="ghost" size="icon" title="Toggle large fonts">
-            <Type className="h-6 w-6" />
-          </Button>
+    <div className={`relative min-h-full ${isLargeFonts ? 'text-lg' : ''}`}>
+      {/* Checkered grid background - matching footer */}
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+      
+      <div className="relative z-10 p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
+            Power of Attorney Form
+          </h2>
+          <div className="flex items-center gap-2">
+            <Button onClick={onToggleExpand} variant="ghost" size="icon" title="Toggle fullscreen">
+              <Maximize2 className="h-6 w-6" />
+            </Button>
+            <Button onClick={() => setIsLargeFonts(!isLargeFonts)} variant="ghost" size="icon" title="Toggle large fonts">
+              <Type className="h-6 w-6" />
+            </Button>
           <Button onClick={onClose} variant="ghost" size="icon">
             <X className="h-6 w-6" />
           </Button>
@@ -50,70 +55,8 @@ export default function POAFormDemo({ onClose, isExpanded, onToggleExpand }: POA
       </div>
 
       <div className="space-y-6">
-        <div className="space-y-3">
-          <Label>POA Type</Label>
-          <RadioGroup value={poaType} onValueChange={setPOAType}>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="adult" id="adult" />
-              <Label htmlFor="adult">Adult POA</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="minor" id="minor" />
-              <Label htmlFor="minor">Minor POA</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="spouse" id="spouse" />
-              <Label htmlFor="spouse">Spouse POA</Label>
-            </div>
-          </RadioGroup>
-        </div>
-
-        <POAFormField
-          name="applicant_given_names"
-          label="Applicant Given Names"
-          value={formData.applicant_given_names}
-          onChange={(value) => handleInputChange('applicant_given_names', value)}
-        />
-
-        <POAFormField
-          name="applicant_family_name"
-          label="Applicant Family Name"
-          value={formData.applicant_family_name}
-          onChange={(value) => handleInputChange('applicant_family_name', value)}
-        />
-
-        <POAFormField
-          name="applicant_passport_number"
-          label="Passport Number"
-          value={formData.applicant_passport_number}
-          onChange={(value) => handleInputChange('applicant_passport_number', value)}
-        />
-
-        <DateField
-          name="poa_date_filed"
-          label="POA Date Filed"
-          value={formData.poa_date_filed}
-          onChange={(value) => handleInputChange('poa_date_filed', value)}
-          colorScheme="poa"
-        />
-
-        {poaType === "minor" && (
-          <POAFormField
-            name="child_1_full_name"
-            label="Child Full Name"
-            value={formData.child_1_full_name}
-            onChange={(value) => handleInputChange('child_1_full_name', value)}
-          />
-        )}
-
-        {poaType === "spouse" && (
-          <POAFormField
-            name="spouse_full_name"
-            label="Spouse Full Name"
-            value={formData.spouse_full_name}
-            onChange={(value) => handleInputChange('spouse_full_name', value)}
-          />
-        )}
+...
+      </div>
       </div>
     </div>
   );
