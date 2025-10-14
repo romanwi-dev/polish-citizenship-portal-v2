@@ -26,8 +26,7 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
         First Questions
       </h3>
     </div>
-    <div className="px-4 py-6 md:p-10">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-2" onDoubleClick={() => clearField("applicant_sex")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Gender</Label>
           <Select value={formData?.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
@@ -130,7 +129,6 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
           </motion.div>
         )}
       </div>
-    </div>
   </>
 );
 
@@ -141,8 +139,7 @@ export const ApplicantSection = ({ formData, handleInputChange, clearField, isLa
         Applicant Information
       </h3>
     </div>
-    <div className="px-4 py-6 md:p-10">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="space-y-2" onDoubleClick={() => clearField("applicant_first_name")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>First name</Label>
           <FormInput value={formData?.applicant_first_name || ""} onChange={(e) => handleInputChange("applicant_first_name", e.target.value.toUpperCase())} isNameField colorScheme="applicant" />
@@ -181,7 +178,6 @@ export const ApplicantSection = ({ formData, handleInputChange, clearField, isLa
           </motion.div>
         </div>
       )}
-    </div>
   </>
 );
 
@@ -192,8 +188,7 @@ export const ContactSection = ({ formData, handleInputChange, clearField, isLarg
         Contact Information
       </h3>
     </div>
-    <div className="px-4 py-6 md:p-10">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_email")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Email</Label>
           <FormInput value={formData?.applicant_email || ""} onChange={(e) => handleInputChange("applicant_email", e.target.value)} type="email" colorScheme="applicant" />
@@ -203,7 +198,6 @@ export const ContactSection = ({ formData, handleInputChange, clearField, isLarg
           <FormInput value={formData?.applicant_phone || ""} onChange={(e) => handleInputChange("applicant_phone", e.target.value)} colorScheme="applicant" />
         </motion.div>
       </div>
-    </div>
   </>
 );
 
@@ -214,8 +208,7 @@ export const AddressSection = ({ formData, handleInputChange, clearField, isLarg
         Address Information
       </h3>
     </div>
-    <div className="px-4 py-6 md:p-10">
-      <div className="grid grid-cols-1 gap-6 w-full">
+    <div className="grid grid-cols-1 gap-6 w-full">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_street")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Street address</Label>
           <FormInput value={formData?.applicant_street || ""} onChange={(e) => handleInputChange("applicant_street", e.target.value.toUpperCase())} isNameField colorScheme="applicant" />
@@ -240,7 +233,6 @@ export const AddressSection = ({ formData, handleInputChange, clearField, isLarg
           <CountrySelect value={formData?.applicant_country || ""} onChange={(value) => handleInputChange("applicant_country", value)} label="Country" isLargeFonts={isLargeFonts} delay={0} />
         </div>
       </div>
-    </div>
   </>
 );
 
@@ -251,8 +243,7 @@ export const PassportSection = ({ formData, handleInputChange, clearField, isLar
         Passport Information
       </h3>
     </div>
-    <div className="px-4 py-6 md:p-10">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-2" onDoubleClick={() => clearField("applicant_passport_number")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Passport number</Label>
           <FormInput value={formData?.applicant_passport_number || ""} onChange={(e) => handleInputChange("applicant_passport_number", e.target.value.toUpperCase())} isNameField colorScheme="applicant" />
@@ -261,7 +252,6 @@ export const PassportSection = ({ formData, handleInputChange, clearField, isLar
           <DateField name="applicant_passport_expiry_date" label="Passport expiry date" value={formData?.applicant_passport_expiry_date} onChange={(value) => handleInputChange("applicant_passport_expiry_date", value)} colorScheme="applicant" isLargeFonts={isLargeFonts} delay={0} />
         </motion.div>
       </div>
-    </div>
   </>
 );
 
@@ -272,12 +262,10 @@ export const ImmigrationSection = ({ formData, handleInputChange, clearField, is
         Emigration Information
       </h3>
     </div>
-    <div className="px-4 py-6 md:p-10">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
         <DateField name="applicant_date_of_naturalization" label="Date of naturalization" value={formData?.applicant_date_of_naturalization} onChange={(value) => handleInputChange("applicant_date_of_naturalization", value)} colorScheme="applicant" isLargeFonts={isLargeFonts} />
         <DateField name="applicant_date_of_emigration" label="Date of emigration" value={formData?.applicant_date_of_emigration} onChange={(value) => handleInputChange("applicant_date_of_emigration", value)} colorScheme="applicant" isLargeFonts={isLargeFonts} />
       </div>
-    </div>
   </>
 );
 
@@ -372,11 +360,9 @@ export const NotesSection = ({ formData, handleInputChange, clearField, isLargeF
         Additional Notes
       </h3>
     </div>
-    <div className="px-4 py-6 md:p-10">
-      <Label className={isLargeFonts ? "text-2xl" : ""}>
-        Additional notes
-      </Label>
-      <Textarea value={formData?.applicant_notes || ""} onChange={(e) => handleInputChange("applicant_notes", e.target.value.toUpperCase())} className="mt-2 uppercase" />
-    </div>
+    <Label className={isLargeFonts ? "text-2xl" : ""}>
+      Additional notes
+    </Label>
+    <Textarea value={formData?.applicant_notes || ""} onChange={(e) => handleInputChange("applicant_notes", e.target.value.toUpperCase())} className="mt-2 uppercase" />
   </>
 );

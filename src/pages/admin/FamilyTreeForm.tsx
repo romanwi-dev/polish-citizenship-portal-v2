@@ -454,8 +454,7 @@ export default function FamilyTreeForm() {
                   First Questions
                 </h3>
               </div>
-              <div className="px-4 py-6 md:p-10">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full">
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-2" onDoubleClick={() => handleInputChange("applicant_sex", null)}>
                     <Label className={isLargeFonts ? "text-2xl" : ""}>Gender</Label>
                     <Select value={formData?.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
@@ -558,7 +557,6 @@ export default function FamilyTreeForm() {
                     </motion.div>
                   )}
                 </div>
-              </div>
             </>
           </motion.div>
           )}

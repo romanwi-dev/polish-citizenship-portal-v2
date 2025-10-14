@@ -300,7 +300,7 @@ export default function CivilRegistryForm() {
                   Applicant Information / Dane wnioskodawcy
                 </h2>
               </div>
-              <div className="p-6 md:p-10 space-y-10">
+              <div className="space-y-10">
                 {renderFieldGroup([{
                 name: "applicant_first_name",
                 label: "Given names / Imię/ imiona"
@@ -355,7 +355,7 @@ export default function CivilRegistryForm() {
                   Document to Register / Dokument do rejestracji
                 </h2>
               </div>
-              <div className="p-6 md:p-10 space-y-10">
+              <div className="space-y-10">
                 {renderFieldGroup([
                   {
                     name: "document_type",

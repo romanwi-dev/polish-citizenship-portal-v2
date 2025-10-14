@@ -332,7 +332,7 @@ export default function CitizenshipForm() {
                   CZĘŚĆ I - Dane osoby, której dotyczy wniosek
                 </h2>
               </div>
-              <div className="p-6 md:p-10 space-y-10">
+              <div className="space-y-10">
                 {renderFieldGroup([
                   { name: "applicant_first_name", label: "Imię/ imiona / Given names" },
                   { name: "applicant_last_name", label: "Nazwisko / Full last name" }
@@ -382,7 +382,7 @@ export default function CitizenshipForm() {
                   Dane osobowe rodziców / Parents Personal Data
                 </h2>
               </div>
-              <div className="p-6 md:p-10 space-y-10">
+              <div className="space-y-10">
                 {/* Mother */}
                 <div className="space-y-6">
                   <h3 className="text-2xl font-semibold text-foreground border-b pb-2">Dane dotyczące matki / Mother's Data</h3>
@@ -425,7 +425,7 @@ export default function CitizenshipForm() {
                   Dane osobowe dalszych wstępnych / Grandparents Data
                 </h2>
               </div>
-              <div className="p-6 md:p-10 space-y-10">
+              <div className="space-y-10">
                 {/* Maternal Grandfather */}
                 <div className="space-y-6">
                   <h3 className="text-2xl font-semibold text-foreground border-b pb-2">Dziadek ze strony matki / Maternal Grandfather</h3>
