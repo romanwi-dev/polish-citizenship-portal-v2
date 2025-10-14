@@ -5,14 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Card, CardContent } from "@/components/ui/card";
 import {
-  ClipboardList,
-  GitBranch,
-  ScrollText,
-  FileText,
-  Award,
-  Building2,
   ArrowLeft,
-  Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -30,44 +23,26 @@ const formCards = [
   {
     id: 'intake',
     title: 'Client Intake',
-    description: 'Collect client information, contact details, and passport data',
-    icon: ClipboardList,
-    color: 'from-blue-500 to-blue-600',
   },
   {
     id: 'familyTree',
     title: 'Family Tree',
-    description: 'Document family structure and ancestry information',
-    icon: GitBranch,
-    color: 'from-green-500 to-green-600',
   },
   {
     id: 'familyHistory',
     title: 'Family History',
-    description: 'Record family origin stories and cultural heritage',
-    icon: ScrollText,
-    color: 'from-purple-500 to-purple-600',
   },
   {
     id: 'poa',
     title: 'Power of Attorney',
-    description: 'Generate POA documents for adults, minors, and spouses',
-    icon: FileText,
-    color: 'from-orange-500 to-orange-600',
   },
   {
     id: 'citizenship',
     title: 'Citizenship Application',
-    description: 'Complete Polish citizenship application form',
-    icon: Award,
-    color: 'from-red-500 to-red-600',
   },
   {
     id: 'civilRegistry',
     title: 'Civil Registry',
-    description: 'Civil registry applications and documentation',
-    icon: Building2,
-    color: 'from-teal-500 to-teal-600',
   },
 ];
 
@@ -146,27 +121,10 @@ export default function FormsDemo() {
                 )}
                 onClick={() => setOpenForm(form.id as FormType)}
               >
-                <CardContent className="p-6">
-                  <div className={cn(
-                    "w-16 h-16 rounded-2xl bg-gradient-to-br mb-4 flex items-center justify-center",
-                    form.color,
-                    "group-hover:scale-110 transition-transform duration-300"
-                  )}>
-                    <form.icon className="h-8 w-8 text-white" />
-                  </div>
-                  
-                  <h3 className="text-2xl font-heading font-bold mb-2 group-hover:text-primary transition-colors">
+                <CardContent className="p-8 flex items-center justify-center">
+                  <h3 className="text-3xl font-heading font-bold group-hover:text-primary transition-colors">
                     {form.title}
                   </h3>
-                  
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    {form.description}
-                  </p>
-
-                  <div className="mt-4 flex items-center text-primary text-sm font-medium gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Sparkles className="h-4 w-4" />
-                    Click to inspect
-                  </div>
                 </CardContent>
               </Card>
             </motion.div>
