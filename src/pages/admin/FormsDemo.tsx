@@ -85,7 +85,7 @@ export default function FormsDemo() {
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.2 }}
             >
-              <h1 className="text-4xl md:text-5xl font-heading font-black tracking-tight bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              <h1 className="text-2xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 Forms Inspection
               </h1>
             </motion.div>
