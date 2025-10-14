@@ -15,18 +15,27 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { GlassmorphicDesign } from './navigation/designs/GlassmorphicDesign';
+import { CyberpunkDesign } from './navigation/designs/CyberpunkDesign';
+import { MaterialDesign } from './navigation/designs/MaterialDesign';
+import { MinimalDesign } from './navigation/designs/MinimalDesign';
+import { RetroDesign } from './navigation/designs/RetroDesign';
+import { BrutalistDesign } from './navigation/designs/BrutalistDesign';
+import { LuxuryDesign } from './navigation/designs/LuxuryDesign';
+import { NeumorphicDesign } from './navigation/designs/NeumorphicDesign';
+import { GradientDesign } from './navigation/designs/GradientDesign';
 
 const DESIGN_MAP: Record<string, React.ComponentType<{ children: React.ReactNode }>> = {
-  'glassmorphic': () => import('./navigation/designs/GlassmorphicDesign').then(m => m.GlassmorphicDesign),
-  'cyberpunk': () => import('./navigation/designs/CyberpunkDesign').then(m => m.CyberpunkDesign),
-  'material': () => import('./navigation/designs/MaterialDesign').then(m => m.MaterialDesign),
-  'minimal': () => import('./navigation/designs/MinimalDesign').then(m => m.MinimalDesign),
-  'retro': () => import('./navigation/designs/RetroDesign').then(m => m.RetroDesign),
-  'brutalist': () => import('./navigation/designs/BrutalistDesign').then(m => m.BrutalistDesign),
-  'luxury': () => import('./navigation/designs/LuxuryDesign').then(m => m.LuxuryDesign),
-  'neumorphic': () => import('./navigation/designs/NeumorphicDesign').then(m => m.NeumorphicDesign),
-  'gradient': () => import('./navigation/designs/GradientDesign').then(m => m.GradientDesign),
-} as any;
+  'glassmorphic': GlassmorphicDesign,
+  'cyberpunk': CyberpunkDesign,
+  'material': MaterialDesign,
+  'minimal': MinimalDesign,
+  'retro': RetroDesign,
+  'brutalist': BrutalistDesign,
+  'luxury': LuxuryDesign,
+  'neumorphic': NeumorphicDesign,
+  'gradient': GradientDesign,
+};
 
 const Navigation = () => {
   const navigate = useNavigate();
