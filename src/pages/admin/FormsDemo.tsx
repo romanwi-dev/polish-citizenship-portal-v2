@@ -86,11 +86,8 @@ export default function FormsDemo() {
               transition={{ delay: 0.2 }}
             >
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
-                Forms Inspection Center
+                Forms Inspection
               </h1>
-              <p className="text-lg text-muted-foreground mt-2">
-                Test and perfect all forms with dummy data
-              </p>
             </motion.div>
 
             <Button
