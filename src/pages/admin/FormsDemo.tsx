@@ -65,7 +65,7 @@ export default function FormsDemo() {
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.2 }}
             >
-              <h1 className="text-4xl md:text-5xl font-heading font-black tracking-tight" style={{
+              <h1 className="text-4xl md:text-5xl font-heading font-black tracking-tight text-center" style={{
                 background: 'linear-gradient(135deg, hsl(221, 83%, 53%) 0%, hsl(204, 70%, 53%) 50%, hsl(221, 50%, 45%) 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
