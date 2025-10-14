@@ -33,10 +33,10 @@ export function FormButtonsRow({
   const navigate = useNavigate();
 
   return (
-    <div className="sticky top-0 z-50 flex flex-row gap-2 mb-8 overflow-x-auto scrollbar-hide py-2 -mx-4 md:-mx-6 px-4 md:px-6 lg:justify-between">
+    <div className="sticky top-0 z-50 flex flex-row gap-0.5 mb-8 overflow-x-auto scrollbar-hide py-2 -mx-4 md:-mx-6 px-4 md:px-6 lg:justify-between">
       {/* Action Buttons */}
       {currentForm !== 'intake' && (
-        <div className="flex gap-2 flex-shrink-0 z-[10000]">
+        <div className="flex gap-0.5 flex-shrink-0 z-[10000]">
           <Button
             onClick={onSave}
             disabled={isSaving}
