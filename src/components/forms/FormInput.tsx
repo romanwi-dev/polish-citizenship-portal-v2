@@ -94,7 +94,7 @@ export const FormInput = ({
   ...props 
 }: FormInputProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [fontSize, setFontSize] = useState<string>(isLargeFonts ? "text-3xl" : "text-2xl");
+  const [fontSize, setFontSize] = useState<number>(isLargeFonts ? 30 : 24);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (isNameField) {
@@ -110,8 +110,8 @@ export const FormInput = ({
 
   // Auto-scale font size based on content length
   useEffect(() => {
-    if (!inputRef.current || !value) {
-      setFontSize(isLargeFonts ? "text-3xl" : "text-2xl");
+    if (!value) {
+      setFontSize(isLargeFonts ? 30 : 24);
       return;
     }
 
@@ -122,9 +122,9 @@ export const FormInput = ({
     if (textLength > 25) {
       const scaleFactor = Math.max(0.5, 1 - ((textLength - 25) / 50));
       const calculatedSize = baseFontSize * scaleFactor;
-      setFontSize(`[${calculatedSize}px]`);
+      setFontSize(calculatedSize);
     } else {
-      setFontSize(isLargeFonts ? "text-3xl" : "text-2xl");
+      setFontSize(baseFontSize);
     }
   }, [value, isLargeFonts]);
 
@@ -140,7 +140,6 @@ export const FormInput = ({
         aria-required={required}
         className={cn(
           "h-20 border-2 hover:border-transparent focus:border-transparent transition-all duration-300 backdrop-blur font-normal font-input-work w-full max-w-full",
-          fontSize,
           scheme.bg,
           scheme.border,
           isNameField && "uppercase",
@@ -149,6 +148,7 @@ export const FormInput = ({
           className
         )}
         style={{
+          fontSize: `${fontSize}px`,
           boxShadow: isChecked ? "none" : error ? "0 0 30px rgba(239, 68, 68, 0.3)" : `0 0 30px ${scheme.glow}`,
           transition: "all 0.3s ease"
         }}
