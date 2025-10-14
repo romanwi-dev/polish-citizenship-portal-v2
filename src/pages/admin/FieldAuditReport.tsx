@@ -100,7 +100,7 @@ export default function FieldAuditReport() {
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="intake">
-            <TabsList className="flex gap-0.5 bg-transparent p-0 overflow-x-auto scrollbar-hide w-full">
+            <TabsList className="flex justify-between gap-0.5 bg-transparent p-0 overflow-x-auto scrollbar-hide w-full">
               <TabsTrigger value="intake" className="flex-shrink-0">
                 <span>Intake ({intakeFields.length})</span>
               </TabsTrigger>
