@@ -1166,7 +1166,7 @@ export default function FamilyTreeForm() {
                       id={`${prefix}_notes`}
                       value={formData[`${prefix}_notes`] || ""}
                       onChange={e => handleInputChange(`${prefix}_notes`, e.target.value.toUpperCase())}
-                      placeholder="Enter biographical information and family history details..."
+                      placeholder=""
                       colorScheme="ggp"
                       className={cn("min-h-[200px] border-2 border-gray-300/10 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase")}
                     />
