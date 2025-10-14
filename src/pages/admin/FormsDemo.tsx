@@ -59,7 +59,7 @@ export default function FormsDemo() {
           transition={{ duration: 0.8 }}
           className="mb-12"
         >
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-center mb-6">
             <motion.div
               initial={{ x: -20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
@@ -71,19 +71,9 @@ export default function FormsDemo() {
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text'
               }}>
-                Forms
+                Polish Citizenship Forms
               </h1>
             </motion.div>
-
-            <Button
-              onClick={() => navigate('/admin/cases')}
-              variant="outline"
-              size="lg"
-              className="gap-2"
-            >
-              <ArrowLeft className="h-5 w-5" />
-              Back to Cases
-            </Button>
           </div>
         </motion.div>
 
