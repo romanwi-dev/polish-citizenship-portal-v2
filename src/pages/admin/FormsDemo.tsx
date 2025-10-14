@@ -71,7 +71,23 @@ export default function FormsDemo() {
   };
 
   return (
-    <div className="min-h-screen overflow-x-hidden">
+    <div className="min-h-screen overflow-x-hidden relative">
+      {/* Animated gradient background */}
+      <div className="fixed inset-0 bg-gradient-to-br from-primary/10 via-secondary/10 to-accent/10 animate-gradient-shift" />
+      
+      {/* Animated grid pattern */}
+      <div 
+        className="fixed inset-0 opacity-20"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, hsl(var(--primary) / 0.1) 1px, transparent 1px),
+            linear-gradient(to bottom, hsl(var(--primary) / 0.1) 1px, transparent 1px)
+          `,
+          backgroundSize: '50px 50px',
+          animation: 'float 20s ease-in-out infinite'
+        }}
+      />
+      
       <div className="container mx-auto py-12 px-4 md:px-6 relative z-10 max-w-7xl">
         {/* Header */}
         <motion.div
