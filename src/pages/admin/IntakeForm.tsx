@@ -163,6 +163,7 @@ export default function IntakeForm() {
           onClear={() => {}}
           onGeneratePDF={() => {}}
           isSaving={false}
+          formData={formData}
         />
 
         {/* Form with Tabs or Full View */}

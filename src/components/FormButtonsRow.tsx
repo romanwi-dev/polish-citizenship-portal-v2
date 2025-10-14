@@ -1,10 +1,11 @@
-import { Save, Sparkles, Download, FileText, Database, GitBranch, BookOpen, FileCheck, Award, Building, FolderOpen } from "lucide-react";
+import { Save, Sparkles, Download, FileText, Database, GitBranch, BookOpen, FileCheck, Award, Building, FolderOpen, Users, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
 interface FormButtonsRowProps {
   caseId: string;
   currentForm: 'intake' | 'family-tree' | 'family-history' | 'poa' | 'citizenship' | 'civil-registry' | 'additional-data';
+  formData?: any;
   onSave: () => void;
   onClear: () => void;
   onGeneratePDF: () => void;
@@ -12,14 +13,28 @@ interface FormButtonsRowProps {
   isSaving?: boolean;
 }
 
-const navigationButtons = [
-  { id: 'intake', label: 'Client Intake', icon: FileText, path: '/admin/cases/:id/intake' },
-  { id: 'family-tree', label: 'Family Tree', icon: GitBranch, path: '/admin/cases/:id/family-tree' },
-  { id: 'family-history', label: 'Family History', icon: BookOpen, path: '/admin/cases/:id/family-history' },
-  { id: 'poa', label: 'Power of Attorney', icon: FileCheck, path: '/admin/cases/:id/poa' },
-  { id: 'citizenship', label: 'Citizenship Application', icon: Award, path: '/admin/cases/:id/citizenship' },
-  { id: 'civil-registry', label: 'Civil Registry', icon: Building, path: '/admin/cases/:id/civil-registry' },
-];
+const getNavigationButtons = (formData: any) => {
+  const buttons = [
+    { id: 'intake', label: 'Client Intake', icon: FileText, path: '/admin/intake/:id', condition: true },
+    { id: 'family-tree', label: 'Family Tree', icon: GitBranch, path: '/admin/family-tree/:id', condition: true },
+    { id: 'family-history', label: 'Family History', icon: BookOpen, path: '/admin/family-history/:id', condition: true },
+    { id: 'poa', label: 'Power of Attorney', icon: FileCheck, path: '/admin/poa/:id', condition: true },
+    { id: 'citizenship', label: 'Citizenship Application', icon: Award, path: '/admin/citizenship/:id', condition: true },
+    { id: 'civil-registry', label: 'Civil Registry', icon: Building, path: '/admin/civil-registry/:id', condition: true },
+  ];
+  
+  // Conditionally add Children button if children_count > 0
+  if (formData?.children_count > 0) {
+    buttons.splice(2, 0, { id: 'children', label: 'Children', icon: Users, path: '/admin/intake/:id', condition: true });
+  }
+  
+  // Conditionally add Spouse button if married
+  if (formData?.applicant_is_married) {
+    buttons.splice(2, 0, { id: 'spouse', label: 'Spouse', icon: User, path: '/admin/intake/:id', condition: true });
+  }
+  
+  return buttons.filter(btn => btn.condition);
+};
 
 export function FormButtonsRow({ 
   caseId, 
@@ -28,9 +43,11 @@ export function FormButtonsRow({
   onClear, 
   onGeneratePDF,
   saveLabel = "Save data",
-  isSaving = false
+  isSaving = false,
+  formData
 }: FormButtonsRowProps) {
   const navigate = useNavigate();
+  const navigationButtons = getNavigationButtons(formData || {});
 
   return (
     <div className="sticky top-0 z-50 flex flex-row gap-0.5 mb-8 overflow-x-auto scrollbar-hide py-2 -mx-4 md:-mx-6 px-4 md:px-6 lg:justify-between">
