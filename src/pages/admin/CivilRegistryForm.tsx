@@ -216,7 +216,7 @@ export default function CivilRegistryForm() {
       }} transition={{
         duration: 0.8
       }} className="sticky top-0 z-20 bg-gradient-to-br from-background via-background to-background/95 backdrop-blur-sm border-b mb-8">
-          <Card className="md:glass-card md:border-emerald-300/20 overflow-hidden rounded-none border-x-0 border-t-0 border-none md:border-b bg-transparent md:bg-card">
+          <Card className="md:glass-card md:border-emerald-300/20 overflow-hidden rounded-none border-x-0 border-t-0 border-none md:border-b">
             <FormHeader
               title="Civil Registry"
               completionPercentage={completion.completionPercentage}
@@ -245,7 +245,7 @@ export default function CivilRegistryForm() {
                     onClick={toggleFontSize} 
                     variant="outline"
                     size="lg"
-                    className={`gap-2 ${isLargeFonts ? 'bg-primary/20 text-primary' : ''}`}
+                    className={`gap-2 ${isLargeFonts ? 'text-primary' : ''}`}
                   >
                     <Type className="h-5 w-5" />
                     {isLargeFonts ? 'Normal' : 'Large'} Font
@@ -293,10 +293,10 @@ export default function CivilRegistryForm() {
                       Gender
                     </Label>
                     <Select value={formData.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
-                      <SelectTrigger className="h-20 text-2xl border-emerald-300/30 dark:border-emerald-500/30 bg-emerald-50/45 dark:bg-emerald-900/45 hover-glow focus:shadow-lg transition-all backdrop-blur">
+                      <SelectTrigger className="h-20 text-2xl border-emerald-300/30 dark:border-emerald-500/30 hover-glow focus:shadow-lg transition-all">
                         <SelectValue placeholder="Select..." />
                       </SelectTrigger>
-                      <SelectContent className="bg-background border-2 z-50">
+                      <SelectContent className="border-2 z-50">
                         <SelectItem value="M" className="text-base cursor-pointer">Male / Mężczyzna</SelectItem>
                         <SelectItem value="F" className="text-base cursor-pointer">Female / Kobieta</SelectItem>
                       </SelectContent>
@@ -309,10 +309,10 @@ export default function CivilRegistryForm() {
                       Civil Status
                     </Label>
                     <Select value={formData.applicant_is_married === true ? "Married" : "Single"} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
-                      <SelectTrigger className="h-20 text-2xl border-emerald-300/30 dark:border-emerald-500/30 bg-emerald-50/45 dark:bg-emerald-900/45 hover-glow focus:shadow-lg transition-all backdrop-blur">
+                      <SelectTrigger className="h-20 text-2xl border-emerald-300/30 dark:border-emerald-500/30 hover-glow focus:shadow-lg transition-all">
                         <SelectValue placeholder="Select..." />
                       </SelectTrigger>
-                      <SelectContent className="bg-background border-2 z-50">
+                      <SelectContent className="border-2 z-50">
                         <SelectItem value="Married" className="text-base cursor-pointer">Married</SelectItem>
                         <SelectItem value="Single" className="text-base cursor-pointer">Single</SelectItem>
                       </SelectContent>
@@ -328,10 +328,10 @@ export default function CivilRegistryForm() {
                       Number of children
                     </Label>
                     <Select value={formData.children_count?.toString() || ""} onValueChange={(value) => { const count = parseInt(value); handleInputChange("children_count", count); }}>
-                      <SelectTrigger className="h-20 text-2xl border-emerald-300/30 dark:border-emerald-500/30 bg-emerald-50/45 dark:bg-emerald-900/45 hover-glow focus:shadow-lg transition-all backdrop-blur z-50">
+                      <SelectTrigger className="h-20 text-2xl border-emerald-300/30 dark:border-emerald-500/30 hover-glow focus:shadow-lg transition-all z-50">
                         <SelectValue placeholder="Select..." />
                       </SelectTrigger>
-                      <SelectContent className="bg-background border-2 z-50">
+                      <SelectContent className="border-2 z-50">
                         {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (<SelectItem key={num} value={num.toString()} className="text-base cursor-pointer">{num}</SelectItem>))}
                       </SelectContent>
                     </Select>
@@ -344,10 +344,10 @@ export default function CivilRegistryForm() {
                         Number of minor children
                       </Label>
                       <Select value={formData.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
-                        <SelectTrigger className="h-20 text-2xl border-emerald-300/30 dark:border-emerald-500/30 bg-emerald-50/45 dark:bg-emerald-900/45 hover-glow focus:shadow-lg transition-all backdrop-blur">
+                        <SelectTrigger className="h-20 text-2xl border-emerald-300/30 dark:border-emerald-500/30 hover-glow focus:shadow-lg transition-all">
                           <SelectValue placeholder="Select..." />
                         </SelectTrigger>
-                        <SelectContent className="bg-background border-2 z-50">
+                        <SelectContent className="border-2 z-50">
                           {Array.from({ length: (formData.children_count || 0) + 1 }, (_, i) => i).map((num) => (<SelectItem key={num} value={num.toString()} className="text-base cursor-pointer">{num}</SelectItem>))}
                         </SelectContent>
                       </Select>
@@ -456,7 +456,7 @@ export default function CivilRegistryForm() {
                       initial={{ opacity: 0, scale: 0.95 }} 
                       animate={{ opacity: 1, scale: 1 }} 
                       transition={{ delay: 0 }}
-                      className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur"
+                      className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow"
                     >
                       <Checkbox
                         id="has_original_foreign_act"
@@ -473,7 +473,7 @@ export default function CivilRegistryForm() {
                       initial={{ opacity: 0, scale: 0.95 }} 
                       animate={{ opacity: 1, scale: 1 }} 
                       transition={{ delay: 0.05 }}
-                      className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur"
+                      className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow"
                     >
                       <Checkbox
                         id="has_sworn_translation"
@@ -490,7 +490,7 @@ export default function CivilRegistryForm() {
                       initial={{ opacity: 0, scale: 0.95 }} 
                       animate={{ opacity: 1, scale: 1 }} 
                       transition={{ delay: 0.1 }}
-                      className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur"
+                      className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow"
                     >
                       <Checkbox
                         id="has_tax_payment"
@@ -507,7 +507,7 @@ export default function CivilRegistryForm() {
                       initial={{ opacity: 0, scale: 0.95 }} 
                       animate={{ opacity: 1, scale: 1 }} 
                       transition={{ delay: 0.15 }}
-                      className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur"
+                      className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow"
                     >
                       <Checkbox
                         id="has_power_of_attorney"
@@ -524,7 +524,7 @@ export default function CivilRegistryForm() {
                       initial={{ opacity: 0, scale: 0.95 }} 
                       animate={{ opacity: 1, scale: 1 }} 
                       transition={{ delay: 0.2 }}
-                      className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow bg-card/30 backdrop-blur"
+                      className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow"
                     >
                       <Checkbox
                         id="has_passport_copy"
@@ -539,7 +539,7 @@ export default function CivilRegistryForm() {
                   </div>
                 </div>
 
-                <div className="bg-muted/30 rounded-lg p-6 border-2 border-primary/20">
+                <div className="rounded-lg p-6 border-2 border-primary/20">
                   <h3 className={cn("font-semibold mb-6 text-foreground", isLargeFonts ? "text-3xl" : "text-2xl")}>Additional notes / Dodatkowe informacje</h3>
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -555,7 +555,7 @@ export default function CivilRegistryForm() {
                       onChange={(e) => handleInputChange("civil_registry_notes", e.target.value.toUpperCase())}
                       placeholder=""
                       className={cn(
-                        "min-h-32 border-emerald-300/10 dark:border-emerald-500/10 bg-emerald-50/45 dark:bg-emerald-900/45 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase",
+                        "min-h-32 border-emerald-300/10 dark:border-emerald-500/10 hover-glow focus:shadow-lg transition-all uppercase",
                         isLargeFonts ? "text-lg" : "text-base"
                       )}
                     />
