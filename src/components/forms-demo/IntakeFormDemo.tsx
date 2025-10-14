@@ -23,12 +23,13 @@ const dummyData = {
 
 interface IntakeFormDemoProps {
   onClose: () => void;
+  isExpanded?: boolean;
+  onToggleExpand?: () => void;
 }
 
-export default function IntakeFormDemo({ onClose }: IntakeFormDemoProps) {
+export default function IntakeFormDemo({ onClose, isExpanded, onToggleExpand }: IntakeFormDemoProps) {
   const [formData, setFormData] = useState(dummyData);
   const [activeTab, setActiveTab] = useState("select");
-  const [isExpanded, setIsExpanded] = useState(false);
   const [isLargeFonts, setIsLargeFonts] = useState(false);
 
   const handleInputChange = (field: string, value: any) => {
@@ -53,7 +54,7 @@ export default function IntakeFormDemo({ onClose }: IntakeFormDemoProps) {
           Client Intake Form
         </h2>
         <div className="flex items-center gap-2">
-          <Button onClick={() => setIsExpanded(!isExpanded)} variant="ghost" size="icon" title="Toggle fullscreen">
+          <Button onClick={onToggleExpand} variant="ghost" size="icon" title="Toggle fullscreen">
             <Maximize2 className="h-6 w-6" />
           </Button>
           <Button onClick={() => setIsLargeFonts(!isLargeFonts)} variant="ghost" size="icon" title="Toggle large fonts">

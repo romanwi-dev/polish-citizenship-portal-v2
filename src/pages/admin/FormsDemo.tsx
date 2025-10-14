@@ -54,9 +54,9 @@ export default function FormsDemo() {
   const renderFormContent = () => {
     switch (openForm) {
       case 'intake':
-        return <IntakeFormDemo onClose={() => setOpenForm(null)} />;
+        return <IntakeFormDemo onClose={() => setOpenForm(null)} isExpanded={isExpanded} onToggleExpand={() => setIsExpanded(!isExpanded)} />;
       case 'familyTree':
-        return <FamilyTreeDemo onClose={() => setOpenForm(null)} />;
+        return <FamilyTreeDemo onClose={() => setOpenForm(null)} isExpanded={isExpanded} onToggleExpand={() => setIsExpanded(!isExpanded)} />;
       case 'familyHistory':
         return <FamilyHistoryDemo onClose={() => setOpenForm(null)} />;
       case 'poa':
