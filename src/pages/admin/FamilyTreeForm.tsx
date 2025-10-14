@@ -407,27 +407,27 @@ export default function FamilyTreeForm() {
           {!isFullView ? (
             // Tabbed View
             <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-              <div className="sticky top-0 z-20 border-b border-border/50 pb-2 pt-2 -mx-4 md:-mx-6 px-4 md:px-6">
-                <TabsList className="w-full inline-flex justify-around gap-0.5 bg-transparent p-0">
-                  <TabsTrigger value="select" className="flex-shrink-0">
+              <div className="sticky top-0 z-50 border-b border-border/50 pb-2 pt-2 -mx-4 md:-mx-6 px-4 md:px-6">
+                <TabsList className="w-full flex gap-0.5 overflow-x-auto md:overflow-visible md:justify-between scrollbar-hide bg-transparent p-0">
+                  <TabsTrigger value="select" className="flex-shrink-0 md:flex-1">
                     <span className="text-blue-600 dark:text-blue-400">Select</span>
                   </TabsTrigger>
-                  <TabsTrigger value="applicant" className="flex-shrink-0">
+                  <TabsTrigger value="applicant" className="flex-shrink-0 md:flex-1">
                     <span className="text-blue-600 dark:text-blue-400">Applicant</span>
                   </TabsTrigger>
-                  <TabsTrigger value="spouse" className="flex-shrink-0">
+                  <TabsTrigger value="spouse" className="flex-shrink-0 md:flex-1">
                     <span className="text-blue-600 dark:text-blue-400">Spouse</span>
                   </TabsTrigger>
-                  <TabsTrigger value="children" className="flex-shrink-0">
+                  <TabsTrigger value="children" className="flex-shrink-0 md:flex-1">
                     <span className="text-cyan-600 dark:text-cyan-400">Children</span>
                   </TabsTrigger>
-                  <TabsTrigger value="parents" className="flex-shrink-0">
+                  <TabsTrigger value="parents" className="flex-shrink-0 md:flex-1">
                     <span className="text-teal-600 dark:text-teal-400">Parents</span>
                   </TabsTrigger>
-                  <TabsTrigger value="grandparents" className="flex-shrink-0">
+                  <TabsTrigger value="grandparents" className="flex-shrink-0 md:flex-1">
                     <span className="text-red-600 dark:text-red-400">Grandparents</span>
                   </TabsTrigger>
-                  <TabsTrigger value="great-grandparents" className="flex-shrink-0">
+                  <TabsTrigger value="great-grandparents" className="flex-shrink-0 md:flex-1">
                     <span className="text-gray-600 dark:text-gray-400">Great Grandparents</span>
                   </TabsTrigger>
                 </TabsList>
@@ -1208,27 +1208,27 @@ export default function FamilyTreeForm() {
             // Full View Mode - Show all tab sections with Tabs wrapper
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               {/* Keep the tabs list visible - matching the original style */}
-              <div className="sticky top-0 z-20 border-b border-border/50 pb-2 pt-2 -mx-4 md:-mx-6 px-4 md:px-6 bg-background/95 backdrop-blur-sm">
-                <TabsList className="w-full inline-flex justify-around gap-0.5 bg-transparent p-0">
-                  <TabsTrigger value="select" className="flex-shrink-0">
+              <div className="sticky top-0 z-50 border-b border-border/50 pb-2 pt-2 -mx-4 md:-mx-6 px-4 md:px-6 bg-background/95 backdrop-blur-sm">
+                <TabsList className="w-full flex gap-0.5 overflow-x-auto md:overflow-visible md:justify-between scrollbar-hide bg-transparent p-0">
+                  <TabsTrigger value="select" className="flex-shrink-0 md:flex-1">
                     <span className="text-blue-600 dark:text-blue-400">Select</span>
                   </TabsTrigger>
-                  <TabsTrigger value="applicant" className="flex-shrink-0">
+                  <TabsTrigger value="applicant" className="flex-shrink-0 md:flex-1">
                     <span className="text-blue-600 dark:text-blue-400">Applicant</span>
                   </TabsTrigger>
-                  <TabsTrigger value="spouse" className="flex-shrink-0">
+                  <TabsTrigger value="spouse" className="flex-shrink-0 md:flex-1">
                     <span className="text-blue-600 dark:text-blue-400">Spouse</span>
                   </TabsTrigger>
-                  <TabsTrigger value="children" className="flex-shrink-0">
+                  <TabsTrigger value="children" className="flex-shrink-0 md:flex-1">
                     <span className="text-cyan-600 dark:text-cyan-400">Children</span>
                   </TabsTrigger>
-                  <TabsTrigger value="parents" className="flex-shrink-0">
+                  <TabsTrigger value="parents" className="flex-shrink-0 md:flex-1">
                     <span className="text-teal-600 dark:text-teal-400">Parents</span>
                   </TabsTrigger>
-                  <TabsTrigger value="grandparents" className="flex-shrink-0">
+                  <TabsTrigger value="grandparents" className="flex-shrink-0 md:flex-1">
                     <span className="text-red-600 dark:text-red-400">Grandparents</span>
                   </TabsTrigger>
-                  <TabsTrigger value="great-grandparents" className="flex-shrink-0">
+                  <TabsTrigger value="great-grandparents" className="flex-shrink-0 md:flex-1">
                     <span className="text-gray-600 dark:text-gray-400">Great Grandparents</span>
                   </TabsTrigger>
                 </TabsList>
