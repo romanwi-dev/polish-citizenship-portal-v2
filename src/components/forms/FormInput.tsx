@@ -108,23 +108,27 @@ export const FormInput = ({
     }
   };
 
-  // Auto-scale font size based on content length
+  // Auto-scale font size based on content length and screen size
   useEffect(() => {
+    if (!inputRef.current) return;
+    
+    const isMobile = window.innerWidth < 768;
+    const baseSize = isMobile ? 18 : (isLargeFonts ? 30 : 24);
+    
     if (!value) {
-      setFontSize(isLargeFonts ? 30 : 24);
+      setFontSize(baseSize);
       return;
     }
 
     const textLength = value.toString().length;
-    const baseFontSize = isLargeFonts ? 30 : 24; // px values for text-3xl and text-2xl
     
     // Scale down font size for very long names
     if (textLength > 25) {
       const scaleFactor = Math.max(0.5, 1 - ((textLength - 25) / 50));
-      const calculatedSize = baseFontSize * scaleFactor;
+      const calculatedSize = baseSize * scaleFactor;
       setFontSize(calculatedSize);
     } else {
-      setFontSize(baseFontSize);
+      setFontSize(baseSize);
     }
   }, [value, isLargeFonts]);
 
