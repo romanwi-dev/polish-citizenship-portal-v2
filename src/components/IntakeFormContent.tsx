@@ -79,8 +79,32 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-2" onDoubleClick={() => clearField("applicant_is_married")}>
+          <Label className={isLargeFonts ? "text-2xl" : ""}>Marital status</Label>
+          <Select value={formData?.applicant_is_married === true ? "Married" : "Single"} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
+            <SelectTrigger 
+              className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur text-xs"
+              style={{
+                boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+              }}
+            >
+              <SelectValue placeholder="Select..." className="text-xs" />
+            </SelectTrigger>
+            <SelectContent className="bg-background border-2 z-50">
+              <SelectItem value="Married" className="text-xs cursor-pointer">Married</SelectItem>
+              <SelectItem value="Single" className="text-xs cursor-pointer">Single</SelectItem>
+            </SelectContent>
+          </Select>
+        </motion.div>
+
         {(formData?.children_count > 0) && (
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-2" onDoubleClick={() => clearField("minor_children_count")}>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="space-y-2" onDoubleClick={() => clearField("minor_children_count")}>
             <Label className={isLargeFonts ? "text-2xl" : ""}>Number of minor children</Label>
             <Select value={formData?.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
               <SelectTrigger 
@@ -105,30 +129,6 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
             </Select>
           </motion.div>
         )}
-
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="space-y-2" onDoubleClick={() => clearField("applicant_is_married")}>
-          <Label className={isLargeFonts ? "text-2xl" : ""}>Marital status</Label>
-          <Select value={formData?.applicant_is_married === true ? "Married" : "Single"} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
-            <SelectTrigger 
-              className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur text-xs"
-              style={{
-                boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
-              }}
-            >
-              <SelectValue placeholder="Select..." className="text-xs" />
-            </SelectTrigger>
-            <SelectContent className="bg-background border-2 z-50">
-              <SelectItem value="Married" className="text-xs cursor-pointer">Married</SelectItem>
-              <SelectItem value="Single" className="text-xs cursor-pointer">Single</SelectItem>
-            </SelectContent>
-          </Select>
-        </motion.div>
       </div>
     </div>
   </>
