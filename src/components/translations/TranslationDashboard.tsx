@@ -113,37 +113,34 @@ export const TranslationDashboard = () => {
 
       {/* Main Content Tabs */}
       <Tabs defaultValue="cards" className="space-y-4">
-        <TabsList className="w-full grid grid-cols-3 sm:grid-cols-6 h-auto gap-2 p-2">
-          <TabsTrigger value="cards" className="gap-2 px-4 py-3 text-base sm:text-sm flex-1">
-            <Workflow className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
-            <span className="hidden sm:inline truncate">Workflow Cards</span>
-            <span className="sm:hidden truncate">Cards</span>
-          </TabsTrigger>
-          <TabsTrigger value="workflow" className="gap-2 px-4 py-3 text-base sm:text-sm flex-1">
-            <Workflow className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
-            <span className="hidden sm:inline truncate">Translation Timeline</span>
-            <span className="sm:hidden truncate">Timeline</span>
-          </TabsTrigger>
-          <TabsTrigger value="supervisor" className="gap-2 px-4 py-3 text-base sm:text-sm flex-1">
-            <UserCog className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
-            <span className="truncate">Supervisor</span>
-          </TabsTrigger>
-          <TabsTrigger value="requirements" className="gap-2 px-4 py-3 text-base sm:text-sm flex-1">
-            <ClipboardList className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
-            <span className="hidden sm:inline truncate">Requirements</span>
-            <span className="sm:hidden truncate">Docs</span>
-          </TabsTrigger>
-          <TabsTrigger value="translators" className="gap-2 px-4 py-3 text-base sm:text-sm flex-1">
-            <Users className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
-            <span className="hidden sm:inline truncate">Sworn Translators</span>
-            <span className="sm:hidden truncate">Translators</span>
-          </TabsTrigger>
-          <TabsTrigger value="agencies" className="gap-2 px-4 py-3 text-base sm:text-sm flex-1">
-            <Building2 className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
-            <span className="hidden sm:inline truncate">Agencies</span>
-            <span className="sm:hidden truncate">Agencies</span>
-          </TabsTrigger>
-        </TabsList>
+        <div className="w-full overflow-x-auto scrollbar-hide">
+          <TabsList className="inline-flex gap-2 h-auto p-2 w-max">
+            <TabsTrigger value="cards" className="gap-2 px-8 py-3 text-base sm:text-sm whitespace-nowrap">
+              <Workflow className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
+              <span>Workflow Cards</span>
+            </TabsTrigger>
+            <TabsTrigger value="workflow" className="gap-2 px-8 py-3 text-base sm:text-sm whitespace-nowrap">
+              <Workflow className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
+              <span>Translation Timeline</span>
+            </TabsTrigger>
+            <TabsTrigger value="supervisor" className="gap-2 px-8 py-3 text-base sm:text-sm whitespace-nowrap">
+              <UserCog className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
+              <span>Supervisor</span>
+            </TabsTrigger>
+            <TabsTrigger value="requirements" className="gap-2 px-8 py-3 text-base sm:text-sm whitespace-nowrap">
+              <ClipboardList className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
+              <span>Requirements</span>
+            </TabsTrigger>
+            <TabsTrigger value="translators" className="gap-2 px-8 py-3 text-base sm:text-sm whitespace-nowrap">
+              <Users className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
+              <span>Sworn Translators</span>
+            </TabsTrigger>
+            <TabsTrigger value="agencies" className="gap-2 px-8 py-3 text-base sm:text-sm whitespace-nowrap">
+              <Building2 className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
+              <span>Agencies</span>
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
         <TabsContent value="cards" className="space-y-4">
           <TranslationWorkflowCards />
