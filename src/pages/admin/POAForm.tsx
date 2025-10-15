@@ -264,15 +264,6 @@ export default function POAForm() {
             </motion.div>
             <div className="flex items-center gap-1 md:gap-3 justify-center md:justify-end">
               <Button
-                onClick={() => window.open('https://docs.lovable.dev', '_blank')}
-                size="lg"
-                variant="ghost"
-                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary text-2xl font-light opacity-60"
-                title="How to fill this form"
-              >
-                ?
-              </Button>
-              <Button
                 onClick={() => navigate('/admin/forms-demo')}
                 size="lg"
                 variant="ghost"
@@ -304,6 +295,15 @@ export default function POAForm() {
               <Button onClick={toggleFontSize} size="lg" variant="ghost"
                 className={`h-16 w-16 rounded-full transition-all z-50 opacity-60 ${isLargeFonts ? 'text-primary' : 'text-muted-foreground hover:text-primary'}`} title="Toggle font size">
                 <Type className="h-8 w-8" />
+              </Button>
+              <Button
+                onClick={() => window.open('https://docs.lovable.dev', '_blank')}
+                size="lg"
+                variant="ghost"
+                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary text-2xl font-light opacity-60"
+                title="How to fill this form"
+              >
+                ?
               </Button>
             </div>
           </div>
