@@ -4,6 +4,8 @@ import { DateField } from "@/components/DateField";
 import { CountrySelect } from "@/components/CountrySelect";
 import { DontKnowCheckbox } from "./DontKnowCheckbox";
 import { useTranslation } from "react-i18next";
+import { PassportUpload } from "@/components/PassportUpload";
+import { Separator } from "@/components/ui/separator";
 
 interface StepProps {
   formData: any;
@@ -15,8 +17,34 @@ interface StepProps {
 export const Step3Passport = ({ formData, onChange, dontKnowFields, onDontKnowToggle }: StepProps) => {
   const { t } = useTranslation();
   
+  const handlePassportDataExtracted = (data: any) => {
+    // Auto-fill fields from OCR
+    if (data.passport_number) {
+      onChange('applicant_passport_number', data.passport_number);
+    }
+    if (data.issue_date) {
+      onChange('applicant_passport_issue_date', data.issue_date);
+    }
+    if (data.expiry_date) {
+      onChange('applicant_passport_expiry_date', data.expiry_date);
+    }
+    if (data.issuing_country) {
+      onChange('applicant_passport_issuing_country', data.issuing_country);
+    }
+  };
+
   return (
     <div className="space-y-6">
+      <PassportUpload
+        caseId={formData.case_id || ""}
+        onDataExtracted={handlePassportDataExtracted}
+      />
+      
+      <Separator className="my-6" />
+      
+      <p className="text-sm text-muted-foreground">
+        Or enter passport information manually:
+      </p>
       {/* Passport Number */}
       <div className="space-y-2">
         <Label htmlFor="passport_number">

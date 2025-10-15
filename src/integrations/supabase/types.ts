@@ -190,6 +190,7 @@ export type Database = {
           case_id: string
           category: string | null
           created_at: string
+          document_type: string | null
           dropbox_file_id: string | null
           dropbox_path: string
           file_extension: string | null
@@ -201,6 +202,12 @@ export type Database = {
           metadata: Json | null
           name: string
           needs_translation: boolean | null
+          ocr_confidence: number | null
+          ocr_data: Json | null
+          ocr_reviewed_at: string | null
+          ocr_reviewed_by: string | null
+          ocr_status: string | null
+          ocr_text: string | null
           person_type: string | null
           translation_required: boolean | null
           type: string | null
@@ -212,6 +219,7 @@ export type Database = {
           case_id: string
           category?: string | null
           created_at?: string
+          document_type?: string | null
           dropbox_file_id?: string | null
           dropbox_path: string
           file_extension?: string | null
@@ -223,6 +231,12 @@ export type Database = {
           metadata?: Json | null
           name: string
           needs_translation?: boolean | null
+          ocr_confidence?: number | null
+          ocr_data?: Json | null
+          ocr_reviewed_at?: string | null
+          ocr_reviewed_by?: string | null
+          ocr_status?: string | null
+          ocr_text?: string | null
           person_type?: string | null
           translation_required?: boolean | null
           type?: string | null
@@ -234,6 +248,7 @@ export type Database = {
           case_id?: string
           category?: string | null
           created_at?: string
+          document_type?: string | null
           dropbox_file_id?: string | null
           dropbox_path?: string
           file_extension?: string | null
@@ -245,6 +260,12 @@ export type Database = {
           metadata?: Json | null
           name?: string
           needs_translation?: boolean | null
+          ocr_confidence?: number | null
+          ocr_data?: Json | null
+          ocr_reviewed_at?: string | null
+          ocr_reviewed_by?: string | null
+          ocr_status?: string | null
+          ocr_text?: string | null
           person_type?: string | null
           translation_required?: boolean | null
           type?: string | null

@@ -12,6 +12,15 @@ verify_jwt = false
 [functions.ocr-passport]
 verify_jwt = false
 
+[functions.ocr-historical]
+verify_jwt = false
+
+[functions.ocr-document]
+verify_jwt = false
+
+[functions.ocr-wsc-letter]
+verify_jwt = false
+
 [functions.generate-poa]
 verify_jwt = false
 
