@@ -273,7 +273,7 @@ export default function POAForm() {
                 ?
               </Button>
               <Button
-                onClick={() => navigate(`/admin/case/${caseId}`)}
+                onClick={() => navigate('/admin/forms-demo')}
                 size="lg"
                 variant="ghost"
                 className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary z-50 opacity-60"

@@ -95,7 +95,7 @@ export default function FamilyHistoryForm() {
                 ?
               </Button>
               <Button
-                onClick={() => navigate(`/admin/case/${caseId}`)}
+                onClick={() => navigate('/admin/forms-demo')}
                 size="lg"
                 variant="ghost"
                 className="h-12 w-12 md:h-16 md:w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50 opacity-60"
