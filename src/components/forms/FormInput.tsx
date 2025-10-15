@@ -135,7 +135,7 @@ export const FormInput = ({
   const scheme = colorSchemes[colorScheme];
 
   return (
-    <div className="w-full">
+    <div className="form-field-container w-full">
       <Input 
         ref={inputRef}
         value={value || ""} 

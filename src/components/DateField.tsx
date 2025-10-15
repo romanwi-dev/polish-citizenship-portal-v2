@@ -124,7 +124,7 @@ export function DateField({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.4 }}
-      className="space-y-2 w-full"
+      className="form-field-container space-y-2 w-full"
     >
       <Label htmlFor={name} className={isLargeFonts ? "text-2xl" : ""}>
         {label} {required && <span className="text-destructive">*</span>}

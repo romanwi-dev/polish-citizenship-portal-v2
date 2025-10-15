@@ -551,3 +551,24 @@ All colors MUST be HSL.
 .scroll-snap-align-start {
   scroll-snap-align: start;
 }
+
+/* Mobile form field focus effect - make active field flow forward */
+@media (max-width: 768px) {
+  .form-field-container input,
+  .form-field-container textarea,
+  .form-field-container select {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .form-field-container:not(:has(:focus)) {
+    opacity: 0.6;
+    transform: scale(0.98);
+  }
+  
+  .form-field-container:has(:focus) {
+    opacity: 1;
+    transform: scale(1.02) translateZ(0);
+    z-index: 10;
+    position: relative;
+  }
+}

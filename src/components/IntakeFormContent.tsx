@@ -28,7 +28,7 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
       </h3>
     </div>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-2" onDoubleClick={() => clearField("applicant_sex")}>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("applicant_sex")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Gender</Label>
           <Select value={formData?.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
             <SelectTrigger 
@@ -52,7 +52,7 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
           </Select>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="space-y-2" onDoubleClick={() => clearField("children_count")}>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("children_count")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Number of children</Label>
           <Select value={formData?.children_count?.toString() || ""} onValueChange={(value) => handleInputChange("children_count", parseInt(value))}>
             <SelectTrigger 
@@ -79,7 +79,7 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-2" onDoubleClick={() => clearField("applicant_is_married")}>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("applicant_is_married")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Marital status</Label>
           <Select value={formData?.applicant_is_married === true ? "Married" : "Single"} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
             <SelectTrigger 
@@ -104,7 +104,7 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
         </motion.div>
 
         {(formData?.children_count > 0) && (
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="space-y-2" onDoubleClick={() => clearField("minor_children_count")}>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("minor_children_count")}>
             <Label className={isLargeFonts ? "text-2xl" : ""}>Number of minor children</Label>
             <Select value={formData?.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
               <SelectTrigger 
@@ -141,11 +141,11 @@ export const ApplicantSection = ({ formData, handleInputChange, clearField, isLa
       </h3>
     </div>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="space-y-2" onDoubleClick={() => clearField("applicant_first_name")}>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("applicant_first_name")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>First name</Label>
           <FormInput value={formData?.applicant_first_name || ""} onChange={(e) => handleInputChange("applicant_first_name", e.target.value.toUpperCase())} isNameField colorScheme="applicant" />
         </motion.div>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="space-y-2" onDoubleClick={() => clearField("applicant_last_name")}>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("applicant_last_name")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Last name</Label>
           <FormInput value={formData?.applicant_last_name || ""} onChange={(e) => handleInputChange("applicant_last_name", e.target.value.toUpperCase())} isNameField colorScheme="applicant" />
         </motion.div>

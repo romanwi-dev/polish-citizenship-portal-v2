@@ -151,11 +151,14 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange, onToggle, c
               style={{ perspective: '1000px' }}
             >
               <div 
-                onClick={() => toggleFlip(doc.id)}
-                className="absolute inset-0 cursor-pointer transition-transform duration-700"
+                onClick={() => !doc.checked && toggleFlip(doc.id)}
+                className={cn(
+                  "absolute inset-0 transition-transform duration-700",
+                  !doc.checked && "cursor-pointer"
+                )}
                 style={{ 
                   transformStyle: 'preserve-3d',
-                  transform: flippedCards[doc.id] ? 'rotateY(180deg)' : 'rotateY(0deg)'
+                  transform: flippedCards[doc.id] && !doc.checked ? 'rotateY(180deg)' : 'rotateY(0deg)'
                 }}
               >
                 {/* Front Side */}
