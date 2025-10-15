@@ -166,7 +166,7 @@ export default function TranslationWorkflowCards({ caseId }: TranslationWorkflow
             viewport={{ once: true }}
             className="text-lg text-muted-foreground max-w-3xl mx-auto mb-8"
           >
-            Professional 8-step process from document collection to official submission
+            Smart step-by-step human and AI supervised process from document collection to official submission
           </motion.p>
         </motion.div>
 
