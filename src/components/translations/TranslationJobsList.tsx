@@ -89,15 +89,15 @@ export const TranslationJobsList = () => {
   return (
     <div className="space-y-4">
       {/* Filters */}
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
         <Input
           placeholder="Search jobs..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="max-w-sm"
+          className="flex-1"
         />
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-[200px]">
+          <SelectTrigger className="w-full sm:w-[200px]">
             <SelectValue placeholder="Filter by status" />
           </SelectTrigger>
           <SelectContent>
@@ -115,91 +115,97 @@ export const TranslationJobsList = () => {
       </div>
 
       {/* Jobs List */}
-      <div className="grid gap-4">
+      <div className="grid gap-3">
         {filteredJobs?.map((job) => (
           <Card 
             key={job.id} 
-            className="p-6 hover:shadow-lg transition-shadow cursor-pointer"
+            className="p-4 sm:p-6 hover:shadow-lg transition-shadow cursor-pointer"
             onClick={() => setSelectedJobId(job.id)}
           >
-            <div className="flex items-start justify-between">
-              <div className="flex-1 space-y-3">
-                {/* Header */}
-                <div className="flex items-center gap-3">
-                  <Languages className="h-5 w-5 text-muted-foreground" />
-                  <h3 className="font-semibold text-lg">
-                    {job.cases?.client_name} ({job.cases?.client_code})
+            <div className="space-y-3">
+              {/* Header */}
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex items-center gap-2 flex-wrap flex-1 min-w-0">
+                  <Languages className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground shrink-0" />
+                  <h3 className="font-semibold text-sm sm:text-base truncate">
+                    {job.cases?.client_name}
                   </h3>
-                  <Badge className={statusColors[job.status]}>
-                    {job.status.replace('_', ' ')}
+                  <span className="text-xs sm:text-sm text-muted-foreground">
+                    ({job.cases?.client_code})
+                  </span>
+                </div>
+                <Button variant="ghost" size="sm" className="shrink-0">
+                  <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4" />
+                </Button>
+              </div>
+
+              {/* Status Badges */}
+              <div className="flex items-center gap-2 flex-wrap">
+                <Badge className={`text-xs ${statusColors[job.status]}`}>
+                  {job.status.replace('_', ' ')}
+                </Badge>
+                {job.priority && (
+                  <Badge className={`text-xs ${priorityColors[job.priority]}`} variant="outline">
+                    {job.priority}
                   </Badge>
-                  {job.priority && (
-                    <Badge className={priorityColors[job.priority]} variant="outline">
-                      {job.priority}
-                    </Badge>
-                  )}
-                </div>
-
-                {/* Details */}
-                <div className="flex items-center gap-6 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-2">
-                    <Languages className="h-4 w-4" />
-                    {job.source_language} → {job.target_language}
-                  </div>
-                  {job.documents && (
-                    <div className="flex items-center gap-2">
-                      <FileText className="h-4 w-4" />
-                      {job.documents.name}
-                    </div>
-                  )}
-                  {job.sworn_translators && (
-                    <div className="flex items-center gap-2">
-                      <User className="h-4 w-4" />
-                      {job.sworn_translators.full_name}
-                    </div>
-                  )}
-                  <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4" />
-                    {format(new Date(job.created_at), 'MMM d, yyyy')}
-                  </div>
-                </div>
-
-                {/* AI Confidence */}
-                {job.ai_confidence && (
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-muted-foreground">AI Confidence:</span>
-                    <div className="flex-1 max-w-xs bg-secondary rounded-full h-2">
-                      <div 
-                        className="bg-primary rounded-full h-2 transition-all"
-                        style={{ width: `${job.ai_confidence * 100}%` }}
-                      />
-                    </div>
-                    <span className="text-sm font-medium">
-                      {(job.ai_confidence * 100).toFixed(0)}%
-                    </span>
-                  </div>
-                )}
-
-                {/* Submission Status */}
-                {(job.submitted_to_wsc || job.submitted_to_civil_registry) && (
-                  <div className="flex gap-2">
-                    {job.submitted_to_wsc && (
-                      <Badge variant="outline" className="text-xs">
-                        ✓ Submitted to WSC
-                      </Badge>
-                    )}
-                    {job.submitted_to_civil_registry && (
-                      <Badge variant="outline" className="text-xs">
-                        ✓ Submitted to Civil Registry
-                      </Badge>
-                    )}
-                  </div>
                 )}
               </div>
 
-              <Button variant="ghost" size="sm">
-                <ExternalLink className="h-4 w-4" />
-              </Button>
+              {/* Details */}
+              <div className="flex flex-col gap-2 text-xs sm:text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <Languages className="h-3 w-3 sm:h-4 sm:w-4 shrink-0" />
+                  <span>{job.source_language} → {job.target_language}</span>
+                </div>
+                {job.documents && (
+                  <div className="flex items-center gap-2">
+                    <FileText className="h-3 w-3 sm:h-4 sm:w-4 shrink-0" />
+                    <span className="truncate">{job.documents.name}</span>
+                  </div>
+                )}
+                {job.sworn_translators && (
+                  <div className="flex items-center gap-2">
+                    <User className="h-3 w-3 sm:h-4 sm:w-4 shrink-0" />
+                    <span className="truncate">{job.sworn_translators.full_name}</span>
+                  </div>
+                )}
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-3 w-3 sm:h-4 sm:w-4 shrink-0" />
+                  <span>{format(new Date(job.created_at), 'MMM d, yyyy')}</span>
+                </div>
+              </div>
+
+              {/* AI Confidence */}
+              {job.ai_confidence && (
+                <div className="flex items-center gap-2">
+                  <span className="text-xs sm:text-sm text-muted-foreground shrink-0">AI:</span>
+                  <div className="flex-1 bg-secondary rounded-full h-2">
+                    <div 
+                      className="bg-primary rounded-full h-2 transition-all"
+                      style={{ width: `${job.ai_confidence * 100}%` }}
+                    />
+                  </div>
+                  <span className="text-xs sm:text-sm font-medium shrink-0">
+                    {(job.ai_confidence * 100).toFixed(0)}%
+                  </span>
+                </div>
+              )}
+
+              {/* Submission Status */}
+              {(job.submitted_to_wsc || job.submitted_to_civil_registry) && (
+                <div className="flex gap-2 flex-wrap">
+                  {job.submitted_to_wsc && (
+                    <Badge variant="outline" className="text-xs">
+                      ✓ WSC
+                    </Badge>
+                  )}
+                  {job.submitted_to_civil_registry && (
+                    <Badge variant="outline" className="text-xs">
+                      ✓ Civil Registry
+                    </Badge>
+                  )}
+                </div>
+              )}
             </div>
           </Card>
         ))}
