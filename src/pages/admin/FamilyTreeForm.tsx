@@ -69,9 +69,29 @@ export default function FamilyTreeForm() {
 
   // Reset scroll position to show Select tab on mount/refresh
   useEffect(() => {
-    if (tabsListRef.current) {
-      tabsListRef.current.scrollLeft = 0;
-    }
+    // Use multiple attempts to ensure scroll reset works even after browser restore
+    const resetScroll = () => {
+      if (tabsListRef.current) {
+        tabsListRef.current.scrollLeft = 0;
+      }
+    };
+    
+    // Immediate reset
+    resetScroll();
+    
+    // Reset after next paint
+    requestAnimationFrame(resetScroll);
+    
+    // Reset after a short delay for browser scroll restoration
+    const timer1 = setTimeout(resetScroll, 0);
+    const timer2 = setTimeout(resetScroll, 100);
+    const timer3 = setTimeout(resetScroll, 300);
+    
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
+    };
   }, []);
 
   const handleTabChange = (value: string) => {
