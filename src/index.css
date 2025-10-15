@@ -541,3 +541,13 @@ All colors MUST be HSL.
     }
   }
 }
+
+/* Scroll snap utilities for tabs */
+.scroll-snap-type-x-mandatory {
+  scroll-snap-type: x mandatory;
+  scroll-behavior: auto;
+}
+
+.scroll-snap-align-start {
+  scroll-snap-align: start;
+}
