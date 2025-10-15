@@ -68,14 +68,14 @@ export default function IntakeForm() {
   };
 
   useEffect(() => {
-    // Scroll tabs to the start to show Select button fully - with delay to ensure DOM is ready
+    // Scroll tabs to the start to show Select button fully - only on mount
     const timer = setTimeout(() => {
       if (tabsListRef.current) {
         tabsListRef.current.scrollLeft = 0;
       }
     }, 100);
     return () => clearTimeout(timer);
-  }, [activeTab]);
+  }, []); // Only run on mount
 
   if (isLoading) {
     return (
