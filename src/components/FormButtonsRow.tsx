@@ -69,7 +69,7 @@ export function FormButtonsRow({
       </div>
 
       {/* Save, Generate PDF, and Clear Row */}
-      <div className="flex flex-row gap-0.5 justify-between px-4 md:px-6">
+      <div className="flex flex-row gap-0.5 justify-between px-0 md:px-6">
         <Button
           onClick={onSave}
           disabled={isSaving}
