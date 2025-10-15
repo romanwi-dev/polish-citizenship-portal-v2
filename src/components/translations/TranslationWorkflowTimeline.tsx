@@ -179,16 +179,6 @@ export const TranslationWorkflowTimeline = () => {
 
   return (
     <section className="relative py-12 overflow-hidden">
-      {/* Background effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
-      <div 
-        className="absolute inset-0" 
-        style={{
-          backgroundImage: `radial-gradient(circle at 2px 2px, hsl(var(--primary) / 0.1) 1px, transparent 0)`,
-          backgroundSize: '48px 48px'
-        }} 
-      />
-      
       <div className="container relative z-10 mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
