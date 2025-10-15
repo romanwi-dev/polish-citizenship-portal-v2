@@ -452,9 +452,10 @@ export default function CivilRegistryForm() {
                 value={formData.civil_registry_notes || ""}
                 onChange={(e) => handleInputChange("civil_registry_notes", e.target.value.toUpperCase())}
                 placeholder=""
+                rows={10}
                 colorScheme="civil-reg"
                 className={cn(
-                  "min-h-[200px] border-2 border-gray-300/10 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase",
+                  "min-h-[300px] resize-y border-2 border-gray-300/10 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase",
                   isLargeFonts && "text-xl"
                 )}
               />
