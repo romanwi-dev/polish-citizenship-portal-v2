@@ -197,10 +197,6 @@ export const TranslationWorkflowTimeline = () => {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-6">
-            <Clock className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium">Translation Workflow</span>
-          </div>
           <motion.h2
             initial={{ opacity: 0, scale: 0.9, y: 30 }}
             whileInView={{ opacity: 1, scale: 1, y: 0 }}

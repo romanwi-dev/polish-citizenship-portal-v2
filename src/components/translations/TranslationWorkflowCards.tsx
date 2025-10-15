@@ -138,11 +138,7 @@ export default function TranslationWorkflowCards({ caseId }: TranslationWorkflow
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-8">
-            <Languages className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium">Translation Process</span>
-          </div>
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, scale: 0.9, y: 30 }}
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ 
