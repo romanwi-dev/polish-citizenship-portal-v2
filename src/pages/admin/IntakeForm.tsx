@@ -97,9 +97,9 @@ export default function IntakeForm() {
           className="mb-6"
         >
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6">
-            <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">
-                Client Intake Form
+            <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="flex-1">
+              <h1 className="text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text text-center md:text-left">
+                Client Intake
               </h1>
             </motion.div>
             <div className="flex items-center gap-3">
