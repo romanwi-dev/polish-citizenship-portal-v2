@@ -107,14 +107,44 @@ export function DateField({
   const [error, setError] = useState<string>("");
   const scheme = colorSchemes[colorScheme];
 
-  const handleChange = (newValue: string) => {
-    onChange(newValue);
+  const formatDateInput = (input: string): string => {
+    // Remove all non-digit characters
+    const digits = input.replace(/\D/g, '');
+    
+    // Format as DD.MM.YYYY
+    let formatted = '';
+    if (digits.length > 0) {
+      formatted = digits.substring(0, 2);
+    }
+    if (digits.length >= 3) {
+      formatted += '.' + digits.substring(2, 4);
+    }
+    if (digits.length >= 5) {
+      formatted += '.' + digits.substring(4, 8);
+    }
+    
+    return formatted;
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = e.target.value;
+    
+    // Allow backspace/delete by checking if input is shorter
+    if (input.length < value.length) {
+      onChange(input);
+      setError("");
+      return;
+    }
+    
+    // Format the input
+    const formatted = formatDateInput(input);
+    onChange(formatted);
     
     // Validate only if value is complete (10 characters: DD.MM.YYYY)
-    if (newValue.length === 10) {
-      const validation = validateDateFormat(newValue);
+    if (formatted.length === 10) {
+      const validation = validateDateFormat(formatted);
       setError(validation.valid ? "" : validation.error || "");
-    } else if (newValue.length === 0) {
+    } else {
       setError("");
     }
   };
@@ -145,8 +175,9 @@ export function DateField({
       <Input
           id={name}
           type="text"
+          inputMode="numeric"
           value={value || ""}
-          onChange={(e) => handleChange(e.target.value)}
+          onChange={handleChange}
           placeholder="DD.MM.YYYY"
           maxLength={10}
           disabled={notApplicableValue}
