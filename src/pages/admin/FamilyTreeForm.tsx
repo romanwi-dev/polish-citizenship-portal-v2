@@ -68,11 +68,14 @@ export default function FamilyTreeForm() {
   const tabsListRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Scroll tabs to the start to show Select button fully
-    if (tabsListRef.current) {
-      tabsListRef.current.scrollLeft = 0;
-    }
-  }, []);
+    // Scroll tabs to the start to show Select button fully - with delay to ensure DOM is ready
+    const timer = setTimeout(() => {
+      if (tabsListRef.current) {
+        tabsListRef.current.scrollLeft = 0;
+      }
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [activeTab]);
 
   const handleTabChange = (value: string) => {
     setActiveTab(value);
