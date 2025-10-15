@@ -25,7 +25,10 @@ import {
   GitCompare,
   Target,
   FlaskConical,
-  Sparkles
+  Sparkles,
+  Archive,
+  FileSearch,
+  Languages
 } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -39,6 +42,9 @@ const navItems = [
   { title: "Testing Dashboard", url: "/admin/testing-dashboard", icon: FlaskConical },
   { title: "Tasks", url: "/admin/tasks", icon: CheckSquare },
   { title: "Documents", url: "/admin/documents", icon: FileText },
+  { title: "Documents Collection", url: "/admin/documents-collection", icon: FileSearch },
+  { title: "Archives Search", url: "/admin/archives-search", icon: Archive },
+  { title: "Translations", url: "/admin/translations", icon: Languages },
   { title: "Messages", url: "/admin/messages", icon: Mail },
   { title: "Analytics", url: "/admin/analytics", icon: BarChart3 },
   { title: "Dropbox Sync", url: "/admin/dropbox", icon: FolderSync },

@@ -14,6 +14,137 @@ export type Database = {
   }
   public: {
     Tables: {
+      archive_document_requests: {
+        Row: {
+          approximate_year: string | null
+          archive_search_id: string | null
+          created_at: string | null
+          document_id: string | null
+          document_type: string
+          id: string
+          location: string | null
+          notes: string | null
+          person_first_name: string | null
+          person_last_name: string | null
+          status: string | null
+        }
+        Insert: {
+          approximate_year?: string | null
+          archive_search_id?: string | null
+          created_at?: string | null
+          document_id?: string | null
+          document_type: string
+          id?: string
+          location?: string | null
+          notes?: string | null
+          person_first_name?: string | null
+          person_last_name?: string | null
+          status?: string | null
+        }
+        Update: {
+          approximate_year?: string | null
+          archive_search_id?: string | null
+          created_at?: string | null
+          document_id?: string | null
+          document_type?: string
+          id?: string
+          location?: string | null
+          notes?: string | null
+          person_first_name?: string | null
+          person_last_name?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "archive_document_requests_archive_search_id_fkey"
+            columns: ["archive_search_id"]
+            isOneToOne: false
+            referencedRelation: "archive_searches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "archive_document_requests_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      archive_searches: {
+        Row: {
+          archive_country: string | null
+          archive_name: string | null
+          case_id: string
+          created_at: string | null
+          document_types: string[] | null
+          documents_received_at: string | null
+          estimated_completion: string | null
+          findings_summary: string | null
+          id: string
+          letter_generated_at: string | null
+          letter_sent_at: string | null
+          partner_assigned_to: string | null
+          person_type: string
+          priority: string | null
+          response_received_at: string | null
+          search_notes: string | null
+          search_type: string
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          archive_country?: string | null
+          archive_name?: string | null
+          case_id: string
+          created_at?: string | null
+          document_types?: string[] | null
+          documents_received_at?: string | null
+          estimated_completion?: string | null
+          findings_summary?: string | null
+          id?: string
+          letter_generated_at?: string | null
+          letter_sent_at?: string | null
+          partner_assigned_to?: string | null
+          person_type: string
+          priority?: string | null
+          response_received_at?: string | null
+          search_notes?: string | null
+          search_type: string
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          archive_country?: string | null
+          archive_name?: string | null
+          case_id?: string
+          created_at?: string | null
+          document_types?: string[] | null
+          documents_received_at?: string | null
+          estimated_completion?: string | null
+          findings_summary?: string | null
+          id?: string
+          letter_generated_at?: string | null
+          letter_sent_at?: string | null
+          partner_assigned_to?: string | null
+          person_type?: string
+          priority?: string | null
+          response_received_at?: string | null
+          search_notes?: string | null
+          search_type?: string
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "archive_searches_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cases: {
         Row: {
           ancestry: Json | null
@@ -511,6 +642,153 @@ export type Database = {
             columns: ["case_id"]
             isOneToOne: true
             referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      local_authorities: {
+        Row: {
+          address: string | null
+          authority_name: string
+          authority_type: string | null
+          city: string | null
+          country: string
+          created_at: string | null
+          email: string | null
+          fees: string | null
+          id: string
+          notes: string | null
+          online_ordering: boolean | null
+          phone: string | null
+          processing_time: string | null
+          state_province: string | null
+          website_url: string | null
+        }
+        Insert: {
+          address?: string | null
+          authority_name: string
+          authority_type?: string | null
+          city?: string | null
+          country: string
+          created_at?: string | null
+          email?: string | null
+          fees?: string | null
+          id?: string
+          notes?: string | null
+          online_ordering?: boolean | null
+          phone?: string | null
+          processing_time?: string | null
+          state_province?: string | null
+          website_url?: string | null
+        }
+        Update: {
+          address?: string | null
+          authority_name?: string
+          authority_type?: string | null
+          city?: string | null
+          country?: string
+          created_at?: string | null
+          email?: string | null
+          fees?: string | null
+          id?: string
+          notes?: string | null
+          online_ordering?: boolean | null
+          phone?: string | null
+          processing_time?: string | null
+          state_province?: string | null
+          website_url?: string | null
+        }
+        Relationships: []
+      }
+      local_document_requests: {
+        Row: {
+          apostille_obtained: boolean | null
+          apostille_required: boolean | null
+          authority_address: string | null
+          authority_email: string | null
+          authority_phone: string | null
+          authority_website: string | null
+          case_id: string
+          certified_copy: boolean | null
+          client_notes: string | null
+          created_at: string | null
+          document_id: string | null
+          document_type: string
+          hac_notes: string | null
+          id: string
+          issuing_authority: string | null
+          issuing_country: string
+          partner_helping: boolean | null
+          partner_name: string | null
+          person_type: string
+          received_date: string | null
+          requested_date: string | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          apostille_obtained?: boolean | null
+          apostille_required?: boolean | null
+          authority_address?: string | null
+          authority_email?: string | null
+          authority_phone?: string | null
+          authority_website?: string | null
+          case_id: string
+          certified_copy?: boolean | null
+          client_notes?: string | null
+          created_at?: string | null
+          document_id?: string | null
+          document_type: string
+          hac_notes?: string | null
+          id?: string
+          issuing_authority?: string | null
+          issuing_country: string
+          partner_helping?: boolean | null
+          partner_name?: string | null
+          person_type: string
+          received_date?: string | null
+          requested_date?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          apostille_obtained?: boolean | null
+          apostille_required?: boolean | null
+          authority_address?: string | null
+          authority_email?: string | null
+          authority_phone?: string | null
+          authority_website?: string | null
+          case_id?: string
+          certified_copy?: boolean | null
+          client_notes?: string | null
+          created_at?: string | null
+          document_id?: string | null
+          document_type?: string
+          hac_notes?: string | null
+          id?: string
+          issuing_authority?: string | null
+          issuing_country?: string
+          partner_helping?: boolean | null
+          partner_name?: string | null
+          person_type?: string
+          received_date?: string | null
+          requested_date?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "local_document_requests_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "local_document_requests_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
             referencedColumns: ["id"]
           },
         ]

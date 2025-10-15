@@ -45,6 +45,8 @@ const BigPlanTracker = lazy(() => import("./pages/admin/BigPlanTracker"));
 const TestingDashboard = lazy(() => import("./pages/admin/TestingDashboard"));
 const FormsDemo = lazy(() => import("./pages/admin/FormsDemo"));
 const Translations = lazy(() => import("./pages/admin/Translations"));
+const ArchivesSearch = lazy(() => import("./pages/admin/ArchivesSearch"));
+const DocumentsCollection = lazy(() => import("./pages/admin/DocumentsCollection"));
 const OCRReview = lazy(() => import("./pages/admin/OCRReview"));
 
 const queryClient = new QueryClient({
@@ -260,6 +262,22 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <FormsDemo />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/documents-collection" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <DocumentsCollection />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/archives-search" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <ArchivesSearch />
               </Suspense>
             } 
           />
