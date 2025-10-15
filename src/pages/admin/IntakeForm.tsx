@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Save, Sparkles, Award, Building, FileCheck, BookOpen, GitBranch } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { Loader2, Type, Maximize2, Minimize2, User, Phone, MapPin, Plane, Users, FolderOpen, MessageSquare, ArrowLeft, HelpCircle } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -67,31 +67,23 @@ export default function IntakeForm() {
     isLargeFonts
   };
 
-  // Reset scroll position to show Select tab on mount/refresh
+  // Reset scroll position BEFORE paint to show Select tab on mount/refresh
+  useLayoutEffect(() => {
+    if (tabsListRef.current) {
+      tabsListRef.current.scrollLeft = 0;
+    }
+  }, []);
+  
+  // Also reset after paint in case of browser scroll restoration
   useEffect(() => {
-    // Use multiple attempts to ensure scroll reset works even after browser restore
     const resetScroll = () => {
       if (tabsListRef.current) {
         tabsListRef.current.scrollLeft = 0;
       }
     };
     
-    // Immediate reset
-    resetScroll();
-    
-    // Reset after next paint
-    requestAnimationFrame(resetScroll);
-    
-    // Reset after a short delay for browser scroll restoration
-    const timer1 = setTimeout(resetScroll, 0);
-    const timer2 = setTimeout(resetScroll, 100);
-    const timer3 = setTimeout(resetScroll, 300);
-    
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
-    };
+    const timer = setTimeout(resetScroll, 500);
+    return () => clearTimeout(timer);
   }, []);
 
   if (isLoading) {

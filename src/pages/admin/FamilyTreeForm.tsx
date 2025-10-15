@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useState, useEffect, useRef, Fragment } from "react";
+import { useState, useEffect, useRef, Fragment, useLayoutEffect } from "react";
 import { Loader2, Save, Download, Users, Sparkles, Type, User, ArrowLeft, TreePine, BookOpen, Baby, Heart, FileText, GitBranch, HelpCircle, Maximize2, Minimize2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
@@ -67,31 +67,23 @@ export default function FamilyTreeForm() {
 
   const tabsListRef = useRef<HTMLDivElement>(null);
 
-  // Reset scroll position to show Select tab on mount/refresh
+  // Reset scroll position BEFORE paint to show Select tab on mount/refresh
+  useLayoutEffect(() => {
+    if (tabsListRef.current) {
+      tabsListRef.current.scrollLeft = 0;
+    }
+  }, []);
+  
+  // Also reset after paint in case of browser scroll restoration
   useEffect(() => {
-    // Use multiple attempts to ensure scroll reset works even after browser restore
     const resetScroll = () => {
       if (tabsListRef.current) {
         tabsListRef.current.scrollLeft = 0;
       }
     };
     
-    // Immediate reset
-    resetScroll();
-    
-    // Reset after next paint
-    requestAnimationFrame(resetScroll);
-    
-    // Reset after a short delay for browser scroll restoration
-    const timer1 = setTimeout(resetScroll, 0);
-    const timer2 = setTimeout(resetScroll, 100);
-    const timer3 = setTimeout(resetScroll, 300);
-    
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
-    };
+    const timer = setTimeout(resetScroll, 500);
+    return () => clearTimeout(timer);
   }, []);
 
   const handleTabChange = (value: string) => {
