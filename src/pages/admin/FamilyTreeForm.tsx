@@ -67,15 +67,6 @@ export default function FamilyTreeForm() {
 
   const tabsListRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    // Scroll tabs to the start to show Select button fully - only on mount with longer delay for refresh
-    const timer = setTimeout(() => {
-      if (tabsListRef.current) {
-        tabsListRef.current.scrollLeft = 0;
-      }
-    }, 300);
-    return () => clearTimeout(timer);
-  }, []); // Only run on mount
 
   const handleTabChange = (value: string) => {
     setActiveTab(value);
@@ -431,7 +422,7 @@ export default function FamilyTreeForm() {
             // Tabbed View
             <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
               <div className="sticky top-0 z-50 border-b border-border/50 pb-2 pt-2 -mx-4 md:-mx-6">
-                <TabsList ref={tabsListRef} className="w-full flex gap-0.5 overflow-x-auto md:overflow-visible md:justify-between scrollbar-hide bg-transparent p-0 px-4 md:px-6">
+                <TabsList ref={tabsListRef} className="w-full flex gap-0.5 overflow-x-auto md:overflow-visible md:justify-between scrollbar-hide bg-transparent p-0 px-0 md:px-6">
 
                   <TabsTrigger value="select" className="flex-shrink-0 md:flex-1">
                     <span className="text-blue-600 dark:text-blue-400">Select</span>
@@ -1208,7 +1199,7 @@ export default function FamilyTreeForm() {
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               {/* Keep the tabs list visible - matching the original style */}
               <div className="sticky top-0 z-50 border-b border-border/50 pb-2 pt-2 -mx-4 md:-mx-6 bg-background/95 backdrop-blur-sm">
-                <TabsList ref={tabsListRef} className="w-full flex gap-0.5 overflow-x-auto md:overflow-visible md:justify-between scrollbar-hide bg-transparent p-0 px-4 md:px-6">
+                <TabsList ref={tabsListRef} className="w-full flex gap-0.5 overflow-x-auto md:overflow-visible md:justify-between scrollbar-hide bg-transparent p-0 px-0 md:px-6">
 
                   <TabsTrigger value="select" className="flex-shrink-0 md:flex-1">
                     <span className="text-blue-600 dark:text-blue-400">Select</span>

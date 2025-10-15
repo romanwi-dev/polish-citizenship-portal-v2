@@ -67,15 +67,6 @@ export default function IntakeForm() {
     isLargeFonts
   };
 
-  useEffect(() => {
-    // Scroll tabs to the start to show Select button fully - only on mount with longer delay for refresh
-    const timer = setTimeout(() => {
-      if (tabsListRef.current) {
-        tabsListRef.current.scrollLeft = 0;
-      }
-    }, 300);
-    return () => clearTimeout(timer);
-  }, []); // Only run on mount
 
   if (isLoading) {
     return (
@@ -174,7 +165,7 @@ export default function IntakeForm() {
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="space-y-8 pb-32">
           <Tabs defaultValue="select" value={activeTab} onValueChange={handleTabChange} className="w-full">
             <div className="sticky top-0 z-50 border-b border-border/50 pb-2 pt-2 -mx-4 md:-mx-6">
-              <TabsList ref={tabsListRef} className="w-full flex gap-0.5 overflow-x-auto md:overflow-visible md:justify-between scrollbar-hide bg-transparent p-0 px-4 md:px-6">
+              <TabsList ref={tabsListRef} className="w-full flex gap-0.5 overflow-x-auto md:overflow-visible md:justify-between scrollbar-hide bg-transparent p-0 px-0 md:px-6">
 
                 <TabsTrigger value="select" className="flex-shrink-0 md:flex-1">
                   <span className="text-blue-600 dark:text-blue-400">Select</span>
