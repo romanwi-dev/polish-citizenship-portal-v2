@@ -13,7 +13,7 @@ import {
   Workflow,
   ClipboardList
 } from "lucide-react";
-import { TranslationWorkflowBoard } from "./TranslationWorkflowBoard";
+import { TranslationWorkflowTimeline } from "./TranslationWorkflowTimeline";
 import { DocumentRequirementsList } from "./DocumentRequirementsList";
 import { SwornTranslatorsList } from "./SwornTranslatorsList";
 import { TranslationAgenciesList } from "./TranslationAgenciesList";
@@ -114,8 +114,8 @@ export const TranslationDashboard = () => {
         <TabsList className="w-full justify-start overflow-x-auto">
           <TabsTrigger value="workflow" className="gap-2">
             <Workflow className="h-4 w-4" />
-            <span className="hidden sm:inline">Workflow Board</span>
-            <span className="sm:hidden">Workflow</span>
+            <span className="hidden sm:inline">Translation Timeline</span>
+            <span className="sm:hidden">Timeline</span>
           </TabsTrigger>
           <TabsTrigger value="requirements" className="gap-2">
             <ClipboardList className="h-4 w-4" />
@@ -135,7 +135,7 @@ export const TranslationDashboard = () => {
         </TabsList>
 
         <TabsContent value="workflow" className="space-y-4">
-          <TranslationWorkflowBoard />
+          <TranslationWorkflowTimeline />
         </TabsContent>
 
         <TabsContent value="requirements">
