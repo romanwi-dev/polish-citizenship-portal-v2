@@ -68,22 +68,11 @@ export default function IntakeForm() {
   };
 
   // Reset scroll position BEFORE paint to show Select tab on mount/refresh
+  // Reset scroll position only on initial mount
   useLayoutEffect(() => {
     if (tabsListRef.current) {
       tabsListRef.current.scrollLeft = 0;
     }
-  }, []);
-  
-  // Also reset after paint in case of browser scroll restoration
-  useEffect(() => {
-    const resetScroll = () => {
-      if (tabsListRef.current) {
-        tabsListRef.current.scrollLeft = 0;
-      }
-    };
-    
-    const timer = setTimeout(resetScroll, 500);
-    return () => clearTimeout(timer);
   }, []);
 
   if (isLoading) {
