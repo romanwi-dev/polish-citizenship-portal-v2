@@ -29,7 +29,7 @@ export const TranslationJobDetail = ({ jobId, open, onOpenChange }: TranslationJ
     queryKey: ["translation-job", jobId],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('translation_jobs')
+        .from('translation_jobs' as any)
         .select(`
           *,
           cases(client_name, client_code),
@@ -40,7 +40,7 @@ export const TranslationJobDetail = ({ jobId, open, onOpenChange }: TranslationJ
         .single();
       
       if (error) throw error;
-      return data;
+      return data as any;
     },
     enabled: !!jobId
   });
@@ -74,7 +74,7 @@ export const TranslationJobDetail = ({ jobId, open, onOpenChange }: TranslationJ
   const updateTranslationMutation = useMutation({
     mutationFn: async (updates: any) => {
       const { error } = await supabase
-        .from('translation_jobs')
+        .from('translation_jobs' as any)
         .update(updates)
         .eq('id', jobId);
       if (error) throw error;

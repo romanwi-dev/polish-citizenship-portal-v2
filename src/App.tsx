@@ -44,6 +44,8 @@ const CitizenshipFieldReview = lazy(() => import("./pages/admin/CitizenshipField
 const BigPlanTracker = lazy(() => import("./pages/admin/BigPlanTracker"));
 const TestingDashboard = lazy(() => import("./pages/admin/TestingDashboard"));
 const FormsDemo = lazy(() => import("./pages/admin/FormsDemo"));
+const Translations = lazy(() => import("./pages/admin/Translations"));
+const OCRReview = lazy(() => import("./pages/admin/OCRReview"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -258,6 +260,22 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <FormsDemo />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/translations" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <Translations />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/ocr-review" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <OCRReview />
               </Suspense>
             } 
           />

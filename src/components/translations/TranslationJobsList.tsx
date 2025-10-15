@@ -52,7 +52,7 @@ export const TranslationJobsList = () => {
     queryKey: ["translation-jobs", statusFilter],
     queryFn: async () => {
       let query = supabase
-        .from('translation_jobs')
+        .from('translation_jobs' as any)
         .select(`
           *,
           cases!inner(client_name, client_code),
@@ -67,7 +67,7 @@ export const TranslationJobsList = () => {
 
       const { data, error } = await query;
       if (error) throw error;
-      return data;
+      return data as any[];
     }
   });
 

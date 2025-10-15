@@ -51,7 +51,7 @@ export const CreateTranslationJobDialog = ({ open, onOpenChange }: CreateTransla
   const createJobMutation = useMutation({
     mutationFn: async () => {
       const { error } = await supabase
-        .from('translation_jobs')
+        .from('translation_jobs' as any)
         .insert({
           ...formData,
           document_id: formData.document_id || null

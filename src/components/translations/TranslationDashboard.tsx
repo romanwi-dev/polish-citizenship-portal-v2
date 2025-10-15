@@ -27,9 +27,9 @@ export const TranslationDashboard = () => {
   const { data: counts } = useQuery({
     queryKey: ["translation-job-counts"],
     queryFn: async () => {
-      const { data, error } = await supabase.rpc('get_translation_job_counts');
+      const { data, error } = await supabase.rpc('get_translation_job_counts' as any);
       if (error) throw error;
-      return data[0];
+      return data[0] as any;
     }
   });
 

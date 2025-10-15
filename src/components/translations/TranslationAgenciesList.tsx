@@ -5,16 +5,16 @@ import { supabase } from "@/integrations/supabase/client";
 import { Building2, Mail, Phone, Star } from "lucide-react";
 
 export const TranslationAgenciesList = () => {
-  const { data: agencies, isLoading } = useQuery({
+  const { data: agencies, isLoading } = useQuery<any[]>({
     queryKey: ["translation-agencies"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('translation_agencies')
+        .from('translation_agencies' as any)
         .select('*')
         .eq('is_active', true)
         .order('rating', { ascending: false });
       if (error) throw error;
-      return data;
+      return data || [];
     }
   });
 
