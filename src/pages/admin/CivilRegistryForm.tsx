@@ -440,7 +440,7 @@ export default function CivilRegistryForm() {
         }} transition={{
           duration: 0.5,
           delay: 0.2
-        }} className="mt-10">
+        }} className="mt-10 pb-32 md:pb-8">
             <div className="border-b border-border/50 pb-6">
               <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-400 bg-clip-text text-transparent">
                 Additional notes / Dodatkowe informacje
