@@ -67,6 +67,12 @@ export default function FamilyTreeForm() {
 
   const tabsListRef = useRef<HTMLDivElement>(null);
 
+  // Reset scroll position to show Select tab on mount/refresh
+  useEffect(() => {
+    if (tabsListRef.current) {
+      tabsListRef.current.scrollLeft = 0;
+    }
+  }, []);
 
   const handleTabChange = (value: string) => {
     setActiveTab(value);

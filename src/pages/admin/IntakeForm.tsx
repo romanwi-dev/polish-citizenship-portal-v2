@@ -67,6 +67,12 @@ export default function IntakeForm() {
     isLargeFonts
   };
 
+  // Reset scroll position to show Select tab on mount/refresh
+  useEffect(() => {
+    if (tabsListRef.current) {
+      tabsListRef.current.scrollLeft = 0;
+    }
+  }, []);
 
   if (isLoading) {
     return (
