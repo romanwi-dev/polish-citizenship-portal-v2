@@ -112,29 +112,29 @@ export const TranslationDashboard = () => {
 
       {/* Main Content Tabs */}
       <Tabs defaultValue="cards" className="space-y-4">
-        <TabsList className="w-full justify-start overflow-x-auto">
-          <TabsTrigger value="cards" className="gap-2">
-            <Workflow className="h-4 w-4" />
+        <TabsList className="w-full justify-start overflow-x-auto h-14 sm:h-auto p-1">
+          <TabsTrigger value="cards" className="gap-2 px-4 py-3 sm:px-3 sm:py-2 text-base sm:text-sm">
+            <Workflow className="h-5 w-5 sm:h-4 sm:w-4" />
             <span className="hidden sm:inline">Workflow Cards</span>
             <span className="sm:hidden">Cards</span>
           </TabsTrigger>
-          <TabsTrigger value="workflow" className="gap-2">
-            <Workflow className="h-4 w-4" />
+          <TabsTrigger value="workflow" className="gap-2 px-4 py-3 sm:px-3 sm:py-2 text-base sm:text-sm">
+            <Workflow className="h-5 w-5 sm:h-4 sm:w-4" />
             <span className="hidden sm:inline">Translation Timeline</span>
             <span className="sm:hidden">Timeline</span>
           </TabsTrigger>
-          <TabsTrigger value="requirements" className="gap-2">
-            <ClipboardList className="h-4 w-4" />
+          <TabsTrigger value="requirements" className="gap-2 px-4 py-3 sm:px-3 sm:py-2 text-base sm:text-sm">
+            <ClipboardList className="h-5 w-5 sm:h-4 sm:w-4" />
             <span className="hidden sm:inline">Requirements</span>
             <span className="sm:hidden">Docs</span>
           </TabsTrigger>
-          <TabsTrigger value="translators" className="gap-2">
-            <Users className="h-4 w-4" />
+          <TabsTrigger value="translators" className="gap-2 px-4 py-3 sm:px-3 sm:py-2 text-base sm:text-sm">
+            <Users className="h-5 w-5 sm:h-4 sm:w-4" />
             <span className="hidden sm:inline">Sworn Translators</span>
             <span className="sm:hidden">Translators</span>
           </TabsTrigger>
-          <TabsTrigger value="agencies" className="gap-2">
-            <Building2 className="h-4 w-4" />
+          <TabsTrigger value="agencies" className="gap-2 px-4 py-3 sm:px-3 sm:py-2 text-base sm:text-sm">
+            <Building2 className="h-5 w-5 sm:h-4 sm:w-4" />
             <span className="hidden sm:inline">Agencies</span>
             <span className="sm:hidden">Agencies</span>
           </TabsTrigger>
