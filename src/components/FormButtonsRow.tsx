@@ -42,7 +42,7 @@ export function FormButtonsRow({
   return (
     <div className="sticky top-0 z-50 mb-2 md:mb-8 py-1 md:py-2 -mx-4 md:-mx-6 space-y-1 md:space-y-2">
       {/* Navigation Buttons Row */}
-      <div className="flex flex-row gap-0.5 overflow-x-auto md:overflow-visible md:justify-between scrollbar-hide px-0 md:px-6">
+      <div className="flex flex-row gap-0.5 md:justify-between px-0 md:px-6">
         {navigationButtons
           .filter(btn => btn.id !== currentForm)
           .map((btn) => {

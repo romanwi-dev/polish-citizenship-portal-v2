@@ -514,7 +514,7 @@ export default function TestingDashboard() {
       <Card>
         <CardContent className="pt-4 md:pt-6">
           <Tabs value={filterCategory} onValueChange={(v) => setFilterCategory(v as TestCategory | "all")}>
-            <div className="overflow-x-auto -mx-3 px-3 md:mx-0 md:px-0">
+            <div className="-mx-3 px-3 md:mx-0 md:px-0">
               <TabsList className="inline-flex md:grid md:w-full md:grid-cols-7 min-w-max md:min-w-0">
                 {categories.map(cat => (
                   <TabsTrigger key={cat.id} value={cat.id} className="whitespace-nowrap text-xs md:text-sm px-3 md:px-4">

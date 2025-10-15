@@ -161,8 +161,8 @@ export default function CaseDetail() {
 
         {/* Tabs */}
         <Tabs defaultValue={defaultTab} className="space-y-6 relative z-10" onValueChange={(value) => setSearchParams({ tab: value })}>
-          <div className="w-full overflow-x-auto pb-4">
-            <TabsList className="inline-flex gap-0.5 bg-transparent h-auto p-0 w-max">
+          <div className="w-full">
+            <TabsList className="grid grid-cols-2 sm:grid-cols-4 gap-0.5 bg-transparent h-auto p-0 w-full">
               <TabsTrigger 
                 value="edit"
                 onClick={() => setShowEditDialog(true)}

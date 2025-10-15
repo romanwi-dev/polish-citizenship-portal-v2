@@ -403,7 +403,7 @@ export default function CasesManagement() {
 
           {/* Sort Controls */}
           {filteredCases.length > 0 && (
-            <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-2">
+            <div className="flex flex-wrap items-center gap-2 pb-2">
               {[
                 { value: "default", label: "Default" },
                 { value: "name", label: "Name" },

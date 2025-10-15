@@ -418,7 +418,7 @@ export const FamilyTreeInteractive = ({
           <FileText className="h-5 w-5" />
           Document Gap Analysis
         </h3>
-        <div className="overflow-x-auto">
+        <div className="w-full">
           <Table>
             <TableHeader>
               <TableRow>
