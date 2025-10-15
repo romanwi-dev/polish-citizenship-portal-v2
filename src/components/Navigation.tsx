@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, User, Moon, Sun, Sparkles } from "lucide-react";
+import { Menu, User, Moon, Sun, Sparkles, Languages } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { useAuth } from "@/hooks/useAuth";
 import { MobileNavigationSheet } from "@/components/MobileNavigationSheet";
@@ -79,6 +79,14 @@ const Navigation = () => {
               title="Forms Inspection Center"
             >
               <Sparkles className="h-5 w-5 text-white" />
+            </button>
+            <button
+              onClick={() => navigate('/admin/translations')}
+              className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+              aria-label="Translations"
+              title="Translation Management"
+            >
+              <Languages className="h-5 w-5 text-foreground/70" />
             </button>
             <button
               onClick={() => navigate('/admin/cases')}
