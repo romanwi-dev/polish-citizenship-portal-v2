@@ -112,31 +112,31 @@ export const TranslationDashboard = () => {
 
       {/* Main Content Tabs */}
       <Tabs defaultValue="cards" className="space-y-4">
-        <TabsList className="w-full justify-start overflow-x-auto h-14 sm:h-auto p-1">
-          <TabsTrigger value="cards" className="gap-2 px-4 py-3 sm:px-3 sm:py-2 text-base sm:text-sm">
-            <Workflow className="h-5 w-5 sm:h-4 sm:w-4" />
-            <span className="hidden sm:inline">Workflow Cards</span>
-            <span className="sm:hidden">Cards</span>
+        <TabsList className="w-full grid grid-cols-2 sm:grid-cols-5 h-auto gap-2 p-2">
+          <TabsTrigger value="cards" className="gap-2 px-4 py-3 text-base sm:text-sm flex-1">
+            <Workflow className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
+            <span className="hidden sm:inline truncate">Workflow Cards</span>
+            <span className="sm:hidden truncate">Cards</span>
           </TabsTrigger>
-          <TabsTrigger value="workflow" className="gap-2 px-4 py-3 sm:px-3 sm:py-2 text-base sm:text-sm">
-            <Workflow className="h-5 w-5 sm:h-4 sm:w-4" />
-            <span className="hidden sm:inline">Translation Timeline</span>
-            <span className="sm:hidden">Timeline</span>
+          <TabsTrigger value="workflow" className="gap-2 px-4 py-3 text-base sm:text-sm flex-1">
+            <Workflow className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
+            <span className="hidden sm:inline truncate">Translation Timeline</span>
+            <span className="sm:hidden truncate">Timeline</span>
           </TabsTrigger>
-          <TabsTrigger value="requirements" className="gap-2 px-4 py-3 sm:px-3 sm:py-2 text-base sm:text-sm">
-            <ClipboardList className="h-5 w-5 sm:h-4 sm:w-4" />
-            <span className="hidden sm:inline">Requirements</span>
-            <span className="sm:hidden">Docs</span>
+          <TabsTrigger value="requirements" className="gap-2 px-4 py-3 text-base sm:text-sm flex-1">
+            <ClipboardList className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
+            <span className="hidden sm:inline truncate">Requirements</span>
+            <span className="sm:hidden truncate">Docs</span>
           </TabsTrigger>
-          <TabsTrigger value="translators" className="gap-2 px-4 py-3 sm:px-3 sm:py-2 text-base sm:text-sm">
-            <Users className="h-5 w-5 sm:h-4 sm:w-4" />
-            <span className="hidden sm:inline">Sworn Translators</span>
-            <span className="sm:hidden">Translators</span>
+          <TabsTrigger value="translators" className="gap-2 px-4 py-3 text-base sm:text-sm flex-1">
+            <Users className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
+            <span className="hidden sm:inline truncate">Sworn Translators</span>
+            <span className="sm:hidden truncate">Translators</span>
           </TabsTrigger>
-          <TabsTrigger value="agencies" className="gap-2 px-4 py-3 sm:px-3 sm:py-2 text-base sm:text-sm">
-            <Building2 className="h-5 w-5 sm:h-4 sm:w-4" />
-            <span className="hidden sm:inline">Agencies</span>
-            <span className="sm:hidden">Agencies</span>
+          <TabsTrigger value="agencies" className="gap-2 px-4 py-3 text-base sm:text-sm flex-1">
+            <Building2 className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
+            <span className="hidden sm:inline truncate">Agencies</span>
+            <span className="sm:hidden truncate">Agencies</span>
           </TabsTrigger>
         </TabsList>
 
