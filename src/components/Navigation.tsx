@@ -74,11 +74,11 @@ const Navigation = () => {
           <div className="flex items-center gap-1.5 md:gap-2">
             <button
               onClick={() => navigate('/admin/forms-demo')}
-              className="h-11 w-11 rounded-full bg-gradient-to-br from-primary to-accent border border-primary/20 flex items-center justify-center hover:border-primary/50 transition-all hover:scale-110"
+              className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
               aria-label="Forms Demo"
               title="Forms Inspection Center"
             >
-              <Sparkles className="h-5 w-5 text-white" />
+              <Sparkles className="h-5 w-5 text-foreground/70" />
             </button>
             <button
               onClick={() => navigate('/admin/translations')}
@@ -94,21 +94,6 @@ const Navigation = () => {
               aria-label="Management"
             >
               <User className="h-5 w-5 text-foreground/70" />
-            </button>
-            <button
-              onClick={() => {
-                const newTheme = document.documentElement.className === "dark" ? "light" : "dark";
-                document.documentElement.className = newTheme;
-                localStorage.setItem("theme", newTheme);
-              }}
-              className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
-              aria-label="Toggle theme"
-            >
-              {document.documentElement.className === "dark" ? (
-                <Moon className="h-5 w-5 text-foreground/70" />
-              ) : (
-                <Sun className="h-5 w-5 text-foreground/70" />
-              )}
             </button>
             
             {/* Mobile Navigation - Full Screen Sheet */}
@@ -133,14 +118,29 @@ const Navigation = () => {
                 <DesignComponent>
                   <ScrollArea className="h-full max-h-[600px]">
                     <div className="p-4 space-y-4">
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
                         <Button
                           variant={user ? "destructive" : "default"}
-                          className="w-full"
+                          className="flex-1"
                           onClick={user ? handleSignOut : () => navigate('/login')}
                         >
                           {user ? 'Sign Out' : 'Login'}
                         </Button>
+                        <button
+                          onClick={() => {
+                            const newTheme = document.documentElement.className === "dark" ? "light" : "dark";
+                            document.documentElement.className = newTheme;
+                            localStorage.setItem("theme", newTheme);
+                          }}
+                          className="h-10 w-10 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all shrink-0"
+                          aria-label="Toggle theme"
+                        >
+                          {document.documentElement.className === "dark" ? (
+                            <Moon className="h-5 w-5 text-foreground/70" />
+                          ) : (
+                            <Sun className="h-5 w-5 text-foreground/70" />
+                          )}
+                        </button>
                       </div>
                       
                       <NavigationSearch 
