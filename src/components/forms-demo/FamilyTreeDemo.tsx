@@ -69,8 +69,8 @@ export default function FamilyTreeDemo({ onClose, isExpanded, onToggleExpand }: 
       
       <div className="relative z-10 p-3 md:p-6">
         <div className="flex items-center justify-between mb-2 md:mb-6">
-          <h2 className="text-3xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
-            Polish Family Tree
+          <h2 className="text-3xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text text-center md:text-left flex-1">
+            Family Tree
           </h2>
           <div className="flex items-center gap-1 md:gap-2">
             <Button onClick={onToggleExpand} variant="ghost" size="icon" title="Toggle fullscreen" className="h-8 w-8 md:h-10 md:w-10">

@@ -43,8 +43,8 @@ export default function POAFormDemo({ onClose, isExpanded, onToggleExpand }: POA
       
       <div className="relative z-10 pt-2 px-3 pb-3 md:p-6">
         <div className="flex items-center justify-between mb-1 md:mb-6">
-          <h2 className="text-2xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
-            Power of Attorney Form
+          <h2 className="text-3xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text text-center md:text-left flex-1">
+            Power of Attorney
           </h2>
           <div className="flex items-center gap-0.5 md:gap-2">
             <Button onClick={onToggleExpand} variant="ghost" size="icon" title="Toggle fullscreen" className="h-7 w-7 md:h-10 md:w-10">
