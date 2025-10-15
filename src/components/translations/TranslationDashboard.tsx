@@ -11,7 +11,8 @@ import {
   Users,
   Building2,
   Workflow,
-  ClipboardList
+  ClipboardList,
+  UserCog
 } from "lucide-react";
 import { TranslationWorkflowTimeline } from "./TranslationWorkflowTimeline";
 import TranslationWorkflowCards from "./TranslationWorkflowCards";
@@ -112,7 +113,7 @@ export const TranslationDashboard = () => {
 
       {/* Main Content Tabs */}
       <Tabs defaultValue="cards" className="space-y-4">
-        <TabsList className="w-full grid grid-cols-2 sm:grid-cols-5 h-auto gap-2 p-2">
+        <TabsList className="w-full grid grid-cols-3 sm:grid-cols-6 h-auto gap-2 p-2">
           <TabsTrigger value="cards" className="gap-2 px-4 py-3 text-base sm:text-sm flex-1">
             <Workflow className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
             <span className="hidden sm:inline truncate">Workflow Cards</span>
@@ -122,6 +123,10 @@ export const TranslationDashboard = () => {
             <Workflow className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
             <span className="hidden sm:inline truncate">Translation Timeline</span>
             <span className="sm:hidden truncate">Timeline</span>
+          </TabsTrigger>
+          <TabsTrigger value="supervisor" className="gap-2 px-4 py-3 text-base sm:text-sm flex-1">
+            <UserCog className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
+            <span className="truncate">Supervisor</span>
           </TabsTrigger>
           <TabsTrigger value="requirements" className="gap-2 px-4 py-3 text-base sm:text-sm flex-1">
             <ClipboardList className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
@@ -146,6 +151,14 @@ export const TranslationDashboard = () => {
 
         <TabsContent value="workflow" className="space-y-4">
           <TranslationWorkflowTimeline />
+        </TabsContent>
+
+        <TabsContent value="supervisor">
+          <div className="text-center py-12">
+            <UserCog className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
+            <h3 className="text-xl font-semibold mb-2">Supervisor Dashboard</h3>
+            <p className="text-muted-foreground">Supervisor features coming soon</p>
+          </div>
         </TabsContent>
 
         <TabsContent value="requirements">
