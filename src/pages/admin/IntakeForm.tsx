@@ -67,13 +67,22 @@ export default function IntakeForm() {
     isLargeFonts
   };
 
-  // Reset scroll position BEFORE paint to show Select tab on mount/refresh
-  // Reset scroll position only on initial mount
+  // Reset scroll position to show Select tab on mount/refresh
   useLayoutEffect(() => {
     if (tabsListRef.current) {
       tabsListRef.current.scrollLeft = 0;
     }
   }, []);
+
+  // Override browser scroll restoration with a one-time reset
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (tabsListRef.current) {
+        tabsListRef.current.scrollLeft = 0;
+      }
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []); // Empty array ensures this only runs once on mount
 
   if (isLoading) {
     return (
