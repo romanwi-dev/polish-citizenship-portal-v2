@@ -40,7 +40,7 @@ export const TranslationDashboard = () => {
   });
 
   return (
-    <div className="space-y-4 sm:space-y-6 bg-[hsl(221,83%,15%)] min-h-screen p-4 sm:p-6 -m-4 sm:-m-6">
+    <div className="space-y-4 sm:space-y-6 p-4 sm:p-6">
       {/* Header */}
       <div className="flex flex-col gap-2">
         <div className="flex items-center gap-2 sm:gap-3">
