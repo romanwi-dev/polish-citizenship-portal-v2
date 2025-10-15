@@ -28,40 +28,86 @@ import {
   Sparkles,
   Archive,
   FileSearch,
-  Languages
+  Languages,
+  FileCheck,
+  BookOpen,
+  Award,
+  ChevronDown,
+  Plus
 } from "lucide-react";
+import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import logo from "@/assets/logo.png";
+import { Badge } from "@/components/ui/badge";
+import { Collapsible } from "@/components/ui/collapsible";
 
-const navItems = [
-  { title: "Dashboard", url: "/admin", icon: LayoutDashboard, exact: true },
-  { title: "Cases", url: "/admin/cases", icon: Users },
-  { title: "Forms Demo", url: "/admin/forms-demo", icon: Sparkles },
-  { title: "Big Plan Tracker", url: "/admin/big-plan-tracker", icon: Target },
-  { title: "Testing Dashboard", url: "/admin/testing-dashboard", icon: FlaskConical },
-  { title: "Tasks", url: "/admin/tasks", icon: CheckSquare },
-  { title: "Documents", url: "/admin/documents", icon: FileText },
-  { title: "Documents Collection", url: "/admin/documents-collection", icon: FileSearch },
-  { title: "Archives Search", url: "/admin/archives-search", icon: Archive },
-  { title: "Translations", url: "/admin/translations", icon: Languages },
-  { title: "Messages", url: "/admin/messages", icon: Mail },
-  { title: "Analytics", url: "/admin/analytics", icon: BarChart3 },
-  { title: "Dropbox Sync", url: "/admin/dropbox", icon: FolderSync },
-  { title: "Migration Scanner", url: "/admin/dropbox-migration", icon: GitCompare },
-  { title: "System Health", url: "/admin/system-health", icon: Shield },
-  { title: "Settings", url: "/admin/settings", icon: Settings },
+const navSections = [
+  {
+    title: "Core Management",
+    defaultOpen: false,
+    items: [
+      { title: "Dashboard", url: "/admin", icon: LayoutDashboard, exact: true },
+      { title: "Cases", url: "/admin/cases", icon: Users },
+      { title: "New Case", url: "/admin/new-case", icon: Plus },
+      { title: "Forms Demo", url: "/admin/forms-demo", icon: Sparkles },
+      { title: "Big Plan Tracker", url: "/admin/big-plan-tracker", icon: Target },
+      { title: "Testing Dashboard", url: "/admin/testing-dashboard", icon: FlaskConical },
+    ]
+  },
+  {
+    title: "WORKFLOWS",
+    defaultOpen: true,
+    highlighted: true,
+    items: [
+      { title: "Translations", url: "/admin/translations", icon: Languages, badge: "PART 8" },
+      { title: "Archives Search", url: "/admin/archives-search", icon: Archive, badge: "PART 7" },
+      { title: "Documents Collection", url: "/admin/documents-collection", icon: FileSearch, badge: "PART 6" },
+      { title: "Polish Civil Acts", url: "/admin/civil-acts", icon: FileCheck, badge: "PART 10" },
+      { title: "Polish Citizenship", url: "/admin/citizenship", icon: BookOpen, badge: "PART 13" },
+      { title: "Polish Passport", url: "/admin/passport", icon: Award, badge: "PART 14" },
+    ]
+  },
+  {
+    title: "Operations",
+    defaultOpen: false,
+    items: [
+      { title: "Tasks", url: "/admin/tasks", icon: CheckSquare },
+      { title: "Documents", url: "/admin/documents", icon: FileText },
+      { title: "Messages", url: "/admin/messages", icon: Mail },
+      { title: "Analytics", url: "/admin/analytics", icon: BarChart3 },
+    ]
+  },
+  {
+    title: "System",
+    defaultOpen: false,
+    items: [
+      { title: "Dropbox Sync", url: "/admin/dropbox", icon: FolderSync },
+      { title: "Migration Scanner", url: "/admin/dropbox-migration", icon: GitCompare },
+      { title: "System Health", url: "/admin/system-health", icon: Shield },
+      { title: "Settings", url: "/admin/settings", icon: Settings },
+    ]
+  }
 ];
 
 function AppSidebar() {
   const { open } = useSidebar();
   const location = useLocation();
+  const [openGroups, setOpenGroups] = useState<string[]>(['WORKFLOWS']);
 
   const isActive = (path: string, exact?: boolean) => {
     if (exact) {
       return location.pathname === path;
     }
     return location.pathname.startsWith(path);
+  };
+
+  const toggleGroup = (title: string) => {
+    setOpenGroups(prev => 
+      prev.includes(title) 
+        ? prev.filter(g => g !== title)
+        : [...prev, title]
+    );
   };
 
   return (
@@ -78,31 +124,63 @@ function AppSidebar() {
       </div>
       
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Management</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {navItems.map((item) => {
-                const active = isActive(item.url, item.exact);
-                return (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton
-                      asChild
-                      className={cn(
-                        active && "bg-primary text-primary-foreground hover:bg-primary/90"
-                      )}
-                    >
-                      <NavLink to={item.url} className="flex items-center gap-2 w-full">
-                        <item.icon className="h-4 w-4 flex-shrink-0" />
-                        {open && <span className="flex-1">{item.title}</span>}
-                      </NavLink>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        {navSections.map((section) => {
+          const isGroupOpen = openGroups.includes(section.title);
+          
+          return (
+            <SidebarGroup key={section.title}>
+              <SidebarGroupLabel 
+                className={cn(
+                  "cursor-pointer flex items-center justify-between hover:bg-accent/50 rounded-md px-2 py-1",
+                  section.highlighted && "text-primary font-bold"
+                )}
+                onClick={() => toggleGroup(section.title)}
+              >
+                <span>{section.title}</span>
+                <ChevronDown 
+                  className={cn(
+                    "h-4 w-4 transition-transform",
+                    isGroupOpen && "rotate-180"
+                  )}
+                />
+              </SidebarGroupLabel>
+              
+              <Collapsible open={isGroupOpen}>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {section.items.map((item) => {
+                      const active = isActive(item.url, item.exact);
+                      return (
+                        <SidebarMenuItem key={item.title}>
+                          <SidebarMenuButton
+                            asChild
+                            className={cn(
+                              active && "bg-primary text-primary-foreground hover:bg-primary/90"
+                            )}
+                          >
+                            <NavLink to={item.url} className="flex items-center gap-2 w-full">
+                              <item.icon className="h-4 w-4 flex-shrink-0" />
+                              {open && (
+                                <div className="flex items-center justify-between flex-1">
+                                  <span>{item.title}</span>
+                                  {item.badge && (
+                                    <Badge variant="outline" className="text-[10px] px-1 ml-auto">
+                                      {item.badge}
+                                    </Badge>
+                                  )}
+                                </div>
+                              )}
+                            </NavLink>
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
+                      );
+                    })}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </Collapsible>
+            </SidebarGroup>
+          );
+        })}
       </SidebarContent>
     </Sidebar>
   );

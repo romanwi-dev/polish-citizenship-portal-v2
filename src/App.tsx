@@ -47,6 +47,9 @@ const FormsDemo = lazy(() => import("./pages/admin/FormsDemo"));
 const Translations = lazy(() => import("./pages/admin/Translations"));
 const ArchivesSearch = lazy(() => import("./pages/admin/ArchivesSearch"));
 const DocumentsCollection = lazy(() => import("./pages/admin/DocumentsCollection"));
+const PolishCivilActs = lazy(() => import("./pages/admin/PolishCivilActs"));
+const PolishCitizenship = lazy(() => import("./pages/admin/PolishCitizenship"));
+const PolishPassport = lazy(() => import("./pages/admin/PolishPassport"));
 const OCRReview = lazy(() => import("./pages/admin/OCRReview"));
 
 const queryClient = new QueryClient({
@@ -274,7 +277,31 @@ const App = () => (
             } 
           />
           <Route 
-            path="/admin/archives-search" 
+            path="/admin/civil-acts" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <PolishCivilActs />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/citizenship" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <PolishCitizenship />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/passport" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <PolishPassport />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/archives-search"
             element={
               <Suspense fallback={<AdminLoader />}>
                 <ArchivesSearch />
