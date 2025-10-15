@@ -4,9 +4,6 @@ import { Button } from "./ui/button";
 const AIAnalysisSection = () => {
   return (
     <section className="relative py-32 overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/5 to-background" />
-      <div className="absolute bottom-20 left-20 w-96 h-96 bg-primary/10 rounded-full blur-[100px]" />
       
       <div className="container relative z-10 px-4 mx-auto">
         <div className="max-w-6xl mx-auto">

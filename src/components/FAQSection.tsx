@@ -161,9 +161,6 @@ const FAQSection = () => {
 
   return (
     <section id="faq" className="py-24 relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
-      <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]" />
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto">

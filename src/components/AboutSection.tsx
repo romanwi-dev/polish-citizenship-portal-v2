@@ -3,9 +3,6 @@ import { Shield, Users, Globe } from "lucide-react";
 const AboutSection = () => {
   return (
     <section className="relative py-32 overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
-      <div className="absolute top-40 right-20 w-96 h-96 bg-secondary/10 rounded-full blur-[100px]" />
       
       <div className="container relative z-10 px-4 mx-auto">
         <div className="max-w-4xl mx-auto text-center mb-16">

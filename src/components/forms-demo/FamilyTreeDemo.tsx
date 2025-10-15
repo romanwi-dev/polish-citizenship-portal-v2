@@ -63,9 +63,6 @@ export default function FamilyTreeDemo({ onClose, isExpanded, onToggleExpand }: 
 
   return (
     <div className={`relative min-h-full ${isLargeFonts ? 'text-lg' : ''}`}>
-      {/* Checkered grid background - matching footer */}
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
       
       <div className="relative z-10 p-3 md:p-6">
         <div className="flex items-center justify-between mb-2 md:mb-6">

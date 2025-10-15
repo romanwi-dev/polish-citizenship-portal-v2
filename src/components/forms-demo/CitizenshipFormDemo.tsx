@@ -37,9 +37,6 @@ export default function CitizenshipFormDemo({ onClose, isExpanded, onToggleExpan
 
   return (
     <div className={`relative min-h-full ${isLargeFonts ? 'text-lg' : ''}`}>
-      {/* Checkered grid background - matching footer */}
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
       
       <div className="relative z-10 pt-2 px-3 pb-3 md:p-6">
         <div className="flex items-center justify-between mb-1 md:mb-6">

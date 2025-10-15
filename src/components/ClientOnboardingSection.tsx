@@ -92,12 +92,6 @@ export default function ClientOnboardingSection() {
 
   return (
     <section id="how-to-start" className="relative py-24 overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-muted/20 to-background" />
-      <div className="absolute inset-0" style={{
-        backgroundImage: `radial-gradient(circle at 2px 2px, hsl(var(--primary) / 0.05) 1px, transparent 0)`,
-        backgroundSize: '48px 48px'
-      }} />
 
       <div className="container relative z-10 mx-auto px-4">
         {/* Header */}

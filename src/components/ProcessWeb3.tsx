@@ -114,8 +114,6 @@ const steps = [
 const ProcessWeb3 = () => {
   return (
     <section className="py-32 relative overflow-hidden">
-      {/* Background Grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
       
       <div className="container px-4 mx-auto relative z-10">
         <div className="text-center mb-20">

@@ -51,12 +51,6 @@ const HeroWeb3 = () => {
         <div className="absolute inset-0 z-0 bg-gradient-to-b from-primary/10 via-secondary/5 to-background" />
       )}
 
-      {/* Gradient Overlays */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/50 to-background z-[1]" />
-      
-      {/* Animated Glow Orbs */}
-      <div className="absolute top-20 left-20 w-96 h-96 bg-primary/20 rounded-full blur-[120px] animate-pulse z-[1]" />
-      <div className="absolute bottom-20 right-20 w-96 h-96 bg-secondary/20 rounded-full blur-[120px] animate-pulse delay-700 z-[1]" />
 
       {/* Content */}
       <div className="container relative z-10 px-4 pt-32 pb-20 mx-auto">

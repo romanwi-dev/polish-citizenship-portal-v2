@@ -224,7 +224,7 @@ export default function ClientIntakeWizard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 py-8">
+    <div className="min-h-screen py-8">
       <div className="container max-w-4xl mx-auto px-4">
         {/* Header */}
         <div className="flex justify-between items-center mb-6">

@@ -103,8 +103,6 @@ const FlippableServiceCard = ({ service, index }: { service: typeof services[0];
 const ServicesWeb3 = () => {
   return (
     <section id="services" className="py-32 relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
       
       <div className="container px-4 mx-auto relative z-10">
         <div className="text-center mb-16">
