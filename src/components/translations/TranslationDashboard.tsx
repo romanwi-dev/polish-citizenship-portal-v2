@@ -18,8 +18,17 @@ import TranslationWorkflowCards from "./TranslationWorkflowCards";
 import { DocumentRequirementsList } from "./DocumentRequirementsList";
 import { SwornTranslatorsList } from "./SwornTranslatorsList";
 import { TranslationAgenciesList } from "./TranslationAgenciesList";
+import { useState } from "react";
 
 export const TranslationDashboard = () => {
+  const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
+
+  const toggleFlip = (cardId: string) => {
+    setFlippedCards(prev => ({
+      ...prev,
+      [cardId]: !prev[cardId]
+    }));
+  };
 
   const { data: counts } = useQuery({
     queryKey: ["translation-workflow-counts"],
@@ -44,58 +53,162 @@ export const TranslationDashboard = () => {
       </div>
 
       <div className="grid gap-3 grid-cols-2 md:grid-cols-4">
-        <div className="glass-card p-4 sm:p-6 rounded-lg hover-glow">
-          <div className="flex items-center gap-3 sm:gap-4">
-            <div className="p-3 bg-primary/10 rounded-lg shrink-0">
-              <FileText className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
+        {/* Prepared Card */}
+        <div 
+          className="relative h-[140px] cursor-pointer"
+          style={{ perspective: '1000px' }}
+          onClick={() => toggleFlip('prepared')}
+        >
+          <div
+            className="absolute inset-0 transition-transform duration-700"
+            style={{
+              transformStyle: 'preserve-3d',
+              transform: flippedCards['prepared'] ? 'rotateY(180deg)' : 'rotateY(0deg)',
+            }}
+          >
+            {/* Front */}
+            <div 
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
+              style={{ backfaceVisibility: 'hidden' }}
+            >
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="p-3 bg-primary/10 rounded-lg shrink-0">
+                  <FileText className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-muted-foreground truncate">Prepared</p>
+                  <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                    {counts?.total || 0}
+                  </p>
+                </div>
+              </div>
             </div>
-            <div className="min-w-0">
-              <p className="text-sm font-medium text-muted-foreground truncate">Total</p>
-              <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                {counts?.total || 0}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="glass-card p-4 sm:p-6 rounded-lg hover-glow">
-          <div className="flex items-center gap-3 sm:gap-4">
-            <div className="p-3 bg-yellow-500/10 rounded-lg shrink-0">
-              <Clock className="h-6 w-6 sm:h-7 sm:w-7 text-yellow-600" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-sm font-medium text-muted-foreground truncate">Upload Pending</p>
-              <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                {counts?.upload_pending || 0}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="glass-card p-4 sm:p-6 rounded-lg hover-glow">
-          <div className="flex items-center gap-3 sm:gap-4">
-            <div className="p-3 bg-blue-500/10 rounded-lg shrink-0">
-              <Languages className="h-6 w-6 sm:h-7 sm:w-7 text-blue-600" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-sm font-medium text-muted-foreground truncate">With Translator</p>
-              <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                {counts?.with_translator || 0}
-              </p>
+            {/* Back */}
+            <div 
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
+              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+            >
+              <p className="text-sm text-muted-foreground text-center">Total documents prepared for translation workflow</p>
             </div>
           </div>
         </div>
 
-        <div className="glass-card p-4 sm:p-6 rounded-lg hover-glow">
-          <div className="flex items-center gap-3 sm:gap-4">
-            <div className="p-3 bg-green-500/10 rounded-lg shrink-0">
-              <CheckCircle className="h-6 w-6 sm:h-7 sm:w-7 text-green-600" />
+        {/* Pending Card */}
+        <div 
+          className="relative h-[140px] cursor-pointer"
+          style={{ perspective: '1000px' }}
+          onClick={() => toggleFlip('pending')}
+        >
+          <div
+            className="absolute inset-0 transition-transform duration-700"
+            style={{
+              transformStyle: 'preserve-3d',
+              transform: flippedCards['pending'] ? 'rotateY(180deg)' : 'rotateY(0deg)',
+            }}
+          >
+            {/* Front */}
+            <div 
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
+              style={{ backfaceVisibility: 'hidden' }}
+            >
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="p-3 bg-yellow-500/10 rounded-lg shrink-0">
+                  <Clock className="h-6 w-6 sm:h-7 sm:w-7 text-yellow-600" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-muted-foreground truncate">Pending</p>
+                  <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                    {counts?.upload_pending || 0}
+                  </p>
+                </div>
+              </div>
             </div>
-            <div className="min-w-0">
-              <p className="text-sm font-medium text-muted-foreground truncate">Completed</p>
-              <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                {counts?.completed || 0}
-              </p>
+            {/* Back */}
+            <div 
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
+              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+            >
+              <p className="text-sm text-muted-foreground text-center">Documents awaiting client upload to portal</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Translator Card */}
+        <div 
+          className="relative h-[140px] cursor-pointer"
+          style={{ perspective: '1000px' }}
+          onClick={() => toggleFlip('translator')}
+        >
+          <div
+            className="absolute inset-0 transition-transform duration-700"
+            style={{
+              transformStyle: 'preserve-3d',
+              transform: flippedCards['translator'] ? 'rotateY(180deg)' : 'rotateY(0deg)',
+            }}
+          >
+            {/* Front */}
+            <div 
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
+              style={{ backfaceVisibility: 'hidden' }}
+            >
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="p-3 bg-blue-500/10 rounded-lg shrink-0">
+                  <Languages className="h-6 w-6 sm:h-7 sm:w-7 text-blue-600" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-muted-foreground truncate">Translator</p>
+                  <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                    {counts?.with_translator || 0}
+                  </p>
+                </div>
+              </div>
+            </div>
+            {/* Back */}
+            <div 
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
+              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+            >
+              <p className="text-sm text-muted-foreground text-center">Documents currently with sworn translator for certification</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Completed Card */}
+        <div 
+          className="relative h-[140px] cursor-pointer"
+          style={{ perspective: '1000px' }}
+          onClick={() => toggleFlip('completed')}
+        >
+          <div
+            className="absolute inset-0 transition-transform duration-700"
+            style={{
+              transformStyle: 'preserve-3d',
+              transform: flippedCards['completed'] ? 'rotateY(180deg)' : 'rotateY(0deg)',
+            }}
+          >
+            {/* Front */}
+            <div 
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
+              style={{ backfaceVisibility: 'hidden' }}
+            >
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="p-3 bg-green-500/10 rounded-lg shrink-0">
+                  <CheckCircle className="h-6 w-6 sm:h-7 sm:w-7 text-green-600" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-muted-foreground truncate">Completed</p>
+                  <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                    {counts?.completed || 0}
+                  </p>
+                </div>
+              </div>
+            </div>
+            {/* Back */}
+            <div 
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
+              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+            >
+              <p className="text-sm text-muted-foreground text-center">Certified translations ready for submission to authorities</p>
             </div>
           </div>
         </div>
