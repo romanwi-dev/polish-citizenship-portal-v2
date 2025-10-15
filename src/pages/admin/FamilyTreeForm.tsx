@@ -418,8 +418,9 @@ export default function FamilyTreeForm() {
           {!isFullView ? (
             // Tabbed View
             <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-              <div className="sticky top-0 z-50 border-b border-border/50 pb-2 pt-2 -mx-4 md:-mx-6 px-4 md:px-6">
-                <TabsList className="w-full flex gap-0.5 overflow-x-auto md:overflow-visible md:justify-between scrollbar-hide bg-transparent p-0">
+              <div className="sticky top-0 z-50 border-b border-border/50 pb-2 pt-2 -mx-4 md:-mx-6">
+                <TabsList className="w-screen md:w-full flex gap-0.5 overflow-x-auto md:overflow-visible md:justify-between scrollbar-hide bg-transparent p-0 px-4 md:px-6">
+
                   <TabsTrigger value="select" className="flex-shrink-0 md:flex-1">
                     <span className="text-blue-600 dark:text-blue-400">Select</span>
                   </TabsTrigger>
@@ -1194,8 +1195,9 @@ export default function FamilyTreeForm() {
             // Full View Mode - Show all tab sections with Tabs wrapper
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               {/* Keep the tabs list visible - matching the original style */}
-              <div className="sticky top-0 z-50 border-b border-border/50 pb-2 pt-2 -mx-4 md:-mx-6 px-4 md:px-6 bg-background/95 backdrop-blur-sm">
-                <TabsList className="w-full flex gap-0.5 overflow-x-auto md:overflow-visible md:justify-between scrollbar-hide bg-transparent p-0">
+              <div className="sticky top-0 z-50 border-b border-border/50 pb-2 pt-2 -mx-4 md:-mx-6 bg-background/95 backdrop-blur-sm">
+                <TabsList className="w-screen md:w-full flex gap-0.5 overflow-x-auto md:overflow-visible md:justify-between scrollbar-hide bg-transparent p-0 px-4 md:px-6">
+
                   <TabsTrigger value="select" className="flex-shrink-0 md:flex-1">
                     <span className="text-blue-600 dark:text-blue-400">Select</span>
                   </TabsTrigger>
