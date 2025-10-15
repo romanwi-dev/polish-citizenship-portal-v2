@@ -67,22 +67,25 @@ export default function IntakeForm() {
     isLargeFonts
   };
 
-  // Reset scroll position to show Select tab on mount/refresh
-  useLayoutEffect(() => {
-    if (tabsListRef.current) {
-      tabsListRef.current.scrollLeft = 0;
-    }
-  }, []);
-
-  // Override browser scroll restoration with a one-time reset
+  // Disable browser scroll restoration and reset to Select tab
   useEffect(() => {
-    const timer = setTimeout(() => {
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    
+    const resetScroll = () => {
       if (tabsListRef.current) {
         tabsListRef.current.scrollLeft = 0;
       }
-    }, 100);
+    };
+    
+    // Multiple attempts to ensure it works
+    resetScroll();
+    requestAnimationFrame(resetScroll);
+    const timer = setTimeout(resetScroll, 0);
+    
     return () => clearTimeout(timer);
-  }, []); // Empty array ensures this only runs once on mount
+  }, []);
 
   if (isLoading) {
     return (
