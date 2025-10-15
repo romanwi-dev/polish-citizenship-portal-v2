@@ -44,3 +44,12 @@ verify_jwt = false
 
 [functions.dropbox-migration-scan]
 verify_jwt = false
+
+[functions.validate-intake-token]
+verify_jwt = false
+
+[functions.send-welcome-email]
+verify_jwt = false
+
+[functions.partner-api]
+verify_jwt = false

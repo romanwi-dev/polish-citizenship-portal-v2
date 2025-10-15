@@ -49,26 +49,29 @@ export default function ClientIntakeWizard() {
       }
 
       try {
-        // TODO: Implement token validation via edge function
-        // For now, extract caseId from token (format: case_{caseId}_{timestamp})
-        const parts = token.split('_');
-        if (parts.length >= 2 && parts[0] === 'case') {
-          const extractedCaseId = parts[1];
-          setCaseId(extractedCaseId);
-          
-          // Load existing intake data
-          const { data, error } = await supabase
-            .from('intake_data')
-            .select('*')
-            .eq('case_id', extractedCaseId)
-            .maybeSingle();
-          
-          if (error) throw error;
-          if (data) {
-            setFormData(data);
-          }
-        } else {
-          throw new Error('Invalid token format');
+        // Validate token via edge function
+        const { data: validationData, error: validationError } = await supabase.functions.invoke(
+          'validate-intake-token',
+          { body: { token } }
+        );
+        
+        if (validationError || !validationData.valid) {
+          throw new Error(validationData?.error || 'Invalid token');
+        }
+        
+        const extractedCaseId = validationData.caseId;
+        setCaseId(extractedCaseId);
+        
+        // Load existing intake data
+        const { data, error } = await supabase
+          .from('intake_data')
+          .select('*')
+          .eq('case_id', extractedCaseId)
+          .maybeSingle();
+        
+        if (error) throw error;
+        if (data) {
+          setFormData(data);
         }
       } catch (error) {
         console.error('Token validation error');

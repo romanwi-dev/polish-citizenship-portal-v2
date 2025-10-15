@@ -2,6 +2,7 @@ import { useState, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Edit, MoreVertical, Copy, Pause, Ban, Archive, Trash2, Eye, Radio, FileEdit, Award, Zap, Star } from "lucide-react";
 import { CollapsibleKPIStrip } from "@/components/CollapsibleKPIStrip";
+import { KPIStrip } from "@/components/KPIStrip";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { toast } from "sonner";
@@ -44,6 +45,7 @@ interface CaseCardProps {
     processing_mode: string;
     client_score: number;
     scheme_introduced?: string;
+    intake_completed?: boolean;
     poa_approved?: boolean;
     oby_filed?: boolean;
     wsc_received?: boolean;
@@ -293,65 +295,18 @@ export const CaseCard = memo(({
           </div>
 
           {/* KPI Strip - Mobile Optimized */}
-          <CollapsibleKPIStrip className="mb-4 sm:mb-5">
-            <div className="p-3 rounded-lg border border-border/30">
-              <div className="flex flex-wrap gap-2">
-                {/* POA Status */}
-              <div className={`px-2 py-1 rounded text-xs font-medium flex items-center gap-1 justify-center ${
-                clientCase.poa_approved 
-                  ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
-                  : 'bg-muted/20 text-muted-foreground border border-border/30'
-              }`}>
-                <CheckCircle2 className="w-3 h-3" />
-                POA
-              </div>
-
-              {/* OBY Filed */}
-              <div className={`px-2 py-1 rounded text-xs font-medium flex items-center gap-1 justify-center ${
-                clientCase.oby_filed 
-                  ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' 
-                  : 'bg-muted/20 text-muted-foreground border border-border/30'
-              }`}>
-                <FileText className="w-3 h-3" />
-                OBY
-              </div>
-
-              {/* WSC Letter */}
-              <div className={`px-2 py-1 rounded text-xs font-medium flex items-center gap-1 justify-center ${
-                clientCase.wsc_received 
-                  ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30' 
-                  : 'bg-muted/20 text-muted-foreground border border-border/30'
-              }`}>
-                <FileEdit className="w-3 h-3" />
-                WSC
-              </div>
-
-              {/* Decision */}
-              <div className={`px-2 py-1 rounded text-xs font-medium flex items-center gap-1 justify-center ${
-                clientCase.decision_received 
-                  ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' 
-                  : 'bg-muted/20 text-muted-foreground border border-border/30'
-              }`}>
-                <Award className="w-3 h-3" />
-                Decision
-              </div>
-
-              {/* Tasks Progress */}
-              {(clientCase.kpi_tasks_total ?? 0) > 0 && (
-                <div className="px-2 py-1 rounded text-xs font-medium bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 col-span-1">
-                  Tasks: {clientCase.kpi_tasks_completed}/{clientCase.kpi_tasks_total}
-                </div>
-              )}
-
-              {/* Docs Percentage */}
-              {(clientCase.kpi_docs_percentage ?? 0) > 0 && (
-                <div className="px-2 py-1 rounded text-xs font-medium bg-orange-500/20 text-orange-400 border border-orange-500/30 col-span-1">
-                  Docs: {clientCase.kpi_docs_percentage}%
-                </div>
-              )}
-              </div>
-            </div>
-          </CollapsibleKPIStrip>
+          <div className="mb-4 sm:mb-5">
+            <KPIStrip
+              intakeCompleted={Boolean(clientCase.intake_completed)}
+              poaApproved={Boolean(clientCase.poa_approved)}
+              obyFiled={Boolean(clientCase.oby_filed)}
+              wscReceived={Boolean(clientCase.wsc_received)}
+              decisionReceived={Boolean(clientCase.decision_received)}
+              docsPercentage={clientCase.kpi_docs_percentage || 0}
+              tasksCompleted={clientCase.kpi_tasks_completed || 0}
+              tasksTotal={clientCase.kpi_tasks_total || 0}
+            />
+          </div>
 
           {clientCase.client_code && (
             <div className="mb-3 sm:mb-4 p-2 rounded-lg border border-border/20">
