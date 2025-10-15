@@ -1,4 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
+import { FlippableCardsDarkGlow } from "@/components/docs/FlippableCardsDarkGlow";
 import { useMasterData, useUpdateMasterData } from "@/hooks/useMasterData";
 import { sanitizeMasterData } from "@/utils/masterDataSanitizer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -384,95 +385,52 @@ export default function CivilRegistryForm() {
 
                 <div className="pt-8">
                   <h3 className={cn("font-semibold mb-6 text-foreground", isLargeFonts ? "text-2xl" : "text-xl")}>Required Documents Checklist / Lista wymaganych dokumentów</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <motion.div 
-                      initial={{ opacity: 0, scale: 0.95 }} 
-                      animate={{ opacity: 1, scale: 1 }} 
-                      transition={{ delay: 0 }}
-                      className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow"
-                    >
-                      <Checkbox
-                        id="has_original_foreign_act"
-                        checked={formData?.has_original_foreign_act || false}
-                        onCheckedChange={(checked) => handleInputChange("has_original_foreign_act", checked)}
-                        className="h-6 w-6"
-                      />
-                      <Label htmlFor="has_original_foreign_act" className="cursor-pointer text-sm font-normal">
-                        Original foreign civil act / Oryginał aktu zagranicznego
-                      </Label>
-                    </motion.div>
-
-                    <motion.div 
-                      initial={{ opacity: 0, scale: 0.95 }} 
-                      animate={{ opacity: 1, scale: 1 }} 
-                      transition={{ delay: 0.05 }}
-                      className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow"
-                    >
-                      <Checkbox
-                        id="has_sworn_translation"
-                        checked={formData?.has_sworn_translation || false}
-                        onCheckedChange={(checked) => handleInputChange("has_sworn_translation", checked)}
-                        className="h-6 w-6"
-                      />
-                      <Label htmlFor="has_sworn_translation" className="cursor-pointer text-sm font-normal">
-                        Sworn translation into Polish / Tłumaczenie przysięgłe na język polski
-                      </Label>
-                    </motion.div>
-
-                    <motion.div 
-                      initial={{ opacity: 0, scale: 0.95 }} 
-                      animate={{ opacity: 1, scale: 1 }} 
-                      transition={{ delay: 0.1 }}
-                      className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow"
-                    >
-                      <Checkbox
-                        id="has_tax_payment"
-                        checked={formData?.has_tax_payment || false}
-                        onCheckedChange={(checked) => handleInputChange("has_tax_payment", checked)}
-                        className="h-6 w-6"
-                      />
-                      <Label htmlFor="has_tax_payment" className="cursor-pointer text-sm font-normal">
-                        Proof of Tax Payment (50 PLN) / Dowód uiszczenia opłaty skarbowej
-                      </Label>
-                    </motion.div>
-
-                    <motion.div 
-                      initial={{ opacity: 0, scale: 0.95 }} 
-                      animate={{ opacity: 1, scale: 1 }} 
-                      transition={{ delay: 0.15 }}
-                      className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow"
-                    >
-                      <Checkbox
-                        id="has_power_of_attorney"
-                        checked={formData?.has_power_of_attorney || false}
-                        onCheckedChange={(checked) => handleInputChange("has_power_of_attorney", checked)}
-                        className="h-6 w-6"
-                      />
-                      <Label htmlFor="has_power_of_attorney" className="cursor-pointer text-sm font-normal">
-                        Power of Attorney / Pełnomocnictwo (notarized or consular)
-                      </Label>
-                    </motion.div>
-
-                    <motion.div 
-                      initial={{ opacity: 0, scale: 0.95 }} 
-                      animate={{ opacity: 1, scale: 1 }} 
-                      transition={{ delay: 0.2 }}
-                      className="flex items-center space-x-4 p-5 rounded-xl border-2 border-border/50 hover:border-primary/50 transition-all hover-glow"
-                    >
-                      <Checkbox
-                        id="has_passport_copy"
-                        checked={formData?.has_passport_copy || false}
-                        onCheckedChange={(checked) => handleInputChange("has_passport_copy", checked)}
-                        className="h-6 w-6"
-                      />
-                      <Label htmlFor="has_passport_copy" className="cursor-pointer text-sm font-normal">
-                        Valid Passport Copy / Kopia paszportu
-                      </Label>
-                    </motion.div>
-                  </div>
+                  <FlippableCardsDarkGlow 
+                    documents={[
+                      {
+                        id: 'has_original_foreign_act',
+                        label: 'Original foreign civil act / Oryginał aktu zagranicznego',
+                        checked: formData?.has_original_foreign_act || false,
+                        importance: 'critical' as const,
+                        difficulty: 'hard' as const,
+                      },
+                      {
+                        id: 'has_sworn_translation',
+                        label: 'Sworn translation into Polish / Tłumaczenie przysięgłe na język polski',
+                        checked: formData?.has_sworn_translation || false,
+                        importance: 'critical' as const,
+                        difficulty: 'medium' as const,
+                      },
+                      {
+                        id: 'has_tax_payment',
+                        label: 'Proof of Tax Payment (50 PLN) / Dowód uiszczenia opłaty skarbowej',
+                        checked: formData?.has_tax_payment || false,
+                        importance: 'high' as const,
+                        difficulty: 'easy' as const,
+                      },
+                      {
+                        id: 'has_power_of_attorney',
+                        label: 'Power of Attorney / Pełnomocnictwo (notarized or consular)',
+                        checked: formData?.has_power_of_attorney || false,
+                        importance: 'high' as const,
+                        difficulty: 'medium' as const,
+                      },
+                      {
+                        id: 'has_passport_copy',
+                        label: 'Valid Passport Copy / Kopia paszportu',
+                        checked: formData?.has_passport_copy || false,
+                        importance: 'medium' as const,
+                        difficulty: 'easy' as const,
+                      },
+                    ]}
+                    onToggle={(id) => {
+                      handleInputChange(id, !formData?.[id]);
+                    }}
+                    colorScheme="civil-reg"
+                  />
                 </div>
 
-          {/* Additional Notes Section - Full Width like Family History */}
+          {/* Additional Notes Section - Matching Family Tree */}
           <motion.div initial={{
           opacity: 0,
           scale: 0.95
@@ -482,25 +440,24 @@ export default function CivilRegistryForm() {
         }} transition={{
           duration: 0.5,
           delay: 0.2
-        }}>
-            <div>
-              <div className="border-b border-emerald-200/20 pb-6">
-                <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-400 bg-clip-text text-transparent">
-                  Additional notes / Dodatkowe informacje
-                </h2>
-              </div>
-              <div className="p-6 md:p-10">
-                <Textarea
-                  id="civil_registry_notes"
-                  value={formData.civil_registry_notes || ""}
-                  onChange={(e) => handleInputChange("civil_registry_notes", e.target.value.toUpperCase())}
-                  placeholder=""
-                  className={cn(
-                    "min-h-[500px] text-base border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase",
-                    isLargeFonts && "text-xl"
-                  )}
-                />
-              </div>
+        }} className="mt-10">
+            <div className="border-b border-border/50 pb-6">
+              <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-400 bg-clip-text text-transparent">
+                Additional notes / Dodatkowe informacje
+              </h2>
+            </div>
+            <div className="mt-8">
+              <Textarea
+                id="civil_registry_notes"
+                value={formData.civil_registry_notes || ""}
+                onChange={(e) => handleInputChange("civil_registry_notes", e.target.value.toUpperCase())}
+                placeholder=""
+                colorScheme="civil-reg"
+                className={cn(
+                  "min-h-[200px] border-2 border-gray-300/10 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase",
+                  isLargeFonts && "text-xl"
+                )}
+              />
             </div>
           </motion.div>
 

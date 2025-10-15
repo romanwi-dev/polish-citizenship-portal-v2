@@ -16,10 +16,11 @@ interface DocumentItem {
 }
 
 interface FlippableCardsDarkGlowProps {
-  title: string;
+  title?: string;
   documents: DocumentItem[];
-  onChange: (documents: DocumentItem[]) => void;
-  colorScheme?: 'children' | 'applicant' | 'spouse' | 'parents' | 'grandparents' | 'ggp';
+  onChange?: (documents: DocumentItem[]) => void;
+  onToggle?: (id: string) => void;
+  colorScheme?: 'children' | 'applicant' | 'spouse' | 'parents' | 'grandparents' | 'ggp' | 'civil-reg';
 }
 
 const colorSchemes = {
@@ -77,9 +78,18 @@ const colorSchemes = {
     glow: 'rgba(156, 163, 175, 0.3)',
     titleColor: 'text-gray-600/80 dark:text-gray-400/80',
   },
+  'civil-reg': {
+    bg: 'from-emerald-400 to-emerald-600',
+    cardBg: 'bg-emerald-50/60 dark:bg-emerald-950/60',
+    cardBorder: 'border-emerald-200/10 dark:border-emerald-800/10',
+    badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
+    button: 'bg-emerald-500/10 border-emerald-500/40 hover:bg-emerald-500/20',
+    glow: 'rgba(16, 185, 129, 0.3)',
+    titleColor: 'text-emerald-600/80 dark:text-emerald-400/80',
+  },
 };
 
-export const FlippableCardsDarkGlow = ({ title, documents, onChange, colorScheme = 'applicant' }: FlippableCardsDarkGlowProps) => {
+export const FlippableCardsDarkGlow = ({ title, documents, onChange, onToggle, colorScheme = 'applicant' }: FlippableCardsDarkGlowProps) => {
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
   const scheme = colorSchemes[colorScheme];
 
@@ -88,10 +98,14 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange, colorScheme
   };
 
   const handleToggle = (id: string, checked: boolean) => {
-    const updated = documents.map(doc =>
-      doc.id === id ? { ...doc, checked } : doc
-    );
-    onChange(updated);
+    if (onToggle) {
+      onToggle(id);
+    } else if (onChange) {
+      const updated = documents.map(doc =>
+        doc.id === id ? { ...doc, checked } : doc
+      );
+      onChange(updated);
+    }
   };
 
   const allChecked = documents.every(doc => doc.checked);
