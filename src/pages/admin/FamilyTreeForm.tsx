@@ -67,22 +67,21 @@ export default function FamilyTreeForm() {
 
   const tabsListRef = useRef<HTMLDivElement>(null);
 
-  // Disable browser scroll restoration and reset to Select tab
+  // Force scroll to Select tab on mount
   useEffect(() => {
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
     }
     
-    const resetScroll = () => {
-      if (tabsListRef.current) {
+    // Wait for DOM to be fully ready, then scroll
+    const timer = setTimeout(() => {
+      const selectTrigger = document.querySelector('[data-state="active"]');
+      if (selectTrigger) {
+        selectTrigger.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'start' });
+      } else if (tabsListRef.current) {
         tabsListRef.current.scrollLeft = 0;
       }
-    };
-    
-    // Multiple attempts to ensure it works
-    resetScroll();
-    requestAnimationFrame(resetScroll);
-    const timer = setTimeout(resetScroll, 0);
+    }, 150);
     
     return () => clearTimeout(timer);
   }, []);
