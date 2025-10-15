@@ -21,6 +21,9 @@ verify_jwt = false
 [functions.ocr-wsc-letter]
 verify_jwt = false
 
+[functions.ai-translate]
+verify_jwt = false
+
 [functions.generate-poa]
 verify_jwt = false
 
