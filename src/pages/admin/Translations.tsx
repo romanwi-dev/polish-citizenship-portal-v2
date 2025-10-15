@@ -1,10 +1,11 @@
+import { AdminLayout } from "@/components/AdminLayout";
 import { TranslationDashboard } from "@/components/translations/TranslationDashboard";
 
 const Translations = () => {
   return (
-    <div className="container mx-auto py-8">
+    <AdminLayout>
       <TranslationDashboard />
-    </div>
+    </AdminLayout>
   );
 };
 

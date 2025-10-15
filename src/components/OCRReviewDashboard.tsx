@@ -114,46 +114,45 @@ export const OCRReviewDashboard = () => {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>OCR Review Dashboard</CardTitle>
-        <CardDescription>
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold">OCR Review Dashboard</h1>
+        <p className="text-muted-foreground mt-1">
           Review and approve OCR-processed documents
-        </CardDescription>
-        <div className="flex gap-4 mt-4">
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Statuses</SelectItem>
-              <SelectItem value="needs_review">Needs Review</SelectItem>
-              <SelectItem value="completed">Completed</SelectItem>
-              <SelectItem value="failed">Failed</SelectItem>
-              <SelectItem value="pending">Pending</SelectItem>
-            </SelectContent>
-          </Select>
+        </p>
+      </div>
 
-          <Select value={confidenceFilter} onValueChange={setConfidenceFilter}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Confidence</SelectItem>
-              <SelectItem value="high">High (90%+)</SelectItem>
-              <SelectItem value="medium">Medium (75-89%)</SelectItem>
-              <SelectItem value="low">Low (&lt;75%)</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {documents?.map((doc) => (
-            <div
-              key={doc.id}
-              className="border rounded-lg p-4 space-y-3"
-            >
+      <div className="flex gap-4">
+        <Select value={statusFilter} onValueChange={setStatusFilter}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Statuses</SelectItem>
+            <SelectItem value="needs_review">Needs Review</SelectItem>
+            <SelectItem value="completed">Completed</SelectItem>
+            <SelectItem value="failed">Failed</SelectItem>
+            <SelectItem value="pending">Pending</SelectItem>
+          </SelectContent>
+        </Select>
+
+        <Select value={confidenceFilter} onValueChange={setConfidenceFilter}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Confidence</SelectItem>
+            <SelectItem value="high">High (90%+)</SelectItem>
+            <SelectItem value="medium">Medium (75-89%)</SelectItem>
+            <SelectItem value="low">Low (&lt;75%)</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="space-y-4">
+        {documents?.map((doc) => (
+          <Card key={doc.id}>
+            <CardContent className="p-6 space-y-3">
               <div className="flex items-start justify-between">
                 <div>
                   <h4 className="font-medium">{doc.name}</h4>
@@ -213,16 +212,18 @@ export const OCRReviewDashboard = () => {
                   </a>
                 </Button>
               </div>
-            </div>
-          ))}
+            </CardContent>
+          </Card>
+        ))}
 
-          {documents?.length === 0 && (
-            <div className="text-center text-muted-foreground py-8">
-              No documents match the current filters
-            </div>
-          )}
-        </div>
-      </CardContent>
-    </Card>
+        {documents?.length === 0 && (
+          <Card>
+            <CardContent className="p-12 text-center">
+              <p className="text-muted-foreground">No documents match the current filters</p>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+    </div>
   );
 };
