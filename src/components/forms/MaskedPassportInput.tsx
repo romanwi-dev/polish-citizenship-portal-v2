@@ -24,7 +24,7 @@ export const MaskedPassportInput = ({
   value,
   onChange,
   isLargeFonts = false,
-  placeholder = "Enter passport number",
+  placeholder = "",
   id,
   colorScheme = 'applicant',
   error,
