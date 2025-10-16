@@ -403,13 +403,7 @@ export const CaseCard = memo(({
                 }}
               >
                 <span className="text-sm font-medium text-foreground/70 dark:text-foreground/40 group-hover:text-foreground/90 dark:group-hover:text-foreground/60 transition-colors relative z-10">
-                  {getWorkflowLabel(getWorkflowForCase({
-                    workflow_type: clientCase.workflow_type,
-                    current_stage: clientCase.current_stage,
-                    status: clientCase.status,
-                    decision_received: clientCase.decision_received,
-                    oby_filed: clientCase.oby_filed
-                  }))}
+                  CASE WORKFLOW
                 </span>
               </Button>
 
