@@ -492,6 +492,16 @@ All colors MUST be HSL.
     scrollbar-color: rgba(139, 92, 246, 0.2) transparent;
   }
 
+  /* Ken Burns Animation */
+  @keyframes ken-burns {
+    0%, 100% {
+      transform: scale(1) translate(0, 0);
+    }
+    50% {
+      transform: scale(1.1) translate(-2%, -2%);
+    }
+  }
+
   /* Focus Visible Improvements for Accessibility */
   *:focus-visible {
     @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;

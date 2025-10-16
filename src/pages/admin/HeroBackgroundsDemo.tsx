@@ -3,9 +3,18 @@ import { AdminLayout } from '@/components/AdminLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Check, Loader2 } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Check, Loader2, Film, Sparkles } from 'lucide-react';
 
-// Lazy load hero backgrounds for performance
+// Lazy load realistic video-based hero backgrounds
+const RealisticPolandJourney = lazy(() => import('@/components/heroes/RealisticPolandJourney').then(m => ({ default: m.RealisticPolandJourney })));
+const RealisticWarsaw = lazy(() => import('@/components/heroes/RealisticWarsaw').then(m => ({ default: m.RealisticWarsaw })));
+const RealisticPassport = lazy(() => import('@/components/heroes/RealisticPassport').then(m => ({ default: m.RealisticPassport })));
+const RealisticLegal = lazy(() => import('@/components/heroes/RealisticLegal').then(m => ({ default: m.RealisticLegal })));
+const RealisticHeritage = lazy(() => import('@/components/heroes/RealisticHeritage').then(m => ({ default: m.RealisticHeritage })));
+const RealisticEUFlag = lazy(() => import('@/components/heroes/RealisticEUFlag').then(m => ({ default: m.RealisticEUFlag })));
+
+// Lazy load 3D artistic hero backgrounds
 const GoldenHourPoland = lazy(() => import('@/components/heroes/GoldenHourPoland').then(m => ({ default: m.GoldenHourPoland })));
 const EUPrestige = lazy(() => import('@/components/heroes/EUPrestige').then(m => ({ default: m.EUPrestige })));
 const LegalChambers = lazy(() => import('@/components/heroes/LegalChambers').then(m => ({ default: m.LegalChambers })));
@@ -31,7 +40,58 @@ interface HeroBackground {
   mood: string;
 }
 
-const backgrounds: HeroBackground[] = [
+const realisticBackgrounds: HeroBackground[] = [
+  {
+    id: 'realistic-poland',
+    name: 'Poland Journey (Video)',
+    component: RealisticPolandJourney,
+    description: 'Cinematic video showcasing real Polish landscapes with dramatic overlay and professional color grading.',
+    specs: ['Live video', 'Gradient overlay', 'Responsive design', 'Auto-loop'],
+    mood: 'Realistic, cinematic, immersive'
+  },
+  {
+    id: 'realistic-warsaw',
+    name: 'Warsaw City (Video)',
+    component: RealisticWarsaw,
+    description: 'Real footage of Warsaw cityscape with professional cinematography and urban atmosphere.',
+    specs: ['HD video', 'City footage', 'Blue hour timing', 'Urban aesthetic'],
+    mood: 'Metropolitan, modern, professional'
+  },
+  {
+    id: 'realistic-passport',
+    name: 'Passport & Documents',
+    component: RealisticPassport,
+    description: 'Photo slideshow featuring real passport and EU imagery with smooth transitions.',
+    specs: ['Image slideshow', 'Fade transitions', 'Real photography', 'Auto-advance'],
+    mood: 'Authentic, documentary, trustworthy'
+  },
+  {
+    id: 'realistic-legal',
+    name: 'Legal Office',
+    component: RealisticLegal,
+    description: 'Professional legal environment with Ken Burns photo animation and sophisticated atmosphere.',
+    specs: ['Photo animation', 'Ken Burns effect', 'Vignette overlay', 'Professional setting'],
+    mood: 'Professional, credible, established'
+  },
+  {
+    id: 'realistic-heritage',
+    name: 'Historical Heritage',
+    component: RealisticHeritage,
+    description: 'Authentic Polish historical imagery with vintage sepia tones and film grain texture.',
+    specs: ['Historical photos', 'Sepia grading', 'Film grain', 'Parallax scroll'],
+    mood: 'Heritage, nostalgic, authentic'
+  },
+  {
+    id: 'realistic-eu',
+    name: 'EU Flag (Video)',
+    component: RealisticEUFlag,
+    description: 'Real EU flag footage with gentle movement and official European Union atmosphere.',
+    specs: ['Flag video', 'Natural movement', 'Blue/gold theme', 'Official feel'],
+    mood: 'Official, European, prestigious'
+  }
+];
+
+const artisticBackgrounds: HeroBackground[] = [
   {
     id: 'golden-hour',
     name: 'Golden Hour Poland',
@@ -155,7 +215,7 @@ const backgrounds: HeroBackground[] = [
 ];
 
 export default function HeroBackgroundsDemo() {
-  const [selected, setSelected] = useState<string>('golden-hour');
+  const [selected, setSelected] = useState<string>('realistic-poland');
 
   return (
     <AdminLayout>
@@ -163,13 +223,109 @@ export default function HeroBackgroundsDemo() {
         <div className="mb-8">
           <h1 className="text-4xl font-bold mb-2">Cinematic Hero Backgrounds</h1>
           <p className="text-muted-foreground text-lg">
-            High-quality 3D backgrounds inspired by luxury brands and film production. Each design features photorealistic materials, 
-            dramatic lighting, and professional-grade visuals.
+            Professional video and photo-based backgrounds plus artistic 3D scenes. 
+            Choose between realistic footage or creative 3D designs for your hero section.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {backgrounds.map((bg) => {
+        <Tabs defaultValue="realistic" className="w-full">
+          <TabsList className="grid w-full grid-cols-2 mb-8">
+            <TabsTrigger value="realistic" className="gap-2">
+              <Film className="w-4 h-4" />
+              Realistic Videos
+            </TabsTrigger>
+            <TabsTrigger value="artistic" className="gap-2">
+              <Sparkles className="w-4 h-4" />
+              Artistic 3D
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="realistic">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {realisticBackgrounds.map((bg) => {
+                const BackgroundComponent = bg.component;
+                const isSelected = selected === bg.id;
+
+                return (
+                  <Card 
+                    key={bg.id} 
+                    className={`overflow-hidden transition-all ${
+                      isSelected ? 'ring-2 ring-primary shadow-xl' : ''
+                    }`}
+                  >
+                    <div className="relative h-[400px] bg-black overflow-hidden">
+                      <Suspense 
+                        fallback={
+                          <div className="w-full h-full flex items-center justify-center bg-muted">
+                            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                          </div>
+                        }
+                      >
+                        <BackgroundComponent />
+                      </Suspense>
+                      
+                      {isSelected && (
+                        <div className="absolute top-4 right-4">
+                          <Badge variant="default" className="gap-1">
+                            <Check className="w-3 h-3" />
+                            Selected
+                          </Badge>
+                        </div>
+                      )}
+                    </div>
+
+                    <CardHeader>
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1">
+                          <CardTitle className="text-2xl mb-2">{bg.name}</CardTitle>
+                          <CardDescription className="text-sm mb-3">
+                            <span className="font-semibold text-foreground">Mood:</span> {bg.mood}
+                          </CardDescription>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            {bg.description}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                          Features
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {bg.specs.map((spec, idx) => (
+                            <Badge key={idx} variant="secondary" className="text-xs">
+                              {spec}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    </CardHeader>
+
+                    <CardContent>
+                      <Button
+                        onClick={() => setSelected(bg.id)}
+                        variant={isSelected ? 'default' : 'outline'}
+                        className="w-full"
+                      >
+                        {isSelected ? (
+                          <>
+                            <Check className="w-4 h-4 mr-2" />
+                            Selected
+                          </>
+                        ) : (
+                          'Select This Design'
+                        )}
+                      </Button>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="artistic">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {artisticBackgrounds.map((bg) => {
             const BackgroundComponent = bg.component;
             const isSelected = selected === bg.id;
 
@@ -247,7 +403,9 @@ export default function HeroBackgroundsDemo() {
               </Card>
             );
           })}
-        </div>
+            </div>
+          </TabsContent>
+        </Tabs>
 
         {selected && (
           <Card className="mt-8 border-primary/50 bg-primary/5">
@@ -260,10 +418,9 @@ export default function HeroBackgroundsDemo() {
             <CardContent>
               <p className="text-lg">
                 <span className="font-semibold">
-                  {backgrounds.find(b => b.id === selected)?.name}
+                  {[...realisticBackgrounds, ...artisticBackgrounds].find(b => b.id === selected)?.name}
                 </span>
-                {' '}is currently selected. This cinematic background will elevate your hero section with 
-                professional-grade 3D visuals and dramatic lighting.
+                {' '}is currently selected. This background will create an impactful hero section.
               </p>
             </CardContent>
           </Card>
