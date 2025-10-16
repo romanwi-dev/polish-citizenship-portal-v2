@@ -1,6 +1,7 @@
 import { useState, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Edit, MoreVertical, Copy, Pause, Ban, Archive, Trash2, Eye, Radio, FileEdit, Award, Zap, Star } from "lucide-react";
+import { getWorkflowForCase, getWorkflowPath, getWorkflowLabel } from "@/utils/workflowMapping";
 import { CollapsibleKPIStrip } from "@/components/CollapsibleKPIStrip";
 import { KPIStrip } from "@/components/KPIStrip";
 import { Button } from "@/components/ui/button";
@@ -54,6 +55,8 @@ interface CaseCardProps {
     kpi_tasks_completed?: number;
     kpi_docs_percentage?: number;
     client_photo_url?: string | null;
+    current_stage?: string;
+    workflow_type?: string;
   };
   onEdit: (clientCase: any) => void;
   onDelete: (id: string) => void;
@@ -378,6 +381,34 @@ export const CaseCard = memo(({
               >
                 <span className="text-sm font-medium text-foreground/70 dark:text-foreground/40 group-hover:text-foreground/90 dark:group-hover:text-foreground/60 transition-colors relative z-10">
                   CONTROL ROOM
+                </span>
+              </Button>
+
+              {/* Case Workflow Button */}
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full border-2 border-secondary/50 dark:border-secondary/20 h-12 perspective-1000 group relative overflow-hidden preserve-3d transition-all duration-300 hover:scale-105 bg-secondary/10 dark:bg-secondary/5"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const workflowType = getWorkflowForCase({
+                    workflow_type: clientCase.workflow_type,
+                    current_stage: clientCase.current_stage,
+                    status: clientCase.status,
+                    decision_received: clientCase.decision_received,
+                    oby_filed: clientCase.oby_filed
+                  });
+                  navigate(getWorkflowPath(workflowType));
+                }}
+              >
+                <span className="text-sm font-medium text-foreground/70 dark:text-foreground/40 group-hover:text-foreground/90 dark:group-hover:text-foreground/60 transition-colors relative z-10">
+                  {getWorkflowLabel(getWorkflowForCase({
+                    workflow_type: clientCase.workflow_type,
+                    current_stage: clientCase.current_stage,
+                    status: clientCase.status,
+                    decision_received: clientCase.decision_received,
+                    oby_filed: clientCase.oby_filed
+                  }))}
                 </span>
               </Button>
 
