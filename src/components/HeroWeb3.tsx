@@ -4,8 +4,8 @@ import { lazy, Suspense, useState, useEffect, useRef } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
-// Lazy load 3D components
-const WavingEUFlag = lazy(() => import("./WavingEUFlag").then(module => ({ default: module.WavingEUFlag })));
+// Lazy load background component
+const RealisticHeritage = lazy(() => import("./heroes/RealisticHeritage").then(module => ({ default: module.RealisticHeritage })));
 
 const HeroWeb3 = () => {
   const [shouldLoadMap, setShouldLoadMap] = useState(false);
@@ -40,16 +40,12 @@ const HeroWeb3 = () => {
     });
   };
   return <section ref={heroRef} className="relative min-h-[60vh] md:min-h-screen flex items-center justify-center overflow-hidden">
-      {/* 3D Background */}
-      {shouldShow3D ? (
-        <div className="absolute inset-0 z-0">
-          <Suspense fallback={<div className="w-full h-full bg-gradient-to-b from-primary/5 to-background" />}>
-            {shouldLoadMap && <WavingEUFlag />}
-          </Suspense>
-        </div>
-      ) : (
-        <div className="absolute inset-0 z-0 bg-gradient-to-b from-primary/10 via-secondary/5 to-background" />
-      )}
+      {/* Background */}
+      <div className="absolute inset-0 z-0">
+        <Suspense fallback={<div className="w-full h-full bg-gradient-to-b from-primary/5 to-background" />}>
+          {shouldLoadMap && <RealisticHeritage />}
+        </Suspense>
+      </div>
 
 
       {/* Content */}
