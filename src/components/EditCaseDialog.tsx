@@ -188,39 +188,49 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="flex items-center justify-between">
-            Edit Case Details & Filters
+      <DialogContent className="max-w-5xl max-h-[92vh] overflow-y-auto bg-background/95 backdrop-blur-xl border-2 border-primary/20">
+        <DialogHeader className="space-y-3 pb-6 border-b border-border/30">
+          <div className="flex items-center justify-between">
+            <DialogTitle className="text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              Edit Case Details
+            </DialogTitle>
             {activeFiltersCount > 0 && (
-              <Badge variant="secondary">
+              <Badge variant="secondary" className="text-base px-4 py-2 bg-primary/20 border-primary/30">
                 {activeFiltersCount} Active Filter{activeFiltersCount > 1 ? 's' : ''}
               </Badge>
             )}
-          </DialogTitle>
-          <DialogDescription>
-            Update client information, case status, and apply filters
+          </div>
+          <DialogDescription className="text-base text-muted-foreground">
+            Update client information, case status, and apply advanced filters
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Client Photo Upload */}
-          <div className="space-y-2 p-4 border border-border rounded-lg bg-background/50">
-            <Label>Client Photo</Label>
-            <div className="flex items-center gap-4">
-              <Avatar className="h-20 w-20">
-                <AvatarImage src={photoPreview || undefined} alt={formData.client_name} />
-                <AvatarFallback className="bg-gradient-to-br from-primary/60 to-accent/60">
-                  <Camera className="h-8 w-8 text-primary-foreground/70" />
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex-1 space-y-2">
-                <Input
-                  type="file"
-                  accept="image/jpeg,image/jpg,image/png,image/webp"
-                  onChange={handlePhotoChange}
-                  className="cursor-pointer"
-                />
-                <p className="text-xs text-muted-foreground">
+
+        <form onSubmit={handleSubmit} className="space-y-8 pt-6">
+          {/* Client Photo Upload - Premium Style */}
+          <div className="space-y-4 p-6 border-2 border-primary/20 rounded-xl bg-gradient-to-br from-primary/5 to-secondary/5 backdrop-blur-sm">
+            <Label className="text-lg font-semibold text-foreground">Client Photo</Label>
+            <div className="flex items-center gap-6">
+              <div className="relative group">
+                <Avatar className="h-28 w-28 border-4 border-primary/30 shadow-lg transition-all duration-300 group-hover:border-primary/50 group-hover:shadow-xl">
+                  <AvatarImage src={photoPreview || undefined} alt={formData.client_name} className="object-cover" />
+                  <AvatarFallback className="bg-gradient-to-br from-primary/70 to-accent/70 text-2xl">
+                    <Camera className="h-10 w-10 text-primary-foreground/80" />
+                  </AvatarFallback>
+                </Avatar>
+                <div className="absolute inset-0 rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <Upload className="h-8 w-8 text-white" />
+                </div>
+              </div>
+              <div className="flex-1 space-y-3">
+                <div className="relative">
+                  <Input
+                    type="file"
+                    accept="image/jpeg,image/jpg,image/png,image/webp"
+                    onChange={handlePhotoChange}
+                    className="cursor-pointer border-2 border-border/50 hover:border-primary/50 transition-colors bg-background/50 text-base h-12"
+                  />
+                </div>
+                <p className="text-sm text-muted-foreground font-medium">
                   JPG, PNG or WEBP (max 2MB)
                 </p>
               </div>
@@ -228,33 +238,37 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                 <Button
                   type="button"
                   variant="outline"
-                  size="sm"
+                  size="lg"
                   onClick={handleRemovePhoto}
+                  className="border-2 border-destructive/50 hover:bg-destructive/10 hover:border-destructive"
                 >
-                  <X className="h-4 w-4 mr-1" />
+                  <X className="h-5 w-5 mr-2" />
                   Remove
                 </Button>
               )}
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="client_name">Client Name</Label>
+          {/* Basic Information - Enhanced Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-3">
+              <Label htmlFor="client_name" className="text-base font-semibold text-foreground">Client Name</Label>
               <Input
                 id="client_name"
                 value={formData.client_name}
                 onChange={(e) => setFormData({ ...formData, client_name: e.target.value })}
                 required
+                className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-background/50 text-base h-12"
+                placeholder="Enter client name"
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="client_code">Client Code</Label>
+            <div className="space-y-3">
+              <Label htmlFor="client_code" className="text-base font-semibold text-foreground">Client Code</Label>
               <Select value={formData.client_code} onValueChange={(value) => setFormData({ ...formData, client_code: value })}>
-                <SelectTrigger>
+                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-background/50 text-base h-12">
                   <SelectValue placeholder="Select client code" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-popover border-2 border-border z-50">
                   <SelectItem value="Bad">Bad</SelectItem>
                   <SelectItem value="Poor">Poor</SelectItem>
                   <SelectItem value="Fair">Fair</SelectItem>
@@ -269,9 +283,9 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="country">Country</Label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-3">
+              <Label htmlFor="country" className="text-base font-semibold text-foreground">Country</Label>
               <Select 
                 value={showOtherCountry ? "Other" : formData.country} 
                 onValueChange={(value) => {
@@ -285,10 +299,10 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                   }
                 }}
               >
-                <SelectTrigger>
+                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-background/50 text-base h-12">
                   <SelectValue placeholder="Select country" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-popover border-2 border-border z-50">
                   <SelectItem value="USA">USA</SelectItem>
                   <SelectItem value="UK">UK</SelectItem>
                   <SelectItem value="Canada">Canada</SelectItem>
@@ -306,20 +320,20 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
               </Select>
               {showOtherCountry && (
                 <Input
-                  placeholder="Enter country"
+                  placeholder="Enter country name"
                   value={otherCountry}
                   onChange={(e) => setOtherCountry(e.target.value)}
-                  className="mt-2"
+                  className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-background/50 text-base h-12"
                 />
               )}
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="status">Status</Label>
+            <div className="space-y-3">
+              <Label htmlFor="status" className="text-base font-semibold text-foreground">Status</Label>
               <Select value={formData.status} onValueChange={(value) => setFormData({ ...formData, status: value })}>
-                <SelectTrigger>
+                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-background/50 text-base h-12">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-popover border-2 border-border z-50">
                   <SelectItem value="lead">Lead</SelectItem>
                   <SelectItem value="active">Active</SelectItem>
                   <SelectItem value="on_hold">On Hold</SelectItem>
@@ -334,21 +348,46 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
             </div>
           </div>
 
-          <div className="space-y-4 p-4 border border-border rounded-lg bg-background/50">
-            <h3 className="font-semibold text-sm">Case Filters</h3>
+          {/* Advanced Filters Section - Premium Design */}
+          <div className="space-y-6 p-6 border-2 border-secondary/20 rounded-xl bg-gradient-to-br from-secondary/5 to-accent/5 backdrop-blur-sm">
+            <div className="flex items-center justify-between">
+              <h3 className="text-2xl font-heading font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent">
+                Advanced Filters
+              </h3>
+              {activeFiltersCount > 0 && (
+                <Button 
+                  type="button"
+                  variant="outline" 
+                  onClick={clearAllFilters}
+                  className="border-2 border-destructive/50 hover:bg-destructive/10 hover:border-destructive"
+                >
+                  <X className="h-4 w-4 mr-2" />
+                  Clear All ({activeFiltersCount})
+                </Button>
+              )}
+            </div>
             
-            {/* Processing Modes - Multi-select */}
-            <div className="space-y-2">
-              <Label>Processing Modes (Multi-select)</Label>
-              <div className="grid grid-cols-2 gap-2">
+            {/* Processing Modes - Enhanced Grid */}
+            <div className="space-y-3">
+              <Label className="text-base font-semibold text-foreground">Processing Modes</Label>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {["standard", "expedited", "vip", "vip_plus"].map((mode) => (
-                  <div key={mode} className="flex items-center space-x-2">
+                  <div 
+                    key={mode} 
+                    className={`flex items-center space-x-3 p-4 rounded-lg border-2 transition-all cursor-pointer hover:shadow-md ${
+                      selectedProcessingModes.includes(mode) 
+                        ? 'bg-primary/10 border-primary/50' 
+                        : 'bg-background/30 border-border/30 hover:border-border/50'
+                    }`}
+                    onClick={() => toggleProcessingMode(mode)}
+                  >
                     <Checkbox
                       id={`mode-${mode}`}
                       checked={selectedProcessingModes.includes(mode)}
                       onCheckedChange={() => toggleProcessingMode(mode)}
+                      className="h-5 w-5"
                     />
-                    <Label htmlFor={`mode-${mode}`} className="text-sm font-normal capitalize cursor-pointer">
+                    <Label htmlFor={`mode-${mode}`} className="text-sm font-medium capitalize cursor-pointer flex-1">
                       {mode === "vip_plus" ? "VIP+" : mode}
                     </Label>
                   </div>
@@ -356,18 +395,27 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
               </div>
             </div>
 
-            {/* Status - Multi-select */}
-            <div className="space-y-2">
-              <Label>Status (Multi-select)</Label>
-              <div className="grid grid-cols-2 gap-2">
+            {/* Status - Enhanced Grid */}
+            <div className="space-y-3">
+              <Label className="text-base font-semibold text-foreground">Status Filter</Label>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                 {["lead", "active", "on_hold", "suspended", "finished", "failed", "bad", "name_change", "other"].map((status) => (
-                  <div key={status} className="flex items-center space-x-2">
+                  <div 
+                    key={status} 
+                    className={`flex items-center space-x-3 p-3 rounded-lg border-2 transition-all cursor-pointer hover:shadow-md ${
+                      selectedStatuses.includes(status) 
+                        ? 'bg-secondary/10 border-secondary/50' 
+                        : 'bg-background/30 border-border/30 hover:border-border/50'
+                    }`}
+                    onClick={() => toggleStatus(status)}
+                  >
                     <Checkbox
                       id={`status-${status}`}
                       checked={selectedStatuses.includes(status)}
                       onCheckedChange={() => toggleStatus(status)}
+                      className="h-5 w-5"
                     />
-                    <Label htmlFor={`status-${status}`} className="text-sm font-normal capitalize cursor-pointer">
+                    <Label htmlFor={`status-${status}`} className="text-sm font-medium capitalize cursor-pointer flex-1">
                       {status.replace("_", " ")}
                     </Label>
                   </div>
@@ -375,18 +423,27 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
               </div>
             </div>
 
-            {/* Schemes from Client Card - Multi-select */}
-            <div className="space-y-2">
-              <Label>Schemes (Multi-select)</Label>
-              <div className="grid grid-cols-2 gap-2">
+            {/* Schemes - Enhanced Grid */}
+            <div className="space-y-3">
+              <Label className="text-base font-semibold text-foreground">Push Schemes</Label>
+              <div className="grid grid-cols-3 gap-4">
                 {["PUSH", "NUDGE", "SIT-DOWN"].map((scheme) => (
-                  <div key={scheme} className="flex items-center space-x-2">
+                  <div 
+                    key={scheme} 
+                    className={`flex items-center space-x-3 p-4 rounded-lg border-2 transition-all cursor-pointer hover:shadow-md ${
+                      selectedSchemes.includes(scheme) 
+                        ? 'bg-accent/10 border-accent/50' 
+                        : 'bg-background/30 border-border/30 hover:border-border/50'
+                    }`}
+                    onClick={() => toggleScheme(scheme)}
+                  >
                     <Checkbox
                       id={`scheme-${scheme}`}
                       checked={selectedSchemes.includes(scheme)}
                       onCheckedChange={() => toggleScheme(scheme)}
+                      className="h-5 w-5"
                     />
-                    <Label htmlFor={`scheme-${scheme}`} className="text-sm font-normal cursor-pointer">
+                    <Label htmlFor={`scheme-${scheme}`} className="text-sm font-medium cursor-pointer flex-1">
                       {scheme}
                     </Label>
                   </div>
@@ -394,134 +451,137 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
               </div>
             </div>
 
-            {/* Client Score Range */}
-            <div className="space-y-2">
-              <Label>Client Score Range: {clientScoreRange[0]} - {clientScoreRange[1]}</Label>
-              <Slider
-                value={clientScoreRange}
-                onValueChange={(value) => setClientScoreRange(value as [number, number])}
-                min={0}
-                max={100}
-                step={5}
-              />
+            {/* Sliders - Enhanced Design */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4 p-4 rounded-lg bg-background/30 border border-border/30">
+                <Label className="text-base font-semibold text-foreground">
+                  Client Score: <span className="text-primary">{clientScoreRange[0]} - {clientScoreRange[1]}</span>
+                </Label>
+                <Slider
+                  value={clientScoreRange}
+                  onValueChange={(value) => setClientScoreRange(value as [number, number])}
+                  min={0}
+                  max={100}
+                  step={5}
+                  className="py-2"
+                />
+              </div>
+
+              <div className="space-y-4 p-4 rounded-lg bg-background/30 border border-border/30">
+                <Label className="text-base font-semibold text-foreground">
+                  Progress: <span className="text-secondary">{progressRange[0]}% - {progressRange[1]}%</span>
+                </Label>
+                <Slider
+                  value={progressRange}
+                  onValueChange={(value) => setProgressRange(value as [number, number])}
+                  min={0}
+                  max={100}
+                  step={10}
+                  className="py-2"
+                />
+              </div>
             </div>
 
-            {/* Progress Range */}
-            <div className="space-y-2">
-              <Label>Progress Range: {progressRange[0]}% - {progressRange[1]}%</Label>
-              <Slider
-                value={progressRange}
-                onValueChange={(value) => setProgressRange(value as [number, number])}
-                min={0}
-                max={100}
-                step={10}
-              />
-            </div>
+            {/* Case Age & Payment - Enhanced */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-3">
+                <Label className="text-base font-semibold text-foreground">Case Age</Label>
+                <Select value={caseAgeFilter} onValueChange={setCaseAgeFilter}>
+                  <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-background/50 text-base h-12">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-popover border-2 border-border z-50">
+                    <SelectItem value="all">All Ages</SelectItem>
+                    <SelectItem value="new">New (0-30 days)</SelectItem>
+                    <SelectItem value="recent">Recent (31-90 days)</SelectItem>
+                    <SelectItem value="medium">Medium (91-180 days)</SelectItem>
+                    <SelectItem value="old">Old (180+ days)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-            {/* Case Age */}
-            <div className="space-y-2">
-              <Label>Case Age</Label>
-              <Select value={caseAgeFilter} onValueChange={setCaseAgeFilter}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Ages</SelectItem>
-                  <SelectItem value="new">New (0-30 days)</SelectItem>
-                  <SelectItem value="recent">Recent (31-90 days)</SelectItem>
-                  <SelectItem value="medium">Medium (91-180 days)</SelectItem>
-                  <SelectItem value="old">Old (180+ days)</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Payment Due */}
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="payment-due"
-                checked={paymentDueFilter}
-                onCheckedChange={(checked) => setPaymentDueFilter(checked as boolean)}
-              />
-              <Label htmlFor="payment-due" className="text-sm font-normal cursor-pointer">
-                Payment Due
-              </Label>
-            </div>
-
-            {/* Clear All Filters */}
-            {activeFiltersCount > 0 && (
-              <Button 
-                type="button"
-                variant="outline" 
-                onClick={clearAllFilters}
-                className="w-full"
+              <div 
+                className={`flex items-center space-x-3 p-4 rounded-lg border-2 transition-all cursor-pointer hover:shadow-md ${
+                  paymentDueFilter 
+                    ? 'bg-destructive/10 border-destructive/50' 
+                    : 'bg-background/30 border-border/30 hover:border-border/50'
+                }`}
+                onClick={() => setPaymentDueFilter(!paymentDueFilter)}
               >
-                <X className="h-4 w-4 mr-2" />
-                Clear All Filters ({activeFiltersCount})
-              </Button>
-            )}
+                <Checkbox
+                  id="payment-due"
+                  checked={paymentDueFilter}
+                  onCheckedChange={(checked) => setPaymentDueFilter(checked as boolean)}
+                  className="h-5 w-5"
+                />
+                <Label htmlFor="payment-due" className="text-base font-semibold cursor-pointer flex-1">
+                  Payment Due
+                </Label>
+              </div>
+            </div>
 
-            {/* Active Filters Display */}
+            {/* Active Filters Display - Premium Badges */}
             {activeFiltersCount > 0 && (
-              <div className="flex flex-wrap gap-2 pt-2 border-t border-border">
+              <div className="flex flex-wrap gap-3 pt-4 border-t-2 border-border/30">
                 {selectedProcessingModes.map(mode => (
-                  <Badge key={mode} variant="secondary" className="capitalize">
+                  <Badge key={mode} variant="secondary" className="px-4 py-2 text-sm border-2 border-primary/30 bg-primary/10 capitalize">
                     {mode === "vip_plus" ? "VIP+" : mode}
                     <X 
-                      className="h-3 w-3 ml-1 cursor-pointer" 
+                      className="h-4 w-4 ml-2 cursor-pointer hover:text-destructive transition-colors" 
                       onClick={() => toggleProcessingMode(mode)}
                     />
                   </Badge>
                 ))}
                 {selectedStatuses.map(status => (
-                  <Badge key={status} variant="secondary" className="capitalize">
+                  <Badge key={status} variant="secondary" className="px-4 py-2 text-sm border-2 border-secondary/30 bg-secondary/10 capitalize">
                     {status.replace("_", " ")}
                     <X 
-                      className="h-3 w-3 ml-1 cursor-pointer" 
+                      className="h-4 w-4 ml-2 cursor-pointer hover:text-destructive transition-colors" 
                       onClick={() => toggleStatus(status)}
                     />
                   </Badge>
                 ))}
                 {selectedSchemes.map(scheme => (
-                  <Badge key={scheme} variant="secondary">
+                  <Badge key={scheme} variant="secondary" className="px-4 py-2 text-sm border-2 border-accent/30 bg-accent/10">
                     {scheme}
                     <X 
-                      className="h-3 w-3 ml-1 cursor-pointer" 
+                      className="h-4 w-4 ml-2 cursor-pointer hover:text-destructive transition-colors" 
                       onClick={() => toggleScheme(scheme)}
                     />
                   </Badge>
                 ))}
                 {(clientScoreRange[0] !== 0 || clientScoreRange[1] !== 100) && (
-                  <Badge variant="secondary">
+                  <Badge variant="secondary" className="px-4 py-2 text-sm border-2 border-primary/30 bg-primary/10">
                     Score: {clientScoreRange[0]}-{clientScoreRange[1]}
                     <X 
-                      className="h-3 w-3 ml-1 cursor-pointer" 
+                      className="h-4 w-4 ml-2 cursor-pointer hover:text-destructive transition-colors" 
                       onClick={() => setClientScoreRange([0, 100])}
                     />
                   </Badge>
                 )}
                 {(progressRange[0] !== 0 || progressRange[1] !== 100) && (
-                  <Badge variant="secondary">
+                  <Badge variant="secondary" className="px-4 py-2 text-sm border-2 border-secondary/30 bg-secondary/10">
                     Progress: {progressRange[0]}%-{progressRange[1]}%
                     <X 
-                      className="h-3 w-3 ml-1 cursor-pointer" 
+                      className="h-4 w-4 ml-2 cursor-pointer hover:text-destructive transition-colors" 
                       onClick={() => setProgressRange([0, 100])}
                     />
                   </Badge>
                 )}
                 {caseAgeFilter !== "all" && (
-                  <Badge variant="secondary">
+                  <Badge variant="secondary" className="px-4 py-2 text-sm border-2 border-accent/30 bg-accent/10">
                     Age: {caseAgeFilter}
                     <X 
-                      className="h-3 w-3 ml-1 cursor-pointer" 
+                      className="h-4 w-4 ml-2 cursor-pointer hover:text-destructive transition-colors" 
                       onClick={() => setCaseAgeFilter("all")}
                     />
                   </Badge>
                 )}
                 {paymentDueFilter && (
-                  <Badge variant="secondary">
+                  <Badge variant="secondary" className="px-4 py-2 text-sm border-2 border-destructive/30 bg-destructive/10">
                     Payment Due
                     <X 
-                      className="h-3 w-3 ml-1 cursor-pointer" 
+                      className="h-4 w-4 ml-2 cursor-pointer hover:text-destructive transition-colors" 
                       onClick={() => setPaymentDueFilter(false)}
                     />
                   </Badge>
@@ -530,14 +590,15 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
             )}
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="processing_mode">Processing Mode</Label>
+          {/* Additional Case Details */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-3">
+              <Label htmlFor="processing_mode" className="text-base font-semibold text-foreground">Processing Mode</Label>
               <Select value={formData.generation} onValueChange={(value) => setFormData({ ...formData, generation: value })}>
-                <SelectTrigger>
+                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-background/50 text-base h-12">
                   <SelectValue placeholder="Select processing mode" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-popover border-2 border-border z-50">
                   <SelectItem value="standard">Standard</SelectItem>
                   <SelectItem value="expedited">Expedited</SelectItem>
                   <SelectItem value="vip">VIP</SelectItem>
@@ -545,8 +606,8 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="progress">Progress (%)</Label>
+            <div className="space-y-3">
+              <Label htmlFor="progress" className="text-base font-semibold text-foreground">Progress (%)</Label>
               <Input
                 id="progress"
                 type="number"
@@ -554,40 +615,61 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                 max="100"
                 value={formData.progress}
                 onChange={(e) => setFormData({ ...formData, progress: parseInt(e.target.value) || 0 })}
+                className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-background/50 text-base h-12"
               />
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="is_vip" className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                id="is_vip"
-                checked={formData.is_vip}
-                onChange={(e) => setFormData({ ...formData, is_vip: e.target.checked })}
-                className="w-4 h-4"
-              />
+          <div 
+            className={`flex items-center space-x-3 p-4 rounded-lg border-2 transition-all cursor-pointer hover:shadow-md ${
+              formData.is_vip 
+                ? 'bg-accent/10 border-accent/50' 
+                : 'bg-background/30 border-border/30 hover:border-border/50'
+            }`}
+            onClick={() => setFormData({ ...formData, is_vip: !formData.is_vip })}
+          >
+            <input
+              type="checkbox"
+              id="is_vip"
+              checked={formData.is_vip}
+              onChange={(e) => setFormData({ ...formData, is_vip: e.target.checked })}
+              className="w-5 h-5 cursor-pointer"
+            />
+            <Label htmlFor="is_vip" className="text-base font-semibold cursor-pointer flex-1">
               VIP Client
             </Label>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="notes">Notes</Label>
+          <div className="space-y-3">
+            <Label htmlFor="notes" className="text-base font-semibold text-foreground">Notes</Label>
             <Textarea
               id="notes"
               value={formData.notes}
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-              rows={4}
+              rows={5}
               placeholder="Add any additional notes about this case..."
+              className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-background/50 text-base resize-none"
             />
           </div>
 
-          <div className="flex justify-end gap-2">
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+          {/* Action Buttons - Premium Design */}
+          <div className="flex justify-end gap-4 pt-6 border-t-2 border-border/30">
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={() => onOpenChange(false)}
+              size="lg"
+              className="px-8 border-2 border-border/50 hover:border-destructive/50 hover:bg-destructive/10 text-base h-12"
+            >
               Cancel
             </Button>
-            <Button type="submit" disabled={updateCaseMutation.isPending || isUploading}>
-              {isUploading ? "Uploading..." : updateCaseMutation.isPending ? "Saving..." : "Save Changes"}
+            <Button 
+              type="submit" 
+              disabled={updateCaseMutation.isPending || isUploading}
+              size="lg"
+              className="px-8 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 shadow-lg hover:shadow-xl transition-all text-base h-12"
+            >
+              {isUploading ? "Uploading Photo..." : updateCaseMutation.isPending ? "Saving Changes..." : "Save Changes"}
             </Button>
           </div>
         </form>
