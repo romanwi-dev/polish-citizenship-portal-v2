@@ -52,6 +52,7 @@ const PolishCitizenship = lazy(() => import("./pages/admin/PolishCitizenship"));
 const PolishPassport = lazy(() => import("./pages/admin/PolishPassport"));
 const OCRReview = lazy(() => import("./pages/admin/OCRReview"));
 const BackgroundsDemo = lazy(() => import("./pages/admin/BackgroundsDemo"));
+const HeroBackgroundsDemo = lazy(() => import("./pages/admin/HeroBackgroundsDemo"));
 const SecurityAudit = lazy(() => import("./pages/admin/SecurityAudit"));
 const Researcher = lazy(() => import("./pages/admin/Researcher"));
 const Translator = lazy(() => import("./pages/admin/Translator"));
@@ -339,7 +340,15 @@ const App = () => (
             } 
           />
           <Route 
-            path="/admin/security-audit" 
+            path="/admin/hero-backgrounds-demo" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <HeroBackgroundsDemo />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/security-audit"
             element={
               <Suspense fallback={<AdminLoader />}>
                 <SecurityAudit />
