@@ -420,7 +420,7 @@ export default function CasesManagement() {
                     variant={sortBy === option.value ? "default" : "outline"}
                     size="lg"
                     onClick={() => setSortBy(option.value as any)}
-                    className="whitespace-nowrap flex-shrink-0 h-14 px-10 text-base font-medium border-2"
+                    className="whitespace-nowrap flex-shrink-0 h-10 px-10 text-base font-medium border-2"
                   >
                     {option.label}
                   </Button>
