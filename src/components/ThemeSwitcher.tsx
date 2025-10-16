@@ -23,12 +23,12 @@ export function ThemeSwitcher() {
       variant="ghost" 
       size="icon" 
       onClick={toggleTheme}
-      className="relative h-11 w-11"
+      className="h-9 w-9 md:h-11 md:w-11 rounded-full bg-background/20 border border-border/10 hover:border-primary/30 transition-all p-0"
     >
       {currentTheme === "dark" ? (
-        <Moon className="h-5 w-5 transition-all" />
+        <Moon className="h-4 w-4 md:h-5 md:w-5 text-foreground/70 transition-all" />
       ) : (
-        <Sun className="h-5 w-5 transition-all" />
+        <Sun className="h-4 w-4 md:h-5 md:w-5 text-foreground/70 transition-all" />
       )}
       <span className="sr-only">Toggle theme</span>
     </Button>
