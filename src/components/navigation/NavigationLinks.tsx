@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Bot, GitBranch, ClipboardList, Users, Archive, Languages, Award, FileCheck, Plane, Palette } from 'lucide-react';
+import { Bot, GitBranch, ClipboardList, Users, Archive, Languages, Award, FileCheck, Plane, Palette, Shield } from 'lucide-react';
 
 interface NavigationLinksProps {
   onNavigate: () => void;
@@ -46,6 +46,12 @@ const NAVIGATION_SECTIONS: Array<{
       { label: 'Polish Citizenship', href: '/admin/citizenship', icon: Award },
       { label: 'Polish Civil Acts', href: '/admin/civil-acts', icon: FileCheck },
       { label: 'Polish Passport', href: '/admin/passport', icon: Plane },
+    ]
+  },
+  {
+    title: 'Subagents',
+    links: [
+      { label: 'Security', href: '/admin/security-audit', icon: Shield },
     ]
   },
   {
