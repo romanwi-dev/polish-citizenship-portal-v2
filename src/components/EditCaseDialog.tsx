@@ -371,25 +371,6 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
             </div>
           </div>
 
-          <div 
-            className={`flex items-center space-x-3 p-4 rounded-lg border-2 transition-all cursor-pointer hover:shadow-md ${
-              formData.is_vip 
-                ? 'bg-accent/10 border-accent/50' 
-                : 'bg-background/30 border-border/30 hover:border-border/50'
-            }`}
-            onClick={() => setFormData({ ...formData, is_vip: !formData.is_vip })}
-          >
-            <input
-              type="checkbox"
-              id="is_vip"
-              checked={formData.is_vip}
-              onChange={(e) => setFormData({ ...formData, is_vip: e.target.checked })}
-              className="w-5 h-5 cursor-pointer"
-            />
-            <Label htmlFor="is_vip" className="text-base font-semibold cursor-pointer flex-1">
-              VIP Client
-            </Label>
-          </div>
 
           <div className="space-y-3">
             <Label htmlFor="notes" className="text-base font-semibold text-foreground">Notes</Label>
