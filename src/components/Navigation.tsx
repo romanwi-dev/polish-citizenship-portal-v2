@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, User, Sparkles, Languages } from "lucide-react";
+import { Menu, User, Sparkles, Languages, Image } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { useAuth } from "@/hooks/useAuth";
 import { MobileNavigationSheet } from "@/components/MobileNavigationSheet";
@@ -90,6 +90,14 @@ const Navigation = () => {
               <Languages className="h-4 w-4 md:h-5 md:w-5 text-foreground" />
             </button>
             <button
+              onClick={() => navigate('/admin/hero-backgrounds-demo')}
+              className="h-9 w-9 md:h-11 md:w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
+              aria-label="Hero Backgrounds"
+              title="Cinematic Hero Backgrounds"
+            >
+              <Image className="h-4 w-4 md:h-5 md:w-5 text-foreground" />
+            </button>
+            <button
               onClick={() => navigate('/admin/cases')}
               className="h-9 w-9 md:h-11 md:w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
               aria-label="Management"
@@ -139,6 +147,14 @@ const Navigation = () => {
                           <Languages className="h-5 w-5 text-foreground" />
                         </button>
                         <button
+                          onClick={() => navigate('/admin/hero-backgrounds-demo')}
+                          className="h-11 w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
+                          aria-label="Hero Backgrounds"
+                          title="Cinematic Hero Backgrounds"
+                        >
+                          <Image className="h-5 w-5 text-foreground" />
+                        </button>
+                        <button
                           onClick={() => navigate('/admin/cases')}
                           className="h-11 w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
                           aria-label="Management"
@@ -167,6 +183,14 @@ const Navigation = () => {
                             title="Translation Management"
                           >
                             <Languages className="h-5 w-5 text-foreground" />
+                          </button>
+                          <button
+                            onClick={() => navigate('/admin/hero-backgrounds-demo')}
+                            className="h-11 w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
+                            aria-label="Hero Backgrounds"
+                            title="Cinematic Hero Backgrounds"
+                          >
+                            <Image className="h-5 w-5 text-foreground" />
                           </button>
                           <button
                             onClick={() => navigate('/admin/cases')}
