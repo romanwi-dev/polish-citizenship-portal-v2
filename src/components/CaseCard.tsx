@@ -161,7 +161,7 @@ export const CaseCard = memo(({
         style={{ transformStyle: 'preserve-3d', minHeight: '750px' }}
       >
           {/* Front of Card */}
-        <div className="absolute inset-0 w-full backface-hidden border border-border hover:border-primary/50 transition-colors p-5 sm:p-6 rounded-lg flex flex-col" style={{ minHeight: '750px' }}>
+        <div className="absolute inset-0 w-full backface-hidden border border-border hover:border-primary/50 transition-colors p-5 sm:p-6 rounded-lg flex flex-col bg-card/80 dark:bg-card/40" style={{ minHeight: '750px' }}>
           <div className="flex items-start justify-between mb-5">
             <div className="flex items-center gap-3">
               <ClientPhotoUpload
