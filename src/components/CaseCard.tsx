@@ -297,7 +297,7 @@ export const CaseCard = memo(({
             )}
           </div>
 
-          {/* KPI Strip - Mobile Optimized */}
+          {/* KPI Strip - Mobile Optimized with Clickable Navigation */}
           <div className="mb-4 sm:mb-5">
             <KPIStrip
               intakeCompleted={Boolean(clientCase.intake_completed)}
@@ -308,6 +308,7 @@ export const CaseCard = memo(({
               docsPercentage={clientCase.kpi_docs_percentage || 0}
               tasksCompleted={clientCase.kpi_tasks_completed || 0}
               tasksTotal={clientCase.kpi_tasks_total || 0}
+              caseId={clientCase.id}
             />
           </div>
 
