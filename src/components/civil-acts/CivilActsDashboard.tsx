@@ -26,14 +26,12 @@ export const CivilActsDashboard = () => {
   return (
     <div className="space-y-4 sm:space-y-6 p-4 sm:p-6">
       {/* Header */}
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center gap-2 sm:gap-3">
-          <FileCheck className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
-          <h1 className="text-2xl sm:text-3xl font-bold">Polish Civil Acts</h1>
-        </div>
-        <p className="text-sm sm:text-base text-muted-foreground">
-          Manage Polish civil registry documents (birth and marriage certificates)
-        </p>
+      <div className="max-w-4xl mx-auto text-center mb-8">
+        <h1 className="text-4xl md:text-5xl font-heading font-black tracking-tight">
+          <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            Polish Civil Acts
+          </span>
+        </h1>
       </div>
 
       {/* Workflow Navigation */}

@@ -43,14 +43,12 @@ export const TranslationDashboard = () => {
   return (
     <div className="space-y-4 sm:space-y-6 p-4 sm:p-6">
       {/* Header */}
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center gap-2 sm:gap-3">
-          <Languages className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
-          <h1 className="text-2xl sm:text-3xl font-bold">Translation Management</h1>
-        </div>
-        <p className="text-sm sm:text-base text-muted-foreground">
-          Document-based AI translation with sworn translator certification
-        </p>
+      <div className="max-w-4xl mx-auto text-center mb-8">
+        <h1 className="text-4xl md:text-5xl font-heading font-black tracking-tight">
+          <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            Translation Management
+          </span>
+        </h1>
       </div>
 
       {/* Workflow Navigation */}
