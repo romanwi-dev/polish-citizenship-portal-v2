@@ -189,15 +189,6 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-5xl max-h-[92vh] overflow-y-auto bg-background/95 backdrop-blur-xl border-2 border-primary/20">
-        <DialogHeader className="space-y-3 pb-6 border-b border-border/30">
-          <DialogTitle className="text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-            Edit Case Details
-          </DialogTitle>
-          <DialogDescription className="text-base text-muted-foreground">
-            Update client information and case status
-          </DialogDescription>
-        </DialogHeader>
-
         <form onSubmit={handleSubmit} className="space-y-8 pt-6">
           {/* Client Photo Upload - Premium Style */}
           <div className="space-y-4 p-6 border-2 border-primary/20 rounded-xl bg-gradient-to-br from-primary/5 to-secondary/5 backdrop-blur-sm">
