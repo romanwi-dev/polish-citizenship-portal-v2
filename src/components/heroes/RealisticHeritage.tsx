@@ -5,31 +5,39 @@ import * as THREE from 'three';
 
 const HeritageWave = () => {
   const meshRef = useRef<THREE.Mesh>(null!);
-
+  const geometry = new THREE.PlaneGeometry(16, 10, 80, 50);
+  
   useFrame((state) => {
-    const time = state.clock.getElapsedTime();
-    const geometry = meshRef.current.geometry;
-    const positions = geometry.attributes.position;
-
-    for (let i = 0; i < positions.count; i++) {
-      const x = positions.getX(i);
-      const y = positions.getY(i);
-      const wave = Math.sin(x * 2 + time) * 0.3 + Math.sin(y * 2 + time * 0.5) * 0.3;
-      positions.setZ(i, wave);
+    if (meshRef.current) {
+      const positions = meshRef.current.geometry.attributes.position;
+      const time = state.clock.getElapsedTime();
+      
+      for (let i = 0; i < positions.count; i++) {
+        const x = positions.getX(i);
+        const y = positions.getY(i);
+        
+        const waveX = Math.sin(x * 0.2 + time * 0.8) * 0.15;
+        const waveY = Math.cos(y * 0.25 + time * 0.6) * 0.15;
+        
+        positions.setZ(i, waveX + waveY);
+      }
+      
+      positions.needsUpdate = true;
+      meshRef.current.geometry.computeVertexNormals();
     }
-    positions.needsUpdate = true;
   });
 
   const texture = createHeritageTexture();
 
   return (
-    <mesh ref={meshRef} rotation={[-0.3, 0, 0]}>
-      <planeGeometry args={[10, 10, 32, 32]} />
+    <mesh ref={meshRef} geometry={geometry}>
       <meshStandardMaterial 
         map={texture} 
         side={THREE.DoubleSide}
-        metalness={0.3}
-        roughness={0.7}
+        metalness={0.1}
+        roughness={0.6}
+        transparent
+        opacity={0.9}
       />
     </mesh>
   );
@@ -66,7 +74,7 @@ export const RealisticHeritage = () => {
           enableZoom={false} 
           enablePan={false} 
           autoRotate 
-          autoRotateSpeed={0.5}
+          autoRotateSpeed={0.15}
         />
       </Canvas>
       <div className="absolute inset-0 opacity-40 blur-sm pointer-events-none" />
