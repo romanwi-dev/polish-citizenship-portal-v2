@@ -403,7 +403,7 @@ export default function CasesManagement() {
 
           {/* Sort Controls - Horizontal Scrollable */}
           {filteredCases.length > 0 && (
-            <div className="overflow-x-auto pb-3 -mx-4 px-4">
+            <div className="overflow-x-auto scrollbar-hide pb-3 -mx-4 px-4">
               <div className="flex items-center gap-2 min-w-max">
                 {[
                   { value: "default", label: "Default" },
@@ -420,7 +420,7 @@ export default function CasesManagement() {
                     variant={sortBy === option.value ? "default" : "outline"}
                     size="lg"
                     onClick={() => setSortBy(option.value as any)}
-                    className="whitespace-nowrap flex-shrink-0 h-14 px-6 text-base font-medium border-2"
+                    className="whitespace-nowrap flex-shrink-0 h-14 px-10 text-base font-medium border-2"
                   >
                     {option.label}
                   </Button>
