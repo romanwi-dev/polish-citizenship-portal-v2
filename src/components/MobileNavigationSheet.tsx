@@ -9,6 +9,7 @@ import { NavigationSearch } from './navigation/NavigationSearch';
 import { LastVisitedLinks } from './navigation/LastVisitedLinks';
 import { NavigationLinks } from './navigation/NavigationLinks';
 import { useNavigationDesign } from '@/hooks/useNavigationDesign';
+import { ThemeSwitcher } from './ThemeSwitcher';
 
 // Design imports
 import { GlassmorphicDesign } from './navigation/designs/GlassmorphicDesign';
@@ -125,6 +126,7 @@ export const MobileNavigationSheet = () => {
                   >
                     <Share2 className="h-5 w-5 text-foreground/30" />
                   </button>
+                  <ThemeSwitcher />
                 </div>
 
                 {/* Login/Register Button */}

@@ -97,6 +97,8 @@ const Navigation = () => {
               <User className="h-4 w-4 md:h-5 md:w-5 text-foreground/70" />
             </button>
             
+            <ThemeSwitcher />
+            
             {/* Mobile Navigation - Full Screen Sheet */}
             <div className="md:hidden">
               <MobileNavigationSheet />
