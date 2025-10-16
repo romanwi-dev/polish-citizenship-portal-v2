@@ -139,7 +139,10 @@ const Navigation = () => {
                           <Languages className="h-5 w-5 text-foreground" />
                         </button>
                         <button
-                          onClick={() => navigate('/admin/hero-backgrounds-demo')}
+                          onClick={() => {
+                            navigate('/admin/hero-backgrounds-demo');
+                            setIsMobileMenuOpen(false);
+                          }}
                           className="h-11 w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
                           aria-label="Hero Backgrounds"
                           title="Cinematic Hero Backgrounds"
@@ -177,7 +180,10 @@ const Navigation = () => {
                             <Languages className="h-5 w-5 text-foreground" />
                           </button>
                           <button
-                            onClick={() => navigate('/admin/hero-backgrounds-demo')}
+                            onClick={() => {
+                              navigate('/admin/hero-backgrounds-demo');
+                              setIsMobileMenuOpen(false);
+                            }}
                             className="h-11 w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
                             aria-label="Hero Backgrounds"
                             title="Cinematic Hero Backgrounds"
