@@ -1,258 +1,428 @@
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import { AdminLayout } from "@/components/AdminLayout";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, CheckCircle2, Clock, TrendingUp, ExternalLink } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
+import { 
+  FileText, 
+  Languages, 
+  Archive, 
+  FileCheck, 
+  AlertCircle,
+  Plus,
+  CheckCircle2
+} from "lucide-react";
+import { DocRadarPanel } from "@/components/DocRadarPanel";
+import { ArchiveRequestGenerator } from "@/components/ArchiveRequestGenerator";
+import { analyzeDocumentRadar } from "@/utils/documentRadar";
 
-const DocumentsCollection = () => {
+export default function DocumentsCollection() {
+  const { id } = useParams();
+  const [caseData, setCaseData] = useState<any>(null);
+  const [masterData, setMasterData] = useState<any>(null);
+  const [documents, setDocuments] = useState<any[]>([]);
+  const [tasks, setTasks] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (id) loadData();
+  }, [id]);
+
+  const loadData = async () => {
+    try {
+      const [caseRes, masterRes, docsRes, tasksRes] = await Promise.all([
+        supabase.from("cases").select("*").eq("id", id).single(),
+        supabase.from("master_table").select("*").eq("case_id", id).maybeSingle(),
+        supabase.from("documents").select("*").eq("case_id", id),
+        supabase.from("tasks").select("*").eq("case_id", id).eq("task_type", "translation"),
+      ]);
+
+      if (caseRes.error) throw caseRes.error;
+      
+      setCaseData(caseRes.data);
+      setMasterData(masterRes.data);
+      setDocuments(docsRes.data || []);
+      setTasks(tasksRes.data || []);
+    } catch (error: any) {
+      console.error("Error loading data:", error);
+      toast.error("Failed to load document data");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const createTranslationTask = async (docId: string, docName: string, personType: string) => {
+    try {
+      const { error } = await supabase.from("tasks").insert({
+        case_id: id,
+        task_type: "translation",
+        title: `Translate ${docName}`,
+        description: `Document needs certified Polish translation for ${personType}`,
+        priority: "high",
+        status: "pending",
+        related_document_id: docId,
+        related_person: personType,
+        metadata: {
+          document_name: docName,
+          person_type: personType,
+        },
+      });
+
+      if (error) throw error;
+      toast.success("Translation task created");
+      loadData();
+    } catch (error: any) {
+      console.error("Error creating task:", error);
+      toast.error("Failed to create translation task");
+    }
+  };
+
+  const createUSCTask = async (type: 'umiejscowienie' | 'uzupelnienie', personType: string) => {
+    try {
+      const taskTitles = {
+        umiejscowienie: 'USC Umiejscowienie Request',
+        uzupelnienie: 'USC Uzupełnienie Request',
+      };
+
+      const { error } = await supabase.from("tasks").insert({
+        case_id: id,
+        task_type: "usc_workflow",
+        title: taskTitles[type],
+        description: `Generate ${type} request for Polish Civil Registry for ${personType}`,
+        priority: "medium",
+        status: "pending",
+        related_person: personType,
+        metadata: {
+          usc_type: type,
+          person_type: personType,
+        },
+      });
+
+      if (error) throw error;
+      toast.success(`${type} task created`);
+      loadData();
+    } catch (error: any) {
+      console.error("Error creating USC task:", error);
+      toast.error("Failed to create USC task");
+    }
+  };
+
+  if (loading) {
+    return (
+      <AdminLayout>
+        <div className="flex items-center justify-center h-screen">
+          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        </div>
+      </AdminLayout>
+    );
+  }
+
+  const radar = analyzeDocumentRadar(documents, masterData);
+  const translationNeeded = documents.filter(d => !d.is_translated && d.translation_required);
+  const uscWorkflows = tasks.filter((t: any) => t.task_type === "usc_workflow");
+
   return (
     <AdminLayout>
-      <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">Documents Collection Dashboard</h1>
-          <p className="text-muted-foreground mt-2">
-            PART 6 - Local Documents: Birth/Marriage Certificates, Passports, Naturalization, Military Records
+      <div className="p-6 max-w-[1600px] mx-auto">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-heading font-black mb-2">
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              Documents Engine
+            </span>
+          </h1>
+          <p className="text-lg text-muted-foreground">
+            Case: {caseData?.client_name} ({caseData?.client_code})
           </p>
         </div>
 
-        {/* Stats Overview - Flippable Cards */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <Card className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Pending</p>
-                <h3 className="text-2xl font-bold mt-1">23</h3>
-                <p className="text-xs text-muted-foreground mt-1">Documents needed</p>
+        {/* Stats Overview */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">Total Documents</p>
+                  <p className="text-3xl font-bold">{documents.length}</p>
+                </div>
+                <FileText className="h-10 w-10 text-muted-foreground" />
               </div>
-              <Clock className="w-8 h-8 text-amber-500" />
-            </div>
+            </CardContent>
           </Card>
 
-          <Card className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">In Progress</p>
-                <h3 className="text-2xl font-bold mt-1">15</h3>
-                <p className="text-xs text-muted-foreground mt-1">Being obtained</p>
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">Need Translation</p>
+                  <p className="text-3xl font-bold text-orange-600">{translationNeeded.length}</p>
+                </div>
+                <Languages className="h-10 w-10 text-orange-600" />
               </div>
-              <TrendingUp className="w-8 h-8 text-primary" />
-            </div>
+            </CardContent>
           </Card>
 
-          <Card className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Received</p>
-                <h3 className="text-2xl font-bold mt-1">42</h3>
-                <p className="text-xs text-muted-foreground mt-1">Awaiting verification</p>
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">USC Workflows</p>
+                  <p className="text-3xl font-bold text-blue-600">{uscWorkflows.length}</p>
+                </div>
+                <Archive className="h-10 w-10 text-blue-600" />
               </div>
-              <FileText className="w-8 h-8 text-blue-500" />
-            </div>
+            </CardContent>
           </Card>
 
-          <Card className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Verified & Filed</p>
-                <h3 className="text-2xl font-bold mt-1">78</h3>
-                <p className="text-xs text-muted-foreground mt-1">Complete</p>
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">Verified Docs</p>
+                  <p className="text-3xl font-bold text-green-600">
+                    {documents.filter(d => d.is_verified).length}
+                  </p>
+                </div>
+                <CheckCircle2 className="h-10 w-10 text-green-600" />
               </div>
-              <CheckCircle2 className="w-8 h-8 text-green-500" />
-            </div>
+            </CardContent>
           </Card>
         </div>
 
-        {/* Main Tabs */}
-        <Tabs defaultValue="workflow" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="workflow">Collection Workflow</TabsTrigger>
-            <TabsTrigger value="timeline">Collection Timeline</TabsTrigger>
-            <TabsTrigger value="authorities">Authority Directory</TabsTrigger>
-            <TabsTrigger value="partners">Partner Network</TabsTrigger>
-            <TabsTrigger value="checklist">Requirements Checklist</TabsTrigger>
+        <Tabs defaultValue="radar" className="space-y-6">
+          <TabsList className="grid grid-cols-4 w-full max-w-2xl">
+            <TabsTrigger value="radar">Doc Radar</TabsTrigger>
+            <TabsTrigger value="translation">
+              Translation
+              {translationNeeded.length > 0 && (
+                <Badge variant="destructive" className="ml-2">{translationNeeded.length}</Badge>
+              )}
+            </TabsTrigger>
+            <TabsTrigger value="archives">Archives</TabsTrigger>
+            <TabsTrigger value="usc">USC Workflows</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="workflow" className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-3">
-              {/* Pending Stage */}
-              <Card className="p-4">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold">Requirements Defined</h3>
-                  <Badge variant="secondary">8</Badge>
-                </div>
-                <div className="space-y-3">
-                  <Card className="p-3 bg-muted/50">
-                    <p className="font-medium text-sm">Case: POL-2024-005</p>
-                    <p className="text-xs text-muted-foreground mt-1">Father's Birth Certificate</p>
-                    <div className="flex gap-2 mt-2">
-                      <Badge variant="outline" className="text-xs">Cook County, IL</Badge>
-                      <Badge variant="outline" className="text-xs">USA</Badge>
-                    </div>
-                  </Card>
-                </div>
-              </Card>
+          {/* DOC RADAR TAB */}
+          <TabsContent value="radar">
+            <DocRadarPanel documents={documents} familyData={masterData} />
+          </TabsContent>
 
-              {/* In Progress Stage */}
-              <Card className="p-4">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold">Client Obtaining</h3>
-                  <Badge variant="secondary">6</Badge>
-                </div>
-                <div className="space-y-3">
-                  <Card className="p-3 bg-muted/50">
-                    <p className="font-medium text-sm">Case: POL-2024-007</p>
-                    <p className="text-xs text-muted-foreground mt-1">Naturalization Certificate</p>
-                    <div className="flex gap-2 mt-2">
-                      <Badge variant="outline" className="text-xs">USCIS</Badge>
-                      <Badge className="text-xs bg-amber-500">Requested</Badge>
-                    </div>
-                  </Card>
-                </div>
-              </Card>
+          {/* TRANSLATION TAB */}
+          <TabsContent value="translation" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Languages className="h-5 w-5" />
+                  Documents Requiring Translation
+                </CardTitle>
+                <CardDescription>
+                  Non-Polish documents that need certified translation
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {translationNeeded.length === 0 ? (
+                  <div className="text-center py-12 text-muted-foreground">
+                    <Languages className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <p>All documents are in Polish or already translated</p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {translationNeeded.map((doc) => (
+                      <div
+                        key={doc.id}
+                        className="flex items-center justify-between p-4 border rounded-lg hover:bg-accent/50 transition-colors"
+                      >
+                        <div className="flex-1">
+                          <p className="font-medium">{doc.name}</p>
+                          <div className="flex items-center gap-2 mt-1">
+                            <Badge variant="outline">{doc.person_type || "Unknown"}</Badge>
+                            <Badge variant="secondary">{doc.type}</Badge>
+                            {doc.file_extension && (
+                              <span className="text-sm text-muted-foreground">
+                                {doc.file_extension}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <Button
+                          size="sm"
+                          onClick={() => createTranslationTask(doc.id, doc.name, doc.person_type)}
+                          className="gap-2"
+                        >
+                          <Plus className="h-4 w-4" />
+                          Create Task
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
 
-              {/* Completed Stage */}
-              <Card className="p-4">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold">Received & Verified</h3>
-                  <Badge variant="secondary">12</Badge>
-                </div>
-                <div className="space-y-3">
-                  <Card className="p-3 bg-muted/50">
-                    <p className="font-medium text-sm">Case: POL-2024-006</p>
-                    <p className="text-xs text-muted-foreground mt-1">Marriage Certificate</p>
-                    <div className="flex gap-2 mt-2">
-                      <Badge variant="outline" className="text-xs">Ontario, Canada</Badge>
-                      <Badge className="text-xs bg-green-500">Filed</Badge>
-                    </div>
-                  </Card>
-                </div>
+            {/* Translation Tasks */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Active Translation Tasks</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {tasks.length === 0 ? (
+                  <p className="text-center py-8 text-muted-foreground">No translation tasks yet</p>
+                ) : (
+                  <div className="space-y-2">
+                    {tasks.map((task) => (
+                      <div
+                        key={task.id}
+                        className="flex items-center justify-between p-3 border rounded"
+                      >
+                        <div>
+                          <p className="font-medium">{task.title}</p>
+                          <p className="text-sm text-muted-foreground">{task.description}</p>
+                        </div>
+                        <Badge variant={task.status === "completed" ? "default" : "secondary"}>
+                          {task.status}
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* ARCHIVES TAB */}
+          <TabsContent value="archives">
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Archive className="h-5 w-5" />
+                    Polish Archive Requests
+                  </CardTitle>
+                  <CardDescription>
+                    Generate official letters to request documents from Polish archives
+                  </CardDescription>
+                </CardHeader>
               </Card>
+              
+              <ArchiveRequestGenerator />
             </div>
           </TabsContent>
 
-          <TabsContent value="timeline" className="space-y-4">
-            <Card className="p-6">
-              <h3 className="font-semibold mb-4">8-Stage Collection Process</h3>
-              <div className="space-y-4">
-                {[
-                  { stage: 'Requirements Defined', desc: 'List of needed documents created', status: 'completed' },
-                  { stage: 'Client Notified', desc: 'Client instructed on how to obtain', status: 'completed' },
-                  { stage: 'Client Obtaining', desc: 'Client working to get documents', status: 'active' },
-                  { stage: 'Partner Assistance', desc: 'Local partner helping with difficult requests', status: 'pending' },
-                  { stage: 'Documents Received', desc: 'Documents received from client/partner', status: 'pending' },
-                  { stage: 'Verification', desc: 'Checking authenticity, apostilles, certifications', status: 'pending' },
-                  { stage: 'Translation Queue', desc: 'Non-English docs sent for translation', status: 'pending' },
-                  { stage: 'Filed', desc: 'Documents filed in case folder', status: 'pending' }
-                ].map((item, index) => (
-                  <div key={index} className="flex items-center gap-4">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                      item.status === 'completed' ? 'bg-green-500 text-white' :
-                      item.status === 'active' ? 'bg-primary text-white' :
-                      'bg-muted text-muted-foreground'
-                    }`}>
-                      {index + 1}
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-medium">{item.stage}</p>
-                      <p className="text-sm text-muted-foreground">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </Card>
-          </TabsContent>
+          {/* USC WORKFLOWS TAB */}
+          <TabsContent value="usc" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <FileCheck className="h-5 w-5" />
+                  USC Workflows (Urząd Stanu Cywilnego)
+                </CardTitle>
+                <CardDescription>
+                  Civil Registry workflows for document registration
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <Card className="border-2">
+                    <CardHeader>
+                      <CardTitle className="text-lg">Umiejscowienie</CardTitle>
+                      <CardDescription>
+                        Register foreign document with Polish Civil Registry
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm mb-4">
+                        Used when a civil act (birth, marriage) occurred abroad and needs to be
+                        registered in Poland
+                      </p>
+                      <Button
+                        onClick={() => createUSCTask('umiejscowienie', 'AP')}
+                        className="w-full gap-2"
+                      >
+                        <Plus className="h-4 w-4" />
+                        Create Umiejscowienie Task
+                      </Button>
+                    </CardContent>
+                  </Card>
 
-          <TabsContent value="authorities" className="space-y-4">
-            <Card className="p-6">
-              <h3 className="font-semibold mb-4">Local Authority Directory</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                Vital records offices, passport agencies, USCIS, military archives worldwide
-              </p>
-              
-              <div className="space-y-3">
-                {[
-                  { 
-                    name: 'Cook County Clerk - Vital Records',
-                    location: 'Chicago, Illinois, USA',
-                    type: 'vital_records',
-                    website: 'cookcountyclerkil.gov',
-                    processing: '4-6 weeks',
-                    fees: '$15 certified copy'
-                  },
-                  {
-                    name: 'USCIS - National Records Center',
-                    location: 'Lee\'s Summit, Missouri, USA',
-                    type: 'uscis',
-                    website: 'uscis.gov',
-                    processing: '8-12 weeks',
-                    fees: '$65 FOIA request'
-                  },
-                  {
-                    name: 'Ontario Service Canada',
-                    location: 'Toronto, Ontario, Canada',
-                    type: 'vital_records',
-                    website: 'serviceontario.ca',
-                    processing: '2-3 weeks',
-                    fees: '$35 CAD'
-                  }
-                ].map((authority, index) => (
-                  <Card key={index} className="p-4 bg-muted/50">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <p className="font-medium">{authority.name}</p>
-                        <p className="text-sm text-muted-foreground">{authority.location}</p>
-                        <div className="flex gap-2 mt-2">
-                          <Badge variant="outline" className="text-xs">{authority.type}</Badge>
-                          <Badge variant="outline" className="text-xs">{authority.processing}</Badge>
-                          <Badge variant="outline" className="text-xs">{authority.fees}</Badge>
+                  <Card className="border-2">
+                    <CardHeader>
+                      <CardTitle className="text-lg">Uzupełnienie</CardTitle>
+                      <CardDescription>
+                        Add missing information to existing Polish record
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm mb-4">
+                        Used to supplement incomplete Polish civil registry records with additional
+                        information
+                      </p>
+                      <Button
+                        onClick={() => createUSCTask('uzupelnienie', 'AP')}
+                        className="w-full gap-2"
+                      >
+                        <Plus className="h-4 w-4" />
+                        Create Uzupełnienie Task
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* USC Tasks List */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Active USC Workflows</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {uscWorkflows.length === 0 ? (
+                  <div className="text-center py-12 text-muted-foreground">
+                    <FileCheck className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <p>No USC workflows created yet</p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {uscWorkflows.map((task: any) => (
+                      <div
+                        key={task.id}
+                        className="flex items-center justify-between p-4 border rounded-lg"
+                      >
+                        <div className="flex-1">
+                          <p className="font-medium">{task.title}</p>
+                          <p className="text-sm text-muted-foreground">{task.description}</p>
+                          <div className="flex items-center gap-2 mt-2">
+                            <Badge variant="outline">{task.related_person}</Badge>
+                            <Badge variant="secondary">
+                              {task.metadata?.usc_type || "Unknown"}
+                            </Badge>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Badge
+                            variant={
+                              task.status === "completed"
+                                ? "default"
+                                : task.status === "in_progress"
+                                ? "secondary"
+                                : "outline"
+                            }
+                          >
+                            {task.status}
+                          </Badge>
                         </div>
                       </div>
-                      <Button size="sm" variant="ghost">
-                        <ExternalLink className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="partners" className="space-y-4">
-            <Card className="p-6">
-              <h3 className="font-semibold mb-4">Document Retrieval Partners</h3>
-              <div className="space-y-3">
-                {[
-                  { name: 'USA Document Services', location: 'Multiple States', cases: 12 },
-                  { name: 'Canadian Vital Records Specialist', location: 'Toronto, Canada', cases: 6 },
-                  { name: 'UK Document Retrieval', location: 'London, UK', cases: 4 }
-                ].map((partner, index) => (
-                  <Card key={index} className="p-4 bg-muted/50">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium">{partner.name}</p>
-                        <p className="text-sm text-muted-foreground">{partner.location}</p>
-                      </div>
-                      <Badge>{partner.cases} active requests</Badge>
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="checklist" className="space-y-4">
-            <Card className="p-6">
-              <h3 className="font-semibold mb-4">Document Requirements Checklist</h3>
-              <p className="text-sm text-muted-foreground">
-                Auto-generated based on family tree - tracks what documents are needed for each family member
-              </p>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
       </div>
     </AdminLayout>
   );
-};
-
-export default DocumentsCollection;
+}

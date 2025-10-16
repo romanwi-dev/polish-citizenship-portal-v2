@@ -270,7 +270,7 @@ const App = () => (
             } 
           />
           <Route 
-            path="/admin/documents-collection" 
+            path="/admin/documents-collection/:id" 
             element={
               <Suspense fallback={<AdminLoader />}>
                 <DocumentsCollection />
