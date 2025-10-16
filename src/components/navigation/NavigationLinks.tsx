@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Bot, GitBranch, ClipboardList, Users } from 'lucide-react';
+import { Bot, GitBranch, ClipboardList, Users, Archive, Languages, Award, FileCheck } from 'lucide-react';
 
 interface NavigationLinksProps {
   onNavigate: () => void;
@@ -36,6 +36,15 @@ const NAVIGATION_SECTIONS: Array<{
       { label: 'Paperwork', href: '#paperwork' },
       { label: 'Documents', href: '#documents' },
       { label: 'Testimonials', href: '#testimonials' },
+    ]
+  },
+  {
+    title: 'Workflows',
+    links: [
+      { label: 'Archives Search', href: '/admin/archives-search', icon: Archive },
+      { label: 'Translations', href: '/admin/translations', icon: Languages },
+      { label: 'Polish Citizenship', href: '/admin/citizenship', icon: Award },
+      { label: 'Polish Civil Acts', href: '/admin/civil-acts', icon: FileCheck },
     ]
   },
   {
