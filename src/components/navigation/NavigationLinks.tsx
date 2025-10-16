@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Bot, GitBranch, ClipboardList, Users, Archive, Languages, Award, FileCheck, Plane, Palette, Shield } from 'lucide-react';
+import { Bot, GitBranch, ClipboardList, Users, Archive, Languages, Award, FileCheck, Plane, Palette, Shield, Search, PenTool } from 'lucide-react';
 
 interface NavigationLinksProps {
   onNavigate: () => void;
@@ -52,6 +52,10 @@ const NAVIGATION_SECTIONS: Array<{
     title: 'Subagents',
     links: [
       { label: 'Security', href: '/admin/security-audit', icon: Shield },
+      { label: 'Researcher', href: '/admin/researcher', icon: Search },
+      { label: 'Translator', href: '/admin/translator', icon: Languages },
+      { label: 'Writer', href: '/admin/writer', icon: PenTool },
+      { label: 'Designer', href: '/admin/designer', icon: Palette },
     ]
   },
   {

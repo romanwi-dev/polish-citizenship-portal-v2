@@ -53,6 +53,10 @@ const PolishPassport = lazy(() => import("./pages/admin/PolishPassport"));
 const OCRReview = lazy(() => import("./pages/admin/OCRReview"));
 const BackgroundsDemo = lazy(() => import("./pages/admin/BackgroundsDemo"));
 const SecurityAudit = lazy(() => import("./pages/admin/SecurityAudit"));
+const Researcher = lazy(() => import("./pages/admin/Researcher"));
+const Translator = lazy(() => import("./pages/admin/Translator"));
+const Writer = lazy(() => import("./pages/admin/Writer"));
+const Designer = lazy(() => import("./pages/admin/Designer"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -339,6 +343,38 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <SecurityAudit />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/researcher" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <Researcher />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/translator" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <Translator />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/writer" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <Writer />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/designer" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <Designer />
               </Suspense>
             } 
           />
