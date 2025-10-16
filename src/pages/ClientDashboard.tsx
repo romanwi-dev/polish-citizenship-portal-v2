@@ -8,6 +8,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { FileText, Upload, MessageSquare, FileCheck, LogOut, Download } from "lucide-react";
 import { CaseStageVisualization } from "@/components/CaseStageVisualization";
+import { FileUploadSection } from "@/components/client/FileUploadSection";
+import { MessagingSection } from "@/components/client/MessagingSection";
 
 export default function ClientDashboard() {
   const { caseId } = useParams();
@@ -80,12 +82,13 @@ export default function ClientDashboard() {
     toast.success("Logged out successfully");
   };
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    toast.info(`File upload functionality: ${file.name}`);
-    // TODO: Implement actual file upload to storage
+  const getCurrentUserId = () => {
+    const session = localStorage.getItem("client_session");
+    if (session) {
+      const parsed = JSON.parse(session);
+      return parsed.userId || "client-user";
+    }
+    return "client-user";
   };
 
   if (loading) {
@@ -196,32 +199,10 @@ export default function ClientDashboard() {
           </TabsContent>
 
           <TabsContent value="upload">
-            <Card>
-              <CardHeader>
-                <CardTitle>Upload Documents</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="border-2 border-dashed rounded-lg p-12 text-center hover:border-primary/50 transition-colors">
-                  <Upload className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">Upload Your Documents</h3>
-                  <p className="text-muted-foreground mb-4">
-                    Drag and drop files here or click to browse
-                  </p>
-                  <input
-                    type="file"
-                    onChange={handleFileUpload}
-                    className="hidden"
-                    id="file-upload"
-                    multiple
-                  />
-                  <label htmlFor="file-upload">
-                    <Button asChild>
-                      <span>Choose Files</span>
-                    </Button>
-                  </label>
-                </div>
-              </CardContent>
-            </Card>
+            <FileUploadSection 
+              caseId={caseId!} 
+              onUploadComplete={loadDashboardData}
+            />
           </TabsContent>
 
           <TabsContent value="poa">
@@ -261,35 +242,10 @@ export default function ClientDashboard() {
           </TabsContent>
 
           <TabsContent value="messages">
-            <Card>
-              <CardHeader>
-                <CardTitle>Messages</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {messages.length === 0 ? (
-                    <p className="text-muted-foreground text-center py-8">No messages yet</p>
-                  ) : (
-                    messages.map((msg) => (
-                      <div
-                        key={msg.id}
-                        className="p-4 border rounded-lg hover:bg-accent/50 transition-colors"
-                      >
-                        <div className="flex items-start gap-3">
-                          <MessageSquare className="h-5 w-5 text-muted-foreground mt-1" />
-                          <div className="flex-1">
-                            <p className="text-sm">{msg.message_text}</p>
-                            <p className="text-xs text-muted-foreground mt-2">
-                              {new Date(msg.created_at).toLocaleString()}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+            <MessagingSection 
+              caseId={caseId!} 
+              currentUserId={getCurrentUserId()}
+            />
           </TabsContent>
         </Tabs>
       </main>

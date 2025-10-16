@@ -20,7 +20,9 @@ import {
   Edit,
   Bot,
   FileText,
-  Loader2
+  Loader2,
+  Link as LinkIcon,
+  Copy
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -31,6 +33,86 @@ const POAFormContent = lazy(() => import("./POAForm"));
 const CitizenshipFormContent = lazy(() => import("./CitizenshipForm"));
 const CivilRegistryFormContent = lazy(() => import("./CivilRegistryForm"));
 const FamilyHistoryFormContent = lazy(() => import("./FamilyHistoryForm"));
+
+// Portal Access Component
+function GrantPortalAccessSection({ caseId, clientEmail }: { caseId: string; clientEmail?: string }) {
+  const [generating, setGenerating] = useState(false);
+  const [magicLink, setMagicLink] = useState<string | null>(null);
+
+  const generateMagicLink = async () => {
+    if (!clientEmail) {
+      toast.error("Client email not found. Please add it in the Intake form first.");
+      return;
+    }
+
+    setGenerating(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("send-welcome-email", {
+        body: { caseId, clientEmail, clientName: clientEmail.split("@")[0] },
+      });
+
+      if (error) throw error;
+
+      setMagicLink(data.intakeUrl);
+      toast.success("Magic link generated! Copy and send to client.");
+    } catch (error: any) {
+      console.error("Error generating magic link:", error);
+      toast.error(error.message || "Failed to generate magic link");
+    } finally {
+      setGenerating(false);
+    }
+  };
+
+  const copyToClipboard = () => {
+    if (magicLink) {
+      navigator.clipboard.writeText(magicLink);
+      toast.success("Magic link copied to clipboard!");
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-4">
+        <Button onClick={generateMagicLink} disabled={generating || !clientEmail}>
+          {generating ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Generating...
+            </>
+          ) : (
+            <>
+              <LinkIcon className="mr-2 h-4 w-4" />
+              Generate Portal Access Link
+            </>
+          )}
+        </Button>
+        {!clientEmail && (
+          <p className="text-sm text-muted-foreground">
+            Add client email in Intake form first
+          </p>
+        )}
+      </div>
+
+      {magicLink && (
+        <Card className="bg-muted/50">
+          <CardContent className="pt-4">
+            <div className="flex items-center gap-2">
+              <code className="flex-1 p-3 bg-background rounded text-sm overflow-x-auto">
+                {magicLink}
+              </code>
+              <Button size="sm" variant="outline" onClick={copyToClipboard}>
+                <Copy className="h-4 w-4" />
+              </Button>
+            </div>
+            <p className="text-sm text-muted-foreground mt-2">
+              Send this link to your client. It expires in 7 days.
+            </p>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  );
+}
 
 interface CaseData {
   id: string;
@@ -319,6 +401,17 @@ export default function CaseDetail() {
 
           {/* OVERVIEW TAB - Finalized from Replit */}
           <TabsContent value="overview" className="space-y-6">
+            {/* Client Portal Access */}
+            <Card className="bg-card/50 backdrop-blur">
+              <CardHeader>
+                <CardTitle className="text-2xl font-heading font-black">Client Portal Access</CardTitle>
+                <CardDescription>Grant client access to their portal with a magic link</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <GrantPortalAccessSection caseId={id!} clientEmail={intakeData?.email} />
+              </CardContent>
+            </Card>
+
             {/* Case Information */}
             <Card className="bg-card/50 backdrop-blur">
               <CardHeader>
