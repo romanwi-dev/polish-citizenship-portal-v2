@@ -1,9 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Sparkles } from "lucide-react";
-import { lazy, Suspense } from "react";
-
-// Lazy load background component
-const RealisticHeritage = lazy(() => import("./heroes/RealisticHeritage").then(module => ({ default: module.RealisticHeritage })));
+import { RealisticHeritage } from "./heroes/RealisticHeritage";
 
 const HeroWeb3 = () => {
   const scrollToContact = () => {
@@ -15,9 +12,7 @@ const HeroWeb3 = () => {
   return <section className="relative min-h-[60vh] md:min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 z-0">
-        <Suspense fallback={<div className="w-full h-full bg-gradient-to-b from-primary/5 to-background" />}>
-          <RealisticHeritage />
-        </Suspense>
+        <RealisticHeritage />
       </div>
 
 
