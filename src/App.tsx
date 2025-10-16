@@ -52,6 +52,7 @@ const PolishCitizenship = lazy(() => import("./pages/admin/PolishCitizenship"));
 const PolishPassport = lazy(() => import("./pages/admin/PolishPassport"));
 const OCRReview = lazy(() => import("./pages/admin/OCRReview"));
 const BackgroundsDemo = lazy(() => import("./pages/admin/BackgroundsDemo"));
+const SecurityAudit = lazy(() => import("./pages/admin/SecurityAudit"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -330,6 +331,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <BackgroundsDemo />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/security-audit" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <SecurityAudit />
               </Suspense>
             } 
           />

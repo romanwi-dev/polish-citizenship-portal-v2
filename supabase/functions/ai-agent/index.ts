@@ -110,6 +110,22 @@ function buildAgentContext(caseData: any, action: string) {
     country: caseData.country,
   };
 
+  // Security audit context (system-wide, not case-specific)
+  if (action === 'security_audit') {
+    context.system_audit = true;
+    context.tables_with_rls = [
+      'cases', 'intake_data', 'master_table', 'documents', 'tasks',
+      'poa', 'oby_forms', 'hac_logs', 'messages',
+      'user_roles', 'client_portal_access', 'archive_searches'
+    ];
+    context.sensitive_tables = ['master_table', 'intake_data', 'poa', 'documents'];
+    context.edge_functions = [
+      'ai-agent', 'generate-poa', 'fill-pdf', 'ocr-passport',
+      'ocr-document', 'ocr-wsc-letter', 'dropbox-sync'
+    ];
+    return context;
+  }
+
   // Add relevant data based on action
   if (action === 'eligibility_analysis' || action === 'comprehensive') {
     context.intake = caseData.intake_data?.[0] || null;
@@ -246,7 +262,55 @@ TASK: Comprehensive case analysis covering all aspects.
 - Critical next steps
 - Risks and blockers
 - Timeline estimate
-- Recommendations for HAC`
+- Recommendations for HAC`,
+
+    security_audit: `You are a security auditor AI specialized in Supabase applications and OWASP best practices.
+
+TASK: Perform comprehensive security audit of the Polish citizenship application system.
+
+Focus Areas:
+
+1. Row Level Security (RLS) Policies
+   - Verify all tables have RLS enabled
+   - Check policy logic for data leaks
+   - Ensure user_id filtering with auth.uid()
+   - Verify has_role() function usage
+   - Check for policy bypass vulnerabilities
+
+2. Authentication & Authorization
+   - Review auth flows (no anonymous signups)
+   - Check JWT token handling in edge functions
+   - Verify role-based access control (admin/assistant/client)
+   - Check client portal access controls
+
+3. Data Protection (CRITICAL)
+   - Identify exposed PII (passport numbers, addresses, personal data)
+   - Verify data masking implementation
+   - Check encryption for sensitive fields
+   - Verify documents table security
+
+4. OWASP Top 10 Compliance
+   - SQL injection prevention
+   - XSS vulnerabilities
+   - CSRF protection
+   - Security misconfiguration
+   - Sensitive data exposure
+
+5. Edge Function Security
+   - Input validation (Zod schemas)
+   - CORS configuration
+   - Error handling (no data leaks)
+   - API key exposure
+   - JWT token verification
+
+Output Format:
+🔴 CRITICAL ISSUES (must fix immediately)
+🟡 MEDIUM ISSUES (fix before production)
+🟢 LOW ISSUES (nice to have)
+✅ COMPLIANCE STATUS
+📋 RECOMMENDATIONS
+
+Be specific: cite table names, function names, provide actionable fixes with code examples.`
   };
 
   return actionPrompts[action] || actionPrompts.comprehensive;

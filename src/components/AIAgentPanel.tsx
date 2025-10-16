@@ -4,7 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Bot, Sparkles, FileText, CheckCircle2, TrendingUp, Mail, Zap } from "lucide-react";
+import { Loader2, Bot, Sparkles, FileText, CheckCircle2, TrendingUp, Mail, Zap, Shield } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface AIAgentPanelProps {
@@ -25,6 +25,7 @@ export const AIAgentPanel = ({ caseId }: AIAgentPanelProps) => {
     { value: "task_suggest", label: "Task Suggestions", icon: Zap },
     { value: "wsc_strategy", label: "WSC Letter Strategy", icon: Mail },
     { value: "form_populate", label: "Form Auto-Population", icon: TrendingUp },
+    { value: "security_audit", label: "Security Audit", icon: Shield },
   ];
 
   const quickPrompts = [
