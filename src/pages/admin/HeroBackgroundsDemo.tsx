@@ -12,6 +12,15 @@ const LegalChambers = lazy(() => import('@/components/heroes/LegalChambers').the
 const PassportJourney = lazy(() => import('@/components/heroes/PassportJourney').then(m => ({ default: m.PassportJourney })));
 const HeritageTapestry = lazy(() => import('@/components/heroes/HeritageTapestry').then(m => ({ default: m.HeritageTapestry })));
 const ModernMinimalist = lazy(() => import('@/components/heroes/ModernMinimalist').then(m => ({ default: m.ModernMinimalist })));
+const AuroraBorealis = lazy(() => import('@/components/heroes/AuroraBorealis').then(m => ({ default: m.AuroraBorealis })));
+const FloatingWarsaw = lazy(() => import('@/components/heroes/FloatingWarsaw').then(m => ({ default: m.FloatingWarsaw })));
+const DocumentVault = lazy(() => import('@/components/heroes/DocumentVault').then(m => ({ default: m.DocumentVault })));
+const WingsOfFreedom = lazy(() => import('@/components/heroes/WingsOfFreedom').then(m => ({ default: m.WingsOfFreedom })));
+const TimePortal = lazy(() => import('@/components/heroes/TimePortal').then(m => ({ default: m.TimePortal })));
+const CrystalPalace = lazy(() => import('@/components/heroes/CrystalPalace').then(m => ({ default: m.CrystalPalace })));
+const CrownJewels = lazy(() => import('@/components/heroes/CrownJewels').then(m => ({ default: m.CrownJewels })));
+const StormyRevelation = lazy(() => import('@/components/heroes/StormyRevelation').then(m => ({ default: m.StormyRevelation })));
+const UnderwaterPassport = lazy(() => import('@/components/heroes/UnderwaterPassport').then(m => ({ default: m.UnderwaterPassport })));
 
 interface HeroBackground {
   id: string;
@@ -70,6 +79,78 @@ const backgrounds: HeroBackground[] = [
     description: 'Apple-commercial inspired clean design with premium materials and perfect studio lighting. Ultra-modern and sophisticated.',
     specs: ['Premium materials', 'Studio lighting', 'Geometric shapes', 'Monochrome with accents'],
     mood: 'Modern, clean, premium'
+  },
+  {
+    id: 'aurora-borealis',
+    name: 'Aurora Borealis',
+    component: AuroraBorealis,
+    description: 'Northern Lights over Polish landscapes with shader-based aurora waves and winter atmosphere. Magical and breathtaking.',
+    specs: ['Custom shader materials', 'Snow particles', 'Aurora simulation', 'Nordic atmosphere'],
+    mood: 'Magical, natural, wonder'
+  },
+  {
+    id: 'floating-warsaw',
+    name: 'Floating Warsaw',
+    component: FloatingWarsaw,
+    description: 'City landmarks suspended in space with distorted sphere and floating buildings. Futuristic urban design.',
+    specs: ['Mesh distortion', 'Floating architecture', 'Dynamic rings', 'Urban sci-fi'],
+    mood: 'Futuristic, innovative, urban'
+  },
+  {
+    id: 'document-vault',
+    name: 'Document Vault',
+    component: DocumentVault,
+    description: 'Secure chamber with floating documents, golden light beams, and dark vault walls. Maximum security aesthetic.',
+    specs: ['Volumetric beams', 'Metallic walls', 'Document physics', 'Dust simulation'],
+    mood: 'Secure, mysterious, official'
+  },
+  {
+    id: 'wings-freedom',
+    name: 'Wings of Freedom',
+    component: WingsOfFreedom,
+    description: 'Majestic Polish eagle with animated wings, golden crown, and radiant light rays. Symbol of independence.',
+    specs: ['Wing animation', 'Crown jewels', 'Light rays', 'Patriotic colors'],
+    mood: 'Majestic, proud, liberating'
+  },
+  {
+    id: 'time-portal',
+    name: 'Time Portal',
+    component: TimePortal,
+    description: 'Swirling energy portal connecting past and present with historical elements and particle effects. Journey through time.',
+    specs: ['Portal distortion', 'Energy particles', 'Historical artifacts', 'Temporal effects'],
+    mood: 'Mysterious, historical, transformative'
+  },
+  {
+    id: 'crystal-palace',
+    name: 'Crystal Palace',
+    component: CrystalPalace,
+    description: 'Holographic EU chamber with transmission crystal stars and reflective floor. Ultra-premium glass architecture.',
+    specs: ['Transmission materials', 'Crystal pillars', 'Holographic flag', 'Mirror floor'],
+    mood: 'Futuristic, transparent, prestigious'
+  },
+  {
+    id: 'crown-jewels',
+    name: 'Crown Jewels',
+    component: CrownJewels,
+    description: 'Royal Polish regalia on velvet with golden rays and regal atmosphere. Maximum luxury and heritage.',
+    specs: ['Crown geometry', 'Scepter & orb', 'Velvet textures', 'Golden illumination'],
+    mood: 'Royal, luxurious, regal'
+  },
+  {
+    id: 'stormy-revelation',
+    name: 'Stormy Revelation',
+    component: StormyRevelation,
+    description: 'Hope breaking through storm clouds with lightning, rain, and sunburst. Powerful emotional narrative.',
+    specs: ['Cloud simulation', 'Lightning flashes', 'Rain particles', 'Sunburst rays'],
+    mood: 'Dramatic, hopeful, powerful'
+  },
+  {
+    id: 'underwater-passport',
+    name: 'Underwater Journey',
+    component: UnderwaterPassport,
+    description: 'Submerged passport with tropical fish, coral reef, and caustic light effects. Unique aquatic perspective.',
+    specs: ['Caustic shaders', 'Fish animation', 'Coral reef', 'Bubble physics'],
+    mood: 'Unique, peaceful, exploratory'
   }
 ];
 
