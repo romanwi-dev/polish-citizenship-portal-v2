@@ -20,26 +20,35 @@ serve(async (req) => {
     
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Fetch comprehensive case data
-    const { data: caseData, error: caseError } = await supabase
-      .from('cases')
-      .select(`
-        *,
-        intake_data(*),
-        master_table(*),
-        documents(*),
-        tasks(*),
-        poa(*),
-        oby_forms(*),
-        wsc_letters(*)
-      `)
-      .eq('id', caseId)
-      .single();
+    let caseData = null;
+    let context = {};
 
-    if (caseError) throw caseError;
+    // Security audit doesn't need case data - it's system-wide
+    if (action === 'security_audit') {
+      context = buildAgentContext(null, action);
+    } else {
+      // Fetch comprehensive case data for other actions
+      const { data, error: caseError } = await supabase
+        .from('cases')
+        .select(`
+          *,
+          intake_data(*),
+          master_table(*),
+          documents(*),
+          tasks(*),
+          poa(*),
+          oby_forms(*),
+          wsc_letters(*)
+        `)
+        .eq('id', caseId)
+        .single();
 
-    // Build context for AI
-    const context = buildAgentContext(caseData, action);
+      if (caseError) throw caseError;
+      caseData = data;
+      
+      // Build context for AI
+      context = buildAgentContext(caseData, action);
+    }
     
     // Call Lovable AI
     const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
@@ -73,14 +82,16 @@ serve(async (req) => {
     const aiData = await aiResponse.json();
     const agentResponse = aiData.choices[0].message.content;
 
-    // Log agent interaction
-    await supabase.from('hac_logs').insert({
-      case_id: caseId,
-      performed_by: req.headers.get('x-user-id'),
-      action_type: 'ai_agent_interaction',
-      action_details: `Action: ${action}, Prompt: ${prompt}`,
-      metadata: { response: agentResponse }
-    });
+    // Log agent interaction (skip for security audits)
+    if (action !== 'security_audit' && caseId) {
+      await supabase.from('hac_logs').insert({
+        case_id: caseId,
+        performed_by: req.headers.get('x-user-id'),
+        action_type: 'ai_agent_interaction',
+        action_details: `Action: ${action}, Prompt: ${prompt}`,
+        metadata: { response: agentResponse }
+      });
+    }
 
     return new Response(
       JSON.stringify({ 
@@ -101,6 +112,29 @@ serve(async (req) => {
 });
 
 function buildAgentContext(caseData: any, action: string) {
+  // Security audit context (system-wide, not case-specific)
+  if (action === 'security_audit') {
+    return {
+      system_audit: true,
+      tables_with_rls: [
+        'cases', 'intake_data', 'master_table', 'documents', 'tasks',
+        'poa', 'oby_forms', 'hac_logs', 'messages',
+        'user_roles', 'client_portal_access', 'archive_searches'
+      ],
+      sensitive_tables: ['master_table', 'intake_data', 'poa', 'documents'],
+      edge_functions: [
+        'ai-agent', 'generate-poa', 'fill-pdf', 'ocr-passport',
+        'ocr-document', 'ocr-wsc-letter', 'dropbox-sync', 'ai-translate'
+      ],
+      description: 'System-wide security audit of Polish citizenship portal'
+    };
+  }
+
+  // For all other actions, caseData is required
+  if (!caseData) {
+    throw new Error('Case data is required for this action');
+  }
+
   const context: any = {
     client_name: caseData.client_name,
     client_code: caseData.client_code,
@@ -109,22 +143,6 @@ function buildAgentContext(caseData: any, action: string) {
     processing_mode: caseData.processing_mode,
     country: caseData.country,
   };
-
-  // Security audit context (system-wide, not case-specific)
-  if (action === 'security_audit') {
-    context.system_audit = true;
-    context.tables_with_rls = [
-      'cases', 'intake_data', 'master_table', 'documents', 'tasks',
-      'poa', 'oby_forms', 'hac_logs', 'messages',
-      'user_roles', 'client_portal_access', 'archive_searches'
-    ];
-    context.sensitive_tables = ['master_table', 'intake_data', 'poa', 'documents'];
-    context.edge_functions = [
-      'ai-agent', 'generate-poa', 'fill-pdf', 'ocr-passport',
-      'ocr-document', 'ocr-wsc-letter', 'dropbox-sync'
-    ];
-    return context;
-  }
 
   // Add relevant data based on action
   if (action === 'eligibility_analysis' || action === 'comprehensive') {
