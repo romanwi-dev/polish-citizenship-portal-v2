@@ -370,13 +370,13 @@ export const CaseCard = memo(({
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full border-primary/20 h-12 perspective-1000 group relative overflow-hidden preserve-3d transition-all duration-300 hover:scale-105"
+                className="w-full border-2 border-primary/50 dark:border-primary/20 h-12 perspective-1000 group relative overflow-hidden preserve-3d transition-all duration-300 hover:scale-105 bg-primary/10 dark:bg-primary/5"
                 onClick={(e) => {
                   e.stopPropagation();
                   navigate(`/admin/cases/${clientCase.id}`);
                 }}
               >
-                <span className="text-sm font-normal text-foreground/40 group-hover:text-foreground/60 transition-colors relative z-10">
+                <span className="text-sm font-medium text-foreground/70 dark:text-foreground/40 group-hover:text-foreground/90 dark:group-hover:text-foreground/60 transition-colors relative z-10">
                   CONTROL ROOM
                 </span>
               </Button>
