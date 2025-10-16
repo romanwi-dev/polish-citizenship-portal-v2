@@ -401,29 +401,31 @@ export default function CasesManagement() {
             </div>
           </div>
 
-          {/* Sort Controls */}
+          {/* Sort Controls - Horizontal Scrollable */}
           {filteredCases.length > 0 && (
-            <div className="flex flex-wrap items-center gap-2 pb-2">
-              {[
-                { value: "default", label: "Default" },
-                { value: "name", label: "Name" },
-                { value: "date", label: "Date" },
-                { value: "progress", label: "Progress" },
-                { value: "mode", label: "Mode" },
-                { value: "score", label: "Score" },
-                { value: "stage", label: "Stage" },
-                { value: "pay", label: "Pay" },
-              ].map((option) => (
-                <Button
-                  key={option.value}
-                  variant={sortBy === option.value ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setSortBy(option.value as any)}
-                  className="whitespace-nowrap flex-shrink-0"
-                >
-                  {option.label}
-                </Button>
-              ))}
+            <div className="overflow-x-auto pb-3 -mx-4 px-4">
+              <div className="flex items-center gap-2 min-w-max">
+                {[
+                  { value: "default", label: "Default" },
+                  { value: "name", label: "Name" },
+                  { value: "date", label: "Date" },
+                  { value: "progress", label: "Progress" },
+                  { value: "mode", label: "Mode" },
+                  { value: "score", label: "Score" },
+                  { value: "stage", label: "Stage" },
+                  { value: "pay", label: "Pay" },
+                ].map((option) => (
+                  <Button
+                    key={option.value}
+                    variant={sortBy === option.value ? "default" : "outline"}
+                    size="lg"
+                    onClick={() => setSortBy(option.value as any)}
+                    className="whitespace-nowrap flex-shrink-0 h-14 px-6 text-base font-medium border-2"
+                  >
+                    {option.label}
+                  </Button>
+                ))}
+              </div>
             </div>
           )}
         </div>
