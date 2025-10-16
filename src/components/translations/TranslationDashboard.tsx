@@ -46,7 +46,7 @@ export const TranslationDashboard = () => {
       <div className="max-w-4xl mx-auto text-center mb-8">
         <h1 className="text-4xl md:text-5xl font-heading font-black tracking-tight">
           <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-            Translation Management
+            Translations
           </span>
         </h1>
       </div>
