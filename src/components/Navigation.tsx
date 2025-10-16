@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, User, Moon, Sun, Sparkles, Languages } from "lucide-react";
+import { Menu, User, Sparkles, Languages } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { useAuth } from "@/hooks/useAuth";
 import { MobileNavigationSheet } from "@/components/MobileNavigationSheet";
@@ -10,6 +10,7 @@ import { LastVisitedLinks } from "@/components/navigation/LastVisitedLinks";
 import { NavigationLinks } from "@/components/navigation/NavigationLinks";
 import { useNavigationDesign } from "@/hooks/useNavigationDesign";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -96,6 +97,9 @@ const Navigation = () => {
               <User className="h-5 w-5 text-foreground/70" />
             </button>
             
+            {/* Theme Toggle - Always Visible */}
+            <ThemeSwitcher />
+            
             {/* Mobile Navigation - Full Screen Sheet */}
             <div className="md:hidden">
               <MobileNavigationSheet />
@@ -113,56 +117,44 @@ const Navigation = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent 
                 align="end" 
-                className="w-96 max-h-[600px] overflow-hidden p-0 bg-background/95 backdrop-blur-xl border border-primary/20 z-[100]"
+                className="w-96 p-0 bg-background/95 backdrop-blur-xl border border-primary/20 z-[100] flex flex-col"
+                style={{ height: 'calc(100vh - 5rem)' }}
               >
                 <DesignComponent>
-                  <ScrollArea className="h-full max-h-[600px]">
-                    <div className="p-4 space-y-4">
-                      <div className="flex items-center gap-2">
+                  <div className="flex flex-col h-full">
+                    {/* Scrollable Content */}
+                    <ScrollArea className="flex-1">
+                      <div className="p-4 space-y-4">
                         <Button
                           variant={user ? "destructive" : "default"}
-                          className="flex-1"
+                          className="w-full"
                           onClick={user ? handleSignOut : () => navigate('/login')}
                         >
                           {user ? 'Sign Out' : 'Login'}
                         </Button>
-                        <button
-                          onClick={() => {
-                            const newTheme = document.documentElement.className === "dark" ? "light" : "dark";
-                            document.documentElement.className = newTheme;
-                            localStorage.setItem("theme", newTheme);
-                          }}
-                          className="h-10 w-10 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all shrink-0"
-                          aria-label="Toggle theme"
-                        >
-                          {document.documentElement.className === "dark" ? (
-                            <Moon className="h-5 w-5 text-foreground/70" />
-                          ) : (
-                            <Sun className="h-5 w-5 text-foreground/70" />
-                          )}
-                        </button>
+                        
+                        <NavigationSearch 
+                          value={searchQuery}
+                          onChange={setSearchQuery}
+                        />
+                        <LastVisitedLinks onNavigate={handleNavigate} />
+                        <NavigationLinks 
+                          onNavigate={handleNavigate}
+                          searchQuery={searchQuery}
+                        />
                       </div>
-                      
-                      <NavigationSearch 
-                        value={searchQuery}
-                        onChange={setSearchQuery}
-                      />
-                      <LastVisitedLinks onNavigate={handleNavigate} />
-                      <NavigationLinks 
-                        onNavigate={handleNavigate}
-                        searchQuery={searchQuery}
-                      />
-                      
-                      <div className="pt-4">
-                        <Button 
-                          onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
-                          className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white font-semibold rounded-md shadow-lg"
-                        >
-                          Take Polish Citizenship Test
-                        </Button>
-                      </div>
+                    </ScrollArea>
+                    
+                    {/* Sticky Bottom Button */}
+                    <div className="sticky bottom-0 p-4 bg-background/95 backdrop-blur-xl border-t border-primary/20">
+                      <Button 
+                        onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
+                        className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white font-semibold rounded-md shadow-lg"
+                      >
+                        Take Polish Citizenship Test
+                      </Button>
                     </div>
-                  </ScrollArea>
+                  </div>
                 </DesignComponent>
               </DropdownMenuContent>
             </DropdownMenu>
