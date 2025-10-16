@@ -51,6 +51,7 @@ const PolishCivilActs = lazy(() => import("./pages/admin/PolishCivilActs"));
 const PolishCitizenship = lazy(() => import("./pages/admin/PolishCitizenship"));
 const PolishPassport = lazy(() => import("./pages/admin/PolishPassport"));
 const OCRReview = lazy(() => import("./pages/admin/OCRReview"));
+const BackgroundsDemo = lazy(() => import("./pages/admin/BackgroundsDemo"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -321,6 +322,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <OCRReview />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/backgrounds-demo" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <BackgroundsDemo />
               </Suspense>
             } 
           />
