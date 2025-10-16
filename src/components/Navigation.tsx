@@ -75,26 +75,26 @@ const Navigation = () => {
           <div className="flex items-center gap-1 md:gap-2">
             <button
               onClick={() => navigate('/admin/forms-demo')}
-              className="h-9 w-9 md:h-11 md:w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+              className="h-9 w-9 md:h-11 md:w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
               aria-label="Forms Demo"
               title="Forms Inspection Center"
             >
-              <Sparkles className="h-4 w-4 md:h-5 md:w-5 text-foreground/70" />
+              <Sparkles className="h-4 w-4 md:h-5 md:w-5 text-foreground" />
             </button>
             <button
               onClick={() => navigate('/admin/translations')}
-              className="h-9 w-9 md:h-11 md:w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+              className="h-9 w-9 md:h-11 md:w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
               aria-label="Translations"
               title="Translation Management"
             >
-              <Languages className="h-4 w-4 md:h-5 md:w-5 text-foreground/70" />
+              <Languages className="h-4 w-4 md:h-5 md:w-5 text-foreground" />
             </button>
             <button
               onClick={() => navigate('/admin/cases')}
-              className="h-9 w-9 md:h-11 md:w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+              className="h-9 w-9 md:h-11 md:w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
               aria-label="Management"
             >
-              <User className="h-4 w-4 md:h-5 md:w-5 text-foreground/70" />
+              <User className="h-4 w-4 md:h-5 md:w-5 text-foreground" />
             </button>
             
             {/* Mobile Navigation - Full Screen Sheet */}
@@ -106,10 +106,10 @@ const Navigation = () => {
             <DropdownMenu open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <DropdownMenuTrigger asChild className="hidden md:flex">
                 <button
-                  className="h-9 w-9 md:h-11 md:w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+                  className="h-9 w-9 md:h-11 md:w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
                   aria-label="Open menu"
                 >
-                  <Menu className="h-4 w-4 md:h-5 md:w-5 text-foreground/70" />
+                  <Menu className="h-4 w-4 md:h-5 md:w-5 text-foreground" />
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent 
@@ -124,26 +124,26 @@ const Navigation = () => {
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => navigate('/admin/forms-demo')}
-                          className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+                          className="h-11 w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
                           aria-label="Forms Demo"
                           title="Forms Inspection Center"
                         >
-                          <Sparkles className="h-5 w-5 text-foreground/70" />
+                          <Sparkles className="h-5 w-5 text-foreground" />
                         </button>
                         <button
                           onClick={() => navigate('/admin/translations')}
-                          className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+                          className="h-11 w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
                           aria-label="Translations"
                           title="Translation Management"
                         >
-                          <Languages className="h-5 w-5 text-foreground/70" />
+                          <Languages className="h-5 w-5 text-foreground" />
                         </button>
                         <button
                           onClick={() => navigate('/admin/cases')}
-                          className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+                          className="h-11 w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
                           aria-label="Management"
                         >
-                          <User className="h-5 w-5 text-foreground/70" />
+                          <User className="h-5 w-5 text-foreground" />
                         </button>
                       </div>
                     </div>
@@ -154,26 +154,26 @@ const Navigation = () => {
                         <div className="flex items-center gap-2 pb-2">
                           <button
                             onClick={() => navigate('/admin/forms-demo')}
-                            className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+                            className="h-11 w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
                             aria-label="Forms Demo"
                             title="Forms Inspection Center"
                           >
-                            <Sparkles className="h-5 w-5 text-foreground/70" />
+                            <Sparkles className="h-5 w-5 text-foreground" />
                           </button>
                           <button
                             onClick={() => navigate('/admin/translations')}
-                            className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+                            className="h-11 w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
                             aria-label="Translations"
                             title="Translation Management"
                           >
-                            <Languages className="h-5 w-5 text-foreground/70" />
+                            <Languages className="h-5 w-5 text-foreground" />
                           </button>
                           <button
                             onClick={() => navigate('/admin/cases')}
-                            className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+                            className="h-11 w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
                             aria-label="Management"
                           >
-                            <User className="h-5 w-5 text-foreground/70" />
+                            <User className="h-5 w-5 text-foreground" />
                           </button>
                           <ThemeSwitcher />
                         </div>

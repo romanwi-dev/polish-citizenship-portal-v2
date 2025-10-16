@@ -20,13 +20,13 @@ export function ThemeSwitcher() {
   return (
     <button
       onClick={toggleTheme}
-      className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+      className="h-11 w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
       aria-label="Toggle theme"
     >
       {currentTheme === "dark" ? (
-        <Moon className="h-5 w-5 text-foreground/30" />
+        <Moon className="h-5 w-5 text-foreground" />
       ) : (
-        <Sun className="h-5 w-5 text-foreground/30" />
+        <Sun className="h-5 w-5 text-foreground" />
       )}
     </button>
   );
