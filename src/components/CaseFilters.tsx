@@ -36,6 +36,7 @@ interface CaseFiltersProps {
   onClearFilters: () => void;
   activeFiltersCount: number;
   searchInputRef?: React.RefObject<HTMLInputElement>;
+  className?: string;
 }
 
 export const CaseFilters = ({
@@ -54,13 +55,14 @@ export const CaseFilters = ({
   onClearFilters,
   activeFiltersCount,
   searchInputRef,
+  className,
 }: CaseFiltersProps) => {
   return (
     <div className="space-y-4">
       {/* Filters Sheet - Mobile Optimized */}
       <Sheet>
           <SheetTrigger asChild>
-            <Button variant="outline" size="lg" className="relative h-12 w-full sm:w-auto">
+            <Button variant="outline" size="lg" className={`relative h-12 w-full sm:w-auto ${className || ''}`}>
               <SlidersHorizontal className="h-4 w-4 mr-2" />
               Filters
               {activeFiltersCount > 0 && (

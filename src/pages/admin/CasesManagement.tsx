@@ -363,7 +363,7 @@ export default function CasesManagement() {
             <div className="hidden sm:flex sm:flex-row gap-3">
               <Button 
                 onClick={() => navigate("/admin/cases/new")}
-                className="h-12"
+                className="h-12 w-[140px]"
                 size="lg"
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -397,6 +397,7 @@ export default function CasesManagement() {
                 onClearFilters={handleClearFilters}
                 activeFiltersCount={activeFiltersCount}
                 searchInputRef={searchInputRef}
+                className="w-[140px]"
               />
             </div>
           </div>
