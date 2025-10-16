@@ -1,49 +1,22 @@
 import { Button } from "@/components/ui/button";
 import { Sparkles } from "lucide-react";
-import { lazy, Suspense, useState, useEffect, useRef } from "react";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { lazy, Suspense } from "react";
 
 // Lazy load background component
 const RealisticHeritage = lazy(() => import("./heroes/RealisticHeritage").then(module => ({ default: module.RealisticHeritage })));
 
 const HeroWeb3 = () => {
-  const [shouldLoadMap, setShouldLoadMap] = useState(false);
-  const heroRef = useRef<HTMLDivElement>(null);
-  const prefersReducedMotion = useReducedMotion();
-
-  // Load 3D when user doesn't prefer reduced motion
-  const shouldShow3D = !prefersReducedMotion;
-
-  // Use IntersectionObserver for lazy loading 3D component
-  useEffect(() => {
-    if (!shouldShow3D) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setShouldLoadMap(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (heroRef.current) {
-      observer.observe(heroRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [shouldShow3D]);
   const scrollToContact = () => {
     document.getElementById('contact')?.scrollIntoView({
       behavior: 'smooth'
     });
   };
-  return <section ref={heroRef} className="relative min-h-[60vh] md:min-h-screen flex items-center justify-center overflow-hidden">
+  
+  return <section className="relative min-h-[60vh] md:min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 z-0">
         <Suspense fallback={<div className="w-full h-full bg-gradient-to-b from-primary/5 to-background" />}>
-          {shouldLoadMap && <RealisticHeritage />}
+          <RealisticHeritage />
         </Suspense>
       </div>
 
