@@ -12,6 +12,7 @@ import {
   Building2,
   PartyPopper
 } from "lucide-react";
+import { WorkflowNavigation } from "@/components/workflows/WorkflowNavigation";
 
 export const PassportDashboard = () => {
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
@@ -35,6 +36,9 @@ export const PassportDashboard = () => {
           Final stage: Obtaining Polish passport after citizenship confirmation
         </p>
       </div>
+
+      {/* Workflow Navigation */}
+      <WorkflowNavigation />
 
       <div className="grid gap-3 grid-cols-2 md:grid-cols-4">
         {/* Preparing Card */}

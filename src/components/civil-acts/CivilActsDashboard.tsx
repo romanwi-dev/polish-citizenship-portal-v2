@@ -11,6 +11,7 @@ import {
   UserCog,
   CreditCard
 } from "lucide-react";
+import { WorkflowNavigation } from "@/components/workflows/WorkflowNavigation";
 
 export const CivilActsDashboard = () => {
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
@@ -34,6 +35,9 @@ export const CivilActsDashboard = () => {
           Manage Polish civil registry documents (birth and marriage certificates)
         </p>
       </div>
+
+      {/* Workflow Navigation */}
+      <WorkflowNavigation />
 
       <div className="grid gap-3 grid-cols-2 md:grid-cols-4">
         {/* Preparing Card */}

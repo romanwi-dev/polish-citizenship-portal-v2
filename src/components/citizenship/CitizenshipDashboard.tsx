@@ -12,6 +12,7 @@ import {
   TrendingUp,
   AlertCircle
 } from "lucide-react";
+import { WorkflowNavigation } from "@/components/workflows/WorkflowNavigation";
 
 export const CitizenshipDashboard = () => {
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
@@ -35,6 +36,9 @@ export const CitizenshipDashboard = () => {
           Manage citizenship applications, WSC letters, and push schemes
         </p>
       </div>
+
+      {/* Workflow Navigation */}
+      <WorkflowNavigation />
 
       <div className="grid gap-3 grid-cols-2 md:grid-cols-4">
         {/* Active Card */}

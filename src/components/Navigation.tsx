@@ -97,9 +97,6 @@ const Navigation = () => {
               <User className="h-4 w-4 md:h-5 md:w-5 text-foreground/70" />
             </button>
             
-            {/* Theme Toggle - Always Visible */}
-            <ThemeSwitcher />
-            
             {/* Mobile Navigation - Full Screen Sheet */}
             <div className="md:hidden">
               <MobileNavigationSheet />
@@ -122,6 +119,36 @@ const Navigation = () => {
               >
                 <DesignComponent>
                   <div className="flex flex-col h-full">
+                    {/* Icon Row */}
+                    <div className="p-4 border-b border-border/50">
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => navigate('/admin/forms-demo')}
+                          className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+                          aria-label="Forms Demo"
+                          title="Forms Inspection Center"
+                        >
+                          <Sparkles className="h-5 w-5 text-foreground/70" />
+                        </button>
+                        <button
+                          onClick={() => navigate('/admin/translations')}
+                          className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+                          aria-label="Translations"
+                          title="Translation Management"
+                        >
+                          <Languages className="h-5 w-5 text-foreground/70" />
+                        </button>
+                        <button
+                          onClick={() => navigate('/admin/cases')}
+                          className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+                          aria-label="Management"
+                        >
+                          <User className="h-5 w-5 text-foreground/70" />
+                        </button>
+                        <ThemeSwitcher />
+                      </div>
+                    </div>
+                    
                     {/* Scrollable Content */}
                     <ScrollArea className="flex-1">
                       <div className="p-4 space-y-4">

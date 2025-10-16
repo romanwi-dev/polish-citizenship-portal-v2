@@ -11,6 +11,7 @@ import {
   UserCog,
   Building2
 } from "lucide-react";
+import { WorkflowNavigation } from "@/components/workflows/WorkflowNavigation";
 
 export const ArchivesSearchDashboard = () => {
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
@@ -34,6 +35,9 @@ export const ArchivesSearchDashboard = () => {
           Track searches in Polish and international archives
         </p>
       </div>
+
+      {/* Workflow Navigation */}
+      <WorkflowNavigation />
 
       <div className="grid gap-3 grid-cols-2 md:grid-cols-4">
         {/* Polish Archives Card */}

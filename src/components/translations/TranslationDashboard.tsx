@@ -19,6 +19,7 @@ import { DocumentRequirementsList } from "./DocumentRequirementsList";
 import { SwornTranslatorsList } from "./SwornTranslatorsList";
 import { TranslationAgenciesList } from "./TranslationAgenciesList";
 import { useState } from "react";
+import { WorkflowNavigation } from "@/components/workflows/WorkflowNavigation";
 
 export const TranslationDashboard = () => {
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
@@ -51,6 +52,9 @@ export const TranslationDashboard = () => {
           Document-based AI translation with sworn translator certification
         </p>
       </div>
+
+      {/* Workflow Navigation */}
+      <WorkflowNavigation />
 
       <div className="grid gap-3 grid-cols-2 md:grid-cols-4">
         {/* Prepared Card */}
