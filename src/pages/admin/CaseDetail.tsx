@@ -267,39 +267,27 @@ export default function CaseDetail() {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   <Button
                     variant="outline"
-                    className="h-24 flex flex-col gap-2 border-2 hover:border-primary hover:bg-primary/10"
                     onClick={() => navigate(`/admin/researcher/${id}`)}
                   >
-                    <Search className="h-6 w-6 text-primary" />
-                    <span className="font-semibold">Researcher</span>
-                    <span className="text-xs text-muted-foreground">In-depth analysis</span>
+                    Researcher
                   </Button>
                   <Button
                     variant="outline"
-                    className="h-24 flex flex-col gap-2 border-2 hover:border-primary hover:bg-primary/10"
                     onClick={() => navigate(`/admin/translator/${id}`)}
                   >
-                    <Languages className="h-6 w-6 text-primary" />
-                    <span className="font-semibold">Translator</span>
-                    <span className="text-xs text-muted-foreground">Legal translation</span>
+                    Translator
                   </Button>
                   <Button
                     variant="outline"
-                    className="h-24 flex flex-col gap-2 border-2 hover:border-primary hover:bg-primary/10"
                     onClick={() => navigate(`/admin/writer/${id}`)}
                   >
-                    <PenTool className="h-6 w-6 text-primary" />
-                    <span className="font-semibold">Writer</span>
-                    <span className="text-xs text-muted-foreground">Professional content</span>
+                    Writer
                   </Button>
                   <Button
                     variant="outline"
-                    className="h-24 flex flex-col gap-2 border-2 hover:border-primary hover:bg-primary/10"
                     onClick={() => navigate(`/admin/designer/${id}`)}
                   >
-                    <Palette className="h-6 w-6 text-primary" />
-                    <span className="font-semibold">Designer</span>
-                    <span className="text-xs text-muted-foreground">UI/UX optimization</span>
+                    Designer
                   </Button>
                 </div>
               </CardContent>
