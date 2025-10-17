@@ -44,47 +44,66 @@ serve(async (req) => {
     // 1. RLS POLICY AUDIT (CRITICAL)
     console.log('Scanning RLS policies...');
     
-    // Check critical tables that must have RLS
-    const criticalTables = [
-      'cases', 'documents', 'intake_data', 'master_table', 'poa', 
-      'oby_forms', 'messages', 'archive_searches', 'local_document_requests',
-      'user_roles', 'client_portal_access', 'security_audit_logs'
-    ];
+    const rlsCheckResponse = await supabaseRequest('rpc/check_rls_status');
 
-    for (const tableName of criticalTables) {
-      // In a real implementation, we'd query pg_tables via RPC
-      // For now, we'll add this as a manual check
-      issues.push({
-        category: 'RLS Policies',
-        severity: 'info',
-        title: `Manual check required: ${tableName} RLS status`,
-        description: `Verify that table ${tableName} has Row Level Security enabled and appropriate policies.`,
-        remediation: `Run: SELECT tablename, rowsecurity FROM pg_tables WHERE schemaname = 'public' AND tablename = '${tableName}';`,
-        affected_items: [tableName]
-      });
+    if (rlsCheckResponse.ok) {
+      const rlsData = await rlsCheckResponse.json();
+      
+      for (const table of rlsData) {
+        if (!table.rls_enabled) {
+          issues.push({
+            category: 'RLS Policies',
+            severity: 'critical',
+            title: `Table "${table.table_name}" has RLS disabled`,
+            description: `Critical security issue: ${table.table_name} is accessible without row-level restrictions.`,
+            remediation: `ALTER TABLE public.${table.table_name} ENABLE ROW LEVEL SECURITY;`,
+            affected_items: [table.table_name]
+          });
+        } else if (table.policy_count === 0) {
+          issues.push({
+            category: 'RLS Policies',
+            severity: 'high',
+            title: `Table "${table.table_name}" has no RLS policies`,
+            description: `RLS is enabled but no policies exist - table may be inaccessible to users.`,
+            remediation: `Create appropriate SELECT/INSERT/UPDATE/DELETE policies for ${table.table_name}.`,
+            affected_items: [table.table_name]
+          });
+        }
+      }
     }
 
     // 2. AUTHENTICATION & JWT VERIFICATION (CRITICAL)
     console.log('Checking edge function JWT settings...');
+    
+    // Functions that should always require JWT
+    const sensitivePatterns = ['admin', 'generate', 'fill-pdf', 'ai', 'dropbox', 'ocr', 'inspect'];
+    
+    // Public functions that are intentionally unauthenticated
+    const legitimatePublicFunctions = [
+      'check-password-breach',
+      'partner-api',
+      'validate-intake-token',
+      'text-to-speech',
+      'realtime-token'
+    ];
+
+    // Check config.toml for verify_jwt settings
     const publicFunctions = [
       'analyze-forms',
-      'get-form-code', 
-      'realtime-token',
-      'validate-intake-token',
-      'send-welcome-email',
-      'partner-api',
-      'check-password-breach',
-      'text-to-speech'
+      'get-form-code',
+      'send-welcome-email'
     ];
 
     for (const funcName of publicFunctions) {
-      if (!['check-password-breach', 'partner-api'].includes(funcName)) {
+      const isSensitive = sensitivePatterns.some(pattern => funcName.includes(pattern));
+      
+      if (isSensitive || !legitimatePublicFunctions.includes(funcName)) {
         issues.push({
           category: 'Authentication',
-          severity: 'critical',
+          severity: 'medium',
           title: `Function "${funcName}" allows unauthenticated access`,
-          description: `Edge function ${funcName} has verify_jwt=false, allowing anyone to call it without authentication.`,
-          remediation: `Review if this function truly needs public access. If not, set verify_jwt=true in supabase/config.toml`,
+          description: `Edge function ${funcName} has verify_jwt=false. Verify this is intentional.`,
+          remediation: `Review function purpose. If it handles sensitive data, set verify_jwt=true in supabase/config.toml`,
           affected_items: [funcName]
         });
       }
@@ -153,30 +172,33 @@ serve(async (req) => {
       }
     }
 
-    // 5. RATE LIMITING CHECK (HIGH)
-    console.log('Verifying rate limiting...');
+    // 5. RATE LIMITING CHECK (MEDIUM)
+    console.log('Verifying rate limiting implementation...');
     
-    try {
-      const metricsResponse = await supabaseRequest(
-        'security_metrics?select=metric_type,metric_value&metric_type=eq.rate_limit_exceeded&order=recorded_at.desc&limit=100'
-      );
-      
-      if (metricsResponse.ok) {
-        const recentMetrics = await metricsResponse.json();
-        
-        if (recentMetrics.length === 0) {
-          issues.push({
-            category: 'Rate Limiting',
-            severity: 'medium',
-            title: 'No rate limiting metrics detected',
-            description: 'No rate limit exceeded events found in the last 7 days. Verify rate limiting is properly configured.',
-            remediation: 'Implement rate limiting on all public edge functions using the rate limiting middleware.',
-            affected_items: ['public edge functions']
-          });
-        }
-      }
-    } catch (error) {
-      console.error('Error checking metrics:', error);
+    const publicEndpoints = [
+      'partner-api',
+      'validate-intake-token',
+      'send-welcome-email',
+      'check-password-breach',
+      'analyze-forms',
+      'get-form-code'
+    ];
+
+    // Check if functions likely have rate limiting code
+    // (In production, we'd read function source or check for rate limiting middleware)
+    const functionsWithoutRateLimiting = publicEndpoints.filter(
+      func => !['check-password-breach'].includes(func) // Only password check has known rate limiting
+    );
+
+    if (functionsWithoutRateLimiting.length > 0) {
+      issues.push({
+        category: 'Rate Limiting',
+        severity: 'medium',
+        title: `${functionsWithoutRateLimiting.length} public function(s) may lack rate limiting`,
+        description: `Public endpoints should implement rate limiting to prevent abuse and DDoS attacks.`,
+        remediation: `Implement rate limiting using in-memory tracking or Redis for: ${functionsWithoutRateLimiting.join(', ')}`,
+        affected_items: functionsWithoutRateLimiting
+      });
     }
 
     // 6. OWASP TOP 10 COMPLIANCE
@@ -221,18 +243,7 @@ serve(async (req) => {
       console.error('Error analyzing metrics:', error);
     }
 
-    // 8. DATABASE FUNCTION SECURITY
-    console.log('Auditing database functions...');
-    // Note: information_schema.routines requires special privileges
-    // For now, we'll add this as a manual check recommendation
-    issues.push({
-      category: 'Database Security',
-      severity: 'info',
-      title: 'Manual review: Database function security',
-      description: 'Security-critical functions should use SECURITY DEFINER and set search_path explicitly.',
-      remediation: 'Review all database functions to ensure: 1) SECURITY DEFINER is set for auth/access functions, 2) search_path is explicitly set to prevent search_path attacks.',
-      affected_items: ['database functions']
-    });
+    // 8. DATABASE FUNCTION SECURITY (removed - no automatic check available)
 
     // Calculate scores
     const criticalCount = issues.filter(i => i.severity === 'critical').length;

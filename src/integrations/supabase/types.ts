@@ -2292,6 +2292,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      check_rls_status: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          policy_count: number
+          rls_enabled: boolean
+          table_name: string
+        }[]
+      }
       get_case_document_count: {
         Args: { case_uuid: string }
         Returns: number

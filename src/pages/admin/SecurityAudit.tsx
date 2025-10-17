@@ -58,12 +58,22 @@ export default function SecurityAudit() {
         setScanResult(data);
         setLastScanTime(new Date().toLocaleString());
         
-        if (data.summary.critical > 0) {
-          toast.error(`Critical issues detected! Score: ${data.score}/100`);
+        if (data.issues?.length === 0) {
+          toast.success(`🎉 Perfect Security! Score: ${data.score}/100`, {
+            description: 'No security issues detected. Your application is well-protected.'
+          });
+        } else if (data.summary.critical > 0) {
+          toast.error(`⚠️ Critical Issues Found! Score: ${data.score}/100`, {
+            description: `${data.summary.critical} critical issue(s) require immediate attention.`
+          });
         } else if (data.score >= 95) {
-          toast.success(`Excellent! Score: ${data.score}/100`);
+          toast.success(`✅ Excellent Security! Score: ${data.score}/100`, {
+            description: `${data.summary.total} minor issue(s) found.`
+          });
         } else {
-          toast.warning(`Security audit complete. Score: ${data.score}/100`);
+          toast.warning(`Security Scan Complete. Score: ${data.score}/100`, {
+            description: `Found ${data.summary.total} issue(s) across ${data.summary.critical + data.summary.high} high-priority categories.`
+          });
         }
       } else {
         throw new Error(data.error || 'Security scan failed');
