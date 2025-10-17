@@ -47,7 +47,13 @@ export const AIAgentPanel = ({ caseId, defaultAction, showActionSelector = true,
   const quickPrompts = customQuickPrompts || defaultQuickPrompts;
 
   const handleSubmit = async () => {
+    console.log('🔥 BUTTON CLICKED');
+    console.log('Prompt:', prompt);
+    console.log('Case ID:', caseId);
+    console.log('Action:', action);
+    
     if (!prompt.trim()) {
+      console.log('❌ Empty prompt, showing toast');
       toast({
         title: "Error",
         description: "Please enter a prompt",
@@ -58,6 +64,7 @@ export const AIAgentPanel = ({ caseId, defaultAction, showActionSelector = true,
 
     // Validate caseId for non-security-audit actions
     if (action !== 'security_audit' && !caseId) {
+      console.log('❌ No case ID, showing toast');
       toast({
         title: "Error",
         description: "Please select a case first",
@@ -66,6 +73,7 @@ export const AIAgentPanel = ({ caseId, defaultAction, showActionSelector = true,
       return;
     }
 
+    console.log('✅ Starting request...');
     setIsLoading(true);
     setResponse("");
 
