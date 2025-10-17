@@ -69,6 +69,14 @@ const parts: Part[] = [
         completion: 0,
         missing: ["Auto-generation logic", "Migration from existing codes", "Validation rules"],
         estimate: "2-3 hours"
+      },
+      {
+        id: 4,
+        title: "UI Unified Design",
+        status: "complete",
+        completion: 100,
+        files: ["index.css", "tailwind.config.ts", "All form components"],
+        route: "/admin/forms-demo"
       }
     ]
   },
@@ -78,14 +86,14 @@ const parts: Part[] = [
     description: "Intake, POA, and case management workflows",
     steps: [
       {
-        id: 4,
+        id: 5,
         title: "Dashboard KPI Strip",
         status: "complete",
         completion: 100,
         files: ["CaseCard.tsx", "CollapsibleKPIStrip.tsx"]
       },
       {
-        id: 5,
+        id: 6,
         title: "Universal Intake Wizard",
         status: "partial",
         priority: "high",
@@ -95,7 +103,7 @@ const parts: Part[] = [
         estimate: "4-5 hours"
       },
       {
-        id: 6,
+        id: 7,
         title: "POA Generation & E-Sign",
         status: "partial",
         priority: "high",
@@ -105,7 +113,7 @@ const parts: Part[] = [
         estimate: "3-4 hours"
       },
       {
-        id: 7,
+        id: 8,
         title: "OBY Draft Generation",
         status: "partial",
         priority: "critical",
@@ -115,7 +123,7 @@ const parts: Part[] = [
         estimate: "4-5 hours"
       },
       {
-        id: 12,
+        id: 9,
         title: "Manual Case Creation",
         status: "complete",
         completion: 100,
@@ -130,7 +138,7 @@ const parts: Part[] = [
     description: "Documents engine and WSC letter processing",
     steps: [
       {
-        id: 8,
+        id: 10,
         title: "Documents Engine (Doc Radar)",
         status: "not-started",
         priority: "critical",
@@ -139,7 +147,7 @@ const parts: Part[] = [
         estimate: "8-10 hours"
       },
       {
-        id: 9,
+        id: 11,
         title: "WSC Letter Stage",
         status: "complete",
         completion: 100,
@@ -153,16 +161,15 @@ const parts: Part[] = [
     description: "External APIs and data pipelines",
     steps: [
       {
-        id: 10,
+        id: 12,
         title: "Partner API",
-        status: "not-started",
-        priority: "medium",
-        completion: 0,
-        missing: ["POST /api/partner/intake", "GET /api/partner/status", "API key auth", "Rate limiting"],
-        estimate: "4-5 hours"
+        status: "complete",
+        completion: 100,
+        files: ["partner-api edge function"],
+        route: "/admin/partner-api"
       },
       {
-        id: 11,
+        id: 13,
         title: "Typeform Integration",
         status: "not-started",
         priority: "medium",
@@ -178,7 +185,7 @@ const parts: Part[] = [
     description: "Logging, backups, and data protection",
     steps: [
       {
-        id: 13,
+        id: 14,
         title: "HAC Logging",
         status: "complete",
         completion: 100,
@@ -186,16 +193,15 @@ const parts: Part[] = [
         missing: ["Log viewer UI", "Export to CSV"]
       },
       {
-        id: 14,
+        id: 15,
         title: "System Checks Console",
-        status: "not-started",
-        priority: "high",
-        completion: 0,
-        missing: ["Health dashboard", "Real-time monitoring", "Performance metrics"],
-        estimate: "5-6 hours"
+        status: "complete",
+        completion: 100,
+        files: ["SystemHealth.tsx", "SecurityAudit.tsx"],
+        route: "/admin/system-health"
       },
       {
-        id: 15,
+        id: 16,
         title: "Nightly Backups",
         status: "not-started",
         priority: "medium",
@@ -204,7 +210,7 @@ const parts: Part[] = [
         estimate: "4-5 hours"
       },
       {
-        id: 16,
+        id: 17,
         title: "Data Masking",
         status: "not-started",
         priority: "critical",
@@ -213,7 +219,7 @@ const parts: Part[] = [
         estimate: "3-4 hours"
       },
       {
-        id: 17,
+        id: 18,
         title: "Role Management",
         status: "partial",
         priority: "medium",
@@ -230,7 +236,7 @@ const parts: Part[] = [
     description: "Client-facing dashboard and authentication",
     steps: [
       {
-        id: 18,
+        id: 19,
         title: "Magic Link Login",
         status: "complete",
         completion: 100,
@@ -238,7 +244,7 @@ const parts: Part[] = [
         route: "/client/login"
       },
       {
-        id: 19,
+        id: 20,
         title: "Client Dashboard",
         status: "complete",
         completion: 100,
@@ -246,7 +252,7 @@ const parts: Part[] = [
         route: "/client/dashboard/:caseId"
       },
       {
-        id: 20,
+        id: 21,
         title: "Consulate Kit Generator",
         status: "not-started",
         priority: "low",
@@ -262,7 +268,7 @@ const parts: Part[] = [
     description: "E2E validation and quality assurance",
     steps: [
       {
-        id: 21,
+        id: 22,
         title: "E2E Case Flows (Lead → Decision)",
         status: "not-started",
         priority: "medium",
@@ -270,7 +276,7 @@ const parts: Part[] = [
         estimate: "10-12 hours"
       },
       {
-        id: 30,
+        id: 23,
         title: "Multi-source Creation Test",
         status: "not-started",
         priority: "medium",
@@ -278,7 +284,7 @@ const parts: Part[] = [
         estimate: "2 hours"
       },
       {
-        id: 31,
+        id: 24,
         title: "WSC Full Lifecycle Test",
         status: "not-started",
         priority: "medium",
