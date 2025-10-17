@@ -167,20 +167,18 @@ export const CaseCard = memo(({
         <div className="absolute inset-0 w-full backface-hidden border border-border hover:border-primary/50 transition-colors p-5 sm:p-6 rounded-lg flex flex-col bg-card/80 dark:bg-card/40" style={{ minHeight: '750px' }}>
           <div className="flex items-start justify-between mb-5">
             <div className="flex items-center gap-3">
-              <ClientPhotoUpload
-                caseId={clientCase.id}
-                currentPhotoUrl={photoUrl}
-                clientName={clientCase.client_name}
-                onPhotoUpdated={setPhotoUrl}
-              />
-              <div>
+              <div className="w-24 h-24 shrink-0">
+                <ClientPhotoUpload
+                  caseId={clientCase.id}
+                  currentPhotoUrl={photoUrl}
+                  clientName={clientCase.client_name}
+                  onPhotoUpdated={setPhotoUrl}
+                />
+              </div>
+                <div>
                 <h3 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                   {clientCase.client_name}
                 </h3>
-                <div className="flex items-center gap-1 text-sm sm:text-base text-muted-foreground">
-                  <MapPin className="w-4 h-4" />
-                  {clientCase.country || 'N/A'}
-                </div>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -204,21 +202,6 @@ export const CaseCard = memo(({
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48 bg-popover border border-border z-50">
-                  {onToggleSelection && (
-                    <>
-                      <DropdownMenuItem onClick={(e) => { e.stopPropagation(); onToggleSelection(); }}>
-                        <input
-                          type="checkbox"
-                          checked={isSelected}
-                          onChange={onToggleSelection}
-                          className="mr-2 h-4 w-4 rounded border-border bg-background text-primary cursor-pointer"
-                          onClick={(e) => e.stopPropagation()}
-                        />
-                        {isSelected ? 'Deselect' : 'Select'}
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                    </>
-                  )}
                   <DropdownMenuItem onClick={handleEdit}>
                     <Edit className="mr-2 h-4 w-4" />
                     Edit
@@ -255,14 +238,27 @@ export const CaseCard = memo(({
 
           {/* Badges Row */}
           <div className="flex flex-wrap gap-2 mb-4 sm:mb-5">
-            <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusBadge(clientCase.status)} capitalize whitespace-nowrap min-h-[44px] flex items-center justify-center`}>
+            <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getStatusBadge(clientCase.status)} capitalize whitespace-nowrap min-h-[32px] flex items-center justify-center`}>
               {clientCase.status.replace(/_/g, ' ')}
             </span>
             
-            {/* Processing Mode Badge with Dropdown - no VIP badge if VIP mode */}
+            {clientCase.is_vip && (
+              <span className="px-2 py-1 rounded-full text-xs font-medium border bg-purple-500/20 text-purple-400 border-purple-500/30 whitespace-nowrap min-h-[32px] flex items-center justify-center">
+                VIP
+              </span>
+            )}
+
+            {clientCase.country && (
+              <span className="px-2 py-1 rounded-full text-xs font-medium border bg-blue-500/20 text-blue-400 border-blue-500/30 whitespace-nowrap min-h-[32px] flex items-center justify-center">
+                <MapPin className="w-3 h-3 mr-1" />
+                {clientCase.country}
+              </span>
+            )}
+            
+            {/* Processing Mode Badge with Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                <span className={`px-3 py-1 rounded-full text-xs font-medium border cursor-pointer hover:opacity-80 transition-opacity flex items-center gap-1 whitespace-nowrap min-h-[44px] ${
+                <span className={`px-2 py-1 rounded-full text-xs font-medium border cursor-pointer hover:opacity-80 transition-opacity flex items-center gap-1 whitespace-nowrap min-h-[32px] ${
                   PROCESSING_MODE_COLORS[clientCase.processing_mode as keyof typeof PROCESSING_MODE_COLORS]
                 }`}>
                   {getProcessingModeIcon()}
@@ -291,7 +287,7 @@ export const CaseCard = memo(({
             </DropdownMenu>
 
             {clientCase.scheme_introduced && (
-              <span className="px-3 py-1 rounded-full text-xs font-medium border bg-cyan-500/20 text-cyan-400 border-cyan-500/30 whitespace-nowrap min-h-[44px] flex items-center justify-center">
+              <span className="px-2 py-1 rounded-full text-xs font-medium border bg-cyan-500/20 text-cyan-400 border-cyan-500/30 whitespace-nowrap min-h-[32px] flex items-center justify-center">
                 {clientCase.scheme_introduced}
               </span>
             )}
@@ -312,12 +308,6 @@ export const CaseCard = memo(({
             />
           </div>
 
-          {clientCase.client_code && (
-            <div className="mb-3 sm:mb-4 p-2 rounded-lg border border-border/20">
-              <p className="text-xs sm:text-sm font-normal font-label text-muted-foreground">Case Code</p>
-              <p className="text-sm sm:text-base font-mono font-normal">{clientCase.client_code}</p>
-            </div>
-          )}
 
           <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-5 sm:mb-6">
             <div className="flex flex-col gap-1 p-3 rounded-lg border border-border/20">
