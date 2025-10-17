@@ -70,7 +70,7 @@ export const TranslationDashboard = () => {
           >
             {/* Front */}
             <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300 border-2 border-primary/20"
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300 border-2 border-primary/20 opacity-50"
               style={{ 
                 backfaceVisibility: 'hidden',
                 boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
@@ -78,7 +78,7 @@ export const TranslationDashboard = () => {
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <p className="text-base sm:text-sm font-semibold text-foreground/90">Prepared</p>
+                  <p className="text-base sm:text-sm font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Prepared</p>
                 </div>
               </div>
             </div>
@@ -107,7 +107,7 @@ export const TranslationDashboard = () => {
           >
             {/* Front */}
             <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300 border-2 border-primary/20"
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300 border-2 border-primary/20 opacity-50"
               style={{ 
                 backfaceVisibility: 'hidden',
                 boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
@@ -115,7 +115,7 @@ export const TranslationDashboard = () => {
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <p className="text-base sm:text-sm font-semibold text-foreground/90">Pending</p>
+                  <p className="text-base sm:text-sm font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Pending</p>
                 </div>
               </div>
             </div>
@@ -144,7 +144,7 @@ export const TranslationDashboard = () => {
           >
             {/* Front */}
             <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300 border-2 border-primary/20"
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300 border-2 border-primary/20 opacity-50"
               style={{ 
                 backfaceVisibility: 'hidden',
                 boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
@@ -152,7 +152,7 @@ export const TranslationDashboard = () => {
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <p className="text-base sm:text-sm font-semibold text-foreground/90">Translator</p>
+                  <p className="text-base sm:text-sm font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Translator</p>
                 </div>
               </div>
             </div>
@@ -181,7 +181,7 @@ export const TranslationDashboard = () => {
           >
             {/* Front */}
             <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300 border-2 border-primary/20"
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300 border-2 border-primary/20 opacity-50"
               style={{ 
                 backfaceVisibility: 'hidden',
                 boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
@@ -189,7 +189,7 @@ export const TranslationDashboard = () => {
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <p className="text-base sm:text-sm font-semibold text-foreground/90">Completed</p>
+                  <p className="text-base sm:text-sm font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Completed</p>
                 </div>
               </div>
             </div>
@@ -223,25 +223,25 @@ export const TranslationDashboard = () => {
 
       {/* Main Content Tabs */}
       <Tabs defaultValue="cards" className="space-y-4">
-        <div className="w-full overflow-x-auto scrollbar-hide">
-          <TabsList className="inline-flex h-auto p-0 w-max bg-transparent border-0 gap-1">
-            <TabsTrigger value="cards" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
-              Workflow Cards
+        <div className="grid gap-3 grid-cols-2 md:grid-cols-4">
+          <TabsList className="col-span-2 md:col-span-4 grid grid-cols-2 md:grid-cols-4 gap-3 bg-transparent border-0 h-auto p-0">
+            <TabsTrigger value="cards" className="h-[140px] rounded-lg opacity-50 glass-card hover-glow data-[state=active]:opacity-100 transition-all duration-300 border-2 border-primary/20">
+              <span className="text-base font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Workflow Cards</span>
             </TabsTrigger>
-            <TabsTrigger value="workflow" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
-              Translation Timeline
+            <TabsTrigger value="workflow" className="h-[140px] rounded-lg opacity-50 glass-card hover-glow data-[state=active]:opacity-100 transition-all duration-300 border-2 border-primary/20">
+              <span className="text-base font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Translation Timeline</span>
             </TabsTrigger>
-            <TabsTrigger value="supervisor" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
-              Supervisor
+            <TabsTrigger value="supervisor" className="h-[140px] rounded-lg opacity-50 glass-card hover-glow data-[state=active]:opacity-100 transition-all duration-300 border-2 border-primary/20">
+              <span className="text-base font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Supervisor</span>
             </TabsTrigger>
-            <TabsTrigger value="requirements" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
-              Requirements
+            <TabsTrigger value="requirements" className="h-[140px] rounded-lg opacity-50 glass-card hover-glow data-[state=active]:opacity-100 transition-all duration-300 border-2 border-primary/20">
+              <span className="text-base font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Requirements</span>
             </TabsTrigger>
-            <TabsTrigger value="translators" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
-              Sworn Translators
+            <TabsTrigger value="translators" className="h-[140px] rounded-lg opacity-50 glass-card hover-glow data-[state=active]:opacity-100 transition-all duration-300 border-2 border-primary/20">
+              <span className="text-base font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Sworn Translators</span>
             </TabsTrigger>
-            <TabsTrigger value="agencies" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
-              Agencies
+            <TabsTrigger value="agencies" className="h-[140px] rounded-lg opacity-50 glass-card hover-glow data-[state=active]:opacity-100 transition-all duration-300 border-2 border-primary/20">
+              <span className="text-base font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Agencies</span>
             </TabsTrigger>
           </TabsList>
         </div>
