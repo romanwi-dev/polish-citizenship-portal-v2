@@ -192,22 +192,22 @@ export const CitizenshipDashboard = () => {
       <Tabs defaultValue="cards" className="space-y-4">
         <div className="w-full overflow-x-auto scrollbar-hide">
           <TabsList className="inline-flex h-auto p-0 w-max bg-transparent border-0 gap-1">
-            <TabsTrigger value="cards" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500 hover:bg-red-600 border-red-500">
+            <TabsTrigger value="cards" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-700 hover:bg-red-800 border-red-700">
               Workflow Cards
             </TabsTrigger>
-            <TabsTrigger value="timeline" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500 hover:bg-red-600 border-red-500">
+            <TabsTrigger value="timeline" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-700 hover:bg-red-800 border-red-700">
               Timeline
             </TabsTrigger>
-            <TabsTrigger value="supervisor" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500 hover:bg-red-600 border-red-500">
+            <TabsTrigger value="supervisor" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-700 hover:bg-red-800 border-red-700">
               Supervisor
             </TabsTrigger>
-            <TabsTrigger value="wsc" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500 hover:bg-red-600 border-red-500">
+            <TabsTrigger value="wsc" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-700 hover:bg-red-800 border-red-700">
               WSC Letters
             </TabsTrigger>
-            <TabsTrigger value="push" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500 hover:bg-red-600 border-red-500">
+            <TabsTrigger value="push" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-700 hover:bg-red-800 border-red-700">
               Push Schemes
             </TabsTrigger>
-            <TabsTrigger value="analytics" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500 hover:bg-red-600 border-red-500">
+            <TabsTrigger value="analytics" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-700 hover:bg-red-800 border-red-700">
               Analytics
             </TabsTrigger>
           </TabsList>
