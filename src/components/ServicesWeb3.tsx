@@ -47,22 +47,25 @@ const FlippableServiceCard = ({ service, index }: { service: typeof services[0];
 
   return (
     <div 
-      className="h-[280px] perspective-1000"
+      className="h-[280px]"
       style={{ 
-        animationDelay: `${index * 100}ms`
+        animationDelay: `${index * 100}ms`,
+        perspective: '1000px'
       }}
       onMouseEnter={() => setIsFlipped(true)}
       onMouseLeave={() => setIsFlipped(false)}
     >
       <div 
-        className={cn(
-          "relative w-full h-full transition-transform duration-700 transform-style-3d",
-          isFlipped && "rotate-y-180"
-        )}
+        className="relative w-full h-full transition-transform duration-700"
+        style={{
+          transformStyle: 'preserve-3d',
+          transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
+        }}
       >
         {/* Front of card */}
         <div 
-          className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group overflow-hidden backface-hidden"
+          className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group overflow-hidden"
+          style={{ backfaceVisibility: 'hidden' }}
         >
           <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
           
@@ -83,9 +86,13 @@ const FlippableServiceCard = ({ service, index }: { service: typeof services[0];
           <div className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-br ${service.color} opacity-20 blur-2xl rounded-full`} />
         </div>
 
-        {/* Back of card - Placeholder for admin editing */}
+        {/* Back of card */}
         <div 
-          className="absolute inset-0 glass-card p-8 rounded-lg overflow-hidden flex items-center justify-center backface-hidden rotate-y-180"
+          className="absolute inset-0 glass-card p-8 rounded-lg overflow-hidden flex items-center justify-center"
+          style={{ 
+            backfaceVisibility: 'hidden',
+            transform: 'rotateY(180deg)'
+          }}
         >
           <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-20`} />
           
