@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Send, Zap, CheckCircle2 } from "lucide-react";
+import { Zap, CheckCircle2 } from "lucide-react";
 import { z } from "zod";
 import { CelebrationBackground } from "./backgrounds/CelebrationBackground";
 
@@ -171,10 +171,8 @@ const ContactFormWeb3 = () => {
 
                   <Button 
                     type="submit" 
-                    size="lg" 
-                    className="text-xl font-bold px-12 h-16 rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 w-full"
+                    className="text-2xl font-bold px-20 py-6 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 w-full transition-all"
                   >
-                    <Send className="h-5 w-5 mr-2 opacity-50" />
                     <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                       Send Your Info
                     </span>
