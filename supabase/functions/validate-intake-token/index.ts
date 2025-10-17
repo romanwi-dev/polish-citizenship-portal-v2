@@ -1,10 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
-
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-};
+import { corsHeaders, handleCorsPreflight, createCorsResponse, createErrorResponse } from '../_shared/cors.ts';
+import { sanitizeString, validateRequestBody } from '../_shared/inputValidation.ts';
 
 // Rate limiting implementation
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
@@ -34,18 +31,23 @@ function checkRateLimit(key: string, maxRequests = 50, windowMs = 60000): { allo
 }
 
 serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
-  }
+  const preflightResponse = handleCorsPreflight(req);
+  if (preflightResponse) return preflightResponse;
 
   try {
-    const { token } = await req.json();
+    const body = await req.json();
+    
+    // Validate request body structure
+    const validation = validateRequestBody(body, ['token']);
+    if (!validation.valid) {
+      return createErrorResponse(validation.error!, 400);
+    }
+
+    // Sanitize token
+    const token = sanitizeString(body.token, 500);
 
     if (!token) {
-      return new Response(
-        JSON.stringify({ valid: false, error: "Token required" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      return createErrorResponse("Token required", 400);
     }
     
     // Rate limiting by IP or token
@@ -78,10 +80,7 @@ serve(async (req) => {
     // Token format: case_{caseId}_{timestamp}_{randomString}
     const parts = token.split("_");
     if (parts.length < 3 || parts[0] !== "case") {
-      return new Response(
-        JSON.stringify({ valid: false, error: "Invalid token format" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      return createErrorResponse("Invalid token format", 400);
     }
 
     const caseId = parts[1];
@@ -91,10 +90,7 @@ serve(async (req) => {
     const now = Date.now();
     const sevenDaysInMs = 7 * 24 * 60 * 60 * 1000;
     if (now - timestamp > sevenDaysInMs) {
-      return new Response(
-        JSON.stringify({ valid: false, error: "Token expired" }),
-        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      return createErrorResponse("Token expired", 401);
     }
 
     // Verify case exists
@@ -105,26 +101,17 @@ serve(async (req) => {
       .single();
 
     if (caseError || !caseData) {
-      return new Response(
-        JSON.stringify({ valid: false, error: "Case not found" }),
-        { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      return createErrorResponse("Case not found", 404);
     }
 
-    return new Response(
-      JSON.stringify({
-        valid: true,
-        caseId: caseData.id,
-        clientName: caseData.client_name,
-      }),
-      { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return createCorsResponse({
+      valid: true,
+      caseId: caseData.id,
+      clientName: caseData.client_name,
+    }, 200);
   } catch (error) {
     console.error("Token validation error:", error);
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
-    return new Response(
-      JSON.stringify({ valid: false, error: errorMessage }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return createErrorResponse(errorMessage, 500);
   }
 });

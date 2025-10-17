@@ -1,10 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
-
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-api-key",
-};
+import { corsHeaders, handleCorsPreflight, createCorsResponse, createErrorResponse } from '../_shared/cors.ts';
+import { sanitizeString, isValidEmail, isValidUUID, validateRequestBody, sanitizeObject } from '../_shared/inputValidation.ts';
 
 const VALID_API_KEYS = new Set([
   Deno.env.get("PARTNER_API_KEY_1"),
@@ -40,18 +37,14 @@ function checkRateLimit(key: string, maxRequests = 100, windowMs = 60000): { all
 }
 
 serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
-  }
+  const preflightResponse = handleCorsPreflight(req);
+  if (preflightResponse) return preflightResponse;
 
   try {
     // Validate API key
     const apiKey = req.headers.get("x-api-key");
     if (!apiKey || !VALID_API_KEYS.has(apiKey)) {
-      return new Response(
-        JSON.stringify({ error: "Invalid API key" }),
-        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      return createErrorResponse("Invalid API key", 401);
     }
     
     // Rate limiting
@@ -84,32 +77,36 @@ serve(async (req) => {
     // POST /intake - Create new case with intake data
     if (req.method === "POST" && pathname === "/intake") {
       const body = await req.json();
-      const { clientName, email, phone, country, intakeData } = body;
-
-      // Input validation
-      const { sanitizeName, isValidEmail } = await import('../_shared/validation.ts');
-
-      const sanitizedName = sanitizeName(clientName);
-      if (!sanitizedName) {
-        return new Response(
-          JSON.stringify({ error: 'Invalid client name' }),
-          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
+      
+      // Validate request structure
+      const validation = validateRequestBody(body, ['clientName']);
+      if (!validation.valid) {
+        return createErrorResponse(validation.error!, 400);
       }
 
+      // Sanitize inputs
+      const clientName = sanitizeString(body.clientName, 200);
+      const email = body.email ? sanitizeString(body.email, 255).toLowerCase() : null;
+      const phone = body.phone ? sanitizeString(body.phone, 50) : null;
+      const country = body.country ? sanitizeString(body.country, 100) : "Unknown";
+      const intakeData = body.intakeData ? sanitizeObject(body.intakeData) : {};
+
+      // Validate client name
+      if (!clientName || clientName.length < 2) {
+        return createErrorResponse('Invalid client name - must be at least 2 characters', 400);
+      }
+
+      // Validate email if provided
       if (email && !isValidEmail(email)) {
-        return new Response(
-          JSON.stringify({ error: 'Invalid email format' }),
-          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
+        return createErrorResponse('Invalid email format', 400);
       }
 
       // Create case with sanitized data
       const { data: caseData, error: caseError } = await supabase
         .from("cases")
         .insert({
-          client_name: sanitizedName,
-          country: country || "Unknown",
+          client_name: clientName,
+          country,
           status: "lead",
         })
         .select()
@@ -129,14 +126,11 @@ serve(async (req) => {
 
       if (intakeError) throw intakeError;
 
-      return new Response(
-        JSON.stringify({
-          success: true,
-          caseId: caseData.id,
-          clientCode: caseData.client_code,
-        }),
-        { status: 201, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      return createCorsResponse({
+        success: true,
+        caseId: caseData.id,
+        clientCode: caseData.client_code,
+      }, 201);
     }
 
     // GET /status/:caseId - Get case status
@@ -144,13 +138,8 @@ serve(async (req) => {
       const caseId = pathname.split("/")[2];
 
       // Input validation
-      const { isValidUUID } = await import('../_shared/validation.ts');
-      
       if (!isValidUUID(caseId)) {
-        return new Response(
-          JSON.stringify({ error: 'Invalid case ID format' }),
-          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
+        return createErrorResponse('Invalid case ID format', 400);
       }
 
       const { data: caseData, error: caseError } = await supabase
@@ -161,22 +150,13 @@ serve(async (req) => {
 
       if (caseError) throw caseError;
 
-      return new Response(
-        JSON.stringify(caseData),
-        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      return createCorsResponse(caseData, 200);
     }
 
-    return new Response(
-      JSON.stringify({ error: "Endpoint not found" }),
-      { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return createErrorResponse("Endpoint not found", 404);
   } catch (error) {
     console.error("Partner API error:", error);
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
-    return new Response(
-      JSON.stringify({ error: errorMessage }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return createErrorResponse(errorMessage, 500);
   }
 });

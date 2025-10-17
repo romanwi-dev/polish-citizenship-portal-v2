@@ -1,9 +1,6 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+import { corsHeaders, handleCorsPreflight, createCorsResponse, createErrorResponse } from '../_shared/cors.ts';
+import { isValidEmail, sanitizeString, validateRequestBody, isValidUUID } from '../_shared/inputValidation.ts';
 
 interface MagicLinkRequest {
   email: string;
@@ -11,26 +8,29 @@ interface MagicLinkRequest {
 }
 
 Deno.serve(async (req) => {
-  if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
-  }
+  const preflightResponse = handleCorsPreflight(req);
+  if (preflightResponse) return preflightResponse;
 
   try {
-    const { email, caseId }: MagicLinkRequest = await req.json();
-
-    // Input validation
-    if (!email || !email.includes('@')) {
-      return new Response(
-        JSON.stringify({ error: 'Valid email is required' }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+    const body = await req.json();
+    
+    // Validate request body structure
+    const validation = validateRequestBody(body, ['email', 'caseId']);
+    if (!validation.valid) {
+      return createErrorResponse(validation.error!, 400);
     }
 
-    if (!caseId || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(caseId)) {
-      return new Response(
-        JSON.stringify({ error: 'Valid case ID is required' }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+    // Sanitize and validate inputs
+    const email = sanitizeString(body.email, 255).toLowerCase();
+    const caseId = sanitizeString(body.caseId, 36);
+
+    // Input validation
+    if (!isValidEmail(email)) {
+      return createErrorResponse('Valid email is required', 400);
+    }
+
+    if (!isValidUUID(caseId)) {
+      return createErrorResponse('Valid case ID is required', 400);
     }
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
@@ -53,10 +53,7 @@ Deno.serve(async (req) => {
         p_details: { email, case_id: caseId, reason: 'no_access' }
       });
 
-      return new Response(
-        JSON.stringify({ error: 'No access to this case' }),
-        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      return createErrorResponse('No access to this case', 403);
     }
 
     // Check for rate limiting (max 5 attempts per hour per email)
@@ -76,10 +73,7 @@ Deno.serve(async (req) => {
         p_details: { email, case_id: caseId }
       });
 
-      return new Response(
-        JSON.stringify({ error: 'Too many login attempts. Please try again later.' }),
-        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      return createErrorResponse('Too many login attempts. Please try again later.', 429);
     }
 
     // Generate magic link with Supabase Auth
@@ -111,22 +105,16 @@ Deno.serve(async (req) => {
 
     console.log('Magic link generated for:', email);
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        message: 'Magic link sent to your email'
-      }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+    return createCorsResponse({
+      success: true,
+      message: 'Magic link sent to your email'
+    }, 200);
 
   } catch (error) {
     console.error('Magic link error:', error);
-    return new Response(
-      JSON.stringify({
-        success: false,
-        error: error instanceof Error ? error.message : 'Failed to send magic link'
-      }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    return createErrorResponse(
+      error instanceof Error ? error.message : 'Failed to send magic link',
+      500
     );
   }
 });
