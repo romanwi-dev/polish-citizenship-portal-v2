@@ -70,33 +70,55 @@ export const AIAgentPanel = ({ caseId, defaultAction, showActionSelector = true,
     setResponse("");
 
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      
+      if (sessionError) {
+        console.error('Session error:', sessionError);
+        throw new Error('Authentication error: ' + sessionError.message);
+      }
       
       if (!session) {
-        throw new Error('Not authenticated');
+        throw new Error('Not authenticated - please log in');
       }
+
+      console.log('Invoking AI agent with:', { caseId, action, promptLength: prompt.length });
       
       const { data, error } = await supabase.functions.invoke('ai-agent', {
         body: { 
           caseId, 
           prompt,
           action 
-        },
-        headers: {
-          Authorization: `Bearer ${session.access_token}`,
-          'x-user-id': session.user.id
         }
       });
 
       if (error) {
-        console.error('Edge function error:', error);
-        throw error;
+        console.error('Edge function error details:', {
+          message: error.message,
+          status: error.status,
+          context: error.context,
+          name: error.name
+        });
+        
+        let errorMessage = 'Failed to process request';
+        if (error.message?.includes('rate limit')) {
+          errorMessage = 'Rate limit exceeded. Please try again in a moment.';
+        } else if (error.message?.includes('402')) {
+          errorMessage = 'AI service requires payment. Please check your Lovable AI workspace credits.';
+        } else if (error.status === 404) {
+          errorMessage = 'AI agent function not found. Please contact support.';
+        } else {
+          errorMessage = error.message || 'Unknown error occurred';
+        }
+        
+        throw new Error(errorMessage);
       }
 
       if (!data || !data.response) {
-        throw new Error('Invalid response from AI agent');
+        console.error('Invalid response data:', data);
+        throw new Error('Invalid response from AI agent - no data returned');
       }
 
+      console.log('AI agent response received, length:', data.response.length);
       setResponse(data.response);
       toast({
         title: "Analysis Complete",
