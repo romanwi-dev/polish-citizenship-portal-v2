@@ -171,7 +171,7 @@ export default function SecurityAudit() {
             size="lg"
             onClick={runFullScan} 
             disabled={isLoading}
-            className="text-lg md:text-2xl font-bold px-8 py-4 md:px-20 md:py-6 h-auto min-h-[48px] rounded-lg bg-red-500/20 hover:bg-red-500/30 shadow-glow hover-glow backdrop-blur-md border-2 border-red-500/30 transition-all group relative overflow-hidden"
+            className="text-lg md:text-2xl font-bold px-8 py-4 md:px-12 md:py-6 h-auto min-h-[48px] rounded-lg bg-red-500/20 hover:bg-red-500/30 shadow-glow hover-glow backdrop-blur-md border-2 border-red-500/30 transition-all group relative overflow-hidden"
           >
             {isLoading ? (
               <>
