@@ -80,12 +80,9 @@ const ContactFormWeb3 = () => {
           </div>
           <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-6">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              Ready to Check Your Eligibility?
+              Check Your Eligibility and Chances
             </span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Take the most comprehensive Polish citizenship by descent test available online
-          </p>
         </div>
 
         <div className="max-w-5xl mx-auto px-2">

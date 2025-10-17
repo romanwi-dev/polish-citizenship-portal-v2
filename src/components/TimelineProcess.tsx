@@ -253,8 +253,7 @@ const TimelineProcess = () => {
 
         {/* CTA */}
         <div className="text-center mt-12">
-          <h3 className="text-2xl font-bold mb-4">Ready to Check Your Eligibility?</h3>
-          <p className="text-muted-foreground mb-6">Take the most comprehensive Polish citizenship by descent test available online</p>
+          <h3 className="text-2xl font-bold mb-4">Check Your Eligibility and Chances</h3>
           <button
             onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
             className="px-8 py-4 bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white rounded-lg font-semibold shadow-glow hover-glow transition-all"
