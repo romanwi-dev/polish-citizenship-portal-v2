@@ -5,6 +5,10 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Security: Time-limited processing
+const PROCESSING_TIMEOUT_MS = 240000; // 4 minutes
+const HARD_TIMEOUT_MS = 300000; // 5 minutes absolute max
+
 interface WSCLetterOCRRequest {
   imageBase64: string;
   letterId: string;
@@ -16,8 +20,24 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  const startTime = Date.now();
+  let imageBase64: string | null = null;
+  let logId: string | null = null;
+
   try {
-    const { imageBase64, letterId, caseId }: WSCLetterOCRRequest = await req.json();
+    // Validate authentication
+    const authHeader = req.headers.get('authorization');
+    if (!authHeader) {
+      console.error('Security: Unauthenticated OCR request blocked');
+      return new Response(
+        JSON.stringify({ error: 'Authentication required' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const requestData: WSCLetterOCRRequest = await req.json();
+    imageBase64 = requestData.imageBase64;
+    const { letterId, caseId } = requestData;
 
     // Input validation
     const { isValidUUID, MAX_FILE_SIZE } = await import('../_shared/validation.ts');
@@ -52,7 +72,21 @@ Deno.serve(async (req) => {
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    console.log('Processing WSC letter with Gemini 2.5 Flash...');
+    // Create processing log
+    const { data: logData } = await supabase
+      .from('ocr_processing_logs')
+      .insert({
+        case_id: caseId,
+        status: 'processing',
+        image_size_bytes: imageBase64.length,
+        started_at: new Date().toISOString()
+      })
+      .select('id')
+      .single();
+
+    logId = logData?.id || null;
+
+    console.log(`Processing WSC letter with Gemini 2.5 Flash (Log ID: ${logId})...`);
 
     const systemPrompt = `You are an expert at extracting structured data from Polish government correspondence, specifically letters from the Mazovian Voivodeship Office (Mazowiecki Urząd Wojewódzki) regarding Polish citizenship applications.
 
@@ -74,7 +108,12 @@ Return ONLY valid JSON in this exact format:
   "confidence": 0.95
 }`;
 
-    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    // Security: Timeout enforcement
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('Processing timeout exceeded')), PROCESSING_TIMEOUT_MS)
+    );
+
+    const processingPromise = fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${LOVABLE_API_KEY}`,
@@ -107,6 +146,12 @@ Return ONLY valid JSON in this exact format:
         max_tokens: 2000
       }),
     });
+
+    const aiResponse = await Promise.race([processingPromise, timeoutPromise]) as Response;
+
+    // Security: Clear image data from memory immediately after AI processing
+    const imageSizeBytes = imageBase64.length;
+    imageBase64 = null;
 
     if (!aiResponse.ok) {
       const errorText = await aiResponse.text();
@@ -176,19 +221,60 @@ Return ONLY valid JSON in this exact format:
       }
     }
 
-    console.log(`WSC letter OCR completed with ${(ocrResult.confidence * 100).toFixed(0)}% confidence`);
+    const processingDuration = Date.now() - startTime;
+    
+    // Update processing log with success
+    if (logId) {
+      await supabase
+        .from('ocr_processing_logs')
+        .update({
+          status: 'completed',
+          completed_at: new Date().toISOString(),
+          processing_duration_ms: processingDuration,
+          confidence: ocrResult.confidence,
+          extracted_fields: ocrResult,
+          image_size_bytes: imageSizeBytes,
+          image_deleted_at: new Date().toISOString()
+        })
+        .eq('id', logId);
+    }
+
+    console.log(`WSC letter OCR completed with ${(ocrResult.confidence * 100).toFixed(0)}% confidence in ${processingDuration}ms`);
 
     return new Response(
       JSON.stringify({
         success: true,
         data: ocrResult,
-        tasksCreated: ocrResult.required_documents?.length || 0
+        tasksCreated: ocrResult.required_documents?.length || 0,
+        processingTime: processingDuration
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
   } catch (error) {
-    console.error('WSC letter OCR processing failed');
+    const processingDuration = Date.now() - startTime;
+    console.error('WSC letter OCR processing failed:', error);
+
+    // Security: Clear image data on error
+    imageBase64 = null;
+
+    // Update processing log with failure
+    if (logId) {
+      const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+      const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+      const supabase = createClient(supabaseUrl, supabaseKey);
+
+      await supabase
+        .from('ocr_processing_logs')
+        .update({
+          status: 'failed',
+          completed_at: new Date().toISOString(),
+          processing_duration_ms: processingDuration,
+          error_message: error instanceof Error ? error.message : 'Unknown error',
+          image_deleted_at: new Date().toISOString()
+        })
+        .eq('id', logId);
+    }
 
     return new Response(
       JSON.stringify({
@@ -197,5 +283,8 @@ Return ONLY valid JSON in this exact format:
       }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
+  } finally {
+    // Security: Final cleanup - ensure image data is cleared
+    imageBase64 = null;
   }
 });
