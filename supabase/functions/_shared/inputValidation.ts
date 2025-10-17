@@ -1,7 +1,93 @@
 /**
  * Shared input validation utilities
- * Provides common validation schemas and sanitization functions
+ * Provides common validation schemas and sanitization functions using Zod
  */
+
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
+
+// ===========================
+// ZOD SCHEMAS FOR VALIDATION
+// ===========================
+
+export const uuidSchema = z.string().uuid({ message: "Invalid UUID format" });
+
+export const emailSchema = z
+  .string()
+  .email({ message: "Invalid email address" })
+  .max(255, { message: "Email must be less than 255 characters" })
+  .toLowerCase()
+  .trim();
+
+export const nameSchema = z
+  .string()
+  .min(2, { message: "Name must be at least 2 characters" })
+  .max(100, { message: "Name must be less than 100 characters" })
+  .regex(/^[a-zA-ZÀ-ÿ\s\-'\.]+$/, { message: "Name contains invalid characters" })
+  .trim();
+
+export const textSchema = z
+  .string()
+  .max(5000, { message: "Text cannot exceed 5000 characters" })
+  .trim();
+
+export const notesSchema = z
+  .string()
+  .max(10000, { message: "Notes cannot exceed 10000 characters" })
+  .trim()
+  .optional();
+
+// Date in DD.MM.YYYY format
+export const ddmmyyyyDateSchema = z
+  .string()
+  .regex(/^\d{2}\.\d{2}\.\d{4}$/, { message: "Date must be in DD.MM.YYYY format" })
+  .refine((date) => {
+    const [day, month, year] = date.split('.').map(Number);
+    return day >= 1 && day <= 31 && month >= 1 && month <= 12 && year <= 2030;
+  }, { message: "Invalid date values (day ≤ 31, month ≤ 12, year ≤ 2030)" })
+  .optional();
+
+// AI Agent Request Schema
+export const AIAgentRequestSchema = z.object({
+  caseId: uuidSchema.optional(),
+  prompt: z.string().min(1).max(5000),
+  action: z.enum([
+    'comprehensive', 'eligibility_analysis', 'document_check', 
+    'task_suggest', 'wsc_strategy', 'form_populate', 'security_audit',
+    'researcher', 'translator', 'writer', 'designer'
+  ]),
+});
+
+// Contact Form Schema
+export const ContactFormSchema = z.object({
+  name: nameSchema,
+  email: emailSchema,
+  message: z.string().min(10).max(5000),
+});
+
+/**
+ * Validate data against a Zod schema
+ */
+export function validateInput<T>(
+  schema: z.ZodSchema<T>,
+  data: unknown
+): { success: true; data: T } | { success: false; error: string; details: any } {
+  const result = schema.safeParse(data);
+  
+  if (result.success) {
+    return { success: true, data: result.data };
+  } else {
+    return {
+      success: false,
+      error: "Input validation failed",
+      details: result.error.flatten(),
+    };
+  }
+}
+
+// ===========================
+// LEGACY SANITIZATION FUNCTIONS (kept for compatibility)
+// ===========================
+
 
 /**
  * Sanitize string input to prevent XSS and injection attacks

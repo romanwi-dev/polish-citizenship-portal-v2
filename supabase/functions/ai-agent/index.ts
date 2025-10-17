@@ -1,15 +1,12 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+import { getSecureCorsHeaders, handleCorsPreflight, createSecureCorsResponse, createSecureErrorResponse } from '../_shared/cors.ts';
+import { AIAgentRequestSchema, validateInput } from '../_shared/inputValidation.ts';
 
 serve(async (req) => {
-  if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
-  }
+  // Handle CORS preflight
+  const preflightResponse = handleCorsPreflight(req);
+  if (preflightResponse) return preflightResponse;
 
   console.log('AI Agent function called');
 
@@ -17,23 +14,19 @@ serve(async (req) => {
     const body = await req.json();
     console.log('Request body:', JSON.stringify(body));
     
-    const { caseId, prompt, action } = body;
+    // Validate input using Zod schema
+    const validation = validateInput(AIAgentRequestSchema, body);
     
-    if (!prompt || !action) {
-      throw new Error('Missing required fields: prompt and action are required');
+    if (!validation.success) {
+      console.error('Validation failed:', validation.details);
+      return createSecureErrorResponse(
+        req,
+        `Invalid input: ${JSON.stringify(validation.details)}`,
+        400
+      );
     }
     
-    // Validate caseId for non-security-audit actions
-    if (action !== 'security_audit') {
-      if (!caseId) {
-        throw new Error('caseId is required for this action');
-      }
-      // Basic UUID format validation
-      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-      if (!uuidRegex.test(caseId)) {
-        throw new Error('Invalid caseId format');
-      }
-    }
+    const { caseId, prompt, action } = validation.data;
     
     const supabaseUrl = Deno.env.get('SUPABASE_URL');
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
@@ -41,12 +34,12 @@ serve(async (req) => {
     
     if (!supabaseUrl || !supabaseKey) {
       console.error('Missing Supabase credentials');
-      throw new Error('Server configuration error');
+      return createSecureErrorResponse(req, 'Server configuration error', 500);
     }
     
     if (!lovableApiKey) {
       console.error('Missing LOVABLE_API_KEY');
-      throw new Error('AI service not configured');
+      return createSecureErrorResponse(req, 'AI service not configured', 500);
     }
     
     console.log('Initializing Supabase client');
@@ -133,24 +126,22 @@ serve(async (req) => {
       });
     }
 
-    return new Response(
-      JSON.stringify({ 
+    return createSecureCorsResponse(
+      req,
+      { 
         response: agentResponse,
         context: context,
         action: action 
-      }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      }
     );
 
   } catch (error: any) {
     console.error('AI Agent error:', error);
     console.error('Error stack:', error.stack);
-    return new Response(
-      JSON.stringify({ 
-        error: error.message || 'Unknown error occurred',
-        details: error.toString()
-      }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    return createSecureErrorResponse(
+      req,
+      error.message || 'Unknown error occurred',
+      500
     );
   }
 });
