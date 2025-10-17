@@ -47,13 +47,12 @@ const FlippableServiceCard = ({ service, index }: { service: typeof services[0];
 
   return (
     <div 
-      className="h-[280px]"
+      className="h-[280px] cursor-pointer"
       style={{ 
         animationDelay: `${index * 100}ms`,
         perspective: '1000px'
       }}
-      onMouseEnter={() => setIsFlipped(true)}
-      onMouseLeave={() => setIsFlipped(false)}
+      onClick={() => setIsFlipped(!isFlipped)}
     >
       <div 
         className="relative w-full h-full transition-transform duration-700"
