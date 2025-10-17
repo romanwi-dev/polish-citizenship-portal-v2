@@ -178,25 +178,25 @@ export const ExtendedServicesDashboard = () => {
 
       {/* Main Content Tabs */}
       <Tabs defaultValue="cards" className="space-y-4">
-        <div className="grid gap-3 grid-cols-2 md:grid-cols-4">
-          <TabsList className="col-span-2 md:col-span-4 grid grid-cols-2 md:grid-cols-4 gap-3 bg-transparent border-0 h-auto p-0">
-            <TabsTrigger value="cards" className="h-[140px] rounded-lg opacity-50 glass-card hover-glow data-[state=active]:opacity-100 transition-all duration-300 border-2 border-primary/20">
-              <span className="text-base font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Service Cards</span>
+        <div className="w-full overflow-x-auto scrollbar-hide">
+          <TabsList className="inline-flex h-auto p-0 w-max bg-transparent border-0 gap-1">
+            <TabsTrigger value="cards" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
+              Service Cards
             </TabsTrigger>
-            <TabsTrigger value="family" className="h-[140px] rounded-lg opacity-50 glass-card hover-glow data-[state=active]:opacity-100 transition-all duration-300 border-2 border-primary/20">
-              <span className="text-base font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Family Legal</span>
+            <TabsTrigger value="family" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
+              Family Legal
             </TabsTrigger>
-            <TabsTrigger value="procurement" className="h-[140px] rounded-lg opacity-50 glass-card hover-glow data-[state=active]:opacity-100 transition-all duration-300 border-2 border-primary/20">
-              <span className="text-base font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Document Procurement</span>
+            <TabsTrigger value="procurement" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
+              Document Procurement
             </TabsTrigger>
-            <TabsTrigger value="heritage" className="h-[140px] rounded-lg opacity-50 glass-card hover-glow data-[state=active]:opacity-100 transition-all duration-300 border-2 border-primary/20">
-              <span className="text-base font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Heritage Research</span>
+            <TabsTrigger value="heritage" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
+              Heritage Research
             </TabsTrigger>
-            <TabsTrigger value="relocation" className="h-[140px] rounded-lg opacity-50 glass-card hover-glow data-[state=active]:opacity-100 transition-all duration-300 border-2 border-primary/20">
-              <span className="text-base font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Relocation</span>
+            <TabsTrigger value="relocation" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
+              Relocation
             </TabsTrigger>
-            <TabsTrigger value="analytics" className="h-[140px] rounded-lg opacity-50 glass-card hover-glow data-[state=active]:opacity-100 transition-all duration-300 border-2 border-primary/20">
-              <span className="text-base font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Analytics</span>
+            <TabsTrigger value="analytics" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
+              Analytics
             </TabsTrigger>
           </TabsList>
         </div>

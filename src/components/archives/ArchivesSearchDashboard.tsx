@@ -177,25 +177,25 @@ export const ArchivesSearchDashboard = () => {
 
       {/* Main Content Tabs */}
       <Tabs defaultValue="cards" className="space-y-4">
-        <div className="grid gap-3 grid-cols-2 md:grid-cols-4">
-          <TabsList className="col-span-2 md:col-span-4 grid grid-cols-2 md:grid-cols-4 gap-3 bg-transparent border-0 h-auto p-0">
-            <TabsTrigger value="cards" className="h-[140px] rounded-lg opacity-50 glass-card hover-glow data-[state=active]:opacity-100 transition-all duration-300 border-2 border-primary/20">
-              <span className="text-base font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Workflow Cards</span>
+        <div className="w-full overflow-x-auto scrollbar-hide">
+          <TabsList className="inline-flex h-auto p-0 w-max bg-transparent border-0 gap-1">
+            <TabsTrigger value="cards" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
+              Workflow Cards
             </TabsTrigger>
-            <TabsTrigger value="timeline" className="h-[140px] rounded-lg opacity-50 glass-card hover-glow data-[state=active]:opacity-100 transition-all duration-300 border-2 border-primary/20">
-              <span className="text-base font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Search Timeline</span>
+            <TabsTrigger value="timeline" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
+              Search Timeline
             </TabsTrigger>
-            <TabsTrigger value="supervisor" className="h-[140px] rounded-lg opacity-50 glass-card hover-glow data-[state=active]:opacity-100 transition-all duration-300 border-2 border-primary/20">
-              <span className="text-base font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Supervisor</span>
+            <TabsTrigger value="supervisor" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
+              Supervisor
             </TabsTrigger>
-            <TabsTrigger value="partners" className="h-[140px] rounded-lg opacity-50 glass-card hover-glow data-[state=active]:opacity-100 transition-all duration-300 border-2 border-primary/20">
-              <span className="text-base font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Partners</span>
+            <TabsTrigger value="partners" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
+              Partners
             </TabsTrigger>
-            <TabsTrigger value="directory" className="h-[140px] rounded-lg opacity-50 glass-card hover-glow data-[state=active]:opacity-100 transition-all duration-300 border-2 border-primary/20">
-              <span className="text-base font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Archive Directory</span>
+            <TabsTrigger value="directory" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
+              Archive Directory
             </TabsTrigger>
-            <TabsTrigger value="templates" className="h-[140px] rounded-lg opacity-50 glass-card hover-glow data-[state=active]:opacity-100 transition-all duration-300 border-2 border-primary/20">
-              <span className="text-base font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Templates</span>
+            <TabsTrigger value="templates" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
+              Templates
             </TabsTrigger>
           </TabsList>
         </div>
