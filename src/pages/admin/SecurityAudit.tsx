@@ -1,11 +1,19 @@
 import { useState } from 'react';
 import { AdminLayout } from '@/components/AdminLayout';
 import { Button } from '@/components/ui/button';
-import { Shield, Loader2, Play, Clock, Database, Lock, FileCode, Activity, Wrench } from 'lucide-react';
+import { Shield, Loader2, Play, Clock, Database, Lock, FileCode, Activity, Wrench, Copy } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import SecurityScoreCard from '@/components/SecurityScoreCard';
 import SecurityIssuesList from '@/components/SecurityIssuesList';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface SecurityScanResult {
   success: boolean;
@@ -29,8 +37,11 @@ interface SecurityScanResult {
 
 export default function SecurityAudit() {
   const [isLoading, setIsLoading] = useState(false);
+  const [isFixing, setIsFixing] = useState(false);
   const [scanResult, setScanResult] = useState<SecurityScanResult | null>(null);
   const [lastScanTime, setLastScanTime] = useState<string | null>(null);
+  const [fixPlan, setFixPlan] = useState<string | null>(null);
+  const [showFixDialog, setShowFixDialog] = useState(false);
 
   const runFullScan = async () => {
     setIsLoading(true);
@@ -65,20 +76,40 @@ export default function SecurityAudit() {
     }
   };
 
-  const handleFixAllIssues = () => {
-    if (!scanResult) return;
+  const handleFixAllIssues = async () => {
+    if (!scanResult || scanResult.issues.length === 0) return;
     
-    const issuesSummary = scanResult.issues.map(issue => 
-      `- ${issue.severity.toUpperCase()}: ${issue.message}`
-    ).join('\n');
+    setIsFixing(true);
     
-    const fixPrompt = `Please fix all the security issues detected:\n\n${issuesSummary}\n\nTotal: ${scanResult.summary.total} issues (${scanResult.summary.critical} critical, ${scanResult.summary.high} high, ${scanResult.summary.medium} medium, ${scanResult.summary.low} low)`;
+    try {
+      const { data, error } = await supabase.functions.invoke('fix-security-issues', {
+        body: { issues: scanResult.issues }
+      });
+
+      if (error) throw error;
+
+      if (data.success) {
+        setFixPlan(data.fixPlan);
+        setShowFixDialog(true);
+        toast.success(`Generated fix plan for ${data.issuesCount} issues`);
+      } else {
+        throw new Error(data.error || 'Failed to generate fix plan');
+      }
+    } catch (error: any) {
+      console.error('Fix generation error:', error);
+      toast.error(error.message || "Failed to generate fix plan");
+    } finally {
+      setIsFixing(false);
+    }
+  };
+
+  const copyFixPlan = () => {
+    if (!fixPlan) return;
     
-    // Copy to clipboard
-    navigator.clipboard.writeText(fixPrompt).then(() => {
-      toast.success('Security issues copied to clipboard! Paste in chat to fix all issues.');
+    navigator.clipboard.writeText(fixPlan).then(() => {
+      toast.success('Fix plan copied to clipboard!');
     }).catch(() => {
-      toast.error('Failed to copy. Please manually ask AI to fix the security issues.');
+      toast.error('Failed to copy fix plan');
     });
   };
 
@@ -155,12 +186,22 @@ export default function SecurityAudit() {
           {scanResult && scanResult.summary.total > 0 && (
             <Button 
               onClick={handleFixAllIssues}
+              disabled={isFixing}
               size="lg"
               variant="default"
               className="gap-2 bg-primary hover:bg-primary/90"
             >
-              <Wrench className="h-5 w-5" />
-              Fix All Issues
+              {isFixing ? (
+                <>
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  Generating Fixes...
+                </>
+              ) : (
+                <>
+                  <Wrench className="h-5 w-5" />
+                  Generate Fix Plan
+                </>
+              )}
             </Button>
           )}
         </div>
@@ -213,6 +254,39 @@ export default function SecurityAudit() {
           </div>
         )}
       </div>
+      
+      {/* Fix Plan Dialog */}
+      <Dialog open={showFixDialog} onOpenChange={setShowFixDialog}>
+        <DialogContent className="max-w-4xl max-h-[80vh]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Wrench className="h-5 w-5" />
+              Security Fix Plan
+            </DialogTitle>
+            <DialogDescription>
+              AI-generated recommendations to fix all detected security issues
+            </DialogDescription>
+          </DialogHeader>
+          <ScrollArea className="h-[500px] w-full rounded-md border p-4">
+            <div className="whitespace-pre-wrap font-mono text-sm">
+              {fixPlan || 'No fix plan available'}
+            </div>
+          </ScrollArea>
+          <div className="flex justify-end gap-2">
+            <Button
+              variant="outline"
+              onClick={copyFixPlan}
+              className="gap-2"
+            >
+              <Copy className="h-4 w-4" />
+              Copy to Clipboard
+            </Button>
+            <Button onClick={() => setShowFixDialog(false)}>
+              Close
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </AdminLayout>
   );
 }
