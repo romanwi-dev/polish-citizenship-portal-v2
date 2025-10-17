@@ -14,10 +14,10 @@ export const NavigationSearch = ({ value, onChange, className }: NavigationSearc
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
           type="text"
-          placeholder="Search services, pages..."
+          placeholder=""
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="pl-10 h-14 text-sm bg-background border-border focus:border-primary placeholder:text-muted-foreground/60"
+          className="pl-10 h-11 text-sm bg-background border-border focus:border-primary"
         />
       </div>
     </div>
