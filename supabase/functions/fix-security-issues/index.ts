@@ -32,25 +32,42 @@ serve(async (req) => {
       recommendation: issue.recommendation
     }))
 
-    const systemPrompt = `You are a security expert. You will receive a list of security issues found in a web application.
-Your task is to provide detailed, actionable fixes for each issue. Include:
-1. The specific file that needs to be modified
-2. The exact changes required
-3. Code snippets if applicable
-4. Why the fix addresses the security concern
+    const systemPrompt = `You are a security expert for a Polish Citizenship Portal built with:
+- Frontend: React + TypeScript (src/ directory)
+- Backend: Supabase (PostgreSQL, Edge Functions in Deno/TypeScript)
+- Auth: Supabase Auth with user_roles table using has_role() function
+- Files: React pages in src/pages/, components in src/components/, edge functions in supabase/functions/
 
-Format your response as a structured plan with clear steps.`
+Provide SPECIFIC, ACTIONABLE fixes using actual project file paths and code patterns.`
 
-    const userPrompt = `I have the following security issues that need to be fixed:
+    const userPrompt = `Fix these security issues in the Polish Citizenship Portal:
 
 ${JSON.stringify(issuesSummary, null, 2)}
 
-Please provide a comprehensive fix plan for all these issues. For each issue:
-1. Explain what needs to be changed
-2. Provide the specific code changes needed
-3. Explain why this fixes the security vulnerability
+For EACH issue provide:
 
-Prioritize critical and high severity issues first.`
+## Issue: [severity] - [category]
+
+**Files to modify:**
+- Exact file path (e.g., src/pages/admin/SecurityAudit.tsx)
+
+**Changes needed:**
+\`\`\`typescript
+// Actual code snippet ready to copy-paste
+\`\`\`
+
+**SQL Migration (if needed):**
+\`\`\`sql
+-- Supabase migration SQL
+\`\`\`
+
+**Why this fixes it:** One sentence explanation.
+
+---
+
+Group by: CRITICAL → HIGH → MEDIUM → LOW
+Use project patterns: has_role() for RLS, supabase.from() for queries, TypeScript for edge functions.
+Be concise. No generic advice - only specific code for THIS project.`
 
     // Call Lovable AI to generate fix recommendations
     const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
@@ -60,11 +77,13 @@ Prioritize critical and high severity issues first.`
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
+        model: 'google/gemini-2.5-pro',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt }
         ],
+        temperature: 0.3,
+        max_tokens: 4000
       }),
     })
 
