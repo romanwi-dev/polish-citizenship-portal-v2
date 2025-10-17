@@ -129,7 +129,7 @@ const Navigation = () => {
                     <ScrollArea className="flex-1">
                       <div className="p-4 space-y-4">
                         {/* Icon Row - At the very top, matching mobile */}
-                        <div className="flex items-center justify-center gap-1.5 py-2">
+                        <div className="flex items-center justify-start flex-wrap gap-1.5 py-2">
                           <button 
                             className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
                             aria-label="Settings"
@@ -179,6 +179,12 @@ const Navigation = () => {
                           <ThemeSwitcher />
                         </div>
 
+                        {/* Search - Above the login button, same height */}
+                        <NavigationSearch 
+                          value={searchQuery}
+                          onChange={setSearchQuery}
+                        />
+
                         {/* Login/Register Button - same height as search */}
                         <Button
                           onClick={user ? handleSignOut : () => navigate('/login')}
@@ -196,12 +202,6 @@ const Navigation = () => {
                             </>
                           )}
                         </Button>
-                        
-                        {/* Search - Below the green button, same height */}
-                        <NavigationSearch 
-                          value={searchQuery}
-                          onChange={setSearchQuery}
-                        />
 
                         <div className="h-px bg-border/50" />
                         
