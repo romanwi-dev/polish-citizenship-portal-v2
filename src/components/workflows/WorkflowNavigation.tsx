@@ -47,14 +47,13 @@ export const WorkflowNavigation = () => {
 
   return (
     <div className="w-full overflow-x-auto scrollbar-hide mb-6">
-      <div className="flex gap-2 w-full">
+      <div className="flex gap-1 w-full">
         {WORKFLOWS.map((workflow) => {
           const isActive = location.pathname === workflow.path;
           
           return (
             <Button
               key={workflow.id}
-              variant={isActive ? "default" : "outline"}
               onClick={() => navigate(workflow.path)}
               className="flex-1 h-14 bg-green-500/20 text-white font-bold text-lg border-2 border-green-500/30 hover:bg-green-500/30 hover:shadow-[0_0_30px_rgba(34,197,94,0.3)] transition-all"
             >
