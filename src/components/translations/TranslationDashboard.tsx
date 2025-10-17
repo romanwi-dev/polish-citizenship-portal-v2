@@ -70,8 +70,11 @@ export const TranslationDashboard = () => {
           >
             {/* Front */}
             <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
-              style={{ backfaceVisibility: 'hidden' }}
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300"
+              style={{ 
+                backfaceVisibility: 'hidden',
+                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15), 0 8px 32px 0 rgba(0, 0, 0, 0.37)'
+              }}
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
@@ -104,8 +107,11 @@ export const TranslationDashboard = () => {
           >
             {/* Front */}
             <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
-              style={{ backfaceVisibility: 'hidden' }}
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300"
+              style={{ 
+                backfaceVisibility: 'hidden',
+                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15), 0 8px 32px 0 rgba(0, 0, 0, 0.37)'
+              }}
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
@@ -138,8 +144,11 @@ export const TranslationDashboard = () => {
           >
             {/* Front */}
             <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
-              style={{ backfaceVisibility: 'hidden' }}
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300"
+              style={{ 
+                backfaceVisibility: 'hidden',
+                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15), 0 8px 32px 0 rgba(0, 0, 0, 0.37)'
+              }}
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
@@ -172,8 +181,11 @@ export const TranslationDashboard = () => {
           >
             {/* Front */}
             <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
-              style={{ backfaceVisibility: 'hidden' }}
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300"
+              style={{ 
+                backfaceVisibility: 'hidden',
+                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15), 0 8px 32px 0 rgba(0, 0, 0, 0.37)'
+              }}
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
