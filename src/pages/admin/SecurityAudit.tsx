@@ -166,7 +166,7 @@ export default function SecurityAudit() {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-wrap gap-1 w-full justify-between">
+        <div className="max-w-4xl mx-auto flex flex-wrap gap-4 justify-center">
           <Button 
             size="lg"
             onClick={runFullScan} 
