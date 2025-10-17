@@ -10,14 +10,14 @@ interface NavigationSearchProps {
 export const NavigationSearch = ({ value, onChange, className }: NavigationSearchProps) => {
   return (
     <div className={className}>
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-foreground/70" />
+      <div className="relative flex items-center">
+        <Search className="absolute left-3 h-4 w-4 text-foreground/70 z-10" />
         <Input
           type="text"
           placeholder=""
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="pl-10 h-11 text-sm bg-background border-border focus:border-primary"
+          className="!h-11 pl-10 text-sm bg-background border-border focus:border-primary"
         />
       </div>
     </div>
