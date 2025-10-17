@@ -47,7 +47,7 @@ export const WorkflowNavigation = () => {
 
   return (
     <div className="w-full overflow-x-auto scrollbar-hide mb-6">
-      <div className="flex gap-1 w-full">
+      <div className="flex gap-1 w-full justify-between">
         {WORKFLOWS.map((workflow) => {
           const isActive = location.pathname === workflow.path;
           
