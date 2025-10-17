@@ -1,129 +1,190 @@
 import { useState } from 'react';
 import { AdminLayout } from '@/components/AdminLayout';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Shield, Loader2 } from 'lucide-react';
+import { Shield, Loader2, Play, Clock, Database, Lock, FileCode, Activity } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import SecurityScoreCard from '@/components/SecurityScoreCard';
+import SecurityIssuesList from '@/components/SecurityIssuesList';
+
+interface SecurityScanResult {
+  success: boolean;
+  score: number;
+  issues: any[];
+  summary: {
+    critical: number;
+    high: number;
+    medium: number;
+    low: number;
+    info: number;
+    total: number;
+    duration_ms: number;
+  };
+  compliance: {
+    'OWASP Top 10': boolean;
+    'GDPR Ready': boolean;
+    'Production Ready': boolean;
+  };
+}
 
 export default function SecurityAudit() {
-  const [prompt, setPrompt] = useState('');
-  const [response, setResponse] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [scanResult, setScanResult] = useState<SecurityScanResult | null>(null);
+  const [lastScanTime, setLastScanTime] = useState<string | null>(null);
 
-  const quickPrompts = [
-    "Run full security audit on all tables and RLS policies",
-    "Check for data exposure vulnerabilities",
-    "Audit edge functions for injection risks",
-    "Review authentication and authorization flows",
-    "Verify OWASP Top 10 compliance",
-  ];
-
-  const handleSubmit = async () => {
-    if (!prompt.trim()) {
-      toast.error("Please enter a security audit prompt");
-      return;
-    }
-
+  const runFullScan = async () => {
     setIsLoading(true);
-    setResponse('');
+    setScanResult(null);
 
     try {
-      const { data, error } = await supabase.functions.invoke('ai-agent', {
-        body: {
-          caseId: '00000000-0000-0000-0000-000000000000', // System-wide audit
-          action: 'security_audit',
-          prompt: prompt,
-        },
+      const { data, error } = await supabase.functions.invoke('security-scan', {
+        body: { scan_type: 'full' }
       });
 
       if (error) throw error;
 
-      setResponse(data.response);
-      
-      toast.success("Security audit completed");
+      if (data.success) {
+        setScanResult(data);
+        setLastScanTime(new Date().toLocaleString());
+        
+        if (data.summary.critical > 0) {
+          toast.error(`Critical issues detected! Score: ${data.score}/100`);
+        } else if (data.score >= 95) {
+          toast.success(`Excellent! Score: ${data.score}/100`);
+        } else {
+          toast.warning(`Security audit complete. Score: ${data.score}/100`);
+        }
+      } else {
+        throw new Error(data.error || 'Security scan failed');
+      }
     } catch (error: any) {
-      console.error('Security audit error:', error);
-      toast.error(error.message || "Failed to run security audit");
-      setResponse(`Error: ${error.message}`);
+      console.error('Security scan error:', error);
+      toast.error(error.message || "Failed to run security scan");
     } finally {
       setIsLoading(false);
     }
   };
 
+  const quickScans = [
+    { 
+      name: 'RLS Policies Only', 
+      icon: Lock, 
+      description: 'Check Row-Level Security',
+      action: () => toast.info('Feature coming soon')
+    },
+    { 
+      name: 'Edge Functions Only', 
+      icon: FileCode, 
+      description: 'Audit backend functions',
+      action: () => toast.info('Feature coming soon')
+    },
+    { 
+      name: 'Database Security', 
+      icon: Database, 
+      description: 'Check DB configuration',
+      action: () => toast.info('Feature coming soon')
+    },
+    { 
+      name: 'Real-time Monitoring', 
+      icon: Activity, 
+      description: 'View security metrics',
+      action: () => toast.info('Feature coming soon')
+    },
+  ];
+
   return (
     <AdminLayout>
       <div className="space-y-8">
+        {/* Header */}
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-heading font-black tracking-tight">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              Security Audit
+              Maximum Security Audit
             </span>
           </h1>
           <p className="mt-4 text-lg text-muted-foreground">
-            AI-powered security analysis for your Polish citizenship portal
+            Fortress-level security scanning with zero-tolerance enforcement
           </p>
         </div>
 
-        <div className="space-y-6">
-          {/* Quick Prompts */}
-          <div className="space-y-3">
-            <label className="text-lg font-medium">Quick Audits</label>
-            <div className="flex flex-wrap gap-2">
-              {quickPrompts.map((qp, idx) => (
-                <Button
-                  key={idx}
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setPrompt(qp)}
-                >
-                  {qp}
-                </Button>
-              ))}
-            </div>
-          </div>
-
-          {/* Custom Prompt */}
-          <div className="space-y-3">
-            <label className="text-lg font-medium">Custom Security Audit Prompt</label>
-            <Textarea
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-              placeholder="Example: Check all tables for RLS policy vulnerabilities and data exposure risks..."
-              className="min-h-[120px]"
-            />
-          </div>
-
-          {/* Submit Button */}
+        {/* Action Buttons */}
+        <div className="flex flex-wrap gap-4 justify-center">
           <Button 
-            onClick={handleSubmit} 
+            onClick={runFullScan} 
             disabled={isLoading}
-            className="w-full"
             size="lg"
+            className="gap-2"
           >
             {isLoading ? (
               <>
-                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                Running Security Audit...
+                <Loader2 className="h-5 w-5 animate-spin" />
+                Running Comprehensive Scan...
               </>
             ) : (
               <>
-                <Shield className="mr-2 h-5 w-5" />
-                Run Security Audit
+                <Play className="h-5 w-5" />
+                Run Full Security Scan
               </>
             )}
           </Button>
 
-          {/* Response */}
-          {response && (
-            <Alert>
-              <AlertDescription className="whitespace-pre-wrap font-mono text-sm">
-                {response}
-              </AlertDescription>
-            </Alert>
+          {lastScanTime && (
+            <Button variant="outline" size="lg" className="gap-2" disabled>
+              <Clock className="h-5 w-5" />
+              Last scan: {lastScanTime}
+            </Button>
           )}
         </div>
+
+        {/* Quick Scan Options */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {quickScans.map((scan) => (
+            <Button
+              key={scan.name}
+              variant="outline"
+              className="h-auto p-4 flex flex-col items-start gap-2"
+              onClick={scan.action}
+            >
+              <scan.icon className="h-5 w-5 text-primary" />
+              <div className="text-left">
+                <div className="font-semibold">{scan.name}</div>
+                <div className="text-xs text-muted-foreground">{scan.description}</div>
+              </div>
+            </Button>
+          ))}
+        </div>
+
+        {/* Results */}
+        {scanResult && (
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-1">
+                <SecurityScoreCard
+                  score={scanResult.score}
+                  criticalIssues={scanResult.summary.critical}
+                  highIssues={scanResult.summary.high}
+                  mediumIssues={scanResult.summary.medium}
+                  lowIssues={scanResult.summary.low}
+                  infoIssues={scanResult.summary.info}
+                  compliance={scanResult.compliance}
+                />
+              </div>
+              
+              <div className="lg:col-span-2">
+                <SecurityIssuesList issues={scanResult.issues} />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Initial State */}
+        {!scanResult && !isLoading && (
+          <div className="text-center py-12 text-muted-foreground">
+            <Shield className="h-16 w-16 mx-auto mb-4 opacity-50" />
+            <p className="text-lg">Click "Run Full Security Scan" to analyze your application's security posture</p>
+            <p className="text-sm mt-2">Scans 10 critical categories with maximum hardness rules</p>
+          </div>
+        )}
       </div>
     </AdminLayout>
   );

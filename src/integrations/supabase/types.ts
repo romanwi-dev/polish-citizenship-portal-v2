@@ -2019,6 +2019,51 @@ export type Database = {
         }
         Relationships: []
       }
+      security_scan_results: {
+        Row: {
+          created_at: string | null
+          critical_issues: number
+          high_issues: number
+          id: string
+          info_issues: number
+          low_issues: number
+          medium_issues: number
+          overall_score: number
+          performed_by: string | null
+          results: Json
+          scan_date: string
+          scan_duration_ms: number
+        }
+        Insert: {
+          created_at?: string | null
+          critical_issues?: number
+          high_issues?: number
+          id?: string
+          info_issues?: number
+          low_issues?: number
+          medium_issues?: number
+          overall_score: number
+          performed_by?: string | null
+          results?: Json
+          scan_date?: string
+          scan_duration_ms: number
+        }
+        Update: {
+          created_at?: string | null
+          critical_issues?: number
+          high_issues?: number
+          id?: string
+          info_issues?: number
+          low_issues?: number
+          medium_issues?: number
+          overall_score?: number
+          performed_by?: string | null
+          results?: Json
+          scan_date?: string
+          scan_duration_ms?: number
+        }
+        Relationships: []
+      }
       sync_logs: {
         Row: {
           created_at: string
