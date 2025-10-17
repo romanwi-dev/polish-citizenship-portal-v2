@@ -1,4 +1,5 @@
 import { Shield, Users, Globe } from "lucide-react";
+import { Button } from "./ui/button";
 
 const AboutSection = () => {
   return (
@@ -59,6 +60,21 @@ const AboutSection = () => {
               The education system in Europe is outstanding and offers the best elementary schools, top high schools, and some of the world's best universities. The latest medical technology and the best pharmaceutical developments ensure that your health is in good hands in Europe. With a Polish European passport you can freely move, travel, live, and work in any of the 28 member states of the EU.
             </p>
           </div>
+        </div>
+        
+        {/* CTA Button */}
+        <div className="flex justify-center mt-16">
+          <Button 
+            size="lg" 
+            className="text-lg md:text-2xl font-bold px-8 py-4 md:px-20 md:py-6 h-auto min-h-[48px] rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30" 
+            onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
+            aria-label="Take the Polish Citizenship Test to check your eligibility"
+          >
+            <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-bold">
+              Take Polish Citizenship Test
+            </span>
+            <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+          </Button>
         </div>
       </div>
     </section>
