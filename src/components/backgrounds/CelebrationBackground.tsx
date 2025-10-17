@@ -19,7 +19,7 @@ export const CelebrationBackground = () => {
     const newParticles: Particle[] = [];
     
     // Stars
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 40; i++) {
       newParticles.push({
         id: i,
         x: Math.random() * 100,
@@ -32,7 +32,7 @@ export const CelebrationBackground = () => {
     }
     
     // Sparkles
-    for (let i = 30; i < 60; i++) {
+    for (let i = 40; i < 80; i++) {
       newParticles.push({
         id: i,
         x: Math.random() * 100,
@@ -41,19 +41,6 @@ export const CelebrationBackground = () => {
         delay: Math.random() * 3,
         duration: Math.random() * 2 + 1,
         type: 'sparkle'
-      });
-    }
-    
-    // Fireworks
-    for (let i = 60; i < 70; i++) {
-      newParticles.push({
-        id: i,
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        size: Math.random() * 4 + 3,
-        delay: Math.random() * 6,
-        duration: Math.random() * 4 + 3,
-        type: 'firework'
       });
     }
     
@@ -133,51 +120,6 @@ export const CelebrationBackground = () => {
                 repeatDelay: 1,
               }}
             />
-          );
-        }
-        
-        if (particle.type === 'firework') {
-          return (
-            <motion.div
-              key={particle.id}
-              className="absolute"
-              style={{
-                left: `${particle.x}%`,
-                top: `${particle.y}%`,
-              }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
-              {/* Firework burst */}
-              {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute w-1 h-1 rounded-full"
-                  style={{
-                    background: `linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--accent)))`,
-                    boxShadow: '0 0 4px hsl(var(--primary))',
-                  }}
-                  initial={{
-                    x: 0,
-                    y: 0,
-                    opacity: 0,
-                    scale: 0,
-                  }}
-                  animate={{
-                    x: Math.cos(angle * Math.PI / 180) * 30,
-                    y: Math.sin(angle * Math.PI / 180) * 30,
-                    opacity: [0, 1, 0],
-                    scale: [0, 1, 0],
-                  }}
-                  transition={{
-                    duration: particle.duration,
-                    delay: particle.delay,
-                    repeat: Infinity,
-                    repeatDelay: 3,
-                  }}
-                />
-              ))}
-            </motion.div>
           );
         }
         
