@@ -137,18 +137,18 @@ export default function SecurityAudit() {
         </div>
 
         {/* Quick Scan Options */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 max-w-7xl mx-auto">
           {quickScans.map((scan) => (
             <Button
               key={scan.name}
               variant="outline"
-              className="h-auto p-4 flex flex-col items-start gap-2"
+              className="h-auto p-4 sm:p-6 flex flex-col items-center sm:items-start gap-3 hover:bg-primary/5 transition-all"
               onClick={scan.action}
             >
-              <scan.icon className="h-5 w-5 text-primary" />
-              <div className="text-left">
-                <div className="font-semibold">{scan.name}</div>
-                <div className="text-xs text-muted-foreground">{scan.description}</div>
+              <scan.icon className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
+              <div className="text-center sm:text-left w-full">
+                <div className="font-semibold text-sm sm:text-base">{scan.name}</div>
+                <div className="text-xs text-muted-foreground mt-1">{scan.description}</div>
               </div>
             </Button>
           ))}
