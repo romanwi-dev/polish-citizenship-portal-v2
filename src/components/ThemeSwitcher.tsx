@@ -20,7 +20,7 @@ export function ThemeSwitcher() {
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 hover:opacity-80 transition-all"
+      className="h-11 w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
       aria-label="Toggle theme"
     >
       {currentTheme === "dark" ? (

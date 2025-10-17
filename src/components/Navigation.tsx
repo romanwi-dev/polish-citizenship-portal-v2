@@ -131,50 +131,50 @@ const Navigation = () => {
                         {/* Icon Row - At the very top, matching mobile */}
                         <div className="flex items-center justify-start flex-wrap gap-1.5 py-2">
                           <button 
-                            className="p-2 hover:opacity-80 transition-all"
+                            className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
                             aria-label="Settings"
                           >
-                            <Settings className="h-5 w-5 text-gray-500 opacity-50" />
+                            <Settings className="h-5 w-5 text-foreground/30" />
                           </button>
                           <button 
-                            className="p-2 hover:opacity-80 transition-all"
+                            className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
                             aria-label="Add new item"
                           >
-                            <Plus className="h-5 w-5 text-gray-500 opacity-50" />
+                            <Plus className="h-5 w-5 text-foreground/30" />
                           </button>
                           <button 
                             onClick={() => {
                               navigate('/admin/hero-backgrounds-demo');
                               setIsMobileMenuOpen(false);
                             }}
-                            className="p-2 hover:opacity-80 transition-all"
+                            className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
                             aria-label="Upload image"
                           >
-                            <Image className="h-5 w-5 text-gray-500 opacity-50" />
+                            <Image className="h-5 w-5 text-foreground/30" />
                           </button>
                           <button 
-                            className="p-2 hover:opacity-80 transition-all"
+                            className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
                             aria-label="Voice input"
                           >
-                            <Mic className="h-5 w-5 text-gray-500 opacity-50" />
+                            <Mic className="h-5 w-5 text-foreground/30" />
                           </button>
                           <button 
-                            className="p-2 hover:opacity-80 transition-all"
+                            className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
                             aria-label="Quick actions"
                           >
-                            <Zap className="h-5 w-5 text-gray-500 opacity-50" />
+                            <Zap className="h-5 w-5 text-foreground/30" />
                           </button>
                           <button 
-                            className="p-2 hover:opacity-80 transition-all"
+                            className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
                             aria-label="Upload file"
                           >
-                            <Upload className="h-5 w-5 text-gray-500 opacity-50" />
+                            <Upload className="h-5 w-5 text-foreground/30" />
                           </button>
                           <button 
-                            className="p-2 hover:opacity-80 transition-all"
+                            className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
                             aria-label="Share"
                           >
-                            <Share2 className="h-5 w-5 text-gray-500 opacity-50" />
+                            <Share2 className="h-5 w-5 text-foreground/30" />
                           </button>
                           <ThemeSwitcher />
                         </div>
