@@ -104,7 +104,7 @@ Return ONLY valid JSON in this exact format:
       throw new Error('No response from Lovable AI');
     }
 
-    console.log('Raw AI response:', resultText);
+    console.log('WSC letter OCR processing completed for letter:', letterId);
 
     let ocrResult: any;
     try {
@@ -171,12 +171,12 @@ Return ONLY valid JSON in this exact format:
     );
 
   } catch (error) {
-    console.error('WSC letter OCR error:', error);
+    console.error('WSC letter OCR processing failed');
 
     return new Response(
       JSON.stringify({
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error: 'OCR processing failed'
       }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );

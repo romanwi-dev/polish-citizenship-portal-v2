@@ -119,7 +119,7 @@ Return ONLY valid JSON in this exact format:
       throw new Error('No response from Lovable AI');
     }
 
-    console.log('Raw AI response:', resultText);
+    console.log('Document OCR processing completed for document:', documentId);
 
     // Parse JSON response
     let ocrResult: any;
@@ -161,7 +161,7 @@ Return ONLY valid JSON in this exact format:
     );
 
   } catch (error) {
-    console.error('Document OCR error:', error);
+    console.error('Document OCR processing failed');
     
     try {
       const { documentId } = await req.json();
@@ -176,13 +176,13 @@ Return ONLY valid JSON in this exact format:
           .eq('id', documentId);
       }
     } catch (e) {
-      console.error('Failed to update error status:', e);
+      console.error('Failed to update error status');
     }
 
     return new Response(
       JSON.stringify({
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error: 'OCR processing failed'
       }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );

@@ -128,7 +128,7 @@ Return JSON with these exact fields:
     }
 
     const aiData = await aiResponse.json();
-    console.log("AI response:", JSON.stringify(aiData));
+    console.log("OCR processing completed for case:", caseId);
 
     const toolCall = aiData.choices?.[0]?.message?.tool_calls?.[0];
     if (!toolCall) {
@@ -176,10 +176,10 @@ Return JSON with these exact fields:
       }
     );
   } catch (error) {
-    console.error("Error in OCR function:", error);
+    console.error("OCR processing failed");
     return new Response(
       JSON.stringify({
-        error: error instanceof Error ? error.message : "Unknown error",
+        error: "OCR processing failed",
       }),
       {
         status: 500,

@@ -1,43 +1,43 @@
 project_id = "oogmuakyqadpynnrasnd"
 
 [functions.inspect-citizenship]
-verify_jwt = false
+verify_jwt = true
 
 [functions.rename-pdf-fields]
-verify_jwt = false
+verify_jwt = true
 
 [functions.dropbox-sync]
-verify_jwt = false
+verify_jwt = true
 
 [functions.ocr-passport]
-verify_jwt = false
+verify_jwt = true
 
 [functions.ocr-historical]
-verify_jwt = false
+verify_jwt = true
 
 [functions.ocr-document]
-verify_jwt = false
+verify_jwt = true
 
 [functions.ocr-wsc-letter]
-verify_jwt = false
+verify_jwt = true
 
 [functions.ai-translate]
-verify_jwt = false
+verify_jwt = true
 
 [functions.generate-poa]
-verify_jwt = false
+verify_jwt = true
 
 [functions.fill-pdf]
-verify_jwt = false
+verify_jwt = true
 
 [functions.check-password-breach]
 verify_jwt = false
 
 [functions.ai-agent]
-verify_jwt = false
+verify_jwt = true
 
 [functions.client-guide-agent]
-verify_jwt = false
+verify_jwt = true
 
 [functions.text-to-speech]
 verify_jwt = false
@@ -52,10 +52,10 @@ verify_jwt = false
 verify_jwt = false
 
 [functions.dropbox-diag]
-verify_jwt = false
+verify_jwt = true
 
 [functions.dropbox-migration-scan]
-verify_jwt = false
+verify_jwt = true
 
 [functions.validate-intake-token]
 verify_jwt = false

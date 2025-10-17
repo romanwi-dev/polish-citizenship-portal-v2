@@ -120,7 +120,7 @@ ${sourceText}`;
       throw new Error('No response from AI');
     }
 
-    console.log('Raw AI response:', resultText);
+    console.log('AI translation completed for job:', jobId);
 
     let translationResult: any;
     try {
@@ -179,7 +179,7 @@ ${sourceText}`;
     );
 
   } catch (error) {
-    console.error('Translation error:', error);
+    console.error('AI translation processing failed');
     
     // Update job status to failed if we have jobId
     try {
@@ -193,18 +193,18 @@ ${sourceText}`;
           .from('translation_jobs')
           .update({ 
             status: 'human_review',
-            notes: `AI translation failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+            notes: 'AI translation failed'
           })
           .eq('id', jobId);
       }
     } catch (e) {
-      console.error('Failed to update error status:', e);
+      console.error('Failed to update error status');
     }
 
     return new Response(
       JSON.stringify({
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred'
+        error: 'Translation processing failed'
       }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
