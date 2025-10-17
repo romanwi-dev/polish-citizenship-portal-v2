@@ -68,15 +68,78 @@ export default function SecurityAudit() {
   const handleFixAllIssues = () => {
     if (!scanResult) return;
     
-    const issuesSummary = scanResult.issues.map(issue => 
-      `- ${issue.severity.toUpperCase()}: ${issue.message}`
-    ).join('\n');
+    // Group issues by severity for better organization
+    const criticalIssues = scanResult.issues.filter(i => i.severity === 'critical');
+    const highIssues = scanResult.issues.filter(i => i.severity === 'high');
+    const mediumIssues = scanResult.issues.filter(i => i.severity === 'medium');
+    const lowIssues = scanResult.issues.filter(i => i.severity === 'low');
+    const infoIssues = scanResult.issues.filter(i => i.severity === 'info');
     
-    const fixPrompt = `Please fix all the security issues detected:\n\n${issuesSummary}\n\nTotal: ${scanResult.summary.total} issues (${scanResult.summary.critical} critical, ${scanResult.summary.high} high, ${scanResult.summary.medium} medium, ${scanResult.summary.low} low)`;
+    let fixPrompt = `Please fix all the security issues detected by the security scan:\n\n`;
+    
+    if (criticalIssues.length > 0) {
+      fixPrompt += `🚨 CRITICAL ISSUES (${criticalIssues.length}):\n`;
+      criticalIssues.forEach((issue, idx) => {
+        fixPrompt += `${idx + 1}. [${issue.category}] ${issue.title}\n`;
+        fixPrompt += `   Description: ${issue.description}\n`;
+        fixPrompt += `   Remediation: ${issue.remediation}\n`;
+        if (issue.affected_items?.length) {
+          fixPrompt += `   Affected: ${issue.affected_items.join(', ')}\n`;
+        }
+        fixPrompt += `\n`;
+      });
+    }
+    
+    if (highIssues.length > 0) {
+      fixPrompt += `⚠️ HIGH PRIORITY ISSUES (${highIssues.length}):\n`;
+      highIssues.forEach((issue, idx) => {
+        fixPrompt += `${idx + 1}. [${issue.category}] ${issue.title}\n`;
+        fixPrompt += `   Description: ${issue.description}\n`;
+        fixPrompt += `   Remediation: ${issue.remediation}\n`;
+        if (issue.affected_items?.length) {
+          fixPrompt += `   Affected: ${issue.affected_items.join(', ')}\n`;
+        }
+        fixPrompt += `\n`;
+      });
+    }
+    
+    if (mediumIssues.length > 0) {
+      fixPrompt += `📋 MEDIUM PRIORITY ISSUES (${mediumIssues.length}):\n`;
+      mediumIssues.forEach((issue, idx) => {
+        fixPrompt += `${idx + 1}. [${issue.category}] ${issue.title}\n`;
+        fixPrompt += `   Remediation: ${issue.remediation}\n\n`;
+      });
+    }
+    
+    if (lowIssues.length > 0) {
+      fixPrompt += `ℹ️ LOW PRIORITY ISSUES (${lowIssues.length}):\n`;
+      lowIssues.forEach((issue, idx) => {
+        fixPrompt += `${idx + 1}. ${issue.title}\n`;
+      });
+      fixPrompt += `\n`;
+    }
+    
+    if (infoIssues.length > 0) {
+      fixPrompt += `📝 INFORMATIONAL (${infoIssues.length}):\n`;
+      infoIssues.forEach((issue, idx) => {
+        fixPrompt += `${idx + 1}. ${issue.title}\n`;
+      });
+      fixPrompt += `\n`;
+    }
+    
+    fixPrompt += `\nSUMMARY:\n`;
+    fixPrompt += `Total Issues: ${scanResult.summary.total}\n`;
+    fixPrompt += `- Critical: ${scanResult.summary.critical}\n`;
+    fixPrompt += `- High: ${scanResult.summary.high}\n`;
+    fixPrompt += `- Medium: ${scanResult.summary.medium}\n`;
+    fixPrompt += `- Low: ${scanResult.summary.low}\n`;
+    fixPrompt += `- Info: ${scanResult.summary.info}\n`;
+    fixPrompt += `\nCurrent Security Score: ${scanResult.score}/100\n`;
+    fixPrompt += `\nPlease implement the recommended remediations for all issues, prioritizing critical and high severity items first.`;
     
     // Copy to clipboard
     navigator.clipboard.writeText(fixPrompt).then(() => {
-      toast.success('Security issues copied to clipboard! Paste in chat to fix all issues.');
+      toast.success('Detailed security issues copied to clipboard! Paste in chat to fix all issues.');
     }).catch(() => {
       toast.error('Failed to copy. Please manually ask AI to fix the security issues.');
     });
