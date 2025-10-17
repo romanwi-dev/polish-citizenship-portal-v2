@@ -192,8 +192,8 @@ const FAQSection = () => {
 
           {/* FAQ Tabs */}
           <Tabs defaultValue="eligibility" className="w-full">
-            <div className="mb-8">
-              <TabsList className="inline-flex lg:grid w-max lg:w-full grid-cols-2 lg:grid-cols-5 gap-2 h-auto p-2 bg-background/50 backdrop-blur-sm border border-primary/10">
+            <div className="mb-8 overflow-x-auto">
+              <TabsList className="inline-flex lg:grid w-max lg:w-full grid-cols-2 lg:grid-cols-5 gap-2 h-auto p-2 backdrop-blur-sm border border-primary/10">
                 {faqCategories.map((category) => {
                   const Icon = category.icon;
                   return (
