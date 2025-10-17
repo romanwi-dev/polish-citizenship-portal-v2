@@ -2,7 +2,6 @@ import { lazy, Suspense } from "react";
 import Navigation from "@/components/Navigation";
 import HeroWeb3 from "@/components/HeroWeb3";
 import AboutSection from "@/components/AboutSection";
-import { StaticHeritage } from "@/components/heroes/StaticHeritage";
 
 // Lazy load components below the fold
 const AIAnalysisSection = lazy(() => import("@/components/AIAnalysisSection"));
@@ -24,13 +23,7 @@ const SectionLoader = () => (
 
 const Index = () => {
   return (
-    <div className="min-h-screen overflow-x-hidden relative">
-      {/* Global Background */}
-      <div className="fixed inset-0 z-0">
-        <StaticHeritage />
-      </div>
-      
-      <div className="relative z-10">
+    <div className="min-h-screen overflow-x-hidden bg-background">
       <Navigation />
       <HeroWeb3 />
       <AboutSection />
@@ -70,7 +63,6 @@ const Index = () => {
       <Suspense fallback={<SectionLoader />}>
         <ScrollToTop />
       </Suspense>
-      </div>
     </div>
   );
 };
