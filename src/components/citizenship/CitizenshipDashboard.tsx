@@ -38,7 +38,7 @@ export const CitizenshipDashboard = () => {
       {/* Workflow Navigation */}
       <WorkflowNavigation />
 
-      <div className="grid gap-3 grid-cols-2 md:grid-cols-4">
+      <div className="grid gap-3 grid-cols-2 md:grid-cols-4 px-2 sm:px-0">
         {/* Active Card */}
         <div 
           className="relative h-[140px] cursor-pointer"
@@ -54,12 +54,15 @@ export const CitizenshipDashboard = () => {
           >
             {/* Front */}
             <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
-              style={{ backfaceVisibility: 'hidden' }}
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300 border-2 border-primary/20"
+              style={{ 
+                backfaceVisibility: 'hidden',
+                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
+              }}
             >
               <div className="flex items-center gap-3 sm:gap-4 justify-center">
                 <div className="min-w-0 text-center">
-                  <p className="text-base font-semibold text-foreground">Active</p>
+                  <p className="text-base sm:text-sm font-semibold text-foreground/90">Preparing</p>
                 </div>
               </div>
             </div>
@@ -88,12 +91,15 @@ export const CitizenshipDashboard = () => {
           >
             {/* Front */}
             <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
-              style={{ backfaceVisibility: 'hidden' }}
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300 border-2 border-primary/20"
+              style={{ 
+                backfaceVisibility: 'hidden',
+                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
+              }}
             >
               <div className="flex items-center gap-3 sm:gap-4 justify-center">
                 <div className="min-w-0 text-center">
-                  <p className="text-base font-semibold text-foreground">WSC Letters</p>
+                  <p className="text-base sm:text-sm font-semibold text-foreground/90">Submitted</p>
                 </div>
               </div>
             </div>
@@ -122,12 +128,15 @@ export const CitizenshipDashboard = () => {
           >
             {/* Front */}
             <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
-              style={{ backfaceVisibility: 'hidden' }}
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300 border-2 border-primary/20"
+              style={{ 
+                backfaceVisibility: 'hidden',
+                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
+              }}
             >
               <div className="flex items-center gap-3 sm:gap-4 justify-center">
                 <div className="min-w-0 text-center">
-                  <p className="text-base font-semibold text-foreground">Push Schemes</p>
+                  <p className="text-base sm:text-sm font-semibold text-foreground/90">Schemes</p>
                 </div>
               </div>
             </div>
@@ -156,12 +165,15 @@ export const CitizenshipDashboard = () => {
           >
             {/* Front */}
             <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
-              style={{ backfaceVisibility: 'hidden' }}
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300 border-2 border-primary/20"
+              style={{ 
+                backfaceVisibility: 'hidden',
+                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
+              }}
             >
               <div className="flex items-center gap-3 sm:gap-4 justify-center">
                 <div className="min-w-0 text-center">
-                  <p className="text-base font-semibold text-foreground">Decisions</p>
+                  <p className="text-base sm:text-sm font-semibold text-foreground/90">Decision</p>
                 </div>
               </div>
             </div>
@@ -179,24 +191,24 @@ export const CitizenshipDashboard = () => {
       {/* Main Content Tabs */}
       <Tabs defaultValue="cards" className="space-y-4">
         <div className="w-full overflow-x-auto scrollbar-hide">
-          <TabsList className="inline-flex gap-2 h-auto p-2 w-max">
-            <TabsTrigger value="cards" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
-              <span>Workflow Cards</span>
+          <TabsList className="inline-flex h-auto p-0 w-max bg-transparent border-0 gap-1 opacity-70">
+            <TabsTrigger value="cards" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
+              Workflow Cards
             </TabsTrigger>
-            <TabsTrigger value="timeline" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
-              <span>Timeline</span>
+            <TabsTrigger value="timeline" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
+              Timeline
             </TabsTrigger>
-            <TabsTrigger value="supervisor" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
-              <span>Supervisor</span>
+            <TabsTrigger value="supervisor" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
+              Supervisor
             </TabsTrigger>
-            <TabsTrigger value="wsc" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
-              <span>WSC Letters</span>
+            <TabsTrigger value="wsc" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
+              WSC Letters
             </TabsTrigger>
-            <TabsTrigger value="push" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
-              <span>Push Schemes</span>
+            <TabsTrigger value="push" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
+              Push Schemes
             </TabsTrigger>
-            <TabsTrigger value="analytics" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
-              <span>Analytics</span>
+            <TabsTrigger value="analytics" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
+              Analytics
             </TabsTrigger>
           </TabsList>
         </div>
