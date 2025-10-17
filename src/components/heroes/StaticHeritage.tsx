@@ -4,7 +4,8 @@ export const StaticHeritage = () => {
       <div 
         className="absolute inset-0 animate-color-wave bg-[length:200%_200%]"
         style={{
-          backgroundImage: 'radial-gradient(circle at 20% 50%, #f5ebe0, transparent 50%), radial-gradient(circle at 60% 50%, #ede0d4, transparent 50%), radial-gradient(circle at 90% 50%, #e6ccb2, transparent 50%), linear-gradient(135deg, #f5ebe0, #ede0d4, #e6ccb2, #f5ebe0)'
+          backgroundImage: 'radial-gradient(circle at 20% 50%, #d4c5b0, transparent 50%), radial-gradient(circle at 60% 50%, #c8b89d, transparent 50%), radial-gradient(circle at 90% 50%, #baa888, transparent 50%), linear-gradient(135deg, #d4c5b0, #c8b89d, #baa888, #d4c5b0)',
+          backgroundColor: '#c8b89d'
         }}
       />
       <div className="absolute inset-0 opacity-40 blur-sm pointer-events-none" />
