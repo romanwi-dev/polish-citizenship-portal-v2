@@ -224,23 +224,23 @@ export const TranslationDashboard = () => {
       {/* Main Content Tabs */}
       <Tabs defaultValue="cards" className="space-y-4">
         <div className="w-full overflow-x-auto scrollbar-hide">
-          <TabsList className="inline-flex h-auto p-0 w-max bg-transparent border-0 gap-1">
-            <TabsTrigger value="cards" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-lg bg-gradient-to-r from-gray-900 via-red-700 to-gray-800 hover:from-gray-950 hover:via-red-800 hover:to-gray-900 border-0 text-white shadow-lg">
+          <TabsList className="flex gap-1 w-full justify-between h-auto p-0 bg-transparent border-0">
+            <TabsTrigger value="cards" className="flex-1 h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/30 data-[state=active]:shadow-[0_0_30px_rgba(239,68,68,0.3)]">
               Workflow Cards
             </TabsTrigger>
-            <TabsTrigger value="workflow" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-lg bg-gradient-to-r from-gray-900 via-red-700 to-gray-800 hover:from-gray-950 hover:via-red-800 hover:to-gray-900 border-0 text-white shadow-lg">
+            <TabsTrigger value="workflow" className="flex-1 h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/30 data-[state=active]:shadow-[0_0_30px_rgba(239,68,68,0.3)]">
               Translation Timeline
             </TabsTrigger>
-            <TabsTrigger value="supervisor" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-lg bg-gradient-to-r from-gray-900 via-red-700 to-gray-800 hover:from-gray-950 hover:via-red-800 hover:to-gray-900 border-0 text-white shadow-lg">
+            <TabsTrigger value="supervisor" className="flex-1 h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/30 data-[state=active]:shadow-[0_0_30px_rgba(239,68,68,0.3)]">
               Supervisor
             </TabsTrigger>
-            <TabsTrigger value="requirements" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-lg bg-gradient-to-r from-gray-900 via-red-700 to-gray-800 hover:from-gray-950 hover:via-red-800 hover:to-gray-900 border-0 text-white shadow-lg">
+            <TabsTrigger value="requirements" className="flex-1 h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/30 data-[state=active]:shadow-[0_0_30px_rgba(239,68,68,0.3)]">
               Requirements
             </TabsTrigger>
-            <TabsTrigger value="translators" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-lg bg-gradient-to-r from-gray-900 via-red-700 to-gray-800 hover:from-gray-950 hover:via-red-800 hover:to-gray-900 border-0 text-white shadow-lg">
+            <TabsTrigger value="translators" className="flex-1 h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/30 data-[state=active]:shadow-[0_0_30px_rgba(239,68,68,0.3)]">
               Sworn Translators
             </TabsTrigger>
-            <TabsTrigger value="agencies" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-lg bg-gradient-to-r from-gray-900 via-red-700 to-gray-800 hover:from-gray-950 hover:via-red-800 hover:to-gray-900 border-0 text-white shadow-lg">
+            <TabsTrigger value="agencies" className="flex-1 h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/30 data-[state=active]:shadow-[0_0_30px_rgba(239,68,68,0.3)]">
               Agencies
             </TabsTrigger>
           </TabsList>

@@ -179,23 +179,23 @@ export const ExtendedServicesDashboard = () => {
       {/* Main Content Tabs */}
       <Tabs defaultValue="cards" className="space-y-4">
         <div className="w-full overflow-x-auto scrollbar-hide">
-          <TabsList className="inline-flex h-auto p-0 w-max bg-transparent border-0 gap-1">
-            <TabsTrigger value="cards" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-lg bg-gradient-to-r from-gray-900 via-red-700 to-gray-800 hover:from-gray-950 hover:via-red-800 hover:to-gray-900 border-0 text-white shadow-lg">
+          <TabsList className="flex gap-1 w-full justify-between h-auto p-0 bg-transparent border-0">
+            <TabsTrigger value="cards" className="flex-1 h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/30 data-[state=active]:shadow-[0_0_30px_rgba(239,68,68,0.3)]">
               Service Cards
             </TabsTrigger>
-            <TabsTrigger value="family" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-lg bg-gradient-to-r from-gray-900 via-red-700 to-gray-800 hover:from-gray-950 hover:via-red-800 hover:to-gray-900 border-0 text-white shadow-lg">
+            <TabsTrigger value="family" className="flex-1 h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/30 data-[state=active]:shadow-[0_0_30px_rgba(239,68,68,0.3)]">
               Family Legal
             </TabsTrigger>
-            <TabsTrigger value="procurement" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-lg bg-gradient-to-r from-gray-900 via-red-700 to-gray-800 hover:from-gray-950 hover:via-red-800 hover:to-gray-900 border-0 text-white shadow-lg">
+            <TabsTrigger value="procurement" className="flex-1 h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/30 data-[state=active]:shadow-[0_0_30px_rgba(239,68,68,0.3)]">
               Document Procurement
             </TabsTrigger>
-            <TabsTrigger value="heritage" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-lg bg-gradient-to-r from-gray-900 via-red-700 to-gray-800 hover:from-gray-950 hover:via-red-800 hover:to-gray-900 border-0 text-white shadow-lg">
+            <TabsTrigger value="heritage" className="flex-1 h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/30 data-[state=active]:shadow-[0_0_30px_rgba(239,68,68,0.3)]">
               Heritage Research
             </TabsTrigger>
-            <TabsTrigger value="relocation" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-lg bg-gradient-to-r from-gray-900 via-red-700 to-gray-800 hover:from-gray-950 hover:via-red-800 hover:to-gray-900 border-0 text-white shadow-lg">
+            <TabsTrigger value="relocation" className="flex-1 h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/30 data-[state=active]:shadow-[0_0_30px_rgba(239,68,68,0.3)]">
               Relocation
             </TabsTrigger>
-            <TabsTrigger value="analytics" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-lg bg-gradient-to-r from-gray-900 via-red-700 to-gray-800 hover:from-gray-950 hover:via-red-800 hover:to-gray-900 border-0 text-white shadow-lg">
+            <TabsTrigger value="analytics" className="flex-1 h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/30 data-[state=active]:shadow-[0_0_30px_rgba(239,68,68,0.3)]">
               Analytics
             </TabsTrigger>
           </TabsList>
