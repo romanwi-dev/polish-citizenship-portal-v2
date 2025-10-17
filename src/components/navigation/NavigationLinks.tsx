@@ -49,16 +49,6 @@ const NAVIGATION_SECTIONS: Array<{
     ]
   },
   {
-    title: 'Subagents',
-    links: [
-      { label: 'Security', href: '/admin/security-audit', icon: Shield },
-      { label: 'Researcher', href: '/admin/researcher', icon: Search },
-      { label: 'Translator', href: '/admin/translator', icon: Languages },
-      { label: 'Writer', href: '/admin/writer', icon: PenTool },
-      { label: 'Designer', href: '/admin/designer', icon: Palette },
-    ]
-  },
-  {
     title: 'Admin Tools',
     links: [
       { label: 'AI Agent', href: '/admin/ai-agent', icon: Bot },

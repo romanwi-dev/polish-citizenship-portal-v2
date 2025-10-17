@@ -21,7 +21,11 @@ import {
   Edit,
   Bot,
   FileText,
-  Loader2
+  Loader2,
+  Search,
+  Languages,
+  PenTool,
+  Palette
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -253,6 +257,54 @@ export default function CaseDetail() {
 
           {/* AI AGENT TAB */}
           <TabsContent value="ai-agent" className="space-y-6">
+            {/* AI Subagent Selector */}
+            <Card className="bg-card/50 backdrop-blur">
+              <CardHeader>
+                <CardTitle className="text-2xl font-heading font-black">AI Subagents</CardTitle>
+                <CardDescription>Select a specialized AI agent for this case</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <Button
+                    variant="outline"
+                    className="h-24 flex flex-col gap-2 border-2 hover:border-primary hover:bg-primary/10"
+                    onClick={() => navigate(`/admin/researcher/${id}`)}
+                  >
+                    <Search className="h-6 w-6 text-primary" />
+                    <span className="font-semibold">Researcher</span>
+                    <span className="text-xs text-muted-foreground">In-depth analysis</span>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="h-24 flex flex-col gap-2 border-2 hover:border-primary hover:bg-primary/10"
+                    onClick={() => navigate(`/admin/translator/${id}`)}
+                  >
+                    <Languages className="h-6 w-6 text-primary" />
+                    <span className="font-semibold">Translator</span>
+                    <span className="text-xs text-muted-foreground">Legal translation</span>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="h-24 flex flex-col gap-2 border-2 hover:border-primary hover:bg-primary/10"
+                    onClick={() => navigate(`/admin/writer/${id}`)}
+                  >
+                    <PenTool className="h-6 w-6 text-primary" />
+                    <span className="font-semibold">Writer</span>
+                    <span className="text-xs text-muted-foreground">Professional content</span>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="h-24 flex flex-col gap-2 border-2 hover:border-primary hover:bg-primary/10"
+                    onClick={() => navigate(`/admin/designer/${id}`)}
+                  >
+                    <Palette className="h-6 w-6 text-primary" />
+                    <span className="font-semibold">Designer</span>
+                    <span className="text-xs text-muted-foreground">UI/UX optimization</span>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
             <AIAgentPanel caseId={id!} />
           </TabsContent>
 
