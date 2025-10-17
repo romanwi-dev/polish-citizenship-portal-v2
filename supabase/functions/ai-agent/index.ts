@@ -11,13 +11,33 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  console.log('AI Agent function called');
+
   try {
-    const { caseId, prompt, action } = await req.json();
+    const body = await req.json();
+    console.log('Request body:', JSON.stringify(body));
     
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const lovableApiKey = Deno.env.get('LOVABLE_API_KEY')!;
+    const { caseId, prompt, action } = body;
     
+    if (!prompt || !action) {
+      throw new Error('Missing required fields: prompt and action are required');
+    }
+    
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+    const lovableApiKey = Deno.env.get('LOVABLE_API_KEY');
+    
+    if (!supabaseUrl || !supabaseKey) {
+      console.error('Missing Supabase credentials');
+      throw new Error('Server configuration error');
+    }
+    
+    if (!lovableApiKey) {
+      console.error('Missing LOVABLE_API_KEY');
+      throw new Error('AI service not configured');
+    }
+    
+    console.log('Initializing Supabase client');
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     let caseData = null;
@@ -104,8 +124,12 @@ serve(async (req) => {
 
   } catch (error: any) {
     console.error('AI Agent error:', error);
+    console.error('Error stack:', error.stack);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: error.message || 'Unknown error occurred',
+        details: error.toString()
+      }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
