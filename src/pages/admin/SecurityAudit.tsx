@@ -268,7 +268,7 @@ export default function SecurityAudit() {
             </DialogDescription>
           </DialogHeader>
           <ScrollArea className="h-[500px] w-full rounded-md border p-4">
-            <div className="whitespace-pre-wrap font-mono text-sm">
+            <div className="whitespace-pre-wrap font-mono text-sm select-text cursor-text">
               {fixPlan || 'No fix plan available'}
             </div>
           </ScrollArea>
