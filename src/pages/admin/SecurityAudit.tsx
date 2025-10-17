@@ -165,13 +165,13 @@ export default function SecurityAudit() {
           </p>
         </div>
 
-        {/* Action Buttons */}
-        <div className="max-w-4xl mx-auto flex flex-wrap gap-4 justify-center">
+        {/* Main Action Button */}
+        <div className="flex justify-center">
           <Button 
             size="lg"
             onClick={runFullScan} 
             disabled={isLoading}
-            className="flex-1 text-lg md:text-2xl font-bold px-8 py-4 md:px-20 md:py-6 h-auto min-h-[48px] rounded-lg bg-red-500/20 hover:bg-red-500/30 shadow-glow hover-glow backdrop-blur-md border-2 border-red-500/30 transition-all group relative overflow-hidden"
+            className="text-lg md:text-2xl font-bold px-8 py-4 md:px-20 md:py-6 h-auto min-h-[48px] rounded-lg bg-red-500/20 hover:bg-red-500/30 shadow-glow hover-glow backdrop-blur-md border-2 border-red-500/30 transition-all group relative overflow-hidden"
           >
             {isLoading ? (
               <>
@@ -186,7 +186,10 @@ export default function SecurityAudit() {
             )}
             <div className="absolute inset-0 bg-red-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
           </Button>
+        </div>
 
+        {/* Secondary Action Buttons */}
+        <div className="flex flex-wrap gap-4 justify-center">
           {lastScanTime && (
             <Button variant="outline" size="lg" className="gap-2" disabled>
               <Clock className="h-5 w-5" />
