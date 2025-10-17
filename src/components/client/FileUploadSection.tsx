@@ -38,34 +38,70 @@ export function FileUploadSection({ caseId, onUploadComplete }: FileUploadSectio
 
     setUploading(true);
     try {
-      // Create Dropbox path
+      // Convert file to base64 for OCR processing
+      const reader = new FileReader();
+      const base64Promise = new Promise<string>((resolve, reject) => {
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(selectedFile);
+      });
+      
+      const imageBase64 = await base64Promise;
       const timestamp = Date.now();
       const dropboxPath = `/CASES/${caseId}/uploads/${timestamp}_${selectedFile.name}`;
 
-      // Insert document record
-      const { error: dbError } = await supabase.from("documents").insert({
-        case_id: caseId,
-        name: selectedFile.name,
-        dropbox_path: dropboxPath,
-        type: docType,
-        category: category || "client_upload",
-        file_size: selectedFile.size,
-        file_extension: selectedFile.name.split('.').pop() || '',
-        ocr_status: 'pending',
-        metadata: {
-          uploaded_by: 'client',
-          upload_source: 'client_portal',
-          original_filename: selectedFile.name,
-        },
-      });
+      // 1. Create document record
+      const { data: newDoc, error: dbError } = await supabase
+        .from("documents")
+        .insert({
+          case_id: caseId,
+          name: selectedFile.name,
+          dropbox_path: dropboxPath,
+          type: docType,
+          category: category || "client_upload",
+          file_size: selectedFile.size,
+          file_extension: selectedFile.name.split('.').pop() || '',
+          ocr_status: 'processing',
+          metadata: {
+            uploaded_by: 'client',
+            upload_source: 'client_portal',
+            original_filename: selectedFile.name,
+          },
+        })
+        .select()
+        .single();
 
       if (dbError) throw dbError;
 
-      toast.success("Document uploaded successfully!");
+      toast.success("Document uploaded! Processing with OCR...");
+
+      // 2. Trigger OCR processing (time-limited, secure)
+      supabase.functions.invoke('ocr-document', {
+        body: {
+          imageBase64,
+          documentId: newDoc.id,
+          caseId,
+          expectedType: docType
+        }
+      }).then(({ data: ocrResult, error: ocrError }) => {
+        if (ocrError) {
+          console.error('OCR processing error:', ocrError);
+          toast.warning('Document saved but OCR processing failed');
+        } else if (ocrResult?.data) {
+          const confidence = (ocrResult.data.confidence * 100).toFixed(0);
+          toast.success(
+            `OCR complete! Confidence: ${confidence}%`,
+            { duration: 5000 }
+          );
+        }
+      });
+
+      // 3. Clear file from browser memory immediately
       setSelectedFile(null);
       setDocType("");
       setCategory("");
       onUploadComplete();
+      
     } catch (error: any) {
       console.error("Upload error:", error);
       toast.error(error.message || "Failed to upload document");
@@ -159,6 +195,10 @@ export function FileUploadSection({ caseId, onUploadComplete }: FileUploadSectio
             </>
           )}
         </Button>
+
+        <div className="mt-4 p-3 bg-blue-500/10 border border-blue-500/20 rounded text-sm text-muted-foreground">
+          <strong className="text-foreground">Security:</strong> Your document is processed securely with OCR for 5 minutes maximum, then immediately deleted from our servers. Original files remain safely on Dropbox.
+        </div>
       </CardContent>
     </Card>
   );

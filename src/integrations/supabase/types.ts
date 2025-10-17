@@ -1882,6 +1882,75 @@ export type Database = {
           },
         ]
       }
+      ocr_processing_logs: {
+        Row: {
+          case_id: string | null
+          completed_at: string | null
+          confidence: number | null
+          created_at: string | null
+          document_id: string | null
+          error_message: string | null
+          extracted_fields: Json | null
+          id: string
+          image_deleted_at: string | null
+          image_size_bytes: number | null
+          memory_used_mb: number | null
+          processed_by: string | null
+          processing_duration_ms: number | null
+          started_at: string
+          status: string | null
+        }
+        Insert: {
+          case_id?: string | null
+          completed_at?: string | null
+          confidence?: number | null
+          created_at?: string | null
+          document_id?: string | null
+          error_message?: string | null
+          extracted_fields?: Json | null
+          id?: string
+          image_deleted_at?: string | null
+          image_size_bytes?: number | null
+          memory_used_mb?: number | null
+          processed_by?: string | null
+          processing_duration_ms?: number | null
+          started_at?: string
+          status?: string | null
+        }
+        Update: {
+          case_id?: string | null
+          completed_at?: string | null
+          confidence?: number | null
+          created_at?: string | null
+          document_id?: string | null
+          error_message?: string | null
+          extracted_fields?: Json | null
+          id?: string
+          image_deleted_at?: string | null
+          image_size_bytes?: number | null
+          memory_used_mb?: number | null
+          processed_by?: string | null
+          processing_duration_ms?: number | null
+          started_at?: string
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ocr_processing_logs_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ocr_processing_logs_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       poa: {
         Row: {
           case_id: string

@@ -6,131 +6,73 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Mail, Loader2 } from "lucide-react";
+import { Mail, Loader2, CheckCircle } from "lucide-react";
 
 export default function ClientLogin() {
   const [email, setEmail] = useState("");
-  const [token, setToken] = useState("");
-  const [step, setStep] = useState<"email" | "token">("email");
+  const [caseId, setCaseId] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showEmailSent, setShowEmailSent] = useState(false);
   const navigate = useNavigate();
 
-  const handleSendMagicLink = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleMagicLinkLogin = async () => {
+    if (!email || !caseId) {
+      toast.error("Please enter both email and case ID");
+      return;
+    }
+
     setLoading(true);
-
     try {
-      // Check if client has portal access
-      const { data: access } = await supabase
-        .from("client_portal_access")
-        .select("id, case_id")
-        .eq("user_id", email)
-        .maybeSingle();
+      const { data, error } = await supabase.functions.invoke("client-magic-link", {
+        body: { email, caseId },
+      });
 
-      if (!access) {
-        toast.error("No portal access found for this email");
-        setLoading(false);
-        return;
-      }
+      if (error) throw error;
 
-      // Generate magic link token
-      const magicToken = Math.random().toString(36).substring(2, 15);
-      const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
-
-      await supabase
-        .from("client_portal_access")
-        .update({
-          magic_link_token: magicToken,
-          magic_link_expires_at: expiresAt.toISOString(),
-        })
-        .eq("id", access.id);
-
-      toast.success("Magic link code sent! Check your email.");
-      setStep("token");
-    } catch (error) {
-      console.error("Error sending magic link:", error);
-      toast.error("Failed to send magic link");
+      setShowEmailSent(true);
+      toast.success("Magic link sent! Check your email to login securely.");
+    } catch (error: any) {
+      console.error("Magic link error:", error);
+      toast.error(error.message || "Failed to send magic link");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleVerifyToken = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      const { data: access } = await supabase
-        .from("client_portal_access")
-        .select("*, cases(id, client_name)")
-        .eq("magic_link_token", token)
-        .gt("magic_link_expires_at", new Date().toISOString())
-        .maybeSingle();
-
-      if (!access) {
-        toast.error("Invalid or expired token");
-        setLoading(false);
-        return;
-      }
-
-      // Update last login
-      await supabase
-        .from("client_portal_access")
-        .update({
-          last_login: new Date().toISOString(),
-          login_count: (access.login_count || 0) + 1,
-        })
-        .eq("id", access.id);
-
-      // Store session in localStorage
-      localStorage.setItem("client_session", JSON.stringify({
-        caseId: access.case_id,
-        userId: access.user_id,
-        loginTime: new Date().toISOString(),
-      }));
-
-      toast.success("Welcome to your portal!");
-      navigate(`/client/dashboard/${access.case_id}`);
-    } catch (error) {
-      console.error("Error verifying token:", error);
-      toast.error("Failed to verify token");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDevAccess = async () => {
-    setLoading(true);
-    try {
-      // Fetch first available case for testing
-      const { data: cases } = await supabase
-        .from("cases")
-        .select("id, client_name")
-        .limit(1)
-        .single();
-
-      if (!cases) {
-        toast.error("No test cases available. Create a case first.");
-        setLoading(false);
-        return;
-      }
-
-      // Create dev session
-      localStorage.setItem("client_session", JSON.stringify({
-        caseId: cases.id,
-        userId: "dev-user",
-        loginTime: new Date().toISOString(),
-      }));
-
-      toast.success(`Dev Mode: Accessing ${cases.client_name}'s portal`);
-      navigate(`/client/dashboard/${cases.id}`);
-    } catch (error) {
-      console.error("Error accessing dev mode:", error);
-      toast.error("Failed to access dev mode");
-    } finally {
-      setLoading(false);
-    }
-  };
+  if (showEmailSent) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <Card className="w-full max-w-md">
+          <CardHeader className="text-center">
+            <div className="mx-auto mb-4 w-12 h-12 rounded-full bg-green-500/10 flex items-center justify-center">
+              <CheckCircle className="h-6 w-6 text-green-600" />
+            </div>
+            <CardTitle className="text-2xl">Check Your Email</CardTitle>
+            <CardDescription>
+              We've sent a secure login link to <strong>{email}</strong>
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-muted-foreground text-center">
+              Click the link in the email to securely access your dashboard.
+              The link will expire in 24 hours.
+            </p>
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => {
+                setShowEmailSent(false);
+                setEmail("");
+                setCaseId("");
+              }}
+            >
+              Back to Login
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
@@ -138,90 +80,58 @@ export default function ClientLogin() {
         <CardHeader>
           <CardTitle className="text-2xl">Client Portal Login</CardTitle>
           <CardDescription>
-            {step === "email" 
-              ? "Enter your email to receive a login code"
-              : "Enter the code sent to your email"}
+            Enter your email and case ID to receive a secure login link
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          {step === "email" ? (
-            <form onSubmit={handleSendMagicLink} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="your.email@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </div>
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Sending...
-                  </>
-                ) : (
-                  <>
-                    <Mail className="mr-2 h-4 w-4" />
-                    Send Login Code
-                  </>
-                )}
-              </Button>
-            </form>
-          ) : (
-            <form onSubmit={handleVerifyToken} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="token">Login Code</Label>
-                <Input
-                  id="token"
-                  type="text"
-                  placeholder="Enter code from email"
-                  value={token}
-                  onChange={(e) => setToken(e.target.value)}
-                  required
-                />
-              </div>
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Verifying...
-                  </>
-                ) : (
-                  "Verify & Login"
-                )}
-              </Button>
-              <Button
-                type="button"
-                variant="ghost"
-                className="w-full"
-                onClick={() => setStep("email")}
-              >
-                Back to Email
-              </Button>
-            </form>
-          )}
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="email">Email Address</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="your.email@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={loading}
+            />
+          </div>
 
-          {/* Dev Mode Access - Only in Development */}
-          {import.meta.env.DEV && (
-            <div className="mt-6 pt-6 border-t">
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full"
-                onClick={handleDevAccess}
-                disabled={loading}
-              >
-                🔧 Dev Mode: Quick Access (Test Only)
-              </Button>
-              <p className="text-xs text-muted-foreground text-center mt-2">
-                Development only - bypasses authentication
-              </p>
-            </div>
-          )}
+          <div className="space-y-2">
+            <Label htmlFor="caseId">Case ID</Label>
+            <Input
+              id="caseId"
+              type="text"
+              placeholder="Enter your case ID"
+              value={caseId}
+              onChange={(e) => setCaseId(e.target.value)}
+              disabled={loading}
+            />
+          </div>
+
+          <Button
+            onClick={handleMagicLinkLogin}
+            className="w-full"
+            disabled={loading || !email || !caseId}
+          >
+            {loading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Sending Secure Link...
+              </>
+            ) : (
+              <>
+                <Mail className="mr-2 h-4 w-4" />
+                Send Login Link
+              </>
+            )}
+          </Button>
+
+          <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+            <p className="text-sm text-muted-foreground">
+              <strong className="text-foreground">Security Note:</strong> This portal uses passwordless authentication for maximum security.
+              Your login link is time-limited and single-use only.
+            </p>
+          </div>
         </CardContent>
       </Card>
     </div>

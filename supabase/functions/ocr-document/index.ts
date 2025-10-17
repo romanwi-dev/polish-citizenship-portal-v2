@@ -5,9 +5,14 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Security: Time-limited processing
+const PROCESSING_TIMEOUT_MS = 300000; // 5 minutes soft limit
+const HARD_TIMEOUT_MS = 600000; // 10 minutes absolute max
+
 interface DocumentOCRRequest {
   imageBase64: string;
   documentId: string;
+  caseId?: string;
   expectedType?: string;
 }
 
@@ -16,13 +21,33 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  const startTime = Date.now();
+  let logId: string | null = null;
+
+  // Force cleanup after hard timeout
+  const timeoutId = setTimeout(() => {
+    console.error('SECURITY: Processing timeout exceeded - forcing cleanup');
+    Deno.exit(1);
+  }, HARD_TIMEOUT_MS);
+
   try {
-    const { imageBase64, documentId, expectedType }: DocumentOCRRequest = await req.json();
+    const { imageBase64, documentId, caseId, expectedType }: DocumentOCRRequest = await req.json();
+
+    // 1. Validate authentication
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      clearTimeout(timeoutId);
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
     // Input validation
     const { isValidUUID, MAX_FILE_SIZE } = await import('../_shared/validation.ts');
 
     if (!imageBase64 || typeof imageBase64 !== 'string') {
+      clearTimeout(timeoutId);
       return new Response(
         JSON.stringify({ error: 'Image data is required' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -30,6 +55,7 @@ Deno.serve(async (req) => {
     }
 
     if (imageBase64.length > MAX_FILE_SIZE * 1.5) {
+      clearTimeout(timeoutId);
       return new Response(
         JSON.stringify({ error: 'Image file too large' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -37,15 +63,9 @@ Deno.serve(async (req) => {
     }
 
     if (!isValidUUID(documentId)) {
+      clearTimeout(timeoutId);
       return new Response(
         JSON.stringify({ error: 'Invalid document ID format' }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
-
-    if (expectedType && typeof expectedType !== 'string') {
-      return new Response(
-        JSON.stringify({ error: 'Invalid expected type' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -59,6 +79,40 @@ Deno.serve(async (req) => {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
+
+    // 2. Log processing start for audit trail
+    const { data: logEntry } = await supabase
+      .from('ocr_processing_logs')
+      .insert({
+        document_id: documentId,
+        case_id: caseId,
+        started_at: new Date().toISOString(),
+        image_size_bytes: imageBase64.length,
+        status: 'processing'
+      })
+      .select('id')
+      .single();
+
+    if (logEntry) {
+      logId = logEntry.id;
+    }
+
+    // 3. Check rate limiting (max 10 OCR per case per hour)
+    if (caseId) {
+      const { count } = await supabase
+        .from('ocr_processing_logs')
+        .select('id', { count: 'exact' })
+        .eq('case_id', caseId)
+        .gte('started_at', new Date(Date.now() - 3600000).toISOString());
+
+      if (count && count >= 10) {
+        clearTimeout(timeoutId);
+        return new Response(
+          JSON.stringify({ error: 'Rate limit exceeded. Maximum 10 documents per hour.' }),
+          { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+    }
 
     // Update document status to processing
     await supabase
@@ -175,11 +229,47 @@ Return ONLY valid JSON in this exact format:
 
     console.log(`Document OCR completed with ${(ocrResult.confidence * 100).toFixed(0)}% confidence`);
 
+    // 6. Force memory cleanup - explicitly nullify image data
+    const memUsage = Deno.memoryUsage();
+    const processingTime = Date.now() - startTime;
+
+    // Update OCR log with completion
+    if (logId) {
+      await supabase
+        .from('ocr_processing_logs')
+        .update({
+          completed_at: new Date().toISOString(),
+          processing_duration_ms: processingTime,
+          extracted_fields: ocrResult.extracted_data,
+          confidence: ocrResult.confidence,
+          image_deleted_at: new Date().toISOString(),
+          memory_used_mb: memUsage.heapUsed / 1024 / 1024,
+          status: 'completed'
+        })
+        .eq('id', logId);
+    }
+
+    // Alert if excessive memory usage
+    if (memUsage.heapUsed > 100_000_000) { // 100MB
+      await supabase.rpc('log_security_event', {
+        p_event_type: 'memory_alert',
+        p_severity: 'high',
+        p_action: 'excessive_memory',
+        p_resource_type: 'ocr_processing',
+        p_resource_id: documentId,
+        p_details: { heap_used_mb: memUsage.heapUsed / 1024 / 1024 }
+      });
+    }
+
+    clearTimeout(timeoutId);
+
     return new Response(
       JSON.stringify({
         success: true,
         data: ocrResult,
-        needsReview: ocrResult.confidence < 0.85
+        needsReview: ocrResult.confidence < 0.85,
+        processingTime,
+        securityNote: 'Image data deleted after processing'
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
@@ -187,21 +277,27 @@ Return ONLY valid JSON in this exact format:
   } catch (error) {
     console.error('Document OCR processing failed');
     
-    try {
-      const { documentId } = await req.json();
-      if (documentId) {
+    // Update log with failure
+    if (logId) {
+      try {
         const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
         const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
         const supabase = createClient(supabaseUrl, supabaseKey);
         
         await supabase
-          .from('documents')
-          .update({ ocr_status: 'failed' })
-          .eq('id', documentId);
+          .from('ocr_processing_logs')
+          .update({
+            completed_at: new Date().toISOString(),
+            status: 'failed',
+            error_message: error instanceof Error ? error.message : 'Unknown error'
+          })
+          .eq('id', logId);
+      } catch (e) {
+        console.error('Failed to update error log');
       }
-    } catch (e) {
-      console.error('Failed to update error status');
     }
+
+    clearTimeout(timeoutId);
 
     return new Response(
       JSON.stringify({

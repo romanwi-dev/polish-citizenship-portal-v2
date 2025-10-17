@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { FileText, Upload, MessageSquare, FileCheck, LogOut, Download } from "lucide-react";
+import { FileText, MessageSquare, FileCheck, LogOut, Download } from "lucide-react";
 import { CaseStageVisualization } from "@/components/CaseStageVisualization";
 import { FileUploadSection } from "@/components/client/FileUploadSection";
 import { MessagingSection } from "@/components/client/MessagingSection";
@@ -14,20 +14,72 @@ import { MessagingSection } from "@/components/client/MessagingSection";
 export default function ClientDashboard() {
   const { caseId } = useParams();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [session, setSession] = useState<any>(null);
   const [caseData, setCaseData] = useState<any>(null);
   const [documents, setDocuments] = useState<any[]>([]);
   const [messages, setMessages] = useState<any[]>([]);
   const [poa, setPoa] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const session = localStorage.getItem("client_session");
-    if (!session) {
-      navigate("/client/login");
-      return;
-    }
+    let mounted = true;
 
-    loadDashboardData();
+    // Check authentication with Supabase
+    const checkAuth = async () => {
+      try {
+        const { data: { session: authSession }, error } = await supabase.auth.getSession();
+
+        if (!mounted) return;
+
+        if (error || !authSession) {
+          toast.error("Please log in to access your dashboard");
+          navigate("/client/login");
+          return;
+        }
+
+        // Verify case access
+        const { data: access, error: accessError } = await supabase
+          .from('client_portal_access')
+          .select('case_id')
+          .eq('user_id', authSession.user.id)
+          .eq('case_id', caseId)
+          .maybeSingle();
+
+        if (!mounted) return;
+
+        if (accessError || !access) {
+          toast.error("You don't have access to this case");
+          navigate("/client/login");
+          return;
+        }
+
+        setSession(authSession);
+        loadDashboardData();
+      } catch (error) {
+        console.error("Auth check error:", error);
+        if (mounted) {
+          navigate("/client/login");
+        }
+      }
+    };
+
+    checkAuth();
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, authSession) => {
+      if (!mounted) return;
+      
+      if (event === 'SIGNED_OUT' || !authSession) {
+        navigate("/client/login");
+      } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+        setSession(authSession);
+      }
+    });
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, [caseId, navigate]);
 
   const loadDashboardData = async () => {
@@ -76,19 +128,10 @@ export default function ClientDashboard() {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("client_session");
-    navigate("/client/login");
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
     toast.success("Logged out successfully");
-  };
-
-  const getCurrentUserId = () => {
-    const session = localStorage.getItem("client_session");
-    if (session) {
-      const parsed = JSON.parse(session);
-      return parsed.userId || "client-user";
-    }
-    return "client-user";
+    navigate("/client/login");
   };
 
   if (loading) {
@@ -244,7 +287,7 @@ export default function ClientDashboard() {
           <TabsContent value="messages">
             <MessagingSection 
               caseId={caseId!} 
-              currentUserId={getCurrentUserId()}
+              currentUserId={session?.user?.id || "client"}
             />
           </TabsContent>
         </Tabs>
