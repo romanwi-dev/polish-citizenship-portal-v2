@@ -85,14 +85,12 @@ const ContactFormWeb3 = () => {
             >
               {/* Front Side - Form */}
               <div 
-                className="glass-card p-4 md:p-12 rounded-lg w-full"
+                className="p-4 md:p-12 rounded-lg w-full"
                 style={{ 
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden'
                 }}
               >
-                {/* Background Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 rounded-lg" />
                 
                 <form 
                   onSubmit={handleSubmit} 
@@ -194,8 +192,6 @@ const ContactFormWeb3 = () => {
                   transform: 'rotateY(180deg)'
                 }}
               >
-                {/* Background Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 rounded-lg" />
                 
                 <div className="relative z-10">
                   <h3 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
