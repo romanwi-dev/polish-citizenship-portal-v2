@@ -168,21 +168,23 @@ export default function SecurityAudit() {
         {/* Action Buttons */}
         <div className="flex flex-wrap gap-1 w-full justify-between">
           <Button 
+            size="lg"
             onClick={runFullScan} 
             disabled={isLoading}
-            className="flex-1 text-lg md:text-2xl font-bold px-8 py-4 md:px-20 md:py-6 h-auto min-h-[48px] rounded-lg bg-red-500/20 text-white border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all"
+            className="flex-1 text-lg md:text-2xl font-bold px-8 py-4 md:px-20 md:py-6 h-auto min-h-[48px] rounded-lg bg-red-500/20 hover:bg-red-500/30 shadow-glow hover-glow backdrop-blur-md border-2 border-red-500/30 transition-all group relative overflow-hidden"
           >
             {isLoading ? (
               <>
-                <Loader2 className="h-5 w-5 md:h-6 md:w-6 animate-spin" />
-                Running Comprehensive Scan...
+                <Loader2 className="h-5 w-5 md:h-6 md:w-6 animate-spin relative z-10" />
+                <span className="relative z-10 text-white">Running Comprehensive Scan...</span>
               </>
             ) : (
               <>
-                <Play className="h-5 w-5 md:h-6 md:w-6" />
-                Run Full Security Scan
+                <Play className="h-5 w-5 md:h-6 md:w-6 relative z-10" />
+                <span className="relative z-10 text-white">Run Full Security Scan</span>
               </>
             )}
+            <div className="absolute inset-0 bg-red-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
           </Button>
 
           {lastScanTime && (
