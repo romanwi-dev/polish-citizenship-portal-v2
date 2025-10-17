@@ -26,6 +26,7 @@ interface EditCaseDialogProps {
     notes?: string;
     progress: number;
     client_photo_url?: string | null;
+    start_date?: string | null;
   };
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -43,6 +44,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
     is_vip: caseData.is_vip,
     notes: caseData.notes || "",
     progress: caseData.progress,
+    start_date: caseData.start_date || "",
   });
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(caseData.client_photo_url || null);
@@ -175,6 +177,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
           notes: formData.notes,
           progress: formData.progress,
           client_photo_url,
+          start_date: formData.start_date || null,
         },
       },
       {
@@ -357,6 +360,19 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                 max="100"
                 value={formData.progress}
                 onChange={(e) => setFormData({ ...formData, progress: parseInt(e.target.value) || 0 })}
+                className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-background/50 text-base h-12"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-3">
+              <Label htmlFor="start_date" className="text-base font-semibold text-foreground">Case Start Date</Label>
+              <Input
+                id="start_date"
+                type="date"
+                value={formData.start_date}
+                onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
                 className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-background/50 text-base h-12"
               />
             </div>
