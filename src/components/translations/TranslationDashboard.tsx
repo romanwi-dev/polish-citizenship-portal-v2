@@ -212,7 +212,7 @@ export const TranslationDashboard = () => {
       {/* Main Content Tabs */}
       <Tabs defaultValue="cards" className="space-y-4">
         <div className="w-full overflow-x-auto scrollbar-hide">
-          <TabsList className="inline-flex h-auto p-2 w-max">
+          <TabsList className="inline-flex h-auto p-0 w-max bg-transparent border-0">
             <TabsTrigger value="cards" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[180px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
               Workflow Cards
             </TabsTrigger>
