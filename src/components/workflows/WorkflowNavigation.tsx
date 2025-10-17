@@ -56,7 +56,7 @@ export const WorkflowNavigation = () => {
               key={workflow.id}
               variant={isActive ? "default" : "outline"}
               onClick={() => navigate(workflow.path)}
-              className="flex-1 px-4 py-3 text-base whitespace-nowrap h-12 font-medium rounded-sm"
+              className="flex-1 h-14 bg-green-500/20 text-white font-bold text-lg border-2 border-green-500/30 hover:bg-green-500/30 hover:shadow-[0_0_30px_rgba(34,197,94,0.3)] transition-all"
             >
               <span>{workflow.label}</span>
             </Button>
