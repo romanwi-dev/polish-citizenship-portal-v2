@@ -229,7 +229,7 @@ export default function TranslationWorkflowCards({ caseId }: TranslationWorkflow
                           className="w-full"
                           onClick={(e) => e.stopPropagation()}
                         >
-                          {step.cta} →
+                          {step.cta}
                         </Button>
                         <p className="text-xs text-muted-foreground/60 text-center mt-2">Tap card for details</p>
                       </div>
