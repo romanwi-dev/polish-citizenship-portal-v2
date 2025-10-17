@@ -308,7 +308,7 @@ export default function CasesManagement() {
       <div className="p-4 sm:p-8 bg-background min-h-screen">
         {/* Header - Mobile Optimized */}
         <div className="mb-6 sm:mb-8">
-          <div className="mb-4 mt-8">
+          <div className="mb-6">
             <h1 className="text-4xl md:text-5xl font-heading font-black tracking-tight">
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 Management
@@ -317,7 +317,7 @@ export default function CasesManagement() {
           </div>
 
           {/* Action Buttons Row - Mobile Optimized */}
-          <div className="flex flex-col gap-3 mb-4">
+          <div className="flex flex-col gap-3 mb-3">
             {/* Mobile layout */}
             <div className="grid grid-cols-1 gap-3 sm:hidden">
               <Button 
@@ -359,28 +359,9 @@ export default function CasesManagement() {
               </div>
             </div>
 
-            {/* Desktop layout */}
-            <div className="hidden sm:flex sm:flex-row gap-3">
-              <Button 
-                onClick={() => navigate("/admin/cases/new")}
-                className="h-12 w-[140px]"
-                size="lg"
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                New Case
-              </Button>
-
-              <div className="relative flex-1 max-w-md">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-40 z-10" />
-                <Input
-                  ref={searchInputRef}
-                  placeholder=""
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 h-12"
-                />
-              </div>
-
+            {/* Desktop layout - 3 column grid */}
+            <div className="hidden sm:grid sm:grid-cols-[140px_1fr_140px] gap-3 items-center">
+              {/* Left: Filters Button */}
               <CaseFilters
                 searchTerm={searchTerm}
                 onSearchChange={setSearchTerm}
@@ -397,14 +378,36 @@ export default function CasesManagement() {
                 onClearFilters={handleClearFilters}
                 activeFiltersCount={activeFiltersCount}
                 searchInputRef={searchInputRef}
-                className="w-[140px]"
+                className="w-full"
               />
+
+              {/* Center: Search Bar */}
+              <div className="relative w-full max-w-2xl mx-auto">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-40 z-10" />
+                <Input
+                  ref={searchInputRef}
+                  placeholder=""
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10 h-12 w-full"
+                />
+              </div>
+
+              {/* Right: New Case Button */}
+              <Button 
+                onClick={() => navigate("/admin/cases/new")}
+                className="h-12 w-full"
+                size="lg"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                New Case
+              </Button>
             </div>
           </div>
 
           {/* Sort Controls - Horizontal Scrollable */}
           {filteredCases.length > 0 && (
-            <div className="overflow-x-auto scrollbar-hide pb-3 -mx-4 px-4">
+            <div className="overflow-x-auto scrollbar-hide pb-2 -mx-4 px-4">
               <div className="flex items-center gap-2 min-w-max">
                 {[
                   { value: "default", label: "Default" },
