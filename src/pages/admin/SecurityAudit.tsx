@@ -170,16 +170,16 @@ export default function SecurityAudit() {
           <Button 
             onClick={runFullScan} 
             disabled={isLoading}
-            className="flex-1 h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all"
+            className="flex-1 text-lg md:text-2xl font-bold px-8 py-4 md:px-20 md:py-6 h-auto min-h-[48px] rounded-lg bg-red-500/20 text-white border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all"
           >
             {isLoading ? (
               <>
-                <Loader2 className="h-5 w-5 animate-spin" />
+                <Loader2 className="h-5 w-5 md:h-6 md:w-6 animate-spin" />
                 Running Comprehensive Scan...
               </>
             ) : (
               <>
-                <Play className="h-5 w-5" />
+                <Play className="h-5 w-5 md:h-6 md:w-6" />
                 Run Full Security Scan
               </>
             )}
