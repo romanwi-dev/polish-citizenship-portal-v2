@@ -213,22 +213,22 @@ export const TranslationDashboard = () => {
       <Tabs defaultValue="cards" className="space-y-4">
         <div className="w-full overflow-x-auto scrollbar-hide">
           <TabsList className="inline-flex h-auto p-2 w-max">
-            <TabsTrigger value="cards" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[180px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
+            <TabsTrigger value="cards" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[180px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
               Workflow Cards
             </TabsTrigger>
-            <TabsTrigger value="workflow" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[180px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
+            <TabsTrigger value="workflow" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[180px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
               Translation Timeline
             </TabsTrigger>
-            <TabsTrigger value="supervisor" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[180px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
+            <TabsTrigger value="supervisor" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[180px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
               Supervisor
             </TabsTrigger>
-            <TabsTrigger value="requirements" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[180px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
+            <TabsTrigger value="requirements" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[180px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
               Requirements
             </TabsTrigger>
-            <TabsTrigger value="translators" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[180px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
+            <TabsTrigger value="translators" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[180px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
               Sworn Translators
             </TabsTrigger>
-            <TabsTrigger value="agencies" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[180px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
+            <TabsTrigger value="agencies" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[180px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
               Agencies
             </TabsTrigger>
           </TabsList>
