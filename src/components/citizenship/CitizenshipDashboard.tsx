@@ -59,10 +59,7 @@ export const CitizenshipDashboard = () => {
             >
               <div className="flex items-center gap-3 sm:gap-4 justify-center">
                 <div className="min-w-0 text-center">
-                  <p className="text-sm font-medium text-muted-foreground truncate">Active</p>
-                  <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                    0
-                  </p>
+                  <p className="text-base font-semibold text-foreground">Active</p>
                 </div>
               </div>
             </div>
@@ -96,10 +93,7 @@ export const CitizenshipDashboard = () => {
             >
               <div className="flex items-center gap-3 sm:gap-4 justify-center">
                 <div className="min-w-0 text-center">
-                  <p className="text-sm font-medium text-muted-foreground truncate">WSC Letters</p>
-                  <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                    0
-                  </p>
+                  <p className="text-base font-semibold text-foreground">WSC Letters</p>
                 </div>
               </div>
             </div>
@@ -133,10 +127,7 @@ export const CitizenshipDashboard = () => {
             >
               <div className="flex items-center gap-3 sm:gap-4 justify-center">
                 <div className="min-w-0 text-center">
-                  <p className="text-sm font-medium text-muted-foreground truncate">Push Schemes</p>
-                  <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                    0
-                  </p>
+                  <p className="text-base font-semibold text-foreground">Push Schemes</p>
                 </div>
               </div>
             </div>
@@ -170,10 +161,7 @@ export const CitizenshipDashboard = () => {
             >
               <div className="flex items-center gap-3 sm:gap-4 justify-center">
                 <div className="min-w-0 text-center">
-                  <p className="text-sm font-medium text-muted-foreground truncate">Decisions</p>
-                  <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                    0
-                  </p>
+                  <p className="text-base font-semibold text-foreground">Decisions</p>
                 </div>
               </div>
             </div>
@@ -192,22 +180,22 @@ export const CitizenshipDashboard = () => {
       <Tabs defaultValue="cards" className="space-y-4">
         <div className="w-full overflow-x-auto scrollbar-hide">
           <TabsList className="inline-flex gap-2 h-auto p-2 w-max">
-            <TabsTrigger value="cards" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
+            <TabsTrigger value="cards" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
               <span>Workflow Cards</span>
             </TabsTrigger>
-            <TabsTrigger value="timeline" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
+            <TabsTrigger value="timeline" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
               <span>Timeline</span>
             </TabsTrigger>
-            <TabsTrigger value="supervisor" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
+            <TabsTrigger value="supervisor" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
               <span>Supervisor</span>
             </TabsTrigger>
-            <TabsTrigger value="wsc" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
+            <TabsTrigger value="wsc" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
               <span>WSC Letters</span>
             </TabsTrigger>
-            <TabsTrigger value="push" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
+            <TabsTrigger value="push" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
               <span>Push Schemes</span>
             </TabsTrigger>
-            <TabsTrigger value="analytics" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
+            <TabsTrigger value="analytics" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
               <span>Analytics</span>
             </TabsTrigger>
           </TabsList>

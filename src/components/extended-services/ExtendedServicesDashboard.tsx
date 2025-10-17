@@ -59,10 +59,7 @@ export const ExtendedServicesDashboard = () => {
             >
               <div className="flex items-center gap-3 sm:gap-4 justify-center">
                 <div className="min-w-0 text-center">
-                  <p className="text-sm font-medium text-muted-foreground truncate">Family Legal</p>
-                  <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                    0
-                  </p>
+                  <p className="text-base font-semibold text-foreground">Family Legal</p>
                 </div>
               </div>
             </div>
@@ -96,10 +93,7 @@ export const ExtendedServicesDashboard = () => {
             >
               <div className="flex items-center gap-3 sm:gap-4 justify-center">
                 <div className="min-w-0 text-center">
-                  <p className="text-sm font-medium text-muted-foreground truncate">Documents</p>
-                  <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                    0
-                  </p>
+                  <p className="text-base font-semibold text-foreground">Documents</p>
                 </div>
               </div>
             </div>
@@ -133,10 +127,7 @@ export const ExtendedServicesDashboard = () => {
             >
               <div className="flex items-center gap-3 sm:gap-4 justify-center">
                 <div className="min-w-0 text-center">
-                  <p className="text-sm font-medium text-muted-foreground truncate">International</p>
-                  <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                    0
-                  </p>
+                  <p className="text-base font-semibold text-foreground">International</p>
                 </div>
               </div>
             </div>
@@ -170,10 +161,7 @@ export const ExtendedServicesDashboard = () => {
             >
               <div className="flex items-center gap-3 sm:gap-4 justify-center">
                 <div className="min-w-0 text-center">
-                  <p className="text-sm font-medium text-muted-foreground truncate">Heritage</p>
-                  <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                    0
-                  </p>
+                  <p className="text-base font-semibold text-foreground">Heritage</p>
                 </div>
               </div>
             </div>
@@ -192,22 +180,22 @@ export const ExtendedServicesDashboard = () => {
       <Tabs defaultValue="cards" className="space-y-4">
         <div className="w-full overflow-x-auto scrollbar-hide">
           <TabsList className="inline-flex gap-2 h-auto p-2 w-max">
-            <TabsTrigger value="cards" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
+            <TabsTrigger value="cards" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
               <span>Service Cards</span>
             </TabsTrigger>
-            <TabsTrigger value="family" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
+            <TabsTrigger value="family" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
               <span>Family Legal</span>
             </TabsTrigger>
-            <TabsTrigger value="procurement" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
+            <TabsTrigger value="procurement" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
               <span>Document Procurement</span>
             </TabsTrigger>
-            <TabsTrigger value="heritage" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
+            <TabsTrigger value="heritage" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
               <span>Heritage Research</span>
             </TabsTrigger>
-            <TabsTrigger value="relocation" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
+            <TabsTrigger value="relocation" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
               <span>Relocation</span>
             </TabsTrigger>
-            <TabsTrigger value="analytics" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
+            <TabsTrigger value="analytics" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
               <span>Analytics</span>
             </TabsTrigger>
           </TabsList>

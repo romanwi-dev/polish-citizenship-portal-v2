@@ -58,10 +58,7 @@ export const ArchivesSearchDashboard = () => {
             >
               <div className="flex items-center gap-3 sm:gap-4 justify-center">
                 <div className="min-w-0 text-center">
-                  <p className="text-sm font-medium text-muted-foreground truncate">Polish</p>
-                  <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                    12
-                  </p>
+                  <p className="text-base font-semibold text-foreground">Polish</p>
                 </div>
               </div>
             </div>
@@ -95,10 +92,7 @@ export const ArchivesSearchDashboard = () => {
             >
               <div className="flex items-center gap-3 sm:gap-4 justify-center">
                 <div className="min-w-0 text-center">
-                  <p className="text-sm font-medium text-muted-foreground truncate">International</p>
-                  <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                    8
-                  </p>
+                  <p className="text-base font-semibold text-foreground">International</p>
                 </div>
               </div>
             </div>
@@ -132,10 +126,7 @@ export const ArchivesSearchDashboard = () => {
             >
               <div className="flex items-center gap-3 sm:gap-4 justify-center">
                 <div className="min-w-0 text-center">
-                  <p className="text-sm font-medium text-muted-foreground truncate">Found</p>
-                  <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                    47
-                  </p>
+                  <p className="text-base font-semibold text-foreground">Found</p>
                 </div>
               </div>
             </div>
@@ -169,10 +160,7 @@ export const ArchivesSearchDashboard = () => {
             >
               <div className="flex items-center gap-3 sm:gap-4 justify-center">
                 <div className="min-w-0 text-center">
-                  <p className="text-sm font-medium text-muted-foreground truncate">Success</p>
-                  <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                    73%
-                  </p>
+                  <p className="text-base font-semibold text-foreground">Success</p>
                 </div>
               </div>
             </div>
@@ -191,22 +179,22 @@ export const ArchivesSearchDashboard = () => {
       <Tabs defaultValue="cards" className="space-y-4">
         <div className="w-full overflow-x-auto scrollbar-hide">
           <TabsList className="inline-flex gap-2 h-auto p-2 w-max">
-            <TabsTrigger value="cards" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
+            <TabsTrigger value="cards" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
               <span>Workflow Cards</span>
             </TabsTrigger>
-            <TabsTrigger value="timeline" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
+            <TabsTrigger value="timeline" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
               <span>Search Timeline</span>
             </TabsTrigger>
-            <TabsTrigger value="supervisor" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
+            <TabsTrigger value="supervisor" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
               <span>Supervisor</span>
             </TabsTrigger>
-            <TabsTrigger value="partners" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
+            <TabsTrigger value="partners" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
               <span>Partners</span>
             </TabsTrigger>
-            <TabsTrigger value="directory" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
+            <TabsTrigger value="directory" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
               <span>Archive Directory</span>
             </TabsTrigger>
-            <TabsTrigger value="templates" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
+            <TabsTrigger value="templates" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
               <span>Templates</span>
             </TabsTrigger>
           </TabsList>

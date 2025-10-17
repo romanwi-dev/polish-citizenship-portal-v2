@@ -47,9 +47,8 @@ export const WorkflowNavigation = () => {
 
   return (
     <div className="w-full overflow-x-auto scrollbar-hide mb-6">
-      <div className="inline-flex gap-2 p-2 w-max">
+      <div className="inline-flex w-max">
         {WORKFLOWS.map((workflow) => {
-          const Icon = workflow.icon;
           const isActive = location.pathname === workflow.path;
           
           return (
@@ -57,7 +56,7 @@ export const WorkflowNavigation = () => {
               key={workflow.id}
               variant={isActive ? "default" : "outline"}
               onClick={() => navigate(workflow.path)}
-              className="px-6 py-3 text-base whitespace-nowrap h-14 border-2 font-medium"
+              className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-green-500/10 hover:bg-green-500/20 border-green-500/30"
             >
               <span>{workflow.label}</span>
             </Button>

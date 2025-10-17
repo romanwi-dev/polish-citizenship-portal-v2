@@ -58,10 +58,7 @@ export const CivilActsDashboard = () => {
             >
               <div className="flex items-center gap-3 sm:gap-4 justify-center">
                 <div className="min-w-0 text-center">
-                  <p className="text-sm font-medium text-muted-foreground truncate">Preparing</p>
-                  <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                    0
-                  </p>
+                  <p className="text-base font-semibold text-foreground">Preparing</p>
                 </div>
               </div>
             </div>
@@ -95,10 +92,7 @@ export const CivilActsDashboard = () => {
             >
               <div className="flex items-center gap-3 sm:gap-4 justify-center">
                 <div className="min-w-0 text-center">
-                  <p className="text-sm font-medium text-muted-foreground truncate">Submitted</p>
-                  <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                    0
-                  </p>
+                  <p className="text-base font-semibold text-foreground">Submitted</p>
                 </div>
               </div>
             </div>
@@ -132,10 +126,7 @@ export const CivilActsDashboard = () => {
             >
               <div className="flex items-center gap-3 sm:gap-4 justify-center">
                 <div className="min-w-0 text-center">
-                  <p className="text-sm font-medium text-muted-foreground truncate">Awaiting</p>
-                  <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                    0
-                  </p>
+                  <p className="text-base font-semibold text-foreground">Awaiting</p>
                 </div>
               </div>
             </div>
@@ -169,10 +160,7 @@ export const CivilActsDashboard = () => {
             >
               <div className="flex items-center gap-3 sm:gap-4 justify-center">
                 <div className="min-w-0 text-center">
-                  <p className="text-sm font-medium text-muted-foreground truncate">Received</p>
-                  <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                    0
-                  </p>
+                  <p className="text-base font-semibold text-foreground">Received</p>
                 </div>
               </div>
             </div>
@@ -191,22 +179,22 @@ export const CivilActsDashboard = () => {
       <Tabs defaultValue="cards" className="space-y-4">
         <div className="w-full overflow-x-auto scrollbar-hide">
           <TabsList className="inline-flex gap-2 h-auto p-2 w-max">
-            <TabsTrigger value="cards" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
+            <TabsTrigger value="cards" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
               <span>Workflow Cards</span>
             </TabsTrigger>
-            <TabsTrigger value="timeline" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
+            <TabsTrigger value="timeline" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
               <span>Timeline</span>
             </TabsTrigger>
-            <TabsTrigger value="supervisor" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
+            <TabsTrigger value="supervisor" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
               <span>Supervisor</span>
             </TabsTrigger>
-            <TabsTrigger value="directory" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
+            <TabsTrigger value="directory" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
               <span>USC Directory</span>
             </TabsTrigger>
-            <TabsTrigger value="agent" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
+            <TabsTrigger value="agent" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
               <span>Civil Acts Agent</span>
             </TabsTrigger>
-            <TabsTrigger value="payment" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
+            <TabsTrigger value="payment" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px] bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
               <span>Payment Tracker</span>
             </TabsTrigger>
           </TabsList>
