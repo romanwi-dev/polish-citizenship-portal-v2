@@ -25,6 +25,15 @@ const Researcher = () => {
     );
   }
 
+  const researcherPrompts = [
+    "Research the citizenship laws that apply to this case",
+    "Find historical context for documents from this time period",
+    "What archives should we contact for this ancestry line?",
+    "Research legal precedents for similar cases",
+    "Analyze document availability in this region",
+    "What are the key historical events affecting this case?"
+  ];
+
   return (
     <AdminLayout>
       <div className="space-y-4">
@@ -35,7 +44,12 @@ const Researcher = () => {
             <p className="text-muted-foreground">In-depth research and analysis with citations</p>
           </div>
         </div>
-        <AIAgentPanel caseId={caseId} defaultAction="researcher" showActionSelector={false} />
+        <AIAgentPanel 
+          caseId={caseId} 
+          defaultAction="researcher" 
+          showActionSelector={false}
+          customQuickPrompts={researcherPrompts}
+        />
       </div>
     </AdminLayout>
   );

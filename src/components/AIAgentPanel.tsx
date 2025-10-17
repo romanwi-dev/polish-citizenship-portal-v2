@@ -11,9 +11,10 @@ interface AIAgentPanelProps {
   caseId: string;
   defaultAction?: string;
   showActionSelector?: boolean;
+  customQuickPrompts?: string[];
 }
 
-export const AIAgentPanel = ({ caseId, defaultAction, showActionSelector = true }: AIAgentPanelProps) => {
+export const AIAgentPanel = ({ caseId, defaultAction, showActionSelector = true, customQuickPrompts }: AIAgentPanelProps) => {
   const [prompt, setPrompt] = useState("");
   const [action, setAction] = useState(defaultAction || "comprehensive");
   const [response, setResponse] = useState("");
@@ -34,7 +35,7 @@ export const AIAgentPanel = ({ caseId, defaultAction, showActionSelector = true 
     { value: "designer", label: "UI/UX Designer", icon: Palette },
   ];
 
-  const quickPrompts = [
+  const defaultQuickPrompts = [
     "Analyze this case and tell me if the client is eligible",
     "What documents are we missing?",
     "What should I do next?",
@@ -42,6 +43,8 @@ export const AIAgentPanel = ({ caseId, defaultAction, showActionSelector = true 
     "Check if all required forms are complete",
     "Estimate timeline to citizenship decision"
   ];
+
+  const quickPrompts = customQuickPrompts || defaultQuickPrompts;
 
   const handleSubmit = async () => {
     if (!prompt.trim()) {

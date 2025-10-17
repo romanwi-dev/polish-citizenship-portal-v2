@@ -25,6 +25,15 @@ const Writer = () => {
     );
   }
 
+  const writerPrompts = [
+    "Draft an email to the client explaining current status",
+    "Write a formal archive request letter in Polish",
+    "Create a response strategy for the WSC letter",
+    "Draft a case summary for internal review",
+    "Write an explanation of the next steps for the client",
+    "Create a professional follow-up message"
+  ];
+
   return (
     <AdminLayout>
       <div className="space-y-4">
@@ -35,7 +44,12 @@ const Writer = () => {
             <p className="text-muted-foreground">Create professional content and communications</p>
           </div>
         </div>
-        <AIAgentPanel caseId={caseId} defaultAction="writer" showActionSelector={false} />
+        <AIAgentPanel 
+          caseId={caseId} 
+          defaultAction="writer" 
+          showActionSelector={false}
+          customQuickPrompts={writerPrompts}
+        />
       </div>
     </AdminLayout>
   );

@@ -25,6 +25,15 @@ const Designer = () => {
     );
   }
 
+  const designerPrompts = [
+    "Suggest UI improvements for the case detail page",
+    "How can we improve the document upload flow?",
+    "Recommend a better layout for the forms",
+    "Analyze accessibility issues in the client portal",
+    "Suggest color scheme improvements for better readability",
+    "How can we make the timeline visualization more intuitive?"
+  ];
+
   return (
     <AdminLayout>
       <div className="space-y-4">
@@ -35,7 +44,12 @@ const Designer = () => {
             <p className="text-muted-foreground">UI/UX design optimization and recommendations</p>
           </div>
         </div>
-        <AIAgentPanel caseId={caseId} defaultAction="designer" showActionSelector={false} />
+        <AIAgentPanel 
+          caseId={caseId} 
+          defaultAction="designer" 
+          showActionSelector={false}
+          customQuickPrompts={designerPrompts}
+        />
       </div>
     </AdminLayout>
   );

@@ -25,6 +25,15 @@ const Translator = () => {
     );
   }
 
+  const translatorPrompts = [
+    "Which documents need sworn translation?",
+    "Translate this document excerpt to Polish",
+    "Review the quality of this AI translation",
+    "Create a glossary of key legal terms for this case",
+    "Flag any ambiguous passages in these documents",
+    "What translation strategy should we use for historical documents?"
+  ];
+
   return (
     <AdminLayout>
       <div className="space-y-4">
@@ -35,7 +44,12 @@ const Translator = () => {
             <p className="text-muted-foreground">Translation expertise for legal documents</p>
           </div>
         </div>
-        <AIAgentPanel caseId={caseId} defaultAction="translator" showActionSelector={false} />
+        <AIAgentPanel 
+          caseId={caseId} 
+          defaultAction="translator" 
+          showActionSelector={false}
+          customQuickPrompts={translatorPrompts}
+        />
       </div>
     </AdminLayout>
   );
