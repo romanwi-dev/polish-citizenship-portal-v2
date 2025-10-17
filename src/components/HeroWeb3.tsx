@@ -59,11 +59,11 @@ const HeroWeb3 = () => {
           }, {
             value: "100%",
             label: "Unmatched Success Rate"
-          }].map((stat, i) => <div key={i} className="glass-card p-4 md:p-6 rounded-lg hover-glow w-full">
+          }].map((stat, i) => <div key={i} className="glass-card p-4 md:p-6 rounded-lg hover-glow w-full bg-background/50 dark:bg-background/10">
                 <div className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
                   {stat.value}
                 </div>
-                <div className="text-xs md:text-sm text-muted-foreground font-bold">{stat.label}</div>
+                <div className="text-xs md:text-sm text-foreground/70 dark:text-muted-foreground font-bold">{stat.label}</div>
               </div>)}
           </div>
         </div>
