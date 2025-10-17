@@ -135,9 +135,6 @@ export const TranslationWorkflowBoard = () => {
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-2 flex-1 min-w-0">
-                    <div className="p-2 bg-primary/10 rounded-lg shrink-0">
-                      <Icon className="h-4 w-4 text-primary" />
-                    </div>
                     <div className="min-w-0">
                       <CardTitle className="text-sm font-semibold truncate">
                         {stage.title}

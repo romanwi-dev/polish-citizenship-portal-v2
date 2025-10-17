@@ -51,9 +51,8 @@ export const WorkflowNavigation = () => {
               key={workflow.id}
               variant={isActive ? "default" : "outline"}
               onClick={() => navigate(workflow.path)}
-              className="gap-2 px-6 py-3 text-base whitespace-nowrap h-14 border-2 font-medium"
+              className="px-6 py-3 text-base whitespace-nowrap h-14 border-2 font-medium"
             >
-              <Icon className="h-5 w-5 shrink-0" />
               <span>{workflow.label}</span>
             </Button>
           );
