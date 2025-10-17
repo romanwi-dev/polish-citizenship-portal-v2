@@ -35,7 +35,7 @@ const AboutSection = () => {
               <Users className="w-8 h-8 text-primary" />
             </div>
             <h3 className="text-xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-3">Over 20 Million People of Polish Descent</h3>
-            <p className="text-muted-foreground font-bold">
+            <p className="text-muted-foreground">
               There are more than 20 million people of Polish descent that live outside of Poland today, which itself has a population of about 38.5 million. This means that more than 1/3 of Poles and people of Polish descent actually live outside of the country. For many generations of European unrest, people have been emigrating outside of Poland, especially in the 20th century.
             </p>
           </div>
@@ -45,7 +45,7 @@ const AboutSection = () => {
               <Globe className="w-8 h-8 text-secondary" />
             </div>
             <h3 className="text-xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-3">Poland - EU Member Since 2004</h3>
-            <p className="text-muted-foreground font-bold">
+            <p className="text-muted-foreground">
               Since 1989, however, the quality of life has changed for the better in Poland. Poland has been an EU member since 2004 and is one of its biggest countries. We support the idea of a united Europe, and being a European citizen is a widely held dream. Many people of Polish origin can now legally confirm their Polish citizenship by descent and obtain the Polish European passport as a gateway to the EU.
             </p>
           </div>
@@ -55,7 +55,7 @@ const AboutSection = () => {
               <Shield className="w-8 h-8 text-accent" />
             </div>
             <h3 className="text-xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-3">The Benefits of Polish European Citizenship</h3>
-            <p className="text-muted-foreground font-bold">
+            <p className="text-muted-foreground">
               The education system in Europe is outstanding and offers the best elementary schools, top high schools, and some of the world's best universities. The latest medical technology and the best pharmaceutical developments ensure that your health is in good hands in Europe. With a Polish European passport you can freely move, travel, live, and work in any of the 28 member states of the EU.
             </p>
           </div>
