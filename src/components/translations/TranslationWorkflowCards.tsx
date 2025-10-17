@@ -194,12 +194,13 @@ export default function TranslationWorkflowCards({ caseId }: TranslationWorkflow
                         WebkitBackfaceVisibility: 'hidden',
                       }}
                     >
-                      {/* Number */}
+                      {/* Icon and Number */}
                       <div className="mb-6 relative">
                         <div className="w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/5 flex items-center justify-center">
-                          <div className={`text-6xl font-heading font-black bg-gradient-to-r ${step.gradient} bg-clip-text text-transparent`}>
-                            {step.number}
-                          </div>
+                          <step.icon className="w-16 h-16 text-primary opacity-80 group-hover:opacity-100 transition-opacity duration-300" />
+                        </div>
+                        <div className={`absolute top-4 left-4 text-5xl font-heading font-black bg-gradient-to-r ${step.gradient} bg-clip-text text-transparent opacity-20`}>
+                          {step.number}
                         </div>
                         {documentCount > 0 && (
                           <div className="absolute top-4 right-4 bg-primary text-primary-foreground rounded-full w-10 h-10 flex items-center justify-center font-bold text-sm">
@@ -246,9 +247,10 @@ export default function TranslationWorkflowCards({ caseId }: TranslationWorkflow
                       <div className="flex flex-col gap-4 h-full">
                         <div className="mb-4 relative">
                           <div className="w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-secondary/5 to-accent/5 flex items-center justify-center">
-                            <div className={`text-6xl font-heading font-black bg-gradient-to-r ${step.gradient} bg-clip-text text-transparent`}>
-                              {step.number}
-                            </div>
+                            <step.icon className="w-16 h-16 text-secondary opacity-60" />
+                          </div>
+                          <div className={`absolute top-4 left-4 text-5xl font-heading font-black bg-gradient-to-r ${step.gradient} bg-clip-text text-transparent opacity-20`}>
+                            {step.number}
                           </div>
                         </div>
                         

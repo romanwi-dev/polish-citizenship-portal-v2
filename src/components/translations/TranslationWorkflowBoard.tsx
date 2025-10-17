@@ -118,7 +118,7 @@ export const TranslationWorkflowBoard = () => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center p-12">
-        <Languages className="h-8 w-8 animate-pulse text-primary" />
+        <div className="h-8 w-8 animate-pulse rounded-full bg-primary" />
       </div>
     );
   }
