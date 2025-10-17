@@ -50,6 +50,7 @@ const DocumentsCollection = lazy(() => import("./pages/admin/DocumentsCollection
 const PolishCivilActs = lazy(() => import("./pages/admin/PolishCivilActs"));
 const PolishCitizenship = lazy(() => import("./pages/admin/PolishCitizenship"));
 const PolishPassport = lazy(() => import("./pages/admin/PolishPassport"));
+const ExtendedServices = lazy(() => import("./pages/admin/ExtendedServices"));
 const OCRReview = lazy(() => import("./pages/admin/OCRReview"));
 const BackgroundsDemo = lazy(() => import("./pages/admin/BackgroundsDemo"));
 const HeroBackgroundsDemo = lazy(() => import("./pages/admin/HeroBackgroundsDemo"));
@@ -320,6 +321,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <Translations />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/extended-services" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <ExtendedServices />
               </Suspense>
             } 
           />

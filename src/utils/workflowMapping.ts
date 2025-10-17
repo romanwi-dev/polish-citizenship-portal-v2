@@ -42,7 +42,8 @@ export const getWorkflowPath = (workflowType: string): string => {
     'archives': '/admin/archives-search',
     'citizenship': '/admin/citizenship',
     'civil-acts': '/admin/civil-acts',
-    'passport': '/admin/passport'
+    'passport': '/admin/passport',
+    'extended-services': '/admin/extended-services'
   };
   
   return paths[workflowType] || '/admin/citizenship';
@@ -54,7 +55,8 @@ export const getWorkflowLabel = (workflowType: string): string => {
     'archives': 'Archives Search',
     'citizenship': 'Citizenship',
     'civil-acts': 'Civil Acts',
-    'passport': 'Passport'
+    'passport': 'Passport',
+    'extended-services': 'Extended Services'
   };
   
   return labels[workflowType] || 'Citizenship';

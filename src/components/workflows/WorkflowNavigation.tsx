@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Languages, Archive, Award, FileCheck, Plane } from 'lucide-react';
+import { Languages, Archive, Award, FileCheck, Plane, Sparkles } from 'lucide-react';
 
 const WORKFLOWS = [
   {
@@ -32,6 +32,12 @@ const WORKFLOWS = [
     label: 'Polish Passport',
     icon: Plane,
     path: '/admin/passport'
+  },
+  {
+    id: 'extended-services',
+    label: 'Extended Services',
+    icon: Sparkles,
+    path: '/admin/extended-services'
   }
 ];
 
