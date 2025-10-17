@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Sparkles } from "lucide-react";
-import { RealisticHeritage } from "./heroes/RealisticHeritage";
+import { StaticHeritage } from "./heroes/StaticHeritage";
 
 const HeroWeb3 = () => {
   const scrollToContact = () => {
@@ -12,7 +12,7 @@ const HeroWeb3 = () => {
   return <section className="relative min-h-[60vh] md:min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 z-0">
-        <RealisticHeritage />
+        <StaticHeritage />
       </div>
 
 
