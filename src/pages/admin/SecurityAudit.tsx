@@ -96,7 +96,7 @@ export default function SecurityAudit() {
     <AdminLayout>
       <div className="space-y-8">
         {/* Header */}
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-4xl mx-auto text-center pt-8 md:pt-16">
           <h1 className="text-4xl md:text-5xl font-heading font-black tracking-tight">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               Maximum Security Audit
@@ -113,7 +113,7 @@ export default function SecurityAudit() {
             onClick={runFullScan} 
             disabled={isLoading}
             size="lg"
-            className="gap-2"
+            className="gap-2 bg-red-500 hover:bg-red-600 text-white"
           >
             {isLoading ? (
               <>
@@ -142,13 +142,11 @@ export default function SecurityAudit() {
             <Button
               key={scan.name}
               variant="outline"
-              className="h-auto p-4 sm:p-6 flex flex-col items-center sm:items-start gap-3 hover:bg-primary/5 transition-all"
+              className="h-auto p-4 sm:p-6 flex items-center justify-center hover:bg-primary/5 transition-all"
               onClick={scan.action}
             >
-              <scan.icon className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
-              <div className="text-center sm:text-left w-full">
+              <div className="text-center w-full">
                 <div className="font-semibold text-sm sm:text-base">{scan.name}</div>
-                <div className="text-xs text-muted-foreground mt-1">{scan.description}</div>
               </div>
             </Button>
           ))}
