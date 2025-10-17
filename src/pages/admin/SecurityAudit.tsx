@@ -166,12 +166,13 @@ export default function SecurityAudit() {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-wrap gap-4 justify-center">
+        <div className="flex flex-wrap gap-4 w-full">
           <Button 
             onClick={runFullScan} 
             disabled={isLoading}
             size="lg"
-            className="gap-2 bg-red-500 hover:bg-red-600 text-white"
+            className="flex-1 gap-2 rounded-sm"
+            variant="destructive"
           >
             {isLoading ? (
               <>
