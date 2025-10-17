@@ -180,20 +180,20 @@ const FAQSection = () => {
 
           {/* Search Bar */}
           <div className="mb-8 relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground pointer-events-none" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground/50 pointer-events-none" />
             <Input
               type="text"
               placeholder="Type to filter questions (e.g., pre-1920, naturalization, translations)..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-12 h-14 text-base glass-card border-primary/20 focus:border-primary/40 relative z-10"
+              className="pl-12 h-14 text-sm font-normal opacity-50 glass-card border-primary/20 focus:border-primary/40 focus:opacity-100 transition-opacity relative z-10"
             />
           </div>
 
           {/* FAQ Tabs */}
           <Tabs defaultValue="eligibility" className="w-full">
             <div className="mb-8 overflow-x-auto">
-              <TabsList className="inline-flex lg:grid w-max lg:w-full grid-cols-2 lg:grid-cols-5 gap-2 h-auto p-2 backdrop-blur-sm border border-primary/10">
+              <TabsList className="inline-flex lg:grid w-max lg:w-full grid-cols-2 lg:grid-cols-5 gap-2 h-auto p-2">
                 {faqCategories.map((category) => {
                   const Icon = category.icon;
                   return (
