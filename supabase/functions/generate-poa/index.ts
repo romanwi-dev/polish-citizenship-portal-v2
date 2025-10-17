@@ -13,6 +13,24 @@ serve(async (req) => {
 
   try {
     const { caseId, poaType } = await req.json();
+
+    // Input validation
+    const { isValidUUID } = await import('../_shared/validation.ts');
+    
+    if (!isValidUUID(caseId)) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid case ID format' }),
+        { status: 400, headers: corsHeaders }
+      );
+    }
+
+    const validPoaTypes = ['adult', 'minor', 'spouses'];
+    if (!validPoaTypes.includes(poaType)) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid POA type' }),
+        { status: 400, headers: corsHeaders }
+      );
+    }
     
     if (!caseId || !poaType) {
       return new Response(

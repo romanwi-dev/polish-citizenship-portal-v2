@@ -19,9 +19,33 @@ Deno.serve(async (req) => {
   try {
     const { imageBase64, documentId, expectedType }: DocumentOCRRequest = await req.json();
 
-    if (!imageBase64 || !documentId) {
+    // Input validation
+    const { isValidUUID, MAX_FILE_SIZE } = await import('../_shared/validation.ts');
+
+    if (!imageBase64 || typeof imageBase64 !== 'string') {
       return new Response(
-        JSON.stringify({ error: 'Missing required fields: imageBase64 and documentId' }),
+        JSON.stringify({ error: 'Image data is required' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (imageBase64.length > MAX_FILE_SIZE * 1.5) {
+      return new Response(
+        JSON.stringify({ error: 'Image file too large' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (!isValidUUID(documentId)) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid document ID format' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (expectedType && typeof expectedType !== 'string') {
+      return new Response(
+        JSON.stringify({ error: 'Invalid expected type' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }

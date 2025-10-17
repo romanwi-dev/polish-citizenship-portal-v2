@@ -26,9 +26,27 @@ serve(async (req) => {
   try {
     const { imageBase64, caseId } = await req.json();
     
-    if (!imageBase64) {
+    // Input validation
+    const { isValidUUID, MAX_FILE_SIZE } = await import('../_shared/validation.ts');
+    
+    if (!imageBase64 || typeof imageBase64 !== 'string') {
       return new Response(
         JSON.stringify({ error: "Image data is required" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Basic size check on base64 string
+    if (imageBase64.length > MAX_FILE_SIZE * 1.5) { // Base64 is ~1.37x larger
+      return new Response(
+        JSON.stringify({ error: "Image file too large" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    if (caseId && !isValidUUID(caseId)) {
+      return new Response(
+        JSON.stringify({ error: "Invalid case ID format" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }

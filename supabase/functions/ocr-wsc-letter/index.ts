@@ -19,9 +19,26 @@ Deno.serve(async (req) => {
   try {
     const { imageBase64, letterId, caseId }: WSCLetterOCRRequest = await req.json();
 
-    if (!imageBase64 || !letterId || !caseId) {
+    // Input validation
+    const { isValidUUID, MAX_FILE_SIZE } = await import('../_shared/validation.ts');
+
+    if (!imageBase64 || typeof imageBase64 !== 'string') {
       return new Response(
-        JSON.stringify({ error: 'Missing required fields: imageBase64, letterId, and caseId' }),
+        JSON.stringify({ error: 'Image data is required' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (imageBase64.length > MAX_FILE_SIZE * 1.5) {
+      return new Response(
+        JSON.stringify({ error: 'Image file too large' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (!isValidUUID(letterId) || !isValidUUID(caseId)) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid ID format' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }

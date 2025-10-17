@@ -21,12 +21,39 @@ Deno.serve(async (req) => {
   try {
     const { jobId, sourceText, sourceLanguage, targetLanguage = 'PL', documentType }: TranslateRequest = await req.json();
 
-    if (!jobId || !sourceText || !sourceLanguage) {
+    // Input validation
+    const { sanitizeText, isValidUUID, MAX_TEXT_LENGTH } = await import('../_shared/validation.ts');
+
+    if (!isValidUUID(jobId)) {
       return new Response(
-        JSON.stringify({ error: 'Missing required fields' }),
+        JSON.stringify({ error: 'Invalid job ID format' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+
+    if (!sourceText || typeof sourceText !== 'string') {
+      return new Response(
+        JSON.stringify({ error: 'Source text is required' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (sourceText.length > MAX_TEXT_LENGTH) {
+      return new Response(
+        JSON.stringify({ error: `Text exceeds maximum length of ${MAX_TEXT_LENGTH} characters` }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const validLanguages = ['EN', 'ES', 'PT', 'HE', 'RU', 'UK', 'DE', 'FR', 'PL'];
+    if (!validLanguages.includes(sourceLanguage) || !validLanguages.includes(targetLanguage)) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid language code' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const sanitizedText = sanitizeText(sourceText);
 
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     if (!LOVABLE_API_KEY) {
@@ -88,7 +115,7 @@ Return ONLY valid JSON in this format:
 
     const userPrompt = `Translate the following ${documentType || 'document'} from ${languageNames[sourceLanguage]} to Polish:
 
-${sourceText}`;
+${sanitizedText}`;
 
     const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',

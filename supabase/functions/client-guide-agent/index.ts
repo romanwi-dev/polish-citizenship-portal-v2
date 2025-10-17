@@ -12,6 +12,29 @@ serve(async (req) => {
 
   try {
     const { formType, currentField, userQuestion, context } = await req.json();
+
+    // Input validation
+    const { sanitizeText, checkRateLimit } = await import('../_shared/validation.ts');
+
+    if (userQuestion && typeof userQuestion !== 'string') {
+      return new Response(
+        JSON.stringify({ error: 'Invalid question format' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const sanitizedQuestion = userQuestion ? sanitizeText(userQuestion, 500) : null;
+
+    // Rate limiting
+    const clientIp = req.headers.get('x-forwarded-for') || 'unknown';
+    const rateLimit = checkRateLimit(clientIp, 30, 60000); // 30 requests per minute
+    
+    if (!rateLimit.allowed) {
+      return new Response(
+        JSON.stringify({ error: 'Too many requests', retryAfter: rateLimit.retryAfter }),
+        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
     
     const lovableApiKey = Deno.env.get('LOVABLE_API_KEY')!;
 
@@ -240,6 +263,7 @@ function buildUserPrompt(
   context: any
 ): string {
   if (userQuestion) {
+    // Note: userQuestion is already sanitized in the main handler
     return `Field: ${currentField || 'general'}
 Question: "${userQuestion}"
 

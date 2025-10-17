@@ -39,11 +39,38 @@ serve(async (req) => {
       const body = await req.json();
       const { clientName, email, phone, country, intakeData } = body;
 
-      // Create case
+      // Input validation
+      const { sanitizeName, isValidEmail, checkRateLimit } = await import('../_shared/validation.ts');
+
+      // Rate limiting by API key
+      const rateLimit = checkRateLimit(`partner-${apiKey}`, 100, 60000);
+      if (!rateLimit.allowed) {
+        return new Response(
+          JSON.stringify({ error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter }),
+          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      const sanitizedName = sanitizeName(clientName);
+      if (!sanitizedName) {
+        return new Response(
+          JSON.stringify({ error: 'Invalid client name' }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      if (email && !isValidEmail(email)) {
+        return new Response(
+          JSON.stringify({ error: 'Invalid email format' }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      // Create case with sanitized data
       const { data: caseData, error: caseError } = await supabase
         .from("cases")
         .insert({
-          client_name: clientName,
+          client_name: sanitizedName,
           country: country || "Unknown",
           status: "lead",
         })
@@ -77,6 +104,16 @@ serve(async (req) => {
     // GET /status/:caseId - Get case status
     if (req.method === "GET" && pathname.startsWith("/status/")) {
       const caseId = pathname.split("/")[2];
+
+      // Input validation
+      const { isValidUUID } = await import('../_shared/validation.ts');
+      
+      if (!isValidUUID(caseId)) {
+        return new Response(
+          JSON.stringify({ error: 'Invalid case ID format' }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
 
       const { data: caseData, error: caseError } = await supabase
         .from("cases")
