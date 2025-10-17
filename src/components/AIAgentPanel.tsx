@@ -55,7 +55,11 @@ export const AIAgentPanel = ({ caseId }: AIAgentPanelProps) => {
     setResponse("");
 
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        throw new Error('Not authenticated');
+      }
       
       const { data, error } = await supabase.functions.invoke('ai-agent', {
         body: { 
@@ -64,11 +68,19 @@ export const AIAgentPanel = ({ caseId }: AIAgentPanelProps) => {
           action 
         },
         headers: {
-          'x-user-id': user?.id
+          Authorization: `Bearer ${session.access_token}`,
+          'x-user-id': session.user.id
         }
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Edge function error:', error);
+        throw error;
+      }
+
+      if (!data || !data.response) {
+        throw new Error('Invalid response from AI agent');
+      }
 
       setResponse(data.response);
       toast({
@@ -79,7 +91,7 @@ export const AIAgentPanel = ({ caseId }: AIAgentPanelProps) => {
       console.error('AI Agent error:', error);
       toast({
         title: "Error",
-        description: error.message || "Failed to get AI response",
+        description: error.message || "Failed to send a request to the Edge Function",
         variant: "destructive",
       });
     } finally {
