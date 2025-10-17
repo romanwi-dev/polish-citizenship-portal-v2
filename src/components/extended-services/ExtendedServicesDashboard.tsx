@@ -57,11 +57,8 @@ export const ExtendedServicesDashboard = () => {
               className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
               style={{ backfaceVisibility: 'hidden' }}
             >
-              <div className="flex items-center gap-3 sm:gap-4">
-                <div className="p-3 bg-blue-500/10 rounded-lg shrink-0">
-                  <Users className="h-6 w-6 sm:h-7 sm:w-7 text-blue-600" />
-                </div>
-                <div className="min-w-0">
+              <div className="flex items-center gap-3 sm:gap-4 justify-center">
+                <div className="min-w-0 text-center">
                   <p className="text-sm font-medium text-muted-foreground truncate">Family Legal</p>
                   <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                     0
@@ -97,11 +94,8 @@ export const ExtendedServicesDashboard = () => {
               className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
               style={{ backfaceVisibility: 'hidden' }}
             >
-              <div className="flex items-center gap-3 sm:gap-4">
-                <div className="p-3 bg-green-500/10 rounded-lg shrink-0">
-                  <FileText className="h-6 w-6 sm:h-7 sm:w-7 text-green-600" />
-                </div>
-                <div className="min-w-0">
+              <div className="flex items-center gap-3 sm:gap-4 justify-center">
+                <div className="min-w-0 text-center">
                   <p className="text-sm font-medium text-muted-foreground truncate">Documents</p>
                   <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                     0
@@ -137,11 +131,8 @@ export const ExtendedServicesDashboard = () => {
               className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
               style={{ backfaceVisibility: 'hidden' }}
             >
-              <div className="flex items-center gap-3 sm:gap-4">
-                <div className="p-3 bg-purple-500/10 rounded-lg shrink-0">
-                  <Globe className="h-6 w-6 sm:h-7 sm:w-7 text-purple-600" />
-                </div>
-                <div className="min-w-0">
+              <div className="flex items-center gap-3 sm:gap-4 justify-center">
+                <div className="min-w-0 text-center">
                   <p className="text-sm font-medium text-muted-foreground truncate">International</p>
                   <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                     0
@@ -177,11 +168,8 @@ export const ExtendedServicesDashboard = () => {
               className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
               style={{ backfaceVisibility: 'hidden' }}
             >
-              <div className="flex items-center gap-3 sm:gap-4">
-                <div className="p-3 bg-pink-500/10 rounded-lg shrink-0">
-                  <Heart className="h-6 w-6 sm:h-7 sm:w-7 text-pink-600" />
-                </div>
-                <div className="min-w-0">
+              <div className="flex items-center gap-3 sm:gap-4 justify-center">
+                <div className="min-w-0 text-center">
                   <p className="text-sm font-medium text-muted-foreground truncate">Heritage</p>
                   <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                     0
@@ -204,28 +192,22 @@ export const ExtendedServicesDashboard = () => {
       <Tabs defaultValue="cards" className="space-y-4">
         <div className="w-full overflow-x-auto scrollbar-hide">
           <TabsList className="inline-flex gap-2 h-auto p-2 w-max">
-            <TabsTrigger value="cards" className="gap-2 px-8 py-3 text-base sm:text-sm whitespace-nowrap">
-              <Workflow className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
+            <TabsTrigger value="cards" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
               <span>Service Cards</span>
             </TabsTrigger>
-            <TabsTrigger value="family" className="gap-2 px-8 py-3 text-base sm:text-sm whitespace-nowrap">
-              <Users className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
+            <TabsTrigger value="family" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
               <span>Family Legal</span>
             </TabsTrigger>
-            <TabsTrigger value="procurement" className="gap-2 px-8 py-3 text-base sm:text-sm whitespace-nowrap">
-              <FileText className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
+            <TabsTrigger value="procurement" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
               <span>Document Procurement</span>
             </TabsTrigger>
-            <TabsTrigger value="heritage" className="gap-2 px-8 py-3 text-base sm:text-sm whitespace-nowrap">
-              <Heart className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
+            <TabsTrigger value="heritage" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
               <span>Heritage Research</span>
             </TabsTrigger>
-            <TabsTrigger value="relocation" className="gap-2 px-8 py-3 text-base sm:text-sm whitespace-nowrap">
-              <Briefcase className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
+            <TabsTrigger value="relocation" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
               <span>Relocation</span>
             </TabsTrigger>
-            <TabsTrigger value="analytics" className="gap-2 px-8 py-3 text-base sm:text-sm whitespace-nowrap">
-              <TrendingUp className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
+            <TabsTrigger value="analytics" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
               <span>Analytics</span>
             </TabsTrigger>
           </TabsList>

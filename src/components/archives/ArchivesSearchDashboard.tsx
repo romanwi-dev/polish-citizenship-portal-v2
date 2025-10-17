@@ -56,11 +56,8 @@ export const ArchivesSearchDashboard = () => {
               className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
               style={{ backfaceVisibility: 'hidden' }}
             >
-              <div className="flex items-center gap-3 sm:gap-4">
-                <div className="p-3 bg-primary/10 rounded-lg shrink-0">
-                  <Archive className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
-                </div>
-                <div className="min-w-0">
+              <div className="flex items-center gap-3 sm:gap-4 justify-center">
+                <div className="min-w-0 text-center">
                   <p className="text-sm font-medium text-muted-foreground truncate">Polish</p>
                   <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                     12
@@ -96,11 +93,8 @@ export const ArchivesSearchDashboard = () => {
               className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
               style={{ backfaceVisibility: 'hidden' }}
             >
-              <div className="flex items-center gap-3 sm:gap-4">
-                <div className="p-3 bg-blue-500/10 rounded-lg shrink-0">
-                  <FileSearch className="h-6 w-6 sm:h-7 sm:w-7 text-blue-600" />
-                </div>
-                <div className="min-w-0">
+              <div className="flex items-center gap-3 sm:gap-4 justify-center">
+                <div className="min-w-0 text-center">
                   <p className="text-sm font-medium text-muted-foreground truncate">International</p>
                   <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                     8
@@ -136,11 +130,8 @@ export const ArchivesSearchDashboard = () => {
               className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
               style={{ backfaceVisibility: 'hidden' }}
             >
-              <div className="flex items-center gap-3 sm:gap-4">
-                <div className="p-3 bg-green-500/10 rounded-lg shrink-0">
-                  <FileText className="h-6 w-6 sm:h-7 sm:w-7 text-green-600" />
-                </div>
-                <div className="min-w-0">
+              <div className="flex items-center gap-3 sm:gap-4 justify-center">
+                <div className="min-w-0 text-center">
                   <p className="text-sm font-medium text-muted-foreground truncate">Found</p>
                   <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                     47
@@ -176,11 +167,8 @@ export const ArchivesSearchDashboard = () => {
               className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
               style={{ backfaceVisibility: 'hidden' }}
             >
-              <div className="flex items-center gap-3 sm:gap-4">
-                <div className="p-3 bg-yellow-500/10 rounded-lg shrink-0">
-                  <TrendingUp className="h-6 w-6 sm:h-7 sm:w-7 text-yellow-600" />
-                </div>
-                <div className="min-w-0">
+              <div className="flex items-center gap-3 sm:gap-4 justify-center">
+                <div className="min-w-0 text-center">
                   <p className="text-sm font-medium text-muted-foreground truncate">Success</p>
                   <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                     73%
@@ -203,28 +191,22 @@ export const ArchivesSearchDashboard = () => {
       <Tabs defaultValue="cards" className="space-y-4">
         <div className="w-full overflow-x-auto scrollbar-hide">
           <TabsList className="inline-flex gap-2 h-auto p-2 w-max">
-            <TabsTrigger value="cards" className="gap-2 px-8 py-3 text-base sm:text-sm whitespace-nowrap">
-              <Workflow className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
+            <TabsTrigger value="cards" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
               <span>Workflow Cards</span>
             </TabsTrigger>
-            <TabsTrigger value="timeline" className="gap-2 px-8 py-3 text-base sm:text-sm whitespace-nowrap">
-              <Workflow className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
+            <TabsTrigger value="timeline" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
               <span>Search Timeline</span>
             </TabsTrigger>
-            <TabsTrigger value="supervisor" className="gap-2 px-8 py-3 text-base sm:text-sm whitespace-nowrap">
-              <UserCog className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
+            <TabsTrigger value="supervisor" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
               <span>Supervisor</span>
             </TabsTrigger>
-            <TabsTrigger value="partners" className="gap-2 px-8 py-3 text-base sm:text-sm whitespace-nowrap">
-              <Users className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
+            <TabsTrigger value="partners" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
               <span>Partners</span>
             </TabsTrigger>
-            <TabsTrigger value="directory" className="gap-2 px-8 py-3 text-base sm:text-sm whitespace-nowrap">
-              <Building2 className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
+            <TabsTrigger value="directory" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
               <span>Archive Directory</span>
             </TabsTrigger>
-            <TabsTrigger value="templates" className="gap-2 px-8 py-3 text-base sm:text-sm whitespace-nowrap">
-              <ClipboardList className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
+            <TabsTrigger value="templates" className="px-10 py-3 text-base sm:text-sm whitespace-nowrap w-[180px]">
               <span>Templates</span>
             </TabsTrigger>
           </TabsList>
