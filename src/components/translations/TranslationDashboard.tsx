@@ -54,7 +54,7 @@ export const TranslationDashboard = () => {
       {/* Workflow Navigation */}
       <WorkflowNavigation />
 
-      <div className="grid gap-3 grid-cols-2 md:grid-cols-4">
+      <div className="grid gap-3 grid-cols-2 md:grid-cols-4 px-2 sm:px-0">
         {/* Prepared Card */}
         <div 
           className="relative h-[140px] cursor-pointer"
@@ -70,15 +70,15 @@ export const TranslationDashboard = () => {
           >
             {/* Front */}
             <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300"
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300 border-2 border-primary/20"
               style={{ 
                 backfaceVisibility: 'hidden',
-                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15), 0 8px 32px 0 rgba(0, 0, 0, 0.37)'
+                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
               }}
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <p className="text-sm font-medium text-muted-foreground truncate">Prepared</p>
+                  <p className="text-base sm:text-sm font-semibold text-foreground/90">Prepared</p>
                 </div>
               </div>
             </div>
@@ -107,15 +107,15 @@ export const TranslationDashboard = () => {
           >
             {/* Front */}
             <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300"
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300 border-2 border-primary/20"
               style={{ 
                 backfaceVisibility: 'hidden',
-                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15), 0 8px 32px 0 rgba(0, 0, 0, 0.37)'
+                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
               }}
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <p className="text-sm font-medium text-muted-foreground truncate">Pending</p>
+                  <p className="text-base sm:text-sm font-semibold text-foreground/90">Pending</p>
                 </div>
               </div>
             </div>
@@ -144,15 +144,15 @@ export const TranslationDashboard = () => {
           >
             {/* Front */}
             <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300"
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300 border-2 border-primary/20"
               style={{ 
                 backfaceVisibility: 'hidden',
-                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15), 0 8px 32px 0 rgba(0, 0, 0, 0.37)'
+                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
               }}
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <p className="text-sm font-medium text-muted-foreground truncate">Translator</p>
+                  <p className="text-base sm:text-sm font-semibold text-foreground/90">Translator</p>
                 </div>
               </div>
             </div>
@@ -181,15 +181,15 @@ export const TranslationDashboard = () => {
           >
             {/* Front */}
             <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300"
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300 border-2 border-primary/20"
               style={{ 
                 backfaceVisibility: 'hidden',
-                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15), 0 8px 32px 0 rgba(0, 0, 0, 0.37)'
+                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
               }}
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <p className="text-sm font-medium text-muted-foreground truncate">Completed</p>
+                  <p className="text-base sm:text-sm font-semibold text-foreground/90">Completed</p>
                 </div>
               </div>
             </div>
@@ -224,23 +224,23 @@ export const TranslationDashboard = () => {
       {/* Main Content Tabs */}
       <Tabs defaultValue="cards" className="space-y-4">
         <div className="w-full overflow-x-auto scrollbar-hide">
-          <TabsList className="inline-flex h-auto p-0 w-max bg-transparent border-0 gap-1 opacity-50">
-            <TabsTrigger value="cards" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[180px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
+          <TabsList className="inline-flex h-auto p-0 w-max bg-transparent border-0 gap-1 opacity-70">
+            <TabsTrigger value="cards" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
               Workflow Cards
             </TabsTrigger>
-            <TabsTrigger value="workflow" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[180px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
+            <TabsTrigger value="workflow" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
               Translation Timeline
             </TabsTrigger>
-            <TabsTrigger value="supervisor" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[180px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
+            <TabsTrigger value="supervisor" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
               Supervisor
             </TabsTrigger>
-            <TabsTrigger value="requirements" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[180px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
+            <TabsTrigger value="requirements" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
               Requirements
             </TabsTrigger>
-            <TabsTrigger value="translators" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[180px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
+            <TabsTrigger value="translators" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
               Sworn Translators
             </TabsTrigger>
-            <TabsTrigger value="agencies" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[180px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
+            <TabsTrigger value="agencies" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-red-500/10 hover:bg-red-500/20 border-red-500/30">
               Agencies
             </TabsTrigger>
           </TabsList>
