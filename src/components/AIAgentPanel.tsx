@@ -9,11 +9,13 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface AIAgentPanelProps {
   caseId: string;
+  defaultAction?: string;
+  showActionSelector?: boolean;
 }
 
-export const AIAgentPanel = ({ caseId }: AIAgentPanelProps) => {
+export const AIAgentPanel = ({ caseId, defaultAction, showActionSelector = true }: AIAgentPanelProps) => {
   const [prompt, setPrompt] = useState("");
-  const [action, setAction] = useState("comprehensive");
+  const [action, setAction] = useState(defaultAction || "comprehensive");
   const [response, setResponse] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -46,6 +48,16 @@ export const AIAgentPanel = ({ caseId }: AIAgentPanelProps) => {
       toast({
         title: "Error",
         description: "Please enter a prompt",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate caseId for non-security-audit actions
+    if (action !== 'security_audit' && !caseId) {
+      toast({
+        title: "Error",
+        description: "Please select a case first",
         variant: "destructive",
       });
       return;
@@ -113,27 +125,29 @@ export const AIAgentPanel = ({ caseId }: AIAgentPanelProps) => {
       </div>
 
       {/* Action Type Selector */}
-      <div className="space-y-3">
-        <label className="text-lg sm:text-xl font-normal text-foreground/95 block">Agent Action</label>
-        <Select value={action} onValueChange={setAction}>
-          <SelectTrigger className="h-12 sm:h-14 text-base sm:text-lg">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {agentActions.map((act) => {
-              const Icon = act.icon;
-              return (
-                <SelectItem key={act.value} value={act.value} className="text-base sm:text-lg py-3">
-                  <div className="flex items-center gap-3">
-                    <Icon className="h-5 w-5" />
-                    {act.label}
-                  </div>
-                </SelectItem>
-              );
-            })}
-          </SelectContent>
-        </Select>
-      </div>
+      {showActionSelector && (
+        <div className="space-y-3">
+          <label className="text-lg sm:text-xl font-normal text-foreground/95 block">Agent Action</label>
+          <Select value={action} onValueChange={setAction}>
+            <SelectTrigger className="h-12 sm:h-14 text-base sm:text-lg">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {agentActions.map((act) => {
+                const Icon = act.icon;
+                return (
+                  <SelectItem key={act.value} value={act.value} className="text-base sm:text-lg py-3">
+                    <div className="flex items-center gap-3">
+                      <Icon className="h-5 w-5" />
+                      {act.label}
+                    </div>
+                  </SelectItem>
+                );
+              })}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
 
       {/* Quick Prompts */}
       <div className="space-y-3">

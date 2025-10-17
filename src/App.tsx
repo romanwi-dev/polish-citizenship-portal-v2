@@ -383,7 +383,7 @@ const App = () => (
             } 
           />
           <Route 
-            path="/admin/researcher" 
+            path="/admin/researcher/:id" 
             element={
               <Suspense fallback={<AdminLoader />}>
                 <Researcher />
@@ -391,7 +391,7 @@ const App = () => (
             } 
           />
           <Route 
-            path="/admin/translator" 
+            path="/admin/translator/:id" 
             element={
               <Suspense fallback={<AdminLoader />}>
                 <Translator />
@@ -399,7 +399,7 @@ const App = () => (
             } 
           />
           <Route 
-            path="/admin/writer" 
+            path="/admin/writer/:id" 
             element={
               <Suspense fallback={<AdminLoader />}>
                 <Writer />
@@ -407,7 +407,7 @@ const App = () => (
             } 
           />
           <Route 
-            path="/admin/designer" 
+            path="/admin/designer/:id" 
             element={
               <Suspense fallback={<AdminLoader />}>
                 <Designer />

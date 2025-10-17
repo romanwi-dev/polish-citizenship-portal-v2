@@ -23,6 +23,18 @@ serve(async (req) => {
       throw new Error('Missing required fields: prompt and action are required');
     }
     
+    // Validate caseId for non-security-audit actions
+    if (action !== 'security_audit') {
+      if (!caseId) {
+        throw new Error('caseId is required for this action');
+      }
+      // Basic UUID format validation
+      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+      if (!uuidRegex.test(caseId)) {
+        throw new Error('Invalid caseId format');
+      }
+    }
+    
     const supabaseUrl = Deno.env.get('SUPABASE_URL');
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
     const lovableApiKey = Deno.env.get('LOVABLE_API_KEY');
@@ -63,7 +75,16 @@ serve(async (req) => {
         .eq('id', caseId)
         .single();
 
-      if (caseError) throw caseError;
+      if (caseError) {
+        console.error('Database error fetching case:', caseError);
+        console.error('Error details:', JSON.stringify(caseError));
+        throw new Error(`Failed to fetch case data: ${caseError.message}`);
+      }
+      
+      if (!data) {
+        throw new Error(`Case not found with ID: ${caseId}`);
+      }
+      
       caseData = data;
       
       // Build context for AI
@@ -89,7 +110,6 @@ serve(async (req) => {
             content: `Case Context:\n${JSON.stringify(context, null, 2)}\n\nUser Request: ${prompt}`
           }
         ],
-        temperature: 0.7,
       }),
     });
 

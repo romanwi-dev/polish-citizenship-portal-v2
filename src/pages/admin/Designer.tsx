@@ -1,14 +1,42 @@
 import { AdminLayout } from "@/components/AdminLayout";
 import { AIAgentPanel } from "@/components/AIAgentPanel";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, Palette } from "lucide-react";
 
 const Designer = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const caseId = id || "";
+
+  if (!caseId) {
+    return (
+      <AdminLayout>
+        <div className="flex flex-col items-center justify-center min-h-[400px] space-y-4">
+          <Palette className="h-16 w-16 text-muted-foreground" />
+          <h2 className="text-2xl font-bold">No Case Selected</h2>
+          <p className="text-muted-foreground">Please select a case to use the Designer agent</p>
+          <Button onClick={() => navigate("/admin/cases")}>
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Cases
+          </Button>
+        </div>
+      </AdminLayout>
+    );
+  }
 
   return (
     <AdminLayout>
-      <AIAgentPanel caseId={caseId} />
+      <div className="space-y-4">
+        <div className="flex items-center gap-3 mb-6">
+          <Palette className="h-8 w-8 text-primary" />
+          <div>
+            <h1 className="text-3xl font-bold">Designer Agent</h1>
+            <p className="text-muted-foreground">UI/UX design optimization and recommendations</p>
+          </div>
+        </div>
+        <AIAgentPanel caseId={caseId} defaultAction="designer" showActionSelector={false} />
+      </div>
     </AdminLayout>
   );
 };
