@@ -11,6 +11,34 @@ const VALID_API_KEYS = new Set([
   Deno.env.get("PARTNER_API_KEY_2"),
 ].filter(Boolean));
 
+// Rate limiting implementation
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+
+function checkRateLimit(key: string, maxRequests = 100, windowMs = 60000): { allowed: boolean; retryAfter?: number } {
+  const now = Date.now();
+  const limit = rateLimitMap.get(key);
+  
+  // Clean up expired entries
+  if (limit && now > limit.resetAt) {
+    rateLimitMap.delete(key);
+  }
+  
+  const existing = rateLimitMap.get(key);
+  
+  if (!existing) {
+    rateLimitMap.set(key, { count: 1, resetAt: now + windowMs });
+    return { allowed: true };
+  }
+  
+  if (existing.count >= maxRequests) {
+    const retryAfter = Math.ceil((existing.resetAt - now) / 1000);
+    return { allowed: false, retryAfter };
+  }
+  
+  existing.count++;
+  return { allowed: true };
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -23,6 +51,25 @@ serve(async (req) => {
       return new Response(
         JSON.stringify({ error: "Invalid API key" }),
         { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+    
+    // Rate limiting
+    const rateLimitResult = checkRateLimit(`partner-${apiKey}`, 100, 60000);
+    if (!rateLimitResult.allowed) {
+      return new Response(
+        JSON.stringify({ 
+          error: "Rate limit exceeded", 
+          retryAfter: rateLimitResult.retryAfter 
+        }),
+        { 
+          status: 429, 
+          headers: { 
+            ...corsHeaders, 
+            "Content-Type": "application/json",
+            "Retry-After": String(rateLimitResult.retryAfter)
+          } 
+        }
       );
     }
 
@@ -40,16 +87,7 @@ serve(async (req) => {
       const { clientName, email, phone, country, intakeData } = body;
 
       // Input validation
-      const { sanitizeName, isValidEmail, checkRateLimit } = await import('../_shared/validation.ts');
-
-      // Rate limiting by API key
-      const rateLimit = checkRateLimit(`partner-${apiKey}`, 100, 60000);
-      if (!rateLimit.allowed) {
-        return new Response(
-          JSON.stringify({ error: 'Rate limit exceeded', retryAfter: rateLimit.retryAfter }),
-          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-      }
+      const { sanitizeName, isValidEmail } = await import('../_shared/validation.ts');
 
       const sanitizedName = sanitizeName(clientName);
       if (!sanitizedName) {

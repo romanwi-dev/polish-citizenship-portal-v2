@@ -6,6 +6,33 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// Rate limiting implementation
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+
+function checkRateLimit(key: string, maxRequests = 20, windowMs = 60000): { allowed: boolean; retryAfter?: number } {
+  const now = Date.now();
+  const limit = rateLimitMap.get(key);
+  
+  if (limit && now > limit.resetAt) {
+    rateLimitMap.delete(key);
+  }
+  
+  const existing = rateLimitMap.get(key);
+  
+  if (!existing) {
+    rateLimitMap.set(key, { count: 1, resetAt: now + windowMs });
+    return { allowed: true };
+  }
+  
+  if (existing.count >= maxRequests) {
+    const retryAfter = Math.ceil((existing.resetAt - now) / 1000);
+    return { allowed: false, retryAfter };
+  }
+  
+  existing.count++;
+  return { allowed: true };
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -18,6 +45,26 @@ serve(async (req) => {
       return new Response(
         JSON.stringify({ error: "caseId and clientEmail required" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+    
+    // Rate limiting by email
+    const rateLimitResult = checkRateLimit(`welcome-${clientEmail}`, 20, 60000);
+    
+    if (!rateLimitResult.allowed) {
+      return new Response(
+        JSON.stringify({ 
+          error: "Rate limit exceeded", 
+          retryAfter: rateLimitResult.retryAfter 
+        }),
+        { 
+          status: 429, 
+          headers: { 
+            ...corsHeaders, 
+            "Content-Type": "application/json",
+            "Retry-After": String(rateLimitResult.retryAfter)
+          } 
+        }
       );
     }
 
