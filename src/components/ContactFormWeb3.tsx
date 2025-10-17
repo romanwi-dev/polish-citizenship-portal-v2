@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense } from "react";
+import { useState } from "react";
 import { Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,9 +7,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Send, Zap, CheckCircle2 } from "lucide-react";
 import { z } from "zod";
-
-// Lazy load 3D component
-const WavingEUFlag = lazy(() => import("./WavingEUFlag").then(module => ({ default: module.WavingEUFlag })));
+import { CelebrationBackground } from "./backgrounds/CelebrationBackground";
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, { message: "Name is required" }).max(100),
@@ -20,18 +18,11 @@ const contactSchema = z.object({
 const ContactFormWeb3 = () => {
   const { toast } = useToast();
   const [isFlipped, setIsFlipped] = useState(false);
-  const [shouldLoadMap, setShouldLoadMap] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
   });
-
-  // Defer 3D component loading
-  useEffect(() => {
-    const timer = setTimeout(() => setShouldLoadMap(true), 100);
-    return () => clearTimeout(timer);
-  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,11 +56,9 @@ const ContactFormWeb3 = () => {
   return (
     <section id="contact" className="py-32 relative overflow-hidden">
       
-      {/* 3D Background - EU Flag */}
+      {/* Celebration Background - Stars, Sparkles & Fireworks */}
       <div className="absolute inset-0 z-0">
-        <Suspense fallback={null}>
-          {shouldLoadMap && <WavingEUFlag />}
-        </Suspense>
+        <CelebrationBackground />
       </div>
       
       <div className="container px-4 mx-auto relative z-10">
