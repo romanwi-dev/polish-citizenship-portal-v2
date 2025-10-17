@@ -114,7 +114,7 @@ const Navigation = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent 
                 align="end" 
-                className="w-[480px] p-0 bg-background/95 backdrop-blur-xl border border-primary/20 z-[100] flex flex-col"
+                className="w-[440px] p-0 bg-background/95 backdrop-blur-xl border border-primary/20 z-[100] flex flex-col"
                 style={{ height: 'calc(100vh - 5rem)' }}
               >
                 <DesignComponent>
