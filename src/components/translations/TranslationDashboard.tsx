@@ -54,22 +54,152 @@ export const TranslationDashboard = () => {
       {/* Workflow Navigation */}
       <WorkflowNavigation />
 
-      <div className="w-full overflow-x-auto scrollbar-hide mb-6">
-        <div className="inline-flex w-max gap-1">
-          <div className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-green-500/10 hover:bg-green-500/20 border border-green-500/30 flex items-center justify-center cursor-default">
-            <span>Prepared</span>
+      <div className="grid gap-3 grid-cols-2 md:grid-cols-4 px-2 sm:px-0">
+        {/* Prepared Card */}
+        <div 
+          className="relative h-[140px] cursor-pointer"
+          style={{ perspective: '1000px' }}
+          onClick={() => toggleFlip('prepared')}
+        >
+          <div
+            className="absolute inset-0 transition-transform duration-700"
+            style={{
+              transformStyle: 'preserve-3d',
+              transform: flippedCards['prepared'] ? 'rotateY(180deg)' : 'rotateY(0deg)',
+            }}
+          >
+            {/* Front */}
+            <div 
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300 border-2 border-primary/20"
+              style={{ 
+                backfaceVisibility: 'hidden',
+                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
+              }}
+            >
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center">
+                  <p className="text-base sm:text-sm font-semibold text-foreground/90">Prepared</p>
+                </div>
+              </div>
+            </div>
+            {/* Back */}
+            <div 
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
+              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+            >
+              <p className="text-sm text-muted-foreground text-center">Total documents prepared for translation workflow</p>
+            </div>
           </div>
+        </div>
 
-          <div className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-green-500/10 hover:bg-green-500/20 border border-green-500/30 flex items-center justify-center cursor-default">
-            <span>Pending</span>
+        {/* Pending Card */}
+        <div 
+          className="relative h-[140px] cursor-pointer"
+          style={{ perspective: '1000px' }}
+          onClick={() => toggleFlip('pending')}
+        >
+          <div
+            className="absolute inset-0 transition-transform duration-700"
+            style={{
+              transformStyle: 'preserve-3d',
+              transform: flippedCards['pending'] ? 'rotateY(180deg)' : 'rotateY(0deg)',
+            }}
+          >
+            {/* Front */}
+            <div 
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300 border-2 border-primary/20"
+              style={{ 
+                backfaceVisibility: 'hidden',
+                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
+              }}
+            >
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center">
+                  <p className="text-base sm:text-sm font-semibold text-foreground/90">Pending</p>
+                </div>
+              </div>
+            </div>
+            {/* Back */}
+            <div 
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
+              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+            >
+              <p className="text-sm text-muted-foreground text-center">Documents awaiting client upload to portal</p>
+            </div>
           </div>
+        </div>
 
-          <div className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-green-500/10 hover:bg-green-500/20 border border-green-500/30 flex items-center justify-center cursor-default">
-            <span>Translator</span>
+        {/* Translator Card */}
+        <div 
+          className="relative h-[140px] cursor-pointer"
+          style={{ perspective: '1000px' }}
+          onClick={() => toggleFlip('translator')}
+        >
+          <div
+            className="absolute inset-0 transition-transform duration-700"
+            style={{
+              transformStyle: 'preserve-3d',
+              transform: flippedCards['translator'] ? 'rotateY(180deg)' : 'rotateY(0deg)',
+            }}
+          >
+            {/* Front */}
+            <div 
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300 border-2 border-primary/20"
+              style={{ 
+                backfaceVisibility: 'hidden',
+                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
+              }}
+            >
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center">
+                  <p className="text-base sm:text-sm font-semibold text-foreground/90">Translator</p>
+                </div>
+              </div>
+            </div>
+            {/* Back */}
+            <div 
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
+              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+            >
+              <p className="text-sm text-muted-foreground text-center">Documents currently with sworn translator for certification</p>
+            </div>
           </div>
+        </div>
 
-          <div className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[200px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-green-500/10 hover:bg-green-500/20 border border-green-500/30 flex items-center justify-center cursor-default">
-            <span>Completed</span>
+        {/* Completed Card */}
+        <div 
+          className="relative h-[140px] cursor-pointer"
+          style={{ perspective: '1000px' }}
+          onClick={() => toggleFlip('completed')}
+        >
+          <div
+            className="absolute inset-0 transition-transform duration-700"
+            style={{
+              transformStyle: 'preserve-3d',
+              transform: flippedCards['completed'] ? 'rotateY(180deg)' : 'rotateY(0deg)',
+            }}
+          >
+            {/* Front */}
+            <div 
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300 border-2 border-primary/20"
+              style={{ 
+                backfaceVisibility: 'hidden',
+                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
+              }}
+            >
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center">
+                  <p className="text-base sm:text-sm font-semibold text-foreground/90">Completed</p>
+                </div>
+              </div>
+            </div>
+            {/* Back */}
+            <div 
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
+              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+            >
+              <p className="text-sm text-muted-foreground text-center">Certified translations ready for submission to authorities</p>
+            </div>
           </div>
         </div>
       </div>
