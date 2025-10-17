@@ -238,56 +238,58 @@ export const CaseCard = memo(({
 
           {/* Badges Row */}
           <div className="flex flex-wrap gap-2 mb-4 sm:mb-5">
-            <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getStatusBadge(clientCase.status)} capitalize whitespace-nowrap min-h-[32px] flex items-center justify-center`}>
+            <span className={`px-3 py-1.5 rounded-full text-xs font-medium border ${getStatusBadge(clientCase.status)} capitalize whitespace-nowrap min-h-[28px] flex items-center justify-center`}>
               {clientCase.status.replace(/_/g, ' ')}
             </span>
             
             {clientCase.is_vip && (
-              <span className="px-2 py-1 rounded-full text-xs font-medium border bg-purple-500/20 text-purple-400 border-purple-500/30 whitespace-nowrap min-h-[32px] flex items-center justify-center">
+              <span className="px-3 py-1.5 rounded-full text-xs font-medium border bg-purple-500/20 text-purple-400 border-purple-500/30 whitespace-nowrap min-h-[28px] flex items-center justify-center">
                 VIP
               </span>
             )}
 
             {clientCase.country && (
-              <span className="px-2 py-1 rounded-full text-xs font-medium border bg-blue-500/20 text-blue-400 border-blue-500/30 whitespace-nowrap min-h-[32px] flex items-center justify-center">
+              <span className="px-3 py-1.5 rounded-full text-xs font-medium border bg-blue-500/20 text-blue-400 border-blue-500/30 whitespace-nowrap min-h-[28px] flex items-center justify-center">
                 <MapPin className="w-3 h-3 mr-1" />
                 {clientCase.country}
               </span>
             )}
             
-            {/* Processing Mode Badge with Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                <span className={`px-2 py-1 rounded-full text-xs font-medium border cursor-pointer hover:opacity-80 transition-opacity flex items-center gap-1 whitespace-nowrap min-h-[32px] ${
-                  PROCESSING_MODE_COLORS[clientCase.processing_mode as keyof typeof PROCESSING_MODE_COLORS]
-                }`}>
-                  {getProcessingModeIcon()}
-                  {PROCESSING_MODE_LABELS[clientCase.processing_mode as keyof typeof PROCESSING_MODE_LABELS]}
-                </span>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-40 bg-popover border border-border z-50">
-                <DropdownMenuLabel>Processing Mode</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleProcessingModeChange('standard'); }}>
-                  Standard
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleProcessingModeChange('expedited'); }}>
-                  <Zap className="mr-2 h-3 w-3" />
-                  Expedited
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleProcessingModeChange('vip'); }}>
-                  <Award className="mr-2 h-3 w-3" />
-                  VIP
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleProcessingModeChange('vip_plus'); }}>
-                  <Award className="mr-2 h-3 w-3" />
-                  VIP+
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {/* Processing Mode Badge - Only show if NOT VIP (to avoid duplication) */}
+            {!clientCase.is_vip && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                  <span className={`px-3 py-1.5 rounded-full text-xs font-medium border cursor-pointer hover:opacity-80 transition-opacity flex items-center gap-1 whitespace-nowrap min-h-[28px] ${
+                    PROCESSING_MODE_COLORS[clientCase.processing_mode as keyof typeof PROCESSING_MODE_COLORS]
+                  }`}>
+                    {getProcessingModeIcon()}
+                    {PROCESSING_MODE_LABELS[clientCase.processing_mode as keyof typeof PROCESSING_MODE_LABELS]}
+                  </span>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-40 bg-popover border border-border z-50">
+                  <DropdownMenuLabel>Processing Mode</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleProcessingModeChange('standard'); }}>
+                    Standard
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleProcessingModeChange('expedited'); }}>
+                    <Zap className="mr-2 h-3 w-3" />
+                    Expedited
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleProcessingModeChange('vip'); }}>
+                    <Award className="mr-2 h-3 w-3" />
+                    VIP
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleProcessingModeChange('vip_plus'); }}>
+                    <Award className="mr-2 h-3 w-3" />
+                    VIP+
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
 
             {clientCase.scheme_introduced && (
-              <span className="px-2 py-1 rounded-full text-xs font-medium border bg-cyan-500/20 text-cyan-400 border-cyan-500/30 whitespace-nowrap min-h-[32px] flex items-center justify-center">
+              <span className="px-3 py-1.5 rounded-full text-xs font-medium border bg-cyan-500/20 text-cyan-400 border-cyan-500/30 whitespace-nowrap min-h-[28px] flex items-center justify-center">
                 {clientCase.scheme_introduced}
               </span>
             )}
