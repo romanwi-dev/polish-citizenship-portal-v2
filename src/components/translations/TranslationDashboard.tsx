@@ -73,15 +73,9 @@ export const TranslationDashboard = () => {
               className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
               style={{ backfaceVisibility: 'hidden' }}
             >
-              <div className="flex items-center gap-3 sm:gap-4">
-                <div className="p-3 bg-primary/10 rounded-lg shrink-0">
-                  <FileText className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
-                </div>
-                <div className="min-w-0">
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center">
                   <p className="text-sm font-medium text-muted-foreground truncate">Prepared</p>
-                  <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                    {counts?.total || 0}
-                  </p>
                 </div>
               </div>
             </div>
@@ -113,15 +107,9 @@ export const TranslationDashboard = () => {
               className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
               style={{ backfaceVisibility: 'hidden' }}
             >
-              <div className="flex items-center gap-3 sm:gap-4">
-                <div className="p-3 bg-yellow-500/10 rounded-lg shrink-0">
-                  <Clock className="h-6 w-6 sm:h-7 sm:w-7 text-yellow-600" />
-                </div>
-                <div className="min-w-0">
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center">
                   <p className="text-sm font-medium text-muted-foreground truncate">Pending</p>
-                  <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                    {counts?.upload_pending || 0}
-                  </p>
                 </div>
               </div>
             </div>
@@ -153,15 +141,9 @@ export const TranslationDashboard = () => {
               className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
               style={{ backfaceVisibility: 'hidden' }}
             >
-              <div className="flex items-center gap-3 sm:gap-4">
-                <div className="p-3 bg-blue-500/10 rounded-lg shrink-0">
-                  <Languages className="h-6 w-6 sm:h-7 sm:w-7 text-blue-600" />
-                </div>
-                <div className="min-w-0">
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center">
                   <p className="text-sm font-medium text-muted-foreground truncate">Translator</p>
-                  <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                    {counts?.with_translator || 0}
-                  </p>
                 </div>
               </div>
             </div>
@@ -193,15 +175,9 @@ export const TranslationDashboard = () => {
               className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
               style={{ backfaceVisibility: 'hidden' }}
             >
-              <div className="flex items-center gap-3 sm:gap-4">
-                <div className="p-3 bg-green-500/10 rounded-lg shrink-0">
-                  <CheckCircle className="h-6 w-6 sm:h-7 sm:w-7 text-green-600" />
-                </div>
-                <div className="min-w-0">
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center">
                   <p className="text-sm font-medium text-muted-foreground truncate">Completed</p>
-                  <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                    {counts?.completed || 0}
-                  </p>
                 </div>
               </div>
             </div>
@@ -236,30 +212,24 @@ export const TranslationDashboard = () => {
       {/* Main Content Tabs */}
       <Tabs defaultValue="cards" className="space-y-4">
         <div className="w-full overflow-x-auto scrollbar-hide">
-          <TabsList className="inline-flex gap-2 h-auto p-2 w-max">
-            <TabsTrigger value="cards" className="gap-2 px-8 py-3 text-base sm:text-sm whitespace-nowrap">
-              <Workflow className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
-              <span>Workflow Cards</span>
+          <TabsList className="inline-flex h-auto p-2 w-max">
+            <TabsTrigger value="cards" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[180px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
+              Workflow Cards
             </TabsTrigger>
-            <TabsTrigger value="workflow" className="gap-2 px-8 py-3 text-base sm:text-sm whitespace-nowrap">
-              <Workflow className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
-              <span>Translation Timeline</span>
+            <TabsTrigger value="workflow" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[180px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
+              Translation Timeline
             </TabsTrigger>
-            <TabsTrigger value="supervisor" className="gap-2 px-8 py-3 text-base sm:text-sm whitespace-nowrap">
-              <UserCog className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
-              <span>Supervisor</span>
+            <TabsTrigger value="supervisor" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[180px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
+              Supervisor
             </TabsTrigger>
-            <TabsTrigger value="requirements" className="gap-2 px-8 py-3 text-base sm:text-sm whitespace-nowrap">
-              <ClipboardList className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
-              <span>Requirements</span>
+            <TabsTrigger value="requirements" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[180px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
+              Requirements
             </TabsTrigger>
-            <TabsTrigger value="translators" className="gap-2 px-8 py-3 text-base sm:text-sm whitespace-nowrap">
-              <Users className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
-              <span>Sworn Translators</span>
+            <TabsTrigger value="translators" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[180px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
+              Sworn Translators
             </TabsTrigger>
-            <TabsTrigger value="agencies" className="gap-2 px-8 py-3 text-base sm:text-sm whitespace-nowrap">
-              <Building2 className="h-5 w-5 sm:h-4 sm:w-4 shrink-0" />
-              <span>Agencies</span>
+            <TabsTrigger value="agencies" className="px-8 py-3 text-base whitespace-nowrap h-14 font-medium w-[180px] rounded-none first:rounded-l-lg last:rounded-r-lg bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/30">
+              Agencies
             </TabsTrigger>
           </TabsList>
         </div>
