@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AdminLayout } from '@/components/AdminLayout';
 import { Button } from '@/components/ui/button';
-import { Shield, Loader2, Play, Clock, Database, Lock, FileCode, Activity } from 'lucide-react';
+import { Shield, Loader2, Play, Clock, Database, Lock, FileCode, Activity, Wrench } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import SecurityScoreCard from '@/components/SecurityScoreCard';
@@ -63,6 +63,23 @@ export default function SecurityAudit() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleFixAllIssues = () => {
+    if (!scanResult) return;
+    
+    const issuesSummary = scanResult.issues.map(issue => 
+      `- ${issue.severity.toUpperCase()}: ${issue.message}`
+    ).join('\n');
+    
+    const fixPrompt = `Please fix all the security issues detected:\n\n${issuesSummary}\n\nTotal: ${scanResult.summary.total} issues (${scanResult.summary.critical} critical, ${scanResult.summary.high} high, ${scanResult.summary.medium} medium, ${scanResult.summary.low} low)`;
+    
+    // Copy to clipboard
+    navigator.clipboard.writeText(fixPrompt).then(() => {
+      toast.success('Security issues copied to clipboard! Paste in chat to fix all issues.');
+    }).catch(() => {
+      toast.error('Failed to copy. Please manually ask AI to fix the security issues.');
+    });
   };
 
   const quickScans = [
@@ -132,6 +149,18 @@ export default function SecurityAudit() {
             <Button variant="outline" size="lg" className="gap-2" disabled>
               <Clock className="h-5 w-5" />
               Last scan: {lastScanTime}
+            </Button>
+          )}
+          
+          {scanResult && scanResult.summary.total > 0 && (
+            <Button 
+              onClick={handleFixAllIssues}
+              size="lg"
+              variant="default"
+              className="gap-2 bg-primary hover:bg-primary/90"
+            >
+              <Wrench className="h-5 w-5" />
+              Fix All Issues
             </Button>
           )}
         </div>
