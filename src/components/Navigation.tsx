@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, User, Sparkles, Languages, Image } from "lucide-react";
+import { Menu, User, Sparkles, Languages, Image, Settings, Plus, Mic, Zap, Upload, Share2, LogIn, LogOut } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { useAuth } from "@/hooks/useAuth";
 import { MobileNavigationSheet } from "@/components/MobileNavigationSheet";
@@ -119,99 +119,92 @@ const Navigation = () => {
               >
                 <DesignComponent>
                   <div className="flex flex-col h-full">
-                    {/* Icon Row */}
-                    <div className="p-4 border-b border-border/50">
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => navigate('/admin/forms-demo')}
-                          className="h-11 w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
-                          aria-label="Forms Demo"
-                          title="Forms Inspection Center"
-                        >
-                          <Sparkles className="h-5 w-5 text-foreground" />
-                        </button>
-                        <button
-                          onClick={() => navigate('/admin/translations')}
-                          className="h-11 w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
-                          aria-label="Translations"
-                          title="Translation Management"
-                        >
-                          <Languages className="h-5 w-5 text-foreground" />
-                        </button>
-                        <button
-                          onClick={() => {
-                            navigate('/admin/hero-backgrounds-demo');
-                            setIsMobileMenuOpen(false);
-                          }}
-                          className="h-11 w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
-                          aria-label="Hero Backgrounds"
-                          title="Cinematic Hero Backgrounds"
-                        >
-                          <Image className="h-5 w-5 text-foreground" />
-                        </button>
-                        <button
-                          onClick={() => navigate('/admin/cases')}
-                          className="h-11 w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
-                          aria-label="Management"
-                        >
-                          <User className="h-5 w-5 text-foreground" />
-                        </button>
-                      </div>
+                    {/* Header */}
+                    <div className="flex items-center gap-2 p-4 border-b border-border/50">
+                      <Sparkles className="h-5 w-5 text-primary" />
+                      <span className="font-semibold text-lg">Navigation</span>
                     </div>
                     
                     {/* Scrollable Content */}
                     <ScrollArea className="flex-1">
                       <div className="p-4 space-y-4">
-                        <div className="flex items-center gap-2 pb-2">
-                          <button
-                            onClick={() => navigate('/admin/forms-demo')}
-                            className="h-11 w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
-                            aria-label="Forms Demo"
-                            title="Forms Inspection Center"
+                        {/* Icon Row - At the very top, matching mobile */}
+                        <div className="flex items-center justify-center gap-1.5 py-2">
+                          <button 
+                            className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+                            aria-label="Settings"
                           >
-                            <Sparkles className="h-5 w-5 text-foreground" />
+                            <Settings className="h-5 w-5 text-foreground/30" />
                           </button>
-                          <button
-                            onClick={() => navigate('/admin/translations')}
-                            className="h-11 w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
-                            aria-label="Translations"
-                            title="Translation Management"
+                          <button 
+                            className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+                            aria-label="Add new item"
                           >
-                            <Languages className="h-5 w-5 text-foreground" />
+                            <Plus className="h-5 w-5 text-foreground/30" />
                           </button>
-                          <button
+                          <button 
                             onClick={() => {
                               navigate('/admin/hero-backgrounds-demo');
                               setIsMobileMenuOpen(false);
                             }}
-                            className="h-11 w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
-                            aria-label="Hero Backgrounds"
-                            title="Cinematic Hero Backgrounds"
+                            className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+                            aria-label="Upload image"
                           >
-                            <Image className="h-5 w-5 text-foreground" />
+                            <Image className="h-5 w-5 text-foreground/30" />
                           </button>
-                          <button
-                            onClick={() => navigate('/admin/cases')}
-                            className="h-11 w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
-                            aria-label="Management"
+                          <button 
+                            className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+                            aria-label="Voice input"
                           >
-                            <User className="h-5 w-5 text-foreground" />
+                            <Mic className="h-5 w-5 text-foreground/30" />
+                          </button>
+                          <button 
+                            className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+                            aria-label="Quick actions"
+                          >
+                            <Zap className="h-5 w-5 text-foreground/30" />
+                          </button>
+                          <button 
+                            className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+                            aria-label="Upload file"
+                          >
+                            <Upload className="h-5 w-5 text-foreground/30" />
+                          </button>
+                          <button 
+                            className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
+                            aria-label="Share"
+                          >
+                            <Share2 className="h-5 w-5 text-foreground/30" />
                           </button>
                           <ThemeSwitcher />
                         </div>
-                        
+
+                        {/* Login/Register Button - same height as search */}
                         <Button
-                          variant={user ? "destructive" : "default"}
-                          className="w-full"
                           onClick={user ? handleSignOut : () => navigate('/login')}
+                          className="w-full h-14 bg-green-500/20 text-white font-bold text-lg border-2 border-green-500/30 hover:bg-green-500/30 hover:shadow-[0_0_30px_rgba(34,197,94,0.3)] transition-all"
                         >
-                          {user ? 'Sign Out' : 'Login'}
+                          {user ? (
+                            <>
+                              <LogOut className="mr-2 h-4 w-4" />
+                              Sign Out
+                            </>
+                          ) : (
+                            <>
+                              <LogIn className="mr-2 h-4 w-4" />
+                              Register / Login
+                            </>
+                          )}
                         </Button>
                         
+                        {/* Search - Below the green button, same height */}
                         <NavigationSearch 
                           value={searchQuery}
                           onChange={setSearchQuery}
                         />
+
+                        <div className="h-px bg-border/50" />
+                        
                         <LastVisitedLinks onNavigate={handleNavigate} />
                         <NavigationLinks 
                           onNavigate={handleNavigate}
@@ -220,11 +213,12 @@ const Navigation = () => {
                       </div>
                     </ScrollArea>
                     
-                    {/* Sticky Bottom Button */}
-                    <div className="sticky bottom-0 p-4 bg-background/95 backdrop-blur-xl border-t border-primary/20">
+                    {/* Sticky Bottom Button - Red with visible text */}
+                    <div className="p-4 border-t border-border/50">
                       <Button 
                         onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
-                        className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white font-semibold rounded-md shadow-lg"
+                        className="w-full h-14 min-h-[48px] bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all"
+                        aria-label="Take the Polish Citizenship Test to check your eligibility"
                       >
                         Take Polish Citizenship Test
                       </Button>
