@@ -35,6 +35,24 @@ interface EditCaseDialogProps {
 
 export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditCaseDialogProps) => {
   const updateCaseMutation = useUpdateCase();
+  
+  // Convert YYYY-MM-DD to DD.MM.YYYY for display
+  const formatDateForDisplay = (dateStr: string | null): string => {
+    if (!dateStr) return "";
+    const [year, month, day] = dateStr.split("-");
+    return `${day}.${month}.${year}`;
+  };
+  
+  // Convert DD.MM.YYYY to YYYY-MM-DD for database
+  const formatDateForDatabase = (dateStr: string): string | null => {
+    if (!dateStr) return null;
+    const parts = dateStr.split(".");
+    if (parts.length !== 3) return null;
+    const [day, month, year] = parts;
+    if (!day || !month || !year) return null;
+    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+  };
+  
   const [formData, setFormData] = useState({
     client_name: caseData.name,
     client_code: caseData.client_code || "",
@@ -44,7 +62,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
     is_vip: caseData.is_vip,
     notes: caseData.notes || "",
     progress: caseData.progress,
-    start_date: caseData.start_date || "",
+    start_date: formatDateForDisplay(caseData.start_date),
   });
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(caseData.client_photo_url || null);
@@ -177,7 +195,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
           notes: formData.notes,
           progress: formData.progress,
           client_photo_url,
-          start_date: formData.start_date || null,
+          start_date: formatDateForDatabase(formData.start_date),
         },
       },
       {
@@ -370,9 +388,36 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
               <Label htmlFor="start_date" className="text-base font-semibold text-foreground">Case Start Date</Label>
               <Input
                 id="start_date"
-                type="date"
+                type="text"
+                placeholder="DD.MM.YYYY"
                 value={formData.start_date}
-                onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  // Allow only digits and dots
+                  const filtered = value.replace(/[^\d.]/g, '');
+                  setFormData({ ...formData, start_date: filtered });
+                }}
+                onBlur={(e) => {
+                  const value = e.target.value;
+                  if (!value) return;
+                  
+                  // Validate DD.MM.YYYY format
+                  const parts = value.split('.');
+                  if (parts.length === 3) {
+                    const [day, month, year] = parts;
+                    const dayNum = parseInt(day);
+                    const monthNum = parseInt(month);
+                    const yearNum = parseInt(year);
+                    
+                    if (dayNum < 1 || dayNum > 31 || monthNum < 1 || monthNum > 12 || yearNum > 2030) {
+                      toast.error("Invalid date format. Use DD.MM.YYYY (day ≤ 31, month ≤ 12, year ≤ 2030)");
+                      setFormData({ ...formData, start_date: "" });
+                    }
+                  } else if (value.length > 0) {
+                    toast.error("Invalid date format. Use DD.MM.YYYY");
+                    setFormData({ ...formData, start_date: "" });
+                  }
+                }}
                 className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-background/50 text-base h-12"
               />
             </div>
