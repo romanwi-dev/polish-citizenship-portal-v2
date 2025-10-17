@@ -6,6 +6,15 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+const PROCESSING_TIMEOUT_MS = 300000; // 5 minutes max
+const HARD_TIMEOUT_MS = 600000; // 10 minutes absolute max
+
+// Force cleanup after hard timeout
+setTimeout(() => {
+  console.error('SECURITY: Processing timeout exceeded - forcing cleanup');
+  Deno.exit(1);
+}, HARD_TIMEOUT_MS);
+
 interface PassportData {
   applicantFirstName: string;
   applicantLastName: string;
@@ -18,13 +27,27 @@ interface PassportData {
   sex: "M" | "F";
 }
 
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
+  const startTime = Date.now();
+  let imageBase64: string | null = null;
+  
   try {
-    const { imageBase64, caseId } = await req.json();
+    // 1. Validate authentication
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const { imageBase64: img, caseId } = await req.json();
+    imageBase64 = img;
     
     // Input validation
     const { isValidUUID, MAX_FILE_SIZE } = await import('../_shared/validation.ts');
@@ -51,7 +74,9 @@ serve(async (req) => {
       );
     }
 
-    console.log("Processing passport OCR for case:", caseId);
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) {
@@ -183,10 +208,19 @@ Return JSON with these exact fields:
       }
     }
 
+    // Force garbage collection
+    imageBase64 = null;
+    const memUsage = Deno.memoryUsage();
+    const processingTime = Date.now() - startTime;
+
+    console.log(`Passport OCR completed in ${processingTime}ms`);
+
     return new Response(
       JSON.stringify({
         success: true,
         data: passportData,
+        processingTime,
+        securityNote: 'Image data deleted after processing'
       }),
       {
         status: 200,

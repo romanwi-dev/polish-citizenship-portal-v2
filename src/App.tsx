@@ -14,6 +14,7 @@ import NotFound from "./pages/NotFound";
 // Client portal pages
 const ClientLogin = lazy(() => import("./pages/ClientLogin"));
 const ClientDashboard = lazy(() => import("./pages/ClientDashboard"));
+const ClientSecurity = lazy(() => import("./pages/ClientSecurity"));
 const ClientIntakeWizard = lazy(() => import("./pages/ClientIntakeWizard"));
 
 // Lazy load admin pages to avoid loading Sidebar on home page
@@ -59,6 +60,7 @@ const Researcher = lazy(() => import("./pages/admin/Researcher"));
 const Translator = lazy(() => import("./pages/admin/Translator"));
 const Writer = lazy(() => import("./pages/admin/Writer"));
 const Designer = lazy(() => import("./pages/admin/Designer"));
+const OCRProcessingMonitor = lazy(() => import("./pages/admin/OCRProcessingMonitor"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -112,6 +114,14 @@ const App = () => (
               element={
                 <Suspense fallback={<AdminLoader />}>
                   <ClientIntakeWizard />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/client/security"
+              element={
+                <Suspense fallback={<AdminLoader />}>
+                  <ClientSecurity />
                 </Suspense>
               }
             />
@@ -337,6 +347,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <OCRReview />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/ocr-processing-monitor" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <OCRProcessingMonitor />
               </Suspense>
             } 
           />

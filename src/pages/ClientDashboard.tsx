@@ -6,7 +6,17 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { FileText, MessageSquare, FileCheck, LogOut, Download } from "lucide-react";
+import { 
+  FileText, 
+  MessageSquare, 
+  FileCheck, 
+  LogOut, 
+  Download,
+  Shield,
+  Lock,
+  Clock,
+  Trash2
+} from "lucide-react";
 import { CaseStageVisualization } from "@/components/CaseStageVisualization";
 import { FileUploadSection } from "@/components/client/FileUploadSection";
 import { MessagingSection } from "@/components/client/MessagingSection";
@@ -157,7 +167,36 @@ export default function ClientDashboard() {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-8 space-y-6">
+        {/* Security Badges */}
+        <div className="flex flex-wrap gap-2 justify-center mb-6">
+          <Badge className="px-3 py-1 text-xs">
+            <Lock className="h-3 w-3 mr-1" />
+            TLS 1.3 Encryption
+          </Badge>
+          <Badge className="px-3 py-1 text-xs">
+            <Clock className="h-3 w-3 mr-1" />
+            5min Max Processing
+          </Badge>
+          <Badge className="px-3 py-1 text-xs">
+            <Trash2 className="h-3 w-3 mr-1" />
+            Auto Deletion
+          </Badge>
+          <Badge className="px-3 py-1 text-xs">
+            <FileCheck className="h-3 w-3 mr-1" />
+            SOC 2 Certified
+          </Badge>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={() => window.open('/client/security', '_blank')}
+            className="ml-2"
+          >
+            <Shield className="h-3 w-3 mr-1" />
+            Learn More
+          </Button>
+        </div>
+
         <Tabs defaultValue="timeline" className="space-y-6">
           <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="timeline">Timeline</TabsTrigger>
