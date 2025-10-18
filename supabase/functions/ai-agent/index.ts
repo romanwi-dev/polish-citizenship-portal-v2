@@ -904,6 +904,132 @@ async function executeSingleTool(toolCall: any, caseId: string, supabase: any, u
             result = { success: false, message: `Failed: ${error.message}` };
           }
           break;
+
+        // Phase 4: Translator Agent Tools
+        case 'create_translation_job':
+          try {
+            const { data: jobData, error: jobError } = await supabase
+              .from('translation_jobs')
+              .insert({
+                case_id: args.caseId,
+                document_id: args.documentId,
+                source_language: args.sourceLanguage,
+                target_language: args.targetLanguage || 'PL',
+                job_type: args.jobType,
+                priority: args.priority || 'medium',
+                status: 'pending',
+                estimated_cost: args.estimatedCost,
+                notes: args.notes
+              })
+              .select()
+              .single();
+
+            if (jobError) throw jobError;
+
+            await supabase.from('hac_logs').insert({
+              case_id: args.caseId,
+              action_type: 'translation_job_created',
+              action_details: `Created ${args.jobType} translation job (${args.sourceLanguage} → ${args.targetLanguage || 'PL'})`,
+              performed_by: userId,
+              metadata: { job_id: jobData.id, document_id: args.documentId }
+            });
+
+            result = {
+              success: true,
+              message: `✅ Translation job created (${args.sourceLanguage} → ${args.targetLanguage || 'PL'})`,
+              job_id: jobData.id
+            };
+          } catch (error: any) {
+            result = { success: false, message: `Failed: ${error.message}` };
+          }
+          break;
+
+        case 'update_translation_status':
+          try {
+            const updateData: any = { status: args.status };
+            if (args.status === 'assigned') {
+              updateData.translator_assigned = args.translatorId;
+              updateData.assigned_at = new Date().toISOString();
+            }
+            if (args.status === 'completed') {
+              updateData.completed_at = new Date().toISOString();
+              updateData.final_cost = args.finalCost;
+            }
+            if (args.translatorNotes) updateData.translator_notes = args.translatorNotes;
+
+            const { data: jobData, error: jobError } = await supabase
+              .from('translation_jobs')
+              .update(updateData)
+              .eq('id', args.jobId)
+              .select()
+              .single();
+
+            if (jobError) throw jobError;
+
+            await supabase.from('hac_logs').insert({
+              case_id: caseId,
+              action_type: 'translation_status_updated',
+              action_details: `Translation job updated to ${args.status}`,
+              performed_by: userId,
+              metadata: { job_id: args.jobId, status: args.status }
+            });
+
+            result = {
+              success: true,
+              message: `✅ Translation job updated to ${args.status}`,
+              job: jobData
+            };
+          } catch (error: any) {
+            result = { success: false, message: `Failed: ${error.message}` };
+          }
+          break;
+
+        case 'assign_translator':
+          try {
+            const { data: translatorData } = await supabase
+              .from('sworn_translators')
+              .select('*')
+              .eq('id', args.translatorId)
+              .single();
+
+            if (!translatorData) throw new Error('Translator not found');
+
+            await supabase
+              .from('translation_jobs')
+              .update({
+                translator_assigned: args.translatorId,
+                status: 'assigned',
+                assigned_at: new Date().toISOString()
+              })
+              .eq('id', args.jobId);
+
+            await supabase.from('tasks').insert({
+              case_id: args.caseId,
+              title: `Translation assigned to ${translatorData.name}`,
+              description: `Sworn translator assigned. Follow up on delivery.`,
+              category: 'translation',
+              priority: 'medium',
+              status: 'pending',
+              metadata: { job_id: args.jobId, translator_id: args.translatorId }
+            });
+
+            await supabase.from('hac_logs').insert({
+              case_id: args.caseId,
+              action_type: 'translator_assigned',
+              action_details: `Assigned translation job to ${translatorData.name}`,
+              performed_by: userId,
+              metadata: { job_id: args.jobId, translator_id: args.translatorId }
+            });
+
+            result = {
+              success: true,
+              message: `✅ Translation assigned to ${translatorData.name}`,
+              translator: translatorData.name
+            };
+          } catch (error: any) {
+            result = { success: false, message: `Failed: ${error.message}` };
+          }
+          break;
       }
 
     console.log(`✅ Tool completed: ${toolName}`, result);
