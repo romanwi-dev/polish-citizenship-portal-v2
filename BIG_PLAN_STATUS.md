@@ -1,7 +1,7 @@
 # Big Plan Implementation Status
 
-**Last Updated:** 2025-10-17  
-**Overall Progress:** 11/26 steps = **42% Complete**
+**Last Updated:** 2025-10-18  
+**Overall Progress:** 12/26 steps = **46% Complete**
 
 ---
 
@@ -15,8 +15,9 @@
 | Integrations | 1 | 0 | 1 | 2 |
 | Oversight & Security | 2 | 1 | 2 | 5 |
 | Client Portal | 2 | 0 | 1 | 3 |
+| AI Agent System | 5 | 0 | 1 | 6 |
 | Final Testing | 0 | 0 | 3 | 3 |
-| **TOTAL** | **11** | **4** | **9** | **24** |
+| **TOTAL** | **16** | **4** | **9** | **29** |
 
 ---
 
@@ -225,6 +226,131 @@
 - UI at `/client/dashboard/:caseId`
 
 **Verification:** ✅ Full client experience working
+
+---
+
+### PART 7: AI Agent System (5/6)
+
+#### ✅ Phase 1: Streaming + Conversations
+**Status:** COMPLETE  
+**Files:**
+- `supabase/functions/ai-agent/index.ts`
+- `src/components/AIAgentPanel.tsx`
+- Database: `ai_conversations`, `ai_conversation_messages`
+
+**Features:**
+- ✅ SSE streaming with token-by-token rendering
+- ✅ Conversation persistence
+- ✅ Early conversationId delivery
+- ✅ Parallel tool execution
+- ✅ Message pagination (50 msgs max, send last 20 to AI)
+- ✅ Enhanced error messages with troubleshooting hints
+
+**Verification:** ✅ Fully functional with NO-RUSH fixes applied
+
+---
+
+#### ✅ Phase 2: Paperwork Automation
+**Status:** COMPLETE  
+**Files:**
+- `supabase/functions/ai-agent/index.ts` (tools section)
+
+**Features:**
+- ✅ `create_oby_draft` - Citizenship application drafts
+- ✅ `draft_wsc_response` - WSC letter response strategies
+- ✅ `generate_civil_acts_request` - Civil registry requests
+- ✅ Duplicate prevention
+- ✅ Transaction rollback on failures
+- ✅ HAC logging for all actions
+
+**Verification:** ✅ All tools working with validation
+
+---
+
+#### ✅ Phase 3: Researcher Agent (Archives)
+**Status:** COMPLETE  
+**Files:**
+- `supabase/functions/ai-agent/index.ts` (tools: create_archive_search, update_archive_search, generate_archive_letter)
+- Database: `archive_searches`, `archive_document_requests`
+
+**Features:**
+- ✅ Archive search creation
+- ✅ Document request tracking
+- ✅ Polish letter generation (umiejscowienie/uzupełnienie templates)
+- ✅ Status tracking (pending → letter_generated → letter_sent → documents_received)
+- ✅ Duplicate prevention
+- ✅ Transaction rollback
+
+**Verification:** ✅ Fully functional with letter generation
+
+---
+
+#### ✅ Phase 4: Translator Agent
+**Status:** COMPLETE  
+**Files:**
+- `supabase/functions/ai-agent/index.ts` (tools: create_translation_job, update_translation_status, assign_translator)
+- Database: `translation_jobs`, `sworn_translators`
+
+**Features:**
+- ✅ Translation job creation
+- ✅ Status tracking with validated transitions
+- ✅ Translator assignment with load balancing (max 5 active jobs)
+- ✅ Foreign key validation
+- ✅ Cost tracking
+
+**Verification:** ✅ All workflows functional
+
+---
+
+#### ✅ Phase 5: Civil Acts Agent
+**Status:** COMPLETE ✅ (JUST IMPLEMENTED)  
+**Files:**
+- `supabase/functions/ai-agent/index.ts` (4 new tools)
+- Database: `civil_acts_requests`
+
+**Features:**
+- ✅ `create_civil_acts_request` - Request birth/marriage certificates from Polish USC
+- ✅ `update_civil_acts_status` - Status tracking (pending → submitted → in_progress → received)
+- ✅ `record_civil_acts_payment` - Payment tracking (75 PLN standard fee)
+- ✅ `link_civil_acts_document` - Link received documents to requests
+- ✅ Person data fetched from master_table
+- ✅ Duplicate prevention
+- ✅ Payment validation (cannot submit without payment)
+- ✅ Status transition validation
+- ✅ Auto-creates payment tasks
+- ✅ HAC logging
+
+**Tools:**
+1. `create_civil_acts_request(requestType, personType, registryOffice, registryCity, copyType, notes)`
+2. `update_civil_acts_status(requestId, status, actNumber, notes)`
+3. `record_civil_acts_payment(requestId, amount, paymentDate, paymentMethod)`
+4. `link_civil_acts_document(requestId, documentId, actNumber, receivedDate)`
+
+**Database Schema:**
+```sql
+civil_acts_requests:
+- id, case_id, request_type, person_type
+- person_first_name, person_last_name, person_maiden_name
+- registry_office, registry_city, registry_voivodeship
+- status, payment_status, payment_amount, payment_date
+- document_id, act_number
+- submitted_date, received_date
+```
+
+**Verification:** ✅ Edge function deployed, table created, all tools functional
+
+---
+
+#### ❌ Phase 6: Passport Agent
+**Status:** NOT STARTED  
+**Priority:** MEDIUM
+
+**What to build:**
+1. `create_passport_appointment` - Schedule consulate appointments
+2. `update_passport_status` - Track passport application status
+3. `generate_passport_checklist` - Create consulate kit documents
+
+**Estimate:** 2-3 hours
 
 ---
 
