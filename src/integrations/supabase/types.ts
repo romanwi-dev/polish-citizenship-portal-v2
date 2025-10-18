@@ -1176,6 +1176,14 @@ export type Database = {
           mother_pesel: string | null
           mother_pob: string | null
           mother_previous_names: string | null
+          oby_draft_created_at: string | null
+          oby_filed_at: string | null
+          oby_hac_notes: string | null
+          oby_hac_reviewed_at: string | null
+          oby_hac_reviewed_by: string | null
+          oby_reference_number: string | null
+          oby_status: string | null
+          oby_submitted_at: string | null
           parents_has_marriage_additional_docs: boolean | null
           parents_has_marriage_cert: boolean | null
           parents_has_marriage_foreign_docs: boolean | null
@@ -1489,6 +1497,14 @@ export type Database = {
           mother_pesel?: string | null
           mother_pob?: string | null
           mother_previous_names?: string | null
+          oby_draft_created_at?: string | null
+          oby_filed_at?: string | null
+          oby_hac_notes?: string | null
+          oby_hac_reviewed_at?: string | null
+          oby_hac_reviewed_by?: string | null
+          oby_reference_number?: string | null
+          oby_status?: string | null
+          oby_submitted_at?: string | null
           parents_has_marriage_additional_docs?: boolean | null
           parents_has_marriage_cert?: boolean | null
           parents_has_marriage_foreign_docs?: boolean | null
@@ -1802,6 +1818,14 @@ export type Database = {
           mother_pesel?: string | null
           mother_pob?: string | null
           mother_previous_names?: string | null
+          oby_draft_created_at?: string | null
+          oby_filed_at?: string | null
+          oby_hac_notes?: string | null
+          oby_hac_reviewed_at?: string | null
+          oby_hac_reviewed_by?: string | null
+          oby_reference_number?: string | null
+          oby_status?: string | null
+          oby_submitted_at?: string | null
           parents_has_marriage_additional_docs?: boolean | null
           parents_has_marriage_cert?: boolean | null
           parents_has_marriage_foreign_docs?: boolean | null
