@@ -293,7 +293,7 @@ serve(async (req) => {
       isNewConversation = true;
     }
 
-    // Fetch conversation history
+    // Fetch conversation history (FIX 6: Pagination - last 50 messages max)
     let conversationMessages: any[] = [];
     if (activeConversationId) {
       const { data: messages } = await supabase
@@ -301,7 +301,7 @@ serve(async (req) => {
         .select('role, content, tool_calls')
         .eq('conversation_id', activeConversationId)
         .order('created_at', { ascending: true })
-        .limit(20);
+        .limit(50);
       conversationMessages = messages || [];
     }
 
@@ -323,11 +323,12 @@ serve(async (req) => {
       context = buildAgentContext(caseData, action);
     }
 
-    // Build message history
+    // Build message history (FIX 6: Only send last 20 messages to AI to reduce token usage)
     const systemPrompt = getSystemPrompt(action);
+    const recentMessages = conversationMessages.slice(-20);
     const conversationHistory = [
       { role: 'system', content: systemPrompt },
-      ...conversationMessages.map(m => ({
+      ...recentMessages.map(m => ({
         role: m.role,
         content: m.content,
         ...(m.tool_calls && { tool_calls: m.tool_calls })
@@ -655,12 +656,22 @@ async function executeSingleTool(toolCall: any, caseId: string, supabase: any, u
 
             if (!masterData) throw new Error('Master data not found');
 
-            // Check if OBY draft already exists
+            // FIX 1: Duplicate prevention - check if draft OBY already exists
             const { data: existingOby } = await supabase
               .from('oby_forms')
-              .select('*')
+              .select('id, status')
               .eq('case_id', args.caseId)
+              .eq('status', 'draft')
               .maybeSingle();
+
+            if (existingOby && !args.forceUpdate) {
+              result = {
+                success: false,
+                message: '⚠️ Draft OBY already exists for this case. Use forceUpdate=true to update it.',
+                existing_id: existingOby.id
+              };
+              break;
+            }
 
             const obyData = {
               case_id: args.caseId,
@@ -691,7 +702,11 @@ async function executeSingleTool(toolCall: any, caseId: string, supabase: any, u
               performed_by: userId
             });
           } catch (error: any) {
-            result = { success: false, message: `Failed: ${error.message}` };
+            result = { 
+              success: false, 
+              message: `create_oby_draft failed: ${error.message}`,
+              error_type: error.name
+            };
           }
           break;
 
@@ -762,6 +777,27 @@ async function executeSingleTool(toolCall: any, caseId: string, supabase: any, u
         // Phase 3: Researcher Agent Tools
         case 'create_archive_search':
           try {
+            // FIX 1: Duplicate prevention - check if active search already exists
+            const { data: existingSearch } = await supabase
+              .from('archive_searches')
+              .select('id, status')
+              .eq('case_id', args.caseId)
+              .eq('archive_name', args.archiveName || '')
+              .eq('person_type', args.personType)
+              .in('status', ['pending', 'letter_generated', 'letter_sent', 'response_received'])
+              .maybeSingle();
+
+            if (existingSearch) {
+              result = {
+                success: false,
+                message: `⚠️ Active archive search already exists for ${args.personType} at ${args.archiveName}`,
+                existing_search_id: existingSearch.id,
+                existing_status: existingSearch.status
+              };
+              break;
+            }
+
+            // FIX 2: Transaction-like rollback - wrap in try/catch to clean up on failure
             const { data: searchData, error: searchError } = await supabase
               .from('archive_searches')
               .insert({
@@ -780,16 +816,30 @@ async function executeSingleTool(toolCall: any, caseId: string, supabase: any, u
 
             if (searchError) throw searchError;
 
-            // Create document requests for each document type
-            for (const docType of args.documentTypes) {
-              await supabase.from('archive_document_requests').insert({
-                archive_search_id: searchData.id,
-                document_type: docType,
-                person_first_name: '',
-                person_last_name: '',
-                status: 'searching',
-                location: args.archiveName
-              });
+            const searchId = searchData.id;
+            let docRequestsCreated = 0;
+
+            // Create document requests for each document type with rollback on error
+            try {
+              for (const docType of args.documentTypes) {
+                const { error: docError } = await supabase.from('archive_document_requests').insert({
+                  archive_search_id: searchId,
+                  document_type: docType,
+                  person_first_name: '',
+                  person_last_name: '',
+                  status: 'searching',
+                  location: args.archiveName
+                });
+                
+                if (docError) {
+                  // Rollback: delete the search we just created
+                  await supabase.from('archive_searches').delete().eq('id', searchId);
+                  throw new Error(`Failed to create document request for ${docType}: ${docError.message}`);
+                }
+                docRequestsCreated++;
+              }
+            } catch (rollbackError: any) {
+              throw new Error(`Transaction failed: ${rollbackError.message}`);
             }
 
             await supabase.from('hac_logs').insert({
@@ -797,16 +847,22 @@ async function executeSingleTool(toolCall: any, caseId: string, supabase: any, u
               action_type: 'archive_search_created',
               action_details: `Created ${args.searchType} search for ${args.personType} - ${args.documentTypes.join(', ')}`,
               performed_by: userId,
-              metadata: { search_id: searchData.id, person_type: args.personType }
+              metadata: { search_id: searchId, person_type: args.personType, doc_requests_created: docRequestsCreated }
             });
 
             result = {
               success: true,
-              message: `✅ Archive search created for ${args.personType} (${args.documentTypes.length} document types)`,
-              search_id: searchData.id
+              message: `✅ Archive search created for ${args.personType} (${docRequestsCreated} document types)`,
+              search_id: searchId
             };
           } catch (error: any) {
-            result = { success: false, message: `Failed: ${error.message}` };
+            // FIX 4: Enhanced error messages
+            result = { 
+              success: false, 
+              message: `create_archive_search failed: ${error.message}`,
+              error_type: error.name,
+              troubleshooting_hint: 'Check if archive name and person type are valid'
+            };
           }
           break;
 
@@ -864,6 +920,14 @@ async function executeSingleTool(toolCall: any, caseId: string, supabase: any, u
 
             if (searchError) throw searchError;
 
+            // FIX 7: Generate actual letter content
+            const letterContent = generateArchiveLetterTemplate(
+              args.letterType,
+              args.personDetails || {},
+              args.archiveAddress || searchData.archive_name,
+              searchData
+            );
+
             await supabase
               .from('archive_searches')
               .update({
@@ -877,11 +941,11 @@ async function executeSingleTool(toolCall: any, caseId: string, supabase: any, u
               .insert({
                 case_id: args.caseId,
                 title: `Send ${args.letterType} letter to Polish archive`,
-                description: `Review and send archive request letter to ${args.archiveAddress || searchData.archive_name}`,
+                description: `Review and send archive request letter to ${args.archiveAddress || searchData.archive_name}\n\n${letterContent}`,
                 category: 'archive_search',
                 priority: 'high',
                 status: 'pending',
-                metadata: { search_id: args.searchId, letter_type: args.letterType }
+                metadata: { search_id: args.searchId, letter_type: args.letterType, letter_content: letterContent }
               })
               .select()
               .single();
@@ -898,10 +962,15 @@ async function executeSingleTool(toolCall: any, caseId: string, supabase: any, u
               success: true,
               message: `✅ ${args.letterType} letter generated. Task created.`,
               letter_type: args.letterType,
+              letter_content: letterContent,
               task_id: taskData?.id
             };
           } catch (error: any) {
-            result = { success: false, message: `Failed: ${error.message}` };
+            result = { 
+              success: false, 
+              message: `generate_archive_letter failed: ${error.message}`,
+              error_type: error.name
+            };
           }
           break;
 
@@ -946,6 +1015,41 @@ async function executeSingleTool(toolCall: any, caseId: string, supabase: any, u
 
         case 'update_translation_status':
           try {
+            // FIX 5: Status validation - check valid transitions
+            const VALID_TRANSITIONS: Record<string, string[]> = {
+              'pending': ['in_progress', 'cancelled'],
+              'in_progress': ['review', 'cancelled'],
+              'review': ['completed', 'in_progress'],
+              'completed': ['delivered'],
+              'delivered': [],
+              'cancelled': []
+            };
+
+            // Get current status
+            const { data: currentJob } = await supabase
+              .from('translation_jobs')
+              .select('status, case_id')
+              .eq('id', args.jobId)
+              .single();
+
+            if (!currentJob) {
+              result = { success: false, message: '⚠️ Translation job not found' };
+              break;
+            }
+
+            const currentStatus = currentJob.status || 'pending';
+            const validNextStatuses = VALID_TRANSITIONS[currentStatus] || [];
+
+            if (!validNextStatuses.includes(args.status)) {
+              result = {
+                success: false,
+                message: `⚠️ Invalid status transition from '${currentStatus}' to '${args.status}'. Valid transitions: ${validNextStatuses.join(', ') || 'none'}`,
+                current_status: currentStatus,
+                valid_transitions: validNextStatuses
+              };
+              break;
+            }
+
             const updateData: any = { status: args.status };
             if (args.status === 'assigned') {
               updateData.translator_assigned = args.translatorId;
@@ -1137,12 +1241,6 @@ When tools are available, use them proactively:
 Always explain what you're doing with tools.`;
 
   const actionPrompts: Record<string, string> = {
-    researcher: `${basePrompt}
-
-RESEARCHER AGENT
-
-Conduct thorough research on Polish citizenship laws, historical records, and genealogical data. Provide detailed reports with supporting evidence.`,
-
     translator: `${basePrompt}
 
 TRANSLATOR AGENT
@@ -1394,4 +1492,105 @@ Analyze Polish citizenship eligibility by descent.
   };
 
   return actionPrompts[action] || basePrompt;
+}
+
+// FIX 7: Archive letter template generator
+function generateArchiveLetterTemplate(
+  letterType: string,
+  personDetails: any,
+  archiveAddress: string,
+  searchData: any
+): string {
+  const today = new Date().toLocaleDateString('pl-PL');
+  
+  if (letterType === 'umiejscowienie') {
+    return `
+Szanowni Państwo,
+
+${archiveAddress}
+
+Data: ${today}
+
+Dotyczy: Wniosek o umiejscowienie aktu stanu cywilnego
+
+W imieniu klienta ${personDetails.firstName || '[Imię]'} ${personDetails.lastName || '[Nazwisko]'}, 
+proszę o pomoc w zlokalizowaniu następujących dokumentów:
+
+Osoba: ${personDetails.firstName || '[Imię]'} ${personDetails.lastName || '[Nazwisko]'}
+Data urodzenia: ${personDetails.dob || '[DD.MM.YYYY]'}
+Miejsce urodzenia: ${personDetails.pob || '[Miasto]'}
+
+Poszukiwane dokumenty:
+${(searchData.document_types || []).map((dt: string) => `- ${dt}`).join('\n')}
+
+Dokumenty są potrzebne do postępowania o potwierdzenie obywatelstwa polskiego 
+na podstawie art. 4 ustawy o obywatelstwie polskim.
+
+Proszę o informację, czy powyższe akty znajdują się w Państwa archiwum, 
+oraz o wskazanie trybu ich uzyskania.
+
+Z poważaniem,
+Heritage and Citizenship Bureau
+Biuro Obywatelstwa i Dziedzictwa
+  `.trim();
+  } else if (letterType === 'uzupelnienie') {
+    return `
+Szanowni Państwo,
+
+${archiveAddress}
+
+Data: ${today}
+
+Dotyczy: Wniosek o wydanie odpisu aktu stanu cywilnego
+
+W imieniu klienta ${personDetails.firstName || '[Imię]'} ${personDetails.lastName || '[Nazwisko]'}, 
+proszę o wydanie odpisów następujących aktów stanu cywilnego:
+
+Osoba: ${personDetails.firstName || '[Imię]'} ${personDetails.lastName || '[Nazwisko]'}
+Data urodzenia: ${personDetails.dob || '[DD.MM.YYYY]'}
+Miejsce urodzenia: ${personDetails.pob || '[Miasto]'}
+
+Wnioskowane odpisy:
+${(searchData.document_types || []).map((dt: string) => `- ${dt}`).join('\n')}
+
+Odpisy są potrzebne do postępowania o potwierdzenie posiadania obywatelstwa polskiego.
+
+Proszę o informację o trybie i kosztach wydania odpisów oraz o podanie numeru konta 
+do opłaty skarbowej.
+
+Z poważaniem,
+Heritage and Citizenship Bureau
+Biuro Obywatelstwa i Dziedzictwa
+  `.trim();
+  }
+  
+  return `Archive request letter for ${letterType}`;
+}
+
+// FIX 4: Error troubleshooting hints
+function getErrorHint(toolName: string, error: any): string {
+  const hints: Record<string, string> = {
+    'create_oby_draft': 'Ensure master_table has data for this case. Check if draft already exists.',
+    'create_archive_search': 'Verify archive name and person type are valid. Check for duplicate searches.',
+    'update_archive_search': 'Confirm search ID exists. Verify status transition is valid.',
+    'generate_archive_letter': 'Ensure search ID exists and has required person details.',
+    'create_translation_job': 'Verify document exists and languages are valid codes.',
+    'update_translation_status': 'Check status transition rules. Ensure job ID is valid.',
+    'assign_translator': 'Verify translator and job IDs exist. Check translator workload.',
+    'generate_poa_pdf': 'Ensure case has complete intake data for POA generation.',
+    'create_task': 'Verify case ID exists and required fields are provided.',
+    'update_master_data': 'Check field names match master_table schema.',
+  };
+  
+  const hint = hints[toolName] || 'Check tool parameters and database constraints.';
+  
+  if (error.message?.includes('not found')) {
+    return `${hint} The referenced resource does not exist in the database.`;
+  } else if (error.message?.includes('duplicate') || error.message?.includes('already exists')) {
+    return `${hint} A similar record already exists - check for duplicates.`;
+  } else if (error.message?.includes('foreign key')) {
+    return `${hint} Referenced ID does not exist - verify all foreign keys.`;
+  }
+  
+  return hint;
 }
