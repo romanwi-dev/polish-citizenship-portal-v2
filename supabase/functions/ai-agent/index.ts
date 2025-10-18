@@ -381,6 +381,111 @@ const AGENT_TOOLS = [
         required: ["requestId", "documentId"]
       }
     }
+  },
+  // Phase 6: Passport Agent
+  {
+    type: "function",
+    function: {
+      name: "create_passport_appointment",
+      description: "Schedule Polish passport appointment at consulate",
+      parameters: {
+        type: "object",
+        properties: {
+          applicantType: {
+            type: "string",
+            enum: ["primary", "spouse", "child"],
+            description: "Who is applying for passport"
+          },
+          consulateLocation: {
+            type: "string",
+            description: "Consulate name and city (e.g., 'Consulate General of Poland in New York')"
+          },
+          consulateCountry: {
+            type: "string",
+            description: "Country where consulate is located"
+          },
+          appointmentDate: {
+            type: "string",
+            description: "Scheduled appointment date/time (ISO 8601 format)"
+          },
+          notes: {
+            type: "string",
+            description: "Additional appointment notes"
+          }
+        },
+        required: ["applicantType", "consulateLocation", "consulateCountry"]
+      }
+    }
+  },
+  {
+    type: "function",
+    function: {
+      name: "update_passport_status",
+      description: "Update passport application status",
+      parameters: {
+        type: "object",
+        properties: {
+          applicationId: {
+            type: "string",
+            description: "UUID of passport application"
+          },
+          status: {
+            type: "string",
+            enum: ["preparing", "appointment_scheduled", "documents_submitted", "in_review", "approved", "passport_issued", "passport_received", "cancelled"],
+            description: "New status"
+          },
+          passportNumber: {
+            type: "string",
+            description: "Polish passport number (when issued)"
+          },
+          issueDate: {
+            type: "string",
+            description: "Passport issue date (YYYY-MM-DD)"
+          },
+          expiryDate: {
+            type: "string",
+            description: "Passport expiry date (YYYY-MM-DD)"
+          },
+          collectionMethod: {
+            type: "string",
+            enum: ["pickup", "mail", "courier"],
+            description: "How passport will be collected"
+          },
+          notes: {
+            type: "string",
+            description: "Status update notes"
+          }
+        },
+        required: ["applicationId", "status"]
+      }
+    }
+  },
+  {
+    type: "function",
+    function: {
+      name: "generate_passport_checklist",
+      description: "Generate consulate appointment checklist/kit for passport application",
+      parameters: {
+        type: "object",
+        properties: {
+          applicationId: {
+            type: "string",
+            description: "UUID of passport application"
+          },
+          includePhotoSpecs: {
+            type: "boolean",
+            description: "Include photo specifications",
+            default: true
+          },
+          includeConsulateInfo: {
+            type: "boolean",
+            description: "Include consulate contact info",
+            default: true
+          }
+        },
+        required: ["applicationId"]
+      }
+    }
   }
 ];
 
@@ -1588,6 +1693,360 @@ async function executeSingleTool(toolCall: any, caseId: string, supabase: any, u
             result = { success: false, message: `Failed: ${error.message}` };
           }
           break;
+
+        // Phase 6: Passport Agent Tools
+        case 'create_passport_appointment':
+          try {
+            const { applicantType, consulateLocation, consulateCountry, appointmentDate, notes } = args;
+            
+            // Get applicant data from master_table
+            const fieldPrefix = applicantType === 'primary' ? 'applicant' : applicantType === 'spouse' ? 'spouse' : 'child_1';
+            
+            const { data: masterData, error: masterError } = await supabase
+              .from('master_table')
+              .select(`
+                ${fieldPrefix}_first_name,
+                ${fieldPrefix}_last_name,
+                ${fieldPrefix}_dob
+              `)
+              .eq('case_id', caseId)
+              .single();
+            
+            if (masterError || !masterData) {
+              result = { success: false, message: `${applicantType} data not found in master table` };
+              break;
+            }
+            
+            // Check for existing application
+            const { data: existing } = await supabase
+              .from('passport_applications')
+              .select('id, status')
+              .eq('case_id', caseId)
+              .eq('applicant_type', applicantType)
+              .not('status', 'in', '("cancelled", "passport_received")')
+              .maybeSingle();
+            
+            if (existing) {
+              result = { 
+                success: false, 
+                message: `Active passport application already exists for ${applicantType} (status: ${existing.status})` 
+              };
+              break;
+            }
+            
+            // Create passport application
+            const applicationData = {
+              case_id: caseId,
+              applicant_type: applicantType,
+              applicant_first_name: masterData[`${fieldPrefix}_first_name`],
+              applicant_last_name: masterData[`${fieldPrefix}_last_name`],
+              applicant_dob: masterData[`${fieldPrefix}_dob`],
+              consulate_location: consulateLocation,
+              consulate_country: consulateCountry,
+              appointment_date: appointmentDate || null,
+              appointment_confirmed: !!appointmentDate,
+              status: appointmentDate ? 'appointment_scheduled' : 'preparing',
+              notes: notes
+            };
+            
+            const { data: application, error: appError } = await supabase
+              .from('passport_applications')
+              .insert(applicationData)
+              .select()
+              .single();
+            
+            if (appError) {
+              result = { success: false, message: `Failed to create application: ${appError.message}` };
+              break;
+            }
+            
+            // Create appointment task if date provided
+            if (appointmentDate) {
+              await supabase.from('tasks').insert({
+                case_id: caseId,
+                title: `Polish Passport Appointment - ${applicantType}`,
+                description: `Consulate appointment at ${consulateLocation} on ${appointmentDate}`,
+                priority: 'high',
+                category: 'passport',
+                status: 'pending',
+                due_date: appointmentDate
+              });
+            } else {
+              await supabase.from('tasks').insert({
+                case_id: caseId,
+                title: `Schedule Passport Appointment - ${applicantType}`,
+                description: `Client needs to schedule appointment at ${consulateLocation}`,
+                priority: 'medium',
+                category: 'passport',
+                status: 'pending'
+              });
+            }
+            
+            // Log action
+            await supabase.from('hac_logs').insert({
+              case_id: caseId,
+              action_type: 'passport_application_created',
+              action_details: `Created passport application for ${applicantType} at ${consulateLocation}`,
+              performed_by: userId,
+              metadata: { 
+                application_id: application.id, 
+                consulate: consulateLocation,
+                applicant_name: `${masterData[`${fieldPrefix}_first_name`]} ${masterData[`${fieldPrefix}_last_name`]}`
+              }
+            });
+            
+            result = {
+              success: true,
+              message: `✅ Passport application created for ${applicantType} - ${masterData[`${fieldPrefix}_first_name`]} ${masterData[`${fieldPrefix}_last_name`]}`,
+              application_id: application.id,
+              consulate: consulateLocation,
+              next_step: appointmentDate 
+                ? `Appointment scheduled for ${appointmentDate}. Use generate_passport_checklist to create documents.`
+                : 'Schedule appointment, then generate checklist'
+            };
+          } catch (error: any) {
+            result = { success: false, message: `Failed: ${error.message}` };
+          }
+          break;
+
+        case 'update_passport_status':
+          try {
+            const { applicationId, status: newStatus, passportNumber, issueDate, expiryDate, collectionMethod, notes: statusNotes } = args;
+            
+            // Status transition validation
+            const VALID_TRANSITIONS: Record<string, string[]> = {
+              'preparing': ['appointment_scheduled', 'cancelled'],
+              'appointment_scheduled': ['documents_submitted', 'cancelled'],
+              'documents_submitted': ['in_review', 'cancelled'],
+              'in_review': ['approved', 'cancelled'],
+              'approved': ['passport_issued', 'cancelled'],
+              'passport_issued': ['passport_received'],
+              'passport_received': [],
+              'cancelled': ['preparing'] // Can restart
+            };
+            
+            const { data: currentApp, error: fetchError } = await supabase
+              .from('passport_applications')
+              .select('status, applicant_type, applicant_first_name, applicant_last_name')
+              .eq('id', applicationId)
+              .single();
+            
+            if (fetchError || !currentApp) {
+              result = { success: false, message: 'Passport application not found' };
+              break;
+            }
+            
+            // Validate transition
+            if (!VALID_TRANSITIONS[currentApp.status]?.includes(newStatus)) {
+              result = {
+                success: false,
+                message: `Invalid status transition from "${currentApp.status}" to "${newStatus}". Valid options: ${VALID_TRANSITIONS[currentApp.status]?.join(', ') || 'none'}`
+              };
+              break;
+            }
+            
+            // Prepare update
+            const updateData: any = { status: newStatus };
+            if (newStatus === 'documents_submitted') updateData.submitted_date = new Date().toISOString().split('T')[0];
+            if (newStatus === 'approved') updateData.approved_date = new Date().toISOString().split('T')[0];
+            if (newStatus === 'passport_issued') {
+              updateData.issued_date = issueDate || new Date().toISOString().split('T')[0];
+              if (passportNumber) updateData.passport_number = passportNumber;
+              if (expiryDate) updateData.expiry_date = expiryDate;
+            }
+            if (newStatus === 'passport_received') {
+              updateData.received_date = new Date().toISOString().split('T')[0];
+              if (collectionMethod) updateData.collection_method = collectionMethod;
+            }
+            if (statusNotes) updateData.notes = statusNotes;
+            
+            const { error: updateError } = await supabase
+              .from('passport_applications')
+              .update(updateData)
+              .eq('id', applicationId);
+            
+            if (updateError) {
+              result = { success: false, message: `Update failed: ${updateError.message}` };
+              break;
+            }
+            
+            // Log action
+            await supabase.from('hac_logs').insert({
+              case_id: caseId,
+              action_type: 'passport_status_updated',
+              action_details: `Passport status changed to "${newStatus}" for ${currentApp.applicant_type}`,
+              performed_by: userId,
+              metadata: { 
+                application_id: applicationId, 
+                previous_status: currentApp.status, 
+                new_status: newStatus,
+                passport_number: passportNumber 
+              }
+            });
+            
+            result = {
+              success: true,
+              message: `✅ Passport status updated from "${currentApp.status}" to "${newStatus}"`,
+              application_id: applicationId,
+              applicant: `${currentApp.applicant_first_name} ${currentApp.applicant_last_name}`
+            };
+          } catch (error: any) {
+            result = { success: false, message: `Failed: ${error.message}` };
+          }
+          break;
+
+        case 'generate_passport_checklist':
+          try {
+            const { applicationId, includePhotoSpecs = true, includeConsulateInfo = true } = args;
+            
+            // Get application details
+            const { data: application, error: appError } = await supabase
+              .from('passport_applications')
+              .select('*')
+              .eq('id', applicationId)
+              .single();
+            
+            if (appError || !application) {
+              result = { success: false, message: 'Passport application not found' };
+              break;
+            }
+            
+            // Generate checklist content
+            const checklistContent = `
+# POLISH PASSPORT APPLICATION CHECKLIST
+## ${application.consulate_location}
+
+**Applicant:** ${application.applicant_first_name} ${application.applicant_last_name}  
+**Date of Birth:** ${application.applicant_dob}  
+${application.appointment_date ? `**Appointment:** ${new Date(application.appointment_date).toLocaleString()}` : '**Appointment:** Not yet scheduled'}
+
+---
+
+## REQUIRED DOCUMENTS
+
+### 1. ✅ Polish Citizenship Confirmation Decision
+- Original decision document
+- **CRITICAL:** Must have original stamp from Voivoda's office
+
+### 2. ✅ Proof of Identity
+- Current passport (any nationality)
+- Valid ID card
+- Birth certificate (with apostille if non-Polish)
+
+### 3. ✅ Passport Photos
+${includePhotoSpecs ? `
+**Photo Specifications:**
+- Size: 35mm x 45mm (standard Polish passport photo size)
+- White or light gray background
+- Recent photo (taken within last 6 months)
+- Face centered, neutral expression
+- No glasses, no head covering (unless religious reasons)
+- High-quality color print (no home printing)
+- Quantity: 2 photos required
+` : ''}
+
+### 4. ✅ Completed Application Form
+- "Wniosek o wydanie paszportu" (Passport Application Form)
+- Available at consulate or download from consulate website
+- Fill in Polish or English (check consulate preference)
+- Sign in front of consular officer (do NOT pre-sign)
+
+### 5. ✅ Fee Payment
+- Check consulate website for current fee
+- Payment methods accepted: Check consulate (usually credit card, money order, or cash)
+- Typical fee: $100-150 USD equivalent
+
+---
+
+## CONSULATE INFORMATION
+${includeConsulateInfo ? `
+**Location:** ${application.consulate_location}  
+**Country:** ${application.consulate_country}  
+
+**Before Your Appointment:**
+- [ ] Confirm appointment 24-48 hours before
+- [ ] Check consulate hours and holidays
+- [ ] Arrive 15 minutes early
+- [ ] Bring all original documents + copies
+- [ ] Prepare payment in accepted form
+
+**Processing Time:**
+- Standard passport: 4-6 weeks
+- Express service: Check if available at this consulate
+` : ''}
+
+---
+
+## CHECKLIST VERIFICATION
+
+- [ ] Polish citizenship decision (original with stamp)
+- [ ] Current ID/passport
+- [ ] 2 passport photos (35mm x 45mm)
+- [ ] Completed application form (unsigned)
+- [ ] Payment ready in accepted form
+- [ ] Appointment confirmed
+- [ ] All documents + photocopies prepared
+
+---
+
+**IMPORTANT NOTES:**
+- Do NOT laminate any documents
+- Bring both originals AND photocopies
+- Children under 18 may need both parents present (check consulate rules)
+- Processing times vary by consulate
+- Passport valid for 10 years (adults) or 5 years (minors)
+
+---
+
+**Generated:** ${new Date().toISOString().split('T')[0]}  
+**For case:** ${caseId}
+            `.trim();
+            
+            // Create checklist task
+            const { data: taskData } = await supabase
+              .from('tasks')
+              .insert({
+                case_id: caseId,
+                title: `Review Passport Checklist - ${application.applicant_type}`,
+                description: `Consulate kit generated for ${application.consulate_location}\n\n${checklistContent}`,
+                category: 'passport',
+                priority: 'high',
+                status: 'pending',
+                metadata: { 
+                  application_id: applicationId, 
+                  checklist_content: checklistContent 
+                }
+              })
+              .select()
+              .single();
+            
+            // Update application
+            await supabase
+              .from('passport_applications')
+              .update({ checklist_generated: true })
+              .eq('id', applicationId);
+            
+            // Log action
+            await supabase.from('hac_logs').insert({
+              case_id: caseId,
+              action_type: 'passport_checklist_generated',
+              action_details: `Generated passport checklist for ${application.applicant_type}`,
+              performed_by: userId,
+              metadata: { application_id: applicationId }
+            });
+            
+            result = {
+              success: true,
+              message: `✅ Passport checklist generated for ${application.applicant_first_name} ${application.applicant_last_name}`,
+              application_id: applicationId,
+              checklist_content: checklistContent,
+              task_id: taskData?.id,
+              next_step: 'Review checklist and ensure client has all required documents before appointment'
+            };
+          } catch (error: any) {
+            result = { success: false, message: `Failed: ${error.message}` };
+          }
+          break;
       }
 
     console.log(`✅ Tool completed: ${toolName}`, result);
@@ -1863,6 +2322,44 @@ RESEARCH PROCESS:
 5. Track and document findings
 
 Provide detailed research plans with specific archive names, locations, and search strategies.`,
+
+    passport: `${basePrompt}
+
+PASSPORT AGENT - Polish Passport Application Specialist
+
+You help clients navigate the Polish passport application process after citizenship is confirmed.
+
+AVAILABLE TOOLS:
+1. create_passport_appointment - Schedule consulate appointments
+2. update_passport_status - Track application progress (preparing → appointment_scheduled → documents_submitted → in_review → approved → passport_issued → passport_received)
+3. generate_passport_checklist - Create consulate kit with required documents list
+
+KEY INFORMATION:
+- Can only apply AFTER citizenship decision received
+- Requires appointment at Polish consulate
+- Standard documents: citizenship decision (original), current ID, 2 photos (35mm x 45mm), application form
+- Processing time: 4-6 weeks standard
+- Valid for 10 years (adults) or 5 years (minors)
+- Applicant types: primary, spouse, child
+
+WORKFLOW:
+1. Create application (creates scheduling task)
+2. Schedule consulate appointment
+3. Generate checklist for client review
+4. Track status through application process
+5. Update when passport issued and received
+
+PHOTO REQUIREMENTS:
+- Size: 35mm x 45mm (NOT US passport size!)
+- White/light gray background
+- Recent (within 6 months)
+- No glasses, neutral expression
+- Professional quality
+
+IMPORTANT:
+- Status transitions validated automatically
+- Checklist includes consulate-specific info
+- Multiple applicants supported (primary, spouse, children)`,
 
     archive_request_management: `${basePrompt}
 

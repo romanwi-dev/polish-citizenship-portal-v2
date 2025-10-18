@@ -2114,6 +2114,102 @@ export type Database = {
           },
         ]
       }
+      passport_applications: {
+        Row: {
+          applicant_dob: string | null
+          applicant_first_name: string | null
+          applicant_last_name: string | null
+          applicant_type: string
+          appointment_confirmed: boolean | null
+          appointment_date: string | null
+          approved_date: string | null
+          case_id: string
+          checklist_document_id: string | null
+          checklist_generated: boolean | null
+          collection_method: string | null
+          consulate_country: string | null
+          consulate_location: string | null
+          created_at: string | null
+          expiry_date: string | null
+          id: string
+          issue_date: string | null
+          issued_date: string | null
+          notes: string | null
+          passport_number: string | null
+          received_date: string | null
+          status: string | null
+          submitted_date: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          applicant_dob?: string | null
+          applicant_first_name?: string | null
+          applicant_last_name?: string | null
+          applicant_type: string
+          appointment_confirmed?: boolean | null
+          appointment_date?: string | null
+          approved_date?: string | null
+          case_id: string
+          checklist_document_id?: string | null
+          checklist_generated?: boolean | null
+          collection_method?: string | null
+          consulate_country?: string | null
+          consulate_location?: string | null
+          created_at?: string | null
+          expiry_date?: string | null
+          id?: string
+          issue_date?: string | null
+          issued_date?: string | null
+          notes?: string | null
+          passport_number?: string | null
+          received_date?: string | null
+          status?: string | null
+          submitted_date?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          applicant_dob?: string | null
+          applicant_first_name?: string | null
+          applicant_last_name?: string | null
+          applicant_type?: string
+          appointment_confirmed?: boolean | null
+          appointment_date?: string | null
+          approved_date?: string | null
+          case_id?: string
+          checklist_document_id?: string | null
+          checklist_generated?: boolean | null
+          collection_method?: string | null
+          consulate_country?: string | null
+          consulate_location?: string | null
+          created_at?: string | null
+          expiry_date?: string | null
+          id?: string
+          issue_date?: string | null
+          issued_date?: string | null
+          notes?: string | null
+          passport_number?: string | null
+          received_date?: string | null
+          status?: string | null
+          submitted_date?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "passport_applications_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "passport_applications_checklist_document_id_fkey"
+            columns: ["checklist_document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       poa: {
         Row: {
           case_id: string
