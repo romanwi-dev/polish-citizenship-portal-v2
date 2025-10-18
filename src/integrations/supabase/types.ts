@@ -318,6 +318,96 @@ export type Database = {
         }
         Relationships: []
       }
+      civil_acts_requests: {
+        Row: {
+          act_number: string | null
+          case_id: string
+          created_at: string | null
+          document_id: string | null
+          id: string
+          notes: string | null
+          payment_amount: number | null
+          payment_date: string | null
+          payment_required: boolean | null
+          payment_status: string | null
+          person_first_name: string | null
+          person_last_name: string | null
+          person_maiden_name: string | null
+          person_type: string
+          received_date: string | null
+          registry_city: string
+          registry_office: string
+          registry_voivodeship: string | null
+          request_type: string
+          status: string | null
+          submitted_date: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          act_number?: string | null
+          case_id: string
+          created_at?: string | null
+          document_id?: string | null
+          id?: string
+          notes?: string | null
+          payment_amount?: number | null
+          payment_date?: string | null
+          payment_required?: boolean | null
+          payment_status?: string | null
+          person_first_name?: string | null
+          person_last_name?: string | null
+          person_maiden_name?: string | null
+          person_type: string
+          received_date?: string | null
+          registry_city: string
+          registry_office: string
+          registry_voivodeship?: string | null
+          request_type: string
+          status?: string | null
+          submitted_date?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          act_number?: string | null
+          case_id?: string
+          created_at?: string | null
+          document_id?: string | null
+          id?: string
+          notes?: string | null
+          payment_amount?: number | null
+          payment_date?: string | null
+          payment_required?: boolean | null
+          payment_status?: string | null
+          person_first_name?: string | null
+          person_last_name?: string | null
+          person_maiden_name?: string | null
+          person_type?: string
+          received_date?: string | null
+          registry_city?: string
+          registry_office?: string
+          registry_voivodeship?: string | null
+          request_type?: string
+          status?: string | null
+          submitted_date?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "civil_acts_requests_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "civil_acts_requests_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       client_portal_access: {
         Row: {
           case_id: string

@@ -251,6 +251,136 @@ const AGENT_TOOLS = [
         required: ["caseId", "letterType", "searchId"]
       }
     }
+  },
+  // Phase 5: Civil Acts Agent
+  {
+    type: "function",
+    function: {
+      name: "create_civil_acts_request",
+      description: "Request a Polish civil registry document (birth/marriage certificate) from USC office",
+      parameters: {
+        type: "object",
+        properties: {
+          requestType: {
+            type: "string",
+            enum: ["birth", "marriage"],
+            description: "Type of civil document"
+          },
+          personType: {
+            type: "string",
+            enum: ["AP", "F", "M", "PGF", "PGM", "MGF", "MGM", "SP"],
+            description: "Family member (AP=Applicant, F=Father, M=Mother, etc.)"
+          },
+          registryOffice: {
+            type: "string",
+            description: "USC office name (e.g., 'Urząd Stanu Cywilnego w Warszawie')"
+          },
+          registryCity: {
+            type: "string",
+            description: "City of USC office"
+          },
+          copyType: {
+            type: "string",
+            enum: ["full", "extract"],
+            description: "Full copy (zupełny) or extract (skrócony)",
+            default: "full"
+          },
+          notes: {
+            type: "string",
+            description: "Additional notes or special requests"
+          }
+        },
+        required: ["requestType", "personType", "registryOffice", "registryCity"]
+      }
+    }
+  },
+  {
+    type: "function",
+    function: {
+      name: "update_civil_acts_status",
+      description: "Update status of civil acts request",
+      parameters: {
+        type: "object",
+        properties: {
+          requestId: {
+            type: "string",
+            description: "UUID of the civil acts request"
+          },
+          status: {
+            type: "string",
+            enum: ["pending", "submitted", "in_progress", "received", "failed"],
+            description: "New status"
+          },
+          actNumber: {
+            type: "string",
+            description: "Polish act number (e.g., '123/2024')"
+          },
+          notes: {
+            type: "string",
+            description: "Additional notes"
+          }
+        },
+        required: ["requestId", "status"]
+      }
+    }
+  },
+  {
+    type: "function",
+    function: {
+      name: "record_civil_acts_payment",
+      description: "Record payment for civil acts request",
+      parameters: {
+        type: "object",
+        properties: {
+          requestId: {
+            type: "string",
+            description: "UUID of the civil acts request"
+          },
+          amount: {
+            type: "number",
+            description: "Amount in PLN"
+          },
+          paymentDate: {
+            type: "string",
+            description: "Payment date (YYYY-MM-DD)"
+          },
+          paymentMethod: {
+            type: "string",
+            description: "Payment method used"
+          }
+        },
+        required: ["requestId", "amount"]
+      }
+    }
+  },
+  {
+    type: "function",
+    function: {
+      name: "link_civil_acts_document",
+      description: "Link received civil document to request",
+      parameters: {
+        type: "object",
+        properties: {
+          requestId: {
+            type: "string",
+            description: "UUID of the civil acts request"
+          },
+          documentId: {
+            type: "string",
+            description: "UUID of the document in documents table"
+          },
+          actNumber: {
+            type: "string",
+            description: "Polish act number from the document"
+          },
+          receivedDate: {
+            type: "string",
+            description: "Date document was received (YYYY-MM-DD)"
+          }
+        },
+        required: ["requestId", "documentId"]
+      }
+    }
   }
 ];
 
@@ -1134,6 +1264,330 @@ async function executeSingleTool(toolCall: any, caseId: string, supabase: any, u
             result = { success: false, message: `Failed: ${error.message}` };
           }
           break;
+
+        // Phase 5: Civil Acts Agent Tools
+        case 'create_civil_acts_request':
+          try {
+            const { requestType, personType, registryOffice, registryCity, copyType, notes } = args;
+            
+            // Helper to get person field prefix
+            const getPersonFieldPrefix = (pt: string): string => {
+              const map: Record<string, string> = {
+                'AP': 'applicant', 'F': 'father', 'M': 'mother',
+                'PGF': 'pgf', 'PGM': 'pgm', 'MGF': 'mgf', 'MGM': 'mgm', 'SP': 'spouse'
+              };
+              return map[pt] || 'applicant';
+            };
+            
+            const personField = getPersonFieldPrefix(personType);
+            
+            // Get person data from master_table
+            const { data: masterData, error: masterError } = await supabase
+              .from('master_table')
+              .select(`
+                ${personField}_first_name,
+                ${personField}_last_name,
+                ${personField}_maiden_name,
+                ${personField}_dob,
+                ${personField}_pob
+              `)
+              .eq('case_id', caseId)
+              .single();
+            
+            if (masterError || !masterData) {
+              result = { success: false, message: `Person data not found for ${personType} in master table` };
+              break;
+            }
+            
+            // Check for duplicate request
+            const { data: existing } = await supabase
+              .from('civil_acts_requests')
+              .select('id, status')
+              .eq('case_id', caseId)
+              .eq('request_type', requestType)
+              .eq('person_type', personType)
+              .neq('status', 'failed')
+              .maybeSingle();
+            
+            if (existing) {
+              result = { 
+                success: false, 
+                message: `Active ${requestType} certificate request already exists for ${personType} (status: ${existing.status})` 
+              };
+              break;
+            }
+            
+            // Insert civil acts request
+            const requestData = {
+              case_id: caseId,
+              request_type: requestType,
+              person_type: personType,
+              person_first_name: masterData[`${personField}_first_name`],
+              person_last_name: masterData[`${personField}_last_name`],
+              person_maiden_name: masterData[`${personField}_maiden_name`],
+              registry_office: registryOffice,
+              registry_city: registryCity,
+              status: 'pending',
+              payment_required: true,
+              payment_amount: 75.00, // Standard USC fee
+              notes: notes || `${copyType === 'full' ? 'Full copy (odpis zupełny)' : 'Extract (odpis skrócony)'} requested`
+            };
+            
+            const { data: request, error: requestError } = await supabase
+              .from('civil_acts_requests')
+              .insert(requestData)
+              .select()
+              .single();
+            
+            if (requestError) {
+              result = { success: false, message: `Failed to create request: ${requestError.message}` };
+              break;
+            }
+            
+            // Create payment task
+            await supabase.from('tasks').insert({
+              case_id: caseId,
+              title: `Civil Acts Payment - ${personType} ${requestType}`,
+              description: `Client needs to pay 75 PLN for ${registryCity} civil acts request (${copyType} copy)`,
+              priority: 'high',
+              category: 'payment',
+              status: 'pending'
+            });
+            
+            // Log action
+            await supabase.from('hac_logs').insert({
+              case_id: caseId,
+              action_type: 'civil_acts_request_created',
+              action_details: `Created ${requestType} certificate request for ${personType} from ${registryCity}`,
+              performed_by: userId,
+              metadata: { 
+                request_id: request.id, 
+                registry_office: registryOffice,
+                person_name: `${masterData[`${personField}_first_name`]} ${masterData[`${personField}_last_name`]}`
+              }
+            });
+            
+            result = {
+              success: true,
+              message: `✅ Civil acts request created for ${personType} - ${masterData[`${personField}_first_name`]} ${masterData[`${personField}_last_name`]}`,
+              request_id: request.id,
+              payment_required: '75 PLN',
+              registry_office: registryOffice,
+              next_step: 'Record payment using record_civil_acts_payment, then update status to "submitted"'
+            };
+          } catch (error: any) {
+            result = { success: false, message: `Failed: ${error.message}` };
+          }
+          break;
+
+        case 'update_civil_acts_status':
+          try {
+            const { requestId, status: newStatus, actNumber, notes: statusNotes } = args;
+            
+            // Status transition validation
+            const VALID_TRANSITIONS: Record<string, string[]> = {
+              'pending': ['submitted', 'failed'],
+              'submitted': ['in_progress', 'failed'],
+              'in_progress': ['received', 'failed'],
+              'received': [],
+              'failed': ['pending'] // Can retry
+            };
+            
+            const { data: currentRequest, error: fetchError } = await supabase
+              .from('civil_acts_requests')
+              .select('status, person_type, request_type, payment_status')
+              .eq('id', requestId)
+              .single();
+            
+            if (fetchError || !currentRequest) {
+              result = { success: false, message: 'Civil acts request not found' };
+              break;
+            }
+            
+            // Validate transition
+            if (!VALID_TRANSITIONS[currentRequest.status]?.includes(newStatus)) {
+              result = {
+                success: false,
+                message: `Invalid status transition from "${currentRequest.status}" to "${newStatus}". Valid options: ${VALID_TRANSITIONS[currentRequest.status]?.join(', ') || 'none'}`
+              };
+              break;
+            }
+            
+            // Check payment before submitting
+            if (newStatus === 'submitted' && currentRequest.payment_status !== 'paid') {
+              result = {
+                success: false,
+                message: 'Cannot mark as submitted - payment not recorded. Use record_civil_acts_payment first.'
+              };
+              break;
+            }
+            
+            // Prepare update
+            const updateData: any = { status: newStatus };
+            if (newStatus === 'submitted') updateData.submitted_date = new Date().toISOString().split('T')[0];
+            if (newStatus === 'received') updateData.received_date = new Date().toISOString().split('T')[0];
+            if (actNumber) updateData.act_number = actNumber;
+            if (statusNotes) updateData.notes = statusNotes;
+            
+            const { error: updateError } = await supabase
+              .from('civil_acts_requests')
+              .update(updateData)
+              .eq('id', requestId);
+            
+            if (updateError) {
+              result = { success: false, message: `Update failed: ${updateError.message}` };
+              break;
+            }
+            
+            // Log action
+            await supabase.from('hac_logs').insert({
+              case_id: caseId,
+              action_type: 'civil_acts_status_updated',
+              action_details: `Status changed to "${newStatus}" for ${currentRequest.person_type} ${currentRequest.request_type} certificate`,
+              performed_by: userId,
+              metadata: { request_id: requestId, previous_status: currentRequest.status, new_status: newStatus }
+            });
+            
+            result = {
+              success: true,
+              message: `✅ Status updated from "${currentRequest.status}" to "${newStatus}"`,
+              request_id: requestId
+            };
+          } catch (error: any) {
+            result = { success: false, message: `Failed: ${error.message}` };
+          }
+          break;
+
+        case 'record_civil_acts_payment':
+          try {
+            const { requestId, amount, paymentDate, paymentMethod } = args;
+            
+            const { data: request, error: fetchError } = await supabase
+              .from('civil_acts_requests')
+              .select('payment_status, person_type, request_type')
+              .eq('id', requestId)
+              .single();
+            
+            if (fetchError || !request) {
+              result = { success: false, message: 'Civil acts request not found' };
+              break;
+            }
+            
+            if (request.payment_status === 'paid') {
+              result = { 
+                success: false, 
+                message: 'Payment already recorded for this request' 
+              };
+              break;
+            }
+            
+            const { error: updateError } = await supabase
+              .from('civil_acts_requests')
+              .update({
+                payment_status: 'paid',
+                payment_amount: amount,
+                payment_date: paymentDate || new Date().toISOString().split('T')[0]
+              })
+              .eq('id', requestId);
+            
+            if (updateError) {
+              result = { success: false, message: `Failed to record payment: ${updateError.message}` };
+              break;
+            }
+            
+            // Log payment
+            await supabase.from('hac_logs').insert({
+              case_id: caseId,
+              action_type: 'civil_acts_payment_recorded',
+              action_details: `Payment of ${amount} PLN recorded for ${request.person_type} ${request.request_type} certificate`,
+              performed_by: userId,
+              metadata: { 
+                request_id: requestId, 
+                amount, 
+                payment_method: paymentMethod,
+                payment_date: paymentDate 
+              }
+            });
+            
+            result = {
+              success: true,
+              message: `✅ Payment of ${amount} PLN recorded successfully`,
+              request_id: requestId,
+              next_step: 'Update status to "submitted" once letter is sent to USC office'
+            };
+          } catch (error: any) {
+            result = { success: false, message: `Failed: ${error.message}` };
+          }
+          break;
+
+        case 'link_civil_acts_document':
+          try {
+            const { requestId, documentId, actNumber: linkedActNumber, receivedDate } = args;
+            
+            // Validate document exists
+            const { data: document, error: docError } = await supabase
+              .from('documents')
+              .select('id, name')
+              .eq('id', documentId)
+              .single();
+            
+            if (docError || !document) {
+              result = { success: false, message: 'Document not found - ensure document is uploaded first' };
+              break;
+            }
+            
+            // Validate request exists
+            const { data: request, error: reqError } = await supabase
+              .from('civil_acts_requests')
+              .select('person_type, request_type')
+              .eq('id', requestId)
+              .single();
+            
+            if (reqError || !request) {
+              result = { success: false, message: 'Civil acts request not found' };
+              break;
+            }
+            
+            // Link document and update status
+            const { error: updateError } = await supabase
+              .from('civil_acts_requests')
+              .update({
+                document_id: documentId,
+                act_number: linkedActNumber,
+                status: 'received',
+                received_date: receivedDate || new Date().toISOString().split('T')[0]
+              })
+              .eq('id', requestId);
+            
+            if (updateError) {
+              result = { success: false, message: `Failed to link document: ${updateError.message}` };
+              break;
+            }
+            
+            // Log action
+            await supabase.from('hac_logs').insert({
+              case_id: caseId,
+              action_type: 'civil_acts_document_linked',
+              action_details: `Document "${document.name}" linked to ${request.person_type} ${request.request_type} certificate request`,
+              performed_by: userId,
+              metadata: { 
+                request_id: requestId, 
+                document_id: documentId,
+                act_number: linkedActNumber 
+              }
+            });
+            
+            result = {
+              success: true,
+              message: `✅ Document successfully linked and status updated to "received"`,
+              request_id: requestId,
+              document_name: document.name,
+              act_number: linkedActNumber
+            };
+          } catch (error: any) {
+            result = { success: false, message: `Failed: ${error.message}` };
+          }
+          break;
       }
 
     console.log(`✅ Tool completed: ${toolName}`, result);
@@ -1329,20 +1783,36 @@ Focus on RLS policies, data encryption, and input validation.`,
     
     civil_acts_management: `${basePrompt}
 
-CIVIL ACTS MANAGEMENT AGENT
+CIVIL ACTS MANAGEMENT AGENT - Polish Civil Registry Specialist
 
-Manage and process civil acts (birth, marriage, death certificates) required for Polish citizenship applications.
+You help request and track Polish civil registry documents (birth/marriage certificates) from USC offices.
 
 AVAILABLE TOOLS:
-- generate_civil_acts_request: Create civil acts application tasks
-- create_task: Create follow-up tasks
-- update_master_data: Update case data
+1. create_civil_acts_request - Request birth/marriage certificates from Polish USC offices
+2. update_civil_acts_status - Update request status (pending → submitted → in_progress → received)
+3. record_civil_acts_payment - Record payments for civil documents
+4. link_civil_acts_document - Link received documents to requests
+
+KEY INFORMATION:
+- Birth certificates need: person name, DOB, POB, parents' names
+- Marriage certificates need: both spouses' names, marriage date, marriage place
+- Full copy (odpis zupełny) is preferred for citizenship applications
+- Standard fee: 50-100 PLN per document
+- Processing time: 2-4 weeks from Polish USC offices
+- Person types: AP=Applicant, F=Father, M=Mother, PGF=Paternal Grandfather, PGM=Paternal Grandmother, MGF=Maternal Grandfather, MGM=Maternal Grandmother, SP=Spouse
 
 WORKFLOW:
-1. Identify required civil acts
-2. Generate Polish civil registry applications
-3. Track submission status
-4. Monitor response times`,
+1. Check master_table for person data before creating requests
+2. Create civil acts request (automatically creates payment task)
+3. Record payment when received (cannot submit without payment)
+4. Update status to 'submitted' once letter sent to USC
+5. Track progress (submitted → in_progress → received)
+6. Link document when received
+
+IMPORTANT:
+- Always check master_table for complete person data first
+- Cannot mark as 'submitted' without payment recorded
+- Duplicate requests are prevented automatically`,
 
     wsc_response_drafting: `${basePrompt}
 
