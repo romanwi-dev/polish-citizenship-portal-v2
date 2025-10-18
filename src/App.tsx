@@ -62,6 +62,7 @@ const Writer = lazy(() => import("./pages/admin/Writer"));
 const Designer = lazy(() => import("./pages/admin/Designer"));
 const OCRProcessingMonitor = lazy(() => import("./pages/admin/OCRProcessingMonitor"));
 const AIAgentDiagnostics = lazy(() => import("./pages/admin/AIAgentDiagnostics"));
+const RoleManagement = lazy(() => import("./pages/admin/RoleManagement"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -412,6 +413,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <Designer />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/role-management" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <RoleManagement />
               </Suspense>
             } 
           />
