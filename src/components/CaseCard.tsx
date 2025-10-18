@@ -175,10 +175,15 @@ export const CaseCard = memo(({
                   onPhotoUpdated={setPhotoUrl}
                 />
               </div>
-                <div>
+              <div>
                 <h3 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                   {clientCase.client_name}
                 </h3>
+                {clientCase.client_code && (
+                  <p className="text-sm text-muted-foreground mt-1 font-mono">
+                    {clientCase.client_code}
+                  </p>
+                )}
               </div>
             </div>
             <div className="flex items-center gap-2">

@@ -218,6 +218,42 @@ export type Database = {
           },
         ]
       }
+      backup_logs: {
+        Row: {
+          backup_date: string
+          backup_path: string
+          created_at: string | null
+          error_message: string | null
+          id: string
+          status: string | null
+          total_cases: number | null
+          total_files: number | null
+          total_size_mb: number | null
+        }
+        Insert: {
+          backup_date: string
+          backup_path: string
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          status?: string | null
+          total_cases?: number | null
+          total_files?: number | null
+          total_size_mb?: number | null
+        }
+        Update: {
+          backup_date?: string
+          backup_path?: string
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          status?: string | null
+          total_cases?: number | null
+          total_files?: number | null
+          total_size_mb?: number | null
+        }
+        Relationships: []
+      }
       cases: {
         Row: {
           ancestry: Json | null

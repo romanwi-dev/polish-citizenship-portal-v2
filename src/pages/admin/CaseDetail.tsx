@@ -156,6 +156,12 @@ export default function CaseDetail() {
                 </span>
               </h1>
               <div className="flex items-center gap-3 text-base text-muted-foreground">
+                {caseData.client_code && (
+                  <>
+                    <span className="font-mono text-primary">{caseData.client_code}</span>
+                    <span>•</span>
+                  </>
+                )}
                 <span>Email: {intakeData?.email || 'test@example.com'}</span>
                 <span>•</span>
                 <span>Updated: {new Date(caseData.updated_at).toLocaleDateString()}</span>
