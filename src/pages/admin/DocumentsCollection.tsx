@@ -19,6 +19,7 @@ import {
 import { DocRadarPanel } from "@/components/DocRadarPanel";
 import { ArchiveRequestGenerator } from "@/components/ArchiveRequestGenerator";
 import { USCWorkflowPanel } from "@/components/usc/USCWorkflowPanel";
+import { DocumentsListView } from "@/components/docs/DocumentsListView";
 
 export default function DocumentsCollection() {
   const { id } = useParams();
@@ -193,8 +194,9 @@ export default function DocumentsCollection() {
         </div>
 
         <Tabs defaultValue="radar" className="space-y-6">
-          <TabsList className="grid grid-cols-4 w-full max-w-2xl">
+          <TabsList className="grid grid-cols-5 w-full max-w-3xl">
             <TabsTrigger value="radar">Doc Radar</TabsTrigger>
+            <TabsTrigger value="all">All Documents</TabsTrigger>
             <TabsTrigger value="translation">
               Translation
               {translationNeeded.length > 0 && (
@@ -208,6 +210,11 @@ export default function DocumentsCollection() {
           {/* DOC RADAR TAB */}
           <TabsContent value="radar">
             <DocRadarPanel documents={documents} />
+          </TabsContent>
+
+          {/* ALL DOCUMENTS TAB */}
+          <TabsContent value="all">
+            <DocumentsListView documents={documents} />
           </TabsContent>
 
           {/* TRANSLATION TAB */}
