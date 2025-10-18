@@ -18,7 +18,6 @@ import {
 } from "lucide-react";
 import { DocRadarPanel } from "@/components/DocRadarPanel";
 import { ArchiveRequestGenerator } from "@/components/ArchiveRequestGenerator";
-import { analyzeDocumentRadar } from "@/utils/documentRadar";
 
 export default function DocumentsCollection() {
   const { id } = useParams();
@@ -121,7 +120,6 @@ export default function DocumentsCollection() {
     );
   }
 
-  const radar = analyzeDocumentRadar(documents, masterData);
   const translationNeeded = documents.filter(d => !d.is_translated && d.translation_required);
   const uscWorkflows = tasks.filter((t: any) => t.task_type === "usc_workflow");
 
@@ -208,7 +206,7 @@ export default function DocumentsCollection() {
 
           {/* DOC RADAR TAB */}
           <TabsContent value="radar">
-            <DocRadarPanel documents={documents} familyData={masterData} />
+            <DocRadarPanel documents={documents} />
           </TabsContent>
 
           {/* TRANSLATION TAB */}
