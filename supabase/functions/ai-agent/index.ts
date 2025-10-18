@@ -75,6 +75,31 @@ const AGENT_TOOLS = [
         required: ["caseId", "fields"]
       }
     }
+  },
+  {
+    type: "function",
+    function: {
+      name: "generate_archive_request",
+      description: "Generate a Polish archive request letter for missing documents",
+      parameters: {
+        type: "object",
+        properties: {
+          caseId: { type: "string" },
+          personType: { 
+            type: "string", 
+            enum: ["AP", "F", "M", "PGF", "PGM", "MGF", "MGM"],
+            description: "Person whose documents are needed"
+          },
+          documentTypes: { 
+            type: "array",
+            items: { type: "string" },
+            description: "Types of documents needed (birth, marriage, etc.)"
+          },
+          archiveLocation: { type: "string", description: "Polish archive to contact" }
+        },
+        required: ["caseId", "personType", "documentTypes"]
+      }
+    }
   }
 ];
 
@@ -106,6 +131,7 @@ serve(async (req) => {
 
     // Get or create conversation
     let activeConversationId = conversationId;
+    let isNewConversation = false;
     if (!activeConversationId && caseId) {
       const { data: newConv } = await supabase
         .from('ai_conversations')
@@ -113,6 +139,7 @@ serve(async (req) => {
         .select()
         .single();
       activeConversationId = newConv?.id;
+      isNewConversation = true;
     }
 
     // Fetch conversation history
@@ -189,6 +216,11 @@ serve(async (req) => {
 
       const streamResponse = new ReadableStream({
         async start(controller) {
+          // Send conversationId immediately if it's a new conversation
+          if (isNewConversation && activeConversationId) {
+            controller.enqueue(`data: ${JSON.stringify({ conversationId: activeConversationId })}\n\n`);
+          }
+
           const reader = aiResponse.body!.getReader();
           const decoder = new TextDecoder();
           let buffer = '';
@@ -240,9 +272,9 @@ serve(async (req) => {
               ]);
             }
 
-            // Execute tools
+            // Execute tools in parallel
             if (toolCalls.length > 0 && caseId) {
-              const toolResults = await executeTools(toolCalls, caseId, supabase, userId);
+              const toolResults = await executeToolsParallel(toolCalls, caseId, supabase, userId);
               controller.enqueue(`data: ${JSON.stringify({ toolResults })}\n\n`);
             }
 
@@ -295,10 +327,10 @@ serve(async (req) => {
       ]);
     }
 
-    // Execute tools
+    // Execute tools in parallel
     let toolResults: any[] = [];
     if (toolCalls && toolCalls.length > 0 && caseId) {
-      toolResults = await executeTools(toolCalls, caseId, supabase, userId);
+      toolResults = await executeToolsParallel(toolCalls, caseId, supabase, userId);
     }
 
     // Log interaction
@@ -328,16 +360,20 @@ serve(async (req) => {
   }
 });
 
-// Tool execution function
-async function executeTools(toolCalls: any[], caseId: string, supabase: any, userId: string): Promise<any[]> {
-  const toolResults = [];
+// Parallel tool execution function
+async function executeToolsParallel(toolCalls: any[], caseId: string, supabase: any, userId: string): Promise<any[]> {
+  return await Promise.all(
+    toolCalls.map(toolCall => executeSingleTool(toolCall, caseId, supabase, userId))
+  );
+}
 
-  for (const toolCall of toolCalls) {
-    try {
-      const args = JSON.parse(toolCall.function.arguments);
-      let result: any = { success: false, message: 'Unknown tool' };
+// Single tool execution function
+async function executeSingleTool(toolCall: any, caseId: string, supabase: any, userId: string): Promise<any> {
+  try {
+    const args = JSON.parse(toolCall.function.arguments);
+    let result: any = { success: false, message: 'Unknown tool' };
 
-      switch (toolCall.function.name) {
+    switch (toolCall.function.name) {
         case 'generate_poa_pdf':
           try {
             const { data: pdfData, error: pdfError } = await supabase.functions.invoke('generate-poa', {
@@ -413,23 +449,49 @@ async function executeTools(toolCalls: any[], caseId: string, supabase: any, use
             result = { success: false, message: `Failed: ${error.message}` };
           }
           break;
+
+        case 'generate_archive_request':
+          try {
+            // Create archive search record
+            await supabase.from('archive_searches').insert({
+              case_id: args.caseId,
+              person_type: args.personType,
+              document_types: args.documentTypes,
+              archive_name: args.archiveLocation || 'To be determined',
+              search_type: 'international',
+              status: 'pending',
+              priority: 'medium'
+            });
+
+            result = {
+              success: true,
+              message: `✅ Archive request created for ${args.personType}: ${args.documentTypes.join(', ')}`
+            };
+
+            await supabase.from('hac_logs').insert({
+              case_id: args.caseId,
+              action_type: 'archive_request_created',
+              action_details: `AI created archive request for ${args.personType} documents`,
+              performed_by: userId
+            });
+          } catch (error: any) {
+            result = { success: false, message: `Failed: ${error.message}` };
+          }
+          break;
       }
 
-      toolResults.push({
-        tool_call_id: toolCall.id,
-        name: toolCall.function.name,
-        result
-      });
-    } catch (error: any) {
-      toolResults.push({
-        tool_call_id: toolCall.id,
-        name: toolCall.function.name,
-        result: { success: false, message: error.message }
-      });
-    }
+    return {
+      tool_call_id: toolCall.id,
+      name: toolCall.function.name,
+      result
+    };
+  } catch (error: any) {
+    return {
+      tool_call_id: toolCall.id,
+      name: toolCall.function.name,
+      result: { success: false, message: error.message }
+    };
   }
-
-  return toolResults;
 }
 
 function buildAgentContext(caseData: any, action: string) {

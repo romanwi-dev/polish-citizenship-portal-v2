@@ -227,9 +227,12 @@ export const AIAgentPanel = ({ caseId, defaultAction, showActionSelector = true,
               });
             }
 
-            if (parsed.conversationId && !receivedConversationId) {
-              receivedConversationId = parsed.conversationId;
-              setConversationId(parsed.conversationId);
+            // Handle conversationId from streaming or non-streaming
+            if (parsed.conversationId) {
+              if (!receivedConversationId) {
+                receivedConversationId = parsed.conversationId;
+                setConversationId(parsed.conversationId);
+              }
             }
 
             if (parsed.toolResults) {
