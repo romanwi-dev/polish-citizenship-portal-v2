@@ -4,6 +4,9 @@ import { FileText, Calendar, User, Download, CheckCircle2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { DocumentTranslationStatus } from './DocumentTranslationStatus';
 import { Button } from '@/components/ui/button';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/hooks/use-toast';
+import { useState } from 'react';
 
 interface DocumentCardProps {
   document: any;
@@ -21,9 +24,53 @@ const PERSON_LABELS: Record<string, string> = {
 };
 
 export function DocumentCard({ document }: DocumentCardProps) {
-  const handleDownload = () => {
-    // TODO: Implement Dropbox download
-    console.log('Download:', document.dropbox_path);
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const handleDownload = async () => {
+    if (!document.dropbox_path) {
+      toast({
+        title: 'Download Error',
+        description: 'No file path available for this document',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setIsDownloading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('dropbox-download', {
+        body: { file_path: document.dropbox_path }
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      // Create blob and trigger download
+      const blob = new Blob([data], { type: 'application/octet-stream' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = document.name || 'download';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      toast({
+        title: 'Download Started',
+        description: 'Your file is being downloaded',
+      });
+    } catch (error) {
+      console.error('Download error:', error);
+      toast({
+        title: 'Download Failed',
+        description: error.message || 'Failed to download file',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   return (
@@ -52,8 +99,13 @@ export function DocumentCard({ document }: DocumentCardProps) {
               </div>
             </div>
           </div>
-          <Button variant="ghost" size="sm" onClick={handleDownload}>
-            <Download className="h-4 w-4" />
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={handleDownload}
+            disabled={isDownloading}
+          >
+            <Download className={`h-4 w-4 ${isDownloading ? 'animate-pulse' : ''}`} />
           </Button>
         </div>
 

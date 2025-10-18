@@ -68,3 +68,6 @@ verify_jwt = false
 
 [functions.partner-api]
 verify_jwt = false
+
+[functions.dropbox-download]
+verify_jwt = true
