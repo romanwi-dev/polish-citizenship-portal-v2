@@ -1,198 +1,448 @@
-// AI Agent Edge Function v1.0.2 - Health check + deployment fix (2025-10-18)
+// AI Agent Edge Function v2.0.0 - Phase 1: Streaming + Tool Calling + Conversations + Document Intelligence
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { getSecureCorsHeaders, handleCorsPreflight, createSecureCorsResponse, createSecureErrorResponse } from '../_shared/cors.ts';
 import { AIAgentRequestSchema, validateInput } from '../_shared/inputValidation.ts';
 
+// Tool definitions for AI agent
+const AGENT_TOOLS = [
+  {
+    type: "function",
+    function: {
+      name: "generate_poa_pdf",
+      description: "Generate a POA (Power of Attorney) PDF for a client. Use when client data is complete.",
+      parameters: {
+        type: "object",
+        properties: {
+          caseId: { type: "string", description: "Case UUID" },
+          poaType: { 
+            type: "string", 
+            enum: ["adult", "minor", "spouses"],
+            description: "Type of POA to generate"
+          },
+          reason: { type: "string", description: "Why this POA is needed" }
+        },
+        required: ["caseId", "poaType"]
+      }
+    }
+  },
+  {
+    type: "function",
+    function: {
+      name: "create_task",
+      description: "Create a task for HAC, client, or partner to complete",
+      parameters: {
+        type: "object",
+        properties: {
+          caseId: { type: "string" },
+          title: { type: "string" },
+          description: { type: "string" },
+          priority: { type: "string", enum: ["low", "medium", "high"] },
+          category: { type: "string" },
+          dueDate: { type: "string", description: "ISO date string" }
+        },
+        required: ["caseId", "title", "priority"]
+      }
+    }
+  },
+  {
+    type: "function",
+    function: {
+      name: "trigger_ocr",
+      description: "Trigger OCR processing on a document to extract text and data",
+      parameters: {
+        type: "object",
+        properties: {
+          documentId: { type: "string" },
+          expectedType: { type: "string" }
+        },
+        required: ["documentId"]
+      }
+    }
+  },
+  {
+    type: "function",
+    function: {
+      name: "update_master_data",
+      description: "Update fields in master_table for a case",
+      parameters: {
+        type: "object",
+        properties: {
+          caseId: { type: "string" },
+          fields: { type: "object" },
+          reason: { type: "string" }
+        },
+        required: ["caseId", "fields"]
+      }
+    }
+  }
+];
+
 serve(async (req) => {
-  // Health check endpoint
+  // Health check
   if (req.url.endsWith('/health')) {
-    console.log('Health check requested');
-    return createSecureCorsResponse(req, { 
-      status: 'healthy', 
-      timestamp: new Date().toISOString(),
-      version: '1.0.2',
-      deployment: 'verified'
-    });
+    return createSecureCorsResponse(req, { status: 'healthy', version: '2.0.0' });
   }
 
-  console.log('=== AI AGENT REQUEST RECEIVED ===');
-  console.log('Timestamp:', new Date().toISOString());
-  console.log('Method:', req.method);
-  console.log('URL:', req.url);
-  console.log('Origin:', req.headers.get('origin'));
-  console.log('Auth Header:', req.headers.get('authorization') ? 'JWT Present ✓' : 'NO JWT ✗');
-  console.log('Content-Type:', req.headers.get('content-type'));
-  
-  // Handle CORS preflight
   const preflightResponse = handleCorsPreflight(req);
   if (preflightResponse) return preflightResponse;
 
   try {
     const body = await req.json();
-    console.log('Request Body Keys:', Object.keys(body));
-    
-    // Validate input using Zod schema
     const validation = validateInput(AIAgentRequestSchema, body);
     
     if (!validation.success) {
-      console.error('Validation failed:', validation.details);
-      return createSecureErrorResponse(
-        req,
-        `Invalid input: ${JSON.stringify(validation.details)}`,
-        400
-      );
+      return createSecureErrorResponse(req, `Invalid input: ${JSON.stringify(validation.details)}`, 400);
     }
     
-    const { caseId, prompt, action } = validation.data;
+    const { caseId, prompt, action, conversationId, stream = false } = validation.data;
+    const userId = req.headers.get('x-user-id') || 'system';
     
-    console.log('📋 Parsed Request:');
-    console.log('  Case ID:', caseId || 'NOT PROVIDED');
-    console.log('  Action:', action);
-    console.log('  Prompt Length:', prompt?.length || 0);
-    console.log('  Prompt Preview:', prompt?.substring(0, 100) + '...');
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const lovableApiKey = Deno.env.get('LOVABLE_API_KEY')!;
     
-    const supabaseUrl = Deno.env.get('SUPABASE_URL');
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
-    const lovableApiKey = Deno.env.get('LOVABLE_API_KEY');
-    
-    if (!supabaseUrl || !supabaseKey) {
-      console.error('Missing Supabase credentials');
-      return createSecureErrorResponse(req, 'Server configuration error', 500);
-    }
-    
-    if (!lovableApiKey) {
-      console.error('Missing LOVABLE_API_KEY');
-      return createSecureErrorResponse(req, 'AI service not configured', 500);
-    }
-    
-    console.log('Initializing Supabase client');
     const supabase = createClient(supabaseUrl, supabaseKey);
 
+    // Get or create conversation
+    let activeConversationId = conversationId;
+    if (!activeConversationId && caseId) {
+      const { data: newConv } = await supabase
+        .from('ai_conversations')
+        .insert({ case_id: caseId, agent_type: action })
+        .select()
+        .single();
+      activeConversationId = newConv?.id;
+    }
+
+    // Fetch conversation history
+    let conversationMessages: any[] = [];
+    if (activeConversationId) {
+      const { data: messages } = await supabase
+        .from('ai_conversation_messages')
+        .select('role, content, tool_calls')
+        .eq('conversation_id', activeConversationId)
+        .order('created_at', { ascending: true })
+        .limit(20);
+      conversationMessages = messages || [];
+    }
+
+    // Fetch case data
     let caseData = null;
     let context = {};
 
-    // Security audit doesn't need case data - it's system-wide
     if (action === 'security_audit') {
       context = buildAgentContext(null, action);
-    } else {
-      // Fetch comprehensive case data for other actions
+    } else if (caseId) {
       const { data, error: caseError } = await supabase
         .from('cases')
-        .select(`
-          *,
-          intake_data(*),
-          master_table(*),
-          documents(*),
-          tasks(*),
-          poa(*),
-          oby_forms(*),
-          wsc_letters(*)
-        `)
+        .select(`*, intake_data(*), master_table(*), documents(*), tasks(*), poa(*), oby_forms(*), wsc_letters(*)`)
         .eq('id', caseId)
         .single();
 
-      if (caseError) {
-        console.error('Database error fetching case:', caseError);
-        console.error('Error details:', JSON.stringify(caseError));
-        throw new Error(`Failed to fetch case data: ${caseError.message}`);
-      }
-      
-      if (!data) {
-        throw new Error(`Case not found with ID: ${caseId}`);
-      }
-      
+      if (caseError) throw new Error(`Failed to fetch case: ${caseError.message}`);
       caseData = data;
-      
-      // Build context for AI
       context = buildAgentContext(caseData, action);
     }
-    
-    // Call Lovable AI
+
+    // Build message history
+    const systemPrompt = getSystemPrompt(action);
+    const conversationHistory = [
+      { role: 'system', content: systemPrompt },
+      ...conversationMessages.map(m => ({
+        role: m.role,
+        content: m.content,
+        ...(m.tool_calls && { tool_calls: m.tool_calls })
+      })),
+      { role: 'user', content: `Case Context:\n${JSON.stringify(context, null, 2)}\n\nUser Request: ${prompt}` }
+    ];
+
+    // Tool-enabled actions
+    const toolEnabledActions = ['researcher', 'comprehensive', 'document_intelligence', 'auto_populate_forms', 'task_suggest'];
+    const includeTools = toolEnabledActions.includes(action);
+
+    const aiRequestBody: any = {
+      model: 'google/gemini-2.5-flash',
+      messages: conversationHistory,
+      stream
+    };
+
+    if (includeTools) {
+      aiRequestBody.tools = AGENT_TOOLS;
+      aiRequestBody.tool_choice = 'auto';
+    }
+
+    // Handle streaming response
+    if (stream) {
+      const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${lovableApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(aiRequestBody),
+      });
+
+      if (!aiResponse.ok) {
+        throw new Error(`AI Gateway error: ${aiResponse.status}`);
+      }
+
+      const streamResponse = new ReadableStream({
+        async start(controller) {
+          const reader = aiResponse.body!.getReader();
+          const decoder = new TextDecoder();
+          let buffer = '';
+          let fullContent = '';
+          let toolCalls: any[] = [];
+
+          try {
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done) break;
+
+              buffer += decoder.decode(value, { stream: true });
+              const lines = buffer.split('\n');
+              buffer = lines.pop() || '';
+
+              for (const line of lines) {
+                if (!line.trim() || line.startsWith(':')) continue;
+                if (!line.startsWith('data: ')) continue;
+
+                const data = line.slice(6).trim();
+                if (data === '[DONE]') continue;
+
+                try {
+                  const parsed = JSON.parse(data);
+                  const delta = parsed.choices?.[0]?.delta;
+                  
+                  if (delta?.content) {
+                    fullContent += delta.content;
+                    controller.enqueue(`data: ${JSON.stringify({ delta: delta.content })}\n\n`);
+                  }
+
+                  if (delta?.tool_calls) {
+                    toolCalls.push(...delta.tool_calls);
+                  }
+                } catch {}
+              }
+            }
+
+            // Save messages
+            if (activeConversationId) {
+              await supabase.from('ai_conversation_messages').insert([
+                { conversation_id: activeConversationId, role: 'user', content: prompt },
+                { 
+                  conversation_id: activeConversationId, 
+                  role: 'assistant', 
+                  content: fullContent,
+                  tool_calls: toolCalls.length > 0 ? toolCalls : null
+                }
+              ]);
+            }
+
+            // Execute tools
+            if (toolCalls.length > 0 && caseId) {
+              const toolResults = await executeTools(toolCalls, caseId, supabase, userId);
+              controller.enqueue(`data: ${JSON.stringify({ toolResults })}\n\n`);
+            }
+
+            controller.enqueue('data: [DONE]\n\n');
+            controller.close();
+          } catch (error) {
+            controller.error(error);
+          }
+        }
+      });
+
+      return new Response(streamResponse, {
+        headers: {
+          ...getSecureCorsHeaders(req),
+          'Content-Type': 'text/event-stream',
+          'Cache-Control': 'no-cache',
+          'Connection': 'keep-alive',
+        }
+      });
+    }
+
+    // Non-streaming response
     const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${lovableApiKey}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          {
-            role: 'system',
-            content: getSystemPrompt(action)
-          },
-          {
-            role: 'user',
-            content: `Case Context:\n${JSON.stringify(context, null, 2)}\n\nUser Request: ${prompt}`
-          }
-        ],
-      }),
+      body: JSON.stringify(aiRequestBody),
     });
 
     if (!aiResponse.ok) {
-      const errorText = await aiResponse.text();
-      console.error('AI Gateway error:', aiResponse.status, errorText);
       throw new Error(`AI Gateway error: ${aiResponse.status}`);
     }
 
-    const aiData = await aiResponse.json();
-    const agentResponse = aiData.choices[0].message.content;
+    const data = await aiResponse.json();
+    const responseContent = data.choices[0].message.content;
+    const toolCalls = data.choices[0].message.tool_calls;
 
-    // Log agent interaction (skip for security audits)
-    if (action !== 'security_audit' && caseId) {
+    // Save messages
+    if (activeConversationId) {
+      await supabase.from('ai_conversation_messages').insert([
+        { conversation_id: activeConversationId, role: 'user', content: prompt },
+        { 
+          conversation_id: activeConversationId, 
+          role: 'assistant', 
+          content: responseContent,
+          tool_calls: toolCalls || null
+        }
+      ]);
+    }
+
+    // Execute tools
+    let toolResults: any[] = [];
+    if (toolCalls && toolCalls.length > 0 && caseId) {
+      toolResults = await executeTools(toolCalls, caseId, supabase, userId);
+    }
+
+    // Log interaction
+    if (caseId) {
       await supabase.from('hac_logs').insert({
         case_id: caseId,
-        performed_by: req.headers.get('x-user-id'),
-        action_type: 'ai_agent_interaction',
-        action_details: `Action: ${action}, Prompt: ${prompt}`,
-        metadata: { response: agentResponse }
+        action_type: `ai_agent_${action}`,
+        action_details: prompt,
+        performed_by: userId,
+        metadata: {
+          response_preview: responseContent.substring(0, 500),
+          conversation_id: activeConversationId,
+          tools_used: toolCalls?.length || 0
+        }
       });
     }
 
-    return createSecureCorsResponse(
-      req,
-      { 
-        response: agentResponse,
-        context: context,
-        action: action 
-      }
-    );
+    return createSecureCorsResponse(req, { 
+      response: responseContent, 
+      conversationId: activeConversationId,
+      toolResults 
+    });
 
   } catch (error: any) {
     console.error('AI Agent error:', error);
-    console.error('Error stack:', error.stack);
-    return createSecureErrorResponse(
-      req,
-      error.message || 'Unknown error occurred',
-      500
-    );
+    return createSecureErrorResponse(req, error.message || 'Unknown error', 500);
   }
 });
 
+// Tool execution function
+async function executeTools(toolCalls: any[], caseId: string, supabase: any, userId: string): Promise<any[]> {
+  const toolResults = [];
+
+  for (const toolCall of toolCalls) {
+    try {
+      const args = JSON.parse(toolCall.function.arguments);
+      let result: any = { success: false, message: 'Unknown tool' };
+
+      switch (toolCall.function.name) {
+        case 'generate_poa_pdf':
+          try {
+            const { data: pdfData, error: pdfError } = await supabase.functions.invoke('generate-poa', {
+              body: { caseId: args.caseId, poaType: args.poaType }
+            });
+
+            if (pdfError) throw pdfError;
+
+            result = {
+              success: true,
+              message: `✅ POA (${args.poaType}) generated`,
+              pdfUrl: pdfData?.pdfUrl
+            };
+
+            await supabase.from('hac_logs').insert({
+              case_id: args.caseId,
+              action_type: 'poa_generated',
+              action_details: `AI auto-generated ${args.poaType} POA: ${args.reason || ''}`,
+              performed_by: userId
+            });
+          } catch (error: any) {
+            result = { success: false, message: `Failed: ${error.message}` };
+          }
+          break;
+
+        case 'create_task':
+          try {
+            await supabase.from('tasks').insert({
+              case_id: args.caseId,
+              title: args.title,
+              description: args.description || '',
+              priority: args.priority,
+              category: args.category || 'general',
+              due_date: args.dueDate || null,
+              status: 'pending'
+            });
+
+            result = { success: true, message: `✅ Task created: ${args.title}` };
+          } catch (error: any) {
+            result = { success: false, message: `Failed: ${error.message}` };
+          }
+          break;
+
+        case 'trigger_ocr':
+          try {
+            await supabase.functions.invoke('ocr-document', {
+              body: { documentId: args.documentId, expectedType: args.expectedType }
+            });
+
+            result = { success: true, message: `✅ OCR triggered` };
+          } catch (error: any) {
+            result = { success: false, message: `Failed: ${error.message}` };
+          }
+          break;
+
+        case 'update_master_data':
+          try {
+            await supabase.from('master_table').update(args.fields).eq('case_id', args.caseId);
+
+            result = {
+              success: true,
+              message: `✅ Updated ${Object.keys(args.fields).length} fields`
+            };
+
+            await supabase.from('hac_logs').insert({
+              case_id: args.caseId,
+              action_type: 'master_data_updated',
+              action_details: `AI updated: ${Object.keys(args.fields).join(', ')}. ${args.reason || ''}`,
+              performed_by: userId,
+              metadata: { updated_fields: args.fields }
+            });
+          } catch (error: any) {
+            result = { success: false, message: `Failed: ${error.message}` };
+          }
+          break;
+      }
+
+      toolResults.push({
+        tool_call_id: toolCall.id,
+        name: toolCall.function.name,
+        result
+      });
+    } catch (error: any) {
+      toolResults.push({
+        tool_call_id: toolCall.id,
+        name: toolCall.function.name,
+        result: { success: false, message: error.message }
+      });
+    }
+  }
+
+  return toolResults;
+}
+
 function buildAgentContext(caseData: any, action: string) {
-  // Security audit context (system-wide, not case-specific)
   if (action === 'security_audit') {
     return {
       system_audit: true,
-      tables_with_rls: [
-        'cases', 'intake_data', 'master_table', 'documents', 'tasks',
-        'poa', 'oby_forms', 'hac_logs', 'messages',
-        'user_roles', 'client_portal_access', 'archive_searches'
-      ],
+      tables_with_rls: ['cases', 'intake_data', 'master_table', 'documents', 'tasks'],
       sensitive_tables: ['master_table', 'intake_data', 'poa', 'documents'],
-      edge_functions: [
-        'ai-agent', 'generate-poa', 'fill-pdf', 'ocr-passport',
-        'ocr-document', 'ocr-wsc-letter', 'dropbox-sync', 'ai-translate'
-      ],
-      description: 'System-wide security audit of Polish citizenship portal'
+      edge_functions: ['ai-agent', 'generate-poa', 'fill-pdf', 'ocr-passport']
     };
   }
 
-  // For all other actions, caseData is required
-  if (!caseData) {
-    throw new Error('Case data is required for this action');
-  }
+  if (!caseData) throw new Error('Case data required');
 
   const context: any = {
     client_name: caseData.client_name,
@@ -203,323 +453,218 @@ function buildAgentContext(caseData: any, action: string) {
     country: caseData.country,
   };
 
-  // Add relevant data based on action
-  if (action === 'eligibility_analysis' || action === 'comprehensive') {
+  if (['eligibility_analysis', 'comprehensive', 'auto_populate_forms'].includes(action)) {
     context.intake = caseData.intake_data?.[0] || null;
-    context.ancestry_line = caseData.intake_data?.[0]?.ancestry_line;
     context.master_data = caseData.master_table?.[0] || null;
   }
 
-  if (action === 'document_check' || action === 'comprehensive') {
+  if (['document_check', 'comprehensive', 'document_intelligence'].includes(action)) {
     context.documents = caseData.documents?.map((d: any) => ({
+      id: d.id,
       name: d.name,
       type: d.type,
       category: d.category,
       person_type: d.person_type,
       is_verified: d.is_verified,
       needs_translation: d.needs_translation,
-      is_translated: d.is_translated
+      ocr_data: d.ocr_data
     })) || [];
-    context.document_count = caseData.documents?.length || 0;
   }
 
-  if (action === 'task_suggest' || action === 'comprehensive') {
+  if (['task_suggest', 'comprehensive'].includes(action)) {
     context.tasks = caseData.tasks?.map((t: any) => ({
       title: t.title,
       status: t.status,
-      task_type: t.task_type,
       priority: t.priority,
       due_date: t.due_date
     })) || [];
-    context.pending_tasks = caseData.tasks?.filter((t: any) => t.status === 'pending').length || 0;
   }
 
-  if (action === 'wsc_strategy' || action === 'comprehensive') {
+  if (['wsc_strategy', 'comprehensive'].includes(action)) {
     context.wsc_letters = caseData.wsc_letters?.map((w: any) => ({
       letter_date: w.letter_date,
       deadline: w.deadline,
       reference_number: w.reference_number,
-      strategy: w.strategy,
-      hac_reviewed: w.hac_reviewed
+      strategy: w.strategy
     })) || [];
-  }
-
-  if (action === 'form_populate' || action === 'comprehensive') {
-    context.poa = caseData.poa?.[0] || null;
-    context.oby_forms = caseData.oby_forms?.[0] || null;
   }
 
   context.kpi = {
     tasks_total: caseData.kpi_tasks_total,
     tasks_completed: caseData.kpi_tasks_completed,
     docs_percentage: caseData.kpi_docs_percentage,
-    poa_approved: caseData.poa_approved,
-    oby_filed: caseData.oby_filed,
-    wsc_received: caseData.wsc_received,
-    decision_received: caseData.decision_received
+    poa_approved: caseData.poa_approved
   };
 
   return context;
 }
 
 function getSystemPrompt(action: string): string {
-  const basePrompt = `You are an AI agent specialized in Polish citizenship by descent applications. You help HAC (Head Attorney Coach) manage cases efficiently.
+  const basePrompt = `You are an AI agent for Polish citizenship applications. You help manage cases efficiently.
 
-Polish Citizenship Process Stages:
-1. Lead → First Contact → Citizenship Test → Family Tree → Eligibility Call
-2. Terms & Pricing → Advance Payment → Opening Account
-3. POA (Power of Attorney) → Master Form → Application Filing
-4. Local Documents → Polish Documents → Translations → Filing
-5. Civil Acts → Initial Response → WSC Letter → Push Schemes
-6. Citizenship Decision → Polish Passport → Extended Services
+When tools are available, use them proactively:
+- Generate POA PDFs when data is complete
+- Create tasks for follow-ups
+- Trigger OCR for documents
+- Update master data when extracting info
 
-Key Person Types: AP (Applicant), F (Father), M (Mother), PGF/PGM (Paternal Grandparents), MGF/MGM (Maternal Grandparents)
-Document Categories: birth_cert, marriage_cert, naturalization, passport, military_record, archive_doc
-Ancestry Lines: paternal, maternal
-
-Your responses should be:
-- Concise and actionable
-- Based on actual case data provided
-- Specific with dates, names, and document references
-- Professional and accurate`;
+Always explain what you're doing with tools.`;
 
   const actionPrompts: Record<string, string> = {
     researcher: `${basePrompt}
 
-RESEARCHER AGENT MODE
+RESEARCHER AGENT
 
-You conduct in-depth research with multiple sources, cross-verification, and structured reports for Polish citizenship cases.
-
-Research Areas:
-- Polish citizenship law and regulations
-- Historical context (pre-1920, interwar, WWII, communist era, modern Poland)
-- Archive locations and document availability
-- Legal precedents and case law
-- Regional variations in documentation
-
-Method:
-1. Break down complex topics into research questions
-2. Find authoritative sources (Polish government sites, legal databases, historical archives)
-3. Cross-verify information from multiple sources
-4. Synthesize information into structured reports
-
-Output Format:
-📊 EXECUTIVE SUMMARY
-🔍 KEY FINDINGS (with citations)
-📚 SOURCES (reliability assessment)
-💡 RECOMMENDATIONS
-⚠️ POTENTIAL CHALLENGES
-
-Use PROACTIVELY for comprehensive investigations requiring citations and balanced analysis.`,
+Conduct thorough research on Polish citizenship laws, historical records, and genealogical data. Provide detailed reports with supporting evidence.`,
 
     translator: `${basePrompt}
 
-TRANSLATOR AGENT MODE
+TRANSLATOR AGENT
 
-You are a specialized translation agent for Polish citizenship documents.
-
-Languages: Polish, English, Spanish, Portuguese, Hebrew, Russian, Ukrainian, German, French
-
-Translation Expertise:
-- Legal terminology and official documents
-- Historical documents with archaic language
-- Maintain legal accuracy and proper formatting
-- Preserve all legal terms and official language
-
-Tasks:
-1. Review and improve AI-generated translations
-2. Identify documents needing sworn translation
-3. Flag ambiguities or unclear passages
-4. Create glossaries of key terms
-5. Suggest translation strategies for complex documents
-
-Output Format:
-📄 TRANSLATED TEXT
-📊 CONFIDENCE SCORE (0-100%)
-📝 TRANSLATOR NOTES
-📚 GLOSSARY (key terms)
-⚠️ RECOMMENDATIONS (for sworn translator)
-
-Remember: All translations will be reviewed by certified Polish sworn translators.`,
+Translate documents and communications between Polish and other languages. Ensure accuracy and cultural relevance.`,
 
     writer: `${basePrompt}
 
-WRITER AGENT MODE
+WRITER AGENT
 
-You create clear, professional content for Polish citizenship services.
-
-Content Types:
-- Client emails and letters
-- Archive request letters (Polish)
-- WSC response strategies
-- Process explanations for clients
-- Internal case notes and summaries
-- FAQ content and guides
-
-Tone & Style:
-- Professional yet approachable for clients
-- Formal and proper for Polish authorities
-- Clear and jargon-free for explanations
-- Empathetic when addressing concerns
-- Precise when stating requirements
-
-Best Practices:
-- Use appropriate Polish letter formatting conventions
-- Include all necessary legal references
-- Follow salutations and closings properly
-- Maintain consistent terminology
-- Proofread for grammar and clarity
-
-Output Format:
-✍️ DRAFTED CONTENT
-🎯 PURPOSE & AUDIENCE
-📋 KEY POINTS COVERED
-✅ REVIEW CHECKLIST
-
-Use PROACTIVELY for drafting any written communications.`,
+Compose letters, reports, and other documents related to Polish citizenship applications. Maintain a professional and persuasive tone.`,
 
     designer: `${basePrompt}
 
-DESIGNER AGENT MODE
+DESIGN AGENT
 
-You are a UI/UX design specialist for the Polish citizenship portal.
-
-Design Expertise:
-- Modern design principles and accessibility standards
-- User research and user experience optimization
-- Wireframing and prototyping concepts
-- Design system consistency
-- Information architecture
-
-Focus Areas:
-- Client portal interface improvements
-- Form design and usability
-- Document visualization and organization
-- Case timeline presentation
-- Mobile responsiveness
-- Accessibility (WCAG compliance)
-
-Design Process:
-1. Analyze current UI/UX pain points
-2. Suggest design improvements with rationale
-3. Consider user personas (clients, HAC staff, assistants)
-4. Propose component designs
-5. Recommend color, typography, spacing improvements
-
-Output Format:
-🎨 DESIGN RECOMMENDATIONS (with mockup descriptions)
-🔄 USER FLOW IMPROVEMENTS
-♿ ACCESSIBILITY CONSIDERATIONS
-💻 IMPLEMENTATION SUGGESTIONS
-🎯 DESIGN SYSTEM TOKENS
-
-Use PROACTIVELY for UI/UX design, design systems, or user experience optimization.`,
-
-    eligibility_analysis: `${basePrompt}
-
-TASK: Analyze eligibility for Polish citizenship by descent.
-- Check ancestry line (must have Polish ancestor)
-- Verify critical dates (emigration, naturalization)
-- Identify missing family data
-- Assess likelihood of success (High/Medium/Low)
-- Estimate timeline (months)
-- List required documents`,
-
+Create visually appealing presentations and infographics to communicate complex information about Polish citizenship.`,
+    
     document_check: `${basePrompt}
 
-TASK: Review document completeness and requirements.
-- List all uploaded documents
-- Identify missing required documents by person type
-- Flag documents needing translation
-- Check verification status
-- Prioritize critical missing documents`,
+DOCUMENT CHECK AGENT
+
+Review client-provided documents for completeness, accuracy, and relevance to Polish citizenship requirements. Identify missing or problematic items.`,
 
     task_suggest: `${basePrompt}
 
-TASK: Suggest next actionable tasks based on current stage.
-- Review current stage and pending tasks
-- Suggest 3-5 specific next steps
-- Assign priority (high/medium/low)
-- Provide reasoning for each task
-- Consider deadlines and dependencies`,
+TASK SUGGESTION AGENT
+
+Suggest tasks for case managers, clients, or partners to advance Polish citizenship applications. Prioritize tasks based on urgency and impact.`,
 
     wsc_strategy: `${basePrompt}
 
-TASK: Analyze WSC (Voivodeship Office) letter and suggest strategy.
-- Extract key requirements from letter
-- Identify deadline and urgency
-- Recommend strategy: PUSH (aggressive), NUDGE (moderate), or SIT-DOWN (detailed meeting)
-- List specific actions to take
-- Draft response points`,
+WSC STRATEGY AGENT
+
+Develop strategies for obtaining confirmation of Polish citizenship from the WSC (Voivodeship Office). Consider legal precedents and individual case factors.`,
 
     form_populate: `${basePrompt}
 
-TASK: Generate form data and identify auto-population opportunities.
-- Review intake and master data
-- Suggest fields that can be auto-populated
-- Identify missing critical fields
-- Flag inconsistencies between data sources
-- Provide clean, formatted values for forms`,
+FORM POPULATION AGENT
+
+Automatically populate Polish citizenship application forms with client data. Ensure accuracy and compliance with form instructions.`,
 
     comprehensive: `${basePrompt}
 
-TASK: Comprehensive case analysis covering all aspects.
-- Eligibility assessment
-- Document completeness
-- Current stage progress
-- Critical next steps
-- Risks and blockers
-- Timeline estimate
-- Recommendations for HAC`,
+COMPREHENSIVE AGENT
 
-    security_audit: `You are a security auditor AI specialized in Supabase applications and OWASP best practices.
+Provide end-to-end support for Polish citizenship applications. Integrate research, translation, writing, design, document review, task suggestion, and WSC strategy.`,
 
-TASK: Perform comprehensive security audit of the Polish citizenship application system.
+    security_audit: `You are a security auditor for a Polish citizenship application platform.
 
-Focus Areas:
+OBJECTIVE:
+Identify potential security vulnerabilities and risks in the system.
 
-1. Row Level Security (RLS) Policies
-   - Verify all tables have RLS enabled
-   - Check policy logic for data leaks
-   - Ensure user_id filtering with auth.uid()
-   - Verify has_role() function usage
-   - Check for policy bypass vulnerabilities
+SCOPE:
+- Review access controls and permissions
+- Analyze data handling and storage practices
+- Evaluate the security of edge functions and APIs
+- Assess the risk of unauthorized access or data breaches
 
-2. Authentication & Authorization
-   - Review auth flows (no anonymous signups)
-   - Check JWT token handling in edge functions
-   - Verify role-based access control (admin/assistant/client)
-   - Check client portal access controls
+REPORT FORMAT:
+- Summary of findings
+- List of vulnerabilities with severity ratings (High, Medium, Low)
+- Recommendations for remediation
 
-3. Data Protection (CRITICAL)
-   - Identify exposed PII (passport numbers, addresses, personal data)
-   - Verify data masking implementation
-   - Check encryption for sensitive fields
-   - Verify documents table security
+CONTEXT:
+- Tables with RLS enabled: [tables_with_rls]
+- Sensitive tables: [sensitive_tables]
+- Edge functions: [edge_functions]
 
-4. OWASP Top 10 Compliance
-   - SQL injection prevention
-   - XSS vulnerabilities
-   - CSRF protection
-   - Security misconfiguration
-   - Sensitive data exposure
+Focus on RLS policies, data encryption, and input validation.`,
+    
+    civil_acts_management: `${basePrompt}
 
-5. Edge Function Security
-   - Input validation (Zod schemas)
-   - CORS configuration
-   - Error handling (no data leaks)
-   - API key exposure
-   - JWT token verification
+CIVIL ACTS MANAGEMENT AGENT
+
+Manage and process civil acts (birth, marriage, death certificates) required for Polish citizenship applications. Ensure proper documentation and authentication.`,
+
+    translation_workflow: `${basePrompt}
+
+TRANSLATION WORKFLOW AGENT
+
+Streamline the translation process for Polish citizenship documents. Coordinate with translators, review translations for accuracy, and manage translation costs.`,
+
+    analytics_report: `${basePrompt}
+
+ANALYTICS REPORT AGENT
+
+Generate reports on key metrics related to Polish citizenship applications. Track application progress, identify bottlenecks, and measure team performance.`,
+    
+    document_intelligence: `${basePrompt}
+
+DOCUMENT INTELLIGENCE AGENT
+
+Analyze uploaded documents:
+1. Document type identification
+2. Completeness check
+3. Quality assessment
+4. Translation requirements
+5. OCR accuracy validation
+6. Next steps
 
 Output Format:
-🔴 CRITICAL ISSUES (must fix immediately)
-🟡 MEDIUM ISSUES (fix before production)
-🟢 LOW ISSUES (nice to have)
-✅ COMPLIANCE STATUS
-📋 RECOMMENDATIONS
+📄 DOCUMENT TYPE: [type]
+✅ COMPLETENESS: [%]
+🔍 QUALITY: [excellent/good/poor]
+🌐 LANGUAGE: [lang] - Translation: [yes/no]
+📊 OCR CONFIDENCE: [%]
+⚠️ ISSUES: [list]
+🎯 NEXT STEPS:
+  1. [action]
+  2. [action]
 
-Be specific: cite table names, function names, provide actionable fixes with code examples.`
+Use tools to create tasks or trigger OCR.`,
+
+    auto_populate_forms: `${basePrompt}
+
+FORM AUTO-POPULATION AGENT
+
+Intelligently populate forms using:
+1. Master table data
+2. OCR extracted data
+3. Logical inference
+4. Polish legal requirements
+
+Output Format:
+📋 FORM: [name]
+📊 COMPLETION: [%]
+✅ POPULATED: [count] fields
+⚠️ MISSING: [list with reasons]
+🔍 CONFIDENCE: [%]
+
+💡 RECOMMENDATIONS:
+- HAC review needed: [list]
+- Missing docs: [list]
+- Data concerns: [list]
+
+Use update_master_data tool and create_task for HAC review.`,
+
+    eligibility_analysis: `${basePrompt}
+
+Analyze Polish citizenship eligibility by descent.
+- Check ancestry line
+- Verify critical dates
+- Identify missing data
+- Assess success likelihood
+- Estimate timeline
+- List required documents`,
   };
 
-  return actionPrompts[action] || actionPrompts.comprehensive;
+  return actionPrompts[action] || basePrompt;
 }

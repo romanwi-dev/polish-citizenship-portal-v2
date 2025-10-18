@@ -53,8 +53,11 @@ export const AIAgentRequestSchema = z.object({
   action: z.enum([
     'comprehensive', 'eligibility_analysis', 'document_check', 
     'task_suggest', 'wsc_strategy', 'form_populate', 'security_audit',
-    'researcher', 'translator', 'writer', 'designer'
+    'researcher', 'translator', 'writer', 'designer',
+    'document_intelligence', 'auto_populate_forms'
   ]),
+  conversationId: uuidSchema.optional(),
+  stream: z.boolean().optional(),
 });
 
 // Contact Form Schema
