@@ -1,18 +1,22 @@
+// AI Agent Edge Function v1.0.1 - Enhanced logging and validation (2025-10-18)
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { getSecureCorsHeaders, handleCorsPreflight, createSecureCorsResponse, createSecureErrorResponse } from '../_shared/cors.ts';
 import { AIAgentRequestSchema, validateInput } from '../_shared/inputValidation.ts';
 
 serve(async (req) => {
+  console.log('=== AI AGENT REQUEST RECEIVED ===');
+  console.log('Method:', req.method);
+  console.log('URL:', req.url);
+  console.log('Auth Header:', req.headers.get('authorization') ? 'JWT Present ✓' : 'NO JWT ✗');
+  
   // Handle CORS preflight
   const preflightResponse = handleCorsPreflight(req);
   if (preflightResponse) return preflightResponse;
 
-  console.log('AI Agent function called');
-
   try {
     const body = await req.json();
-    console.log('Request body:', JSON.stringify(body));
+    console.log('Request Body Keys:', Object.keys(body));
     
     // Validate input using Zod schema
     const validation = validateInput(AIAgentRequestSchema, body);
@@ -27,6 +31,12 @@ serve(async (req) => {
     }
     
     const { caseId, prompt, action } = validation.data;
+    
+    console.log('📋 Parsed Request:');
+    console.log('  Case ID:', caseId || 'NOT PROVIDED');
+    console.log('  Action:', action);
+    console.log('  Prompt Length:', prompt?.length || 0);
+    console.log('  Prompt Preview:', prompt?.substring(0, 100) + '...');
     
     const supabaseUrl = Deno.env.get('SUPABASE_URL');
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');

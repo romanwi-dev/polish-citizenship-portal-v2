@@ -3,11 +3,25 @@ import { AIAgentPanel } from "@/components/AIAgentPanel";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Languages } from "lucide-react";
+import { useEffect } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 const Translator = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const caseId = id || "";
+
+  useEffect(() => {
+    if (!id) {
+      toast({
+        title: "Navigation Error",
+        description: "Please access Translator from a case detail page",
+        variant: "destructive",
+      });
+      navigate("/admin/cases");
+    }
+  }, [id, navigate, toast]);
 
   if (!caseId) {
     return (

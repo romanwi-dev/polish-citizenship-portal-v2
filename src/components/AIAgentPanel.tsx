@@ -47,13 +47,7 @@ export const AIAgentPanel = ({ caseId, defaultAction, showActionSelector = true,
   const quickPrompts = customQuickPrompts || defaultQuickPrompts;
 
   const handleSubmit = async () => {
-    console.log('🔥 BUTTON CLICKED');
-    console.log('Prompt:', prompt);
-    console.log('Case ID:', caseId);
-    console.log('Action:', action);
-    
     if (!prompt.trim()) {
-      console.log('❌ Empty prompt, showing toast');
       toast({
         title: "Error",
         description: "Please enter a prompt",
@@ -64,7 +58,6 @@ export const AIAgentPanel = ({ caseId, defaultAction, showActionSelector = true,
 
     // Validate caseId for non-security-audit actions
     if (action !== 'security_audit' && !caseId) {
-      console.log('❌ No case ID, showing toast');
       toast({
         title: "Error",
         description: "Please select a case first",
@@ -73,7 +66,19 @@ export const AIAgentPanel = ({ caseId, defaultAction, showActionSelector = true,
       return;
     }
 
-    console.log('✅ Starting request...');
+    // Validate UUID format if caseId is provided
+    if (caseId) {
+      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+      if (!uuidRegex.test(caseId)) {
+        toast({
+          title: "Invalid Case ID",
+          description: "Please navigate to this page from a case detail page",
+          variant: "destructive",
+        });
+        return;
+      }
+    }
+
     setIsLoading(true);
     setResponse("");
 
