@@ -1,14 +1,28 @@
-// AI Agent Edge Function v1.0.1 - Enhanced logging and validation (2025-10-18)
+// AI Agent Edge Function v1.0.2 - Health check + deployment fix (2025-10-18)
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { getSecureCorsHeaders, handleCorsPreflight, createSecureCorsResponse, createSecureErrorResponse } from '../_shared/cors.ts';
 import { AIAgentRequestSchema, validateInput } from '../_shared/inputValidation.ts';
 
 serve(async (req) => {
+  // Health check endpoint
+  if (req.url.endsWith('/health')) {
+    console.log('Health check requested');
+    return createSecureCorsResponse(req, { 
+      status: 'healthy', 
+      timestamp: new Date().toISOString(),
+      version: '1.0.2',
+      deployment: 'verified'
+    });
+  }
+
   console.log('=== AI AGENT REQUEST RECEIVED ===');
+  console.log('Timestamp:', new Date().toISOString());
   console.log('Method:', req.method);
   console.log('URL:', req.url);
+  console.log('Origin:', req.headers.get('origin'));
   console.log('Auth Header:', req.headers.get('authorization') ? 'JWT Present ✓' : 'NO JWT ✗');
+  console.log('Content-Type:', req.headers.get('content-type'));
   
   // Handle CORS preflight
   const preflightResponse = handleCorsPreflight(req);

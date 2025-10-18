@@ -113,12 +113,22 @@ export const AIAgentPanel = ({ caseId, defaultAction, showActionSelector = true,
         });
         
         let errorMessage = 'Failed to process request';
-        if (error.message?.includes('rate limit')) {
-          errorMessage = 'Rate limit exceeded. Please try again in a moment.';
+        
+        // Specific error detection
+        if (error.status === 404) {
+          errorMessage = '🔴 AI agent is not deployed. Please contact your administrator or check deployment logs.';
+        } else if (error.status === 401) {
+          errorMessage = '🔐 Authentication failed. Please log in again.';
+        } else if (error.status === 403) {
+          errorMessage = '🚫 Access denied. JWT verification failed.';
+        } else if (error.message?.includes('rate limit')) {
+          errorMessage = '⏱️ Rate limit exceeded. Please wait a moment and try again.';
         } else if (error.message?.includes('402')) {
-          errorMessage = 'AI service requires payment. Please check your Lovable AI workspace credits.';
-        } else if (error.status === 404) {
-          errorMessage = 'AI agent function not found. Please contact support.';
+          errorMessage = '💳 AI service requires payment. Please add credits to your Lovable AI workspace.';
+        } else if (error.message?.includes('Failed to fetch') || !error.status) {
+          errorMessage = '🌐 Cannot reach AI service. Check your internet connection.';
+        } else if (error.context?.message) {
+          errorMessage = `Edge function error: ${error.context.message}`;
         } else {
           errorMessage = error.message || 'Unknown error occurred';
         }
