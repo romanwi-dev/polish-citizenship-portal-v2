@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { DocRadarPanel } from "@/components/DocRadarPanel";
 import { ArchiveRequestGenerator } from "@/components/ArchiveRequestGenerator";
+import { USCWorkflowPanel } from "@/components/usc/USCWorkflowPanel";
 
 export default function DocumentsCollection() {
   const { id } = useParams();
@@ -312,6 +313,7 @@ export default function DocumentsCollection() {
 
           {/* USC WORKFLOWS TAB */}
           <TabsContent value="usc" className="space-y-4">
+            <USCWorkflowPanel caseId={id || ''} />
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -368,54 +370,6 @@ export default function DocumentsCollection() {
                     </CardContent>
                   </Card>
                 </div>
-              </CardContent>
-            </Card>
-
-            {/* USC Tasks List */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Active USC Workflows</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {uscWorkflows.length === 0 ? (
-                  <div className="text-center py-12 text-muted-foreground">
-                    <FileCheck className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <p>No USC workflows created yet</p>
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    {uscWorkflows.map((task: any) => (
-                      <div
-                        key={task.id}
-                        className="flex items-center justify-between p-4 border rounded-lg"
-                      >
-                        <div className="flex-1">
-                          <p className="font-medium">{task.title}</p>
-                          <p className="text-sm text-muted-foreground">{task.description}</p>
-                          <div className="flex items-center gap-2 mt-2">
-                            <Badge variant="outline">{task.related_person}</Badge>
-                            <Badge variant="secondary">
-                              {task.metadata?.usc_type || "Unknown"}
-                            </Badge>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Badge
-                            variant={
-                              task.status === "completed"
-                                ? "default"
-                                : task.status === "in_progress"
-                                ? "secondary"
-                                : "outline"
-                            }
-                          >
-                            {task.status}
-                          </Badge>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
               </CardContent>
             </Card>
           </TabsContent>

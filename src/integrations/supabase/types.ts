@@ -2494,6 +2494,84 @@ export type Database = {
           },
         ]
       }
+      usc_requests: {
+        Row: {
+          application_details: Json | null
+          case_id: string
+          completed_at: string | null
+          created_at: string
+          document_type: string
+          id: string
+          letter_generated_at: string | null
+          letter_sent_at: string | null
+          notes: string | null
+          person_type: string
+          registry_city: string | null
+          registry_office: string | null
+          registry_voivodeship: string | null
+          request_type: string
+          response_received_at: string | null
+          result_document_id: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          application_details?: Json | null
+          case_id: string
+          completed_at?: string | null
+          created_at?: string
+          document_type: string
+          id?: string
+          letter_generated_at?: string | null
+          letter_sent_at?: string | null
+          notes?: string | null
+          person_type: string
+          registry_city?: string | null
+          registry_office?: string | null
+          registry_voivodeship?: string | null
+          request_type: string
+          response_received_at?: string | null
+          result_document_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          application_details?: Json | null
+          case_id?: string
+          completed_at?: string | null
+          created_at?: string
+          document_type?: string
+          id?: string
+          letter_generated_at?: string | null
+          letter_sent_at?: string | null
+          notes?: string | null
+          person_type?: string
+          registry_city?: string | null
+          registry_office?: string | null
+          registry_voivodeship?: string | null
+          request_type?: string
+          response_received_at?: string | null
+          result_document_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "usc_requests_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "usc_requests_result_document_id_fkey"
+            columns: ["result_document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_favorites: {
         Row: {
           case_id: string

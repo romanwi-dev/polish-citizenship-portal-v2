@@ -1,7 +1,7 @@
 # Big Plan Implementation Status
 
 **Last Updated:** 2025-10-18  
-**Overall Progress:** 17/29 steps = **59% Complete**  
+**Overall Progress:** 18/29 steps = **62% Complete**  
 **AI Agent System:** 6/6 phases = **100% Complete** ✅
 
 ---
@@ -12,13 +12,14 @@
 |----------|----------|---------|-------------|-------|
 | Foundation | 3 | 0 | 1 | 4 |
 | Case Organization | 2 | 3 | 0 | 5 |
-| Application Generation | 1 | 0 | 1 | 2 |
+| Documents Engine | 2 | 0 | 1 | 3 |
+| Application Generation | 1 | 0 | 0 | 1 |
 | Integrations | 1 | 0 | 1 | 2 |
 | Oversight & Security | 2 | 1 | 2 | 5 |
 | Client Portal | 2 | 0 | 1 | 3 |
 | AI Agent System | 6 | 0 | 0 | 6 |
 | Final Testing | 0 | 0 | 3 | 3 |
-| **TOTAL** | **17** | **4** | **8** | **29** |
+| **TOTAL** | **18** | **4** | **7** | **29** |
 
 ---
 
@@ -372,6 +373,63 @@ passport_applications:
 ```
 
 **Verification:** ✅ Edge function deployed, table created, all tools functional
+
+---
+
+### PART 4: Documents Engine (1/3)
+
+#### ✅ Step 10: Doc Radar  
+**Status:** COMPLETE ✅ (JUST IMPLEMENTED)  
+**Files:**
+- `src/utils/docRadarConfig.ts` - Document requirements configuration
+- `src/utils/documentRadar.ts` - Status calculation logic
+- `src/components/DocRadarPanel.tsx` - UI component
+- `src/pages/admin/DocumentsCollection.tsx` - Integration page
+
+**Features:**
+- ✅ Track documents for 8 person types (AP, SPOUSE, F, M, PGF, PGM, MGF, MGM)
+- ✅ Define required documents per person (birth cert, marriage cert, passport, naturalization, etc.)
+- ✅ Critical vs non-critical document flags
+- ✅ Overall completion percentage
+- ✅ Missing document alerts with descriptions
+- ✅ Visual progress bars per person
+- ✅ Color-coded status (green = complete, red = critical missing)
+
+**Verification:** ✅ Fully functional in DocumentsCollection page
+
+---
+
+#### ✅ Step 13: USC Workflows
+**Status:** COMPLETE ✅ (JUST IMPLEMENTED)  
+**Files:**
+- `src/components/usc/USCWorkflowPanel.tsx` - Main workflow panel
+- `src/components/usc/CreateUSCRequestDialog.tsx` - Request creation dialog
+- `src/components/usc/USCRequestCard.tsx` - Individual request card
+- Database: `usc_requests` table
+
+**Features:**
+- ✅ Create umiejscowienie (registration) requests
+- ✅ Create uzupełnienie (completion) requests
+- ✅ Status tracking (draft → letter_generated → sent → response_received → completed/rejected)
+- ✅ Person type tracking (AP, SPOUSE, F, M, PGF, PGM, MGF, MGM)
+- ✅ Document type selection (birth, marriage, death, other)
+- ✅ Registry office details (office name, city, voivodeship)
+- ✅ Date tracking (letter generation, sent, response received, completed)
+- ✅ Notes and metadata storage
+- ✅ Status badges with visual indicators
+- ✅ Quick action buttons for status progression
+
+**Database Schema:**
+```sql
+usc_requests:
+- id, case_id, request_type, person_type, document_type
+- registry_office, registry_city, registry_voivodeship
+- status (draft/letter_generated/sent/response_received/completed/rejected)
+- letter_generated_at, letter_sent_at, response_received_at, completed_at
+- application_details (jsonb), notes, result_document_id
+```
+
+**Verification:** ✅ Integrated into DocumentsCollection page, fully functional
 
 ---
 
