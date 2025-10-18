@@ -51,10 +51,29 @@ export const AIAgentRequestSchema = z.object({
   caseId: uuidSchema.optional(),
   prompt: z.string().min(1).max(5000),
   action: z.enum([
-    'comprehensive', 'eligibility_analysis', 'document_check', 
-    'task_suggest', 'wsc_strategy', 'form_populate', 'security_audit',
+    // Phase 1 Core
+    'comprehensive', 'security_audit',
+    
+    // Case Analysis
+    'eligibility_analysis', 'document_check', 'document_intelligence',
+    
+    // Task Management
+    'task_suggest',
+    
+    // Paperwork & Forms
+    'form_populate', 'auto_populate_forms',
+    
+    // WSC Letters
+    'wsc_strategy', 'wsc_response_drafting',
+    
+    // Archives & Civil Acts
+    'archive_request_management', 'generate_archive_request', 'civil_acts_management',
+    
+    // Specialized Agents
     'researcher', 'translator', 'writer', 'designer',
-    'document_intelligence', 'auto_populate_forms'
+    
+    // Workflows
+    'translation_workflow', 'analytics_report'
   ]),
   conversationId: uuidSchema.optional(),
   stream: z.boolean().optional(),

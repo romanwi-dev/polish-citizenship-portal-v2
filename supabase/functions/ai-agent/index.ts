@@ -433,7 +433,11 @@ async function executeToolsParallel(toolCalls: any[], caseId: string, supabase: 
 
 // Single tool execution function
 async function executeSingleTool(toolCall: any, caseId: string, supabase: any, userId: string): Promise<any> {
+  const toolName = toolCall.function.name;
+  
   try {
+    console.log(`🔧 Executing tool: ${toolName}`, { caseId, args: toolCall.function.arguments });
+    
     const args = JSON.parse(toolCall.function.arguments);
     let result: any = { success: false, message: 'Unknown tool' };
 
@@ -659,15 +663,27 @@ async function executeSingleTool(toolCall: any, caseId: string, supabase: any, u
           break;
       }
 
+    console.log(`✅ Tool completed: ${toolName}`, result);
     return {
       tool_call_id: toolCall.id,
-      name: toolCall.function.name,
+      name: toolName,
       result
     };
   } catch (error: any) {
+    console.error(`❌ Tool failed: ${toolName}`, error);
+    
+    // Log tool failure to HAC logs
+    await supabase.from('hac_logs').insert({
+      case_id: caseId,
+      action_type: `tool_error_${toolName}`,
+      action_details: `Tool execution failed: ${error.message}`,
+      performed_by: userId,
+      metadata: { error: error.message, tool: toolName, stack: error.stack }
+    });
+    
     return {
       tool_call_id: toolCall.id,
-      name: toolCall.function.name,
+      name: toolName,
       result: { success: false, message: error.message }
     };
   }
@@ -804,6 +820,9 @@ AVAILABLE TOOLS:
 - create_oby_draft: Create citizenship application draft
 - update_master_data: Update case data fields
 - generate_poa_pdf: Generate Power of Attorney documents
+- create_task: Create follow-up tasks
+- trigger_ocr: Process documents with OCR
+- generate_archive_request: Request Polish archive documents
 
 WORKFLOW:
 1. Review intake and master data
@@ -848,8 +867,9 @@ CIVIL ACTS MANAGEMENT AGENT
 Manage and process civil acts (birth, marriage, death certificates) required for Polish citizenship applications.
 
 AVAILABLE TOOLS:
-- generate_civil_acts_request: Create civil acts application
+- generate_civil_acts_request: Create civil acts application tasks
 - create_task: Create follow-up tasks
+- update_master_data: Update case data
 
 WORKFLOW:
 1. Identify required civil acts
@@ -864,9 +884,9 @@ WSC RESPONSE DRAFTING AGENT
 Draft strategic responses to WSC (Voivoda) letters based on case specifics and legal requirements.
 
 AVAILABLE TOOLS:
-- draft_wsc_response: Create response strategy (PUSH/NUDGE/SITDOWN)
-- update_master_data: Update case notes
-- create_task: Create follow-up actions
+- draft_wsc_response: Create strategy entries for WSC letters
+- create_task: Create follow-up tasks
+- update_master_data: Update case data
 
 STRATEGIES:
 - PUSH: Aggressive legal arguments, cite precedents
@@ -886,8 +906,10 @@ ARCHIVE REQUEST MANAGEMENT AGENT
 Generate and manage Polish archive document requests for missing birth/marriage/death certificates.
 
 AVAILABLE TOOLS:
-- generate_archive_request: Create archive search request
+- generate_archive_request: Create archive search requests
 - create_task: Create follow-up tasks
+- update_master_data: Update case data
+- trigger_ocr: Process historical documents
 
 WORKFLOW:
 1. Identify missing documents

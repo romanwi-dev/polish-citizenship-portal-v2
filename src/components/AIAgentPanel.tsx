@@ -4,7 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Bot, Sparkles, FileText, CheckCircle2, TrendingUp, Mail, Zap, Shield, Search, Languages, PenTool, Palette, User, CheckCircle } from "lucide-react";
+import { Loader2, Bot, Sparkles, FileText, CheckCircle2, TrendingUp, Mail, Zap, Shield, Search, Languages, PenTool, Palette, User, CheckCircle, XCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -255,10 +255,20 @@ export const AIAgentPanel = ({ caseId, defaultAction, showActionSelector = true,
       setResponse(assistantContent);
       
       if (receivedToolResults.length > 0) {
-        toast({
-          title: "AI Actions Completed",
-          description: `${receivedToolResults.length} tool(s) executed successfully`,
-        });
+        // Check for failed tools
+        const failedTools = receivedToolResults.filter(t => !t.result?.success);
+        if (failedTools.length > 0) {
+          toast({
+            title: "Some Actions Failed",
+            description: `${failedTools.length} tool(s) encountered errors. Check the results below.`,
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "AI Actions Completed",
+            description: `${receivedToolResults.length} tool(s) executed successfully`,
+          });
+        }
       }
 
     } catch (error: any) {
@@ -338,10 +348,20 @@ export const AIAgentPanel = ({ caseId, defaultAction, showActionSelector = true,
           <label className="text-sm font-medium">AI Actions Executed:</label>
           <div className="space-y-2">
             {toolResults.map((result, idx) => (
-              <Alert key={idx} className="bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800">
-                <CheckCircle className="h-4 w-4 text-green-600" />
+              <Alert 
+                key={idx} 
+                className={result.result?.success 
+                  ? "bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800"
+                  : "bg-red-50 dark:bg-red-950 border-red-200 dark:border-red-800"
+                }
+              >
+                {result.result?.success ? (
+                  <CheckCircle className="h-4 w-4 text-green-600" />
+                ) : (
+                  <XCircle className="h-4 w-4 text-red-600" />
+                )}
                 <AlertDescription className="text-sm">
-                  {result.message || JSON.stringify(result)}
+                  <strong>{result.name}:</strong> {result.result?.message || JSON.stringify(result)}
                 </AlertDescription>
               </Alert>
             ))}
