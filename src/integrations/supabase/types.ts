@@ -2215,7 +2215,9 @@ export type Database = {
           case_id: string
           client_ip_address: string | null
           client_signature_date: string | null
+          client_signature_url: string | null
           client_signed: boolean | null
+          client_signed_at: string | null
           created_at: string
           dropbox_path: string | null
           generated_at: string | null
@@ -2233,7 +2235,9 @@ export type Database = {
           case_id: string
           client_ip_address?: string | null
           client_signature_date?: string | null
+          client_signature_url?: string | null
           client_signed?: boolean | null
+          client_signed_at?: string | null
           created_at?: string
           dropbox_path?: string | null
           generated_at?: string | null
@@ -2251,7 +2255,9 @@ export type Database = {
           case_id?: string
           client_ip_address?: string | null
           client_signature_date?: string | null
+          client_signature_url?: string | null
           client_signed?: boolean | null
+          client_signed_at?: string | null
           created_at?: string
           dropbox_path?: string | null
           generated_at?: string | null
