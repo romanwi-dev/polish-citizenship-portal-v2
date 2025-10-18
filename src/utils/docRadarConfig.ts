@@ -18,6 +18,7 @@ export interface DocumentRequirement {
   label: string;
   isCritical: boolean;
   description: string;
+  requiresTranslation?: boolean; // Polish documents don't need translation
 }
 
 export const DOCUMENT_REQUIREMENTS: Record<PersonType, DocumentRequirement[]> = {
@@ -26,25 +27,29 @@ export const DOCUMENT_REQUIREMENTS: Record<PersonType, DocumentRequirement[]> = 
       type: 'birth_certificate',
       label: 'Birth Certificate',
       isCritical: true,
-      description: 'Original or certified copy of birth certificate'
+      description: 'Original or certified copy of birth certificate',
+      requiresTranslation: true
     },
     {
       type: 'passport',
       label: 'Passport',
       isCritical: true,
-      description: 'Valid passport (scanned or photographed)'
+      description: 'Valid passport (scanned or photographed)',
+      requiresTranslation: false
     },
     {
       type: 'marriage_certificate',
       label: 'Marriage Certificate',
       isCritical: false,
-      description: 'Required if married'
+      description: 'Required if married',
+      requiresTranslation: true
     },
     {
       type: 'naturalization',
       label: 'Naturalization Certificate',
       isCritical: false,
-      description: 'If naturalized in another country'
+      description: 'If naturalized in another country',
+      requiresTranslation: true
     }
   ],
   SPOUSE: [
@@ -72,31 +77,36 @@ export const DOCUMENT_REQUIREMENTS: Record<PersonType, DocumentRequirement[]> = 
       type: 'birth_certificate',
       label: 'Birth Certificate',
       isCritical: true,
-      description: 'Original or certified copy'
+      description: 'Original or certified copy',
+      requiresTranslation: true
     },
     {
       type: 'marriage_certificate',
       label: 'Marriage Certificate',
       isCritical: true,
-      description: 'Marriage to mother'
+      description: 'Marriage to mother',
+      requiresTranslation: true
     },
     {
       type: 'naturalization',
       label: 'Naturalization Certificate',
       isCritical: true,
-      description: 'If naturalized - critical for eligibility'
+      description: 'If naturalized - critical for eligibility',
+      requiresTranslation: true
     },
     {
       type: 'passport',
       label: 'Passport',
       isCritical: false,
-      description: 'If available'
+      description: 'If available',
+      requiresTranslation: false
     },
     {
       type: 'death_certificate',
       label: 'Death Certificate',
       isCritical: false,
-      description: 'If deceased'
+      description: 'If deceased',
+      requiresTranslation: true
     }
   ],
   M: [

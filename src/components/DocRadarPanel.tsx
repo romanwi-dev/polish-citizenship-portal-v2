@@ -2,14 +2,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { FileText, AlertCircle, CheckCircle2, Upload } from 'lucide-react';
+import { FileText, AlertCircle, CheckCircle2, Upload, Languages } from 'lucide-react';
 import { 
   calculateDocumentStatus, 
   getOverallDocumentCompletion,
   getCriticalDocumentsStatus,
   DocumentStatus 
 } from '@/utils/documentRadar';
-import { PersonType, PERSON_TYPE_LABELS } from '@/utils/docRadarConfig';
+import { PersonType, PERSON_TYPE_LABELS, DOCUMENT_REQUIREMENTS } from '@/utils/docRadarConfig';
 import { cn } from '@/lib/utils';
 
 interface DocRadarPanelProps {
@@ -26,6 +26,11 @@ export function DocRadarPanel({ documents }: DocRadarPanelProps) {
   const overallCompletion = getOverallDocumentCompletion(statuses);
   const { totalCritical, missingCritical, hasCriticalGaps } = getCriticalDocumentsStatus(statuses);
 
+  // Calculate translation needs
+  const translationNeeded = documents.filter(doc => 
+    doc.needs_translation === true && doc.is_translated === false
+  ).length;
+
   return (
     <Card>
       <CardHeader>
@@ -34,12 +39,20 @@ export function DocRadarPanel({ documents }: DocRadarPanelProps) {
             <FileText className="h-5 w-5" />
             Document Radar
           </CardTitle>
-          <Badge 
-            variant={overallCompletion === 100 ? 'default' : 'secondary'}
-            className="text-sm"
-          >
-            {overallCompletion}% Complete
-          </Badge>
+          <div className="flex items-center gap-2">
+            {translationNeeded > 0 && (
+              <Badge variant="destructive" className="text-sm">
+                <Languages className="h-3 w-3 mr-1" />
+                {translationNeeded} Need Translation
+              </Badge>
+            )}
+            <Badge 
+              variant={overallCompletion === 100 ? 'default' : 'secondary'}
+              className="text-sm"
+            >
+              {overallCompletion}% Complete
+            </Badge>
+          </div>
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
