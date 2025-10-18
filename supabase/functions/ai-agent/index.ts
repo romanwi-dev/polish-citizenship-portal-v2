@@ -100,6 +100,70 @@ const AGENT_TOOLS = [
         required: ["caseId", "personType", "documentTypes"]
       }
     }
+  },
+  {
+    type: "function",
+    function: {
+      name: "create_oby_draft",
+      description: "Create or update OBY citizenship application draft with auto-populated fields",
+      parameters: {
+        type: "object",
+        properties: {
+          caseId: { type: "string" },
+          autoPopulatedFields: {
+            type: "array",
+            items: { type: "string" },
+            description: "List of field names that were auto-populated"
+          }
+        },
+        required: ["caseId"]
+      }
+    }
+  },
+  {
+    type: "function",
+    function: {
+      name: "draft_wsc_response",
+      description: "Draft a response strategy for WSC (Voivoda) letter",
+      parameters: {
+        type: "object",
+        properties: {
+          caseId: { type: "string" },
+          wscLetterId: { type: "string", description: "UUID of WSC letter" },
+          strategy: {
+            type: "string",
+            enum: ["PUSH", "NUDGE", "SITDOWN"],
+            description: "Response strategy type"
+          },
+          keyPoints: {
+            type: "array",
+            items: { type: "string" },
+            description: "Main arguments to include"
+          }
+        },
+        required: ["caseId", "strategy"]
+      }
+    }
+  },
+  {
+    type: "function",
+    function: {
+      name: "generate_civil_acts_request",
+      description: "Generate Polish civil acts (birth/marriage certificate) application",
+      parameters: {
+        type: "object",
+        properties: {
+          caseId: { type: "string" },
+          actType: {
+            type: "string",
+            enum: ["birth", "marriage"],
+            description: "Type of civil act to request"
+          },
+          personType: { type: "string", description: "Person for whom to request (AP, F, M, etc.)" }
+        },
+        required: ["caseId", "actType"]
+      }
+    }
   }
 ];
 
@@ -478,6 +542,121 @@ async function executeSingleTool(toolCall: any, caseId: string, supabase: any, u
             result = { success: false, message: `Failed: ${error.message}` };
           }
           break;
+
+        case 'create_oby_draft':
+          try {
+            // Get master_table data for auto-population
+            const { data: masterData } = await supabase
+              .from('master_table')
+              .select('*')
+              .eq('case_id', args.caseId)
+              .single();
+
+            if (!masterData) throw new Error('Master data not found');
+
+            // Check if OBY draft already exists
+            const { data: existingOby } = await supabase
+              .from('oby_forms')
+              .select('*')
+              .eq('case_id', args.caseId)
+              .maybeSingle();
+
+            const obyData = {
+              case_id: args.caseId,
+              status: 'draft',
+              form_data: masterData,
+              auto_populated_fields: args.autoPopulatedFields || [],
+              hac_approved: false
+            };
+
+            if (existingOby) {
+              await supabase
+                .from('oby_forms')
+                .update(obyData)
+                .eq('id', existingOby.id);
+            } else {
+              await supabase.from('oby_forms').insert(obyData);
+            }
+
+            result = {
+              success: true,
+              message: `✅ OBY draft ${existingOby ? 'updated' : 'created'} with ${args.autoPopulatedFields?.length || 0} auto-populated fields`
+            };
+
+            await supabase.from('hac_logs').insert({
+              case_id: args.caseId,
+              action_type: 'oby_draft_created',
+              action_details: `AI ${existingOby ? 'updated' : 'created'} OBY draft skeleton`,
+              performed_by: userId
+            });
+          } catch (error: any) {
+            result = { success: false, message: `Failed: ${error.message}` };
+          }
+          break;
+
+        case 'draft_wsc_response':
+          try {
+            // Create HAC log entry with WSC response strategy
+            const strategyDetails = args.keyPoints?.join('; ') || 'Strategy drafted by AI';
+            
+            await supabase.from('hac_logs').insert({
+              case_id: args.caseId,
+              action_type: `wsc_response_${args.strategy.toLowerCase()}`,
+              action_details: `AI drafted ${args.strategy} strategy: ${strategyDetails}`,
+              performed_by: userId,
+              related_wsc_id: args.wscLetterId || null,
+              metadata: { 
+                strategy: args.strategy,
+                key_points: args.keyPoints 
+              }
+            });
+
+            // Update case with strategy if WSC letter ID provided
+            if (args.wscLetterId) {
+              await supabase
+                .from('master_table')
+                .update({ 
+                  family_notes: `WSC Strategy (${args.strategy}): ${strategyDetails}` 
+                })
+                .eq('case_id', args.caseId);
+            }
+
+            result = {
+              success: true,
+              message: `✅ WSC ${args.strategy} response strategy drafted`
+            };
+          } catch (error: any) {
+            result = { success: false, message: `Failed: ${error.message}` };
+          }
+          break;
+
+        case 'generate_civil_acts_request':
+          try {
+            // Create task for civil acts application
+            await supabase.from('tasks').insert({
+              case_id: args.caseId,
+              title: `Submit Polish ${args.actType} certificate application`,
+              description: `AI-generated task: Apply for Polish civil ${args.actType} certificate for ${args.personType || 'applicant'}`,
+              priority: 'high',
+              category: 'civil_acts',
+              status: 'pending'
+            });
+
+            result = {
+              success: true,
+              message: `✅ Civil acts ${args.actType} request created`
+            };
+
+            await supabase.from('hac_logs').insert({
+              case_id: args.caseId,
+              action_type: 'civil_acts_request',
+              action_details: `AI created ${args.actType} certificate application task`,
+              performed_by: userId
+            });
+          } catch (error: any) {
+            result = { success: false, message: `Failed: ${error.message}` };
+          }
+          break;
       }
 
     return {
@@ -619,7 +798,19 @@ Develop strategies for obtaining confirmation of Polish citizenship from the WSC
 
 FORM POPULATION AGENT
 
-Automatically populate Polish citizenship application forms with client data. Ensure accuracy and compliance with form instructions.`,
+Automatically populate Polish citizenship application forms with client data. Ensure accuracy and compliance with form instructions.
+
+AVAILABLE TOOLS:
+- create_oby_draft: Create citizenship application draft
+- update_master_data: Update case data fields
+- generate_poa_pdf: Generate Power of Attorney documents
+
+WORKFLOW:
+1. Review intake and master data
+2. Identify missing fields
+3. Auto-populate forms using create_oby_draft tool
+4. Flag gaps for HAC review
+5. Generate supporting documents (POAs)`,
 
     comprehensive: `${basePrompt}
 
@@ -654,7 +845,56 @@ Focus on RLS policies, data encryption, and input validation.`,
 
 CIVIL ACTS MANAGEMENT AGENT
 
-Manage and process civil acts (birth, marriage, death certificates) required for Polish citizenship applications. Ensure proper documentation and authentication.`,
+Manage and process civil acts (birth, marriage, death certificates) required for Polish citizenship applications.
+
+AVAILABLE TOOLS:
+- generate_civil_acts_request: Create civil acts application
+- create_task: Create follow-up tasks
+
+WORKFLOW:
+1. Identify required civil acts
+2. Generate Polish civil registry applications
+3. Track submission status
+4. Monitor response times`,
+
+    wsc_response_drafting: `${basePrompt}
+
+WSC RESPONSE DRAFTING AGENT
+
+Draft strategic responses to WSC (Voivoda) letters based on case specifics and legal requirements.
+
+AVAILABLE TOOLS:
+- draft_wsc_response: Create response strategy (PUSH/NUDGE/SITDOWN)
+- update_master_data: Update case notes
+- create_task: Create follow-up actions
+
+STRATEGIES:
+- PUSH: Aggressive legal arguments, cite precedents
+- NUDGE: Diplomatic inquiry, request clarification
+- SITDOWN: Schedule in-person meeting
+
+WORKFLOW:
+1. Analyze WSC letter requirements
+2. Select appropriate strategy
+3. Draft key arguments
+4. Create follow-up tasks`,
+
+    archive_request_management: `${basePrompt}
+
+ARCHIVE REQUEST MANAGEMENT AGENT
+
+Generate and manage Polish archive document requests for missing birth/marriage/death certificates.
+
+AVAILABLE TOOLS:
+- generate_archive_request: Create archive search request
+- create_task: Create follow-up tasks
+
+WORKFLOW:
+1. Identify missing documents
+2. Determine appropriate Polish archive
+3. Generate formal request letter in Polish
+4. Track response times
+5. Create follow-up tasks`,
 
     translation_workflow: `${basePrompt}
 
