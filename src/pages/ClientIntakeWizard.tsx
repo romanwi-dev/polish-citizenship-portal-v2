@@ -101,21 +101,39 @@ export default function ClientIntakeWizard() {
     });
   };
 
+  const calculateCompletion = () => {
+    const requiredFields = [
+      'first_name', 'last_name', 'date_of_birth', 'sex', 'place_of_birth',
+      'email', 'phone', 'passport_number', 'passport_issuing_country',
+      'father_first_name', 'father_last_name', 'mother_first_name', 'mother_last_name',
+    ];
+    
+    const filledRequired = requiredFields.filter(field => {
+      return formData[field] && formData[field] !== '' || dontKnowFields.has(field);
+    }).length;
+    
+    return Math.round((filledRequired / requiredFields.length) * 100);
+  };
+
   const saveProgress = async () => {
     if (!caseId) return;
     
     setIsSaving(true);
     try {
+      const completion = calculateCompletion();
+      
       const { error } = await supabase
         .from('intake_data')
         .upsert({
           case_id: caseId,
           ...formData,
+          completion_percentage: completion,
+          autosave_data: { dontKnowFields: Array.from(dontKnowFields) },
           updated_at: new Date().toISOString(),
         });
       
       if (error) throw error;
-      toast.success(t('progressSaved'));
+      toast.success(`${t('progressSaved')} (${completion}%)`);
     } catch (error) {
       console.error('Save error');
       toast.error(t('error'));
@@ -146,21 +164,35 @@ export default function ClientIntakeWizard() {
     
     setIsSubmitting(true);
     try {
+      const completion = calculateCompletion();
+      
       // Save final data
       const { error: updateError } = await supabase
         .from('intake_data')
         .upsert({
           case_id: caseId,
           ...formData,
-          status: 'submitted',
-          submitted_at: new Date().toISOString(),
+          completion_percentage: completion,
+          autosave_data: { dontKnowFields: Array.from(dontKnowFields) },
+          updated_at: new Date().toISOString(),
         });
       
       if (updateError) throw updateError;
+
+      // Mark intake as completed in cases table
+      const { error: caseError } = await supabase
+        .from('cases')
+        .update({ 
+          intake_completed: true,
+          current_stage: 'terms_pricing' // Move to next stage
+        })
+        .eq('id', caseId);
+
+      if (caseError) throw caseError;
       
-      toast.success(t('submitted'));
+      toast.success(`${t('submitted')} - ${completion}% complete`);
       
-      // Redirect to thank you page or client dashboard
+      // Redirect to client dashboard
       setTimeout(() => {
         navigate(`/client/dashboard/${caseId}`);
       }, 2000);
