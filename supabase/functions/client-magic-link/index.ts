@@ -1,6 +1,7 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { corsHeaders, handleCorsPreflight, createCorsResponse, createErrorResponse } from '../_shared/cors.ts';
+import { handleCorsPreflight, createSecureResponse, createSecureErrorWithHeaders } from '../_shared/cors.ts';
 import { isValidEmail, sanitizeString, validateRequestBody, isValidUUID } from '../_shared/inputValidation.ts';
+import { checkRateLimit, RATE_LIMITS, getRequestIdentifier, rateLimitResponse } from '../_shared/rateLimiting.ts';
 
 interface MagicLinkRequest {
   email: string;
@@ -17,7 +18,7 @@ Deno.serve(async (req) => {
     // Validate request body structure
     const validation = validateRequestBody(body, ['email', 'caseId']);
     if (!validation.valid) {
-      return createErrorResponse(validation.error!, 400);
+      return createSecureErrorWithHeaders(req, validation.error!, 400);
     }
 
     // Sanitize and validate inputs
@@ -26,11 +27,35 @@ Deno.serve(async (req) => {
 
     // Input validation
     if (!isValidEmail(email)) {
-      return createErrorResponse('Valid email is required', 400);
+      return createSecureErrorWithHeaders(req, 'Valid email is required', 400);
     }
 
     if (!isValidUUID(caseId)) {
-      return createErrorResponse('Valid case ID is required', 400);
+      return createSecureErrorWithHeaders(req, 'Valid case ID is required', 400);
+    }
+
+    // Rate limit by email (3 attempts per hour)
+    const emailIdentifier = `email:${email}`;
+    const emailRateLimit = await checkRateLimit({
+      ...RATE_LIMITS.MAGIC_LINK,
+      identifier: emailIdentifier
+    });
+
+    if (!emailRateLimit.allowed) {
+      console.log(`Magic link rate limit exceeded for email: ${email}`);
+      return rateLimitResponse(emailRateLimit);
+    }
+
+    // Rate limit by IP (10 attempts per hour - prevents distributed attacks)
+    const ipIdentifier = await getRequestIdentifier(req);
+    const ipRateLimit = await checkRateLimit({
+      ...RATE_LIMITS.MAGIC_LINK_IP,
+      identifier: ipIdentifier
+    });
+
+    if (!ipRateLimit.allowed) {
+      console.log(`Magic link rate limit exceeded for IP: ${ipIdentifier}`);
+      return rateLimitResponse(ipRateLimit);
     }
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
@@ -53,27 +78,7 @@ Deno.serve(async (req) => {
         p_details: { email, case_id: caseId, reason: 'no_access' }
       });
 
-      return createErrorResponse('No access to this case', 403);
-    }
-
-    // Check for rate limiting (max 5 attempts per hour per email)
-    const oneHourAgo = new Date(Date.now() - 3600000).toISOString();
-    const { count } = await supabase
-      .from('security_audit_logs')
-      .select('id', { count: 'exact' })
-      .eq('event_type', 'client_login_attempt')
-      .eq('details->>email', email)
-      .gte('created_at', oneHourAgo);
-
-    if (count && count >= 5) {
-      await supabase.rpc('log_security_event', {
-        p_event_type: 'client_login_attempt',
-        p_severity: 'high',
-        p_action: 'rate_limit_exceeded',
-        p_details: { email, case_id: caseId }
-      });
-
-      return createErrorResponse('Too many login attempts. Please try again later.', 429);
+      return createSecureErrorWithHeaders(req, 'No access to this case', 403);
     }
 
     // Generate magic link with Supabase Auth
@@ -105,14 +110,15 @@ Deno.serve(async (req) => {
 
     console.log('Magic link generated for:', email);
 
-    return createCorsResponse({
+    return createSecureResponse(req, {
       success: true,
       message: 'Magic link sent to your email'
     }, 200);
 
   } catch (error) {
     console.error('Magic link error:', error);
-    return createErrorResponse(
+    return createSecureErrorWithHeaders(
+      req,
       error instanceof Error ? error.message : 'Failed to send magic link',
       500
     );

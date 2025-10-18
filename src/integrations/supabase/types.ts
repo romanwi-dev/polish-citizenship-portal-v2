@@ -2341,6 +2341,27 @@ export type Database = {
           },
         ]
       }
+      rate_limit_logs: {
+        Row: {
+          created_at: string | null
+          endpoint: string
+          id: string
+          identifier: string
+        }
+        Insert: {
+          created_at?: string | null
+          endpoint: string
+          id?: string
+          identifier: string
+        }
+        Update: {
+          created_at?: string | null
+          endpoint?: string
+          id?: string
+          identifier?: string
+        }
+        Relationships: []
+      }
       security_audit_logs: {
         Row: {
           action: string
@@ -2771,6 +2792,10 @@ export type Database = {
           rls_enabled: boolean
           table_name: string
         }[]
+      }
+      cleanup_rate_limit_logs: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
       get_case_document_count: {
         Args: { case_uuid: string }

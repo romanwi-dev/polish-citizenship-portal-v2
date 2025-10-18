@@ -9,6 +9,7 @@ interface RateLimitConfig {
   maxRequests: number;
   windowMs: number;
   identifier: string; // user_id or ip_address
+  endpoint: string; // endpoint name for tracking
 }
 
 interface RateLimitResult {
@@ -37,6 +38,7 @@ export async function checkRateLimit(
     .from('rate_limit_logs')
     .select('*', { count: 'exact', head: true })
     .eq('identifier', config.identifier)
+    .eq('endpoint', config.endpoint)
     .gte('created_at', windowStart.toISOString());
 
   if (error) {
@@ -67,6 +69,7 @@ export async function checkRateLimit(
     .from('rate_limit_logs')
     .insert({
       identifier: config.identifier,
+      endpoint: config.endpoint,
       created_at: new Date().toISOString()
     });
 
@@ -83,19 +86,33 @@ export async function checkRateLimit(
 export const RATE_LIMITS = {
   OCR_PROCESSING: {
     maxRequests: 10,
-    windowMs: 60000 // 10 requests per minute
+    windowMs: 60000, // 10 requests per minute
+    endpoint: 'ocr'
   },
   PDF_GENERATION: {
     maxRequests: 20,
-    windowMs: 60000 // 20 requests per minute
+    windowMs: 60000, // 20 requests per minute
+    endpoint: 'pdf'
   },
   AI_TRANSLATION: {
     maxRequests: 30,
-    windowMs: 60000 // 30 requests per minute
+    windowMs: 60000, // 30 requests per minute
+    endpoint: 'ai_translate'
   },
   GENERAL_API: {
     maxRequests: 60,
-    windowMs: 60000 // 60 requests per minute
+    windowMs: 60000, // 60 requests per minute
+    endpoint: 'api'
+  },
+  MAGIC_LINK: {
+    maxRequests: 3,
+    windowMs: 3600000, // 3 attempts per hour per email
+    endpoint: 'magic_link'
+  },
+  MAGIC_LINK_IP: {
+    maxRequests: 10,
+    windowMs: 3600000, // 10 attempts per hour per IP
+    endpoint: 'magic_link_ip'
   }
 };
 

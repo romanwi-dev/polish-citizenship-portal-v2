@@ -134,3 +134,49 @@ export function createSecureErrorResponse(
     }
   );
 }
+
+/**
+ * Get comprehensive security headers (CSP, XSS protection, etc.)
+ * USE THIS for all edge functions to prevent XSS, clickjacking, and other attacks
+ */
+export function getSecurityHeaders(req: Request): Record<string, string> {
+  return {
+    ...getSecureCorsHeaders(req),
+    'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://*.supabase.co https://*.lovableproject.com",
+    'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'DENY',
+    'X-XSS-Protection': '1; mode=block',
+    'Referrer-Policy': 'strict-origin-when-cross-origin',
+    'Permissions-Policy': 'geolocation=(), microphone=(), camera=()'
+  };
+}
+
+/**
+ * Create a secure JSON response with CSP and security headers
+ * USE THIS for all new edge functions
+ */
+export function createSecureResponse(
+  req: Request,
+  data: any,
+  status: number = 200
+): Response {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: { ...getSecurityHeaders(req), 'Content-Type': 'application/json' }
+  });
+}
+
+/**
+ * Create a secure error response with CSP and security headers
+ * USE THIS for all new edge functions
+ */
+export function createSecureErrorWithHeaders(
+  req: Request,
+  error: string,
+  status: number = 500
+): Response {
+  return new Response(JSON.stringify({ error }), {
+    status,
+    headers: { ...getSecurityHeaders(req), 'Content-Type': 'application/json' }
+  });
+}
