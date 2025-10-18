@@ -164,6 +164,93 @@ const AGENT_TOOLS = [
         required: ["caseId", "actType"]
       }
     }
+  },
+  // Phase 3: Researcher Agent (Archives Search)
+  {
+    type: "function",
+    function: {
+      name: "create_archive_search",
+      description: "Create new archive search for Polish or international documents",
+      parameters: {
+        type: "object",
+        properties: {
+          caseId: { type: "string" },
+          searchType: {
+            type: "string",
+            enum: ["polish_archive", "international_archive", "family_possession"],
+            description: "Type of archive search"
+          },
+          personType: {
+            type: "string",
+            description: "Person for whom to search (AP, F, M, PGF, PGM, MGF, MGM)"
+          },
+          documentTypes: {
+            type: "array",
+            items: { type: "string" },
+            description: "Types of documents to search for"
+          },
+          archiveCountry: { type: "string", description: "Country of archive" },
+          archiveName: { type: "string", description: "Name of archive institution" },
+          searchNotes: { type: "string", description: "Additional search context" },
+          priority: {
+            type: "string",
+            enum: ["low", "medium", "high"],
+            description: "Search priority"
+          }
+        },
+        required: ["caseId", "searchType", "personType", "documentTypes"]
+      }
+    }
+  },
+  {
+    type: "function",
+    function: {
+      name: "update_archive_search",
+      description: "Update archive search status and findings",
+      parameters: {
+        type: "object",
+        properties: {
+          searchId: { type: "string", description: "Archive search UUID" },
+          status: {
+            type: "string",
+            enum: ["pending", "letter_generated", "letter_sent", "response_received", "documents_received", "completed", "unsuccessful"],
+            description: "New status"
+          },
+          findingsSummary: { type: "string", description: "Summary of findings" },
+          documentsFound: {
+            type: "array",
+            items: { type: "string" },
+            description: "List of document IDs found"
+          }
+        },
+        required: ["searchId", "status"]
+      }
+    }
+  },
+  {
+    type: "function",
+    function: {
+      name: "generate_archive_letter",
+      description: "Generate Polish archive request letter (umiejscowienie/uzupełnienie)",
+      parameters: {
+        type: "object",
+        properties: {
+          caseId: { type: "string" },
+          letterType: {
+            type: "string",
+            enum: ["umiejscowienie", "uzupelnienie"],
+            description: "Letter type: umiejscowienie (locating) or uzupełnienie (supplementing)"
+          },
+          searchId: { type: "string", description: "Related archive search UUID" },
+          archiveAddress: { type: "string", description: "Full archive address" },
+          personDetails: {
+            type: "object",
+            description: "Person details (name, DOB, POB)"
+          }
+        },
+        required: ["caseId", "letterType", "searchId"]
+      }
+    }
   }
 ];
 
@@ -249,7 +336,17 @@ serve(async (req) => {
     ];
 
     // Tool-enabled actions
-    const toolEnabledActions = ['researcher', 'comprehensive', 'document_intelligence', 'auto_populate_forms', 'task_suggest'];
+    const toolEnabledActions = [
+      'researcher', 
+      'comprehensive', 
+      'document_intelligence', 
+      'auto_populate_forms', 
+      'task_suggest',
+      'archive_request_management',
+      'form_populate',
+      'wsc_response_drafting',
+      'civil_acts_management'
+    ];
     const includeTools = toolEnabledActions.includes(action);
 
     const aiRequestBody: any = {
@@ -661,6 +758,152 @@ async function executeSingleTool(toolCall: any, caseId: string, supabase: any, u
             result = { success: false, message: `Failed: ${error.message}` };
           }
           break;
+        
+        // Phase 3: Researcher Agent Tools
+        case 'create_archive_search':
+          try {
+            const { data: searchData, error: searchError } = await supabase
+              .from('archive_searches')
+              .insert({
+                case_id: args.caseId,
+                search_type: args.searchType,
+                person_type: args.personType,
+                document_types: args.documentTypes,
+                archive_country: args.archiveCountry,
+                archive_name: args.archiveName,
+                search_notes: args.searchNotes,
+                priority: args.priority || 'medium',
+                status: 'pending'
+              })
+              .select()
+              .single();
+
+            if (searchError) throw searchError;
+
+            // Create document requests for each document type
+            for (const docType of args.documentTypes) {
+              await supabase.from('archive_document_requests').insert({
+                archive_search_id: searchData.id,
+                document_type: docType,
+                person_first_name: '',
+                person_last_name: '',
+                status: 'searching',
+                location: args.archiveName
+              });
+            }
+
+            await supabase.from('hac_logs').insert({
+              case_id: args.caseId,
+              action_type: 'archive_search_created',
+              action_details: `Created ${args.searchType} search for ${args.personType} - ${args.documentTypes.join(', ')}`,
+              performed_by: userId,
+              metadata: { search_id: searchData.id, person_type: args.personType }
+            });
+
+            result = {
+              success: true,
+              message: `✅ Archive search created for ${args.personType} (${args.documentTypes.length} document types)`,
+              search_id: searchData.id
+            };
+          } catch (error: any) {
+            result = { success: false, message: `Failed: ${error.message}` };
+          }
+          break;
+
+        case 'update_archive_search':
+          try {
+            const updateData: any = { status: args.status };
+            if (args.findingsSummary) updateData.findings_summary = args.findingsSummary;
+            if (args.status === 'response_received') updateData.response_received_at = new Date().toISOString();
+            if (args.status === 'documents_received') updateData.documents_received_at = new Date().toISOString();
+
+            const { data: searchData, error: searchError } = await supabase
+              .from('archive_searches')
+              .update(updateData)
+              .eq('id', args.searchId)
+              .select()
+              .single();
+
+            if (searchError) throw searchError;
+
+            // Update document requests if documents found
+            if (args.documentsFound && args.documentsFound.length > 0) {
+              for (const docId of args.documentsFound) {
+                await supabase
+                  .from('archive_document_requests')
+                  .update({ status: 'found', document_id: docId })
+                  .eq('archive_search_id', args.searchId);
+              }
+            }
+
+            await supabase.from('hac_logs').insert({
+              case_id: caseId,
+              action_type: 'archive_search_updated',
+              action_details: `Updated archive search to ${args.status}`,
+              performed_by: userId,
+              metadata: { search_id: args.searchId, status: args.status }
+            });
+
+            result = {
+              success: true,
+              message: `✅ Archive search updated to ${args.status}`,
+              search: searchData
+            };
+          } catch (error: any) {
+            result = { success: false, message: `Failed: ${error.message}` };
+          }
+          break;
+
+        case 'generate_archive_letter':
+          try {
+            const { data: searchData, error: searchError } = await supabase
+              .from('archive_searches')
+              .select('*')
+              .eq('id', args.searchId)
+              .single();
+
+            if (searchError) throw searchError;
+
+            await supabase
+              .from('archive_searches')
+              .update({
+                status: 'letter_generated',
+                letter_generated_at: new Date().toISOString()
+              })
+              .eq('id', args.searchId);
+
+            const { data: taskData } = await supabase
+              .from('tasks')
+              .insert({
+                case_id: args.caseId,
+                title: `Send ${args.letterType} letter to Polish archive`,
+                description: `Review and send archive request letter to ${args.archiveAddress || searchData.archive_name}`,
+                category: 'archive_search',
+                priority: 'high',
+                status: 'pending',
+                metadata: { search_id: args.searchId, letter_type: args.letterType }
+              })
+              .select()
+              .single();
+
+            await supabase.from('hac_logs').insert({
+              case_id: args.caseId,
+              action_type: 'archive_letter_generated',
+              action_details: `Generated ${args.letterType} letter for archive search`,
+              performed_by: userId,
+              metadata: { search_id: args.searchId, letter_type: args.letterType }
+            });
+
+            result = {
+              success: true,
+              message: `✅ ${args.letterType} letter generated. Task created.`,
+              letter_type: args.letterType,
+              task_id: taskData?.id
+            };
+          } catch (error: any) {
+            result = { success: false, message: `Failed: ${error.message}` };
+          }
+          break;
       }
 
     console.log(`✅ Tool completed: ${toolName}`, result);
@@ -899,6 +1142,34 @@ WORKFLOW:
 3. Draft key arguments
 4. Create follow-up tasks`,
 
+    researcher: `${basePrompt}
+
+RESEARCHER AGENT - Archive Search Specialist
+
+EXPERTISE: Conduct comprehensive archive searches for Polish and international documents.
+
+ARCHIVES KNOWLEDGE:
+- Polish State Archives (Archiwum Państwowe)
+- Civil Registry Offices (USC)
+- International archives (Ellis Island, JewishGen, etc.)
+- Church records and parish archives
+- Military archives
+
+AVAILABLE TOOLS:
+- create_archive_search: Create new archive search
+- update_archive_search: Update search status/findings
+- generate_archive_letter: Generate Polish archive letters
+- create_task: Create research tasks
+
+RESEARCH PROCESS:
+1. Analyze family history and ancestry line
+2. Identify potential archive sources
+3. Prioritize searches based on document importance
+4. Generate targeted search requests
+5. Track and document findings
+
+Provide detailed research plans with specific archive names, locations, and search strategies.`,
+
     archive_request_management: `${basePrompt}
 
 ARCHIVE REQUEST MANAGEMENT AGENT
@@ -906,17 +1177,23 @@ ARCHIVE REQUEST MANAGEMENT AGENT
 Generate and manage Polish archive document requests for missing birth/marriage/death certificates.
 
 AVAILABLE TOOLS:
-- generate_archive_request: Create archive search requests
+- create_archive_search: Create new archive searches
+- update_archive_search: Update search status and findings
+- generate_archive_letter: Generate Polish archive request letters
 - create_task: Create follow-up tasks
-- update_master_data: Update case data
 - trigger_ocr: Process historical documents
 
+POLISH ARCHIVES PROTOCOL:
+- Umiejscowienie: Use when you don't know which registry office has the document
+- Uzupełnienie: Use when you know the registry but need the document
+
 WORKFLOW:
-1. Identify missing documents
-2. Determine appropriate Polish archive
-3. Generate formal request letter in Polish
-4. Track response times
-5. Create follow-up tasks`,
+1. Identify missing documents from case data
+2. Determine appropriate Polish archive (city/voivodeship)
+3. Create archive search with document types
+4. Generate formal request letter in Polish
+5. Track response times and update status
+6. Create follow-up tasks for document processing`,
 
     translation_workflow: `${basePrompt}
 

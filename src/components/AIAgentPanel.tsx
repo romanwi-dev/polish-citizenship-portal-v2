@@ -45,10 +45,10 @@ export const AIAgentPanel = ({ caseId, defaultAction, showActionSelector = true,
     { value: "wsc_response_drafting", label: "WSC Response Drafting", icon: Mail },
     { value: "form_populate", label: "Form Auto-Population", icon: TrendingUp },
     { value: "auto_populate_forms", label: "Auto-Populate Forms", icon: TrendingUp },
+    { value: "researcher", label: "Archive Research", icon: Search },
     { value: "archive_request_management", label: "Archive Requests", icon: FileText },
     { value: "civil_acts_management", label: "Civil Acts", icon: FileText },
     { value: "security_audit", label: "Security Audit", icon: Shield },
-    { value: "researcher", label: "Research & Analysis", icon: Search },
     { value: "translator", label: "Translation Agent", icon: Languages },
     { value: "writer", label: "Content Writer", icon: PenTool },
     { value: "designer", label: "UI/UX Designer", icon: Palette },
@@ -102,10 +102,11 @@ export const AIAgentPanel = ({ caseId, defaultAction, showActionSelector = true,
     "What should I do next?",
     "Review the WSC letter and suggest a strategy",
     "Auto-populate the citizenship application",
-    "Generate archive request for missing documents",
-    "Draft civil acts application",
-    "Check if all required forms are complete",
-    "Estimate timeline to citizenship decision"
+    "Create archive search for paternal grandfather birth certificate",
+    "Generate umiejscowienie letter for missing documents",
+    "Draft civil acts application for applicant",
+    "What Polish archives should we search?",
+    "Update archive search status to documents received"
   ];
 
   const quickPrompts = customQuickPrompts || defaultQuickPrompts;
