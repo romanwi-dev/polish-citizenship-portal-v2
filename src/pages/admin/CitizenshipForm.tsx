@@ -478,7 +478,6 @@ export default function CitizenshipForm() {
           </AlertDialogContent>
         </AlertDialog>
       </div>
-
     </div>
   );
 }

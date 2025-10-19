@@ -648,11 +648,11 @@ export default function POAForm() {
                     )}
                   </Button>
                 </div>
-          </motion.div>
+              </div>
+            </motion.div>
           )}
         </motion.div>
       </div>
-
 
       <AlertDialog open={showClearAllDialog} onOpenChange={setShowClearAllDialog}>
         <AlertDialogContent>

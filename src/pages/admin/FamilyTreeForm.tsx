@@ -577,15 +577,12 @@ export default function FamilyTreeForm() {
                             <SelectItem key={num} value={num.toString()} className="text-xs cursor-pointer">{num}</SelectItem>
                           ))}
                         </SelectContent>
-                      </Select>
-                    </motion.div>
-                  )}
-                </div>
+                    </Select>
+                  </motion.div>
+                )}
               </div>
             </div>
-          </motion.div>
-          )}
-        </TabsContent>
+          </TabsContent>
 
               <TabsContent value="applicant" className="mt-0" {...(isFullView ? { forceMount: true } : {})}>
           {/* Applicant Section */}
@@ -1201,8 +1198,7 @@ export default function FamilyTreeForm() {
           </motion.div>
           )}
         </TabsContent>
-
-            </Tabs>
+      </Tabs>
           ) : (
             // Full View Mode - Show all tab sections with Tabs wrapper
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -1726,12 +1722,11 @@ export default function FamilyTreeForm() {
                   ], 'ggp')}
                 </motion.div>
               </div>
-            </div>
-            </Tabs>
+            </TabsContent>
+          </Tabs>
           )}
         </motion.div>
       </div>
-
 
       {/* Clear Data Confirmation Dialog */}
       <AlertDialog open={showClearDialog} onOpenChange={setShowClearDialog}>
