@@ -16,6 +16,10 @@ import { useLongPressWithFeedback } from "@/hooks/useLongPressWithFeedback";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { FormButtonsRow } from "@/components/FormButtonsRow";
 import { useFormManager } from "@/hooks/useFormManager";
+import { useOBYAutoPopulation } from "@/hooks/useOBYAutoPopulation";
+import { MaskedPassportInput } from "@/components/forms/MaskedPassportInput";
+import { Check, FileText } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import {
   CITIZENSHIP_FORM_REQUIRED_FIELDS,
   CITIZENSHIP_DATE_FIELDS
@@ -56,6 +60,16 @@ export default function CitizenshipForm() {
     CITIZENSHIP_FORM_REQUIRED_FIELDS,
     CITIZENSHIP_DATE_FIELDS
   );
+
+  // OBY Auto-Population Hook
+  const { 
+    generateOBYData, 
+    calculateCompletionPercentage,
+    hasData: hasOBYData, 
+    isLoading: loadingOBYData,
+    intakeData: obyIntakeData,
+    masterData: obyMasterData
+  } = useOBYAutoPopulation(caseId || '');
 
 
   const handleGeneratePDF = async () => {
@@ -298,6 +312,46 @@ export default function CitizenshipForm() {
             </div>
           </div>
         </motion.div>
+
+        {/* Auto-Populate from Intake Button */}
+        {hasOBYData && (
+          <div className="mb-4 flex flex-col md:flex-row items-start md:items-center gap-3 justify-between bg-green-50/50 dark:bg-green-950/20 p-4 rounded-lg border border-green-200 dark:border-green-800">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 text-sm text-green-700 dark:text-green-300">
+                <Check className="h-4 w-4" />
+                <span>Data available ({obyIntakeData ? 'intake' : 'master'} table)</span>
+              </div>
+              {formData.applicant_first_name && (
+                <Badge variant={completion.completionPercentage >= 80 ? 'default' : 'secondary'}>
+                  {completion.completionPercentage}% Complete
+                </Badge>
+              )}
+            </div>
+            <Button
+              onClick={() => {
+                const obyData = generateOBYData();
+                if (obyData) {
+                  let fieldCount = 0;
+                  Object.entries(obyData).forEach(([key, value]) => {
+                    if (value && key !== 'case_id' && key !== 'status') {
+                      handleInputChange(key, value);
+                      fieldCount++;
+                    }
+                  });
+                  
+                  const completionPct = calculateCompletionPercentage(obyData);
+                  toast.success(`OBY form auto-populated! ${fieldCount} fields filled, ${completionPct}% complete`);
+                }
+              }}
+              disabled={!hasOBYData || isLoading}
+              variant="outline"
+              className="gap-2"
+            >
+              <Sparkles className="h-4 w-4" />
+              Auto-Populate from Intake
+            </Button>
+          </div>
+        )}
 
         <FormButtonsRow 
           caseId={caseId!}

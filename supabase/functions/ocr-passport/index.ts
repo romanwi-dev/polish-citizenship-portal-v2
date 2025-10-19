@@ -202,9 +202,9 @@ Return JSON with these exact fields:
         .eq("case_id", caseId);
 
       if (updateError) {
-        console.error("Error updating intake data:", updateError);
+        console.error("Error updating intake data:", updateError.message);
       } else {
-        console.log("Intake data updated successfully");
+        console.log("Intake data updated successfully for case:", caseId);
       }
     }
 

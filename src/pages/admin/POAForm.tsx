@@ -20,6 +20,10 @@ import { sanitizeMasterData } from "@/utils/masterDataSanitizer";
 import { cn } from "@/lib/utils";
 import { FormButtonsRow } from "@/components/FormButtonsRow";
 import { useFormManager } from "@/hooks/useFormManager";
+import { usePOAAutoGeneration } from "@/hooks/usePOAAutoGeneration";
+import { MaskedPassportInput } from "@/components/forms/MaskedPassportInput";
+import { Check } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import {
   POA_FORM_REQUIRED_FIELDS,
   POA_DATE_FIELDS
@@ -53,6 +57,14 @@ export default function POAForm() {
     POA_FORM_REQUIRED_FIELDS,
     POA_DATE_FIELDS
   );
+
+  // POA Auto-Generation Hook
+  const { 
+    generatePOAData, 
+    hasData: hasIntakeData, 
+    intakeData, 
+    masterData
+  } = usePOAAutoGeneration(caseId);
 
   // Calculate if there are minor children (under 18)
   const hasMinorChildren = () => {
@@ -306,6 +318,37 @@ export default function POAForm() {
           </div>
         </motion.div>
 
+        {/* Auto-Fill from Intake Button */}
+        {hasIntakeData && (
+          <div className="mb-4 flex items-center gap-3 justify-between bg-green-50/50 dark:bg-green-950/20 p-4 rounded-lg border border-green-200 dark:border-green-800">
+            <div className="flex items-center gap-2 text-sm text-green-700 dark:text-green-300">
+              <Check className="h-4 w-4" />
+              <span>Intake data available ({intakeData ? 'intake' : 'master'} table)</span>
+            </div>
+            <Button
+              onClick={() => {
+                const autoData = generatePOAData();
+                if (autoData) {
+                  let fieldCount = 0;
+                  Object.entries(autoData).forEach(([key, value]) => {
+                    if (value && key !== 'case_id') {
+                      handleInputChange(key, value);
+                      fieldCount++;
+                    }
+                  });
+                  toast.success(`POA form auto-filled! ${fieldCount} fields populated from ${intakeData ? 'intake' : 'master'} data`);
+                }
+              }}
+              disabled={!hasIntakeData || isLoading}
+              variant="outline"
+              className="gap-2"
+            >
+              <Sparkles className="h-4 w-4" />
+              Auto-Fill from Intake
+            </Button>
+          </div>
+        )}
+
         <FormButtonsRow 
           caseId={caseId!}
           currentForm="poa"
@@ -457,12 +500,27 @@ export default function POAForm() {
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-6">
-                  <POAFormField
-                    name="applicant_passport_number"
-                    label="ID/ passport number"
-                    value={formData?.applicant_passport_number || ""}
-                    onChange={(value) => handleInputChange("applicant_passport_number", value)}
-                  />
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0, duration: 0.4 }}
+                    className="space-y-2"
+                  >
+                    <Label htmlFor="applicant_passport_number" className={cn(
+                      "font-light text-foreground/90",
+                      isLargeFonts ? "text-2xl" : "text-xl"
+                    )}>
+                      ID/ passport number
+                    </Label>
+                    <MaskedPassportInput
+                      id="applicant_passport_number"
+                      value={formData?.applicant_passport_number || ""}
+                      onChange={(value) => handleInputChange("applicant_passport_number", value)}
+                      isLargeFonts={isLargeFonts}
+                      placeholder="Enter passport number"
+                      colorScheme="poa"
+                    />
+                  </motion.div>
                 </div>
                 <div className="mt-10 flex justify-end">
                   <Button onClick={() => handleGenerateAndPreview('poa-adult')} disabled={isGenerating}
@@ -507,12 +565,27 @@ export default function POAForm() {
                   />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
-                  <POAFormField
-                    name="applicant_passport_number"
-                    label="Parent ID/ passport number"
-                    value={formData?.applicant_passport_number || ""}
-                    onChange={(value) => handleInputChange("applicant_passport_number", value)}
-                  />
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0, duration: 0.4 }}
+                    className="space-y-2"
+                  >
+                    <Label htmlFor="applicant_passport_number_minor" className={cn(
+                      "font-light text-foreground/90",
+                      isLargeFonts ? "text-2xl" : "text-xl"
+                    )}>
+                      Parent ID/ passport number
+                    </Label>
+                    <MaskedPassportInput
+                      id="applicant_passport_number_minor"
+                      value={formData?.applicant_passport_number || ""}
+                      onChange={(value) => handleInputChange("applicant_passport_number", value)}
+                      isLargeFonts={isLargeFonts}
+                      placeholder="Enter passport number"
+                      colorScheme="poa"
+                    />
+                  </motion.div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
                   <POAFormField
@@ -573,15 +646,30 @@ export default function POAForm() {
                   />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
-                  <POAFormField
-                    name="applicant_passport_number"
-                    label={formData?.applicant_sex === 'F'
-                      ? "Wife ID/passport number / Nr dokumentu tożsamości żony"
-                      : "Husband ID/passport number / Nr dokumentu tożsamości męża"
-                    }
-                    value={formData?.applicant_passport_number || ""}
-                    onChange={(value) => handleInputChange("applicant_passport_number", value)}
-                  />
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0, duration: 0.4 }}
+                    className="space-y-2"
+                  >
+                    <Label htmlFor="applicant_passport_number_spouse" className={cn(
+                      "font-light text-foreground/90",
+                      isLargeFonts ? "text-2xl" : "text-xl"
+                    )}>
+                      {formData?.applicant_sex === 'F'
+                        ? "Wife ID/passport number / Nr dokumentu tożsamości żony"
+                        : "Husband ID/passport number / Nr dokumentu tożsamości męża"
+                      }
+                    </Label>
+                    <MaskedPassportInput
+                      id="applicant_passport_number_spouse"
+                      value={formData?.applicant_passport_number || ""}
+                      onChange={(value) => handleInputChange("applicant_passport_number", value)}
+                      isLargeFonts={isLargeFonts}
+                      placeholder="Enter passport number"
+                      colorScheme="poa"
+                    />
+                  </motion.div>
                 </div>
 
                 {/* Spouse Fields - labels swap based on primary applicant */}
@@ -606,15 +694,30 @@ export default function POAForm() {
                   />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
-                  <POAFormField
-                    name="spouse_passport_number"
-                    label={formData?.applicant_sex === 'F'
-                      ? "Husband ID/passport number"
-                      : "Wife ID/passport number"
-                    }
-                    value={formData?.spouse_passport_number || ""}
-                    onChange={(value) => handleInputChange("spouse_passport_number", value)}
-                  />
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0, duration: 0.4 }}
+                    className="space-y-2"
+                  >
+                    <Label htmlFor="spouse_passport_number" className={cn(
+                      "font-light text-foreground/90",
+                      isLargeFonts ? "text-2xl" : "text-xl"
+                    )}>
+                      {formData?.applicant_sex === 'F'
+                        ? "Husband ID/passport number"
+                        : "Wife ID/passport number"
+                      }
+                    </Label>
+                    <MaskedPassportInput
+                      id="spouse_passport_number"
+                      value={formData?.spouse_passport_number || ""}
+                      onChange={(value) => handleInputChange("spouse_passport_number", value)}
+                      isLargeFonts={isLargeFonts}
+                      placeholder="Enter passport number"
+                      colorScheme="spouse"
+                    />
+                  </motion.div>
                 </div>
 
                 {/* Post-Marriage Last Names - separate fields for wife and husband */}

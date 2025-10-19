@@ -197,7 +197,7 @@ Return ONLY valid JSON in this exact format:
       throw new Error('No response from Lovable AI');
     }
 
-    console.log('Document OCR processing completed for document:', documentId);
+    console.log('Document OCR processing completed, document ID:', documentId.substring(0, 8));
 
     // Parse JSON response
     let ocrResult: any;

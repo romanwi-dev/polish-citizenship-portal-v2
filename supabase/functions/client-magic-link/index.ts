@@ -42,7 +42,7 @@ Deno.serve(async (req) => {
     });
 
     if (!emailRateLimit.allowed) {
-      console.log(`Magic link rate limit exceeded for email: ${email}`);
+      console.log(`Magic link rate limit exceeded for identifier:`, emailIdentifier.substring(0, 15));
       return rateLimitResponse(emailRateLimit);
     }
 
@@ -108,7 +108,7 @@ Deno.serve(async (req) => {
       p_details: { email, case_id: caseId }
     });
 
-    console.log('Magic link generated for:', email);
+    console.log('Magic link generated for case:', caseId);
 
     return createSecureResponse(req, {
       success: true,

@@ -95,11 +95,10 @@ serve(async (req) => {
 
     // TODO: Integrate with Resend or SendGrid for actual email sending
     // For now, log the email details
-    console.log("Welcome email details:", {
-      to: clientEmail,
-      subject: "Welcome to Polish Citizenship Portal",
-      intakeUrl,
-      clientName: clientName || "Client",
+    console.log("Welcome email queued:", {
+      hasEmail: !!clientEmail,
+      hasUrl: !!intakeUrl,
+      hasName: !!clientName,
     });
 
     // Return success with intake URL for testing
