@@ -250,7 +250,32 @@ export default function CitizenshipForm() {
               Citizenship Application
             </h2>
             <div className="flex items-center justify-between md:justify-end gap-1 md:gap-3">
-...
+              <Button
+                onClick={() => navigate('/admin/cases')}
+                variant="ghost"
+                size="icon"
+                className="h-7 w-7 md:h-10 md:w-10"
+                title="Back to Cases"
+              >
+                <ArrowLeft className="h-3.5 w-3.5 md:h-6 md:w-6" />
+              </Button>
+              <Button
+                onClick={toggleFontSize}
+                variant="ghost"
+                size="icon"
+                className="h-7 w-7 md:h-10 md:w-10"
+                title="Toggle Font Size"
+              >
+                <Type className="h-3.5 w-3.5 md:h-6 md:w-6" />
+              </Button>
+              <Button
+                onClick={() => navigate('/login')}
+                variant="ghost"
+                size="icon"
+                className="h-7 w-7 md:h-10 md:w-10"
+                title="Login"
+              >
+                <User className="h-3.5 w-3.5 md:h-6 md:w-6" />
               </Button>
             </div>
           </div>

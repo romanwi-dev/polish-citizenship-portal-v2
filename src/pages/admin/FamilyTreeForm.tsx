@@ -582,7 +582,9 @@ export default function FamilyTreeForm() {
                 )}
               </div>
             </div>
-          </TabsContent>
+          </motion.div>
+          )}
+        </TabsContent>
 
               <TabsContent value="applicant" className="mt-0" {...(isFullView ? { forceMount: true } : {})}>
           {/* Applicant Section */}
@@ -1199,7 +1201,7 @@ export default function FamilyTreeForm() {
           )}
         </TabsContent>
       </Tabs>
-          ) : (
+      ) : (
             // Full View Mode - Show all tab sections with Tabs wrapper
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               {/* Keep the tabs list visible - matching the original style */}
@@ -1717,14 +1719,14 @@ export default function FamilyTreeForm() {
                   ], 'ggp')}
 
                   {renderFieldGroup([
-                    { name: "ggpmmm_first_name", label: "Great Grandmother - Given names", isNameField: true },
-                    { name: "ggpmmm_last_name", label: "Great Grandmother - Last name", isNameField: true }
-                  ], 'ggp')}
-                </motion.div>
-              </div>
-            </TabsContent>
-          </Tabs>
-          )}
+                  { name: "ggpmmm_first_name", label: "Great Grandmother - Given names", isNameField: true },
+                  { name: "ggpmmm_last_name", label: "Great Grandmother - Last name", isNameField: true }
+                ], 'ggp')}
+              </motion.div>
+            </div>
+          </div>
+        </Tabs>
+        )}
         </motion.div>
       </div>
 

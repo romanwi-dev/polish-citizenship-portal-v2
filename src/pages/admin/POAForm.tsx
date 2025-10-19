@@ -427,7 +427,6 @@ export default function POAForm() {
                   )}
               </div>
             </div>
-          </div>
 
           {/* POA Adult */}
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0 }} className="space-y-6">
@@ -648,7 +647,6 @@ export default function POAForm() {
                     )}
                   </Button>
                 </div>
-              </div>
             </motion.div>
           )}
         </motion.div>
