@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState, useEffect, useRef } from "react";
-import { Sparkles, Type, ArrowLeft, Maximize2, Minimize2, User, Download } from "lucide-react";
+import { Sparkles, Type, ArrowLeft, Maximize2, Minimize2, User, Download, HelpCircle } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -227,43 +227,39 @@ export default function CivilRegistryForm() {
               </Button>
               <Button
                 onClick={() => setIsFullView(!isFullView)}
-                size="lg"
                 variant="ghost"
-                className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 ${
-                  isFullView ? 'bg-primary/20 text-primary opacity-100' : 'text-muted-foreground hover:text-primary opacity-60'
-                }`}
+                size="icon"
+                className="h-7 w-7 md:h-10 md:w-10"
                 title={isFullView ? "Collapse to Tabs" : "Expand All Sections"}
               >
-                {isFullView ? <Minimize2 className="h-8 w-8" /> : <Maximize2 className="h-8 w-8" />}
+                {isFullView ? <Minimize2 className="h-3.5 w-3.5 md:h-6 md:w-6" /> : <Maximize2 className="h-3.5 w-3.5 md:h-6 md:w-6" />}
               </Button>
               <Button
                 onClick={() => navigate('/login')}
-                size="lg"
                 variant="ghost"
-                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50 opacity-60"
+                size="icon"
+                className="h-7 w-7 md:h-10 md:w-10"
                 title="Login / Register"
               >
-                <User className="h-8 w-8" />
+                <User className="h-3.5 w-3.5 md:h-6 md:w-6" />
               </Button>
               <Button
                 onClick={toggleFontSize}
-                size="lg"
                 variant="ghost"
-                className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 z-50 opacity-60 ${
-                  isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:text-primary'
-                }`}
-                title="Toggle font size"
+                size="icon"
+                className="h-7 w-7 md:h-10 md:w-10"
+                title="Toggle Font Size"
               >
-                <Type className="h-8 w-8" />
+                <Type className="h-3.5 w-3.5 md:h-6 md:w-6" />
               </Button>
               <Button
                 onClick={() => window.open('https://docs.lovable.dev', '_blank')}
-                size="lg"
                 variant="ghost"
-                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 text-2xl font-light opacity-60"
+                size="icon"
+                className="h-7 w-7 md:h-10 md:w-10"
                 title="How to fill this form"
               >
-                ?
+                <HelpCircle className="h-3.5 w-3.5 md:h-6 md:w-6" />
               </Button>
             </div>
           </div>

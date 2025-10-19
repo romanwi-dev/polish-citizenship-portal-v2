@@ -277,25 +277,30 @@ export default function POAForm() {
               </Button>
               <Button
                 onClick={() => navigate('/login')}
-                size="lg"
                 variant="ghost"
-                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary z-50 opacity-60"
+                size="icon"
+                className="h-7 w-7 md:h-10 md:w-10"
                 title="Login / Register"
               >
-                <User className="h-8 w-8" />
+                <User className="h-3.5 w-3.5 md:h-6 md:w-6" />
               </Button>
-              <Button onClick={toggleFontSize} size="lg" variant="ghost"
-                className={`h-16 w-16 rounded-full transition-all z-50 opacity-60 ${isLargeFonts ? 'text-primary' : 'text-muted-foreground hover:text-primary'}`} title="Toggle font size">
-                <Type className="h-8 w-8" />
+              <Button
+                onClick={toggleFontSize}
+                variant="ghost"
+                size="icon"
+                className="h-7 w-7 md:h-10 md:w-10"
+                title="Toggle Font Size"
+              >
+                <Type className="h-3.5 w-3.5 md:h-6 md:w-6" />
               </Button>
               <Button
                 onClick={() => window.open('https://docs.lovable.dev', '_blank')}
-                size="lg"
                 variant="ghost"
-                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary text-2xl font-light opacity-60"
+                size="icon"
+                className="h-7 w-7 md:h-10 md:w-10"
                 title="How to fill this form"
               >
-                ?
+                <HelpCircle className="h-3.5 w-3.5 md:h-6 md:w-6" />
               </Button>
             </div>
           </div>

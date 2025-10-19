@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
-import { Loader2, Sparkles, Type, User, ArrowLeft, Maximize2, Minimize2, Download } from "lucide-react";
+import { Loader2, Sparkles, Type, User, ArrowLeft, Maximize2, Minimize2, Download, HelpCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -249,15 +249,33 @@ export default function CitizenshipForm() {
             <h2 className="text-2xl sm:text-3xl md:text-6xl lg:text-8xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text text-center md:text-left flex-1 leading-tight break-words">
               Citizenship Application
             </h2>
-            <div className="flex items-center justify-between md:justify-end gap-1 md:gap-3">
+            <div className="flex items-center gap-1 md:gap-3 justify-center md:justify-end">
               <Button
-                onClick={() => navigate('/admin/cases')}
+                onClick={() => navigate('/admin/forms-demo')}
                 variant="ghost"
                 size="icon"
                 className="h-7 w-7 md:h-10 md:w-10"
-                title="Back to Cases"
+                title="Back to Case"
               >
                 <ArrowLeft className="h-3.5 w-3.5 md:h-6 md:w-6" />
+              </Button>
+              <Button
+                onClick={() => setIsFullView(!isFullView)}
+                variant="ghost"
+                size="icon"
+                className="h-7 w-7 md:h-10 md:w-10"
+                title={isFullView ? "Collapse" : "Expand All"}
+              >
+                {isFullView ? <Minimize2 className="h-3.5 w-3.5 md:h-6 md:w-6" /> : <Maximize2 className="h-3.5 w-3.5 md:h-6 md:w-6" />}
+              </Button>
+              <Button
+                onClick={() => navigate('/login')}
+                variant="ghost"
+                size="icon"
+                className="h-7 w-7 md:h-10 md:w-10"
+                title="Login / Register"
+              >
+                <User className="h-3.5 w-3.5 md:h-6 md:w-6" />
               </Button>
               <Button
                 onClick={toggleFontSize}
@@ -269,13 +287,13 @@ export default function CitizenshipForm() {
                 <Type className="h-3.5 w-3.5 md:h-6 md:w-6" />
               </Button>
               <Button
-                onClick={() => navigate('/login')}
+                onClick={() => window.open('https://docs.lovable.dev', '_blank')}
                 variant="ghost"
                 size="icon"
                 className="h-7 w-7 md:h-10 md:w-10"
-                title="Login"
+                title="How to fill this form"
               >
-                <User className="h-3.5 w-3.5 md:h-6 md:w-6" />
+                <HelpCircle className="h-3.5 w-3.5 md:h-6 md:w-6" />
               </Button>
             </div>
           </div>
