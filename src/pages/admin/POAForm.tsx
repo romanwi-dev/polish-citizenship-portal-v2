@@ -243,8 +243,8 @@ export default function POAForm() {
   }
 
   return (
-    <div className="overflow-x-hidden min-h-screen relative">
-      <div className="container mx-auto py-3 md:py-12 px-4 md:px-6 max-w-7xl">
+    <div className={cn("relative min-h-full", isLargeFonts && "text-lg")}>
+      <div className="relative z-10 pt-2 px-3 pb-3 md:p-6">
         {/* Header */}
         <motion.div 
           initial={{ opacity: 0, y: -50 }} 
@@ -253,31 +253,27 @@ export default function POAForm() {
           className="mb-1 md:mb-6"
         >
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-1 md:gap-4 pb-1 md:pb-6">
-            <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="flex-1">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text text-center md:text-left">
-                Power of Attorney
-              </h1>
-            </motion.div>
+            <h2 className="text-3xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text text-center md:text-left flex-1">
+              Power of Attorney
+            </h2>
             <div className="flex items-center gap-1 md:gap-3 justify-center md:justify-end">
               <Button
                 onClick={() => navigate('/admin/forms-demo')}
-                size="lg"
                 variant="ghost"
-                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary z-50 opacity-60"
+                size="icon"
+                className="h-7 w-7 md:h-10 md:w-10"
                 title="Back to Case"
               >
-                <ArrowLeft className="h-8 w-8" />
+                <ArrowLeft className="h-3.5 w-3.5 md:h-6 md:w-6" />
               </Button>
               <Button
                 onClick={() => setIsFullView(!isFullView)}
-                size="lg"
                 variant="ghost"
-                className={`h-16 w-16 rounded-full transition-all opacity-60 ${
-                  isFullView ? 'text-primary' : 'text-muted-foreground hover:text-primary'
-                }`}
+                size="icon"
+                className="h-7 w-7 md:h-10 md:w-10"
                 title={isFullView ? "Collapse" : "Expand All"}
               >
-                {isFullView ? <Minimize2 className="h-8 w-8" /> : <Maximize2 className="h-8 w-8" />}
+                {isFullView ? <Minimize2 className="h-3.5 w-3.5 md:h-6 md:w-6" /> : <Maximize2 className="h-3.5 w-3.5 md:h-6 md:w-6" />}
               </Button>
               <Button
                 onClick={() => navigate('/login')}
