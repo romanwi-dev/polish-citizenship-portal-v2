@@ -15,11 +15,13 @@ import {
   Shield,
   Lock,
   Clock,
-  Trash2
+  Trash2,
+  Plane
 } from "lucide-react";
 import { CaseStageVisualization } from "@/components/CaseStageVisualization";
 import { FileUploadSection } from "@/components/client/FileUploadSection";
 import { MessagingSection } from "@/components/client/MessagingSection";
+import { ConsulateKitGenerator } from "@/components/passport/ConsulateKitGenerator";
 
 export default function ClientDashboard() {
   const { caseId } = useParams();
@@ -198,12 +200,16 @@ export default function ClientDashboard() {
         </div>
 
         <Tabs defaultValue="timeline" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="timeline">Timeline</TabsTrigger>
             <TabsTrigger value="documents">Documents</TabsTrigger>
             <TabsTrigger value="upload">Upload</TabsTrigger>
             <TabsTrigger value="poa">POA</TabsTrigger>
             <TabsTrigger value="messages">Messages</TabsTrigger>
+            <TabsTrigger value="passport" className="flex items-center gap-2">
+              <Plane className="h-4 w-4" />
+              Passport
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="timeline">
@@ -327,6 +333,14 @@ export default function ClientDashboard() {
             <MessagingSection 
               caseId={caseId!} 
               currentUserId={session?.user?.id || "client"}
+            />
+          </TabsContent>
+
+          <TabsContent value="passport">
+            <ConsulateKitGenerator
+              caseId={caseId!}
+              clientName={caseData?.client_name || "Client"}
+              decisionReceived={caseData?.decision_received || false}
             />
           </TabsContent>
         </Tabs>
