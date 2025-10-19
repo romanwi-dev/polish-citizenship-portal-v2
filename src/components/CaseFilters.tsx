@@ -180,7 +180,7 @@ export const CaseFilters = ({
             <Badge variant="secondary" className="capitalize">
               Status: {statusFilter.replace("_", " ")}
               <X 
-                className="h-3 w-3 ml-1 cursor-pointer" 
+                className="h-4 w-4 ml-1 cursor-pointer" 
                 onClick={() => onStatusChange("all")}
               />
             </Badge>
@@ -189,7 +189,7 @@ export const CaseFilters = ({
             <Badge variant="secondary" className="capitalize">
               Mode: {processingModeFilter.replace("_", " ")}
               <X 
-                className="h-3 w-3 ml-1 cursor-pointer" 
+                className="h-4 w-4 ml-1 cursor-pointer" 
                 onClick={() => onProcessingModeChange("all")}
               />
             </Badge>
@@ -198,7 +198,7 @@ export const CaseFilters = ({
             <Badge variant="secondary">
               Age: {ageFilter}
               <X 
-                className="h-3 w-3 ml-1 cursor-pointer" 
+                className="h-4 w-4 ml-1 cursor-pointer" 
                 onClick={() => onAgeChange("all")}
               />
             </Badge>
@@ -207,7 +207,7 @@ export const CaseFilters = ({
             <Badge variant="secondary">
               Score: {scoreFilter[0]}-{scoreFilter[1]}
               <X 
-                className="h-3 w-3 ml-1 cursor-pointer" 
+                className="h-4 w-4 ml-1 cursor-pointer" 
                 onClick={() => onScoreChange([0, 100])}
               />
             </Badge>
@@ -216,7 +216,7 @@ export const CaseFilters = ({
             <Badge variant="secondary">
               Progress: {progressFilter[0]}%-{progressFilter[1]}%
               <X 
-                className="h-3 w-3 ml-1 cursor-pointer" 
+                className="h-4 w-4 ml-1 cursor-pointer" 
                 onClick={() => onProgressChange([0, 100])}
               />
             </Badge>

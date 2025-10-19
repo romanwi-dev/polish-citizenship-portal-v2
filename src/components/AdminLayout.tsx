@@ -164,7 +164,7 @@ function AppSidebar() {
                                 <div className="flex items-center justify-between flex-1">
                                   <span>{item.title}</span>
                                   {item.badge && (
-                                    <Badge variant="outline" className="text-[10px] px-1 ml-auto">
+                                    <Badge variant="outline" className="text-xs px-1 ml-auto">
                                       {item.badge}
                                     </Badge>
                                   )}

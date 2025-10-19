@@ -286,7 +286,7 @@ export const TranslationWorkflowTimeline = () => {
                             <span className={`text-sm md:text-xs font-bold px-3 py-1.5 md:px-2 md:py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
                               {step.number}
                             </span>
-                            <span className="text-[10px] md:text-xs text-muted-foreground">{step.duration}</span>
+                            <span className="text-xs text-muted-foreground">{step.duration}</span>
                           </div>
                           <motion.h3
                             initial={prefersReducedMotion ? {} : {
@@ -315,7 +315,7 @@ export const TranslationWorkflowTimeline = () => {
                             {step.description}
                           </p>
                           <div className="flex flex-wrap gap-1.5 md:gap-2 items-center">
-                            <span className="text-[10px] md:text-xs px-2 py-1 md:px-3 md:py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
+                            <span className="text-xs px-2 py-1 md:px-3 md:py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
                               {step.priority}
                             </span>
                             <Badge variant="secondary" className="font-semibold">
@@ -325,7 +325,7 @@ export const TranslationWorkflowTimeline = () => {
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                className="gap-1 h-auto px-2 py-1 text-[10px] md:text-xs"
+                                className="gap-1 h-auto px-2 py-1 text-xs"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   handleLinkClick(step.linkType);
@@ -339,7 +339,7 @@ export const TranslationWorkflowTimeline = () => {
                               </Button>
                             )}
                           </div>
-                          <p className="text-[10px] md:text-xs text-muted-foreground/60 mt-2 text-center">
+                          <p className="text-xs text-muted-foreground/60 mt-2 text-center">
                             {isMobile ? 'Tap' : 'Click'} to see details
                           </p>
                         </div>
@@ -378,7 +378,7 @@ export const TranslationWorkflowTimeline = () => {
                                   <p className="font-medium text-xs truncate">
                                     {workflow.cases?.client_name}
                                   </p>
-                                  <p className="text-[10px] text-muted-foreground truncate">
+                                  <p className="text-xs text-muted-foreground truncate">
                                     {workflow.documents?.name}
                                   </p>
                                   {workflow.ai_confidence && (
@@ -389,7 +389,7 @@ export const TranslationWorkflowTimeline = () => {
                                           style={{ width: `${workflow.ai_confidence * 100}%` }}
                                         />
                                       </div>
-                                      <span className="text-[10px] font-medium">
+                                      <span className="text-xs font-medium">
                                         {(workflow.ai_confidence * 100).toFixed(0)}%
                                       </span>
                                     </div>
@@ -397,7 +397,7 @@ export const TranslationWorkflowTimeline = () => {
                                 </div>
                               ))}
                               {stageWorkflows.length > 5 && (
-                                <p className="text-[10px] text-muted-foreground text-center pt-1">
+                                <p className="text-xs text-muted-foreground text-center pt-1">
                                   +{stageWorkflows.length - 5} more
                                 </p>
                               )}

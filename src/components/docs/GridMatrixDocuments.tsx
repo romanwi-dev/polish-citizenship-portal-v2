@@ -101,7 +101,7 @@ export function GridMatrixDocuments({
             </div>
 
             {/* Index number */}
-            <div className="absolute bottom-1 right-2 text-[10px] font-mono text-muted-foreground/30">
+            <div className="absolute bottom-1 right-2 text-xs font-mono text-muted-foreground/30">
               #{index + 1}
             </div>
           </div>

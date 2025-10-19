@@ -221,7 +221,7 @@ export function CaseStageVisualization({
                     value={(partCompleted / partTotal) * 100} 
                     className="w-12 sm:w-16 h-1 mb-0.5 sm:mb-1" 
                   />
-                  <span className="text-[10px] sm:text-xs font-medium">
+                  <span className="text-xs font-medium">
                     {partCompleted}/{partTotal}
                   </span>
                 </button>

@@ -110,7 +110,7 @@ const PersonCardInteractive = ({
       <div className="mt-1">
         <div className="flex items-start justify-between gap-2 mb-2">
           <div className="flex-1 min-w-0">
-            <p className="text-[10px] text-muted-foreground font-light opacity-70 mb-1">{title}</p>
+            <p className="text-xs text-muted-foreground font-light opacity-70 mb-1">{title}</p>
             <h4 className="font-light text-xs leading-tight mb-1 opacity-90">{displayName}</h4>
           </div>
           <Badge variant={completionRate === 100 ? "default" : "destructive"} className="text-[9px] px-1 py-0">
@@ -118,7 +118,7 @@ const PersonCardInteractive = ({
           </Badge>
         </div>
         
-        <div className="space-y-1 text-[10px] text-muted-foreground font-light opacity-70">
+        <div className="space-y-1 text-xs text-muted-foreground font-light opacity-70">
           {person.dateOfBirth && (
             <div className="flex items-center gap-1">
               <span className="font-medium">DOB:</span>

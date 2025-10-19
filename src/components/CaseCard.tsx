@@ -144,10 +144,10 @@ export const CaseCard = memo(({
   const getProcessingModeIcon = () => {
     switch (clientCase.processing_mode) {
       case "expedited":
-        return <Zap className="w-3 h-3" />;
+        return <Zap className="w-4 h-4" />;
       case "vip":
       case "vip_plus":
-        return <Award className="w-3 h-3" />;
+        return <Award className="w-4 h-4" />;
       default:
         return null;
     }
@@ -191,18 +191,19 @@ export const CaseCard = memo(({
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-8 w-8"
+                  className="h-11 w-11"
                   onClick={(e) => {
                     e.stopPropagation();
                     onToggleFavorite();
                   }}
+                  aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
                 >
                   <Star className={`h-4 w-4 ${isFavorite ? 'fill-yellow-400 text-yellow-400' : ''}`} />
                 </Button>
               )}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                  <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <Button variant="ghost" size="icon" className="h-11 w-11" aria-label="Case options menu">
                     <MoreVertical className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
@@ -255,7 +256,7 @@ export const CaseCard = memo(({
 
             {clientCase.country && (
               <span className="px-3 py-1.5 rounded-full text-xs font-medium border bg-blue-500/20 text-blue-400 border-blue-500/30 whitespace-nowrap min-h-[28px] flex items-center justify-center">
-                <MapPin className="w-3 h-3 mr-1" />
+                <MapPin className="w-4 h-4 mr-1" />
                 {clientCase.country}
               </span>
             )}
@@ -278,15 +279,15 @@ export const CaseCard = memo(({
                     Standard
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleProcessingModeChange('expedited'); }}>
-                    <Zap className="mr-2 h-3 w-3" />
+                    <Zap className="mr-2 h-4 w-4" />
                     Expedited
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleProcessingModeChange('vip'); }}>
-                    <Award className="mr-2 h-3 w-3" />
+                    <Award className="mr-2 h-4 w-4" />
                     VIP
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleProcessingModeChange('vip_plus'); }}>
-                    <Award className="mr-2 h-3 w-3" />
+                    <Award className="mr-2 h-4 w-4" />
                     VIP+
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -518,7 +519,7 @@ export const CaseCard = memo(({
                 <div className="space-y-1.5">
                   <div className="flex justify-between items-center py-1 border-b border-border/30">
                     <span className="text-xs flex items-center gap-1.5">
-                      <Calendar className="w-3 h-3 text-primary" />
+                      <Calendar className="w-4 h-4 text-primary" />
                       Started
                     </span>
                     <span className="text-xs font-bold">
@@ -528,7 +529,7 @@ export const CaseCard = memo(({
                   {clientCase.start_date && (
                     <div className="flex justify-between items-center py-1 border-b border-border/30">
                       <span className="text-xs flex items-center gap-1.5">
-                        <Clock className="w-3 h-3 text-secondary" />
+                        <Clock className="w-4 h-4 text-secondary" />
                         Days Active
                       </span>
                       <span className="text-xs font-bold text-cyan-400">
@@ -538,7 +539,7 @@ export const CaseCard = memo(({
                   )}
                   <div className="flex justify-between items-center py-1">
                     <span className="text-xs flex items-center gap-1.5">
-                      <TrendingUp className="w-3 h-3 text-accent" />
+                      <TrendingUp className="w-4 h-4 text-accent" />
                       Completion
                     </span>
                     <span className="text-xs font-bold text-cyan-400">{clientCase.progress || 0}%</span>

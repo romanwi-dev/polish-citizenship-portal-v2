@@ -288,7 +288,7 @@ export default function TimelineProcessEnhanced() {
                           <span className={`text-sm md:text-xs font-bold px-3 py-1.5 md:px-2 md:py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
                             {step.number}
                           </span>
-                          <span className="text-[10px] md:text-xs text-muted-foreground">{step.duration}</span>
+                          <span className="text-xs text-muted-foreground">{step.duration}</span>
                         </div>
                         <motion.h3 initial={prefersReducedMotion ? {} : {
                       opacity: 0,
@@ -313,14 +313,14 @@ export default function TimelineProcessEnhanced() {
                           {step.description}
                         </p>
                         <div className="flex flex-wrap gap-1.5 md:gap-2">
-                          <span className="text-[10px] md:text-xs px-2 py-1 md:px-3 md:py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
+                          <span className="text-xs px-2 py-1 md:px-3 md:py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
                             {step.keyAction}
                           </span>
-                          <span className="text-[10px] md:text-xs px-2 py-1 md:px-3 md:py-1 rounded-full bg-secondary/10 text-secondary border border-secondary/20">
+                          <span className="text-xs px-2 py-1 md:px-3 md:py-1 rounded-full bg-secondary/10 text-secondary border border-secondary/20">
                             {step.priority}
                           </span>
                         </div>
-                        <p className="text-[10px] md:text-xs text-muted-foreground/60 mt-2 text-center">{isMobile ? 'Tap' : 'Click'} to see details</p>
+                        <p className="text-xs text-muted-foreground/60 mt-2 text-center">{isMobile ? 'Tap' : 'Click'} to see details</p>
                       </div>
                     </motion.div>
 

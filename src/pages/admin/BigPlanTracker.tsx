@@ -402,16 +402,16 @@ export default function BigPlanTracker() {
             </div>
             <div className="grid grid-cols-3 gap-2 sm:gap-4 pt-2">
               <div className="text-center">
-                <div className="text-lg sm:text-2xl font-bold text-green-500">{completedSteps}</div>
-                <div className="text-[10px] sm:text-xs text-muted-foreground">Complete</div>
+                <div className="text-lg sm:text-2xl font-bold text-success">{completedSteps}</div>
+                <div className="text-xs text-muted-foreground">Complete</div>
               </div>
               <div className="text-center">
-                <div className="text-lg sm:text-2xl font-bold text-yellow-500">{partialSteps}</div>
-                <div className="text-[10px] sm:text-xs text-muted-foreground">Partial</div>
+                <div className="text-lg sm:text-2xl font-bold text-warning">{partialSteps}</div>
+                <div className="text-xs text-muted-foreground">Partial</div>
               </div>
               <div className="text-center">
-                <div className="text-lg sm:text-2xl font-bold text-gray-400">{totalSteps - completedSteps - partialSteps}</div>
-                <div className="text-[10px] sm:text-xs text-muted-foreground">Not Started</div>
+                <div className="text-lg sm:text-2xl font-bold text-muted-foreground">{totalSteps - completedSteps - partialSteps}</div>
+                <div className="text-xs text-muted-foreground">Not Started</div>
               </div>
             </div>
           </CardContent>

@@ -30,6 +30,8 @@ export const FormFieldGroup = ({
   error,
   required = false,
 }: FormFieldGroupProps) => {
+  const errorId = error ? `${id}-error` : undefined;
+
   return (
     <div className="space-y-2 sm:space-y-3 w-full min-w-0 mb-4 sm:mb-0">
       <FormLabel isLargeFonts={isLargeFonts} htmlFor={id} required={required}>
@@ -46,7 +48,15 @@ export const FormFieldGroup = ({
         colorScheme={colorScheme}
         error={error}
         required={required}
+        aria-invalid={error ? "true" : undefined}
+        aria-describedby={errorId}
       />
+      {error && (
+        <p id={errorId} className="text-xs text-destructive mt-1 flex items-center gap-1">
+          <span className="inline-block w-1 h-1 rounded-full bg-destructive" />
+          {error}
+        </p>
+      )}
     </div>
   );
 };

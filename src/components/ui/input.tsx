@@ -9,10 +9,10 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
     
     const glowStyle = {
       boxShadow: isFocused 
-        ? "0 0 60px hsla(221, 83%, 53%, 0.4)" 
+        ? "0 0 20px hsla(var(--primary) / 0.2)" 
         : isHovered 
-          ? "0 0 50px hsla(221, 83%, 53%, 0.3)"
-          : "0 0 30px hsla(221, 83%, 53%, 0.15)",
+          ? "0 0 15px hsla(var(--primary) / 0.15)"
+          : "none",
       transition: "all 0.3s ease",
       ...style
     };
@@ -21,7 +21,7 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
       <input
         type={type}
         className={cn(
-          "flex h-16 md:h-20 w-full min-w-0 rounded-none border-2 border-blue-200/30 dark:border-blue-800/30 bg-blue-50/45 dark:bg-blue-950/40 px-3 py-2 text-lg md:text-2xl font-normal font-input-work ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 backdrop-blur disabled:cursor-not-allowed disabled:opacity-50",
+          "flex h-11 md:h-12 w-full min-w-0 rounded-md border-2 border-input bg-background px-3 py-2 text-base md:text-lg font-normal font-input-work ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all",
           className,
         )}
         style={glowStyle}

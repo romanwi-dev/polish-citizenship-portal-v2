@@ -65,6 +65,25 @@ export function useFieldValidation(
   requiredFields: string[],
   dateFields: string[] = []
 ) {
+  const validateField = (field: string, value: any): ValidationError | null => {
+    // Check if required
+    if (requiredFields.includes(field)) {
+      if (value === null || value === undefined || value === '') {
+        return { field, message: 'This field is required' };
+      }
+    }
+
+    // Check if date field
+    if (dateFields.includes(field) && value && typeof value === 'string') {
+      const result = validateDateFormat(value);
+      if (!result.isValid) {
+        return { field, message: result.error || 'Invalid date format' };
+      }
+    }
+
+    return null;
+  };
+
   const errors = useMemo(() => {
     const validationErrors: ValidationError[] = [];
 
@@ -103,5 +122,6 @@ export function useFieldValidation(
     errors,
     isValid,
     getFieldError,
+    validateField,
   };
 }
