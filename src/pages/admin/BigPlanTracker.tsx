@@ -162,12 +162,10 @@ const parts: Part[] = [
       {
         id: 13,
         title: "Typeform Integration",
-        status: "partial",
-        priority: "low",
-        completion: 50,
-        files: ["Webhook structure ready"],
-        missing: ["Live Typeform webhook setup", "Field mapping finalization"],
-        estimate: "2 hours"
+        status: "complete",
+        completion: 100,
+        files: ["typeform-webhook edge function", "TYPEFORM_INTEGRATION_GUIDE.md", "Auto LEAD-### creation"],
+        route: "/admin/partner-api"
       }
     ]
   },
@@ -318,12 +316,10 @@ const parts: Part[] = [
       {
         id: 30,
         title: "E2E Testing Documentation",
-        status: "partial",
-        priority: "medium",
-        completion: 70,
-        files: ["TESTING_CHECKLIST.md", "Manual testing guides"],
-        missing: ["Automated E2E tests", "Performance benchmarks"],
-        estimate: "4-6 hours"
+        status: "complete",
+        completion: 100,
+        files: ["Playwright E2E suite (30+ tests)", "PERFORMANCE_BENCHMARKS.md", "E2E_TEST_RESULTS.md", "6 test files"],
+        route: "/admin/qa-harness"
       }
     ]
   }
