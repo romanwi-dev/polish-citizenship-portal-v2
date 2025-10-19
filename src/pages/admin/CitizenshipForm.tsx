@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useState } from "react";
 import { Loader2, Sparkles, Type, User, ArrowLeft, Maximize2, Minimize2, Download, HelpCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -322,9 +323,20 @@ export default function CitizenshipForm() {
                 <span>Data available ({obyIntakeData ? 'intake' : 'master'} table)</span>
               </div>
               {formData.applicant_first_name && (
-                <Badge variant={completion.completionPercentage >= 80 ? 'default' : 'secondary'}>
-                  {completion.completionPercentage}% Complete
-                </Badge>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Badge variant={completion.completionPercentage >= 80 ? 'default' : 'secondary'} className="cursor-help">
+                        {completion.completionPercentage}% Auto-Filled
+                      </Badge>
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-xs">
+                      <p className="text-sm">
+                        86% is optimal. Great-grandparents and Polish-specific fields are gathered during case processing, not intake.
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               )}
             </div>
             <Button

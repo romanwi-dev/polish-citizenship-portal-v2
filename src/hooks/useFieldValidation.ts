@@ -25,7 +25,7 @@ export function validateDateFormat(value: string): DateValidationResult {
   if (!match) {
     return {
       isValid: false,
-      error: 'Date must be in DD.MM.YYYY format',
+      error: 'Use DD.MM.YYYY format (e.g., 15.03.1985). Year must be ≤ 2030',
     };
   }
 
@@ -36,21 +36,21 @@ export function validateDateFormat(value: string): DateValidationResult {
   if (day < 1 || day > 31) {
     return {
       isValid: false,
-      error: 'Day must be between 01 and 31',
+      error: 'Day must be 01-31 (e.g., 15.03.1985)',
     };
   }
 
   if (month < 1 || month > 12) {
     return {
       isValid: false,
-      error: 'Month must be between 01 and 12',
+      error: 'Month must be 01-12 (e.g., 15.03.1985)',
     };
   }
 
   if (year > 2030) {
     return {
       isValid: false,
-      error: 'Year must be 2030 or earlier',
+      error: 'Year must be ≤ 2030 (e.g., 15.03.1985)',
     };
   }
 
