@@ -82,6 +82,7 @@ const navSections = [
     title: "System",
     defaultOpen: false,
     items: [
+      { title: "System Overview", url: "/admin/system-overview", icon: BookOpen },
       { title: "Dropbox Sync", url: "/admin/dropbox", icon: FolderSync },
       { title: "Migration Scanner", url: "/admin/dropbox-migration", icon: GitCompare },
       { title: "System Health", url: "/admin/system-health", icon: Shield },
