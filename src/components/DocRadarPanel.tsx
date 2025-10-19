@@ -26,9 +26,13 @@ export function DocRadarPanel({ documents }: DocRadarPanelProps) {
   const overallCompletion = getOverallDocumentCompletion(statuses);
   const { totalCritical, missingCritical, hasCriticalGaps } = getCriticalDocumentsStatus(statuses);
 
-  // Calculate translation needs
+  // Calculate translation needs using language detection
   const translationNeeded = documents.filter(doc => 
-    doc.needs_translation === true && doc.is_translated === false
+    doc.language && doc.language !== 'PL' && doc.language !== 'UNKNOWN' && !doc.is_translated
+  ).length;
+  
+  const unknownLanguage = documents.filter(doc => 
+    doc.language === 'UNKNOWN'
   ).length;
 
   return (
@@ -40,6 +44,12 @@ export function DocRadarPanel({ documents }: DocRadarPanelProps) {
             Document Radar
           </CardTitle>
           <div className="flex items-center gap-2">
+            {unknownLanguage > 0 && (
+              <Badge variant="outline" className="text-sm">
+                <AlertCircle className="h-3 w-3 mr-1" />
+                {unknownLanguage} Unknown
+              </Badge>
+            )}
             {translationNeeded > 0 && (
               <Badge variant="destructive" className="text-sm">
                 <Languages className="h-3 w-3 mr-1" />

@@ -529,6 +529,7 @@ export type Database = {
           is_translated: boolean | null
           is_verified: boolean | null
           is_verified_by_hac: boolean | null
+          language: string | null
           metadata: Json | null
           name: string
           needs_translation: boolean | null
@@ -558,6 +559,7 @@ export type Database = {
           is_translated?: boolean | null
           is_verified?: boolean | null
           is_verified_by_hac?: boolean | null
+          language?: string | null
           metadata?: Json | null
           name: string
           needs_translation?: boolean | null
@@ -587,6 +589,7 @@ export type Database = {
           is_translated?: boolean | null
           is_verified?: boolean | null
           is_verified_by_hac?: boolean | null
+          language?: string | null
           metadata?: Json | null
           name?: string
           needs_translation?: boolean | null
