@@ -33,7 +33,7 @@ export const sanitizeMasterData = (formData: any): any => {
     'has_minor_children',
     'applicant_has_children',
     'applicant_has_minor_children',
-    'applicant_minor_children_count',
+    'applicant_minor_children_count', // NOT a DB column
     'has_child_1', 'has_child_2', 'has_child_3', 'has_child_4', 'has_child_5',
     'has_child_6', 'has_child_7', 'has_child_8', 'has_child_9', 'has_child_10',
   ];
@@ -109,6 +109,9 @@ export const sanitizeMasterData = (formData: any): any => {
         sanitized['applicant_notes'] = value === '' ? null : value;
       } else if (formField === 'applicant_children_count') {
         sanitized['children_count'] = value === '' || value === null ? null : Number(value);
+      } else if (formField === 'applicant_minor_children_count') {
+        // Map UI field to actual DB column
+        sanitized['minor_children_count'] = value === '' || value === null ? null : Number(value);
       }
     }
   });
