@@ -91,6 +91,25 @@ export function DocumentCard({ document }: DocumentCardProps) {
                 {document.document_type && (
                   <Badge variant="secondary">{document.document_type}</Badge>
                 )}
+                {document.language && (
+                  <Badge 
+                    variant={
+                      document.language === 'PL' 
+                        ? 'default' 
+                        : document.language === 'UNKNOWN' 
+                        ? 'secondary' 
+                        : 'destructive'
+                    }
+                    className="text-xs"
+                  >
+                    {document.language}
+                  </Badge>
+                )}
+                {document.language && document.language !== 'PL' && document.language !== 'UNKNOWN' && (
+                  <Badge variant="outline" className="text-xs border-yellow-500 text-yellow-700 dark:text-yellow-300">
+                    Needs Translation
+                  </Badge>
+                )}
                 {document.file_extension && (
                   <span className="text-xs text-muted-foreground uppercase">
                     {document.file_extension}

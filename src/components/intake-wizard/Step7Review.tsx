@@ -29,13 +29,48 @@ export const Step7Review = ({ formData, dontKnowFields }: ReviewProps) => {
     );
   };
   
+  // Define sections with their required fields
+  const sections = [
+    {
+      name: t('steps.basicInfo'),
+      fields: ['first_name', 'last_name', 'date_of_birth', 'sex'],
+      isComplete: false,
+      missingFields: [] as string[]
+    },
+    {
+      name: t('steps.contact'),
+      fields: ['email', 'phone'],
+      isComplete: false,
+      missingFields: [] as string[]
+    },
+    {
+      name: t('steps.passport'),
+      fields: ['passport_number', 'passport_issuing_country'],
+      isComplete: false,
+      missingFields: [] as string[]
+    },
+    {
+      name: t('steps.family'),
+      fields: ['father_first_name', 'mother_first_name'],
+      isComplete: false,
+      missingFields: [] as string[]
+    },
+  ];
+
+  // Calculate completion for each section
+  sections.forEach(section => {
+    const missing = section.fields.filter(f => !formData[f] && !dontKnowFields.has(f));
+    section.missingFields = missing;
+    section.isComplete = missing.length === 0;
+  });
+
   const requiredFields = ['applicant_first_name', 'applicant_last_name', 'applicant_dob', 'applicant_sex', 'applicant_email'];
   const isComplete = requiredFields.every(field => formData[field] || dontKnowFields.has(field));
   
   return (
     <div className="space-y-6">
-      {/* Completion Status */}
-      <Card className={isComplete ? "border-green-500" : "border-yellow-500"}>
+      {/* Overall Completion Status */}
+      <Card className={isComplete ? "border-green-500 bg-green-50/50 dark:bg-green-950/20" : "border-yellow-500 bg-yellow-50/50 dark:bg-yellow-950/20"}>
         <CardContent className="pt-6">
           <div className="flex items-center gap-3">
             {isComplete ? (
@@ -58,6 +93,37 @@ export const Step7Review = ({ formData, dontKnowFields }: ReviewProps) => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Section Completion Cards */}
+      <div className="grid gap-3">
+        {sections.map(section => (
+          <Card 
+            key={section.name}
+            className={section.isComplete 
+              ? "border-green-500 bg-green-50/30 dark:bg-green-950/10" 
+              : "border-yellow-500 bg-yellow-50/30 dark:bg-yellow-950/10"
+            }
+          >
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-base">{section.name}</CardTitle>
+                {section.isComplete ? (
+                  <Badge variant="default" className="bg-green-600">Complete</Badge>
+                ) : (
+                  <Badge variant="secondary">{section.missingFields.length} missing</Badge>
+                )}
+              </div>
+            </CardHeader>
+            {!section.isComplete && (
+              <CardContent className="pt-0">
+                <p className="text-sm text-yellow-700 dark:text-yellow-300">
+                  Missing: {section.missingFields.join(', ')}
+                </p>
+              </CardContent>
+            )}
+          </Card>
+        ))}
+      </div>
 
       {/* Basic Information */}
       <Card>

@@ -189,6 +189,23 @@ export default function ClientIntakeWizard() {
         .eq('id', caseId);
 
       if (caseError) throw caseError;
+
+      // Send welcome email notification
+      if (formData.email) {
+        const { error: emailError } = await supabase.functions.invoke('send-welcome-email', {
+          body: {
+            email: formData.email,
+            caseId: caseId,
+            clientName: `${formData.first_name || 'Client'} ${formData.last_name || ''}`.trim(),
+            intakeCompletedAt: new Date().toISOString()
+          }
+        });
+
+        if (emailError) {
+          console.error('Email notification failed:', emailError);
+          // Don't block submission on email failure
+        }
+      }
       
       toast.success(`${t('submitted')} - ${completion}% complete`);
       
