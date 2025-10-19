@@ -583,7 +583,6 @@ export default function FamilyTreeForm() {
                   )}
                 </div>
               </div>
-            </div>
             </>
           </motion.div>
           )}
@@ -1204,7 +1203,6 @@ export default function FamilyTreeForm() {
           )}
         </TabsContent>
 
-                </>
             </Tabs>
           ) : (
             // Full View Mode - Show all tab sections with Tabs wrapper
