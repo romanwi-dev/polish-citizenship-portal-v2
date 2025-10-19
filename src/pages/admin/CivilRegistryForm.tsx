@@ -290,7 +290,7 @@ export default function CivilRegistryForm() {
         }} transition={{
           duration: 0.5
         }}>
-            <div>
+            <div className="px-4 py-6 md:p-10">
               <div className="border-b border-emerald-200/20 pb-6">
                 <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-400 bg-clip-text text-transparent">
                   Applicant Information / Dane wnioskodawcy
@@ -345,7 +345,7 @@ export default function CivilRegistryForm() {
           duration: 0.5,
           delay: 0.1
         }}>
-            <div>
+            <div className="px-4 py-6 md:p-10">
               <div className="border-b border-emerald-200/20 pb-6">
                 <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-400 bg-clip-text text-transparent">
                   Document to Register / Dokument do rejestracji

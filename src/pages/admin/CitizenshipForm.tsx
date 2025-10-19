@@ -318,7 +318,7 @@ export default function CitizenshipForm() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <div>
+            <div className="px-4 py-6 md:p-10">
               <div className="border-b border-border/50 pb-6">
                 <h2 className="text-4xl md:text-5xl font-heading font-bold text-primary">
                   CZĘŚĆ I - Dane osoby, której dotyczy wniosek
@@ -366,7 +366,7 @@ export default function CitizenshipForm() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <div>
+            <div className="px-4 py-6 md:p-10">
               <div 
                 className="border-b border-border/50 pb-6 cursor-pointer"
               >
@@ -409,7 +409,7 @@ export default function CitizenshipForm() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <div>
+            <div className="px-4 py-6 md:p-10">
               <div 
                 className="border-b border-border/50 pb-6 cursor-pointer"
               >
@@ -473,7 +473,7 @@ export default function CitizenshipForm() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <div>
+            <div className="px-4 py-6 md:p-10">
               <div 
                 className="border-b border-border/50 pb-6 cursor-pointer"
               >

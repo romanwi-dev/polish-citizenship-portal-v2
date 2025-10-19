@@ -18,7 +18,7 @@ interface IntakeFormContentProps {
 }
 
 export const SelectSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
-  <>
+  <div className="px-4 py-6 md:p-10">
     <div className="border-b border-border/50 pb-6 pt-6">
       <h2 className="text-2xl md:text-3xl font-heading font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
         Main Applicant
@@ -130,11 +130,11 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
           </motion.div>
         )}
       </div>
-  </>
+  </div>
 );
 
 export const ApplicantSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
-  <>
+  <div className="px-4 py-6 md:p-10">
     <div className="border-b border-border/50 pb-6 pt-6">
       <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
         Applicant Information
@@ -179,11 +179,11 @@ export const ApplicantSection = ({ formData, handleInputChange, clearField, isLa
           </motion.div>
         </div>
       )}
-  </>
+  </div>
 );
 
 export const ContactSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
-  <>
+  <div className="px-4 py-6 md:p-10">
     <div className="border-b border-border/50 pb-6 pt-6">
       <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
         Contact Information
@@ -199,11 +199,11 @@ export const ContactSection = ({ formData, handleInputChange, clearField, isLarg
           <FormInput value={formData?.applicant_phone || ""} onChange={(e) => handleInputChange("applicant_phone", e.target.value)} colorScheme="applicant" />
         </motion.div>
       </div>
-  </>
+  </div>
 );
 
 export const AddressSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
-  <>
+  <div className="px-4 py-6 md:p-10">
     <div className="border-b border-border/50 pb-6 pt-6">
       <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
         Address Information
@@ -234,11 +234,11 @@ export const AddressSection = ({ formData, handleInputChange, clearField, isLarg
           <CountrySelect value={formData?.applicant_country || ""} onChange={(value) => handleInputChange("applicant_country", value)} label="Country" isLargeFonts={isLargeFonts} delay={0} />
         </div>
       </div>
-  </>
+  </div>
 );
 
 export const PassportSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
-  <>
+  <div className="px-4 py-6 md:p-10">
     <div className="border-b border-border/50 pb-6 pt-6">
       <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
         Passport Information
@@ -258,11 +258,11 @@ export const PassportSection = ({ formData, handleInputChange, clearField, isLar
           <DateField name="applicant_passport_expiry_date" label="Passport expiry date" value={formData?.applicant_passport_expiry_date} onChange={(value) => handleInputChange("applicant_passport_expiry_date", value)} colorScheme="applicant" isLargeFonts={isLargeFonts} delay={0} />
         </motion.div>
       </div>
-  </>
+  </div>
 );
 
 export const ImmigrationSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
-  <>
+  <div className="px-4 py-6 md:p-10">
     <div className="border-b border-border/50 pb-6 pt-6">
       <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
         Emigration Information
@@ -272,7 +272,7 @@ export const ImmigrationSection = ({ formData, handleInputChange, clearField, is
         <DateField name="applicant_date_of_naturalization" label="Date of naturalization" value={formData?.applicant_date_of_naturalization} onChange={(value) => handleInputChange("applicant_date_of_naturalization", value)} colorScheme="applicant" isLargeFonts={isLargeFonts} />
         <DateField name="applicant_date_of_emigration" label="Date of emigration" value={formData?.applicant_date_of_emigration} onChange={(value) => handleInputChange("applicant_date_of_emigration", value)} colorScheme="applicant" isLargeFonts={isLargeFonts} />
       </div>
-  </>
+  </div>
 );
 
 export const DocumentsSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => {
@@ -342,7 +342,7 @@ export const DocumentsSection = ({ formData, handleInputChange, clearField, isLa
   };
 
   return (
-    <>
+    <div className="px-4 py-6 md:p-10">
       <div className="border-b border-border/50 pb-6 pt-6">
         <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
           Required Documents
@@ -355,12 +355,12 @@ export const DocumentsSection = ({ formData, handleInputChange, clearField, isLa
           onChange={handleDocumentsChange}
         />
       </div>
-    </>
+    </div>
   );
 };
 
 export const NotesSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
-  <>
+  <div className="px-4 py-6 md:p-10">
     <div className="border-b border-border/50 pb-6 pt-6">
       <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
         Additional Notes
@@ -370,5 +370,5 @@ export const NotesSection = ({ formData, handleInputChange, clearField, isLargeF
       Additional notes
     </Label>
     <Textarea value={formData?.applicant_notes || ""} onChange={(e) => handleInputChange("applicant_notes", e.target.value.toUpperCase())} className="mt-2 uppercase" />
-  </>
+  </div>
 );
