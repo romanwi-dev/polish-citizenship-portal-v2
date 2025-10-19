@@ -1,524 +1,268 @@
 import { AdminLayout } from "@/components/AdminLayout";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { 
   Bot, 
   FileText, 
   Workflow, 
-  Database,
-  Zap,
-  GitBranch,
   Users,
   Award,
   Archive,
   Languages,
   FileCheck,
-  Plane,
-  Sparkles
+  Plane
 } from "lucide-react";
 
 export default function SystemOverview() {
   return (
     <AdminLayout>
-      <div className="container mx-auto p-6 space-y-8">
-        {/* Header */}
-        <div className="space-y-2">
-          <h1 className="text-4xl font-bold">System Overview</h1>
-          <p className="text-muted-foreground text-lg">
-            Complete technical documentation of the Polish Citizenship Portal AI Agent system
-          </p>
-        </div>
+      <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-background">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12 max-w-7xl">
+          {/* Header */}
+          <div className="space-y-3 text-center">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
+              System Overview
+            </h1>
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-3xl mx-auto">
+              Complete technical documentation of the Polish Citizenship Portal AI Agent system
+            </p>
+          </div>
 
-        {/* AI Agents Section */}
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Bot className="h-6 w-6 text-primary" />
-              <CardTitle>AI Agents (5 Total)</CardTitle>
+          {/* AI Agents Section */}
+          <div className="space-y-6">
+            <div className="flex items-center gap-3 border-b border-primary/20 pb-3">
+              <Bot className="h-6 w-6 md:h-7 md:w-7 text-primary" />
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">AI Agents</h2>
+              <Badge variant="outline" className="ml-auto">5 Total</Badge>
             </div>
-            <CardDescription>
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground">
               Specialized AI agents that automate different aspects of the citizenship process
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {/* Forms Agent */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <FileText className="h-5 w-5 text-primary" />
-                <h3 className="text-xl font-semibold">Forms Agent</h3>
-                <Badge variant="outline">6 Tools</Badge>
+            </p>
+            
+            <div className="space-y-6">
+              {/* Forms Agent */}
+              <div className="space-y-3 bg-background/40 backdrop-blur-sm p-4 sm:p-5 md:p-6 rounded-lg border border-primary/10">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <FileText className="h-5 w-5 text-primary flex-shrink-0" />
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-semibold">Forms Agent</h3>
+                  <Badge variant="secondary" className="text-xs sm:text-sm">6 Tools</Badge>
+                </div>
+                <p className="text-sm sm:text-base text-muted-foreground">
+                  Manages all form processing, validation, and data flow between different stages of the citizenship application.
+                </p>
+                <div className="space-y-2">
+                  <p className="text-sm sm:text-base font-medium">Tools:</p>
+                  <ul className="text-sm sm:text-base text-muted-foreground space-y-1 list-disc list-inside ml-2 sm:ml-4">
+                    <li><strong>Intake Form Parser:</strong> Extracts client data from initial intake submissions</li>
+                    <li><strong>POA Generator:</strong> Auto-generates Power of Attorney documents from intake data</li>
+                    <li><strong>Citizenship Form Mapper:</strong> Maps intake data to OBY (citizenship application) fields</li>
+                    <li><strong>Family Tree Builder:</strong> Constructs genealogical relationships from provided data</li>
+                    <li><strong>Civil Registry Mapper:</strong> Organizes birth/marriage certificate requests</li>
+                    <li><strong>Form Validator:</strong> Real-time validation of DD.MM.YYYY dates and required fields</li>
+                  </ul>
+                </div>
               </div>
-              <p className="text-sm text-muted-foreground">
-                Manages all form processing, validation, and data flow between different stages of the citizenship application.
-              </p>
-              <div className="ml-7 space-y-2">
-                <p className="text-sm font-medium">Tools:</p>
-                <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
-                  <li><strong>Intake Form Parser:</strong> Extracts client data from initial intake submissions</li>
-                  <li><strong>POA Generator:</strong> Auto-generates Power of Attorney documents from intake data</li>
-                  <li><strong>Citizenship Form Mapper:</strong> Maps intake data to OBY (citizenship application) fields</li>
-                  <li><strong>Family Tree Builder:</strong> Constructs genealogical relationships from provided data</li>
-                  <li><strong>Civil Registry Mapper:</strong> Organizes birth/marriage certificate requests</li>
-                  <li><strong>Form Validator:</strong> Real-time validation of DD.MM.YYYY dates and required fields</li>
-                </ul>
+
+              {/* Translations Agent */}
+              <div className="space-y-3 bg-background/40 backdrop-blur-sm p-4 sm:p-5 md:p-6 rounded-lg border border-primary/10">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Languages className="h-5 w-5 text-primary flex-shrink-0" />
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-semibold">Translations Agent</h3>
+                  <Badge variant="secondary" className="text-xs sm:text-sm">5 Tools</Badge>
+                </div>
+                <p className="text-sm sm:text-base text-muted-foreground">
+                  Handles document translation workflows, certified translator coordination, and quality control.
+                </p>
+                <div className="space-y-2">
+                  <p className="text-sm sm:text-base font-medium">Tools:</p>
+                  <ul className="text-sm sm:text-base text-muted-foreground space-y-1 list-disc list-inside ml-2 sm:ml-4">
+                    <li><strong>Translation Queue Manager:</strong> Organizes documents needing translation</li>
+                    <li><strong>AI Translation Service:</strong> Provides initial machine translations</li>
+                    <li><strong>Sworn Translator Matcher:</strong> Connects to certified Polish translators</li>
+                    <li><strong>Quality Checker:</strong> Independent review of translations</li>
+                    <li><strong>Document Language Detector:</strong> Identifies source language automatically</li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Archives Agent */}
+              <div className="space-y-3 bg-background/40 backdrop-blur-sm p-4 sm:p-5 md:p-6 rounded-lg border border-primary/10">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Archive className="h-5 w-5 text-primary flex-shrink-0" />
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-semibold">Archives Agent</h3>
+                  <Badge variant="secondary" className="text-xs sm:text-sm">4 Tools</Badge>
+                </div>
+                <p className="text-sm sm:text-base text-muted-foreground">
+                  Manages Polish and international archives searches for historical documents.
+                </p>
+                <div className="space-y-2">
+                  <p className="text-sm sm:text-base font-medium">Tools:</p>
+                  <ul className="text-sm sm:text-base text-muted-foreground space-y-1 list-disc list-inside ml-2 sm:ml-4">
+                    <li><strong>Archive Request Generator:</strong> Creates formal Polish archive requests</li>
+                    <li><strong>International Search Coordinator:</strong> Manages searches outside Poland</li>
+                    <li><strong>Document Receipt Tracker:</strong> Monitors incoming archival documents</li>
+                    <li><strong>Relevance Evaluator:</strong> Determines which documents to file in case</li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Documents Agent */}
+              <div className="space-y-3 bg-background/40 backdrop-blur-sm p-4 sm:p-5 md:p-6 rounded-lg border border-primary/10">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <FileCheck className="h-5 w-5 text-primary flex-shrink-0" />
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-semibold">Documents Agent</h3>
+                  <Badge variant="secondary" className="text-xs sm:text-sm">3 Tools</Badge>
+                </div>
+                <p className="text-sm sm:text-base text-muted-foreground">
+                  Tracks required documents, monitors collection status, and coordinates USC workflows.
+                </p>
+                <div className="space-y-2">
+                  <p className="text-sm sm:text-base font-medium">Tools:</p>
+                  <ul className="text-sm sm:text-base text-muted-foreground space-y-1 list-disc list-inside ml-2 sm:ml-4">
+                    <li><strong>Doc Radar:</strong> Real-time tracking of 7 document categories (AP, F, M, PGF, PGM, MGF, MGM)</li>
+                    <li><strong>USC Workflow Manager:</strong> Handles umiejscowienie and uzupełnienie requests</li>
+                    <li><strong>Translation Flag System:</strong> Automatically flags non-Polish documents</li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* WSC Letter Agent */}
+              <div className="space-y-3 bg-background/40 backdrop-blur-sm p-4 sm:p-5 md:p-6 rounded-lg border border-primary/10">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Award className="h-5 w-5 text-primary flex-shrink-0" />
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-semibold">WSC Letter Agent</h3>
+                  <Badge variant="secondary" className="text-xs sm:text-sm">2 Tools</Badge>
+                </div>
+                <p className="text-sm sm:text-base text-muted-foreground">
+                  Processes official letters from WSC (Masovian Voivoda's office) and manages response strategies.
+                </p>
+                <div className="space-y-2">
+                  <p className="text-sm sm:text-base font-medium">Tools:</p>
+                  <ul className="text-sm sm:text-base text-muted-foreground space-y-1 list-disc list-inside ml-2 sm:ml-4">
+                    <li><strong>Letter OCR Parser:</strong> Extracts date, reference number, and deadline from WSC letters</li>
+                    <li><strong>Strategy Recommender:</strong> Suggests PUSH/NUDGE/SITDOWN approaches based on letter content</li>
+                  </ul>
+                </div>
               </div>
             </div>
+          </div>
 
-            <Separator />
-
-            {/* Translations Agent */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <Languages className="h-5 w-5 text-primary" />
-                <h3 className="text-xl font-semibold">Translations Agent</h3>
-                <Badge variant="outline">5 Tools</Badge>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Handles document translation workflows, prioritization, and certified translator coordination.
-              </p>
-              <div className="ml-7 space-y-2">
-                <p className="text-sm font-medium">Tools:</p>
-                <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
-                  <li><strong>Translation Queue Manager:</strong> Prioritizes documents needing translation by urgency</li>
-                  <li><strong>AI Translation Engine:</strong> Provides initial automated translations for review</li>
-                  <li><strong>Sworn Translator Router:</strong> Assigns documents to certified Polish translators</li>
-                  <li><strong>Translation Validator:</strong> Double-checks translations for errors</li>
-                  <li><strong>Certificate Generator:</strong> Creates sworn translation certificates</li>
-                </ul>
-              </div>
+          {/* Workflows Section */}
+          <div className="space-y-6">
+            <div className="flex items-center gap-3 border-b border-primary/20 pb-3">
+              <Workflow className="h-6 w-6 md:h-7 md:w-7 text-primary" />
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">Workflows</h2>
+              <Badge variant="outline" className="ml-auto">6 Total</Badge>
             </div>
-
-            <Separator />
-
-            {/* Archives Agent */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <Archive className="h-5 w-5 text-primary" />
-                <h3 className="text-xl font-semibold">Archives Agent</h3>
-                <Badge variant="outline">4 Tools</Badge>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Coordinates searches across Polish and international archives to locate historical documents.
-              </p>
-              <div className="ml-7 space-y-2">
-                <p className="text-sm font-medium">Tools:</p>
-                <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
-                  <li><strong>Archive Letter Generator:</strong> Creates official requests in Polish for archive offices</li>
-                  <li><strong>USC Workflow Manager:</strong> Handles umiejscowienie and uzupełnienie processes</li>
-                  <li><strong>Partner Coordination:</strong> Connects with local search partners</li>
-                  <li><strong>Results Tracker:</strong> Monitors status of pending archive requests</li>
-                </ul>
-              </div>
-            </div>
-
-            <Separator />
-
-            {/* Documents Agent */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <FileCheck className="h-5 w-5 text-primary" />
-                <h3 className="text-xl font-semibold">Documents Agent</h3>
-                <Badge variant="outline">4 Tools</Badge>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Monitors document collection status across all 7 family members (AP, F, M, PGF, PGM, MGF, MGM).
-              </p>
-              <div className="ml-7 space-y-2">
-                <p className="text-sm font-medium">Tools:</p>
-                <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
-                  <li><strong>Doc Radar:</strong> Tracks which documents are present/missing for each family member</li>
-                  <li><strong>Translation Flag Engine:</strong> Auto-creates tasks when documents aren't in Polish</li>
-                  <li><strong>OCR Scanner:</strong> Extracts data from passport/document images</li>
-                  <li><strong>Evidence Bundle Generator:</strong> Creates organized PDF packages with TOC</li>
-                </ul>
-              </div>
-            </div>
-
-            <Separator />
-
-            {/* WSC Letter Agent */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <Award className="h-5 w-5 text-primary" />
-                <h3 className="text-xl font-semibold">WSC Letter Agent</h3>
-                <Badge variant="outline">2 Tools</Badge>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Processes official letters from WSC (Masovian Voivoda's office) and manages response strategies.
-              </p>
-              <div className="ml-7 space-y-2">
-                <p className="text-sm font-medium">Tools:</p>
-                <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
-                  <li><strong>Letter OCR Parser:</strong> Extracts date, reference number, and deadline from WSC letters</li>
-                  <li><strong>Strategy Recommender:</strong> Suggests PUSH/NUDGE/SITDOWN approaches based on letter content</li>
-                </ul>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Workflows Section */}
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Workflow className="h-6 w-6 text-primary" />
-              <CardTitle>Workflows (6 Total)</CardTitle>
-            </div>
-            <CardDescription>
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground">
               End-to-end processes that guide cases through different stages of the citizenship journey
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {/* Translations Workflow */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <Languages className="h-5 w-5 text-primary" />
-                <h3 className="text-xl font-semibold">Translations Workflow</h3>
-                <Badge>PART 8</Badge>
+            </p>
+            
+            <div className="space-y-6">
+              {/* Translations Workflow */}
+              <div className="space-y-3 bg-background/40 backdrop-blur-sm p-4 sm:p-5 md:p-6 rounded-lg border border-primary/10">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-semibold">Translations Workflow</h3>
+                <p className="text-sm sm:text-base text-muted-foreground">
+                  Complete document translation pipeline from intake to certified delivery.
+                </p>
+                <div className="space-y-2">
+                  <h4 className="text-sm sm:text-base font-semibold">Process Steps:</h4>
+                  <ol className="text-sm sm:text-base text-muted-foreground space-y-1 list-decimal list-inside ml-2 sm:ml-4">
+                    <li>Document language auto-detection</li>
+                    <li>Queue placement with priority assignment</li>
+                    <li>AI-powered initial translation</li>
+                    <li>Certified sworn translator assignment</li>
+                    <li>Independent quality review</li>
+                    <li>Client approval and filing</li>
+                  </ol>
+                </div>
+                <div className="space-y-2">
+                  <h4 className="text-sm sm:text-base font-semibold">Key Features:</h4>
+                  <ul className="text-sm sm:text-base text-muted-foreground space-y-1 list-disc list-inside ml-2 sm:ml-4">
+                    <li>Automatic flagging of non-Polish documents</li>
+                    <li>Task generation for HAC review</li>
+                    <li>Integration with Polish sworn translators</li>
+                  </ul>
+                </div>
               </div>
-              <p className="text-sm text-muted-foreground">
-                <strong>Process:</strong> Document upload → AI translation → Certified translator review → Double-check by independent agent → Submission
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <strong>Key Features:</strong> Prioritization queue, automatic flagging of non-Polish documents, sworn translator certification tracking
-              </p>
-            </div>
 
-            <Separator />
-
-            {/* Archives Search Workflow */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <Archive className="h-5 w-5 text-primary" />
-                <h3 className="text-xl font-semibold">Archives Search Workflow</h3>
-                <Badge>PART 7</Badge>
+              {/* Other workflows would continue here */}
+              <div className="space-y-3 bg-background/40 backdrop-blur-sm p-4 sm:p-5 md:p-6 rounded-lg border border-primary/10">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-semibold">Data Security & Infrastructure</h3>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <h4 className="text-sm sm:text-base font-semibold">Data Security</h4>
+                    <ul className="text-sm sm:text-base text-muted-foreground space-y-1 list-disc list-inside">
+                      <li>Passport number masking (by role)</li>
+                      <li>Row Level Security (RLS) enabled</li>
+                      <li>Input validation on all forms</li>
+                      <li>Unsaved changes browser warning</li>
+                      <li>Real-time sync across sessions</li>
+                    </ul>
+                  </div>
+                  <div className="space-y-2">
+                    <h4 className="text-sm sm:text-base font-semibold">Case Organization</h4>
+                    <ul className="text-sm sm:text-base text-muted-foreground space-y-1 list-disc list-inside">
+                      <li>Hybrid naming system (migration scanner)</li>
+                      <li>KPI tracking dashboard</li>
+                      <li>Document completion % badges</li>
+                      <li>Stage timeline visualization</li>
+                      <li>HAC oversight logging</li>
+                    </ul>
+                  </div>
+                </div>
               </div>
-              <p className="text-sm text-muted-foreground">
-                <strong>Process:</strong> Polish archives search → International archives search → Family possessions search → Partner coordination → Document retrieval → Translation → Filing
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <strong>Key Features:</strong> Generates official Polish letters for archive offices, USC workflows (umiejscowienie/uzupełnienie), partner integration
-              </p>
-            </div>
 
-            <Separator />
-
-            {/* Documents Collection Workflow */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <FileCheck className="h-5 w-5 text-primary" />
-                <h3 className="text-xl font-semibold">Documents Collection Workflow</h3>
-                <Badge>PART 6</Badge>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                <strong>Process:</strong> Documents list clarification → Local documents gathering → Partner assistance → Document examination → Translation selection → Filing
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <strong>Key Features:</strong> Doc Radar (7 family members), translation flag engine, OCR for passport/document scanning
-              </p>
-            </div>
-
-            <Separator />
-
-            {/* Polish Civil Acts Workflow */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <FileCheck className="h-5 w-5 text-primary" />
-                <h3 className="text-xl font-semibold">Polish Civil Acts Workflow</h3>
-                <Badge>PART 10</Badge>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                <strong>Process:</strong> Prepare applications → Payment collection → Submit to Polish Civil Registry → Receive birth/marriage certificates
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <strong>Key Features:</strong> Dedicated civil acts agent supervision, automated payment tracking
-              </p>
-            </div>
-
-            <Separator />
-
-            {/* Polish Citizenship Workflow */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <Award className="h-5 w-5 text-primary" />
-                <h3 className="text-xl font-semibold">Polish Citizenship Workflow</h3>
-                <Badge>PART 13</Badge>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                <strong>Process:</strong> Initial response evaluation → Evidence submission → WSC letter management → Push schemes (PUSH/NUDGE/SITDOWN) → Confirmation decision
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <strong>Key Features:</strong> WSC letter OCR parsing, strategy recommendation, term extensions, appeal preparation (if needed)
-              </p>
-            </div>
-
-            <Separator />
-
-            {/* Polish Passport Workflow */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <Plane className="h-5 w-5 text-primary" />
-                <h3 className="text-xl font-semibold">Polish Passport Workflow</h3>
-                <Badge>PART 14</Badge>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                <strong>Process:</strong> Prepare documents → Final payment → FedEx shipment → Consulate appointment scheduling → Passport application → Passport obtained
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <strong>Key Features:</strong> Consulate kit generation (passport checklist), appointment coordination
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Forms Section */}
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Database className="h-6 w-6 text-primary" />
-              <CardTitle>Forms & Data Structure (6 Forms)</CardTitle>
-            </div>
-            <CardDescription>
-              All forms use unified architecture with auto-save, validation, and real-time synchronization
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {/* Intake Form */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <FileText className="h-5 w-5 text-primary" />
-                <h3 className="text-xl font-semibold">1. Intake Form</h3>
-                <Badge variant="outline">PART 3-4</Badge>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                <strong>Purpose:</strong> Universal client intake wizard for collecting initial information
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <strong>Database Table:</strong> <code>intake_forms</code>
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <strong>Key Fields:</strong> Passport data (OCR auto-fill), basic details, address, phone, essential family history, "I don't know" fields
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <strong>Data Flow:</strong> Intake → POA generation → Citizenship form → Family Tree → Civil Registry
-              </p>
-            </div>
-
-            <Separator />
-
-            {/* POA Form */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <FileText className="h-5 w-5 text-primary" />
-                <h3 className="text-xl font-semibold">2. POA Form (Power of Attorney)</h3>
-                <Badge variant="outline">PART 4</Badge>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                <strong>Purpose:</strong> Legal authorization for representing clients in Polish citizenship proceedings
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <strong>Database Table:</strong> <code>poa_forms</code>
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <strong>Key Fields:</strong> Client details (auto-filled from intake), e-signature capability, HAC approval tracking
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <strong>Workflow:</strong> Auto-generated from intake → Client e-sign → FedEx to Warsaw → HAC approval → Marked valid
-              </p>
-            </div>
-
-            <Separator />
-
-            {/* Citizenship Form */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <FileText className="h-5 w-5 text-primary" />
-                <h3 className="text-xl font-semibold">3. Citizenship Form (OBY)</h3>
-                <Badge variant="outline">PART 5</Badge>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                <strong>Purpose:</strong> Complete Polish citizenship application (Wniosek o stwierdzenie posiadania obywatelstwa polskiego)
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <strong>Database Table:</strong> <code>citizenship_forms</code>
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <strong>Key Fields:</strong> ~140 fields including personal data, family history, residential addresses, Polish ancestor details
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <strong>Workflow:</strong> Intake auto-populates draft → HAC review/approval → Submitted to WSC → Status: "Filed"
-              </p>
-            </div>
-
-            <Separator />
-
-            {/* Family Tree Form */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <GitBranch className="h-5 w-5 text-primary" />
-                <h3 className="text-xl font-semibold">4. Family Tree Form</h3>
-                <Badge variant="outline">PART 1</Badge>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                <strong>Purpose:</strong> Visual genealogical mapping for eligibility determination
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <strong>Database Table:</strong> <code>family_tree_forms</code>
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <strong>Key Fields:</strong> 7 family members (AP, F, M, PGF, PGM, MGF, MGM), relationships, birth/death dates, citizenship status
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <strong>Use Case:</strong> Citizenship test → Eligibility examination (yes/maybe/no) → Case difficulty evaluation (1-10 scale)
-              </p>
-            </div>
-
-            <Separator />
-
-            {/* Civil Registry Form */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <FileText className="h-5 w-5 text-primary" />
-                <h3 className="text-xl font-semibold">5. Civil Registry Form</h3>
-                <Badge variant="outline">PART 10</Badge>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                <strong>Purpose:</strong> Organizing requests for Polish birth and marriage certificates
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <strong>Database Table:</strong> <code>civil_registry_forms</code>
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <strong>Key Fields:</strong> Person details, event type (birth/marriage), registry office location, request status
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <strong>Workflow:</strong> Applications prepared → Payment → Submit to Polish Civil Registry → Receive certificates
-              </p>
-            </div>
-
-            <Separator />
-
-            {/* Master Data Table */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <Database className="h-5 w-5 text-primary" />
-                <h3 className="text-xl font-semibold">6. Master Data Table</h3>
-                <Badge variant="outline">PART 5</Badge>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                <strong>Purpose:</strong> Comprehensive data collection for case processing
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <strong>Database Table:</strong> <code>master_data_forms</code>
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <strong>Key Fields:</strong> All data needed to process case in full (filled by client on portal account)
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <strong>Integration:</strong> Central data source for AI agent to generate all paperwork
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Technical Infrastructure */}
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Zap className="h-6 w-6 text-primary" />
-              <CardTitle>Technical Infrastructure</CardTitle>
-            </div>
-            <CardDescription>
-              Shared services and utilities powering the entire system
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-2">
-              <div className="space-y-2">
-                <h4 className="font-semibold">Form Management</h4>
-                <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
-                  <li><code>useFormManager</code>: Universal form hook</li>
-                  <li><code>useAutoSave</code>: 30-second debounced auto-save</li>
-                  <li><code>useFieldValidation</code>: DD.MM.YYYY date validation</li>
-                  <li><code>FormValidationSummary</code>: Error count display</li>
-                  <li><code>AutosaveIndicator</code>: Save status indicator</li>
-                </ul>
-              </div>
-              <div className="space-y-2">
-                <h4 className="font-semibold">Data Security</h4>
-                <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
-                  <li>Passport number masking (by role)</li>
-                  <li>Row Level Security (RLS) enabled</li>
-                  <li>Input validation on all forms</li>
-                  <li>Unsaved changes browser warning</li>
-                  <li>Real-time sync across sessions</li>
-                </ul>
-              </div>
-              <div className="space-y-2">
-                <h4 className="font-semibold">Case Organization</h4>
-                <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
-                  <li>Hybrid naming system (migration scanner)</li>
-                  <li>KPI tracking dashboard</li>
-                  <li>Document completion % badges</li>
-                  <li>Stage timeline visualization</li>
-                  <li>HAC oversight logging</li>
-                </ul>
-              </div>
-              <div className="space-y-2">
-                <h4 className="font-semibold">Integrations</h4>
-                <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
-                  <li>Partner API (POST intake, GET status)</li>
-                  <li>Typeform → Case creation</li>
-                  <li>Dropbox sync & migration</li>
-                  <li>Email notifications (welcome, updates)</li>
-                  <li>Magic link authentication</li>
+              <div className="space-y-3 bg-background/40 backdrop-blur-sm p-4 sm:p-5 md:p-6 rounded-lg border border-primary/10">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-semibold">Integrations</h3>
+                <ul className="text-sm sm:text-base text-muted-foreground space-y-1 list-disc list-inside ml-2 sm:ml-4">
+                  <li><strong>Partner API:</strong> POST intake, GET status</li>
+                  <li><strong>Typeform:</strong> Automatic case creation from form submissions</li>
+                  <li><strong>Dropbox:</strong> Sync & migration capabilities</li>
+                  <li><strong>Email notifications:</strong> Welcome messages and status updates</li>
+                  <li><strong>Magic link authentication:</strong> Secure client access</li>
                 </ul>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
 
-        {/* System Metrics */}
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Users className="h-6 w-6 text-primary" />
-              <CardTitle>System Metrics</CardTitle>
+          {/* System Metrics */}
+          <div className="space-y-6">
+            <div className="flex items-center gap-3 border-b border-primary/20 pb-3">
+              <Users className="h-6 w-6 md:h-7 md:w-7 text-primary" />
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">System Metrics</h2>
             </div>
-            <CardDescription>
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground">
               Current production readiness status
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-4 md:grid-cols-3">
-              <div className="text-center space-y-2 p-4 border rounded-lg">
-                <div className="text-3xl font-bold text-primary">21</div>
-                <div className="text-sm text-muted-foreground">AI Agent Tools</div>
+            </p>
+            
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="text-center space-y-2 p-4 sm:p-6 bg-background/40 backdrop-blur-sm border border-primary/10 rounded-lg">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary">21</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">AI Agent Tools</div>
               </div>
-              <div className="text-center space-y-2 p-4 border rounded-lg">
-                <div className="text-3xl font-bold text-primary">6</div>
-                <div className="text-sm text-muted-foreground">Active Workflows</div>
+              <div className="text-center space-y-2 p-4 sm:p-6 bg-background/40 backdrop-blur-sm border border-primary/10 rounded-lg">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary">6</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Active Workflows</div>
               </div>
-              <div className="text-center space-y-2 p-4 border rounded-lg">
-                <div className="text-3xl font-bold text-primary">6</div>
-                <div className="text-sm text-muted-foreground">Unified Forms</div>
+              <div className="text-center space-y-2 p-4 sm:p-6 bg-background/40 backdrop-blur-sm border border-primary/10 rounded-lg">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary">6</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Unified Forms</div>
               </div>
-              <div className="text-center space-y-2 p-4 border rounded-lg">
-                <div className="text-3xl font-bold text-primary">99.7%</div>
-                <div className="text-sm text-muted-foreground">Production Ready</div>
+              <div className="text-center space-y-2 p-4 sm:p-6 bg-background/40 backdrop-blur-sm border border-primary/10 rounded-lg">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary">99.7%</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Production Ready</div>
               </div>
-              <div className="text-center space-y-2 p-4 border rounded-lg">
-                <div className="text-3xl font-bold text-primary">30s</div>
-                <div className="text-sm text-muted-foreground">Auto-save Interval</div>
+              <div className="text-center space-y-2 p-4 sm:p-6 bg-background/40 backdrop-blur-sm border border-primary/10 rounded-lg">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary">30s</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Auto-save Interval</div>
               </div>
-              <div className="text-center space-y-2 p-4 border rounded-lg">
-                <div className="text-3xl font-bold text-primary">93%</div>
-                <div className="text-sm text-muted-foreground">Big Plan Complete</div>
+              <div className="text-center space-y-2 p-4 sm:p-6 bg-background/40 backdrop-blur-sm border border-primary/10 rounded-lg">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary">93%</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">Big Plan Complete</div>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </AdminLayout>
   );
