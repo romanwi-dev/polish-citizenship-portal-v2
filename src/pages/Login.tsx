@@ -103,18 +103,18 @@ const Login = () => {
           transition={{ duration: 0.8 }}
           className="mb-6"
         >
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4 pb-2 md:pb-6">
-            <h2 className="text-2xl sm:text-3xl md:text-6xl lg:text-8xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text text-center md:text-left flex-1 leading-tight break-words">
-              {isSignUp ? "Create Account" : "Welcome Back"}
-            </h2>
+          <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text text-center leading-tight break-words mb-4">
+            {isSignUp ? "Create Account" : "Welcome Back"}
+          </h2>
+          <div className="flex justify-center">
             <Button
               onClick={toggleFontSize}
               variant="ghost"
               size="icon"
-              className="h-7 w-7 md:h-10 md:w-10"
+              className="h-10 w-10 md:h-12 md:w-12"
               title="Toggle font size"
             >
-              <Type className="h-3.5 w-3.5 md:h-6 md:w-6" />
+              <Type className="h-6 w-6 md:h-8 md:w-8" />
             </Button>
           </div>
         </motion.div>
@@ -251,7 +251,7 @@ const Login = () => {
                   onClick={() => setIsSignUp(!isSignUp)}
                 >
                   <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                    {isSignUp ? "Already have an account? Login" : "Don't have an account? Sign up"}
+                    {isSignUp ? "Already have an account? Login" : "Open an Account / Register"}
                   </span>
                 </Button>
               </motion.div>
