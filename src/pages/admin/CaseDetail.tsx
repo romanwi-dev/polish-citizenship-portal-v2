@@ -305,26 +305,46 @@ export default function CaseDetail() {
           {/* FORMS TAB */}
           <TabsContent value="forms" className="space-y-6">
             <Tabs defaultValue={defaultFormSection} onValueChange={(value) => setSearchParams({ tab: "forms", section: value })}>
-              <TabsList className="flex justify-between gap-0.5 bg-transparent p-0 w-full">
-                <TabsTrigger value="intake" className="flex-shrink-0">
-                  <span className="text-blue-600 dark:text-blue-400">Intake</span>
-                </TabsTrigger>
-                <TabsTrigger value="family-tree" className="flex-shrink-0">
-                  <span className="text-teal-600 dark:text-teal-400">Family Tree</span>
-                </TabsTrigger>
-                <TabsTrigger value="family-history" className="flex-shrink-0">
-                  <span className="text-blue-600 dark:text-blue-400">Family History</span>
-                </TabsTrigger>
-                <TabsTrigger value="poa" className="flex-shrink-0">
-                  <span className="text-gray-600 dark:text-gray-400">POA</span>
-                </TabsTrigger>
-                <TabsTrigger value="citizenship" className="flex-shrink-0">
-                  <span className="text-blue-700 dark:text-blue-300">Citizenship</span>
-                </TabsTrigger>
-                <TabsTrigger value="civil-registry" className="flex-shrink-0">
-                  <span className="text-emerald-600 dark:text-emerald-400">Civil Registry</span>
-                </TabsTrigger>
-              </TabsList>
+              <div className="w-full overflow-x-auto scrollbar-hide">
+                <TabsList className="inline-flex gap-0.5 bg-transparent p-0 w-max min-w-full">
+                  <TabsTrigger 
+                    value="intake" 
+                    className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-card/80 hover:bg-card/90 hover:shadow-[0_0_40px_hsl(221_83%_53%_/_0.4)] transition-all group relative backdrop-blur-md border border-white/30 data-[state=active]:bg-card flex-shrink-0 md:flex-1"
+                  >
+                    <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Intake</span>
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="family-tree" 
+                    className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-card/80 hover:bg-card/90 hover:shadow-[0_0_40px_hsl(221_83%_53%_/_0.4)] transition-all group relative backdrop-blur-md border border-white/30 data-[state=active]:bg-card flex-shrink-0 md:flex-1"
+                  >
+                    <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Family Tree</span>
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="family-history" 
+                    className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-card/80 hover:bg-card/90 hover:shadow-[0_0_40px_hsl(221_83%_53%_/_0.4)] transition-all group relative backdrop-blur-md border border-white/30 data-[state=active]:bg-card flex-shrink-0 md:flex-1"
+                  >
+                    <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Family History</span>
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="poa" 
+                    className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-card/80 hover:bg-card/90 hover:shadow-[0_0_40px_hsl(221_83%_53%_/_0.4)] transition-all group relative backdrop-blur-md border border-white/30 data-[state=active]:bg-card flex-shrink-0 md:flex-1"
+                  >
+                    <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">POA</span>
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="citizenship" 
+                    className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-card/80 hover:bg-card/90 hover:shadow-[0_0_40px_hsl(221_83%_53%_/_0.4)] transition-all group relative backdrop-blur-md border border-white/30 data-[state=active]:bg-card flex-shrink-0 md:flex-1"
+                  >
+                    <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Citizenship</span>
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="civil-registry" 
+                    className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-card/80 hover:bg-card/90 hover:shadow-[0_0_40px_hsl(221_83%_53%_/_0.4)] transition-all group relative backdrop-blur-md border border-white/30 data-[state=active]:bg-card flex-shrink-0 md:flex-1"
+                  >
+                    <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Civil Registry</span>
+                  </TabsTrigger>
+                </TabsList>
+              </div>
 
               <TabsContent value="intake" className="mt-6">
                 <Suspense fallback={<div className="flex items-center justify-center p-12"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
