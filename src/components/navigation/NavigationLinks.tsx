@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Bot, GitBranch, ClipboardList, Users, Archive, Languages, Award, FileCheck, Plane, Palette, Shield, Search, PenTool } from 'lucide-react';
+import { Bot, GitBranch, ClipboardList, Users, Archive, Languages, Award, FileCheck, Plane, BookOpen, Shield, Search, PenTool } from 'lucide-react';
 
 interface NavigationLinksProps {
   onNavigate: () => void;
@@ -55,7 +55,7 @@ const NAVIGATION_SECTIONS: Array<{
       { label: 'Family Tree', href: '/admin/family-tree', icon: GitBranch },
       { label: 'Client Intake', href: '/admin/intake', icon: ClipboardList },
       { label: 'Management', href: '/admin/cases', icon: Users },
-      { label: '3D Backgrounds', href: '/admin/backgrounds-demo', icon: Palette },
+      { label: 'System Overview', href: '/admin/system-overview', icon: BookOpen },
     ]
   }
 ];

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, User, Sparkles, Languages, Image, Settings, Plus, Mic, Zap, Upload, Share2, LogIn, LogOut } from "lucide-react";
+import { Menu, User, Sparkles, Languages, BookOpen, Settings, Plus, Mic, Zap, Upload, Share2, LogIn, LogOut } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { useAuth } from "@/hooks/useAuth";
 import { MobileNavigationSheet } from "@/components/MobileNavigationSheet";
@@ -90,6 +90,14 @@ const Navigation = () => {
               <Languages className="h-4 w-4 md:h-5 md:w-5 text-foreground" />
             </button>
             <button
+              onClick={() => navigate('/admin/system-overview')}
+              className="h-9 w-9 md:h-11 md:w-11 rounded-full bg-background/5 dark:bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
+              aria-label="System Overview"
+              title="System Overview"
+            >
+              <BookOpen className="h-4 w-4 md:h-5 md:w-5 text-foreground" />
+            </button>
+            <button
               onClick={() => navigate('/admin/cases')}
               className="h-9 w-9 md:h-11 md:w-11 rounded-full bg-background/5 dark:bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
               aria-label="Management"
@@ -144,13 +152,14 @@ const Navigation = () => {
                           </button>
                           <button 
                             onClick={() => {
-                              navigate('/admin/hero-backgrounds-demo');
+                              navigate('/admin/system-overview');
                               setIsMobileMenuOpen(false);
                             }}
                             className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
-                            aria-label="Upload image"
+                            aria-label="System Overview"
+                            title="System Overview"
                           >
-                            <Image className="h-5 w-5 text-foreground/30" />
+                            <BookOpen className="h-5 w-5 text-foreground/30" />
                           </button>
                           <button 
                             className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
