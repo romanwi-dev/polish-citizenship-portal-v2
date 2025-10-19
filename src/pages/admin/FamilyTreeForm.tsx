@@ -362,7 +362,7 @@ export default function FamilyTreeForm() {
           className="mb-1 md:mb-6"
         >
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4 pb-2 md:pb-6">
-            <h2 className="text-2xl sm:text-3xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text text-center md:text-left flex-1 leading-tight break-words">
+            <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-8xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text text-center flex-1 leading-tight whitespace-nowrap">
               Family Tree
             </h2>
             <div className="flex items-center justify-between md:justify-end gap-1 md:gap-3">
