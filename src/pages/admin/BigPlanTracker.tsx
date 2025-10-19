@@ -357,61 +357,64 @@ export default function BigPlanTracker() {
     })
   })).filter(part => part.steps.length > 0);
 
+  const notStartedSteps = totalSteps - completedSteps - partialSteps;
+
   return (
     <AdminLayout>
-      <div className="container mx-auto p-6 space-y-6">
+      <div className="container mx-auto px-4 py-8 max-w-7xl space-y-8">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-              Big Plan Tracker
-            </h1>
-            <p className="text-sm sm:text-base text-muted-foreground mt-2">
-              AI Agent Build Sequence
-            </p>
-          </div>
-          <Button
-            variant="outline"
-            size="sm"
-            className="w-full sm:w-auto"
-            onClick={() => window.open("/BIG_PLAN_STATUS.md", "_blank")}
-          >
-            <FileText className="h-4 w-4 sm:mr-2" />
-            <span className="hidden sm:inline">View Full Documentation</span>
-          </Button>
+        <div className="space-y-2">
+          <h1 className="text-4xl font-bold text-primary">
+            Big Plan Tracker
+          </h1>
+          <p className="text-lg text-muted-foreground">
+            AI Agent Build Sequence
+          </p>
         </div>
 
+        {/* Document Icon Card */}
+        <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
+          <CardContent className="flex items-center justify-center py-12">
+            <FileText className="h-16 w-16 text-muted-foreground/40" />
+          </CardContent>
+        </Card>
+
         {/* Overall Progress Card */}
-        <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="h-5 w-5" />
-              Overall Progress
-            </CardTitle>
-            <CardDescription>
-              {completedSteps} complete • {partialSteps} partial • {totalSteps - completedSteps - partialSteps} not started
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xs sm:text-sm font-medium">Total Completion</span>
-                <span className="text-xl sm:text-2xl font-bold">{overallProgress}%</span>
+        <Card className="border-border bg-card">
+          <CardContent className="pt-6 space-y-6">
+            {/* Header */}
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <TrendingUp className="h-5 w-5 text-primary" />
+                <h2 className="text-xl font-semibold">Overall Progress</h2>
               </div>
-              <Progress value={overallProgress} className="h-2 sm:h-3" />
+              <p className="text-sm text-muted-foreground">
+                {completedSteps} complete • {partialSteps} partial • {notStartedSteps} not started
+              </p>
             </div>
-            <div className="grid grid-cols-3 gap-2 sm:gap-4 pt-2">
-              <div className="text-center">
-                <div className="text-lg sm:text-2xl font-bold text-success">{completedSteps}</div>
-                <div className="text-xs text-muted-foreground">Complete</div>
+
+            {/* Total Completion Bar */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-muted-foreground">Total Completion</span>
+                <span className="text-4xl font-bold">{overallProgress}%</span>
               </div>
-              <div className="text-center">
-                <div className="text-lg sm:text-2xl font-bold text-warning">{partialSteps}</div>
-                <div className="text-xs text-muted-foreground">Partial</div>
+              <Progress value={overallProgress} className="h-3" />
+            </div>
+
+            {/* Stats Grid */}
+            <div className="grid grid-cols-3 gap-6 pt-4">
+              <div className="text-center space-y-1">
+                <div className="text-4xl font-bold text-green-500">{completedSteps}</div>
+                <div className="text-sm text-muted-foreground">Complete</div>
               </div>
-              <div className="text-center">
-                <div className="text-lg sm:text-2xl font-bold text-muted-foreground">{totalSteps - completedSteps - partialSteps}</div>
-                <div className="text-xs text-muted-foreground">Not Started</div>
+              <div className="text-center space-y-1">
+                <div className="text-4xl font-bold text-orange-500">{partialSteps}</div>
+                <div className="text-sm text-muted-foreground">Partial</div>
+              </div>
+              <div className="text-center space-y-1">
+                <div className="text-4xl font-bold text-muted-foreground/60">{notStartedSteps}</div>
+                <div className="text-sm text-muted-foreground">Not Started</div>
               </div>
             </div>
           </CardContent>
