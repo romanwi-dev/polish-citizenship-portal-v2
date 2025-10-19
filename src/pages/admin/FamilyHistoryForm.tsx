@@ -113,6 +113,15 @@ export default function FamilyHistoryForm() {
               >
                 <Type className="h-3.5 w-3.5 md:h-6 md:w-6" />
               </Button>
+              <Button
+                onClick={() => window.open('https://docs.lovable.dev', '_blank')}
+                variant="ghost"
+                size="icon"
+                className="h-7 w-7 md:h-10 md:w-10"
+                title="Help"
+              >
+                <BookOpen className="h-3.5 w-3.5 md:h-6 md:w-6" />
+              </Button>
             </div>
           </div>
         </motion.div>
