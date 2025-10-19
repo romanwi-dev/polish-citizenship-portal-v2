@@ -154,16 +154,27 @@ const Login = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value.toLowerCase())}
                   required
-                  className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur"
+                  className="h-16 md:h-20 border-2 hover:border-transparent focus:border-transparent transition-all duration-300 backdrop-blur font-normal font-input-work w-full bg-blue-50/45 dark:bg-blue-950/40 border-blue-200/30 dark:border-blue-800/30"
                   style={{ 
-                    fontSize: '0.75rem',
+                    fontSize: '24px',
                     boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
+                    transition: "all 0.3s ease"
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
+                    e.currentTarget.style.transform = "translateY(-2px)";
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+                    e.currentTarget.style.transform = "translateY(0)";
+                  }}
+                  onFocus={(e) => {
+                    e.currentTarget.style.boxShadow = "0 0 60px hsla(221, 83%, 53%, 0.4)";
+                    e.currentTarget.style.transform = "translateY(-2px)";
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+                    e.currentTarget.style.transform = "translateY(0)";
                   }}
                 />
               </motion.div>
@@ -190,16 +201,27 @@ const Login = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur"
+                  className="h-16 md:h-20 border-2 hover:border-transparent focus:border-transparent transition-all duration-300 backdrop-blur font-normal font-input-work w-full bg-blue-50/45 dark:bg-blue-950/40 border-blue-200/30 dark:border-blue-800/30"
                   style={{ 
-                    fontSize: '0.75rem',
+                    fontSize: '24px',
                     boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
+                    transition: "all 0.3s ease"
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
+                    e.currentTarget.style.transform = "translateY(-2px)";
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+                    e.currentTarget.style.transform = "translateY(0)";
+                  }}
+                  onFocus={(e) => {
+                    e.currentTarget.style.boxShadow = "0 0 60px hsla(221, 83%, 53%, 0.4)";
+                    e.currentTarget.style.transform = "translateY(-2px)";
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+                    e.currentTarget.style.transform = "translateY(0)";
                   }}
                 />
                 
