@@ -249,7 +249,7 @@ export default function CitizenshipForm() {
             <h2 className="text-2xl sm:text-3xl md:text-6xl lg:text-8xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text text-center md:text-left flex-1 leading-tight break-words">
               Citizenship Application
             </h2>
-            <div className="flex items-center gap-1 md:gap-3 justify-center md:justify-end">
+            <div className="flex items-center justify-between md:justify-end gap-1 md:gap-3">
               <Button
                 onClick={() => navigate('/admin/forms-demo')}
                 variant="ghost"
