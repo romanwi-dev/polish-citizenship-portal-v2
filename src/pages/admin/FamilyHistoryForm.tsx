@@ -82,7 +82,7 @@ export default function FamilyHistoryForm() {
                 variant="ghost"
                 size="icon"
                 className="h-7 w-7 md:h-10 md:w-10"
-                title="Back to Case"
+                title="Back to Control Room"
               >
                 <ArrowLeft className="h-3.5 w-3.5 md:h-6 md:w-6" />
               </Button>
