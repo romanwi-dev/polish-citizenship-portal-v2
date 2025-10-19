@@ -311,7 +311,7 @@ export default function POAForm() {
         />
 
         {/* POA Forms */}
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="pb-32">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="space-y-6 md:space-y-12 pb-32">
           {/* Main Applicant - First Questions */}
           <>
             <div className="border-b border-border/50 pb-6 pt-6">
@@ -322,7 +322,8 @@ export default function POAForm() {
                 First Questions
               </h3>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full">
+            <div className="px-4 py-6 md:p-10">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-2" onDoubleClick={() => handleInputChange("applicant_sex", null)}>
                   <Label className={isLargeFonts ? "text-2xl" : ""}>Gender</Label>
                   <Select value={formData?.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
@@ -368,9 +369,9 @@ export default function POAForm() {
                       {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
                         <SelectItem key={num} value={num.toString()} className="text-xs cursor-pointer">{num}</SelectItem>
                       ))}
-                    </SelectContent>
-                  </Select>
-                </motion.div>
+                  </SelectContent>
+                </Select>
+              </motion.div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -424,8 +425,9 @@ export default function POAForm() {
                       </SelectContent>
                     </Select>
                   </motion.div>
-                )}
+                  )}
               </div>
+            </div>
           </>
 
           {/* POA Adult */}

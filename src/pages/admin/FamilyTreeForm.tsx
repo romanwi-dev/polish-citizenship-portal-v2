@@ -457,7 +457,6 @@ export default function FamilyTreeForm() {
                   </TabsTrigger>
                 </TabsList>
               </div>
-                <>
                   <TabsContent value="select" className="mt-0" {...(isFullView ? { forceMount: true } : {})}>
           {(activeTab === 'select' || isFullView) && (
           <motion.div initial={{
@@ -468,7 +467,7 @@ export default function FamilyTreeForm() {
           scale: 1
         }} transition={{
           duration: 0.5
-        }} className="">
+        }} className="space-y-6 md:space-y-12">
             {/* Main Applicant - First Questions */}
             <>
               <div className="border-b border-border/50 pb-6 pt-6">
@@ -476,9 +475,10 @@ export default function FamilyTreeForm() {
                   Main Applicant
                 </h2>
                 <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
-                  First Questions
-                </h3>
-              </div>
+                First Questions
+              </h3>
+            </div>
+            <div className="px-4 py-6 md:p-10">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full">
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-2" onDoubleClick={() => handleInputChange("applicant_sex", null)}>
                     <Label className={isLargeFonts ? "text-2xl" : ""}>Gender</Label>
@@ -525,9 +525,9 @@ export default function FamilyTreeForm() {
                         {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
                           <SelectItem key={num} value={num.toString()} className="text-xs cursor-pointer">{num}</SelectItem>
                         ))}
-                      </SelectContent>
-                    </Select>
-                  </motion.div>
+                  </SelectContent>
+                </Select>
+              </motion.div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -582,6 +582,8 @@ export default function FamilyTreeForm() {
                     </motion.div>
                   )}
                 </div>
+              </div>
+            </div>
             </>
           </motion.div>
           )}
