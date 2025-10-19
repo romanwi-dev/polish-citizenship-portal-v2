@@ -105,11 +105,11 @@ export default function IntakeForm() {
           transition={{ duration: 0.8 }}
           className="mb-1 md:mb-6"
         >
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-1 md:gap-4 pb-1 md:pb-6">
-            <h2 className="text-3xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text text-center md:text-left flex-1">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4 pb-2 md:pb-6">
+            <h2 className="text-4xl md:text-6xl lg:text-8xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text text-center flex-1">
               Client Intake
             </h2>
-            <div className="flex items-center gap-1 md:gap-3 justify-center md:justify-end">
+            <div className="flex items-center justify-between md:justify-end gap-1 md:gap-3">
               <Button
                 onClick={() => navigate('/admin/forms-demo')}
                 variant="ghost"
@@ -139,23 +139,21 @@ export default function IntakeForm() {
               </Button>
               <Button
                 onClick={toggleFontSize}
-                size="lg"
                 variant="ghost"
-                className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 z-50 opacity-60 ${
-                  isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:text-primary'
-                }`}
+                size="icon"
+                className="h-7 w-7 md:h-10 md:w-10"
                 title="Toggle font size"
               >
-                <Type className="h-8 w-8" />
+                <Type className="h-3.5 w-3.5 md:h-6 md:w-6" />
               </Button>
               <Button
                 onClick={() => window.open('https://docs.lovable.dev', '_blank')}
-                size="lg"
                 variant="ghost"
-                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 text-2xl font-light opacity-60"
+                size="icon"
+                className="h-7 w-7 md:h-10 md:w-10"
                 title="How to fill this form"
               >
-                ?
+                <HelpCircle className="h-3.5 w-3.5 md:h-6 md:w-6" />
               </Button>
             </div>
           </div>
