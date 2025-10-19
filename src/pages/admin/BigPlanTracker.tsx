@@ -95,32 +95,26 @@ const parts: Part[] = [
       {
         id: 6,
         title: "Universal Intake Wizard",
-        status: "partial",
-        priority: "high",
-        completion: 80,
-        files: ["IntakeForm.tsx", "IntakeDemo.tsx", "ocr-passport"],
-        missing: ["Client-facing version", "EN/PL toggle", "Multi-step wizard", "I don't know options"],
-        estimate: "4-5 hours"
+        status: "complete",
+        completion: 100,
+        files: ["IntakeForm.tsx", "useFormManager.ts", "ocr-passport"],
+        route: "/intake"
       },
       {
         id: 7,
         title: "POA Generation & E-Sign",
-        status: "partial",
-        priority: "high",
-        completion: 70,
-        files: ["POAForm.tsx", "generate-poa"],
-        missing: ["Auto-generation from intake", "E-signature canvas", "Auto-upload to Dropbox"],
-        estimate: "3-4 hours"
+        status: "complete",
+        completion: 100,
+        files: ["POAForm.tsx", "usePOAAutoGeneration.ts", "generate-poa"],
+        route: "/admin/poa"
       },
       {
         id: 8,
         title: "OBY Draft Generation",
-        status: "partial",
-        priority: "critical",
-        completion: 30,
-        files: ["CitizenshipForm.tsx"],
-        missing: ["Auto-population from intake", "Mark as Filed workflow", "HAC approval"],
-        estimate: "4-5 hours"
+        status: "complete",
+        completion: 100,
+        files: ["CitizenshipForm.tsx", "useOBYAutoPopulation.ts"],
+        route: "/admin/citizenship"
       },
       {
         id: 9,
@@ -128,7 +122,7 @@ const parts: Part[] = [
         status: "complete",
         completion: 100,
         files: ["NewCase.tsx"],
-        route: "/admin/cases/new"
+        route: "/admin/new-case"
       }
     ]
   },
@@ -140,11 +134,12 @@ const parts: Part[] = [
       {
         id: 10,
         title: "Documents Engine (Doc Radar)",
-        status: "not-started",
-        priority: "critical",
-        completion: 0,
-        missing: ["Document tracking for 7 family types", "Translation flags", "Archive request generator", "USC workflows"],
-        estimate: "8-10 hours"
+        status: "partial",
+        priority: "high",
+        completion: 60,
+        files: ["DocumentManagement.tsx", "documents table"],
+        missing: ["Translation flags automation", "Archive request generator", "USC workflows"],
+        estimate: "4-6 hours"
       },
       {
         id: 11,
@@ -189,8 +184,7 @@ const parts: Part[] = [
         title: "HAC Logging",
         status: "complete",
         completion: 100,
-        files: ["hac_logs table", "StrategyButtons.tsx"],
-        missing: ["Log viewer UI", "Export to CSV"]
+        files: ["hac_logs table", "StrategyButtons.tsx", "log_hac_action function"]
       },
       {
         id: 15,
@@ -203,17 +197,18 @@ const parts: Part[] = [
       {
         id: 16,
         title: "Nightly Backups",
-        status: "not-started",
+        status: "partial",
         priority: "medium",
-        completion: 0,
-        missing: ["Cron job (2 AM UTC)", "Zip /CASES folder", "Restore capability"],
-        estimate: "4-5 hours"
+        completion: 50,
+        files: ["backup_logs table"],
+        missing: ["Automated cron job", "Restore capability", "Email notifications"],
+        estimate: "3-4 hours"
       },
       {
         id: 17,
         title: "Data Masking",
         status: "not-started",
-        priority: "critical",
+        priority: "high",
         completion: 0,
         missing: ["Mask passport numbers in UI", "Role-based unmasking", "Audit sensitive data in logs"],
         estimate: "3-4 hours"
@@ -221,12 +216,9 @@ const parts: Part[] = [
       {
         id: 18,
         title: "Role Management",
-        status: "partial",
-        priority: "medium",
-        completion: 50,
-        files: ["user_roles table"],
-        missing: ["Permission matrix enforcement", "Route guards", "Feature flags per role"],
-        estimate: "3-4 hours"
+        status: "complete",
+        completion: 100,
+        files: ["user_roles table", "has_role function", "RLS policies"]
       }
     ]
   },
@@ -240,7 +232,7 @@ const parts: Part[] = [
         title: "Magic Link Login",
         status: "complete",
         completion: 100,
-        files: ["ClientLogin.tsx"],
+        files: ["ClientLogin.tsx", "client_portal_access table"],
         route: "/client/login"
       },
       {
@@ -249,7 +241,7 @@ const parts: Part[] = [
         status: "complete",
         completion: 100,
         files: ["ClientDashboard.tsx", "CaseStageVisualization.tsx"],
-        route: "/client/dashboard/:caseId"
+        route: "/client/dashboard"
       },
       {
         id: 21,
@@ -273,6 +265,7 @@ const parts: Part[] = [
         status: "not-started",
         priority: "medium",
         completion: 0,
+        missing: ["Full workflow testing", "Edge case validation", "Performance testing"],
         estimate: "10-12 hours"
       },
       {
@@ -281,6 +274,7 @@ const parts: Part[] = [
         status: "not-started",
         priority: "medium",
         completion: 0,
+        missing: ["Dropbox creation test", "Manual creation test", "Partner API test", "Typeform test"],
         estimate: "2 hours"
       },
       {
@@ -289,6 +283,7 @@ const parts: Part[] = [
         status: "not-started",
         priority: "medium",
         completion: 0,
+        missing: ["Upload test", "OCR extraction test", "Strategy buttons test", "HAC logging test"],
         estimate: "2 hours"
       }
     ]
