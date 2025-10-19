@@ -18,15 +18,12 @@ export default function SystemOverview() {
       <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-background">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12 max-w-7xl">
           {/* Header */}
-          <div className="space-y-3 text-center">
-            <h1 className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight">
+          <div className="space-y-3 text-center mb-16">
+            <h1 className="text-4xl md:text-6xl font-heading font-black mb-14 tracking-tight">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-primary glow-text drop-shadow-2xl">
                 System Overview
               </span>
             </h1>
-            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-3xl mx-auto">
-              Complete technical documentation of the Polish Citizenship Portal AI Agent system
-            </p>
           </div>
 
           {/* AI Agents Section */}
