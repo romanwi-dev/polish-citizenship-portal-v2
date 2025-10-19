@@ -95,33 +95,27 @@ const Login = () => {
 
   return (
     <div className="min-h-screen relative">
-      <div className="container mx-auto py-12 px-4 md:px-6 lg:px-8 relative z-10 max-w-7xl flex items-center justify-center min-h-screen">
-        {/* Sticky Header */}
+      <div className="container mx-auto py-12 px-4 md:px-6 lg:px-8 relative z-10 max-w-7xl">
+        {/* Header */}
         <motion.div 
           initial={{ opacity: 0, y: -50 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ duration: 0.8 }}
-          className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-b border-primary/20"
+          className="mb-6"
         >
-          <div className="pb-6 pt-6">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 container mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
-              <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
-                  {isSignUp ? "Create Account" : "Welcome Back"}
-                </h1>
-              </motion.div>
-              <Button
-                onClick={toggleFontSize}
-                size="lg"
-                variant="ghost"
-                className={`h-16 w-16 rounded-full transition-all ${
-                  isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground'
-                }`}
-                title="Toggle font size"
-              >
-                <Type className="h-8 w-8" />
-              </Button>
-            </div>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4 pb-2 md:pb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-6xl lg:text-8xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text text-center md:text-left flex-1 leading-tight break-words">
+              {isSignUp ? "Create Account" : "Welcome Back"}
+            </h2>
+            <Button
+              onClick={toggleFontSize}
+              variant="ghost"
+              size="icon"
+              className="h-7 w-7 md:h-10 md:w-10"
+              title="Toggle font size"
+            >
+              <Type className="h-3.5 w-3.5 md:h-6 md:w-6" />
+            </Button>
           </div>
         </motion.div>
 
@@ -130,7 +124,7 @@ const Login = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="w-full max-w-3xl mt-32"
+          className="w-full max-w-3xl"
         >
           <div className="p-8 md:p-12">
             <p className="text-center text-lg text-muted-foreground mb-8">
@@ -160,8 +154,17 @@ const Login = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value.toLowerCase())}
                   required
-                  className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
-                  style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                  className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur"
+                  style={{ 
+                    fontSize: '0.75rem',
+                    boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+                  }}
                 />
               </motion.div>
 
@@ -187,8 +190,17 @@ const Login = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur"
-                  style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                  className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur"
+                  style={{ 
+                    fontSize: '0.75rem',
+                    boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+                  }}
                 />
                 
                 {isSignUp && <PasswordStrengthMeter 
