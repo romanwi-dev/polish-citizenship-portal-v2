@@ -67,8 +67,8 @@ const Navigation = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <a href="/" className="flex items-center">
-            <img src={logo} alt="PolishCitizenship.pl" className="h-8 w-auto object-contain" style={{ background: 'transparent' }} />
+          <a href="/" className="flex items-center bg-transparent">
+            <img src={logo} alt="PolishCitizenship.pl" className="h-8 w-auto object-contain bg-transparent" />
           </a>
 
           {/* User Icon & Desktop/Mobile Menu */}
