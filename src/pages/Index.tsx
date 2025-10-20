@@ -90,13 +90,13 @@ const Index = () => {
         <ServicesWeb3 />
       </Suspense>
       
-      <div ref={timelineRef} className="min-h-screen">
+      <div ref={timelineRef} style={{ minHeight: '350rem' }}>
         {timelineInView ? (
           <Suspense fallback={<SectionLoader />}>
             <TimelineProcessEnhanced />
           </Suspense>
         ) : (
-          <div className="h-screen" />
+          <div style={{ height: '350rem' }} />
         )}
       </div>
       
@@ -104,33 +104,33 @@ const Index = () => {
         <ClientOnboardingSection />
       </Suspense>
       
-      <div ref={pricingRef}>
+      <div ref={pricingRef} style={{ minHeight: '50rem' }}>
         {pricingInView ? (
           <Suspense fallback={<SectionLoader />}>
             <PricingSection />
           </Suspense>
         ) : (
-          <div className="h-screen" />
+          <div style={{ height: '50rem' }} />
         )}
       </div>
       
-      <div ref={faqRef} className="min-h-[400px]">
+      <div ref={faqRef} style={{ minHeight: '40rem' }}>
         {faqInView ? (
           <Suspense fallback={<SectionLoader />}>
             <FAQSection />
           </Suspense>
         ) : (
-          <div className="h-screen" />
+          <div style={{ height: '40rem' }} />
         )}
       </div>
       
-      <div ref={contactRef}>
+      <div ref={contactRef} style={{ minHeight: '50rem' }}>
         {contactInView ? (
           <Suspense fallback={<SectionLoader />}>
             <ContactFormWeb3 />
           </Suspense>
         ) : (
-          <div className="h-screen" />
+          <div style={{ height: '50rem' }} />
         )}
       </div>
       
