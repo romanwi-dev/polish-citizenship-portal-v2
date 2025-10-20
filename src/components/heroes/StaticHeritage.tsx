@@ -1,4 +1,6 @@
-export const StaticHeritage = () => {
+import { memo } from "react";
+
+export const StaticHeritage = memo(() => {
   return (
     <div className="absolute inset-0 w-full h-full">
       <div 
@@ -25,4 +27,6 @@ export const StaticHeritage = () => {
       `}</style>
     </div>
   );
-};
+});
+
+StaticHeritage.displayName = 'StaticHeritage';

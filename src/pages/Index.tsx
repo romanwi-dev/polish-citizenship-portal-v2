@@ -1,5 +1,8 @@
-import { lazy, Suspense } from "react";
-import { StaticHeritage } from "@/components/heroes/StaticHeritage";
+import { lazy, Suspense, useState, useEffect } from "react";
+import { useInView } from "react-intersection-observer";
+import { StaticHeritagePlaceholder } from "@/components/heroes/StaticHeritagePlaceholder";
+
+const StaticHeritage = lazy(() => import("@/components/heroes/StaticHeritage").then(m => ({ default: m.StaticHeritage })));
 
 // Lazy load all components for better code splitting
 const Navigation = lazy(() => import("@/components/Navigation"));
@@ -23,11 +26,28 @@ const SectionLoader = () => (
 );
 
 const Index = () => {
+  const [show3D, setShow3D] = useState(false);
+  const { ref: timelineRef, inView: timelineInView } = useInView({ threshold: 0, triggerOnce: true, rootMargin: '200px' });
+  const { ref: pricingRef, inView: pricingInView } = useInView({ threshold: 0, triggerOnce: true, rootMargin: '200px' });
+  const { ref: faqRef, inView: faqInView } = useInView({ threshold: 0, triggerOnce: true, rootMargin: '200px' });
+  const { ref: contactRef, inView: contactInView } = useInView({ threshold: 0, triggerOnce: true, rootMargin: '200px' });
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShow3D(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="min-h-screen overflow-x-hidden relative">
-      {/* Global Background - Same as Hero Section */}
+      {/* Global Background - Lazy loaded 3D */}
       <div className="fixed inset-0 z-0">
-        <StaticHeritage />
+        {show3D ? (
+          <Suspense fallback={<StaticHeritagePlaceholder />}>
+            <StaticHeritage />
+          </Suspense>
+        ) : (
+          <StaticHeritagePlaceholder />
+        )}
       </div>
       
       <div className="relative z-10">
@@ -51,25 +71,49 @@ const Index = () => {
         <ServicesWeb3 />
       </Suspense>
       
-      <Suspense fallback={<SectionLoader />}>
-        <TimelineProcessEnhanced />
-      </Suspense>
+      <div ref={timelineRef}>
+        {timelineInView ? (
+          <Suspense fallback={<SectionLoader />}>
+            <TimelineProcessEnhanced />
+          </Suspense>
+        ) : (
+          <div className="h-screen" />
+        )}
+      </div>
       
       <Suspense fallback={<SectionLoader />}>
         <ClientOnboardingSection />
       </Suspense>
       
-      <Suspense fallback={<SectionLoader />}>
-        <PricingSection />
-      </Suspense>
+      <div ref={pricingRef}>
+        {pricingInView ? (
+          <Suspense fallback={<SectionLoader />}>
+            <PricingSection />
+          </Suspense>
+        ) : (
+          <div className="h-screen" />
+        )}
+      </div>
       
-      <Suspense fallback={<SectionLoader />}>
-        <FAQSection />
-      </Suspense>
+      <div ref={faqRef}>
+        {faqInView ? (
+          <Suspense fallback={<SectionLoader />}>
+            <FAQSection />
+          </Suspense>
+        ) : (
+          <div className="h-screen" />
+        )}
+      </div>
       
-      <Suspense fallback={<SectionLoader />}>
-        <ContactFormWeb3 />
-      </Suspense>
+      <div ref={contactRef}>
+        {contactInView ? (
+          <Suspense fallback={<SectionLoader />}>
+            <ContactFormWeb3 />
+          </Suspense>
+        ) : (
+          <div className="h-screen" />
+        )}
+      </div>
       
       <Suspense fallback={<SectionLoader />}>
         <FooterWeb3 />
