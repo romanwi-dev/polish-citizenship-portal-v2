@@ -1,7 +1,6 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 
@@ -77,11 +76,9 @@ export function CountrySelect({
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay }}
-      className={cn("space-y-2 w-full", className)}
+    <div
+      className={cn("space-y-2 w-full animate-fade-in", className)}
+      style={{ animationDelay: `${delay * 100}ms` }}
     >
       {label && (
         <Label>
@@ -129,6 +126,6 @@ export function CountrySelect({
           </button>
         </div>
       )}
-    </motion.div>
+    </div>
   );
 }

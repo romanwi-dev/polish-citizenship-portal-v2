@@ -2,7 +2,6 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { validateDateFormat } from "@/utils/validators";
 import { useState } from "react";
@@ -150,11 +149,9 @@ export function DateField({
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, duration: 0.4 }}
-      className="form-field-container space-y-2 w-full"
+    <div
+      className="form-field-container space-y-2 w-full animate-fade-in"
+      style={{ animationDelay: `${delay * 100}ms` }}
     >
       <Label htmlFor={name} className={isLargeFonts ? "text-2xl" : ""}>
         {label} {required && <span className="text-destructive">*</span>}
@@ -221,6 +218,6 @@ export function DateField({
       {error && (
         <p className="text-sm text-destructive">{error}</p>
       )}
-    </motion.div>
+    </div>
   );
 }

@@ -7,7 +7,6 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Calendar as CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 
 interface POAFormFieldProps {
@@ -35,11 +34,9 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
     const displayDate = format(dateValue, "dd.MM.yyyy");
     
     return (
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay, duration: 0.4 }}
-        className="space-y-2"
+      <div
+        className="space-y-2 animate-fade-in"
+        style={{ animationDelay: `${delay * 100}ms` }}
         onDoubleClick={handleDoubleClick}
       >
         <Label htmlFor={name} className={cn(
@@ -67,7 +64,7 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
         >
           {displayDate}
         </div>
-      </motion.div>
+      </div>
     );
   }
 
@@ -75,11 +72,9 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
   const isPassportField = name.toLowerCase().includes('passport');
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, duration: 0.4 }}
-      className="space-y-2"
+    <div
+      className="space-y-2 animate-fade-in"
+      style={{ animationDelay: `${delay * 100}ms` }}
       onDoubleClick={handleDoubleClick}
     >
       <Label htmlFor={name} className={cn(
@@ -107,6 +102,6 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
           colorScheme="poa"
         />
       )}
-    </motion.div>
+    </div>
   );
 }

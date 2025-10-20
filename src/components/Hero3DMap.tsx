@@ -1,9 +1,10 @@
-import { useRef, memo } from 'react';
+import { useRef, memo, useMemo } from 'react';
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import { Float, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import heroEuFlag from '@/assets/hero-eu-flag.jpg';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const MapPlane = memo(function MapPlane({ prefersReducedMotion }: { prefersReducedMotion: boolean }) {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -35,13 +36,17 @@ const MapPlane = memo(function MapPlane({ prefersReducedMotion }: { prefersReduc
 
 const Hero3DMap = memo(() => {
   const prefersReducedMotion = useReducedMotion();
+  const isMobile = useIsMobile();
+  
+  // Lower quality on mobile for better performance
+  const dpr = useMemo<[number, number]>(() => isMobile ? [0.5, 1] : [1, 1.5], [isMobile]);
 
   return (
     <div className="w-full h-full">
       <Canvas 
         camera={{ position: [0, 0, 8], fov: 75 }}
-        dpr={[1, 1.5]} // Limit pixel ratio for better performance
-        performance={{ min: 0.5 }} // Allow frame rate throttling
+        dpr={dpr}
+        performance={{ min: 0.5 }}
       >
         <ambientLight intensity={0.8} />
         <pointLight position={[10, 10, 10]} intensity={1} color="#ffffff" />
