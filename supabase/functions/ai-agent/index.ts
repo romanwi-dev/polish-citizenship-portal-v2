@@ -498,6 +498,29 @@ serve(async (req) => {
   const preflightResponse = handleCorsPreflight(req);
   if (preflightResponse) return preflightResponse;
 
+  // SECURITY: Verify JWT token and extract authenticated user
+  const authHeader = req.headers.get('authorization');
+  if (!authHeader) {
+    console.error('[ai-agent] Missing authorization header');
+    return createSecureErrorResponse(req, 'Authentication required', 401);
+  }
+
+  // Create Supabase client with user's auth token (not service role)
+  const supabaseClient = createClient(
+    Deno.env.get('SUPABASE_URL')!,
+    Deno.env.get('SUPABASE_ANON_KEY')!,
+    { global: { headers: { Authorization: authHeader } } }
+  );
+
+  // Verify the JWT token and get authenticated user
+  const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
+  if (authError || !user) {
+    console.error('[ai-agent] Invalid or expired token:', authError);
+    return createSecureErrorResponse(req, 'Invalid or expired authentication token', 401);
+  }
+
+  console.log(`[ai-agent] Authenticated user: ${user.id}`);
+
   try {
     const body = await req.json();
     const validation = validateInput(AIAgentRequestSchema, body);
@@ -507,7 +530,35 @@ serve(async (req) => {
     }
     
     const { caseId, prompt, action, conversationId, stream = false } = validation.data;
-    const userId = req.headers.get('x-user-id') || 'system';
+
+    // SECURITY: Verify user has access to the requested case
+    if (caseId) {
+      const { data: hasAccess, error: accessError } = await supabaseClient
+        .from('client_portal_access')
+        .select('id')
+        .eq('case_id', caseId)
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      // Also check if user is admin or assistant
+      const { data: userRole } = await supabaseClient
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      const isStaff = userRole?.role === 'admin' || userRole?.role === 'assistant';
+
+      if (!hasAccess && !isStaff) {
+        console.error(`[ai-agent] User ${user.id} denied access to case ${caseId}`);
+        return createSecureErrorResponse(req, 'Access denied to this case', 403);
+      }
+
+      console.log(`[ai-agent] User ${user.id} authorized for case ${caseId} (role: ${userRole?.role || 'client'})`);
+    }
+
+    // Use authenticated user ID for all operations
+    const userId = user.id;
     
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
