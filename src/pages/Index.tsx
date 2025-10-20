@@ -93,7 +93,7 @@ const Index = () => {
         <ServicesWeb3 />
       </Suspense>
       
-      <div ref={timelineRef}>
+      <div ref={timelineRef} className="min-h-screen">
         {timelineInView ? (
           <Suspense fallback={<SectionLoader />}>
             <TimelineProcessEnhanced />
@@ -117,7 +117,7 @@ const Index = () => {
         )}
       </div>
       
-      <div ref={faqRef}>
+      <div ref={faqRef} className="min-h-[400px]">
         {faqInView ? (
           <Suspense fallback={<SectionLoader />}>
             <FAQSection />
