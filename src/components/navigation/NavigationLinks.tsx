@@ -64,20 +64,27 @@ export const NavigationLinks = ({ onNavigate, searchQuery }: NavigationLinksProp
   
   const handleClick = (e: React.MouseEvent, href: string) => {
     if (href.startsWith('#')) {
-      e.preventDefault(); // Always prevent default for hash links
+      e.preventDefault();
+      
+      const sectionId = href.substring(1);
       
       // If we're not on the homepage, navigate there first
       if (window.location.pathname !== '/') {
         navigate('/' + href);
       } else {
-        // We're already on homepage, scroll to section
-        const sectionId = href.substring(1); // Remove the #
-        const element = document.getElementById(sectionId);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
+        // We're on homepage - scroll to section
+        const scrollToElement = () => {
+          const element = document.getElementById(sectionId);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            onNavigate(); // Close menu after successful scroll
+          } else {
+            // Element not loaded yet (lazy loaded), wait and retry
+            setTimeout(scrollToElement, 100);
+          }
+        };
+        scrollToElement();
       }
-      onNavigate(); // Close the menu
     } else {
       navigate(href);
       onNavigate();
