@@ -63,37 +63,14 @@ const NAVIGATION_SECTIONS: Array<{
 export const NavigationLinks = ({ onNavigate, searchQuery }: NavigationLinksProps) => {
   const navigate = useNavigate();
   
-  const scrollToSection = (id: string) => {
-    // Try to find element multiple times with delays to handle lazy loading
-    const attemptScroll = (attempts = 0) => {
-      const element = document.getElementById(id);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      } else if (attempts < 10) {
-        // Element not loaded yet, try again
-        setTimeout(() => attemptScroll(attempts + 1), 100);
-      }
-    };
-    attemptScroll();
-  };
-
   const handleClick = (e: React.MouseEvent, href: string) => {
     if (href.startsWith('#')) {
-      e.preventDefault();
-      const sectionId = href.substring(1);
-      
-      // If we're not on the home page, navigate there first
+      // Don't prevent default - let browser handle anchor navigation
+      // This works even with lazy-loaded sections
       if (window.location.pathname !== '/') {
-        navigate('/');
-        // Wait for navigation to complete, then scroll
-        setTimeout(() => {
-          scrollToSection(sectionId);
-        }, 200);
-      } else {
-        scrollToSection(sectionId);
+        e.preventDefault();
+        navigate('/' + href);
       }
-      
-      // Close menu after initiating scroll
       onNavigate();
     } else {
       onNavigate();
