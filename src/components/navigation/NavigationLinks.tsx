@@ -105,7 +105,7 @@ export const NavigationLinks = ({ onNavigate, searchQuery }: NavigationLinksProp
                     key={link.href}
                     to={link.href}
                     onClick={() => handleClick(link.href)}
-                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg"
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors"
                   >
                     {Icon && <Icon className="h-4 w-4 text-primary" />}
                     <span className="font-medium">
