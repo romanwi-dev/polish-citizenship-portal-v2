@@ -22,10 +22,20 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks: {
+          // Core React libraries
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          // UI component library
+          'radix-vendor': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-slot', '@radix-ui/react-tabs', '@radix-ui/react-toast', '@radix-ui/react-accordion', '@radix-ui/react-select'],
+          // Form and validation
+          'form-vendor': ['react-hook-form', '@hookform/resolvers', 'zod'],
           // Separate Three.js into its own chunk
           'three-vendor': ['three', '@react-three/fiber', '@react-three/drei'],
           // Separate framer-motion
           'motion-vendor': ['framer-motion'],
+          // Supabase and API
+          'supabase-vendor': ['@supabase/supabase-js', '@tanstack/react-query'],
+          // Utilities
+          'utils-vendor': ['date-fns', 'clsx', 'tailwind-merge', 'class-variance-authority'],
         }
       }
     }

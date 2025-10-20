@@ -1,10 +1,10 @@
 import { lazy, Suspense } from "react";
-import Navigation from "@/components/Navigation";
-import HeroWeb3 from "@/components/HeroWeb3";
-import AboutSection from "@/components/AboutSection";
 import { StaticHeritage } from "@/components/heroes/StaticHeritage";
 
-// Lazy load components below the fold
+// Lazy load all components for better code splitting
+const Navigation = lazy(() => import("@/components/Navigation"));
+const HeroWeb3 = lazy(() => import("@/components/HeroWeb3"));
+const AboutSection = lazy(() => import("@/components/AboutSection"));
 const AIAnalysisSection = lazy(() => import("@/components/AIAnalysisSection"));
 const ServicesWeb3 = lazy(() => import("@/components/ServicesWeb3"));
 const ClientOnboardingSection = lazy(() => import("@/components/ClientOnboardingSection"));
@@ -31,9 +31,17 @@ const Index = () => {
       </div>
       
       <div className="relative z-10">
-      <Navigation />
-      <HeroWeb3 />
-      <AboutSection />
+      <Suspense fallback={<SectionLoader />}>
+        <Navigation />
+      </Suspense>
+      
+      <Suspense fallback={<SectionLoader />}>
+        <HeroWeb3 />
+      </Suspense>
+      
+      <Suspense fallback={<SectionLoader />}>
+        <AboutSection />
+      </Suspense>
       
       <Suspense fallback={<SectionLoader />}>
         <AIAnalysisSection />
