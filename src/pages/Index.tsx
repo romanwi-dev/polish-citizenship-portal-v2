@@ -4,9 +4,11 @@ import { StaticHeritagePlaceholder } from "@/components/heroes/StaticHeritagePla
 
 const StaticHeritage = lazy(() => import("@/components/heroes/StaticHeritage").then(m => ({ default: m.StaticHeritage })));
 
-// Lazy load all components for better code splitting
-const Navigation = lazy(() => import("@/components/Navigation"));
-const HeroWeb3 = lazy(() => import("@/components/HeroWeb3"));
+// Eagerly load critical above-the-fold components for LCP
+import Navigation from "@/components/Navigation";
+import HeroWeb3 from "@/components/HeroWeb3";
+
+// Lazy load below-the-fold components for better code splitting
 const AboutSection = lazy(() => import("@/components/AboutSection"));
 const AIAnalysisSection = lazy(() => import("@/components/AIAnalysisSection"));
 const ServicesWeb3 = lazy(() => import("@/components/ServicesWeb3"));
@@ -73,13 +75,8 @@ const Index = () => {
       </div>
       
       <div className="relative z-10">
-      <Suspense fallback={<SectionLoader />}>
-        <Navigation />
-      </Suspense>
-      
-      <Suspense fallback={<SectionLoader />}>
-        <HeroWeb3 />
-      </Suspense>
+      <Navigation />
+      <HeroWeb3 />
       
       <Suspense fallback={<SectionLoader />}>
         <AboutSection />
