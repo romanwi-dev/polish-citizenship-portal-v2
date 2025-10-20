@@ -34,6 +34,60 @@ interface TypeformWebhook {
   };
 }
 
+/**
+ * Verify Typeform webhook signature to prevent unauthorized requests
+ */
+async function verifyTypeformSignature(
+  payload: string,
+  signature: string | null,
+  secret: string
+): Promise<boolean> {
+  if (!signature) return false;
+
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    'raw',
+    encoder.encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign']
+  );
+
+  const signatureBytes = await crypto.subtle.sign(
+    'HMAC',
+    key,
+    encoder.encode(payload)
+  );
+
+  const computedSignature = btoa(String.fromCharCode(...new Uint8Array(signatureBytes)));
+  
+  // Remove 'sha256=' prefix from Typeform signature if present
+  const cleanSignature = signature.replace(/^sha256=/, '');
+  
+  return computedSignature === cleanSignature;
+}
+
+/**
+ * Sanitize string to prevent XSS and enforce length limits
+ */
+function sanitizeString(input: string, maxLength: number = 1000): string {
+  if (!input) return '';
+  let sanitized = input.trim();
+  if (sanitized.length > maxLength) {
+    sanitized = sanitized.substring(0, maxLength);
+  }
+  sanitized = sanitized.replace(/\0/g, '');
+  return sanitized;
+}
+
+/**
+ * Validate email format
+ */
+function isValidEmail(email: string): boolean {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email) && email.length <= 255;
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -47,7 +101,30 @@ serve(async (req) => {
 
     console.log('Received Typeform webhook');
 
-    const payload: TypeformWebhook = await req.json();
+    // Get raw body for signature verification
+    const rawBody = await req.text();
+    const signature = req.headers.get('typeform-signature');
+    const webhookSecret = Deno.env.get('TYPEFORM_WEBHOOK_SECRET');
+
+    // Verify Typeform signature
+    if (webhookSecret) {
+      const isValid = await verifyTypeformSignature(rawBody, signature, webhookSecret);
+      if (!isValid) {
+        console.error('Invalid Typeform signature');
+        return new Response(
+          JSON.stringify({ error: 'Invalid signature' }),
+          {
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            status: 401,
+          }
+        );
+      }
+      console.log('Typeform signature verified ✓');
+    } else {
+      console.warn('TYPEFORM_WEBHOOK_SECRET not set - signature verification skipped');
+    }
+
+    const payload: TypeformWebhook = JSON.parse(rawBody);
     
     if (!payload.form_response || !payload.form_response.answers) {
       throw new Error('Invalid Typeform payload');
@@ -61,13 +138,23 @@ serve(async (req) => {
       return answer?.text || answer?.email || answer?.phone_number || answer?.choice?.label || answer?.date || '';
     };
 
-    // Map Typeform fields to intake data
-    const firstName = findAnswer('first_name') || '';
-    const lastName = findAnswer('last_name') || '';
-    const email = findAnswer('email') || '';
-    const phone = findAnswer('phone') || '';
-    const country = findAnswer('country') || 'Unknown';
+    // Map and validate Typeform fields
+    const firstName = sanitizeString(findAnswer('first_name'), 100);
+    const lastName = sanitizeString(findAnswer('last_name'), 100);
+    const emailRaw = findAnswer('email');
+    const email = emailRaw && isValidEmail(emailRaw) ? emailRaw.toLowerCase().trim() : '';
+    const phone = sanitizeString(findAnswer('phone'), 50);
+    const country = sanitizeString(findAnswer('country'), 100) || 'Unknown';
     const dateOfBirth = findAnswer('date_of_birth') || '';
+
+    // Validate required fields
+    if (!firstName || !lastName) {
+      throw new Error('First name and last name are required');
+    }
+
+    if (email && !isValidEmail(email)) {
+      console.warn('Invalid email format in Typeform submission:', emailRaw);
+    }
 
     console.log(`Processing lead: ${firstName} ${lastName} from ${country}`);
 
@@ -130,10 +217,10 @@ serve(async (req) => {
       completion_percentage: 15
     };
 
-    // Map additional Typeform fields if present
-    const fatherFirstName = findAnswer('father_first_name');
-    const motherFirstName = findAnswer('mother_first_name');
-    const passportNumber = findAnswer('passport_number');
+    // Map additional Typeform fields with sanitization
+    const fatherFirstName = sanitizeString(findAnswer('father_first_name'), 100);
+    const motherFirstName = sanitizeString(findAnswer('mother_first_name'), 100);
+    const passportNumber = sanitizeString(findAnswer('passport_number'), 50);
     
     if (fatherFirstName) intakeData.father_first_name = fatherFirstName;
     if (motherFirstName) intakeData.mother_first_name = motherFirstName;

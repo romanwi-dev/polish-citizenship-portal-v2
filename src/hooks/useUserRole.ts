@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/utils/secureLogger";
 
 export type UserRole = 'admin' | 'assistant' | 'user';
 
@@ -16,7 +17,7 @@ export const useUserRole = (userId: string | undefined) => {
         .maybeSingle();
 
       if (error) {
-        console.error("Error fetching user role:", error);
+        logger.error("Error fetching user role", error, { sanitize: true });
         return null;
       }
 

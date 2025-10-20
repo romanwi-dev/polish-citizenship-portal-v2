@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/utils/secureLogger";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -90,7 +91,8 @@ export const RoleManagement = () => {
       setSelectedRole("client");
     },
     onError: (error) => {
-      toast.error(`Failed to assign role: ${error.message}`);
+      logger.error("Role assignment failed", error, { sanitize: true });
+      toast.error("Failed to assign role. Please try again.");
     }
   });
 
@@ -110,7 +112,8 @@ export const RoleManagement = () => {
       setDeleteUserId(null);
     },
     onError: (error) => {
-      toast.error(`Failed to remove role: ${error.message}`);
+      logger.error("Role removal failed", error, { sanitize: true });
+      toast.error("Failed to remove role. Please try again.");
       setDeleteUserId(null);
     }
   });
