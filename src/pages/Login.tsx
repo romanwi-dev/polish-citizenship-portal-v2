@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/utils/secureLogger";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -39,7 +40,7 @@ const Login = () => {
       setBreachWarning("");
       return true;
     } catch (error) {
-      console.error('Error checking password breach:', error);
+      logger.error('Error checking password breach', error);
       // Don't block signup if breach check fails
       return true;
     }
