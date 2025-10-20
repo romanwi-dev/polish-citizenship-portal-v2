@@ -1,5 +1,5 @@
 import { Shield, Zap, Globe } from "lucide-react";
-import logo from "@/assets/logo.webp";
+import logo from "@/assets/logo.png";
 
 const FooterWeb3 = () => {
   return (
