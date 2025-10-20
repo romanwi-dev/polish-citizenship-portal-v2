@@ -8,42 +8,13 @@ import { useAuth } from '@/hooks/useAuth';
 import { NavigationSearch } from './navigation/NavigationSearch';
 import { LastVisitedLinks } from './navigation/LastVisitedLinks';
 import { NavigationLinks } from './navigation/NavigationLinks';
-import { useNavigationDesign } from '@/hooks/useNavigationDesign';
 import { ThemeSwitcher } from './ThemeSwitcher';
-
-// Design imports
-import { GlassmorphicDesign } from './navigation/designs/GlassmorphicDesign';
-import { CyberpunkDesign } from './navigation/designs/CyberpunkDesign';
-import { MinimalDesign } from './navigation/designs/MinimalDesign';
-import { NeumorphicDesign } from './navigation/designs/NeumorphicDesign';
-import { MaterialDesign } from './navigation/designs/MaterialDesign';
-import { BrutalistDesign } from './navigation/designs/BrutalistDesign';
-import { GradientDesign } from './navigation/designs/GradientDesign';
-import { RetroDesign } from './navigation/designs/RetroDesign';
-import { LuxuryDesign } from './navigation/designs/LuxuryDesign';
-import { ParticleDesign } from './navigation/designs/ParticleDesign';
-
-const DESIGN_MAP = {
-  glassmorphic: GlassmorphicDesign,
-  cyberpunk: CyberpunkDesign,
-  minimal: MinimalDesign,
-  neumorphic: NeumorphicDesign,
-  material: MaterialDesign,
-  brutalist: BrutalistDesign,
-  gradient: GradientDesign,
-  retro: RetroDesign,
-  luxury: LuxuryDesign,
-  particle: ParticleDesign,
-};
 
 export const MobileNavigationSheet = () => {
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const { user, signOut } = useAuth(false);
   const navigate = useNavigate();
-  const { design } = useNavigationDesign();
-
-  const DesignComponent = DESIGN_MAP[design];
 
   const handleAuthAction = async () => {
     if (user) {
@@ -71,13 +42,16 @@ export const MobileNavigationSheet = () => {
       </SheetTrigger>
 
       <SheetContent side="right" className="w-full p-0 border-0 transition-all duration-300 ease-in-out">
-        <ParticleDesign>
-          <div className="flex flex-col h-full">
-            {/* Header */}
-            <div className="flex items-center gap-2 p-4 border-b border-border/50">
-              <Sparkles className="h-5 w-5 text-primary" />
-              <span className="font-semibold text-lg">Navigation</span>
-            </div>
+        {/* Simple background matching footer */}
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+        
+        <div className="relative flex flex-col h-full">
+          {/* Header */}
+          <div className="flex items-center gap-2 p-4 border-b border-border/50">
+            <Sparkles className="h-5 w-5 text-primary" />
+            <span className="font-semibold text-lg">Navigation</span>
+          </div>
 
             {/* Scrollable Content */}
             <ScrollArea className="flex-1">
@@ -177,7 +151,6 @@ export const MobileNavigationSheet = () => {
               </Button>
             </div>
           </div>
-        </ParticleDesign>
       </SheetContent>
     </Sheet>
   );

@@ -8,7 +8,6 @@ import { MobileNavigationSheet } from "@/components/MobileNavigationSheet";
 import { NavigationSearch } from "@/components/navigation/NavigationSearch";
 import { LastVisitedLinks } from "@/components/navigation/LastVisitedLinks";
 import { NavigationLinks } from "@/components/navigation/NavigationLinks";
-import { useNavigationDesign } from "@/hooks/useNavigationDesign";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import {
@@ -16,36 +15,12 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { GlassmorphicDesign } from './navigation/designs/GlassmorphicDesign';
-import { CyberpunkDesign } from './navigation/designs/CyberpunkDesign';
-import { MaterialDesign } from './navigation/designs/MaterialDesign';
-import { MinimalDesign } from './navigation/designs/MinimalDesign';
-import { RetroDesign } from './navigation/designs/RetroDesign';
-import { BrutalistDesign } from './navigation/designs/BrutalistDesign';
-import { LuxuryDesign } from './navigation/designs/LuxuryDesign';
-import { NeumorphicDesign } from './navigation/designs/NeumorphicDesign';
-import { GradientDesign } from './navigation/designs/GradientDesign';
-
-const DESIGN_MAP: Record<string, React.ComponentType<{ children: React.ReactNode }>> = {
-  'glassmorphic': GlassmorphicDesign,
-  'cyberpunk': CyberpunkDesign,
-  'material': MaterialDesign,
-  'minimal': MinimalDesign,
-  'retro': RetroDesign,
-  'brutalist': BrutalistDesign,
-  'luxury': LuxuryDesign,
-  'neumorphic': NeumorphicDesign,
-  'gradient': GradientDesign,
-};
 
 const Navigation = () => {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const { user, signOut } = useAuth(false);
-  const { design } = useNavigationDesign();
-  
-  const DesignComponent = DESIGN_MAP[design] || DESIGN_MAP['glassmorphic'];
 
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -125,13 +100,16 @@ const Navigation = () => {
                 className="w-[440px] p-0 bg-background/95 backdrop-blur-xl border border-primary/20 z-[100] flex flex-col"
                 style={{ height: 'calc(100vh - 5rem)' }}
               >
-                <DesignComponent>
-                  <div className="flex flex-col h-full">
-                    {/* Header */}
-                    <div className="flex items-center gap-2 p-4 border-b border-border/50">
-                      <Sparkles className="h-5 w-5 text-primary" />
-                      <span className="font-semibold text-lg">Navigation</span>
-                    </div>
+                {/* Simple background matching footer */}
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+                
+                <div className="relative flex flex-col h-full">
+                  {/* Header */}
+                  <div className="flex items-center gap-2 p-4 border-b border-border/50">
+                    <Sparkles className="h-5 w-5 text-primary" />
+                    <span className="font-semibold text-lg">Navigation</span>
+                  </div>
                     
                     {/* Scrollable Content */}
                     <ScrollArea className="flex-1">
@@ -233,7 +211,6 @@ const Navigation = () => {
                       </Button>
                     </div>
                   </div>
-                </DesignComponent>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

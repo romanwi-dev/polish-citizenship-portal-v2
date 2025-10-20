@@ -1,20 +1,28 @@
 import { Sun, Moon } from "lucide-react";
+import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 export function ThemeSwitcher() {
-  const [currentTheme, setCurrentTheme] = useState("dark");
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") || "dark";
-    setCurrentTheme(savedTheme);
-    document.documentElement.className = savedTheme;
+    setMounted(true);
   }, []);
 
+  if (!mounted) {
+    return (
+      <button
+        className="h-11 w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center"
+        aria-label="Toggle theme"
+      >
+        <Moon className="h-4 w-4 text-foreground/30" />
+      </button>
+    );
+  }
+
   const toggleTheme = () => {
-    const newTheme = currentTheme === "dark" ? "light" : "dark";
-    setCurrentTheme(newTheme);
-    document.documentElement.className = newTheme;
-    localStorage.setItem("theme", newTheme);
+    setTheme(theme === "dark" ? "light" : "dark");
   };
 
   return (
@@ -23,7 +31,7 @@ export function ThemeSwitcher() {
       className="h-11 w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
       aria-label="Toggle theme"
     >
-      {currentTheme === "dark" ? (
+      {theme === "dark" ? (
         <Moon className="h-4 w-4 text-foreground/30" />
       ) : (
         <Sun className="h-4 w-4 text-foreground/30" />

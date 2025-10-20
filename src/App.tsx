@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { AccessibilityProvider } from "@/contexts/AccessibilityContext";
+import { ThemeProvider } from "next-themes";
 import Index from "./pages/Index";
 import Cases from "./pages/Cases";
 import Login from "./pages/Login";
@@ -86,11 +87,12 @@ const AdminLoader = () => (
 const App = () => (
   <ErrorBoundary>
     <QueryClientProvider client={queryClient}>
-      <AccessibilityProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
+      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+        <AccessibilityProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
@@ -500,6 +502,7 @@ const App = () => (
         </BrowserRouter>
       </TooltipProvider>
       </AccessibilityProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   </ErrorBoundary>
 );
