@@ -51,6 +51,8 @@
       button{cursor:pointer;font-family:inherit}
       img{max-width:100%;height:auto}
     </style>
+    <!-- Load main CSS asynchronously to prevent render blocking -->
+    <link rel="preload" href="/src/index.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript>
       <link rel="stylesheet" href="/src/index.css">
     </noscript>
