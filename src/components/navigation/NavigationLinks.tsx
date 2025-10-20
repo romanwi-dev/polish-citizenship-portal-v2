@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Bot, GitBranch, ClipboardList, Users, Archive, Languages, Award, FileCheck, Plane, BookOpen, Shield, Search, PenTool } from 'lucide-react';
 
 interface NavigationLinksProps {
@@ -61,17 +61,33 @@ const NAVIGATION_SECTIONS: Array<{
 ];
 
 export const NavigationLinks = ({ onNavigate, searchQuery }: NavigationLinksProps) => {
+  const navigate = useNavigate();
+  
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
-      onNavigate();
     }
   };
 
-  const handleClick = (href: string) => {
+  const handleClick = (e: React.MouseEvent, href: string) => {
     if (href.startsWith('#')) {
-      scrollToSection(href.substring(1));
+      e.preventDefault();
+      const sectionId = href.substring(1);
+      
+      // If we're not on the home page, navigate there first
+      if (window.location.pathname !== '/') {
+        navigate('/');
+        // Wait for navigation to complete, then scroll
+        setTimeout(() => {
+          scrollToSection(sectionId);
+        }, 100);
+      } else {
+        scrollToSection(sectionId);
+      }
+      
+      // Close menu after initiating scroll
+      onNavigate();
     } else {
       onNavigate();
     }
@@ -104,7 +120,7 @@ export const NavigationLinks = ({ onNavigate, searchQuery }: NavigationLinksProp
                   <Link
                     key={link.href}
                     to={link.href}
-                    onClick={() => handleClick(link.href)}
+                    onClick={(e) => handleClick(e, link.href)}
                     className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors"
                   >
                     {Icon && <Icon className="h-4 w-4 text-primary" />}
