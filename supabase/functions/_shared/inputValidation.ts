@@ -70,7 +70,7 @@ export const AIAgentRequestSchema = z.object({
     'archive_request_management', 'generate_archive_request', 'civil_acts_management',
     
     // Specialized Agents
-    'researcher', 'translator', 'writer', 'designer',
+    'researcher', 'translator', 'writer', 'designer', 'supervisor',
     
     // Workflows
     'translation_workflow', 'analytics_report'
