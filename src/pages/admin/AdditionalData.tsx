@@ -32,20 +32,15 @@ export default function AdditionalData() {
     <div className="overflow-x-hidden min-h-screen">
       <div className="container mx-auto py-12 px-4 md:px-6 relative z-10 max-w-7xl">
         {/* Header */}
-        <motion.div 
-          initial={{ opacity: 0, y: -50 }} 
-          animate={{ opacity: 1, y: 0 }} 
-          transition={{ duration: 0.8 }}
-          className="sticky top-0 z-20 bg-gradient-to-br from-background via-background to-background/95 backdrop-blur-sm border-b mb-0"
-        >
+        <div className="animate-fade-in-up sticky top-0 z-20 bg-gradient-to-br from-background via-background to-background/95 backdrop-blur-sm border-b mb-0">
           <Card className="glass-card border-primary/20 overflow-hidden rounded-none border-x-0 border-t-0">
             <CardHeader className="pb-6 pt-6">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
+                <div className="animate-fade-in">
                   <CardTitle className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">
                     Additional Data
                   </CardTitle>
-                </motion.div>
+                </div>
                 <div className="flex items-center gap-3">
                   <Button
                     onClick={() => window.open('https://docs.lovable.dev', '_blank')}
@@ -110,14 +105,10 @@ export default function AdditionalData() {
               />
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
 
         {/* Content */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
+        <div className="animate-fade-in">
           <Card className="glass-card border-primary/20">
             <CardContent className="p-6 md:p-10">
               <p className="text-lg text-muted-foreground text-center">
@@ -125,7 +116,7 @@ export default function AdditionalData() {
               </p>
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
       </div>
     </div>
   );

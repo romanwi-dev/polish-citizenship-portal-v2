@@ -86,12 +86,9 @@ export default function FamilyTreePage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-        >
+        <div className="animate-spin">
           <Sparkles className="h-16 w-16 text-primary" />
-        </motion.div>
+        </div>
       </div>
     );
   }
@@ -100,18 +97,13 @@ export default function FamilyTreePage() {
     <div className="overflow-x-hidden min-h-screen relative">
       <div className="container mx-auto py-12 px-4 md:px-6 max-w-7xl">
         {/* Header */}
-        <motion.div 
-          initial={{ opacity: 0, y: -50 }} 
-          animate={{ opacity: 1, y: 0 }} 
-          transition={{ duration: 0.8 }}
-          className="mb-6"
-        >
+        <div className="animate-fade-in-up mb-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6">
-            <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
+            <div className="animate-fade-in">
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">
                 Family Tree Visualization
               </h1>
-            </motion.div>
+            </div>
             <div className="flex items-center gap-3">
               <Button
                 onClick={() => navigate('/admin/forms-demo')}
@@ -153,10 +145,10 @@ export default function FamilyTreePage() {
               </Button>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Family Tree Interactive Component */}
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }}>
+        <div className="animate-scale-in">
           <FamilyTreeInteractive
             clientData={{
               ...mapPersonData('applicant'),
@@ -176,7 +168,7 @@ export default function FamilyTreePage() {
             onEdit={handlePersonEdit}
             onOpenMasterTable={() => navigate(`/admin/master-data/${caseId}`)}
           />
-        </motion.div>
+        </div>
       </div>
     </div>
   );
