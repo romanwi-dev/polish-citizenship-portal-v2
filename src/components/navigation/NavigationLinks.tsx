@@ -68,24 +68,34 @@ export const NavigationLinks = ({ onNavigate, searchQuery }: NavigationLinksProp
       
       const sectionId = href.substring(1);
       
-      // If we're not on the homepage, navigate there first
       if (window.location.pathname !== '/') {
+        // Navigate to homepage with hash
         navigate('/' + href);
+        onNavigate(); // Close menu immediately for page navigation
       } else {
-        // We're on homepage - scroll to section
+        // We're on homepage - scroll with retry logic
+        let attempts = 0;
+        const maxAttempts = 30; // 3 seconds max (30 * 100ms)
+        
         const scrollToElement = () => {
           const element = document.getElementById(sectionId);
           if (element) {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            onNavigate(); // Close menu after successful scroll
-          } else {
-            // Element not loaded yet (lazy loaded), wait and retry
+            onNavigate(); // Close menu AFTER successful scroll
+          } else if (attempts < maxAttempts) {
+            attempts++;
             setTimeout(scrollToElement, 100);
+          } else {
+            // Failed to find element after max attempts
+            console.warn(`Could not find element with id: ${sectionId}`);
+            onNavigate(); // Close menu anyway
           }
         };
+        
         scrollToElement();
       }
     } else {
+      // Regular navigation
       navigate(href);
       onNavigate();
     }
@@ -116,7 +126,7 @@ export const NavigationLinks = ({ onNavigate, searchQuery }: NavigationLinksProp
                 
                 return (
                   <Link
-                    key={link.href}
+                    key={`${link.href}-${link.label}`}
                     to={link.href}
                     onClick={(e) => handleClick(e, link.href)}
                     className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors"
