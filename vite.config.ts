@@ -22,6 +22,13 @@ export default defineConfig(({ mode }) => ({
     cssCodeSplit: true,
     chunkSizeWarningLimit: 500,
     reportCompressedSize: true,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
     rollupOptions: {
       output: {
         manualChunks: {
@@ -31,10 +38,8 @@ export default defineConfig(({ mode }) => ({
           'radix-vendor': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-slot', '@radix-ui/react-tabs', '@radix-ui/react-toast', '@radix-ui/react-accordion', '@radix-ui/react-select'],
           // Form and validation
           'form-vendor': ['react-hook-form', '@hookform/resolvers', 'zod'],
-          // Separate Three.js into its own chunk
+          // Three.js separate chunk (loaded on demand)
           'three-vendor': ['three', '@react-three/fiber', '@react-three/drei'],
-          // Separate framer-motion
-          'motion-vendor': ['framer-motion'],
           // Supabase and API
           'supabase-vendor': ['@supabase/supabase-js', '@tanstack/react-query'],
           // Utilities
