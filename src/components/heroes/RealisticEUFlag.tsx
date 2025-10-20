@@ -7,6 +7,7 @@ export const RealisticEUFlag = () => {
         loop
         muted
         playsInline
+        preload="none"
         className="absolute inset-0 w-full h-full object-cover"
       >
         <source src="https://player.vimeo.com/external/456044157.sd.mp4?s=76d746841d5c09e5e7e67a164d3829a2f3a78a1b&profile_id=164&oauth2_token_id=57447761" type="video/mp4" />

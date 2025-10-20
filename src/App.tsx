@@ -71,6 +71,7 @@ const queryClient = new QueryClient({
       refetchOnWindowFocus: false,
       retry: 1,
       staleTime: 30000,
+      gcTime: 300000, // 5 minutes cache retention
     },
   },
 });

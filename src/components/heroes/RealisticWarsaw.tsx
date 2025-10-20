@@ -7,6 +7,7 @@ export const RealisticWarsaw = () => {
         loop
         muted
         playsInline
+        preload="none"
         className="absolute inset-0 w-full h-full object-cover"
       >
         <source src="https://player.vimeo.com/external/396761224.sd.mp4?s=115f7783eb27c0e9fb79c6e09b812f67a0f1acae&profile_id=164&oauth2_token_id=57447761" type="video/mp4" />
