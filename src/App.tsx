@@ -59,6 +59,7 @@ const Researcher = lazy(() => import("./pages/admin/Researcher"));
 const Translator = lazy(() => import("./pages/admin/Translator"));
 const Writer = lazy(() => import("./pages/admin/Writer"));
 const Designer = lazy(() => import("./pages/admin/Designer"));
+const Supervisor = lazy(() => import("./pages/admin/Supervisor"));
 const OCRProcessingMonitor = lazy(() => import("./pages/admin/OCRProcessingMonitor"));
 const AIAgentDiagnostics = lazy(() => import("./pages/admin/AIAgentDiagnostics"));
 const RoleManagement = lazy(() => import("./pages/admin/RoleManagement"));
@@ -407,6 +408,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <Designer />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/supervisor/:id" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <Supervisor />
               </Suspense>
             } 
           />

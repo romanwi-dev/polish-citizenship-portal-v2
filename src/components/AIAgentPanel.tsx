@@ -4,7 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Bot, Sparkles, FileText, CheckCircle2, TrendingUp, Mail, Zap, Shield, Search, Languages, PenTool, Palette, User, CheckCircle, XCircle } from "lucide-react";
+import { Loader2, Bot, Sparkles, FileText, CheckCircle2, TrendingUp, Mail, Zap, Shield, Search, Languages, PenTool, Palette, User, CheckCircle, XCircle, ShieldCheck } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -52,6 +52,7 @@ export const AIAgentPanel = ({ caseId, defaultAction, showActionSelector = true,
     { value: "translator", label: "Translation Agent", icon: Languages },
     { value: "writer", label: "Content Writer", icon: PenTool },
     { value: "designer", label: "UI/UX Designer", icon: Palette },
+    { value: "supervisor", label: "Supervisor Agent", icon: ShieldCheck },
   ];
 
   // Auto-scroll to bottom when new messages arrive
