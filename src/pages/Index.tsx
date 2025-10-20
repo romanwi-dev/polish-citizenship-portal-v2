@@ -1,5 +1,4 @@
 import { lazy, Suspense, useState, useEffect } from "react";
-import { useInView } from "react-intersection-observer";
 import { StaticHeritagePlaceholder } from "@/components/heroes/StaticHeritagePlaceholder";
 
 const StaticHeritage = lazy(() => import("@/components/heroes/StaticHeritage").then(m => ({ default: m.StaticHeritage })));
@@ -30,11 +29,6 @@ const SectionLoader = () => (
 
 const Index = () => {
   const [show3D, setShow3D] = useState(false);
-  const { ref: timelineRef, inView: timelineInView } = useInView({ threshold: 0, triggerOnce: true, rootMargin: '200px' });
-  const { ref: pricingRef, inView: pricingInView } = useInView({ threshold: 0, triggerOnce: true, rootMargin: '200px' });
-  const { ref: testimonialsRef, inView: testimonialsInView } = useInView({ threshold: 0, triggerOnce: true, rootMargin: '200px' });
-  const { ref: faqRef, inView: faqInView } = useInView({ threshold: 0, triggerOnce: true, rootMargin: '200px' });
-  const { ref: contactRef, inView: contactInView } = useInView({ threshold: 0, triggerOnce: true, rootMargin: '200px' });
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -92,59 +86,29 @@ const Index = () => {
         <ServicesWeb3 />
       </Suspense>
       
-      <div ref={timelineRef} style={{ minHeight: '350rem' }}>
-        {timelineInView ? (
-          <Suspense fallback={<SectionLoader />}>
-            <TimelineProcessEnhanced />
-          </Suspense>
-        ) : (
-          <div style={{ height: '350rem' }} />
-        )}
-      </div>
+      <Suspense fallback={<SectionLoader />}>
+        <TimelineProcessEnhanced />
+      </Suspense>
       
       <Suspense fallback={<SectionLoader />}>
         <ClientOnboardingSection />
       </Suspense>
       
-      <div ref={pricingRef} style={{ minHeight: '50rem' }}>
-        {pricingInView ? (
-          <Suspense fallback={<SectionLoader />}>
-            <PricingSection />
-          </Suspense>
-        ) : (
-          <div style={{ height: '50rem' }} />
-        )}
-      </div>
+      <Suspense fallback={<SectionLoader />}>
+        <PricingSection />
+      </Suspense>
       
-      <div ref={testimonialsRef} style={{ minHeight: '40rem' }}>
-        {testimonialsInView ? (
-          <Suspense fallback={<SectionLoader />}>
-            <TestimonialsSection />
-          </Suspense>
-        ) : (
-          <div style={{ height: '40rem' }} />
-        )}
-      </div>
+      <Suspense fallback={<SectionLoader />}>
+        <TestimonialsSection />
+      </Suspense>
       
-      <div ref={faqRef} style={{ minHeight: '40rem' }}>
-        {faqInView ? (
-          <Suspense fallback={<SectionLoader />}>
-            <FAQSection />
-          </Suspense>
-        ) : (
-          <div style={{ height: '40rem' }} />
-        )}
-      </div>
+      <Suspense fallback={<SectionLoader />}>
+        <FAQSection />
+      </Suspense>
       
-      <div ref={contactRef} style={{ minHeight: '50rem' }}>
-        {contactInView ? (
-          <Suspense fallback={<SectionLoader />}>
-            <ContactFormWeb3 />
-          </Suspense>
-        ) : (
-          <div style={{ height: '50rem' }} />
-        )}
-      </div>
+      <Suspense fallback={<SectionLoader />}>
+        <ContactFormWeb3 />
+      </Suspense>
       
       <Suspense fallback={<SectionLoader />}>
         <FooterWeb3 />
