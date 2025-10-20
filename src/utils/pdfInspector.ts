@@ -1,4 +1,4 @@
-import { PDFDocument } from 'pdf-lib';
+import type { PDFDocument } from 'pdf-lib';
 
 export interface FieldInfo {
   name: string;
@@ -17,6 +17,9 @@ export interface InspectionResult {
  */
 export async function inspectPDFFields(templateType: string): Promise<InspectionResult> {
   try {
+    // Lazy load pdf-lib only when needed
+    const { PDFDocument } = await import('pdf-lib');
+    
     // Fetch PDF from public folder
     const response = await fetch(`/templates/${templateType}.pdf`);
     

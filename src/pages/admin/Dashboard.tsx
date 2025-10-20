@@ -8,6 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useIsStaff } from "@/hooks/useUserRole";
 import { LoadingState } from "@/components/LoadingState";
 import { ErrorState } from "@/components/ErrorState";
+import { DashboardSkeleton } from "@/components/DashboardSkeleton";
 import { cn } from "@/lib/utils";
 
 export default function Dashboard() {
@@ -210,19 +211,7 @@ export default function Dashboard() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {loading ? (
-            Array.from({ length: 6 }).map((_, i) => (
-              <Card key={i} className="hover-glow">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <div className="h-4 w-24 bg-muted animate-pulse rounded" />
-                  <div className="h-4 w-4 bg-muted animate-pulse rounded" />
-                </CardHeader>
-                <CardContent>
-                  <div className="h-8 w-16 bg-muted animate-pulse rounded mb-2" />
-                  <div className="h-3 w-32 bg-muted animate-pulse rounded mb-1" />
-                  <div className="h-3 w-20 bg-muted animate-pulse rounded" />
-                </CardContent>
-              </Card>
-            ))
+            <DashboardSkeleton />
           ) : (
             statCards.map((stat) => (
               <div

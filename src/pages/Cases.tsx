@@ -27,6 +27,7 @@ import { CaseCard } from "@/components/CaseCard";
 import { LoadingState } from "@/components/LoadingState";
 import { EmptyState } from "@/components/EmptyState";
 import { ErrorState } from "@/components/ErrorState";
+import { CaseCardSkeletonGrid } from "@/components/CaseCardSkeleton";
 import { useAuth } from "@/hooks/useAuth";
 import { useCases, useUpdateCaseStatus, useDeleteCase } from "@/hooks/useCases";
 import { STATUS_COLORS } from "@/lib/constants";
@@ -389,7 +390,7 @@ const Cases = () => {
               retry={() => refetch()}
             />
           ) : loading ? (
-            <LoadingState message="Loading cases..." />
+            <CaseCardSkeletonGrid count={4} />
           ) : filteredCases.length === 0 ? (
             <EmptyState
               icon={Database}
