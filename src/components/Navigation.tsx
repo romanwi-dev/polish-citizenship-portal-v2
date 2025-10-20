@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, User, Sparkles, Languages, BookOpen, Settings, Plus, Mic, Zap, Upload, Share2, LogIn, LogOut } from "lucide-react";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo.webp";
 import { useAuth } from "@/hooks/useAuth";
 import { MobileNavigationSheet } from "@/components/MobileNavigationSheet";
 import { NavigationSearch } from "@/components/navigation/NavigationSearch";

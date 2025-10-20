@@ -38,7 +38,7 @@ import {
 import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo.webp";
 import { Badge } from "@/components/ui/badge";
 import { Collapsible } from "@/components/ui/collapsible";
 
