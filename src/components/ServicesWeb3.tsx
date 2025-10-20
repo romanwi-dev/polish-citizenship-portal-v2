@@ -1,6 +1,5 @@
 import { FileText, Users, CheckCircle, Globe, Cpu, Shield, Zap } from "lucide-react";
 import { useState } from "react";
-import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 
 const services = [
@@ -48,7 +47,7 @@ const FlippableServiceCard = ({ service, index }: { service: typeof services[0];
 
   return (
     <div 
-      className="h-[280px] cursor-pointer"
+      className="h-[280px] cursor-pointer animate-fade-in"
       style={{ 
         animationDelay: `${index * 100}ms`,
         perspective: '1000px'
@@ -64,7 +63,7 @@ const FlippableServiceCard = ({ service, index }: { service: typeof services[0];
       >
         {/* Front of card */}
         <div 
-          className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group overflow-hidden"
+          className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group overflow-hidden transition-all duration-300 hover:scale-105 hover:-translate-y-1"
           style={{ backfaceVisibility: 'hidden' }}
         >
           <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
@@ -112,12 +111,12 @@ const ServicesWeb3 = () => {
     <section id="services" className="py-32 relative overflow-hidden">
       
       <div className="container px-4 mx-auto relative z-10">
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 animate-fade-in">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16">
             <Zap className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium">Next-Gen Services</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-heading font-black mb-14 tracking-tight">
+          <h2 className="text-4xl md:text-5xl font-heading font-black mb-14 tracking-tight animate-scale-in">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               Powered by Innovation
             </span>
@@ -134,7 +133,7 @@ const ServicesWeb3 = () => {
         </div>
         
         {/* CTA Button */}
-        <div className="flex justify-center mt-16">
+        <div className="flex justify-center mt-16 animate-fade-in" style={{ animationDelay: '400ms' }}>
           <Button 
             size="lg" 
             className="text-lg md:text-2xl font-bold px-8 py-4 md:px-20 md:py-6 h-auto min-h-[48px] rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30" 

@@ -6,13 +6,13 @@ const AboutSection = () => {
     <section className="relative py-32 overflow-hidden">
       
       <div className="container relative z-10 px-4 mx-auto">
-        <div className="max-w-4xl mx-auto text-center mb-16">
+        <div className="max-w-4xl mx-auto text-center mb-16 animate-fade-in">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16">
             <Shield className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium">Legal Expertise Since 2003</span>
           </div>
           
-          <h2 className="text-4xl md:text-5xl font-heading font-black mb-14 tracking-tight">
+          <h2 className="text-4xl md:text-5xl font-heading font-black mb-14 tracking-tight animate-scale-in">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               The Most Comprehensive Online Legal Service for Polish Citizenship and Polish European Passport
             </span>
@@ -31,7 +31,7 @@ const AboutSection = () => {
 
         {/* Features Grid */}
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          <div className="glass-card p-8 rounded-lg hover-glow text-center">
+          <div className="glass-card p-8 rounded-lg hover-glow text-center transition-transform duration-300 hover:scale-105 hover:-translate-y-1 animate-fade-in" style={{ animationDelay: '100ms' }}>
             <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
               <Users className="w-8 h-8 text-primary" />
             </div>
@@ -41,7 +41,7 @@ const AboutSection = () => {
             </p>
           </div>
 
-          <div className="glass-card p-8 rounded-lg hover-glow text-center">
+          <div className="glass-card p-8 rounded-lg hover-glow text-center transition-transform duration-300 hover:scale-105 hover:-translate-y-1 animate-fade-in" style={{ animationDelay: '200ms' }}>
             <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-secondary/20 to-accent/20 flex items-center justify-center">
               <Globe className="w-8 h-8 text-secondary" />
             </div>
@@ -51,7 +51,7 @@ const AboutSection = () => {
             </p>
           </div>
 
-          <div className="glass-card p-8 rounded-lg hover-glow text-center">
+          <div className="glass-card p-8 rounded-lg hover-glow text-center transition-transform duration-300 hover:scale-105 hover:-translate-y-1 animate-fade-in" style={{ animationDelay: '300ms' }}>
             <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-accent/20 to-primary/20 flex items-center justify-center">
               <Shield className="w-8 h-8 text-accent" />
             </div>
@@ -63,7 +63,7 @@ const AboutSection = () => {
         </div>
         
         {/* CTA Button */}
-        <div className="flex justify-center mt-16">
+        <div className="flex justify-center mt-16 animate-fade-in" style={{ animationDelay: '400ms' }}>
           <Button 
             size="lg" 
             className="text-lg md:text-2xl font-bold px-8 py-4 md:px-20 md:py-6 h-auto min-h-[48px] rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30" 

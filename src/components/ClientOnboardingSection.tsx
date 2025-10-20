@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { useState } from "react";
 import { UserCircle } from "lucide-react";
 import { MessageSquare, ClipboardCheck, FileSearch, Scale, Send, Brain, FileCheck2, Globe } from "lucide-react";
@@ -95,54 +94,28 @@ export default function ClientOnboardingSection() {
 
       <div className="container relative z-10 mx-auto px-4">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mb-20"
-        >
+        <div className="text-center mb-20 animate-fade-in">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16">
             <UserCircle className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium">Client Journey</span>
           </div>
-          <motion.h2 
-            initial={{ opacity: 0, scale: 0.9, y: 30 }}
-            whileInView={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ 
-              duration: 2.5, 
-              delay: 0.2,
-              type: "spring",
-              stiffness: 50,
-              damping: 15
-            }}
-            viewport={{ once: true }}
-            className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight"
-          >
+          <h2 className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight animate-scale-in">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-primary animate-fade-in-up glow-text drop-shadow-2xl">
               How to Become Our Client
             </span>
-          </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            viewport={{ once: true }}
-            className="text-xl text-muted-foreground max-w-3xl mx-auto mb-16"
-          >
+          </h2>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-16 animate-fade-in">
             Follow these 8 clear steps to become our registered client and start your citizenship case
-          </motion.p>
-        </motion.div>
+          </p>
+        </div>
 
         {/* Steps Grid */}
         <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {onboardingSteps.map((step, index) => (
-            <motion.div
+            <div
               key={step.number}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.15 }}
-              viewport={{ once: true, margin: "-50px" }}
+              className="animate-fade-in"
+              style={{ animationDelay: `${index * 150}ms` }}
             >
               <div 
                 className="relative h-[450px]"
@@ -157,10 +130,8 @@ export default function ClientOnboardingSection() {
                   }}
                 >
                   {/* Front Side */}
-                  <motion.div
-                    whileHover={{ scale: 1.03, y: -5 }}
-                    transition={{ duration: 0.3 }}
-                    className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group"
+                  <div
+                    className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.03] hover:-translate-y-1"
                     style={{
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
@@ -178,15 +149,9 @@ export default function ClientOnboardingSection() {
 
                     {/* Content */}
                     <div className="space-y-4">
-                      <motion.h3 
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.5, delay: index * 0.1 }}
-                        viewport={{ once: true }}
-                        className="text-2xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300"
-                      >
+                      <h3 className="text-2xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
                         {step.title}
-                      </motion.h3>
+                      </h3>
                       <p className="text-muted-foreground leading-relaxed mb-4">
                         {step.description}
                       </p>
@@ -207,7 +172,7 @@ export default function ClientOnboardingSection() {
                       </Button>
                       <p className="text-xs text-muted-foreground/60 text-center mt-2">Tap card for details</p>
                     </div>
-                  </motion.div>
+                  </div>
 
                   {/* Back Side */}
                   <div 
@@ -241,18 +206,12 @@ export default function ClientOnboardingSection() {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="text-center mt-16"
-        >
+        <div className="text-center mt-16 animate-fade-in" style={{ animationDelay: '400ms' }}>
           <Button
             size="lg"
             className="text-lg md:text-2xl font-bold px-8 py-4 md:px-20 md:py-6 h-auto min-h-[48px] rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30"
@@ -264,7 +223,7 @@ export default function ClientOnboardingSection() {
             </span>
             <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
           </Button>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

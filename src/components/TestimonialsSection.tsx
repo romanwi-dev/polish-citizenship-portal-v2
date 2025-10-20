@@ -63,7 +63,7 @@ export default function TestimonialsSection() {
     <section id="testimonials" className="py-24 px-4 bg-gradient-to-b from-background via-background/95 to-background">
       <div className="container mx-auto max-w-7xl">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
             Success Stories
           </h2>
@@ -87,7 +87,8 @@ export default function TestimonialsSection() {
           {testimonials.map((testimonial, index) => (
             <Card 
               key={index} 
-              className="group hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 border-border/50 bg-card/50 backdrop-blur-sm"
+              className="group hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 border-border/50 bg-card/50 backdrop-blur-sm hover:scale-105 hover:-translate-y-1 animate-fade-in"
+              style={{ animationDelay: `${index * 100}ms` }}
             >
               <CardContent className="p-6">
                 {/* Quote Icon */}
@@ -135,7 +136,7 @@ export default function TestimonialsSection() {
         </div>
 
         {/* CTA */}
-        <div className="text-center mt-12">
+        <div className="text-center mt-12 animate-fade-in" style={{ animationDelay: '600ms' }}>
           <p className="text-muted-foreground mb-4">
             Join hundreds of satisfied clients who successfully reclaimed their Polish citizenship
           </p>
