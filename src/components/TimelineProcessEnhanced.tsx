@@ -5,14 +5,7 @@ import { Card } from "./ui/card";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
-// Replace Framer Motion with CSS animations for performance
-const motion = {
-  div: 'div' as any,
-  section: 'section' as any,
-  h2: 'h2' as any,
-  h3: 'h3' as any,
-  p: 'p' as any
-};
+// Using pure CSS animations for optimal performance
 
 // Optimized WebP images for better performance
 import timeline01 from "@/assets/timeline-01-first-steps.webp";
@@ -195,72 +188,31 @@ export default function TimelineProcessEnhanced() {
   return <section id="timeline" className="relative py-24 overflow-hidden">
       
       <div className="container relative z-10 mx-auto px-4">
-        <motion.div initial={{
-        opacity: 0,
-        y: 20
-      }} whileInView={{
-        opacity: 1,
-        y: 0
-      }} transition={{
-        duration: 0.6
-      }} viewport={{
-        once: true
-      }} className="text-center mb-16">
+        <div className="text-center mb-16 animate-fade-in">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16">
             <Clock className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium">Process Timeline</span>
           </div>
-          <motion.h2 initial={{
-          opacity: 0,
-          scale: 0.9,
-          y: 30
-        }} whileInView={{
-          opacity: 1,
-          scale: 1,
-          y: 0
-        }} transition={{
-          duration: 2.5,
-          delay: 0.3,
-          type: "spring",
-          stiffness: 40,
-          damping: 20
-        }} viewport={{
-          once: true
-        }} className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight">
+          <h2 className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight animate-scale-in" style={{ animationDelay: '150ms' }}>
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-primary animate-fade-in-up glow-text drop-shadow-2xl">
               Complete Legal Process Timeline
             </span>
-          </motion.h2>
-          <motion.p initial={{
-          opacity: 0
-        }} whileInView={{
-          opacity: 1
-        }} transition={{
-          duration: 0.6,
-          delay: 0.4
-        }} viewport={{
-          once: true
-        }} className="text-xl text-muted-foreground max-w-3xl mx-auto mb-16">Complex journey to Polish citizenship through our comprehensive 15-part process. Many stages are always processed simultaneously to save time.</motion.p>
-        </motion.div>
+          </h2>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-16 animate-fade-in" style={{ animationDelay: '200ms' }}>
+            Complex journey to Polish citizenship through our comprehensive 15-part process. Many stages are always processed simultaneously to save time.
+          </p>
+        </div>
 
         {/* Timeline */}
         <div className="relative max-w-5xl mx-auto">
           {/* Center line */}
           <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block" />
 
-          {timelineSteps.map((step, index) => <motion.div key={step.number} initial={prefersReducedMotion ? {} : {
-          opacity: 0,
-          x: index % 2 === 0 ? -50 : 50
-        }} whileInView={prefersReducedMotion ? {} : {
-          opacity: 1,
-          x: 0
-        }} transition={prefersReducedMotion ? {} : {
-          duration: 0.6,
-          delay: index * 0.1
-        }} viewport={{
-          once: true,
-          margin: "-100px"
-        }} className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-8 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
+          {timelineSteps.map((step, index) => <div 
+            key={step.number} 
+            className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-8 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''} ${prefersReducedMotion ? '' : 'animate-fade-in'}`}
+            style={{ animationDelay: `${index * 100}ms` }}
+          >
               {/* Content Card */}
               <div className="w-full md:w-5/12">
                 <div className="relative h-[280px] md:h-[400px]" style={{
@@ -283,11 +235,7 @@ export default function TimelineProcessEnhanced() {
                 transform: flippedCards[step.number] ? 'rotateY(180deg)' : 'rotateY(0deg)'
               }}>
                     {/* Front Side */}
-                    <motion.div whileHover={{
-                  scale: 1.02
-                }} transition={{
-                  duration: 0.3
-                }} className="absolute inset-0 glass-card p-6 rounded-lg hover-glow group" style={{
+                    <div className="absolute inset-0 glass-card p-6 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.02]" style={{
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden'
                 }}>
@@ -298,25 +246,9 @@ export default function TimelineProcessEnhanced() {
                           </span>
                           <span className="text-xs text-muted-foreground">{step.duration}</span>
                         </div>
-                        <motion.h3 initial={prefersReducedMotion ? {} : {
-                      opacity: 0,
-                      x: -20,
-                      scale: 0.95
-                    }} whileInView={prefersReducedMotion ? {} : {
-                      opacity: 1,
-                      x: 0,
-                      scale: 1
-                    }} transition={prefersReducedMotion ? {} : {
-                      duration: 2,
-                      delay: index * 0.08,
-                      type: "spring",
-                      stiffness: 60,
-                      damping: 15
-                    }} viewport={{
-                      once: true
-                    }} className="text-xl md:text-2xl lg:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-lg">
+                        <h3 className={`text-xl md:text-2xl lg:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-lg ${prefersReducedMotion ? '' : 'animate-fade-in'}`}>
                           {step.title}
-                        </motion.h3>
+                        </h3>
                         <p className="text-xs md:text-sm text-muted-foreground mb-3 flex-1 line-clamp-3 md:line-clamp-none">
                           {step.description}
                         </p>
@@ -330,7 +262,7 @@ export default function TimelineProcessEnhanced() {
                         </div>
                         <p className="text-xs text-muted-foreground/60 mt-2 text-center">{isMobile ? 'Tap' : 'Click'} to see details</p>
                       </div>
-                    </motion.div>
+                    </div>
 
                     {/* Back Side */}
                     <div className="absolute inset-0 glass-card p-6 rounded-lg hover-glow" style={{
@@ -362,16 +294,7 @@ export default function TimelineProcessEnhanced() {
 
               {/* Center Circle with Number */}
               <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:block">
-                <motion.div initial={{
-              scale: 0
-            }} whileInView={{
-              scale: 1
-            }} transition={{
-              duration: 0.5,
-              delay: index * 0.1 + 0.2
-            }} viewport={{
-              once: true
-            }} className="relative w-24 h-24 rounded-full bg-gradient-to-br from-primary to-secondary p-1 animate-float" style={{
+                <div className={`relative w-24 h-24 rounded-full bg-gradient-to-br from-primary to-secondary p-1 animate-float ${prefersReducedMotion ? '' : 'animate-scale-in'}`} style={{
               animationDelay: `${index * 0.2}s`
             }}>
                   <div className="w-full h-full rounded-full bg-card flex items-center justify-center">
@@ -380,26 +303,16 @@ export default function TimelineProcessEnhanced() {
                     </span>
                   </div>
                   <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 blur-xl -z-10" />
-                </motion.div>
+                </div>
               </div>
 
               {/* Empty space for layout balance */}
               <div className="w-full md:w-5/12 hidden md:block" />
-            </motion.div>)}
+            </div>)}
         </div>
 
         {/* Expert Tip */}
-        <motion.div initial={{
-        opacity: 0,
-        y: 20
-      }} whileInView={{
-        opacity: 1,
-        y: 0
-      }} transition={{
-        duration: 0.6
-      }} viewport={{
-        once: true
-      }} className="mt-16 glass-card p-8 rounded-lg max-w-3xl mx-auto">
+        <div className="mt-16 glass-card p-8 rounded-lg max-w-3xl mx-auto animate-fade-in">
           <div className="flex items-center gap-4 mb-4">
             <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
               <Shield className="w-6 h-6 text-primary" />
@@ -411,20 +324,10 @@ export default function TimelineProcessEnhanced() {
             receives professional attention at each critical stage. We handle complex genealogical research, 
             navigate bureaucratic requirements, and provide ongoing support throughout your journey.
           </p>
-        </motion.div>
+        </div>
 
         {/* CTA */}
-        <motion.div initial={prefersReducedMotion ? {} : {
-        opacity: 0,
-        scale: 0.9
-      }} whileInView={prefersReducedMotion ? {} : {
-        opacity: 1,
-        scale: 1
-      }} transition={prefersReducedMotion ? {} : {
-        duration: 0.6
-      }} viewport={{
-        once: true
-      }} className="text-center mt-12">
+        <div className={`text-center mt-12 ${prefersReducedMotion ? '' : 'animate-fade-in animate-scale-in'}`}>
           <Button 
             size="lg" 
             className="text-lg md:text-2xl font-bold px-8 py-4 md:px-20 md:py-6 h-auto min-h-[48px] rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30" 
@@ -436,7 +339,7 @@ export default function TimelineProcessEnhanced() {
             </span>
             <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
           </Button>
-        </motion.div>
+        </div>
       </div>
     </section>;
 }
