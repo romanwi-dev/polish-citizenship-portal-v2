@@ -117,26 +117,17 @@ export default function POAForm() {
       toast.success('Saved! Generating PDF...');
 
       // Generate PDF - it will fetch fresh data from DB
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/fill-pdf`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-          },
-          body: JSON.stringify({ caseId, templateType }),
-        }
-      );
+      const { data, error } = await supabase.functions.invoke('fill-pdf', {
+        body: { caseId, templateType }
+      });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Edge function error:", errorText);
-        throw new Error(`PDF generation failed: ${errorText}`);
+      if (error) {
+        console.error("Edge function error:", error);
+        throw new Error(`PDF generation failed: ${error.message}`);
       }
 
       // Get the PDF as a blob
-      const blob = await response.blob();
+      const blob = new Blob([data], { type: 'application/pdf' });
       // Revoke old URL to prevent memory leaks
       if (pdfPreviewUrl) URL.revokeObjectURL(pdfPreviewUrl);
       const url = URL.createObjectURL(blob);
@@ -163,21 +154,13 @@ export default function POAForm() {
       
       await supabase.from("master_table").update(sanitizedData).eq("case_id", caseId);
 
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/fill-pdf`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-          },
-          body: JSON.stringify({ caseId, templateType: 'poa-adult' }),
-        }
-      );
+      const { data, error } = await supabase.functions.invoke('fill-pdf', {
+        body: { caseId, templateType: 'poa-adult' }
+      });
 
-      if (!response.ok) throw new Error('PDF generation failed');
+      if (error) throw new Error(error.message || 'PDF generation failed');
 
-      const blob = await response.blob();
+      const blob = new Blob([data], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
       
       setPdfPreviewUrl(url);
@@ -215,21 +198,13 @@ export default function POAForm() {
       if (showSpousePOA) templates.push('poa-spouses');
 
       for (const templateType of templates) {
-        const response = await fetch(
-          `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/fill-pdf`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-            },
-            body: JSON.stringify({ caseId, templateType }),
-          }
-        );
+        const { data, error } = await supabase.functions.invoke('fill-pdf', {
+          body: { caseId, templateType }
+        });
 
-        if (!response.ok) throw new Error('PDF generation failed');
+        if (error) throw new Error(error.message || 'PDF generation failed');
 
-        const blob = await response.blob();
+        const blob = new Blob([data], { type: 'application/pdf' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;

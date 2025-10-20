@@ -80,28 +80,19 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
 
       console.log('Invoking fill-pdf function with:', { caseId, templateType });
       
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/fill-pdf`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-          },
-          body: JSON.stringify({ caseId, templateType, flatten }),
-        }
-      );
+      const { data, error } = await supabase.functions.invoke('fill-pdf', {
+        body: { caseId, templateType, flatten }
+      });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Edge function error:', errorText);
-        throw new Error(`Failed to generate PDF: ${errorText}`);
+      if (error) {
+        console.error('Edge function error:', error);
+        throw new Error(`Failed to generate PDF: ${error.message}`);
       }
 
       console.log('PDF data received, creating blob...');
       
       // Get the PDF as a blob
-      const blob = await response.blob();
+      const blob = new Blob([data], { type: 'application/pdf' });
       console.log(`📊 PDF Stats: ${blob.size} bytes, ${blob.type}`);
 
       toast.dismiss(loadingToast);

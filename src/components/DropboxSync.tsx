@@ -36,22 +36,13 @@ export const DropboxSync = () => {
     toast.info("Starting Dropbox sync...");
 
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/dropbox-sync`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ syncType: "full" }),
-        }
-      );
+      const { data: result, error } = await supabase.functions.invoke('dropbox-sync', {
+        body: { syncType: "full" }
+      });
 
-      if (!response.ok) {
-        throw new Error("Sync failed");
+      if (error) {
+        throw new Error(error.message || "Sync failed");
       }
-
-      const result = await response.json();
       setLastSync(new Date());
       
       toast.success(
