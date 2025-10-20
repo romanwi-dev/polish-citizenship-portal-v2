@@ -1,8 +1,11 @@
-import { useRef, useState } from 'react';
-import SignatureCanvas from 'react-signature-canvas';
+import { useRef, useState, lazy, Suspense } from 'react';
+import type SignatureCanvas from 'react-signature-canvas';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Trash2, Save } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
+
+const SignatureCanvasLazy = lazy(() => import('react-signature-canvas'));
 
 interface SignatureFieldProps {
   onSave: (signature: string) => void;
@@ -45,15 +48,17 @@ export function SignatureField({ onSave, label = 'Signature', required = false }
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="border-2 border-dashed rounded-lg overflow-hidden bg-white">
-          <SignatureCanvas
-            ref={sigCanvas}
-            penColor="black"
-            canvasProps={{
-              className: 'w-full h-40 cursor-crosshair',
-              style: { touchAction: 'none' }
-            }}
-            onBegin={handleBegin}
-          />
+          <Suspense fallback={<Skeleton className="w-full h-40" />}>
+            <SignatureCanvasLazy
+              ref={sigCanvas}
+              penColor="black"
+              canvasProps={{
+                className: 'w-full h-40 cursor-crosshair',
+                style: { touchAction: 'none' }
+              }}
+              onBegin={handleBegin}
+            />
+          </Suspense>
         </div>
         
         <div className="flex gap-2 justify-end">

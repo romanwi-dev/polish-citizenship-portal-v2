@@ -1,13 +1,16 @@
 import { ReactNode } from 'react';
-import { motion } from 'framer-motion';
+import { useMotion } from '@/hooks/useMotion';
 
 export const GlassmorphicDesign = ({ children }: { children: ReactNode }) => {
+  const motion = useMotion();
+  const MotionDiv = motion.div;
+  
   return (
-    <motion.div
+    <MotionDiv
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
-      className="h-full w-full relative overflow-hidden"
+      className="h-full w-full relative overflow-hidden animate-fade-in"
     >
       {/* Footer-matching background */}
       <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
@@ -28,6 +31,6 @@ export const GlassmorphicDesign = ({ children }: { children: ReactNode }) => {
           box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
         }
       `}</style>
-    </motion.div>
+    </MotionDiv>
   );
 };

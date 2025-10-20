@@ -1,13 +1,16 @@
 import { ReactNode } from 'react';
-import { motion } from 'framer-motion';
+import { useMotion } from '@/hooks/useMotion';
 
 export const NeumorphicDesign = ({ children }: { children: ReactNode }) => {
+  const motion = useMotion();
+  const MotionDiv = motion.div;
+  
   return (
-    <motion.div
+    <MotionDiv
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
-      className="h-full w-full relative overflow-hidden"
+      className="h-full w-full relative overflow-hidden animate-fade-in"
     >
       {/* Footer-matching background */}
       <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
@@ -38,6 +41,6 @@ export const NeumorphicDesign = ({ children }: { children: ReactNode }) => {
           box-shadow: inset 4px 4px 8px #161616, inset -4px -4px 8px #323232;
         }
       `}</style>
-    </motion.div>
+    </MotionDiv>
   );
 };
