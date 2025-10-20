@@ -50,9 +50,9 @@ const NAVIGATION_SECTIONS: Array<{
   {
     title: 'Admin Tools',
     links: [
-      { label: 'AI Agent', href: '/admin/ai-agent', icon: Bot },
-      { label: 'Family Tree', href: '/admin/family-tree', icon: GitBranch },
-      { label: 'Client Intake', href: '/admin/intake', icon: ClipboardList },
+      { label: 'AI Agent', href: '/admin/ai-agent-diagnostics', icon: Bot },
+      { label: 'Family Tree', href: '/admin/cases', icon: GitBranch },
+      { label: 'Client Intake', href: '/admin/intake-demo', icon: ClipboardList },
       { label: 'Management', href: '/admin/cases', icon: Users },
       { label: 'System Overview', href: '/admin/system-overview', icon: BookOpen },
     ]
