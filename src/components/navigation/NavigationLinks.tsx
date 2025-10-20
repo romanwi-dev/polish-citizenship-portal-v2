@@ -65,14 +65,22 @@ export const NavigationLinks = ({ onNavigate, searchQuery }: NavigationLinksProp
   
   const handleClick = (e: React.MouseEvent, href: string) => {
     if (href.startsWith('#')) {
-      // Don't prevent default - let browser handle anchor navigation
-      // This works even with lazy-loaded sections
+      e.preventDefault(); // Always prevent default for hash links
+      
+      // If we're not on the homepage, navigate there first
       if (window.location.pathname !== '/') {
-        e.preventDefault();
         navigate('/' + href);
+      } else {
+        // We're already on homepage, scroll to section
+        const sectionId = href.substring(1); // Remove the #
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
       }
-      onNavigate();
+      onNavigate(); // Close the menu
     } else {
+      navigate(href);
       onNavigate();
     }
   };
