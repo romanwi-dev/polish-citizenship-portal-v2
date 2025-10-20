@@ -20,7 +20,8 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     cssCodeSplit: true,
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 500,
+    reportCompressedSize: true,
     rollupOptions: {
       output: {
         manualChunks: {

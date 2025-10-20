@@ -10,7 +10,6 @@ import { toast } from "sonner";
 import { PasswordStrengthMeter } from "@/components/PasswordStrengthMeter";
 import { AlertCircle, Sparkles, LogIn, UserPlus, Type } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 
@@ -98,12 +97,7 @@ const Login = () => {
     <div className="min-h-screen relative">
       <div className="container mx-auto py-12 px-4 md:px-6 lg:px-8 relative z-10 max-w-7xl">
         {/* Header */}
-        <motion.div 
-          initial={{ opacity: 0, y: -50 }} 
-          animate={{ opacity: 1, y: 0 }} 
-          transition={{ duration: 0.8 }}
-          className="mb-6"
-        >
+        <div className="animate-fade-in-up mb-6">
           <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text text-center leading-tight break-words mb-4">
             {isSignUp ? "Create Account" : "Welcome Back"}
           </h2>
@@ -118,27 +112,17 @@ const Login = () => {
               <Type className="h-6 w-6 md:h-8 md:w-8" />
             </Button>
           </div>
-        </motion.div>
+        </div>
 
         {/* Form */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="w-full max-w-3xl"
-        >
+        <div className="animate-scale-in w-full max-w-3xl">
           <div className="p-8 md:p-12">
             <p className="text-center text-lg text-muted-foreground mb-8">
               {isSignUp ? "Create a new account to access the case management system" : "Sign in to access your case management system"}
             </p>
             
             <form onSubmit={handleAuth} className="space-y-6">
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="space-y-4"
-              >
+              <div className="space-y-4">
                 <Label 
                   htmlFor="email" 
                   className={cn(
@@ -178,14 +162,9 @@ const Login = () => {
                     e.currentTarget.style.transform = "translateY(0)";
                   }}
                 />
-              </motion.div>
+              </div>
 
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.15 }}
-                className="space-y-4"
-              >
+              <div className="space-y-4">
                 <Label 
                   htmlFor="password"
                   className={cn(
@@ -237,14 +216,9 @@ const Login = () => {
                     <AlertDescription>{breachWarning}</AlertDescription>
                   </Alert>
                 )}
-              </motion.div>
+              </div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="space-y-4 pt-4"
-              >
+              <div className="space-y-4 pt-4">
                 <Button 
                   type="submit" 
                   className="w-full h-16 text-lg md:text-xl font-bold bg-white/5 hover:bg-white/10 shadow-glow hover-glow backdrop-blur-md border border-white/30"
@@ -277,10 +251,10 @@ const Login = () => {
                     {isSignUp ? "Already have an account? Login" : "Open an Account / Register"}
                   </span>
                 </Button>
-              </motion.div>
+              </div>
             </form>
           </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );

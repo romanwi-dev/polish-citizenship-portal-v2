@@ -33,8 +33,30 @@ const Index = () => {
   const { ref: contactRef, inView: contactInView } = useInView({ threshold: 0, triggerOnce: true, rootMargin: '200px' });
 
   useEffect(() => {
-    const timer = setTimeout(() => setShow3D(true), 100);
-    return () => clearTimeout(timer);
+    let timer: NodeJS.Timeout;
+    
+    const handleInteraction = () => {
+      setShow3D(true);
+      cleanup();
+    };
+    
+    const cleanup = () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', handleInteraction);
+      window.removeEventListener('click', handleInteraction);
+    };
+    
+    // Listen for user interaction
+    window.addEventListener('scroll', handleInteraction, { once: true });
+    window.addEventListener('click', handleInteraction, { once: true });
+    
+    // Fallback: load after 2 seconds anyway
+    timer = setTimeout(() => {
+      setShow3D(true);
+      cleanup();
+    }, 2000);
+    
+    return cleanup;
   }, []);
 
   return (
