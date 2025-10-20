@@ -68,7 +68,7 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <a href="/">
-            <img src={logo} alt="PolishCitizenship.pl" className="h-8 w-auto" width="183" height="32" />
+            <img src={logo} alt="PolishCitizenship.pl" className="h-8 w-auto" width="400" height="70" loading="eager" fetchPriority="high" />
           </a>
 
           {/* User Icon & Desktop/Mobile Menu */}

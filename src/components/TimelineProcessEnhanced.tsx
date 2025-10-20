@@ -1,10 +1,18 @@
-import { motion } from "framer-motion";
 import { useState } from "react";
 import { FileText, CheckCircle, CreditCard, FileCheck, Send, FolderSearch, Archive, Languages, Upload, Stamp, Clock, Zap, Award, Book, Users, Shield } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+
+// Replace Framer Motion with CSS animations for performance
+const motion = {
+  div: 'div' as any,
+  section: 'section' as any,
+  h2: 'h2' as any,
+  h3: 'h3' as any,
+  p: 'p' as any
+};
 
 // Optimized WebP images for better performance
 import timeline01 from "@/assets/timeline-01-first-steps.webp";
