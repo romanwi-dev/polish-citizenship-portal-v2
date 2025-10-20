@@ -30,11 +30,10 @@ const NAVIGATION_SECTIONS: Array<{
   {
     title: 'Resources',
     links: [
-      { label: 'Law', href: '#law' },
-      { label: 'Passport', href: '#passport' },
-      { label: 'Resources', href: '#resources' },
-      { label: 'Paperwork', href: '#paperwork' },
-      { label: 'Documents', href: '#documents' },
+      { label: 'Law', href: '#faq' },
+      { label: 'Passport', href: '#services' },
+      { label: 'Process', href: '#timeline' },
+      { label: 'Documents', href: '#timeline' },
       { label: 'Testimonials', href: '#testimonials' },
     ]
   },

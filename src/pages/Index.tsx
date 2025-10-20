@@ -15,6 +15,7 @@ const ServicesWeb3 = lazy(() => import("@/components/ServicesWeb3"));
 const ClientOnboardingSection = lazy(() => import("@/components/ClientOnboardingSection"));
 const TimelineProcessEnhanced = lazy(() => import("@/components/TimelineProcessEnhanced"));
 const PricingSection = lazy(() => import("@/components/PricingSection"));
+const TestimonialsSection = lazy(() => import("@/components/TestimonialsSection"));
 const FAQSection = lazy(() => import("@/components/FAQSection"));
 const ContactFormWeb3 = lazy(() => import("@/components/ContactFormWeb3"));
 const FooterWeb3 = lazy(() => import("@/components/FooterWeb3"));
@@ -31,6 +32,7 @@ const Index = () => {
   const [show3D, setShow3D] = useState(false);
   const { ref: timelineRef, inView: timelineInView } = useInView({ threshold: 0, triggerOnce: true, rootMargin: '200px' });
   const { ref: pricingRef, inView: pricingInView } = useInView({ threshold: 0, triggerOnce: true, rootMargin: '200px' });
+  const { ref: testimonialsRef, inView: testimonialsInView } = useInView({ threshold: 0, triggerOnce: true, rootMargin: '200px' });
   const { ref: faqRef, inView: faqInView } = useInView({ threshold: 0, triggerOnce: true, rootMargin: '200px' });
   const { ref: contactRef, inView: contactInView } = useInView({ threshold: 0, triggerOnce: true, rootMargin: '200px' });
 
@@ -111,6 +113,16 @@ const Index = () => {
           </Suspense>
         ) : (
           <div style={{ height: '50rem' }} />
+        )}
+      </div>
+      
+      <div ref={testimonialsRef} style={{ minHeight: '40rem' }}>
+        {testimonialsInView ? (
+          <Suspense fallback={<SectionLoader />}>
+            <TestimonialsSection />
+          </Suspense>
+        ) : (
+          <div style={{ height: '40rem' }} />
         )}
       </div>
       
