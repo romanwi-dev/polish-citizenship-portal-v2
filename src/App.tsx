@@ -65,6 +65,9 @@ const AIAgentDiagnostics = lazy(() => import("./pages/admin/AIAgentDiagnostics")
 const RoleManagement = lazy(() => import("./pages/admin/RoleManagement"));
 const SystemOverview = lazy(() => import("./pages/admin/SystemOverview"));
 
+// Demo pages
+const LightThemeDemo = lazy(() => import("./pages/demo/LightThemeDemo"));
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -432,6 +435,16 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <AIAgentDiagnostics />
+              </Suspense>
+            } 
+          />
+          
+          {/* Demo Routes */}
+          <Route 
+            path="/demo/light-theme" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <LightThemeDemo />
               </Suspense>
             } 
           />

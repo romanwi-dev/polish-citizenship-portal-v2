@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Bot, GitBranch, ClipboardList, Users, Archive, Languages, Award, FileCheck, Plane, BookOpen, Shield, Search, PenTool } from 'lucide-react';
+import { Bot, GitBranch, ClipboardList, Users, Archive, Languages, Award, FileCheck, Plane, BookOpen, Shield, Search, PenTool, Sun, Sparkles } from 'lucide-react';
 
 interface NavigationLinksProps {
   onNavigate: () => void;
@@ -55,6 +55,14 @@ const NAVIGATION_SECTIONS: Array<{
       { label: 'Client Intake', href: '/admin/intake-demo', icon: ClipboardList },
       { label: 'Management', href: '/admin/cases', icon: Users },
       { label: 'System Overview', href: '/admin/system-overview', icon: BookOpen },
+    ]
+  },
+  {
+    title: 'Demos',
+    links: [
+      { label: 'Light Theme Preview', href: '/demo/light-theme', icon: Sun },
+      { label: 'Forms Demo', href: '/admin/forms-demo', icon: Sparkles },
+      { label: 'Client Intake Demo', href: '/admin/intake-demo', icon: ClipboardList },
     ]
   }
 ];
