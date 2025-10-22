@@ -60,7 +60,10 @@ const NAVIGATION_SECTIONS: Array<{
   {
     title: 'Demos',
     links: [
-      { label: 'Light Theme Preview', href: '/demo/light-theme', icon: Sun },
+      { label: 'Light Theme 1 - Premium', href: '/demo/light-theme', icon: Sun },
+      { label: 'Light Theme 2 - Minimal', href: '/demo/light-theme-2', icon: Sun },
+      { label: 'Light Theme 3 - Bold', href: '/demo/light-theme-3', icon: Sun },
+      { label: 'Light Theme 4 - Corporate', href: '/demo/light-theme-4', icon: Sun },
       { label: 'Forms Demo', href: '/admin/forms-demo', icon: Sparkles },
       { label: 'Client Intake Demo', href: '/admin/intake-demo', icon: ClipboardList },
     ]

@@ -67,6 +67,9 @@ const SystemOverview = lazy(() => import("./pages/admin/SystemOverview"));
 
 // Demo pages
 const LightThemeDemo = lazy(() => import("./pages/demo/LightThemeDemo"));
+const LightThemeDemo2 = lazy(() => import("./pages/demo/LightThemeDemo2"));
+const LightThemeDemo3 = lazy(() => import("./pages/demo/LightThemeDemo3"));
+const LightThemeDemo4 = lazy(() => import("./pages/demo/LightThemeDemo4"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -445,6 +448,30 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <LightThemeDemo />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/demo/light-theme-2" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <LightThemeDemo2 />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/demo/light-theme-3" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <LightThemeDemo3 />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/demo/light-theme-4" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <LightThemeDemo4 />
               </Suspense>
             } 
           />
