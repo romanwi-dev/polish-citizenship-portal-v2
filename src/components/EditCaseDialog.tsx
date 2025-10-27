@@ -58,7 +58,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
     client_code: caseData.client_code || "",
     country: caseData.country,
     status: caseData.status,
-    generation: caseData.generation || "",
+    processing_mode: caseData.generation || "standard",
     is_vip: caseData.is_vip,
     notes: caseData.notes || "",
     progress: caseData.progress,
@@ -190,7 +190,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
           client_code: formData.client_code || null,
           country: countryValue,
           status: formData.status as any,
-          generation: formData.generation as any,
+          processing_mode: formData.processing_mode as any,
           is_vip: formData.is_vip,
           notes: formData.notes,
           progress: formData.progress,
@@ -357,7 +357,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-3">
               <Label htmlFor="processing_mode" className="text-base font-semibold text-foreground">Processing Mode</Label>
-              <Select value={formData.generation} onValueChange={(value) => setFormData({ ...formData, generation: value })}>
+              <Select value={formData.processing_mode} onValueChange={(value) => setFormData({ ...formData, processing_mode: value })}>
                 <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-background/50 text-base h-12">
                   <SelectValue placeholder="Select processing mode" />
                 </SelectTrigger>
