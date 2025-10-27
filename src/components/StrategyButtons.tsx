@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Zap, Bell, Users, Check } from "lucide-react";
+import { Zap, Bell, Users, Check, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -13,7 +13,7 @@ interface StrategyButtonsProps {
   wscId?: string;
 }
 
-type StrategyType = "PUSH" | "NUDGE" | "SITDOWN";
+type StrategyType = "PUSH" | "NUDGE" | "SITDOWN" | "SLOW";
 
 const STRATEGY_CONFIG = {
   PUSH: {
@@ -36,6 +36,13 @@ const STRATEGY_CONFIG = {
     description: "Schedule formal meeting with authorities",
     color: "bg-blue-500/20 text-blue-400 border-blue-500/30",
     hoverColor: "hover:bg-blue-500/30",
+  },
+  SLOW: {
+    icon: Clock,
+    label: "SLOW",
+    description: "Standard processing - client declined paid schemes",
+    color: "bg-gray-500/20 text-gray-400 border-gray-500/30",
+    hoverColor: "hover:bg-gray-500/30",
   },
 };
 
@@ -100,11 +107,11 @@ export const StrategyButtons = ({ caseId, wscId }: StrategyButtonsProps) => {
       <CardHeader>
         <CardTitle>Response Strategy</CardTitle>
         <CardDescription>
-          Choose how aggressively to follow up with authorities
+          Choose how to follow up with authorities - or mark as SLOW if client declined paid schemes
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 gap-3">
           {(Object.keys(STRATEGY_CONFIG) as StrategyType[]).map((strategy) => {
             const config = STRATEGY_CONFIG[strategy];
             const Icon = config.icon;
