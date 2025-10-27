@@ -281,6 +281,7 @@ export type Database = {
           poa_approved: boolean | null
           processing_mode: Database["public"]["Enums"]["processing_mode"] | null
           progress: number | null
+          push_scheme: string | null
           sort_order: number | null
           start_date: string | null
           status: Database["public"]["Enums"]["case_status"]
@@ -315,6 +316,7 @@ export type Database = {
             | Database["public"]["Enums"]["processing_mode"]
             | null
           progress?: number | null
+          push_scheme?: string | null
           sort_order?: number | null
           start_date?: string | null
           status?: Database["public"]["Enums"]["case_status"]
@@ -349,6 +351,7 @@ export type Database = {
             | Database["public"]["Enums"]["processing_mode"]
             | null
           progress?: number | null
+          push_scheme?: string | null
           sort_order?: number | null
           start_date?: string | null
           status?: Database["public"]["Enums"]["case_status"]

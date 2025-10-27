@@ -22,6 +22,7 @@ interface EditCaseDialogProps {
     country: string;
     status: string;
     generation?: string;
+    push_scheme?: string | null;
     is_vip: boolean;
     notes?: string;
     progress: number;
@@ -59,6 +60,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
     country: caseData.country,
     status: caseData.status,
     processing_mode: caseData.generation || "standard",
+    push_scheme: caseData.push_scheme || "",
     is_vip: caseData.is_vip,
     notes: caseData.notes || "",
     progress: caseData.progress,
@@ -191,6 +193,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
           country: countryValue,
           status: formData.status as any,
           processing_mode: formData.processing_mode as any,
+          push_scheme: formData.push_scheme || null,
           is_vip: formData.is_vip,
           notes: formData.notes,
           progress: formData.progress,
@@ -369,6 +372,24 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                 </SelectContent>
               </Select>
             </div>
+            <div className="space-y-3">
+              <Label htmlFor="push_scheme" className="text-base font-semibold text-foreground">Push Scheme</Label>
+              <Select value={formData.push_scheme} onValueChange={(value) => setFormData({ ...formData, push_scheme: value })}>
+                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-background/50 text-base h-12">
+                  <SelectValue placeholder="Select push scheme" />
+                </SelectTrigger>
+                <SelectContent className="bg-popover border-2 border-border z-50">
+                  <SelectItem value="">None</SelectItem>
+                  <SelectItem value="PUSH">PUSH - Aggressive follow-up</SelectItem>
+                  <SelectItem value="NUDGE">NUDGE - Regular reminders</SelectItem>
+                  <SelectItem value="SITDOWN">SITDOWN - Formal meeting</SelectItem>
+                  <SelectItem value="SLOW">SLOW - Standard pace</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-3">
               <Label htmlFor="progress" className="text-base font-semibold text-foreground">Progress (%)</Label>
               <Input
