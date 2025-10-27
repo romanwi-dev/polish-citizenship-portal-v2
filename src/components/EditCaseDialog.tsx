@@ -384,6 +384,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                   <SelectItem value="NUDGE">NUDGE - Regular reminders</SelectItem>
                   <SelectItem value="SITDOWN">SITDOWN - Formal meeting</SelectItem>
                   <SelectItem value="SLOW">SLOW - Standard pace</SelectItem>
+                  <SelectItem value="ALL SCHEMES">ALL SCHEMES - All strategies</SelectItem>
                 </SelectContent>
               </Select>
             </div>
