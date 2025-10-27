@@ -4,7 +4,7 @@ import { AdminLayout } from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { CaseFilters } from "@/components/CaseFilters";
 import { EditCaseDialog } from "@/components/EditCaseDialog";
-import { CaseCard } from "@/components/CaseCard";
+import { DraggableCaseCard } from "@/components/DraggableCaseCard";
 import { CaseCardSkeletonGrid } from "@/components/CaseCardSkeleton";
 import { KeyboardShortcutsDialog } from "@/components/KeyboardShortcutsDialog";
 import { 
@@ -12,7 +12,8 @@ import {
   Database,
   ArrowUpDown,
   Search,
-  SlidersHorizontal
+  SlidersHorizontal,
+  RotateCcw
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/useAuth";
@@ -29,6 +30,22 @@ import { BulkActionsToolbar } from "@/components/BulkActionsToolbar";
 import { toast } from "sonner";
 import { toastSuccess, toastError } from "@/utils/toastNotifications";
 import { useBulkCaseActions } from "@/hooks/useBulkCaseActions";
+import { useUpdateCaseSortOrders, useResetCaseSortOrders } from "@/hooks/useCaseSortOrder";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 
 export default function CasesManagement() {
   const navigate = useNavigate();
@@ -67,6 +84,20 @@ export default function CasesManagement() {
   const updateStatusMutation = useUpdateCaseStatus();
   const deleteMutation = useDeleteCase();
   const { favorites, toggleFavorite, isFavorite } = useFavoriteCases(user?.id);
+  const updateSortOrdersMutation = useUpdateCaseSortOrders();
+  const resetSortOrdersMutation = useResetCaseSortOrders();
+  
+  // Drag and drop sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   const loading = authLoading || roleLoading || casesLoading;
 
@@ -145,6 +176,26 @@ export default function CasesManagement() {
     return count;
   }, [statusFilter, processingModeFilter, ageFilter, scoreFilter, progressFilter]);
 
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    
+    if (!over || active.id === over.id) return;
+    
+    const oldIndex = filteredCases.findIndex(c => c.id === active.id);
+    const newIndex = filteredCases.findIndex(c => c.id === over.id);
+    
+    if (oldIndex === -1 || newIndex === -1) return;
+    
+    const reordered = arrayMove(filteredCases, oldIndex, newIndex);
+    
+    const updates = reordered.map((caseItem, index) => ({
+      case_id: caseItem.id,
+      sort_order: index,
+    }));
+    
+    updateSortOrdersMutation.mutate(updates);
+  };
+
   const filteredCases = useMemo(() => {
     let filtered = cases.filter(c => {
       // Search filter
@@ -192,6 +243,22 @@ export default function CasesManagement() {
 
     // Apply sorting
     return filtered.sort((a, b) => {
+      // Manual sort order takes absolute priority
+      const aOrder = a.sort_order;
+      const bOrder = b.sort_order;
+      
+      if (aOrder !== null && bOrder !== null) {
+        return aOrder - bOrder;
+      }
+      
+      if (aOrder !== null && bOrder === null) {
+        return -1;
+      }
+      
+      if (aOrder === null && bOrder !== null) {
+        return 1;
+      }
+      
       // Custom sorting
       if (sortBy === "name") {
         return a.client_name.localeCompare(b.client_name);
@@ -429,6 +496,16 @@ export default function CasesManagement() {
                     {option.label}
                   </Button>
                 ))}
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={() => resetSortOrdersMutation.mutate()}
+                  className="whitespace-nowrap flex-shrink-0 h-10 w-[160px] text-base font-medium border-2"
+                  disabled={!cases.some(c => c.sort_order !== null)}
+                >
+                  <RotateCcw className="h-4 w-4 mr-2" />
+                  Reset Order
+                </Button>
               </div>
             </div>
           )}
@@ -457,21 +534,32 @@ export default function CasesManagement() {
             }
           />
         ) : (
-          <div className="grid md:grid-cols-2 gap-6">
-            {filteredCases.map((caseItem) => (
-              <CaseCard 
-                key={caseItem.id}
-                clientCase={caseItem}
-                onEdit={handleEdit}
-                onDelete={handleDeleteCase}
-                onUpdateStatus={handleUpdateStatus}
-                isFavorite={isFavorite(caseItem.id)}
-                onToggleFavorite={() => toggleFavorite(caseItem.id)}
-                isSelected={isSelected(caseItem.id)}
-                onToggleSelection={() => toggleSelection(caseItem.id)}
-              />
-            ))}
-          </div>
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext
+              items={filteredCases.map(c => c.id)}
+              strategy={verticalListSortingStrategy}
+            >
+              <div className="grid md:grid-cols-2 gap-6">
+                {filteredCases.map((caseItem) => (
+                  <DraggableCaseCard 
+                    key={caseItem.id}
+                    clientCase={caseItem}
+                    onEdit={handleEdit}
+                    onDelete={handleDeleteCase}
+                    onUpdateStatus={handleUpdateStatus}
+                    isFavorite={isFavorite(caseItem.id)}
+                    onToggleFavorite={() => toggleFavorite(caseItem.id)}
+                    isSelected={isSelected(caseItem.id)}
+                    onToggleSelection={() => toggleSelection(caseItem.id)}
+                  />
+                ))}
+              </div>
+            </SortableContext>
+          </DndContext>
         )}
       </div>
 

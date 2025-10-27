@@ -18,6 +18,7 @@ export interface CaseData {
   updated_at: string;
   processing_mode: string;
   client_score: number;
+  sort_order: number | null;
   document_count: number;
   task_count: number;
   completed_task_count: number;

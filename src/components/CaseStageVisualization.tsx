@@ -183,7 +183,7 @@ export function CaseStageVisualization({
           <h3 className="text-base sm:text-lg font-semibold">Part Progression</h3>
           <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">Click to jump • Double-click to complete</p>
         </div>
-        <div className="w-full">
+        <div className="w-full overflow-x-auto scrollbar-hide">
           <div className="flex gap-4 pb-4 min-w-max">
             {PART_NAMES.map((partName, index) => {
               const partNum = index + 1;
@@ -246,7 +246,7 @@ export function CaseStageVisualization({
             </span>
           </div>
         </div>
-        <div className="w-full" ref={pipelineScrollRef}>
+        <div className="w-full overflow-x-auto scrollbar-hide" ref={pipelineScrollRef}>
           <div className="flex gap-4 pb-4 min-w-max">
             {filteredStages.map((stage) => {
               const status = getStageStatus(stage.id);

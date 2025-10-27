@@ -281,6 +281,7 @@ export type Database = {
           poa_approved: boolean | null
           processing_mode: Database["public"]["Enums"]["processing_mode"] | null
           progress: number | null
+          sort_order: number | null
           start_date: string | null
           status: Database["public"]["Enums"]["case_status"]
           updated_at: string
@@ -314,6 +315,7 @@ export type Database = {
             | Database["public"]["Enums"]["processing_mode"]
             | null
           progress?: number | null
+          sort_order?: number | null
           start_date?: string | null
           status?: Database["public"]["Enums"]["case_status"]
           updated_at?: string
@@ -347,6 +349,7 @@ export type Database = {
             | Database["public"]["Enums"]["processing_mode"]
             | null
           progress?: number | null
+          sort_order?: number | null
           start_date?: string | null
           status?: Database["public"]["Enums"]["case_status"]
           updated_at?: string
@@ -2833,23 +2836,17 @@ export type Database = {
     }
     Functions: {
       check_rls_status: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           policy_count: number
           rls_enabled: boolean
           table_name: string
         }[]
       }
-      cleanup_rate_limit_logs: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      get_case_document_count: {
-        Args: { case_uuid: string }
-        Returns: number
-      }
+      cleanup_rate_limit_logs: { Args: never; Returns: undefined }
+      get_case_document_count: { Args: { case_uuid: string }; Returns: number }
       get_cases_with_counts: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           client_code: string
           client_name: string
@@ -2865,6 +2862,7 @@ export type Database = {
           notes: string
           processing_mode: Database["public"]["Enums"]["processing_mode"]
           progress: number
+          sort_order: number
           start_date: string
           status: Database["public"]["Enums"]["case_status"]
           task_count: number
@@ -2901,6 +2899,10 @@ export type Database = {
           p_metric_value: number
         }
         Returns: string
+      }
+      update_case_sort_orders: {
+        Args: { case_orders: Json }
+        Returns: undefined
       }
     }
     Enums: {
