@@ -53,12 +53,15 @@ interface CaseData {
   oby_filed: boolean;
   wsc_received: boolean;
   processing_mode: string;
+  push_scheme: string | null;
   client_score: number;
   is_vip: boolean;
   notes: string;
   generation: string;
   created_at: string;
   updated_at: string;
+  client_photo_url: string | null;
+  start_date: string | null;
 }
 
 export default function CaseDetail() {
@@ -747,9 +750,12 @@ export default function CaseDetail() {
             country: caseData.country || '',
             status: caseData.status,
             generation: caseData.processing_mode,
+            push_scheme: caseData.push_scheme,
             is_vip: caseData.is_vip,
             notes: caseData.notes || '',
             progress: caseData.progress,
+            client_photo_url: caseData.client_photo_url,
+            start_date: caseData.start_date,
           }}
           open={showEditDialog}
           onOpenChange={setShowEditDialog}

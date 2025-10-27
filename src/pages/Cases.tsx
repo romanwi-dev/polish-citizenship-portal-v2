@@ -39,12 +39,14 @@ interface FullscreenCase {
   country: string | null;
   status: string;
   generation: string | null;
+  push_scheme: string | null;
   is_vip: boolean | null;
   start_date: string | null;
   progress: number | null;
   dropbox_path: string;
   notes: string | null;
   document_count: number;
+  client_photo_url: string | null;
 }
 
 const Cases = () => {
@@ -558,9 +560,12 @@ const Cases = () => {
             country: editCase.country,
             status: editCase.status,
             generation: editCase.generation,
+            push_scheme: editCase.push_scheme,
             is_vip: editCase.is_vip,
             notes: editCase.notes,
             progress: editCase.progress,
+            client_photo_url: editCase.client_photo_url,
+            start_date: editCase.start_date,
           }}
           open={!!editCase}
           onOpenChange={(open) => !open && setEditCase(null)}
