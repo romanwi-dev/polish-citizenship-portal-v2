@@ -145,7 +145,7 @@ export const CitizenshipDashboard = () => {
               className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
               style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
             >
-              <p className="text-sm text-muted-foreground text-center">Cases with active PUSH/NUDGE/SITDOWN strategies</p>
+              <p className="text-sm text-muted-foreground text-center">Cases with active strategies (PUSH/NUDGE/SITDOWN/SLOW)</p>
             </div>
           </div>
         </div>

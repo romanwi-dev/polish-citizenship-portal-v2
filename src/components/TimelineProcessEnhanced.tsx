@@ -136,7 +136,7 @@ const timelineSteps = [{
 }, {
   number: "12",
   title: "PUSH SCHEMES",
-  description: "Offering push schemes (PUSH, NUDGE, SIT-DOWN) and implementing strategies in practice",
+  description: "Offering push schemes (PUSH, NUDGE, SIT-DOWN, SLOW) and implementing strategies in practice",
   duration: "Month 12-20",
   keyAction: "Government Processing",
   priority: "Major Milestone",
