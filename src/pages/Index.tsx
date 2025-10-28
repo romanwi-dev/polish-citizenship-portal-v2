@@ -7,18 +7,18 @@ const StaticHeritage = lazy(() => import("@/components/heroes/StaticHeritage").t
 import Navigation from "@/components/Navigation";
 import HeroWeb3 from "@/components/HeroWeb3";
 
-// Lazy load below-the-fold components for better code splitting
-const AboutSection = lazy(() => import("@/components/AboutSection"));
-const AIAnalysisSection = lazy(() => import("@/components/AIAnalysisSection"));
-const ServicesWeb3 = lazy(() => import("@/components/ServicesWeb3"));
-const ClientOnboardingSection = lazy(() => import("@/components/ClientOnboardingSection"));
-const TimelineProcessEnhanced = lazy(() => import("@/components/TimelineProcessEnhanced"));
-const PricingSection = lazy(() => import("@/components/PricingSection"));
-const TestimonialsSection = lazy(() => import("@/components/TestimonialsSection"));
-const FAQSection = lazy(() => import("@/components/FAQSection"));
-const ContactFormWeb3 = lazy(() => import("@/components/ContactFormWeb3"));
-const FooterWeb3 = lazy(() => import("@/components/FooterWeb3"));
-const ScrollToTop = lazy(() => import("@/components/ScrollToTop"));
+// Lazy load below-the-fold components for better code splitting with prefetch hints
+const AboutSection = lazy(() => import(/* webpackPrefetch: true */ "@/components/AboutSection"));
+const AIAnalysisSection = lazy(() => import(/* webpackPrefetch: true */ "@/components/AIAnalysisSection"));
+const ServicesWeb3 = lazy(() => import(/* webpackPrefetch: true */ "@/components/ServicesWeb3"));
+const ClientOnboardingSection = lazy(() => import(/* webpackPrefetch: true */ "@/components/ClientOnboardingSection"));
+const TimelineProcessEnhanced = lazy(() => import(/* webpackPrefetch: true */ "@/components/TimelineProcessEnhanced"));
+const PricingSection = lazy(() => import(/* webpackPrefetch: true */ "@/components/PricingSection"));
+const TestimonialsSection = lazy(() => import(/* webpackPrefetch: true */ "@/components/TestimonialsSection"));
+const FAQSection = lazy(() => import(/* webpackPrefetch: true */ "@/components/FAQSection"));
+const ContactFormWeb3 = lazy(() => import(/* webpackPrefetch: true */ "@/components/ContactFormWeb3"));
+const FooterWeb3 = lazy(() => import(/* webpackPrefetch: true */ "@/components/FooterWeb3"));
+const ScrollToTop = lazy(() => import(/* webpackPrefetch: true */ "@/components/ScrollToTop"));
 
 // Simple loading fallback
 const SectionLoader = () => (
