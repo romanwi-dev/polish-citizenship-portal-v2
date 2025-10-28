@@ -28,8 +28,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Inter:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Inter:wght@400;500;600&display=swap"></noscript>
     
-    <!-- Preload critical logo image -->
-    <link rel="preload" href="/src/assets/logo.png" as="image" fetchpriority="high">
+    <!-- Preload critical logo image with correct dimensions -->
+    <link rel="preload" href="/src/assets/logo.png" as="image" fetchpriority="high" imagesrcset="/src/assets/logo.png 1x" imagesizes="305px">
     
     <!-- Resource hints for performance -->
     <link rel="dns-prefetch" href="https://oogmuakyqadpynnrasnd.supabase.co">

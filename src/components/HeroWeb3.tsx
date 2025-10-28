@@ -17,7 +17,7 @@ const HeroWeb3 = () => {
             <span className="text-sm font-medium">Web3 Legal Services</span>
           </div>
           
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-black mb-14 leading-tight animate-fade-in tracking-tight">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-black mb-14 leading-tight animate-fade-in tracking-tight" style={{ contentVisibility: 'auto' }}>
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
               Polish Citizenship by Descent
             </span>
