@@ -243,13 +243,13 @@ export const CaseCard = memo(({
           </div>
 
           {/* Badges Row */}
-          <div className="flex flex-wrap gap-2 mb-4 sm:mb-5">
-            <span className={`px-3 py-1.5 rounded-full text-xs font-medium border ${getStatusBadge(clientCase.status)} capitalize whitespace-nowrap min-h-[28px] flex items-center justify-center`}>
+          <div className="flex flex-wrap gap-2 mb-4 sm:mb-5 sm:flex-nowrap">
+            <span className={`px-3 py-1.5 rounded-full text-xs font-medium border ${getStatusBadge(clientCase.status)} capitalize whitespace-nowrap min-h-[28px] flex items-center justify-center sm:min-w-[85px] min-w-[85px]`}>
               {clientCase.status.replace(/_/g, ' ')}
             </span>
             
             {clientCase.country && (
-              <span className="px-3 py-1.5 rounded-full text-xs font-medium border bg-blue-500/20 text-blue-400 border-blue-500/30 whitespace-nowrap min-h-[28px] flex items-center justify-center">
+              <span className="px-3 py-1.5 rounded-full text-xs font-medium border bg-blue-500/20 text-blue-400 border-blue-500/30 whitespace-nowrap min-h-[28px] flex items-center justify-center sm:min-w-[85px] min-w-[85px]">
                 <MapPin className="w-4 h-4 mr-1" />
                 {clientCase.country}
               </span>
@@ -258,7 +258,7 @@ export const CaseCard = memo(({
             {/* Processing Mode Badge with Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                <span className={`px-3 py-1.5 rounded-full text-xs font-medium border cursor-pointer hover:opacity-80 transition-opacity flex items-center gap-1 whitespace-nowrap min-h-[28px] ${
+                <span className={`px-3 py-1.5 rounded-full text-xs font-medium border cursor-pointer hover:opacity-80 transition-opacity flex items-center gap-1 whitespace-nowrap min-h-[28px] sm:min-w-[85px] min-w-[85px] ${
                   PROCESSING_MODE_COLORS[clientCase.processing_mode as keyof typeof PROCESSING_MODE_COLORS]
                 }`}>
                   {getProcessingModeIcon()}
@@ -287,7 +287,7 @@ export const CaseCard = memo(({
             </DropdownMenu>
 
             {clientCase.scheme_introduced && (
-              <span className="px-3 py-1.5 rounded-full text-xs font-medium border bg-cyan-500/20 text-cyan-400 border-cyan-500/30 whitespace-nowrap min-h-[28px] flex items-center justify-center">
+              <span className="px-3 py-1.5 rounded-full text-xs font-medium border bg-cyan-500/20 text-cyan-400 border-cyan-500/30 whitespace-nowrap min-h-[28px] flex items-center justify-center sm:min-w-[85px] min-w-[85px]">
                 {clientCase.scheme_introduced}
               </span>
             )}
@@ -494,69 +494,27 @@ export const CaseCard = memo(({
               </div>
               )}
 
-              <div className="p-3 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground mb-1">Processing Mode</p>
-                <p className="font-bold text-base capitalize">{PROCESSING_MODE_LABELS[clientCase.processing_mode as keyof typeof PROCESSING_MODE_LABELS]}</p>
-              </div>
-
-              {clientCase.scheme_introduced && (
+              {clientCase.start_date && (
                 <div className="p-3 rounded-lg border border-border/50">
-                  <p className="text-xs text-muted-foreground mb-1">Scheme Introduced</p>
-                  <p className="font-bold text-base">{clientCase.scheme_introduced}</p>
+                  <p className="text-xs text-muted-foreground mb-2">Timeline</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs flex items-center gap-1.5">
+                      <Clock className="w-4 h-4 text-secondary" />
+                      Days Active
+                    </span>
+                    <span className="text-sm font-bold text-cyan-400">
+                      {Math.floor((Date.now() - new Date(clientCase.start_date).getTime()) / (1000 * 60 * 60 * 24))} days
+                    </span>
+                  </div>
                 </div>
               )}
 
-              <div className="p-3 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground mb-2">Timeline Details</p>
-                <div className="space-y-1.5">
-                  <div className="flex justify-between items-center py-1 border-b border-border/30">
-                    <span className="text-xs flex items-center gap-1.5">
-                      <Calendar className="w-4 h-4 text-primary" />
-                      Started
-                    </span>
-                    <span className="text-xs font-bold">
-                      {clientCase.start_date ? new Date(clientCase.start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'N/A'}
-                    </span>
-                  </div>
-                  {clientCase.start_date && (
-                    <div className="flex justify-between items-center py-1 border-b border-border/30">
-                      <span className="text-xs flex items-center gap-1.5">
-                        <Clock className="w-4 h-4 text-secondary" />
-                        Days Active
-                      </span>
-                      <span className="text-xs font-bold text-cyan-400">
-                        {Math.floor((Date.now() - new Date(clientCase.start_date).getTime()) / (1000 * 60 * 60 * 24))} days
-                      </span>
-                    </div>
-                  )}
-                  <div className="flex justify-between items-center py-1">
-                    <span className="text-xs flex items-center gap-1.5">
-                      <TrendingUp className="w-4 h-4 text-accent" />
-                      Completion
-                    </span>
-                    <span className="text-xs font-bold text-cyan-400">{clientCase.progress || 0}%</span>
-                  </div>
+              {clientCase.notes && (
+                <div className="p-3 rounded-lg border border-border/50">
+                  <p className="text-xs text-muted-foreground mb-1">Additional Notes</p>
+                  <p className="text-sm leading-relaxed">{clientCase.notes}</p>
                 </div>
-              </div>
-
-              <div className="p-3 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground mb-2">Documents Status</p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <FileText className="w-4 h-4 text-accent" />
-                    <span className="text-xs">Total Submitted</span>
-                  </div>
-                  <span className="text-xl font-bold text-cyan-400">{clientCase.document_count}</span>
-                </div>
-              </div>
-
-              <div className="p-3 rounded-lg border border-border/50">
-                <p className="text-xs text-muted-foreground mb-1">Current Location</p>
-                <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-secondary" />
-                  <p className="font-bold text-base">{clientCase.country || 'N/A'}</p>
-                </div>
-              </div>
+              )}
 
               {clientCase.status === "finished" && (
                 <div className="p-3 rounded-lg border border-green-500/40">
