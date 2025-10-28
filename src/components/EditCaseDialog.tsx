@@ -203,6 +203,8 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
           progress: formData.progress,
           client_photo_url,
           start_date: formatDateForDatabase(formData.start_date),
+          kpi_docs_percentage: formData.kpi_docs_percentage,
+          client_score: formData.client_score,
         },
       },
       {

@@ -87,7 +87,7 @@ export const KPIStrip = ({
             key={kpi.label}
             variant={kpi.completed ? "default" : "outline"}
             className={cn(
-              "gap-1.5 cursor-pointer transition-all hover:scale-105",
+              "min-w-[70px] justify-center cursor-pointer transition-all hover:scale-105",
               kpi.completed && "bg-green-500 hover:bg-green-600",
               !kpi.completed && "hover:border-primary"
             )}
@@ -96,7 +96,6 @@ export const KPIStrip = ({
               handleKpiClick(kpi.label.toLowerCase(), kpi.tab, (kpi as any).section);
             }}
           >
-            <Icon className="w-3 h-3" />
             {kpi.label}
           </Badge>
         );
@@ -104,25 +103,23 @@ export const KPIStrip = ({
       
       <Badge 
         variant="secondary" 
-        className="gap-1.5 cursor-pointer transition-all hover:scale-105 hover:border-primary"
+        className="min-w-[70px] justify-center cursor-pointer transition-all hover:scale-105 hover:border-primary"
         onClick={(e) => {
           e.stopPropagation();
           handleKpiClick('documents', 'documents');
         }}
       >
-        <FileText className="w-3 h-3" />
         Docs {docsPercentage}%
       </Badge>
       
       <Badge 
         variant="secondary" 
-        className="gap-1.5 cursor-pointer transition-all hover:scale-105 hover:border-primary"
+        className="min-w-[70px] justify-center cursor-pointer transition-all hover:scale-105 hover:border-primary"
         onClick={(e) => {
           e.stopPropagation();
           handleKpiClick('tasks', 'tasks');
         }}
       >
-        <Clock className="w-3 h-3" />
         Tasks {tasksCompleted}/{tasksTotal}
       </Badge>
     </div>
