@@ -555,7 +555,10 @@ export const CaseCard = memo(({
                           size="sm"
                           variant="ghost"
                           className="h-6 px-2 text-xs"
-                          onClick={handleSaveAdminNotes}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleSaveAdminNotes();
+                          }}
                         >
                           Save
                         </Button>
@@ -563,7 +566,8 @@ export const CaseCard = memo(({
                           size="sm"
                           variant="ghost"
                           className="h-6 px-2 text-xs"
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.stopPropagation();
                             setAdminNotes(clientCase.admin_notes || '');
                             setIsEditingNotes(false);
                           }}
@@ -576,7 +580,10 @@ export const CaseCard = memo(({
                         size="sm"
                         variant="ghost"
                         className="h-6 px-2 text-xs"
-                        onClick={() => setIsEditingNotes(true)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsEditingNotes(true);
+                        }}
                       >
                         Edit
                       </Button>
@@ -586,6 +593,8 @@ export const CaseCard = memo(({
                     <Textarea
                       value={adminNotes}
                       onChange={(e) => setAdminNotes(e.target.value)}
+                      onClick={(e) => e.stopPropagation()}
+                      onMouseDown={(e) => e.stopPropagation()}
                       className="text-sm min-h-[60px] bg-background/50"
                       placeholder="Add private notes visible only to staff..."
                     />
