@@ -214,7 +214,7 @@ export const CaseCard = memo(({
                 )}
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className={`flex items-center gap-2 ${isFlipped ? 'opacity-0 pointer-events-none' : ''}`}>
               {onToggleFavorite && (
                 <Button
                   variant="ghost"
