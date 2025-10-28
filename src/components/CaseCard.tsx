@@ -4,6 +4,7 @@ import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, E
 import { useUserRole } from "@/hooks/useUserRole";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { cn } from "@/lib/utils";
 import { getWorkflowForCase, getWorkflowPath, getWorkflowLabel } from "@/utils/workflowMapping";
 import { CollapsibleKPIStrip } from "@/components/CollapsibleKPIStrip";
 import { KPIStrip } from "@/components/KPIStrip";
@@ -88,6 +89,7 @@ export const CaseCard = memo(({
   const [photoUrl, setPhotoUrl] = useState<string | null>(clientCase.client_photo_url || null);
   const [adminNotes, setAdminNotes] = useState(clientCase.admin_notes || '');
   const [isEditingNotes, setIsEditingNotes] = useState(false);
+  const [showAdminNotes, setShowAdminNotes] = useState(false);
   const updateProcessingMode = useUpdateProcessingMode();
   const { user } = useAuth();
   const { data: userRole } = useUserRole(user?.id);
@@ -545,7 +547,7 @@ export const CaseCard = memo(({
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-xs text-amber-400 font-semibold flex items-center gap-1">
                       <Edit2 className="w-3 h-3" />
-                      Admin Notes (Staff Only)
+                      Admin Notes
                     </p>
                     {isEditingNotes ? (
                       <div className="flex gap-1">
@@ -588,7 +590,17 @@ export const CaseCard = memo(({
                       placeholder="Add private notes visible only to staff..."
                     />
                   ) : (
-                    <p className="text-sm leading-relaxed text-muted-foreground">
+                    <p 
+                      className={cn(
+                        "text-sm leading-relaxed text-muted-foreground select-none cursor-pointer transition-all",
+                        !showAdminNotes && "blur-sm"
+                      )}
+                      onMouseDown={() => setShowAdminNotes(true)}
+                      onMouseUp={() => setShowAdminNotes(false)}
+                      onMouseLeave={() => setShowAdminNotes(false)}
+                      onTouchStart={() => setShowAdminNotes(true)}
+                      onTouchEnd={() => setShowAdminNotes(false)}
+                    >
                       {adminNotes || 'No admin notes yet...'}
                     </p>
                   )}
