@@ -30,44 +30,51 @@ export const KPIStrip = ({
 }: KPIStripProps) => {
   const navigate = useNavigate();
 
-  const handleKpiClick = (kpiType: string, tab?: string) => {
+  const handleKpiClick = (kpiType: string, tab?: string, section?: string) => {
     if (onKpiClick) {
       onKpiClick(kpiType);
     } else if (caseId) {
-      const tabParam = tab ? `?tab=${tab}` : '';
-      navigate(`/admin/cases/${caseId}${tabParam}`);
+      let url = `/admin/cases/${caseId}?tab=${tab}`;
+      if (section) {
+        url += `&section=${section}`;
+      }
+      navigate(url);
     }
   };
+  
   const kpis = [
     {
       label: "Intake",
       completed: intakeCompleted,
       icon: FileText,
-      tab: "intake",
+      tab: "forms",
+      section: "intake",
     },
     {
       label: "POA",
       completed: poaApproved,
       icon: CheckCircle2,
-      tab: "poa",
+      tab: "forms",
+      section: "poa",
     },
     {
       label: "OBY",
       completed: obyFiled,
       icon: FileText,
-      tab: "citizenship",
+      tab: "forms",
+      section: "citizenship",
     },
     {
       label: "WSC",
       completed: wscReceived,
       icon: Mail,
-      tab: "wsc",
+      tab: "overview",
     },
     {
       label: "Decision",
       completed: decisionReceived,
       icon: Award,
-      tab: "decision",
+      tab: "overview",
     },
   ];
 
@@ -86,7 +93,7 @@ export const KPIStrip = ({
             )}
             onClick={(e) => {
               e.stopPropagation();
-              handleKpiClick(kpi.label.toLowerCase(), kpi.tab);
+              handleKpiClick(kpi.label.toLowerCase(), kpi.tab, (kpi as any).section);
             }}
           >
             <Icon className="w-3 h-3" />
