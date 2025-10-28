@@ -250,7 +250,6 @@ export const CaseCard = memo(({
             
             {clientCase.country && (
               <span className="px-3 py-1.5 rounded-full text-xs font-medium border bg-blue-500/20 text-blue-400 border-blue-500/30 whitespace-nowrap min-h-[28px] flex items-center justify-center sm:min-w-[85px] min-w-[85px]">
-                <MapPin className="w-4 h-4 mr-1" />
                 {clientCase.country}
               </span>
             )}
@@ -258,10 +257,9 @@ export const CaseCard = memo(({
             {/* Processing Mode Badge with Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                <span className={`px-3 py-1.5 rounded-full text-xs font-medium border cursor-pointer hover:opacity-80 transition-opacity flex items-center gap-1 whitespace-nowrap min-h-[28px] sm:min-w-[85px] min-w-[85px] ${
+                <span className={`px-3 py-1.5 rounded-full text-xs font-medium border cursor-pointer hover:opacity-80 transition-opacity flex items-center justify-center whitespace-nowrap min-h-[28px] sm:min-w-[85px] min-w-[85px] ${
                   PROCESSING_MODE_COLORS[clientCase.processing_mode as keyof typeof PROCESSING_MODE_COLORS]
                 }`}>
-                  {getProcessingModeIcon()}
                   {PROCESSING_MODE_LABELS[clientCase.processing_mode as keyof typeof PROCESSING_MODE_LABELS]}
                 </span>
               </DropdownMenuTrigger>
