@@ -573,11 +573,14 @@ export default function CasesManagement() {
             status: editCase.status,
             generation: editCase.generation,
             push_scheme: editCase.push_scheme,
+            payment_status: editCase.payment_status,
             is_vip: editCase.is_vip,
             notes: editCase.notes,
             progress: editCase.progress,
             client_photo_url: editCase.client_photo_url,
             start_date: editCase.start_date,
+            kpi_docs_percentage: editCase.kpi_docs_percentage,
+            client_score: editCase.client_score,
           }}
           open={!!editCase}
           onOpenChange={(open) => !open && setEditCase(null)}

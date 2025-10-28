@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -72,6 +72,27 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
     kpi_docs_percentage: caseData.kpi_docs_percentage || 0,
     client_score: caseData.client_score || 0,
   });
+
+  // Reset form data when caseData changes (when dialog reopens with different case)
+  useEffect(() => {
+    if (open) {
+      setFormData({
+        client_name: caseData.name,
+        client_code: caseData.client_code || "",
+        country: caseData.country,
+        status: caseData.status,
+        processing_mode: caseData.generation || "standard",
+        push_scheme: caseData.push_scheme || "NONE",
+        payment_status: caseData.payment_status || "pay",
+        is_vip: caseData.is_vip,
+        notes: caseData.notes || "",
+        progress: caseData.progress,
+        start_date: formatDateForDisplay(caseData.start_date),
+        kpi_docs_percentage: caseData.kpi_docs_percentage || 0,
+        client_score: caseData.client_score || 0,
+      });
+    }
+  }, [open, caseData]);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(caseData.client_photo_url || null);
   const [isUploading, setIsUploading] = useState(false);
