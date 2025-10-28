@@ -1,6 +1,9 @@
 import { useState, memo } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Edit, MoreVertical, Copy, Pause, Ban, Archive, Trash2, Eye, Radio, FileEdit, Award, Zap, Star } from "lucide-react";
+import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Edit, MoreVertical, Copy, Pause, Ban, Archive, Trash2, Eye, Radio, FileEdit, Award, Zap, Star, Edit2 } from "lucide-react";
+import { useUserRole } from "@/hooks/useUserRole";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import { getWorkflowForCase, getWorkflowPath, getWorkflowLabel } from "@/utils/workflowMapping";
 import { CollapsibleKPIStrip } from "@/components/CollapsibleKPIStrip";
 import { KPIStrip } from "@/components/KPIStrip";
@@ -28,6 +31,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Textarea } from "@/components/ui/textarea";
 
 interface CaseCardProps {
   clientCase: {
@@ -57,6 +61,7 @@ interface CaseCardProps {
     client_photo_url?: string | null;
     current_stage?: string;
     workflow_type?: string;
+    admin_notes?: string | null;
   };
   onEdit: (clientCase: any) => void;
   onDelete: (id: string) => void;
@@ -81,7 +86,12 @@ export const CaseCard = memo(({
   const [isFlipped, setIsFlipped] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [photoUrl, setPhotoUrl] = useState<string | null>(clientCase.client_photo_url || null);
+  const [adminNotes, setAdminNotes] = useState(clientCase.admin_notes || '');
+  const [isEditingNotes, setIsEditingNotes] = useState(false);
   const updateProcessingMode = useUpdateProcessingMode();
+  const { user } = useAuth();
+  const { data: userRole } = useUserRole(user?.id);
+  const isStaff = userRole === 'admin' || userRole === 'assistant';
 
   const getStatusBadge = (status: string) => {
     return STATUS_COLORS[status as keyof typeof STATUS_COLORS] || STATUS_COLORS.other;
@@ -135,6 +145,22 @@ export const CaseCard = memo(({
   const confirmDelete = () => {
     onDelete(clientCase.id);
     setShowDeleteDialog(false);
+  };
+
+  const handleSaveAdminNotes = async () => {
+    try {
+      const { error } = await supabase
+        .from('cases')
+        .update({ admin_notes: adminNotes })
+        .eq('id', clientCase.id);
+
+      if (error) throw error;
+      toast.success('Admin notes saved');
+      setIsEditingNotes(false);
+    } catch (error) {
+      console.error('Error saving admin notes:', error);
+      toast.error('Failed to save admin notes');
+    }
   };
 
   const handleProcessingModeChange = (mode: string) => {
@@ -511,6 +537,61 @@ export const CaseCard = memo(({
                 <div className="p-3 rounded-lg border border-border/50">
                   <p className="text-xs text-muted-foreground mb-1">Additional Notes</p>
                   <p className="text-sm leading-relaxed">{clientCase.notes}</p>
+                </div>
+              )}
+
+              {isStaff && (
+                <div className="p-3 rounded-lg border border-amber-500/40 bg-amber-500/5">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-xs text-amber-400 font-semibold flex items-center gap-1">
+                      <Edit2 className="w-3 h-3" />
+                      Admin Notes (Staff Only)
+                    </p>
+                    {isEditingNotes ? (
+                      <div className="flex gap-1">
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="h-6 px-2 text-xs"
+                          onClick={handleSaveAdminNotes}
+                        >
+                          Save
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="h-6 px-2 text-xs"
+                          onClick={() => {
+                            setAdminNotes(clientCase.admin_notes || '');
+                            setIsEditingNotes(false);
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    ) : (
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="h-6 px-2 text-xs"
+                        onClick={() => setIsEditingNotes(true)}
+                      >
+                        Edit
+                      </Button>
+                    )}
+                  </div>
+                  {isEditingNotes ? (
+                    <Textarea
+                      value={adminNotes}
+                      onChange={(e) => setAdminNotes(e.target.value)}
+                      className="text-sm min-h-[60px] bg-background/50"
+                      placeholder="Add private notes visible only to staff..."
+                    />
+                  ) : (
+                    <p className="text-sm leading-relaxed text-muted-foreground">
+                      {adminNotes || 'No admin notes yet...'}
+                    </p>
+                  )}
                 </div>
               )}
 

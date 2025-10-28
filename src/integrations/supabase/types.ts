@@ -256,6 +256,7 @@ export type Database = {
       }
       cases: {
         Row: {
+          admin_notes: string | null
           ancestry: Json | null
           client_code: string | null
           client_name: string
@@ -289,6 +290,7 @@ export type Database = {
           wsc_received: boolean | null
         }
         Insert: {
+          admin_notes?: string | null
           ancestry?: Json | null
           client_code?: string | null
           client_name: string
@@ -324,6 +326,7 @@ export type Database = {
           wsc_received?: boolean | null
         }
         Update: {
+          admin_notes?: string | null
           ancestry?: Json | null
           client_code?: string | null
           client_name?: string
