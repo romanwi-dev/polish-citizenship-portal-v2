@@ -595,11 +595,26 @@ export const CaseCard = memo(({
                         "text-sm leading-relaxed text-muted-foreground select-none cursor-pointer transition-all",
                         !showAdminNotes && "blur-sm"
                       )}
-                      onMouseDown={() => setShowAdminNotes(true)}
-                      onMouseUp={() => setShowAdminNotes(false)}
-                      onMouseLeave={() => setShowAdminNotes(false)}
-                      onTouchStart={() => setShowAdminNotes(true)}
-                      onTouchEnd={() => setShowAdminNotes(false)}
+                      onMouseDown={(e) => {
+                        e.stopPropagation();
+                        setShowAdminNotes(true);
+                      }}
+                      onMouseUp={(e) => {
+                        e.stopPropagation();
+                        setShowAdminNotes(false);
+                      }}
+                      onMouseLeave={(e) => {
+                        e.stopPropagation();
+                        setShowAdminNotes(false);
+                      }}
+                      onTouchStart={(e) => {
+                        e.stopPropagation();
+                        setShowAdminNotes(true);
+                      }}
+                      onTouchEnd={(e) => {
+                        e.stopPropagation();
+                        setShowAdminNotes(false);
+                      }}
                     >
                       {adminNotes || 'No admin notes yet...'}
                     </p>
