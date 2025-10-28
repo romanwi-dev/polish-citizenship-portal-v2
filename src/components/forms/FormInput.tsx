@@ -108,29 +108,12 @@ export const FormInput = ({
     }
   };
 
-  // Auto-scale font size based on content length and screen size
+  // Set font size based on screen size only (prevent re-rendering on value change)
   useEffect(() => {
-    if (!inputRef.current) return;
-    
     const isMobile = window.innerWidth < 768;
-    const baseSize = isMobile ? 28 : (isLargeFonts ? 30 : 24);
-    
-    if (!value) {
-      setFontSize(baseSize);
-      return;
-    }
-
-    const textLength = value.toString().length;
-    
-    // Scale down font size for very long names
-    if (textLength > 25) {
-      const scaleFactor = Math.max(0.5, 1 - ((textLength - 25) / 50));
-      const calculatedSize = baseSize * scaleFactor;
-      setFontSize(calculatedSize);
-    } else {
-      setFontSize(baseSize);
-    }
-  }, [value, isLargeFonts]);
+    const baseSize = isMobile ? 24 : (isLargeFonts ? 30 : 24);
+    setFontSize(baseSize);
+  }, [isLargeFonts]);
 
   const scheme = colorSchemes[colorScheme];
 

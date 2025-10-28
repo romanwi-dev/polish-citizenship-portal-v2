@@ -4,15 +4,7 @@ import { cn } from "@/lib/utils";
 
 const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
   ({ className, type, style, ...props }, ref) => {
-    const [isHovered, setIsHovered] = React.useState(false);
-    const [isFocused, setIsFocused] = React.useState(false);
-    
     const glowStyle = {
-      boxShadow: isFocused 
-        ? "0 0 20px hsla(var(--primary) / 0.2)" 
-        : isHovered 
-          ? "0 0 15px hsla(var(--primary) / 0.15)"
-          : "none",
       transition: "all 0.3s ease",
       ...style
     };
@@ -25,10 +17,6 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
           className,
         )}
         style={glowStyle}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
         ref={ref}
         {...props}
       />
