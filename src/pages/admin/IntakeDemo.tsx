@@ -149,7 +149,7 @@ export default function IntakeDemo() {
   };
 
   return (
-    <div className="min-h-screen bg-background p-8">
+    <div className="p-8">
       <div className="max-w-7xl mx-auto space-y-6">
         <Button variant="outline" onClick={() => navigate('/admin/intake')}>
           <ArrowLeft className="mr-2 h-4 w-4" />

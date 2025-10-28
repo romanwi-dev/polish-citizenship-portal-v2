@@ -15,7 +15,7 @@ export default function AdditionalData() {
 
   if (!caseId || caseId === ':id') {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-background">
+      <div className="flex items-center justify-center min-h-screen">
         <Card className="p-8 max-w-md">
           <CardHeader>
             <CardTitle className="text-red-500">Invalid Case ID</CardTitle>
@@ -32,7 +32,7 @@ export default function AdditionalData() {
     <div className="overflow-x-hidden min-h-screen">
       <div className="container mx-auto py-12 px-4 md:px-6 relative z-10 max-w-7xl">
         {/* Header */}
-        <div className="animate-fade-in-up sticky top-0 z-20 bg-gradient-to-br from-background via-background to-background/95 backdrop-blur-sm border-b mb-0">
+        <div className="animate-fade-in-up sticky top-0 z-20 backdrop-blur-sm border-b mb-0">
           <Card className="glass-card border-primary/20 overflow-hidden rounded-none border-x-0 border-t-0">
             <CardHeader className="pb-6 pt-6">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">

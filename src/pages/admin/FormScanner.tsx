@@ -148,7 +148,7 @@ export default function FormScanner() {
   };
 
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="p-6">
       <div className="container mx-auto max-w-6xl space-y-6">
         {/* Header */}
         <motion.div

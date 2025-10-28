@@ -70,7 +70,7 @@ export default function FamilyTreePage() {
 
   if (caseId !== 'demo-preview' && (!caseId || caseId === ':id')) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-background">
+      <div className="flex items-center justify-center min-h-screen">
         <Card className="p-8 max-w-md">
           <CardContent>
             <p>Please navigate to this page from a valid case.</p>
@@ -85,7 +85,7 @@ export default function FamilyTreePage() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-background">
+      <div className="flex items-center justify-center min-h-screen">
         <div className="animate-spin">
           <Sparkles className="h-16 w-16 text-primary" />
         </div>

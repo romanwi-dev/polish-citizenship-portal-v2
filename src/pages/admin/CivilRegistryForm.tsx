@@ -173,7 +173,7 @@ export default function CivilRegistryForm() {
   };
   if (caseId !== 'demo-preview' && (!caseId || caseId === ':id')) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-background">
+      <div className="flex items-center justify-center min-h-screen">
         <Card className="p-8 max-w-md">
           <CardHeader>
             <CardTitle className="text-red-500">Invalid Case ID</CardTitle>
@@ -190,7 +190,7 @@ export default function CivilRegistryForm() {
   }
 
   if (isLoading) {
-    return <div className="flex items-center justify-center min-h-screen bg-background">
+    return <div className="flex items-center justify-center min-h-screen">
         <motion.div animate={{
         rotate: 360
       }} transition={{

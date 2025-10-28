@@ -328,7 +328,7 @@ export default function CasesManagement() {
   if (loading) {
     return (
       <AdminLayout>
-        <div className="p-4 sm:p-8 bg-background min-h-screen">
+        <div className="p-4 sm:p-8">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 sm:mb-8 gap-4 sm:gap-0">
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2 text-foreground bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
@@ -372,7 +372,7 @@ export default function CasesManagement() {
   return (
     <ErrorBoundary>
       <AdminLayout>
-      <div className="p-4 sm:p-8 bg-background min-h-screen">
+      <div className="p-4 sm:p-8">
         {/* Header - Mobile Optimized */}
         <div className="mb-6 sm:mb-8">
           <div className="mb-6">

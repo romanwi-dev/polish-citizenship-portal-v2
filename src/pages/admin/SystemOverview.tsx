@@ -15,7 +15,7 @@ import {
 export default function SystemOverview() {
   return (
     <AdminLayout>
-      <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-background">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12 max-w-7xl">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12 max-w-7xl">
           {/* Header */}
           <div className="space-y-3 text-center mb-16">
