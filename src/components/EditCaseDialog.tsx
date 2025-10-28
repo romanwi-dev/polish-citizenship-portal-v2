@@ -23,6 +23,7 @@ interface EditCaseDialogProps {
     status: string;
     generation?: string;
     push_scheme?: string | null;
+    payment_status?: string | null;
     is_vip: boolean;
     notes?: string;
     progress: number;
@@ -63,6 +64,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
     status: caseData.status,
     processing_mode: caseData.generation || "standard",
     push_scheme: caseData.push_scheme || "NONE",
+    payment_status: caseData.payment_status || "pay",
     is_vip: caseData.is_vip,
     notes: caseData.notes || "",
     progress: caseData.progress,
@@ -198,6 +200,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
           status: formData.status as any,
           processing_mode: formData.processing_mode as any,
           push_scheme: formData.push_scheme === "NONE" ? null : formData.push_scheme,
+          payment_status: formData.payment_status as any,
           is_vip: formData.is_vip,
           notes: formData.notes,
           progress: formData.progress,
@@ -391,6 +394,18 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                   <SelectItem value="SITDOWN">SITDOWN - Formal meeting</SelectItem>
                   <SelectItem value="SLOW">SLOW - Standard pace</SelectItem>
                   <SelectItem value="ALL SCHEMES">ALL SCHEMES - All strategies</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-3">
+              <Label htmlFor="payment_status" className="text-base font-semibold text-foreground">Payment Status</Label>
+              <Select value={formData.payment_status} onValueChange={(value) => setFormData({ ...formData, payment_status: value })}>
+                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-background/50 text-base h-12">
+                  <SelectValue placeholder="Select payment status" />
+                </SelectTrigger>
+                <SelectContent className="bg-popover border-2 border-border z-50">
+                  <SelectItem value="pay">Pay</SelectItem>
+                  <SelectItem value="clear">Clear</SelectItem>
                 </SelectContent>
               </Select>
             </div>
