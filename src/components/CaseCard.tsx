@@ -193,8 +193,8 @@ export const CaseCard = memo(({
       >
           {/* Front of Card */}
         <div className="absolute inset-0 w-full backface-hidden border-2 border-border/50 hover:border-primary/60 transition-all shadow-lg hover:shadow-xl p-5 sm:p-6 rounded-lg flex flex-col bg-card/95 backdrop-blur-sm" style={{ minHeight: '750px' }}>
-          <div className="flex items-start justify-between mb-5">
-            <div className="flex items-center gap-3">
+          <div className="flex items-start justify-between gap-2 mb-5">
+            <div className="flex items-center gap-3 min-w-0 flex-1">
               <div className="w-24 h-24 shrink-0">
                 <ClientPhotoUpload
                   caseId={clientCase.id}
@@ -203,18 +203,18 @@ export const CaseCard = memo(({
                   onPhotoUpdated={setPhotoUrl}
                 />
               </div>
-              <div>
-                <h3 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <div className="min-w-0 flex-1">
+                <h3 className="font-heading font-bold text-2xl sm:text-3xl md:text-4xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent truncate">
                   {clientCase.client_name}
                 </h3>
                 {clientCase.client_code && (
-                  <p className="text-sm text-muted-foreground mt-1 font-mono">
+                  <p className="text-sm text-muted-foreground mt-1 font-mono truncate">
                     {clientCase.client_code}
                   </p>
                 )}
               </div>
             </div>
-            <div className={`flex items-center gap-2 ${isFlipped ? 'opacity-0 pointer-events-none' : ''}`}>
+            <div className={`flex items-center gap-2 shrink-0 ${isFlipped ? 'opacity-0 pointer-events-none' : ''}`}>
               {onToggleFavorite && (
                 <Button
                   variant="ghost"
