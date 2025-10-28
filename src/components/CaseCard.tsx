@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import { ClientPhotoUpload } from "@/components/ClientPhotoUpload";
 import { STATUS_COLORS, PROCESSING_MODE_COLORS, PROCESSING_MODE_LABELS } from "@/lib/constants";
 import { useUpdateProcessingMode } from "@/hooks/useCaseMutations";
+import { useUpdateCase } from "@/hooks/useCases";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -63,6 +64,7 @@ interface CaseCardProps {
     current_stage?: string;
     workflow_type?: string;
     admin_notes?: string | null;
+    payment_status?: string | null;
   };
   onEdit: (clientCase: any) => void;
   onDelete: (id: string) => void;
@@ -91,6 +93,7 @@ export const CaseCard = memo(({
   const [isEditingNotes, setIsEditingNotes] = useState(false);
   const [showAdminNotes, setShowAdminNotes] = useState(false);
   const updateProcessingMode = useUpdateProcessingMode();
+  const updateCase = useUpdateCase();
   const { user } = useAuth();
   const { data: userRole } = useUserRole(user?.id);
   const isStaff = userRole === 'admin' || userRole === 'assistant';
@@ -167,6 +170,13 @@ export const CaseCard = memo(({
 
   const handleProcessingModeChange = (mode: string) => {
     updateProcessingMode.mutate({ caseId: clientCase.id, processingMode: mode });
+  };
+
+  const handlePaymentStatusChange = (status: string) => {
+    updateCase.mutate({ 
+      caseId: clientCase.id, 
+      updates: { payment_status: status } as any 
+    });
   };
 
   const getProcessingModeIcon = () => {
@@ -308,6 +318,29 @@ export const CaseCard = memo(({
                 <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleProcessingModeChange('vip_plus'); }}>
                   <Award className="mr-2 h-4 w-4" />
                   VIP+
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Payment Status Badge with Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                <span className={`px-3 py-1.5 rounded-full text-xs font-medium border cursor-pointer hover:opacity-80 transition-opacity flex items-center justify-center whitespace-nowrap min-h-[28px] sm:min-w-[85px] min-w-[85px] ${
+                  clientCase.payment_status === 'clear' 
+                    ? 'bg-green-500/20 text-green-400 border-green-500/30'
+                    : 'bg-orange-500/20 text-orange-400 border-orange-500/30'
+                }`}>
+                  {clientCase.payment_status === 'clear' ? 'Clear' : 'Pay'}
+                </span>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-40 bg-popover border border-border z-50">
+                <DropdownMenuLabel>Payment Status</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handlePaymentStatusChange('pay'); }}>
+                  Pay
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handlePaymentStatusChange('clear'); }}>
+                  Clear
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
