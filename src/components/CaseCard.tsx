@@ -509,7 +509,7 @@ export const CaseCard = memo(({
         >
           <div className="h-full flex flex-col" style={{ minHeight: '580px' }}>
             <h3 className="text-2xl font-bold mb-6 text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Case Details
+              {clientCase.client_name.split(' ').pop() || clientCase.client_name} Case Details
             </h3>
             
             <div className="space-y-3 flex-1 overflow-y-auto">
