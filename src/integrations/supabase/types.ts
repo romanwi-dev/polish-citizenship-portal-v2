@@ -279,6 +279,7 @@ export type Database = {
           metadata: Json | null
           notes: string | null
           oby_filed: boolean | null
+          payment_status: string | null
           poa_approved: boolean | null
           processing_mode: Database["public"]["Enums"]["processing_mode"] | null
           progress: number | null
@@ -313,6 +314,7 @@ export type Database = {
           metadata?: Json | null
           notes?: string | null
           oby_filed?: boolean | null
+          payment_status?: string | null
           poa_approved?: boolean | null
           processing_mode?:
             | Database["public"]["Enums"]["processing_mode"]
@@ -349,6 +351,7 @@ export type Database = {
           metadata?: Json | null
           notes?: string | null
           oby_filed?: boolean | null
+          payment_status?: string | null
           poa_approved?: boolean | null
           processing_mode?:
             | Database["public"]["Enums"]["processing_mode"]
