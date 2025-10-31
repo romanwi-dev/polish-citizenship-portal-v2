@@ -58,30 +58,6 @@ const Navigation = () => {
           {/* User Icon & Desktop/Mobile Menu */}
           <div className="flex items-center gap-1 md:gap-2">
             <button
-              onClick={() => navigate('/admin/forms-demo')}
-              className="h-9 w-9 md:h-11 md:w-11 rounded-full bg-background/5 dark:bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
-              aria-label="Forms Demo"
-              title="Forms Inspection Center"
-            >
-              <Sparkles className="h-4 w-4 md:h-5 md:w-5 text-foreground" />
-            </button>
-            <button
-              onClick={() => navigate('/admin/translations')}
-              className="h-9 w-9 md:h-11 md:w-11 rounded-full bg-background/5 dark:bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
-              aria-label="Translations"
-              title="Translation Management"
-            >
-              <Languages className="h-4 w-4 md:h-5 md:w-5 text-foreground" />
-            </button>
-            <button
-              onClick={() => navigate('/admin/system-overview')}
-              className="h-9 w-9 md:h-11 md:w-11 rounded-full bg-background/5 dark:bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
-              aria-label="System Overview"
-              title="System Overview"
-            >
-              <BookOpen className="h-4 w-4 md:h-5 md:w-5 text-foreground" />
-            </button>
-            <button
               onClick={() => navigate('/admin/cases')}
               className="h-9 w-9 md:h-11 md:w-11 rounded-full bg-background/5 dark:bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
               aria-label="Management"
