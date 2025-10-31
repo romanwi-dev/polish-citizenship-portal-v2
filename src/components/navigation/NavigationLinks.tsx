@@ -61,7 +61,7 @@ const NAVIGATION_SECTIONS: Array<{
     title: 'Demos',
     links: [
       { label: 'Forms Demo', href: '/admin/forms-demo', icon: Sparkles },
-      { label: 'Client Intake Demo', href: '/admin/intake-demo', icon: ClipboardList },
+      { label: 'Editing Demos', href: '/admin/intake-demo', icon: ClipboardList },
     ]
   }
 ];
