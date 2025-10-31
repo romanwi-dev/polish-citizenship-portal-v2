@@ -37,16 +37,21 @@ const Index = () => {
   const [theme, setTheme] = useState<"light" | "dark">(() => {
     // Initialize from DOM class on mount
     if (typeof window !== "undefined") {
-      return document.documentElement.classList.contains("light") ? "light" : "dark";
+      const isLight = document.documentElement.classList.contains("light");
+      console.log("Initial theme detection:", isLight ? "light" : "dark");
+      return isLight ? "light" : "dark";
     }
     return "dark";
   });
 
   // Watch for theme changes via MutationObserver
   useEffect(() => {
+    console.log("Setting up theme observer, current theme:", theme);
+    
     const observer = new MutationObserver(() => {
       const root = document.documentElement;
       const newTheme = root.classList.contains("light") ? "light" : "dark";
+      console.log("Theme changed to:", newTheme);
       setTheme(newTheme);
     });
     
@@ -55,13 +60,20 @@ const Index = () => {
       attributeFilter: ["class"]
     });
     
-    return () => observer.disconnect();
+    return () => {
+      console.log("Cleaning up theme observer");
+      observer.disconnect();
+    };
   }, []);
 
   useEffect(() => {
     // Don't load 3D in light theme
-    if (theme === "light") return;
+    if (theme === "light") {
+      console.log("Light theme active, skipping 3D load");
+      return;
+    }
     
+    console.log("Dark theme active, setting up 3D load");
     let timer: NodeJS.Timeout;
     
     const handleInteraction = () => {
@@ -89,7 +101,10 @@ const Index = () => {
   }, [theme]);
 
   // Premium Light Theme
+  console.log("Rendering with theme:", theme);
+  
   if (theme === "light") {
+    console.log("Rendering Premium Light Theme");
     return (
       <div className="min-h-screen bg-background">
         <Navigation />
@@ -113,6 +128,7 @@ const Index = () => {
   }
 
   // Dark Theme (Default)
+  console.log("Rendering Dark Theme");
   return (
     <div className="min-h-screen overflow-x-hidden relative">
       {/* Global Background - Lazy loaded 3D */}
