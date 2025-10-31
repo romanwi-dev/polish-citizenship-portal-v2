@@ -34,18 +34,20 @@ const SectionLoader = () => (
 
 const Index = () => {
   const [show3D, setShow3D] = useState(false);
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
+    // Initialize from DOM class on mount
+    if (typeof window !== "undefined") {
+      return document.documentElement.classList.contains("light") ? "light" : "dark";
+    }
+    return "dark";
+  });
 
+  // Watch for theme changes via MutationObserver
   useEffect(() => {
-    // Check theme on mount
-    const savedTheme = localStorage.getItem("theme") || "dark";
-    setTheme(savedTheme as "light" | "dark");
-    
-    // Listen for theme changes
     const observer = new MutationObserver(() => {
       const root = document.documentElement;
-      const currentTheme = root.classList.contains("light") ? "light" : "dark";
-      setTheme(currentTheme);
+      const newTheme = root.classList.contains("light") ? "light" : "dark";
+      setTheme(newTheme);
     });
     
     observer.observe(document.documentElement, {
@@ -57,6 +59,9 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
+    // Don't load 3D in light theme
+    if (theme === "light") return;
+    
     let timer: NodeJS.Timeout;
     
     const handleInteraction = () => {
@@ -81,7 +86,7 @@ const Index = () => {
     }, 2000);
     
     return cleanup;
-  }, []);
+  }, [theme]);
 
   // Premium Light Theme
   if (theme === "light") {
