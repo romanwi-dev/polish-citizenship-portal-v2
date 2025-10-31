@@ -7,11 +7,6 @@ const StaticHeritage = lazy(() => import("@/components/heroes/StaticHeritage").t
 import Navigation from "@/components/Navigation";
 import HeroWeb3 from "@/components/HeroWeb3";
 
-// Premium Light Theme Components
-const LightThemeHero = lazy(() => import("@/components/demo/LightThemeHero"));
-const LightThemeAbout = lazy(() => import("@/components/demo/LightThemeAbout"));
-const LightThemeContact = lazy(() => import("@/components/demo/LightThemeContact"));
-
 // Lazy load below-the-fold components for better code splitting
 const AboutSection = lazy(() => import("@/components/AboutSection"));
 const AIAnalysisSection = lazy(() => import("@/components/AIAnalysisSection"));
@@ -34,27 +29,6 @@ const SectionLoader = () => (
 
 const Index = () => {
   const [show3D, setShow3D] = useState(false);
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
-
-  useEffect(() => {
-    // Check theme
-    const savedTheme = localStorage.getItem("theme") || "dark";
-    setTheme(savedTheme as "light" | "dark");
-    
-    // Listen for theme changes
-    const observer = new MutationObserver(() => {
-      const root = document.documentElement;
-      const currentTheme = root.classList.contains("light") ? "light" : "dark";
-      setTheme(currentTheme);
-    });
-    
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"]
-    });
-    
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -83,31 +57,6 @@ const Index = () => {
     return cleanup;
   }, []);
 
-  // Premium Light Theme
-  if (theme === "light") {
-    return (
-      <div className="min-h-screen bg-background">
-        <Navigation />
-        <Suspense fallback={<SectionLoader />}>
-          <LightThemeHero />
-        </Suspense>
-        <Suspense fallback={<SectionLoader />}>
-          <LightThemeAbout />
-        </Suspense>
-        <Suspense fallback={<SectionLoader />}>
-          <LightThemeContact />
-        </Suspense>
-        <Suspense fallback={<SectionLoader />}>
-          <FooterWeb3 />
-        </Suspense>
-        <Suspense fallback={<SectionLoader />}>
-          <ScrollToTop />
-        </Suspense>
-      </div>
-    );
-  }
-
-  // Dark Theme (Default)
   return (
     <div className="min-h-screen overflow-x-hidden relative">
       {/* Global Background - Lazy loaded 3D */}
