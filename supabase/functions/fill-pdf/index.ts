@@ -676,6 +676,13 @@ serve(async (req) => {
       }
     }
 
+    // Preserve Adobe's AUTO font sizing by using NeedAppearances
+    // This allows PDF viewers to render fields with proper fonts for Polish characters
+    pdfDoc.getForm().acroForm.dict.set(
+      PDFName.of('NeedAppearances'), 
+      PDFBool.True
+    );
+
     // Only flatten for final locked PDFs, keep editable otherwise
     if (flatten) {
       form.flatten();
@@ -686,7 +693,7 @@ serve(async (req) => {
     
     const filledPdfBytes = await pdfDoc.save({
       useObjectStreams: false,
-      updateFieldAppearances: true  // Create proper field appearances with template content
+      updateFieldAppearances: false  // Preserve NeedAppearances for Polish character support
     });
     
     console.log(`PDF generated: ${filledPdfBytes.length} bytes`);
