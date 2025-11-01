@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Download, X, Printer, Eye, Edit, Lock } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import {
   DropdownMenu,
@@ -9,6 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { detectDevice } from "@/utils/deviceDetection";
 
 interface PDFPreviewDialogProps {
   open: boolean;
@@ -32,26 +33,64 @@ export function PDFPreviewDialog({
   documentTitle
 }: PDFPreviewDialogProps) {
   const [isPrinting, setIsPrinting] = useState(false);
+  const [pdfDataUrl, setPdfDataUrl] = useState<string>('');
+  const device = detectDevice();
+
+  // Convert blob URL to data URL for mobile compatibility
+  useEffect(() => {
+    if (device.isMobile && pdfUrl && pdfUrl.startsWith('blob:')) {
+      fetch(pdfUrl)
+        .then(res => res.blob())
+        .then(blob => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setPdfDataUrl(reader.result as string);
+          };
+          reader.readAsDataURL(blob);
+        })
+        .catch(err => {
+          console.error('Failed to convert PDF for mobile:', err);
+          toast.error('Failed to load PDF preview');
+        });
+    }
+  }, [pdfUrl, device.isMobile]);
 
   const handlePrint = () => {
     setIsPrinting(true);
     
     try {
-      // Blob URLs work directly in window.open()
-      const printWindow = window.open(pdfUrl, '_blank');
-      if (printWindow) {
-        printWindow.onload = () => {
-          printWindow.print();
-        };
-        toast.success("Print dialog opened");
+      if (device.isIOS) {
+        // iOS: Open in new tab, user manually prints
+        window.open(pdfUrl, '_blank');
+        toast.info("PDF opened in new tab. Use browser menu to print", {
+          duration: 4000
+        });
       } else {
-        toast.error("Unable to open print window. Please check popup blocker.");
+        // Desktop/Android: Trigger print dialog
+        const printWindow = window.open(pdfUrl, '_blank');
+        if (printWindow) {
+          printWindow.onload = () => {
+            printWindow.print();
+          };
+          toast.success("Print dialog opened");
+        } else {
+          toast.error("Unable to open print window. Please check popup blocker.");
+        }
       }
     } catch (error) {
       console.error('Print error:', error);
       toast.error("Unable to print. Please download and print manually.");
     } finally {
       setIsPrinting(false);
+    }
+  };
+
+  const handleOpenNewTab = () => {
+    if (device.isIOS) {
+      window.open(pdfUrl, '_blank');
+      toast.info("PDF opened in new tab", { duration: 2000 });
+    } else {
+      window.open(pdfUrl, '_blank');
     }
   };
 
@@ -71,22 +110,30 @@ export function PDFPreviewDialog({
       </DialogHeader>
 
       <div className="flex-1 border rounded-lg overflow-hidden bg-muted/10">
-        <object
-          data={pdfUrl}
-          type="application/pdf"
-          className="w-full h-full"
-          aria-label="PDF Preview"
-        >
-          <div className="flex flex-col items-center justify-center h-full gap-4 p-8">
-            <p className="text-muted-foreground">
-              Unable to display PDF preview in this browser.
-            </p>
-            <Button onClick={() => window.open(pdfUrl, '_blank')} className="gap-2">
-              <Eye className="h-4 w-4" />
-              Open in New Tab
-            </Button>
-          </div>
-        </object>
+        {device.isDesktop ? (
+          <object
+            data={pdfUrl}
+            type="application/pdf"
+            className="w-full h-full"
+            aria-label="PDF Preview"
+          >
+            <div className="flex flex-col items-center justify-center h-full gap-4 p-8">
+              <p className="text-muted-foreground">
+                Unable to display PDF preview in this browser.
+              </p>
+              <Button onClick={handleOpenNewTab} className="gap-2">
+                <Eye className="h-4 w-4" />
+                Open in New Tab
+              </Button>
+            </div>
+          </object>
+        ) : (
+          <iframe 
+            src={pdfDataUrl || pdfUrl} 
+            className="w-full h-full border-0"
+            title="PDF Preview"
+          />
+        )}
       </div>
 
       <DialogFooter className="flex gap-2">
@@ -104,7 +151,7 @@ export function PDFPreviewDialog({
         </Button>
         <Button
           variant="secondary"
-          onClick={() => window.open(pdfUrl, '_blank')}
+          onClick={handleOpenNewTab}
           className="gap-2"
         >
           <Eye className="h-4 w-4" />

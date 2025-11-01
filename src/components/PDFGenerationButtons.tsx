@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { PDFPreviewDialog } from "./PDFPreviewDialog";
 import { validatePDFGeneration, formatFieldName, ValidationResult } from "@/utils/pdfValidation";
+import { detectDevice } from "@/utils/deviceDetection";
 
 interface PDFGenerationButtonsProps {
   caseId: string;
@@ -139,19 +140,84 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
     await handleGeneratePDF(currentTemplate.type, currentTemplate.label, false);
   };
 
+  const handlePlatformDownload = (blob: Blob, filename: string, isEditable: boolean) => {
+    const device = detectDevice();
+    
+    if (device.isIOS) {
+      // iOS: window.open in new tab with user guidance
+      const url = window.URL.createObjectURL(blob);
+      window.open(url, '_blank');
+      toast.info("PDF opened in new tab. Tap the Share icon → Save to Files to download", {
+        duration: 5000
+      });
+      setTimeout(() => window.URL.revokeObjectURL(url), 1000);
+    } else {
+      // Desktop + Android: standard download
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      
+      if (isEditable) {
+        toast.success("Editable PDF downloaded - fill in Adobe Acrobat");
+      } else {
+        toast.success("Final PDF downloaded (locked fields)");
+      }
+    }
+  };
+
   const handleDownloadEditable = async () => {
-    // Generate editable PDF for offline editing (flatten: false)
-    await handleGeneratePDF(currentTemplate.type, currentTemplate.label, false);
-    toast.success("Editable PDF downloaded - you can fill it in Adobe Acrobat");
-    setPreviewOpen(false);
-    cleanupPreviewUrl();
+    try {
+      setIsGenerating(true);
+      const loadingToast = toast.loading(`Generating editable ${currentTemplate.label}...`);
+
+      const { data, error } = await supabase.functions.invoke('fill-pdf', {
+        body: { caseId, templateType: currentTemplate.type, flatten: false }
+      });
+
+      if (error) throw new Error(`Failed to generate PDF: ${error.message}`);
+
+      const blob = new Blob([data], { type: 'application/pdf' });
+      toast.dismiss(loadingToast);
+      
+      handlePlatformDownload(blob, `${currentTemplate.type}-${caseId}-editable.pdf`, true);
+      setPreviewOpen(false);
+      cleanupPreviewUrl();
+    } catch (error: any) {
+      console.error('Download error:', error);
+      toast.error(`Failed to download: ${error.message}`);
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const handleDownloadFinal = async () => {
-    // Generate final locked PDF for submission (flatten: true)
-    await handleGeneratePDF(currentTemplate.type, currentTemplate.label, true);
-    setPreviewOpen(false);
-    cleanupPreviewUrl();
+    try {
+      setIsGenerating(true);
+      const loadingToast = toast.loading(`Generating final ${currentTemplate.label}...`);
+
+      const { data, error } = await supabase.functions.invoke('fill-pdf', {
+        body: { caseId, templateType: currentTemplate.type, flatten: true }
+      });
+
+      if (error) throw new Error(`Failed to generate PDF: ${error.message}`);
+
+      const blob = new Blob([data], { type: 'application/pdf' });
+      toast.dismiss(loadingToast);
+      
+      handlePlatformDownload(blob, `${currentTemplate.type}-${caseId}-final.pdf`, false);
+      setPreviewOpen(false);
+      cleanupPreviewUrl();
+    } catch (error: any) {
+      console.error('Download error:', error);
+      toast.error(`Failed to download: ${error.message}`);
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   return (
