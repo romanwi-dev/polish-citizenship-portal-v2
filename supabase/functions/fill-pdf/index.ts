@@ -676,12 +676,6 @@ serve(async (req) => {
       }
     }
 
-    // Preserve Adobe's AUTO font sizing by using needAppearances
-    pdfDoc.getForm().acroForm.dict.set(
-      PDFName.of('NeedAppearances'), 
-      PDFBool.True
-    );
-
     // Only flatten for final locked PDFs, keep editable otherwise
     if (flatten) {
       form.flatten();
@@ -692,7 +686,7 @@ serve(async (req) => {
     
     const filledPdfBytes = await pdfDoc.save({
       useObjectStreams: false,
-      updateFieldAppearances: false  // Don't force font changes!
+      updateFieldAppearances: true  // Create proper field appearances with template content
     });
     
     console.log(`PDF generated: ${filledPdfBytes.length} bytes`);
