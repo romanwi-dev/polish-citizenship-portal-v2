@@ -73,8 +73,6 @@ const SystemOverview = lazy(() => import("./pages/admin/SystemOverview"));
 const AIAgentsDashboard = lazy(() => import("./pages/admin/AIAgentsDashboard"));
 const AgentApprovals = lazy(() => import("./pages/admin/AgentApprovals"));
 const VerifyChanges = lazy(() => import("./pages/VerifyChanges"));
-const VerifyAuditPlan = lazy(() => import("./pages/VerifyAuditPlan"));
-const RunAuditNow = lazy(() => import("./pages/RunAuditNow"));
 
 
 const queryClient = new QueryClient({
@@ -577,22 +575,6 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <VerifyChanges />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/verify-audit-plan" 
-            element={
-              <Suspense fallback={<AdminLoader />}>
-                <VerifyAuditPlan />
-              </Suspense>
-            } 
-          />
-          <Route 
-            path="/admin/run-audit-now" 
-            element={
-              <Suspense fallback={<AdminLoader />}>
-                <RunAuditNow />
               </Suspense>
             } 
           />
