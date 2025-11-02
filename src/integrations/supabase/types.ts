@@ -530,9 +530,15 @@ export type Database = {
       documents: {
         Row: {
           ai_corrections: Json | null
+          ai_detected_person: string | null
+          ai_detected_type: string | null
+          applied_at: string | null
+          applied_by: string | null
           case_id: string
           category: string | null
           created_at: string
+          data_applied_to_forms: boolean | null
+          detection_confidence: number | null
           document_type: string | null
           dropbox_file_id: string | null
           dropbox_path: string
@@ -564,6 +570,7 @@ export type Database = {
           translation_required: boolean | null
           type: string | null
           updated_at: string
+          user_overrode_detection: boolean | null
           validation_errors: Json | null
           validation_passed: boolean | null
           verified_at: string | null
@@ -571,9 +578,15 @@ export type Database = {
         }
         Insert: {
           ai_corrections?: Json | null
+          ai_detected_person?: string | null
+          ai_detected_type?: string | null
+          applied_at?: string | null
+          applied_by?: string | null
           case_id: string
           category?: string | null
           created_at?: string
+          data_applied_to_forms?: boolean | null
+          detection_confidence?: number | null
           document_type?: string | null
           dropbox_file_id?: string | null
           dropbox_path: string
@@ -605,6 +618,7 @@ export type Database = {
           translation_required?: boolean | null
           type?: string | null
           updated_at?: string
+          user_overrode_detection?: boolean | null
           validation_errors?: Json | null
           validation_passed?: boolean | null
           verified_at?: string | null
@@ -612,9 +626,15 @@ export type Database = {
         }
         Update: {
           ai_corrections?: Json | null
+          ai_detected_person?: string | null
+          ai_detected_type?: string | null
+          applied_at?: string | null
+          applied_by?: string | null
           case_id?: string
           category?: string | null
           created_at?: string
+          data_applied_to_forms?: boolean | null
+          detection_confidence?: number | null
           document_type?: string | null
           dropbox_file_id?: string | null
           dropbox_path?: string
@@ -646,6 +666,7 @@ export type Database = {
           translation_required?: boolean | null
           type?: string | null
           updated_at?: string
+          user_overrode_detection?: boolean | null
           validation_errors?: Json | null
           validation_passed?: boolean | null
           verified_at?: string | null
