@@ -60,20 +60,31 @@ serve(async (req) => {
           .update({ ocr_status: "processing" })
           .eq("id", doc.id);
 
-        // Download file from Dropbox
-        const { data: fileData, error: downloadError } = await supabase.functions.invoke(
-          "dropbox-download",
+        // Download file from Dropbox using direct fetch with auth header
+        const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+        const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+
+        const downloadResponse = await fetch(
+          `${supabaseUrl}/functions/v1/dropbox-download`,
           {
-            body: { file_path: doc.dropbox_path },
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${serviceKey}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ file_path: doc.dropbox_path }),
           }
         );
 
-        if (downloadError) {
-          throw new Error(`Download failed: ${downloadError.message}`);
+        if (!downloadResponse.ok) {
+          const errorText = await downloadResponse.text();
+          throw new Error(`Download failed: ${downloadResponse.status} ${downloadResponse.statusText} - ${errorText}`);
         }
 
+        // Get file content as ArrayBuffer
+        const arrayBuffer = await downloadResponse.arrayBuffer();
+        
         // Convert to base64
-        const arrayBuffer = await fileData.arrayBuffer();
         const base64 = btoa(
           new Uint8Array(arrayBuffer).reduce(
             (data, byte) => data + String.fromCharCode(byte),
