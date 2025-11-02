@@ -183,6 +183,20 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
     if (photoFile) {
       setIsUploading(true);
       try {
+        // Delete old photo first (if exists)
+        if (caseData.client_photo_url) {
+          try {
+            const oldPath = caseData.client_photo_url.split('/').pop();
+            if (oldPath) {
+              await supabase.storage
+                .from('client-photos')
+                .remove([oldPath]);
+            }
+          } catch (err) {
+            console.warn("Could not delete old photo:", err);
+          }
+        }
+        
         const fileExt = photoFile.name.split('.').pop();
         const fileName = `${caseData.id}-${Date.now()}.${fileExt}`;
         const filePath = `${fileName}`;
@@ -207,7 +221,17 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
       }
       setIsUploading(false);
     } else if (photoPreview === null && caseData.client_photo_url) {
-      // Photo was removed
+      // Photo was removed - delete from storage
+      try {
+        const oldPath = caseData.client_photo_url.split('/').pop();
+        if (oldPath) {
+          await supabase.storage
+            .from('client-photos')
+            .remove([oldPath]);
+        }
+      } catch (err) {
+        console.warn("Could not delete photo:", err);
+      }
       client_photo_url = null;
     }
     

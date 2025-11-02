@@ -3332,6 +3332,10 @@ export type Database = {
           updated_at: string
         }[]
       }
+      get_next_case_sequence: {
+        Args: { sequence_name: string }
+        Returns: number
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

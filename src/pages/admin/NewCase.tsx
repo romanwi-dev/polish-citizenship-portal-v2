@@ -81,11 +81,14 @@ export default function NewCase() {
         : `/CASES/${formData.client_name.replace(/[^a-zA-Z0-9]/g, '_')}`;
 
       // Step 4: Create case in database with hybrid client_code
+      const { data: { user: currentUser } } = await supabase.auth.getUser();
+      
       const caseInsert: any = {
         client_name: formData.client_name.trim(),
         client_code: hybridCaseName, // Hybrid format
         dropbox_path: dropboxPath,
         start_date: new Date().toISOString().split('T')[0],
+        created_by: currentUser?.id, // Track who created the case
       };
       
       if (formData.country) caseInsert.country = formData.country;
@@ -109,30 +112,43 @@ export default function NewCase() {
         description: `Created case: ${hybridCaseName}`,
       });
 
-      // Step 4: Create Dropbox folder (background task)
+      // Step 4: Create Dropbox folder (background task with retry)
       if (formData.auto_create_dropbox_folder) {
-        supabase.functions
-          .invoke("dropbox-sync", {
-            body: { 
-              action: "create_folder", 
-              path: dropboxPath,
-              case_id: newCase.id 
-            },
-          })
-          .then(() => {
+        let retryCount = 0;
+        const maxRetries = 3;
+        
+        const createFolder = async (): Promise<void> => {
+          try {
+            await supabase.functions.invoke("dropbox-sync", {
+              body: { 
+                action: "create_folder", 
+                path: dropboxPath,
+                case_id: newCase.id 
+              },
+            });
             toast({
               title: "Dropbox Folder Created",
               description: `Folder created at ${dropboxPath}`,
             });
-          })
-          .catch(err => {
-            console.error("Dropbox folder creation failed:", err);
-            toast({
-              title: "Dropbox Warning",
-              description: "Could not create Dropbox folder. You can create it manually.",
-              variant: "destructive",
-            });
-          });
+          } catch (err) {
+            retryCount++;
+            if (retryCount < maxRetries) {
+              // Exponential backoff: 2s, 4s, 8s
+              const delay = Math.pow(2, retryCount) * 1000;
+              await new Promise(resolve => setTimeout(resolve, delay));
+              await createFolder();
+            } else {
+              console.error("Dropbox folder creation failed after retries:", err);
+              toast({
+                title: "Dropbox Error",
+                description: `Failed to create folder after ${maxRetries} attempts. Please create manually.`,
+                variant: "destructive",
+              });
+            }
+          }
+        };
+        
+        createFolder();
       }
 
       // Step 5: Generate magic link and send welcome email

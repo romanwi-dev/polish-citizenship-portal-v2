@@ -75,6 +75,21 @@ export const useUpdateCase = () => {
         .eq("id", caseId);
       
       if (error) throw error;
+      
+      // Log case access for audit trail
+      try {
+        await supabase.rpc('log_security_event', {
+          p_event_type: 'case_update',
+          p_severity: 'info',
+          p_action: 'UPDATE',
+          p_resource_type: 'case',
+          p_resource_id: caseId,
+          p_details: { fields_updated: Object.keys(updates) },
+          p_success: true,
+        });
+      } catch (err) {
+        console.warn('Failed to log audit event:', err);
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cases"] });
@@ -91,6 +106,21 @@ export const useDeleteCase = () => {
   
   return useMutation({
     mutationFn: async (caseId: string) => {
+      // Log deletion attempt for audit trail
+      try {
+        await supabase.rpc('log_security_event', {
+          p_event_type: 'case_delete',
+          p_severity: 'warning',
+          p_action: 'DELETE',
+          p_resource_type: 'case',
+          p_resource_id: caseId,
+          p_details: {},
+          p_success: true,
+        });
+      } catch (err) {
+        console.warn('Failed to log audit event:', err);
+      }
+      
       const { error } = await supabase
         .from("cases")
         .delete()
@@ -100,7 +130,7 @@ export const useDeleteCase = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cases"] });
-      toast.success("Case deleted successfully");
+      toast.success("Case deleted successfully (all related data cascaded)");
     },
     onError: (error: any) => {
       toast.error(`Failed to delete case: ${error.message}`);

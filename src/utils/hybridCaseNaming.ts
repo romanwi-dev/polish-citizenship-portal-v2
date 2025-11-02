@@ -86,32 +86,30 @@ const normalizeCountryCode = (country: string | null): string => {
 };
 
 /**
- * Gets the next sequential number for a country
+ * Gets the next sequential number for a country using atomic database sequences
  */
 const getNextCountrySequence = async (countryCode: string): Promise<string> => {
   try {
-    // Query all cases with this country code prefix
-    const { data: cases, error } = await supabase
-      .from('cases')
-      .select('client_code')
-      .not('client_code', 'is', null)
-      .ilike('client_code', `${countryCode}%`);
+    // Map country code to sequence name
+    const sequenceMap: Record<string, string> = {
+      'USA': 'case_code_usa_seq',
+      'CAN': 'case_code_can_seq',
+      'GBR': 'case_code_gbr_seq',
+      'AUS': 'case_code_aus_seq',
+      'NZL': 'case_code_nzl_seq',
+      'POL': 'case_code_pol_seq',
+    };
+    
+    const sequenceName = sequenceMap[countryCode] || 'case_code_other_seq';
+    
+    // Use database sequence for atomic increment
+    const { data, error } = await supabase.rpc('get_next_case_sequence', {
+      sequence_name: sequenceName
+    });
     
     if (error) throw error;
     
-    // Extract sequence numbers from existing codes
-    const existingNumbers = (cases || [])
-      .map(c => {
-        if (!c.client_code) return 0;
-        // Extract number from format like USA001_John_Smith
-        const match = c.client_code.match(new RegExp(`^${countryCode}(\\d+)_`));
-        return match ? parseInt(match[1], 10) : 0;
-      })
-      .filter(n => !isNaN(n));
-    
-    // Get max number and increment
-    const maxNumber = existingNumbers.length > 0 ? Math.max(...existingNumbers) : 0;
-    const nextNumber = maxNumber + 1;
+    const nextNumber = data || 1;
     
     // Pad with zeros (001, 002, etc.)
     return nextNumber.toString().padStart(3, '0');

@@ -95,18 +95,24 @@ export const BulkActionsToolbar = ({
                     Put On Hold
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => handleBulkAction(
-                    () => onBulkStatusUpdate("review"),
-                    "Cases moved to review"
+                    () => onBulkStatusUpdate("lead"),
+                    "Cases moved to lead"
                   )}>
-                    Move to Review
+                    Move to Lead
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleBulkAction(
+                    () => onBulkStatusUpdate("suspended"),
+                    "Cases suspended"
+                  )}>
+                    Suspend Cases
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => handleBulkAction(
-                    () => onBulkStatusUpdate("archived"),
-                    "Cases archived"
+                    () => onBulkStatusUpdate("finished"),
+                    "Cases marked as finished"
                   )}>
                     <Archive className="mr-2 h-4 w-4" />
-                    Archive
+                    Mark as Finished
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
