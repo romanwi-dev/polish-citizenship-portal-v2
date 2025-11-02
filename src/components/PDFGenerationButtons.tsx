@@ -43,7 +43,6 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
   const cleanupPreviewUrl = () => {
     if (previewUrl && previewUrl.startsWith('blob:')) {
       window.URL.revokeObjectURL(previewUrl);
-      console.log('🧹 Cleaned up blob URL');
     }
   };
 
@@ -79,8 +78,6 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
         }
       }
 
-      console.log('Invoking fill-pdf function with:', { caseId, templateType });
-      
       const { data, error } = await supabase.functions.invoke('fill-pdf', {
         body: { caseId, templateType, flatten }
       });
@@ -89,12 +86,9 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
         console.error('Edge function error:', error);
         throw new Error(`Failed to generate PDF: ${error.message}`);
       }
-
-      console.log('PDF data received, creating blob...');
       
       // Get the PDF as a blob
       const blob = new Blob([data], { type: 'application/pdf' });
-      console.log(`📊 PDF Stats: ${blob.size} bytes, ${blob.type}`);
 
       toast.dismiss(loadingToast);
 
@@ -102,7 +96,6 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
         // For preview and editable download - show in dialog
         // Use Object URL (blob://) instead of base64 for better performance
         const url = window.URL.createObjectURL(blob);
-        console.log('✅ Created blob URL for preview:', url);
         setPreviewUrl(url);
         setCurrentTemplate({ type: templateType, label });
         setFormData(masterData);
