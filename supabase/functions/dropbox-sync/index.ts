@@ -313,7 +313,7 @@ serve(async (req) => {
                     
                     // Determine if document should be queued for OCR
                     const isOCRable = ["pdf", "jpg", "jpeg", "png", "gif", "tiff", "bmp"].includes(fileExtension);
-                    const ocrStatus = isOCRable ? "pending" : null;
+                    const ocrStatus = isOCRable ? "queued" : null; // Changed from 'pending' to 'queued'
                     
                     await supabase.from("documents").insert({
                       case_id: newCase.id,
@@ -344,15 +344,8 @@ serve(async (req) => {
       }
     }
 
-    // Queue pending documents for OCR
-    const { data: pendingDocs, error: queueError } = await supabase
-      .from("documents")
-      .update({ ocr_status: "queued" })
-      .eq("ocr_status", "pending")
-      .select("id");
-
-    const queuedCount = pendingDocs?.length || 0;
-    console.log(`Queued ${queuedCount} documents for OCR processing`);
+    // No need to queue - documents are already created with 'queued' status
+    console.log(`Documents created with OCR status already set to 'queued'`);
 
     // Update sync log
     await supabase
@@ -364,7 +357,7 @@ serve(async (req) => {
         metadata: {
           started_at: syncLog.created_at,
           completed_at: new Date().toISOString(),
-          documents_queued_for_ocr: queuedCount,
+          documents_queued_for_ocr: 0, // Documents are created with 'queued' status directly
         },
       })
       .eq("id", syncLog.id);
