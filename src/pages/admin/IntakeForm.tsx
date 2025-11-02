@@ -12,7 +12,7 @@ import { validateEmail, validatePassport } from "@/utils/validators";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FormButtonsRow } from "@/components/FormButtonsRow";
-import { SelectSection, ApplicantSection, ContactSection, AddressSection, PassportSection, NotesSection } from "@/components/IntakeFormContent";
+import { SelectSection, ApplicantSection, SpouseSection, ChildrenSection, ContactSection, AddressSection, PassportSection, NotesSection } from "@/components/IntakeFormContent";
 import { useFormManager } from "@/hooks/useFormManager";
 import { INTAKE_FORM_REQUIRED_FIELDS, INTAKE_DATE_FIELDS } from "@/config/formRequiredFields";
 import { AutosaveIndicator } from "@/components/AutosaveIndicator";
@@ -43,6 +43,8 @@ export default function IntakeForm() {
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({
     select: null,
     applicant: null,
+    spouse: null,
+    children: null,
     contact: null,
     address: null,
     passport: null,
@@ -211,6 +213,12 @@ export default function IntakeForm() {
                 <div ref={(el) => sectionRefs.current.applicant = el} className="border-b border-border/10">
                   <ApplicantSection {...contentProps} />
                 </div>
+                <div ref={(el) => sectionRefs.current.spouse = el} className="border-b border-border/10">
+                  <SpouseSection {...contentProps} />
+                </div>
+                <div ref={(el) => sectionRefs.current.children = el} className="border-b border-border/10">
+                  <ChildrenSection {...contentProps} />
+                </div>
                 <div ref={(el) => sectionRefs.current.passport = el} className="border-b border-border/10">
                   <PassportSection {...contentProps} />
                 </div>
@@ -232,6 +240,12 @@ export default function IntakeForm() {
                 </TabsContent>
                 <TabsContent value="applicant" className="mt-0">
                   <ApplicantSection {...contentProps} />
+                </TabsContent>
+                <TabsContent value="spouse" className="mt-0">
+                  <SpouseSection {...contentProps} />
+                </TabsContent>
+                <TabsContent value="children" className="mt-0">
+                  <ChildrenSection {...contentProps} />
                 </TabsContent>
                 <TabsContent value="passport" className="mt-0">
                   <PassportSection {...contentProps} />

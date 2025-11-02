@@ -46,26 +46,81 @@ Deno.serve(async (req) => {
 
     console.log(`Downloading file from Dropbox: ${file_path}`);
 
-    const dropboxToken = Deno.env.get('DROPBOX_ACCESS_TOKEN');
+    let dropboxToken = Deno.env.get('DROPBOX_ACCESS_TOKEN');
     if (!dropboxToken) {
       throw new Error('DROPBOX_ACCESS_TOKEN not configured');
     }
 
-    // Download file from Dropbox
-    const downloadResponse = await fetch('https://content.dropboxapi.com/2/files/download', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${dropboxToken}`,
-        'Dropbox-API-Arg': JSON.stringify({ path: file_path }),
-      },
-    });
+    // Download file from Dropbox with retry logic
+    let downloadResponse: Response | null = null;
+    let lastError = '';
+    
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        downloadResponse = await fetch('https://content.dropboxapi.com/2/files/download', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${dropboxToken}`,
+            'Dropbox-API-Arg': JSON.stringify({ path: file_path }),
+          },
+        });
 
-    if (!downloadResponse.ok) {
-      const errorText = await downloadResponse.text();
-      console.error('Dropbox download error:', errorText);
+        if (downloadResponse.ok) {
+          break; // Success
+        }
+
+        // Handle token refresh on 401
+        if (downloadResponse.status === 401 && attempt < 3) {
+          console.log('Token expired, attempting refresh...');
+          const refreshToken = Deno.env.get('DROPBOX_REFRESH_TOKEN');
+          const appKey = Deno.env.get('DROPBOX_APP_KEY');
+          const appSecret = Deno.env.get('DROPBOX_APP_SECRET');
+          
+          if (refreshToken && appKey && appSecret) {
+            const tokenResponse = await fetch('https://api.dropboxapi.com/oauth2/token', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+              body: new URLSearchParams({
+                grant_type: 'refresh_token',
+                refresh_token: refreshToken,
+                client_id: appKey,
+                client_secret: appSecret,
+              }),
+            });
+            
+            if (tokenResponse.ok) {
+              const tokenData = await tokenResponse.json();
+              dropboxToken = tokenData.access_token;
+              console.log('Token refreshed successfully');
+              continue; // Retry with new token
+            }
+          }
+        }
+
+        lastError = await downloadResponse.text();
+        console.error(`Dropbox download attempt ${attempt}/3 failed:`, downloadResponse.status, lastError);
+
+        // Exponential backoff for retries (1s, 2s)
+        if (attempt < 3) {
+          await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+        }
+      } catch (error) {
+        lastError = error instanceof Error ? error.message : 'Network error';
+        console.error(`Dropbox download attempt ${attempt}/3 error:`, lastError);
+        if (attempt < 3) {
+          await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+        }
+      }
+    }
+
+    if (!downloadResponse || !downloadResponse.ok) {
       return new Response(
-        JSON.stringify({ error: 'Failed to download file from Dropbox', details: errorText }),
-        { status: downloadResponse.status, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        JSON.stringify({ 
+          error: 'Failed to download file from Dropbox after 3 attempts', 
+          details: lastError,
+          status: downloadResponse?.status || 500
+        }),
+        { status: downloadResponse?.status || 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
