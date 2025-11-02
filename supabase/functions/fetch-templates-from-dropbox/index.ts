@@ -34,12 +34,12 @@ Deno.serve(async (req) => {
 
     // Map template types to Dropbox paths
     const dropboxPaths: Record<string, string> = {
-      'poa-adult': '/# POA/new-POA-adult-8.pdf',
-      'poa-minor': '/# POA/new-POA-minor-7.pdf',
-      'poa-spouses': '/# POA/new-POA-spuses-8.pdf',
-      'family-tree': '/# WORK/new-FAMILY_TREE-7.pdf',
-      'citizenship': '/# WORK/new-CITIZENSHIP-2.pdf',
-      'transcription': '/# WORK/new-TRANSCRIPTION.pdf',
+      'poa-adult': '/POA/new-POA-adult-8.pdf',
+      'poa-minor': '/POA/new-POA-minor-7.pdf',
+      'poa-spouses': '/POA/new-POA-spuses-8.pdf',
+      'family-tree': '/WORK/new-FAMILY_TREE-7.pdf',
+      'citizenship': '/WORK/new-CITIZENSHIP-2.pdf',
+      'transcription': '/WORK/new-TRANSCRIPTION.pdf',
     };
 
     const dropboxPath = dropboxPaths[templateType];
