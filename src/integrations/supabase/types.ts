@@ -462,6 +462,62 @@ export type Database = {
           },
         ]
       }
+      ai_verifications: {
+        Row: {
+          case_id: string | null
+          created_at: string
+          critical_issues: string[] | null
+          description: string
+          files_affected: string[]
+          id: string
+          implemented_at: string | null
+          openai_score: number
+          proposal_type: string
+          recommendation: string
+          suggestions: string[] | null
+          user_decision: string | null
+          warnings: string[] | null
+        }
+        Insert: {
+          case_id?: string | null
+          created_at?: string
+          critical_issues?: string[] | null
+          description: string
+          files_affected: string[]
+          id?: string
+          implemented_at?: string | null
+          openai_score: number
+          proposal_type: string
+          recommendation: string
+          suggestions?: string[] | null
+          user_decision?: string | null
+          warnings?: string[] | null
+        }
+        Update: {
+          case_id?: string | null
+          created_at?: string
+          critical_issues?: string[] | null
+          description?: string
+          files_affected?: string[]
+          id?: string
+          implemented_at?: string | null
+          openai_score?: number
+          proposal_type?: string
+          recommendation?: string
+          suggestions?: string[] | null
+          user_decision?: string | null
+          warnings?: string[] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_verifications_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       archive_document_requests: {
         Row: {
           approximate_year: string | null

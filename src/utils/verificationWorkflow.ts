@@ -94,6 +94,32 @@ export function getVerificationResult(): { approved: boolean; review?: Verificat
 }
 
 /**
+ * Store verification to database history
+ */
+export async function storeVerificationHistory(
+  proposal: ChangeProposal,
+  review: VerificationResult,
+  userDecision: 'approved' | 'rejected' | 'modified',
+  caseId?: string
+): Promise<void> {
+  const { supabase } = await import('@/integrations/supabase/client');
+  
+  await supabase.from('ai_verifications').insert({
+    proposal_type: proposal.type,
+    description: proposal.description,
+    files_affected: proposal.files.map(f => f.path),
+    openai_score: review.overallScore,
+    recommendation: review.recommendation,
+    critical_issues: review.criticalIssues,
+    warnings: review.warnings,
+    suggestions: review.suggestions,
+    user_decision: userDecision,
+    implemented_at: userDecision === 'approved' ? new Date().toISOString() : null,
+    case_id: caseId || null
+  });
+}
+
+/**
  * Format proposal as markdown for chat display
  */
 export function formatProposalMarkdown(proposal: ChangeProposal): string {
