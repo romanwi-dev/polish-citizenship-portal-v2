@@ -90,7 +90,7 @@ export default function ClientOnboardingSection() {
   };
 
   return (
-    <section id="how-to-start" className="relative py-24 overflow-hidden">
+    <section id="how-to-start" className="relative py-24 overflow-hidden overflow-x-hidden">
 
       <div className="container relative z-10 mx-auto px-4">
         {/* Header */}

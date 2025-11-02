@@ -60,7 +60,7 @@ const testimonials = [
 
 export default function TestimonialsSection() {
   return (
-    <section id="testimonials" className="py-24 px-4 bg-gradient-to-b from-background via-background/95 to-background">
+    <section id="testimonials" className="py-24 px-4 overflow-x-hidden">
       <div className="container mx-auto max-w-7xl">
         {/* Header */}
         <div className="text-center mb-16 animate-fade-in">

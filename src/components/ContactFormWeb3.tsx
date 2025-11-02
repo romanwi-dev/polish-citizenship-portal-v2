@@ -54,7 +54,7 @@ const ContactFormWeb3 = () => {
   };
 
   return (
-    <section id="contact" className="py-32 relative overflow-hidden">
+    <section id="contact" className="py-32 relative overflow-hidden overflow-x-hidden">
       
       {/* Celebration Background - Stars, Sparkles & Fireworks */}
       <div className="absolute inset-0 z-0">

@@ -108,7 +108,7 @@ const FlippableServiceCard = ({ service, index }: { service: typeof services[0];
 
 const ServicesWeb3 = () => {
   return (
-    <section id="services" className="py-32 relative overflow-hidden">
+    <section id="services" className="py-32 relative overflow-hidden overflow-x-hidden">
       
       <div className="container px-4 mx-auto relative z-10">
         <div className="text-center mb-16 animate-fade-in">

@@ -3,7 +3,7 @@ import { Button } from "./ui/button";
 
 const AIAnalysisSection = () => {
   return (
-    <section className="relative py-32 overflow-hidden">
+    <section className="relative py-32 overflow-hidden overflow-x-hidden">
       
       <div className="container relative z-10 px-4 mx-auto">
         <div className="max-w-6xl mx-auto">

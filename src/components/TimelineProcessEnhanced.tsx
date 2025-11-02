@@ -185,7 +185,7 @@ export default function TimelineProcessEnhanced() {
       [stepNumber]: !prev[stepNumber]
     }));
   };
-  return <section id="timeline" className="relative py-24 overflow-hidden">
+  return <section id="timeline" className="relative py-24 overflow-hidden overflow-x-hidden">
       
       <div className="container relative z-10 mx-auto px-4">
         <div className="text-center mb-16 animate-fade-in">

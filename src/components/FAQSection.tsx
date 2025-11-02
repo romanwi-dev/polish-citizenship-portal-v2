@@ -161,7 +161,7 @@ const FAQSection = () => {
   })).filter(category => category.questions.length > 0);
 
   return (
-    <section id="faq" className="py-24 relative overflow-hidden">
+    <section id="faq" className="py-24 relative overflow-hidden overflow-x-hidden">
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto">
@@ -193,8 +193,8 @@ const FAQSection = () => {
 
           {/* FAQ Tabs */}
           <Tabs defaultValue="eligibility" className="w-full">
-            <div className="mb-8 overflow-x-auto">
-              <TabsList className="inline-flex lg:grid w-max lg:w-full grid-cols-2 lg:grid-cols-5 gap-2 h-auto p-2">
+            <div className="mb-8 w-full">
+              <TabsList className="flex lg:grid w-full grid-cols-2 lg:grid-cols-5 gap-2 h-auto p-2 flex-wrap">
                 {faqCategories.map((category) => {
                   const Icon = category.icon;
                   return (
