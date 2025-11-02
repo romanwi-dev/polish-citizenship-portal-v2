@@ -1,4 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.58.0';
+import { generateAccessToken } from '../_shared/dropbox-auth.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -13,10 +14,18 @@ Deno.serve(async (req) => {
   try {
     const { templateType } = await req.json();
     
-    const DROPBOX_ACCESS_TOKEN = Deno.env.get('DROPBOX_ACCESS_TOKEN');
-    if (!DROPBOX_ACCESS_TOKEN) {
-      throw new Error('Dropbox access token not configured');
+    // Get Dropbox credentials for token refresh
+    const dropboxAppKey = Deno.env.get('DROPBOX_APP_KEY');
+    const dropboxAppSecret = Deno.env.get('DROPBOX_APP_SECRET');
+    const dropboxRefreshToken = Deno.env.get('DROPBOX_REFRESH_TOKEN');
+    
+    if (!dropboxAppKey || !dropboxAppSecret || !dropboxRefreshToken) {
+      throw new Error('Missing Dropbox credentials: DROPBOX_APP_KEY, DROPBOX_APP_SECRET, and DROPBOX_REFRESH_TOKEN required');
     }
+
+    // Generate fresh access token on-demand
+    console.log('Generating fresh Dropbox access token...');
+    const accessToken = await generateAccessToken(dropboxAppKey, dropboxAppSecret, dropboxRefreshToken);
 
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -40,11 +49,11 @@ Deno.serve(async (req) => {
 
     console.log(`Fetching ${templateType} from Dropbox: ${dropboxPath}`);
 
-    // Download file from Dropbox
+    // Download file from Dropbox using fresh access token
     const downloadResponse = await fetch('https://content.dropboxapi.com/2/files/download', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${DROPBOX_ACCESS_TOKEN}`,
+        'Authorization': `Bearer ${accessToken}`,
         'Dropbox-API-Arg': JSON.stringify({ path: dropboxPath }),
       },
     });
