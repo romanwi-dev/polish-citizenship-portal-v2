@@ -53,7 +53,7 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("children_count")}>
-          <Label className={isLargeFonts ? "text-2xl" : ""}>Children</Label>
+          <Label className={isLargeFonts ? "text-2xl" : ""}>Number of children</Label>
           <Select value={formData?.children_count?.toString() || ""} onValueChange={(value) => handleInputChange("children_count", parseInt(value))}>
             <SelectTrigger 
               className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur z-50 text-xs"
