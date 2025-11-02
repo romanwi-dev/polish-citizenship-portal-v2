@@ -99,8 +99,9 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
         throw new Error(`Failed to generate PDF: ${error.message}`);
       }
       
-      // Get the PDF as a blob
-      const blob = new Blob([data], { type: 'application/pdf' });
+      // Edge function returns binary PDF data - supabase SDK handles it as Blob already
+      // Check if data is already a Blob, otherwise create one
+      const blob = data instanceof Blob ? data : new Blob([data], { type: 'application/pdf' });
 
       toast.dismiss(loadingToast);
 
