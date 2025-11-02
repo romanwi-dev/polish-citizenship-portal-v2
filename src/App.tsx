@@ -70,6 +70,8 @@ const OCRProcessingMonitor = lazy(() => import("./pages/admin/OCRProcessingMonit
 const AIAgentDiagnostics = lazy(() => import("./pages/admin/AIAgentDiagnostics"));
 const RoleManagement = lazy(() => import("./pages/admin/RoleManagement"));
 const SystemOverview = lazy(() => import("./pages/admin/SystemOverview"));
+const AIAgentsDashboard = lazy(() => import("./pages/admin/AIAgentsDashboard"));
+const AgentApprovals = lazy(() => import("./pages/admin/AgentApprovals"));
 
 
 const queryClient = new QueryClient({
