@@ -311,6 +311,10 @@ serve(async (req) => {
                   try {
                     const fileExtension = doc.name.split(".").pop()?.toLowerCase() || "";
                     
+                    // Determine if document should be queued for OCR
+                    const isOCRable = ["pdf", "jpg", "jpeg", "png", "gif", "tiff", "bmp"].includes(fileExtension);
+                    const ocrStatus = isOCRable ? "pending" : null;
+                    
                     await supabase.from("documents").insert({
                       case_id: newCase.id,
                       name: doc.name,
@@ -318,6 +322,7 @@ serve(async (req) => {
                       file_extension: fileExtension,
                       dropbox_path: doc.path_display,
                       dropbox_file_id: doc.id,
+                      ocr_status: ocrStatus,
                     });
                   } catch (docError) {
                     console.error(`Failed to create document ${doc.name}:`, docError);
@@ -339,6 +344,16 @@ serve(async (req) => {
       }
     }
 
+    // Queue pending documents for OCR
+    const { data: pendingDocs, error: queueError } = await supabase
+      .from("documents")
+      .update({ ocr_status: "queued" })
+      .eq("ocr_status", "pending")
+      .select("id");
+
+    const queuedCount = pendingDocs?.length || 0;
+    console.log(`Queued ${queuedCount} documents for OCR processing`);
+
     // Update sync log
     await supabase
       .from("sync_logs")
@@ -349,6 +364,7 @@ serve(async (req) => {
         metadata: {
           started_at: syncLog.created_at,
           completed_at: new Date().toISOString(),
+          documents_queued_for_ocr: queuedCount,
         },
       })
       .eq("id", syncLog.id);

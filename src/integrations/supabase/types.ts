@@ -555,6 +555,7 @@ export type Database = {
           needs_translation: boolean | null
           ocr_confidence: number | null
           ocr_data: Json | null
+          ocr_retry_count: number | null
           ocr_reviewed_at: string | null
           ocr_reviewed_by: string | null
           ocr_status: string | null
@@ -603,6 +604,7 @@ export type Database = {
           needs_translation?: boolean | null
           ocr_confidence?: number | null
           ocr_data?: Json | null
+          ocr_retry_count?: number | null
           ocr_reviewed_at?: string | null
           ocr_reviewed_by?: string | null
           ocr_status?: string | null
@@ -651,6 +653,7 @@ export type Database = {
           needs_translation?: boolean | null
           ocr_confidence?: number | null
           ocr_data?: Json | null
+          ocr_retry_count?: number | null
           ocr_reviewed_at?: string | null
           ocr_reviewed_by?: string | null
           ocr_status?: string | null

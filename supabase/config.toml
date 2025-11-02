@@ -86,3 +86,6 @@ verify_jwt = true
 
 [functions.dropbox-bulk-scan]
 verify_jwt = true
+
+[functions.ocr-worker]
+verify_jwt = false

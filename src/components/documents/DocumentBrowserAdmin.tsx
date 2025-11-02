@@ -4,9 +4,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Search, FolderOpen, FileText, Grid3x3, List } from "lucide-react";
+import { Search, FolderOpen, FileText, Grid3x3, List, CheckCircle } from "lucide-react";
 import { useDocumentSearch } from "@/hooks/useDocumentSearch";
+import { useBatchApplyOCR } from "@/hooks/useBatchApplyOCR";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Progress } from "@/components/ui/progress";
 
 interface DocumentBrowserAdminProps {
   caseId: string;
@@ -24,6 +26,24 @@ export const DocumentBrowserAdmin = ({ caseId }: DocumentBrowserAdminProps) => {
     totalCount,
     isLoading
   } = useDocumentSearch(caseId);
+
+  const { batchApply, isApplying, progress } = useBatchApplyOCR(caseId);
+
+  // Count completed OCR documents not yet applied
+  const { data: unappliedOCRCount } = useQuery({
+    queryKey: ["unapplied-ocr-count", caseId],
+    queryFn: async () => {
+      const { count, error } = await supabase
+        .from("documents")
+        .select("*", { count: "exact", head: true })
+        .eq("case_id", caseId)
+        .eq("ocr_status", "completed")
+        .eq("data_applied_to_forms", false);
+      
+      if (error) throw error;
+      return count || 0;
+    },
+  });
 
   // Organize documents into folder structure
   const folderStructure = useMemo(() => {
@@ -69,6 +89,36 @@ export const DocumentBrowserAdmin = ({ caseId }: DocumentBrowserAdminProps) => {
 
   return (
     <div className="space-y-6">
+      {/* Batch Apply OCR Button */}
+      {unappliedOCRCount !== undefined && unappliedOCRCount > 0 && (
+        <div className="glass-card p-4 rounded-lg">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex-1">
+              <h3 className="font-semibold mb-1">Apply OCR Data to Forms</h3>
+              <p className="text-sm text-muted-foreground">
+                {unappliedOCRCount} completed OCR document{unappliedOCRCount !== 1 ? 's' : ''} ready to apply
+              </p>
+              {isApplying && progress.total > 0 && (
+                <div className="mt-2 space-y-1">
+                  <Progress value={(progress.current / progress.total) * 100} className="h-2" />
+                  <p className="text-xs text-muted-foreground">
+                    Processing {progress.current} of {progress.total}...
+                  </p>
+                </div>
+              )}
+            </div>
+            <Button
+              onClick={() => batchApply()}
+              disabled={isApplying}
+              className="shrink-0"
+            >
+              <CheckCircle className="w-4 h-4 mr-2" />
+              {isApplying ? "Applying..." : "Apply All OCR"}
+            </Button>
+          </div>
+        </div>
+      )}
+
       {/* Search and filters */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
