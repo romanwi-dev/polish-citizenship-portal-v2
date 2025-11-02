@@ -3261,6 +3261,214 @@ export type Database = {
         }
         Relationships: []
       }
+      workflow_definitions: {
+        Row: {
+          assignment_rules: Json | null
+          auto_assign: boolean | null
+          created_at: string | null
+          default_sla_days: number | null
+          description: string | null
+          display_name: string
+          id: string
+          is_active: boolean | null
+          stages: Json
+          updated_at: string | null
+          workflow_type: string
+        }
+        Insert: {
+          assignment_rules?: Json | null
+          auto_assign?: boolean | null
+          created_at?: string | null
+          default_sla_days?: number | null
+          description?: string | null
+          display_name: string
+          id?: string
+          is_active?: boolean | null
+          stages?: Json
+          updated_at?: string | null
+          workflow_type: string
+        }
+        Update: {
+          assignment_rules?: Json | null
+          auto_assign?: boolean | null
+          created_at?: string | null
+          default_sla_days?: number | null
+          description?: string | null
+          display_name?: string
+          id?: string
+          is_active?: boolean | null
+          stages?: Json
+          updated_at?: string | null
+          workflow_type?: string
+        }
+        Relationships: []
+      }
+      workflow_instances: {
+        Row: {
+          assigned_at: string | null
+          assigned_to: string | null
+          case_id: string
+          completed_at: string | null
+          created_at: string | null
+          current_stage: string
+          deadline: string | null
+          id: string
+          metadata: Json | null
+          priority: string | null
+          sla_violated: boolean | null
+          source_id: string
+          source_table: string
+          started_at: string | null
+          status: Database["public"]["Enums"]["workflow_status"] | null
+          updated_at: string | null
+          workflow_type: string
+        }
+        Insert: {
+          assigned_at?: string | null
+          assigned_to?: string | null
+          case_id: string
+          completed_at?: string | null
+          created_at?: string | null
+          current_stage: string
+          deadline?: string | null
+          id?: string
+          metadata?: Json | null
+          priority?: string | null
+          sla_violated?: boolean | null
+          source_id: string
+          source_table: string
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["workflow_status"] | null
+          updated_at?: string | null
+          workflow_type: string
+        }
+        Update: {
+          assigned_at?: string | null
+          assigned_to?: string | null
+          case_id?: string
+          completed_at?: string | null
+          created_at?: string | null
+          current_stage?: string
+          deadline?: string | null
+          id?: string
+          metadata?: Json | null
+          priority?: string | null
+          sla_violated?: boolean | null
+          source_id?: string
+          source_table?: string
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["workflow_status"] | null
+          updated_at?: string | null
+          workflow_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_instances_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workflow_instances_workflow_type_fkey"
+            columns: ["workflow_type"]
+            isOneToOne: false
+            referencedRelation: "workflow_definitions"
+            referencedColumns: ["workflow_type"]
+          },
+        ]
+      }
+      workflow_sla_rules: {
+        Row: {
+          created_at: string | null
+          escalate_to_role: string | null
+          id: string
+          is_active: boolean | null
+          max_duration_hours: number
+          send_notification: boolean | null
+          stage: string
+          updated_at: string | null
+          warning_threshold_hours: number | null
+          workflow_type: string
+        }
+        Insert: {
+          created_at?: string | null
+          escalate_to_role?: string | null
+          id?: string
+          is_active?: boolean | null
+          max_duration_hours: number
+          send_notification?: boolean | null
+          stage: string
+          updated_at?: string | null
+          warning_threshold_hours?: number | null
+          workflow_type: string
+        }
+        Update: {
+          created_at?: string | null
+          escalate_to_role?: string | null
+          id?: string
+          is_active?: boolean | null
+          max_duration_hours?: number
+          send_notification?: boolean | null
+          stage?: string
+          updated_at?: string | null
+          warning_threshold_hours?: number | null
+          workflow_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_sla_rules_workflow_type_fkey"
+            columns: ["workflow_type"]
+            isOneToOne: false
+            referencedRelation: "workflow_definitions"
+            referencedColumns: ["workflow_type"]
+          },
+        ]
+      }
+      workflow_stage_transitions: {
+        Row: {
+          created_at: string | null
+          duration_seconds: number | null
+          from_stage: string | null
+          id: string
+          metadata: Json | null
+          to_stage: string
+          transition_reason: string | null
+          transitioned_by: string | null
+          workflow_instance_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          duration_seconds?: number | null
+          from_stage?: string | null
+          id?: string
+          metadata?: Json | null
+          to_stage: string
+          transition_reason?: string | null
+          transitioned_by?: string | null
+          workflow_instance_id: string
+        }
+        Update: {
+          created_at?: string | null
+          duration_seconds?: number | null
+          from_stage?: string | null
+          id?: string
+          metadata?: Json | null
+          to_stage?: string
+          transition_reason?: string | null
+          transitioned_by?: string | null
+          workflow_instance_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_stage_transitions_workflow_instance_id_fkey"
+            columns: ["workflow_instance_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_instances"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       wsc_letters: {
         Row: {
           case_id: string
@@ -3405,6 +3613,15 @@ export type Database = {
           p_metric_value: number
         }
         Returns: string
+      }
+      transition_workflow_stage: {
+        Args: {
+          p_reason?: string
+          p_to_stage: string
+          p_transitioned_by?: string
+          p_workflow_instance_id: string
+        }
+        Returns: Json
       }
       update_case_sort_orders: {
         Args: { case_orders: Json }
