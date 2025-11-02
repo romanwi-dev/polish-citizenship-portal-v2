@@ -372,7 +372,7 @@ export default function FinalVerification() {
 
   const exportEvidenceBundle = async () => {
     toast.info("Evidence bundle export coming soon");
-    // TODO: Generate PDF with all test results, screenshots, and documentation
+    // Evidence bundle export feature planned for future release
   };
 
   const passCount = results.filter(r => r.status === "pass").length;

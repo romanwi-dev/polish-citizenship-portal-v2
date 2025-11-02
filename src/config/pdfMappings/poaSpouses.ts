@@ -13,7 +13,7 @@
 
 export const POA_SPOUSES_PDF_MAP: Record<string, string> = {
   // Applicant fields
-  'imie_nazwisko_wniosko': 'applicant_first_name', // Full name field
+  'imie_nazwisko_wniosko': 'applicant_first_name|applicant_last_name', // Full name field
   'applicant_given_names': 'applicant_first_name',
   'applicant_surname': 'applicant_last_name',
   'passport_number': 'applicant_passport_number',
@@ -30,7 +30,7 @@ export const POA_SPOUSES_PDF_MAP: Record<string, string> = {
   
   // Children from marriage
   'minor_surname': 'child_1_last_name',
-  'imie_nazwisko_dziecka': 'child_1_first_name', // Child full name
+  'imie_nazwisko_dziecka': 'child_1_first_name|child_1_last_name', // Child full name
   
   // POA date
   'data_pelnomocnictwa': 'poa_date_filed',

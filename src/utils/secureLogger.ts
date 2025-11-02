@@ -72,8 +72,8 @@ class SecureLogger {
       console.error(`[ERROR] ${message}`, errorData || '');
     }
     
-    // In production, you would send to error tracking service
-    // Example: Sentry.captureException(error, { tags: { message } });
+    // Production error tracking can be configured with services like Sentry
+    // Sentry.captureException(error, { tags: { message } });
   }
 
   debug(message: string, data?: any) {

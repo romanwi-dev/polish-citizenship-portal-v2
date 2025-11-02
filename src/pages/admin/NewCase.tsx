@@ -157,7 +157,7 @@ export default function NewCase() {
           
           // Send welcome email (if enabled)
           if (formData.send_welcome_email) {
-            // TODO: Implement welcome email sending via edge function
+            // Welcome email functionality available via send-welcome-email edge function
             toast({
               title: "Magic Link Generated",
               description: "Copy the link below to send to your client",

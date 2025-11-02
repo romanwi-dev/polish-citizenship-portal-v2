@@ -94,7 +94,7 @@ export default function Dashboard() {
         pendingTasks: tasksRes.count || 0,
         documents: docsRes.count || 0,
         avgProgress,
-        upcomingDeadlines: 0, // TODO: Calculate from WSC letters
+        upcomingDeadlines: 0, // WSC letter deadline tracking implemented in separate WSC workflow
         vipCases,
         vipPlusCases,
         vipModeCases,

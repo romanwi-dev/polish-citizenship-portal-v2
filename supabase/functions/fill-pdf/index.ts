@@ -27,7 +27,7 @@ const POA_MINOR_PDF_MAP: Record<string, string> = {
 
 const POA_SPOUSES_PDF_MAP: Record<string, string> = {
   // Applicant fields
-  'imie_nazwisko_wniosko': 'applicant_first_name', // Full name field  
+  'imie_nazwisko_wniosko': 'applicant_first_name|applicant_last_name', // Full name field  
   'applicant_given_names': 'applicant_first_name',
   'applicant_surname': 'applicant_last_name',
   'passport_number': 'applicant_passport_number',
@@ -44,7 +44,7 @@ const POA_SPOUSES_PDF_MAP: Record<string, string> = {
   
   // Children from marriage
   'minor_surname': 'child_1_last_name',
-  'imie_nazwisko_dziecka': 'child_1_first_name', // Child full name
+  'imie_nazwisko_dziecka': 'child_1_first_name|child_1_last_name', // Child full name
   
   // POA date
   'data_pelnomocnictwa': 'poa_date_filed',
@@ -52,99 +52,267 @@ const POA_SPOUSES_PDF_MAP: Record<string, string> = {
 };
 
 const CITIZENSHIP_PDF_MAP: Record<string, string> = {
-  'miejscowosc_zl': 'applicant_address.city',
-  'app_date_dzien': 'application_submission_date.day',
-  'app_date_miesia': 'application_submission_date.month',
-  'app_date_rok': 'application_submission_date.year',
-  'wojewoda_name': 'voivodeship',
-  'imie_nazwisko_wniosko': 'applicant_full_name',
-  'imie_nazwisko_wniosko_cd': 'applicant_full_name_cont',
-  'kraj_zam': 'applicant_address.country',
-  'miasto_zam': 'applicant_address.city',
-  'nr_domu1': 'applicant_address.house_number',
-  'nr_mieszkz': 'applicant_address.apartment_number',
-  'kod_pocztowy': 'applicant_address.postal_code',
-  'miejscowosc_zamieszkania': 'applicant_address.locality',
-  'telefon': 'applicant_phone',
-  'imie_nazw_3': 'citizenship_through_name_1',
-  'imie_nazw_4': 'citizenship_through_name_2',
-  'posiadaniei': 'additional_citizenship_info',
-  'cel_ubieganie': 'application_purpose',
+  // ========== HEADER & ADMIN FIELDS ==========
+  'wojewoda': 'voivodeship',
+  'decyzja': 'decision_type',
+  'posiadanie1': 'citizenship_possession_info',
+  'cel_ubiegania': 'application_purpose',
+  'nazwa_organu': 'authority_name',
+  'r_w_obyw_dziec': 'residence_citizenship_info',
+  
+  // Submission date & location
+  'dzien_zloz': 'application_submission_date.day',
+  'miesiac_zloz': 'application_submission_date.month',
+  'rok_zloz': 'application_submission_date.year',
+  'miejscowosc_zl': 'submission_location',
+  
+  // ========== APPLICANT SECTION ==========
+  // Name fields
+  'imie_wniosko': 'applicant_first_name',
   'nazwisko_wniosko': 'applicant_last_name',
   'nazwisko_rodowe_wniosko': 'applicant_maiden_name',
-  'imie_wniosko': 'applicant_first_name',
-  'imie_nazwisko_ojca': 'applicant_father_full_name',
-  'imie_nazwisko_rodowe_matki': 'applicant_mother_full_name_maiden',
-  'uzywane_nazwiska': 'applicant_previous_names',
-  'uzywane_nazwiska_cd': 'applicant_previous_names_cont',
-  'app_dob_dzien': 'applicant_dob.day',
-  'app_dob_miesia': 'applicant_dob.month',
-  'app_dob_rok': 'applicant_dob.year',
-  'app_sex_male': 'applicant_sex_male',
-  'app_sex_female': 'applicant_sex_female',
+  'imie_nazwisko_wniosko': 'applicant_first_name|applicant_last_name',
+  'imie_nazwisko_wniosko_cd': 'applicant_first_name|applicant_last_name',
+  
+  // Birth info
+  'dzien_uro': 'applicant_dob.day',
+  'miesiac_uro': 'applicant_dob.month',
+  'rok_uro': 'applicant_dob.year',
   'miejsce_uro': 'applicant_pob',
-  'obce_obywatelstwa': 'applicant_current_citizenships',
-  'obce_obywatelstwa_cd1': 'applicant_current_citizenships_cont1',
-  'obce_obywatelstwa_cd2': 'applicant_current_citizenships_cont2',
-  'stan_cywilny': 'applicant_marital_status',
+  
+  // Personal details
+  'plec': 'applicant_sex',
+  'stan_cywilny': 'applicant_is_married',
   'nr_pesel': 'applicant_pesel',
+  
+  // Address
+  'miasto_zam': 'applicant_address.city',
+  'miejscowosc_zamieszkania': 'applicant_address.city',
+  'kod_pocztowy': 'applicant_address.postal_code',
+  'kraj_zam': 'applicant_address.country',
+  'nr_domu': 'applicant_address.house_number',
+  'nr_mieszkania': 'applicant_address.apartment_number',
+  
+  // Contact
+  'telefon': 'applicant_phone',
+  
+  // Citizenship & name history
+  'obce_obywatelstwa': 'applicant_other_citizenships',
+  'obce_obywatelstwa_cd1': 'applicant_other_citizenships',
+  'obce_obywatelstwa_cd2': 'applicant_other_citizenships',
+  'uzywane_nazwiska': 'applicant_previous_names',
+  'uzywane_nazwiska_cd': 'applicant_previous_names',
+  
+  // Previous decisions
+  'wydana_decyzja': 'previous_decision_info',
+  'zezwolenie_na_zmiane_obyw': 'citizenship_change_permission',
+  'pozbawienie_obywatelstwa_polskiego': 'polish_citizenship_deprivation',
+  'miejsce_zamieszk_pl_granica': 'residence_citizenship_info',
+  
+  // Additional applicant fields
+  'imie_nazw_3': 'applicant_first_name',
+  'imie_nazw_4': 'applicant_last_name',
+  
+  // ========== MOTHER SECTION ==========
+  // Name fields
   'nazwisko_matki': 'mother_last_name',
   'nazwisko_rodowe_matki': 'mother_maiden_name',
   'imie_matki': 'mother_first_name',
-  'mother_dob_dzien': 'mother_dob.day',
-  'mother_dob_miesia': 'mother_dob.month',
-  'mother_dob_rok': 'mother_dob.year',
+  'imie_nazwisko_rodowe_matki': 'mother_first_name|mother_maiden_name',
+  
+  // Mother's parents
+  'imie_nazwisko_ojca_matki': 'mgf_first_name|mgf_last_name',
+  'imie_nazw_rod_matki_matki': 'mgm_first_name|mgm_maiden_name',
+  
+  // Birth info
+  'dzien_uro_matki': 'mother_dob.day',
+  'miesiac_uro_matki': 'mother_dob.month',
+  'rok_uro_matki': 'mother_dob.year',
   'miejsce_uro_matki': 'mother_pob',
+  
+  // Additional mother info
+  'stan_cywilny_matki': 'mother_marital_status',
+  'pesel_matki': 'mother_pesel',
+  'uzywane_nazwiska_matki': 'mother_previous_names',
+  
+  // Mother's marriage
+  'dzien_zaw_zwiazku_matki': 'mother_marriage_date.day',
+  'miesiac_zaw_zwiazku_matki': 'mother_marriage_date.month',
+  'rok_zaw_zwiazku_matki': 'mother_marriage_date.year',
+  'miejsce_zaw_zwiazku_matki': 'father_mother_marriage_place',
+  
+  // ========== FATHER SECTION ==========
+  // Name fields
   'nazwisko_ojca': 'father_last_name',
+  'nazwisko_rodowe_ojca': 'father_maiden_name',
   'imie_ojca': 'father_first_name',
-  'father_dob_dzien': 'father_dob.day',
-  'father_dob_miesia': 'father_dob.month',
-  'father_dob_rok': 'father_dob.year',
+  'imie_nazwisko_ojca': 'father_first_name|father_last_name',
+  
+  // Father's parents
+  'imie_nazwisko_ojca_ojca': 'pgf_first_name|pgf_last_name',
+  'imie_nazw_rod_matki_ojca': 'pgm_first_name|pgm_maiden_name',
+  
+  // Birth info
+  'dzien_uro_ojca': 'father_dob.day',
+  'miesiac_uro_ojca': 'father_dob.month',
+  'rok_uro_ojca': 'father_dob.year',
   'miejsce_uro_ojca': 'father_pob',
+  
+  // Additional father info
+  'stan_cywilny_ojca': 'father_marital_status',
+  'pesel_ojca': 'father_pesel',
+  'uzywane_nazwiska_ojca': 'father_previous_names',
+  
+  // Father's marriage
+  'dzien_zaw_zwiazku_ojca': 'father_marriage_date.day',
+  'miesiac_zaw_zwiazku_ojca': 'father_marriage_date.month',
+  'rok_zaw_zwiazku_ojca': 'father_marriage_date.year',
+  'miejsce_zaw_zwiazku_ojca': 'father_mother_marriage_place',
+  
+  // ========== MATERNAL GRANDFATHER (MGF) ==========
   'nazwisko_dziadka_m': 'mgf_last_name',
+  'nazwisko_rodowe_dziadka_m': 'mgf_maiden_name',
   'imie_dziadka_m': 'mgf_first_name',
-  'mgf_dob_dzien': 'mgf_dob.day',
-  'mgf_dob_miesia': 'mgf_dob.month',
-  'mgf_dob_rok': 'mgf_dob.year',
+  
+  // MGF's parents (great-grandparents)
+  'imie_nazw_pradziadek_d_m': 'mggf_first_name|mggf_last_name',
+  'imie_nazw_prababka_d_m': 'mggm_first_name|mggm_maiden_name',
+  
+  // MGF birth info
+  'dzien_uro_dziadka_m': 'mgf_dob.day',
+  'miesiac_uro_dziadka_m': 'mgf_dob.month',
+  'rok_uro_dziadka_m': 'mgf_dob.year',
+  'miejsce_uro_dziadka_m': 'mgf_pob',
+  'pesel_dziadka_m': 'mgf_pesel',
+  
+  // Citizenship at applicant's birth
+  'posiadane_obywatel_matki_uro_wniosko': 'mgf_citizenship_at_birth',
+  'posiadane_obywatel_matki_uro_wniosko_cd': 'mgf_citizenship_at_birth',
+  
+  // ========== MATERNAL GRANDMOTHER (MGM) ==========
   'nazwisko_babki_m': 'mgm_last_name',
+  'nazwisko_rodowe_babki_m': 'mgm_maiden_name',
   'imie_babki_m': 'mgm_first_name',
-  'mgm_dob_dzien': 'mgm_dob.day',
-  'mgm_dob_miesia': 'mgm_dob.month',
-  'mgm_dob_rok': 'mgm_dob.year',
+  
+  // MGM's parents (great-grandparents)
+  'imie_nazw_pradziadek_b_m': 'mggf_first_name|mggf_last_name',
+  'imie_nazw_rod_prababka_b_m': 'mggm_first_name|mggm_maiden_name',
+  
+  // MGM birth info
+  'dzien_uro_babki_m': 'mgm_dob.day',
+  'miesiac_uro_babki_m': 'mgm_dob.month',
+  'rok_uro_babki_m': 'mgm_dob.year',
+  'miejsce_uro_babki_m': 'mgm_pob',
+  'pesel_babki_m': 'mgm_pesel',
+  
+  // ========== PATERNAL GRANDFATHER (PGF) ==========
   'nazwisko_dziadka_o': 'pgf_last_name',
+  'nazwisko_rodowe_dziadka_o': 'pgf_maiden_name',
   'imie_dziadka_o': 'pgf_first_name',
-  'pgf_dob_dzien': 'pgf_dob.day',
-  'pgf_dob_miesia': 'pgf_dob.month',
-  'pgf_dob_rok': 'pgf_dob.year',
+  
+  // PGF's parents (great-grandparents)
+  'imie_nazw_pradziadek_d_o': 'pggf_first_name|pggf_last_name',
+  'imie_nazw_rod_prababka_d_o': 'pggm_first_name|pggm_maiden_name',
+  
+  // PGF birth info
+  'dzien_uro_dziadka_o': 'pgf_dob.day',
+  'miesiac_uro_dziadka_o': 'pgf_dob.month',
+  'rok_uro_dziadka_o': 'pgf_dob.year',
+  'miejsce_uro_dziadka_o': 'pgf_pob',
+  'pesel_dziadka_o': 'pgf_pesel',
+  
+  // Citizenship at applicant's birth
+  'posiadane_obywatel_ojca_uro_wniosko': 'pgf_citizenship_at_birth',
+  'posiadane_obywatel_ojca_uro_wniosko_cd': 'pgf_citizenship_at_birth',
+  
+  // ========== PATERNAL GRANDMOTHER (PGM) ==========
   'nazwisko_babki_o': 'pgm_last_name',
+  'nazwisko_rodowe_babki_o': 'pgm_maiden_name',
   'imie_babki_o': 'pgm_first_name',
+  
+  // PGM's parents (great-grandparents)
+  'imie_nazw_pradziadek_b_o': 'pggf_first_name|pggf_last_name',
+  'imie_nazw_rod_prababka_b_o': 'pggm_first_name|pggm_maiden_name',
+  
+  // PGM birth info
+  'dzien_uro_babki_o': 'pgm_dob.day',
+  'miesiac_uro_babki_o': 'pgm_dob.month',
+  'rok_uro_babki_o': 'pgm_dob.year',
+  'miejsce_uro_babki_o': 'pgm_pob',
+  'pesel_babki_o': 'pgm_pesel',
+  
+  // ========== BIOGRAPHICAL NOTES (Życiorysy) ==========
+  'zyciorys_wniosko': 'applicant_notes',
+  'zyciorys_matki': 'mother_notes',
+  'zyciorys_ojca': 'father_notes',
+  'zyciorys_dziadka_m': 'mgf_notes',
+  'zyciorys_babki_m': 'mgm_notes',
+  'zyciorys_dziadka_o': 'pgf_notes',
+  'zyciorys_babki_o': 'pgm_notes',
+  'pradziadkowie': 'pggf_notes|mggf_notes',
+  
+  // ========== PAGE 11 - ATTACHMENTS (CRITICAL) ==========
+  'zal1': 'attachment_1_included',
+  'zal2': 'attachment_2_included',
+  'zal3': 'attachment_3_included',
+  'zal4': 'attachment_4_included',
+  'zal5': 'attachment_5_included',
+  'zal6': 'attachment_6_included',
+  'zal7': 'attachment_7_included',
+  'zal8': 'attachment_8_included',
+  'zal9': 'attachment_9_included',
+  'zal10': 'attachment_10_included',
+  
+  // Additional page 11 fields
+  'polskie_dok_wstepnych': 'polish_preliminary_docs_info',
+  'istotne_info': 'important_additional_info',
+  'decyzja_rodzenstwo': 'sibling_decision_info',
 };
 
 const FAMILY_TREE_PDF_MAP: Record<string, string> = {
-  'applicant_full_name': 'applicant_first_name',
+  'applicant_full_name': 'applicant_first_name|applicant_last_name',
   'applicant_date_of_birth': 'applicant_dob',
   'applicant_place_of_birth': 'applicant_pob',
-  'father_full_name': 'father_first_name',
-  'father_date_of_birth': 'father_dob',
-  'father_place_of_birth': 'father_pob',
-  'mother_full_name': 'mother_first_name',
-  'mother_maiden_name': 'mother_maiden_name',
-  'mother_date_of_birth': 'mother_dob',
-  'mother_place_of_birth': 'mother_pob',
-  'pgf_full_name': 'pgf_first_name',
-  'pgf_date_of_birth': 'pgf_dob',
-  'pgf_place_of_birth': 'pgf_pob',
-  'pgm_full_name': 'pgm_first_name',
-  'pgm_maiden_name': 'pgm_maiden_name',
-  'pgm_date_of_birth': 'pgm_dob',
-  'pgm_place_of_birth': 'pgm_pob',
-  'mgf_full_name': 'mgf_first_name',
-  'mgf_date_of_birth': 'mgf_dob',
-  'mgf_place_of_birth': 'mgf_pob',
-  'mgm_full_name': 'mgm_first_name',
-  'mgm_maiden_name': 'mgm_maiden_name',
-  'mgm_date_of_birth': 'mgm_dob',
-  'mgm_place_of_birth': 'mgm_pob',
+  'applicant_date_of_marriage': 'date_of_marriage',
+  'applicant_place_of_marriage': 'place_of_marriage',
+  
+  'applicant_spouse_full_name_and_maiden_name': 'spouse_first_name|spouse_last_name',
+  
+  'polish_parent_full_name': 'father_first_name|father_last_name',
+  'polish_parent_spouse_full_name': 'mother_first_name|mother_last_name',
+  'polish_parent_date_of_birth': 'father_dob',
+  'polish_parent_place_of_birth': 'father_pob',
+  'polish_parent_date_of_marriage': 'father_mother_marriage_date',
+  'polish_parent_place_of_marriage': 'father_mother_marriage_place',
+  'polish_parent_date_of_emigration': 'father_date_of_emigration',
+  'polish_parent_date_of_naturalization': 'father_date_of_naturalization',
+  
+  'polish_grandparent_full_name': 'pgf_first_name|pgf_last_name',
+  'polish_grandparent_spouse_full_name': 'pgm_first_name|pgm_last_name',
+  'polish_grandparent_date_of_birth': 'pgf_dob',
+  'polish_grandparent_place_of_birth': 'pgf_pob',
+  'polish_grandparent_date_of_mariage': 'pgf_pgm_marriage_date',
+  'polish_grandparent_place_of_mariage': 'pgf_pgm_marriage_place',
+  'polish_grandparent_date_of_emigration': 'pgf_date_of_emigration',
+  'polish_grandparent_date_of_naturalization': 'pgf_date_of_naturalization',
+  
+  'great_grandfather_full_name': 'pggf_first_name|pggf_last_name',
+  'great_grandmother_full_name': 'pggm_first_name|pggm_last_name',
+  'great_grandfather_date_of_birth': 'pggf_dob',
+  'great_grandfather_place_of_birth': 'pggf_pob',
+  'great_grandfather_date_of_marriage': 'pggf_pggm_marriage_date',
+  'great_grandfather_place_of_marriage': 'pggf_pggm_marriage_place',
+  'great_grandfather_date_of_emigartion': 'pggf_date_of_emigration',
+  'great_grandfather_date_of_naturalization': 'pggf_date_of_naturalization',
+  
+  'minor_1_full_name': 'child_1_first_name|child_1_last_name',
+  'minor_1_date_of_birth': 'child_1_dob',
+  'minor_1_place_of_birth': 'child_1_pob',
+  'minor_2_full_name': 'child_2_first_name|child_2_last_name',
+  'minor_2_date_of_birth': 'child_2_dob',
+  'minor_2_place_of_birth': 'child_2_pob',
+  'minor_3_full_name': 'child_3_first_name|child_3_last_name',
+  'minor_3_date_of_birth': 'child_3_dob',
 };
 
 const UMIEJSCOWIENIE_PDF_MAP: Record<string, string> = {
@@ -448,35 +616,83 @@ const fillPDFFields = (
     result.totalFields++;
 
     try {
-      // Check if this is a pipe-delimited mapping (for date splitting)
+      // Check if this is a pipe-delimited mapping
       if (dbColumn.includes('|')) {
-        const pdfFields = pdfFieldName.split('|');
-        const dbField = dbColumn;
+        const dbFields = dbColumn.split('|');
         
-        let rawValue = getNestedValue(data, dbField);
-        
-        // Handle date splitting into day|month|year
-        if (rawValue && pdfFields.length === 3) {
-          const date = new Date(rawValue);
-          if (!isNaN(date.getTime())) {
-            const day = date.getDate().toString().padStart(2, '0');
-            const month = (date.getMonth() + 1).toString().padStart(2, '0');
-            const year = date.getFullYear().toString();
-            
-            // Fill each pipe-delimited field
-            const values = [day, month, year];
-            for (let i = 0; i < pdfFields.length && i < values.length; i++) {
-              try {
-                const textField = form.getTextField(pdfFields[i]);
-                if (textField) {
-                  textField.setText(values[i]);
-                  result.filledFields++;
-                }
-              } catch {
-                result.emptyFields.push(pdfFields[i]);
+        // CASE 1: Name concatenation (2 fields: firstName|lastName)
+        if (dbFields.length === 2 && 
+            (dbFields[0].includes('first_name') || 
+             dbFields[0].includes('given') ||
+             dbFields[0].includes('maiden'))) {
+          const firstName = getNestedValue(data, dbFields[0]) || '';
+          const lastName = getNestedValue(data, dbFields[1]) || '';
+          const fullName = `${firstName} ${lastName}`.trim();
+          
+          if (fullName) {
+            try {
+              const textField = form.getTextField(pdfFieldName);
+              if (textField) {
+                textField.setText(fullName);
+                result.filledFields++;
+                continue;
               }
+            } catch {
+              result.emptyFields.push(pdfFieldName);
+              continue;
             }
+          } else {
+            result.emptyFields.push(pdfFieldName);
             continue;
+          }
+        }
+        
+        // CASE 2: Date splitting (single date field → day|month|year PDF fields)
+        else if (pdfFieldName.includes('|')) {
+          const pdfFields = pdfFieldName.split('|');
+          const rawValue = getNestedValue(data, dbColumn);
+          
+          if (rawValue && pdfFields.length === 3) {
+            const date = new Date(rawValue);
+            if (!isNaN(date.getTime())) {
+              const day = date.getDate().toString().padStart(2, '0');
+              const month = (date.getMonth() + 1).toString().padStart(2, '0');
+              const year = date.getFullYear().toString();
+              
+              const values = [day, month, year];
+              for (let i = 0; i < pdfFields.length && i < values.length; i++) {
+                try {
+                  const textField = form.getTextField(pdfFields[i]);
+                  if (textField) {
+                    textField.setText(values[i]);
+                    result.filledFields++;
+                  }
+                } catch {
+                  result.emptyFields.push(pdfFields[i]);
+                }
+              }
+              continue;
+            }
+          }
+        }
+        
+        // CASE 3: Concatenate multiple text fields (e.g., biographical notes)
+        else {
+          const values = dbFields.map(field => getNestedValue(data, field) || '').filter(Boolean);
+          const concatenated = values.join(' ').trim();
+          
+          if (concatenated) {
+            try {
+              const textField = form.getTextField(pdfFieldName);
+              if (textField) {
+                textField.setText(concatenated);
+                result.filledFields++;
+                continue;
+              }
+            } catch {
+              result.emptyFields.push(pdfFieldName);
+              continue;
+            }
           }
         }
         
