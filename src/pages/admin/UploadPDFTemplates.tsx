@@ -1,208 +1,141 @@
-import { useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { toast } from 'sonner';
-import { Upload, CheckCircle, XCircle, Loader2, Eye, Download } from 'lucide-react';
-import { PDFPreviewDialog } from '@/components/PDFPreviewDialog';
-
-const TEMPLATES = [
-  { file: 'poa-adult', display: 'POA - Adult' },
-  { file: 'poa-minor', display: 'POA - Minor' },
-  { file: 'poa-spouses', display: 'POA - Spouses' },
-  { file: 'citizenship', display: 'Citizenship Application' },
-  { file: 'family-tree', display: 'Family Tree' },
-  { file: 'umiejscowienie', display: 'Registration (Umiejscowienie)' },
-  { file: 'uzupelnienie', display: 'Supplement (Uzupełnienie)' },
-];
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { Upload, Check, AlertCircle } from "lucide-react";
 
 export default function UploadPDFTemplates() {
   const [uploading, setUploading] = useState(false);
-  const [results, setResults] = useState<Record<string, 'success' | 'error' | 'pending'>>({});
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState('');
-  const [previewTitle, setPreviewTitle] = useState('');
+  const [status, setStatus] = useState<Record<string, 'pending' | 'success' | 'error'>>({});
 
-  const uploadAllTemplates = async () => {
-    setUploading(true);
-    const newResults: Record<string, 'success' | 'error' | 'pending'> = {};
+  const templates = [
+    { filename: 'poa-adult.pdf', label: 'POA Adult' },
+    { filename: 'poa-minor.pdf', label: 'POA Minor' },
+    { filename: 'poa-spouses.pdf', label: 'POA Spouses' },
+  ];
 
-    for (const template of TEMPLATES) {
-      try {
-        newResults[template.file] = 'pending';
-        setResults({ ...newResults });
-
-        // Fetch PDF from public folder
-        const response = await fetch(`/templates/${template.file}.pdf`);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch ${template.file}.pdf`);
-        }
-
-        const blob = await response.blob();
-
-        // Upload to Supabase Storage
-        const { error } = await supabase.storage
-          .from('pdf-templates')
-          .upload(`${template.file}.pdf`, blob, {
-            upsert: true,
-            contentType: 'application/pdf',
-          });
-
-        if (error) throw error;
-
-        newResults[template.file] = 'success';
-        setResults({ ...newResults });
-        toast.success(`Uploaded ${template.display}`);
-      } catch (error) {
-        console.error(`Error uploading ${template.file}:`, error);
-        newResults[template.file] = 'error';
-        setResults({ ...newResults });
-        toast.error(`Failed to upload ${template.display}`);
-      }
-    }
-
-    setUploading(false);
-    toast.success('Upload process complete!');
-  };
-
-  const handlePreviewPDF = async (templateFile: string, displayName: string) => {
+  const uploadTemplate = async (filename: string) => {
     try {
-      const { data, error } = await supabase.storage
-        .from('pdf-templates')
-        .download(`${templateFile}.pdf`);
-
-      if (error) throw error;
-
-      // Convert to base64 for reliable preview
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewUrl(reader.result as string);
-        setPreviewTitle(displayName);
-        setPreviewOpen(true);
-      };
-      reader.onerror = () => {
-        toast.error('Failed to prepare PDF preview');
-      };
-      reader.readAsDataURL(data);
-    } catch (error) {
-      console.error('Preview error:', error);
-      toast.error(`Failed to preview: ${error.message}`);
-    }
-  };
-
-  const handleDownloadPDF = async (templateFile: string, displayName: string) => {
-    try {
-      const { data, error } = await supabase.storage
-        .from('pdf-templates')
-        .download(`${templateFile}.pdf`);
-
-      if (error) throw error;
-
-      // Create download link
-      const url = URL.createObjectURL(data);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${templateFile}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      // Fetch the PDF from public folder
+      const response = await fetch(`/pdf-templates/${filename}`);
+      if (!response.ok) throw new Error(`Failed to fetch ${filename}`);
       
-      toast.success(`Downloaded ${displayName}`);
-    } catch (error) {
-      console.error('Download error:', error);
-      toast.error(`Failed to download ${displayName}`);
+      const blob = await response.blob();
+      
+      // Upload to Supabase Storage
+      const { error: uploadError } = await supabase.storage
+        .from('pdf-templates')
+        .upload(filename, blob, {
+          upsert: true,
+          contentType: 'application/pdf',
+        });
+
+      if (uploadError) throw uploadError;
+      
+      setStatus(prev => ({ ...prev, [filename]: 'success' }));
+      return true;
+    } catch (error: any) {
+      console.error(`Error uploading ${filename}:`, error);
+      setStatus(prev => ({ ...prev, [filename]: 'error' }));
+      throw error;
+    }
+  };
+
+  const handleUploadAll = async () => {
+    setUploading(true);
+    const loadingToast = toast.loading('Uploading PDF templates to storage...');
+    
+    try {
+      // Reset status
+      setStatus({});
+      
+      // Upload all templates
+      for (const template of templates) {
+        await uploadTemplate(template.filename);
+      }
+      
+      toast.dismiss(loadingToast);
+      toast.success('All PDF templates uploaded successfully!');
+    } catch (error: any) {
+      toast.dismiss(loadingToast);
+      toast.error(`Upload failed: ${error.message}`);
+    } finally {
+      setUploading(false);
     }
   };
 
   return (
-    <div className="container mx-auto p-8">
-      <Card className="p-6">
-        <h1 className="text-2xl font-bold mb-4">Upload PDF Templates to Storage</h1>
-        <p className="text-muted-foreground mb-6">
-          This will upload all 7 PDF templates from the public/templates folder to Supabase Storage.
-        </p>
-
-        <Button
-          onClick={uploadAllTemplates}
-          disabled={uploading}
-          className="mb-6"
-        >
-          {uploading ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Uploading...
-            </>
-          ) : (
-            <>
-              <Upload className="mr-2 h-4 w-4" />
-              Upload All Templates
-            </>
-          )}
-        </Button>
-
-        <div className="space-y-2">
-          {TEMPLATES.map((template) => (
-            <div
-              key={template.file}
-              className="flex items-center justify-between p-3 border rounded gap-3"
-            >
-              <span className="flex-1">
-                <span className="font-semibold">{template.display}</span>
-                <span className="text-xs text-muted-foreground ml-2">({template.file}.pdf)</span>
-              </span>
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleDownloadPDF(template.file, template.display)}
-                  className="flex items-center gap-2"
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-slate-900 to-black p-8">
+      <div className="max-w-4xl mx-auto">
+        <Card className="bg-background/95 backdrop-blur-sm border-primary/20">
+          <CardHeader>
+            <CardTitle className="text-3xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              Upload PDF Templates
+            </CardTitle>
+            <CardDescription className="text-lg">
+              Upload the correct POA templates to Supabase Storage
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="space-y-4">
+              {templates.map(template => (
+                <div 
+                  key={template.filename}
+                  className="flex items-center justify-between p-4 border rounded-lg"
                 >
-                  <Download className="h-4 w-4" />
-                  Download
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handlePreviewPDF(template.file, template.display)}
-                  className="flex items-center gap-2"
-                >
-                  <Eye className="h-4 w-4" />
-                  Preview
-                </Button>
-                {results[template.file] === 'success' && (
-                  <CheckCircle className="h-5 w-5 text-green-500" />
-                )}
-                {results[template.file] === 'error' && (
-                  <XCircle className="h-5 w-5 text-red-500" />
-                )}
-                {results[template.file] === 'pending' && (
-                  <Loader2 className="h-5 w-5 animate-spin text-blue-500" />
-                )}
-              </div>
+                  <div className="flex items-center gap-3">
+                    {status[template.filename] === 'success' && (
+                      <Check className="h-5 w-5 text-green-500" />
+                    )}
+                    {status[template.filename] === 'error' && (
+                      <AlertCircle className="h-5 w-5 text-red-500" />
+                    )}
+                    {!status[template.filename] && (
+                      <div className="h-5 w-5" />
+                    )}
+                    <div>
+                      <p className="font-medium">{template.label}</p>
+                      <p className="text-sm text-muted-foreground">{template.filename}</p>
+                    </div>
+                  </div>
+                  <div className="text-sm">
+                    {status[template.filename] === 'success' && (
+                      <span className="text-green-500">Uploaded</span>
+                    )}
+                    {status[template.filename] === 'error' && (
+                      <span className="text-red-500">Failed</span>
+                    )}
+                    {!status[template.filename] && (
+                      <span className="text-muted-foreground">Ready</span>
+                    )}
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </Card>
 
-      <PDFPreviewDialog
-        open={previewOpen}
-        onClose={() => setPreviewOpen(false)}
-        pdfUrl={previewUrl}
-        onDownloadEditable={() => {
-          const link = document.createElement('a');
-          link.href = previewUrl;
-          link.download = `${previewTitle}.pdf`;
-          link.click();
-        }}
-        onDownloadFinal={() => {
-          const link = document.createElement('a');
-          link.href = previewUrl;
-          link.download = `${previewTitle}-final.pdf`;
-          link.click();
-        }}
-        documentTitle={previewTitle}
-      />
+            <Button
+              onClick={handleUploadAll}
+              disabled={uploading}
+              size="lg"
+              className="w-full"
+            >
+              <Upload className="h-5 w-5 mr-2" />
+              {uploading ? 'Uploading...' : 'Upload All Templates to Storage'}
+            </Button>
+
+            <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+              <h3 className="font-semibold text-blue-400 mb-2">What this does:</h3>
+              <ul className="text-sm text-muted-foreground space-y-1">
+                <li>• Loads the new POA PDFs from the public folder</li>
+                <li>• Uploads them to the pdf-templates storage bucket</li>
+                <li>• Replaces the old blank templates with full content</li>
+                <li>• PDFs will now generate with all Polish text and formatting</li>
+              </ul>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
