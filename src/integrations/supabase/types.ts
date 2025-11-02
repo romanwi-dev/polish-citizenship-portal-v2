@@ -3378,6 +3378,68 @@ export type Database = {
           },
         ]
       }
+      workflow_notifications: {
+        Row: {
+          created_at: string | null
+          id: string
+          message: string
+          metadata: Json | null
+          notification_type: string
+          read_at: string | null
+          recipient_email: string | null
+          recipient_user_id: string | null
+          sent_at: string | null
+          sent_via_email: boolean | null
+          sent_via_in_app: boolean | null
+          sent_via_sms: boolean | null
+          severity: string
+          title: string
+          workflow_instance_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          message: string
+          metadata?: Json | null
+          notification_type: string
+          read_at?: string | null
+          recipient_email?: string | null
+          recipient_user_id?: string | null
+          sent_at?: string | null
+          sent_via_email?: boolean | null
+          sent_via_in_app?: boolean | null
+          sent_via_sms?: boolean | null
+          severity: string
+          title: string
+          workflow_instance_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          message?: string
+          metadata?: Json | null
+          notification_type?: string
+          read_at?: string | null
+          recipient_email?: string | null
+          recipient_user_id?: string | null
+          sent_at?: string | null
+          sent_via_email?: boolean | null
+          sent_via_in_app?: boolean | null
+          sent_via_sms?: boolean | null
+          severity?: string
+          title?: string
+          workflow_instance_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_notifications_workflow_instance_id_fkey"
+            columns: ["workflow_instance_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_instances"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       workflow_sla_rules: {
         Row: {
           created_at: string | null
@@ -3422,6 +3484,68 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "workflow_definitions"
             referencedColumns: ["workflow_type"]
+          },
+        ]
+      }
+      workflow_sla_violations: {
+        Row: {
+          actual_completion: string | null
+          created_at: string | null
+          delay_hours: number | null
+          escalated: boolean | null
+          escalated_at: string | null
+          escalated_to: string | null
+          expected_completion: string | null
+          id: string
+          metadata: Json | null
+          resolution_notes: string | null
+          resolved: boolean | null
+          resolved_at: string | null
+          stage: string | null
+          violation_type: string
+          workflow_instance_id: string
+        }
+        Insert: {
+          actual_completion?: string | null
+          created_at?: string | null
+          delay_hours?: number | null
+          escalated?: boolean | null
+          escalated_at?: string | null
+          escalated_to?: string | null
+          expected_completion?: string | null
+          id?: string
+          metadata?: Json | null
+          resolution_notes?: string | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          stage?: string | null
+          violation_type: string
+          workflow_instance_id: string
+        }
+        Update: {
+          actual_completion?: string | null
+          created_at?: string | null
+          delay_hours?: number | null
+          escalated?: boolean | null
+          escalated_at?: string | null
+          escalated_to?: string | null
+          expected_completion?: string | null
+          id?: string
+          metadata?: Json | null
+          resolution_notes?: string | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          stage?: string | null
+          violation_type?: string
+          workflow_instance_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_sla_violations_workflow_instance_id_fkey"
+            columns: ["workflow_instance_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_instances"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -3553,6 +3677,21 @@ export type Database = {
           table_name: string
         }[]
       }
+      check_workflow_sla_violations: {
+        Args: never
+        Returns: {
+          delay_hours: number
+          violation_type: string
+          workflow_id: string
+        }[]
+      }
+      check_workflow_sla_warnings: {
+        Args: never
+        Returns: {
+          hours_remaining: number
+          workflow_id: string
+        }[]
+      }
       cleanup_rate_limit_logs: { Args: never; Returns: undefined }
       get_case_document_count: { Args: { case_uuid: string }; Returns: number }
       get_cases_with_counts: {
@@ -3611,6 +3750,18 @@ export type Database = {
           p_metadata?: Json
           p_metric_type: string
           p_metric_value: number
+        }
+        Returns: string
+      }
+      send_workflow_notification: {
+        Args: {
+          p_message: string
+          p_metadata?: Json
+          p_notification_type: string
+          p_recipient_user_id: string
+          p_severity: string
+          p_title: string
+          p_workflow_instance_id: string
         }
         Returns: string
       }
