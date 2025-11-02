@@ -49,6 +49,29 @@ Deno.serve(async (req) => {
 
     console.log(`Fetching ${templateType} from Dropbox: ${dropboxPath}`);
 
+    // DEBUG: List files in /POA folder to verify structure
+    console.log('DEBUG: Listing files in /POA/ folder...');
+    try {
+      const listResponse = await fetch('https://api.dropboxapi.com/2/files/list_folder', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ path: '/POA' }),
+      });
+      
+      if (listResponse.ok) {
+        const listData = await listResponse.json();
+        console.log('Files in /POA/:', JSON.stringify(listData.entries.map((e: any) => ({ name: e.name, path: e.path_display })), null, 2));
+      } else {
+        console.log('Failed to list /POA/ folder:', await listResponse.text());
+      }
+    } catch (listError) {
+      console.log('Error listing /POA/ folder:', listError);
+    }
+
+
     // Download file from Dropbox using fresh access token
     const downloadResponse = await fetch('https://content.dropboxapi.com/2/files/download', {
       method: 'POST',
