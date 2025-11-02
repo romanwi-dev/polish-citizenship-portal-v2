@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Download, Eye } from "lucide-react";
+import { Download, Eye, AlertTriangle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useState } from "react";
@@ -10,8 +10,18 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { PDFPreviewDialog } from "./PDFPreviewDialog";
-import { validatePDFGeneration } from "@/utils/pdfValidation";
+import { validatePDFGeneration, formatFieldName, ValidationResult } from "@/utils/pdfValidation";
 import { detectDevice } from "@/utils/deviceDetection";
 
 interface PDFGenerationButtonsProps {
@@ -24,6 +34,8 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
   const [previewUrl, setPreviewUrl] = useState("");
   const [currentTemplate, setCurrentTemplate] = useState({ type: "", label: "" });
   const [formData, setFormData] = useState<any>(null);
+  const [validationDialogOpen, setValidationDialogOpen] = useState(false);
+  const [validationResult, setValidationResult] = useState<ValidationResult | null>(null);
 
   const cleanupPreviewUrl = () => {
     if (previewUrl && previewUrl.startsWith('blob:')) {
@@ -167,6 +179,24 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
 
   const handleDownloadFinal = async () => {
     try {
+      // Validate before final PDF printing
+      const { data: masterData } = await supabase
+        .from("master_table")
+        .select("*")
+        .eq("case_id", caseId)
+        .maybeSingle();
+
+      if (masterData) {
+        const validation = validatePDFGeneration(masterData, currentTemplate.type);
+        
+        if (!validation.meetsThreshold) {
+          // Block final PDF printing if below threshold
+          setValidationResult(validation);
+          setValidationDialogOpen(true);
+          return;
+        }
+      }
+
       setIsGenerating(true);
       const loadingToast = toast.loading(`Generating final ${currentTemplate.label}...`);
 
@@ -253,6 +283,73 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
         documentTitle={currentTemplate.label}
       />
 
+      <AlertDialog open={validationDialogOpen} onOpenChange={setValidationDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-amber-500" />
+              PDF Not Ready for Printing
+            </AlertDialogTitle>
+            <AlertDialogDescription className="space-y-4">
+              <p>
+                This PDF is only <strong>{validationResult?.coverage}% complete</strong> 
+                (minimum {validationResult?.threshold}% recommended for printing).
+                {validationResult && validationResult.missingFields.length > 0 && (
+                  <span> Missing {validationResult.missingFields.length} required field(s):</span>
+                )}
+              </p>
+              {validationResult && validationResult.missingFields.length > 0 && (
+                <ul className="list-disc list-inside space-y-1 text-sm max-h-40 overflow-y-auto">
+                  {validationResult.missingFields.slice(0, 10).map(field => (
+                    <li key={field}>{formatFieldName(field)}</li>
+                  ))}
+                  {validationResult.missingFields.length > 10 && (
+                    <li className="text-muted-foreground">
+                      ...and {validationResult.missingFields.length - 10} more
+                    </li>
+                  )}
+                </ul>
+              )}
+              <p className="text-sm text-muted-foreground">
+                We recommend completing these fields before printing the final PDF.
+              </p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Go Back & Complete Data</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={async () => {
+                setValidationDialogOpen(false);
+                // Proceed with final PDF generation anyway
+                try {
+                  setIsGenerating(true);
+                  const loadingToast = toast.loading(`Generating final ${currentTemplate.label}...`);
+
+                  const { data, error } = await supabase.functions.invoke('fill-pdf', {
+                    body: { caseId, templateType: currentTemplate.type, flatten: true }
+                  });
+
+                  if (error) throw new Error(`Failed to generate PDF: ${error.message}`);
+
+                  const blob = new Blob([data], { type: 'application/pdf' });
+                  toast.dismiss(loadingToast);
+                  
+                  handlePlatformDownload(blob, `${currentTemplate.type}-${caseId}-final.pdf`, false);
+                  setPreviewOpen(false);
+                  cleanupPreviewUrl();
+                } catch (error: any) {
+                  console.error('Download error:', error);
+                  toast.error(`Failed to download: ${error.message}`);
+                } finally {
+                  setIsGenerating(false);
+                }
+              }}
+            >
+              Print Anyway
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </DropdownMenu>
   );
 }
