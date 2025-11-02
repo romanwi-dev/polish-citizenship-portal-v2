@@ -193,7 +193,7 @@ serve(async (req) => {
           case_id: doc.case_id,
           status: "failed",
           error_message: errorMessage,
-          retry_count: newRetryCount,
+          ocr_retry_count: newRetryCount,
           processing_duration_ms: processingTime,
           started_at: new Date(startTime).toISOString(),
           completed_at: new Date().toISOString(),

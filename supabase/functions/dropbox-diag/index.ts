@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { generateAccessToken } from "../_shared/dropbox-auth.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -64,43 +65,70 @@ serve(async (req) => {
 
     diagnostics.checks.push(secretsCheck);
 
-    // Check 2: Test Dropbox API connection
-    if (dropboxAccessToken) {
-      const connectionCheck = {
-        name: 'Dropbox API Connection',
-        status: 'pass',
-        details: {} as any
-      };
+    // Check 2: Test token generation and Dropbox API connection
+    const tokenGenCheck = {
+      name: 'Token Generation',
+      status: 'pass',
+      details: {} as any
+    };
 
+    if (dropboxAppKey && dropboxAppSecret && dropboxRefreshToken) {
+      const tokenGenStart = Date.now();
       try {
-        const response = await fetch('https://api.dropboxapi.com/2/users/get_current_account', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${dropboxAccessToken}`,
-            'Content-Type': 'application/json'
-          }
-        });
+        const accessToken = await generateAccessToken(dropboxAppKey, dropboxAppSecret, dropboxRefreshToken);
+        const tokenGenDuration = Date.now() - tokenGenStart;
+        
+        tokenGenCheck.details.duration_ms = tokenGenDuration;
+        tokenGenCheck.details.message = 'Fresh access token generated successfully';
 
-        if (response.ok) {
-          const data = await response.json();
-          connectionCheck.details.account_id = data.account_id;
-          connectionCheck.details.email = data.email;
-          connectionCheck.details.name = data.name?.display_name;
-        } else {
+        // Check 3: Test Dropbox API connection with generated token
+        const connectionCheck = {
+          name: 'Dropbox API Connection',
+          status: 'pass',
+          details: {} as any
+        };
+
+        try {
+          const response = await fetch('https://api.dropboxapi.com/2/users/get_current_account', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${accessToken}`,
+              'Content-Type': 'application/json'
+            }
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            connectionCheck.details.account_id = data.account_id;
+            connectionCheck.details.email = data.email;
+            connectionCheck.details.name = data.name?.display_name;
+          } else {
+            connectionCheck.status = 'fail';
+            connectionCheck.details.error = `HTTP ${response.status}`;
+            diagnostics.ok = false;
+          }
+        } catch (error: any) {
           connectionCheck.status = 'fail';
-          connectionCheck.details.error = `HTTP ${response.status}`;
+          connectionCheck.details.error = error.message;
           diagnostics.ok = false;
         }
+
+        diagnostics.checks.push(connectionCheck);
       } catch (error: any) {
-        connectionCheck.status = 'fail';
-        connectionCheck.details.error = error.message;
+        tokenGenCheck.status = 'fail';
+        tokenGenCheck.details.error = error.message;
+        tokenGenCheck.details.duration_ms = Date.now() - tokenGenStart;
         diagnostics.ok = false;
       }
-
-      diagnostics.checks.push(connectionCheck);
+    } else {
+      tokenGenCheck.status = 'fail';
+      tokenGenCheck.details.error = 'Missing credentials for token generation';
+      diagnostics.ok = false;
     }
 
-    // Check 3: Database sync status
+    diagnostics.checks.push(tokenGenCheck);
+
+    // Check 4: Database sync status
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
@@ -143,7 +171,7 @@ serve(async (req) => {
 
     diagnostics.checks.push(dbCheck);
 
-    // Check 4: Sync logs
+    // Check 5: Sync logs
     const logsCheck = {
       name: 'Recent Sync Logs',
       status: 'pass',

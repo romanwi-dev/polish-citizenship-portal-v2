@@ -1,6 +1,7 @@
 // Dropbox sync edge function with OAuth refresh token support
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { generateAccessToken } from "../_shared/dropbox-auth.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -135,17 +136,16 @@ serve(async (req) => {
   }
 
   try {
-    const dropboxToken = Deno.env.get("DROPBOX_ACCESS_TOKEN");
     const dropboxAppKey = Deno.env.get("DROPBOX_APP_KEY");
     const dropboxAppSecret = Deno.env.get("DROPBOX_APP_SECRET");
     const dropboxRefreshToken = Deno.env.get("DROPBOX_REFRESH_TOKEN");
     
-    if (!dropboxToken || !dropboxAppKey || !dropboxAppSecret || !dropboxRefreshToken) {
-      throw new Error("Missing Dropbox credentials: DROPBOX_ACCESS_TOKEN, DROPBOX_APP_KEY, DROPBOX_APP_SECRET, and DROPBOX_REFRESH_TOKEN required");
+    if (!dropboxAppKey || !dropboxAppSecret || !dropboxRefreshToken) {
+      throw new Error("Missing Dropbox credentials: DROPBOX_APP_KEY, DROPBOX_APP_SECRET, and DROPBOX_REFRESH_TOKEN required");
     }
 
-    // Initialize current access token
-    currentAccessToken = dropboxToken;
+    // Generate fresh access token on-demand
+    currentAccessToken = await generateAccessToken(dropboxAppKey, dropboxAppSecret, dropboxRefreshToken);
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
