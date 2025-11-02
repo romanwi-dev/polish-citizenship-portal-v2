@@ -123,30 +123,16 @@ export function PDFPreviewDialog({
       </DialogHeader>
 
       <div className="flex-1 border rounded-lg overflow-hidden bg-muted/10">
-        {device.isDesktop ? (
-          <object
-            data={pdfUrl}
-            type="application/pdf"
-            className="w-full h-full"
-            aria-label="PDF Preview"
-          >
-            <div className="flex flex-col items-center justify-center h-full gap-4 p-8">
-              <p className="text-muted-foreground">
-                Unable to display PDF preview in this browser.
-              </p>
-              <Button onClick={handleOpenNewTab} className="gap-2">
-                <Eye className="h-4 w-4" />
-                Open in New Tab
-              </Button>
-            </div>
-          </object>
-        ) : (
-          <iframe 
-            src={pdfDataUrl || pdfUrl} 
-            className="w-full h-full border-0"
-            title="PDF Preview"
-          />
-        )}
+        <iframe 
+          src={pdfUrl} 
+          className="w-full h-full border-0"
+          title="PDF Preview"
+          onLoad={() => console.log('✅ PDF iframe loaded:', pdfUrl)}
+          onError={(e) => {
+            console.error('❌ PDF iframe error:', e);
+            toast.error('Failed to load PDF preview');
+          }}
+        />
       </div>
 
       <DialogFooter className="flex gap-2">

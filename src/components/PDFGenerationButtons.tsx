@@ -109,12 +109,13 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
         // For preview and editable download - show in dialog
         // Use Object URL (blob://) instead of base64 for better performance
         const url = window.URL.createObjectURL(blob);
+        console.log('✅ PDF blob created:', { url, size: blob.size, type: blob.type });
         setPreviewUrl(url);
         setCurrentTemplate({ type: templateType, label });
         setCurrentTemplateType(templateType);
         setFormData(masterData);
         setPreviewOpen(true);
-        toast.success(`${label} ready!`);
+        toast.success(`${label} ready! Opening preview...`, { duration: 3000 });
         
         // Update status: generated
         if (documentId) {
