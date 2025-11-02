@@ -1,5 +1,7 @@
 import { AdminLayout } from "@/components/AdminLayout";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import { 
   Bot, 
   FileText, 
@@ -9,21 +11,33 @@ import {
   Archive,
   Languages,
   FileCheck,
-  Plane
+  Plane,
+  Shield
 } from "lucide-react";
 
 export default function SystemOverview() {
+  const navigate = useNavigate();
   return (
     <AdminLayout>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12 max-w-7xl">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12 max-w-7xl">
           {/* Header */}
-          <div className="space-y-3 text-center mb-16">
-            <h1 className="text-4xl md:text-6xl font-heading font-black mb-14 tracking-tight">
+          <div className="space-y-6 text-center mb-16">
+            <h1 className="text-4xl md:text-6xl font-heading font-black mb-6 tracking-tight">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-primary glow-text drop-shadow-2xl">
                 System Overview
               </span>
             </h1>
+            <div className="flex justify-center">
+              <Button 
+                onClick={() => navigate('/admin/verify-audit-plan')}
+                size="lg"
+                className="gap-2"
+              >
+                <Shield className="h-5 w-5" />
+                Run Comprehensive System Audit
+              </Button>
+            </div>
           </div>
 
           {/* AI Agents Section */}
