@@ -103,21 +103,132 @@ export function ChangeVerificationDialog({
 }: ChangeVerificationDialogProps) {
   if (!proposal) return null;
 
+  const isPDFProposal = proposal.type === 'pdf_generation_pre' || proposal.type === 'pdf_generation_post';
+  const isPreGeneration = proposal.type === 'pdf_generation_pre';
+  const isPostGeneration = proposal.type === 'pdf_generation_post';
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            🤖 AI Code Review
+            {isPDFProposal ? '📄 AI PDF Verification' : '🤖 AI Code Review'}
             <Badge variant="outline">{proposal.type}</Badge>
           </DialogTitle>
           <DialogDescription>
-            OpenAI GPT-5 verification of proposed changes
+            {isPDFProposal
+              ? isPreGeneration
+                ? 'Analyzing data completeness and PDF generation readiness'
+                : 'Verifying generated PDF quality and accuracy'
+              : 'OpenAI GPT-5 verification of proposed changes'}
           </DialogDescription>
         </DialogHeader>
 
         <ScrollArea className="h-[70vh] pr-4">
           <div className="space-y-6">
+            
+            {/* PDF Pre-Generation Details */}
+            {isPDFProposal && isPreGeneration && proposal.pdfGeneration && (
+              <Alert className="border-blue-500/30 bg-blue-500/10">
+                <Target className="h-4 w-4" />
+                <AlertTitle className="text-lg font-bold">PDF Generation Plan</AlertTitle>
+                <AlertDescription>
+                  <div className="grid grid-cols-2 gap-4 mt-3">
+                    <div>
+                      <p className="text-xs text-muted-foreground">Template</p>
+                      <p className="font-mono text-sm font-bold">{proposal.pdfGeneration.templateName}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">Data Coverage</p>
+                      <div className="flex items-center gap-2">
+                        <Progress value={proposal.pdfGeneration.dataCoverage} className="h-2 flex-1" />
+                        <span className="font-bold text-sm">{proposal.pdfGeneration.dataCoverage}%</span>
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">Fields to Fill</p>
+                      <p className="font-bold text-sm">
+                        {proposal.pdfGeneration.mappedFields} / {proposal.pdfGeneration.totalPDFFields}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">Missing Required</p>
+                      <p className={`font-bold text-sm ${proposal.pdfGeneration.missingRequired.length > 0 ? 'text-red-500' : 'text-green-500'}`}>
+                        {proposal.pdfGeneration.missingRequired.length === 0 
+                          ? '✓ All Present' 
+                          : `✗ ${proposal.pdfGeneration.missingRequired.length} Missing`}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  {proposal.pdfGeneration.missingRequired.length > 0 && (
+                    <div className="mt-3 p-3 bg-red-500/10 border border-red-500/30 rounded">
+                      <p className="text-xs font-semibold text-red-600 mb-2">⚠️ Missing Required Fields:</p>
+                      <p className="text-xs font-mono text-red-700">
+                        {proposal.pdfGeneration.missingRequired.join(', ')}
+                      </p>
+                    </div>
+                  )}
+                </AlertDescription>
+              </Alert>
+            )}
+
+            {/* PDF Post-Generation Results */}
+            {isPDFProposal && isPostGeneration && proposal.execution && (
+              <Alert className="border-green-500/30 bg-green-500/10">
+                <CheckCircle2 className="h-4 w-4" />
+                <AlertTitle className="text-lg font-bold">PDF Generation Results</AlertTitle>
+                <AlertDescription>
+                  <div className="grid grid-cols-2 gap-4 mt-3">
+                    <div>
+                      <p className="text-xs text-muted-foreground">Execution Status</p>
+                      <p className={`font-bold text-sm ${proposal.execution.success ? 'text-green-600' : 'text-red-600'}`}>
+                        {proposal.execution.success ? '✓ SUCCESSFUL' : '✗ FAILED'}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">Fields Populated</p>
+                      <p className="font-bold text-sm">
+                        {proposal.execution.fieldsFilledCount} / {proposal.execution.totalFieldsInPDF}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">Empty Fields</p>
+                      <p className={`font-bold text-sm ${proposal.execution.emptyFields.length === 0 ? 'text-green-600' : 'text-yellow-600'}`}>
+                        {proposal.execution.emptyFields.length || 'None'}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">Issues Detected</p>
+                      <p className={`font-bold text-sm ${proposal.execution.issues.length === 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        {proposal.execution.issues.length || 'None'}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  {proposal.comparisonToProposal && (
+                    <div className="mt-3 p-3 bg-blue-500/10 border border-blue-500/30 rounded">
+                      <p className="text-xs font-semibold text-blue-700 mb-1">
+                        📊 Proposal Match Rate: <span className="text-lg">{proposal.comparisonToProposal.matchRate}%</span>
+                      </p>
+                      {proposal.comparisonToProposal.discrepancies.length > 0 && (
+                        <div className="mt-2">
+                          <p className="text-xs font-semibold text-blue-600 mb-1">Discrepancies:</p>
+                          <ul className="text-xs text-muted-foreground space-y-1">
+                            {proposal.comparisonToProposal.discrepancies.map((disc, idx) => (
+                              <li key={idx}>• {disc}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </AlertDescription>
+              </Alert>
+            )}
+            
+            {isPDFProposal && <Separator />}
+            
             
             {/* Proposal Summary */}
             <div className="space-y-3">

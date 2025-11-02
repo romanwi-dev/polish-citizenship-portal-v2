@@ -145,6 +145,102 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
     }
   };
 
+  const handleVerifyAndGenerate = async (templateType: string, label: string) => {
+    try {
+      setIsGenerating(true);
+      const loadingToast = toast.loading(`Analyzing data for ${label}...`);
+
+      // Fetch current form data
+      const { data: masterData, error: fetchError } = await supabase
+        .from("master_table")
+        .select("*")
+        .eq("case_id", caseId)
+        .maybeSingle();
+
+      if (fetchError) {
+        console.error('❌ Failed to fetch form data:', fetchError);
+        toast.error('Failed to fetch form data');
+        throw new Error('Failed to fetch form data');
+      }
+
+      if (!masterData || Object.keys(masterData).length <= 2) {
+        toast.warning('No form data found. Save the form first, then verify PDFs.', { duration: 6000 });
+        return;
+      }
+
+      // Generate pre-verification proposal
+      const proposal = await generatePDFProposal(caseId, templateType, masterData);
+      
+      toast.dismiss(loadingToast);
+      toast.info('Opening verification review...');
+
+      // Store proposal in localStorage
+      localStorage.setItem('pending_proposal', JSON.stringify(proposal));
+      localStorage.setItem('proposal_timestamp', new Date().toISOString());
+      
+      // Encode proposal for URL
+      const encodedProposal = btoa(JSON.stringify(proposal));
+      
+      // Open verification page in new tab (or same tab)
+      const verifyUrl = `/admin/verify-changes?proposal=${encodedProposal}`;
+      window.open(verifyUrl, '_blank');
+      
+      toast.success('Verification opened! Review and approve to generate PDF.', { duration: 5000 });
+      
+    } catch (error: any) {
+      console.error('Verification error:', error);
+      toast.dismiss();
+      toast.error(`Failed to verify: ${error.message}`);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handlePostVerifyPDF = async (blob: Blob, templateType: string, label: string) => {
+    try {
+      // Get the original proposal if available
+      const storedProposal = localStorage.getItem('pending_proposal');
+      const originalProposal = storedProposal ? JSON.parse(storedProposal) : undefined;
+
+      // Generate post-verification inspection report
+      const inspectionReport = await generateInspectionReport(
+        blob,
+        templateType,
+        originalProposal,
+        caseId
+      );
+
+      // Store report in localStorage
+      localStorage.setItem('pending_proposal', JSON.stringify(inspectionReport));
+      localStorage.setItem('proposal_timestamp', new Date().toISOString());
+      
+      // Encode report for URL
+      const encodedReport = btoa(JSON.stringify(inspectionReport));
+      
+      // Open post-verification page
+      const verifyUrl = `/admin/verify-changes?proposal=${encodedReport}`;
+      window.open(verifyUrl, '_blank');
+      
+      toast.success('Post-generation verification opened! Review PDF quality.', { duration: 5000 });
+      
+      // Save verification results to database
+      if (documentId) {
+        await supabase
+          .from('documents')
+          .update({
+            post_verification_result: inspectionReport as any,
+            post_verification_score: inspectionReport.execution?.success ? 10 : 5,
+            verification_status: inspectionReport.execution?.success ? 'verified' : 'failed',
+          })
+          .eq('id', documentId);
+      }
+      
+    } catch (error: any) {
+      console.error('Post-verification error:', error);
+      toast.error(`Post-verification failed: ${error.message}`);
+    }
+  };
+
   const handleRegeneratePDF = async (updatedData: any) => {
     // Update master table first
     await supabase
@@ -287,37 +383,69 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
           </span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-72 bg-background/95 backdrop-blur-sm border-primary/20 z-50">
-        <DropdownMenuItem onClick={() => handleGeneratePDF('family-tree', 'Family Tree', false)}>
-          <Eye className="h-4 w-4 mr-2" />
-          Preview Family Tree
+      <DropdownMenuContent align="end" className="w-80 bg-background/95 backdrop-blur-sm border-primary/20 z-50">
+        <div className="px-2 py-2">
+          <PDFVerificationToggle
+            enabled={verificationEnabled}
+            onToggle={toggleVerification}
+          />
+        </div>
+        <DropdownMenuSeparator />
+        
+        <DropdownMenuLabel className="text-xs text-muted-foreground">
+          {verificationEnabled ? 'With AI Verification' : 'Direct Generation'}
+        </DropdownMenuLabel>
+        
+        <DropdownMenuItem onClick={() => verificationEnabled 
+          ? handleVerifyAndGenerate('family-tree', 'Family Tree')
+          : handleGeneratePDF('family-tree', 'Family Tree', false)}>
+          {verificationEnabled ? <Shield className="h-4 w-4 mr-2" /> : <Eye className="h-4 w-4 mr-2" />}
+          {verificationEnabled ? 'Verify & Preview' : 'Preview'} Family Tree
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => handleGeneratePDF('citizenship', 'Citizenship Application', false)}>
-          <Eye className="h-4 w-4 mr-2" />
-          Preview Citizenship Application
+        
+        <DropdownMenuItem onClick={() => verificationEnabled
+          ? handleVerifyAndGenerate('citizenship', 'Citizenship Application')
+          : handleGeneratePDF('citizenship', 'Citizenship Application', false)}>
+          {verificationEnabled ? <Shield className="h-4 w-4 mr-2" /> : <Eye className="h-4 w-4 mr-2" />}
+          {verificationEnabled ? 'Verify & Preview' : 'Preview'} Citizenship Application
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => handleGeneratePDF('poa-adult', 'POA - Adult', false)}>
-          <Eye className="h-4 w-4 mr-2" />
-          Preview POA - Adult
+        
+        <DropdownMenuItem onClick={() => verificationEnabled
+          ? handleVerifyAndGenerate('poa-adult', 'POA - Adult')
+          : handleGeneratePDF('poa-adult', 'POA - Adult', false)}>
+          {verificationEnabled ? <Shield className="h-4 w-4 mr-2" /> : <Eye className="h-4 w-4 mr-2" />}
+          {verificationEnabled ? 'Verify & Preview' : 'Preview'} POA - Adult
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleGeneratePDF('poa-minor', 'POA - Minor', false)}>
-          <Eye className="h-4 w-4 mr-2" />
-          Preview POA - Minor
+        
+        <DropdownMenuItem onClick={() => verificationEnabled
+          ? handleVerifyAndGenerate('poa-minor', 'POA - Minor')
+          : handleGeneratePDF('poa-minor', 'POA - Minor', false)}>
+          {verificationEnabled ? <Shield className="h-4 w-4 mr-2" /> : <Eye className="h-4 w-4 mr-2" />}
+          {verificationEnabled ? 'Verify & Preview' : 'Preview'} POA - Minor
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleGeneratePDF('poa-spouses', 'POA - Spouses', false)}>
-          <Eye className="h-4 w-4 mr-2" />
-          Preview POA - Spouses
+        
+        <DropdownMenuItem onClick={() => verificationEnabled
+          ? handleVerifyAndGenerate('poa-spouses', 'POA - Spouses')
+          : handleGeneratePDF('poa-spouses', 'POA - Spouses', false)}>
+          {verificationEnabled ? <Shield className="h-4 w-4 mr-2" /> : <Eye className="h-4 w-4 mr-2" />}
+          {verificationEnabled ? 'Verify & Preview' : 'Preview'} POA - Spouses
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => handleGeneratePDF('umiejscowienie', 'Civil Registry Entry (Umiejscowienie)', false)}>
-          <Eye className="h-4 w-4 mr-2" />
-          Preview Civil Registry Entry (Umiejscowienie)
+        
+        <DropdownMenuItem onClick={() => verificationEnabled
+          ? handleVerifyAndGenerate('umiejscowienie', 'Civil Registry Entry (Umiejscowienie)')
+          : handleGeneratePDF('umiejscowienie', 'Civil Registry Entry (Umiejscowienie)', false)}>
+          {verificationEnabled ? <Shield className="h-4 w-4 mr-2" /> : <Eye className="h-4 w-4 mr-2" />}
+          {verificationEnabled ? 'Verify & Preview' : 'Preview'} Civil Registry Entry
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleGeneratePDF('uzupelnienie', 'Birth Certificate Supplementation', false)}>
-          <Eye className="h-4 w-4 mr-2" />
-          Preview Birth Certificate Supplementation
+        
+        <DropdownMenuItem onClick={() => verificationEnabled
+          ? handleVerifyAndGenerate('uzupelnienie', 'Birth Certificate Supplementation')
+          : handleGeneratePDF('uzupelnienie', 'Birth Certificate Supplementation', false)}>
+          {verificationEnabled ? <Shield className="h-4 w-4 mr-2" /> : <Eye className="h-4 w-4 mr-2" />}
+          {verificationEnabled ? 'Verify & Preview' : 'Preview'} Birth Certificate Supplementation
         </DropdownMenuItem>
       </DropdownMenuContent>
       
