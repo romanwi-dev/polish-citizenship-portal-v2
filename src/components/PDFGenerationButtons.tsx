@@ -26,6 +26,7 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewUrl, setPreviewUrl] = useState("");
   const [currentTemplate, setCurrentTemplate] = useState({ type: "", label: "" });
+  const [currentTemplateType, setCurrentTemplateType] = useState<string>('');
   const [formData, setFormData] = useState<any>(null);
   const [prePrintChecklistOpen, setPrePrintChecklistOpen] = useState(false);
   
@@ -81,6 +82,7 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
         const url = window.URL.createObjectURL(blob);
         setPreviewUrl(url);
         setCurrentTemplate({ type: templateType, label });
+        setCurrentTemplateType(templateType);
         setFormData(masterData);
         setPreviewOpen(true);
         toast.success(`${label} ready!`);
@@ -187,6 +189,11 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
   };
 
   const handleDownloadFinal = async () => {
+    if (!currentTemplateType) {
+      toast.error('Template type not found. Please regenerate the PDF.');
+      return;
+    }
+    
     // Fetch current form data for AI validation
     const { data: masterData } = await supabase
       .from("master_table")
@@ -202,7 +209,8 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
     // Store data for PrePrintChecklist
     setFormData(masterData);
     
-    // Open AI-powered pre-print checklist
+    // Close preview, open AI-powered pre-print checklist
+    setPreviewOpen(false);
     setPrePrintChecklistOpen(true);
   };
 
@@ -304,7 +312,7 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
         onClose={() => setPrePrintChecklistOpen(false)}
         onProceed={handleProceedToPrint}
         formData={formData}
-        templateType={currentTemplate.type}
+        templateType={currentTemplateType}
       />
     </DropdownMenu>
   );

@@ -48,19 +48,36 @@ serve(async (req) => {
 
     // Build validation prompt based on check type
     let systemPrompt = `You are an expert validator for Polish citizenship application forms.
-Validate the provided form data and return structured validation results.`;
+Validate the provided form data and return structured validation results.
+
+CRITICAL VALIDATION RULES:
+
+1. POLISH CHARACTERS: Names MUST use proper Polish diacritics (ą, ć, ę, ł, ń, ó, ś, ź, ż).
+   - REJECT: "Kowalski" with plain letters if should be "Kowalśki"
+   - Common errors: Using a/c/e/l/n/o/s/z instead of ą/ć/ę/ł/ń/ó/ś/ź/ż
+   
+2. DATE FORMAT: Strictly DD.MM.YYYY where:
+   - DD: 01-31 (day must be valid for the month)
+   - MM: 01-12
+   - YYYY: Must be ≤ 2030
+   - Regex: ^(0[1-9]|[12][0-9]|3[01])\\.(0[1-9]|1[0-2])\\.(19|20)\\d{2}$
+   
+3. POLISH PASSPORT: Format AA1234567 (2 uppercase letters + 7 digits)
+   - Regex: ^[A-Z]{2}[0-9]{7}$
+   
+4. CROSS-FIELD RELATIONSHIPS:
+   - Father's last name SHOULD equal paternal grandfather's last name
+   - Mother's maiden name SHOULD equal maternal grandfather's last name
+   - Children's last name inheritance: father's last name (default) OR mother's maiden name if father unknown
+   - Date logic: birth_date < marriage_date < emigration_date < naturalization_date
+   
+5. NAME CONSISTENCY: Same person's name must be identical across all form sections`;
 
     if (checkType === 'pre-print') {
-      systemPrompt += `\n\nThis is a PRE-PRINT VERIFICATION. Be extremely thorough and check:
-1. Polish character validation (ą, ć, ę, ł, ń, ó, ś, ź, ż)
-2. Date format strictly DD.MM.YYYY with valid ranges
-3. Passport numbers match expected format
-4. All mandatory fields are filled
-5. Name consistency across all fields
-6. Address formatting for Polish standards`;
+      systemPrompt += `\n\nThis is a PRE-PRINT VERIFICATION. Apply MAXIMUM strictness. Block printing if ANY critical errors exist.`;
     }
 
-    const userPrompt = `Template: ${templateType}
+const userPrompt = `Template: ${templateType}
 Form Data: ${JSON.stringify(formData, null, 2)}
 
 Validate and return results in this exact JSON format:
@@ -82,14 +99,18 @@ Validate and return results in this exact JSON format:
     }
   ],
   "checks": {
-    "polish_chars": { "passed": true/false, "message": "..." },
-    "dates": { "passed": true/false, "message": "..." },
-    "passport": { "passed": true/false, "message": "..." },
-    "mandatory_fields": { "passed": true/false, "message": "..." },
-    "name_consistency": { "passed": true/false, "message": "..." },
-    "address_format": { "passed": true/false, "message": "..." }
+    "polish_chars": { "passed": true/false, "message": "...", "critical": true },
+    "dates": { "passed": true/false, "message": "...", "critical": true },
+    "passport": { "passed": true/false, "message": "...", "critical": true },
+    "mandatory_fields": { "passed": true/false, "message": "...", "critical": true },
+    "name_consistency": { "passed": true/false, "message": "...", "critical": false },
+    "address_format": { "passed": true/false, "message": "...", "critical": false },
+    "cross_field_relationships": { "passed": true/false, "message": "...", "critical": false }
   }
-}`;
+}
+
+Mark "critical": true for checks that MUST block PDF printing if failed.`;
+
 
     const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
