@@ -163,8 +163,11 @@ export type Database = {
           response_received_at: string | null
           search_notes: string | null
           search_type: string
+          stage_entered_at: string | null
+          stage_history: Json | null
           status: string
           updated_at: string | null
+          workflow_stage: string | null
         }
         Insert: {
           archive_country?: string | null
@@ -184,8 +187,11 @@ export type Database = {
           response_received_at?: string | null
           search_notes?: string | null
           search_type: string
+          stage_entered_at?: string | null
+          stage_history?: Json | null
           status?: string
           updated_at?: string | null
+          workflow_stage?: string | null
         }
         Update: {
           archive_country?: string | null
@@ -205,8 +211,11 @@ export type Database = {
           response_received_at?: string | null
           search_notes?: string | null
           search_type?: string
+          stage_entered_at?: string | null
+          stage_history?: Json | null
           status?: string
           updated_at?: string | null
+          workflow_stage?: string | null
         }
         Relationships: [
           {
@@ -256,6 +265,7 @@ export type Database = {
       }
       cases: {
         Row: {
+          active_workflows: Json | null
           admin_notes: string | null
           ancestry: Json | null
           client_code: string | null
@@ -291,6 +301,7 @@ export type Database = {
           wsc_received: boolean | null
         }
         Insert: {
+          active_workflows?: Json | null
           admin_notes?: string | null
           ancestry?: Json | null
           client_code?: string | null
@@ -328,6 +339,7 @@ export type Database = {
           wsc_received?: boolean | null
         }
         Update: {
+          active_workflows?: Json | null
           admin_notes?: string | null
           ancestry?: Json | null
           client_code?: string | null
@@ -2472,9 +2484,12 @@ export type Database = {
           notes: string | null
           passport_number: string | null
           received_date: string | null
+          stage_entered_at: string | null
+          stage_history: Json | null
           status: string | null
           submitted_date: string | null
           updated_at: string | null
+          workflow_stage: string | null
         }
         Insert: {
           applicant_dob?: string | null
@@ -2498,9 +2513,12 @@ export type Database = {
           notes?: string | null
           passport_number?: string | null
           received_date?: string | null
+          stage_entered_at?: string | null
+          stage_history?: Json | null
           status?: string | null
           submitted_date?: string | null
           updated_at?: string | null
+          workflow_stage?: string | null
         }
         Update: {
           applicant_dob?: string | null
@@ -2524,9 +2542,12 @@ export type Database = {
           notes?: string | null
           passport_number?: string | null
           received_date?: string | null
+          stage_entered_at?: string | null
+          stage_history?: Json | null
           status?: string | null
           submitted_date?: string | null
           updated_at?: string | null
+          workflow_stage?: string | null
         }
         Relationships: [
           {
@@ -3011,11 +3032,14 @@ export type Database = {
           internal_notes: string | null
           priority: string | null
           source_language: string
+          stage_entered_at: string | null
+          stage_history: Json | null
           started_at: string | null
           status: string | null
           target_language: string
           updated_at: string | null
           word_count: number | null
+          workflow_stage: string | null
         }
         Insert: {
           actual_cost_pln?: number | null
@@ -3034,11 +3058,14 @@ export type Database = {
           internal_notes?: string | null
           priority?: string | null
           source_language: string
+          stage_entered_at?: string | null
+          stage_history?: Json | null
           started_at?: string | null
           status?: string | null
           target_language?: string
           updated_at?: string | null
           word_count?: number | null
+          workflow_stage?: string | null
         }
         Update: {
           actual_cost_pln?: number | null
@@ -3057,11 +3084,14 @@ export type Database = {
           internal_notes?: string | null
           priority?: string | null
           source_language?: string
+          stage_entered_at?: string | null
+          stage_history?: Json | null
           started_at?: string | null
           status?: string | null
           target_language?: string
           updated_at?: string | null
           word_count?: number | null
+          workflow_stage?: string | null
         }
         Relationships: [
           {
@@ -3112,8 +3142,11 @@ export type Database = {
           request_type: string
           response_received_at: string | null
           result_document_id: string | null
+          stage_entered_at: string | null
+          stage_history: Json | null
           status: string
           updated_at: string
+          workflow_stage: string | null
         }
         Insert: {
           application_details?: Json | null
@@ -3132,8 +3165,11 @@ export type Database = {
           request_type: string
           response_received_at?: string | null
           result_document_id?: string | null
+          stage_entered_at?: string | null
+          stage_history?: Json | null
           status?: string
           updated_at?: string
+          workflow_stage?: string | null
         }
         Update: {
           application_details?: Json | null
@@ -3152,8 +3188,11 @@ export type Database = {
           request_type?: string
           response_received_at?: string | null
           result_document_id?: string | null
+          stage_entered_at?: string | null
+          stage_history?: Json | null
           status?: string
           updated_at?: string
+          workflow_stage?: string | null
         }
         Relationships: [
           {
@@ -3402,6 +3441,15 @@ export type Database = {
         | "received"
         | "archived"
       processing_mode: "standard" | "expedited" | "vip" | "vip_plus"
+      workflow_status:
+        | "pending"
+        | "assigned"
+        | "in_progress"
+        | "review"
+        | "approved"
+        | "completed"
+        | "blocked"
+        | "cancelled"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -3561,6 +3609,16 @@ export const Constants = {
         "archived",
       ],
       processing_mode: ["standard", "expedited", "vip", "vip_plus"],
+      workflow_status: [
+        "pending",
+        "assigned",
+        "in_progress",
+        "review",
+        "approved",
+        "completed",
+        "blocked",
+        "cancelled",
+      ],
     },
   },
 } as const

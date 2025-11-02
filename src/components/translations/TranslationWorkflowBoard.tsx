@@ -87,7 +87,7 @@ export const TranslationWorkflowBoard = () => {
     queryKey: ["translation-workflows"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("translation_workflows" as any)
+        .from("translation_requests")
         .select(`
           *,
           cases!inner(client_name, client_code),
@@ -97,12 +97,12 @@ export const TranslationWorkflowBoard = () => {
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-      return data as any[];
+      return data;
     },
   });
 
   const getWorkflowsForStage = (stageKeys: string[]) => {
-    return workflows?.filter((w: any) => stageKeys.includes(w.stage)) || [];
+    return workflows?.filter((w: any) => stageKeys.includes(w.workflow_stage || w.status)) || [];
   };
 
   const getPriorityColor = (priority: string) => {
