@@ -492,7 +492,7 @@ export default function POAForm() {
                       value={formData?.applicant_passport_number || ""}
                       onChange={(value) => handleInputChange("applicant_passport_number", value)}
                       isLargeFonts={isLargeFonts}
-                      placeholder="Enter passport number"
+                      placeholder=""
                       colorScheme="poa"
                     />
                   </motion.div>
@@ -557,7 +557,7 @@ export default function POAForm() {
                       value={formData?.applicant_passport_number || ""}
                       onChange={(value) => handleInputChange("applicant_passport_number", value)}
                       isLargeFonts={isLargeFonts}
-                      placeholder="Enter passport number"
+                      placeholder=""
                       colorScheme="poa"
                     />
                   </motion.div>
@@ -641,7 +641,7 @@ export default function POAForm() {
                       value={formData?.applicant_passport_number || ""}
                       onChange={(value) => handleInputChange("applicant_passport_number", value)}
                       isLargeFonts={isLargeFonts}
-                      placeholder="Enter passport number"
+                      placeholder=""
                       colorScheme="poa"
                     />
                   </motion.div>
@@ -689,7 +689,7 @@ export default function POAForm() {
                       value={formData?.spouse_passport_number || ""}
                       onChange={(value) => handleInputChange("spouse_passport_number", value)}
                       isLargeFonts={isLargeFonts}
-                      placeholder="Enter passport number"
+                      placeholder=""
                       colorScheme="spouse"
                     />
                   </motion.div>
