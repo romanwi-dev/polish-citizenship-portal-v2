@@ -13,6 +13,23 @@ const normalizeGender = (value: any): string | null => {
   return null;
 };
 
+// Convert DD.MM.YYYY to ISO date format
+const convertDDMMYYYYToISO = (dateStr: string): string | null => {
+  if (!dateStr || typeof dateStr !== 'string') return null;
+  
+  // Already in ISO format
+  if (/^\d{4}-\d{2}-\d{2}/.test(dateStr)) return dateStr;
+  
+  // DD.MM.YYYY format
+  const match = dateStr.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
+  if (match) {
+    const [, day, month, year] = match;
+    return `${year}-${month}-${day}`;
+  }
+  
+  return null;
+};
+
 export const sanitizeMasterData = (formData: any): any => {
   const sanitized: any = {};
   
@@ -70,8 +87,8 @@ export const sanitizeMasterData = (formData: any): any => {
             break;
             
           case 'text':
-            // Special handling for gender/sex fields
-            if (formField.includes('_sex') || formField === 'sex') {
+            // Special handling for ALL gender/sex fields
+            if (formField.endsWith('_sex') || formField === 'sex') {
               sanitized[dbColumn] = normalizeGender(value);
             } else {
               sanitized[dbColumn] = value === '' ? null : value;
@@ -83,7 +100,9 @@ export const sanitizeMasterData = (formData: any): any => {
             break;
             
           case 'date':
-            sanitized[dbColumn] = value === '' ? null : value;
+            // Auto-convert DD.MM.YYYY to ISO format
+            const isoDate = convertDDMMYYYYToISO(String(value || ''));
+            sanitized[dbColumn] = isoDate || (value === '' ? null : value);
             break;
             
           case 'jsonb':

@@ -84,3 +84,19 @@ export const parseDDMMYYYYToDate = (dateStr: string): Date | null => {
   const [day, month, year] = dateStr.split('.').map(n => parseInt(n, 10));
   return new Date(year, month - 1, day);
 };
+
+export const validatePhone = (phone: string): { valid: boolean; error?: string } => {
+  if (!phone) return { valid: true }; // Optional field
+  
+  const cleaned = phone.replace(/[^\d+]/g, '');
+  
+  if (cleaned.length < 10) {
+    return { valid: false, error: "Phone number must be at least 10 digits" };
+  }
+  
+  if (cleaned.length > 15) {
+    return { valid: false, error: "Phone number must be less than 15 digits" };
+  }
+  
+  return { valid: true };
+};

@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { validatePhone, validateEmail, validatePassport } from '@/utils/validators';
 
 export interface ValidationError {
   field: string;
@@ -63,7 +64,10 @@ export function validateDateFormat(value: string): DateValidationResult {
 export function useFieldValidation(
   formData: Record<string, any>,
   requiredFields: string[],
-  dateFields: string[] = []
+  dateFields: string[] = [],
+  phoneFields: string[] = [],
+  emailFields: string[] = [],
+  passportFields: string[] = []
 ) {
   const validateField = (field: string, value: any): ValidationError | null => {
     // Check if required
@@ -112,8 +116,50 @@ export function useFieldValidation(
       }
     });
 
+    // Validate phone fields
+    phoneFields.forEach((field) => {
+      const value = formData[field];
+      if (value) {
+        const result = validatePhone(value);
+        if (!result.valid) {
+          validationErrors.push({
+            field,
+            message: result.error || 'Invalid phone number',
+          });
+        }
+      }
+    });
+
+    // Validate email fields
+    emailFields.forEach((field) => {
+      const value = formData[field];
+      if (value) {
+        const result = validateEmail(value);
+        if (!result.valid) {
+          validationErrors.push({
+            field,
+            message: result.error || 'Invalid email',
+          });
+        }
+      }
+    });
+
+    // Validate passport fields
+    passportFields.forEach((field) => {
+      const value = formData[field];
+      if (value) {
+        const result = validatePassport(value);
+        if (!result.valid) {
+          validationErrors.push({
+            field,
+            message: result.error || 'Invalid passport number',
+          });
+        }
+      }
+    });
+
     return validationErrors;
-  }, [formData, requiredFields, dateFields]);
+  }, [formData, requiredFields, dateFields, phoneFields, emailFields, passportFields]);
 
   const isValid = errors.length === 0;
   const getFieldError = (field: string) => errors.find((e) => e.field === field);

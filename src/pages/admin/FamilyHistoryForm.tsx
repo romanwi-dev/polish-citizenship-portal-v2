@@ -29,7 +29,7 @@ export default function FamilyHistoryForm() {
     handleInputChange,
     handleSave,
     handleClearAll,
-  } = useFormManager(caseId, []);
+  } = useFormManager(caseId, [], []); // No required fields, no date fields for this form
 
   if (caseId !== 'demo-preview' && (!caseId || caseId === ':id')) {
     return (

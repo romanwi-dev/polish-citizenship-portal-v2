@@ -3,13 +3,14 @@
  * Combines common form logic for all forms
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useMasterData, useUpdateMasterData } from './useMasterData';
 import { useRealtimeFormSync } from './useRealtimeFormSync';
 import { useFormCompletion } from './useFormCompletion';
 import { useAutoSave } from './useAutoSave';
 import { useUnsavedChanges } from './useUnsavedChanges';
 import { useFieldValidation } from './useFieldValidation';
+import { toast } from 'sonner';
 
 export const useFormManager = (
   caseId: string | undefined,
@@ -30,7 +31,12 @@ export const useFormManager = (
   const completion = useFormCompletion(formData, requiredFields);
 
   // Field validation
-  const validation = useFieldValidation(formData, requiredFields, dateFields);
+  // Identify phone, email, passport fields dynamically
+  const phoneFields = useMemo(() => requiredFields.filter(f => f.includes('phone')), [requiredFields]);
+  const emailFields = useMemo(() => requiredFields.filter(f => f.includes('email')), [requiredFields]);
+  const passportFields = useMemo(() => requiredFields.filter(f => f.includes('passport')), [requiredFields]);
+
+  const validation = useFieldValidation(formData, requiredFields, dateFields, phoneFields, emailFields, passportFields);
 
   // Track unsaved changes
   useEffect(() => {
@@ -63,13 +69,32 @@ export const useFormManager = (
     setHasUnsavedChanges(true);
   };
 
-  // Save handler
+  // Save handler with optional validation
   const handleSave = async () => {
-    if (!caseId) return;
-    await updateMasterData.mutateAsync({
-      caseId,
-      updates: formData,
-    });
+    if (!caseId) return false;
+    
+    // Optional: Block save if critical fields missing (configurable)
+    const criticalFieldsMissing = validation.errors.some(e => 
+      e.message === 'This field is required' && 
+      ['applicant_first_name', 'applicant_last_name'].includes(e.field)
+    );
+    
+    if (criticalFieldsMissing && completion.completionPercentage < 10) {
+      toast.error('Please fill in at least the applicant name before saving');
+      return false;
+    }
+    
+    try {
+      await updateMasterData.mutateAsync({
+        caseId,
+        updates: formData,
+      });
+      setHasUnsavedChanges(false);
+      return true;
+    } catch (error) {
+      console.error('Save failed:', error);
+      return false;
+    }
   };
 
   // Clear field handler

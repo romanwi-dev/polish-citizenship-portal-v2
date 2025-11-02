@@ -36,14 +36,29 @@ export const useRealtimeFormSync = (
           filter: `case_id=eq.${caseId}`,
         },
         (payload) => {
-          // Removed production console.log
           const newData = payload.new;
           
-          // Update local form state
-          setFormData((prev: any) => ({
-            ...prev,
-            ...newData,
-          }));
+          // Smart merge: Only update fields that haven't been modified locally
+          setFormData((prev: any) => {
+            const merged = { ...prev };
+            
+            Object.entries(newData).forEach(([key, value]) => {
+              // Skip system fields
+              if (key === 'id' || key === 'case_id' || key === 'created_at' || key === 'updated_at') {
+                return;
+              }
+              
+              // If local value matches original (from masterData), accept remote update
+              // Otherwise, keep local changes (user is actively editing)
+              if (!masterData || prev[key] === masterData[key]) {
+                merged[key] = value;
+              } else if (prev[key] !== value) {
+                console.warn(`Conflict on field ${key}: keeping local value`);
+              }
+            });
+            
+            return merged;
+          });
 
           // Update React Query cache
           queryClient.setQueryData(['masterData', caseId], newData);
