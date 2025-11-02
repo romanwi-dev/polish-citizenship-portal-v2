@@ -47,6 +47,10 @@ const TestingDashboard = lazy(() => import("./pages/admin/TestingDashboard"));
 const FormsDemo = lazy(() => import("./pages/admin/FormsDemo"));
 const Translations = lazy(() => import("./pages/admin/Translations"));
 const ArchivesSearch = lazy(() => import("./pages/admin/ArchivesSearch"));
+const TranslationsWorkflow = lazy(() => import("./pages/admin/TranslationsWorkflow"));
+const ArchivesWorkflow = lazy(() => import("./pages/admin/ArchivesWorkflow"));
+const PassportWorkflow = lazy(() => import("./pages/admin/PassportWorkflow"));
+const AllWorkflows = lazy(() => import("./pages/admin/AllWorkflows"));
 const DocumentsCollection = lazy(() => import("./pages/admin/DocumentsCollection"));
 const PolishCivilActs = lazy(() => import("./pages/admin/PolishCivilActs"));
 const PolishCitizenship = lazy(() => import("./pages/admin/PolishCitizenship"));
@@ -328,12 +332,28 @@ const App = () => (
             path="/admin/passport" 
             element={
               <Suspense fallback={<AdminLoader />}>
+                <PassportWorkflow />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/passport-legacy" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
                 <PolishPassport />
               </Suspense>
             } 
           />
           <Route 
             path="/admin/archives-search"
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <ArchivesWorkflow />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/archives-search-legacy"
             element={
               <Suspense fallback={<AdminLoader />}>
                 <ArchivesSearch />
@@ -344,7 +364,23 @@ const App = () => (
             path="/admin/translations" 
             element={
               <Suspense fallback={<AdminLoader />}>
+                <TranslationsWorkflow />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/translations-legacy" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
                 <Translations />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/workflows" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <AllWorkflows />
               </Suspense>
             } 
           />
