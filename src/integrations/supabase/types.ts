@@ -529,12 +529,14 @@ export type Database = {
       }
       documents: {
         Row: {
+          ai_corrections: Json | null
           case_id: string
           category: string | null
           created_at: string
           document_type: string | null
           dropbox_file_id: string | null
           dropbox_path: string
+          fedex_label_url: string | null
           file_extension: string | null
           file_size: number | null
           id: string
@@ -551,20 +553,31 @@ export type Database = {
           ocr_reviewed_by: string | null
           ocr_status: string | null
           ocr_text: string | null
+          pdf_status: Database["public"]["Enums"]["pdf_status"] | null
           person_type: string | null
+          received_at: string | null
+          sent_at: string | null
+          signature_data: string | null
+          signed_at: string | null
+          status_updated_at: string | null
+          tracking_number: string | null
           translation_required: boolean | null
           type: string | null
           updated_at: string
+          validation_errors: Json | null
+          validation_passed: boolean | null
           verified_at: string | null
           verified_by: string | null
         }
         Insert: {
+          ai_corrections?: Json | null
           case_id: string
           category?: string | null
           created_at?: string
           document_type?: string | null
           dropbox_file_id?: string | null
           dropbox_path: string
+          fedex_label_url?: string | null
           file_extension?: string | null
           file_size?: number | null
           id?: string
@@ -581,20 +594,31 @@ export type Database = {
           ocr_reviewed_by?: string | null
           ocr_status?: string | null
           ocr_text?: string | null
+          pdf_status?: Database["public"]["Enums"]["pdf_status"] | null
           person_type?: string | null
+          received_at?: string | null
+          sent_at?: string | null
+          signature_data?: string | null
+          signed_at?: string | null
+          status_updated_at?: string | null
+          tracking_number?: string | null
           translation_required?: boolean | null
           type?: string | null
           updated_at?: string
+          validation_errors?: Json | null
+          validation_passed?: boolean | null
           verified_at?: string | null
           verified_by?: string | null
         }
         Update: {
+          ai_corrections?: Json | null
           case_id?: string
           category?: string | null
           created_at?: string
           document_type?: string | null
           dropbox_file_id?: string | null
           dropbox_path?: string
+          fedex_label_url?: string | null
           file_extension?: string | null
           file_size?: number | null
           id?: string
@@ -611,10 +635,19 @@ export type Database = {
           ocr_reviewed_by?: string | null
           ocr_status?: string | null
           ocr_text?: string | null
+          pdf_status?: Database["public"]["Enums"]["pdf_status"] | null
           person_type?: string | null
+          received_at?: string | null
+          sent_at?: string | null
+          signature_data?: string | null
+          signed_at?: string | null
+          status_updated_at?: string | null
+          tracking_number?: string | null
           translation_required?: boolean | null
           type?: string | null
           updated_at?: string
+          validation_errors?: Json | null
+          validation_passed?: boolean | null
           verified_at?: string | null
           verified_by?: string | null
         }
@@ -2329,6 +2362,47 @@ export type Database = {
           },
         ]
       }
+      pdf_history: {
+        Row: {
+          action: string
+          changed_by: string | null
+          created_at: string | null
+          document_id: string
+          id: string
+          metadata: Json | null
+          new_status: Database["public"]["Enums"]["pdf_status"] | null
+          old_status: Database["public"]["Enums"]["pdf_status"] | null
+        }
+        Insert: {
+          action: string
+          changed_by?: string | null
+          created_at?: string | null
+          document_id: string
+          id?: string
+          metadata?: Json | null
+          new_status?: Database["public"]["Enums"]["pdf_status"] | null
+          old_status?: Database["public"]["Enums"]["pdf_status"] | null
+        }
+        Update: {
+          action?: string
+          changed_by?: string | null
+          created_at?: string | null
+          document_id?: string
+          id?: string
+          metadata?: Json | null
+          new_status?: Database["public"]["Enums"]["pdf_status"] | null
+          old_status?: Database["public"]["Enums"]["pdf_status"] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pdf_history_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       poa: {
         Row: {
           case_id: string
@@ -2935,6 +3009,14 @@ export type Database = {
         | "bad"
         | "name_change"
         | "other"
+      pdf_status:
+        | "generated"
+        | "edited"
+        | "printed"
+        | "signed"
+        | "sent"
+        | "received"
+        | "archived"
       processing_mode: "standard" | "expedited" | "vip" | "vip_plus"
     }
     CompositeTypes: {
@@ -3084,6 +3166,15 @@ export const Constants = {
         "bad",
         "name_change",
         "other",
+      ],
+      pdf_status: [
+        "generated",
+        "edited",
+        "printed",
+        "signed",
+        "sent",
+        "received",
+        "archived",
       ],
       processing_mode: ["standard", "expedited", "vip", "vip_plus"],
     },
