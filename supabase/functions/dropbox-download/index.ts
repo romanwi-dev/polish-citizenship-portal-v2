@@ -24,15 +24,23 @@ Deno.serve(async (req) => {
       );
     }
 
-    const { data: { user }, error: authError } = await supabase.auth.getUser(
-      authHeader.replace('Bearer ', '')
-    );
+    const token = authHeader.replace('Bearer ', '');
+    
+    // Allow service role key for internal edge function calls (e.g., ocr-worker)
+    const isServiceKey = token === supabaseKey;
+    
+    if (!isServiceKey) {
+      // For user requests, verify JWT
+      const { data: { user }, error: authError } = await supabase.auth.getUser(token);
 
-    if (authError || !user) {
-      return new Response(
-        JSON.stringify({ error: 'Unauthorized' }),
-        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      if (authError || !user) {
+        return new Response(
+          JSON.stringify({ error: 'Unauthorized' }),
+          { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+    } else {
+      console.log('Internal service call authenticated');
     }
 
     const { file_path } = await req.json();

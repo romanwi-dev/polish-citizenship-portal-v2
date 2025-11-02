@@ -530,28 +530,36 @@ export type Database = {
       documents: {
         Row: {
           ai_corrections: Json | null
+          ai_description: string | null
           ai_detected_person: string | null
           ai_detected_type: string | null
+          ai_generated_name: string | null
+          ai_summary: string | null
           applied_at: string | null
           applied_by: string | null
+          archival_significance: string | null
           case_id: string
           category: string | null
           created_at: string
           data_applied_to_forms: boolean | null
           detection_confidence: number | null
+          document_tags: string[] | null
           document_type: string | null
           dropbox_file_id: string | null
           dropbox_path: string
           fedex_label_url: string | null
           file_extension: string | null
           file_size: number | null
+          folder_category: string | null
           id: string
           is_translated: boolean | null
           is_verified: boolean | null
           is_verified_by_hac: boolean | null
           language: string | null
+          legal_validity: string | null
           metadata: Json | null
           name: string
+          name_confidence: number | null
           needs_translation: boolean | null
           ocr_confidence: number | null
           ocr_data: Json | null
@@ -567,7 +575,11 @@ export type Database = {
           signature_data: string | null
           signed_at: string | null
           status_updated_at: string | null
+          subfolder_path: string | null
           tracking_number: string | null
+          translated_text_english: string | null
+          translated_text_polish: string | null
+          translation_confidence: number | null
           translation_required: boolean | null
           type: string | null
           updated_at: string
@@ -579,28 +591,36 @@ export type Database = {
         }
         Insert: {
           ai_corrections?: Json | null
+          ai_description?: string | null
           ai_detected_person?: string | null
           ai_detected_type?: string | null
+          ai_generated_name?: string | null
+          ai_summary?: string | null
           applied_at?: string | null
           applied_by?: string | null
+          archival_significance?: string | null
           case_id: string
           category?: string | null
           created_at?: string
           data_applied_to_forms?: boolean | null
           detection_confidence?: number | null
+          document_tags?: string[] | null
           document_type?: string | null
           dropbox_file_id?: string | null
           dropbox_path: string
           fedex_label_url?: string | null
           file_extension?: string | null
           file_size?: number | null
+          folder_category?: string | null
           id?: string
           is_translated?: boolean | null
           is_verified?: boolean | null
           is_verified_by_hac?: boolean | null
           language?: string | null
+          legal_validity?: string | null
           metadata?: Json | null
           name: string
+          name_confidence?: number | null
           needs_translation?: boolean | null
           ocr_confidence?: number | null
           ocr_data?: Json | null
@@ -616,7 +636,11 @@ export type Database = {
           signature_data?: string | null
           signed_at?: string | null
           status_updated_at?: string | null
+          subfolder_path?: string | null
           tracking_number?: string | null
+          translated_text_english?: string | null
+          translated_text_polish?: string | null
+          translation_confidence?: number | null
           translation_required?: boolean | null
           type?: string | null
           updated_at?: string
@@ -628,28 +652,36 @@ export type Database = {
         }
         Update: {
           ai_corrections?: Json | null
+          ai_description?: string | null
           ai_detected_person?: string | null
           ai_detected_type?: string | null
+          ai_generated_name?: string | null
+          ai_summary?: string | null
           applied_at?: string | null
           applied_by?: string | null
+          archival_significance?: string | null
           case_id?: string
           category?: string | null
           created_at?: string
           data_applied_to_forms?: boolean | null
           detection_confidence?: number | null
+          document_tags?: string[] | null
           document_type?: string | null
           dropbox_file_id?: string | null
           dropbox_path?: string
           fedex_label_url?: string | null
           file_extension?: string | null
           file_size?: number | null
+          folder_category?: string | null
           id?: string
           is_translated?: boolean | null
           is_verified?: boolean | null
           is_verified_by_hac?: boolean | null
           language?: string | null
+          legal_validity?: string | null
           metadata?: Json | null
           name?: string
+          name_confidence?: number | null
           needs_translation?: boolean | null
           ocr_confidence?: number | null
           ocr_data?: Json | null
@@ -665,7 +697,11 @@ export type Database = {
           signature_data?: string | null
           signed_at?: string | null
           status_updated_at?: string | null
+          subfolder_path?: string | null
           tracking_number?: string | null
+          translated_text_english?: string | null
+          translated_text_polish?: string | null
+          translation_confidence?: number | null
           translation_required?: boolean | null
           type?: string | null
           updated_at?: string

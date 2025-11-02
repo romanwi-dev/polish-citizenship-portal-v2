@@ -9,6 +9,44 @@ const corsHeaders = {
 const MAX_CONCURRENT_OCR = 5;
 const MAX_RETRIES = 3;
 
+/**
+ * Classify errors as permanent (no retry) vs transient (retry with backoff)
+ */
+function classifyError(errorMessage: string): 'permanent' | 'transient' {
+  const permanentPatterns = [
+    /file not found/i,
+    /invalid file format/i,
+    /unsupported document type/i,
+    /file path does not exist/i,
+    /malformed_path/i,
+    /path.*not found/i,
+    /missing required fields/i,
+  ];
+
+  const transientPatterns = [
+    /rate limit/i,
+    /timeout/i,
+    /network/i,
+    /temporarily unavailable/i,
+    /service unavailable/i,
+    /internal server error/i,
+    /502/,
+    /503/,
+    /504/,
+  ];
+
+  for (const pattern of permanentPatterns) {
+    if (pattern.test(errorMessage)) return 'permanent';
+  }
+
+  for (const pattern of transientPatterns) {
+    if (pattern.test(errorMessage)) return 'transient';
+  }
+
+  // Default to transient for unknown errors (safer to retry)
+  return 'transient';
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -51,13 +89,19 @@ serve(async (req) => {
 
     // Process documents sequentially to avoid rate limits
     for (const doc of queuedDocs) {
+      const startTime = Date.now();
+      let errorType: 'permanent' | 'transient' | null = null;
+      
       try {
         console.log(`Processing document: ${doc.name} (${doc.id})`);
 
         // Update status to processing
         await supabase
           .from("documents")
-          .update({ ocr_status: "processing" })
+          .update({ 
+            ocr_status: "processing",
+            updated_at: new Date().toISOString()
+          })
           .eq("id", doc.id);
 
         // Download file from Dropbox using direct fetch with auth header
@@ -123,38 +167,52 @@ serve(async (req) => {
         console.error(`Failed to process ${doc.name}:`, error);
         failedCount++;
 
+        // Classify error type
+        const errorMessage = error instanceof Error ? error.message : "Unknown error";
+        errorType = classifyError(errorMessage);
+
         // Increment retry count
         const newRetryCount = (doc.ocr_retry_count || 0) + 1;
-        const newStatus = newRetryCount >= MAX_RETRIES ? "failed" : "queued";
+        
+        // Permanent errors skip retry - mark as failed immediately
+        const newStatus = errorType === 'permanent' || newRetryCount >= MAX_RETRIES ? "failed" : "queued";
 
         await supabase
           .from("documents")
           .update({
             ocr_status: newStatus,
             ocr_retry_count: newRetryCount,
+            updated_at: new Date().toISOString(),
           })
           .eq("id", doc.id);
 
         // Log to ocr_processing_logs
+        const processingTime = Date.now() - startTime;
         await supabase.from("ocr_processing_logs").insert({
           document_id: doc.id,
           case_id: doc.case_id,
           status: "failed",
-          error_message: error instanceof Error ? error.message : "Unknown error",
+          error_message: errorMessage,
           retry_count: newRetryCount,
+          processing_duration_ms: processingTime,
+          started_at: new Date(startTime).toISOString(),
+          completed_at: new Date().toISOString(),
         });
 
         results.push({
           documentId: doc.id,
           name: doc.name,
           status: "failed",
-          error: error instanceof Error ? error.message : "Unknown error",
+          error: errorMessage,
+          errorType,
           retryCount: newRetryCount,
+          willRetry: newStatus === "queued",
         });
       }
 
-      // Small delay to avoid rate limits
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Exponential backoff between documents
+      const delayMs = errorType === 'transient' ? 2000 * Math.pow(2, (doc.ocr_retry_count || 0)) : 1000;
+      await new Promise(resolve => setTimeout(resolve, Math.min(delayMs, 10000)));
     }
 
     console.log(`OCR Worker complete: ${successCount} successful, ${failedCount} failed`);
