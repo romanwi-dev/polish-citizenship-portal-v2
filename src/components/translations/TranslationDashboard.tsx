@@ -18,6 +18,7 @@ import TranslationWorkflowCards from "./TranslationWorkflowCards";
 import { DocumentRequirementsList } from "./DocumentRequirementsList";
 import { SwornTranslatorsList } from "./SwornTranslatorsList";
 import { TranslationAgenciesList } from "./TranslationAgenciesList";
+import { TranslationDashboardWorkflow } from "./TranslationDashboardWorkflow";
 import { useState } from "react";
 import { WorkflowNavigation } from "@/components/workflows/WorkflowNavigation";
 
@@ -231,6 +232,9 @@ export const TranslationDashboard = () => {
             <TabsTrigger value="workflow" className="flex-1 min-h-[48px] h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.4)]">
               Translation Timeline
             </TabsTrigger>
+            <TabsTrigger value="manage" className="flex-1 min-h-[48px] h-14 bg-green-500/20 text-white font-bold text-lg border-2 border-green-500/30 hover:bg-green-500/30 hover:shadow-[0_0_30px_rgba(34,197,94,0.3)] transition-all data-[state=active]:bg-green-500/40 data-[state=active]:shadow-[0_0_40px_rgba(34,197,94,0.4)]">
+              Manage Workflow
+            </TabsTrigger>
             <TabsTrigger value="supervisor" className="flex-1 min-h-[48px] h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.4)]">
               Supervisor
             </TabsTrigger>
@@ -252,6 +256,10 @@ export const TranslationDashboard = () => {
 
         <TabsContent value="workflow" className="space-y-4">
           <TranslationWorkflowTimeline />
+        </TabsContent>
+
+        <TabsContent value="manage" className="space-y-4">
+          <TranslationDashboardWorkflow />
         </TabsContent>
 
         <TabsContent value="supervisor">

@@ -2693,6 +2693,54 @@ export type Database = {
         }
         Relationships: []
       }
+      sworn_translators: {
+        Row: {
+          certification_number: string | null
+          created_at: string | null
+          email: string
+          full_name: string
+          hourly_rate_pln: number | null
+          id: string
+          is_active: boolean | null
+          languages: Json | null
+          notes: string | null
+          phone: string | null
+          rating: number | null
+          total_jobs_completed: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          certification_number?: string | null
+          created_at?: string | null
+          email: string
+          full_name: string
+          hourly_rate_pln?: number | null
+          id?: string
+          is_active?: boolean | null
+          languages?: Json | null
+          notes?: string | null
+          phone?: string | null
+          rating?: number | null
+          total_jobs_completed?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          certification_number?: string | null
+          created_at?: string | null
+          email?: string
+          full_name?: string
+          hourly_rate_pln?: number | null
+          id?: string
+          is_active?: boolean | null
+          languages?: Json | null
+          notes?: string | null
+          phone?: string | null
+          rating?: number | null
+          total_jobs_completed?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       sync_logs: {
         Row: {
           created_at: string
@@ -2789,6 +2837,155 @@ export type Database = {
           {
             foreignKeyName: "tasks_related_document_id_fkey"
             columns: ["related_document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      translation_agencies: {
+        Row: {
+          contact_person: string | null
+          created_at: string | null
+          email: string
+          id: string
+          is_active: boolean | null
+          languages: Json | null
+          name: string
+          notes: string | null
+          phone: string | null
+          rating: number | null
+          total_jobs_completed: number | null
+          updated_at: string | null
+          website: string | null
+        }
+        Insert: {
+          contact_person?: string | null
+          created_at?: string | null
+          email: string
+          id?: string
+          is_active?: boolean | null
+          languages?: Json | null
+          name: string
+          notes?: string | null
+          phone?: string | null
+          rating?: number | null
+          total_jobs_completed?: number | null
+          updated_at?: string | null
+          website?: string | null
+        }
+        Update: {
+          contact_person?: string | null
+          created_at?: string | null
+          email?: string
+          id?: string
+          is_active?: boolean | null
+          languages?: Json | null
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          rating?: number | null
+          total_jobs_completed?: number | null
+          updated_at?: string | null
+          website?: string | null
+        }
+        Relationships: []
+      }
+      translation_requests: {
+        Row: {
+          actual_cost_pln: number | null
+          assigned_at: string | null
+          assigned_translator_id: string | null
+          case_id: string
+          certified_translation_document_id: string | null
+          client_visible: boolean | null
+          completed_at: string | null
+          created_at: string | null
+          deadline: string | null
+          document_id: string
+          estimated_cost_pln: number | null
+          estimated_days: number | null
+          id: string
+          internal_notes: string | null
+          priority: string | null
+          source_language: string
+          started_at: string | null
+          status: string | null
+          target_language: string
+          updated_at: string | null
+          word_count: number | null
+        }
+        Insert: {
+          actual_cost_pln?: number | null
+          assigned_at?: string | null
+          assigned_translator_id?: string | null
+          case_id: string
+          certified_translation_document_id?: string | null
+          client_visible?: boolean | null
+          completed_at?: string | null
+          created_at?: string | null
+          deadline?: string | null
+          document_id: string
+          estimated_cost_pln?: number | null
+          estimated_days?: number | null
+          id?: string
+          internal_notes?: string | null
+          priority?: string | null
+          source_language: string
+          started_at?: string | null
+          status?: string | null
+          target_language?: string
+          updated_at?: string | null
+          word_count?: number | null
+        }
+        Update: {
+          actual_cost_pln?: number | null
+          assigned_at?: string | null
+          assigned_translator_id?: string | null
+          case_id?: string
+          certified_translation_document_id?: string | null
+          client_visible?: boolean | null
+          completed_at?: string | null
+          created_at?: string | null
+          deadline?: string | null
+          document_id?: string
+          estimated_cost_pln?: number | null
+          estimated_days?: number | null
+          id?: string
+          internal_notes?: string | null
+          priority?: string | null
+          source_language?: string
+          started_at?: string | null
+          status?: string | null
+          target_language?: string
+          updated_at?: string | null
+          word_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "translation_requests_assigned_translator_id_fkey"
+            columns: ["assigned_translator_id"]
+            isOneToOne: false
+            referencedRelation: "sworn_translators"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "translation_requests_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "translation_requests_certified_translation_document_id_fkey"
+            columns: ["certified_translation_document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "translation_requests_document_id_fkey"
+            columns: ["document_id"]
             isOneToOne: false
             referencedRelation: "documents"
             referencedColumns: ["id"]
