@@ -53,6 +53,7 @@ const PolishCitizenship = lazy(() => import("./pages/admin/PolishCitizenship"));
 const PolishPassport = lazy(() => import("./pages/admin/PolishPassport"));
 const ExtendedServices = lazy(() => import("./pages/admin/ExtendedServices"));
 const OCRReview = lazy(() => import("./pages/admin/OCRReview"));
+const DocumentBrowser = lazy(() => import("./pages/admin/DocumentBrowser"));
 // Removed unused 3D demo pages for performance
 const SecurityAudit = lazy(() => import("./pages/admin/SecurityAudit"));
 const Researcher = lazy(() => import("./pages/admin/Researcher"));
@@ -436,6 +437,15 @@ const App = () => (
               </Suspense>
             } 
           />
+          <Route 
+            path="/admin/documents/:id" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <DocumentBrowser />
+              </Suspense>
+            } 
+          />
+          
           
           {/* Form Routes */}
           <Route 

@@ -2278,6 +2278,69 @@ export type Database = {
           },
         ]
       }
+      ocr_conflicts: {
+        Row: {
+          case_id: string
+          created_at: string | null
+          document_id: string
+          field_name: string
+          id: string
+          manual_value: string | null
+          ocr_confidence: number | null
+          ocr_value: string | null
+          resolution_notes: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          case_id: string
+          created_at?: string | null
+          document_id: string
+          field_name: string
+          id?: string
+          manual_value?: string | null
+          ocr_confidence?: number | null
+          ocr_value?: string | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          case_id?: string
+          created_at?: string | null
+          document_id?: string
+          field_name?: string
+          id?: string
+          manual_value?: string | null
+          ocr_confidence?: number | null
+          ocr_value?: string | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ocr_conflicts_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ocr_conflicts_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ocr_processing_logs: {
         Row: {
           case_id: string | null
