@@ -99,6 +99,7 @@ Deno.serve(async (req) => {
       .eq('id', documentId);
 
     console.log(`Processing historical document with Gemini 2.5 Pro (Log ID: ${logId})...`);
+    console.log(`NOTE: This function is DEPRECATED. Use ocr-universal for all new documents.`);
 
     const systemPrompt = `You are an expert paleographer and historian specializing in 19th and early 20th-century Russian archival documents written in pre-1918 Cyrillic script.
 

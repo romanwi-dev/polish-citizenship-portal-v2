@@ -82,26 +82,31 @@ export function FileUploadSection({ caseId, onUploadComplete }: FileUploadSectio
 
       toast.success("Document uploaded! AI is analyzing...");
 
-      // 2. Classify document with AI (identify type and person)
+      // 2. Run Universal OCR with full translation and organization
       setClassifying(true);
-      const { data: classifyResult, error: classifyError } = await supabase.functions.invoke('ai-classify-document', {
+      const { data: ocrResult, error: ocrError } = await supabase.functions.invoke('ocr-universal', {
         body: {
+          imageBase64,
           documentId: newDoc.id,
           caseId,
-          imageBase64
+          documentType: docType || undefined,
+          personType: undefined
         }
       });
 
-      if (classifyError) {
-        console.error('AI classification error:', classifyError);
-        toast.warning('Document saved but AI classification failed');
-      } else if (classifyResult?.classification) {
-        const { document_type, person_type, confidence, reasoning } = classifyResult.classification;
+      if (ocrError) {
+        console.error('Universal OCR error:', ocrError);
+        toast.warning('Document saved but OCR processing failed');
+        setClassifying(false);
+      } else if (ocrResult?.data) {
+        const result = ocrResult.data;
+        const confidence = (result.confidence?.overall * 100).toFixed(0);
+        
         setAiClassification({
-          documentType: document_type,
-          personType: person_type,
-          confidence,
-          reasoning
+          documentType: result.extracted_data?.document_type || 'unknown',
+          personType: result.extracted_data?.person_type || 'unknown',
+          confidence: result.confidence?.overall || 0,
+          reasoning: result.description?.full_description || ''
         });
         
         const personLabels: Record<string, string> = {
@@ -115,33 +120,39 @@ export function FileUploadSection({ caseId, onUploadComplete }: FileUploadSectio
           SPOUSE: 'Spouse'
         };
 
+        const detectedLanguage = result.detected_language;
+        const needsTranslation = ocrResult.needsSwornTranslation;
+        
         toast.success(
-          `✅ Detected: ${personLabels[person_type]}'s ${document_type.replace('_', ' ')} (${(confidence * 100).toFixed(0)}% confident)`,
-          { duration: 6000 }
+          `✅ ${personLabels[result.extracted_data?.person_type]}'s ${result.extracted_data?.document_type?.replace('_', ' ')} (${confidence}% confident)${needsTranslation ? ' - Needs certified translation' : ''}`,
+          { duration: 8000 }
         );
-      }
-      setClassifying(false);
 
-      // 3. Trigger OCR processing (time-limited, secure)
-      supabase.functions.invoke('ocr-document', {
-        body: {
-          imageBase64,
-          documentId: newDoc.id,
-          caseId,
-          expectedType: aiClassification?.documentType || docType
-        }
-      }).then(({ data: ocrResult, error: ocrError }) => {
-        if (ocrError) {
-          console.error('OCR processing error:', ocrError);
-          toast.warning('Document saved but OCR processing failed');
-        } else if (ocrResult?.data) {
-          const confidence = (ocrResult.data.confidence * 100).toFixed(0);
-          toast.success(
-            `📄 OCR complete! Confidence: ${confidence}%`,
+        // Show translation info if available
+        if (detectedLanguage !== 'POLISH' && result.translations?.polish) {
+          toast.info(
+            `🌐 Translated from ${detectedLanguage} to Polish & English`,
             { duration: 5000 }
           );
         }
-      });
+
+        setClassifying(false);
+
+        // 3. Organize document in Dropbox structure
+        supabase.functions.invoke('organize-dropbox', {
+          body: {
+            documentId: newDoc.id,
+            caseId,
+            clientCode: 'CLIENT' // TODO: Get actual client code from case
+          }
+        }).then(({ data: orgResult, error: orgError }) => {
+          if (orgError) {
+            console.warn('Document organization failed (non-critical):', orgError);
+          } else if (orgResult) {
+            console.log('Document organized:', orgResult);
+          }
+        });
+      }
 
       // 4. Clear file from browser memory immediately
       setSelectedFile(null);
@@ -245,7 +256,14 @@ export function FileUploadSection({ caseId, onUploadComplete }: FileUploadSectio
         </Button>
 
         <div className="mt-4 p-3 bg-blue-500/10 border border-blue-500/20 rounded text-sm text-muted-foreground space-y-2">
-          <p><strong className="text-foreground">✨ AI-Powered:</strong> Upload any document and our AI will automatically identify whose document it is (Applicant, Father, Grandfather, etc.) and what type (birth cert, marriage cert, etc.).</p>
+          <p><strong className="text-foreground">✨ AI-Powered:</strong> Upload any document in ANY language (Polish, Russian, German, English, Yiddish, etc.) and our AI will:</p>
+          <ul className="list-disc list-inside ml-2 space-y-1">
+            <li>Automatically identify whose document it is (Applicant, Father, Grandfather, etc.)</li>
+            <li>Detect the document type (birth cert, marriage cert, naturalization, etc.)</li>
+            <li>Translate to Polish and English instantly</li>
+            <li>Organize it in the correct folder</li>
+            <li>Handle old handwritten documents from 1800s-1900s</li>
+          </ul>
           <p><strong className="text-foreground">🔒 Security:</strong> Your document is processed securely with OCR for 5 minutes maximum, then immediately deleted from our servers. Original files remain safely on Dropbox.</p>
         </div>
       </CardContent>
