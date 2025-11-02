@@ -383,7 +383,7 @@ Provide a thorough review in the specified JSON format.`;
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt }
         ],
-        temperature: 0.2,
+        // NOTE: GPT-5 does NOT support temperature parameter (only default value 1.0)
         max_completion_tokens: 3000,
       }),
     });
