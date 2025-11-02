@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, XCircle, RefreshCw, Eye } from "lucide-react";
+import { CheckCircle, XCircle, RefreshCw, Eye, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -12,6 +12,7 @@ export const OCRReviewDashboard = () => {
   const queryClient = useQueryClient();
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [confidenceFilter, setConfidenceFilter] = useState<string>("all");
+  const [applyingDocId, setApplyingDocId] = useState<string | null>(null);
 
   const { data: documents, isLoading } = useQuery({
     queryKey: ["ocr-documents", statusFilter, confidenceFilter],
@@ -41,21 +42,46 @@ export const OCRReviewDashboard = () => {
 
   const approveMutation = useMutation({
     mutationFn: async (documentId: string) => {
-      const { data: { user } } = await supabase.auth.getUser();
       const { error } = await supabase
-        .from("documents")
-        .update({
-          ocr_status: "completed",
-          ocr_reviewed_by: user?.id,
+        .from('documents')
+        .update({ 
+          ocr_reviewed_by: (await supabase.auth.getUser()).data.user?.id,
           ocr_reviewed_at: new Date().toISOString(),
+          is_verified_by_hac: true
         })
-        .eq("id", documentId);
+        .eq('id', documentId);
 
       if (error) throw error;
     },
     onSuccess: () => {
-      toast.success("OCR results approved");
-      queryClient.invalidateQueries({ queryKey: ["ocr-documents"] });
+      queryClient.invalidateQueries({ queryKey: ['ocr-review-documents'] });
+      toast.success("OCR Approved", { description: "Document OCR data has been verified" });
+    },
+  });
+
+  const applyToFormsMutation = useMutation({
+    mutationFn: async ({ documentId, caseId }: { documentId: string; caseId: string }) => {
+      setApplyingDocId(documentId);
+      const { data, error } = await supabase.functions.invoke('apply-ocr-to-forms', {
+        body: { documentId, caseId, overwriteManual: false }
+      });
+
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['ocr-review-documents'] });
+      queryClient.invalidateQueries({ queryKey: ['masterData'] });
+      toast.success("OCR Applied to Forms", { 
+        description: data.message || `Applied ${data.applied_count} fields to Master Data Table` 
+      });
+      setApplyingDocId(null);
+    },
+    onError: (error) => {
+      toast.error("Failed to Apply OCR", {
+        description: error instanceof Error ? error.message : "Could not apply OCR data to forms"
+      });
+      setApplyingDocId(null);
     },
   });
 
@@ -182,6 +208,15 @@ export const OCRReviewDashboard = () => {
                 >
                   <CheckCircle className="w-4 h-4 mr-1" />
                   Approve
+                </Button>
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  onClick={() => applyToFormsMutation.mutate({ documentId: doc.id, caseId: doc.case_id })}
+                  disabled={applyingDocId === doc.id || doc.data_applied_to_forms}
+                >
+                  <Upload className="w-4 h-4 mr-1" />
+                  {applyingDocId === doc.id ? 'Applying...' : doc.data_applied_to_forms ? 'Applied' : 'Apply to Forms'}
                 </Button>
                 <Button
                   size="sm"

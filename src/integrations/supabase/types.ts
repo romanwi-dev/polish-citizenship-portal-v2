@@ -682,6 +682,66 @@ export type Database = {
           },
         ]
       }
+      form_field_sources: {
+        Row: {
+          applied_at: string | null
+          applied_by: string | null
+          case_id: string
+          confidence: number | null
+          created_at: string | null
+          field_name: string
+          id: string
+          locked: boolean | null
+          metadata: Json | null
+          source_document_id: string | null
+          source_type: string
+          updated_at: string | null
+        }
+        Insert: {
+          applied_at?: string | null
+          applied_by?: string | null
+          case_id: string
+          confidence?: number | null
+          created_at?: string | null
+          field_name: string
+          id?: string
+          locked?: boolean | null
+          metadata?: Json | null
+          source_document_id?: string | null
+          source_type: string
+          updated_at?: string | null
+        }
+        Update: {
+          applied_at?: string | null
+          applied_by?: string | null
+          case_id?: string
+          confidence?: number | null
+          created_at?: string | null
+          field_name?: string
+          id?: string
+          locked?: boolean | null
+          metadata?: Json | null
+          source_document_id?: string | null
+          source_type?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "form_field_sources_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "form_field_sources_source_document_id_fkey"
+            columns: ["source_document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       hac_logs: {
         Row: {
           action_details: string | null
