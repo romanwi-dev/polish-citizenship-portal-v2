@@ -19,7 +19,6 @@ interface PDFGenerationButtonsProps {
 }
 
 export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
-  const navigate = useNavigate();
   const [isGenerating, setIsGenerating] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewUrl, setPreviewUrl] = useState("");
