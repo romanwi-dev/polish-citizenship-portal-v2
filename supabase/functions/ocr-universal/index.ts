@@ -432,25 +432,23 @@ Return ONLY valid JSON in this EXACT format:
                             ocrResult.detected_language !== 'UNKNOWN';
     
     if (needsTranslation) {
-      // Create translation request
-      await supabase
+      // Create translation request with correct schema fields
+      const { error: translationError } = await supabase
         .from('translation_requests')
         .insert({
           document_id: documentId,
           case_id: caseId,
           source_language: ocrResult.detected_language,
-          source_document_type: ocrResult.extracted_data.document_type,
           target_language: 'PL',
-          translation_type: 'machine',
-          ai_translation_text: ocrResult.translations.polish,
-          ai_translation_data: {
-            polish: ocrResult.translations.polish,
-            english: ocrResult.translations.english,
-            modern_russian: ocrResult.translations.modern_russian
-          },
-          ai_confidence: ocrResult.confidence.translation_polish,
-          status: 'ai_completed'
+          status: 'pending',
+          priority: 'medium',
+          internal_notes: `AI translation available (confidence: ${ocrResult.confidence.translation_polish.toFixed(2)})`
         });
+      
+      if (translationError) {
+        console.error('Failed to create translation request:', translationError);
+        // Don't fail the whole operation, just log the error
+      }
     }
 
     const processingDuration = Date.now() - startTime;

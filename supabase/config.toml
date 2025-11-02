@@ -1,5 +1,14 @@
 project_id = "oogmuakyqadpynnrasnd"
 
+[functions.apply-ocr-to-forms]
+verify_jwt = true
+
+[functions.assign-translator]
+verify_jwt = true
+
+[functions.ocr-universal]
+verify_jwt = true
+
 [functions.typeform-webhook]
 verify_jwt = false
 
@@ -73,4 +82,7 @@ verify_jwt = false
 verify_jwt = false
 
 [functions.dropbox-download]
+verify_jwt = true
+
+[functions.dropbox-bulk-scan]
 verify_jwt = true

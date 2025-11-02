@@ -74,6 +74,7 @@ const navSections = [
     items: [
       { title: "Tasks", url: "/admin/tasks", icon: CheckSquare },
       { title: "Documents", url: "/admin/documents", icon: FileText },
+      { title: "OCR Review", url: "/admin/ocr-review", icon: FileSearch, badge: "NEW" },
       { title: "Messages", url: "/admin/messages", icon: Mail },
       { title: "Analytics", url: "/admin/analytics", icon: BarChart3 },
     ]
