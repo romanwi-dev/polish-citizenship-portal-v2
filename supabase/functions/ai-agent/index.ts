@@ -521,8 +521,13 @@ serve(async (req) => {
 
   console.log(`[ai-agent] Authenticated user: ${user.id}`);
 
+  // Variables for error logging
+  let bodyData: any = null;
+  let activeConvId: string | null = null;
+
   try {
     const body = await req.json();
+    bodyData = body; // Store for error logging
     const validation = validateInput(AIAgentRequestSchema, body);
     
     if (!validation.success) {
@@ -530,6 +535,7 @@ serve(async (req) => {
     }
     
     const { caseId, prompt, action, conversationId, stream = false } = validation.data;
+    const requestStartTime = Date.now();
 
     // SECURITY: Verify user has access to the requested case
     if (caseId) {
@@ -572,12 +578,15 @@ serve(async (req) => {
     if (!activeConversationId && caseId) {
       const { data: newConv } = await supabase
         .from('ai_conversations')
-        .insert({ case_id: caseId, agent_type: action })
+        .insert({ case_id: caseId, agent_type: action, status: 'queued' })
         .select()
         .single();
       activeConversationId = newConv?.id;
       isNewConversation = true;
     }
+    
+    // Store for error handling
+    activeConvId = activeConversationId || null;
 
     // Fetch conversation history (FIX 6: Pagination - last 50 messages max)
     let conversationMessages: any[] = [];
@@ -795,6 +804,28 @@ serve(async (req) => {
           tools_used: toolCalls?.length || 0
         }
       });
+
+      // Log agent activity for analytics
+      await supabaseClient.from('ai_agent_activity').insert({
+        conversation_id: activeConversationId,
+        case_id: caseId,
+        agent_type: action,
+        user_id: user.id,
+        prompt_tokens: data.usage?.prompt_tokens || 0,
+        completion_tokens: data.usage?.completion_tokens || 0,
+        total_tokens: data.usage?.total_tokens || 0,
+        response_time_ms: Date.now() - requestStartTime,
+        tools_executed: toolResults.filter((r: any) => r.success).length,
+        tools_failed: toolResults.filter((r: any) => !r.success).length,
+        success: true
+      });
+
+      // Update conversation status to completed
+      await supabaseClient.from('ai_conversations').update({
+        status: 'completed',
+        completed_at: new Date().toISOString(),
+        tools_completed: toolResults.filter((r: any) => r.success).map((r: any) => r.tool_name)
+      }).eq('id', activeConversationId);
     }
 
     return createSecureCorsResponse(req, { 
@@ -805,6 +836,28 @@ serve(async (req) => {
 
   } catch (error: any) {
     console.error('AI Agent error:', error);
+
+    // Log failed activity (safely handle cases where variables may not exist)
+    try {
+      if (bodyData?.caseId && activeConvId) {
+        await supabaseClient.from('ai_agent_activity').insert({
+          conversation_id: activeConvId,
+          case_id: bodyData.caseId,
+          agent_type: bodyData.action || 'unknown',
+          user_id: user.id,
+          success: false,
+          error_message: error.message || 'Unknown error'
+        });
+
+        await supabaseClient.from('ai_conversations').update({
+          status: 'failed',
+          completed_at: new Date().toISOString()
+        }).eq('id', activeConvId);
+      }
+    } catch (logError) {
+      console.error('Failed to log error activity:', logError);
+    }
+
     return createSecureErrorResponse(req, error.message || 'Unknown error', 500);
   }
 });

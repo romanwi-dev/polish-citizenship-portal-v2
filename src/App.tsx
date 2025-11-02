@@ -549,6 +549,24 @@ const App = () => (
               </Suspense>
             } 
           />
+
+          {/* AI Agents Routes */}
+          <Route 
+            path="/admin/ai-agents" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <AIAgentsDashboard />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/agent-approvals" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <AgentApprovals />
+              </Suspense>
+            } 
+          />
           
           {/* Catch-all */}
           <Route path="*" element={<NotFound />} />

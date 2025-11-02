@@ -14,36 +14,393 @@ export type Database = {
   }
   public: {
     Tables: {
+      agent_approvals: {
+        Row: {
+          ai_explanation: string
+          auto_approve_after: string | null
+          conversation_id: string | null
+          id: string
+          requested_at: string | null
+          review_notes: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          risk_level: string | null
+          status: string | null
+          tool_arguments: Json
+          tool_name: string
+        }
+        Insert: {
+          ai_explanation: string
+          auto_approve_after?: string | null
+          conversation_id?: string | null
+          id?: string
+          requested_at?: string | null
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          risk_level?: string | null
+          status?: string | null
+          tool_arguments: Json
+          tool_name: string
+        }
+        Update: {
+          ai_explanation?: string
+          auto_approve_after?: string | null
+          conversation_id?: string | null
+          id?: string
+          requested_at?: string | null
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          risk_level?: string | null
+          status?: string | null
+          tool_arguments?: Json
+          tool_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agent_approvals_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agent_knowledge_snippets: {
+        Row: {
+          agent_type: string
+          created_at: string | null
+          created_by: string | null
+          id: string
+          snippet: string
+          source_conversation_id: string | null
+          topic: string
+          usefulness_score: number | null
+          verified: boolean | null
+        }
+        Insert: {
+          agent_type: string
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          snippet: string
+          source_conversation_id?: string | null
+          topic: string
+          usefulness_score?: number | null
+          verified?: boolean | null
+        }
+        Update: {
+          agent_type?: string
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          snippet?: string
+          source_conversation_id?: string | null
+          topic?: string
+          usefulness_score?: number | null
+          verified?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agent_knowledge_snippets_source_conversation_id_fkey"
+            columns: ["source_conversation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agent_notifications: {
+        Row: {
+          conversation_id: string | null
+          created_at: string | null
+          id: string
+          message: string
+          notification_type: string | null
+          read: boolean | null
+          read_at: string | null
+          recipient_user_id: string | null
+          severity: string | null
+          title: string
+        }
+        Insert: {
+          conversation_id?: string | null
+          created_at?: string | null
+          id?: string
+          message: string
+          notification_type?: string | null
+          read?: boolean | null
+          read_at?: string | null
+          recipient_user_id?: string | null
+          severity?: string | null
+          title: string
+        }
+        Update: {
+          conversation_id?: string | null
+          created_at?: string | null
+          id?: string
+          message?: string
+          notification_type?: string | null
+          read?: boolean | null
+          read_at?: string | null
+          recipient_user_id?: string | null
+          severity?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agent_notifications_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agent_orchestration: {
+        Row: {
+          child_agent_type: string
+          child_conversation_id: string | null
+          completed_at: string | null
+          created_at: string | null
+          delegation_prompt: string
+          id: string
+          parent_conversation_id: string | null
+          result_summary: string | null
+          status: string | null
+        }
+        Insert: {
+          child_agent_type: string
+          child_conversation_id?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          delegation_prompt: string
+          id?: string
+          parent_conversation_id?: string | null
+          result_summary?: string | null
+          status?: string | null
+        }
+        Update: {
+          child_agent_type?: string
+          child_conversation_id?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          delegation_prompt?: string
+          id?: string
+          parent_conversation_id?: string | null
+          result_summary?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agent_orchestration_child_conversation_id_fkey"
+            columns: ["child_conversation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agent_orchestration_parent_conversation_id_fkey"
+            columns: ["parent_conversation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agent_test_cases: {
+        Row: {
+          agent_type: string
+          created_at: string | null
+          expected_outcome: string | null
+          expected_tools: string[] | null
+          id: string
+          last_run_at: string | null
+          last_run_result: Json | null
+          status: string | null
+          test_name: string
+          test_prompt: string
+          updated_at: string | null
+        }
+        Insert: {
+          agent_type: string
+          created_at?: string | null
+          expected_outcome?: string | null
+          expected_tools?: string[] | null
+          id?: string
+          last_run_at?: string | null
+          last_run_result?: Json | null
+          status?: string | null
+          test_name: string
+          test_prompt: string
+          updated_at?: string | null
+        }
+        Update: {
+          agent_type?: string
+          created_at?: string | null
+          expected_outcome?: string | null
+          expected_tools?: string[] | null
+          id?: string
+          last_run_at?: string | null
+          last_run_result?: Json | null
+          status?: string | null
+          test_name?: string
+          test_prompt?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      ai_agent_activity: {
+        Row: {
+          agent_type: string
+          case_id: string | null
+          completion_tokens: number | null
+          conversation_id: string | null
+          created_at: string | null
+          error_message: string | null
+          id: string
+          prompt_tokens: number | null
+          response_time_ms: number | null
+          success: boolean | null
+          tools_executed: number | null
+          tools_failed: number | null
+          total_tokens: number | null
+          user_id: string | null
+        }
+        Insert: {
+          agent_type: string
+          case_id?: string | null
+          completion_tokens?: number | null
+          conversation_id?: string | null
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          prompt_tokens?: number | null
+          response_time_ms?: number | null
+          success?: boolean | null
+          tools_executed?: number | null
+          tools_failed?: number | null
+          total_tokens?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          agent_type?: string
+          case_id?: string | null
+          completion_tokens?: number | null
+          conversation_id?: string | null
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          prompt_tokens?: number | null
+          response_time_ms?: number | null
+          success?: boolean | null
+          tools_executed?: number | null
+          tools_failed?: number | null
+          total_tokens?: number | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_agent_activity_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_agent_activity_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_agent_metrics: {
+        Row: {
+          agent_type: string
+          avg_response_time_ms: number | null
+          created_at: string | null
+          failed_requests: number | null
+          id: string
+          metadata: Json | null
+          period_end: string
+          period_start: string
+          successful_requests: number | null
+          total_requests: number | null
+          total_tokens_used: number | null
+          total_tools_executed: number | null
+        }
+        Insert: {
+          agent_type: string
+          avg_response_time_ms?: number | null
+          created_at?: string | null
+          failed_requests?: number | null
+          id?: string
+          metadata?: Json | null
+          period_end: string
+          period_start: string
+          successful_requests?: number | null
+          total_requests?: number | null
+          total_tokens_used?: number | null
+          total_tools_executed?: number | null
+        }
+        Update: {
+          agent_type?: string
+          avg_response_time_ms?: number | null
+          created_at?: string | null
+          failed_requests?: number | null
+          id?: string
+          metadata?: Json | null
+          period_end?: string
+          period_start?: string
+          successful_requests?: number | null
+          total_requests?: number | null
+          total_tokens_used?: number | null
+          total_tools_executed?: number | null
+        }
+        Relationships: []
+      }
       ai_conversation_messages: {
         Row: {
           content: string
           conversation_id: string
           created_at: string | null
+          feedback_at: string | null
           id: string
           metadata: Json | null
           role: string
           tool_call_id: string | null
           tool_calls: Json | null
+          user_feedback: string | null
+          user_rating: number | null
         }
         Insert: {
           content: string
           conversation_id: string
           created_at?: string | null
+          feedback_at?: string | null
           id?: string
           metadata?: Json | null
           role: string
           tool_call_id?: string | null
           tool_calls?: Json | null
+          user_feedback?: string | null
+          user_rating?: number | null
         }
         Update: {
           content?: string
           conversation_id?: string
           created_at?: string | null
+          feedback_at?: string | null
           id?: string
           metadata?: Json | null
           role?: string
           tool_call_id?: string | null
           tool_calls?: Json | null
+          user_feedback?: string | null
+          user_rating?: number | null
         }
         Relationships: [
           {
@@ -59,22 +416,40 @@ export type Database = {
         Row: {
           agent_type: string
           case_id: string
+          completed_at: string | null
           created_at: string | null
           id: string
+          started_at: string | null
+          status: string | null
+          tools_completed: string[] | null
+          tools_failed: string[] | null
+          tools_pending: string[] | null
           updated_at: string | null
         }
         Insert: {
           agent_type: string
           case_id: string
+          completed_at?: string | null
           created_at?: string | null
           id?: string
+          started_at?: string | null
+          status?: string | null
+          tools_completed?: string[] | null
+          tools_failed?: string[] | null
+          tools_pending?: string[] | null
           updated_at?: string | null
         }
         Update: {
           agent_type?: string
           case_id?: string
+          completed_at?: string | null
           created_at?: string | null
           id?: string
+          started_at?: string | null
+          status?: string | null
+          tools_completed?: string[] | null
+          tools_failed?: string[] | null
+          tools_pending?: string[] | null
           updated_at?: string | null
         }
         Relationships: [
