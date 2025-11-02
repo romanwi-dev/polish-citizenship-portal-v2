@@ -97,7 +97,7 @@ export const FlippableCardsShadow = ({ title, documents, onChange }: FlippableCa
                   className="w-full bg-primary/80 hover:bg-primary shadow-lg"
                   onClick={(e) => {
                     e.stopPropagation();
-                    console.log("Navigate to folder");
+                    // Navigate to folder
                   }}
                 >
                   <Database className="w-4 h-4 mr-2" />

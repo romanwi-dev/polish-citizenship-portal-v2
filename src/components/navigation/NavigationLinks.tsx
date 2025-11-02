@@ -94,7 +94,7 @@ export const NavigationLinks = ({ onNavigate, searchQuery }: NavigationLinksProp
             setTimeout(scrollToElement, 100);
           } else {
             // Failed to find element after max attempts
-            console.warn(`Could not find element with id: ${sectionId}`);
+            // Element not found for scroll
             onNavigate(); // Close menu anyway
           }
         };

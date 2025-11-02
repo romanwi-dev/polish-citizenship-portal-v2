@@ -2982,6 +2982,36 @@ export type Database = {
           },
         ]
       }
+      performance_logs: {
+        Row: {
+          connection_type: string | null
+          created_at: string | null
+          id: string
+          metric_type: string
+          page: string
+          user_agent: string | null
+          value: number
+        }
+        Insert: {
+          connection_type?: string | null
+          created_at?: string | null
+          id?: string
+          metric_type: string
+          page: string
+          user_agent?: string | null
+          value: number
+        }
+        Update: {
+          connection_type?: string | null
+          created_at?: string | null
+          id?: string
+          metric_type?: string
+          page?: string
+          user_agent?: string | null
+          value?: number
+        }
+        Relationships: []
+      }
       poa: {
         Row: {
           case_id: string

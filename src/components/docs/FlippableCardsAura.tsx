@@ -116,7 +116,7 @@ export const FlippableCardsAura = ({ title, documents, onChange }: FlippableCard
                   className="w-full bg-primary/10 border-primary/40 hover:bg-primary/20 group/btn"
                   onClick={(e) => {
                     e.stopPropagation();
-                    console.log("Navigate to folder");
+                    // Navigate to folder
                   }}
                 >
                   Access Storage

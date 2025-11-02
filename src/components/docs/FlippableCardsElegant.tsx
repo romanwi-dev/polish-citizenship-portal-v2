@@ -107,7 +107,7 @@ export const FlippableCardsElegant = ({ title, documents, onChange }: FlippableC
                     className="w-full group border-2 hover:bg-primary/10"
                     onClick={(e) => {
                       e.stopPropagation();
-                      console.log("Navigate to folder");
+                      // Navigate to folder
                     }}
                   >
                     <Folder className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />

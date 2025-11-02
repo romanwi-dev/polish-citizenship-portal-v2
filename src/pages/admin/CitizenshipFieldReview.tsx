@@ -173,12 +173,13 @@ export default function CitizenshipFieldReview() {
     const toKeep = Object.values(reviews).filter(r => r.status === 'keep');
     const conditional = Object.values(reviews).filter(r => r.status === 'conditional');
     
-    console.log('CITIZENSHIP FIELD REVIEW RESULTS:', {
+    // Field review results prepared for implementation
+    const reviewResults = {
       delete: toDelete.map(r => r.field),
       keep: toKeep.map(r => r.field),
       conditional: conditional.map(r => ({ field: r.field, notes: r.notes })),
       fullReview: reviews,
-    });
+    };
 
     toast.success('Field review saved to console. Ready to implement changes.');
   };

@@ -84,7 +84,7 @@ export const FlippableCardsMinimal = ({ title, documents, onChange }: FlippableC
                   className="w-full justify-between"
                   onClick={(e) => {
                     e.stopPropagation();
-                    console.log("Navigate to folder");
+                    // Navigate to folder
                   }}
                 >
                   <span>Access</span>

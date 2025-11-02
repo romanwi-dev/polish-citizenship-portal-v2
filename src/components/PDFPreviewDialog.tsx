@@ -47,7 +47,7 @@ export function PDFPreviewDialog({
           const sizeMB = blob.size / (1024 * 1024);
           
           if (sizeMB > 2) {
-            console.log(`📱 PDF too large for data URL (${sizeMB.toFixed(2)} MB). Using blob URL.`);
+            // PDF using blob URL for large file
             toast.info("Large PDF - using optimized mobile viewer", { duration: 3000 });
             setPdfDataUrl(pdfUrl); // Keep blob URL
             return;

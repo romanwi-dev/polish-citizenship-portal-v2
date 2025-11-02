@@ -142,7 +142,7 @@ export const FlippableCardsMidnight = ({ title, documents, onChange }: Flippable
                   className="w-full bg-primary/10 border-primary/40 hover:bg-primary/20"
                   onClick={(e) => {
                     e.stopPropagation();
-                    console.log("Open vault for:", doc.label);
+                    // Open vault
                   }}
                 >
                   <FolderOpen className="w-4 h-4 mr-2" />

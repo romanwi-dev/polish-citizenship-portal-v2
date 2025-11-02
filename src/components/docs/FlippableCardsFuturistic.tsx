@@ -107,7 +107,7 @@ export const FlippableCardsFuturistic = ({ title, documents, onChange }: Flippab
                   className="w-full bg-cyan-600 hover:bg-cyan-500 text-black font-mono uppercase tracking-wider border-2 border-cyan-400 rounded-none"
                   onClick={(e) => {
                     e.stopPropagation();
-                    console.log("Navigate to folder");
+                    // Navigate to folder
                   }}
                 >
                   <Database className="w-4 h-4 mr-2" />

@@ -97,7 +97,7 @@ export const FlippableCardsNeon = ({ title, documents, onChange }: FlippableCard
                   className="w-full bg-purple-600 hover:bg-purple-500 text-white border border-purple-400"
                   onClick={(e) => {
                     e.stopPropagation();
-                    console.log("Navigate to folder");
+                    // Navigate to folder
                   }}
                 >
                   Access Vault

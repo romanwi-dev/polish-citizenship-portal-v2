@@ -88,7 +88,7 @@ export const useUpdateCase = () => {
           p_success: true,
         });
       } catch (err) {
-        console.warn('Failed to log audit event:', err);
+        // Audit logging failed (non-critical)
       }
     },
     onSuccess: () => {
@@ -118,7 +118,7 @@ export const useDeleteCase = () => {
           p_success: true,
         });
       } catch (err) {
-        console.warn('Failed to log audit event:', err);
+        // Audit logging failed (non-critical)
       }
       
       const { error } = await supabase

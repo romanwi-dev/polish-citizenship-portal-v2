@@ -72,7 +72,7 @@ export const FlippableCards3D = ({ title, documents, onChange }: FlippableCards3
                   className="w-full"
                   onClick={(e) => {
                     e.stopPropagation();
-                    console.log("Navigate to folder");
+                    // Navigate to folder
                   }}
                 >
                   <FolderOpen className="w-4 h-4 mr-2" />

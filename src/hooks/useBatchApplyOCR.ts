@@ -29,7 +29,7 @@ export const useBatchApplyOCR = (caseId: string) => {
         throw new Error("No completed OCR documents found to apply");
       }
 
-      console.log(`Starting batch apply for ${documents.length} documents`);
+      // Batch OCR starting
       setProgress({ current: 0, total: documents.length });
 
       let applied = 0;

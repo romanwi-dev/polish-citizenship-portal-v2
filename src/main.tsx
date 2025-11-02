@@ -14,4 +14,11 @@ if (import.meta.env.DEV) {
   });
 }
 
+// Initialize Web Vitals tracking in production
+if (!import.meta.env.DEV) {
+  import("./lib/webVitals").then(({ initWebVitals }) => {
+    initWebVitals();
+  });
+}
+
 createRoot(document.getElementById("root")!).render(<App />);

@@ -103,7 +103,7 @@ export const FlippableCardsBold = ({ title, documents, onChange }: FlippableCard
                   className="w-full font-bold text-base"
                   onClick={(e) => {
                     e.stopPropagation();
-                    console.log("Navigate to folder");
+                    // Navigate to folder
                   }}
                 >
                   <FolderOpen className="w-5 h-5 mr-2" />

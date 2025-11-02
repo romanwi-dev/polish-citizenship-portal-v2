@@ -178,7 +178,7 @@ export default function NewCase() {
               title: "Magic Link Generated",
               description: "Copy the link below to send to your client",
             });
-            console.log("Magic Link:", magicLink);
+            // Magic link generated successfully
             
             // Copy to clipboard
             navigator.clipboard.writeText(magicLink).catch(() => {});

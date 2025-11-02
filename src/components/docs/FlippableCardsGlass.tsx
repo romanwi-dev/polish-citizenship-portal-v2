@@ -92,7 +92,7 @@ export const FlippableCardsGlass = ({ title, documents, onChange }: FlippableCar
                   className="w-full bg-white/10 backdrop-blur-sm border-white/30 hover:bg-white/20"
                   onClick={(e) => {
                     e.stopPropagation();
-                    console.log("Navigate to folder");
+                    // Navigate to folder
                   }}
                 >
                   View Archive

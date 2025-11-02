@@ -102,7 +102,7 @@ export const FlippableCardsRetro = ({ title, documents, onChange }: FlippableCar
                   className="w-full bg-red-700 hover:bg-red-600 text-white font-serif uppercase tracking-wide border-2 border-red-900 rounded-none shadow-[2px_2px_0_rgba(0,0,0,0.2)]"
                   onClick={(e) => {
                     e.stopPropagation();
-                    console.log("Navigate to folder");
+                    // Navigate to folder
                   }}
                 >
                   <Archive className="w-4 h-4 mr-2" />

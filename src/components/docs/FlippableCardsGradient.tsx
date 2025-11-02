@@ -85,7 +85,7 @@ export const FlippableCardsGradient = ({ title, documents, onChange }: Flippable
                   className="w-full group/btn"
                   onClick={(e) => {
                     e.stopPropagation();
-                    console.log("Navigate to folder");
+                    // Navigate to folder
                   }}
                 >
                   View in Folder

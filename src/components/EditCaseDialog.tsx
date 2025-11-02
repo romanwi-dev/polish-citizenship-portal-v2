@@ -193,7 +193,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                 .remove([oldPath]);
             }
           } catch (err) {
-            console.warn("Could not delete old photo:", err);
+            // Photo deletion failed (non-critical)
           }
         }
         
@@ -230,7 +230,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
             .remove([oldPath]);
         }
       } catch (err) {
-        console.warn("Could not delete photo:", err);
+        // Photo deletion failed (non-critical)
       }
       client_photo_url = null;
     }

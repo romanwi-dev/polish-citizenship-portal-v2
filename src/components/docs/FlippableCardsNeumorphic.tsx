@@ -107,7 +107,7 @@ export const FlippableCardsNeumorphic = ({ title, documents, onChange }: Flippab
                   className="w-full bg-gradient-to-br from-blue-200 to-purple-200 text-blue-900 hover:from-blue-300 hover:to-purple-300 border-0 shadow-[4px_4px_8px_#c0d0e0,-4px_-4px_8px_#e0f0ff] hover:shadow-[6px_6px_12px_#b8c8d8,-6px_-6px_12px_#e8f8ff]"
                   onClick={(e) => {
                     e.stopPropagation();
-                    console.log("Navigate to folder");
+                    // Navigate to folder
                   }}
                 >
                   <FolderOpen className="w-4 h-4 mr-2" />

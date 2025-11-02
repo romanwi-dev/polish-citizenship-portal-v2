@@ -146,11 +146,7 @@ export function FileUploadSection({ caseId, onUploadComplete }: FileUploadSectio
             clientCode: 'CLIENT' // TODO: Get actual client code from case
           }
         }).then(({ data: orgResult, error: orgError }) => {
-          if (orgError) {
-            console.warn('Document organization failed (non-critical):', orgError);
-          } else if (orgResult) {
-            console.log('Document organized:', orgResult);
-          }
+          // Document organization completed (errors are non-critical)
         });
       }
 

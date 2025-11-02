@@ -245,7 +245,7 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange, onToggle, c
                       className={`w-full ${scheme.button} mt-2`}
                       onClick={(e) => {
                         e.stopPropagation();
-                        console.log("Access folder for:", doc.label);
+                        // Access folder
                       }}
                     >
                       <FolderOpen className="w-4 h-4 mr-2" />

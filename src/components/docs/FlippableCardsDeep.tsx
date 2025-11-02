@@ -95,7 +95,7 @@ export const FlippableCardsDeep = ({ title, documents, onChange }: FlippableCard
                   className="w-full border-primary/40 hover:bg-primary/10"
                   onClick={(e) => {
                     e.stopPropagation();
-                    console.log("Navigate to folder");
+                    // Navigate to folder
                   }}
                 >
                   <FolderOpen className="w-4 h-4 mr-2" />

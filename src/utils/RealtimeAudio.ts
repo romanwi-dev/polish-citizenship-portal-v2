@@ -77,7 +77,7 @@ export class RealtimeChat {
 
   async init() {
     try {
-      console.log("Requesting ephemeral token...");
+      // Request ephemeral token
       const { data: tokenData, error: tokenError } = await supabase.functions.invoke("realtime-token", {
         body: { formType: this.formType }
       });
@@ -89,28 +89,24 @@ export class RealtimeChat {
       }
 
       const EPHEMERAL_KEY = tokenData.client_secret.value;
-      console.log("Got ephemeral token");
 
       // Create peer connection
       this.pc = new RTCPeerConnection();
 
       // Set up remote audio
       this.pc.ontrack = e => {
-        console.log("Received remote audio track");
         this.audioEl.srcObject = e.streams[0];
       };
 
       // Add local audio track
       const ms = await navigator.mediaDevices.getUserMedia({ audio: true });
       this.pc.addTrack(ms.getTracks()[0]);
-      console.log("Added local audio track");
 
       // Set up data channel for events
       this.dc = this.pc.createDataChannel("oai-events");
       
       this.dc.addEventListener("message", (e) => {
         const event = JSON.parse(e.data);
-        console.log("Received event:", event.type);
         
         if (event.type === 'response.audio.delta') {
           this.onSpeakingChange(true);
@@ -129,7 +125,6 @@ export class RealtimeChat {
       const baseUrl = "https://api.openai.com/v1/realtime";
       const model = "gpt-4o-realtime-preview-2024-12-17";
       
-      console.log("Connecting to OpenAI Realtime API...");
       const sdpResponse = await fetch(`${baseUrl}?model=${model}`, {
         method: "POST",
         body: offer.sdp,
@@ -149,7 +144,6 @@ export class RealtimeChat {
       };
       
       await this.pc.setRemoteDescription(answer);
-      console.log("WebRTC connection established!");
 
     } catch (error) {
       console.error("Error initializing chat:", error);
@@ -158,7 +152,6 @@ export class RealtimeChat {
   }
 
   disconnect() {
-    console.log("Disconnecting...");
     this.recorder?.stop();
     this.dc?.close();
     this.pc?.close();

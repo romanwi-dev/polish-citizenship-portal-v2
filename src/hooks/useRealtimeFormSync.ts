@@ -53,7 +53,7 @@ export const useRealtimeFormSync = (
               if (!masterData || prev[key] === masterData[key]) {
                 merged[key] = value;
               } else if (prev[key] !== value) {
-                console.warn(`Conflict on field ${key}: keeping local value`);
+                // Conflict resolved: keeping local value
               }
             });
             
