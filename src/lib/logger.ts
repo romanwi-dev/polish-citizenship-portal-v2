@@ -27,7 +27,7 @@ class Logger {
   }
 
   error(...args: any[]) {
-    // Always log errors but in production consider using error tracking service
+    // ALWAYS log errors in all environments for debugging
     console.error(...args);
   }
 

@@ -67,30 +67,47 @@ export const AIAgentPanel = ({ caseId, defaultAction, showActionSelector = true,
 
       try {
         // Check if conversation exists for this case and action
-        const { data: existingConv } = await supabase
+        const { data: existingConv, error: convError } = await supabase
           .from('ai_conversations')
           .select('id')
           .eq('case_id', caseId)
           .eq('agent_type', action)
-          .single();
+          .maybeSingle();
+
+        if (convError) {
+          console.error('❌ Error loading conversation:', convError);
+          toast({
+            title: "Warning",
+            description: "Could not load conversation history",
+            variant: "destructive",
+          });
+          return;
+        }
 
         if (existingConv) {
           setConversationId(existingConv.id);
           
           // Load messages
-          const { data: msgs } = await supabase
+          const { data: msgs, error: msgsError } = await supabase
             .from('ai_conversation_messages')
             .select('role, content, created_at')
             .eq('conversation_id', existingConv.id)
             .order('created_at', { ascending: true })
             .limit(20);
 
-          if (msgs) {
+          if (msgsError) {
+            console.error('❌ Error loading messages:', msgsError);
+          } else if (msgs) {
             setMessages(msgs as ConversationMessage[]);
           }
         }
       } catch (error) {
-        console.error('Error loading conversation:', error);
+        console.error('❌ Unexpected error loading conversation:', error);
+        toast({
+          title: "Error",
+          description: "Failed to load conversation",
+          variant: "destructive",
+        });
       }
     };
 

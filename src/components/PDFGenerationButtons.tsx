@@ -44,11 +44,26 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
       const loadingToast = toast.loading(`Generating ${label}...`);
 
       // Fetch current form data
-      const { data: masterData } = await supabase
+      const { data: masterData, error: fetchError } = await supabase
         .from("master_table")
         .select("*")
         .eq("case_id", caseId)
         .maybeSingle();
+
+      if (fetchError) {
+        console.error('❌ Failed to fetch form data:', fetchError);
+        toast.error('Failed to fetch form data');
+        throw new Error('Failed to fetch form data');
+      }
+
+      // Warn if no data exists
+      if (!masterData || Object.keys(masterData).length <= 2) {
+        toast.warning(
+          'No form data found. Save the form first, then generate PDFs.',
+          { duration: 6000 }
+        );
+        return;
+      }
 
       // Show informational toast if not 100% complete (never block generation)
       if (masterData) {

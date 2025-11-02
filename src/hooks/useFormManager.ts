@@ -90,9 +90,11 @@ export const useFormManager = (
         updates: formData,
       });
       setHasUnsavedChanges(false);
+      toast.success('Data saved successfully');
       return true;
-    } catch (error) {
-      console.error('Save failed:', error);
+    } catch (error: any) {
+      console.error('❌ SAVE FAILED:', error);
+      toast.error(error?.message || 'Failed to save data. Please try again.');
       return false;
     }
   };
