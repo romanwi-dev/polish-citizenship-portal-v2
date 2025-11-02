@@ -13,6 +13,9 @@ export default function UploadPDFTemplates() {
     { filename: 'poa-adult.pdf', label: 'POA Adult' },
     { filename: 'poa-minor.pdf', label: 'POA Minor' },
     { filename: 'poa-spouses.pdf', label: 'POA Spouses' },
+    { filename: 'family-tree.pdf', label: 'Family Tree' },
+    { filename: 'citizenship.pdf', label: 'Citizenship Application' },
+    { filename: 'transcription.pdf', label: 'Transcription' },
   ];
 
   const uploadTemplate = async (filename: string) => {
@@ -127,10 +130,11 @@ export default function UploadPDFTemplates() {
             <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
               <h3 className="font-semibold text-blue-400 mb-2">What this does:</h3>
               <ul className="text-sm text-muted-foreground space-y-1">
-                <li>• Loads the new POA PDFs from the public folder</li>
+                <li>• Loads ALL PDF templates from the public folder</li>
                 <li>• Uploads them to the pdf-templates storage bucket</li>
                 <li>• Replaces the old blank templates with full content</li>
-                <li>• PDFs will now generate with all Polish text and formatting</li>
+                <li>• PDFs will generate with all Polish text and formatting</li>
+                <li>• Includes: POA (Adult/Minor/Spouses), Family Tree, Citizenship, Transcription</li>
               </ul>
             </div>
           </CardContent>
