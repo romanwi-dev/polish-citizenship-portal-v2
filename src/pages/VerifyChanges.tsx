@@ -5,13 +5,13 @@ import { ChangeVerificationDialog } from "@/components/ChangeVerificationDialog"
 
 interface FileChange {
   path: string;
-  action: 'edit' | 'create' | 'delete';
+  action: 'edit' | 'create' | 'delete' | 'verify';
   changes: string;
   linesAffected?: string;
 }
 
 interface ChangeProposal {
-  type: 'database' | 'edge_function' | 'frontend' | 'mixed';
+  type: 'database' | 'edge_function' | 'frontend' | 'mixed' | 'pdf_generation_pre' | 'pdf_generation_post';
   description: string;
   impact: string;
   files: FileChange[];
@@ -20,6 +20,9 @@ interface ChangeProposal {
     name: string;
     changes: string;
   }>;
+  pdfGeneration?: any;
+  execution?: any;
+  comparisonToProposal?: any;
   reasoning: string;
   risks: string[];
   rollbackPlan: string;

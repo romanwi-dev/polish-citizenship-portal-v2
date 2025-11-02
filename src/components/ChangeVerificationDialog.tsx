@@ -9,18 +9,21 @@ import { CheckCircle2, XCircle, AlertTriangle, Lightbulb, Code2, Database, Shiel
 
 interface FileChange {
   path: string;
-  action: 'edit' | 'create' | 'delete';
+  action: 'edit' | 'create' | 'delete' | 'verify';
   changes: string;
   linesAffected?: string;
 }
 
 interface ChangeProposal {
-  type: 'database' | 'edge_function' | 'frontend' | 'mixed';
+  type: 'database' | 'edge_function' | 'frontend' | 'mixed' | 'pdf_generation_pre' | 'pdf_generation_post';
   description: string;
   impact: string;
   files: FileChange[];
   sql?: string[];
   edgeFunctions?: Array<{ name: string; changes: string }>;
+  pdfGeneration?: any;
+  execution?: any;
+  comparisonToProposal?: any;
   reasoning: string;
   risks: string[];
   rollbackPlan: string;

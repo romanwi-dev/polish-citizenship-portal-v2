@@ -957,6 +957,10 @@ export type Database = {
           ocr_text: string | null
           pdf_status: Database["public"]["Enums"]["pdf_status"] | null
           person_type: string | null
+          post_verification_result: Json | null
+          post_verification_score: number | null
+          pre_verification_result: Json | null
+          pre_verification_score: number | null
           received_at: string | null
           sent_at: string | null
           signature_data: string | null
@@ -973,6 +977,7 @@ export type Database = {
           user_overrode_detection: boolean | null
           validation_errors: Json | null
           validation_passed: boolean | null
+          verification_status: string | null
           verified_at: string | null
           verified_by: string | null
         }
@@ -1018,6 +1023,10 @@ export type Database = {
           ocr_text?: string | null
           pdf_status?: Database["public"]["Enums"]["pdf_status"] | null
           person_type?: string | null
+          post_verification_result?: Json | null
+          post_verification_score?: number | null
+          pre_verification_result?: Json | null
+          pre_verification_score?: number | null
           received_at?: string | null
           sent_at?: string | null
           signature_data?: string | null
@@ -1034,6 +1043,7 @@ export type Database = {
           user_overrode_detection?: boolean | null
           validation_errors?: Json | null
           validation_passed?: boolean | null
+          verification_status?: string | null
           verified_at?: string | null
           verified_by?: string | null
         }
@@ -1079,6 +1089,10 @@ export type Database = {
           ocr_text?: string | null
           pdf_status?: Database["public"]["Enums"]["pdf_status"] | null
           person_type?: string | null
+          post_verification_result?: Json | null
+          post_verification_score?: number | null
+          pre_verification_result?: Json | null
+          pre_verification_score?: number | null
           received_at?: string | null
           sent_at?: string | null
           signature_data?: string | null
@@ -1095,6 +1109,7 @@ export type Database = {
           user_overrode_detection?: boolean | null
           validation_errors?: Json | null
           validation_passed?: boolean | null
+          verification_status?: string | null
           verified_at?: string | null
           verified_by?: string | null
         }

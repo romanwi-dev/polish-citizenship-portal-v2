@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Download, Eye } from "lucide-react";
+import { Download, Eye, Shield } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useState } from "react";
@@ -9,12 +9,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
+  DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
 import { PDFPreviewDialog } from "./PDFPreviewDialog";
 import { validatePDFGeneration } from "@/utils/pdfValidation";
 import { detectDevice } from "@/utils/deviceDetection";
 import { PrePrintChecklist } from "./PrePrintChecklist";
 import { usePDFStatus } from "@/hooks/usePDFStatus";
+import { PDFVerificationToggle } from "./PDFVerificationToggle";
+import { generatePDFProposal } from "@/utils/pdfProposalGenerator";
+import { generateInspectionReport } from "@/utils/pdfInspectionReport";
 
 interface PDFGenerationButtonsProps {
   caseId: string;
@@ -29,8 +33,17 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
   const [currentTemplateType, setCurrentTemplateType] = useState<string>('');
   const [formData, setFormData] = useState<any>(null);
   const [prePrintChecklistOpen, setPrePrintChecklistOpen] = useState(false);
+  const [verificationEnabled, setVerificationEnabled] = useState(() => {
+    const saved = localStorage.getItem('pdf_verification_enabled');
+    return saved !== null ? JSON.parse(saved) : true; // Default: enabled
+  });
   
   const { updateStatus } = usePDFStatus(documentId);
+
+  const toggleVerification = (enabled: boolean) => {
+    setVerificationEnabled(enabled);
+    localStorage.setItem('pdf_verification_enabled', JSON.stringify(enabled));
+  };
 
   const cleanupPreviewUrl = () => {
     if (previewUrl && previewUrl.startsWith('blob:')) {

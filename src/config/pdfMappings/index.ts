@@ -1,56 +1,44 @@
 /**
- * Central export for all PDF field mappings
+ * Centralized PDF Mappings and Validation
+ * Exports all PDF mappings and required fields for verification
  */
 
-export { POA_ADULT_PDF_MAP, POA_ADULT_REQUIRED_FIELDS } from './poaAdult';
-export { POA_MINOR_PDF_MAP, POA_MINOR_REQUIRED_FIELDS } from './poaMinor';
-export { POA_SPOUSES_PDF_MAP, POA_SPOUSES_REQUIRED_FIELDS } from './poaSpouses';
-export { CITIZENSHIP_PDF_MAP, CITIZENSHIP_REQUIRED_FIELDS } from './citizenship';
-export { FAMILY_TREE_PDF_MAP, FAMILY_TREE_REQUIRED_FIELDS } from './familyTree';
-export { UMIEJSCOWIENIE_PDF_MAP, UMIEJSCOWIENIE_REQUIRED_FIELDS } from './umiejscowienie';
-export { UZUPELNIENIE_PDF_MAP, UZUPELNIENIE_REQUIRED_FIELDS } from './uzupelnienie';
+import { POA_ADULT_PDF_MAP, POA_ADULT_REQUIRED_FIELDS } from './poaAdult';
+import { POA_MINOR_PDF_MAP, POA_MINOR_REQUIRED_FIELDS } from './poaMinor';
+import { POA_SPOUSES_PDF_MAP, POA_SPOUSES_REQUIRED_FIELDS } from './poaSpouses';
+import { UZUPELNIENIE_PDF_MAP, UZUPELNIENIE_REQUIRED_FIELDS } from './uzupelnienie';
 
-export type PDFTemplateType = 
-  | 'poa-adult'
-  | 'poa-minor'
-  | 'poa-spouses'
-  | 'citizenship'
-  | 'family-tree'
-  | 'umiejscowienie'
-  | 'uzupelnienie';
+// Re-export individual maps for direct imports
+export { POA_ADULT_PDF_MAP, POA_MINOR_PDF_MAP, POA_SPOUSES_PDF_MAP, UZUPELNIENIE_PDF_MAP };
 
-export interface PDFMappingConfig {
-  fieldMap: Record<string, string>;
-  requiredFields: string[];
+// Export all mappings
+export const PDF_MAPPINGS: Record<string, Record<string, string>> = {
+  'poa-adult': POA_ADULT_PDF_MAP,
+  'poa-minor': POA_MINOR_PDF_MAP,
+  'poa-spouses': POA_SPOUSES_PDF_MAP,
+  'uzupelnienie': UZUPELNIENIE_PDF_MAP,
+  // TODO: Add citizenship, family-tree, umiejscowienie when mappings are ready
+};
+
+// Export all required fields
+export const REQUIRED_FIELDS: Record<string, string[]> = {
+  'poa-adult': POA_ADULT_REQUIRED_FIELDS,
+  'poa-minor': POA_MINOR_REQUIRED_FIELDS,
+  'poa-spouses': POA_SPOUSES_REQUIRED_FIELDS,
+  'uzupelnienie': UZUPELNIENIE_REQUIRED_FIELDS,
+};
+
+// Get mapping for a specific template
+export function getPDFMapping(templateType: string): Record<string, string> | null {
+  return PDF_MAPPINGS[templateType] || null;
 }
 
-export const PDF_MAPPINGS: Record<PDFTemplateType, PDFMappingConfig> = {
-  'poa-adult': {
-    fieldMap: {}, // Will be imported from poaAdult.ts
-    requiredFields: [],
-  },
-  'poa-minor': {
-    fieldMap: {},
-    requiredFields: [],
-  },
-  'poa-spouses': {
-    fieldMap: {},
-    requiredFields: [],
-  },
-  'citizenship': {
-    fieldMap: {},
-    requiredFields: [],
-  },
-  'family-tree': {
-    fieldMap: {},
-    requiredFields: [],
-  },
-  'umiejscowienie': {
-    fieldMap: {},
-    requiredFields: [],
-  },
-  'uzupelnienie': {
-    fieldMap: {},
-    requiredFields: [],
-  },
-};
+// Get required fields for a specific template
+export function getRequiredFields(templateType: string): string[] {
+  return REQUIRED_FIELDS[templateType] || [];
+}
+
+// Validate if a template is supported
+export function isSupportedTemplate(templateType: string): boolean {
+  return templateType in PDF_MAPPINGS;
+}
