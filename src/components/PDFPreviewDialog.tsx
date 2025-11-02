@@ -37,11 +37,22 @@ export function PDFPreviewDialog({
   const device = detectDevice();
 
   // Convert blob URL to data URL for mobile compatibility
+  // Only for small PDFs to avoid memory issues
   useEffect(() => {
     if (device.isMobile && pdfUrl && pdfUrl.startsWith('blob:')) {
       fetch(pdfUrl)
         .then(res => res.blob())
         .then(blob => {
+          // Check size before converting to data URL
+          const sizeMB = blob.size / (1024 * 1024);
+          
+          if (sizeMB > 2) {
+            console.log(`📱 PDF too large for data URL (${sizeMB.toFixed(2)} MB). Using blob URL.`);
+            toast.info("Large PDF - using optimized mobile viewer", { duration: 3000 });
+            setPdfDataUrl(pdfUrl); // Keep blob URL
+            return;
+          }
+          
           const reader = new FileReader();
           reader.onloadend = () => {
             setPdfDataUrl(reader.result as string);
@@ -51,6 +62,8 @@ export function PDFPreviewDialog({
         .catch(err => {
           console.error('Failed to convert PDF for mobile:', err);
           toast.error('Failed to load PDF preview');
+          // Fallback to blob URL
+          setPdfDataUrl(pdfUrl);
         });
     }
   }, [pdfUrl, device.isMobile]);

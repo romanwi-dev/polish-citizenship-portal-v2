@@ -6,6 +6,34 @@ import { PDFDocument, PDFName, PDFBool } from "https://esm.sh/pdf-lib@1.17.1";
 const pdfTemplateCache = new Map<string, Uint8Array>();
 const CACHE_MAX_AGE = 3600000; // 1 hour in milliseconds
 const cacheTimestamps = new Map<string, number>();
+const MAX_CACHE_SIZE_MB = 50; // 50MB total cache limit
+const MAX_CACHE_ENTRIES = 10; // Max 10 templates
+
+function getCacheSizeMB(): number {
+  let totalBytes = 0;
+  pdfTemplateCache.forEach(bytes => {
+    totalBytes += bytes.length;
+  });
+  return totalBytes / (1024 * 1024);
+}
+
+function evictOldestCacheEntry() {
+  let oldestKey: string | null = null;
+  let oldestTime = Date.now();
+  
+  cacheTimestamps.forEach((timestamp, key) => {
+    if (timestamp < oldestTime) {
+      oldestTime = timestamp;
+      oldestKey = key;
+    }
+  });
+  
+  if (oldestKey) {
+    console.log(`🗑️ Evicting cached template: ${oldestKey}`);
+    pdfTemplateCache.delete(oldestKey);
+    cacheTimestamps.delete(oldestKey);
+  }
+}
 
 // ============ PDF FIELD MAPPINGS (INLINE) ============
 
@@ -819,12 +847,24 @@ serve(async (req) => {
     const cachedTime = cacheTimestamps.get(cacheKey);
     const isCacheValid = cachedTime && (Date.now() - cachedTime < CACHE_MAX_AGE);
     
-    let pdfBytes: Uint8Array;
+    let pdfBytes: Uint8Array | undefined;
     
     if (isCacheValid && pdfTemplateCache.has(cacheKey)) {
       console.log(`✅ Using cached template: ${cacheKey}`);
-      pdfBytes = pdfTemplateCache.get(cacheKey)!;
-    } else {
+      const cached = pdfTemplateCache.get(cacheKey)!;
+      
+      // Validate cached template
+      if (!cached || cached.length === 0) {
+        console.warn(`⚠️ Cached template corrupted: ${cacheKey}. Refetching...`);
+        pdfTemplateCache.delete(cacheKey);
+        cacheTimestamps.delete(cacheKey);
+        pdfBytes = undefined; // Force refetch
+      } else {
+        pdfBytes = cached;
+      }
+    }
+    
+    if (!pdfBytes) {
       // Fetch PDF template from Supabase Storage
       console.log(`Fetching template from storage: ${templateType}.pdf`);
       
@@ -839,10 +879,20 @@ serve(async (req) => {
       
       pdfBytes = new Uint8Array(await pdfBlob.arrayBuffer());
       
+      // Check cache limits before storing
+      if (pdfTemplateCache.size >= MAX_CACHE_ENTRIES) {
+        evictOldestCacheEntry();
+      }
+      
+      if (getCacheSizeMB() + (pdfBytes.length / (1024 * 1024)) > MAX_CACHE_SIZE_MB) {
+        evictOldestCacheEntry();
+      }
+      
       // Store in cache
       pdfTemplateCache.set(cacheKey, pdfBytes);
       cacheTimestamps.set(cacheKey, Date.now());
       console.log(`✅ Template loaded and cached: ${templateType}.pdf (${pdfBytes.length} bytes)`);
+      console.log(`📊 Cache status: ${pdfTemplateCache.size} entries, ${getCacheSizeMB().toFixed(2)} MB`);
     }
 
     const pdfDoc = await PDFDocument.load(pdfBytes);
