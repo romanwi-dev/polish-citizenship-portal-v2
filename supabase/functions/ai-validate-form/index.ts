@@ -5,6 +5,20 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// In-memory cache for validation results
+const validationCache = new Map<string, { result: any; timestamp: number }>();
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
+// Cleanup expired cache entries
+const cleanupCache = () => {
+  const now = Date.now();
+  for (const [key, value] of validationCache.entries()) {
+    if (now - value.timestamp > CACHE_TTL) {
+      validationCache.delete(key);
+    }
+  }
+};
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -16,6 +30,20 @@ serve(async (req) => {
 
     if (!LOVABLE_API_KEY) {
       throw new Error('LOVABLE_API_KEY not configured');
+    }
+
+    // Generate cache key (first 100 chars of stringified data for uniqueness)
+    const cacheKey = `${templateType}-${checkType}-${JSON.stringify(formData).substring(0, 100)}`;
+    
+    // Check cache first
+    cleanupCache();
+    const cached = validationCache.get(cacheKey);
+    if (cached && (Date.now() - cached.timestamp < CACHE_TTL)) {
+      console.log('Returning cached validation result');
+      return new Response(
+        JSON.stringify(cached.result),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     // Build validation prompt based on check type
@@ -98,6 +126,12 @@ Validate and return results in this exact JSON format:
     };
 
     console.log('AI Validation Result:', validationResult);
+
+    // Cache the result
+    validationCache.set(cacheKey, {
+      result: validationResult,
+      timestamp: Date.now()
+    });
 
     return new Response(
       JSON.stringify(validationResult),
