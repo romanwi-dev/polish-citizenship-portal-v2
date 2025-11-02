@@ -1,7 +1,10 @@
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { storeProposal, type ChangeProposal } from "@/utils/verificationWorkflow";
 
 export default function VerifyAuditPlan() {
+  const navigate = useNavigate();
+
   useEffect(() => {
     const auditProposal: ChangeProposal = {
       type: 'mixed',
@@ -94,20 +97,16 @@ Root Cause Hypotheses:
       rollbackPlan: 'This is a READ-ONLY audit - no changes will be made. All findings will be documented. Fix proposals will be generated separately. Each fix will go through OpenAI verification before implementation. Version history available for any emergency rollback.'
     };
 
-    // Store the proposal and open in new window to avoid navigation issues
+    // Store the proposal and navigate to verification page
     storeProposal(auditProposal);
-    const verifyUrl = window.location.origin + '/admin/verify-changes';
-    window.open(verifyUrl, '_blank', 'width=1200,height=800');
-    
-    // Go back after opening window
-    window.history.back();
-  }, []);
+    navigate('/admin/verify-changes');
+  }, [navigate]);
 
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="text-center">
         <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-        <p className="text-muted-foreground">Opening verification window...</p>
+        <p className="text-muted-foreground">Loading verification system...</p>
       </div>
     </div>
   );
