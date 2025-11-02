@@ -7,7 +7,26 @@ export interface ValidationResult {
   missingFields: string[];
   warnings: string[];
   coverage: number;
+  threshold: number;
+  meetsThreshold: boolean;
 }
+
+/**
+ * Template-specific coverage thresholds for optimal UX
+ * - POA templates: 100% (simple forms with few required fields)
+ * - Family Tree: 95% (comprehensive genealogy data)
+ * - Citizenship: 60% (many fields are N/A in practice, only core family needed)
+ * - USC forms: 90% (official registry documents)
+ */
+export const TEMPLATE_COVERAGE_THRESHOLDS: Record<string, number> = {
+  'poa-adult': 100,        // 3 fields - must be perfect
+  'poa-minor': 100,        // 6 fields - must be perfect
+  'poa-spouses': 100,      // 6 fields - must be perfect
+  'family-tree': 95,       // 38 fields - comprehensive genealogy
+  'citizenship': 60,       // 140 fields - most are N/A, only core family needed
+  'umiejscowienie': 90,    // 6 fields - official registry
+  'uzupelnienie': 90,      // 6 fields - official supplementation
+};
 
 // POA Adult - Only 4 fields in actual PDF
 export const POA_ADULT_REQUIRED = [
@@ -78,7 +97,7 @@ export const TEMPLATE_REQUIRED_FIELDS: Record<string, string[]> = {
 };
 
 /**
- * Validate data before PDF generation
+ * Validate data before PDF generation with template-specific thresholds
  */
 export const validatePDFGeneration = (
   data: Record<string, any>,
@@ -114,11 +133,17 @@ export const validatePDFGeneration = (
     ? Math.round((filledCount / requiredFields.length) * 100)
     : 100;
 
+  // Get template-specific threshold (default to 80% if not defined)
+  const threshold = TEMPLATE_COVERAGE_THRESHOLDS[templateType] || 80;
+  const meetsThreshold = coverage >= threshold;
+
   return {
     isValid: missingFields.length === 0,
     missingFields,
     warnings,
     coverage,
+    threshold,
+    meetsThreshold,
   };
 };
 

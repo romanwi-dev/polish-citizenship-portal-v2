@@ -166,7 +166,7 @@ export default function ZeroErrorsStatus() {
       <Card>
         <CardHeader>
           <CardTitle>System Improvements Completed</CardTitle>
-          <CardDescription>Phases 1-4 of Systematic Fix Plan</CardDescription>
+          <CardDescription>All 6 Phases of Systematic Fix Plan</CardDescription>
         </CardHeader>
         <CardContent>
           <ul className="space-y-2 text-sm">
@@ -185,6 +185,10 @@ export default function ZeroErrorsStatus() {
             <li className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-green-500" />
               <span>✅ Phase 4: Enhanced full name construction for all person types</span>
+            </li>
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-green-500" />
+              <span>✅ Phase 5: Template-specific coverage thresholds (POA 100%, Citizenship 60%)</span>
             </li>
             <li className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-green-500" />

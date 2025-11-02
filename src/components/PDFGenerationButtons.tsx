@@ -62,8 +62,8 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
       if (masterData) {
         const validation = validatePDFGeneration(masterData, templateType);
         
-        if (!validation.isValid && validation.coverage < 80) {
-          // Show validation warning if coverage is low
+        if (!validation.meetsThreshold) {
+          // Show validation warning if below template-specific threshold
           setValidationResult(validation);
           setPendingGeneration({ templateType, label, flatten });
           setValidationDialogOpen(true);
@@ -71,7 +71,7 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
           setIsGenerating(false);
           return;
         } else if (!validation.isValid) {
-          // Show toast warning but continue
+          // Show toast warning but continue (above threshold but not perfect)
           toast.warning(`${validation.missingFields.length} fields missing (${validation.coverage}% complete)`, {
             duration: 3000,
           });
@@ -285,7 +285,8 @@ export function PDFGenerationButtons({ caseId }: PDFGenerationButtonsProps) {
             </AlertDialogTitle>
             <AlertDialogDescription className="space-y-4">
               <p>
-                The PDF is only <strong>{validationResult?.coverage}% complete</strong>. 
+                The PDF is only <strong>{validationResult?.coverage}% complete</strong> 
+                (minimum {validationResult?.threshold}% recommended for this template).
                 {validationResult && validationResult.missingFields.length > 0 && (
                   <span> Missing {validationResult.missingFields.length} required field(s):</span>
                 )}
