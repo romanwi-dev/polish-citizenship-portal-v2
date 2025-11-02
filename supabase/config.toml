@@ -89,3 +89,6 @@ verify_jwt = true
 
 [functions.ocr-worker]
 verify_jwt = false
+
+[functions.check-agent-alerts]
+verify_jwt = false

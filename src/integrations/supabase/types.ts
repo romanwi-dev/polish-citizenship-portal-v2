@@ -4093,6 +4093,13 @@ export type Database = {
           updated_at: string
         }[]
       }
+      get_high_token_usage_cases: {
+        Args: { since_timestamp: string; token_threshold: number }
+        Returns: {
+          case_id: string
+          total_tokens: number
+        }[]
+      }
       get_next_case_sequence: {
         Args: { sequence_name: string }
         Returns: number

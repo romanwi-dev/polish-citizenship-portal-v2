@@ -588,6 +588,13 @@ serve(async (req) => {
     // Store for error handling
     activeConvId = activeConversationId || null;
 
+    // Update status to processing
+    if (activeConversationId) {
+      await supabase.from('ai_conversations').update({
+        status: 'processing'
+      }).eq('id', activeConversationId);
+    }
+
     // Fetch conversation history (FIX 6: Pagination - last 50 messages max)
     let conversationMessages: any[] = [];
     if (activeConversationId) {
@@ -732,7 +739,14 @@ serve(async (req) => {
 
             // Execute tools in parallel
             if (toolCalls.length > 0 && caseId) {
-              const toolResults = await executeToolsParallel(toolCalls, caseId, supabase, userId);
+              // Update status to tools_executing
+              if (activeConversationId) {
+                await supabase.from('ai_conversations').update({
+                  status: 'tools_executing'
+                }).eq('id', activeConversationId);
+              }
+              
+              const toolResults = await executeToolsParallel(toolCalls, caseId, supabase, userId, activeConversationId);
               controller.enqueue(`data: ${JSON.stringify({ toolResults })}\n\n`);
             }
 
@@ -788,7 +802,14 @@ serve(async (req) => {
     // Execute tools in parallel
     let toolResults: any[] = [];
     if (toolCalls && toolCalls.length > 0 && caseId) {
-      toolResults = await executeToolsParallel(toolCalls, caseId, supabase, userId);
+      // Update status to tools_executing
+      if (activeConversationId) {
+        await supabase.from('ai_conversations').update({
+          status: 'tools_executing'
+        }).eq('id', activeConversationId);
+      }
+      
+      toolResults = await executeToolsParallel(toolCalls, caseId, supabase, userId, activeConversationId);
     }
 
     // Log interaction
@@ -862,21 +883,113 @@ serve(async (req) => {
   }
 });
 
+// Risk level determination function
+function determineRiskLevel(toolName: string, args: any): 'low' | 'medium' | 'high' | 'critical' {
+  // Critical risk: Data modification, external submissions
+  const criticalTools = [
+    'update_master_data',
+    'draft_wsc_response',
+    'generate_civil_acts_request',
+    'create_passport_appointment'
+  ];
+  
+  // High risk: Document generation, important actions
+  const highRiskTools = [
+    'generate_poa_pdf',
+    'create_oby_draft',
+    'generate_archive_request',
+    'update_civil_acts_status',
+    'update_passport_status'
+  ];
+  
+  // Medium risk: Data creation, searches
+  const mediumRiskTools = [
+    'create_archive_search',
+    'generate_archive_letter',
+    'create_civil_acts_request',
+    'link_civil_acts_document'
+  ];
+  
+  if (criticalTools.includes(toolName)) return 'critical';
+  if (highRiskTools.includes(toolName)) return 'high';
+  if (mediumRiskTools.includes(toolName)) return 'medium';
+  return 'low';
+}
+
 // Parallel tool execution function
-async function executeToolsParallel(toolCalls: any[], caseId: string, supabase: any, userId: string): Promise<any[]> {
+async function executeToolsParallel(toolCalls: any[], caseId: string, supabase: any, userId: string, conversationId?: string): Promise<any[]> {
   return await Promise.all(
-    toolCalls.map(toolCall => executeSingleTool(toolCall, caseId, supabase, userId))
+    toolCalls.map(toolCall => executeSingleTool(toolCall, caseId, supabase, userId, conversationId))
   );
 }
 
 // Single tool execution function
-async function executeSingleTool(toolCall: any, caseId: string, supabase: any, userId: string): Promise<any> {
+async function executeSingleTool(toolCall: any, caseId: string, supabase: any, userId: string, conversationId?: string): Promise<any> {
   const toolName = toolCall.function.name;
   
   try {
     console.log(`🔧 Executing tool: ${toolName}`, { caseId, args: toolCall.function.arguments });
     
     const args = JSON.parse(toolCall.function.arguments);
+
+    // APPROVAL CHECK: Check if this tool requires approval
+    const riskLevel = determineRiskLevel(toolName, args);
+    
+    if (riskLevel === 'high' || riskLevel === 'critical') {
+      console.log(`⚠️ Tool "${toolName}" requires approval (risk: ${riskLevel})`);
+      
+      // Create approval request
+      const { data: approval, error: approvalError } = await supabase
+        .from('agent_approvals')
+        .insert({
+          conversation_id: conversationId,
+          tool_name: toolName,
+          tool_arguments: args,
+          ai_explanation: `AI wants to execute ${toolName} on case ${caseId}`,
+          risk_level: riskLevel,
+          status: 'pending',
+          auto_approve_after: new Date(Date.now() + 10 * 60 * 1000).toISOString() // 10 min timeout
+        })
+        .select()
+        .single();
+
+      if (approvalError) {
+        console.error('Failed to create approval:', approvalError);
+        return {
+          tool_name: toolName,
+          success: false,
+          message: `Approval creation failed: ${approvalError.message}`
+        };
+      }
+
+      // Create notification for admins
+      const { data: admins } = await supabase
+        .from('user_roles')
+        .select('user_id')
+        .eq('role', 'admin');
+
+      if (admins) {
+        for (const admin of admins) {
+          await supabase.from('agent_notifications').insert({
+            notification_type: 'approval_pending',
+            conversation_id: conversationId,
+            recipient_user_id: admin.user_id,
+            title: 'AI Tool Requires Approval',
+            message: `Tool "${toolName}" (${riskLevel} risk) is awaiting approval`,
+            severity: riskLevel === 'critical' ? 'error' : 'warning',
+            read: false
+          });
+        }
+      }
+
+      return {
+        tool_name: toolName,
+        success: false,
+        message: `⏸️ Awaiting admin approval (${riskLevel} risk)`,
+        approval_id: approval.id,
+        requires_approval: true
+      };
+    }
     let result: any = { success: false, message: 'Unknown tool' };
 
     switch (toolCall.function.name) {
