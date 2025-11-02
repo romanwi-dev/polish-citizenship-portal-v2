@@ -36,7 +36,7 @@ Deno.serve(async (req) => {
     const dropboxPaths: Record<string, string> = {
       'poa-adult': '/POA/new-POA-adult.pdf',
       'poa-minor': '/POA/new-POA-minor.pdf',
-      'poa-spouses': '/POA/new-POA-spouses.pdf',
+      'poa-spouses': '/POA/new-POA-spuses.pdf',
       'family-tree': '/POA/new-FAMILY_TREE.pdf',
       'citizenship': '/POA/new-CITIZENSHIP.pdf',
       'transcription': '/POA/new-TRANSCRIPTION.pdf',
