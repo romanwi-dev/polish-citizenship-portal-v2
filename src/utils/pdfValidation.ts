@@ -97,7 +97,9 @@ export const TEMPLATE_REQUIRED_FIELDS: Record<string, string[]> = {
 };
 
 /**
- * Validate data before PDF generation with template-specific thresholds
+ * Validate data before PDF generation (informational only - does not block)
+ * Returns coverage metrics for logging and user feedback
+ * Template-specific thresholds used for informational toasts, not blocking
  */
 export const validatePDFGeneration = (
   data: Record<string, any>,
