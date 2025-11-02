@@ -32,14 +32,14 @@ Deno.serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    // Map template types to Dropbox paths
+    // Map template types to Dropbox paths (all templates now in /POA folder)
     const dropboxPaths: Record<string, string> = {
       'poa-adult': '/POA/new-POA-adult-8.pdf',
       'poa-minor': '/POA/new-POA-minor-7.pdf',
       'poa-spouses': '/POA/new-POA-spuses-8.pdf',
-      'family-tree': '/WORK/new-FAMILY_TREE-7.pdf',
-      'citizenship': '/WORK/new-CITIZENSHIP-2.pdf',
-      'transcription': '/WORK/new-TRANSCRIPTION.pdf',
+      'family-tree': '/POA/new-FAMILY_TREE-7.pdf',
+      'citizenship': '/POA/new-CITIZENSHIP-2.pdf',
+      'transcription': '/POA/new-TRANSCRIPTION.pdf',
     };
 
     const dropboxPath = dropboxPaths[templateType];
