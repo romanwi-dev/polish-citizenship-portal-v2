@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
-import { PDFDocument, PDFName, PDFBool } from "https://esm.sh/pdf-lib@1.17.1";
+import { PDFDocument, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1";
 
 // ============ IN-MEMORY CACHE FOR PDF TEMPLATES ============
 const pdfTemplateCache = new Map<string, Uint8Array>();
@@ -942,12 +942,11 @@ serve(async (req) => {
       }
     }
 
-    // Set NeedAppearances flag - let PDF viewer render fields
-    // This works on desktop but not mobile Safari iframe
-    pdfDoc.getForm().acroForm.dict.set(
-      PDFName.of('NeedAppearances'), 
-      PDFBool.True
-    );
+    // Generate appearance streams for Mobile Safari compatibility
+    // Use Helvetica (WinAnsi) font - Polish chars show as ? in preview but actual values preserved
+    const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    form.updateFieldAppearances(helveticaFont);
+    console.log('✅ Generated appearance streams for all fields (Mobile Safari compatible)');
 
     // Only flatten for final locked PDFs, keep editable otherwise
     if (flatten) {
@@ -959,7 +958,7 @@ serve(async (req) => {
     
     const filledPdfBytes = await pdfDoc.save({
       useObjectStreams: false,
-      updateFieldAppearances: false  // MUST be false - NeedAppearances is set
+      updateFieldAppearances: false  // Already generated manually above
     });
     
     console.log(`PDF generated: ${filledPdfBytes.length} bytes`);

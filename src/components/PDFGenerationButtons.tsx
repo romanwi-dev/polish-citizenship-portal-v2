@@ -106,16 +106,31 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
       toast.dismiss(loadingToast);
 
       if (!flatten) {
-        // For preview and editable download - show in dialog
-        // Use Object URL (blob://) instead of base64 for better performance
+        // For preview and editable download
         const url = window.URL.createObjectURL(blob);
         console.log('✅ PDF blob created:', { url, size: blob.size, type: blob.type });
-        setPreviewUrl(url);
-        setCurrentTemplate({ type: templateType, label });
-        setCurrentTemplateType(templateType);
-        setFormData(masterData);
-        setPreviewOpen(true);
-        toast.success(`${label} ready! Opening preview...`, { duration: 3000 });
+        
+        // Check if mobile - force download instead of preview (Safari iframe doesn't render PDFs well)
+        const device = detectDevice();
+        if (device.isMobile) {
+          // Force download on mobile - user opens in native PDF viewer
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `${templateType}-${caseId}.pdf`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+          toast.success(`${label} downloaded! Open in your Files app to view and edit.`, { duration: 5000 });
+        } else {
+          // Desktop - show preview dialog
+          setPreviewUrl(url);
+          setCurrentTemplate({ type: templateType, label });
+          setCurrentTemplateType(templateType);
+          setFormData(masterData);
+          setPreviewOpen(true);
+          toast.success(`${label} ready! Opening preview...`, { duration: 3000 });
+        }
         
         // Update status: generated
         if (documentId) {
