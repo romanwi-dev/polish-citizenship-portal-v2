@@ -204,17 +204,50 @@ export default function POAForm() {
     }
   };
 
-  const handleDownloadPDF = () => {
+  const handleDownloadEditable = () => {
     if (!pdfPreviewUrl) {
-      console.error('[POA] Cannot download - no PDF URL available');
       toast.error('No PDF available to download');
       return;
     }
     const link = document.createElement("a");
     link.href = pdfPreviewUrl;
-    link.download = `POA-${activePOAType.toUpperCase()}-${caseId}.pdf`;
+    link.download = `POA-${activePOAType.toUpperCase()}-EDITABLE-${caseId}.pdf`;
     link.click();
-    toast.success('PDF downloaded');
+    toast.success('Editable PDF downloaded - you can fill fields offline!');
+  };
+
+  const handleDownloadFinal = async () => {
+    if (!pdfPreviewUrl) {
+      toast.error('No PDF available to download');
+      return;
+    }
+    
+    try {
+      toast.loading('Generating final locked PDF...');
+      
+      // Call fill-pdf with flatten=true to create locked version
+      const { data, error } = await supabase.functions.invoke('fill-pdf', {
+        body: { 
+          caseId, 
+          templateType: `poa-${activePOAType}`,
+          flatten: true 
+        }
+      });
+
+      if (error) throw error;
+      
+      if (data?.url) {
+        const link = document.createElement("a");
+        link.href = data.url;
+        link.download = `POA-${activePOAType.toUpperCase()}-FINAL-${caseId}.pdf`;
+        link.click();
+        toast.dismiss();
+        toast.success('Final PDF downloaded - fields are locked!');
+      }
+    } catch (error: any) {
+      toast.dismiss();
+      toast.error('Failed to generate final PDF: ' + error.message);
+    }
   };
 
   const handleGenerateAllPOAs = async () => {
@@ -713,8 +746,8 @@ export default function POAForm() {
         pdfUrl={pdfPreviewUrl || ""}
         formData={previewFormData}
         onRegeneratePDF={handleRegeneratePDF}
-        onDownloadEditable={handleDownloadPDF}
-        onDownloadFinal={handleDownloadPDF}
+        onDownloadEditable={handleDownloadEditable}
+        onDownloadFinal={handleDownloadFinal}
         documentTitle={`POA - ${activePOAType.toUpperCase()}`}
       />
     </div>

@@ -525,7 +525,7 @@ Deno.serve(async (req) => {
 
   try {
     const body = await req.json().catch(() => ({}));
-    const { caseId: rawCaseId, templateType, flatten = true, mode } = body ?? {};
+    const { caseId: rawCaseId, templateType, flatten = false, mode } = body ?? {};
 
     // Secure diagnostics
     if (mode === 'diagnose') {
@@ -714,8 +714,11 @@ Deno.serve(async (req) => {
       const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
       form.updateFieldAppearances(helveticaFont);
       
-      // Flatten and save
-      if (flatten) form.flatten();
+      // Flatten and save (flatten only if explicitly requested for final PDFs)
+      if (flatten) {
+        form.flatten();
+        log('pdf_flattened', { caseId, templateType });
+      }
       const filledPdfBytes = await pdfDoc.save();
 
       // Upload
