@@ -618,13 +618,17 @@ Deno.serve(async (req) => {
     // DEV MODE: Skip cache if DEV_NO_CACHE=1
     const devNoCache = Deno.env.get('DEV_NO_CACHE') === '1';
     const nocacheParam = req.url.includes('nocache=1');
-    const skipCache = devNoCache || nocacheParam;
+    
+    // CRITICAL FIX: Always regenerate POA PDFs to ensure fresh data
+    // POA forms are frequently updated and must reflect current data
+    const isPOA = templateType.startsWith('poa-');
+    const skipCache = devNoCache || nocacheParam || isPOA;
     
     let path: string = '';
     let shouldGenerateNew = true;
 
     if (!skipCache) {
-      // Check for recent artifact (within 1 hour)
+      // Check for recent artifact (within 1 hour) - only for non-POA templates
       const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
       const { data: recent } = await admin.from('generated_documents')
         .select('path, created_at')
@@ -641,7 +645,8 @@ Deno.serve(async (req) => {
         log('reuse_artifact', { caseId, templateType, path });
       }
     } else {
-      log('cache_disabled', { reason: devNoCache ? 'DEV_NO_CACHE=1' : 'nocache=1' });
+      const reason = devNoCache ? 'DEV_NO_CACHE=1' : (nocacheParam ? 'nocache=1' : 'POA_ALWAYS_FRESH');
+      log('cache_disabled', { reason });
     }
 
     if (shouldGenerateNew) {
