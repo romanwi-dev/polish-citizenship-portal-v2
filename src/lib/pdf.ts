@@ -3,6 +3,8 @@
  * Supports all template types with signed URLs and base64 fallback
  */
 
+import { supabase } from './supabaseClient';
+
 export function downloadUrl(href: string, filename?: string) {
   const a = document.createElement('a');
   a.href = href;
@@ -21,16 +23,31 @@ export function base64ToBlob(b64: string, mime = 'application/pdf') {
   return new Blob([bytes], { type: mime });
 }
 
+async function invokeWithAuth(name: string, body: any) {
+  // Get current session token
+  const { data: sessionData } = await supabase.auth.getSession();
+  const token = sessionData?.session?.access_token;
+  if (!token) {
+    const err: any = new Error('You are not signed in');
+    err.code = 'NO_SESSION';
+    throw err;
+  }
+  return supabase.functions.invoke(name, {
+    body,
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
 /** Universal PDF generator used by all forms and all template types. */
 export async function generatePdfViaEdge({
-  supabase,
+  supabase: _supabase,
   caseId,
   templateType,
   toast,
   setIsGenerating,
   filename,
 }: {
-  supabase: any;
+  supabase?: any;
   caseId: string;
   templateType: string;
   toast: any;
@@ -49,24 +66,15 @@ export async function generatePdfViaEdge({
     setIsGenerating(true);
     toast.loading('Generating PDF...');
 
-    console.log('[PDF-LIB] Calling fill-pdf edge function via fetch');
+    console.log('[PDF-LIB] Calling fill-pdf edge function with auth');
     
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    const response = await fetch(`${supabaseUrl}/functions/v1/fill-pdf`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ caseId, templateType }),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('[PDF-LIB] HTTP error:', response.status, errorText);
-      throw new Error(`HTTP ${response.status}: ${errorText}`);
+    const { data, error } = await invokeWithAuth('fill-pdf', { caseId, templateType });
+    
+    if (error) {
+      console.error('[PDF-LIB] Function error:', error);
+      throw error;
     }
 
-    const data = await response.json();
     console.log('[PDF-LIB] Response:', { data });
 
     // Prefer signed URL
@@ -100,8 +108,21 @@ export async function generatePdfViaEdge({
   } catch (err: any) {
     toast.dismiss();
     console.error('[PDF-LIB] PDF generation error:', err);
+    
+    if (err?.code === 'NO_SESSION') {
+      toast.error('Please sign in to generate PDFs.');
+      return;
+    }
+    
     toast.error(`Failed to generate PDF: ${err.message ?? err}`);
   } finally {
     setIsGenerating(false);
   }
+}
+
+export async function refreshPdf(caseId: string, templateType: string) {
+  const { data, error } = await invokeWithAuth('pdf-refresh', { caseId, templateType });
+  if (error) throw error;
+  if (!data?.url) throw new Error('No URL returned');
+  return data;
 }
