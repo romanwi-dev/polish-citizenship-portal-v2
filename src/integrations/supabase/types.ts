@@ -1239,6 +1239,33 @@ export type Database = {
           },
         ]
       }
+      generated_documents: {
+        Row: {
+          case_id: string
+          created_at: string | null
+          created_by: string | null
+          id: string
+          path: string
+          template_type: string
+        }
+        Insert: {
+          case_id: string
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          path: string
+          template_type: string
+        }
+        Update: {
+          case_id?: string
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          path?: string
+          template_type?: string
+        }
+        Relationships: []
+      }
       hac_logs: {
         Row: {
           action_details: string | null

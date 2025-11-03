@@ -913,10 +913,17 @@ serve(async (req) => {
     
     const fieldMap = fieldMappings[templateType];
     
+    let fillResult: FillResult = {
+      totalFields: 0,
+      filledFields: 0,
+      emptyFields: [],
+      errors: [],
+    };
+    
     if (!fieldMap || Object.keys(fieldMap).length === 0) {
       console.warn(`⚠️ No field mapping for: ${templateType}`);
     } else {
-      const fillResult = fillPDFFields(form, masterData, fieldMap);
+      fillResult = fillPDFFields(form, masterData, fieldMap);
       const coverage = calculateCoverage(fillResult);
       
       console.log(`📄 PDF Generation Results for ${templateType}:`);
@@ -961,22 +968,73 @@ serve(async (req) => {
       updateFieldAppearances: false  // Already generated manually above
     });
     
-    console.log(`PDF generated: ${filledPdfBytes.length} bytes`);
+    console.log(`✅ PDF generated: ${filledPdfBytes.length} bytes`);
     
-    // Convert binary to base64 in chunks to avoid stack overflow
-    const chunkSize = 32768; // 32KB chunks
-    const uint8Array = new Uint8Array(filledPdfBytes);
-    let base64Pdf = '';
+    // Upload to Supabase Storage
+    const filename = `${caseId}/${templateType}-${Date.now()}.pdf`;
     
-    for (let i = 0; i < uint8Array.length; i += chunkSize) {
-      const chunk = uint8Array.slice(i, i + chunkSize);
-      base64Pdf += btoa(String.fromCharCode(...chunk));
+    const { error: uploadErr } = await supabaseClient
+      .storage
+      .from('generated-pdfs')
+      .upload(filename, filledPdfBytes, {
+        contentType: 'application/pdf',
+        upsert: true,
+      });
+    
+    if (uploadErr) {
+      console.error('❌ Storage upload error:', uploadErr);
+      return new Response(
+        JSON.stringify({ error: `Storage upload failed: ${uploadErr.message}` }),
+        {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 500,
+        }
+      );
+    }
+    
+    console.log(`📦 Uploaded to: ${filename}`);
+    
+    // Generate signed URL (10 minutes expiry)
+    const { data: signed, error: signedErr } = await supabaseClient
+      .storage
+      .from('generated-pdfs')
+      .createSignedUrl(filename, 60 * 10);
+    
+    if (signedErr) {
+      console.error('❌ Signed URL error:', signedErr);
+      return new Response(
+        JSON.stringify({ error: `Failed to create signed URL: ${signedErr.message}` }),
+        {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 500,
+        }
+      );
+    }
+    
+    console.log(`🔗 Signed URL created (expires in 10 min)`);
+    
+    // Record in audit table
+    const { error: auditErr } = await supabaseClient
+      .from('generated_documents')
+      .insert({
+        case_id: caseId,
+        template_type: templateType,
+        path: filename,
+      });
+    
+    if (auditErr) {
+      console.warn('⚠️ Audit log failed (non-critical):', auditErr.message);
     }
     
     return new Response(
       JSON.stringify({ 
-        pdf: base64Pdf,
-        size: filledPdfBytes.length 
+        url: signed.signedUrl,
+        filename: filename.split('/').pop(),
+        stats: { 
+          filled: fillResult.filledFields, 
+          total: fillResult.totalFields, 
+          percentage: calculateCoverage(fillResult) 
+        },
       }),
       {
         headers: {

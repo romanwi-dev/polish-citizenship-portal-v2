@@ -16,7 +16,6 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { DateField } from "@/components/DateField";
 import { toast } from "sonner";
-import { base64ToBlob, downloadBlob } from '@/lib/pdf';
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { FormButtonsRow } from "@/components/FormButtonsRow";
 import { FamilyTreeInteractive } from "@/components/FamilyTreeInteractive";
@@ -106,22 +105,29 @@ export default function FamilyTreeForm() {
 
     try {
       setIsGenerating(true);
-      toast.loading("Generating Family Tree PDF...");
+      toast.loading('Generating PDF...');
 
       const { data, error } = await supabase.functions.invoke('fill-pdf', {
         body: { caseId, templateType: 'family-tree' }
       });
 
       if (error) throw error;
-      if (!data?.pdf) throw new Error('No PDF data returned from server');
+      if (!data?.url) throw new Error('No URL returned from server');
 
-      const blob = base64ToBlob(data.pdf);
-      downloadBlob(blob, `family-tree-${caseId}.pdf`);
+      // Download using signed URL
+      const a = document.createElement('a');
+      a.href = data.url;
+      a.download = data.filename ?? `family-tree-${caseId}.pdf`;
+      a.rel = 'noopener';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
 
       toast.dismiss();
-      toast.success("Family Tree PDF generated successfully!");
+      toast.success('Family Tree PDF generated successfully!');
     } catch (error: any) {
       toast.dismiss();
+      console.error(error);
       toast.error(`Failed to generate PDF: ${error.message}`);
     } finally {
       setIsGenerating(false);
