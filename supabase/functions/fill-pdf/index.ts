@@ -959,7 +959,7 @@ serve(async (req) => {
     
     const filledPdfBytes = await pdfDoc.save({
       useObjectStreams: false,
-      updateFieldAppearances: false  // Preserve NeedAppearances for Polish character support
+      updateFieldAppearances: true  // Generate appearance streams for all PDF viewers
     });
     
     console.log(`PDF generated: ${filledPdfBytes.length} bytes`);
