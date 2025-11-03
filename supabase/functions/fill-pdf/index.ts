@@ -15,7 +15,7 @@ function j(req: Request, body: unknown, status = 200) {
 }
 
 function log(event: string, extra: Record<string, unknown> = {}) {
-  console.log(JSON.stringify({ ts: new Date().toISOString(), event, ...extra }));
+  console.log(JSON.stringify({ ts: new Date().toISOString(), event, deployment: 'v2-fixed-paths', ...extra }));
 }
 
 // ===== Input Validation =====
@@ -592,7 +592,7 @@ Deno.serve(async (req) => {
 
       log('data_retrieved', { caseId });
 
-      // Template mapping
+      // Template mapping - DEPLOYMENT FIX v3
       const templateMap: Record<string, { path: string; map: Record<string, string> }> = {
         'citizenship': { path: 'citizenship.pdf', map: CITIZENSHIP_PDF_MAP },
         'family-tree': { path: 'family-tree.pdf', map: FAMILY_TREE_PDF_MAP },
@@ -602,6 +602,7 @@ Deno.serve(async (req) => {
         'poa-minor': { path: 'poa-minor.pdf', map: POA_MINOR_PDF_MAP },
         'poa-spouses': { path: 'poa-spouses.pdf', map: POA_SPOUSES_PDF_MAP },
       };
+      log('template_map_loaded', { version: 'v3-lowercase-paths', templateType });
 
       const config = templateMap[templateType];
       if (!config) {
