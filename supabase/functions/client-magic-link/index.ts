@@ -1,5 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { handleCorsPreflight, createSecureResponse, createSecureErrorWithHeaders } from '../_shared/cors.ts';
+import { json, corsHeaders } from '../_shared/cors.ts';
 import { isValidEmail, sanitizeString, validateRequestBody, isValidUUID } from '../_shared/inputValidation.ts';
 import { checkRateLimit, RATE_LIMITS, getRequestIdentifier, rateLimitResponse } from '../_shared/rateLimiting.ts';
 
@@ -9,8 +9,9 @@ interface MagicLinkRequest {
 }
 
 Deno.serve(async (req) => {
-  const preflightResponse = handleCorsPreflight(req);
-  if (preflightResponse) return preflightResponse;
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders(req.headers.get('Origin')) });
+  }
 
   try {
     const body = await req.json();
@@ -18,7 +19,7 @@ Deno.serve(async (req) => {
     // Validate request body structure
     const validation = validateRequestBody(body, ['email', 'caseId']);
     if (!validation.valid) {
-      return createSecureErrorWithHeaders(req, validation.error!, 400);
+      return json(req, { error: validation.error }, 400);
     }
 
     // Sanitize and validate inputs
@@ -27,11 +28,11 @@ Deno.serve(async (req) => {
 
     // Input validation
     if (!isValidEmail(email)) {
-      return createSecureErrorWithHeaders(req, 'Valid email is required', 400);
+      return json(req, { error: 'Valid email is required' }, 400);
     }
 
     if (!isValidUUID(caseId)) {
-      return createSecureErrorWithHeaders(req, 'Valid case ID is required', 400);
+      return json(req, { error: 'Valid case ID is required' }, 400);
     }
 
     // Rate limit by email (3 attempts per hour)
@@ -78,7 +79,7 @@ Deno.serve(async (req) => {
         p_details: { email, case_id: caseId, reason: 'no_access' }
       });
 
-      return createSecureErrorWithHeaders(req, 'No access to this case', 403);
+      return json(req, { error: 'No access to this case' }, 403);
     }
 
     // Generate magic link with Supabase Auth
@@ -110,16 +111,16 @@ Deno.serve(async (req) => {
 
     console.log('Magic link generated for case:', caseId);
 
-    return createSecureResponse(req, {
+    return json(req, {
       success: true,
       message: 'Magic link sent to your email'
     }, 200);
 
   } catch (error) {
     console.error('Magic link error:', error);
-    return createSecureErrorWithHeaders(
+    return json(
       req,
-      error instanceof Error ? error.message : 'Failed to send magic link',
+      { error: error instanceof Error ? error.message : 'Failed to send magic link' },
       500
     );
   }

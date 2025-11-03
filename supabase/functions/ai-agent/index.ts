@@ -1,7 +1,7 @@
 // AI Agent Edge Function v2.0.0 - Phase 1: Streaming + Tool Calling + Conversations + Document Intelligence
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
-import { getSecureCorsHeaders, handleCorsPreflight, createSecureCorsResponse, createSecureErrorResponse } from '../_shared/cors.ts';
+import { json, corsHeaders } from '../_shared/cors.ts';
 import { AIAgentRequestSchema, validateInput } from '../_shared/inputValidation.ts';
 
 // Tool definitions for AI agent
@@ -492,11 +492,12 @@ const AGENT_TOOLS = [
 serve(async (req) => {
   // Health check
   if (req.url.endsWith('/health')) {
-    return createSecureCorsResponse(req, { status: 'healthy', version: '2.0.0' });
+    return json(req, { status: 'healthy', version: '2.0.0' });
   }
 
-  const preflightResponse = handleCorsPreflight(req);
-  if (preflightResponse) return preflightResponse;
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders(req.headers.get('Origin')) });
+  }
 
   // SECURITY: Verify JWT token and extract authenticated user
   const authHeader = req.headers.get('authorization');
