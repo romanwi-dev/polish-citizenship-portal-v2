@@ -619,10 +619,11 @@ Deno.serve(async (req) => {
     const devNoCache = Deno.env.get('DEV_NO_CACHE') === '1';
     const nocacheParam = req.url.includes('nocache=1');
     
-    // CRITICAL FIX: Always regenerate POA PDFs to ensure fresh data
-    // POA forms are frequently updated and must reflect current data
+    // CRITICAL FIX: Always regenerate POA and Family Tree PDFs to ensure fresh data
+    // These forms are frequently updated and must reflect current data
     const isPOA = templateType.startsWith('poa-');
-    const skipCache = devNoCache || nocacheParam || isPOA;
+    const isFamilyTree = templateType === 'family-tree';
+    const skipCache = devNoCache || nocacheParam || isPOA || isFamilyTree;
     
     let path: string = '';
     let shouldGenerateNew = true;
@@ -645,7 +646,7 @@ Deno.serve(async (req) => {
         log('reuse_artifact', { caseId, templateType, path });
       }
     } else {
-      const reason = devNoCache ? 'DEV_NO_CACHE=1' : (nocacheParam ? 'nocache=1' : 'POA_ALWAYS_FRESH');
+      const reason = devNoCache ? 'DEV_NO_CACHE=1' : (nocacheParam ? 'nocache=1' : (isPOA ? 'POA_ALWAYS_FRESH' : 'FAMILY_TREE_ALWAYS_FRESH'));
       log('cache_disabled', { reason });
     }
 
