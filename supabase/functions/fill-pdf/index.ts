@@ -402,12 +402,13 @@ const formatFieldValue = (value: any, fieldName: string): string => {
   const isDateField = datePatterns.some(pattern => fieldName.toLowerCase().includes(pattern.toLowerCase()));
   if (isDateField) return formatDate(value);
   const isAddressField = addressPatterns.some(pattern => fieldName.toLowerCase().includes(pattern.toLowerCase()));
-  if (isAddressField) return formatAddress(value);
+  if (isAddressField) return formatAddress(value).toUpperCase(); // UPPERCASE for addresses
   const isArrayField = arrayPatterns.some(pattern => fieldName.toLowerCase().includes(pattern.toLowerCase()));
-  if (isArrayField && Array.isArray(value)) return formatArray(value);
+  if (isArrayField && Array.isArray(value)) return formatArray(value).toUpperCase(); // UPPERCASE for arrays
   const isBoolField = boolPatterns.some(pattern => fieldName.toLowerCase().startsWith(pattern.toLowerCase()));
   if (isBoolField) return formatBoolean(value);
-  return String(value);
+  // CRITICAL: Convert all text to UPPERCASE for consistency with official documents
+  return String(value).toUpperCase();
 };
 
 interface FillResult {
@@ -476,9 +477,19 @@ function fillPDFFields(form: any, data: any, fieldMap: Record<string, string>): 
       
       if (isTextField) {
         try {
-          field.setText(formattedValue);
+          // Set text in UPPERCASE
+          const uppercaseValue = formattedValue.toUpperCase();
+          field.setText(uppercaseValue);
+          
+          // Enable bold appearance if available
+          try {
+            field.enableBoldFont?.();
+          } catch {
+            // Bold not supported on this field, continue anyway
+          }
+          
           result.filledCount++;
-          log('text_field_filled', { field: pdfFieldName, value: formattedValue });
+          log('text_field_filled', { field: pdfFieldName, value: uppercaseValue });
         } catch (e) {
           const errMsg = (e as Error)?.message || String(e);
           result.errors.push({ field: pdfFieldName, error: `Text field set failed: ${errMsg}` });
@@ -502,7 +513,16 @@ function fillPDFFields(form: any, data: any, fieldMap: Record<string, string>): 
       } else {
         // Try setText as fallback for unknown field types
         try {
-          field.setText(formattedValue);
+          const uppercaseValue = formattedValue.toUpperCase();
+          field.setText(uppercaseValue);
+          
+          // Try to enable bold if available
+          try {
+            field.enableBoldFont?.();
+          } catch {
+            // Bold not supported, continue anyway
+          }
+          
           result.filledCount++;
           log('fallback_text_success', { field: pdfFieldName, fieldType, acroFieldType });
         } catch (e) {
