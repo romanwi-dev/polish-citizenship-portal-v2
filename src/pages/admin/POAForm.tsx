@@ -238,11 +238,10 @@ export default function POAForm() {
           transition={{ duration: 0.8 }}
           className="mb-1 md:mb-6"
         >
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4 pb-2 md:pb-6">
-            <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text text-center flex-1 leading-tight whitespace-nowrap">
-              Power of Attorney
-            </h2>
-            <div className="flex items-center justify-between md:justify-end gap-1 md:gap-3">
+          <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text text-center leading-tight whitespace-nowrap">
+            Power of Attorney
+          </h2>
+          <div className="flex items-center justify-center gap-1 md:gap-3 mt-2 md:mt-4">
               <Button
                 onClick={() => navigate('/admin/forms-demo')}
                 variant="ghost"
@@ -289,41 +288,9 @@ export default function POAForm() {
                 <HelpCircle className="h-3.5 w-3.5 md:h-6 md:w-6" />
               </Button>
             </div>
-          </div>
         </motion.div>
 
-        {/* Auto-Fill from Intake Button */}
-        {hasIntakeData && (
-          <div className="mb-4 flex items-center gap-3 justify-between bg-green-50/50 dark:bg-green-950/20 p-4 rounded-lg border border-green-200 dark:border-green-800">
-            <div className="flex items-center gap-2 text-sm text-green-700 dark:text-green-300">
-              <Check className="h-4 w-4" />
-              <span>Intake data available ({intakeData ? 'intake' : 'master'} table)</span>
-            </div>
-            <Button
-              onClick={() => {
-                const autoData = generatePOAData();
-                if (autoData) {
-                  let fieldCount = 0;
-                  Object.entries(autoData).forEach(([key, value]) => {
-                    if (value && key !== 'case_id') {
-                      handleInputChange(key, value);
-                      fieldCount++;
-                    }
-                  });
-                  toast.success(`POA form auto-filled! ${fieldCount} fields populated from ${intakeData ? 'intake' : 'master'} data`);
-                }
-              }}
-              disabled={!hasIntakeData || isLoading}
-              variant="outline"
-              className="gap-2"
-            >
-              <Sparkles className="h-4 w-4" />
-              Auto-Fill from Intake
-            </Button>
-          </div>
-        )}
-
-        <FormButtonsRow 
+        <FormButtonsRow
           caseId={caseId!}
           currentForm="poa"
           onSave={handlePOASave}

@@ -261,11 +261,10 @@ export default function CitizenshipForm() {
           transition={{ duration: 0.8 }}
           className="mb-1 md:mb-6"
         >
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-4 pb-2 md:pb-6">
-            <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text text-center flex-1 leading-tight whitespace-nowrap">
-              Citizenship Application
-            </h2>
-            <div className="flex items-center justify-between md:justify-end gap-1 md:gap-3">
+          <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text text-center leading-tight whitespace-nowrap">
+            Citizenship Application
+          </h2>
+          <div className="flex items-center justify-center gap-1 md:gap-3 mt-2 md:mt-4">
               <Button
                 onClick={() => navigate('/admin/forms-demo')}
                 variant="ghost"
@@ -312,7 +311,6 @@ export default function CitizenshipForm() {
                 <HelpCircle className="h-3.5 w-3.5 md:h-6 md:w-6" />
               </Button>
             </div>
-          </div>
         </motion.div>
 
         {/* Auto-Populate from Intake Button */}
