@@ -114,3 +114,6 @@ verify_jwt = false
 [functions.gemini-verify-pdf]
 verify_jwt = false
 
+[functions.pdf-inspect]
+verify_jwt = false
+

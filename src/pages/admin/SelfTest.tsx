@@ -30,6 +30,7 @@ export default function SelfTest() {
     pdfBin: 'idle',
     fill: 'idle',
     refresh: 'idle',
+    inspect: 'idle',
   });
   const [adminToken, setAdminToken] = React.useState('');
   const [caseId, setCaseId] = React.useState('');
@@ -115,25 +116,55 @@ export default function SelfTest() {
     }
   }
 
+  async function testInspect() {
+    push('info', `Calling function: pdf-inspect (templateType=${templateType})…`);
+    try {
+      const { data, error } = await supabase.functions.invoke('pdf-inspect', { body: { templateType } });
+      if (error) throw error;
+      if (data?.ok) {
+        push('ok', `pdf-inspect: found ${data.totalFields} fields, XFA=${data.hasXFA}`);
+        if (data.fields && data.fields.length > 0) {
+          push('info', `Fields: ${data.fields.map((f: any) => f.name).join(', ')}`);
+        }
+        setS('inspect', 'ok');
+      } else {
+        throw new Error(data?.error || 'inspection failed');
+      }
+    } catch (e: any) {
+      push('err', `pdf-inspect failed: ${e?.message ?? e}`);
+      setS('inspect', 'err');
+    }
+  }
+
   async function testFillPdf() {
     if (!caseId) {
       push('warn', 'Provide a caseId to test fill-pdf');
       return;
     }
-    push('info', `Calling function: fill-pdf (caseId=${caseId}, templateType=${templateType})…`);
+    push('info', `Calling function: fill-pdf (caseId=${caseId}, templateType=${templateType}, nocache=1)…`);
     try {
-      const { data, error } = await supabase.functions.invoke('fill-pdf', { body: { caseId, templateType } });
-      if (error) throw error;
+      const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/fill-pdf?nocache=1`;
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+        },
+        body: JSON.stringify({ caseId, templateType }),
+      });
+      
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(`HTTP ${res.status}: ${errText}`);
+      }
+      
+      const data = await res.json();
       if (data?.url) {
         openPdfUrl(data.url);
-        push('ok', 'fill-pdf: got signed URL and opened');
-        setS('fill', 'ok');
-      } else if (data?.pdf) {
-        downloadBase64Pdf(data.pdf);
-        push('ok', 'fill-pdf: opened base64 PDF');
+        push('ok', `fill-pdf: generated fresh PDF (nocache=1)`);
         setS('fill', 'ok');
       } else {
-        throw new Error('no url/pdf in response');
+        throw new Error('no url in response');
       }
     } catch (e: any) {
       push('err', `fill-pdf failed: ${e?.message ?? e}`);
@@ -232,12 +263,15 @@ export default function SelfTest() {
               </select>
             </div>
           </div>
-          <div className="mt-3 flex gap-2">
-            <button onClick={testFillPdf} className="px-3 py-1.5 rounded border text-sm hover:bg-accent">
-              Test fill-pdf
+          <div className="mt-3 flex flex-col gap-2">
+            <button onClick={testInspect} className="px-3 py-1.5 rounded bg-blue-600 text-white text-sm hover:bg-blue-700">
+              Inspect Template Fields
+            </button>
+            <button onClick={testFillPdf} className="px-3 py-1.5 rounded bg-green-600 text-white text-sm hover:bg-green-700">
+              Generate Fresh PDF (nocache=1)
             </button>
             <button onClick={testRefresh} className="px-3 py-1.5 rounded border text-sm hover:bg-accent">
-              Test pdf-refresh
+              View Last PDF Log
             </button>
           </div>
         </div>
@@ -280,6 +314,12 @@ export default function SelfTest() {
               <span>pdf-refresh (optional)</span>
               <Badge kind={status.refresh === 'ok' ? 'ok' : status.refresh === 'err' ? 'err' : 'info'}>
                 {status.refresh === 'ok' ? 'OK' : status.refresh === 'err' ? 'ERROR' : 'IDLE'}
+              </Badge>
+            </div>
+            <div className="flex items-center justify-between">
+              <span>pdf-inspect</span>
+              <Badge kind={status.inspect === 'ok' ? 'ok' : status.inspect === 'err' ? 'err' : 'info'}>
+                {status.inspect === 'ok' ? 'OK' : status.inspect === 'err' ? 'ERROR' : 'IDLE'}
               </Badge>
             </div>
           </div>

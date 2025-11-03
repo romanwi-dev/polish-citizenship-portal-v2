@@ -615,19 +615,34 @@ Deno.serve(async (req) => {
       return j(req, { code: 'CASE_NOT_FOUND', message: 'Case not found' }, 404);
     }
 
-    // Check for recent artifact (within 1 hour)
-    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
-    const { data: recent } = await admin.from('generated_documents')
-      .select('path, created_at')
-      .eq('case_id', caseId)
-      .eq('template_type', templateType)
-      .gte('created_at', oneHourAgo)
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .maybeSingle();
+    // DEV MODE: Skip cache if DEV_NO_CACHE=1
+    const devNoCache = Deno.env.get('DEV_NO_CACHE') === '1';
+    const nocacheParam = req.url.includes('nocache=1');
+    const skipCache = devNoCache || nocacheParam;
+    
+    let path: string = '';
+    let shouldGenerateNew = true;
 
-    let path: string;
-    let shouldGenerateNew = !recent?.path;
+    if (!skipCache) {
+      // Check for recent artifact (within 1 hour)
+      const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+      const { data: recent } = await admin.from('generated_documents')
+        .select('path, created_at')
+        .eq('case_id', caseId)
+        .eq('template_type', templateType)
+        .gte('created_at', oneHourAgo)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      
+      shouldGenerateNew = !recent?.path;
+      if (!shouldGenerateNew) {
+        path = recent!.path;
+        log('reuse_artifact', { caseId, templateType, path });
+      }
+    } else {
+      log('cache_disabled', { reason: devNoCache ? 'DEV_NO_CACHE=1' : 'nocache=1' });
+    }
 
     if (shouldGenerateNew) {
       log('gen_start', { caseId, templateType });
@@ -694,8 +709,12 @@ Deno.serve(async (req) => {
       log('fields_filled', { caseId, templateType, filled: result.filledCount, total: result.totalFields, errors: result.errors.length });
       if (result.errors.length > 0) console.warn('[fill-pdf] Field filling errors:', result.errors);
 
+      // Embed font and update appearances
+      const { StandardFonts } = await import('https://esm.sh/pdf-lib@1.17.1');
+      const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+      form.updateFieldAppearances(helveticaFont);
+      
       // Flatten and save
-      form.updateFieldAppearances();
       if (flatten) form.flatten();
       const filledPdfBytes = await pdfDoc.save();
 
@@ -718,9 +737,6 @@ Deno.serve(async (req) => {
         created_by: null 
       });
       log('gen_ok', { caseId, templateType, path, bytes: filledPdfBytes.byteLength, filled: result.filledCount, total: result.totalFields });
-    } else {
-      path = recent!.path;
-      log('reuse_artifact', { caseId, templateType, path });
     }
 
     // Signed URL
