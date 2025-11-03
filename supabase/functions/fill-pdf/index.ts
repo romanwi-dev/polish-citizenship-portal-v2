@@ -1,26 +1,16 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 // ===== CORS & Security Utilities =====
-function parseOrigins() {
-  const raw = Deno.env.get('ALLOWED_ORIGINS') ?? '';
-  return new Set(raw.split(',').map(s => s.trim()).filter(Boolean));
-}
-const ORIGINS = parseOrigins();
-
-function cors(origin: string | null) {
-  const allow = origin && ORIGINS.has(origin) ? origin : 'null';
-  return {
-    'Access-Control-Allow-Origin': allow,
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'authorization, content-type, x-admin-token',
-    'Vary': 'Origin'
-  };
-}
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'authorization, content-type, x-admin-token',
+};
 
 function j(req: Request, body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { ...cors(req.headers.get('Origin')), 'Content-Type': 'application/json' }
+    headers: { ...corsHeaders, 'Content-Type': 'application/json' }
   });
 }
 
@@ -481,7 +471,7 @@ function fillPDFFields(form: any, data: any, fieldMap: Record<string, string>): 
 // ===== Main Handler =====
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: cors(req.headers.get('Origin')) });
+    return new Response('ok', { headers: corsHeaders });
   }
 
   try {
