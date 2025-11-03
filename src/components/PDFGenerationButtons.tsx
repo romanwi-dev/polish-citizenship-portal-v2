@@ -99,9 +99,15 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
         throw new Error(`Failed to generate PDF: ${error.message}`);
       }
       
-      // Edge function returns binary PDF data - supabase SDK handles it as Blob already
-      // Check if data is already a Blob, otherwise create one
-      const blob = data instanceof Blob ? data : new Blob([data], { type: 'application/pdf' });
+      // Create blob from response - edge function returns raw binary data
+      const blob = new Blob([data], { type: 'application/pdf' });
+      
+      console.log('✅ PDF Blob created:', {
+        size: blob.size,
+        type: blob.type,
+        templateType,
+        flatten
+      });
 
       toast.dismiss(loadingToast);
 
@@ -310,6 +316,8 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
       if (error) throw new Error(`Failed to generate PDF: ${error.message}`);
 
       const blob = new Blob([data], { type: 'application/pdf' });
+      
+      console.log('✅ Editable PDF Blob created:', blob.size, 'bytes');
       toast.dismiss(loadingToast);
       
       handlePlatformDownload(blob, `${currentTemplate.type}-${caseId}-editable.pdf`, true);
@@ -366,6 +374,8 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
       if (error) throw new Error(`Failed to generate PDF: ${error.message}`);
 
       const blob = new Blob([data], { type: 'application/pdf' });
+      
+      console.log('✅ Final PDF Blob created:', blob.size, 'bytes');
       toast.dismiss(loadingToast);
       
       handlePlatformDownload(blob, `${currentTemplate.type}-${caseId}-final.pdf`, false);
