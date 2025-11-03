@@ -715,10 +715,10 @@ Deno.serve(async (req) => {
       log('fields_filled', { caseId, templateType, filled: result.filledCount, total: result.totalFields, errors: result.errors.length });
       if (result.errors.length > 0) console.warn('[fill-pdf] Field filling errors:', result.errors);
 
-      // Embed font and update appearances
-      const { StandardFonts } = await import('https://esm.sh/pdf-lib@1.17.1');
-      const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
-      form.updateFieldAppearances(helveticaFont);
+      // CRITICAL FIX: Don't update field appearances with StandardFonts
+      // Polish characters (Ń, Ł, etc.) are not supported by WinAnsi encoding
+      // The PDF template already has fonts that support these characters
+      // Updating appearances overwrites them and causes encoding errors
       
       // Flatten and save (flatten only if explicitly requested for final PDFs)
       if (flatten) {
