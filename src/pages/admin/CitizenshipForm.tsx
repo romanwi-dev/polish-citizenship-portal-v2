@@ -229,16 +229,6 @@ export default function CitizenshipForm() {
 
   return (
     <div className={cn("relative min-h-screen", isLargeFonts && "text-lg")}>
-      <StickyActionBar
-        onSave={handleSave}
-        onGenerate={handleGeneratePDF}
-        onClear={() => setShowClearAllDialog(true)}
-        isGenerating={isGenerating}
-        isSaving={isSaving}
-        disabled={false}
-      />
-      <div className="sticky-actionbar-spacer" />
-      
       <div className="relative z-10 pt-2 px-3 pb-3 md:p-6">
         {/* Header */}
         <motion.div 
