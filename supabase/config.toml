@@ -95,3 +95,13 @@ verify_jwt = false
 
 [functions.verify-pdf-system]
 verify_jwt = true
+
+[functions.health]
+verify_jwt = false
+
+[functions.storage-test]
+verify_jwt = false
+
+[functions.pdf-minimal]
+verify_jwt = false
+
