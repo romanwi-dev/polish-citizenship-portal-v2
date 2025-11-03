@@ -526,7 +526,26 @@ export default function FamilyTreeForm() {
                   </TabsTrigger>
                 </TabsList>
               </div>
-                  <TabsContent value="select" className="mt-0" {...(isFullView ? { forceMount: true } : {})}>
+
+              {/* Family Tree Visualization - Always visible, synced with form data */}
+              <div className="px-4 py-6 border-b border-border/20">
+                <FamilyTreeInteractive
+                  clientData={{
+                    ...mapPersonData('applicant'),
+                    sex: formData.applicant_sex || 'M'
+                  }}
+                  spouse={mapPersonData('spouse')}
+                  father={mapPersonData('father')}
+                  mother={mapPersonData('mother')}
+                  paternalGrandfather={mapPersonData('pgf')}
+                  paternalGrandmother={mapPersonData('pgm')}
+                  maternalGrandfather={mapPersonData('mgf')}
+                  maternalGrandmother={mapPersonData('mgm')}
+                  onEdit={handlePersonEdit}
+                />
+              </div>
+
+              <TabsContent value="select" className="mt-0" {...(isFullView ? { forceMount: true } : {})}>
           {(activeTab === 'select' || isFullView) && (
           <motion.div initial={{
           opacity: 0,
