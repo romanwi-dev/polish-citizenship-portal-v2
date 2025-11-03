@@ -295,15 +295,6 @@ export default function POAForm() {
             </div>
         </motion.div>
 
-        <FormButtonsRow
-          caseId={caseId!}
-          currentForm="poa"
-          onSave={handlePOASave}
-          onClear={() => setShowClearAllDialog(true)}
-          onGeneratePDF={handleGenerateAllPOAs}
-          isSaving={isSaving || isGenerating}
-        />
-
         {/* POA Forms */}
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="space-y-6 md:space-y-12 pb-32">
           {/* Main Applicant - First Questions */}
