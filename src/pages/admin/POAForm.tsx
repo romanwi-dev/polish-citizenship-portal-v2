@@ -205,11 +205,16 @@ export default function POAForm() {
   };
 
   const handleDownloadPDF = () => {
-    if (!pdfPreviewUrl) return;
+    if (!pdfPreviewUrl) {
+      console.error('[POA] Cannot download - no PDF URL available');
+      toast.error('No PDF available to download');
+      return;
+    }
     const link = document.createElement("a");
     link.href = pdfPreviewUrl;
-    link.download = `POA-Adult-${caseId}.pdf`;
+    link.download = `POA-${activePOAType.toUpperCase()}-${caseId}.pdf`;
     link.click();
+    toast.success('PDF downloaded');
   };
 
   const handleGenerateAllPOAs = async () => {
@@ -719,7 +724,7 @@ export default function POAForm() {
           // For POAForm, we only have editable download - final can be same
           handleDownloadPDF();
         }}
-        documentTitle="POA Adult"
+        documentTitle={`POA ${activePOAType.charAt(0).toUpperCase() + activePOAType.slice(1)}`}
       />
     </div>
   );

@@ -33,6 +33,9 @@ export function PDFPreviewDialog({
   const [isPrinting, setIsPrinting] = useState(false);
   const isMobile = useIsMobile();
 
+  // Log PDF URL for debugging
+  console.log('[PDFPreviewDialog] Rendering with:', { open, pdfUrl, documentTitle });
+
   const handlePrint = () => {
     setIsPrinting(true);
     const printWindow = window.open(pdfUrl, '_blank');
@@ -62,11 +65,21 @@ export function PDFPreviewDialog({
         </DialogHeader>
 
         <div className="flex-1 border rounded-lg overflow-hidden bg-muted/10">
-          <iframe 
-            src={pdfUrl} 
-            className="w-full h-full border-0"
-            title="PDF Preview"
-          />
+          {pdfUrl ? (
+            <iframe 
+              src={pdfUrl} 
+              className="w-full h-full border-0"
+              title="PDF Preview"
+              onError={() => {
+                console.error('[PDFPreviewDialog] iframe failed to load PDF');
+                toast.error('Failed to load PDF preview');
+              }}
+            />
+          ) : (
+            <div className="flex items-center justify-center h-full">
+              <p className="text-muted-foreground">No PDF URL provided</p>
+            </div>
+          )}
         </div>
 
         <DialogFooter className="flex flex-col md:flex-row gap-2">
