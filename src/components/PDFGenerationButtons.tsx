@@ -106,16 +106,30 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
       toast.dismiss(loadingToast);
 
       if (!flatten) {
-        // ALWAYS use editable PDF - just create blob URL for preview
-        const url = window.URL.createObjectURL(blob);
-        console.log('✅ PDF ready:', { url, size: blob.size });
+        // Check if mobile - auto-download instead of preview
+        const device = detectDevice();
         
-        setPreviewUrl(url);
-        setCurrentTemplate({ type: templateType, label });
-        setCurrentTemplateType(templateType);
-        setFormData(masterData);
-        setPreviewOpen(true);
-        toast.success(`${label} ready!`, { duration: 3000 });
+        if (device.isMobile || device.isIOS || device.isAndroid) {
+          // MOBILE: Auto-download, skip preview (Safari can't display PDFs in iframe)
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `${templateType}-${caseId}.pdf`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+          toast.success(`${label} downloaded! Open in your PDF viewer to see content.`, { duration: 5000 });
+        } else {
+          // DESKTOP: Show preview dialog
+          const url = window.URL.createObjectURL(blob);
+          setPreviewUrl(url);
+          setCurrentTemplate({ type: templateType, label });
+          setCurrentTemplateType(templateType);
+          setFormData(masterData);
+          setPreviewOpen(true);
+          toast.success(`${label} ready!`, { duration: 3000 });
+        }
         
         // Update status: generated
         if (documentId) {

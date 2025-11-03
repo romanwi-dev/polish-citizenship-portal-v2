@@ -9,11 +9,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { detectDevice } from "@/utils/deviceDetection";
-import { Document, Page, pdfjs } from 'react-pdf';
-
-// Configure PDF.js worker
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 interface PDFPreviewDialogProps {
   open: boolean;
@@ -30,49 +25,24 @@ export function PDFPreviewDialog({
   open,
   onClose,
   pdfUrl,
-  formData,
-  onRegeneratePDF,
   onDownloadEditable,
   onDownloadFinal,
   documentTitle
 }: PDFPreviewDialogProps) {
   const [isPrinting, setIsPrinting] = useState(false);
-  const [numPages, setNumPages] = useState<number>(0);
-  const device = detectDevice();
-
-  function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
-    setNumPages(numPages);
-    console.log(`✅ PDF loaded: ${numPages} pages`);
-  }
 
   const handlePrint = () => {
     setIsPrinting(true);
-    
-    try {
-      if (device.isIOS) {
-        // iOS: Open in new tab, user manually prints
-        window.open(pdfUrl, '_blank');
-        toast.info("PDF opened in new tab. Use browser menu to print", {
-          duration: 4000
-        });
-      } else {
-        // Desktop/Android: Trigger print dialog
-        const printWindow = window.open(pdfUrl, '_blank');
-        if (printWindow) {
-          printWindow.onload = () => {
-            printWindow.print();
-          };
-          toast.success("Print dialog opened");
-        } else {
-          toast.error("Unable to open print window. Please check popup blocker.");
-        }
-      }
-    } catch (error) {
-      console.error('Print error:', error);
-      toast.error("Unable to print. Please download and print manually.");
-    } finally {
-      setIsPrinting(false);
+    const printWindow = window.open(pdfUrl, '_blank');
+    if (printWindow) {
+      printWindow.onload = () => {
+        printWindow.print();
+      };
+      toast.success("Print dialog opened");
+    } else {
+      toast.error("Unable to open print window. Please check popup blocker.");
     }
+    setIsPrinting(false);
   };
 
   const handleOpenNewTab = () => {
@@ -94,46 +64,12 @@ export function PDFPreviewDialog({
           </div>
         </DialogHeader>
 
-        <div className="flex-1 border rounded-lg overflow-auto bg-muted/10">
-          {device.isMobile || device.isIOS ? (
-            // Mobile: Use react-pdf (renders as Canvas - works on iOS)
-            <Document
-              file={pdfUrl}
-              onLoadSuccess={onDocumentLoadSuccess}
-              loading={
-                <div className="flex items-center justify-center h-full">
-                  <div className="text-muted-foreground">Loading PDF...</div>
-                </div>
-              }
-              error={
-                <div className="flex flex-col items-center justify-center h-full gap-2">
-                  <div className="text-destructive">Failed to load PDF</div>
-                  <Button onClick={handleOpenNewTab} variant="outline" size="sm">
-                    Open in New Tab
-                  </Button>
-                </div>
-              }
-              className="flex flex-col items-center gap-4 p-4"
-            >
-              {Array.from(new Array(numPages), (el, index) => (
-                <Page
-                  key={`page_${index + 1}`}
-                  pageNumber={index + 1}
-                  width={Math.min(window.innerWidth - 40, 800)}
-                  renderTextLayer={true}
-                  renderAnnotationLayer={true}
-                />
-              ))}
-            </Document>
-          ) : (
-            // Desktop: Use iframe (better performance)
-            <iframe 
-              src={pdfUrl} 
-              className="w-full h-full border-0"
-              title="PDF Preview"
-              onLoad={() => console.log('✅ PDF iframe loaded')}
-            />
-          )}
+        <div className="flex-1 border rounded-lg overflow-hidden bg-muted/10">
+          <iframe 
+            src={pdfUrl} 
+            className="w-full h-full border-0"
+            title="PDF Preview"
+          />
         </div>
 
         <DialogFooter className="flex gap-2">
