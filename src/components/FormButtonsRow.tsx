@@ -40,7 +40,7 @@ export function FormButtonsRow({
   const navigationButtons = getNavigationButtons(formData || {});
 
   return (
-    <div className="sticky top-0 z-50 mb-2 md:mb-8 py-1 md:py-2 -mx-4 md:-mx-6 space-y-1 md:space-y-2 bg-background/95 backdrop-blur-sm border-b border-border/40">
+    <div className="sticky top-0 z-[100] mb-2 md:mb-8 py-2 md:py-3 -mx-4 md:-mx-6 space-y-1 md:space-y-2 bg-background backdrop-blur-md border-b border-border shadow-lg">
       {/* Navigation Buttons Row */}
       <div className="flex flex-row gap-0.5 overflow-x-auto scrollbar-hide md:justify-between px-0 md:px-6 max-w-full">
         {navigationButtons
