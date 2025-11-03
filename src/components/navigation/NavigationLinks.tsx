@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Bot, GitBranch, ClipboardList, Users, Archive, Languages, Award, FileCheck, Plane, BookOpen, Shield, Search, PenTool, Sun, Sparkles } from 'lucide-react';
+import { Bot, GitBranch, ClipboardList, Users, Archive, Languages, Award, FileCheck, Plane, BookOpen, Shield, Search, PenTool, Sun, Sparkles, FileText } from 'lucide-react';
 
 interface NavigationLinksProps {
   onNavigate: () => void;
@@ -62,6 +62,7 @@ const NAVIGATION_SECTIONS: Array<{
     links: [
       { label: 'Forms Demo', href: '/admin/forms-demo', icon: Sparkles },
       { label: 'Editing Demos', href: '/admin/intake-demo', icon: ClipboardList },
+      { label: 'POA PDF System Docs', href: '/POA_PDF_GENERATION_WORKING_STATE.md', icon: FileText },
     ]
   }
 ];
