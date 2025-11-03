@@ -308,7 +308,7 @@ export default function CitizenshipForm() {
           >
             <div className="px-4 py-6 md:p-10">
               <div className="border-b border-border/50 pb-6">
-                <h2 className="text-4xl md:text-5xl font-heading font-bold text-primary">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-primary leading-tight">
                   CZĘŚĆ I - Dane osoby, której dotyczy wniosek
                 </h2>
               </div>
