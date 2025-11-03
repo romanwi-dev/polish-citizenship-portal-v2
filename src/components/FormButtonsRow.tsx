@@ -41,39 +41,7 @@ export function FormButtonsRow({
 
   return (
     <>
-      {/* Sticky Action Buttons Row - ALWAYS VISIBLE */}
-      <div className="fixed top-0 left-0 right-0 z-[100] backdrop-blur-md bg-background/95 border-b border-border shadow-lg">
-        <div className="mx-auto max-w-7xl px-3 md:px-6 py-2 md:py-3">
-          <div className="flex flex-row gap-0.5 justify-between">
-            <Button
-              onClick={onSave}
-              disabled={isSaving}
-              className="px-6 py-6 md:py-2 text-sm md:text-base font-bold flex-1 bg-green-500/20 hover:bg-green-500/30 border border-green-400/40 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]"
-            >
-              <span className="text-green-100 font-bold whitespace-nowrap">{isSaving ? "Saving..." : saveLabel}</span>
-            </Button>
-            
-            <Button
-              onClick={onGeneratePDF}
-              className="px-6 py-6 md:py-2 text-sm md:text-base font-bold flex-1 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]"
-            >
-              <span className="text-blue-100 font-bold whitespace-nowrap">Generate PDF</span>
-            </Button>
-            
-            <Button
-              onClick={onClear}
-              className="px-6 py-6 md:py-2 text-sm md:text-base font-bold flex-1 bg-red-500/20 hover:bg-red-500/30 border border-red-400/40 transition-all shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]"
-            >
-              <span className="text-red-100 font-bold whitespace-nowrap">Clear Data</span>
-            </Button>
-          </div>
-        </div>
-      </div>
-
-      {/* Spacer for sticky action buttons */}
-      <div className="h-[56px] md:h-[52px]" />
-
-      {/* Navigation Buttons Row - Static, no background */}
+      {/* Navigation Buttons Row - Static at top, no background */}
       <div className="mb-2 md:mb-8 py-2 md:py-3">
         <div className="flex flex-row gap-0.5 overflow-x-auto scrollbar-hide md:justify-between px-0 md:px-6 max-w-full">
           {navigationButtons
@@ -101,6 +69,38 @@ export function FormButtonsRow({
             })}
         </div>
       </div>
+
+      {/* Sticky Action Buttons Row - FIXED AT BOTTOM */}
+      <div className="fixed bottom-0 left-0 right-0 z-[100] backdrop-blur-md bg-background/95 border-t border-border shadow-lg">
+        <div className="mx-auto max-w-7xl px-3 md:px-6 py-2 md:py-3">
+          <div className="flex flex-row gap-0.5 justify-between">
+            <Button
+              onClick={onSave}
+              disabled={isSaving}
+              className="px-6 py-6 md:py-2 text-sm md:text-base font-bold flex-1 bg-green-500/20 hover:bg-green-500/30 border border-green-400/40 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]"
+            >
+              <span className="text-green-100 font-bold whitespace-nowrap">{isSaving ? "Saving..." : saveLabel}</span>
+            </Button>
+            
+            <Button
+              onClick={onGeneratePDF}
+              className="px-6 py-6 md:py-2 text-sm md:text-base font-bold flex-1 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]"
+            >
+              <span className="text-blue-100 font-bold whitespace-nowrap">Generate PDF</span>
+            </Button>
+            
+            <Button
+              onClick={onClear}
+              className="px-6 py-6 md:py-2 text-sm md:text-base font-bold flex-1 bg-red-500/20 hover:bg-red-500/30 border border-red-400/40 transition-all shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]"
+            >
+              <span className="text-red-100 font-bold whitespace-nowrap">Clear Data</span>
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {/* Spacer for sticky action buttons at bottom */}
+      <div className="h-[56px] md:h-[52px]" />
     </>
   );
 }
