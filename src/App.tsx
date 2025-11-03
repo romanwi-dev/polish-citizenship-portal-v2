@@ -75,6 +75,7 @@ const AIAgentsDashboard = lazy(() => import("./pages/admin/AIAgentsDashboard"));
 const AgentApprovals = lazy(() => import("./pages/admin/AgentApprovals"));
 const VerifyChanges = lazy(() => import("./pages/VerifyChanges"));
 const PDFDemo = lazy(() => import("./pages/PDFDemo"));
+const SelfTest = lazy(() => import("./pages/admin/SelfTest"));
 
 
 const queryClient = new QueryClient({
@@ -593,6 +594,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <VerifyChanges />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/selftest" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <SelfTest />
               </Suspense>
             } 
           />
