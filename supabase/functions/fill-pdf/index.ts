@@ -421,6 +421,10 @@ function fillPDFFields(form: any, data: any, fieldMap: Record<string, string>): 
   const allFields = form.getFields();
   const result: FillResult = { totalFields: allFields.length, filledCount: 0, emptyFields: [], errors: [] };
   
+  // Log all available PDF field names for debugging
+  const pdfFieldNames = allFields.map((f: any) => f.getName());
+  log('available_pdf_fields', { fields: pdfFieldNames });
+  
   Object.entries(fieldMap).forEach(([pdfFieldName, dataPath]) => {
     try {
       let value: any;
@@ -431,8 +435,11 @@ function fillPDFFields(form: any, data: any, fieldMap: Record<string, string>): 
         value = getNestedValue(data, dataPath);
       }
       
+      log('attempting_fill', { pdfFieldName, dataPath, value, hasValue: value !== undefined && value !== null && value !== '' });
+      
       if (value === undefined || value === null || value === '') {
         result.emptyFields.push(pdfFieldName);
+        log('empty_field_skipped', { pdfFieldName, dataPath });
         return;
       }
       
