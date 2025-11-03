@@ -99,8 +99,14 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
         throw new Error(`Failed to generate PDF: ${error.message}`);
       }
       
-      // Create blob from response - edge function returns raw binary data
-      const blob = new Blob([data], { type: 'application/pdf' });
+      // Decode base64 to binary
+      const binaryString = atob(data.pdf);
+      const bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      
+      const blob = new Blob([bytes], { type: 'application/pdf' });
       
       console.log('✅ PDF Blob created:', {
         size: blob.size,
@@ -315,7 +321,14 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
 
       if (error) throw new Error(`Failed to generate PDF: ${error.message}`);
 
-      const blob = new Blob([data], { type: 'application/pdf' });
+      // Decode base64 to binary
+      const binaryString = atob(data.pdf);
+      const bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      
+      const blob = new Blob([bytes], { type: 'application/pdf' });
       
       console.log('✅ Editable PDF Blob created:', blob.size, 'bytes');
       toast.dismiss(loadingToast);
@@ -373,7 +386,14 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
 
       if (error) throw new Error(`Failed to generate PDF: ${error.message}`);
 
-      const blob = new Blob([data], { type: 'application/pdf' });
+      // Decode base64 to binary
+      const binaryString = atob(data.pdf);
+      const bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      
+      const blob = new Blob([bytes], { type: 'application/pdf' });
       
       console.log('✅ Final PDF Blob created:', blob.size, 'bytes');
       toast.dismiss(loadingToast);

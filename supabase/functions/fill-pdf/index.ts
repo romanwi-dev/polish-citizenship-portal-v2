@@ -963,13 +963,23 @@ serve(async (req) => {
     
     console.log(`PDF generated: ${filledPdfBytes.length} bytes`);
     
-    return new Response(filledPdfBytes as any, {
-      headers: {
-        ...corsHeaders,
-        'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename="${templateType}-${caseId}.pdf"`,
-      },
-    });
+    // Convert binary to base64 for safe transmission through Supabase client
+    const base64Pdf = btoa(
+      String.fromCharCode(...new Uint8Array(filledPdfBytes))
+    );
+    
+    return new Response(
+      JSON.stringify({ 
+        pdf: base64Pdf,
+        size: filledPdfBytes.length 
+      }),
+      {
+        headers: {
+          ...corsHeaders,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
   } catch (error) {
     console.error('Error generating PDF:', error);
     return new Response(
