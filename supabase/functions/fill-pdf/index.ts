@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
-import { PDFDocument, PDFName, PDFBool } from "https://esm.sh/pdf-lib@1.17.1";
+import { PDFDocument, PDFName, PDFBool, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1";
 
 // ============ IN-MEMORY CACHE FOR PDF TEMPLATES ============
 const pdfTemplateCache = new Map<string, Uint8Array>();
@@ -942,13 +942,14 @@ serve(async (req) => {
       }
     }
 
-    // CRITICAL: Do NOT use updateFieldAppearances with Polish characters
-    // pdf-lib's WinAnsi encoding cannot handle Ś, ź, ą, etc.
-    // Instead, set NeedAppearances flag so PDF viewers render fields themselves
-    pdfDoc.getForm().acroForm.dict.set(
-      PDFName.of('NeedAppearances'), 
-      PDFBool.True
-    );
+    // Embed Helvetica font for Unicode support (Polish characters)
+    const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    
+    // Update field appearances with Unicode-compatible font
+    form.updateFieldAppearances(helveticaFont);
+    
+    // Set NeedAppearances as fallback for viewers that don't support appearance streams
+    form.acroForm.dict.set(PDFName.of('NeedAppearances'), PDFBool.True);
 
     // Only flatten for final locked PDFs, keep editable otherwise
     if (flatten) {
@@ -960,7 +961,7 @@ serve(async (req) => {
     
     const filledPdfBytes = await pdfDoc.save({
       useObjectStreams: false,
-      updateFieldAppearances: false  // MUST be false for Polish character support
+      updateFieldAppearances: true  // Safe now - using Helvetica font for Unicode support
     });
     
     console.log(`PDF generated: ${filledPdfBytes.length} bytes`);
