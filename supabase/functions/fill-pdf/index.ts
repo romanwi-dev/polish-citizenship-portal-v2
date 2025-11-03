@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
-import { PDFDocument, PDFName, PDFBool, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1";
+import { PDFDocument, PDFName, PDFBool } from "https://esm.sh/pdf-lib@1.17.1";
+import fontkit from "https://esm.sh/fontkit@2.0.2";
 
 // ============ IN-MEMORY CACHE FOR PDF TEMPLATES ============
 const pdfTemplateCache = new Map<string, Uint8Array>();
@@ -942,14 +943,22 @@ serve(async (req) => {
       }
     }
 
-    // Embed Helvetica font for Unicode support (Polish characters)
-    const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    // Register fontkit for custom font embedding
+    pdfDoc.registerFontkit(fontkit);
+    
+    // Fetch Roboto font (supports Polish extended Latin characters)
+    const fontUrl = 'https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Me5WZLCzYlKw.ttf';
+    const fontResponse = await fetch(fontUrl);
+    const fontBytes = await fontResponse.arrayBuffer();
+    
+    // Embed custom Unicode font
+    const customFont = await pdfDoc.embedFont(fontBytes);
     
     // Update field appearances with Unicode-compatible font
-    form.updateFieldAppearances(helveticaFont);
+    form.updateFieldAppearances(customFont);
     
-    // Set NeedAppearances as fallback for viewers that don't support appearance streams
-    form.acroForm.dict.set(PDFName.of('NeedAppearances'), PDFBool.True);
+    // Remove NeedAppearances flag - we have proper appearance streams now
+    form.acroForm.dict.delete(PDFName.of('NeedAppearances'));
 
     // Only flatten for final locked PDFs, keep editable otherwise
     if (flatten) {
