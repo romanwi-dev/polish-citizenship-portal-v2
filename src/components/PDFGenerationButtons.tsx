@@ -312,25 +312,20 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
 
   const handleDownloadEditable = async () => {
     try {
-      setIsGenerating(true);
-      const loadingToast = toast.loading(`Generating editable ${currentTemplate.label}...`);
-
-      const { data, error } = await supabase.functions.invoke('fill-pdf', {
-        body: { caseId, templateType: currentTemplate.type, flatten: false }
-      });
-
-      if (error) throw new Error(`Failed to generate PDF: ${error.message}`);
-
-      // Decode base64 to binary
-      const binaryString = atob(data.pdf);
-      const bytes = new Uint8Array(binaryString.length);
-      for (let i = 0; i < binaryString.length; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
+      // The preview is already editable (generated with flatten: false)
+      // So just download the existing blob from the preview URL
+      if (!previewUrl) {
+        toast.error('No PDF preview available');
+        return;
       }
+
+      const loadingToast = toast.loading(`Downloading editable ${currentTemplate.label}...`);
       
-      const blob = new Blob([bytes], { type: 'application/pdf' });
+      // Fetch the blob from the preview URL (which is already editable)
+      const response = await fetch(previewUrl);
+      const blob = await response.blob();
       
-      console.log('✅ Editable PDF Blob created:', blob.size, 'bytes');
+      console.log('✅ Downloading editable PDF from preview:', blob.size, 'bytes');
       toast.dismiss(loadingToast);
       
       handlePlatformDownload(blob, `${currentTemplate.type}-${caseId}-editable.pdf`, true);
