@@ -494,19 +494,65 @@ Deno.serve(async (req) => {
       if (token !== Deno.env.get('INTERNAL_ADMIN_TOKEN')) {
         return j(req, { ok: false, error: 'unauthorized' }, 401);
       }
+      
+      const diagnostics: any = {
+        ok: true,
+        hasSecrets: true,
+        uploadOk: false,
+        signOk: false,
+        timestamp: new Date().toISOString()
+      };
+      
       try {
-        const url = Deno.env.get('SUPABASE_URL')!;
-        const key = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-        const admin = createClient(url, key);
+        // Check secrets
+        const url = Deno.env.get('SUPABASE_URL');
+        const key = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+        const anon = Deno.env.get('SUPABASE_ANON_KEY');
+        diagnostics.hasSecrets = !!(url && key && anon);
+        
+        if (!diagnostics.hasSecrets) {
+          diagnostics.ok = false;
+          diagnostics.diagError = 'Missing required environment variables';
+          return j(req, diagnostics, 200);
+        }
+        
+        // Test storage upload
+        const admin = createClient(url!, key!);
         const path = `diagnostics/${Date.now()}.txt`;
         const up = await admin.storage.from('generated-pdfs')
           .upload(path, new TextEncoder().encode('ok'), { contentType: 'text/plain', upsert: true });
-        if (up.error) { log('diag_upload_fail', { err: up.error.message }); return j(req, { ok: false }, 500); }
+        
+        if (up.error) {
+          log('diag_upload_fail', { err: up.error.message });
+          diagnostics.ok = false;
+          diagnostics.uploadOk = false;
+          diagnostics.diagError = `Upload failed: ${up.error.message}`;
+          return j(req, diagnostics, 200);
+        }
+        
+        diagnostics.uploadOk = true;
+        
+        // Test signed URL generation
         const sign = await admin.storage.from('generated-pdfs').createSignedUrl(path, 60);
-        if (sign.error) { log('diag_sign_fail', { err: sign.error.message }); return j(req, { ok: false }, 500); }
-        return j(req, { ok: true }, 200);
+        
+        if (sign.error) {
+          log('diag_sign_fail', { err: sign.error.message });
+          diagnostics.ok = false;
+          diagnostics.signOk = false;
+          diagnostics.diagError = `Signing failed: ${sign.error.message}`;
+          return j(req, diagnostics, 200);
+        }
+        
+        diagnostics.signOk = true;
+        log('diagnostics_pass', { timestamp: diagnostics.timestamp });
+        return j(req, diagnostics, 200);
+        
       } catch (e) {
-        log('diag_exception', { err: String((e as Error)?.message ?? e) }); return j(req, { ok: false }, 500);
+        const errMsg = String((e as Error)?.message ?? e);
+        log('diag_exception', { err: errMsg });
+        diagnostics.ok = false;
+        diagnostics.diagError = `Exception: ${errMsg}`;
+        return j(req, diagnostics, 200);
       }
     }
 
