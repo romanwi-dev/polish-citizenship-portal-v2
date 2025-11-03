@@ -38,6 +38,7 @@ const AuthorityReview = lazy(() => import("./pages/admin/AuthorityReview"));
 const SystemHealth = lazy(() => import("./pages/admin/SystemHealth"));
 const PDFInspector = lazy(() => import("./pages/admin/PDFInspector"));
 const PDFFieldInspector = lazy(() => import("./pages/admin/PDFFieldInspector"));
+const PDFSystemVerification = lazy(() => import("./pages/admin/PDFSystemVerification"));
 const ZeroErrorsChecklist = lazy(() => import("./pages/admin/ZeroErrorsChecklist"));
 const UploadPDFTemplates = lazy(() => import("./pages/admin/UploadPDFTemplates"));
 const ManualPDFUpload = lazy(() => import("./pages/admin/ManualPDFUpload"));
@@ -250,6 +251,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <PDFFieldInspector />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/pdf-system-verification" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <PDFSystemVerification />
               </Suspense>
             } 
           />
