@@ -23,6 +23,8 @@ interface VerificationResponse {
     successCount: number;
     errorCount: number;
     warningCount: number;
+    aiVerificationsPassed: number;
+    totalAiVerifications: number;
     successRate: string;
     message: string;
     timestamp: string;
@@ -152,9 +154,18 @@ export function PDFVerificationPanel({ caseId }: { caseId: string }) {
                   </div>
                 </div>
 
-                <div className="mt-4">
-                  <div className="text-sm text-muted-foreground">
-                    {results.summary.message}
+                <div className="mt-4 grid grid-cols-2 gap-4">
+                  <div className="p-3 bg-muted rounded-lg">
+                    <div className="text-sm font-medium">AI Verifications Passed</div>
+                    <div className="text-lg font-bold text-green-500">
+                      {results.summary.aiVerificationsPassed} / {results.summary.totalAiVerifications}
+                    </div>
+                  </div>
+                  <div className="p-3 bg-muted rounded-lg">
+                    <div className="text-sm font-medium">Status</div>
+                    <div className="text-lg font-bold">
+                      {results.summary.message}
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -205,9 +216,11 @@ export function PDFVerificationPanel({ caseId }: { caseId: string }) {
                 <p>Click "Run Full Verification" to test PDF generation</p>
                 <p className="text-sm mt-2">This will:</p>
                 <ul className="text-sm mt-2 space-y-1">
+                  <li>✓ Check case has data to fill</li>
                   <li>✓ Generate PDFs 3 times</li>
                   <li>✓ Download and verify each PDF</li>
-                  <li>✓ Check for generation errors</li>
+                  <li>✓ AI analyzes PDF content (Gemini)</li>
+                  <li>✓ Verify fields are actually filled</li>
                   <li>✓ Provide comprehensive report</li>
                 </ul>
               </div>

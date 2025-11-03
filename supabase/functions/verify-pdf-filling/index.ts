@@ -46,9 +46,53 @@ Deno.serve(async (req) => {
       timestamp: new Date().toISOString()
     });
 
+    // First, check if case has ANY data
+    const { data: caseData, error: caseError } = await supabase
+      .from('master_table')
+      .select('applicant_first_name, applicant_last_name, applicant_passport_number, poa_date_filed')
+      .eq('case_id', caseId)
+      .single();
+
+    if (caseError || !caseData) {
+      addResult('data_check', 'error', { error: 'No data found for this case' });
+      return new Response(
+        JSON.stringify({
+          success: false,
+          summary: {
+            verdict: 'NO_DATA_TO_TEST',
+            message: 'This case has no data in the database. Cannot verify PDF filling.',
+            totalTests: 0,
+            successCount: 0,
+            errorCount: 1
+          },
+          results,
+          recommendation: '❌ Choose a case with actual data to test PDF generation.'
+        }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const hasData = !!(caseData.applicant_first_name || caseData.applicant_last_name || 
+                      caseData.applicant_passport_number || caseData.poa_date_filed);
+
+    addResult('data_check', hasData ? 'success' : 'warning', {
+      applicant_first_name: caseData.applicant_first_name || 'NULL',
+      applicant_last_name: caseData.applicant_last_name || 'NULL',
+      applicant_passport_number: caseData.applicant_passport_number || 'NULL',
+      poa_date_filed: caseData.poa_date_filed || 'NULL',
+      hasData
+    });
+
+    if (!hasData) {
+      addResult('data_validation', 'error', { error: 'All fields are NULL - cannot verify filling' });
+    }
+
+    let aiVerificationsPassed = 0;
+    let totalAiVerifications = 0;
+
     // ===== PROTOCOL RUN 1, 2, 3 =====
     for (let run = 1; run <= runCount; run++) {
-      addResult(`protocol_run_${run}_start`, 'success', { run, templateType });
+      addResult(`run_${run}_start`, 'success', { run, templateType });
 
       // Step 1: Generate PDF
       const generateStart = Date.now();
@@ -65,7 +109,7 @@ Deno.serve(async (req) => {
 
       if (!generateResponse.ok) {
         const errorText = await generateResponse.text();
-        addResult(`protocol_run_${run}_generate`, 'error', {
+        addResult(`run_${run}_generate`, 'error', {
           status: generateResponse.status,
           error: errorText,
           duration: generateDuration
@@ -74,50 +118,114 @@ Deno.serve(async (req) => {
       }
 
       const generateData = await generateResponse.json();
-      addResult(`protocol_run_${run}_generate`, 'success', {
-        url: generateData.url,
+      addResult(`run_${run}_generate`, 'success', {
+        url: generateData.url?.substring(0, 100) + '...',
         duration: generateDuration,
         hasUrl: !!generateData.url
       });
 
       if (!generateData.url) {
-        addResult(`protocol_run_${run}_no_url`, 'error', { data: generateData });
+        addResult(`run_${run}_no_url`, 'error', { data: generateData });
         continue;
       }
 
       // Step 2: Download the PDF
       const pdfResponse = await fetch(generateData.url);
       if (!pdfResponse.ok) {
-        addResult(`protocol_run_${run}_download`, 'error', {
+        addResult(`run_${run}_download`, 'error', {
           status: pdfResponse.status,
-          url: generateData.url
+          url: generateData.url.substring(0, 100)
         });
         continue;
       }
 
       const pdfBytes = await pdfResponse.arrayBuffer();
+      const pdfSize = pdfBytes.byteLength;
       
-      addResult(`protocol_run_${run}_download`, 'success', {
-        size: pdfBytes.byteLength,
-        sizeKB: Math.round(pdfBytes.byteLength / 1024)
+      addResult(`run_${run}_download`, 'success', {
+        size: pdfSize,
+        sizeKB: Math.round(pdfSize / 1024)
       });
 
-      // Note: We skip AI verification for now since it requires the PDF to be analyzed
-      // which would need additional implementation. For now, we verify through logs only.
-
-      // Step 3: Check edge function logs for field filling success
-      // Instead of AI verification, we check the actual fill-pdf logs
-      // to see if fields were filled successfully
+      // Step 3: AI Verification - Upload to Lovable AI and analyze
+      totalAiVerifications++;
       
-      addResult(`protocol_run_${run}_verification`, 'success', {
-        message: 'PDF generated and downloaded successfully',
-        note: 'Check edge function logs for field filling details'
-      });
+      try {
+        // Convert PDF to base64 for AI analysis
+        const base64Pdf = btoa(String.fromCharCode(...new Uint8Array(pdfBytes)));
+        
+        const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${lovableApiKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            model: 'google/gemini-2.5-flash',
+            messages: [
+              {
+                role: 'user',
+                content: [
+                  {
+                    type: 'text',
+                    text: `Analyze this PDF form and answer:
+1. Are form fields filled with actual data (names, dates, passport numbers)?
+2. How many fields appear to be filled vs blank?
+3. List specific data you can see (e.g., names, numbers)
+4. Is this a filled form or blank template?
 
-      addResult(`protocol_run_${run}_complete`, 'success', {
-        run,
-        totalSteps: results.filter(r => r.step.includes(`run_${run}`)).length
-      });
+Respond in JSON:
+{
+  "fields_filled": true/false,
+  "filled_count": number,
+  "blank_count": number,
+  "data_found": ["list", "of", "values"],
+  "verdict": "FILLED" or "BLANK" or "PARTIALLY_FILLED"
+}`
+                  },
+                  {
+                    type: 'image_url',
+                    image_url: {
+                      url: `data:application/pdf;base64,${base64Pdf}`
+                    }
+                  }
+                ]
+              }
+            ]
+          })
+        });
+
+        if (!aiResponse.ok) {
+          addResult(`run_${run}_ai_verify`, 'error', {
+            status: aiResponse.status,
+            error: await aiResponse.text()
+          });
+          continue;
+        }
+
+        const aiData = await aiResponse.json();
+        const aiContent = aiData.choices?.[0]?.message?.content || '{}';
+        const aiAnalysis = JSON.parse(aiContent);
+
+        const passed = aiAnalysis.verdict === 'FILLED' && aiAnalysis.fields_filled;
+        if (passed) aiVerificationsPassed++;
+
+        addResult(`run_${run}_ai_verify`, passed ? 'success' : 'error', {
+          verdict: aiAnalysis.verdict,
+          fields_filled: aiAnalysis.fields_filled,
+          filled_count: aiAnalysis.filled_count,
+          data_found: aiAnalysis.data_found,
+          analysis: aiContent
+        });
+
+      } catch (aiError: any) {
+        addResult(`run_${run}_ai_verify`, 'error', {
+          error: aiError.message,
+          details: 'AI verification failed'
+        });
+      }
+
+      addResult(`run_${run}_complete`, 'success', { run });
     }
 
     // ===== FINAL SUMMARY =====
@@ -125,7 +233,9 @@ Deno.serve(async (req) => {
     const errorCount = results.filter(r => r.status === 'error').length;
     const warningCount = results.filter(r => r.status === 'warning').length;
     
-    const finalVerdict = errorCount === 0 ? 'ALL_TESTS_PASSED' : 'TESTS_FAILED';
+    const finalVerdict = errorCount === 0 && aiVerificationsPassed === totalAiVerifications 
+      ? 'ALL_TESTS_PASSED' 
+      : 'TESTS_FAILED';
 
     const summary = {
       verdict: finalVerdict,
@@ -134,19 +244,21 @@ Deno.serve(async (req) => {
       successCount,
       errorCount,
       warningCount,
+      aiVerificationsPassed,
+      totalAiVerifications,
       successRate: `${Math.round((successCount / results.length) * 100)}%`,
-      message: errorCount === 0 
-        ? '✅ All PDF generation tests completed successfully! Check fill-pdf edge function logs for field filling details.'
-        : '❌ Some tests failed. Review error details above.',
+      message: errorCount === 0 && aiVerificationsPassed === totalAiVerifications
+        ? '✅ All tests passed! PDFs are being filled correctly with actual data.'
+        : `❌ ${errorCount} errors found. AI verified ${aiVerificationsPassed}/${totalAiVerifications} PDFs as filled.`,
       timestamp: new Date().toISOString()
     };
 
     return new Response(
       JSON.stringify({
-        success: errorCount === 0,
+        success: errorCount === 0 && aiVerificationsPassed === totalAiVerifications,
         summary,
         results,
-        recommendation: errorCount === 0 
+        recommendation: errorCount === 0 && aiVerificationsPassed === totalAiVerifications
           ? '✅ PDF generation and field filling is FULLY OPERATIONAL!'
           : '❌ Issues detected. Review error details above.'
       }, null, 2),
