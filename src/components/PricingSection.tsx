@@ -1,5 +1,125 @@
 import { Check, Train, Plane, Zap } from "lucide-react";
 import { Button } from "./ui/button";
+import { useState } from "react";
+
+const FlippablePricingCard = ({ 
+  icon: Icon, 
+  title, 
+  subtitle, 
+  price, 
+  installment, 
+  timeline, 
+  features, 
+  buttonText, 
+  gradient, 
+  iconColor, 
+  checkColor, 
+  badge,
+  onClick 
+}: { 
+  icon: any; 
+  title: string; 
+  subtitle: string; 
+  price: string; 
+  installment: string; 
+  timeline: string; 
+  features: string[]; 
+  buttonText: string; 
+  gradient: string; 
+  iconColor: string; 
+  checkColor: string; 
+  badge?: { text: string; colors: string };
+  onClick: () => void;
+}) => {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  return (
+    <div 
+      className="h-[600px] cursor-pointer"
+      style={{ 
+        perspective: '1000px'
+      }}
+      onClick={() => setIsFlipped(!isFlipped)}
+    >
+      <div 
+        className="relative w-full h-full transition-transform duration-700"
+        style={{
+          transformStyle: 'preserve-3d',
+          transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
+        }}
+      >
+        {/* Front */}
+        <div 
+          className={`absolute inset-0 glass-card p-8 rounded-3xl hover-glow ${badge ? 'border-2 border-primary/50' : ''}`}
+          style={{ backfaceVisibility: 'hidden' }}
+        >
+          {badge && (
+            <div className={`absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full ${badge.colors} text-white text-sm font-semibold whitespace-nowrap min-w-[120px] text-center`}>
+              {badge.text}
+            </div>
+          )}
+          
+          <div className="flex items-center gap-3 mb-6">
+            <div className={`w-12 h-12 rounded-full ${gradient} flex items-center justify-center`}>
+              <Icon className={`w-6 h-6 ${iconColor}`} />
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold">{title}</h3>
+              <p className="text-sm text-muted-foreground">{subtitle}</p>
+            </div>
+          </div>
+          
+          <div className="mb-6">
+            <div className={`text-4xl font-bold bg-clip-text text-transparent mb-2 ${gradient.replace('bg-gradient-to-br', 'bg-gradient-to-r')}`}>
+              {price}
+            </div>
+            <div className="text-sm text-muted-foreground">{installment}</div>
+          </div>
+
+          <div className="mb-6">
+            <div className="text-sm text-muted-foreground mb-1">Timeline</div>
+            <div className="text-lg font-semibold">{timeline}</div>
+          </div>
+
+          <ul className="space-y-3 mb-8">
+            {features.map((feature, idx) => (
+              <li key={idx} className="flex items-start gap-2">
+                <Check className={`w-5 h-5 ${checkColor} mt-0.5 flex-shrink-0`} />
+                <span className="text-sm">{feature}</span>
+              </li>
+            ))}
+          </ul>
+
+          <Button 
+            className="w-full bg-red-900/50 hover:bg-red-900/60 text-white border-2 border-red-800/30 hover:border-red-700/50 shadow-[0_0_20px_rgba(127,29,29,0.4)] hover:shadow-[0_0_30px_rgba(127,29,29,0.6)] transition-all duration-300 hover:scale-105" 
+            onClick={(e) => {
+              e.stopPropagation();
+              onClick();
+            }}
+          >
+            {buttonText}
+          </Button>
+        </div>
+
+        {/* Back */}
+        <div 
+          className="absolute inset-0 glass-card p-8 rounded-3xl flex items-center justify-center"
+          style={{ 
+            backfaceVisibility: 'hidden',
+            transform: 'rotateY(180deg)'
+          }}
+        >
+          <div className={`absolute inset-0 ${gradient} opacity-20 rounded-3xl`} />
+          <div className="relative z-10 text-center">
+            <p className="text-muted-foreground italic">
+              Click to flip back
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const PricingSection = () => {
   const scrollToContact = () => {
@@ -30,192 +150,73 @@ const PricingSection = () => {
 
           {/* Pricing Cards */}
           <div className="grid md:grid-cols-3 gap-8 mb-12">
-            {/* Standard */}
-            <div className="glass-card p-8 rounded-3xl hover-glow relative">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                  <Train className="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold">Standard</h3>
-                  <p className="text-sm text-muted-foreground">Like traveling by train</p>
-                </div>
-              </div>
-              
-              <div className="mb-6">
-                <div className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
-                  €1,500 - €3,500
-                </div>
-                <div className="text-sm text-muted-foreground">375-583 EUR per installment</div>
-                <div className="text-sm text-muted-foreground">4-6 installments</div>
-              </div>
+            <FlippablePricingCard
+              icon={Train}
+              title="Standard"
+              subtitle="Like traveling by train"
+              price="€1,500 - €3,500"
+              installment="375-583 EUR per installment • 4-6 installments"
+              timeline="36-48 months average"
+              features={[
+                "Lower installment values",
+                "Basic legal guidance",
+                "Standard document processing",
+                "Email support",
+                "Regular case updates"
+              ]}
+              buttonText="Get Started"
+              gradient="bg-gradient-to-br from-primary/20 to-secondary/20"
+              iconColor="text-primary"
+              checkColor="text-primary"
+              onClick={scrollToContact}
+            />
 
-              <div className="mb-6">
-                <div className="text-sm text-muted-foreground mb-1">Timeline</div>
-                <div className="text-lg font-semibold">36-48 months average</div>
-              </div>
+            <FlippablePricingCard
+              icon={Plane}
+              title="Expedited"
+              subtitle="Like business class flight"
+              price="€3,500 - €8,000"
+              installment="500-889 EUR per installment • 7-9 installments"
+              timeline="18-36 months"
+              features={[
+                "50% higher installment value",
+                "Priority case handling",
+                "Expedited document processing",
+                "Phone & email support",
+                "Weekly progress updates",
+                "Dedicated case manager"
+              ]}
+              buttonText="Get Started"
+              gradient="bg-gradient-to-br from-secondary/20 to-accent/20"
+              iconColor="text-secondary"
+              checkColor="text-secondary"
+              badge={{ text: "Most Popular", colors: "bg-gradient-to-r from-primary to-secondary" }}
+              onClick={scrollToContact}
+            />
 
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">Lower installment values</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">Basic legal guidance</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">Standard document processing</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">Email support</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">Regular case updates</span>
-                </li>
-              </ul>
-
-              <Button 
-                className="w-full bg-red-900/50 hover:bg-red-900/60 text-white border-2 border-red-800/30 hover:border-red-700/50 shadow-[0_0_20px_rgba(127,29,29,0.4)] hover:shadow-[0_0_30px_rgba(127,29,29,0.6)] transition-all duration-300 hover:scale-105" 
-                onClick={scrollToContact}
-              >
-                Get Started
-              </Button>
-            </div>
-
-            {/* Expedited - Most Popular */}
-            <div className="glass-card p-8 rounded-3xl hover-glow relative border-2 border-primary/50">
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-primary to-secondary text-white text-sm font-semibold whitespace-nowrap min-w-[120px] text-center">
-                Most Popular
-              </div>
-              
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-secondary/20 to-accent/20 flex items-center justify-center">
-                  <Plane className="w-6 h-6 text-secondary" />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold">Expedited</h3>
-                  <p className="text-sm text-muted-foreground">Like business class flight</p>
-                </div>
-              </div>
-              
-              <div className="mb-6">
-                <div className="text-4xl font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent mb-2">
-                  €3,500 - €8,000
-                </div>
-                <div className="text-sm text-muted-foreground">500-889 EUR per installment</div>
-                <div className="text-sm text-muted-foreground">7-9 installments</div>
-              </div>
-
-              <div className="mb-6">
-                <div className="text-sm text-muted-foreground mb-1">Timeline</div>
-                <div className="text-lg font-semibold">18-36 months</div>
-              </div>
-
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">50% higher installment value</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">Priority case handling</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">Expedited document processing</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">Phone & email support</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">Weekly progress updates</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">Dedicated case manager</span>
-                </li>
-              </ul>
-
-              <Button 
-                className="w-full bg-red-900/60 hover:bg-red-900/70 text-white shadow-[0_0_30px_rgba(127,29,29,0.6)] hover:shadow-[0_0_40px_rgba(127,29,29,0.8)] border-2 border-red-800/40 hover:border-red-700/60 transition-all duration-300 hover:scale-105"
-                onClick={scrollToContact}
-              >
-                Get Started
-              </Button>
-            </div>
-
-            {/* VIP */}
-            <div className="glass-card p-8 rounded-3xl hover-glow relative">
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-accent/80 to-primary/80 text-white text-sm font-semibold whitespace-nowrap min-w-[120px] text-center">
-                Waitlist...
-              </div>
-              
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-accent/20 to-primary/20 flex items-center justify-center">
-                  <Zap className="w-6 h-6 text-accent" />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold">VIP</h3>
-                  <p className="text-sm text-muted-foreground">Like flying private jet</p>
-                </div>
-              </div>
-              
-              <div className="mb-6">
-                <div className="text-4xl font-bold bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent mb-2">
-                  €12,500+
-                </div>
-                <div className="text-sm text-muted-foreground">Flat fee per person</div>
-              </div>
-
-              <div className="mb-6">
-                <div className="text-sm text-muted-foreground mb-1">Timeline</div>
-                <div className="text-lg font-semibold">14-18 months</div>
-              </div>
-
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">Fastest processing possible</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">White glove service</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">Direct government liaison</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">24/7 support access</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">Daily updates if needed</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">Personal legal team</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">All schemes included</span>
-                </li>
-              </ul>
-
-              <Button 
-                className="w-full bg-red-900/50 hover:bg-red-900/60 text-white border-2 border-red-800/30 hover:border-red-700/50 shadow-[0_0_20px_rgba(127,29,29,0.4)] hover:shadow-[0_0_30px_rgba(127,29,29,0.6)] transition-all duration-300 hover:scale-105" 
-                onClick={scrollToContact}
-              >
-                Join Waitlist
-              </Button>
-            </div>
+            <FlippablePricingCard
+              icon={Zap}
+              title="VIP"
+              subtitle="Like flying private jet"
+              price="€12,500+"
+              installment="Flat fee per person"
+              timeline="14-18 months"
+              features={[
+                "Fastest processing possible",
+                "White glove service",
+                "Direct government liaison",
+                "24/7 support access",
+                "Daily updates if needed",
+                "Personal legal team",
+                "All schemes included"
+              ]}
+              buttonText="Join Waitlist"
+              gradient="bg-gradient-to-br from-accent/20 to-primary/20"
+              iconColor="text-accent"
+              checkColor="text-accent"
+              badge={{ text: "Waitlist...", colors: "bg-gradient-to-r from-accent/80 to-primary/80" }}
+              onClick={scrollToContact}
+            />
           </div>
         </div>
         
