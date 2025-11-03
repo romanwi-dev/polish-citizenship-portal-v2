@@ -288,56 +288,6 @@ export default function CitizenshipForm() {
             </div>
         </motion.div>
 
-        {/* Auto-Populate from Intake Button */}
-        {hasOBYData && (
-          <div className="mb-4 flex flex-col md:flex-row items-start md:items-center gap-3 justify-between bg-green-50/50 dark:bg-green-950/20 p-4 rounded-lg border border-green-200 dark:border-green-800">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2 text-sm text-green-700 dark:text-green-300">
-                <Check className="h-4 w-4" />
-                <span>Data available ({obyIntakeData ? 'intake' : 'master'} table)</span>
-              </div>
-              {formData.applicant_first_name && (
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Badge variant={completion.completionPercentage >= 80 ? 'default' : 'secondary'} className="cursor-help">
-                        {completion.completionPercentage}% Auto-Filled
-                      </Badge>
-                    </TooltipTrigger>
-                    <TooltipContent className="max-w-xs">
-                      <p className="text-sm">
-                        86% is optimal. Great-grandparents and Polish-specific fields are gathered during case processing, not intake.
-                      </p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              )}
-            </div>
-            <Button
-              onClick={() => {
-                const obyData = generateOBYData();
-                if (obyData) {
-                  let fieldCount = 0;
-                  Object.entries(obyData).forEach(([key, value]) => {
-                    if (value && key !== 'case_id' && key !== 'status') {
-                      handleInputChange(key, value);
-                      fieldCount++;
-                    }
-                  });
-                  
-                  const completionPct = calculateCompletionPercentage(obyData);
-                  toast.success(`OBY form auto-populated! ${fieldCount} fields filled, ${completionPct}% complete`);
-                }
-              }}
-              disabled={!hasOBYData || isLoading}
-              variant="outline"
-              className="gap-2"
-            >
-              <Sparkles className="h-4 w-4" />
-              Auto-Populate from Intake
-            </Button>
-          </div>
-        )}
 
         <FormButtonsRow 
           caseId={caseId!}
