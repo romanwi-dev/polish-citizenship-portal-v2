@@ -299,6 +299,16 @@ export default function CitizenshipForm() {
             </div>
         </motion.div>
 
+
+        <FormButtonsRow 
+          caseId={caseId!}
+          currentForm="citizenship"
+          onSave={handleSave}
+          onClear={() => setShowClearAllDialog(true)}
+          onGeneratePDF={handleGeneratePDF}
+          isSaving={isSaving}
+        />
+
         {/* Form Sections */}
         <div className="space-y-8">
           {/* Part I - Person Data */}
