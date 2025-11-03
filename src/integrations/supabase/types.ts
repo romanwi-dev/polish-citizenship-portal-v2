@@ -1241,27 +1241,33 @@ export type Database = {
       }
       generated_documents: {
         Row: {
+          artifact_key: string | null
           case_id: string
           created_at: string | null
           created_by: string | null
           id: string
           path: string
+          size_bytes: number | null
           template_type: string
         }
         Insert: {
+          artifact_key?: string | null
           case_id: string
           created_at?: string | null
           created_by?: string | null
           id?: string
           path: string
+          size_bytes?: number | null
           template_type: string
         }
         Update: {
+          artifact_key?: string | null
           case_id?: string
           created_at?: string | null
           created_by?: string | null
           id?: string
           path?: string
+          size_bytes?: number | null
           template_type?: string
         }
         Relationships: []
@@ -3039,6 +3045,57 @@ export type Database = {
           },
         ]
       }
+      pdf_artifacts: {
+        Row: {
+          artifact_key: string
+          created_at: string
+          id: number
+          path: string
+          size_bytes: number
+        }
+        Insert: {
+          artifact_key: string
+          created_at?: string
+          id?: number
+          path: string
+          size_bytes: number
+        }
+        Update: {
+          artifact_key?: string
+          created_at?: string
+          id?: number
+          path?: string
+          size_bytes?: number
+        }
+        Relationships: []
+      }
+      pdf_dead_letters: {
+        Row: {
+          artifact_key: string | null
+          created_at: string
+          id: number
+          job_id: number | null
+          last_error: string | null
+          payload: Json | null
+        }
+        Insert: {
+          artifact_key?: string | null
+          created_at?: string
+          id?: number
+          job_id?: number | null
+          last_error?: string | null
+          payload?: Json | null
+        }
+        Update: {
+          artifact_key?: string | null
+          created_at?: string
+          id?: number
+          job_id?: number | null
+          last_error?: string | null
+          payload?: Json | null
+        }
+        Relationships: []
+      }
       pdf_history: {
         Row: {
           action: string
@@ -3079,6 +3136,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      pdf_jobs: {
+        Row: {
+          artifact_key: string
+          attempts: number
+          case_id: string
+          created_at: string
+          id: number
+          last_error: string | null
+          status: string
+          template_type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          artifact_key: string
+          attempts?: number
+          case_id: string
+          created_at?: string
+          id?: number
+          last_error?: string | null
+          status?: string
+          template_type: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          artifact_key?: string
+          attempts?: number
+          case_id?: string
+          created_at?: string
+          id?: number
+          last_error?: string | null
+          status?: string
+          template_type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       performance_logs: {
         Row: {
