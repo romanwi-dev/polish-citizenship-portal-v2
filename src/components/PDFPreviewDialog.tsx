@@ -56,14 +56,9 @@ export function PDFPreviewDialog({
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="w-full max-w-[95vw] md:max-w-6xl h-[90vh] flex flex-col p-3 md:p-6">
         <DialogHeader>
-          <div className="flex items-center justify-between">
-            <DialogTitle className="text-xl font-semibold">
-              {documentTitle} - Preview
-            </DialogTitle>
-            <Button variant="ghost" size="icon" onClick={onClose}>
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
+          <DialogTitle className="text-xl font-semibold">
+            {documentTitle} - Preview
+          </DialogTitle>
         </DialogHeader>
 
         <div className="flex-1 border rounded-lg overflow-hidden bg-muted/10">
