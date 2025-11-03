@@ -299,86 +299,86 @@ export const SpouseSection = ({ formData, handleInputChange, clearField, isLarge
   </div>
 );
 
-export const ChildrenSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
-  <div className="px-4 py-6 md:p-10">
-    <div className="border-b border-border/50 pb-6 pt-6">
-      <h2 className="text-2xl md:text-3xl font-heading font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-        Children Information
-      </h2>
-      <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
-        Details of all children
-      </h3>
-    </div>
-    <div className="space-y-8">
-      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((childNum) => (
-        <div key={childNum} className="border-t border-border/30 pt-6">
-          <h4 className="text-lg font-semibold mb-4 text-primary">Child {childNum}</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="form-field-container space-y-2" onDoubleClick={() => clearField(`child_${childNum}_first_name`)}>
-              <Label className={isLargeFonts ? "text-2xl" : ""}>First name</Label>
-              <FormInput
-                value={formData?.[`child_${childNum}_first_name`] || ""}
-                onChange={(e) => handleInputChange(`child_${childNum}_first_name`, e.target.value)}
-                placeholder=""
-                className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs"
-              />
-            </motion.div>
-
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="form-field-container space-y-2" onDoubleClick={() => clearField(`child_${childNum}_last_name`)}>
-              <Label className={isLargeFonts ? "text-2xl" : ""}>Last name</Label>
-              <FormInput
-                value={formData?.[`child_${childNum}_last_name`] || ""}
-                onChange={(e) => handleInputChange(`child_${childNum}_last_name`, e.target.value)}
-                placeholder=""
-                className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs"
-              />
-            </motion.div>
-
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="form-field-container space-y-2">
-              <DateField
-                name={`child_${childNum}_dob`}
-                label="Date of birth"
-                value={formData?.[`child_${childNum}_dob`] || ""}
-                onChange={(value) => handleInputChange(`child_${childNum}_dob`, value)}
-              />
-            </motion.div>
-
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="form-field-container space-y-2" onDoubleClick={() => clearField(`child_${childNum}_sex`)}>
-              <Label className={isLargeFonts ? "text-2xl" : ""}>Gender</Label>
-              <Select value={formData?.[`child_${childNum}_sex`] || ""} onValueChange={(value) => handleInputChange(`child_${childNum}_sex`, value)}>
-                <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs">
-                  <SelectValue placeholder="Select" className="text-xs" />
-                </SelectTrigger>
-                <SelectContent className="bg-background border-2 z-50">
-                  <SelectItem value="M" className="text-xs cursor-pointer">Male</SelectItem>
-                  <SelectItem value="F" className="text-xs cursor-pointer">Female</SelectItem>
-                </SelectContent>
-              </Select>
-            </motion.div>
-
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="form-field-container space-y-2" onDoubleClick={() => clearField(`child_${childNum}_pob_city`)}>
-              <Label className={isLargeFonts ? "text-2xl" : ""}>City of birth</Label>
-              <FormInput
-                value={formData?.[`child_${childNum}_pob_city`] || ""}
-                onChange={(e) => handleInputChange(`child_${childNum}_pob_city`, e.target.value)}
-                placeholder=""
-                className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs"
-              />
-            </motion.div>
-
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="form-field-container space-y-2" onDoubleClick={() => clearField(`child_${childNum}_pob_country`)}>
-              <Label className={isLargeFonts ? "text-2xl" : ""}>Country of birth</Label>
-              <CountrySelect
-                value={formData?.[`child_${childNum}_pob_country`] || ""}
-                onChange={(value) => handleInputChange(`child_${childNum}_pob_country`, value)}
-              />
-            </motion.div>
-          </div>
+export const ChildrenSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => {
+  const minorChildrenCount = parseInt(formData?.minor_children_count?.toString() || "0");
+  
+  return (
+    <div className="px-4 py-6 md:p-10">
+      <div className="border-b border-border/50 pb-6 pt-6">
+        <h2 className="text-2xl md:text-3xl font-heading font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+          Minor Children POA Information
+        </h2>
+        <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
+          Power of Attorney details for minor children only
+        </h3>
+      </div>
+      
+      {minorChildrenCount === 0 ? (
+        <div className="text-center py-8 text-muted-foreground">
+          No minor children selected. Please select the number of minor children in the "Select" section.
         </div>
-      ))}
+      ) : (
+        <div className="space-y-8">
+          {Array.from({ length: minorChildrenCount }, (_, index) => {
+            const childNum = index + 1;
+            return (
+              <div key={childNum} className="border-t border-border/30 pt-6">
+                <h4 className="text-lg font-semibold mb-4 text-primary">Minor Child {childNum} - POA</h4>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }} 
+                    animate={{ opacity: 1, y: 0 }} 
+                    transition={{ delay: 0.1 }} 
+                    className="form-field-container space-y-2" 
+                    onDoubleClick={() => clearField(`child_${childNum}_first_name`)}
+                  >
+                    <Label className={isLargeFonts ? "text-2xl" : ""}>Given names</Label>
+                    <FormInput
+                      value={formData?.[`child_${childNum}_first_name`] || ""}
+                      onChange={(e) => handleInputChange(`child_${childNum}_first_name`, e.target.value)}
+                      placeholder=""
+                      className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs"
+                    />
+                  </motion.div>
+
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }} 
+                    animate={{ opacity: 1, y: 0 }} 
+                    transition={{ delay: 0.15 }} 
+                    className="form-field-container space-y-2" 
+                    onDoubleClick={() => clearField(`child_${childNum}_last_name`)}
+                  >
+                    <Label className={isLargeFonts ? "text-2xl" : ""}>Full family name</Label>
+                    <FormInput
+                      value={formData?.[`child_${childNum}_last_name`] || ""}
+                      onChange={(e) => handleInputChange(`child_${childNum}_last_name`, e.target.value)}
+                      placeholder=""
+                      className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs"
+                    />
+                  </motion.div>
+
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }} 
+                    animate={{ opacity: 1, y: 0 }} 
+                    transition={{ delay: 0.2 }} 
+                    className="form-field-container space-y-2"
+                  >
+                    <DateField
+                      name={`child_${childNum}_dob`}
+                      label="Date of birth"
+                      value={formData?.[`child_${childNum}_dob`] || ""}
+                      onChange={(value) => handleInputChange(`child_${childNum}_dob`, value)}
+                    />
+                  </motion.div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
-  </div>
-);
+  );
+};
 
 export const ContactSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
   <div className="px-4 py-6 md:p-10">
