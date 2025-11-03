@@ -806,9 +806,62 @@ serve(async (req) => {
   }
 
   try {
-    const { caseId, templateType, flatten = false } = await req.json();
+    const { caseId, templateType, flatten = false, mode } = await req.json();
     
-    const validTemplates = ['poa-adult', 'poa-minor', 'poa-spouses', 'citizenship', 'family-tree', 'umiejscowienie', 'uzupelnienie'];
+    // DIAGNOSTICS MODE
+    if (mode === 'diagnose') {
+      const url = Deno.env.get('SUPABASE_URL');
+      const key = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+      const hasSecrets = Boolean(url && key);
+      let uploadOk = false, signOk = false, diagError = null;
+      
+      try {
+        if (hasSecrets) {
+          const sb = createClient(url!, key!);
+          const path = `diagnostics/${Date.now()}.txt`;
+          const bytes = new TextEncoder().encode('diagnostic test');
+          
+          const { error: upErr } = await sb.storage
+            .from('generated-pdfs')
+            .upload(path, bytes, { contentType: 'text/plain', upsert: true });
+          uploadOk = !upErr;
+          
+          const { data: signed, error: sErr } = await sb.storage
+            .from('generated-pdfs')
+            .createSignedUrl(path, 60);
+          signOk = Boolean(signed?.signedUrl && !sErr);
+        }
+      } catch (e) {
+        diagError = String((e as Error)?.message ?? e);
+      }
+      
+      return new Response(
+        JSON.stringify({ 
+          ok: hasSecrets && uploadOk && signOk, 
+          hasSecrets, 
+          uploadOk, 
+          signOk, 
+          diagError 
+        }),
+        { 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 200
+        }
+      );
+    }
+    
+    // Whitelist valid template types
+    const validTemplates = [
+      'citizenship',
+      'family-tree',
+      'transcription',   // Civil Registry transcription (wpis)
+      'registration',    // Civil Registry registration (umiejscowienie)
+      'poa-adult',
+      'poa-minor',
+      'poa-spouses',
+      'umiejscowienie',  // Legacy
+      'uzupelnienie',    // Legacy
+    ];
     
     if (!templateType || !validTemplates.includes(templateType)) {
       return new Response(

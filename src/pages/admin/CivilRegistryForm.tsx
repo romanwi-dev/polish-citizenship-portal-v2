@@ -54,43 +54,15 @@ export default function CivilRegistryForm() {
     CIVIL_REGISTRY_DATE_FIELDS
   );
   const handleGeneratePDF = async () => {
-    if (!caseId || caseId === ':id' || caseId === 'demo-preview') {
-      toast.error('PDF generation not available in demo mode');
-      return;
-    }
-
-    try {
-      setIsGenerating(true);
-      toast.loading("Generating Civil Registry Application PDF...");
-      const {
-        data,
-        error
-      } = await supabase.functions.invoke('fill-pdf', {
-        body: {
-          caseId,
-          templateType: 'registration'
-        }
-      });
-      if (error) throw error;
-      const blob = new Blob([data], {
-        type: 'application/pdf'
-      });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `civil-registry-${caseId}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-      toast.dismiss();
-      toast.success("Civil Registry Application PDF generated successfully!");
-    } catch (error: any) {
-      toast.dismiss();
-      toast.error(`Failed to generate PDF: ${error.message}`);
-    } finally {
-      setIsGenerating(false);
-    }
+    const { generatePdfViaEdge } = await import('@/lib/pdf');
+    await generatePdfViaEdge({
+      supabase,
+      caseId: caseId!,
+      templateType: 'registration',
+      toast,
+      setIsGenerating,
+      filename: `civil-registry-${caseId}.pdf`,
+    });
   };
 
   const handleClearData = async () => {

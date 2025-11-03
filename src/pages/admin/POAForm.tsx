@@ -190,26 +190,20 @@ export default function POAForm() {
     try {
       await handlePOASave();
 
+      const { generatePdfViaEdge } = await import('@/lib/pdf');
       const templates: Array<'poa-adult' | 'poa-minor' | 'poa-spouses'> = ['poa-adult'];
       if (hasMinorChildren() && minorChildrenCount > 0) templates.push('poa-minor');
       if (showSpousePOA) templates.push('poa-spouses');
 
       for (const templateType of templates) {
-        const { data, error } = await supabase.functions.invoke('fill-pdf', {
-          body: { caseId, templateType }
+        await generatePdfViaEdge({
+          supabase,
+          caseId,
+          templateType,
+          toast,
+          setIsGenerating: () => {}, // Keep spinner on during batch
+          filename: `POA-${templateType.replace('poa-', '').toUpperCase()}-${caseId}.pdf`,
         });
-
-        if (error) throw new Error(error.message || 'PDF generation failed');
-        if (!data?.url) throw new Error('No URL returned from server');
-
-        // Download using signed URL
-        const a = document.createElement('a');
-        a.href = data.url;
-        a.download = data.filename ?? `POA-${templateType.replace('poa-', '').toUpperCase()}-${caseId}.pdf`;
-        a.rel = 'noopener';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
       }
 
       toast.success(`Generated ${templates.length} POA document(s)!`);

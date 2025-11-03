@@ -74,40 +74,15 @@ export default function CitizenshipForm() {
 
 
   const handleGeneratePDF = async () => {
-    if (!caseId || caseId === ':id' || caseId === 'demo-preview') {
-      toast.error('PDF generation not available in demo mode');
-      return;
-    }
-
-    try {
-      setIsGenerating(true);
-      toast.loading('Generating PDF...');
-
-      const { data, error } = await supabase.functions.invoke('fill-pdf', {
-        body: { caseId, templateType: 'citizenship' },
-      });
-
-      if (error) throw error;
-      if (!data?.url) throw new Error('No URL returned from server');
-
-      // Download using signed URL
-      const a = document.createElement('a');
-      a.href = data.url;
-      a.download = data.filename ?? `citizenship-application-${caseId}.pdf`;
-      a.rel = 'noopener';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-
-      toast.dismiss();
-      toast.success('PDF generated successfully!');
-    } catch (error: any) {
-      toast.dismiss();
-      console.error(error);
-      toast.error(`Failed to generate PDF: ${error.message}`);
-    } finally {
-      setIsGenerating(false);
-    }
+    const { generatePdfViaEdge } = await import('@/lib/pdf');
+    await generatePdfViaEdge({
+      supabase,
+      caseId: caseId!,
+      templateType: 'citizenship',
+      toast,
+      setIsGenerating,
+      filename: `citizenship-application-${caseId}.pdf`,
+    });
   };
 
   const {
