@@ -25,6 +25,7 @@ import { MaskedPassportInput } from "@/components/forms/MaskedPassportInput";
 import { useFormManager } from "@/hooks/useFormManager";
 import { FAMILY_TREE_FORM_REQUIRED_FIELDS, FAMILY_TREE_DATE_FIELDS } from "@/config/formRequiredFields";
 import { AutosaveIndicator } from "@/components/AutosaveIndicator";
+import StickyActionBar from "@/components/StickyActionBar";
 
 type ColorScheme = 'children' | 'applicant' | 'spouse' | 'parents' | 'grandparents' | 'ggp' | 'poa' | 'citizenship' | 'civil-reg';
 
@@ -324,7 +325,17 @@ export default function FamilyTreeForm() {
   }
   
   return (
-    <div className={cn("relative min-h-full", isLargeFonts && "text-lg")}>
+    <div className={cn("relative min-h-screen", isLargeFonts && "text-lg")}>
+      <StickyActionBar
+        onSave={formManagerSave}
+        onGenerate={handleGeneratePDF}
+        onClear={() => setShowClearDialog(true)}
+        isGenerating={isGenerating}
+        isSaving={isSaving}
+        disabled={false}
+      />
+      <div className="sticky-actionbar-spacer" />
+      
       <div className="relative z-10 pt-2 px-3 pb-3 md:p-6">
         {/* Header */}
         <motion.div 

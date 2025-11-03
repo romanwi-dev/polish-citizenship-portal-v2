@@ -24,6 +24,7 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
+    --actionbar-h: 56px; /* consistent height across pages */
     --background: 222 47% 11%;
     --foreground: 213 31% 91%;
 
@@ -616,3 +617,16 @@ All colors MUST be HSL.
     position: relative;
   }
 }
+
+/* Utility: page content spacer equal to fixed bar height + safe area */
+.sticky-actionbar-spacer {
+  height: calc(var(--actionbar-h, 56px) + env(safe-area-inset-top));
+}
+
+@supports not (backdrop-filter: blur(4px)) {
+  /* Slightly stronger background when no backdrop support */
+  .no-backdrop-fallback {
+    background-color: hsl(var(--background) / 0.98);
+  }
+}
+
