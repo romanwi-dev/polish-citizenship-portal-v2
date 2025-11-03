@@ -49,40 +49,18 @@ export async function generatePdfViaEdge({
     setIsGenerating(true);
     toast.loading('Generating PDF...');
 
-    console.log('[PDF-LIB] Getting Supabase session for auth');
-    const { data: { session } } = await supabase.auth.getSession();
+    console.log('[PDF-LIB] Invoking fill-pdf edge function');
     
-    if (!session) {
-      console.error('[PDF-LIB] No active session found');
-      toast.error('Please log in to generate PDFs');
-      return;
-    }
-
-    const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-    const url = `${SUPABASE_URL}/functions/v1/fill-pdf`;
-    
-    console.log('[PDF-LIB] Calling fill-pdf at:', url);
-    console.log('[PDF-LIB] With payload:', { caseId, templateType });
-    
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${session.access_token}`,
-      },
-      body: JSON.stringify({ caseId, templateType }),
+    const { data, error } = await supabase.functions.invoke('fill-pdf', {
+      body: { caseId, templateType },
     });
     
-    console.log('[PDF-LIB] Response status:', response.status);
+    console.log('[PDF-LIB] Response:', { data, error });
     
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('[PDF-LIB] HTTP error:', response.status, errorText);
-      throw new Error(`HTTP ${response.status}: ${errorText}`);
+    if (error) {
+      console.error('[PDF-LIB] Edge function error:', error);
+      throw error;
     }
-    
-    const data = await response.json();
-    console.log('[PDF-LIB] Response data:', data);
 
     // Prefer signed URL
     if (data?.url) {
