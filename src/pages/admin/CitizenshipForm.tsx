@@ -9,6 +9,7 @@ import { useState } from "react";
 import { Loader2, Sparkles, Type, User, ArrowLeft, Maximize2, Minimize2, Download, HelpCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast} from "sonner";
+import { base64ToBlob, downloadBlob } from '@/lib/pdf';
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { DateField } from "@/components/DateField";
@@ -88,16 +89,10 @@ export default function CitizenshipForm() {
       });
 
       if (error) throw error;
+      if (!data?.pdf) throw new Error('No PDF data returned from server');
 
-      const blob = new Blob([data], { type: 'application/pdf' });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `citizenship-application-${caseId}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
+      const blob = base64ToBlob(data.pdf);
+      downloadBlob(blob, `citizenship-application-${caseId}.pdf`);
 
       toast.dismiss();
       toast.success("Citizenship Application PDF generated successfully!");

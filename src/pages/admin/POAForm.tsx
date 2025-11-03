@@ -8,6 +8,7 @@ import { useState, useRef } from "react";
 import { Loader2, Save, Download, FileText, Sparkles, Type, User, ArrowLeft, HelpCircle, Maximize2, Minimize2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { base64ToBlob, downloadBlob } from '@/lib/pdf';
 import { motion } from "framer-motion";
 import { POAFormField } from "@/components/POAFormField";
 import { poaFormConfigs } from "@/config/poaFormConfig";
@@ -126,8 +127,10 @@ export default function POAForm() {
         throw new Error(`PDF generation failed: ${error.message}`);
       }
 
-      // Get the PDF as a blob
-      const blob = new Blob([data], { type: 'application/pdf' });
+      if (!data?.pdf) throw new Error('No PDF data returned from server');
+
+      // Decode base64 and create blob
+      const blob = base64ToBlob(data.pdf);
       // Revoke old URL to prevent memory leaks
       if (pdfPreviewUrl) URL.revokeObjectURL(pdfPreviewUrl);
       const url = URL.createObjectURL(blob);
@@ -159,8 +162,9 @@ export default function POAForm() {
       });
 
       if (error) throw new Error(error.message || 'PDF generation failed');
+      if (!data?.pdf) throw new Error('No PDF data returned from server');
 
-      const blob = new Blob([data], { type: 'application/pdf' });
+      const blob = base64ToBlob(data.pdf);
       const url = URL.createObjectURL(blob);
       
       setPdfPreviewUrl(url);
@@ -203,14 +207,10 @@ export default function POAForm() {
         });
 
         if (error) throw new Error(error.message || 'PDF generation failed');
+        if (!data?.pdf) throw new Error('No PDF data returned from server');
 
-        const blob = new Blob([data], { type: 'application/pdf' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = `POA-${templateType.replace('poa-', '').toUpperCase()}-${caseId}.pdf`;
-        link.click();
-        URL.revokeObjectURL(url);
+        const blob = base64ToBlob(data.pdf);
+        downloadBlob(blob, `POA-${templateType.replace('poa-', '').toUpperCase()}-${caseId}.pdf`);
       }
 
       toast.success(`Generated ${templates.length} POA document(s)!`);
