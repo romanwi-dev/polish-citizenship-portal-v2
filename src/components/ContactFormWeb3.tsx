@@ -119,10 +119,11 @@ const ContactFormWeb3 = () => {
                         onChange={handleChange}
                         placeholder=""
                         required
-                        className="h-16 border-2 border-blue-500/20 hover:border-blue-500/30 focus:border-blue-500/40 hover-glow focus:shadow-lg transition-all bg-[#1a2642] backdrop-blur"
+                        className="h-16 border-2 border-blue-500/20 hover:border-blue-500/30 focus:border-blue-500/40 hover-glow focus:shadow-lg transition-all backdrop-blur"
                         style={{ 
                           fontSize: '1.125rem', 
                           fontWeight: '400',
+                          backgroundColor: '#1a2642',
                           boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
                         }}
                         onMouseEnter={(e) => {
@@ -143,10 +144,11 @@ const ContactFormWeb3 = () => {
                         onChange={handleChange}
                         placeholder=""
                         required
-                        className="h-16 border-2 border-blue-500/20 hover:border-blue-500/30 focus:border-blue-500/40 hover-glow focus:shadow-lg transition-all bg-[#1a2642] backdrop-blur"
+                        className="h-16 border-2 border-blue-500/20 hover:border-blue-500/30 focus:border-blue-500/40 hover-glow focus:shadow-lg transition-all backdrop-blur"
                         style={{ 
                           fontSize: '1.125rem', 
                           fontWeight: '400',
+                          backgroundColor: '#1a2642',
                           boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
                         }}
                         onMouseEnter={(e) => {
@@ -167,10 +169,11 @@ const ContactFormWeb3 = () => {
                       value={formData.message}
                       onChange={handleChange}
                       placeholder=""
-                      className="min-h-[240px] border-2 border-blue-500/20 hover:border-blue-500/30 focus:border-blue-500/40 hover-glow focus:shadow-lg transition-all resize-none bg-[#1a2642] backdrop-blur"
+                      className="min-h-[240px] border-2 border-blue-500/20 hover:border-blue-500/30 focus:border-blue-500/40 hover-glow focus:shadow-lg transition-all resize-none backdrop-blur"
                       style={{ 
                         fontSize: '1.125rem', 
                         fontWeight: '400',
+                        backgroundColor: '#1a2642',
                         boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
                       }}
                       onMouseEnter={(e) => {
