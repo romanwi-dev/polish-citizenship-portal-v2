@@ -2,6 +2,64 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { PDFDocument, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1";
 
+// ============ CONFIGURATION ============
+const SIGNED_URL_EXPIRY_MINUTES = 60; // Increased from 10 to 60 minutes for better UX
+const RATE_LIMIT_WINDOW_MS = 60000; // 1 minute
+const RATE_LIMIT_MAX_REQUESTS = 10; // Max 10 PDF generations per minute per IP
+
+// ============ RATE LIMITING ============
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+
+function checkRateLimit(identifier: string): { allowed: boolean; remaining: number } {
+  const now = Date.now();
+  const record = rateLimitMap.get(identifier);
+  
+  if (!record || now > record.resetAt) {
+    rateLimitMap.set(identifier, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return { allowed: true, remaining: RATE_LIMIT_MAX_REQUESTS - 1 };
+  }
+  
+  if (record.count >= RATE_LIMIT_MAX_REQUESTS) {
+    return { allowed: false, remaining: 0 };
+  }
+  
+  record.count++;
+  return { allowed: true, remaining: RATE_LIMIT_MAX_REQUESTS - record.count };
+}
+
+// Clean up old rate limit entries every 5 minutes
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, value] of rateLimitMap.entries()) {
+    if (now > value.resetAt) {
+      rateLimitMap.delete(key);
+    }
+  }
+}, 300000);
+
+// ============ INPUT VALIDATION ============
+function validateCaseId(caseId: string): { valid: boolean; error?: string } {
+  if (!caseId || typeof caseId !== 'string') {
+    return { valid: false, error: 'caseId is required and must be a string' };
+  }
+  
+  // Allow UUID format, alphanumeric with hyphens, max 64 characters
+  const caseIdRegex = /^[a-zA-Z0-9-]{1,64}$/;
+  if (!caseIdRegex.test(caseId)) {
+    return { 
+      valid: false, 
+      error: 'caseId must contain only alphanumeric characters and hyphens, max 64 chars' 
+    };
+  }
+  
+  // Prevent path traversal attempts
+  if (caseId.includes('..') || caseId.includes('/') || caseId.includes('\\')) {
+    return { valid: false, error: 'caseId contains invalid characters' };
+  }
+  
+  return { valid: true };
+}
+
 // ============ IN-MEMORY CACHE FOR PDF TEMPLATES ============
 const pdfTemplateCache = new Map<string, Uint8Array>();
 const CACHE_MAX_AGE = 3600000; // 1 hour in milliseconds
@@ -869,13 +927,16 @@ serve(async (req) => {
         console.error('[DIAG] Exception:', diagError);
       }
       
+      // Improved diagnostics response - focus on functionality, not secrets presence
       return new Response(
         JSON.stringify({ 
-          ok: hasSecrets && uploadOk && signOk, 
-          hasSecrets, 
+          ok: uploadOk && signOk, 
           uploadOk, 
           signOk, 
-          diagError 
+          diagError,
+          message: uploadOk && signOk 
+            ? 'PDF system is fully operational' 
+            : 'PDF system has issues - check diagError for details'
         }),
         { 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -904,14 +965,41 @@ serve(async (req) => {
       );
     }
     
-    if (!caseId) {
+    // Validate caseId with strict security checks
+    const caseIdValidation = validateCaseId(caseId);
+    if (!caseIdValidation.valid) {
+      console.error(`[SECURITY] Invalid caseId: ${caseId}`);
       return new Response(
-        JSON.stringify({ error: 'caseId is required' }),
+        JSON.stringify({ error: caseIdValidation.error }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    console.log(`Generating PDF: ${templateType} for case: ${caseId}`);
+    // Rate limiting check (use IP or user ID as identifier)
+    const clientIp = req.headers.get('x-forwarded-for') || req.headers.get('cf-connecting-ip') || 'unknown';
+    const rateLimitCheck = checkRateLimit(clientIp);
+    
+    if (!rateLimitCheck.allowed) {
+      console.warn(`[RATE-LIMIT] Exceeded for IP: ${clientIp}`);
+      return new Response(
+        JSON.stringify({ 
+          error: 'Rate limit exceeded. Please try again later.',
+          retryAfter: 60
+        }),
+        { 
+          status: 429, 
+          headers: { 
+            ...corsHeaders, 
+            'Content-Type': 'application/json',
+            'Retry-After': '60',
+            'X-RateLimit-Remaining': String(rateLimitCheck.remaining)
+          } 
+        }
+      );
+    }
+
+    console.log(`[PDF-GEN] Generating ${templateType} for case: ${caseId} (Rate limit: ${rateLimitCheck.remaining} remaining)`);
+
 
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -1083,11 +1171,11 @@ serve(async (req) => {
     
     console.log(`📦 Uploaded to: ${filename}`);
     
-    // Generate signed URL (10 minutes expiry)
+    // Generate signed URL with extended expiry (60 minutes for better UX)
     const { data: signed, error: signedErr } = await supabaseClient
       .storage
       .from('generated-pdfs')
-      .createSignedUrl(filename, 60 * 10);
+      .createSignedUrl(filename, 60 * SIGNED_URL_EXPIRY_MINUTES);
     
     if (signedErr) {
       console.error('❌ Signed URL error:', signedErr);
@@ -1100,9 +1188,10 @@ serve(async (req) => {
       );
     }
     
-    console.log(`🔗 Signed URL created (expires in 10 min)`);
+    console.log(`🔗 Signed URL created (expires in ${SIGNED_URL_EXPIRY_MINUTES} minutes)`);
     
-    // Record in audit table
+    // Record in audit table with enhanced logging
+    const startTime = Date.now();
     const { error: auditErr } = await supabaseClient
       .from('generated_documents')
       .insert({
@@ -1115,10 +1204,30 @@ serve(async (req) => {
       console.warn('⚠️ Audit log failed (non-critical):', auditErr.message);
     }
     
+    const generationTime = Date.now() - startTime;
+    
+    // Structured logging for monitoring
+    console.log(JSON.stringify({
+      event: 'pdf_generated',
+      caseId,
+      templateType,
+      filename,
+      stats: {
+        filled: fillResult.filledFields,
+        total: fillResult.totalFields,
+        percentage: calculateCoverage(fillResult),
+        generationTimeMs: generationTime,
+        pdfSizeBytes: filledPdfBytes.length
+      },
+      signedUrlExpiryMinutes: SIGNED_URL_EXPIRY_MINUTES,
+      timestamp: new Date().toISOString()
+    }));
+    
     return new Response(
       JSON.stringify({ 
         url: signed.signedUrl,
         filename: filename.split('/').pop(),
+        expiresInMinutes: SIGNED_URL_EXPIRY_MINUTES,
         stats: { 
           filled: fillResult.filledFields, 
           total: fillResult.totalFields, 
@@ -1129,11 +1238,19 @@ serve(async (req) => {
         headers: {
           ...corsHeaders,
           'Content-Type': 'application/json',
+          'X-RateLimit-Remaining': String(rateLimitCheck.remaining)
         },
       }
     );
   } catch (error) {
-    console.error('Error generating PDF:', error);
+    // Enhanced error logging
+    console.error(JSON.stringify({
+      event: 'pdf_generation_error',
+      error: (error as Error).message,
+      stack: (error as Error).stack,
+      timestamp: new Date().toISOString()
+    }));
+    
     return new Response(
       JSON.stringify({ error: (error as Error).message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
