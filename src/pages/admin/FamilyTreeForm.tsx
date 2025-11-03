@@ -1644,52 +1644,256 @@ export default function FamilyTreeForm() {
                   </h2>
 
                   {/* Paternal Great Grandparents (Father's Father) */}
-                  <h3 className="text-3xl font-heading font-bold text-gray-500 dark:text-gray-300">Paternal Line (Father's Father)</h3>
+                  <h3 className="text-3xl font-heading font-bold text-gray-500 dark:text-gray-300">Paternal Line - Great Grandfather (Father's Father)</h3>
                   {renderFieldGroup([
-                    { name: "ggpff_first_name", label: "Great Grandfather - Given names", isNameField: true },
-                    { name: "ggpff_last_name", label: "Great Grandfather - Last name", isNameField: true }
+                    { name: "ggpff_first_name", label: "Given names", isNameField: true },
+                    { name: "ggpff_last_name", label: "Full last name", isNameField: true }
                   ], 'ggp')}
 
                   {renderFieldGroup([
-                    { name: "ggpmff_first_name", label: "Great Grandmother - Given names", isNameField: true },
-                    { name: "ggpmff_last_name", label: "Great Grandmother - Last name", isNameField: true }
+                    { name: "ggpff_pob", label: "Place of birth", isNameField: true }
                   ], 'ggp')}
+
+                  {renderFieldGroup([
+                    { name: "ggpff_dob", label: "Date of birth", type: "date" },
+                    { name: "ggpff_date_of_emigration", label: "Date of emigration", type: "date" }
+                  ], 'ggp')}
+
+                  {renderFieldGroup([
+                    { name: "ggpff_date_of_naturalization", label: "Date of naturalization", type: "date" }
+                  ], 'ggp')}
+
+                  <FamilyMemberDocumentsSection
+                    prefix="ggpff"
+                    title="Great Grandfather Documents (Father's Father)"
+                    formData={formData}
+                    handleInputChange={handleInputChange}
+                    personType="grandparent"
+                    sex="M"
+                    colorScheme="ggp"
+                  />
+
+                  <h3 className="text-3xl font-heading font-bold text-gray-500 dark:text-gray-300 mt-10">Paternal Line - Great Grandmother (Father's Father)</h3>
+                  {renderFieldGroup([
+                    { name: "ggpmff_first_name", label: "Given names", isNameField: true },
+                    { name: "ggpmff_last_name", label: "Full last name", isNameField: true }
+                  ], 'ggp')}
+
+                  {renderFieldGroup([
+                    { name: "ggpmff_maiden_name", label: "Maiden name", isNameField: true }
+                  ], 'ggp')}
+
+                  {renderFieldGroup([
+                    { name: "ggpmff_pob", label: "Place of birth", isNameField: true }
+                  ], 'ggp')}
+
+                  {renderFieldGroup([
+                    { name: "ggpmff_dob", label: "Date of birth", type: "date" },
+                    { name: "ggpmff_date_of_emigration", label: "Date of emigration", type: "date" }
+                  ], 'ggp')}
+
+                  {renderFieldGroup([
+                    { name: "ggpmff_date_of_naturalization", label: "Date of naturalization", type: "date" }
+                  ], 'ggp')}
+
+                  <FamilyMemberDocumentsSection
+                    prefix="ggpmff"
+                    title="Great Grandmother Documents (Father's Father)"
+                    formData={formData}
+                    handleInputChange={handleInputChange}
+                    personType="grandparent"
+                    sex="F"
+                    colorScheme="ggp"
+                  />
 
                   {/* Paternal Great Grandparents (Father's Mother) */}
-                  <h3 className="text-3xl font-heading font-bold text-gray-500 dark:text-gray-300 mt-10">Paternal Line (Father's Mother)</h3>
+                  <h3 className="text-3xl font-heading font-bold text-gray-500 dark:text-gray-300 mt-10">Paternal Line - Great Grandfather (Father's Mother)</h3>
                   {renderFieldGroup([
-                    { name: "ggpfm_first_name", label: "Great Grandfather - Given names", isNameField: true },
-                    { name: "ggpfm_last_name", label: "Great Grandfather - Last name", isNameField: true }
+                    { name: "ggpfm_first_name", label: "Given names", isNameField: true },
+                    { name: "ggpfm_last_name", label: "Full last name", isNameField: true }
                   ], 'ggp')}
 
                   {renderFieldGroup([
-                    { name: "ggpmfm_first_name", label: "Great Grandmother - Given names", isNameField: true },
-                    { name: "ggpmfm_last_name", label: "Great Grandmother - Last name", isNameField: true }
+                    { name: "ggpfm_pob", label: "Place of birth", isNameField: true }
                   ], 'ggp')}
+
+                  {renderFieldGroup([
+                    { name: "ggpfm_dob", label: "Date of birth", type: "date" },
+                    { name: "ggpfm_date_of_emigration", label: "Date of emigration", type: "date" }
+                  ], 'ggp')}
+
+                  {renderFieldGroup([
+                    { name: "ggpfm_date_of_naturalization", label: "Date of naturalization", type: "date" }
+                  ], 'ggp')}
+
+                  <FamilyMemberDocumentsSection
+                    prefix="ggpfm"
+                    title="Great Grandfather Documents (Father's Mother)"
+                    formData={formData}
+                    handleInputChange={handleInputChange}
+                    personType="grandparent"
+                    sex="M"
+                    colorScheme="ggp"
+                  />
+
+                  <h3 className="text-3xl font-heading font-bold text-gray-500 dark:text-gray-300 mt-10">Paternal Line - Great Grandmother (Father's Mother)</h3>
+                  {renderFieldGroup([
+                    { name: "ggpmfm_first_name", label: "Given names", isNameField: true },
+                    { name: "ggpmfm_last_name", label: "Full last name", isNameField: true }
+                  ], 'ggp')}
+
+                  {renderFieldGroup([
+                    { name: "ggpmfm_maiden_name", label: "Maiden name", isNameField: true }
+                  ], 'ggp')}
+
+                  {renderFieldGroup([
+                    { name: "ggpmfm_pob", label: "Place of birth", isNameField: true }
+                  ], 'ggp')}
+
+                  {renderFieldGroup([
+                    { name: "ggpmfm_dob", label: "Date of birth", type: "date" },
+                    { name: "ggpmfm_date_of_emigration", label: "Date of emigration", type: "date" }
+                  ], 'ggp')}
+
+                  {renderFieldGroup([
+                    { name: "ggpmfm_date_of_naturalization", label: "Date of naturalization", type: "date" }
+                  ], 'ggp')}
+
+                  <FamilyMemberDocumentsSection
+                    prefix="ggpmfm"
+                    title="Great Grandmother Documents (Father's Mother)"
+                    formData={formData}
+                    handleInputChange={handleInputChange}
+                    personType="grandparent"
+                    sex="F"
+                    colorScheme="ggp"
+                  />
 
                   {/* Maternal Great Grandparents (Mother's Father) */}
-                  <h3 className="text-3xl font-heading font-bold text-gray-500 dark:text-gray-300 mt-10">Maternal Line (Mother's Father)</h3>
+                  <h3 className="text-3xl font-heading font-bold text-gray-500 dark:text-gray-300 mt-10">Maternal Line - Great Grandfather (Mother's Father)</h3>
                   {renderFieldGroup([
-                    { name: "ggpmf_first_name", label: "Great Grandfather - Given names", isNameField: true },
-                    { name: "ggpmf_last_name", label: "Great Grandfather - Last name", isNameField: true }
+                    { name: "ggpmf_first_name", label: "Given names", isNameField: true },
+                    { name: "ggpmf_last_name", label: "Full last name", isNameField: true }
                   ], 'ggp')}
 
                   {renderFieldGroup([
-                    { name: "ggpmmf_first_name", label: "Great Grandmother - Given names", isNameField: true },
-                    { name: "ggpmmf_last_name", label: "Great Grandmother - Last name", isNameField: true }
+                    { name: "ggpmf_pob", label: "Place of birth", isNameField: true }
                   ], 'ggp')}
+
+                  {renderFieldGroup([
+                    { name: "ggpmf_dob", label: "Date of birth", type: "date" },
+                    { name: "ggpmf_date_of_emigration", label: "Date of emigration", type: "date" }
+                  ], 'ggp')}
+
+                  {renderFieldGroup([
+                    { name: "ggpmf_date_of_naturalization", label: "Date of naturalization", type: "date" }
+                  ], 'ggp')}
+
+                  <FamilyMemberDocumentsSection
+                    prefix="ggpmf"
+                    title="Great Grandfather Documents (Mother's Father)"
+                    formData={formData}
+                    handleInputChange={handleInputChange}
+                    personType="grandparent"
+                    sex="M"
+                    colorScheme="ggp"
+                  />
+
+                  <h3 className="text-3xl font-heading font-bold text-gray-500 dark:text-gray-300 mt-10">Maternal Line - Great Grandmother (Mother's Father)</h3>
+                  {renderFieldGroup([
+                    { name: "ggpmmf_first_name", label: "Given names", isNameField: true },
+                    { name: "ggpmmf_last_name", label: "Full last name", isNameField: true }
+                  ], 'ggp')}
+
+                  {renderFieldGroup([
+                    { name: "ggpmmf_maiden_name", label: "Maiden name", isNameField: true }
+                  ], 'ggp')}
+
+                  {renderFieldGroup([
+                    { name: "ggpmmf_pob", label: "Place of birth", isNameField: true }
+                  ], 'ggp')}
+
+                  {renderFieldGroup([
+                    { name: "ggpmmf_dob", label: "Date of birth", type: "date" },
+                    { name: "ggpmmf_date_of_emigration", label: "Date of emigration", type: "date" }
+                  ], 'ggp')}
+
+                  {renderFieldGroup([
+                    { name: "ggpmmf_date_of_naturalization", label: "Date of naturalization", type: "date" }
+                  ], 'ggp')}
+
+                  <FamilyMemberDocumentsSection
+                    prefix="ggpmmf"
+                    title="Great Grandmother Documents (Mother's Father)"
+                    formData={formData}
+                    handleInputChange={handleInputChange}
+                    personType="grandparent"
+                    sex="F"
+                    colorScheme="ggp"
+                  />
 
                   {/* Maternal Great Grandparents (Mother's Mother) */}
-                  <h3 className="text-3xl font-heading font-bold text-gray-500 dark:text-gray-300 mt-10">Maternal Line (Mother's Mother)</h3>
+                  <h3 className="text-3xl font-heading font-bold text-gray-500 dark:text-gray-300 mt-10">Maternal Line - Great Grandfather (Mother's Mother)</h3>
                   {renderFieldGroup([
-                    { name: "ggpmm_first_name", label: "Great Grandfather - Given names", isNameField: true },
-                    { name: "ggpmm_last_name", label: "Great Grandfather - Last name", isNameField: true }
+                    { name: "ggpmm_first_name", label: "Given names", isNameField: true },
+                    { name: "ggpmm_last_name", label: "Full last name", isNameField: true }
                   ], 'ggp')}
 
                   {renderFieldGroup([
-                  { name: "ggpmmm_first_name", label: "Great Grandmother - Given names", isNameField: true },
-                  { name: "ggpmmm_last_name", label: "Great Grandmother - Last name", isNameField: true }
+                    { name: "ggpmm_pob", label: "Place of birth", isNameField: true }
+                  ], 'ggp')}
+
+                  {renderFieldGroup([
+                    { name: "ggpmm_dob", label: "Date of birth", type: "date" },
+                    { name: "ggpmm_date_of_emigration", label: "Date of emigration", type: "date" }
+                  ], 'ggp')}
+
+                  {renderFieldGroup([
+                    { name: "ggpmm_date_of_naturalization", label: "Date of naturalization", type: "date" }
+                  ], 'ggp')}
+
+                  <FamilyMemberDocumentsSection
+                    prefix="ggpmm"
+                    title="Great Grandfather Documents (Mother's Mother)"
+                    formData={formData}
+                    handleInputChange={handleInputChange}
+                    personType="grandparent"
+                    sex="M"
+                    colorScheme="ggp"
+                  />
+
+                  <h3 className="text-3xl font-heading font-bold text-gray-500 dark:text-gray-300 mt-10">Maternal Line - Great Grandmother (Mother's Mother)</h3>
+                  {renderFieldGroup([
+                  { name: "ggpmmm_first_name", label: "Given names", isNameField: true },
+                  { name: "ggpmmm_last_name", label: "Full last name", isNameField: true }
                 ], 'ggp')}
+
+                  {renderFieldGroup([
+                    { name: "ggpmmm_maiden_name", label: "Maiden name", isNameField: true }
+                  ], 'ggp')}
+
+                  {renderFieldGroup([
+                    { name: "ggpmmm_pob", label: "Place of birth", isNameField: true }
+                  ], 'ggp')}
+
+                  {renderFieldGroup([
+                    { name: "ggpmmm_dob", label: "Date of birth", type: "date" },
+                    { name: "ggpmmm_date_of_emigration", label: "Date of emigration", type: "date" }
+                  ], 'ggp')}
+
+                  {renderFieldGroup([
+                    { name: "ggpmmm_date_of_naturalization", label: "Date of naturalization", type: "date" }
+                  ], 'ggp')}
+
+                  <FamilyMemberDocumentsSection
+                    prefix="ggpmmm"
+                    title="Great Grandmother Documents (Mother's Mother)"
+                    formData={formData}
+                    handleInputChange={handleInputChange}
+                    personType="grandparent"
+                    sex="F"
+                    colorScheme="ggp"
+                  />
               </motion.div>
             </div>
           </div>
