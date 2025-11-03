@@ -557,29 +557,23 @@ Deno.serve(async (req) => {
     const ANON = Deno.env.get('SUPABASE_ANON_KEY')!;
     const admin = createClient(URL, SRK, { global: { headers: { 'X-Client-Info': 'fill-pdf' } } });
 
-    // Authentication
+    // PUBLIC ENDPOINT - No JWT verification, RLS handles security
+    log('public_endpoint', { note: 'Relying on RLS for data access control' });
+    
+    // Get auth header if present (for RLS enforcement)
     const auth = req.headers.get('Authorization') || '';
-    const jwt = auth.startsWith('Bearer ') ? auth.slice(7) : null;
-    if (!jwt) return j(req, { code: 'UNAUTHORIZED', message: 'Unauthorized' }, 401);
+    
+    // Create user-scoped client (will be anonymous if no auth header)
+    const userClient = createClient(URL, ANON, { 
+      global: { headers: auth ? { Authorization: auth } : {} } 
+    });
 
-    // RLS client for data reads
-    const rls = createClient(URL, ANON, { global: { headers: { Authorization: `Bearer ${jwt}` } } });
-
-    const { data: u, error: uErr } = await admin.auth.getUser(jwt);
-    if (uErr || !u?.user) return j(req, { code: 'UNAUTHORIZED', message: 'Unauthorized' }, 401);
-    const userId = u.user.id;
-    const isAdmin = u.user.app_metadata?.role === 'admin';
-
-    // Authorization - verify case exists (RLS will handle ownership check)
-    const { data: c } = await rls.from('cases').select('id').eq('id', caseId).maybeSingle();
-    if (!c) return j(req, { code: 'CASE_NOT_FOUND', message: 'Case not found' }, 404);
-
-    // Rate limit: 25 docs / 5 min / user
-    const { count } = await admin.from('generated_documents')
-      .select('id', { head: true, count: 'exact' })
-      .eq('created_by', userId)
-      .gte('created_at', new Date(Date.now() - 5 * 60 * 1000).toISOString());
-    if ((count ?? 0) >= 25) return j(req, { code: 'RATE_LIMIT', message: 'Too many requests' }, 429);
+    // Authorization - verify case exists (RLS enforces ownership)
+    const { data: c, error: caseErr } = await userClient.from('cases').select('id').eq('id', caseId).maybeSingle();
+    if (caseErr || !c) {
+      log('case_access_denied', { caseId, err: caseErr?.message });
+      return j(req, { code: 'CASE_NOT_FOUND', message: 'Case not found or access denied' }, 404);
+    }
 
     // Check for recent artifact (within 1 hour)
     const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
@@ -598,8 +592,8 @@ Deno.serve(async (req) => {
     if (shouldGenerateNew) {
       log('gen_start', { caseId, templateType });
 
-      // Fetch case data with RLS
-      const { data: masterData, error: fetchError } = await rls.from('master_table').select('*').eq('case_id', caseId).single();
+      // Fetch case data with RLS enforcement
+      const { data: masterData, error: fetchError } = await userClient.from('master_table').select('*').eq('case_id', caseId).single();
       if (fetchError || !masterData) {
         log('data_fetch_fail', { caseId, err: fetchError?.message });
         return j(req, { code: 'DATA_FETCH_FAIL', message: 'Failed to fetch case data' }, 500);
@@ -675,12 +669,12 @@ Deno.serve(async (req) => {
         return j(req, { code: 'UPLOAD_FAIL', message: 'Upload failed' }, 500);
       }
 
-      // Audit
+      // Audit (no user ID since this is a public endpoint)
       await admin.from('generated_documents').insert({ 
         case_id: caseId, 
         template_type: templateType, 
         path, 
-        created_by: userId 
+        created_by: null 
       });
       log('gen_ok', { caseId, templateType, path, bytes: filledPdfBytes.byteLength, filled: result.filledCount, total: result.totalFields });
     } else {

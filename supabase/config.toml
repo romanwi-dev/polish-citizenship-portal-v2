@@ -43,7 +43,7 @@ verify_jwt = true
 verify_jwt = true
 
 [functions.fill-pdf]
-verify_jwt = true
+verify_jwt = false
 
 [functions.check-password-breach]
 verify_jwt = false
