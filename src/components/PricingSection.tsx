@@ -79,8 +79,7 @@ const PricingSection = () => {
               </ul>
 
               <Button 
-                className="w-full" 
-                variant="outline"
+                className="w-full bg-red-900/50 hover:bg-red-900/60 text-white border-2 border-red-800/30 hover:border-red-700/50 shadow-[0_0_20px_rgba(127,29,29,0.4)] hover:shadow-[0_0_30px_rgba(127,29,29,0.6)] transition-all duration-300 hover:scale-105" 
                 onClick={scrollToContact}
               >
                 Get Started
@@ -144,7 +143,7 @@ const PricingSection = () => {
               </ul>
 
               <Button 
-                className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white shadow-glow"
+                className="w-full bg-red-900/60 hover:bg-red-900/70 text-white shadow-[0_0_30px_rgba(127,29,29,0.6)] hover:shadow-[0_0_40px_rgba(127,29,29,0.8)] border-2 border-red-800/40 hover:border-red-700/60 transition-all duration-300 hover:scale-105"
                 onClick={scrollToContact}
               >
                 Get Started
@@ -211,8 +210,7 @@ const PricingSection = () => {
               </ul>
 
               <Button 
-                className="w-full" 
-                variant="outline"
+                className="w-full bg-red-900/50 hover:bg-red-900/60 text-white border-2 border-red-800/30 hover:border-red-700/50 shadow-[0_0_20px_rgba(127,29,29,0.4)] hover:shadow-[0_0_30px_rgba(127,29,29,0.6)] transition-all duration-300 hover:scale-105" 
                 onClick={scrollToContact}
               >
                 Join Waitlist
@@ -225,14 +223,14 @@ const PricingSection = () => {
         <div className="flex justify-center mt-8">
           <Button 
             size="lg" 
-            className="text-lg md:text-2xl font-bold px-8 py-4 md:px-20 md:py-6 h-auto min-h-[48px] rounded-lg bg-card/10 hover:bg-card/20 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-border/30" 
+            className="text-lg md:text-2xl font-bold px-8 py-4 md:px-20 md:py-6 h-auto min-h-[48px] rounded-lg bg-red-900/60 hover:bg-red-900/70 text-white shadow-[0_0_40px_rgba(127,29,29,0.6)] hover:shadow-[0_0_60px_rgba(127,29,29,0.8)] group relative overflow-hidden backdrop-blur-md border-2 border-red-800/40 hover:border-red-700/60 transition-all duration-300 hover:scale-105" 
             onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
             aria-label="Take the Polish Citizenship Test to check your eligibility"
           >
-            <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-bold">
+            <span className="relative z-10 font-bold drop-shadow-lg">
               Take Polish Citizenship Test
             </span>
-            <div className="absolute inset-0 bg-card/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="absolute inset-0 bg-gradient-to-r from-red-800/30 to-red-950/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </Button>
         </div>
       </div>
