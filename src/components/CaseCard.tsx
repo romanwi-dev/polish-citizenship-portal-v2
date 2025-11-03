@@ -11,7 +11,6 @@ import { KPIStrip } from "@/components/KPIStrip";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { toast } from "sonner";
-import { ClientPhotoUpload } from "@/components/ClientPhotoUpload";
 import { STATUS_COLORS, PROCESSING_MODE_COLORS, PROCESSING_MODE_LABELS } from "@/lib/constants";
 import { useUpdateProcessingMode } from "@/hooks/useCaseMutations";
 import { useUpdateCase } from "@/hooks/useCases";
@@ -204,25 +203,15 @@ export const CaseCard = memo(({
           {/* Front of Card */}
         <div className="absolute inset-0 w-full backface-hidden border-2 border-border/50 hover:border-primary/60 transition-all shadow-lg hover:shadow-xl p-5 sm:p-6 rounded-lg flex flex-col bg-card/95 backdrop-blur-sm" style={{ minHeight: '750px' }}>
           <div className="flex items-start justify-between gap-2 mb-5">
-            <div className="flex items-center gap-3 min-w-0 flex-1">
-              <div className="w-24 h-24 shrink-0">
-                <ClientPhotoUpload
-                  caseId={clientCase.id}
-                  currentPhotoUrl={photoUrl}
-                  clientName={clientCase.client_name}
-                  onPhotoUpdated={setPhotoUrl}
-                />
-              </div>
-              <div className="min-w-0 flex-1">
-                <h3 className="font-heading font-bold text-2xl sm:text-3xl md:text-4xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent truncate">
-                  {clientCase.client_name}
-                </h3>
-                {clientCase.client_code && (
-                  <p className="text-sm text-muted-foreground mt-1 font-mono truncate">
-                    {clientCase.client_code}
-                  </p>
-                )}
-              </div>
+            <div className="min-w-0 flex-1">
+              <h3 className="font-heading font-bold text-2xl sm:text-3xl md:text-4xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent truncate">
+                {clientCase.client_name}
+              </h3>
+              {clientCase.client_code && (
+                <p className="text-sm text-muted-foreground mt-1 font-mono truncate">
+                  {clientCase.client_code}
+                </p>
+              )}
             </div>
             <div className={`flex items-center gap-2 shrink-0 ${isFlipped ? 'opacity-0 pointer-events-none' : ''}`}>
               {onToggleFavorite && (
@@ -542,7 +531,7 @@ export const CaseCard = memo(({
         >
           <div className="h-full flex flex-col" style={{ minHeight: '580px' }}>
             <h3 className="text-2xl font-bold mb-6 text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              {clientCase.client_name.split(' ').pop() || clientCase.client_name} CASE DETAILS
+              {clientCase.client_name.split(' ').pop() || clientCase.client_name}
             </h3>
             
             <div className="space-y-3 flex-1 overflow-y-auto">
