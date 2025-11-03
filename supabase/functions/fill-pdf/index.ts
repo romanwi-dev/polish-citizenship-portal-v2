@@ -942,8 +942,9 @@ serve(async (req) => {
       }
     }
 
-    // Preserve Adobe's AUTO font sizing by using NeedAppearances
-    // This allows PDF viewers to render fields with proper fonts for Polish characters
+    // CRITICAL: Do NOT use updateFieldAppearances with Polish characters
+    // pdf-lib's WinAnsi encoding cannot handle Ś, ź, ą, etc.
+    // Instead, set NeedAppearances flag so PDF viewers render fields themselves
     pdfDoc.getForm().acroForm.dict.set(
       PDFName.of('NeedAppearances'), 
       PDFBool.True
@@ -959,7 +960,7 @@ serve(async (req) => {
     
     const filledPdfBytes = await pdfDoc.save({
       useObjectStreams: false,
-      updateFieldAppearances: true  // Generate appearance streams for all PDF viewers
+      updateFieldAppearances: false  // MUST be false for Polish character support
     });
     
     console.log(`PDF generated: ${filledPdfBytes.length} bytes`);
