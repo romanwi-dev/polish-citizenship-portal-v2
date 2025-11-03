@@ -406,11 +406,11 @@ export default function FamilyTreeForm() {
         />
 
         {/* Form with Tabs or Full View */}
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }}>
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="mt-2">
           {!isFullView ? (
             // Tabbed View
             <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-              <div className="sticky top-0 z-50 border-b border-border/50 pb-2 pt-2 -mx-4 md:-mx-6">
+              <div className="sticky top-0 z-50 border-b border-border/50 pb-2 -mx-4 md:-mx-6">
                 <TabsList ref={tabsListRef} className="w-full inline-flex gap-0.5 overflow-x-auto scrollbar-hide bg-transparent p-0 px-0 md:px-6">
 
                   <TabsTrigger value="select" className="flex-shrink-0 md:flex-1 scroll-snap-align-start">
