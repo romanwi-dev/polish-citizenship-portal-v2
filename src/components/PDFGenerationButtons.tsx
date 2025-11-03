@@ -106,24 +106,47 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
       toast.dismiss(loadingToast);
 
       if (!flatten) {
-        // For preview and editable download
-        const url = window.URL.createObjectURL(blob);
-        console.log('✅ PDF blob created:', { url, size: blob.size, type: blob.type });
-        
-        // Check if mobile - force download instead of preview (Safari iframe doesn't render PDFs well)
+        // For mobile: Generate FLATTENED PDF for preview (visible fields)
+        // For desktop: Show editable PDF in dialog
         const device = detectDevice();
-        if (device.isMobile) {
-          // Force download on mobile - user opens in native PDF viewer
-          const link = document.createElement('a');
-          link.href = url;
-          link.download = `${templateType}-${caseId}.pdf`;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          window.URL.revokeObjectURL(url);
-          toast.success(`${label} downloaded! Open in your Files app to view and edit.`, { duration: 5000 });
+        const isReallyMobile = device.isMobile || device.isIOS || device.isAndroid;
+        
+        if (isReallyMobile) {
+          // MOBILE: Generate flattened (locked but visible) PDF for preview
+          console.log('📱 Mobile detected - generating flattened PDF for preview');
+          
+          const flattenedResponse = await supabase.functions.invoke('fill-pdf', {
+            body: {
+              template: templateType,
+              caseId: caseId,
+              flatten: true, // Force flatten for mobile preview
+            },
+          });
+
+          if (flattenedResponse.error) {
+            console.error('Failed to generate flattened PDF:', flattenedResponse.error);
+            toast.error('Failed to generate preview PDF');
+            return;
+          }
+
+          const flattenedBlob = flattenedResponse.data instanceof Blob 
+            ? flattenedResponse.data 
+            : new Blob([flattenedResponse.data], { type: 'application/pdf' });
+          
+          const flattenedUrl = window.URL.createObjectURL(flattenedBlob);
+          console.log('✅ Flattened PDF for mobile preview:', { size: flattenedBlob.size });
+          
+          // Show preview with flattened PDF
+          setPreviewUrl(flattenedUrl);
+          setCurrentTemplate({ type: templateType, label });
+          setCurrentTemplateType(templateType);
+          setFormData(masterData);
+          setPreviewOpen(true);
+          toast.success(`${label} preview ready (flattened for mobile)`, { duration: 3000 });
         } else {
-          // Desktop - show preview dialog
+          // DESKTOP: Use editable PDF for preview
+          const url = window.URL.createObjectURL(blob);
+          console.log('💻 Desktop detected - using editable PDF');
           setPreviewUrl(url);
           setCurrentTemplate({ type: templateType, label });
           setCurrentTemplateType(templateType);
