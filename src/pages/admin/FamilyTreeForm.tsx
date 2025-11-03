@@ -326,16 +326,6 @@ export default function FamilyTreeForm() {
   
   return (
     <div className={cn("relative min-h-screen", isLargeFonts && "text-lg")}>
-      <StickyActionBar
-        onSave={formManagerSave}
-        onGenerate={handleGeneratePDF}
-        onClear={() => setShowClearDialog(true)}
-        isGenerating={isGenerating}
-        isSaving={isSaving}
-        disabled={false}
-      />
-      <div className="sticky-actionbar-spacer" />
-      
       <div className="relative z-10 pt-2 px-3 pb-3 md:p-6">
         {/* Header */}
         <motion.div 
