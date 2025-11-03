@@ -180,9 +180,9 @@ const FAQSection = () => {
           </div>
 
           {/* Search Bar */}
-          <div className="mb-8">
-            <div className="relative w-full">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground/50 pointer-events-none" />
+          <div className="mb-8 w-full">
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground/50 pointer-events-none z-20" />
               <Input
                 type="text"
                 placeholder="Type to filter questions (e.g., pre-1920, naturalization, translations)..."
