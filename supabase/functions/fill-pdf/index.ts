@@ -594,13 +594,13 @@ Deno.serve(async (req) => {
 
       // Template mapping
       const templateMap: Record<string, { path: string; map: Record<string, string> }> = {
-        'citizenship': { path: 'OBY.pdf', map: CITIZENSHIP_PDF_MAP },
-        'family-tree': { path: 'FamilyTreeForm.pdf', map: FAMILY_TREE_PDF_MAP },
+        'citizenship': { path: 'citizenship.pdf', map: CITIZENSHIP_PDF_MAP },
+        'family-tree': { path: 'family-tree.pdf', map: FAMILY_TREE_PDF_MAP },
         'transcription': { path: 'umiejscowienie.pdf', map: TRANSCRIPTION_PDF_MAP },
         'registration': { path: 'uzupelnienie.pdf', map: REGISTRATION_PDF_MAP },
-        'poa-adult': { path: 'POA_Adult.pdf', map: POA_ADULT_PDF_MAP },
-        'poa-minor': { path: 'POA_Minor.pdf', map: POA_MINOR_PDF_MAP },
-        'poa-spouses': { path: 'POA_Spouses.pdf', map: POA_SPOUSES_PDF_MAP },
+        'poa-adult': { path: 'poa-adult.pdf', map: POA_ADULT_PDF_MAP },
+        'poa-minor': { path: 'poa-minor.pdf', map: POA_MINOR_PDF_MAP },
+        'poa-spouses': { path: 'poa-spouses.pdf', map: POA_SPOUSES_PDF_MAP },
       };
 
       const config = templateMap[templateType];
