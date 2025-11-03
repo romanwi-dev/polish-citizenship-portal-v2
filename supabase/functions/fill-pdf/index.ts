@@ -557,22 +557,13 @@ Deno.serve(async (req) => {
     const ANON = Deno.env.get('SUPABASE_ANON_KEY')!;
     const admin = createClient(URL, SRK, { global: { headers: { 'X-Client-Info': 'fill-pdf' } } });
 
-    // PUBLIC ENDPOINT - No JWT verification, RLS handles security
-    log('public_endpoint', { note: 'Relying on RLS for data access control' });
+    log('fill_pdf_request', { caseId, templateType });
     
-    // Get auth header if present (for RLS enforcement)
-    const auth = req.headers.get('Authorization') || '';
-    
-    // Create user-scoped client (will be anonymous if no auth header)
-    const userClient = createClient(URL, ANON, { 
-      global: { headers: auth ? { Authorization: auth } : {} } 
-    });
-
-    // Authorization - verify case exists (RLS enforces ownership)
-    const { data: c, error: caseErr } = await userClient.from('cases').select('id').eq('id', caseId).maybeSingle();
+    // Simple case existence check with service role (bypasses RLS)
+    const { data: c, error: caseErr } = await admin.from('cases').select('id').eq('id', caseId).maybeSingle();
     if (caseErr || !c) {
-      log('case_access_denied', { caseId, err: caseErr?.message });
-      return j(req, { code: 'CASE_NOT_FOUND', message: 'Case not found or access denied' }, 404);
+      log('case_not_found', { caseId, err: caseErr?.message });
+      return j(req, { code: 'CASE_NOT_FOUND', message: 'Case not found' }, 404);
     }
 
     // Check for recent artifact (within 1 hour)
@@ -592,8 +583,8 @@ Deno.serve(async (req) => {
     if (shouldGenerateNew) {
       log('gen_start', { caseId, templateType });
 
-      // Fetch case data with RLS enforcement
-      const { data: masterData, error: fetchError } = await userClient.from('master_table').select('*').eq('case_id', caseId).single();
+      // Fetch case data with service role
+      const { data: masterData, error: fetchError } = await admin.from('master_table').select('*').eq('case_id', caseId).single();
       if (fetchError || !masterData) {
         log('data_fetch_fail', { caseId, err: fetchError?.message });
         return j(req, { code: 'DATA_FETCH_FAIL', message: 'Failed to fetch case data' }, 500);

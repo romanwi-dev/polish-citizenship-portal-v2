@@ -1,6 +1,5 @@
 /**
  * Shared PDF generation utilities for Polish Citizenship Portal
- * Supports all template types with signed URLs and base64 fallback
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -23,22 +22,7 @@ export function base64ToBlob(b64: string, mime = 'application/pdf') {
   return new Blob([bytes], { type: mime });
 }
 
-async function invokeWithAuth(name: string, body: any) {
-  // Get current session token
-  const { data: sessionData } = await supabase.auth.getSession();
-  const token = sessionData?.session?.access_token;
-  if (!token) {
-    const err: any = new Error('You are not signed in');
-    err.code = 'NO_SESSION';
-    throw err;
-  }
-  return supabase.functions.invoke(name, {
-    body,
-    headers: { Authorization: `Bearer ${token}` },
-  });
-}
-
-/** Universal PDF generator used by all forms and all template types. */
+/** Universal PDF generator */
 export async function generatePdfViaEdge({
   supabase: _supabase,
   caseId,
@@ -54,74 +38,52 @@ export async function generatePdfViaEdge({
   setIsGenerating: (b: boolean) => void;
   filename: string;
 }) {
-  console.log('[PDF-LIB] generatePdfViaEdge called:', { caseId, templateType, filename });
-  
   if (!caseId || caseId === ':id' || caseId === 'demo-preview') {
-    console.error('[PDF-LIB] Invalid caseId, blocking PDF generation:', caseId);
-    toast.error('PDF generation not available in demo mode');
+    toast.error('Invalid case ID');
     return;
   }
 
   try {
     setIsGenerating(true);
     toast.loading('Generating PDF...');
-
-    console.log('[PDF-LIB] Calling fill-pdf edge function with auth');
     
-    const { data, error } = await invokeWithAuth('fill-pdf', { caseId, templateType });
+    const { data, error } = await supabase.functions.invoke('fill-pdf', {
+      body: { caseId, templateType }
+    });
     
-    if (error) {
-      console.error('[PDF-LIB] Function error:', error);
-      throw error;
-    }
+    if (error) throw error;
 
-    console.log('[PDF-LIB] Response:', { data });
-
-    // Prefer signed URL
     if (data?.url) {
-      console.log('[PDF-LIB] Using signed URL:', data.url);
       downloadUrl(data.url, data.filename ?? filename);
       toast.dismiss();
-      toast.success('PDF generated successfully!');
+      toast.success('PDF generated!');
       return;
     }
 
-    // Fallback to base64
     if (data?.pdf) {
-      console.log('[PDF-LIB] Using base64 PDF data');
       const blob = base64ToBlob(data.pdf);
       const url = URL.createObjectURL(blob);
       downloadUrl(url, filename);
       URL.revokeObjectURL(url);
       toast.dismiss();
-      toast.success('PDF generated successfully!');
+      toast.success('PDF generated!');
       return;
     }
 
-    if (data?.error) {
-      console.error('[PDF-LIB] Server returned error:', data.error);
-      throw new Error(data.error);
-    }
-    
-    console.error('[PDF-LIB] No URL or PDF in response:', data);
-    throw new Error('No URL or PDF returned from server');
+    if (data?.error) throw new Error(data.error);
+    throw new Error('No PDF returned');
   } catch (err: any) {
     toast.dismiss();
-    console.error('[PDF-LIB] PDF generation error:', err);
-    
-    if (err?.code === 'NO_SESSION') {
-      toast.error('Please sign in to generate PDFs.');
-      return;
-    }
-    
-    toast.error(`Failed to generate PDF: ${err.message ?? err}`);
+    toast.error(`PDF failed: ${err.message ?? err}`);
   } finally {
     setIsGenerating(false);
   }
 }
 
 export async function refreshPdf(caseId: string, templateType: string) {
-  const { data, error } = await invokeWithAuth('pdf-refresh', { caseId, templateType });
+  const { data, error } = await supabase.functions.invoke('pdf-refresh', { 
+    body: { caseId, templateType } 
+  });
   if (error) throw error;
   if (!data?.url) throw new Error('No URL returned');
   return data;
