@@ -1,13 +1,8 @@
 /**
- * Universal PDF Generation Utilities
- * Shared helpers for all PDF generation across the app
+ * Shared PDF generation utilities for Polish Citizenship Portal
+ * Supports all template types with signed URLs and base64 fallback
  */
 
-import { toast } from "sonner";
-
-/**
- * Download a file from a URL
- */
 export function downloadUrl(href: string, filename?: string) {
   const a = document.createElement('a');
   a.href = href;
@@ -18,9 +13,6 @@ export function downloadUrl(href: string, filename?: string) {
   a.remove();
 }
 
-/**
- * Convert base64 string to Blob
- */
 export function base64ToBlob(b64: string, mime = 'application/pdf') {
   const bin = atob(b64);
   const len = bin.length;
@@ -29,10 +21,7 @@ export function base64ToBlob(b64: string, mime = 'application/pdf') {
   return new Blob([bytes], { type: mime });
 }
 
-/**
- * Universal PDF generator used by all forms and all template types.
- * Supports both signed URL (preferred) and base64 fallback.
- */
+/** Universal PDF generator used by all forms and all template types. */
 export async function generatePdfViaEdge({
   supabase,
   caseId,
@@ -60,7 +49,6 @@ export async function generatePdfViaEdge({
     const { data, error } = await supabase.functions.invoke('fill-pdf', {
       body: { caseId, templateType },
     });
-    
     if (error) throw error;
 
     // Prefer signed URL

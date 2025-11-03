@@ -53,15 +53,16 @@ export default function CivilRegistryForm() {
     CIVIL_REGISTRY_FORM_REQUIRED_FIELDS,
     CIVIL_REGISTRY_DATE_FIELDS
   );
-  const handleGeneratePDF = async () => {
+  
+  const handleGeneratePDF = async (templateType: 'registration' | 'transcription') => {
     const { generatePdfViaEdge } = await import('@/lib/pdf');
     await generatePdfViaEdge({
       supabase,
       caseId: caseId!,
-      templateType: 'registration',
+      templateType,
       toast,
       setIsGenerating,
-      filename: `civil-registry-${caseId}.pdf`,
+      filename: `civil-registry-${templateType}-${caseId}.pdf`,
     });
   };
 
@@ -240,7 +241,7 @@ export default function CivilRegistryForm() {
           currentForm="civil-registry"
           onSave={handleSave}
           onClear={() => setShowClearDialog(true)}
-          onGeneratePDF={handleGeneratePDF}
+          onGeneratePDF={() => handleGeneratePDF('registration')}
           isSaving={isSaving}
         />
 
@@ -420,6 +421,31 @@ export default function CivilRegistryForm() {
                 )}
               />
             </div>
+          </motion.div>
+
+          {/* PDF Generation Buttons */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ delay: 0.3 }} 
+            className="mt-12 flex flex-col sm:flex-row justify-center gap-4"
+          >
+            <Button
+              onClick={() => handleGeneratePDF('registration')}
+              disabled={isGenerating}
+              size="lg"
+              className="px-12 py-8 text-xl md:text-2xl font-heading font-black bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-400/40 transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] min-w-[280px]"
+            >
+              {isGenerating ? 'Generating...' : 'Generate Registration PDF'}
+            </Button>
+            <Button
+              onClick={() => handleGeneratePDF('transcription')}
+              disabled={isGenerating}
+              size="lg"
+              className="px-12 py-8 text-xl md:text-2xl font-heading font-black bg-teal-500/20 hover:bg-teal-500/30 border border-teal-400/40 transition-all shadow-[0_0_20px_rgba(20,184,166,0.3)] hover:shadow-[0_0_30px_rgba(20,184,166,0.5)] min-w-[280px]"
+            >
+              {isGenerating ? 'Generating...' : 'Generate Transcription PDF'}
+            </Button>
           </motion.div>
 
               </div>
