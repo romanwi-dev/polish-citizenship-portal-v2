@@ -135,18 +135,6 @@ export default function TestimonialsSection() {
           ))}
         </div>
 
-        {/* CTA */}
-        <div className="text-center mt-12 animate-fade-in" style={{ animationDelay: '600ms' }}>
-          <p className="text-muted-foreground mb-4">
-            Join hundreds of satisfied clients who successfully reclaimed their Polish citizenship
-          </p>
-          <a 
-            href="#contact" 
-            className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"
-          >
-            Start Your Journey
-          </a>
-        </div>
       </div>
     </section>
   );
