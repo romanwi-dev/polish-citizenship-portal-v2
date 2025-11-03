@@ -448,11 +448,20 @@ function fillPDFFields(form: any, data: any, fieldMap: Record<string, string>): 
         return;
       }
       
+      // Detect field type using multiple methods
       const fieldType = field.constructor.name;
-      if (fieldType === 'PDFTextField') {
-        field.setText(formattedValue);
-        result.filledCount++;
-      } else if (fieldType === 'PDFCheckBox') {
+      const acroFieldType = field.acroField?.dict?.get('FT')?.encodedName || '';
+      
+      // PDFTextField or text field indicator
+      if (fieldType === 'PDFTextField' || acroFieldType === '/Tx' || acroFieldType === 't') {
+        try {
+          field.setText(formattedValue);
+          result.filledCount++;
+        } catch (e) {
+          const errMsg = (e as Error)?.message || String(e);
+          result.errors.push({ field: pdfFieldName, error: `Text field set failed: ${errMsg}` });
+        }
+      } else if (fieldType === 'PDFCheckBox' || acroFieldType === '/Btn') {
         const isChecked = formatBoolean(value) === 'Yes';
         if (isChecked) {
           field.check();
@@ -460,8 +469,16 @@ function fillPDFFields(form: any, data: any, fieldMap: Record<string, string>): 
           field.uncheck();
         }
         result.filledCount++;
+      } else if (fieldType === 'PDFDropdown' || acroFieldType === '/Ch') {
+        try {
+          field.select(formattedValue);
+          result.filledCount++;
+        } catch (e) {
+          const errMsg = (e as Error)?.message || String(e);
+          result.errors.push({ field: pdfFieldName, error: `Dropdown select failed: ${errMsg}` });
+        }
       } else {
-        result.errors.push({ field: pdfFieldName, error: `Unsupported field type: ${fieldType}` });
+        result.errors.push({ field: pdfFieldName, error: `Unsupported field type: ${fieldType} (acro: ${acroFieldType})` });
       }
     } catch (error) {
       result.errors.push({ field: pdfFieldName, error: String((error as Error)?.message ?? error) });
