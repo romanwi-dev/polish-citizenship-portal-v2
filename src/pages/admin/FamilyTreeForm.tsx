@@ -10,6 +10,7 @@ import { useState, useEffect, useRef, Fragment, useLayoutEffect } from "react";
 import { Loader2, Save, Download, Users, Sparkles, Type, User, ArrowLeft, TreePine, BookOpen, Baby, Heart, FileText, GitBranch, HelpCircle, Maximize2, Minimize2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { PDFPreviewDialog } from "@/components/PDFPreviewDialog";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -35,6 +36,8 @@ export default function FamilyTreeForm() {
   const { isLargeFonts, toggleFontSize } = useAccessibility();
   const [showClearDialog, setShowClearDialog] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null);
+  const [previewFormData, setPreviewFormData] = useState<any>(null);
   const { toast } = useToast();
 
   const {
@@ -100,15 +103,108 @@ export default function FamilyTreeForm() {
     }
   };
   const handleGeneratePDF = async () => {
-    const { generatePdfViaEdge } = await import('@/lib/pdf');
-    await generatePdfViaEdge({
-      supabase,
-      caseId: caseId!,
-      templateType: 'family-tree',
-      toast,
-      setIsGenerating,
-      filename: `family-tree-${caseId}.pdf`,
-    });
+    if (!caseId || caseId === ':id' || caseId === 'demo-preview') {
+      toast({ title: "Error", description: "Invalid case ID", variant: "destructive" });
+      return;
+    }
+
+    setIsGenerating(true);
+    try {
+      console.log('[FamilyTree] Saving form data before PDF generation...');
+      await formManagerSave();
+
+      console.log('[FamilyTree] Generating PDF for family-tree');
+      
+      const { data, error } = await supabase.functions.invoke('fill-pdf', {
+        body: { caseId, templateType: 'family-tree' }
+      });
+
+      if (error) throw error;
+      
+      if (data?.url) {
+        console.log('[FamilyTree] PDF generated successfully:', data.url);
+        setPdfPreviewUrl(data.url);
+        setPreviewFormData(formData);
+        toast({ 
+          title: "Success", 
+          description: `PDF generated! Stats: ${data.stats?.filled}/${data.stats?.total} fields filled` 
+        });
+      } else {
+        throw new Error('No PDF URL returned');
+      }
+    } catch (error: any) {
+      console.error('[FamilyTree] PDF generation error:', error);
+      toast({ title: "Error", description: error.message || 'Failed to generate PDF', variant: "destructive" });
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleRegeneratePDF = async (updatedData: any) => {
+    console.log('[FamilyTree] Regenerating PDF with updated data...');
+    setIsGenerating(true);
+    try {
+      await formManagerSave();
+      
+      const { data, error } = await supabase.functions.invoke('fill-pdf', {
+        body: { caseId, templateType: 'family-tree' }
+      });
+
+      if (error) throw error;
+      
+      if (data?.url) {
+        setPdfPreviewUrl(data.url);
+        toast({ title: "Success", description: "PDF regenerated!" });
+      }
+    } catch (error: any) {
+      console.error("Regeneration error:", error);
+      toast({ title: "Error", description: `Failed: ${error.message}`, variant: "destructive" });
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleDownloadEditable = () => {
+    if (!pdfPreviewUrl) {
+      toast({ title: "Error", description: 'No PDF available to download', variant: "destructive" });
+      return;
+    }
+    const link = document.createElement("a");
+    link.href = pdfPreviewUrl;
+    link.download = `FamilyTree-EDITABLE-${caseId}.pdf`;
+    link.click();
+    toast({ title: "Success", description: 'Editable PDF downloaded - you can fill fields offline!' });
+  };
+
+  const handleDownloadFinal = async () => {
+    if (!pdfPreviewUrl) {
+      toast({ title: "Error", description: 'No PDF available to download', variant: "destructive" });
+      return;
+    }
+    
+    try {
+      toast({ title: "Loading", description: 'Generating final locked PDF...' });
+      
+      const { data, error } = await supabase.functions.invoke('fill-pdf', {
+        body: { 
+          caseId, 
+          templateType: 'family-tree',
+          flatten: true 
+        }
+      });
+
+      if (error) throw error;
+      
+      if (data?.url) {
+        const link = document.createElement("a");
+        link.href = data.url;
+        link.download = `FamilyTree-FINAL-${caseId}.pdf`;
+        link.click();
+        toast({ title: "Success", description: 'Final PDF downloaded - fields are locked!' });
+      }
+    } catch (error: any) {
+      toast({ title: "Error", description: 'Failed to generate final PDF: ' + error.message, variant: "destructive" });
+    }
   };
 
   const handleClearData = async () => {
@@ -1924,6 +2020,18 @@ export default function FamilyTreeForm() {
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
+
+    {/* PDF Preview Dialog */}
+    <PDFPreviewDialog
+      open={!!pdfPreviewUrl}
+      onClose={() => setPdfPreviewUrl(null)}
+      pdfUrl={pdfPreviewUrl || ""}
+      formData={previewFormData}
+      onRegeneratePDF={handleRegeneratePDF}
+      onDownloadEditable={handleDownloadEditable}
+      onDownloadFinal={handleDownloadFinal}
+      documentTitle="Family Tree"
+    />
   </div>
   );
 }
