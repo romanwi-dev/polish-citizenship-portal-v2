@@ -1,7 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { PDFDocument, PDFName, PDFBool } from "https://esm.sh/pdf-lib@1.17.1";
-import fontkit from "https://esm.sh/fontkit@2.0.2";
 
 // ============ IN-MEMORY CACHE FOR PDF TEMPLATES ============
 const pdfTemplateCache = new Map<string, Uint8Array>();
@@ -943,22 +942,12 @@ serve(async (req) => {
       }
     }
 
-    // Register fontkit for custom font embedding
-    pdfDoc.registerFontkit(fontkit);
-    
-    // Fetch Roboto font (supports Polish extended Latin characters)
-    const fontUrl = 'https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Me5WZLCzYlKw.ttf';
-    const fontResponse = await fetch(fontUrl);
-    const fontBytes = await fontResponse.arrayBuffer();
-    
-    // Embed custom Unicode font
-    const customFont = await pdfDoc.embedFont(fontBytes);
-    
-    // Update field appearances with Unicode-compatible font
-    form.updateFieldAppearances(customFont);
-    
-    // Remove NeedAppearances flag - we have proper appearance streams now
-    form.acroForm.dict.delete(PDFName.of('NeedAppearances'));
+    // Set NeedAppearances flag - let PDF viewer render fields
+    // This works on desktop but not mobile Safari iframe
+    pdfDoc.getForm().acroForm.dict.set(
+      PDFName.of('NeedAppearances'), 
+      PDFBool.True
+    );
 
     // Only flatten for final locked PDFs, keep editable otherwise
     if (flatten) {
@@ -970,7 +959,7 @@ serve(async (req) => {
     
     const filledPdfBytes = await pdfDoc.save({
       useObjectStreams: false,
-      updateFieldAppearances: true  // Safe now - using Helvetica font for Unicode support
+      updateFieldAppearances: false  // MUST be false - NeedAppearances is set
     });
     
     console.log(`PDF generated: ${filledPdfBytes.length} bytes`);
