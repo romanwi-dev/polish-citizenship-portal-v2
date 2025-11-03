@@ -720,11 +720,8 @@ export default function POAForm() {
         formData={previewFormData}
         onRegeneratePDF={handleRegeneratePDF}
         onDownloadEditable={handleDownloadPDF}
-        onDownloadFinal={() => {
-          // For POAForm, we only have editable download - final can be same
-          handleDownloadPDF();
-        }}
-        documentTitle={`POA ${activePOAType.charAt(0).toUpperCase() + activePOAType.slice(1)}`}
+        onDownloadFinal={handleDownloadPDF}
+        documentTitle={`POA - ${activePOAType.toUpperCase()}`}
       />
     </div>
   );
