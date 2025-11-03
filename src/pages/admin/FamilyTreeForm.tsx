@@ -406,7 +406,7 @@ export default function FamilyTreeForm() {
         />
 
         {/* Form with Tabs or Full View */}
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="mt-2">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="-mt-2">
           {!isFullView ? (
             // Tabbed View
             <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
