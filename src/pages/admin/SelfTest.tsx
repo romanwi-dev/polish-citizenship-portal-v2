@@ -42,10 +42,12 @@ export default function SelfTest() {
   const setS = (key: string, val: 'ok' | 'err') => setStatus((s) => ({ ...s, [key]: val }));
 
   async function testHealth() {
-    push('info', 'Calling function: health (POST via invoke)…');
+    push('info', 'Calling function: health (POST)…');
     try {
-      const { data, error } = await supabase.functions.invoke('health', { body: {} });
-      if (error) throw error;
+      const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/health`;
+      const res = await fetch(url, { method: 'POST' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
       push('ok', `health: ${short(data)}`);
       setS('health', 'ok');
     } catch (e: any) {
@@ -57,8 +59,10 @@ export default function SelfTest() {
   async function testStorage() {
     push('info', 'Calling function: storage-test…');
     try {
-      const { data, error } = await supabase.functions.invoke('storage-test', { body: {} });
-      if (error) throw error;
+      const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/storage-test`;
+      const res = await fetch(url, { method: 'POST' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
       if (data?.ok && data?.url) {
         push('ok', `storage-test: signed URL received`);
         openPdfUrl(data.url); // will download/open selftest.txt
@@ -75,8 +79,10 @@ export default function SelfTest() {
   async function testPdfJson() {
     push('info', 'Calling function: pdf-minimal (JSON/base64)…');
     try {
-      const { data, error } = await supabase.functions.invoke('pdf-minimal', { body: {} });
-      if (error) throw error;
+      const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/pdf-minimal`;
+      const res = await fetch(url, { method: 'POST' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
       if (data?.ok && data?.pdf) {
         downloadBase64Pdf(data.pdf, 'hello.pdf');
         push('ok', 'pdf-minimal JSON: opened base64 PDF');
