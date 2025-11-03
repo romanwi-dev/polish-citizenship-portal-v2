@@ -123,7 +123,7 @@ const ContactFormWeb3 = () => {
                         style={{ 
                           fontSize: '1.125rem', 
                           fontWeight: '400',
-                          backgroundColor: '#1a2642',
+                          backgroundColor: 'rgba(10, 20, 45, 0.6)',
                           boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
                         }}
                         onMouseEnter={(e) => {
@@ -148,7 +148,7 @@ const ContactFormWeb3 = () => {
                         style={{ 
                           fontSize: '1.125rem', 
                           fontWeight: '400',
-                          backgroundColor: '#1a2642',
+                          backgroundColor: 'rgba(10, 20, 45, 0.6)',
                           boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
                         }}
                         onMouseEnter={(e) => {
@@ -173,7 +173,7 @@ const ContactFormWeb3 = () => {
                       style={{ 
                         fontSize: '1.125rem', 
                         fontWeight: '400',
-                        backgroundColor: '#1a2642',
+                        backgroundColor: 'rgba(10, 20, 45, 0.6)',
                         boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
                       }}
                       onMouseEnter={(e) => {
