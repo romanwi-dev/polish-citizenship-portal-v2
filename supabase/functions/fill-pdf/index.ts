@@ -739,6 +739,17 @@ const fillPDFFields = (
         rawValue = getNestedValue(data, dbColumn);
       }
       
+      // Auto-inject today's date for POA date fields if empty
+      if ((pdfFieldName === 'poa_date' || pdfFieldName === 'data_pelnomocnictwa') && 
+          (rawValue === null || rawValue === undefined || rawValue === '')) {
+        const today = new Date();
+        const dd = String(today.getDate()).padStart(2, '0');
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const yyyy = today.getFullYear();
+        rawValue = `${dd}.${mm}.${yyyy}`;
+        console.log(`[FILL-AUTO] Injected today's date for ${pdfFieldName}: ${rawValue}`);
+      }
+      
       if (rawValue === null || rawValue === undefined || rawValue === '') {
         result.emptyFields.push(pdfFieldName);
         continue;
