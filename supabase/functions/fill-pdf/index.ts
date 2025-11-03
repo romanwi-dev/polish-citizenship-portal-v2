@@ -1,7 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { PDFDocument, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1";
-import fontkit from "https://esm.sh/@pdf-lib/fontkit@1.1.1";
 
 // ============ IN-MEMORY CACHE FOR PDF TEMPLATES ============
 const pdfTemplateCache = new Map<string, Uint8Array>();
@@ -897,16 +896,6 @@ serve(async (req) => {
     }
 
     const pdfDoc = await PDFDocument.load(pdfBytes);
-    
-    // Register fontkit to enable custom font embedding (required for Polish characters)
-    pdfDoc.registerFontkit(fontkit);
-    
-    // Load Roboto font for Polish character support
-    const fontPath = new URL('./Roboto-Regular.ttf', import.meta.url).pathname;
-    const fontBytes = await Deno.readFile(fontPath);
-    const polishFont = await pdfDoc.embedFont(fontBytes);
-    console.log('✅ Embedded Roboto font with Polish character support');
-    
     const form = pdfDoc.getForm();
     const fields = form.getFields();
     
@@ -953,23 +942,18 @@ serve(async (req) => {
       }
     }
 
-    // For editable PDFs: Generate appearance streams with Polish font
-    if (!flatten) {
-      form.updateFieldAppearances(polishFont);
-      console.log('✅ Generated appearance streams with Polish font (editable PDF)');
-    }
+    // ALWAYS generate appearance streams for ALL PDFs (editable and flattened)
+    // This makes fields visible in PDF viewers
+    const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    form.updateFieldAppearances(helveticaFont);
+    console.log('✅ Generated appearance streams for all fields');
 
-    // Only flatten for final locked PDFs, keep editable otherwise
+    // Only flatten if explicitly requested
     if (flatten) {
-      // CRITICAL: Must call updateFieldAppearances BEFORE flatten to preserve values
-      // Use Polish font to display Polish characters correctly
-      form.updateFieldAppearances(polishFont);
-      console.log('✅ Updated appearances with Polish font before flattening');
-      
       form.flatten();
-      console.log('🔒 PDF flattened - Polish characters visible as static text');
+      console.log('🔒 PDF flattened (locked, not editable)');
     } else {
-      console.log('✏️ PDF kept editable with Polish font support');
+      console.log('✏️ PDF kept editable');
     }
     
     const filledPdfBytes = await pdfDoc.save({

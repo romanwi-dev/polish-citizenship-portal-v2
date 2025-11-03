@@ -106,63 +106,16 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
       toast.dismiss(loadingToast);
 
       if (!flatten) {
-        // ALWAYS generate flattened PDF for mobile preview (fields visible)
-        // Desktop can use editable, but mobile Safari needs flattened
-        const device = detectDevice();
-        const isReallyMobile = device.isMobile || device.isIOS || device.isAndroid;
+        // ALWAYS use editable PDF - just create blob URL for preview
+        const url = window.URL.createObjectURL(blob);
+        console.log('✅ PDF ready:', { url, size: blob.size });
         
-        if (isReallyMobile) {
-          // MOBILE: Generate FLATTENED PDF for preview (visible, locked)
-          console.log('📱 Mobile detected - generating FLATTENED PDF for preview');
-          toast.loading('Generating mobile-optimized PDF preview...');
-          
-          try {
-            const flattenedResponse = await supabase.functions.invoke('fill-pdf', {
-              body: {
-                template: templateType,
-                caseId: caseId,
-                flatten: true, // Force flatten for mobile visibility
-              },
-            });
-
-            toast.dismiss();
-
-            if (flattenedResponse.error) {
-              console.error('Failed to generate flattened PDF:', flattenedResponse.error);
-              toast.error('Failed to generate preview. Try downloading instead.');
-              return;
-            }
-
-            const flattenedBlob = flattenedResponse.data instanceof Blob 
-              ? flattenedResponse.data 
-              : new Blob([flattenedResponse.data], { type: 'application/pdf' });
-            
-            const flattenedUrl = window.URL.createObjectURL(flattenedBlob);
-            console.log('✅ Flattened PDF ready for mobile:', { size: flattenedBlob.size });
-            
-            // Show preview with flattened (visible) PDF
-            setPreviewUrl(flattenedUrl);
-            setCurrentTemplate({ type: templateType, label });
-            setCurrentTemplateType(templateType);
-            setFormData(masterData);
-            setPreviewOpen(true);
-            toast.success(`${label} preview ready!`, { duration: 3000 });
-          } catch (error) {
-            toast.dismiss();
-            console.error('Mobile PDF generation error:', error);
-            toast.error('Failed to generate preview. Please try again.');
-          }
-        } else {
-          // DESKTOP: Use editable PDF for preview
-          const url = window.URL.createObjectURL(blob);
-          console.log('💻 Desktop - showing editable PDF preview');
-          setPreviewUrl(url);
-          setCurrentTemplate({ type: templateType, label });
-          setCurrentTemplateType(templateType);
-          setFormData(masterData);
-          setPreviewOpen(true);
-          toast.success(`${label} ready! Opening preview...`, { duration: 3000 });
-        }
+        setPreviewUrl(url);
+        setCurrentTemplate({ type: templateType, label });
+        setCurrentTemplateType(templateType);
+        setFormData(masterData);
+        setPreviewOpen(true);
+        toast.success(`${label} ready!`, { duration: 3000 });
         
         // Update status: generated
         if (documentId) {
