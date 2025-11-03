@@ -87,16 +87,16 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
 
       <div className="border-b border-border/50 pb-6 pt-6 mb-6">
         <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
-          I don't know answers
+          Mark if relevant
         </h3>
       </div>
 
       <div className="space-y-4">
         {[
-          { field: "idk_ancestor_polish_passport", label: "I don't know if my Ancestor held Polish passport" },
-          { field: "idk_ancestor_lost_citizenship", label: "I don't know if my Ancestor lost Polish citizenship" },
-          { field: "idk_ancestor_applied_citizenship", label: "I don't know if my Ancestor applied for citizenship of a foreign country" },
-          { field: "idk_renounced", label: "I don't know if anyone in the lineage renounced Polish citizenship" },
+          { field: "idk_ancestor_polish_passport", label: "I have some old original Polish documents of my family?" },
+          { field: "idk_ancestor_lost_citizenship", label: "My ancestors emigrated from POLAND before 1920" },
+          { field: "idk_ancestor_applied_citizenship", label: "One of my relatives has already applied and received Polish citizenship confirmation" },
+          { field: "idk_renounced", label: "I want to apply also for some other family members" },
         ].map((item, index) => (
           <motion.div
             key={item.field}
