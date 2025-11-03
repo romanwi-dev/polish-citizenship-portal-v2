@@ -1,79 +1,50 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "npm:@supabase/supabase-js@2";
-import { PDFDocument, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-// ============ CONFIGURATION ============
-const SIGNED_URL_TTL_SECONDS = Number(Deno.env.get('SIGNED_URL_TTL_SECONDS') ?? '2700'); // 45 minutes
-const RATE_LIMIT_WINDOW_MS = 300000; // 5 minutes
-const RATE_LIMIT_MAX_REQUESTS = 25; // Max 25 PDF generations per 5 minutes
+// ===== CORS & Security Utilities =====
+function parseOrigins() {
+  const raw = Deno.env.get('ALLOWED_ORIGINS') ?? '';
+  return new Set(raw.split(',').map(s => s.trim()).filter(Boolean));
+}
+const ORIGINS = parseOrigins();
 
-// ============ RATE LIMITING ============
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-
-function checkRateLimit(identifier: string): { allowed: boolean; remaining: number } {
-  const now = Date.now();
-  const record = rateLimitMap.get(identifier);
-  
-  if (!record || now > record.resetAt) {
-    rateLimitMap.set(identifier, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
-    return { allowed: true, remaining: RATE_LIMIT_MAX_REQUESTS - 1 };
-  }
-  
-  if (record.count >= RATE_LIMIT_MAX_REQUESTS) {
-    return { allowed: false, remaining: 0 };
-  }
-  
-  record.count++;
-  return { allowed: true, remaining: RATE_LIMIT_MAX_REQUESTS - record.count };
+function cors(origin: string | null) {
+  const allow = origin && ORIGINS.has(origin) ? origin : 'null';
+  return {
+    'Access-Control-Allow-Origin': allow,
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'authorization, content-type, x-admin-token',
+    'Vary': 'Origin'
+  };
 }
 
-// Clean up old rate limit entries every 5 minutes
-setInterval(() => {
-  const now = Date.now();
-  for (const [key, value] of rateLimitMap.entries()) {
-    if (now > value.resetAt) {
-      rateLimitMap.delete(key);
-    }
-  }
-}, 300000);
-
-// ============ INPUT VALIDATION ============
-function validateCaseId(caseId: string): { valid: boolean; error?: string } {
-  if (!caseId || typeof caseId !== 'string') {
-    return { valid: false, error: 'caseId is required and must be a string' };
-  }
-  
-  // Allow UUID format, alphanumeric with hyphens, max 64 characters
-  const caseIdRegex = /^[a-zA-Z0-9-]{1,64}$/;
-  if (!caseIdRegex.test(caseId)) {
-    return { 
-      valid: false, 
-      error: 'caseId must contain only alphanumeric characters and hyphens, max 64 chars' 
-    };
-  }
-  
-  // Prevent path traversal attempts
-  if (caseId.includes('..') || caseId.includes('/') || caseId.includes('\\')) {
-    return { valid: false, error: 'caseId contains invalid characters' };
-  }
-  
-  return { valid: true };
-}
-
-// ============ IN-MEMORY CACHE FOR PDF TEMPLATES ============
-const pdfTemplateCache = new Map<string, Uint8Array>();
-const CACHE_MAX_AGE = 3600000; // 1 hour in milliseconds
-const cacheTimestamps = new Map<string, number>();
-const MAX_CACHE_SIZE_MB = 50; // 50MB total cache limit
-const MAX_CACHE_ENTRIES = 10; // Max 10 templates
-
-function getCacheSizeMB(): number {
-  let totalBytes = 0;
-  pdfTemplateCache.forEach(bytes => {
-    totalBytes += bytes.length;
+function j(req: Request, body: unknown, status = 200) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { ...cors(req.headers.get('Origin')), 'Content-Type': 'application/json' }
   });
-  return totalBytes / (1024 * 1024);
 }
+
+function log(event: string, extra: Record<string, unknown> = {}) {
+  console.log(JSON.stringify({ ts: new Date().toISOString(), event, ...extra }));
+}
+
+// ===== Input Validation =====
+function sanitizeCaseId(raw: unknown): string | null {
+  const s = String(raw ?? '');
+  return /^[A-Za-z0-9_-]{1,64}$/.test(s) ? s : null;
+}
+
+const VALID_TEMPLATES = new Set([
+  'citizenship', 'family-tree', 'transcription', 'registration',
+  'poa-adult', 'poa-minor', 'poa-spouses'
+]);
+
+const TTL = Number(Deno.env.get('SIGNED_URL_TTL_SECONDS') ?? '2700');
+
+// ===== PDF Template Cache =====
+const pdfTemplateCache = new Map<string, Uint8Array>();
+const cacheTimestamps = new Map<string, number>();
+const MAX_CACHE_SIZE = 10;
 
 function evictOldestCacheEntry() {
   let oldestKey: string | null = null;
@@ -87,14 +58,12 @@ function evictOldestCacheEntry() {
   });
   
   if (oldestKey) {
-    console.log(`🗑️ Evicting cached template: ${oldestKey}`);
     pdfTemplateCache.delete(oldestKey);
     cacheTimestamps.delete(oldestKey);
   }
 }
 
-// ============ PDF FIELD MAPPINGS (INLINE) ============
-
+// ===== PDF Field Mappings =====
 const POA_ADULT_PDF_MAP: Record<string, string> = {
   'applicant_given_names': 'applicant_first_name',
   'applicant_surname': 'applicant_last_name',
@@ -112,222 +81,141 @@ const POA_MINOR_PDF_MAP: Record<string, string> = {
 };
 
 const POA_SPOUSES_PDF_MAP: Record<string, string> = {
-  // Applicant fields
-  'imie_nazwisko_wniosko': 'applicant_first_name|applicant_last_name', // Full name field  
+  'imie_nazwisko_wniosko': 'applicant_first_name|applicant_last_name',
   'applicant_given_names': 'applicant_first_name',
   'applicant_surname': 'applicant_last_name',
   'passport_number': 'applicant_passport_number',
-  'nr_dok_tozsamosci': 'applicant_passport_number', // ID document number
-  
-  // Spouse fields
+  'nr_dok_tozsamosci': 'applicant_passport_number',
   'spouse_given_names': 'spouse_first_name',
   'spouse_surname': 'spouse_last_name',
   'spouse_passport_number': 'spouse_passport_number',
-  
-  // Post-marriage surnames - separate independent fields
   'husband_surname': 'husband_last_name_after_marriage',
   'wife_surname': 'wife_last_name_after_marriage',
-  
-  // Children from marriage
   'minor_surname': 'child_1_last_name',
-  'imie_nazwisko_dziecka': 'child_1_first_name|child_1_last_name', // Child full name
-  
-  // POA date
+  'imie_nazwisko_dziecka': 'child_1_first_name|child_1_last_name',
   'data_pelnomocnictwa': 'poa_date_filed',
   'poa_date': 'poa_date_filed',
 };
 
 const CITIZENSHIP_PDF_MAP: Record<string, string> = {
-  // ========== HEADER & ADMIN FIELDS ==========
   'wojewoda': 'voivodeship',
   'decyzja': 'decision_type',
   'posiadanie1': 'citizenship_possession_info',
   'cel_ubiegania': 'application_purpose',
   'nazwa_organu': 'authority_name',
   'r_w_obyw_dziec': 'residence_citizenship_info',
-  
-  // Submission date & location
   'dzien_zloz': 'application_submission_date.day',
   'miesiac_zloz': 'application_submission_date.month',
   'rok_zloz': 'application_submission_date.year',
   'miejscowosc_zl': 'submission_location',
-  
-  // ========== APPLICANT SECTION ==========
-  // Name fields
   'imie_wniosko': 'applicant_first_name',
   'nazwisko_wniosko': 'applicant_last_name',
   'nazwisko_rodowe_wniosko': 'applicant_maiden_name',
   'imie_nazwisko_wniosko': 'applicant_first_name|applicant_last_name',
   'imie_nazwisko_wniosko_cd': 'applicant_first_name|applicant_last_name',
-  
-  // Birth info
   'dzien_uro': 'applicant_dob.day',
   'miesiac_uro': 'applicant_dob.month',
   'rok_uro': 'applicant_dob.year',
   'miejsce_uro': 'applicant_pob',
-  
-  // Personal details
   'plec': 'applicant_sex',
   'stan_cywilny': 'applicant_is_married',
   'nr_pesel': 'applicant_pesel',
-  
-  // Address
   'miasto_zam': 'applicant_address.city',
   'miejscowosc_zamieszkania': 'applicant_address.city',
   'kod_pocztowy': 'applicant_address.postal_code',
   'kraj_zam': 'applicant_address.country',
   'nr_domu': 'applicant_address.house_number',
   'nr_mieszkania': 'applicant_address.apartment_number',
-  
-  // Contact
   'telefon': 'applicant_phone',
-  
-  // Citizenship & name history
   'obce_obywatelstwa': 'applicant_other_citizenships',
   'obce_obywatelstwa_cd1': 'applicant_other_citizenships',
   'obce_obywatelstwa_cd2': 'applicant_other_citizenships',
   'uzywane_nazwiska': 'applicant_previous_names',
   'uzywane_nazwiska_cd': 'applicant_previous_names',
-  
-  // Previous decisions
   'wydana_decyzja': 'previous_decision_info',
   'zezwolenie_na_zmiane_obyw': 'citizenship_change_permission',
   'pozbawienie_obywatelstwa_polskiego': 'polish_citizenship_deprivation',
   'miejsce_zamieszk_pl_granica': 'residence_citizenship_info',
-  
-  // Additional applicant fields
   'imie_nazw_3': 'applicant_first_name',
   'imie_nazw_4': 'applicant_last_name',
-  
-  // ========== MOTHER SECTION ==========
-  // Name fields
   'nazwisko_matki': 'mother_last_name',
   'nazwisko_rodowe_matki': 'mother_maiden_name',
   'imie_matki': 'mother_first_name',
   'imie_nazwisko_rodowe_matki': 'mother_first_name|mother_maiden_name',
-  
-  // Mother's parents
   'imie_nazwisko_ojca_matki': 'mgf_first_name|mgf_last_name',
   'imie_nazw_rod_matki_matki': 'mgm_first_name|mgm_maiden_name',
-  
-  // Birth info
   'dzien_uro_matki': 'mother_dob.day',
   'miesiac_uro_matki': 'mother_dob.month',
   'rok_uro_matki': 'mother_dob.year',
   'miejsce_uro_matki': 'mother_pob',
-  
-  // Additional mother info
   'stan_cywilny_matki': 'mother_marital_status',
   'pesel_matki': 'mother_pesel',
   'uzywane_nazwiska_matki': 'mother_previous_names',
-  
-  // Mother's marriage
   'dzien_zaw_zwiazku_matki': 'mother_marriage_date.day',
   'miesiac_zaw_zwiazku_matki': 'mother_marriage_date.month',
   'rok_zaw_zwiazku_matki': 'mother_marriage_date.year',
   'miejsce_zaw_zwiazku_matki': 'father_mother_marriage_place',
-  
-  // ========== FATHER SECTION ==========
-  // Name fields
   'nazwisko_ojca': 'father_last_name',
   'nazwisko_rodowe_ojca': 'father_maiden_name',
   'imie_ojca': 'father_first_name',
   'imie_nazwisko_ojca': 'father_first_name|father_last_name',
-  
-  // Father's parents
   'imie_nazwisko_ojca_ojca': 'pgf_first_name|pgf_last_name',
   'imie_nazw_rod_matki_ojca': 'pgm_first_name|pgm_maiden_name',
-  
-  // Birth info
   'dzien_uro_ojca': 'father_dob.day',
   'miesiac_uro_ojca': 'father_dob.month',
   'rok_uro_ojca': 'father_dob.year',
   'miejsce_uro_ojca': 'father_pob',
-  
-  // Additional father info
   'stan_cywilny_ojca': 'father_marital_status',
   'pesel_ojca': 'father_pesel',
   'uzywane_nazwiska_ojca': 'father_previous_names',
-  
-  // Father's marriage
   'dzien_zaw_zwiazku_ojca': 'father_marriage_date.day',
   'miesiac_zaw_zwiazku_ojca': 'father_marriage_date.month',
   'rok_zaw_zwiazku_ojca': 'father_marriage_date.year',
   'miejsce_zaw_zwiazku_ojca': 'father_mother_marriage_place',
-  
-  // ========== MATERNAL GRANDFATHER (MGF) ==========
   'nazwisko_dziadka_m': 'mgf_last_name',
   'nazwisko_rodowe_dziadka_m': 'mgf_maiden_name',
   'imie_dziadka_m': 'mgf_first_name',
-  
-  // MGF's parents (great-grandparents)
   'imie_nazw_pradziadek_d_m': 'mggf_first_name|mggf_last_name',
   'imie_nazw_prababka_d_m': 'mggm_first_name|mggm_maiden_name',
-  
-  // MGF birth info
   'dzien_uro_dziadka_m': 'mgf_dob.day',
   'miesiac_uro_dziadka_m': 'mgf_dob.month',
   'rok_uro_dziadka_m': 'mgf_dob.year',
   'miejsce_uro_dziadka_m': 'mgf_pob',
   'pesel_dziadka_m': 'mgf_pesel',
-  
-  // Citizenship at applicant's birth
   'posiadane_obywatel_matki_uro_wniosko': 'mgf_citizenship_at_birth',
   'posiadane_obywatel_matki_uro_wniosko_cd': 'mgf_citizenship_at_birth',
-  
-  // ========== MATERNAL GRANDMOTHER (MGM) ==========
   'nazwisko_babki_m': 'mgm_last_name',
   'nazwisko_rodowe_babki_m': 'mgm_maiden_name',
   'imie_babki_m': 'mgm_first_name',
-  
-  // MGM's parents (great-grandparents)
   'imie_nazw_pradziadek_b_m': 'mggf_first_name|mggf_last_name',
   'imie_nazw_rod_prababka_b_m': 'mggm_first_name|mggm_maiden_name',
-  
-  // MGM birth info
   'dzien_uro_babki_m': 'mgm_dob.day',
   'miesiac_uro_babki_m': 'mgm_dob.month',
   'rok_uro_babki_m': 'mgm_dob.year',
   'miejsce_uro_babki_m': 'mgm_pob',
   'pesel_babki_m': 'mgm_pesel',
-  
-  // ========== PATERNAL GRANDFATHER (PGF) ==========
   'nazwisko_dziadka_o': 'pgf_last_name',
   'nazwisko_rodowe_dziadka_o': 'pgf_maiden_name',
   'imie_dziadka_o': 'pgf_first_name',
-  
-  // PGF's parents (great-grandparents)
   'imie_nazw_pradziadek_d_o': 'pggf_first_name|pggf_last_name',
   'imie_nazw_rod_prababka_d_o': 'pggm_first_name|pggm_maiden_name',
-  
-  // PGF birth info
   'dzien_uro_dziadka_o': 'pgf_dob.day',
   'miesiac_uro_dziadka_o': 'pgf_dob.month',
   'rok_uro_dziadka_o': 'pgf_dob.year',
   'miejsce_uro_dziadka_o': 'pgf_pob',
   'pesel_dziadka_o': 'pgf_pesel',
-  
-  // Citizenship at applicant's birth
   'posiadane_obywatel_ojca_uro_wniosko': 'pgf_citizenship_at_birth',
   'posiadane_obywatel_ojca_uro_wniosko_cd': 'pgf_citizenship_at_birth',
-  
-  // ========== PATERNAL GRANDMOTHER (PGM) ==========
   'nazwisko_babki_o': 'pgm_last_name',
   'nazwisko_rodowe_babki_o': 'pgm_maiden_name',
   'imie_babki_o': 'pgm_first_name',
-  
-  // PGM's parents (great-grandparents)
   'imie_nazw_pradziadek_b_o': 'pggf_first_name|pggf_last_name',
   'imie_nazw_rod_prababka_b_o': 'pggm_first_name|pggm_maiden_name',
-  
-  // PGM birth info
   'dzien_uro_babki_o': 'pgm_dob.day',
   'miesiac_uro_babki_o': 'pgm_dob.month',
   'rok_uro_babki_o': 'pgm_dob.year',
   'miejsce_uro_babki_o': 'pgm_pob',
   'pesel_babki_o': 'pgm_pesel',
-  
-  // ========== BIOGRAPHICAL NOTES (Życiorysy) ==========
   'zyciorys_wniosko': 'applicant_notes',
   'zyciorys_matki': 'mother_notes',
   'zyciorys_ojca': 'father_notes',
@@ -336,8 +224,6 @@ const CITIZENSHIP_PDF_MAP: Record<string, string> = {
   'zyciorys_dziadka_o': 'pgf_notes',
   'zyciorys_babki_o': 'pgm_notes',
   'pradziadkowie': 'pggf_notes|mggf_notes',
-  
-  // ========== PAGE 11 - ATTACHMENTS (CRITICAL) ==========
   'zal1': 'attachment_1_included',
   'zal2': 'attachment_2_included',
   'zal3': 'attachment_3_included',
@@ -348,8 +234,6 @@ const CITIZENSHIP_PDF_MAP: Record<string, string> = {
   'zal8': 'attachment_8_included',
   'zal9': 'attachment_9_included',
   'zal10': 'attachment_10_included',
-  
-  // Additional page 11 fields
   'polskie_dok_wstepnych': 'polish_preliminary_docs_info',
   'istotne_info': 'important_additional_info',
   'decyzja_rodzenstwo': 'sibling_decision_info',
@@ -361,9 +245,7 @@ const FAMILY_TREE_PDF_MAP: Record<string, string> = {
   'applicant_place_of_birth': 'applicant_pob',
   'applicant_date_of_marriage': 'date_of_marriage',
   'applicant_place_of_marriage': 'place_of_marriage',
-  
   'applicant_spouse_full_name_and_maiden_name': 'spouse_first_name|spouse_last_name',
-  
   'polish_parent_full_name': 'father_first_name|father_last_name',
   'polish_parent_spouse_full_name': 'mother_first_name|mother_last_name',
   'polish_parent_date_of_birth': 'father_dob',
@@ -372,7 +254,6 @@ const FAMILY_TREE_PDF_MAP: Record<string, string> = {
   'polish_parent_place_of_marriage': 'father_mother_marriage_place',
   'polish_parent_date_of_emigration': 'father_date_of_emigration',
   'polish_parent_date_of_naturalization': 'father_date_of_naturalization',
-  
   'polish_grandparent_full_name': 'pgf_first_name|pgf_last_name',
   'polish_grandparent_spouse_full_name': 'pgm_first_name|pgm_last_name',
   'polish_grandparent_date_of_birth': 'pgf_dob',
@@ -381,7 +262,6 @@ const FAMILY_TREE_PDF_MAP: Record<string, string> = {
   'polish_grandparent_place_of_mariage': 'pgf_pgm_marriage_place',
   'polish_grandparent_date_of_emigration': 'pgf_date_of_emigration',
   'polish_grandparent_date_of_naturalization': 'pgf_date_of_naturalization',
-  
   'great_grandfather_full_name': 'pggf_first_name|pggf_last_name',
   'great_grandmother_full_name': 'pggm_first_name|pggm_last_name',
   'great_grandfather_date_of_birth': 'pggf_dob',
@@ -390,7 +270,6 @@ const FAMILY_TREE_PDF_MAP: Record<string, string> = {
   'great_grandfather_place_of_marriage': 'pggf_pggm_marriage_place',
   'great_grandfather_date_of_emigartion': 'pggf_date_of_emigration',
   'great_grandfather_date_of_naturalization': 'pggf_date_of_naturalization',
-  
   'minor_1_full_name': 'child_1_first_name|child_1_last_name',
   'minor_1_date_of_birth': 'child_1_dob',
   'minor_1_place_of_birth': 'child_1_pob',
@@ -401,38 +280,27 @@ const FAMILY_TREE_PDF_MAP: Record<string, string> = {
   'minor_3_date_of_birth': 'child_3_dob',
 };
 
-const UMIEJSCOWIENIE_PDF_MAP: Record<string, string> = {
-  // Applicant info
+const TRANSCRIPTION_PDF_MAP: Record<string, string> = {
   'imie_nazwisko_wniosko': 'applicant_first_name|applicant_last_name',
   'kraj_wniosko': 'applicant_country',
-  
-  // Representative info
   'imie_nazwisko_pelnomocnik': 'representative_full_name',
   'miejsce_zamieszkania_pelnomocnik': 'representative_address_line1',
   'miejsce_zamieszkania_pelnomocnik_cd': 'representative_address_line2',
   'telefon_pelnomocnik': 'representative_phone',
   'email_pelnomocnik': 'representative_email',
-  
-  // Submission details
   'miejscowosc_zloz': 'submission_location',
   'dzien_zloz': 'submission_date.day',
   'miesiac_zloz': 'submission_date.month',
   'rok_zloz': 'submission_date.year',
   'wyslanie': 'sending_method',
-  
-  // Act type checkboxes
   'akt_uro': 'act_type_birth',
   'akt_malz': 'act_type_marriage',
-  
-  // Birth act fields
   'miejsce_sporz_aktu_u': 'birth_act_location',
   'imie_nazwisko_u': 'birth_person_full_name',
   'miejsce_urodzenia': 'birth_place',
   'dzien_urodzenia': 'birth_date.day',
   'miesiac_urodzenia': 'birth_date.month',
   'rok_urodzenia': 'birth_date.year',
-  
-  // Marriage act fields
   'miejsce_sporz_aktu_m': 'marriage_act_location',
   'imie_nazwisko_malzonka': 'spouse_full_name',
   'miejsce_malzenstwa_wniosko': 'place_of_marriage',
@@ -441,25 +309,18 @@ const UMIEJSCOWIENIE_PDF_MAP: Record<string, string> = {
   'rok_malzenstwa_wniosko': 'date_of_marriage.year',
 };
 
-const UZUPELNIENIE_PDF_MAP: Record<string, string> = {
-  // Applicant info
+const REGISTRATION_PDF_MAP: Record<string, string> = {
   'imie_nazwisko_wniosko': 'applicant_first_name|applicant_last_name',
   'kraj_wniosko': 'applicant_country',
-  
-  // Representative info
   'imie_nazwisko_pelnomocnik': 'representative_full_name',
   'miejsce_zamieszkania_pelnomocnik': 'representative_address_line1',
   'miejsce_zamieszkania_pelnomocnik_cd': 'representative_address_line2',
   'telefon_pelnomocnik': 'representative_phone',
   'email_pelnomocnik': 'representative_email',
-  
-  // Submission details
   'miejscowosc_zloz': 'submission_location',
   'dzien_zloz': 'submission_date.day',
   'miesiac_zloz': 'submission_date.month',
   'rok_zloz': 'submission_date.year',
-  
-  // Birth act supplement fields
   'nazwisko_rodowe_ojca': 'father_last_name',
   'nazwisko_rodowe_matki': 'mother_maiden_name',
   'miejsce_sporządzenia_aktu_zagranicznego': 'foreign_act_location',
@@ -467,36 +328,21 @@ const UZUPELNIENIE_PDF_MAP: Record<string, string> = {
   'rok_aktu_urodzenia_polskiego': 'birth_act_year',
 };
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
-
-// ============ FIELD FORMATTING UTILITIES ============
-
+// ===== Formatting Utilities =====
 const formatDate = (date: string | null | undefined): string => {
   if (!date) return '';
-  
   try {
-    if (typeof date === 'string' && /^\d{2}\.\d{2}\.\d{4}$/.test(date)) {
-      return date;
-    }
-    
+    if (typeof date === 'string' && /^\d{2}\.\d{2}\.\d{4}$/.test(date)) return date;
     if (typeof date === 'string' && /^\d{4}-\d{2}-\d{2}/.test(date)) {
       const [year, month, day] = date.split('T')[0].split('-');
       return `${day}.${month}.${year}`;
     }
-    
     const d = new Date(date);
-    
     if (isNaN(d.getTime())) return '';
-    
     const year = d.getFullYear();
     if (year < 1800 || year > 2030) return '';
-    
     const day = String(d.getDate()).padStart(2, '0');
     const month = String(d.getMonth() + 1).padStart(2, '0');
-    
     return `${day}.${month}.${year}`;
   } catch {
     return '';
@@ -506,19 +352,11 @@ const formatDate = (date: string | null | undefined): string => {
 const formatAddress = (address: any): string => {
   if (!address) return '';
   if (typeof address === 'string') return address.trim();
-  
   if (typeof address === 'object') {
-    const parts = [
-      address.street,
-      address.city,
-      address.state,
-      address.postal_code || address.zip,
-      address.country,
-    ].filter(Boolean).map(part => String(part).trim());
-    
+    const parts = [address.street, address.city, address.state, address.postal_code || address.zip, address.country]
+      .filter(Boolean).map(part => String(part).trim());
     return parts.join(', ');
   }
-  
   return '';
 };
 
@@ -530,23 +368,16 @@ const formatArray = (arr: any[] | null | undefined): string => {
 const formatBoolean = (value: any): string => {
   if (value === null || value === undefined || value === '') return '';
   if (typeof value === 'boolean') return value ? 'Yes' : 'No';
-  
   const stringValue = String(value).toLowerCase().trim();
   if (['true', 'yes', '1', 'y', 'tak', 'checked'].includes(stringValue)) return 'Yes';
   if (['false', 'no', '0', 'n', 'nie', 'unchecked'].includes(stringValue)) return 'No';
-  
   return 'No';
 };
 
 const getNestedValue = (obj: any, path: string): any => {
   if (!obj || !path) return undefined;
-  
-  if (!path.includes('.')) {
-    return obj[path];
-  }
-  
+  if (!path.includes('.')) return obj[path];
   const keys = path.split('.');
-  
   if (keys.length === 2 && ['day', 'month', 'year'].includes(keys[1])) {
     const dateValue = obj[keys[0]];
     if (dateValue) {
@@ -561,700 +392,273 @@ const getNestedValue = (obj: any, path: string): any => {
     }
     return undefined;
   }
-  
   let current = obj;
-  
   for (const key of keys) {
-    if (current === null || current === undefined) {
-      return undefined;
-    }
+    if (current === null || current === undefined) return undefined;
     current = current[key];
   }
-  
   return current;
 };
 
 const formatFieldValue = (value: any, fieldName: string): string => {
   if (value === null || value === undefined) return '';
-  
-  const datePatterns = [
-    '_date', '_dob', '_at', 'DOB', 'Date', 'birth', 'marriage', 
-    'emigration', 'naturalization', 'expiry', 'issue'
-  ];
-  
-  if (datePatterns.some(pattern => fieldName.includes(pattern))) {
-    return formatDate(value);
-  }
-  
-  if ((fieldName.includes('address') || fieldName.includes('Address')) && 
-      (typeof value === 'object' || typeof value === 'string')) {
-    return formatAddress(value);
-  }
-  
-  if (Array.isArray(value)) {
-    return formatArray(value);
-  }
-  
-  if (typeof value === 'boolean' || 
-      fieldName.includes('is_') || 
-      fieldName.includes('has_') ||
-      fieldName.includes('checkbox')) {
-    return formatBoolean(value);
-  }
-  
-  return String(value).trim();
+  const datePatterns = ['_date', '_dob', '_at', 'DOB', 'Date', 'birth', 'marriage', 'emigration', 'naturalization'];
+  const addressPatterns = ['address', 'miejsce_zamieszkania'];
+  const arrayPatterns = ['citizenships', 'names', 'languages'];
+  const boolPatterns = ['is_', 'has_', 'included', 'zal'];
+  const isDateField = datePatterns.some(pattern => fieldName.toLowerCase().includes(pattern.toLowerCase()));
+  if (isDateField) return formatDate(value);
+  const isAddressField = addressPatterns.some(pattern => fieldName.toLowerCase().includes(pattern.toLowerCase()));
+  if (isAddressField) return formatAddress(value);
+  const isArrayField = arrayPatterns.some(pattern => fieldName.toLowerCase().includes(pattern.toLowerCase()));
+  if (isArrayField && Array.isArray(value)) return formatArray(value);
+  const isBoolField = boolPatterns.some(pattern => fieldName.toLowerCase().startsWith(pattern.toLowerCase()));
+  if (isBoolField) return formatBoolean(value);
+  return String(value);
 };
-
-// ============ FIELD FILLING UTILITIES ============
 
 interface FillResult {
   totalFields: number;
-  filledFields: number;
+  filledCount: number;
   emptyFields: string[];
   errors: Array<{ field: string; error: string }>;
 }
 
-const isTruthyForCheckbox = (value: any): boolean => {
-  if (value === null || value === undefined || value === '') return false;
-  if (typeof value === 'boolean') return value;
+function fillPDFFields(form: any, data: any, fieldMap: Record<string, string>): FillResult {
+  const allFields = form.getFields();
+  const result: FillResult = { totalFields: allFields.length, filledCount: 0, emptyFields: [], errors: [] };
   
-  const stringValue = String(value).toLowerCase().trim();
-  return ['true', 'yes', '1', 'y', 'tak', 'checked', 'on'].includes(stringValue);
-};
-
-const extractNameComponents = (data: any, dbColumn: string): { firstName: string; lastName: string } => {
-  let prefix = dbColumn
-    .replace(/_first_name$/, '')
-    .replace(/_last_name$/, '')
-    .replace(/_given_names$/, '')
-    .replace(/_surname$/, '')
-    .replace(/_full_name$/, '');
-  
-  let firstName = 
-    data[`${prefix}_first_name`] || 
-    data[`${prefix}_given_names`] || 
-    data[dbColumn] || 
-    '';
-  
-  let lastName = 
-    data[`${prefix}_last_name`] || 
-    data[`${prefix}_surname`] || 
-    '';
-  
-  if (!firstName && !lastName) {
-    const columnParts = dbColumn.split('_');
-    const possiblePrefix = columnParts.length >= 2 && !isNaN(Number(columnParts[1]))
-      ? `${columnParts[0]}_${columnParts[1]}`
-      : columnParts[0];
-    
-    firstName = data[`${possiblePrefix}_first_name`] || '';
-    lastName = data[`${possiblePrefix}_last_name`] || '';
-  }
-  
-  return { 
-    firstName: String(firstName || '').trim(), 
-    lastName: String(lastName || '').trim() 
-  };
-};
-
-const isFullNameField = (pdfFieldName: string): boolean => {
-  const lower = pdfFieldName.toLowerCase();
-  
-  // IMPORTANT: Exclude these - they are SEPARATE fields, not full names!
-  const excludeIndicators = ['given_names', 'surname', 'last_name', 'first_name'];
-  if (excludeIndicators.some(ex => lower.includes(ex))) {
-    return false;
-  }
-  
-  const fullNameIndicators = [
-    'full_name',
-    'imie_nazwisko',
-    'imie_nazw',
-  ];
-  
-  if (fullNameIndicators.some(indicator => lower.includes(indicator))) {
-    return true;
-  }
-  
-  const hasName = lower.includes('name');
-  const isNotComponent = !lower.includes('first') && 
-                         !lower.includes('last') && 
-                         !lower.includes('maiden') && 
-                         !lower.includes('middle') &&
-                         !lower.includes('rodowe');
-  
-  return hasName && isNotComponent;
-};
-
-const fillPDFFields = (
-  form: any,
-  data: any,
-  fieldMap: Record<string, string>
-): FillResult => {
-  const result: FillResult = {
-    totalFields: 0,
-    filledFields: 0,
-    emptyFields: [],
-    errors: [],
-  };
-
-  for (const [pdfFieldName, dbColumn] of Object.entries(fieldMap)) {
-    result.totalFields++;
-
+  Object.entries(fieldMap).forEach(([pdfFieldName, dataPath]) => {
     try {
-      // Check if this is a pipe-delimited mapping
-      if (dbColumn.includes('|')) {
-        const dbFields = dbColumn.split('|');
-        
-        // CASE 1: Name concatenation (2 fields: firstName|lastName)
-        if (dbFields.length === 2 && 
-            (dbFields[0].includes('first_name') || 
-             dbFields[0].includes('given') ||
-             dbFields[0].includes('maiden'))) {
-          const firstName = getNestedValue(data, dbFields[0]) || '';
-          const lastName = getNestedValue(data, dbFields[1]) || '';
-          const fullName = `${firstName} ${lastName}`.trim();
-          
-          if (fullName) {
-            try {
-              const textField = form.getTextField(pdfFieldName);
-              if (textField) {
-                textField.setText(fullName);
-                result.filledFields++;
-                continue;
-              }
-            } catch {
-              result.emptyFields.push(pdfFieldName);
-              continue;
-            }
-          } else {
-            result.emptyFields.push(pdfFieldName);
-            continue;
-          }
-        }
-        
-        // CASE 2: Date splitting (single date field → day|month|year PDF fields)
-        else if (pdfFieldName.includes('|')) {
-          const pdfFields = pdfFieldName.split('|');
-          const rawValue = getNestedValue(data, dbColumn);
-          
-          if (rawValue && pdfFields.length === 3) {
-            const date = new Date(rawValue);
-            if (!isNaN(date.getTime())) {
-              const day = date.getDate().toString().padStart(2, '0');
-              const month = (date.getMonth() + 1).toString().padStart(2, '0');
-              const year = date.getFullYear().toString();
-              
-              const values = [day, month, year];
-              for (let i = 0; i < pdfFields.length && i < values.length; i++) {
-                try {
-                  const textField = form.getTextField(pdfFields[i]);
-                  if (textField) {
-                    textField.setText(values[i]);
-                    result.filledFields++;
-                  }
-                } catch {
-                  result.emptyFields.push(pdfFields[i]);
-                }
-              }
-              continue;
-            }
-          }
-        }
-        
-        // CASE 3: Concatenate multiple text fields (e.g., biographical notes)
-        else {
-          const values = dbFields.map(field => getNestedValue(data, field) || '').filter(Boolean);
-          const concatenated = values.join(' ').trim();
-          
-          if (concatenated) {
-            try {
-              const textField = form.getTextField(pdfFieldName);
-              if (textField) {
-                textField.setText(concatenated);
-                result.filledFields++;
-                continue;
-              }
-            } catch {
-              result.emptyFields.push(pdfFieldName);
-              continue;
-            }
-          }
-        }
-        
+      let value: any;
+      if (dataPath.includes('|')) {
+        const parts = dataPath.split('|').map(p => getNestedValue(data, p) || '').filter(Boolean);
+        value = parts.join(' ');
+      } else {
+        value = getNestedValue(data, dataPath);
+      }
+      
+      if (value === undefined || value === null || value === '') {
         result.emptyFields.push(pdfFieldName);
-        continue;
+        return;
       }
       
-      let rawValue;
-      
-      if (isFullNameField(pdfFieldName)) {
-        const { firstName, lastName } = extractNameComponents(data, dbColumn);
-        rawValue = `${firstName} ${lastName}`.trim();
-      } 
-      else {
-        // Direct mapping - no name concatenation for single fields
-        rawValue = getNestedValue(data, dbColumn);
-      }
-      
-      // Auto-inject today's date for POA date fields if empty
-      if ((pdfFieldName === 'poa_date' || pdfFieldName === 'data_pelnomocnictwa') && 
-          (rawValue === null || rawValue === undefined || rawValue === '')) {
-        const today = new Date();
-        const dd = String(today.getDate()).padStart(2, '0');
-        const mm = String(today.getMonth() + 1).padStart(2, '0');
-        const yyyy = today.getFullYear();
-        rawValue = `${dd}.${mm}.${yyyy}`;
-        console.log(`[FILL-AUTO] Injected today's date for ${pdfFieldName}: ${rawValue}`);
-      }
-      
-      if (rawValue === null || rawValue === undefined || rawValue === '') {
-        result.emptyFields.push(pdfFieldName);
-        continue;
-      }
-
-      const formattedValue = formatFieldValue(rawValue, dbColumn);
-      
+      const formattedValue = formatFieldValue(value, pdfFieldName);
       if (!formattedValue) {
         result.emptyFields.push(pdfFieldName);
-        continue;
+        return;
       }
-
-      try {
-        const textField = form.getTextField(pdfFieldName);
-        if (textField) {
-          textField.setText(formattedValue);
-          result.filledFields++;
-          continue;
+      
+      const field = form.getField(pdfFieldName);
+      if (!field) {
+        result.errors.push({ field: pdfFieldName, error: 'Field not found in PDF' });
+        return;
+      }
+      
+      const fieldType = field.constructor.name;
+      if (fieldType === 'PDFTextField') {
+        field.setText(formattedValue);
+        result.filledCount++;
+      } else if (fieldType === 'PDFCheckBox') {
+        const isChecked = formatBoolean(value) === 'Yes';
+        if (isChecked) {
+          field.check();
+        } else {
+          field.uncheck();
         }
-      } catch {
-        // Not a text field
+        result.filledCount++;
+      } else {
+        result.errors.push({ field: pdfFieldName, error: `Unsupported field type: ${fieldType}` });
       }
-      
-      try {
-        const checkboxField = form.getCheckBox(pdfFieldName);
-        if (checkboxField) {
-          if (isTruthyForCheckbox(rawValue)) {
-            checkboxField.check();
-          } else {
-            checkboxField.uncheck();
-          }
-          result.filledFields++;
-          continue;
-        }
-      } catch {
-        // Not a checkbox
-      }
-      
-      result.errors.push({
-        field: pdfFieldName,
-        error: `Field "${pdfFieldName}" not found in PDF template`,
-      });
-      
     } catch (error) {
-      result.errors.push({
-        field: pdfFieldName,
-        error: error instanceof Error ? error.message : 'Unknown error',
-      });
+      result.errors.push({ field: pdfFieldName, error: String((error as Error)?.message ?? error) });
     }
-  }
-
+  });
+  
   return result;
-};
+}
 
-const calculateCoverage = (result: FillResult): number => {
-  if (result.totalFields === 0) return 0;
-  return Math.round((result.filledFields / result.totalFields) * 100);
-};
-
-// ============ MAIN EDGE FUNCTION ============
-
-serve(async (req) => {
+// ===== Main Handler =====
+Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
+    return new Response('ok', { headers: cors(req.headers.get('Origin')) });
   }
 
   try {
-    const { caseId, templateType, flatten = false, mode } = await req.json();
-    
-    // DIAGNOSTICS MODE
+    const body = await req.json().catch(() => ({}));
+    const { caseId: rawCaseId, templateType, flatten = true, mode } = body ?? {};
+
+    // Secure diagnostics
     if (mode === 'diagnose') {
-      const url = Deno.env.get('SUPABASE_URL');
-      const key = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
-      const hasSecrets = Boolean(url && key);
-      let uploadOk = false, signOk = false, diagError = null;
-      
-      try {
-        if (hasSecrets) {
-          const sb = createClient(url!, key!);
-          const path = `diagnostics/test-${Date.now()}.pdf`;
-          
-          // Create a minimal valid PDF for testing
-          const pdfDoc = await PDFDocument.create();
-          const page = pdfDoc.addPage([200, 200]);
-          const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-          page.drawText('Diagnostic Test', { x: 50, y: 100, size: 12, font });
-          const pdfBytes = await pdfDoc.save();
-          
-          console.log('[DIAG] Attempting storage upload...');
-          const { error: upErr } = await sb.storage
-            .from('generated-pdfs')
-            .upload(path, pdfBytes, { contentType: 'application/pdf', upsert: true });
-          
-          if (upErr) {
-            console.error('[DIAG] Upload error:', upErr);
-            diagError = `Upload: ${upErr.message}`;
-          } else {
-            uploadOk = true;
-            console.log('[DIAG] Upload successful');
-          }
-          
-          console.log('[DIAG] Attempting signed URL creation...');
-          const { data: signed, error: sErr } = await sb.storage
-            .from('generated-pdfs')
-            .createSignedUrl(path, 60);
-          
-          if (sErr) {
-            console.error('[DIAG] Signed URL error:', sErr);
-            diagError = diagError ? `${diagError}; SignURL: ${sErr.message}` : `SignURL: ${sErr.message}`;
-          } else if (signed?.signedUrl) {
-            signOk = true;
-            console.log('[DIAG] Signed URL successful');
-          }
-        }
-      } catch (e) {
-        diagError = String((e as Error)?.message ?? e);
-        console.error('[DIAG] Exception:', diagError);
+      const token = req.headers.get('x-admin-token');
+      if (token !== Deno.env.get('INTERNAL_ADMIN_TOKEN')) {
+        return j(req, { ok: false, error: 'unauthorized' }, 401);
       }
-      
-      // Improved diagnostics response - focus on functionality, not secrets presence
-      return new Response(
-        JSON.stringify({ 
-          ok: uploadOk && signOk,
-          hasSecrets: true, // Environment variables are accessible
-          uploadOk, 
-          signOk, 
-          diagError,
-          message: uploadOk && signOk 
-            ? 'PDF system is fully operational' 
-            : 'PDF system has issues - check diagError for details'
-        }),
-        { 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          status: 200
-        }
-      );
-    }
-    
-    // Whitelist valid template types
-    const validTemplates = [
-      'citizenship',
-      'family-tree',
-      'transcription',   // Civil Registry transcription (wpis)
-      'registration',    // Civil Registry registration (umiejscowienie)
-      'poa-adult',
-      'poa-minor',
-      'poa-spouses',
-      'umiejscowienie',  // Legacy
-      'uzupelnienie',    // Legacy
-    ];
-    
-    if (!templateType || !validTemplates.includes(templateType)) {
-      return new Response(
-        JSON.stringify({ error: 'Valid templateType is required' }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
-    
-    // Validate caseId with strict security checks
-    const caseIdValidation = validateCaseId(caseId);
-    if (!caseIdValidation.valid) {
-      console.error(`[SECURITY] Invalid caseId: ${caseId}`);
-      return new Response(
-        JSON.stringify({ error: caseIdValidation.error }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      try {
+        const url = Deno.env.get('SUPABASE_URL')!;
+        const key = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+        const admin = createClient(url, key);
+        const path = `diagnostics/${Date.now()}.txt`;
+        const up = await admin.storage.from('generated-pdfs')
+          .upload(path, new TextEncoder().encode('ok'), { contentType: 'text/plain', upsert: true });
+        if (up.error) { log('diag_upload_fail', { err: up.error.message }); return j(req, { ok: false }, 500); }
+        const sign = await admin.storage.from('generated-pdfs').createSignedUrl(path, 60);
+        if (sign.error) { log('diag_sign_fail', { err: sign.error.message }); return j(req, { ok: false }, 500); }
+        return j(req, { ok: true }, 200);
+      } catch (e) {
+        log('diag_exception', { err: String((e as Error)?.message ?? e) }); return j(req, { ok: false }, 500);
+      }
     }
 
-    // Rate limiting check (use IP or user ID as identifier)
-    const clientIp = req.headers.get('x-forwarded-for') || req.headers.get('cf-connecting-ip') || 'unknown';
-    const rateLimitCheck = checkRateLimit(clientIp);
-    
-    if (!rateLimitCheck.allowed) {
-      console.warn(`[RATE-LIMIT] Exceeded for IP: ${clientIp}`);
-      return new Response(
-        JSON.stringify({ 
-          error: 'Rate limit exceeded. Please try again later.',
-          retryAfter: 60
-        }),
-        { 
-          status: 429, 
-          headers: { 
-            ...corsHeaders, 
-            'Content-Type': 'application/json',
-            'Retry-After': '60',
-            'X-RateLimit-Remaining': String(rateLimitCheck.remaining)
-          } 
-        }
-      );
-    }
+    // Validate inputs
+    const caseId = sanitizeCaseId(rawCaseId);
+    if (!caseId) return j(req, { code: 'INVALID_CASE_ID', message: 'Invalid caseId' }, 400);
+    if (!VALID_TEMPLATES.has(String(templateType))) return j(req, { code: 'INVALID_TEMPLATE', message: 'Invalid templateType' }, 400);
 
-    console.log(`[PDF-GEN] Generating ${templateType} for case: ${caseId} (Rate limit: ${rateLimitCheck.remaining} remaining)`);
+    // Initialize clients
+    const URL = Deno.env.get('SUPABASE_URL')!;
+    const SRK = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const ANON = Deno.env.get('SUPABASE_ANON_KEY')!;
+    const admin = createClient(URL, SRK, { global: { headers: { 'X-Client-Info': 'fill-pdf' } } });
 
+    // Authentication
+    const auth = req.headers.get('Authorization') || '';
+    const jwt = auth.startsWith('Bearer ') ? auth.slice(7) : null;
+    if (!jwt) return j(req, { code: 'UNAUTHORIZED', message: 'Unauthorized' }, 401);
 
-    const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    );
+    // RLS client for data reads
+    const rls = createClient(URL, ANON, { global: { headers: { Authorization: `Bearer ${jwt}` } } });
 
-    const { data: masterData, error: masterError } = await supabaseClient
-      .from('master_table')
-      .select('*')
+    const { data: u, error: uErr } = await admin.auth.getUser(jwt);
+    if (uErr || !u?.user) return j(req, { code: 'UNAUTHORIZED', message: 'Unauthorized' }, 401);
+    const userId = u.user.id;
+    const isAdmin = u.user.app_metadata?.role === 'admin';
+
+    // Authorization
+    const { data: c } = await rls.from('cases').select('id, owner_user_id').eq('id', caseId).maybeSingle();
+    if (!c) return j(req, { code: 'CASE_NOT_FOUND', message: 'Case not found' }, 404);
+    if (!isAdmin && c.owner_user_id !== userId) return j(req, { code: 'FORBIDDEN', message: 'Forbidden' }, 403);
+
+    // Rate limit: 25 docs / 5 min / user
+    const { count } = await admin.from('generated_documents')
+      .select('id', { head: true, count: 'exact' })
+      .eq('user_id', userId)
+      .gte('created_at', new Date(Date.now() - 5 * 60 * 1000).toISOString());
+    if ((count ?? 0) >= 25) return j(req, { code: 'RATE_LIMIT', message: 'Too many requests' }, 429);
+
+    // Check for recent artifact (within 1 hour)
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+    const { data: recent } = await admin.from('generated_documents')
+      .select('path, created_at')
       .eq('case_id', caseId)
+      .eq('template_type', templateType)
+      .gte('created_at', oneHourAgo)
+      .order('created_at', { ascending: false })
+      .limit(1)
       .maybeSingle();
 
-    if (masterError) throw masterError;
-    if (!masterData) throw new Error('Master data not found');
+    let path: string;
+    let shouldGenerateNew = !recent?.path;
 
-    console.log('[fill-pdf] Master data retrieved');
+    if (shouldGenerateNew) {
+      log('gen_start', { caseId, templateType });
 
-    // Check cache first
-    const cacheKey = `${templateType}.pdf`;
-    const cachedTime = cacheTimestamps.get(cacheKey);
-    const isCacheValid = cachedTime && (Date.now() - cachedTime < CACHE_MAX_AGE);
-    
-    let pdfBytes: Uint8Array | undefined;
-    
-    if (isCacheValid && pdfTemplateCache.has(cacheKey)) {
-      console.log(`✅ Using cached template: ${cacheKey}`);
-      const cached = pdfTemplateCache.get(cacheKey)!;
-      
-      // Validate cached template
-      if (!cached || cached.length === 0) {
-        console.warn(`⚠️ Cached template corrupted: ${cacheKey}. Refetching...`);
-        pdfTemplateCache.delete(cacheKey);
-        cacheTimestamps.delete(cacheKey);
-        pdfBytes = undefined; // Force refetch
+      // Fetch case data with RLS
+      const { data: masterData, error: fetchError } = await rls.from('master_table').select('*').eq('case_id', caseId).single();
+      if (fetchError || !masterData) {
+        log('data_fetch_fail', { caseId, err: fetchError?.message });
+        return j(req, { code: 'DATA_FETCH_FAIL', message: 'Failed to fetch case data' }, 500);
+      }
+
+      log('data_retrieved', { caseId });
+
+      // Template mapping
+      const templateMap: Record<string, { path: string; map: Record<string, string> }> = {
+        'citizenship': { path: 'OBY.pdf', map: CITIZENSHIP_PDF_MAP },
+        'family-tree': { path: 'FamilyTreeForm.pdf', map: FAMILY_TREE_PDF_MAP },
+        'transcription': { path: 'umiejscowienie.pdf', map: TRANSCRIPTION_PDF_MAP },
+        'registration': { path: 'uzupelnienie.pdf', map: REGISTRATION_PDF_MAP },
+        'poa-adult': { path: 'POA_Adult.pdf', map: POA_ADULT_PDF_MAP },
+        'poa-minor': { path: 'POA_Minor.pdf', map: POA_MINOR_PDF_MAP },
+        'poa-spouses': { path: 'POA_Spouses.pdf', map: POA_SPOUSES_PDF_MAP },
+      };
+
+      const config = templateMap[templateType];
+      if (!config) {
+        log('template_config_missing', { templateType });
+        return j(req, { code: 'TEMPLATE_CONFIG_MISSING', message: 'Template configuration not found' }, 500);
+      }
+
+      const templatePath = config.path;
+      log('template_load', { templatePath });
+
+      // Template cache
+      let templateBytes: Uint8Array;
+      const cached = pdfTemplateCache.get(templatePath);
+      if (cached) {
+        templateBytes = cached;
+        cacheTimestamps.set(templatePath, Date.now());
+        log('template_cache_hit', { templatePath });
       } else {
-        pdfBytes = cached;
+        const { data: templateData, error: downloadError } = await admin.storage.from('pdf-templates').download(templatePath);
+        if (downloadError || !templateData) {
+          log('template_download_fail', { templatePath, err: downloadError?.message });
+          return j(req, { code: 'TEMPLATE_DOWNLOAD_FAIL', message: 'Failed to download template' }, 500);
+        }
+        const arrayBuffer = await templateData.arrayBuffer();
+        templateBytes = new Uint8Array(arrayBuffer);
+        if (pdfTemplateCache.size >= MAX_CACHE_SIZE) evictOldestCacheEntry();
+        pdfTemplateCache.set(templatePath, templateBytes);
+        cacheTimestamps.set(templatePath, Date.now());
+        log('template_cached', { templatePath });
       }
-    }
-    
-    if (!pdfBytes) {
-      // Fetch PDF template from Supabase Storage
-      console.log(`Fetching template from storage: ${templateType}.pdf`);
-      
-      const { data: pdfBlob, error: storageError } = await supabaseClient.storage
-        .from('pdf-templates')
-        .download(`${templateType}.pdf`);
-      
-      if (storageError || !pdfBlob) {
-        console.error(`❌ Storage error for ${templateType}.pdf:`, storageError);
-        throw new Error(`Failed to load PDF template: ${templateType}`);
-      }
-      
-      pdfBytes = new Uint8Array(await pdfBlob.arrayBuffer());
-      
-      // Check cache limits before storing
-      if (pdfTemplateCache.size >= MAX_CACHE_ENTRIES) {
-        evictOldestCacheEntry();
-      }
-      
-      if (getCacheSizeMB() + (pdfBytes.length / (1024 * 1024)) > MAX_CACHE_SIZE_MB) {
-        evictOldestCacheEntry();
-      }
-      
-      // Store in cache
-      pdfTemplateCache.set(cacheKey, pdfBytes);
-      cacheTimestamps.set(cacheKey, Date.now());
-      console.log(`✅ Template loaded and cached: ${templateType}.pdf (${pdfBytes.length} bytes)`);
-      console.log(`📊 Cache status: ${pdfTemplateCache.size} entries, ${getCacheSizeMB().toFixed(2)} MB`);
-    }
 
-    const pdfDoc = await PDFDocument.load(pdfBytes);
-    const form = pdfDoc.getForm();
-    const fields = form.getFields();
-    
-    console.log(`PDF has ${fields.length} form fields`);
+      // Load PDF
+      const PDFDocument = (await import('https://esm.sh/pdf-lib@1.17.1')).PDFDocument;
+      const pdfDoc = await PDFDocument.load(templateBytes);
+      const form = pdfDoc.getForm();
+      log('pdf_loaded', { caseId, templateType });
 
-    const fieldMappings: Record<string, Record<string, string>> = {
-      'poa-adult': POA_ADULT_PDF_MAP,
-      'poa-minor': POA_MINOR_PDF_MAP,
-      'poa-spouses': POA_SPOUSES_PDF_MAP,
-      'citizenship': CITIZENSHIP_PDF_MAP,
-      'family-tree': FAMILY_TREE_PDF_MAP,
-      'transcription': UZUPELNIENIE_PDF_MAP,  // Civil Registry transcription (wpis)
-      'registration': UMIEJSCOWIENIE_PDF_MAP,  // Civil Registry registration (umiejscowienie)
-      'umiejscowienie': UMIEJSCOWIENIE_PDF_MAP,  // Legacy
-      'uzupelnienie': UZUPELNIENIE_PDF_MAP,     // Legacy
-    };
-    
-    const fieldMap = fieldMappings[templateType];
-    
-    let fillResult: FillResult = {
-      totalFields: 0,
-      filledFields: 0,
-      emptyFields: [],
-      errors: [],
-    };
-    
-    if (!fieldMap || Object.keys(fieldMap).length === 0) {
-      console.warn(`⚠️ No field mapping for: ${templateType}`);
+      // Fill fields
+      const result = fillPDFFields(form, masterData, config.map);
+      log('fields_filled', { caseId, templateType, filled: result.filledCount, total: result.totalFields, errors: result.errors.length });
+      if (result.errors.length > 0) console.warn('[fill-pdf] Field filling errors:', result.errors);
+
+      // Flatten and save
+      form.updateFieldAppearances();
+      if (flatten) form.flatten();
+      const filledPdfBytes = await pdfDoc.save();
+
+      // Upload
+      const filename = `${templateType}-${Date.now()}.pdf`;
+      path = `${caseId}/${filename}`;
+      log('upload_start', { caseId, path });
+      const { error: uploadError } = await admin.storage.from('generated-pdfs')
+        .upload(path, filledPdfBytes, { contentType: 'application/pdf', upsert: true });
+      if (uploadError) {
+        log('upload_fail', { caseId, templateType, err: uploadError.message });
+        return j(req, { code: 'UPLOAD_FAIL', message: 'Upload failed' }, 500);
+      }
+
+      // Audit
+      await admin.from('generated_documents').insert({ case_id: caseId, template_type: templateType, path, user_id: userId });
+      log('gen_ok', { caseId, templateType, path, bytes: filledPdfBytes.byteLength, filled: result.filledCount, total: result.totalFields });
     } else {
-      fillResult = fillPDFFields(form, masterData, fieldMap);
-      const coverage = calculateCoverage(fillResult);
-      
-      console.log(`📄 PDF Generation Results for ${templateType}:`);
-      console.log(`   ✅ Filled: ${fillResult.filledFields}/${fillResult.totalFields} fields (${coverage}%)`);
-      
-      if (fillResult.emptyFields.length > 0) {
-        console.log(`   ⚠️  Empty fields (${fillResult.emptyFields.length}):`);
-        const emptyToShow = fillResult.emptyFields.slice(0, 10);
-        console.log(`       ${emptyToShow.join(', ')}`);
-        if (fillResult.emptyFields.length > 10) {
-          console.log(`       ... and ${fillResult.emptyFields.length - 10} more`);
-        }
-      }
-      
-      if (fillResult.errors.length > 0) {
-        console.log(`   ❌ Errors (${fillResult.errors.length}):`);
-        fillResult.errors.slice(0, 5).forEach(err => {
-          console.log(`       ${err.field}: ${err.error}`);
-        });
-        if (fillResult.errors.length > 5) {
-          console.log(`       ... and ${fillResult.errors.length - 5} more errors`);
-        }
-      }
+      path = recent!.path;
+      log('reuse_artifact', { caseId, templateType, path });
     }
 
-    // ALWAYS generate appearance streams for ALL PDFs (editable and flattened)
-    // This makes fields visible in PDF viewers
-    const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
-    form.updateFieldAppearances(helveticaFont);
-    console.log('✅ Generated appearance streams for all fields');
+    // Signed URL
+    const sign = await admin.storage.from('generated-pdfs')
+      .createSignedUrl(path, TTL, { download: path.split('/').pop() ?? 'document.pdf' });
+    if (sign.error || !sign.data?.signedUrl) {
+      log('sign_fail', { caseId, templateType, err: sign.error?.message });
+      return j(req, { code: 'SIGN_FAIL', message: 'Signing failed' }, 500);
+    }
 
-    // Only flatten if explicitly requested
-    if (flatten) {
-      form.flatten();
-      console.log('🔒 PDF flattened (locked, not editable)');
-    } else {
-      console.log('✏️ PDF kept editable');
-    }
-    
-    const filledPdfBytes = await pdfDoc.save({
-      useObjectStreams: false,
-      updateFieldAppearances: false  // Already generated manually above
-    });
-    
-    console.log(`✅ PDF generated: ${filledPdfBytes.length} bytes`);
-    
-    // Upload to Supabase Storage
-    const filename = `${caseId}/${templateType}-${Date.now()}.pdf`;
-    
-    const { error: uploadErr } = await supabaseClient
-      .storage
-      .from('generated-pdfs')
-      .upload(filename, filledPdfBytes, {
-        contentType: 'application/pdf',
-        upsert: true,
-      });
-    
-    if (uploadErr) {
-      console.error('❌ Storage upload error:', uploadErr);
-      return new Response(
-        JSON.stringify({ error: `Storage upload failed: ${uploadErr.message}` }),
-        {
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          status: 500,
-        }
-      );
-    }
-    
-    console.log(`📦 Uploaded to: ${filename}`);
-    
-    // Generate signed URL with extended expiry (60 minutes for better UX)
-    const { data: signed, error: signedErr } = await supabaseClient
-      .storage
-      .from('generated-pdfs')
-      .createSignedUrl(filename, SIGNED_URL_TTL_SECONDS);
-    
-    if (signedErr) {
-      console.error('❌ Signed URL error:', signedErr);
-      return new Response(
-        JSON.stringify({ error: `Failed to create signed URL: ${signedErr.message}` }),
-        {
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          status: 500,
-        }
-      );
-    }
-    
-    console.log(`🔗 Signed URL created (expires in ${SIGNED_URL_TTL_SECONDS / 60} minutes)`);
-    
-    // Record in audit table with enhanced logging
-    const startTime = Date.now();
-    const { error: auditErr } = await supabaseClient
-      .from('generated_documents')
-      .insert({
-        case_id: caseId,
-        template_type: templateType,
-        path: filename,
-      });
-    
-    if (auditErr) {
-      console.warn('⚠️ Audit log failed (non-critical):', auditErr.message);
-    }
-    
-    const generationTime = Date.now() - startTime;
-    
-    // Structured logging for monitoring
-    console.log(JSON.stringify({
-      event: 'pdf_generated',
-      caseId,
-      templateType,
-      filename,
-      stats: {
-        filled: fillResult.filledFields,
-        total: fillResult.totalFields,
-        percentage: calculateCoverage(fillResult),
-        generationTimeMs: generationTime,
-        pdfSizeBytes: filledPdfBytes.length
-      },
-      signedUrlExpiryMinutes: SIGNED_URL_TTL_SECONDS / 60,
-      timestamp: new Date().toISOString()
-    }));
-    
-    return new Response(
-      JSON.stringify({ 
-        url: signed.signedUrl,
-        filename: filename.split('/').pop(),
-        expiresInMinutes: SIGNED_URL_TTL_SECONDS / 60,
-        stats: { 
-          filled: fillResult.filledFields, 
-          total: fillResult.totalFields, 
-          percentage: calculateCoverage(fillResult) 
-        },
-      }),
-      {
-        headers: {
-          ...corsHeaders,
-          'Content-Type': 'application/json',
-          'X-RateLimit-Remaining': String(rateLimitCheck.remaining)
-        },
-      }
-    );
-  } catch (error) {
-    // Enhanced error logging
-    console.error(JSON.stringify({
-      event: 'pdf_generation_error',
-      error: (error as Error).message,
-      stack: (error as Error).stack,
-      timestamp: new Date().toISOString()
-    }));
-    
-    return new Response(
-      JSON.stringify({ error: (error as Error).message }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+    return j(req, { url: sign.data.signedUrl, filename: path.split('/').pop(), templateType, caseId }, 200);
+  } catch (e) {
+    log('exception', { err: String((e as Error)?.message ?? e) });
+    return j(req, { code: 'INTERNAL', message: 'Internal error' }, 500);
   }
 });
