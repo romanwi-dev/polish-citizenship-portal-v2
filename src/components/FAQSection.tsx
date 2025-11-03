@@ -180,15 +180,17 @@ const FAQSection = () => {
           </div>
 
           {/* Search Bar */}
-          <div className="mb-8 relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground/50 pointer-events-none" />
-            <Input
-              type="text"
-              placeholder="Type to filter questions (e.g., pre-1920, naturalization, translations)..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-12 h-14 text-sm font-normal glass-card border-primary/20 focus:border-primary/40 transition-opacity relative z-10 placeholder:text-xs placeholder:font-light placeholder:opacity-40"
-            />
+          <div className="mb-8">
+            <div className="relative w-full">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground/50 pointer-events-none" />
+              <Input
+                type="text"
+                placeholder="Type to filter questions (e.g., pre-1920, naturalization, translations)..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-12 h-14 text-sm font-normal glass-card border-primary/20 focus:border-primary/40 transition-opacity relative z-10 placeholder:text-xs placeholder:font-light placeholder:opacity-40 w-full"
+              />
+            </div>
           </div>
 
           {/* FAQ Tabs */}
