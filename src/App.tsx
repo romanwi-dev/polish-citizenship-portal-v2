@@ -76,6 +76,7 @@ const AgentApprovals = lazy(() => import("./pages/admin/AgentApprovals"));
 const VerifyChanges = lazy(() => import("./pages/VerifyChanges"));
 const PDFDemo = lazy(() => import("./pages/PDFDemo"));
 const SelfTest = lazy(() => import("./pages/admin/SelfTest"));
+const PDFVerificationTest = lazy(() => import("./pages/admin/PDFVerificationTest"));
 
 
 const queryClient = new QueryClient({
@@ -260,6 +261,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <PDFSystemVerification />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/pdf-verification-test" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <PDFVerificationTest />
               </Suspense>
             } 
           />
