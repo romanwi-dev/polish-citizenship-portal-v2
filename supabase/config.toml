@@ -105,3 +105,9 @@ verify_jwt = false
 [functions.pdf-minimal]
 verify_jwt = false
 
+[functions.pdf-generate-v2]
+verify_jwt = false
+
+[functions.pdf-diagnostic]
+verify_jwt = false
+

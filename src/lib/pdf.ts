@@ -22,7 +22,7 @@ export function base64ToBlob(b64: string, mime = 'application/pdf') {
   return new Blob([bytes], { type: mime });
 }
 
-/** Universal PDF generator */
+/** Universal PDF generator - V2 with fallback */
 export async function generatePdfViaEdge({
   supabase: _supabase,
   caseId,
@@ -47,9 +47,23 @@ export async function generatePdfViaEdge({
     setIsGenerating(true);
     toast.loading('Generating PDF...');
     
-    const { data, error } = await supabase.functions.invoke('fill-pdf', {
-      body: { caseId, templateType }
-    });
+    // Try V2 endpoint first (fresh deployment)
+    let data, error;
+    try {
+      const v2Response = await supabase.functions.invoke('pdf-generate-v2', {
+        body: { caseId, templateType }
+      });
+      data = v2Response.data;
+      error = v2Response.error;
+    } catch (v2Error) {
+      console.log('V2 failed, falling back to fill-pdf:', v2Error);
+      // Fallback to original
+      const v1Response = await supabase.functions.invoke('fill-pdf', {
+        body: { caseId, templateType }
+      });
+      data = v1Response.data;
+      error = v1Response.error;
+    }
     
     if (error) throw error;
 
