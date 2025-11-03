@@ -221,7 +221,14 @@ export default function POAForm() {
     link.href = pdfPreviewUrl;
     link.download = `POA-${activePOAType.toUpperCase()}-EDITABLE-${caseId}.pdf`;
     link.click();
-    toast.success('Editable PDF downloaded - you can fill fields offline!');
+    
+    // Mobile-friendly instruction
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      toast.success('PDF downloaded! Open it with Adobe Acrobat Reader or another PDF editor app to fill in the fields.', { duration: 6000 });
+    } else {
+      toast.success('Editable PDF downloaded - you can fill fields offline!');
+    }
   };
 
   const handleDownloadFinal = async () => {

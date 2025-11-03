@@ -102,6 +102,17 @@ export function PDFPreviewDialog({
           </DialogTitle>
         </DialogHeader>
 
+        {isMobile && (
+          <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-3 mb-2">
+            <p className="text-sm text-blue-600 dark:text-blue-400 font-medium mb-1">
+              📱 Editing PDFs on Mobile
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Mobile browsers can't edit PDF forms. Download the <strong>Editable PDF</strong> and open it in a PDF editor app like Adobe Acrobat Reader (free), Xodo, or PDF Expert to fill in the fields.
+            </p>
+          </div>
+        )}
+
         <div className="flex-1 border rounded-lg overflow-hidden bg-muted/10">
           {isLoading ? (
             <div className="flex items-center justify-center h-full">
@@ -129,7 +140,7 @@ export function PDFPreviewDialog({
                 className="gap-2 w-full"
               >
                 <Download className="h-4 w-4" />
-                Download Editable
+                Download Editable PDF
               </Button>
               <Button 
                 variant="secondary" 
@@ -137,7 +148,7 @@ export function PDFPreviewDialog({
                 className="gap-2 w-full"
               >
                 <Lock className="h-4 w-4" />
-                Download Final
+                Download Final (Locked)
               </Button>
               <Button variant="outline" onClick={onClose} className="w-full">
                 Close
