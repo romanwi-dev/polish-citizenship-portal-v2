@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Download, X, Printer, Eye, Edit, Lock } from "lucide-react";
-import { useState } from "react";
+import { Download, X, Printer, Eye, Edit, Lock, Loader2 } from "lucide-react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
 import {
@@ -31,14 +31,51 @@ export function PDFPreviewDialog({
   documentTitle
 }: PDFPreviewDialogProps) {
   const [isPrinting, setIsPrinting] = useState(false);
+  const [blobUrl, setBlobUrl] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const isMobile = useIsMobile();
 
-  // Log PDF URL for debugging
-  console.log('[PDFPreviewDialog] Rendering with:', { open, pdfUrl, documentTitle });
+  // Download PDF and create blob URL for preview
+  useEffect(() => {
+    if (!pdfUrl || !open) {
+      setBlobUrl(null);
+      return;
+    }
+
+    const loadPDF = async () => {
+      setIsLoading(true);
+      try {
+        console.log('[PDFPreviewDialog] Fetching PDF from:', pdfUrl);
+        const response = await fetch(pdfUrl);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch PDF: ${response.status}`);
+        }
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        setBlobUrl(url);
+        console.log('[PDFPreviewDialog] Blob URL created successfully');
+      } catch (error) {
+        console.error('[PDFPreviewDialog] Failed to load PDF:', error);
+        toast.error('Failed to load PDF preview');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadPDF();
+
+    // Cleanup blob URL when dialog closes
+    return () => {
+      if (blobUrl) {
+        URL.revokeObjectURL(blobUrl);
+      }
+    };
+  }, [pdfUrl, open]);
 
   const handlePrint = () => {
+    const urlToUse = blobUrl || pdfUrl;
     setIsPrinting(true);
-    const printWindow = window.open(pdfUrl, '_blank');
+    const printWindow = window.open(urlToUse, '_blank');
     if (printWindow) {
       printWindow.onload = () => {
         printWindow.print();
@@ -51,7 +88,8 @@ export function PDFPreviewDialog({
   };
 
   const handleOpenNewTab = () => {
-    window.open(pdfUrl, '_blank');
+    const urlToUse = blobUrl || pdfUrl;
+    window.open(urlToUse, '_blank');
     toast.info("PDF opened in new tab", { duration: 2000 });
   };
 
@@ -65,19 +103,19 @@ export function PDFPreviewDialog({
         </DialogHeader>
 
         <div className="flex-1 border rounded-lg overflow-hidden bg-muted/10">
-          {pdfUrl ? (
+          {isLoading ? (
+            <div className="flex items-center justify-center h-full">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          ) : blobUrl ? (
             <iframe 
-              src={pdfUrl} 
+              src={blobUrl} 
               className="w-full h-full border-0"
               title="PDF Preview"
-              onError={() => {
-                console.error('[PDFPreviewDialog] iframe failed to load PDF');
-                toast.error('Failed to load PDF preview');
-              }}
             />
           ) : (
             <div className="flex items-center justify-center h-full">
-              <p className="text-muted-foreground">No PDF URL provided</p>
+              <p className="text-muted-foreground">Failed to load PDF preview</p>
             </div>
           )}
         </div>
