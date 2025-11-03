@@ -49,18 +49,25 @@ export async function generatePdfViaEdge({
     setIsGenerating(true);
     toast.loading('Generating PDF...');
 
-    console.log('[PDF-LIB] Invoking fill-pdf edge function');
+    console.log('[PDF-LIB] Calling fill-pdf edge function via fetch');
     
-    const { data, error } = await supabase.functions.invoke('fill-pdf', {
-      body: { caseId, templateType },
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const response = await fetch(`${supabaseUrl}/functions/v1/fill-pdf`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ caseId, templateType }),
     });
-    
-    console.log('[PDF-LIB] Response:', { data, error });
-    
-    if (error) {
-      console.error('[PDF-LIB] Edge function error:', error);
-      throw error;
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('[PDF-LIB] HTTP error:', response.status, errorText);
+      throw new Error(`HTTP ${response.status}: ${errorText}`);
     }
+
+    const data = await response.json();
+    console.log('[PDF-LIB] Response:', { data });
 
     // Prefer signed URL
     if (data?.url) {

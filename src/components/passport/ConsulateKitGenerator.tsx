@@ -114,9 +114,14 @@ export const ConsulateKitGenerator = ({
   const handleGenerateKit = async () => {
     setGenerating(true);
     try {
-      // Generate PDF with checklist
-      const { data, error } = await supabase.functions.invoke('fill-pdf', {
-        body: {
+      // Generate PDF with checklist via direct fetch
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const response = await fetch(`${supabaseUrl}/functions/v1/fill-pdf`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           templateType: 'consulate_kit',
           caseId,
           data: {
@@ -125,10 +130,15 @@ export const ConsulateKitGenerator = ({
             checkedItems: Array.from(checkedItems),
             generatedDate: new Date().toISOString(),
           }
-        }
+        }),
       });
 
-      if (error) throw error;
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText);
+      }
+
+      const data = await response.json();
 
       // Create blob and download
       const blob = new Blob([Uint8Array.from(atob(data.pdf), c => c.charCodeAt(0))], {

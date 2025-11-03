@@ -75,11 +75,21 @@ export async function generatePdf({
     setIsGenerating(true);
     toast.loading('Preparing your PDF…');
 
-    const { data, error } = await supabase.functions.invoke('fill-pdf', {
-      body: { caseId, templateType }
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const response = await fetch(`${supabaseUrl}/functions/v1/fill-pdf`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ caseId, templateType }),
     });
 
-    if (error) throw error;
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(errorText);
+    }
+
+    const data = await response.json();
 
     if (data?.url) {
       redirectTab(tab, data.url);

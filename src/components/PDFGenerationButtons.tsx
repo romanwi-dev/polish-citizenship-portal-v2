@@ -90,14 +90,22 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
         }
       }
 
-      const { data, error } = await supabase.functions.invoke('fill-pdf', {
-        body: { caseId, templateType, flatten }
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const response = await fetch(`${supabaseUrl}/functions/v1/fill-pdf`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ caseId, templateType, flatten }),
       });
 
-      if (error) {
-        console.error('Edge function error:', error);
-        throw new Error(`Failed to generate PDF: ${error.message}`);
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Edge function error:', response.status, errorText);
+        throw new Error(`Failed to generate PDF: ${errorText}`);
       }
+
+      const data = await response.json();
       
       // Decode base64 to binary
       const binaryString = atob(data.pdf);
@@ -375,11 +383,21 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
       setIsGenerating(true);
       const loadingToast = toast.loading(`Generating final ${currentTemplate.label}...`);
 
-      const { data, error } = await supabase.functions.invoke('fill-pdf', {
-        body: { caseId, templateType: currentTemplate.type, flatten: true }
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const response = await fetch(`${supabaseUrl}/functions/v1/fill-pdf`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ caseId, templateType: currentTemplate.type, flatten: true }),
       });
 
-      if (error) throw new Error(`Failed to generate PDF: ${error.message}`);
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to generate PDF: ${errorText}`);
+      }
+
+      const data = await response.json();
 
       // Decode base64 to binary
       const binaryString = atob(data.pdf);

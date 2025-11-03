@@ -123,17 +123,24 @@ export default function POAForm() {
 
       console.log('[POA] Calling fill-pdf edge function with:', { caseId, templateType });
       
-      // Generate PDF - it will fetch fresh data from DB
-      const { data, error } = await supabase.functions.invoke('fill-pdf', {
-        body: { caseId, templateType }
+      // Generate PDF via direct fetch
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const response = await fetch(`${supabaseUrl}/functions/v1/fill-pdf`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ caseId, templateType }),
       });
 
-      console.log('[POA] Edge function response:', { data, error });
-
-      if (error) {
-        console.error("[POA] Edge function error details:", error);
-        throw new Error(`PDF generation failed: ${error.message}`);
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('[POA] HTTP error:', response.status, errorText);
+        throw new Error(`PDF generation failed: ${errorText}`);
       }
+
+      const data = await response.json();
+      console.log('[POA] Edge function response:', { data });
 
       if (!data?.url) {
         console.error('[POA] No URL in response:', data);
@@ -165,11 +172,21 @@ export default function POAForm() {
       
       await supabase.from("master_table").update(sanitizedData).eq("case_id", caseId);
 
-      const { data, error } = await supabase.functions.invoke('fill-pdf', {
-        body: { caseId, templateType: 'poa-adult' }
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const response = await fetch(`${supabaseUrl}/functions/v1/fill-pdf`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ caseId, templateType: 'poa-adult' }),
       });
 
-      if (error) throw new Error(error.message || 'PDF generation failed');
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || 'PDF generation failed');
+      }
+
+      const data = await response.json();
       if (!data?.url) throw new Error('No URL returned from server');
 
       // Use signed URL for preview
