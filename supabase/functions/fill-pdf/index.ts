@@ -821,18 +821,35 @@ serve(async (req) => {
           const path = `diagnostics/${Date.now()}.txt`;
           const bytes = new TextEncoder().encode('diagnostic test');
           
+          console.log('[DIAG] Attempting storage upload...');
           const { error: upErr } = await sb.storage
             .from('generated-pdfs')
             .upload(path, bytes, { contentType: 'text/plain', upsert: true });
-          uploadOk = !upErr;
           
+          if (upErr) {
+            console.error('[DIAG] Upload error:', upErr);
+            diagError = `Upload: ${upErr.message}`;
+          } else {
+            uploadOk = true;
+            console.log('[DIAG] Upload successful');
+          }
+          
+          console.log('[DIAG] Attempting signed URL creation...');
           const { data: signed, error: sErr } = await sb.storage
             .from('generated-pdfs')
             .createSignedUrl(path, 60);
-          signOk = Boolean(signed?.signedUrl && !sErr);
+          
+          if (sErr) {
+            console.error('[DIAG] Signed URL error:', sErr);
+            diagError = diagError ? `${diagError}; SignURL: ${sErr.message}` : `SignURL: ${sErr.message}`;
+          } else if (signed?.signedUrl) {
+            signOk = true;
+            console.log('[DIAG] Signed URL successful');
+          }
         }
       } catch (e) {
         diagError = String((e as Error)?.message ?? e);
+        console.error('[DIAG] Exception:', diagError);
       }
       
       return new Response(
