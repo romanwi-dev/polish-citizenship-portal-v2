@@ -534,15 +534,14 @@ Deno.serve(async (req) => {
     const userId = u.user.id;
     const isAdmin = u.user.app_metadata?.role === 'admin';
 
-    // Authorization
-    const { data: c } = await rls.from('cases').select('id, owner_user_id').eq('id', caseId).maybeSingle();
+    // Authorization - verify case exists (RLS will handle ownership check)
+    const { data: c } = await rls.from('cases').select('id').eq('id', caseId).maybeSingle();
     if (!c) return j(req, { code: 'CASE_NOT_FOUND', message: 'Case not found' }, 404);
-    if (!isAdmin && c.owner_user_id !== userId) return j(req, { code: 'FORBIDDEN', message: 'Forbidden' }, 403);
 
     // Rate limit: 25 docs / 5 min / user
     const { count } = await admin.from('generated_documents')
       .select('id', { head: true, count: 'exact' })
-      .eq('user_id', userId)
+      .eq('created_by', userId)
       .gte('created_at', new Date(Date.now() - 5 * 60 * 1000).toISOString());
     if ((count ?? 0) >= 25) return j(req, { code: 'RATE_LIMIT', message: 'Too many requests' }, 429);
 
@@ -641,7 +640,12 @@ Deno.serve(async (req) => {
       }
 
       // Audit
-      await admin.from('generated_documents').insert({ case_id: caseId, template_type: templateType, path, user_id: userId });
+      await admin.from('generated_documents').insert({ 
+        case_id: caseId, 
+        template_type: templateType, 
+        path, 
+        created_by: userId 
+      });
       log('gen_ok', { caseId, templateType, path, bytes: filledPdfBytes.byteLength, filled: result.filledCount, total: result.totalFields });
     } else {
       path = recent!.path;

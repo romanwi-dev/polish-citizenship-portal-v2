@@ -57,7 +57,7 @@ Deno.serve(async (req) => {
     // RLS client for case ownership check
     const rls = createClient(URL, ANON, { global: { headers: { Authorization: `Bearer ${jwt}` } } });
 
-    const { data: c } = await rls.from('cases').select('owner_user_id').eq('id', caseId).maybeSingle();
+    const { data: c } = await rls.from('cases').select('id').eq('id', caseId).maybeSingle();
     if (!c) {
       return j(req, { code: 'CASE_NOT_FOUND', message: 'Case not found' }, 404);
     }
