@@ -97,7 +97,10 @@ export default function POAForm() {
   };
 
   const handleGenerateAndPreview = async (templateType: 'poa-adult' | 'poa-minor' | 'poa-spouses') => {
+    console.log('[POA] Generate PDF clicked:', { templateType, caseId });
+    
     if (!caseId || caseId === ':id' || caseId === 'demo-preview') {
+      console.error('[POA] Cannot generate PDF - invalid caseId:', caseId);
       toast.error('PDF generation not available in demo mode');
       return;
     }
@@ -113,30 +116,39 @@ export default function POAForm() {
       }
       
       // Save and wait for full completion
+      console.log('[POA] Saving form data...');
       toast.info('Saving changes...');
       await handlePOASave();
       toast.success('Saved! Generating PDF...');
 
+      console.log('[POA] Calling fill-pdf edge function with:', { caseId, templateType });
+      
       // Generate PDF - it will fetch fresh data from DB
       const { data, error } = await supabase.functions.invoke('fill-pdf', {
         body: { caseId, templateType }
       });
 
+      console.log('[POA] Edge function response:', { data, error });
+
       if (error) {
-        console.error("Edge function error:", error);
+        console.error("[POA] Edge function error details:", error);
         throw new Error(`PDF generation failed: ${error.message}`);
       }
 
-      if (!data?.url) throw new Error('No URL returned from server');
+      if (!data?.url) {
+        console.error('[POA] No URL in response:', data);
+        throw new Error('No URL returned from server');
+      }
 
       // Use signed URL for preview
       if (pdfPreviewUrl) URL.revokeObjectURL(pdfPreviewUrl);
       setPdfPreviewUrl(data.url);
       setPreviewFormData(formData);
       
+      console.log('[POA] PDF generated successfully, URL:', data.url);
       toast.success(`${templateType.toUpperCase()} ready to print!`);
     } catch (error: any) {
-      console.error("PDF generation error:", error);
+      console.error("[POA] PDF generation error:", error);
       toast.error(`Failed to generate PDF: ${error.message}`);
     } finally {
       setIsGenerating(false);

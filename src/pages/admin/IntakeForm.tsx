@@ -22,7 +22,8 @@ export default function IntakeForm() {
   const { id: caseId } = useParams();
   const { isLargeFonts, toggleFontSize } = useAccessibility();
   const [showClearDialog, setShowClearDialog] = useState(false);
-  const tabsListRef = useRef<HTMLDivElement>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const tabsListRef = useRef<HTMLDivElement | null>(null);
 
   const {
     formData,
@@ -39,6 +40,11 @@ export default function IntakeForm() {
     handleSave,
     handleClearAll,
   } = useFormManager(caseId, INTAKE_FORM_REQUIRED_FIELDS, INTAKE_DATE_FIELDS);
+
+  const handleGeneratePDF = async () => {
+    if (!caseId) return;
+    toast.info('Intake form does not have a PDF template yet');
+  };
 
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({
     select: null,
@@ -165,9 +171,9 @@ export default function IntakeForm() {
           formData={formData}
           onSave={handleSave}
           onClear={() => setShowClearDialog(true)}
-          onGeneratePDF={() => {}}
+          onGeneratePDF={handleGeneratePDF}
           saveLabel="Save data"
-          isSaving={isSaving}
+          isSaving={isSaving || isGenerating}
         />
 
         {/* Form with Tabs or Full View */}
