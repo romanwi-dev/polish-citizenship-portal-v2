@@ -196,7 +196,7 @@ export const SpouseSection = ({ formData, handleInputChange, clearField, isLarge
     </div>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("spouse_first_name")}>
-        <Label className={isLargeFonts ? "text-2xl" : ""}>Spouse first name</Label>
+        <Label className={isLargeFonts ? "text-2xl" : ""}>Spouse given names</Label>
         <FormInput
           value={formData?.spouse_first_name || ""}
           onChange={(e) => handleInputChange("spouse_first_name", e.target.value)}
@@ -206,7 +206,7 @@ export const SpouseSection = ({ formData, handleInputChange, clearField, isLarge
       </motion.div>
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("spouse_last_name")}>
-        <Label className={isLargeFonts ? "text-2xl" : ""}>Spouse last name</Label>
+        <Label className={isLargeFonts ? "text-2xl" : ""}>Spouse full last name</Label>
         <FormInput
           value={formData?.spouse_last_name || ""}
           onChange={(e) => handleInputChange("spouse_last_name", e.target.value)}
@@ -217,28 +217,20 @@ export const SpouseSection = ({ formData, handleInputChange, clearField, isLarge
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="form-field-container space-y-2">
         <DateField
-          name="spouse_dob"
-          label="Spouse date of birth"
-          value={formData?.spouse_dob || ""}
-          onChange={(value) => handleInputChange("spouse_dob", value)}
+          name="date_of_marriage"
+          label="Date of marriage"
+          value={formData?.date_of_marriage || ""}
+          onChange={(value) => handleInputChange("date_of_marriage", value)}
         />
       </motion.div>
 
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("spouse_pob_city")}>
-        <Label className={isLargeFonts ? "text-2xl" : ""}>Spouse city of birth</Label>
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("place_of_marriage")}>
+        <Label className={isLargeFonts ? "text-2xl" : ""}>Place of marriage</Label>
         <FormInput
-          value={formData?.spouse_pob_city || ""}
-          onChange={(e) => handleInputChange("spouse_pob_city", e.target.value)}
+          value={formData?.place_of_marriage || ""}
+          onChange={(e) => handleInputChange("place_of_marriage", e.target.value)}
           placeholder=""
           className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs"
-        />
-      </motion.div>
-
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("spouse_pob_country")}>
-        <Label className={isLargeFonts ? "text-2xl" : ""}>Spouse country of birth</Label>
-        <CountrySelect
-          value={formData?.spouse_pob_country || ""}
-          onChange={(value) => handleInputChange("spouse_pob_country", value)}
         />
       </motion.div>
     </div>
