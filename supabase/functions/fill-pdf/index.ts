@@ -818,13 +818,19 @@ serve(async (req) => {
       try {
         if (hasSecrets) {
           const sb = createClient(url!, key!);
-          const path = `diagnostics/${Date.now()}.txt`;
-          const bytes = new TextEncoder().encode('diagnostic test');
+          const path = `diagnostics/test-${Date.now()}.pdf`;
+          
+          // Create a minimal valid PDF for testing
+          const pdfDoc = await PDFDocument.create();
+          const page = pdfDoc.addPage([200, 200]);
+          const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+          page.drawText('Diagnostic Test', { x: 50, y: 100, size: 12, font });
+          const pdfBytes = await pdfDoc.save();
           
           console.log('[DIAG] Attempting storage upload...');
           const { error: upErr } = await sb.storage
             .from('generated-pdfs')
-            .upload(path, bytes, { contentType: 'text/plain', upsert: true });
+            .upload(path, pdfBytes, { contentType: 'application/pdf', upsert: true });
           
           if (upErr) {
             console.error('[DIAG] Upload error:', upErr);
