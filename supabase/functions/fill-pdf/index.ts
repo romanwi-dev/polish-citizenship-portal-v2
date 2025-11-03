@@ -963,10 +963,15 @@ serve(async (req) => {
     
     console.log(`PDF generated: ${filledPdfBytes.length} bytes`);
     
-    // Convert binary to base64 for safe transmission through Supabase client
-    const base64Pdf = btoa(
-      String.fromCharCode(...new Uint8Array(filledPdfBytes))
-    );
+    // Convert binary to base64 in chunks to avoid stack overflow
+    const chunkSize = 32768; // 32KB chunks
+    const uint8Array = new Uint8Array(filledPdfBytes);
+    let base64Pdf = '';
+    
+    for (let i = 0; i < uint8Array.length; i += chunkSize) {
+      const chunk = uint8Array.slice(i, i + chunkSize);
+      base64Pdf += btoa(String.fromCharCode(...chunk));
+    }
     
     return new Response(
       JSON.stringify({ 

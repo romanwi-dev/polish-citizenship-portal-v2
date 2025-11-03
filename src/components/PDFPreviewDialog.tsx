@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Download, X, Printer, Eye, Edit, Lock } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,7 +31,6 @@ export function PDFPreviewDialog({
   documentTitle
 }: PDFPreviewDialogProps) {
   const [isPrinting, setIsPrinting] = useState(false);
-  const { useIsMobile } = require("@/hooks/use-mobile");
   const isMobile = useIsMobile();
 
   const handlePrint = () => {
