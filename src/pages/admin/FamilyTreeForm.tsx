@@ -526,7 +526,7 @@ export default function FamilyTreeForm() {
                   </TabsTrigger>
                 </TabsList>
               </div>
-                  <TabsContent value="select" className="mt-0" {...(isFullView ? { forceMount: true } : {})}>
+                  <TabsContent value="select" className="mt-0 pb-32" {...(isFullView ? { forceMount: true } : {})}>
           {(activeTab === 'select' || isFullView) && (
           <motion.div initial={{
           opacity: 0,
@@ -655,7 +655,7 @@ export default function FamilyTreeForm() {
           )}
         </TabsContent>
 
-              <TabsContent value="applicant" className="mt-0" {...(isFullView ? { forceMount: true } : {})}>
+              <TabsContent value="applicant" className="mt-0 pb-32" {...(isFullView ? { forceMount: true } : {})}>
           {/* Applicant Section */}
           {(activeTab === 'applicant' || isFullView) && (
           <motion.div initial={{
@@ -762,7 +762,7 @@ export default function FamilyTreeForm() {
         </TabsContent>
 
         {/* Spouse Tab */}
-        <TabsContent value="spouse" className="mt-0" {...(isFullView ? { forceMount: true } : {})}>
+        <TabsContent value="spouse" className="mt-0 pb-32" {...(isFullView ? { forceMount: true } : {})}>
           {(activeTab === 'spouse' || isFullView) && (
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="space-y-10">
               <h2 className="text-4xl md:text-5xl font-heading font-bold text-blue-300 dark:text-blue-300 border-b border-border/50 pb-6">
@@ -783,7 +783,7 @@ export default function FamilyTreeForm() {
           )}
         </TabsContent>
 
-        <TabsContent value="children" className="mt-0" {...(isFullView ? { forceMount: true } : {})}>
+        <TabsContent value="children" className="mt-0 pb-32" {...(isFullView ? { forceMount: true } : {})}>
           {/* Children Section - Only Minor Children */}
           {(activeTab === 'children' || isFullView) && (formData.minor_children_count > 0) && (
           <motion.div initial={{
@@ -861,7 +861,7 @@ export default function FamilyTreeForm() {
           )}
         </TabsContent>
 
-        <TabsContent value="parents" className="mt-0" {...(isFullView ? { forceMount: true } : {})}>
+        <TabsContent value="parents" className="mt-0 pb-32" {...(isFullView ? { forceMount: true } : {})}>
           {/* Parents Section */}
           {(activeTab === 'parents' || isFullView) && (
           <motion.div initial={{
@@ -1046,7 +1046,7 @@ export default function FamilyTreeForm() {
           )}
         </TabsContent>
 
-        <TabsContent value="grandparents" className="mt-0" {...(isFullView ? { forceMount: true } : {})}>
+        <TabsContent value="grandparents" className="mt-0 pb-32" {...(isFullView ? { forceMount: true } : {})}>
 
           {/* Grandparents Section */}
           {(activeTab === 'grandparents' || isFullView) && (
@@ -1161,7 +1161,7 @@ export default function FamilyTreeForm() {
           )}
         </TabsContent>
 
-        <TabsContent value="great-grandparents" className="mt-0" {...(isFullView ? { forceMount: true } : {})}>
+        <TabsContent value="great-grandparents" className="mt-0 pb-32" {...(isFullView ? { forceMount: true } : {})}>
 
           {/* Polish Great-Grandfathers Section - Only the 2 Polish Ancestors */}
           {(activeTab === 'great-grandparents' || isFullView) && (
