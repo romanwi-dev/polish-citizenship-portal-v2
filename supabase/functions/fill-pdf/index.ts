@@ -452,8 +452,22 @@ function fillPDFFields(form: any, data: any, fieldMap: Record<string, string>): 
       const fieldType = field.constructor.name;
       const acroFieldType = field.acroField?.dict?.get('FT')?.encodedName || '';
       
-      // PDFTextField or text field indicator
-      if (fieldType === 'PDFTextField' || acroFieldType === '/Tx' || acroFieldType === 't') {
+      // PDFTextField - match various text field indicators
+      const isTextField = fieldType === 'PDFTextField' || 
+                         acroFieldType === '/Tx' || 
+                         acroFieldType === 'Tx' ||
+                         acroFieldType === 't' ||
+                         acroFieldType.includes('Tx');
+      
+      const isCheckBox = fieldType === 'PDFCheckBox' || 
+                        acroFieldType === '/Btn' || 
+                        acroFieldType === 'Btn';
+      
+      const isDropdown = fieldType === 'PDFDropdown' || 
+                        acroFieldType === '/Ch' || 
+                        acroFieldType === 'Ch';
+      
+      if (isTextField) {
         try {
           field.setText(formattedValue);
           result.filledCount++;
@@ -461,7 +475,7 @@ function fillPDFFields(form: any, data: any, fieldMap: Record<string, string>): 
           const errMsg = (e as Error)?.message || String(e);
           result.errors.push({ field: pdfFieldName, error: `Text field set failed: ${errMsg}` });
         }
-      } else if (fieldType === 'PDFCheckBox' || acroFieldType === '/Btn') {
+      } else if (isCheckBox) {
         const isChecked = formatBoolean(value) === 'Yes';
         if (isChecked) {
           field.check();
@@ -469,7 +483,7 @@ function fillPDFFields(form: any, data: any, fieldMap: Record<string, string>): 
           field.uncheck();
         }
         result.filledCount++;
-      } else if (fieldType === 'PDFDropdown' || acroFieldType === '/Ch') {
+      } else if (isDropdown) {
         try {
           field.select(formattedValue);
           result.filledCount++;
@@ -478,7 +492,13 @@ function fillPDFFields(form: any, data: any, fieldMap: Record<string, string>): 
           result.errors.push({ field: pdfFieldName, error: `Dropdown select failed: ${errMsg}` });
         }
       } else {
-        result.errors.push({ field: pdfFieldName, error: `Unsupported field type: ${fieldType} (acro: ${acroFieldType})` });
+        // Try setText as fallback for unknown field types
+        try {
+          field.setText(formattedValue);
+          result.filledCount++;
+        } catch (e) {
+          result.errors.push({ field: pdfFieldName, error: `Unsupported field type: ${fieldType} (acro: ${acroFieldType})` });
+        }
       }
     } catch (error) {
       result.errors.push({ field: pdfFieldName, error: String((error as Error)?.message ?? error) });
