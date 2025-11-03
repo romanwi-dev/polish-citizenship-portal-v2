@@ -40,58 +40,67 @@ export function FormButtonsRow({
   const navigationButtons = getNavigationButtons(formData || {});
 
   return (
-    <div className="sticky top-0 z-[100] mb-2 md:mb-8 py-2 md:py-3 -mx-4 md:-mx-6 space-y-1 md:space-y-2 bg-background backdrop-blur-md border-b border-border shadow-lg">
-      {/* Navigation Buttons Row */}
-      <div className="flex flex-row gap-0.5 overflow-x-auto scrollbar-hide md:justify-between px-0 md:px-6 max-w-full">
-        {navigationButtons
-          .filter(btn => btn.id !== currentForm)
-          .map((btn) => {
-            const isCurrent = btn.id === currentForm;
-            const Icon = btn.icon;
+    <>
+      {/* Sticky Action Buttons Row - ALWAYS VISIBLE */}
+      <div className="fixed top-0 left-0 right-0 z-[100] backdrop-blur-md bg-background/95 border-b border-border shadow-lg">
+        <div className="mx-auto max-w-7xl px-3 md:px-6 py-2 md:py-3">
+          <div className="flex flex-row gap-0.5 justify-between">
+            <Button
+              onClick={onSave}
+              disabled={isSaving}
+              className="px-6 py-6 md:py-2 text-sm md:text-base font-bold flex-1 bg-green-500/20 hover:bg-green-500/30 border border-green-400/40 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]"
+            >
+              <span className="text-green-100 font-bold whitespace-nowrap">{isSaving ? "Saving..." : saveLabel}</span>
+            </Button>
             
-            return (
-              <Button
-                key={btn.id}
-                onClick={() => navigate(btn.path.replace(':id', caseId))}
-                className={`
-                  px-6 py-2 text-sm md:text-base font-bold
-                  flex-shrink-0 md:flex-1 border transition-colors
-                  ${isCurrent 
-                    ? 'bg-white/10 hover:bg-white/15 border-white/40 opacity-60' 
-                    : 'bg-white/5 hover:bg-white/10 border-white/20 opacity-50'
-                  }
-                `}
-              >
-                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent whitespace-nowrap">{btn.label}</span>
-              </Button>
-            );
-          })}
+            <Button
+              onClick={onGeneratePDF}
+              className="px-6 py-6 md:py-2 text-sm md:text-base font-bold flex-1 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]"
+            >
+              <span className="text-blue-100 font-bold whitespace-nowrap">Generate PDF</span>
+            </Button>
+            
+            <Button
+              onClick={onClear}
+              className="px-6 py-6 md:py-2 text-sm md:text-base font-bold flex-1 bg-red-500/20 hover:bg-red-500/30 border border-red-400/40 transition-all shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]"
+            >
+              <span className="text-red-100 font-bold whitespace-nowrap">Clear Data</span>
+            </Button>
+          </div>
+        </div>
       </div>
 
-      {/* Save, Generate PDF, and Clear Row */}
-      <div className="flex flex-row gap-0.5 justify-between px-0 md:px-6">
-        <Button
-          onClick={onSave}
-          disabled={isSaving}
-          className="px-6 py-6 md:py-2 text-sm md:text-base font-bold flex-1 bg-green-500/20 hover:bg-green-500/30 border border-green-400/40 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]"
-        >
-          <span className="text-green-100 font-bold whitespace-nowrap">{isSaving ? "Saving..." : saveLabel}</span>
-        </Button>
-        
-        <Button
-          onClick={onGeneratePDF}
-          className="px-6 py-6 md:py-2 text-sm md:text-base font-bold flex-1 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]"
-        >
-          <span className="text-blue-100 font-bold whitespace-nowrap">Generate PDF</span>
-        </Button>
-        
-        <Button
-          onClick={onClear}
-          className="px-6 py-6 md:py-2 text-sm md:text-base font-bold flex-1 bg-red-500/20 hover:bg-red-500/30 border border-red-400/40 transition-all shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]"
-        >
-          <span className="text-red-100 font-bold whitespace-nowrap">Clear Data</span>
-        </Button>
+      {/* Spacer for sticky action buttons */}
+      <div className="h-[56px] md:h-[52px]" />
+
+      {/* Navigation Buttons Row - Static, no background */}
+      <div className="mb-2 md:mb-8 py-2 md:py-3">
+        <div className="flex flex-row gap-0.5 overflow-x-auto scrollbar-hide md:justify-between px-0 md:px-6 max-w-full">
+          {navigationButtons
+            .filter(btn => btn.id !== currentForm)
+            .map((btn) => {
+              const isCurrent = btn.id === currentForm;
+              const Icon = btn.icon;
+              
+              return (
+                <Button
+                  key={btn.id}
+                  onClick={() => navigate(btn.path.replace(':id', caseId))}
+                  className={`
+                    px-6 py-2 text-sm md:text-base font-bold
+                    flex-shrink-0 md:flex-1 border transition-colors
+                    ${isCurrent 
+                      ? 'bg-white/10 hover:bg-white/15 border-white/40 opacity-60' 
+                      : 'bg-white/5 hover:bg-white/10 border-white/20 opacity-50'
+                    }
+                  `}
+                >
+                  <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent whitespace-nowrap">{btn.label}</span>
+                </Button>
+              );
+            })}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
