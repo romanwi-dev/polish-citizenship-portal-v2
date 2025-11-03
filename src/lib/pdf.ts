@@ -53,6 +53,9 @@ export async function generatePdfViaEdge({
     
     const { data, error } = await supabase.functions.invoke('fill-pdf', {
       body: { caseId, templateType },
+      headers: {
+        'Content-Type': 'application/json'
+      }
     });
     
     console.log('[PDF-LIB] Edge function returned:', { data, error });
