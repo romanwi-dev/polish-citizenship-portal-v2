@@ -3,9 +3,9 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 import { PDFDocument, StandardFonts } from "https://esm.sh/pdf-lib@1.17.1";
 
 // ============ CONFIGURATION ============
-const SIGNED_URL_EXPIRY_MINUTES = 60; // Increased from 10 to 60 minutes for better UX
-const RATE_LIMIT_WINDOW_MS = 60000; // 1 minute
-const RATE_LIMIT_MAX_REQUESTS = 10; // Max 10 PDF generations per minute per IP
+const SIGNED_URL_TTL_SECONDS = Number(Deno.env.get('SIGNED_URL_TTL_SECONDS') ?? '2700'); // 45 minutes
+const RATE_LIMIT_WINDOW_MS = 300000; // 5 minutes
+const RATE_LIMIT_MAX_REQUESTS = 25; // Max 25 PDF generations per 5 minutes
 
 // ============ RATE LIMITING ============
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
@@ -1175,7 +1175,7 @@ serve(async (req) => {
     const { data: signed, error: signedErr } = await supabaseClient
       .storage
       .from('generated-pdfs')
-      .createSignedUrl(filename, 60 * SIGNED_URL_EXPIRY_MINUTES);
+      .createSignedUrl(filename, SIGNED_URL_TTL_SECONDS);
     
     if (signedErr) {
       console.error('❌ Signed URL error:', signedErr);
@@ -1188,7 +1188,7 @@ serve(async (req) => {
       );
     }
     
-    console.log(`🔗 Signed URL created (expires in ${SIGNED_URL_EXPIRY_MINUTES} minutes)`);
+    console.log(`🔗 Signed URL created (expires in ${SIGNED_URL_TTL_SECONDS / 60} minutes)`);
     
     // Record in audit table with enhanced logging
     const startTime = Date.now();
@@ -1219,7 +1219,7 @@ serve(async (req) => {
         generationTimeMs: generationTime,
         pdfSizeBytes: filledPdfBytes.length
       },
-      signedUrlExpiryMinutes: SIGNED_URL_EXPIRY_MINUTES,
+      signedUrlExpiryMinutes: SIGNED_URL_TTL_SECONDS / 60,
       timestamp: new Date().toISOString()
     }));
     
@@ -1227,7 +1227,7 @@ serve(async (req) => {
       JSON.stringify({ 
         url: signed.signedUrl,
         filename: filename.split('/').pop(),
-        expiresInMinutes: SIGNED_URL_EXPIRY_MINUTES,
+        expiresInMinutes: SIGNED_URL_TTL_SECONDS / 60,
         stats: { 
           filled: fillResult.filledFields, 
           total: fillResult.totalFields, 
