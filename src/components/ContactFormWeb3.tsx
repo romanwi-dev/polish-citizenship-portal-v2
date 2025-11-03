@@ -18,6 +18,7 @@ const contactSchema = z.object({
 const ContactFormWeb3 = () => {
   const { toast } = useToast();
   const [isFlipped, setIsFlipped] = useState(false);
+  const [flippedCards, setFlippedCards] = useState<Set<number>>(new Set());
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -51,6 +52,18 @@ const ContactFormWeb3 = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const toggleCardFlip = (index: number) => {
+    setFlippedCards(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(index)) {
+        newSet.delete(index);
+      } else {
+        newSet.add(index);
+      }
+      return newSet;
+    });
   };
 
   return (
@@ -207,17 +220,76 @@ const ContactFormWeb3 = () => {
           {/* Trust Indicators */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mt-12">
             {[
-              { icon: Zap, label: "AI Accurate Response", value: "< 5 mins" },
-              { icon: Mail, label: "Human Detailed Response", value: "< 1 hour" },
-              { icon: Zap, label: "Consultation Availability", value: "24/7" },
-              { icon: Mail, label: "Initial Assessment", value: "Free" }
+              { 
+                icon: Zap, 
+                label: "AI Accurate Response", 
+                value: "< 5 mins",
+                details: "Our advanced AI analyzes your eligibility based on 25,000+ cases and Polish citizenship law. Get instant preliminary assessment with document checklist and potential obstacles identified automatically."
+              },
+              { 
+                icon: Mail, 
+                label: "Human Detailed Response", 
+                value: "< 1 hour",
+                details: "Expert legal team reviews your case personally. Receive comprehensive analysis covering your specific situation, timeline estimates, required documents, and strategic recommendations from experienced citizenship lawyers."
+              },
+              { 
+                icon: Zap, 
+                label: "Consultation Availability", 
+                value: "24/7",
+                details: "Book consultations at your convenience across all time zones. Video calls, phone, or email - we're available when you need us. Global team ensures someone is always ready to help with urgent questions."
+              },
+              { 
+                icon: Mail, 
+                label: "Initial Assessment", 
+                value: "Free",
+                details: "No obligation, no cost for initial eligibility review. We analyze your family history and determine your chances before any commitment. Only proceed if we're confident in your success - 100% success rate maintained."
+              }
             ].map((stat, i) => (
-              <div key={i} className="glass-card p-6 rounded-lg hover-glow w-full max-w-[280px] mx-auto md:max-w-none">
-                <stat.icon className="h-6 w-6 mb-3 opacity-50 text-primary" />
-                <div className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
-                  {stat.value}
+              <div 
+                key={i} 
+                className="w-full max-w-[280px] mx-auto md:max-w-none cursor-pointer"
+                style={{ perspective: '1000px' }}
+                onClick={() => toggleCardFlip(i)}
+              >
+                <div 
+                  className="relative w-full transition-transform duration-700"
+                  style={{ 
+                    transformStyle: 'preserve-3d',
+                    transform: flippedCards.has(i) ? 'rotateY(180deg)' : 'rotateY(0deg)'
+                  }}
+                >
+                  {/* Front Side */}
+                  <div 
+                    className="glass-card p-6 rounded-lg hover-glow w-full"
+                    style={{ 
+                      backfaceVisibility: 'hidden',
+                      WebkitBackfaceVisibility: 'hidden'
+                    }}
+                  >
+                    <stat.icon className="h-6 w-6 mb-3 opacity-50 text-primary" />
+                    <div className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
+                      {stat.value}
+                    </div>
+                    <div className="text-sm text-muted-foreground">{stat.label}</div>
+                    <div className="text-xs text-primary/50 mt-2">Click for details</div>
+                  </div>
+
+                  {/* Back Side */}
+                  <div 
+                    className="glass-card p-6 rounded-lg w-full absolute top-0 left-0 min-h-full flex flex-col justify-center"
+                    style={{ 
+                      backfaceVisibility: 'hidden',
+                      WebkitBackfaceVisibility: 'hidden',
+                      transform: 'rotateY(180deg)'
+                    }}
+                  >
+                    <div className="text-xs text-primary/70 mb-2 font-semibold">{stat.label}</div>
+                    <p className="text-sm text-foreground/80 leading-relaxed">
+                      {stat.details}
+                    </p>
+                    <div className="text-xs text-primary/50 mt-3">Click to flip back</div>
+                  </div>
                 </div>
-                <div className="text-sm text-muted-foreground">{stat.label}</div>
               </div>
             ))}
           </div>
