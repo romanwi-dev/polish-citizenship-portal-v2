@@ -108,11 +108,19 @@ export default function POAForm() {
     setIsGenerating(true);
     setActivePOAType(templateType.replace('poa-', ''));
     try {
-      // Auto-populate POA date if not set
-      if (!formData.poa_date_filed) {
+      // Auto-populate POA date if not set and save it
+      let dateToUse = formData.poa_date_filed;
+      if (!dateToUse) {
         const today = new Date();
         const formattedDate = `${String(today.getDate()).padStart(2, '0')}.${String(today.getMonth() + 1).padStart(2, '0')}.${today.getFullYear()}`;
+        dateToUse = formattedDate;
         handleInputChange('poa_date_filed', formattedDate);
+        
+        // Save the date immediately to database
+        await supabase
+          .from('master_table')
+          .update({ poa_date_filed: formattedDate })
+          .eq('case_id', caseId);
       }
       
       // Save and wait for full completion
