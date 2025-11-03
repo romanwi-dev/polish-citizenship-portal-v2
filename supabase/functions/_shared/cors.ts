@@ -4,7 +4,8 @@ export function allowedOrigins() {
 }
 
 export function corsHeaders(origin: string | null) {
-  const allow = origin && allowedOrigins().has(origin) ? origin : 'null';
+  const allowed = allowedOrigins();
+  const allow = origin && allowed.has(origin) ? origin : (allowed.size > 0 ? 'null' : '*');
   return {
     'Access-Control-Allow-Origin': allow,
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
