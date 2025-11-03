@@ -231,29 +231,23 @@ export default function POAForm() {
       console.log('[POA] Saving form data before PDF generation...');
       await handlePOASave();
 
-      console.log('[POA] Importing generatePdfViaEdge...');
-      const { generatePdfViaEdge } = await import('@/lib/pdf');
+      console.log('[POA] Generating PDF for:', activePOAType);
       
-      const templates: Array<'poa-adult' | 'poa-minor' | 'poa-spouses'> = ['poa-adult'];
-      if (hasMinorChildren() && minorChildrenCount > 0) templates.push('poa-minor');
-      if (showSpousePOA) templates.push('poa-spouses');
+      const { data, error } = await supabase.functions.invoke('fill-pdf', {
+        body: { caseId, templateType: `poa-${activePOAType}` }
+      });
 
-      console.log('[POA] Generating PDFs for templates:', templates);
-
-      for (const templateType of templates) {
-        console.log('[POA] Calling generatePdfViaEdge for:', templateType);
-        await generatePdfViaEdge({
-          supabase,
-          caseId,
-          templateType,
-          toast,
-          setIsGenerating: () => {}, // Keep spinner on during batch
-          filename: `POA-${templateType.replace('poa-', '').toUpperCase()}-${caseId}.pdf`,
-        });
+      if (error) throw error;
+      
+      if (data?.url) {
+        console.log('[POA] PDF generated successfully:', data.url);
+        setPdfPreviewUrl(data.url);
+        setPreviewFormData(formData);
+        toast.success(`PDF generated! Stats: ${data.stats?.filled}/${data.stats?.total} fields filled`);
+      } else {
+        throw new Error('No PDF URL returned');
       }
 
-      console.log('[POA] All PDFs generated successfully!');
-      toast.success(`Generated ${templates.length} POA document(s)!`);
     } catch (error: any) {
       console.error("[POA] PDF generation error:", error);
       toast.error(`Failed to generate PDFs: ${error.message}`);
