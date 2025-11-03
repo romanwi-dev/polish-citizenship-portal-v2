@@ -960,8 +960,10 @@ serve(async (req) => {
       'poa-spouses': POA_SPOUSES_PDF_MAP,
       'citizenship': CITIZENSHIP_PDF_MAP,
       'family-tree': FAMILY_TREE_PDF_MAP,
-      'umiejscowienie': UMIEJSCOWIENIE_PDF_MAP,
-      'uzupelnienie': UZUPELNIENIE_PDF_MAP,
+      'transcription': UZUPELNIENIE_PDF_MAP,  // Civil Registry transcription (wpis)
+      'registration': UMIEJSCOWIENIE_PDF_MAP,  // Civil Registry registration (umiejscowienie)
+      'umiejscowienie': UMIEJSCOWIENIE_PDF_MAP,  // Legacy
+      'uzupelnienie': UZUPELNIENIE_PDF_MAP,     // Legacy
     };
     
     const fieldMap = fieldMappings[templateType];
