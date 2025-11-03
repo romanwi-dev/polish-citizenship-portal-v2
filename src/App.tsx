@@ -73,6 +73,7 @@ const SystemOverview = lazy(() => import("./pages/admin/SystemOverview"));
 const AIAgentsDashboard = lazy(() => import("./pages/admin/AIAgentsDashboard"));
 const AgentApprovals = lazy(() => import("./pages/admin/AgentApprovals"));
 const VerifyChanges = lazy(() => import("./pages/VerifyChanges"));
+const PDFDemo = lazy(() => import("./pages/PDFDemo"));
 
 
 const queryClient = new QueryClient({
@@ -490,6 +491,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <DocumentBrowser />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/pdf-demo" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <PDFDemo />
               </Suspense>
             } 
           />
