@@ -942,16 +942,24 @@ serve(async (req) => {
       }
     }
 
-    // Generate appearance streams for Mobile Safari compatibility
+    // For editable PDFs: Generate appearance streams for Mobile Safari compatibility
     // Use Helvetica (WinAnsi) font - Polish chars show as ? in preview but actual values preserved
-    const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
-    form.updateFieldAppearances(helveticaFont);
-    console.log('✅ Generated appearance streams for all fields (Mobile Safari compatible)');
+    if (!flatten) {
+      const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+      form.updateFieldAppearances(helveticaFont);
+      console.log('✅ Generated appearance streams for editable PDF (Mobile Safari compatible)');
+    }
 
     // Only flatten for final locked PDFs, keep editable otherwise
     if (flatten) {
+      // CRITICAL: Must call updateFieldAppearances BEFORE flatten to preserve values
+      // Otherwise flatten() discards all filled data (known pdf-lib bug)
+      const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+      form.updateFieldAppearances(helveticaFont);
+      console.log('✅ Updated appearances before flattening');
+      
       form.flatten();
-      console.log('🔒 PDF flattened - fields are now static text (not editable)');
+      console.log('🔒 PDF flattened - fields are now static text (visible & not editable)');
     } else {
       console.log('✏️ PDF kept editable - can be filled in PDF viewer software');
     }

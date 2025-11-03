@@ -106,47 +106,56 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
       toast.dismiss(loadingToast);
 
       if (!flatten) {
-        // For mobile: Generate FLATTENED PDF for preview (visible fields)
-        // For desktop: Show editable PDF in dialog
+        // ALWAYS generate flattened PDF for mobile preview (fields visible)
+        // Desktop can use editable, but mobile Safari needs flattened
         const device = detectDevice();
         const isReallyMobile = device.isMobile || device.isIOS || device.isAndroid;
         
         if (isReallyMobile) {
-          // MOBILE: Generate flattened (locked but visible) PDF for preview
-          console.log('📱 Mobile detected - generating flattened PDF for preview');
+          // MOBILE: Generate FLATTENED PDF for preview (visible, locked)
+          console.log('📱 Mobile detected - generating FLATTENED PDF for preview');
+          toast.loading('Generating mobile-optimized PDF preview...');
           
-          const flattenedResponse = await supabase.functions.invoke('fill-pdf', {
-            body: {
-              template: templateType,
-              caseId: caseId,
-              flatten: true, // Force flatten for mobile preview
-            },
-          });
+          try {
+            const flattenedResponse = await supabase.functions.invoke('fill-pdf', {
+              body: {
+                template: templateType,
+                caseId: caseId,
+                flatten: true, // Force flatten for mobile visibility
+              },
+            });
 
-          if (flattenedResponse.error) {
-            console.error('Failed to generate flattened PDF:', flattenedResponse.error);
-            toast.error('Failed to generate preview PDF');
-            return;
+            toast.dismiss();
+
+            if (flattenedResponse.error) {
+              console.error('Failed to generate flattened PDF:', flattenedResponse.error);
+              toast.error('Failed to generate preview. Try downloading instead.');
+              return;
+            }
+
+            const flattenedBlob = flattenedResponse.data instanceof Blob 
+              ? flattenedResponse.data 
+              : new Blob([flattenedResponse.data], { type: 'application/pdf' });
+            
+            const flattenedUrl = window.URL.createObjectURL(flattenedBlob);
+            console.log('✅ Flattened PDF ready for mobile:', { size: flattenedBlob.size });
+            
+            // Show preview with flattened (visible) PDF
+            setPreviewUrl(flattenedUrl);
+            setCurrentTemplate({ type: templateType, label });
+            setCurrentTemplateType(templateType);
+            setFormData(masterData);
+            setPreviewOpen(true);
+            toast.success(`${label} preview ready!`, { duration: 3000 });
+          } catch (error) {
+            toast.dismiss();
+            console.error('Mobile PDF generation error:', error);
+            toast.error('Failed to generate preview. Please try again.');
           }
-
-          const flattenedBlob = flattenedResponse.data instanceof Blob 
-            ? flattenedResponse.data 
-            : new Blob([flattenedResponse.data], { type: 'application/pdf' });
-          
-          const flattenedUrl = window.URL.createObjectURL(flattenedBlob);
-          console.log('✅ Flattened PDF for mobile preview:', { size: flattenedBlob.size });
-          
-          // Show preview with flattened PDF
-          setPreviewUrl(flattenedUrl);
-          setCurrentTemplate({ type: templateType, label });
-          setCurrentTemplateType(templateType);
-          setFormData(masterData);
-          setPreviewOpen(true);
-          toast.success(`${label} preview ready (flattened for mobile)`, { duration: 3000 });
         } else {
           // DESKTOP: Use editable PDF for preview
           const url = window.URL.createObjectURL(blob);
-          console.log('💻 Desktop detected - using editable PDF');
+          console.log('💻 Desktop - showing editable PDF preview');
           setPreviewUrl(url);
           setCurrentTemplate({ type: templateType, label });
           setCurrentTemplateType(templateType);
