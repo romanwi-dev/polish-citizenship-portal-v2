@@ -1,5 +1,8 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
+// DEPLOYMENT VERSION: 2024-11-03-V3-FINAL
+// Template paths: LOWERCASE with hyphens (poa-adult.pdf, family-tree.pdf, etc.)
+
 // ===== CORS & Security Utilities =====
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -611,7 +614,7 @@ Deno.serve(async (req) => {
       }
 
       const templatePath = config.path;
-      log('template_load', { templatePath });
+      log('template_load_v3', { templatePath, deployment: 'V3-FINAL', timestamp: Date.now() });
 
       // Template cache
       let templateBytes: Uint8Array;
