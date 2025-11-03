@@ -471,6 +471,7 @@ function fillPDFFields(form: any, data: any, fieldMap: Record<string, string>): 
         try {
           field.setText(formattedValue);
           result.filledCount++;
+          log('text_field_filled', { field: pdfFieldName, value: formattedValue });
         } catch (e) {
           const errMsg = (e as Error)?.message || String(e);
           result.errors.push({ field: pdfFieldName, error: `Text field set failed: ${errMsg}` });
@@ -496,6 +497,7 @@ function fillPDFFields(form: any, data: any, fieldMap: Record<string, string>): 
         try {
           field.setText(formattedValue);
           result.filledCount++;
+          log('fallback_text_success', { field: pdfFieldName, fieldType, acroFieldType });
         } catch (e) {
           result.errors.push({ field: pdfFieldName, error: `Unsupported field type: ${fieldType} (acro: ${acroFieldType})` });
         }
