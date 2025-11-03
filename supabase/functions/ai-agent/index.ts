@@ -503,7 +503,7 @@ serve(async (req) => {
   const authHeader = req.headers.get('authorization');
   if (!authHeader) {
     console.error('[ai-agent] Missing authorization header');
-    return createSecureErrorResponse(req, 'Authentication required', 401);
+    return json(req, { error: 'Authentication required' }, 401);
   }
 
   // Create Supabase client with user's auth token (not service role)
@@ -517,7 +517,7 @@ serve(async (req) => {
   const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
   if (authError || !user) {
     console.error('[ai-agent] Invalid or expired token:', authError);
-    return createSecureErrorResponse(req, 'Invalid or expired authentication token', 401);
+    return json(req, { error: 'Invalid or expired authentication token' }, 401);
   }
 
   console.log(`[ai-agent] Authenticated user: ${user.id}`);
@@ -532,7 +532,7 @@ serve(async (req) => {
     const validation = validateInput(AIAgentRequestSchema, body);
     
     if (!validation.success) {
-      return createSecureErrorResponse(req, `Invalid input: ${JSON.stringify(validation.details)}`, 400);
+      return json(req, { error: `Invalid input: ${JSON.stringify(validation.details)}` }, 400);
     }
     
     const { caseId, prompt, action, conversationId, stream = false } = validation.data;
@@ -558,7 +558,7 @@ serve(async (req) => {
 
       if (!hasAccess && !isStaff) {
         console.error(`[ai-agent] User ${user.id} denied access to case ${caseId}`);
-        return createSecureErrorResponse(req, 'Access denied to this case', 403);
+        return json(req, { error: 'Access denied to this case' }, 403);
       }
 
       console.log(`[ai-agent] User ${user.id} authorized for case ${caseId} (role: ${userRole?.role || 'client'})`);
@@ -761,7 +761,7 @@ serve(async (req) => {
 
       return new Response(streamResponse, {
         headers: {
-          ...getSecureCorsHeaders(req),
+          ...corsHeaders(req.headers.get('Origin')),
           'Content-Type': 'text/event-stream',
           'Cache-Control': 'no-cache',
           'Connection': 'keep-alive',
@@ -850,7 +850,7 @@ serve(async (req) => {
       }).eq('id', activeConversationId);
     }
 
-    return createSecureCorsResponse(req, { 
+    return json(req, { 
       response: responseContent, 
       conversationId: activeConversationId,
       toolResults 
@@ -880,7 +880,7 @@ serve(async (req) => {
       console.error('Failed to log error activity:', logError);
     }
 
-    return createSecureErrorResponse(req, error.message || 'Unknown error', 500);
+    return json(req, { error: error.message || 'Unknown error' }, 500);
   }
 });
 

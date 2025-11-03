@@ -17,7 +17,7 @@ Deno.serve(async (req) => {
     if (sign.error || !sign.data?.signedUrl) return json(req, { ok: false, step: 'sign', error: sign.error?.message }, 500);
 
     return json(req, { ok: true, url: sign.data.signedUrl }, 200);
-  } catch (e) {
+  } catch (e: any) {
     return json(req, { ok: false, step: 'exception', error: String(e?.message ?? e) }, 500);
   }
 });
