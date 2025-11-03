@@ -178,6 +178,14 @@ export default function CaseDetail() {
           <div className="w-full overflow-x-auto scrollbar-hide">
             <TabsList className="inline-flex gap-0.5 bg-transparent h-auto p-0 w-max min-w-full">
               <TabsTrigger 
+                value="overview"
+                className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-card/80 hover:bg-card/90 hover:shadow-[0_0_40px_hsl(221_83%_53%_/_0.4)] transition-all group relative backdrop-blur-md border border-white/30 data-[state=active]:bg-card flex-shrink-0 md:flex-1"
+              >
+                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                  Overview
+                </span>
+              </TabsTrigger>
+              <TabsTrigger 
                 value="edit"
                 onClick={() => setShowEditDialog(true)}
                 className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-card/80 hover:bg-card/90 hover:shadow-[0_0_40px_hsl(221_83%_53%_/_0.4)] transition-all group relative backdrop-blur-md border border-white/30 data-[state=active]:bg-card flex-shrink-0 md:flex-1"
@@ -194,14 +202,6 @@ export default function CaseDetail() {
                 <Bot className="h-4 w-4 mr-2" />
                 <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   AI Agent
-                </span>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="overview"
-                className="text-lg font-bold px-12 py-4 h-auto rounded-lg bg-card/80 hover:bg-card/90 hover:shadow-[0_0_40px_hsl(221_83%_53%_/_0.4)] transition-all group relative backdrop-blur-md border border-white/30 data-[state=active]:bg-card flex-shrink-0 md:flex-1"
-              >
-                <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                  Overview
                 </span>
               </TabsTrigger>
               <TabsTrigger 
