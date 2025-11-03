@@ -124,10 +124,10 @@ export function PDFPreviewDialog({
 
       <div className="flex-1 border rounded-lg overflow-hidden bg-muted/10">
         <iframe 
-          src={pdfUrl} 
+          src={device.isMobile && pdfDataUrl ? pdfDataUrl : pdfUrl} 
           className="w-full h-full border-0"
           title="PDF Preview"
-          onLoad={() => console.log('✅ PDF iframe loaded:', pdfUrl)}
+          onLoad={() => console.log('✅ PDF iframe loaded:', device.isMobile && pdfDataUrl ? 'data URL' : pdfUrl)}
           onError={(e) => {
             console.error('❌ PDF iframe error:', e);
             toast.error('Failed to load PDF preview');
