@@ -15,8 +15,16 @@ export default function PDFSystemVerification() {
   const runDiagnostics = async () => {
     try {
       toast.loading('Running diagnostics...');
+      
+      // Get admin token from environment or use a placeholder
+      // In production, this should come from secure backend config
+      const adminToken = import.meta.env.VITE_INTERNAL_ADMIN_TOKEN || 'test-token';
+      
       const { data, error } = await supabase.functions.invoke('fill-pdf', {
-        body: { mode: 'diagnose' }
+        body: { mode: 'diagnose' },
+        headers: {
+          'x-admin-token': adminToken
+        }
       });
 
       if (error) throw error;
