@@ -128,15 +128,6 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
           </Select>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("applicant_previous_nationality")}>
-          <Label className={isLargeFonts ? "text-2xl" : ""}>Previous nationality</Label>
-          <FormInput
-            value={formData?.applicant_previous_nationality || ""}
-            onChange={(e) => handleInputChange("applicant_previous_nationality", e.target.value)}
-            placeholder=""
-            className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs"
-          />
-        </motion.div>
       </div>
 
       <div className="border-b border-border/50 pb-6 pt-6 mb-6">
