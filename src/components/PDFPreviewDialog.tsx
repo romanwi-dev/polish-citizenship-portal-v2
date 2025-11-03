@@ -30,6 +30,8 @@ export function PDFPreviewDialog({
   documentTitle
 }: PDFPreviewDialogProps) {
   const [isPrinting, setIsPrinting] = useState(false);
+  const { useIsMobile } = require("@/hooks/use-mobile");
+  const isMobile = useIsMobile();
 
   const handlePrint = () => {
     setIsPrinting(true);
@@ -52,7 +54,7 @@ export function PDFPreviewDialog({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl h-[90vh] flex flex-col">
+      <DialogContent className="w-full max-w-[95vw] md:max-w-6xl h-[90vh] flex flex-col p-3 md:p-6">
         <DialogHeader>
           <div className="flex items-center justify-between">
             <DialogTitle className="text-xl font-semibold">
@@ -72,46 +74,72 @@ export function PDFPreviewDialog({
           />
         </div>
 
-        <DialogFooter className="flex gap-2">
-          <Button variant="outline" onClick={onClose}>
-            Close
-          </Button>
-          <Button 
-            variant="secondary" 
-            onClick={handlePrint} 
-            disabled={isPrinting}
-            className="gap-2"
-          >
-            <Printer className="h-4 w-4" />
-            Print
-          </Button>
-          <Button
-            variant="secondary"
-            onClick={handleOpenNewTab}
-            className="gap-2"
-          >
-            <Eye className="h-4 w-4" />
-            Open in New Tab
-          </Button>
-          
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button className="gap-2">
+        <DialogFooter className="flex flex-col md:flex-row gap-2">
+          {isMobile ? (
+            <>
+              <Button 
+                variant="default" 
+                onClick={onDownloadEditable}
+                className="gap-2 w-full"
+              >
                 <Download className="h-4 w-4" />
-                Download
+                Download Editable
               </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={onDownloadEditable}>
-                <Edit className="h-4 w-4 mr-2" />
-                Editable (for offline editing)
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={onDownloadFinal}>
-                <Lock className="h-4 w-4 mr-2" />
-                Final (locked fields)
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+              <Button 
+                variant="secondary" 
+                onClick={onDownloadFinal}
+                className="gap-2 w-full"
+              >
+                <Lock className="h-4 w-4" />
+                Download Final
+              </Button>
+              <Button variant="outline" onClick={onClose} className="w-full">
+                Close
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button variant="outline" onClick={onClose}>
+                Close
+              </Button>
+              <Button 
+                variant="secondary" 
+                onClick={handlePrint} 
+                disabled={isPrinting}
+                className="gap-2"
+              >
+                <Printer className="h-4 w-4" />
+                Print
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={handleOpenNewTab}
+                className="gap-2"
+              >
+                <Eye className="h-4 w-4" />
+                Open in New Tab
+              </Button>
+              
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button className="gap-2">
+                    <Download className="h-4 w-4" />
+                    Download
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={onDownloadEditable}>
+                    <Edit className="h-4 w-4 mr-2" />
+                    Editable (for offline editing)
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={onDownloadFinal}>
+                    <Lock className="h-4 w-4 mr-2" />
+                    Final (locked fields)
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>
