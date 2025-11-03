@@ -194,21 +194,30 @@ export default function POAForm() {
   };
 
   const handleGenerateAllPOAs = async () => {
+    console.log('[POA] handleGenerateAllPOAs called, caseId:', caseId);
+    
     if (!caseId || caseId === ':id' || caseId === 'demo-preview') {
+      console.error('[POA] Blocked - invalid caseId:', caseId);
       toast.error('PDF generation not available in demo mode');
       return;
     }
 
     setIsGenerating(true);
     try {
+      console.log('[POA] Saving form data before PDF generation...');
       await handlePOASave();
 
+      console.log('[POA] Importing generatePdfViaEdge...');
       const { generatePdfViaEdge } = await import('@/lib/pdf');
+      
       const templates: Array<'poa-adult' | 'poa-minor' | 'poa-spouses'> = ['poa-adult'];
       if (hasMinorChildren() && minorChildrenCount > 0) templates.push('poa-minor');
       if (showSpousePOA) templates.push('poa-spouses');
 
+      console.log('[POA] Generating PDFs for templates:', templates);
+
       for (const templateType of templates) {
+        console.log('[POA] Calling generatePdfViaEdge for:', templateType);
         await generatePdfViaEdge({
           supabase,
           caseId,
@@ -219,9 +228,10 @@ export default function POAForm() {
         });
       }
 
+      console.log('[POA] All PDFs generated successfully!');
       toast.success(`Generated ${templates.length} POA document(s)!`);
     } catch (error: any) {
-      console.error("PDF generation error:", error);
+      console.error("[POA] PDF generation error:", error);
       toast.error(`Failed to generate PDFs: ${error.message}`);
     } finally {
       setIsGenerating(false);

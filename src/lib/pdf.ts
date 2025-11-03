@@ -37,7 +37,10 @@ export async function generatePdfViaEdge({
   setIsGenerating: (b: boolean) => void;
   filename: string;
 }) {
+  console.log('[PDF-LIB] generatePdfViaEdge called:', { caseId, templateType, filename });
+  
   if (!caseId || caseId === ':id' || caseId === 'demo-preview') {
+    console.error('[PDF-LIB] Invalid caseId, blocking PDF generation:', caseId);
     toast.error('PDF generation not available in demo mode');
     return;
   }
@@ -46,13 +49,22 @@ export async function generatePdfViaEdge({
     setIsGenerating(true);
     toast.loading('Generating PDF...');
 
+    console.log('[PDF-LIB] Invoking fill-pdf edge function with:', { caseId, templateType });
+    
     const { data, error } = await supabase.functions.invoke('fill-pdf', {
       body: { caseId, templateType },
     });
-    if (error) throw error;
+    
+    console.log('[PDF-LIB] Edge function returned:', { data, error });
+    
+    if (error) {
+      console.error('[PDF-LIB] Edge function error:', error);
+      throw error;
+    }
 
     // Prefer signed URL
     if (data?.url) {
+      console.log('[PDF-LIB] Using signed URL:', data.url);
       downloadUrl(data.url, data.filename ?? filename);
       toast.dismiss();
       toast.success('PDF generated successfully!');
@@ -61,6 +73,7 @@ export async function generatePdfViaEdge({
 
     // Fallback to base64
     if (data?.pdf) {
+      console.log('[PDF-LIB] Using base64 PDF data');
       const blob = base64ToBlob(data.pdf);
       const url = URL.createObjectURL(blob);
       downloadUrl(url, filename);
@@ -70,11 +83,16 @@ export async function generatePdfViaEdge({
       return;
     }
 
-    if (data?.error) throw new Error(data.error);
+    if (data?.error) {
+      console.error('[PDF-LIB] Server returned error:', data.error);
+      throw new Error(data.error);
+    }
+    
+    console.error('[PDF-LIB] No URL or PDF in response:', data);
     throw new Error('No URL or PDF returned from server');
   } catch (err: any) {
     toast.dismiss();
-    console.error('PDF generation error:', err);
+    console.error('[PDF-LIB] PDF generation error:', err);
     toast.error(`Failed to generate PDF: ${err.message ?? err}`);
   } finally {
     setIsGenerating(false);
