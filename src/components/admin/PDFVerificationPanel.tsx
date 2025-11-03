@@ -24,9 +24,8 @@ interface VerificationResponse {
     errorCount: number;
     warningCount: number;
     successRate: string;
-    geminiVerifications: number;
-    openaiVerifications: number;
-    aiVerdictsPass: number;
+    message: string;
+    timestamp: string;
   };
   results: VerificationResult[];
   recommendation: string;
@@ -153,14 +152,9 @@ export function PDFVerificationPanel({ caseId }: { caseId: string }) {
                   </div>
                 </div>
 
-                <div className="mt-4 grid grid-cols-2 gap-4">
-                  <div className="p-3 bg-muted rounded-lg">
-                    <div className="text-sm font-medium">Gemini Verifications</div>
-                    <div className="text-lg font-bold">{results.summary.geminiVerifications}</div>
-                  </div>
-                  <div className="p-3 bg-muted rounded-lg">
-                    <div className="text-sm font-medium">OpenAI Verifications</div>
-                    <div className="text-lg font-bold">{results.summary.openaiVerifications}</div>
+                <div className="mt-4">
+                  <div className="text-sm text-muted-foreground">
+                    {results.summary.message}
                   </div>
                 </div>
               </CardContent>
@@ -212,9 +206,8 @@ export function PDFVerificationPanel({ caseId }: { caseId: string }) {
                 <p className="text-sm mt-2">This will:</p>
                 <ul className="text-sm mt-2 space-y-1">
                   <li>✓ Generate PDFs 3 times</li>
-                  <li>✓ Verify field filling</li>
-                  <li>✓ Analyze with Gemini AI</li>
-                  <li>✓ Double-check with OpenAI</li>
+                  <li>✓ Download and verify each PDF</li>
+                  <li>✓ Check for generation errors</li>
                   <li>✓ Provide comprehensive report</li>
                 </ul>
               </div>
