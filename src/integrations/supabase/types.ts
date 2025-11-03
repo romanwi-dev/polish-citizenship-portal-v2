@@ -1270,7 +1270,15 @@ export type Database = {
           size_bytes?: number | null
           template_type?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_generated_documents_case"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       hac_logs: {
         Row: {
