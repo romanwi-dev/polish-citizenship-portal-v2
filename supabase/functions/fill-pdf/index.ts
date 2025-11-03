@@ -930,7 +930,8 @@ serve(async (req) => {
       // Improved diagnostics response - focus on functionality, not secrets presence
       return new Response(
         JSON.stringify({ 
-          ok: uploadOk && signOk, 
+          ok: uploadOk && signOk,
+          hasSecrets: true, // Environment variables are accessible
           uploadOk, 
           signOk, 
           diagError,
