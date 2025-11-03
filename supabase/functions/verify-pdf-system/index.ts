@@ -248,7 +248,7 @@ Provide a detailed technical analysis focusing on production readiness and zero-
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'openai/gpt-5',
+        model: 'google/gemini-2.5-flash',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt }
@@ -284,7 +284,7 @@ Provide a detailed technical analysis focusing on production readiness and zero-
       JSON.stringify({ 
         analysis,
         timestamp: new Date().toISOString(),
-        model: 'openai/gpt-5',
+        model: 'google/gemini-2.5-flash',
         analysisType: analysisType || 'comprehensive'
       }),
       { 

@@ -39,7 +39,7 @@ export default function PDFSystemVerification() {
   const runAIVerification = async (analysisType: string) => {
     setIsAnalyzing(true);
     try {
-      toast.loading('Running AI verification with OpenAI GPT-5...');
+      toast.loading('Running AI verification with Google Gemini...');
       
       const { data, error } = await supabase.functions.invoke('verify-pdf-system', {
         body: { analysisType }
@@ -153,7 +153,7 @@ export default function PDFSystemVerification() {
               AI-Powered Analysis
             </CardTitle>
             <CardDescription>
-              Deep analysis using OpenAI GPT-5 for production readiness assessment
+              Deep analysis using Google Gemini 2.5 Flash for production readiness assessment
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
