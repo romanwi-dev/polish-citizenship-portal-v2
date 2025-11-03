@@ -15,7 +15,7 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { DateField } from "@/components/DateField";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { FormButtonsRow } from "@/components/FormButtonsRow";
 import { FamilyTreeInteractive } from "@/components/FamilyTreeInteractive";
@@ -35,6 +35,7 @@ export default function FamilyTreeForm() {
   const { isLargeFonts, toggleFontSize } = useAccessibility();
   const [showClearDialog, setShowClearDialog] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const { toast } = useToast();
 
   const {
     formData,
@@ -155,7 +156,10 @@ export default function FamilyTreeForm() {
     const targetTab = tabMap[personType];
     if (targetTab) {
       setActiveTab(targetTab);
-      toast.success(`Editing ${personType.replace(/([A-Z])/g, ' $1').trim()}`);
+      toast({
+        title: "Success",
+        description: `Editing ${personType.replace(/([A-Z])/g, ' $1').trim()}`
+      });
     }
   };
   const renderDateField = (name: string, label: string, delay = 0, colorScheme: ColorScheme = 'applicant') => {
