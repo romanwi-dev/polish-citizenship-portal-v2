@@ -144,16 +144,18 @@ export default function POAForm() {
 
       if (!data?.url) {
         console.error('[POA] No URL in response:', data);
+        toast.error(`PDF generation failed: ${JSON.stringify(data)}`);
         throw new Error('No URL returned from server');
       }
 
+      console.log('[POA] Setting preview URL:', data.url);
       // Use signed URL for preview
       if (pdfPreviewUrl) URL.revokeObjectURL(pdfPreviewUrl);
       setPdfPreviewUrl(data.url);
       setPreviewFormData(formData);
       
-      console.log('[POA] PDF generated successfully, URL:', data.url);
-      toast.success(`${templateType.toUpperCase()} ready to print!`);
+      console.log('[POA] PDF generated successfully, opening preview with URL:', data.url);
+      toast.success(`${templateType.toUpperCase()} ready to preview!`);
     } catch (error: any) {
       console.error("[POA] PDF generation error:", error);
       toast.error(`Failed to generate PDF: ${error.message}`);
