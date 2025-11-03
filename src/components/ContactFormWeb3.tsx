@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Zap, CheckCircle2 } from "lucide-react";
+import { Zap, CheckCircle2, Clock, Gift } from "lucide-react";
 import { z } from "zod";
 import { CelebrationBackground } from "./backgrounds/CelebrationBackground";
 
@@ -236,13 +236,13 @@ const ContactFormWeb3 = () => {
                 details: "Expert legal team reviews your case personally. Receive comprehensive analysis covering your specific situation, timeline estimates, required documents, and strategic recommendations from experienced citizenship lawyers."
               },
               { 
-                icon: Zap, 
+                icon: Clock, 
                 label: "Consultation Availability", 
                 value: "24/7",
                 details: "Book consultations at your convenience across all time zones. Video calls, phone, or email - we're available when you need us. Global team ensures someone is always ready to help with urgent questions."
               },
               { 
-                icon: Mail, 
+                icon: Gift, 
                 label: "Initial Assessment", 
                 value: "Free",
                 details: "No obligation, no cost for initial eligibility review. We analyze your family history and determine your chances before any commitment. Only proceed if we're confident in your success - 100% success rate maintained."
