@@ -3,18 +3,19 @@ import { AdminLayout } from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { supabase } from "@/integrations/supabase/client";
+import { useAuthenticatedInvoke } from "@/hooks/useAuthenticatedInvoke";
 import { CheckCircle2, XCircle, Loader2, Activity } from "lucide-react";
 
 export default function AIAgentDiagnostics() {
   const [healthCheck, setHealthCheck] = useState<any>(null);
   const [testResults, setTestResults] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const { invoke } = useAuthenticatedInvoke();
 
   const runHealthCheck = async () => {
     setIsLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke('ai-agent/health');
+      const { data, error } = await invoke('ai-agent/health');
       
       if (error) {
         setHealthCheck({ 
@@ -51,12 +52,10 @@ export default function AIAgentDiagnostics() {
     
     for (const action of actions) {
       try {
-        const { data, error } = await supabase.functions.invoke('ai-agent', {
-          body: {
-            caseId: action === 'security_audit' ? undefined : 'test-diagnostic',
-            prompt: 'Test prompt for diagnostic',
-            action
-          }
+        const { data, error } = await invoke('ai-agent', {
+          caseId: action === 'security_audit' ? undefined : 'test-diagnostic',
+          prompt: 'Test prompt for diagnostic',
+          action
         });
         
         results.push({

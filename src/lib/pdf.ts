@@ -3,7 +3,7 @@
  * Supports all template types with signed URLs and base64 fallback
  */
 
-import { supabase } from './supabaseClient';
+import { supabase } from '@/integrations/supabase/client';
 
 export function downloadUrl(href: string, filename?: string) {
   const a = document.createElement('a');
