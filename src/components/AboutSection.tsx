@@ -1,5 +1,73 @@
 import { Shield, Users, Globe } from "lucide-react";
 import { Button } from "./ui/button";
+import { useState } from "react";
+
+const FlippableAboutCard = ({ 
+  icon: Icon, 
+  title, 
+  description, 
+  gradient, 
+  textColor, 
+  index 
+}: { 
+  icon: any; 
+  title: string; 
+  description: string; 
+  gradient: string; 
+  textColor: string; 
+  index: number;
+}) => {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  return (
+    <div 
+      className="h-[380px] cursor-pointer animate-fade-in"
+      style={{ 
+        animationDelay: `${(index + 1) * 100}ms`,
+        perspective: '1000px'
+      }}
+      onClick={() => setIsFlipped(!isFlipped)}
+    >
+      <div 
+        className="relative w-full h-full transition-transform duration-700"
+        style={{
+          transformStyle: 'preserve-3d',
+          transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
+        }}
+      >
+        {/* Front */}
+        <div 
+          className="absolute inset-0 glass-card p-8 rounded-lg hover-glow text-center"
+          style={{ backfaceVisibility: 'hidden' }}
+        >
+          <div className={`w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br ${gradient} flex items-center justify-center`}>
+            <Icon className={`w-8 h-8 ${textColor}`} />
+          </div>
+          <h3 className="text-xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-3">{title}</h3>
+          <p className="text-muted-foreground">
+            {description}
+          </p>
+        </div>
+
+        {/* Back */}
+        <div 
+          className="absolute inset-0 glass-card p-8 rounded-lg flex items-center justify-center"
+          style={{ 
+            backfaceVisibility: 'hidden',
+            transform: 'rotateY(180deg)'
+          }}
+        >
+          <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-20 rounded-lg`} />
+          <div className="relative z-10 text-center">
+            <p className="text-muted-foreground italic">
+              Click to flip back
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const AboutSection = () => {
   return (
@@ -31,35 +99,32 @@ const AboutSection = () => {
 
         {/* Features Grid */}
         <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          <div className="glass-card p-8 rounded-lg hover-glow text-center transition-transform duration-300 hover:scale-105 hover:-translate-y-1 animate-fade-in" style={{ animationDelay: '100ms' }}>
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-              <Users className="w-8 h-8 text-primary" />
-            </div>
-            <h3 className="text-xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-3">Over 20 Million People of Polish Descent</h3>
-            <p className="text-muted-foreground">
-              There are more than 20 million people of Polish descent that live outside of Poland today, which itself has a population of about 38.5 million. This means that more than 1/3 of Poles and people of Polish descent actually live outside of the country. For many generations of European unrest, people have been emigrating outside of Poland, especially in the 20th century.
-            </p>
-          </div>
+          <FlippableAboutCard 
+            icon={Users}
+            title="Over 20 Million People of Polish Descent"
+            description="There are more than 20 million people of Polish descent that live outside of Poland today, which itself has a population of about 38.5 million. This means that more than 1/3 of Poles and people of Polish descent actually live outside of the country. For many generations of European unrest, people have been emigrating outside of Poland, especially in the 20th century."
+            gradient="from-primary/20 to-secondary/20"
+            textColor="text-primary"
+            index={0}
+          />
 
-          <div className="glass-card p-8 rounded-lg hover-glow text-center transition-transform duration-300 hover:scale-105 hover:-translate-y-1 animate-fade-in" style={{ animationDelay: '200ms' }}>
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-secondary/20 to-accent/20 flex items-center justify-center">
-              <Globe className="w-8 h-8 text-secondary" />
-            </div>
-            <h3 className="text-xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-3">Poland - EU Member Since 2004</h3>
-            <p className="text-muted-foreground">
-              Since 1989, however, the quality of life has changed for the better in Poland. Poland has been an EU member since 2004 and is one of its biggest countries. We support the idea of a united Europe, and being a European citizen is a widely held dream. Many people of Polish origin can now legally confirm their Polish citizenship by descent and obtain the Polish European passport as a gateway to the EU.
-            </p>
-          </div>
+          <FlippableAboutCard 
+            icon={Globe}
+            title="Poland - EU Member Since 2004"
+            description="Since 1989, however, the quality of life has changed for the better in Poland. Poland has been an EU member since 2004 and is one of its biggest countries. We support the idea of a united Europe, and being a European citizen is a widely held dream. Many people of Polish origin can now legally confirm their Polish citizenship by descent and obtain the Polish European passport as a gateway to the EU."
+            gradient="from-secondary/20 to-accent/20"
+            textColor="text-secondary"
+            index={1}
+          />
 
-          <div className="glass-card p-8 rounded-lg hover-glow text-center transition-transform duration-300 hover:scale-105 hover:-translate-y-1 animate-fade-in" style={{ animationDelay: '300ms' }}>
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-accent/20 to-primary/20 flex items-center justify-center">
-              <Shield className="w-8 h-8 text-accent" />
-            </div>
-            <h3 className="text-xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-3">The Benefits of Polish European Citizenship</h3>
-            <p className="text-muted-foreground">
-              The education system in Europe is outstanding and offers the best elementary schools, top high schools, and some of the world's best universities. The latest medical technology and the best pharmaceutical developments ensure that your health is in good hands in Europe. With a Polish European passport you can freely move, travel, live, and work in any of the 28 member states of the EU.
-            </p>
-          </div>
+          <FlippableAboutCard 
+            icon={Shield}
+            title="The Benefits of Polish European Citizenship"
+            description="The education system in Europe is outstanding and offers the best elementary schools, top high schools, and some of the world's best universities. The latest medical technology and the best pharmaceutical developments ensure that your health is in good hands in Europe. With a Polish European passport you can freely move, travel, live, and work in any of the 28 member states of the EU."
+            gradient="from-accent/20 to-primary/20"
+            textColor="text-accent"
+            index={2}
+          />
         </div>
         
         {/* CTA Button */}

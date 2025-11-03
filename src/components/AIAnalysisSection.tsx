@@ -1,5 +1,73 @@
 import { Brain, TrendingUp, AlertTriangle, Clock } from "lucide-react";
 import { Button } from "./ui/button";
+import { useState } from "react";
+
+
+const FlippableAICard = ({ 
+  icon: Icon, 
+  title, 
+  description, 
+  gradient, 
+  textColor, 
+  index 
+}: { 
+  icon: any; 
+  title: string; 
+  description: string; 
+  gradient: string; 
+  textColor: string; 
+  index: number;
+}) => {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  return (
+    <div 
+      className="h-[240px] cursor-pointer"
+      style={{ 
+        perspective: '1000px'
+      }}
+      onClick={() => setIsFlipped(!isFlipped)}
+    >
+      <div 
+        className="relative w-full h-full transition-transform duration-700"
+        style={{
+          transformStyle: 'preserve-3d',
+          transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
+        }}
+      >
+        {/* Front */}
+        <div 
+          className="absolute inset-0 glass-card p-8 rounded-lg hover-glow"
+          style={{ backfaceVisibility: 'hidden' }}
+        >
+          <div className={`w-14 h-14 mb-4 rounded-full bg-gradient-to-br ${gradient} flex items-center justify-center`}>
+            <Icon className={`w-7 h-7 ${textColor}`} />
+          </div>
+          <h3 className="text-xl font-bold mb-3">{title}</h3>
+          <p className="text-muted-foreground">
+            {description}
+          </p>
+        </div>
+
+        {/* Back */}
+        <div 
+          className="absolute inset-0 glass-card p-8 rounded-lg flex items-center justify-center"
+          style={{ 
+            backfaceVisibility: 'hidden',
+            transform: 'rotateY(180deg)'
+          }}
+        >
+          <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-20 rounded-lg`} />
+          <div className="relative z-10 text-center">
+            <p className="text-muted-foreground italic">
+              Click to flip back
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const AIAnalysisSection = () => {
   return (
@@ -36,35 +104,32 @@ const AIAnalysisSection = () => {
 
           {/* Features Grid */}
           <div className="grid md:grid-cols-3 gap-8 mb-16">
-            <div className="glass-card p-8 rounded-lg hover-glow">
-              <div className="w-14 h-14 mb-4 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                <TrendingUp className="w-7 h-7 text-primary" />
-              </div>
-              <h3 className="text-xl font-bold mb-3">Success Prediction</h3>
-              <p className="text-muted-foreground">
-                Analyze case strength based on family history, documents, and legal precedents for accurate probability assessment.
-              </p>
-            </div>
+            <FlippableAICard 
+              icon={TrendingUp}
+              title="Success Prediction"
+              description="Analyze case strength based on family history, documents, and legal precedents for accurate probability assessment."
+              gradient="from-primary/20 to-secondary/20"
+              textColor="text-primary"
+              index={0}
+            />
 
-            <div className="glass-card p-8 rounded-lg hover-glow">
-              <div className="w-14 h-14 mb-4 rounded-full bg-gradient-to-br from-secondary/20 to-accent/20 flex items-center justify-center">
-                <Clock className="w-7 h-7 text-secondary" />
-              </div>
-              <h3 className="text-xl font-bold mb-3">Timeline & Cost Estimation</h3>
-              <p className="text-muted-foreground">
-                Predict processing time and total costs based on complexity, document availability, and current processing speeds.
-              </p>
-            </div>
+            <FlippableAICard 
+              icon={Clock}
+              title="Timeline & Cost Estimation"
+              description="Predict processing time and total costs based on complexity, document availability, and current processing speeds."
+              gradient="from-secondary/20 to-accent/20"
+              textColor="text-secondary"
+              index={1}
+            />
 
-            <div className="glass-card p-8 rounded-lg hover-glow">
-              <div className="w-14 h-14 mb-4 rounded-full bg-gradient-to-br from-accent/20 to-primary/20 flex items-center justify-center">
-                <AlertTriangle className="w-7 h-7 text-accent" />
-              </div>
-              <h3 className="text-xl font-bold mb-3">Risk Assessment</h3>
-              <p className="text-muted-foreground">
-                Identify potential obstacles, document gaps, and legal challenges before starting the process.
-              </p>
-            </div>
+            <FlippableAICard 
+              icon={AlertTriangle}
+              title="Risk Assessment"
+              description="Identify potential obstacles, document gaps, and legal challenges before starting the process."
+              gradient="from-accent/20 to-primary/20"
+              textColor="text-accent"
+              index={2}
+            />
           </div>
           
           {/* CTA Button */}
