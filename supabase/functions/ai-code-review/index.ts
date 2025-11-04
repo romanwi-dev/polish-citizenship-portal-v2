@@ -160,31 +160,68 @@ Provide a comprehensive code review following the JSON structure specified in th
 Focus on production-readiness, security, and reliability.
 Be thorough but practical - identify real issues that could cause problems in production.`;
 
-    // Call GPT-5 via Lovable AI
-    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${lovableKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'openai/gpt-5-mini',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userPrompt }
-        ],
-        response_format: { type: "json_object" }
-      }),
-    });
+    // Call Lovable AI with timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 90000); // 90 second timeout
+    
+    let reviewResult;
+    
+    try {
+      const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${lovableKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'google/gemini-2.5-flash',
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userPrompt }
+          ],
+          response_format: { type: "json_object" }
+        }),
+        signal: controller.signal,
+      });
 
-    if (!response.ok) {
-      const error = await response.text();
-      console.error('GPT-5 API error:', error);
-      throw new Error(`GPT-5 API error: ${response.status}`);
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('AI API error:', response.status, errorText);
+        
+        if (response.status === 429) {
+          throw new Error('Rate limit exceeded. Please wait a moment and try again.');
+        }
+        if (response.status === 402) {
+          throw new Error('AI credits exhausted. Please add credits to your Lovable workspace.');
+        }
+        
+        throw new Error(`AI API error: ${response.status} - ${errorText}`);
+      }
+
+      const aiResponse = await response.json();
+      
+      if (!aiResponse.choices?.[0]?.message?.content) {
+        console.error('Invalid AI response structure:', aiResponse);
+        throw new Error('Invalid response from AI - no content returned');
+      }
+
+      reviewResult = JSON.parse(aiResponse.choices[0].message.content);
+      
+      // Validate response structure
+      if (!reviewResult.overallScore || !reviewResult.categories || !Array.isArray(reviewResult.categories)) {
+        console.error('Invalid review result structure:', reviewResult);
+        throw new Error('AI returned invalid review structure');
+      }
+      
+    } catch (fetchError: unknown) {
+      clearTimeout(timeoutId);
+      if (fetchError instanceof Error && fetchError.name === 'AbortError') {
+        throw new Error('Request timeout - file too large or AI took too long');
+      }
+      throw fetchError;
     }
-
-    const aiResponse = await response.json();
-    const reviewResult = JSON.parse(aiResponse.choices[0].message.content);
 
     console.log(`✓ Code review complete for ${fileName}: ${reviewResult.overallScore}/100`);
     console.log(`  Blockers: ${reviewResult.blockers?.length || 0}`);
