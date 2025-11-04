@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { detectDocumentLanguage, requiresTranslation } from '@/utils/documentLanguageDetector';
+import { detectDocumentLanguage, requiresTranslation, getLanguageName } from '@/utils/documentLanguageDetector';
 import { toast } from 'sonner';
 
 /**
  * Hook to sync document language detection with database
- * Automatically detects language when documents are uploaded
+ * Automatically detects language when documents are uploaded and creates translation tasks
  */
 export function useDocumentLanguageSync(caseId: string | undefined) {
   useEffect(() => {
@@ -39,15 +39,51 @@ export function useDocumentLanguageSync(caseId: string | undefined) {
             .update({
               language: detectedLanguage,
               needs_translation: needsTranslation,
+              translation_required: needsTranslation,
             })
             .eq('id', newDoc.id);
 
           if (error) {
             console.error('Failed to update document language:', error);
-          } else if (needsTranslation) {
-            toast.info(`Document needs translation from ${detectedLanguage} to Polish`, {
-              description: newDoc.name,
-            });
+            return;
+          }
+
+          // Auto-create translation task if needed
+          if (needsTranslation) {
+            const languageName = getLanguageName(detectedLanguage);
+            
+            // Create translation task
+            const { error: taskError } = await supabase
+              .from('tasks')
+              .insert({
+                case_id: caseId,
+                related_document_id: newDoc.id,
+                task_type: 'translation',
+                title: `Translate ${newDoc.document_type || 'Document'} from ${languageName}`,
+                description: `Document "${newDoc.name}" requires translation from ${languageName} to Polish. Person: ${newDoc.person_type || 'Unknown'}`,
+                priority: 'high',
+                status: 'pending',
+                related_person: newDoc.person_type,
+                metadata: {
+                  source_language: detectedLanguage,
+                  target_language: 'PL',
+                  document_name: newDoc.name,
+                  auto_created: true,
+                  created_by_system: 'language_detection',
+                }
+              });
+
+            if (taskError) {
+              console.error('Failed to create translation task:', taskError);
+              toast.error('Failed to create translation task', {
+                description: `Document detected as ${languageName} but task creation failed`,
+              });
+            } else {
+              toast.info(`Translation task created for ${languageName} document`, {
+                description: newDoc.name,
+                duration: 5000,
+              });
+            }
           }
         }
       )
