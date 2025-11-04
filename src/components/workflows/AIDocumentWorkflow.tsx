@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { 
   Upload, 
   Brain, 
@@ -116,6 +117,7 @@ interface AIDocumentWorkflowProps {
 
 export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
@@ -219,6 +221,11 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
             });
           }
           toast({ title: "PDFs Generated Successfully" });
+          
+          // Navigate to POA Form to view generated PDFs
+          setTimeout(() => {
+            navigate(`/admin/poa/${caseId}`);
+          }, 1000);
           break;
       }
     } catch (error) {
