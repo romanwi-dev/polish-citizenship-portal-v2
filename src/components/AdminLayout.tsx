@@ -119,91 +119,83 @@ function AppSidebar() {
   };
 
   return (
-    <Sidebar collapsible="icon" className="bg-background/95 backdrop-blur-xl border-r border-primary/20 relative overflow-hidden">
-      {/* Background effects matching homepage dropdown */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+    <Sidebar collapsible="icon" className="border-r border-primary/20">
+      <div className="flex items-center justify-between p-4 border-b border-border/50">
+        {open && (
+          <img 
+            src={logo} 
+            alt="PL Citizenship" 
+            className="h-6 w-auto object-contain"
+          />
+        )}
+        <button
+          onClick={() => setOpen(!open)}
+          className="h-8 w-8 flex items-center justify-center hover:bg-accent rounded-md transition-colors"
+        >
+          <PanelLeft className="h-4 w-4" />
+        </button>
       </div>
-
-      <div className="relative z-10">
-        <div className="flex items-center justify-between p-4 border-b border-border/50">
-          {open && (
-            <img 
-              src={logo} 
-              alt="PL Citizenship" 
-              className="h-6 w-auto object-contain"
-            />
-          )}
-          <button
-            onClick={() => setOpen(!open)}
-            className="h-8 w-8 flex items-center justify-center hover:bg-accent rounded-md transition-colors"
-          >
-            <PanelLeft className="h-4 w-4" />
-          </button>
-        </div>
-        
-        <SidebarContent>
-          {navSections.map((section) => {
-            const isGroupOpen = openGroups.includes(section.title);
-            
-            return (
-              <SidebarGroup key={section.title}>
-                <SidebarGroupLabel 
+      
+      <SidebarContent>
+        {navSections.map((section) => {
+          const isGroupOpen = openGroups.includes(section.title);
+          
+          return (
+            <SidebarGroup key={section.title}>
+              <SidebarGroupLabel 
+                className={cn(
+                  "cursor-pointer flex items-center justify-between hover:bg-accent/50 rounded-md px-2 py-1 transition-all",
+                  section.highlighted && "text-primary font-bold"
+                )}
+                onClick={() => toggleGroup(section.title)}
+              >
+                <span>{section.title}</span>
+                <ChevronDown 
                   className={cn(
-                    "cursor-pointer flex items-center justify-between hover:bg-accent/50 rounded-md px-2 py-1 transition-all",
-                    section.highlighted && "text-primary font-bold"
+                    "h-4 w-4 transition-transform",
+                    isGroupOpen && "rotate-180"
                   )}
-                  onClick={() => toggleGroup(section.title)}
-                >
-                  <span>{section.title}</span>
-                  <ChevronDown 
-                    className={cn(
-                      "h-4 w-4 transition-transform",
-                      isGroupOpen && "rotate-180"
-                    )}
-                  />
-                </SidebarGroupLabel>
-                
-                <Collapsible open={isGroupOpen}>
-                  <SidebarGroupContent>
-                    <SidebarMenu>
-                      {section.items.map((item) => {
-                        const active = isActive(item.url, item.exact);
-                        return (
-                          <SidebarMenuItem key={item.title}>
-                            <SidebarMenuButton
-                              asChild
-                              className={cn(
-                                "transition-all hover:bg-background/20 border border-transparent hover:border-primary/30",
-                                active && "bg-primary/20 text-primary border-primary/50 hover:bg-primary/30"
+                />
+              </SidebarGroupLabel>
+              
+              <Collapsible open={isGroupOpen}>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {section.items.map((item) => {
+                      const active = isActive(item.url, item.exact);
+                      return (
+                        <SidebarMenuItem key={item.title}>
+                          <SidebarMenuButton
+                            asChild
+                            className={cn(
+                              "transition-all hover:bg-background/20 border border-transparent hover:border-primary/30",
+                              active && "bg-primary/20 text-primary border-primary/50 hover:bg-primary/30"
+                            )}
+                          >
+                            <NavLink to={item.url} className="flex items-center gap-2 w-full">
+                              <item.icon className="h-4 w-4 flex-shrink-0" />
+                              {open && (
+                                <div className="flex items-center justify-between flex-1">
+                                  <span>{item.title}</span>
+                                  {item.badge && (
+                                    <Badge variant="outline" className="text-xs px-1.5 ml-auto border-primary/30">
+                                      {item.badge}
+                                    </Badge>
+                                  )}
+                                </div>
                               )}
-                            >
-                              <NavLink to={item.url} className="flex items-center gap-2 w-full">
-                                <item.icon className="h-4 w-4 flex-shrink-0" />
-                                {open && (
-                                  <div className="flex items-center justify-between flex-1">
-                                    <span>{item.title}</span>
-                                    {item.badge && (
-                                      <Badge variant="outline" className="text-xs px-1.5 ml-auto border-primary/30">
-                                        {item.badge}
-                                      </Badge>
-                                    )}
-                                  </div>
-                                )}
-                              </NavLink>
-                            </SidebarMenuButton>
-                          </SidebarMenuItem>
-                        );
-                      })}
-                    </SidebarMenu>
-                  </SidebarGroupContent>
-                </Collapsible>
-              </SidebarGroup>
-            );
-          })}
-        </SidebarContent>
-      </div>
+                            </NavLink>
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
+                      );
+                    })}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </Collapsible>
+            </SidebarGroup>
+          );
+        })}
+      </SidebarContent>
     </Sidebar>
   );
 }
@@ -222,15 +214,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
   return (
     <SidebarProvider open={sidebarOpen} onOpenChange={setSidebarOpen} defaultOpen={true}>
-      <div className="min-h-screen flex w-full relative">
-        {/* Full-width unified background effects */}
-        <div className="fixed inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
-          <div className="absolute top-20 left-20 w-96 h-96 bg-primary/20 rounded-full blur-[150px] animate-pulse" />
-          <div className="absolute bottom-20 right-20 w-96 h-96 bg-secondary/20 rounded-full blur-[150px] animate-pulse delay-700" />
-        </div>
-        
+      <div className="min-h-screen flex w-full">
         {/* Fixed toggle button - always visible even when sidebar is closed */}
         {!sidebarOpen && (
           <button
@@ -242,7 +226,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         )}
         
         <AppSidebar />
-        <main className="flex-1 overflow-auto relative z-10">
+        <main className="flex-1 overflow-auto">
           {children}
         </main>
       </div>
