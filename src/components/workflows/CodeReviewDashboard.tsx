@@ -2,13 +2,15 @@ import { useState } from "react";
 import { 
   Loader2,
   Play,
-  Copy
+  Copy,
+  History
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { getFileContent } from "@/data/reviewFileContents";
 import { analyzeFile, generateSummary, type StaticAnalysisResult } from "@/utils/staticCodeAnalyzer";
 import { CodeReviewResults } from "./CodeReviewResults";
+import { ReviewHistory } from "./ReviewHistory";
 
 interface ReviewResult {
   fileName: string;
@@ -29,6 +31,7 @@ export const CodeReviewDashboard = () => {
   const [staticResults, setStaticResults] = useState<StaticAnalysisResult[]>([]);
   const [progress, setProgress] = useState(0);
   const [currentFile, setCurrentFile] = useState<string>('');
+  const [showHistory, setShowHistory] = useState(false);
 
   const filesToReview = [
     // === CRITICAL PATH FILES ===
@@ -238,6 +241,23 @@ export const CodeReviewDashboard = () => {
 
       const staticIssuesCount = staticSummary ? staticSummary.totalIssues : 0;
 
+      // Save review to history
+      const startTime = new Date();
+      const durationSeconds = Math.round((Date.now() - startTime.getTime()) / 1000);
+      
+      await supabase.from('workflow_reviews').insert({
+        triggered_by: 'manual',
+        results: data.reviews,
+        overall_score: avgScore,
+        total_blockers: totalBlockers,
+        files_count: data.reviews.length,
+        duration_seconds: durationSeconds,
+        status: 'completed',
+        metadata: {
+          static_issues_count: staticIssuesCount
+        }
+      });
+
       toast({
         title: totalBlockers === 0 ? "✅ Production Ready!" : "⚠️ Review Complete",
         description: `${data.reviews.length} files analyzed. Score: ${avgScore}/100. ${totalBlockers} blockers + ${staticIssuesCount} static issues found.`,
@@ -343,8 +363,36 @@ Fix: ${issue.fix}
         Deep Code Review
       </h1>
 
-      {/* Action Buttons - 2 evenly spread in a row */}
+      {/* Action Buttons - 3 evenly spread in a row */}
       <div className="flex flex-col md:flex-row items-stretch gap-4 md:gap-6 w-full max-w-7xl mx-auto">
+        <button
+          onClick={() => setShowHistory(!showHistory)}
+          className="h-16 md:h-20 flex-1 rounded-md border-2 bg-blue-50/45 dark:bg-blue-950/40 border-blue-200/30 dark:border-blue-800/30 hover:border-transparent focus:border-transparent transition-all duration-300 backdrop-blur font-normal font-input-work text-2xl flex items-center justify-center gap-3 text-muted-foreground/80 hover:text-foreground"
+          style={{
+            boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15)',
+            transition: 'all 0.3s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.boxShadow = '0 0 50px hsla(221, 83%, 53%, 0.3)';
+            e.currentTarget.style.transform = 'translateY(-2px)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.boxShadow = '0 0 30px hsla(221, 83%, 53%, 0.15)';
+            e.currentTarget.style.transform = 'translateY(0)';
+          }}
+          onFocus={(e) => {
+            e.currentTarget.style.boxShadow = '0 0 60px hsla(221, 83%, 53%, 0.4)';
+            e.currentTarget.style.transform = 'translateY(-2px)';
+          }}
+          onBlur={(e) => {
+            e.currentTarget.style.boxShadow = '0 0 30px hsla(221, 83%, 53%, 0.15)';
+            e.currentTarget.style.transform = 'translateY(0)';
+          }}
+        >
+          <History className="h-5 w-5" />
+          <span>History</span>
+        </button>
+
         <button
           onClick={copyReport}
           disabled={results.length === 0 && staticResults.length === 0}
@@ -416,6 +464,9 @@ Fix: ${issue.fix}
           )}
         </button>
       </div>
+
+      {/* History Panel */}
+      {showHistory && <ReviewHistory />}
 
       {/* Results Display Panel */}
       {(results.length > 0 || staticResults.length > 0) && (

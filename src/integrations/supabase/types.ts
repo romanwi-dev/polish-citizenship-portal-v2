@@ -4056,6 +4056,66 @@ export type Database = {
         }
         Relationships: []
       }
+      workflow_errors: {
+        Row: {
+          created_at: string
+          document_id: string | null
+          error_details: Json | null
+          error_message: string | null
+          id: string
+          resolution_notes: string | null
+          resolved: boolean | null
+          resolved_at: string | null
+          resolved_by: string | null
+          retry_count: number | null
+          stage: string
+          workflow_run_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          document_id?: string | null
+          error_details?: Json | null
+          error_message?: string | null
+          id?: string
+          resolution_notes?: string | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          retry_count?: number | null
+          stage: string
+          workflow_run_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          document_id?: string | null
+          error_details?: Json | null
+          error_message?: string | null
+          id?: string
+          resolution_notes?: string | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          retry_count?: number | null
+          stage?: string
+          workflow_run_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_errors_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workflow_errors_workflow_run_id_fkey"
+            columns: ["workflow_run_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       workflow_instances: {
         Row: {
           assigned_at: string | null
@@ -4192,6 +4252,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      workflow_reviews: {
+        Row: {
+          created_at: string
+          duration_seconds: number | null
+          files_count: number | null
+          id: string
+          metadata: Json | null
+          overall_score: number | null
+          results: Json
+          status: string
+          total_blockers: number | null
+          triggered_by: string
+        }
+        Insert: {
+          created_at?: string
+          duration_seconds?: number | null
+          files_count?: number | null
+          id?: string
+          metadata?: Json | null
+          overall_score?: number | null
+          results: Json
+          status?: string
+          total_blockers?: number | null
+          triggered_by: string
+        }
+        Update: {
+          created_at?: string
+          duration_seconds?: number | null
+          files_count?: number | null
+          id?: string
+          metadata?: Json | null
+          overall_score?: number | null
+          results?: Json
+          status?: string
+          total_blockers?: number | null
+          triggered_by?: string
+        }
+        Relationships: []
       }
       workflow_runs: {
         Row: {
@@ -4576,6 +4675,16 @@ export type Database = {
           p_success?: boolean
           p_user_agent?: string
           p_user_id?: string
+        }
+        Returns: string
+      }
+      log_workflow_error: {
+        Args: {
+          p_document_id: string
+          p_error_details?: Json
+          p_error_message: string
+          p_stage: string
+          p_workflow_run_id: string
         }
         Returns: string
       }
