@@ -15,7 +15,8 @@ import {
   Zap,
   RefreshCw,
   Code,
-  Copy
+  Copy,
+  Wand2
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -47,6 +48,7 @@ export const CodeReviewDashboard = () => {
   const [results, setResults] = useState<ReviewResult[]>([]);
   const [progress, setProgress] = useState(0);
   const [currentFile, setCurrentFile] = useState<string>('');
+  const [fixingIssue, setFixingIssue] = useState<string | null>(null);
 
   const filesToReview = [
     // === CRITICAL PATH FILES (60% weight) ===
@@ -337,6 +339,51 @@ ${result.recommendations.map((rec, idx) => `${idx + 1}. ${rec}`).join('\n')}
     }
   };
 
+  const handleQuickFix = async (
+    fileName: string,
+    issue: { title: string; description: string; recommendation: string; line?: number },
+    issueId: string
+  ) => {
+    setFixingIssue(issueId);
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('apply-quick-fix', {
+        body: {
+          fileName,
+          issue: {
+            title: issue.title,
+            description: issue.description,
+            recommendation: issue.recommendation,
+            line: issue.line
+          }
+        }
+      });
+
+      if (error) throw error;
+
+      if (data.success) {
+        toast({
+          title: "Fix Applied!",
+          description: `Successfully applied fix to ${fileName}`,
+        });
+        
+        // Refresh the review after applying fix
+        setTimeout(() => runCodeReview(), 1000);
+      } else {
+        throw new Error(data.error || "Failed to apply fix");
+      }
+    } catch (error) {
+      console.error('Quick fix error:', error);
+      toast({
+        title: "Fix Failed",
+        description: error instanceof Error ? error.message : "Could not apply the fix automatically.",
+        variant: "destructive"
+      });
+    } finally {
+      setFixingIssue(null);
+    }
+  };
+
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -517,32 +564,54 @@ ${result.recommendations.map((rec, idx) => `${idx + 1}. ${rec}`).join('\n')}
                   {category.category} - Critical Issues ({criticalIssues.length})
                 </h4>
                 <div className="space-y-3">
-                  {criticalIssues.map((issue, idx) => (
-                    <div key={idx} className="p-3 rounded-lg bg-background/50 backdrop-blur">
-                      <div className="flex items-start gap-3">
-                        {issue.severity === 'CRITICAL' ? (
-                          <XCircle className="h-5 w-5 text-red-600 mt-0.5" />
-                        ) : (
-                          <AlertTriangle className="h-5 w-5 text-orange-600 mt-0.5" />
-                        )}
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-2">
-                            <Badge className={getSeverityColor(issue.severity)}>
-                              {issue.severity}
-                            </Badge>
-                            {issue.line && (
-                              <Badge variant="outline">Line {issue.line}</Badge>
+                  {criticalIssues.map((issue, idx) => {
+                    const issueId = `${result.fileName}-${category.category}-${idx}`;
+                    return (
+                      <div key={idx} className="p-3 rounded-lg bg-background/50 backdrop-blur">
+                        <div className="flex items-start gap-3">
+                          {issue.severity === 'CRITICAL' ? (
+                            <XCircle className="h-5 w-5 text-red-600 mt-0.5" />
+                          ) : (
+                            <AlertTriangle className="h-5 w-5 text-orange-600 mt-0.5" />
+                          )}
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-2">
+                              <Badge className={getSeverityColor(issue.severity)}>
+                                {issue.severity}
+                              </Badge>
+                              {issue.line && (
+                                <Badge variant="outline">Line {issue.line}</Badge>
+                              )}
+                              <span className="font-semibold">{issue.title}</span>
+                            </div>
+                            <p className="text-sm text-muted-foreground mb-2">{issue.description}</p>
+                            <div className="p-2 rounded bg-muted/50 text-sm">
+                              <strong>Fix:</strong> {issue.recommendation}
+                            </div>
+                          </div>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleQuickFix(result.fileName, issue, issueId)}
+                            disabled={fixingIssue === issueId}
+                            className="gap-2 flex-shrink-0"
+                          >
+                            {fixingIssue === issueId ? (
+                              <>
+                                <Loader2 className="h-3 w-3 animate-spin" />
+                                Fixing...
+                              </>
+                            ) : (
+                              <>
+                                <Wand2 className="h-3 w-3" />
+                                Quick Fix
+                              </>
                             )}
-                            <span className="font-semibold">{issue.title}</span>
-                          </div>
-                          <p className="text-sm text-muted-foreground mb-2">{issue.description}</p>
-                          <div className="p-2 rounded bg-muted/50 text-sm">
-                            <strong>Fix:</strong> {issue.recommendation}
-                          </div>
+                          </Button>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             );
