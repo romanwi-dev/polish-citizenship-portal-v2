@@ -150,22 +150,25 @@ export const CodeReviewDashboard = () => {
         setCurrentFile(file.name);
         
         try {
-          // Fetch actual file content from the codebase
-          console.log(`Reading file content for ${file.name} from ${file.path}...`);
+          // Fetch file content by importing it as raw text
+          let fileContent = '';
           
-          const { data: fileData, error: fileError } = await supabase.functions.invoke('read-project-file', {
-            body: { filePath: file.path }
-          });
-
-          if (fileError) {
-            console.error(`Failed to read file ${file.path}:`, fileError);
-            throw fileError;
+          try {
+            // Try to fetch the file from the dev server
+            const response = await fetch(`/${file.path}`);
+            if (response.ok) {
+              fileContent = await response.text();
+              console.log(`Successfully fetched ${fileContent.length} characters from ${file.name}`);
+            } else {
+              console.warn(`Could not fetch ${file.path}, using placeholder`);
+              fileContent = `// File: ${file.name}\n// Could not read file content\n// Path: ${file.path}`;
+            }
+          } catch (fetchError) {
+            console.error(`Error fetching ${file.path}:`, fetchError);
+            fileContent = `// File: ${file.name}\n// Error reading file\n// Path: ${file.path}`;
           }
-
-          const fileContent = fileData?.content || '';
-          console.log(`Successfully read ${fileContent.length} characters from ${file.name}`);
           
-          // Now send the real file content to GPT-5 for analysis
+          // Now send the file content to GPT-5 for analysis
           console.log(`Analyzing ${file.name} with GPT-5...`);
           
           const { data, error } = await supabase.functions.invoke('ai-code-review', {
