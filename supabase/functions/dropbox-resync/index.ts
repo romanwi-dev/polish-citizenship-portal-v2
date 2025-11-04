@@ -20,6 +20,19 @@ interface DropboxListResult {
   has_more: boolean;
 }
 
+/**
+ * Extracts surname from Dropbox folder name
+ * Examples:
+ * - "GALARDA (v) BR (4)" → "GALARDA"
+ * - "SMITH - notes" → "SMITH"
+ * - "KOWALSKI" → "KOWALSKI"
+ */
+function extractSurname(folderName: string): string {
+  // Split on space, parenthesis, or hyphen and take first part
+  const surname = folderName.split(/[\s(-]/)[0].trim().toUpperCase();
+  return surname;
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -86,29 +99,32 @@ serve(async (req) => {
       // Process each client folder
       for (const clientFolder of clientFolders) {
         const clientFolderName = clientFolder.name;
+        const surname = extractSurname(clientFolderName);
         const newDropboxPath = `${categoryPath}/${clientFolderName}/`;
 
-        console.log(`  Processing client: ${clientFolderName}`);
+        console.log(`  Processing client: ${clientFolderName} → Surname: ${surname}`);
 
-        // Try to find matching case by client_code or client_name
+        // Try to find matching case by surname only
         const { data: matchingCases, error: caseError } = await supabase
           .from('cases')
           .select('id, client_code, client_name, dropbox_path')
-          .or(`client_code.ilike.%${clientFolderName}%,client_name.ilike.%${clientFolderName}%`);
+          .or(`client_code.ilike.${surname},client_name.ilike.%${surname}%`);
 
         if (caseError || !matchingCases || matchingCases.length === 0) {
-          console.log(`  ⚠️ No matching case found for ${clientFolderName}`);
+          console.log(`  ⚠️ No matching case found for ${clientFolderName} (surname: ${surname})`);
           casesNotFound.push(clientFolderName);
           continue;
         }
 
-        // If multiple matches, prefer exact match or first one
+        // Prefer exact surname match on client_code, then client_name, then first match
         const matchedCase = matchingCases.find(c => 
-          c.client_code?.toUpperCase() === clientFolderName.toUpperCase() ||
-          c.client_name?.toUpperCase().includes(clientFolderName.toUpperCase())
+          c.client_code?.toUpperCase() === surname ||
+          c.client_name?.toUpperCase() === surname
+        ) || matchingCases.find(c =>
+          c.client_name?.toUpperCase().includes(surname)
         ) || matchingCases[0];
 
-        console.log(`  ✅ Matched to case: ${matchedCase.client_name} (${matchedCase.client_code})`);
+        console.log(`  ✅ Matched "${clientFolderName}" (surname: ${surname}) to case: ${matchedCase.client_name} (${matchedCase.client_code})`);
 
         // Update case dropbox_path
         const { error: updateCaseError } = await supabase
