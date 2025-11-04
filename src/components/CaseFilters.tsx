@@ -58,7 +58,7 @@ export const CaseFilters = ({
   className,
 }: CaseFiltersProps) => {
   return (
-    <div className="space-y-4">
+    <>
       {/* Filters Sheet - Mobile Optimized */}
       <Sheet>
           <SheetTrigger asChild>
@@ -175,7 +175,7 @@ export const CaseFilters = ({
 
       {/* Active Filters Display */}
       {activeFiltersCount > 0 && (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 mt-4">
           {statusFilter !== "all" && (
             <Badge variant="secondary" className="capitalize">
               Status: {statusFilter.replace("_", " ")}
@@ -223,6 +223,6 @@ export const CaseFilters = ({
           )}
         </div>
       )}
-    </div>
+    </>
   );
 };
