@@ -132,3 +132,9 @@ verify_jwt = false
 [functions.pdf-inspect]
 verify_jwt = false
 
+[functions.read-project-file]
+verify_jwt = true
+
+[functions.verify-changes]
+verify_jwt = true
+
