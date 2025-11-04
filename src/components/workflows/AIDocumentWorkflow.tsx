@@ -32,6 +32,7 @@ import { useRequestBatcher } from "@/hooks/useRequestBatcher";
 import { useDocumentProgress } from "@/hooks/useDocumentProgress";
 import { DocumentProgressCard } from "./DocumentProgressCard";
 import { BatchStatsDashboard } from "./BatchStatsDashboard";
+import { PDFPreviewPanel } from "./PDFPreviewPanel";
 import type { RealtimeChannel } from "@supabase/supabase-js";
 
 interface AIWorkflowStep {
@@ -224,6 +225,7 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
   const [workflowStartTime, setWorkflowStartTime] = useState<Date | undefined>();
   const [batchQueueSize, setBatchQueueSize] = useState(0);
   const [batchActiveCount, setBatchActiveCount] = useState(0);
+  const [showPDFPreview, setShowPDFPreview] = useState(false);
 
   const { data: caseData } = useQuery({
     queryKey: ['case-info', caseId],
@@ -630,34 +632,16 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
           break;
 
         case 'pdf_generation':
-          const { data: pdfData, error: pdfError } = await supabase.functions.invoke('fill-pdf', {
-            body: { caseId, formType: 'all' }
+          // Show PDF preview panel first
+          setShowPDFPreview(true);
+          setIsRunning(false); // Pause workflow for HAC review
+          
+          toast({ 
+            title: "Ready for PDF Generation", 
+            description: "Review the PDF previews before generating final documents."
           });
           
-          if (pdfError) {
-            // Check for rate limiting
-            if (pdfError.message?.includes('429') || pdfError.message?.includes('402')) {
-              throw { status: 429, message: 'Rate limit exceeded during PDF generation' };
-            }
-            throw pdfError;
-          }
-          
-          console.log('PDF generation complete');
-          toast({ title: "PDFs Generated Successfully" });
-          await updateStepStatus('pdf_generation', 'completed');
-          
-          // Mark workflow as completed
-          if (workflowRun) {
-            await updateWorkflowRun({
-              status: 'completed',
-              completed_at: new Date().toISOString(),
-              progress_percentage: 100,
-            });
-          }
-          
-          setTimeout(() => {
-            navigate(`/admin/poa/${caseId}`);
-          }, 1500);
+          // The actual PDF generation will be triggered by the preview panel's confirm button
           break;
       }
 
@@ -832,6 +816,66 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
       setCurrentStage(nextStep.stage);
       toast({ title: "Ready for Next Step" });
     }
+  };
+
+  const generateFinalPDFs = async () => {
+    setIsRunning(true);
+    setShowPDFPreview(false);
+    
+    try {
+      const { data: pdfData, error: pdfError } = await supabase.functions.invoke('fill-pdf', {
+        body: { caseId, formType: 'all' }
+      });
+      
+      if (pdfError) {
+        // Check for rate limiting
+        if (pdfError.message?.includes('429') || pdfError.message?.includes('402')) {
+          throw { status: 429, message: 'Rate limit exceeded during PDF generation' };
+        }
+        throw pdfError;
+      }
+      
+      console.log('PDF generation complete');
+      toast({ title: "PDFs Generated Successfully" });
+      await updateStepStatus('pdf_generation', 'completed');
+      
+      // Mark workflow as completed
+      if (workflowRun) {
+        await updateWorkflowRun({
+          status: 'completed',
+          completed_at: new Date().toISOString(),
+          progress_percentage: 100,
+        });
+      }
+      
+      setTimeout(() => {
+        navigate(`/admin/poa/${caseId}`);
+      }, 1500);
+    } catch (error: any) {
+      console.error('PDF generation failed:', error);
+      
+      toast({
+        title: "PDF Generation Failed",
+        description: error.message,
+        variant: "destructive"
+      });
+      
+      setShowPDFPreview(true); // Show preview again if generation fails
+    } finally {
+      setIsRunning(false);
+    }
+  };
+
+  const handleRegenerateWithChanges = async () => {
+    setShowPDFPreview(false);
+    
+    toast({
+      title: "Make Your Changes",
+      description: "Update the forms as needed, then click 'Approve & Continue' on Step 07 to regenerate previews."
+    });
+    
+    // Go back to HAC verification stage
+    setCurrentStage('hac_verify');
   };
 
   const syncDropboxDocuments = async () => {
@@ -1088,6 +1132,21 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
                 <DocumentProgressCard key={doc.id} document={doc} />
               ))}
             </div>
+          </motion.div>
+        )}
+
+        {/* PDF Preview Panel - Step 08 */}
+        {showPDFPreview && currentStage === 'pdf_generation' && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="my-6"
+          >
+            <PDFPreviewPanel
+              caseId={caseId}
+              onConfirmGeneration={generateFinalPDFs}
+              onRegenerateWithChanges={handleRegenerateWithChanges}
+            />
           </motion.div>
         )}
 
