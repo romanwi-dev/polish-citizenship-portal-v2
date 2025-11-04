@@ -28,6 +28,9 @@ import { sanitizeAIJSON } from "@/utils/aiSanitizer";
 import { useWorkflowState } from "@/hooks/useWorkflowState";
 import { useBase64Worker } from "@/hooks/useBase64Worker";
 import { useCancellableRequest } from "@/hooks/useCancellableRequest";
+import { useRequestBatcher } from "@/hooks/useRequestBatcher";
+import { useDocumentProgress } from "@/hooks/useDocumentProgress";
+import { DocumentProgressCard } from "./DocumentProgressCard";
 import type { RealtimeChannel } from "@supabase/supabase-js";
 
 interface AIWorkflowStep {
@@ -174,6 +177,12 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
     removeController 
   } = useCancellableRequest();
   
+  // Phase 3: Request batching with rate limiting (prevent backend overload)
+  const batcher = useRequestBatcher<any>({ batchSize: 3, delayMs: 500 });
+  
+  // Phase 3: Per-document progress tracking (granular visibility)
+  const progress = useDocumentProgress();
+  
   // Compatibility: Expose workflow state as individual variables
   const isRunning = workflowState.status === 'running';
   const isPaused = workflowState.status === 'paused';
@@ -234,16 +243,17 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
     }
   }, [caseData, actions]);
 
-  // Cleanup on unmount - Phase 2: Cancel all operations
+  // Cleanup on unmount - Phase 2 & 3: Cancel all operations
   useEffect(() => {
     return () => {
       cancelAllEncoding();
       cancelAllRequests();
+      batcher.clearQueue();
       if (realtimeChannelRef.current) {
         supabase.removeChannel(realtimeChannelRef.current);
       }
     };
-  }, [cancelAllEncoding, cancelAllRequests]);
+  }, [cancelAllEncoding, cancelAllRequests, batcher]);
 
   const { data: documents, isLoading: docsLoading, refetch: refetchDocs } = useQuery({
     queryKey: ['case-documents', caseId],
@@ -435,54 +445,71 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
             return;
           }
 
-          // Parallel batch processing - using secure download-and-encode
+          // Phase 3: Initialize progress tracking for all documents
+          docs.forEach(doc => progress.initializeDocument(doc.id, doc.name));
+
+          // Phase 3: Batched parallel processing with individual error recovery
           const classifyPromises = docs.map(async (doc) => {
-            try {
-              // Log PII processing for audit trail
-              await logPIIProcessing({
-                caseId,
-                documentId: doc.id,
-                operationType: 'classification',
-                piiFieldsSent: ['document_image', 'document_name'],
-                aiProvider: 'gemini'
-              });
+            return batcher.addRequest(doc.id, async () => {
+              try {
+                progress.updateDocument(doc.id, { status: 'downloading', progress: 25 });
+                
+                // Log PII processing for audit trail
+                await logPIIProcessing({
+                  caseId,
+                  documentId: doc.id,
+                  operationType: 'classification',
+                  piiFieldsSent: ['document_image', 'document_name'],
+                  aiProvider: 'gemini'
+                });
 
-              // Use secure edge function (no token exposure)
-              const { data: downloadData, error: downloadError } = await supabase.functions.invoke(
-                'download-and-encode',
-                { 
-                  body: { 
-                    dropboxPath: doc.dropbox_path,
-                    documentId: doc.id,
-                    caseId 
-                  } 
-                }
-              );
+                // Use secure edge function (no token exposure)
+                const { data: downloadData, error: downloadError } = await supabase.functions.invoke(
+                  'download-and-encode',
+                  { 
+                    body: { 
+                      dropboxPath: doc.dropbox_path,
+                      documentId: doc.id,
+                      caseId 
+                    } 
+                  }
+                );
 
-              if (downloadError) throw downloadError;
-              if (!downloadData?.success) throw new Error('Download failed');
+                if (downloadError) throw downloadError;
+                if (!downloadData?.success) throw new Error('Download failed');
 
-              const { data: classifyData, error: classifyError } = await supabase.functions.invoke(
-                'ai-classify-document',
-                { body: { documentId: doc.id, caseId, imageBase64: downloadData.base64 } }
-              );
+                progress.updateDocument(doc.id, { status: 'classifying', progress: 60 });
 
-              if (classifyError) throw classifyError;
-              
-              // Sanitize AI response
-              const sanitizedResult = sanitizeAIJSON(classifyData || {});
-              
-              return { success: true, name: doc.name, result: sanitizedResult };
-            } catch (error) {
-              console.error(`Failed to classify ${doc.name}:`, error);
-              return { success: false, name: doc.name, error };
-            }
+                const { data: classifyData, error: classifyError } = await supabase.functions.invoke(
+                  'ai-classify-document',
+                  { body: { documentId: doc.id, caseId, imageBase64: downloadData.base64 } }
+                );
+
+                if (classifyError) throw classifyError;
+                
+                // Sanitize AI response
+                const sanitizedResult = sanitizeAIJSON(classifyData || {});
+                
+                progress.markCompleted(doc.id);
+                return { success: true, name: doc.name, result: sanitizedResult };
+              } catch (error) {
+                const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+                console.error(`Failed to classify ${doc.name}:`, errorMsg);
+                progress.markFailed(doc.id, errorMsg);
+                // Don't throw - let workflow continue with other documents
+                return { success: false, name: doc.name, error: errorMsg };
+              }
+            });
           });
 
-          const classifyResults = await Promise.all(classifyPromises);
-          const successCount = classifyResults.filter(r => r.success).length;
+          const classifyResults = await Promise.allSettled(classifyPromises);
+          const successCount = classifyResults.filter(r => r.status === 'fulfilled' && r.value.success).length;
+          const stats = progress.getStats();
           
-          toast({ title: `AI Classification Complete (${successCount}/${docs.length})` });
+          toast({ 
+            title: `AI Classification Complete`, 
+            description: `${successCount} succeeded, ${stats.failed} failed, ${stats.skipped} skipped`
+          });
           await updateStepStatus('ai_classify', 'completed');
           await refetchDocs();
           setCurrentStage('hac_classify');
@@ -517,24 +544,34 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
             return;
           }
 
-          // Parallel form population
+          // Phase 3: Initialize progress and batch form population
+          ocrDocs.forEach(doc => progress.initializeDocument(doc.id, doc.name));
+          
           const applyPromises = ocrDocs.map(async (doc) => {
-            try {
-              const { error: applyError } = await supabase.functions.invoke(
-                'apply-ocr-to-forms',
-                { body: { documentId: doc.id, caseId, overwriteManual: false } }
-              );
+            return batcher.addRequest(doc.id, async () => {
+              try {
+                progress.updateDocument(doc.id, { status: 'classifying', progress: 50 });
+                
+                const { error: applyError } = await supabase.functions.invoke(
+                  'apply-ocr-to-forms',
+                  { body: { documentId: doc.id, caseId, overwriteManual: false } }
+                );
 
-              if (applyError) throw applyError;
-              return { success: true, name: doc.name };
-            } catch (error) {
-              console.error(`Failed to apply OCR for ${doc.name}:`, error);
-              return { success: false, name: doc.name, error };
-            }
+                if (applyError) throw applyError;
+                
+                progress.markCompleted(doc.id);
+                return { success: true, name: doc.name };
+              } catch (error) {
+                const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+                console.error(`Failed to apply OCR for ${doc.name}:`, errorMsg);
+                progress.markFailed(doc.id, errorMsg);
+                return { success: false, name: doc.name, error: errorMsg };
+              }
+            });
           });
 
-          const applyResults = await Promise.all(applyPromises);
-          const applySuccessCount = applyResults.filter(r => r.success).length;
+          const applyResults = await Promise.allSettled(applyPromises);
+          const applySuccessCount = applyResults.filter(r => r.status === 'fulfilled' && r.value.success).length;
 
           toast({ title: `Forms Populated (${applySuccessCount}/${ocrDocs.length})` });
           await updateStepStatus('form_population', 'completed');
@@ -963,6 +1000,29 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
                 <p className="text-sm text-destructive">{workflowRun.last_error}</p>
               </div>
             )}
+          </motion.div>
+        )}
+
+        {/* Phase 3: Per-Document Progress Tracking */}
+        {isRunning && progress.documents.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="glass-card p-6 my-6"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-semibold text-lg">Document Processing Progress</h3>
+              <div className="text-sm text-muted-foreground">
+                {progress.getStats().completed}/{progress.getStats().total} completed • 
+                {progress.getStats().failed > 0 && ` ${progress.getStats().failed} failed • `}
+                {progress.getStats().processing} processing
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+              {progress.documents.map((doc) => (
+                <DocumentProgressCard key={doc.id} document={doc} />
+              ))}
+            </div>
           </motion.div>
         )}
 
