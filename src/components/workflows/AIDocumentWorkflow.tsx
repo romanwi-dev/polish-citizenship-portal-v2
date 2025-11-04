@@ -124,6 +124,17 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
   const [isRunning, setIsRunning] = useState(false);
   const [currentStage, setCurrentStage] = useState<string>('upload');
   const [isUploading, setIsUploading] = useState(false);
+  const [workflowProgress, setWorkflowProgress] = useState<{
+    total: number;
+    completed: number;
+    currentStep: string;
+    errors: Array<{ stage: string; message: string }>;
+  }>({
+    total: 8,
+    completed: 0,
+    currentStep: '',
+    errors: []
+  });
 
   const { data: caseData } = useQuery({
     queryKey: ['case-info', caseId],
@@ -162,78 +173,197 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
     }));
   };
 
-  const runWorkflowStep = async (stage: AIWorkflowStep['stage']) => {
+  const runWorkflowStep = async (stage: AIWorkflowStep['stage'], retryCount = 0) => {
+    const MAX_RETRIES = 3;
+    console.log(`Running workflow step: ${stage} (attempt ${retryCount + 1})`);
+    setCurrentStage(stage);
+    setWorkflowProgress(prev => ({ ...prev, currentStep: stage }));
     setIsRunning(true);
+    
     try {
       switch (stage) {
         case 'ai_classify':
-          const { data: docs } = await supabase
+          // Fetch documents with their file data for classification
+          const { data: docs, error: docsError } = await supabase
             .from('documents')
-            .select('id')
-            .eq('case_id', caseId);
+            .select('id, name, dropbox_path')
+            .eq('case_id', caseId)
+            .is('document_type', null);
 
-          for (const doc of docs || []) {
-            await supabase.functions.invoke('ai-classify-document', {
-              body: { documentId: doc.id, caseId }
-            });
+          if (docsError) throw docsError;
+          if (!docs || docs.length === 0) {
+            toast({ title: "No documents to classify", variant: "default" });
+            setCurrentStage('hac_classify');
+            return;
           }
-          toast({ title: "AI Classification Complete" });
+
+          // Process each document
+          let classifiedCount = 0;
+          for (const doc of docs) {
+            try {
+              // Download file content
+              const { data: fileData, error: downloadError } = await supabase.functions.invoke(
+                'download-dropbox-file',
+                { body: { path: doc.dropbox_path } }
+              );
+
+              if (downloadError) throw downloadError;
+
+              // Convert to base64
+              const arrayBuffer = fileData;
+              const bytes = new Uint8Array(arrayBuffer);
+              let binary = '';
+              for (let i = 0; i < bytes.length; i++) {
+                binary += String.fromCharCode(bytes[i]);
+              }
+              const imageBase64 = btoa(binary);
+
+              // Classify with image data
+              const { data: classifyResult, error: classifyError } = await supabase.functions.invoke(
+                'ai-classify-document',
+                {
+                  body: {
+                    documentId: doc.id,
+                    caseId,
+                    fileName: doc.name,
+                    imageBase64
+                  }
+                }
+              );
+
+              if (classifyError) throw classifyError;
+              
+              console.log(`Classified ${doc.name}:`, classifyResult);
+              classifiedCount++;
+            } catch (docError) {
+              console.error(`Failed to classify ${doc.name}:`, docError);
+              setWorkflowProgress(prev => ({
+                ...prev,
+                errors: [...prev.errors, { stage, message: `Failed to classify ${doc.name}` }]
+              }));
+            }
+          }
+          
+          toast({ title: `AI Classification Complete (${classifiedCount}/${docs.length})` });
+          setWorkflowProgress(prev => ({ ...prev, completed: prev.completed + 1 }));
           setCurrentStage('hac_classify');
           break;
 
         case 'form_population':
-          const { data: ocrDocs } = await supabase
+          const { data: ocrDocs, error: ocrDocsError } = await supabase
             .from('documents')
-            .select('id')
+            .select('id, name')
             .eq('case_id', caseId)
-            .eq('ocr_status', 'completed');
+            .not('ocr_data', 'is', null);
 
-          for (const doc of ocrDocs || []) {
-            await supabase.functions.invoke('apply-ocr-to-forms', {
-              body: { documentId: doc.id, caseId, overwriteManual: false }
-            });
+          if (ocrDocsError) throw ocrDocsError;
+          if (!ocrDocs || ocrDocs.length === 0) {
+            toast({ title: "No OCR data to apply", variant: "default" });
+            setCurrentStage('hac_forms');
+            return;
           }
-          toast({ title: "Forms Populated" });
+
+          let totalApplied = 0;
+          let totalConflicts = 0;
+
+          for (const doc of ocrDocs) {
+            try {
+              const { data: applyResult, error: applyError } = await supabase.functions.invoke(
+                'apply-ocr-to-forms',
+                {
+                  body: {
+                    documentId: doc.id,
+                    caseId,
+                    overwriteManual: false
+                  }
+                }
+              );
+
+              if (applyError) throw applyError;
+              
+              if (applyResult) {
+                totalApplied += applyResult.applied || 0;
+                totalConflicts += applyResult.conflicts || 0;
+              }
+            } catch (docError) {
+              console.error(`Failed to apply OCR for doc ${doc.id}:`, docError);
+              setWorkflowProgress(prev => ({
+                ...prev,
+                errors: [...prev.errors, { stage, message: `Failed to apply OCR for ${doc.name}` }]
+              }));
+            }
+          }
+
+          toast({ 
+            title: "Forms Populated",
+            description: `${totalApplied} fields applied, ${totalConflicts} conflicts detected`
+          });
+          setWorkflowProgress(prev => ({ ...prev, completed: prev.completed + 1 }));
           setCurrentStage('hac_forms');
           break;
 
         case 'ai_verify':
-          await supabase.functions.invoke('verify-changes', {
-            body: {
-              proposal: {
-                type: 'frontend',
-                description: 'Dual AI verification',
-                files: [],
-                reasoning: 'Pre-generation verification',
-                metadata: { caseId, verificationType: 'dual' }
-              }
-            }
+          // TODO: Create proper AI verification edge function
+          toast({ 
+            title: "AI Verification",
+            description: "Dual AI verification will be implemented in next phase"
           });
-          toast({ title: "AI Verification Complete" });
+          setWorkflowProgress(prev => ({ ...prev, completed: prev.completed + 1 }));
           setCurrentStage('hac_verify');
           break;
 
         case 'pdf_generation':
-          const templates = ['poa-adult', 'citizenship', 'family-tree'];
-          for (const template of templates) {
-            await supabase.functions.invoke('fill-pdf', {
-              body: { caseId, templateType: template }
-            });
-          }
+          const { data: pdfData, error: pdfError } = await supabase.functions.invoke('fill-pdf', {
+            body: { caseId, formType: 'all' }
+          });
+          
+          if (pdfError) throw pdfError;
+          
+          console.log('PDF generation result:', pdfData);
           toast({ title: "PDFs Generated Successfully" });
+          setWorkflowProgress(prev => ({ ...prev, completed: prev.completed + 1 }));
           
           // Navigate to POA Form to view generated PDFs
           setTimeout(() => {
             navigate(`/admin/poa/${caseId}`);
-          }, 1000);
+          }, 1500);
           break;
       }
-    } catch (error) {
+
+      return true;
+    } catch (error: any) {
+      console.error(`Workflow step ${stage} failed (attempt ${retryCount + 1}):`, error);
+      
+      // Retry logic for transient errors
+      const isTransientError = error?.message?.includes('timeout') || 
+                              error?.message?.includes('network') ||
+                              error?.status === 429 ||
+                              error?.status === 503;
+
+      if (isTransientError && retryCount < MAX_RETRIES) {
+        const backoffMs = Math.pow(2, retryCount) * 1000;
+        console.log(`Retrying ${stage} in ${backoffMs}ms...`);
+        toast({
+          title: `Retrying ${stage}...`,
+          description: `Attempt ${retryCount + 2} of ${MAX_RETRIES + 1}`
+        });
+        await new Promise(resolve => setTimeout(resolve, backoffMs));
+        return runWorkflowStep(stage, retryCount + 1);
+      }
+
+      // Permanent failure
+      setWorkflowProgress(prev => ({
+        ...prev,
+        errors: [...prev.errors, { stage, message: error?.message || 'Unknown error' }]
+      }));
+      
       toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : 'Unknown error',
-        variant: "destructive"
+        title: `${stage} Failed`,
+        description: error?.message || 'Please check the console for details',
+        variant: "destructive",
       });
+      
+      throw error;
     } finally {
       setIsRunning(false);
     }
@@ -437,6 +567,37 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
           >
             Automated workflow with HAC authorization gates: Documents → AI Classification → Forms → Verification → PDFs
           </motion.p>
+
+          {/* Progress Indicator */}
+          {workflowProgress.completed > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-6 max-w-md mx-auto"
+            >
+              <div className="glass-card p-4">
+                <div className="flex justify-between text-sm mb-2">
+                  <span className="font-medium">Progress: {workflowProgress.completed}/{workflowProgress.total}</span>
+                  {workflowProgress.currentStep && (
+                    <span className="text-muted-foreground">{workflowProgress.currentStep}</span>
+                  )}
+                </div>
+                <div className="h-2 bg-muted rounded-full overflow-hidden">
+                  <motion.div
+                    className="h-full bg-gradient-to-r from-primary to-secondary"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${(workflowProgress.completed / workflowProgress.total) * 100}%` }}
+                    transition={{ duration: 0.5 }}
+                  />
+                </div>
+                {workflowProgress.errors.length > 0 && (
+                  <div className="mt-3 text-sm text-destructive">
+                    {workflowProgress.errors.length} error(s) occurred
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
         </motion.div>
 
         {/* Steps Grid */}
