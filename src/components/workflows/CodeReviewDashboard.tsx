@@ -253,7 +253,7 @@ export const CodeReviewDashboard = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <Card className="p-6">
+      <div className="p-6 rounded-lg border bg-card/50">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Brain className="h-8 w-8 text-primary" />
@@ -295,7 +295,7 @@ export const CodeReviewDashboard = () => {
             <Progress value={progress} className="h-2" />
           </div>
         )}
-      </Card>
+      </div>
 
       {/* Overall Score */}
       {results.length > 0 && (
@@ -470,7 +470,7 @@ export const CodeReviewDashboard = () => {
 
       {/* Empty State */}
       {!isRunning && results.length === 0 && (
-        <Card className="p-12 text-center">
+        <div className="p-12 text-center rounded-lg border bg-card/50">
           <Brain className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
           <h3 className="text-xl font-semibold mb-2">Ready for Deep Code Review</h3>
           <p className="text-muted-foreground mb-6">
@@ -480,7 +480,7 @@ export const CodeReviewDashboard = () => {
             <Play className="h-4 w-4 mr-2" />
             Start Review
           </Button>
-        </Card>
+        </div>
       )}
     </div>
   );
