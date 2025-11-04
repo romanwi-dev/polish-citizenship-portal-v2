@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   Upload, 
@@ -25,6 +25,9 @@ import { WorkflowProgressTracker } from "./WorkflowProgressTracker";
 import { AIConsentModal } from "@/components/consent/AIConsentModal";
 import { checkAIConsent, logPIIProcessing } from "@/utils/aiPIILogger";
 import { sanitizeAIJSON } from "@/utils/aiSanitizer";
+import { useWorkflowState } from "@/hooks/useWorkflowState";
+import { useBase64Worker } from "@/hooks/useBase64Worker";
+import { useCancellableRequest } from "@/hooks/useCancellableRequest";
 import type { RealtimeChannel } from "@supabase/supabase-js";
 
 interface AIWorkflowStep {
@@ -158,33 +161,56 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const realtimeChannelRef = useRef<RealtimeChannel | null>(null);
   
-  const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
-  const [isRunning, setIsRunning] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
-  const [currentStage, setCurrentStage] = useState<string>('upload');
-  const [isUploading, setIsUploading] = useState(false);
-  const [workflowRun, setWorkflowRun] = useState<WorkflowRun | null>(null);
-  const [selectedDocuments, setSelectedDocuments] = useState<Set<string>>(new Set());
+  // Phase 2: Use unified state machine to eliminate race conditions
+  const { state: workflowState, actions } = useWorkflowState();
   
-  const [trackedSteps, setTrackedSteps] = useState<Array<{
-    id: string;
-    title: string;
-    status: 'pending' | 'processing' | 'completed' | 'failed';
-    error?: string;
-    completedAt?: string;
-  }>>([
-    { id: 'upload', title: 'Document Upload & Sync', status: 'pending' },
-    { id: 'ai_classify', title: 'AI Classification', status: 'pending' },
-    { id: 'hac_classify', title: 'HAC Review (Classification)', status: 'pending' },
-    { id: 'ocr', title: 'OCR Processing', status: 'pending' },
-    { id: 'form_population', title: 'Form Population', status: 'pending' },
-    { id: 'hac_forms', title: 'HAC Review (Forms)', status: 'pending' },
-    { id: 'ai_verify', title: 'Dual AI Verification', status: 'pending' },
-    { id: 'hac_verify', title: 'HAC Final Review', status: 'pending' },
-  ]);
-
+  // Phase 2: Web Worker for base64 encoding (prevent UI blocking)
+  const { encodeToBase64, cancelAll: cancelAllEncoding } = useBase64Worker();
+  
+  // Phase 2: AbortController for request cancellation (prevent memory leaks)
+  const { 
+    createController, 
+    cancelAll: cancelAllRequests,
+    removeController 
+  } = useCancellableRequest();
+  
+  // Compatibility: Expose workflow state as individual variables
+  const isRunning = workflowState.status === 'running';
+  const isPaused = workflowState.status === 'paused';
+  const currentStage = workflowState.currentStage;
+  const trackedSteps = workflowState.steps;
+  const selectedDocuments = workflowState.selectedDocuments;
+  const hasConsent = workflowState.hasConsent;
+  const isUploading = workflowState.isUploading;
+  
+  // Compatibility: Expose actions as setState-like functions
+  const setCurrentStage = (stage: string) => actions.setStage(stage as any);
+  const setTrackedSteps = (updater: any) => {
+    // This is handled by actions.updateStep now
+    console.warn('setTrackedSteps is deprecated, use actions.updateStep');
+  };
+  const setSelectedDocuments = (updater: any) => {
+    if (updater instanceof Set) {
+      actions.selectAllDocuments(Array.from(updater));
+    } else if (typeof updater === 'function') {
+      const newSet = updater(selectedDocuments);
+      actions.selectAllDocuments(Array.from(newSet));
+    }
+  };
+  const setIsRunning = (running: boolean) => {
+    if (running) actions.resumeWorkflow();
+    else actions.pauseWorkflow();
+  };
+  const setIsPaused = (paused: boolean) => {
+    if (paused) actions.pauseWorkflow();
+    else actions.resumeWorkflow();
+  };
+  const setIsUploading = actions.setUploading;
+  const setHasConsent = actions.setConsent;
+  
+  const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
+  const [workflowRun, setWorkflowRun] = useState<WorkflowRun | null>(null);
   const [showConsentModal, setShowConsentModal] = useState(false);
-  const [hasConsent, setHasConsent] = useState(false);
 
   const { data: caseData } = useQuery({
     queryKey: ['case-info', caseId],
@@ -204,9 +230,20 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
   // Check consent on mount
   useEffect(() => {
     if (caseData) {
-      setHasConsent(caseData.ai_processing_consent === true);
+      actions.setConsent(caseData.ai_processing_consent === true);
     }
-  }, [caseData]);
+  }, [caseData, actions]);
+
+  // Cleanup on unmount - Phase 2: Cancel all operations
+  useEffect(() => {
+    return () => {
+      cancelAllEncoding();
+      cancelAllRequests();
+      if (realtimeChannelRef.current) {
+        supabase.removeChannel(realtimeChannelRef.current);
+      }
+    };
+  }, [cancelAllEncoding, cancelAllRequests]);
 
   const { data: documents, isLoading: docsLoading, refetch: refetchDocs } = useQuery({
     queryKey: ['case-documents', caseId],
@@ -317,12 +354,12 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
         workflow_type: 'ai_documents',
         status: 'running',
         current_stage: 'ai_classify',
-        steps: trackedSteps,
+        steps: trackedSteps as any,
         total_steps: trackedSteps.length,
         completed_steps: 1, // Upload is already done
         progress_percentage: Math.round((1 / trackedSteps.length) * 100),
         document_ids: selectedDocs,
-      })
+      } as any)
       .select()
       .single();
 
