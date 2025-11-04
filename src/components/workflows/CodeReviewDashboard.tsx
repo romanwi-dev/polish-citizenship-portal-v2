@@ -126,15 +126,12 @@ export const CodeReviewDashboard = () => {
   const runStaticAnalysis = async () => {
     setCurrentFile('Running local analysis...');
     setProgress(10);
-
-    console.log('🔍 Running static analysis...');
     
     const staticPromises = filesToReview.map(async (file) => {
       try {
         const content = getFileContent(file.path);
         return analyzeFile(file.name, content);
       } catch (error) {
-        console.error(`Failed to load ${file.name}:`, error);
         // Return empty analysis for failed files
         return {
           fileName: file.name,
@@ -156,8 +153,6 @@ export const CodeReviewDashboard = () => {
 
     const summary = generateSummary(staticAnalysisResults);
     
-    console.log('✅ Static analysis complete:', summary);
-    
     return { staticAnalysisResults, summary };
   };
 
@@ -177,27 +172,18 @@ export const CodeReviewDashboard = () => {
       }
 
       // STEP 2: Load all file contents in parallel (20-40% progress)
-      console.log('📦 Loading all file contents...');
       const filePromises = filesToReview.map(async (file) => {
         try {
           // Check if this is an edge function
           if (file.path.startsWith('supabase/functions/')) {
-            console.log(`🔌 Fetching edge function via analyzer: ${file.name}`);
             const { data, error } = await supabase.functions.invoke('edge-function-analyzer', {
               body: { functionName: file.name }
             });
 
-            if (error) {
-              console.error(`Failed to analyze edge function ${file.name}:`, error);
+            if (error || !data?.success || !data?.code) {
               return null;
             }
 
-            if (!data?.success || !data?.code) {
-              console.error(`Edge function analyzer failed for ${file.name}:`, data);
-              return null;
-            }
-
-            console.log(`✅ Loaded edge function ${file.name}: ${data.lineCount} lines`);
             return { fileName: file.name, fileContent: data.code, priority: file.priority };
           } else {
             // Regular frontend file
@@ -205,7 +191,6 @@ export const CodeReviewDashboard = () => {
             return { fileName: file.name, fileContent: content, priority: file.priority };
           }
         } catch (error) {
-          console.error(`Failed to load ${file.name}:`, error);
           return null;
         }
       });
@@ -214,22 +199,17 @@ export const CodeReviewDashboard = () => {
       const loadedFiles = loadedFilesWithNulls.filter((f): f is { fileName: string; fileContent: string; priority: 'critical' | 'high' | 'medium' } => f !== null);
       setProgress(40);
       setCurrentFile('Analyzing with AI...');
-      
-      console.log(`✅ Loaded ${loadedFiles.length} files`);
 
       // STEP 3: Single batch AI call (40-100% progress)
-      console.log('🤖 Sending batch to AI...');
       const { data, error } = await supabase.functions.invoke('ai-code-review', {
         body: { files: loadedFiles }
       });
 
       if (error) {
-        console.error('AI review error:', error);
         throw new Error(`AI review failed: ${error.message}`);
       }
 
       if (!data?.reviews) {
-        console.error('No review data:', data);
         throw new Error('No review data returned');
       }
 
@@ -265,8 +245,6 @@ export const CodeReviewDashboard = () => {
       });
 
     } catch (error: any) {
-      console.error('❌ Code review error:', error);
-      
       const errorMessage = error.message || "An unexpected error occurred";
       
       if (errorMessage.includes('AI credits exhausted') || errorMessage.includes('402')) {

@@ -50,12 +50,6 @@ export default function PDFDemo() {
       // Create blob URL
       const blob = new Blob([data], { type: "application/pdf" });
       const url = window.URL.createObjectURL(blob);
-      
-      console.log("✅ PDF loaded:", {
-        template: templateName,
-        size: blob.size,
-        url: url.substring(0, 50) + "..."
-      });
 
       setPdfUrl(url);
       toast.success(`Template loaded: ${templateName}`);

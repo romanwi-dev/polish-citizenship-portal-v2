@@ -126,20 +126,30 @@ export default function CivilRegistryForm() {
                 <Label htmlFor={field.name} className={isLargeFonts ? "text-2xl" : ""}>
                   {field.label}
                 </Label>
-                <FormInput
-                  id={field.name} 
-                  type={field.type || "text"} 
-                  value={formData[field.name] || ""} 
-                  onChange={e => {
-                    // Only uppercase name/POB fields, preserve phone/passport/email as-is
-                    const isNameOrPlace = field.name.includes('_name') || field.name.includes('_pob');
-                    const shouldUppercase = isNameOrPlace && field.type !== "email";
-                    handleInputChange(field.name, shouldUppercase ? e.target.value.toUpperCase() : e.target.value);
-                  }} 
-                  isNameField={(field.name.includes('_name') || field.name.includes('_pob')) && field.type !== "email"}
-                  isLargeFonts={isLargeFonts}
-                  colorScheme="civil-reg"
-                />
+                {field.name.includes('passport_number') ? (
+                  <MaskedPassportInput
+                    id={field.name}
+                    value={formData[field.name] || ""}
+                    onChange={(value) => handleInputChange(field.name, value)}
+                    isLargeFonts={isLargeFonts}
+                    colorScheme="civil-reg"
+                  />
+                ) : (
+                  <FormInput
+                    id={field.name} 
+                    type={field.type || "text"} 
+                    value={formData[field.name] || ""} 
+                    onChange={e => {
+                      // Only uppercase name/POB fields, preserve phone/passport/email as-is
+                      const isNameOrPlace = field.name.includes('_name') || field.name.includes('_pob');
+                      const shouldUppercase = isNameOrPlace && field.type !== "email";
+                      handleInputChange(field.name, shouldUppercase ? e.target.value.toUpperCase() : e.target.value);
+                    }} 
+                    isNameField={(field.name.includes('_name') || field.name.includes('_pob')) && field.type !== "email"}
+                    isLargeFonts={isLargeFonts}
+                    colorScheme="civil-reg"
+                  />
+                )}
               </>}
           </motion.div>)}
       </div>;

@@ -64,7 +64,6 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
         .maybeSingle();
 
       if (fetchError) {
-        console.error('❌ Failed to fetch form data:', fetchError);
         toast.error('Failed to fetch form data');
         throw new Error('Failed to fetch form data');
       }
@@ -101,7 +100,6 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('Edge function error:', response.status, errorText);
         throw new Error(`Failed to generate PDF: ${errorText}`);
       }
 
@@ -115,13 +113,6 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
       }
       
       const blob = new Blob([bytes], { type: 'application/pdf' });
-      
-      console.log('✅ PDF Blob created:', {
-        size: blob.size,
-        type: blob.type,
-        templateType,
-        flatten
-      });
 
       toast.dismiss(loadingToast);
 
@@ -194,7 +185,6 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
         .maybeSingle();
 
       if (fetchError) {
-        console.error('❌ Failed to fetch form data:', fetchError);
         toast.error('Failed to fetch form data');
         throw new Error('Failed to fetch form data');
       }
@@ -333,7 +323,6 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
       const response = await fetch(previewUrl);
       const blob = await response.blob();
       
-      console.log('✅ Downloading editable PDF from preview:', blob.size, 'bytes');
       toast.dismiss(loadingToast);
       
       handlePlatformDownload(blob, `${currentTemplate.type}-${caseId}-editable.pdf`, true);
@@ -408,7 +397,6 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
       
       const blob = new Blob([bytes], { type: 'application/pdf' });
       
-      console.log('✅ Final PDF Blob created:', blob.size, 'bytes');
       toast.dismiss(loadingToast);
       
       handlePlatformDownload(blob, `${currentTemplate.type}-${caseId}-final.pdf`, false);

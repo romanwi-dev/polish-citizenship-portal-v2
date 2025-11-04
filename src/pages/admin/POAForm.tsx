@@ -97,10 +97,7 @@ export default function POAForm() {
   };
 
   const handleGenerateAndPreview = async (templateType: 'poa-adult' | 'poa-minor' | 'poa-spouses') => {
-    console.log('[POA] Generate PDF clicked:', { templateType, caseId });
-    
     if (!caseId || caseId === ':id' || caseId === 'demo-preview') {
-      console.error('[POA] Cannot generate PDF - invalid caseId:', caseId);
       toast.error('PDF generation not available in demo mode');
       return;
     }
@@ -124,12 +121,9 @@ export default function POAForm() {
       }
       
       // Save and wait for full completion
-      console.log('[POA] Saving form data...');
       toast.info('Saving changes...');
       await handlePOASave();
       toast.success('Saved! Generating PDF...');
-
-      console.log('[POA] Calling fill-pdf edge function with:', { caseId, templateType });
       
       // Generate PDF via direct fetch
       const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
@@ -143,26 +137,21 @@ export default function POAForm() {
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('[POA] HTTP error:', response.status, errorText);
         throw new Error(`PDF generation failed: ${errorText}`);
       }
 
       const data = await response.json();
-      console.log('[POA] Edge function response:', { data });
 
       if (!data?.url) {
-        console.error('[POA] No URL in response:', data);
         toast.error(`PDF generation failed: ${JSON.stringify(data)}`);
         throw new Error('No URL returned from server');
       }
 
-      console.log('[POA] Setting preview URL:', data.url);
       // Use signed URL for preview
       if (pdfPreviewUrl) URL.revokeObjectURL(pdfPreviewUrl);
       setPdfPreviewUrl(data.url);
       setPreviewFormData(formData);
       
-      console.log('[POA] PDF generated successfully, opening preview with URL:', data.url);
       toast.success(`${templateType.toUpperCase()} ready to preview!`);
     } catch (error: any) {
       console.error("[POA] PDF generation error:", error);
@@ -266,20 +255,14 @@ export default function POAForm() {
   };
 
   const handleGenerateAllPOAs = async () => {
-    console.log('[POA] handleGenerateAllPOAs called, caseId:', caseId);
-    
     if (!caseId || caseId === ':id' || caseId === 'demo-preview') {
-      console.error('[POA] Blocked - invalid caseId:', caseId);
       toast.error('PDF generation not available in demo mode');
       return;
     }
 
     setIsGenerating(true);
     try {
-      console.log('[POA] Saving form data before PDF generation...');
       await handlePOASave();
-
-      console.log('[POA] Generating PDF for:', activePOAType);
       
       const { data, error } = await supabase.functions.invoke('fill-pdf', {
         body: { caseId, templateType: `poa-${activePOAType}` }
@@ -288,7 +271,6 @@ export default function POAForm() {
       if (error) throw error;
       
       if (data?.url) {
-        console.log('[POA] PDF generated successfully:', data.url);
         setPdfPreviewUrl(data.url);
         setPreviewFormData(formData);
         toast.success(`PDF generated! Stats: ${data.stats?.filled}/${data.stats?.total} fields filled`);

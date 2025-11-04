@@ -110,10 +110,7 @@ export default function FamilyTreeForm() {
 
     setIsGenerating(true);
     try {
-      console.log('[FamilyTree] Saving form data before PDF generation...');
       await formManagerSave();
-
-      console.log('[FamilyTree] Generating PDF for family-tree');
       
       const { data, error } = await supabase.functions.invoke('fill-pdf', {
         body: { caseId, templateType: 'family-tree' }
@@ -122,7 +119,6 @@ export default function FamilyTreeForm() {
       if (error) throw error;
       
       if (data?.url) {
-        console.log('[FamilyTree] PDF generated successfully:', data.url);
         setPdfPreviewUrl(data.url);
         setPreviewFormData(formData);
         toast({ 
@@ -141,7 +137,6 @@ export default function FamilyTreeForm() {
   };
 
   const handleRegeneratePDF = async (updatedData: any) => {
-    console.log('[FamilyTree] Regenerating PDF with updated data...');
     setIsGenerating(true);
     try {
       await formManagerSave();

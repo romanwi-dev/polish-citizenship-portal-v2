@@ -46,8 +46,6 @@ export function ResyncConfirmationDialog({
     setResult(null);
 
     try {
-      console.log('[ResyncConfirmation] Starting Dropbox resync...');
-      
       const { data, error } = await supabase.functions.invoke('dropbox-resync', {
         body: {}
       });
@@ -64,7 +62,6 @@ export function ResyncConfirmationDialog({
         throw new Error(data.message || 'Resync failed');
       }
     } catch (err) {
-      console.error('[ResyncConfirmation] Error:', err);
       const errorMessage = err instanceof Error ? err.message : 'Failed to resync with Dropbox';
       setError(errorMessage);
       toast({

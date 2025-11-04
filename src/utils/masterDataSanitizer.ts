@@ -45,12 +45,13 @@ export const sanitizeMasterData = (formData: any): any => {
     'applicant_address_state',
     'applicant_address_postal',
     'applicant_address_country',
-    // Children flags (derived from children_count)
+    // Children flags (derived from children_count) - NONE of these exist in DB
     'has_children',
     'has_minor_children',
+    'minor_children_count', // UI only - NOT in schema
     'applicant_has_children',
     'applicant_has_minor_children',
-    'applicant_minor_children_count', // NOT a DB column
+    'applicant_minor_children_count', // UI only - NOT in schema
     'has_child_1', 'has_child_2', 'has_child_3', 'has_child_4', 'has_child_5',
     'has_child_6', 'has_child_7', 'has_child_8', 'has_child_9', 'has_child_10',
   ];
@@ -128,10 +129,8 @@ export const sanitizeMasterData = (formData: any): any => {
         sanitized['applicant_notes'] = value === '' ? null : value;
       } else if (formField === 'applicant_children_count') {
         sanitized['children_count'] = value === '' || value === null ? null : Number(value);
-      } else if (formField === 'applicant_minor_children_count') {
-        // Map UI field to actual DB column
-        sanitized['minor_children_count'] = value === '' || value === null ? null : Number(value);
       }
+      // NOTE: applicant_minor_children_count is UI-only and should NOT be saved
     }
   });
 

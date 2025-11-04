@@ -457,7 +457,6 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
     if (isPaused) return;
     
     const MAX_RETRIES = 3;
-    console.log(`Running workflow step: ${stage} (attempt ${retryCount + 1})`);
     setCurrentStage(stage);
     await updateStepStatus(stage, 'processing');
     setIsRunning(true);

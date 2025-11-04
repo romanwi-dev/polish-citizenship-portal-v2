@@ -393,12 +393,10 @@ export default function CasesManagement() {
             {/* Mobile layout - Horizontal Scroll */}
             <div className="sm:hidden overflow-x-auto scrollbar-hide pb-2 -mx-4 px-4">
               <div className="flex gap-2 items-center min-w-max">
-                <Button 
-                  onClick={() => {
-                    if (selectedCount > 0) {
-                      console.log("Edit selected cases");
-                    }
-                  }}
+              <Button 
+                onClick={() => {
+                  // Edit selected cases
+                }}
                   className="h-12 flex-shrink-0 whitespace-nowrap"
                   size="lg"
                   variant="outline"
@@ -460,12 +458,10 @@ export default function CasesManagement() {
 
             {/* Desktop layout - Equal width items with minimal gaps */}
             <div className="hidden sm:grid sm:grid-cols-5 gap-1 w-full">
-              <Button 
-                onClick={() => {
-                  if (selectedCount > 0) {
-                    console.log("Edit selected cases");
-                  }
-                }}
+            <Button 
+              onClick={() => {
+                // Edit selected cases
+              }}
                 className="h-12 whitespace-nowrap w-full"
                 size="lg"
                 variant="outline"

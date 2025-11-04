@@ -45,7 +45,6 @@ export function PDFPreviewDialog({
     const loadPDF = async () => {
       setIsLoading(true);
       try {
-        console.log('[PDFPreviewDialog] Fetching PDF from:', pdfUrl);
         const response = await fetch(pdfUrl);
         if (!response.ok) {
           throw new Error(`Failed to fetch PDF: ${response.status}`);
@@ -53,9 +52,7 @@ export function PDFPreviewDialog({
         const blob = await response.blob();
         const url = URL.createObjectURL(blob);
         setBlobUrl(url);
-        console.log('[PDFPreviewDialog] Blob URL created successfully');
       } catch (error) {
-        console.error('[PDFPreviewDialog] Failed to load PDF:', error);
         toast.error('Failed to load PDF preview');
       } finally {
         setIsLoading(false);
