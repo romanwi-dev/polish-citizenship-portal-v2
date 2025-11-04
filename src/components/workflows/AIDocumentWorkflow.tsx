@@ -123,12 +123,27 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
   const [currentStage, setCurrentStage] = useState<string>('upload');
   const [isUploading, setIsUploading] = useState(false);
 
-  const { data: documents, isLoading: docsLoading } = useQuery({
+  const { data: caseData } = useQuery({
+    queryKey: ['case-info', caseId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('cases')
+        .select('dropbox_path')
+        .eq('id', caseId)
+        .single();
+      
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!caseId
+  });
+
+  const { data: documents, isLoading: docsLoading, refetch: refetchDocs } = useQuery({
     queryKey: ['case-documents', caseId],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('documents')
-        .select('id, name, type, ocr_status, dropbox_path, created_at')
+        .select('id, name, type, ocr_status, dropbox_path, file_size, created_at')
         .eq('case_id', caseId)
         .order('created_at', { ascending: false });
       
@@ -229,41 +244,33 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
     }
   };
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files || files.length === 0) return;
+  const syncDropboxDocuments = async () => {
+    if (!caseData?.dropbox_path) {
+      toast({
+        title: "No Dropbox path configured",
+        description: "Please set the Dropbox path for this case",
+        variant: "destructive"
+      });
+      return;
+    }
 
     setIsUploading(true);
     try {
-      for (const file of Array.from(files)) {
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${caseId}/${Date.now()}_${file.name}`;
-        
-        const { error: uploadError } = await supabase.storage
-          .from('client-photos')
-          .upload(fileName, file);
+      const { data, error } = await supabase.functions.invoke('list-dropbox-documents', {
+        body: { caseId, dropboxPath: caseData.dropbox_path }
+      });
 
-        if (uploadError) throw uploadError;
+      if (error) throw error;
 
-        const { error: dbError } = await supabase
-          .from('documents')
-          .insert({
-            case_id: caseId,
-            name: file.name,
-            type: fileExt || 'unknown',
-            dropbox_path: fileName,
-            ocr_status: 'pending'
-          });
-
-        if (dbError) throw dbError;
-      }
-
-      toast({ title: "Documents uploaded successfully" });
-      queryClient.invalidateQueries({ queryKey: ['case-documents', caseId] });
-      if (fileInputRef.current) fileInputRef.current.value = '';
+      toast({ 
+        title: "Dropbox sync complete",
+        description: `Synced ${data.synced} new documents`
+      });
+      
+      refetchDocs();
     } catch (error) {
       toast({
-        title: "Upload failed",
+        title: "Sync failed",
         description: error instanceof Error ? error.message : 'Unknown error',
         variant: "destructive"
       });
@@ -279,13 +286,15 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
         return;
       }
 
-      const { data, error } = await supabase.storage
-        .from('client-photos')
-        .download(dropboxPath);
+      const { data, error } = await supabase.functions.invoke('download-dropbox-file', {
+        body: { dropboxPath }
+      });
 
       if (error) throw error;
 
-      const url = URL.createObjectURL(data);
+      // Create blob from response and download
+      const blob = new Blob([data]);
+      const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
       a.download = fileName;
@@ -293,6 +302,8 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
+      
+      toast({ title: "Download started" });
     } catch (error) {
       toast({
         title: "Download failed",
@@ -333,25 +344,20 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
           animate={{ opacity: 1, y: 0 }}
           className="glass-card p-6 mb-8"
         >
-          <h3 className="text-2xl font-heading font-bold mb-4">Case Documents</h3>
+          <h3 className="text-2xl font-heading font-bold mb-4">Dropbox Documents</h3>
           
-          <div className="mb-6">
-            <input
-              ref={fileInputRef}
-              type="file"
-              multiple
-              accept=".pdf,.jpg,.jpeg,.png"
-              onChange={handleFileUpload}
-              className="hidden"
-            />
+          <div className="mb-6 flex gap-3">
             <Button
-              onClick={() => fileInputRef.current?.click()}
-              disabled={isUploading}
+              onClick={syncDropboxDocuments}
+              disabled={isUploading || !caseData?.dropbox_path}
               className="w-full md:w-auto"
             >
               <Upload className="h-4 w-4 mr-2" />
-              {isUploading ? 'Uploading...' : 'Upload Documents'}
+              {isUploading ? 'Syncing...' : 'Sync from Dropbox'}
             </Button>
+            {!caseData?.dropbox_path && (
+              <p className="text-sm text-destructive">No Dropbox path configured for this case</p>
+            )}
           </div>
 
           {docsLoading ? (
@@ -362,9 +368,10 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
                 <div key={doc.id} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
                   <div className="flex-1">
                     <p className="font-medium">{doc.name}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {doc.ocr_status === 'completed' ? '✓ OCR Complete' : 'Pending OCR'}
-                    </p>
+                    <div className="flex gap-3 text-sm text-muted-foreground">
+                      <span>{doc.ocr_status === 'completed' ? '✓ OCR Complete' : 'Pending OCR'}</span>
+                      {doc.file_size && <span>{(doc.file_size / 1024).toFixed(1)} KB</span>}
+                    </div>
                   </div>
                   <div className="flex gap-2">
                     <Button
@@ -386,7 +393,7 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
               ))}
             </div>
           ) : (
-            <p className="text-muted-foreground">No documents uploaded yet. Upload documents to begin the workflow.</p>
+            <p className="text-muted-foreground">No documents in Dropbox. Click "Sync from Dropbox" to load documents.</p>
           )}
         </motion.div>
 
