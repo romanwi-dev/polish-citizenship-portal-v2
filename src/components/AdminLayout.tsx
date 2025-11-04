@@ -192,10 +192,7 @@ function AppSidebar() {
                                 : "hover:bg-accent/50"
                             )}
                           >
-                            <item.icon className={cn(
-                              "flex-shrink-0",
-                              open ? "h-4 w-4" : "h-5 w-5"
-                            )} />
+                            <item.icon className="h-4 w-4 flex-shrink-0" />
                             {open && (
                               <span className="text-sm font-medium capitalize group-hover:text-primary transition-colors">
                                 {item.title}
