@@ -186,7 +186,7 @@ function AppSidebar() {
                               "flex items-center transition-colors group",
                               open 
                                 ? "gap-3 px-3 py-2 rounded-lg" 
-                                : "gap-0 px-2 py-2 justify-center rounded-md",
+                                : "gap-0 px-2 py-2 justify-center rounded-md opacity-40 hover:opacity-100",
                               active 
                                 ? "bg-accent text-primary font-medium" 
                                 : "hover:bg-accent/50"
