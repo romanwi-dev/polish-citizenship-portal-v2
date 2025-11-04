@@ -43,12 +43,32 @@ const AIWorkflow = () => {
           {/* Search Bar */}
           <div className="relative w-full md:flex-1">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-primary/40 z-10" />
-            <Input
+            <input
               type="text"
               placeholder="Search for case"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-12 h-16 text-2xl border-2 border-border/50 bg-card/50 rounded-none hover-glow focus:shadow-lg backdrop-blur placeholder:text-muted-foreground/30 placeholder:text-xl w-full"
+              className="h-16 md:h-20 w-full pl-12 pr-4 border-2 bg-blue-50/45 dark:bg-blue-950/40 border-blue-200/30 dark:border-blue-800/30 hover:border-transparent focus:border-transparent transition-all duration-300 backdrop-blur font-normal font-input-work text-2xl placeholder:text-muted-foreground/30"
+              style={{
+                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15)',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.boxShadow = '0 0 50px hsla(221, 83%, 53%, 0.3)';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.boxShadow = '0 0 30px hsla(221, 83%, 53%, 0.15)';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
+              onFocus={(e) => {
+                e.currentTarget.style.boxShadow = '0 0 60px hsla(221, 83%, 53%, 0.4)';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.boxShadow = '0 0 30px hsla(221, 83%, 53%, 0.15)';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
             />
           </div>
 
@@ -61,10 +81,32 @@ const AIWorkflow = () => {
           {/* Case Selection */}
           <div className="w-full md:flex-1">
             <Select value={selectedCaseId} onValueChange={setSelectedCaseId}>
-              <SelectTrigger className="h-16 border-2 border-border/50 bg-card/50 rounded-none hover-glow focus:shadow-lg backdrop-blur w-full">
+              <SelectTrigger 
+                className="h-16 md:h-20 border-2 bg-blue-50/45 dark:bg-blue-950/40 border-blue-200/30 dark:border-blue-800/30 hover:border-transparent focus:border-transparent transition-all duration-300 backdrop-blur font-normal font-input-work text-2xl w-full"
+                style={{
+                  boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15)',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.boxShadow = '0 0 50px hsla(221, 83%, 53%, 0.3)';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.boxShadow = '0 0 30px hsla(221, 83%, 53%, 0.15)';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.boxShadow = '0 0 60px hsla(221, 83%, 53%, 0.4)';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.boxShadow = '0 0 30px hsla(221, 83%, 53%, 0.15)';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                }}
+              >
                 <SelectValue 
                   placeholder="Choose a case" 
-                  className="text-muted-foreground/30 text-2xl"
+                  className="text-muted-foreground/30"
                 />
               </SelectTrigger>
               <SelectContent className="bg-background border-border z-50">
