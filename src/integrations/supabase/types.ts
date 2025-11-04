@@ -4047,6 +4047,80 @@ export type Database = {
           },
         ]
       }
+      workflow_runs: {
+        Row: {
+          case_id: string
+          completed_at: string | null
+          completed_steps: number
+          created_at: string
+          current_stage: string
+          document_ids: string[]
+          id: string
+          last_error: string | null
+          max_retries: number
+          paused_at: string | null
+          processed_documents: Json
+          progress_percentage: number
+          retry_count: number
+          started_at: string | null
+          status: string
+          steps: Json
+          total_steps: number
+          updated_at: string
+          workflow_type: string
+        }
+        Insert: {
+          case_id: string
+          completed_at?: string | null
+          completed_steps?: number
+          created_at?: string
+          current_stage: string
+          document_ids?: string[]
+          id?: string
+          last_error?: string | null
+          max_retries?: number
+          paused_at?: string | null
+          processed_documents?: Json
+          progress_percentage?: number
+          retry_count?: number
+          started_at?: string | null
+          status: string
+          steps?: Json
+          total_steps?: number
+          updated_at?: string
+          workflow_type?: string
+        }
+        Update: {
+          case_id?: string
+          completed_at?: string | null
+          completed_steps?: number
+          created_at?: string
+          current_stage?: string
+          document_ids?: string[]
+          id?: string
+          last_error?: string | null
+          max_retries?: number
+          paused_at?: string | null
+          processed_documents?: Json
+          progress_percentage?: number
+          retry_count?: number
+          started_at?: string | null
+          status?: string
+          steps?: Json
+          total_steps?: number
+          updated_at?: string
+          workflow_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_runs_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       workflow_sla_rules: {
         Row: {
           created_at: string | null

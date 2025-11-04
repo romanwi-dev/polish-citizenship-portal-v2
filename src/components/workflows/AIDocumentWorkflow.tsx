@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   Upload, 
@@ -9,14 +9,20 @@ import {
   CheckCircle2,
   FileCheck,
   Download,
-  Trash2
+  Trash2,
+  Play,
+  Pause,
+  RotateCcw,
+  PlayCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { WorkflowProgressTracker } from "./WorkflowProgressTracker";
+import type { RealtimeChannel } from "@supabase/supabase-js";
 
 interface AIWorkflowStep {
   number: string;
@@ -126,15 +132,36 @@ interface AIDocumentWorkflowProps {
   caseId: string;
 }
 
+interface WorkflowRun {
+  id: string;
+  case_id: string;
+  status: 'pending' | 'running' | 'paused' | 'completed' | 'failed';
+  current_stage: string;
+  steps: any[];
+  completed_steps: number;
+  progress_percentage: number;
+  document_ids: string[];
+  retry_count: number;
+  max_retries: number;
+  last_error?: string;
+  completed_at?: string;
+  paused_at?: string;
+}
+
 export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
   const { toast } = useToast();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const realtimeChannelRef = useRef<RealtimeChannel | null>(null);
+  
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
   const [isRunning, setIsRunning] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const [currentStage, setCurrentStage] = useState<string>('upload');
   const [isUploading, setIsUploading] = useState(false);
+  const [workflowRun, setWorkflowRun] = useState<WorkflowRun | null>(null);
+  const [selectedDocuments, setSelectedDocuments] = useState<Set<string>>(new Set());
   
   const [trackedSteps, setTrackedSteps] = useState<Array<{
     id: string;
@@ -183,12 +210,145 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
     enabled: !!caseId
   });
 
-  const updateStepStatus = (stepId: string, status: 'processing' | 'completed' | 'failed', error?: string) => {
-    setTrackedSteps(prev => prev.map(step => 
+  // Initialize workflow and realtime subscriptions
+  useEffect(() => {
+    initializeWorkflow();
+    return () => {
+      if (realtimeChannelRef.current) {
+        supabase.removeChannel(realtimeChannelRef.current);
+      }
+    };
+  }, [caseId]);
+
+  // Auto-select all documents when they load
+  useEffect(() => {
+    if (documents && !workflowRun) {
+      setSelectedDocuments(new Set(documents.map(d => d.id)));
+    }
+  }, [documents, workflowRun]);
+
+  const initializeWorkflow = async () => {
+    try {
+      // Check for existing workflow run
+      const { data: existingRun, error } = await supabase
+        .from('workflow_runs')
+        .select('*')
+        .eq('case_id', caseId)
+        .eq('workflow_type', 'ai_documents')
+        .in('status', ['pending', 'running', 'paused'])
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (error) throw error;
+
+      if (existingRun) {
+        // Resume existing workflow
+        setWorkflowRun(existingRun as WorkflowRun);
+        setTrackedSteps((existingRun.steps as any[]) || trackedSteps);
+        setCurrentStage(existingRun.current_stage);
+        setIsPaused(existingRun.status === 'paused');
+        setSelectedDocuments(new Set(existingRun.document_ids || []));
+        
+        toast({
+          title: "Workflow Resumed",
+          description: "Continuing from where you left off.",
+        });
+      }
+
+      // Subscribe to realtime updates
+      subscribeToWorkflowUpdates();
+    } catch (error: any) {
+      console.error('Error initializing workflow:', error);
+      toast({
+        title: "Initialization Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const subscribeToWorkflowUpdates = () => {
+    const channel = supabase
+      .channel(`workflow_runs:case_id=eq.${caseId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'workflow_runs',
+          filter: `case_id=eq.${caseId}`,
+        },
+        (payload) => {
+          if (payload.new && payload.eventType !== 'DELETE') {
+            const updatedRun = payload.new as WorkflowRun;
+            setWorkflowRun(updatedRun);
+            setTrackedSteps((updatedRun.steps as any[]) || trackedSteps);
+            setCurrentStage(updatedRun.current_stage);
+            setIsPaused(updatedRun.status === 'paused');
+          }
+        }
+      )
+      .subscribe();
+
+    realtimeChannelRef.current = channel;
+  };
+
+  const createWorkflowRun = async () => {
+    const selectedDocs = Array.from(selectedDocuments);
+    
+    const { data, error } = await supabase
+      .from('workflow_runs')
+      .insert({
+        case_id: caseId,
+        workflow_type: 'ai_documents',
+        status: 'running',
+        current_stage: 'ai_classify',
+        steps: trackedSteps,
+        total_steps: trackedSteps.length,
+        completed_steps: 1, // Upload is already done
+        progress_percentage: Math.round((1 / trackedSteps.length) * 100),
+        document_ids: selectedDocs,
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  };
+
+  const updateWorkflowRun = async (updates: Partial<WorkflowRun>) => {
+    if (!workflowRun) return;
+
+    const { error } = await supabase
+      .from('workflow_runs')
+      .update(updates)
+      .eq('id', workflowRun.id);
+
+    if (error) throw error;
+  };
+
+  const updateStepStatus = async (stepId: string, status: 'processing' | 'completed' | 'failed', error?: string) => {
+    const updatedSteps = trackedSteps.map(step => 
       step.id === stepId 
         ? { ...step, status, error, completedAt: status === 'completed' ? new Date().toISOString() : undefined }
         : step
-    ));
+    );
+    
+    setTrackedSteps(updatedSteps);
+
+    // Persist to database
+    if (workflowRun) {
+      const completedCount = updatedSteps.filter(s => s.status === 'completed').length;
+      const progress = Math.round((completedCount / updatedSteps.length) * 100);
+      
+      await updateWorkflowRun({
+        steps: updatedSteps,
+        completed_steps: completedCount,
+        progress_percentage: progress,
+        current_stage: stepId,
+      });
+    }
   };
 
   const toggleFlip = (stepNumber: string) => {
@@ -199,10 +359,12 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
   };
 
   const runWorkflowStep = async (stage: AIWorkflowStep['stage'], retryCount = 0) => {
+    if (isPaused) return;
+    
     const MAX_RETRIES = 3;
     console.log(`Running workflow step: ${stage} (attempt ${retryCount + 1})`);
     setCurrentStage(stage);
-    updateStepStatus(stage, 'processing');
+    await updateStepStatus(stage, 'processing');
     setIsRunning(true);
     
     try {
@@ -212,20 +374,20 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
             .from('documents')
             .select('id, name, dropbox_path')
             .eq('case_id', caseId)
+            .in('id', Array.from(selectedDocuments))
             .is('document_type', null);
 
           if (docsError) throw docsError;
           if (!docs || docs.length === 0) {
             toast({ title: "No documents to classify", variant: "default" });
-            updateStepStatus('ai_classify', 'completed');
+            await updateStepStatus('ai_classify', 'completed');
             setCurrentStage('hac_classify');
             return;
           }
 
-          // Parallel processing for speed
+          // Parallel batch processing
           const classifyPromises = docs.map(async (doc) => {
             try {
-              // Download file
               const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
               const downloadResponse = await fetch(
                 `${supabaseUrl}/functions/v1/download-dropbox-file`,
@@ -246,7 +408,6 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
                 new Uint8Array(arrayBuffer).reduce((data, byte) => data + String.fromCharCode(byte), "")
               );
 
-              // Classify
               const { error: classifyError } = await supabase.functions.invoke(
                 'ai-classify-document',
                 { body: { documentId: doc.id, caseId, imageBase64 } }
@@ -264,20 +425,19 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
           const successCount = classifyResults.filter(r => r.success).length;
           
           toast({ title: `AI Classification Complete (${successCount}/${docs.length})` });
-          updateStepStatus('ai_classify', 'completed');
+          await updateStepStatus('ai_classify', 'completed');
           await refetchDocs();
           setCurrentStage('hac_classify');
           break;
 
         case 'ocr':
-          // Trigger OCR Worker
           console.log("Triggering OCR worker...");
           const { error: ocrError } = await supabase.functions.invoke('ocr-worker');
           
           if (ocrError) throw ocrError;
           
           toast({ title: "OCR Processing Complete" });
-          updateStepStatus('ocr', 'completed');
+          await updateStepStatus('ocr', 'completed');
           await refetchDocs();
           setCurrentStage('form_population');
           break;
@@ -287,13 +447,14 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
             .from('documents')
             .select('id, name')
             .eq('case_id', caseId)
+            .in('id', Array.from(selectedDocuments))
             .eq('ocr_status', 'completed')
             .eq('data_applied_to_forms', false);
 
           if (ocrDocsError) throw ocrDocsError;
           if (!ocrDocs || ocrDocs.length === 0) {
             toast({ title: "No OCR data to apply", variant: "default" });
-            updateStepStatus('form_population', 'completed');
+            await updateStepStatus('form_population', 'completed');
             setCurrentStage('hac_forms');
             return;
           }
@@ -318,7 +479,7 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
           const applySuccessCount = applyResults.filter(r => r.success).length;
 
           toast({ title: `Forms Populated (${applySuccessCount}/${ocrDocs.length})` });
-          updateStepStatus('form_population', 'completed');
+          await updateStepStatus('form_population', 'completed');
           setCurrentStage('hac_forms');
           break;
 
@@ -343,7 +504,7 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
           const verifySuccessCount = verifyResults.filter(r => r.success).length;
           
           toast({ title: `AI Verification Complete (${verifySuccessCount}/3 forms)` });
-          updateStepStatus('ai_verify', 'completed');
+          await updateStepStatus('ai_verify', 'completed');
           setCurrentStage('hac_verify');
           break;
 
@@ -356,7 +517,16 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
           
           console.log('PDF generation result:', pdfData);
           toast({ title: "PDFs Generated Successfully" });
-          updateStepStatus('pdf_generation', 'completed');
+          await updateStepStatus('pdf_generation', 'completed');
+          
+          // Mark workflow as completed
+          if (workflowRun) {
+            await updateWorkflowRun({
+              status: 'completed',
+              completed_at: new Date().toISOString(),
+              progress_percentage: 100,
+            });
+          }
           
           setTimeout(() => {
             navigate(`/admin/poa/${caseId}`);
@@ -386,7 +556,14 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
       }
 
       // Permanent failure
-      updateStepStatus(stage, 'failed', error?.message || 'Unknown error');
+      await updateStepStatus(stage, 'failed', error?.message || 'Unknown error');
+      
+      if (workflowRun) {
+        await updateWorkflowRun({ 
+          status: 'failed', 
+          last_error: error?.message 
+        });
+      }
       
       toast({
         title: `${stage} Failed`,
@@ -400,9 +577,88 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
     }
   };
 
+  const startWorkflow = async () => {
+    setIsRunning(true);
+    setIsPaused(false);
+    
+    try {
+      // Create new workflow run if starting fresh
+      if (!workflowRun) {
+        const newRun = await createWorkflowRun();
+        setWorkflowRun(newRun);
+      } else {
+        // Resume paused workflow
+        await updateWorkflowRun({ status: 'running', paused_at: null });
+      }
+
+      setCurrentStage("ai_classify");
+      await runWorkflowStep("ai_classify");
+    } catch (error: any) {
+      console.error('Workflow error:', error);
+      toast({
+        title: "Workflow Error",
+        description: error.message,
+        variant: "destructive",
+      });
+      setIsRunning(false);
+    }
+  };
+
+  const pauseWorkflow = async () => {
+    setIsPaused(true);
+    setIsRunning(false);
+    
+    if (workflowRun) {
+      await updateWorkflowRun({ 
+        status: 'paused', 
+        paused_at: new Date().toISOString() 
+      });
+    }
+
+    toast({
+      title: "Workflow Paused",
+      description: "You can resume anytime.",
+    });
+  };
+
+  const retryWorkflow = async () => {
+    if (!workflowRun) return;
+
+    const retryCount = (workflowRun.retry_count || 0) + 1;
+    
+    if (retryCount > (workflowRun.max_retries || 3)) {
+      toast({
+        title: "Max Retries Reached",
+        description: "Please contact support for assistance.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    await updateWorkflowRun({
+      status: 'running',
+      retry_count: retryCount,
+      last_error: null,
+    });
+
+    // Reset failed steps
+    const resetSteps = trackedSteps.map(step => 
+      step.status === 'failed' ? { ...step, status: 'pending' as const, error: undefined } : step
+    );
+    setTrackedSteps(resetSteps);
+
+    // Resume from current stage
+    setIsRunning(true);
+    setIsPaused(false);
+    await runWorkflowStep(currentStage as AIWorkflowStep['stage']);
+  };
+
   const approveAndContinue = async (currentStageId: AIWorkflowStep['stage']) => {
     const stageIndex = workflowSteps.findIndex(s => s.stage === currentStageId);
     const nextStep = workflowSteps[stageIndex + 1];
+    
+    // Mark current step as complete
+    await updateStepStatus(currentStageId, 'completed');
     
     if (nextStep && nextStep.agent === 'ai') {
       await runWorkflowStep(nextStep.stage);
@@ -423,7 +679,7 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
     }
 
     setIsUploading(true);
-    updateStepStatus('upload', 'processing');
+    await updateStepStatus('upload', 'processing');
     try {
       const { data, error } = await supabase.functions.invoke('list-dropbox-documents', {
         body: { caseId, dropboxPath: caseData.dropbox_path }
@@ -436,10 +692,10 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
         description: `Synced ${data.synced} new documents`
       });
       
-      updateStepStatus('upload', 'completed');
+      await updateStepStatus('upload', 'completed');
       refetchDocs();
     } catch (error) {
-      updateStepStatus('upload', 'failed', error instanceof Error ? error.message : 'Unknown error');
+      await updateStepStatus('upload', 'failed', error instanceof Error ? error.message : 'Unknown error');
       toast({
         title: "Sync failed",
         description: error instanceof Error ? error.message : 'Unknown error',
@@ -505,9 +761,38 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
     }
   };
 
+  const toggleDocumentSelection = (docId: string) => {
+    if (workflowRun) return; // Can't change selection if workflow started
+    
+    setSelectedDocuments(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(docId)) {
+        newSet.delete(docId);
+      } else {
+        newSet.add(docId);
+      }
+      return newSet;
+    });
+  };
+
+  const selectAllDocuments = () => {
+    if (workflowRun) return;
+    setSelectedDocuments(new Set(documents?.map(d => d.id) || []));
+  };
+
+  const deselectAllDocuments = () => {
+    if (workflowRun) return;
+    setSelectedDocuments(new Set());
+  };
+
   const overallProgress = Math.round(
     (trackedSteps.filter(s => s.status === 'completed').length / trackedSteps.length) * 100
   );
+
+  const canStart = !isRunning && !isPaused && !workflowRun && selectedDocuments.size > 0;
+  const canResume = isPaused && workflowRun;
+  const canPause = isRunning && !isPaused;
+  const canRetry = workflowRun?.status === 'failed';
 
   return (
     <section className="relative py-8 overflow-hidden">
@@ -519,6 +804,55 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
           overallProgress={overallProgress}
         />
 
+        {/* Workflow Controls */}
+        {workflowRun && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="glass-card p-6 my-6"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-semibold text-lg">Workflow Controls</h3>
+                <p className="text-sm text-muted-foreground">
+                  Run #{workflowRun.id.slice(0, 8)} • {selectedDocuments.size} documents
+                </p>
+              </div>
+              <div className="flex gap-2">
+                {canStart && (
+                  <Button onClick={startWorkflow}>
+                    <Play className="h-4 w-4 mr-2" />
+                    Start ({selectedDocuments.size} docs)
+                  </Button>
+                )}
+                {canResume && (
+                  <Button onClick={startWorkflow}>
+                    <PlayCircle className="h-4 w-4 mr-2" />
+                    Resume
+                  </Button>
+                )}
+                {canPause && (
+                  <Button onClick={pauseWorkflow} variant="outline">
+                    <Pause className="h-4 w-4 mr-2" />
+                    Pause
+                  </Button>
+                )}
+                {canRetry && (
+                  <Button onClick={retryWorkflow} variant="outline">
+                    <RotateCcw className="h-4 w-4 mr-2" />
+                    Retry ({workflowRun.retry_count}/{workflowRun.max_retries})
+                  </Button>
+                )}
+              </div>
+            </div>
+            {workflowRun.last_error && (
+              <div className="mt-4 p-3 bg-destructive/10 border border-destructive rounded">
+                <p className="text-sm text-destructive">{workflowRun.last_error}</p>
+              </div>
+            )}
+          </motion.div>
+        )}
+
         {/* Document Upload Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -527,15 +861,30 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
         >
           <h3 className="text-2xl font-heading font-bold mb-4">Dropbox Documents</h3>
           
-          <div className="mb-6 flex gap-3">
+          <div className="mb-6 flex gap-3 items-center">
             <Button
               onClick={syncDropboxDocuments}
-              disabled={isUploading || !caseData?.dropbox_path}
+              disabled={isUploading || !caseData?.dropbox_path || !!workflowRun}
               className="w-full md:w-auto"
             >
               <Upload className="h-4 w-4 mr-2" />
               {isUploading ? 'Syncing...' : 'Sync from Dropbox'}
             </Button>
+            
+            {!workflowRun && documents && documents.length > 0 && (
+              <>
+                <Button size="sm" variant="outline" onClick={selectAllDocuments}>
+                  Select All
+                </Button>
+                <Button size="sm" variant="outline" onClick={deselectAllDocuments}>
+                  Deselect All
+                </Button>
+                <span className="text-sm text-muted-foreground">
+                  {selectedDocuments.size} of {documents.length} selected
+                </span>
+              </>
+            )}
+            
             {!caseData?.dropbox_path && (
               <p className="text-sm text-destructive">No Dropbox path configured for this case</p>
             )}
@@ -546,7 +895,13 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
           ) : documents && documents.length > 0 ? (
             <div className="space-y-2">
               {documents.map((doc) => (
-                <div key={doc.id} className="flex items-center justify-between p-3 border rounded">
+                <div key={doc.id} className="flex items-center gap-3 p-3 border rounded">
+                  {!workflowRun && (
+                    <Checkbox
+                      checked={selectedDocuments.has(doc.id)}
+                      onCheckedChange={() => toggleDocumentSelection(doc.id)}
+                    />
+                  )}
                   <div className="flex-1">
                     <p className="font-medium">{doc.name}</p>
                     <div className="flex gap-2 mt-1">
@@ -567,6 +922,7 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
                       size="sm"
                       variant="destructive"
                       onClick={() => handleDelete(doc.id)}
+                      disabled={!!workflowRun}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -615,20 +971,19 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
                         {isActive && <Badge variant="outline">Active</Badge>}
                       </div>
 
-                      {step.agent === 'human' && isActive && (
+                      {step.agent === 'human' && isActive && !isRunning && (
                         <Button
                           className="mt-4 w-full"
                           onClick={(e) => {
                             e.stopPropagation();
                             approveAndContinue(step.stage);
                           }}
-                          disabled={isRunning}
                         >
                           Approve & Continue
                         </Button>
                       )}
 
-                      {step.agent === 'ai' && isActive && !isRunning && (
+                      {step.agent === 'ai' && isActive && !isRunning && !isPaused && (
                         <Button
                           className="mt-4 w-full"
                           onClick={(e) => {
@@ -656,14 +1011,15 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
         </div>
 
         {/* Start Button */}
-        {currentStage === 'upload' && !isRunning && (
+        {canStart && (
           <div className="flex justify-center mt-8">
             <Button
               size="lg"
-              onClick={() => runWorkflowStep('ai_classify')}
-              disabled={!documents || documents.length === 0}
+              onClick={startWorkflow}
+              disabled={selectedDocuments.size === 0}
             >
-              Start AI Workflow
+              <Play className="h-4 w-4 mr-2" />
+              Start AI Workflow ({selectedDocuments.size} documents)
             </Button>
           </div>
         )}
