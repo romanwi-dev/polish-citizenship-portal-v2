@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Bot, GitBranch, ClipboardList, Users, Archive, Languages, Award, FileCheck, Plane, BookOpen, Shield, Search, PenTool, Sun, Sparkles, FileText } from 'lucide-react';
+import { Bot, GitBranch, ClipboardList, Users, Archive, Languages, Award, FileCheck, Plane, BookOpen, Shield, Search, PenTool, Sun, Sparkles, FileText, Brain } from 'lucide-react';
 
 interface NavigationLinksProps {
   onNavigate: () => void;
@@ -40,6 +40,7 @@ const NAVIGATION_SECTIONS: Array<{
   {
     title: 'Workflows',
     links: [
+      { label: 'AI Workflow', href: '/admin/ai-workflow', icon: Brain },
       { label: 'Archives Search', href: '/admin/archives-search', icon: Archive },
       { label: 'Translations', href: '/admin/translations', icon: Languages },
       { label: 'Polish Citizenship', href: '/admin/citizenship', icon: Award },
