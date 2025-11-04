@@ -33,6 +33,7 @@ import { useDocumentProgress } from "@/hooks/useDocumentProgress";
 import { DocumentProgressCard } from "./DocumentProgressCard";
 import { BatchStatsDashboard } from "./BatchStatsDashboard";
 import { PDFPreviewPanel } from "./PDFPreviewPanel";
+import { ErrorRecoveryPanel } from "./ErrorRecoveryPanel";
 import type { RealtimeChannel } from "@supabase/supabase-js";
 
 interface AIWorkflowStep {
@@ -518,6 +519,18 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
                 const errorMsg = error instanceof Error ? error.message : 'Unknown error';
                 console.error(`Failed to classify ${doc.name}:`, errorMsg);
                 progress.markFailed(doc.id, errorMsg);
+                
+                // Log error to workflow_errors table
+                if (workflowRun) {
+                  await supabase.rpc('log_workflow_error', {
+                    p_workflow_run_id: workflowRun.id,
+                    p_document_id: doc.id,
+                    p_stage: 'ai_classify',
+                    p_error_message: errorMsg,
+                    p_error_details: { dropbox_path: doc.dropbox_path }
+                  });
+                }
+                
                 // Don't throw - let workflow continue with other documents
                 return { success: false, name: doc.name, error: errorMsg };
               }
@@ -593,6 +606,18 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
                 const errorMsg = error instanceof Error ? error.message : 'Unknown error';
                 console.error(`Failed to apply OCR for ${doc.name}:`, errorMsg);
                 progress.markFailed(doc.id, errorMsg);
+                
+                // Log error to workflow_errors table
+                if (workflowRun) {
+                  await supabase.rpc('log_workflow_error', {
+                    p_workflow_run_id: workflowRun.id,
+                    p_document_id: doc.id,
+                    p_stage: 'form_population',
+                    p_error_message: errorMsg,
+                    p_error_details: {}
+                  });
+                }
+                
                 return { success: false, name: doc.name, error: errorMsg };
               }
             });
@@ -682,6 +707,18 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
       await updateStepStatus(stage, 'failed', error?.message || 'Unknown error');
       
       if (workflowRun) {
+        // Log stage-level error
+        await supabase.rpc('log_workflow_error', {
+          p_workflow_run_id: workflowRun.id,
+          p_document_id: null,
+          p_stage: stage,
+          p_error_message: error?.message || 'Unknown error',
+          p_error_details: { 
+            status: error?.status,
+            retryCount: retryCount
+          }
+        });
+        
         await updateWorkflowRun({ 
           status: 'failed', 
           last_error: error?.message 
@@ -876,6 +913,31 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
     
     // Go back to HAC verification stage
     setCurrentStage('hac_verify');
+  };
+
+  const handleRetryErrors = async (documentIds: string[], stage: string) => {
+    setIsRunning(true);
+    
+    try {
+      // Update selected documents to retry
+      setSelectedDocuments(new Set(documentIds));
+      
+      // Re-run the failed stage
+      await runWorkflowStep(stage as AIWorkflowStep['stage']);
+      
+      toast({
+        title: "Retry Complete",
+        description: `Re-processed ${documentIds.length} document(s)`
+      });
+    } catch (error: any) {
+      toast({
+        title: "Retry Failed",
+        description: error.message,
+        variant: "destructive"
+      });
+    } finally {
+      setIsRunning(false);
+    }
   };
 
   const syncDropboxDocuments = async () => {
@@ -1132,6 +1194,20 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
                 <DocumentProgressCard key={doc.id} document={doc} />
               ))}
             </div>
+          </motion.div>
+        )}
+
+        {/* Error Recovery Panel */}
+        {workflowRun && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="my-6"
+          >
+            <ErrorRecoveryPanel
+              workflowRunId={workflowRun.id}
+              onRetry={handleRetryErrors}
+            />
           </motion.div>
         )}
 
