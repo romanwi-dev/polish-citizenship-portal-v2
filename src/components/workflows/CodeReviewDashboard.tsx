@@ -149,8 +149,12 @@ export const CodeReviewDashboard = () => {
     setResults([]);
     setProgress(0);
 
+    const completedResults: ReviewResult[] = [];
+    let completedCount = 0;
+
     try {
-      const reviewPromises = filesToReview.map(async (file, index) => {
+      // Process files sequentially to avoid overwhelming the system
+      for (const file of filesToReview) {
         setCurrentFile(file.name);
         
         try {
@@ -167,14 +171,33 @@ export const CodeReviewDashboard = () => {
             
             if (analyzerError || !analyzerData?.success) {
               console.error(`Failed to fetch ${functionName}:`, analyzerError || analyzerData?.error);
-              fileContent = `// Edge Function: ${functionName}\n// ERROR: Could not fetch code - ${analyzerData?.error || analyzerError?.message}`;
+              toast({
+                title: `Skipped: ${file.name}`,
+                description: `Could not fetch code: ${analyzerData?.error || analyzerError?.message}`,
+                variant: "destructive"
+              });
+              completedCount++;
+              setProgress((completedCount / filesToReview.length) * 100);
+              continue; // Skip this file but continue with others
             } else {
               fileContent = analyzerData.code;
               console.log(`✅ Fetched ${functionName}: ${analyzerData.lineCount} lines`);
             }
           } else {
             // For src/ files, use build-time imports
-            fileContent = getFileContent(file.path);
+            try {
+              fileContent = getFileContent(file.path);
+            } catch (error) {
+              console.error(`Failed to get content for ${file.name}:`, error);
+              toast({
+                title: `Skipped: ${file.name}`,
+                description: "Could not load file content",
+                variant: "destructive"
+              });
+              completedCount++;
+              setProgress((completedCount / filesToReview.length) * 100);
+              continue;
+            }
           }
           
           console.log(`📄 Analyzing ${file.name} with GPT-5 (${fileContent.length} characters of code)...`);
@@ -187,33 +210,59 @@ export const CodeReviewDashboard = () => {
             }
           });
 
-          if (error) throw error;
+          if (error) {
+            console.error(`AI review error for ${file.name}:`, error);
+            toast({
+              title: `Skipped: ${file.name}`,
+              description: `Review failed: ${error.message}`,
+              variant: "destructive"
+            });
+          } else if (data?.review) {
+            const result = {
+              fileName: file.name,
+              ...data.review
+            } as ReviewResult;
+            
+            completedResults.push(result);
+            setResults([...completedResults]); // Update UI with each completed result
+          }
 
-          setProgress(((index + 1) / filesToReview.length) * 100);
+          completedCount++;
+          setProgress((completedCount / filesToReview.length) * 100);
           
-          return {
-            fileName: file.name,
-            ...data.review
-          } as ReviewResult;
         } catch (error) {
           console.error(`Failed to review ${file.name}:`, error);
-          throw error;
+          toast({
+            title: `Error: ${file.name}`,
+            description: error instanceof Error ? error.message : "Unknown error",
+            variant: "destructive"
+          });
+          completedCount++;
+          setProgress((completedCount / filesToReview.length) * 100);
+          // Continue with next file
         }
-      });
+      }
 
-      const reviewResults = await Promise.all(reviewPromises);
-      setResults(reviewResults);
+      // Show final results
+      if (completedResults.length === 0) {
+        toast({
+          title: "Code Review Failed",
+          description: "No files could be reviewed successfully.",
+          variant: "destructive"
+        });
+      } else {
+        const avgScore = Math.round(
+          completedResults.reduce((sum, r) => sum + r.overallScore, 0) / completedResults.length
+        );
 
-      const avgScore = Math.round(
-        reviewResults.reduce((sum, r) => sum + r.overallScore, 0) / reviewResults.length
-      );
-
-      toast({
-        title: "Code Review Complete",
-        description: `Average score: ${avgScore}/100`
-      });
+        toast({
+          title: "Code Review Complete",
+          description: `Reviewed ${completedResults.length}/${filesToReview.length} files. Average score: ${avgScore}/100`
+        });
+      }
 
     } catch (error: any) {
+      console.error('Code review error:', error);
       toast({
         title: "Code Review Failed",
         description: error.message,
@@ -222,6 +271,7 @@ export const CodeReviewDashboard = () => {
     } finally {
       setIsRunning(false);
       setCurrentFile('');
+      setProgress(100);
     }
   };
 
