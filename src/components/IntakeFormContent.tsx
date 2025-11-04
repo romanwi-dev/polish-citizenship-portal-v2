@@ -102,7 +102,7 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
           { field: "idk_renounced", label: "I want to apply also for some other family members" },
           { field: "idk_ancestor_lost_citizenship", label: "My ancestors emigrated from POLAND before 1920" },
           { field: "idk_ancestor_polish_passport", label: "I have some old original Polish documents of my family" },
-          { field: "idk_ancestor_applied_citizenship", label: "One of my relatives already holds Polish citizenship confirmation" },
+          { field: "idk_ancestor_applied_citizenship", label: "One of my relatives holds Polish citizenship confirmation" },
         ].map((item, index) => (
           <motion.div
             key={item.field}
