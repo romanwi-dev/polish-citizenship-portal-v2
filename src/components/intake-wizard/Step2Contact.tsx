@@ -77,80 +77,86 @@ export const Step2Contact = ({ formData, onChange, dontKnowFields, onDontKnowTog
         />
       </div>
 
-      {/* City */}
-      <div className="space-y-2">
-        <Label htmlFor="city">
-          {t('city')} <span className="text-destructive">*</span>
-        </Label>
-        <Input
-          id="city"
-          value={formData.applicant_city || ''}
-          onChange={(e) => onChange('applicant_city', e.target.value)}
-          placeholder=""
-          disabled={dontKnowFields.has('applicant_city')}
-          required
-        />
-        <DontKnowCheckbox
-          checked={dontKnowFields.has('applicant_city')}
-          onChange={(checked) => onDontKnowToggle('applicant_city', checked)}
-          fieldId="city"
-        />
+      {/* City + State Row */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* City */}
+        <div className="space-y-2">
+          <Label htmlFor="city">
+            {t('city')} <span className="text-destructive">*</span>
+          </Label>
+          <Input
+            id="city"
+            value={formData.applicant_city || ''}
+            onChange={(e) => onChange('applicant_city', e.target.value)}
+            placeholder=""
+            disabled={dontKnowFields.has('applicant_city')}
+            required
+          />
+          <DontKnowCheckbox
+            checked={dontKnowFields.has('applicant_city')}
+            onChange={(checked) => onDontKnowToggle('applicant_city', checked)}
+            fieldId="city"
+          />
+        </div>
+
+        {/* State/Province */}
+        <div className="space-y-2">
+          <Label htmlFor="state">
+            {t('state')} {t('optional')}
+          </Label>
+          <Input
+            id="state"
+            value={formData.applicant_state || ''}
+            onChange={(e) => onChange('applicant_state', e.target.value)}
+            placeholder=""
+            disabled={dontKnowFields.has('applicant_state')}
+          />
+          <DontKnowCheckbox
+            checked={dontKnowFields.has('applicant_state')}
+            onChange={(checked) => onDontKnowToggle('applicant_state', checked)}
+            fieldId="state"
+          />
+        </div>
       </div>
 
-      {/* State/Province */}
-      <div className="space-y-2">
-        <Label htmlFor="state">
-          {t('state')} {t('optional')}
-        </Label>
-        <Input
-          id="state"
-          value={formData.applicant_state || ''}
-          onChange={(e) => onChange('applicant_state', e.target.value)}
-          placeholder=""
-          disabled={dontKnowFields.has('applicant_state')}
-        />
-        <DontKnowCheckbox
-          checked={dontKnowFields.has('applicant_state')}
-          onChange={(checked) => onDontKnowToggle('applicant_state', checked)}
-          fieldId="state"
-        />
-      </div>
+      {/* Postal Code + Country Row */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* ZIP Code */}
+        <div className="space-y-2">
+          <Label htmlFor="zip">
+            {t('zipCode')} <span className="text-destructive">*</span>
+          </Label>
+          <Input
+            id="zip"
+            value={formData.applicant_zip_code || ''}
+            onChange={(e) => onChange('applicant_zip_code', e.target.value)}
+            placeholder=""
+            disabled={dontKnowFields.has('applicant_zip_code')}
+            required
+          />
+          <DontKnowCheckbox
+            checked={dontKnowFields.has('applicant_zip_code')}
+            onChange={(checked) => onDontKnowToggle('applicant_zip_code', checked)}
+            fieldId="zip"
+          />
+        </div>
 
-      {/* ZIP Code */}
-      <div className="space-y-2">
-        <Label htmlFor="zip">
-          {t('zipCode')} <span className="text-destructive">*</span>
-        </Label>
-        <Input
-          id="zip"
-          value={formData.applicant_zip_code || ''}
-          onChange={(e) => onChange('applicant_zip_code', e.target.value)}
-          placeholder=""
-          disabled={dontKnowFields.has('applicant_zip_code')}
-          required
-        />
-        <DontKnowCheckbox
-          checked={dontKnowFields.has('applicant_zip_code')}
-          onChange={(checked) => onDontKnowToggle('applicant_zip_code', checked)}
-          fieldId="zip"
-        />
-      </div>
-
-      {/* Country */}
-      <div className="space-y-2">
-        <Label htmlFor="country">
-          {t('country')} <span className="text-destructive">*</span>
-        </Label>
-        <CountrySelect
-          value={formData.applicant_country || ''}
-          onChange={(value) => onChange('applicant_country', value)}
-          colorScheme="applicant"
-        />
-        <DontKnowCheckbox
-          checked={dontKnowFields.has('applicant_country')}
-          onChange={(checked) => onDontKnowToggle('applicant_country', checked)}
-          fieldId="country"
-        />
+        {/* Country */}
+        <div className="space-y-2">
+          <Label htmlFor="country">
+            {t('country')} <span className="text-destructive">*</span>
+          </Label>
+          <CountrySelect
+            value={formData.applicant_country || ''}
+            onChange={(value) => onChange('applicant_country', value)}
+            colorScheme="applicant"
+          />
+          <DontKnowCheckbox
+            checked={dontKnowFields.has('applicant_country')}
+            onChange={(checked) => onDontKnowToggle('applicant_country', checked)}
+            fieldId="country"
+          />
+        </div>
       </div>
     </div>
   );
