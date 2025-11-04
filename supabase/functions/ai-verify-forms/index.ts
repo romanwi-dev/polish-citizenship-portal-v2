@@ -1,6 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { createSecureResponse, getSecurityHeaders } from "../_shared/security-headers.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -25,8 +26,10 @@ interface VerificationResult {
 }
 
 serve(async (req) => {
+  const origin = req.headers.get('Origin');
+  
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
+    return new Response(null, { headers: getSecurityHeaders(origin) });
   }
 
   try {
@@ -250,32 +253,21 @@ Check for:
 
     console.log(`✓ Verification results stored for ${formType}`);
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        formType,
-        caseId,
-        openai: openaiResult,
-        gemini: geminiResult,
-        consensus,
-        timestamp: new Date().toISOString()
-      }),
-      { 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      }
-    );
+    return createSecureResponse({
+      success: true,
+      formType,
+      caseId,
+      openai: openaiResult,
+      gemini: geminiResult,
+      consensus,
+      timestamp: new Date().toISOString()
+    }, 200, origin);
 
   } catch (error) {
     console.error('AI Verification error:', error);
-    return new Response(
-      JSON.stringify({
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error'
-      }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      }
-    );
+    return createSecureResponse({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    }, 500, origin);
   }
 });

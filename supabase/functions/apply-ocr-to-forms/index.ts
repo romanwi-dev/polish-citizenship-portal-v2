@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { getFieldMappings, mapOCRToMasterTable } from '../_shared/ocrFieldMapping.ts';
+import { createSecureResponse, getSecurityHeaders } from '../_shared/security-headers.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -22,26 +23,22 @@ interface AppliedField {
 }
 
 serve(async (req) => {
+  const origin = req.headers.get('Origin');
+  
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
+    return new Response(null, { headers: getSecurityHeaders(origin) });
   }
 
   try {
     const { documentId, caseId, overwriteManual = false } = await req.json() as ApplyOCRRequest;
 
     if (!documentId || !caseId) {
-      return new Response(
-        JSON.stringify({ error: 'documentId and caseId are required' }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      return createSecureResponse({ error: 'documentId and caseId are required' }, 400, origin);
     }
 
     const authHeader = req.headers.get('Authorization');
     if (!authHeader) {
-      return new Response(
-        JSON.stringify({ error: 'Missing authorization header' }),
-        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      return createSecureResponse({ error: 'Missing authorization header' }, 401, origin);
     }
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
@@ -51,10 +48,7 @@ serve(async (req) => {
     // Verify user authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser(authHeader.replace('Bearer ', ''));
     if (authError || !user) {
-      return new Response(
-        JSON.stringify({ error: 'Unauthorized' }),
-        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      return createSecureResponse({ error: 'Unauthorized' }, 401, origin);
     }
 
     // Fetch document with OCR data
@@ -65,17 +59,11 @@ serve(async (req) => {
       .single();
 
     if (docError || !document) {
-      return new Response(
-        JSON.stringify({ error: 'Document not found' }),
-        { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      return createSecureResponse({ error: 'Document not found' }, 404, origin);
     }
 
     if (!document.ocr_data || typeof document.ocr_data !== 'object') {
-      return new Response(
-        JSON.stringify({ error: 'No OCR data available for this document' }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      return createSecureResponse({ error: 'No OCR data available for this document' }, 400, origin);
     }
 
     const ocrData = document.ocr_data as any;
@@ -84,10 +72,7 @@ serve(async (req) => {
     const documentType = document.document_type || extractedData.document_type;
 
     if (!personType) {
-      return new Response(
-        JSON.stringify({ error: 'Person type not identified in document' }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      return createSecureResponse({ error: 'Person type not identified in document' }, 400, origin);
     }
 
     // Fetch current master table data
@@ -98,10 +83,7 @@ serve(async (req) => {
       .single();
 
     if (masterError || !masterData) {
-      return new Response(
-        JSON.stringify({ error: 'Master table not found for case' }),
-        { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      return createSecureResponse({ error: 'Master table not found for case' }, 404, origin);
     }
 
     // Use shared mapping logic
@@ -163,9 +145,10 @@ serve(async (req) => {
 
       if (updateError) {
         console.error('Failed to update master table:', updateError);
-        return new Response(
-          JSON.stringify({ error: 'Failed to apply OCR data', details: updateError.message }),
-          { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        return createSecureResponse(
+          { error: 'Failed to apply OCR data', details: updateError.message },
+          500,
+          origin
         );
       }
     }
@@ -178,24 +161,22 @@ serve(async (req) => {
 
     console.log(`Applied OCR data: ${appliedFields.length} fields updated, ${conflicts.length} conflicts detected`);
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        appliedFields: appliedFields.length,
-        conflicts: conflicts.length,
-        details: {
-          applied: appliedFields,
-          conflicts: conflicts
-        }
-      }),
-      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+    return createSecureResponse({
+      success: true,
+      appliedFields: appliedFields.length,
+      conflicts: conflicts.length,
+      details: {
+        applied: appliedFields,
+        conflicts: conflicts
+      }
+    }, 200, origin);
 
   } catch (error) {
     console.error('Error in apply-ocr-to-forms:', error);
-    return new Response(
-      JSON.stringify({ error: error instanceof Error ? error.message : 'Internal server error' }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    return createSecureResponse(
+      { error: error instanceof Error ? error.message : 'Internal server error' },
+      500,
+      origin
     );
   }
 });

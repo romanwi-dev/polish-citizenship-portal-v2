@@ -1,14 +1,12 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { generateAccessToken } from "../_shared/dropbox-auth.ts";
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+import { createSecureResponse, getSecurityHeaders } from "../_shared/security-headers.ts";
 
 serve(async (req) => {
+  const origin = req.headers.get('Origin');
+  
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
+    return new Response(null, { headers: getSecurityHeaders(origin) });
   }
 
   try {
@@ -69,9 +67,10 @@ serve(async (req) => {
     };
     const contentType = contentTypeMap[ext] || 'application/octet-stream';
 
+    const secureHeaders = getSecurityHeaders(origin);
     return new Response(fileData, {
       headers: {
-        ...corsHeaders,
+        ...secureHeaders,
         'Content-Type': contentType,
         'Content-Disposition': `attachment; filename="${fileName}"`,
       },
@@ -79,15 +78,9 @@ serve(async (req) => {
 
   } catch (error) {
     console.error('Error downloading Dropbox file:', error);
-    return new Response(
-      JSON.stringify({
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
-      }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      }
-    );
+    return createSecureResponse({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    }, 500, origin);
   }
 });

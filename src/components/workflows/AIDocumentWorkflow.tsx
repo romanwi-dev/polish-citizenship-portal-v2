@@ -841,6 +841,14 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
 
   return (
     <section className="relative py-8 overflow-hidden">
+      {/* AI Consent Modal */}
+      <AIConsentModal
+        open={showConsentModal}
+        onConsent={handleConsentGiven}
+        onDecline={handleConsentDeclined}
+        caseId={caseId}
+      />
+
       <div className="container relative z-10 mx-auto px-4">
         {/* Sprint 3 Code Review Banner */}
         <motion.div

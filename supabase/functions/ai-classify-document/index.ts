@@ -1,4 +1,5 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { createSecureResponse, getSecurityHeaders } from "../_shared/security-headers.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -20,8 +21,10 @@ interface ClassificationResult {
 }
 
 Deno.serve(async (req) => {
+  const origin = req.headers.get('Origin');
+  
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
+    return new Response(null, { headers: getSecurityHeaders(origin) });
   }
 
   try {
@@ -30,10 +33,7 @@ Deno.serve(async (req) => {
     // Validate authentication
     const authHeader = req.headers.get('Authorization');
     if (!authHeader) {
-      return new Response(
-        JSON.stringify({ error: 'Unauthorized' }),
-        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      return createSecureResponse({ error: 'Unauthorized' }, 401, origin);
     }
 
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
@@ -190,24 +190,18 @@ Return ONLY valid JSON:
 
     console.log(`Classification complete: ${classification.document_type} for ${classification.person_type} (${(classification.confidence * 100).toFixed(0)}% confident)`);
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        classification,
-        needsReview: classification.confidence < 0.85
-      }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+    return createSecureResponse({
+      success: true,
+      classification,
+      needsReview: classification.confidence < 0.85
+    }, 200, origin);
 
   } catch (error) {
     console.error('Document classification failed:', error);
 
-    return new Response(
-      JSON.stringify({
-        success: false,
-        error: 'Classification failed'
-      }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+    return createSecureResponse({
+      success: false,
+      error: 'Classification failed'
+    }, 500, origin);
   }
 });

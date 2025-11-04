@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { getSecurityHeaders } from "../_shared/security-headers.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -48,8 +49,11 @@ function classifyError(errorMessage: string): 'permanent' | 'transient' {
 }
 
 serve(async (req) => {
+  const origin = req.headers.get('Origin');
+  const secureHeaders = getSecurityHeaders(origin);
+  
   if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+    return new Response(null, { headers: secureHeaders });
   }
 
   try {
@@ -77,7 +81,7 @@ serve(async (req) => {
       console.log("No queued documents found");
       return new Response(
         JSON.stringify({ success: true, message: "No queued documents", processed: 0 }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        { headers: { ...secureHeaders, "Content-Type": "application/json" } }
       );
     }
 
@@ -249,7 +253,7 @@ serve(async (req) => {
         failed: failedCount,
         results,
       }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      { headers: { ...secureHeaders, "Content-Type": "application/json" } }
     );
 
   } catch (error) {
@@ -260,7 +264,7 @@ serve(async (req) => {
       }),
       {
         status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...secureHeaders, "Content-Type": "application/json" },
       }
     );
   }
