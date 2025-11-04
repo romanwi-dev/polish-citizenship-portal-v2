@@ -36,6 +36,15 @@ import { PDFPreviewPanel } from "./PDFPreviewPanel";
 import { ErrorRecoveryPanel } from "./ErrorRecoveryPanel";
 import { DocumentViewer } from "./DocumentViewer";
 import type { RealtimeChannel } from "@supabase/supabase-js";
+// Phase 2: Phase 3 component integrations
+import { QualityMetricsDashboard } from "./QualityMetricsDashboard";
+import { AIConfidencePanel } from "./AIConfidencePanel";
+import { StagePerformanceAnalytics } from "./StagePerformanceAnalytics";
+import { PreFlightChecks } from "./PreFlightChecks";
+import { useQualityMetrics } from "@/hooks/useQualityMetrics";
+import { useAIConfidenceData } from "@/hooks/useAIConfidenceData";
+import { useStagePerformance } from "@/hooks/useStagePerformance";
+import { usePreFlightValidation } from "@/hooks/usePreFlightValidation";
 
 interface AIWorkflowStep {
   number: string;
@@ -239,6 +248,16 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
     url: '',
     name: '',
   });
+  
+  // Phase 2: PreFlight checks state
+  const [showPreFlightModal, setShowPreFlightModal] = useState(false);
+  const [preFlightTargetStage, setPreFlightTargetStage] = useState<string>('');
+
+  // Phase 2: Phase 3 component data hooks
+  const qualityMetrics = useQualityMetrics(caseId);
+  const { confidenceData, verifyClassification } = useAIConfidenceData(caseId);
+  const stagePerformance = useStagePerformance(caseId, currentStage);
+  const { checks: preFlightChecks, runChecks: runPreFlightChecks } = usePreFlightValidation(caseId);
 
   const { data: caseData } = useQuery({
     queryKey: ['case-info', caseId],
@@ -855,6 +874,14 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
     const stageIndex = workflowSteps.findIndex(s => s.stage === currentStageId);
     const nextStep = workflowSteps[stageIndex + 1];
     
+    // Phase 2: Run pre-flight checks before transition
+    if (nextStep) {
+      setPreFlightTargetStage(nextStep.stage);
+      setShowPreFlightModal(true);
+      await runPreFlightChecks(nextStep.stage);
+      return; // Wait for HAC to approve pre-flight checks
+    }
+    
     // Mark current step as complete
     await updateStepStatus(currentStageId, 'completed');
     
@@ -864,6 +891,28 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
       setCurrentStage(nextStep.stage);
       toast({ title: "Ready for Next Step" });
     }
+  };
+  
+  const handlePreFlightProceed = async () => {
+    setShowPreFlightModal(false);
+    const currentIndex = workflowSteps.findIndex(s => s.stage === currentStage);
+    const nextStep = workflowSteps[currentIndex + 1];
+    
+    // Mark current step as complete
+    await updateStepStatus(currentStage as AIWorkflowStep['stage'], 'completed');
+    
+    if (nextStep && nextStep.agent === 'ai') {
+      await runWorkflowStep(nextStep.stage);
+    } else if (nextStep) {
+      setCurrentStage(nextStep.stage);
+      toast({ title: "Ready for Next Step" });
+    }
+  };
+  
+  const handlePreFlightCancel = () => {
+    setShowPreFlightModal(false);
+    setPreFlightTargetStage('');
+    toast({ title: "Transition cancelled", description: "Review the issues and try again." });
   };
 
   const generateFinalPDFs = async () => {
@@ -1158,6 +1207,43 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
           overallProgress={overallProgress}
         />
 
+        {/* Phase 2: PreFlight Checks Modal */}
+        {showPreFlightModal && preFlightTargetStage && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="glass-card p-6 my-6"
+          >
+            <PreFlightChecks
+              targetStage={preFlightTargetStage}
+              stageName={workflowSteps.find(s => s.stage === preFlightTargetStage)?.title || 'Next Stage'}
+              checks={preFlightChecks}
+              onRunChecks={() => runPreFlightChecks(preFlightTargetStage)}
+              onProceed={handlePreFlightProceed}
+              onCancel={handlePreFlightCancel}
+              autoRun={true}
+            />
+          </motion.div>
+        )}
+
+        {/* Phase 2: Stage Performance Analytics (sidebar when running) */}
+        {isRunning && stagePerformance && (
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="glass-card p-6 my-6"
+          >
+            <StagePerformanceAnalytics
+              caseId={caseId}
+              workflowStartTime={workflowStartTime}
+              stages={stagePerformance.stages}
+              totalDuration={stagePerformance.totalDuration}
+              estimatedCompletion={stagePerformance.estimatedCompletion}
+              currentStage={currentStage}
+            />
+          </motion.div>
+        )}
+
         {/* Workflow Controls */}
         {workflowRun && (
           <motion.div
@@ -1265,6 +1351,40 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
             <ErrorRecoveryPanel
               workflowRunId={workflowRun.id}
               onRetry={handleRetryErrors}
+            />
+          </motion.div>
+        )}
+
+        {/* Phase 2: AI Confidence Panel (after AI classification at HAC review stage) */}
+        {currentStage === 'hac_classify' && confidenceData.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="glass-card p-6 my-6"
+          >
+            <AIConfidencePanel
+              confidenceData={confidenceData}
+              onVerify={(documentId, feedback) => verifyClassification({ documentId, feedback })}
+              showLowConfidenceOnly={false}
+            />
+          </motion.div>
+        )}
+
+        {/* Phase 2: Quality Metrics Dashboard (at HAC review stages) */}
+        {(currentStage === 'hac_classify' || currentStage === 'hac_forms' || currentStage === 'hac_verify') && qualityMetrics && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="glass-card p-6 my-6"
+          >
+            <QualityMetricsDashboard
+              caseId={caseId}
+              metrics={qualityMetrics.breakdown}
+              overallScore={qualityMetrics.overall}
+              completeness={qualityMetrics.completeness}
+              missingFields={qualityMetrics.missingFields}
+              blockers={qualityMetrics.blockers}
+              warnings={qualityMetrics.warnings}
             />
           </motion.div>
         )}
