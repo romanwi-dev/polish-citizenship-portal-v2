@@ -165,42 +165,43 @@ export const CodeReviewDashboard = () => {
             const functionName = file.path.split('/')[2];
             console.log(`🔍 Fetching edge function code: ${functionName}...`);
             
-            const { data: analyzerData, error: analyzerError } = await supabase.functions.invoke('edge-function-analyzer', {
-              body: { functionName }
-            });
-            
-            if (analyzerError || !analyzerData?.success) {
-              console.error(`Failed to fetch ${functionName}:`, analyzerError || analyzerData?.error);
-              toast({
-                title: `Skipped: ${file.name}`,
-                description: `Could not fetch code: ${analyzerData?.error || analyzerError?.message}`,
-                variant: "destructive"
+            try {
+              const { data: analyzerData, error: analyzerError } = await supabase.functions.invoke('edge-function-analyzer', {
+                body: { functionName }
               });
-              completedCount++;
-              setProgress((completedCount / filesToReview.length) * 100);
-              continue; // Skip this file but continue with others
-            } else {
+              
+              if (analyzerError) {
+                console.error(`Analyzer error for ${functionName}:`, analyzerError);
+                throw new Error(`Analyzer failed: ${analyzerError.message}`);
+              }
+              
+              if (!analyzerData?.success) {
+                console.error(`Analyzer returned error for ${functionName}:`, analyzerData?.error);
+                throw new Error(`Analyzer error: ${analyzerData?.error || 'Unknown error'}`);
+              }
+              
               fileContent = analyzerData.code;
               console.log(`✅ Fetched ${functionName}: ${analyzerData.lineCount} lines`);
+            } catch (error) {
+              console.error(`Failed to fetch ${functionName}:`, error);
+              throw error;
             }
           } else {
             // For src/ files, use build-time imports
             try {
               fileContent = getFileContent(file.path);
+              console.log(`✅ Loaded ${file.name}: ${fileContent.length} characters`);
             } catch (error) {
               console.error(`Failed to get content for ${file.name}:`, error);
-              toast({
-                title: `Skipped: ${file.name}`,
-                description: "Could not load file content",
-                variant: "destructive"
-              });
-              completedCount++;
-              setProgress((completedCount / filesToReview.length) * 100);
-              continue;
+              throw new Error(`Could not load file content: ${error instanceof Error ? error.message : 'Unknown error'}`);
             }
           }
           
-          console.log(`📄 Analyzing ${file.name} with GPT-5 (${fileContent.length} characters of code)...`);
+          if (!fileContent || fileContent.length < 10) {
+            throw new Error('File content is empty or too short');
+          }
+          
+          console.log(`📄 Analyzing ${file.name} with AI...`);
           
           const { data, error } = await supabase.functions.invoke('ai-code-review', {
             body: {
@@ -212,29 +213,32 @@ export const CodeReviewDashboard = () => {
 
           if (error) {
             console.error(`AI review error for ${file.name}:`, error);
-            toast({
-              title: `Skipped: ${file.name}`,
-              description: `Review failed: ${error.message}`,
-              variant: "destructive"
-            });
-          } else if (data?.review) {
-            const result = {
-              fileName: file.name,
-              ...data.review
-            } as ReviewResult;
-            
-            completedResults.push(result);
-            setResults([...completedResults]); // Update UI with each completed result
+            throw new Error(`AI review failed: ${error.message}`);
           }
+          
+          if (!data?.review) {
+            console.error(`No review data returned for ${file.name}:`, data);
+            throw new Error('No review data in response');
+          }
+
+          const result = {
+            fileName: file.name,
+            ...data.review
+          } as ReviewResult;
+          
+          completedResults.push(result);
+          setResults([...completedResults]); // Update UI with each completed result
+          
+          console.log(`✅ Completed review for ${file.name}: ${result.overallScore}/100`);
 
           completedCount++;
           setProgress((completedCount / filesToReview.length) * 100);
           
         } catch (error) {
-          console.error(`Failed to review ${file.name}:`, error);
+          console.error(`❌ Failed to review ${file.name}:`, error);
           toast({
-            title: `Error: ${file.name}`,
-            description: error instanceof Error ? error.message : "Unknown error",
+            title: `Skipped: ${file.name}`,
+            description: error instanceof Error ? error.message : "Unknown error occurred",
             variant: "destructive"
           });
           completedCount++;
@@ -247,7 +251,7 @@ export const CodeReviewDashboard = () => {
       if (completedResults.length === 0) {
         toast({
           title: "Code Review Failed",
-          description: "No files could be reviewed successfully.",
+          description: "No files could be reviewed. Check console for detailed errors.",
           variant: "destructive"
         });
       } else {
@@ -257,15 +261,15 @@ export const CodeReviewDashboard = () => {
 
         toast({
           title: "Code Review Complete",
-          description: `Reviewed ${completedResults.length}/${filesToReview.length} files. Average score: ${avgScore}/100`
+          description: `Successfully reviewed ${completedResults.length}/${filesToReview.length} files. Average score: ${avgScore}/100`,
         });
       }
 
     } catch (error: any) {
-      console.error('Code review error:', error);
+      console.error('❌ Code review fatal error:', error);
       toast({
         title: "Code Review Failed",
-        description: error.message,
+        description: error.message || "An unexpected error occurred",
         variant: "destructive"
       });
     } finally {
