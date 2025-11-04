@@ -314,7 +314,7 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
       .single();
 
     if (error) throw error;
-    return data;
+    return data as WorkflowRun;
   };
 
   const updateWorkflowRun = async (updates: Partial<WorkflowRun>) => {
