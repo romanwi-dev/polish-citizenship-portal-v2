@@ -149,25 +149,43 @@ export function ResyncConfirmationDialog({
               </div>
 
               {result.casesNotFound && result.casesNotFound.length > 0 && (
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <AlertTriangle className="h-4 w-4 text-yellow-500" />
-                    <p className="text-sm font-medium">
-                      {result.casesNotFound.length} Dropbox folders not matched to cases
-                    </p>
+                <div className="space-y-3">
+                  <div className="p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+                    <div className="flex items-start gap-2">
+                      <AlertTriangle className="h-5 w-5 text-yellow-500 mt-0.5 flex-shrink-0" />
+                      <div className="flex-1">
+                        <p className="font-medium text-yellow-500">
+                          {result.casesNotFound.length} Unmatched Dropbox Folders
+                        </p>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          These folders exist in Dropbox but don't have matching cases in the database
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                  <ScrollArea className="h-[120px] border rounded-lg p-3">
-                    <div className="space-y-1">
+                  
+                  <ScrollArea className="h-[140px] border rounded-lg p-4 bg-background/50">
+                    <div className="space-y-2">
                       {result.casesNotFound.map((folderName, index) => (
-                        <div key={index} className="text-xs text-muted-foreground">
-                          • {folderName}
+                        <div 
+                          key={index} 
+                          className="flex items-center gap-2 p-2 bg-muted/50 rounded border text-sm font-mono"
+                        >
+                          <span className="text-muted-foreground">{index + 1}.</span>
+                          <span className="font-medium">{folderName}</span>
                         </div>
                       ))}
                     </div>
                   </ScrollArea>
-                  <p className="text-xs text-muted-foreground">
-                    These folders exist in Dropbox but don't match any case in the database
-                  </p>
+                  
+                  <div className="text-xs text-muted-foreground space-y-1">
+                    <p>💡 <strong>Why weren't they matched?</strong></p>
+                    <ul className="list-disc list-inside ml-4 space-y-0.5">
+                      <li>Surname doesn't match any client_code or client_name in database</li>
+                      <li>Case might need to be created manually first</li>
+                      <li>Or folder name format doesn't match expected pattern</li>
+                    </ul>
+                  </div>
                 </div>
               )}
 
