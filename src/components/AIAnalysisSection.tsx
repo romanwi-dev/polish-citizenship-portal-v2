@@ -22,7 +22,7 @@ const FlippableAICard = ({
 
   return (
     <div 
-      className="h-[240px] cursor-pointer"
+      className="h-[280px] cursor-pointer"
       style={{ 
         perspective: '1000px'
       }}
