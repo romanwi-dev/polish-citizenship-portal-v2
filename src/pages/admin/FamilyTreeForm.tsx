@@ -548,30 +548,58 @@ export default function FamilyTreeForm() {
               </h3>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full">
-                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-2" onDoubleClick={() => handleInputChange("applicant_sex", null)}>
-                    <Label className={isLargeFonts ? "text-2xl" : ""}>Gender</Label>
-                    <Select value={formData?.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
-                      <SelectTrigger 
-                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs"
-                        style={{
-                          boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
-                        }}
-                      >
-                        <SelectValue placeholder="Select" className="text-xs" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-background border-2 z-50">
-                        <SelectItem value="M" className="text-xs cursor-pointer">Male</SelectItem>
-                        <SelectItem value="F" className="text-xs cursor-pointer">Female</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </motion.div>
+                  {/* Left column: Gender and Marital Status */}
+                  <div className="space-y-6">
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-2" onDoubleClick={() => handleInputChange("applicant_sex", null)}>
+                      <Label className={isLargeFonts ? "text-2xl" : ""}>Gender</Label>
+                      <Select value={formData?.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
+                        <SelectTrigger 
+                          className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs"
+                          style={{
+                            boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+                          }}
+                        >
+                          <SelectValue placeholder="Select" className="text-xs" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-background border-2 z-50">
+                          <SelectItem value="M" className="text-xs cursor-pointer">Male</SelectItem>
+                          <SelectItem value="F" className="text-xs cursor-pointer">Female</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </motion.div>
 
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-2" onDoubleClick={() => handleInputChange("applicant_is_married", null)}>
+                      <Label className={isLargeFonts ? "text-2xl" : ""}>Marital status</Label>
+                      <Select value={formData?.applicant_is_married === true ? "Married" : formData?.applicant_is_married === false ? "Single" : ""} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
+                        <SelectTrigger 
+                          className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs"
+                          style={{
+                            boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+                          }}
+                        >
+                          <SelectValue placeholder="Select" className="text-xs" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-background border-2 z-50">
+                          <SelectItem value="Married" className="text-xs cursor-pointer">Married</SelectItem>
+                          <SelectItem value="Single" className="text-xs cursor-pointer">Single</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </motion.div>
+                  </div>
+
+                  {/* Right column: Children and Minor Children */}
                   <div className="space-y-6">
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="space-y-2" onDoubleClick={() => handleInputChange("children_count", null)}>
                       <Label className={isLargeFonts ? "text-2xl" : ""}>Number of children</Label>
@@ -625,32 +653,6 @@ export default function FamilyTreeForm() {
                       </motion.div>
                     )}
                   </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-2" onDoubleClick={() => handleInputChange("applicant_is_married", null)}>
-                    <Label className={isLargeFonts ? "text-2xl" : ""}>Marital status</Label>
-                    <Select value={formData?.applicant_is_married === true ? "Married" : formData?.applicant_is_married === false ? "Single" : ""} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
-                      <SelectTrigger 
-                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs"
-                        style={{
-                          boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
-                        }}
-                      >
-                        <SelectValue placeholder="Select" className="text-xs" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-background border-2 z-50">
-                        <SelectItem value="Married" className="text-xs cursor-pointer">Married</SelectItem>
-                        <SelectItem value="Single" className="text-xs cursor-pointer">Single</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </motion.div>
                 </div>
             </div>
           </motion.div>

@@ -28,19 +28,36 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
       </h3>
     </div>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("applicant_sex")}>
-          <Label className={isLargeFonts ? "text-2xl" : ""}>Gender</Label>
-          <Select value={formData?.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
-            <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs">
-              <SelectValue placeholder="Select" />
-            </SelectTrigger>
-            <SelectContent className="bg-background border-2 z-50">
-              <SelectItem value="M" className="cursor-pointer">Male</SelectItem>
-              <SelectItem value="F" className="cursor-pointer">Female</SelectItem>
-            </SelectContent>
-          </Select>
-        </motion.div>
+        {/* Left column: Gender and Marital Status */}
+        <div className="space-y-6">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("applicant_sex")}>
+            <Label className={isLargeFonts ? "text-2xl" : ""}>Gender</Label>
+            <Select value={formData?.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
+              <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs">
+                <SelectValue placeholder="Select" />
+              </SelectTrigger>
+              <SelectContent className="bg-background border-2 z-50">
+                <SelectItem value="M" className="cursor-pointer">Male</SelectItem>
+                <SelectItem value="F" className="cursor-pointer">Female</SelectItem>
+              </SelectContent>
+            </Select>
+          </motion.div>
 
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("applicant_marital_status")}>
+            <Label className={isLargeFonts ? "text-2xl" : ""}>Marital status</Label>
+            <Select value={formData?.applicant_marital_status || ""} onValueChange={(value) => handleInputChange("applicant_marital_status", value)}>
+              <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs">
+                <SelectValue placeholder="Select" />
+              </SelectTrigger>
+              <SelectContent className="bg-background border-2 z-50">
+                <SelectItem value="Married" className="cursor-pointer">Married</SelectItem>
+                <SelectItem value="Single" className="cursor-pointer">Single</SelectItem>
+              </SelectContent>
+            </Select>
+          </motion.div>
+        </div>
+
+        {/* Right column: Children and Minor Children */}
         <div className="space-y-6">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("children_count")}>
             <Label className={isLargeFonts ? "text-2xl" : ""}>Children</Label>
@@ -74,22 +91,6 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
           )}
         </div>
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("applicant_is_married")}>
-          <Label className={isLargeFonts ? "text-2xl" : ""}>Marital status</Label>
-          <Select value={formData?.applicant_is_married === true ? "Married" : "Single"} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
-            <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs">
-              <SelectValue placeholder="Select" />
-            </SelectTrigger>
-            <SelectContent className="bg-background border-2 z-50">
-              <SelectItem value="Married" className="cursor-pointer">Married</SelectItem>
-              <SelectItem value="Single" className="cursor-pointer">Single</SelectItem>
-            </SelectContent>
-          </Select>
-        </motion.div>
-      </div>
-
       <div className="border-b border-border/50 pb-6 pt-6 mb-6">
         <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
           Mark if relevant
