@@ -1,13 +1,13 @@
 // Build-time imports of files for code review
 // NOTE: Vite's ?raw imports only work reliably for files within src/ directory
-// Edge functions are analyzed separately via direct file reads
+// Edge functions are analyzed via the edge-function-analyzer edge function
 
 import AIDocumentWorkflow from '@/components/workflows/AIDocumentWorkflow.tsx?raw';
 import supabaseTypes from '@/integrations/supabase/types.ts?raw';
 import CaseCard from '@/components/CaseCard.tsx?raw';
-import Dashboard from '@/pages/Dashboard.tsx?raw';
-import IntakeForm from '@/components/IntakeForm.tsx?raw';
-import POAForm from '@/components/POAForm.tsx?raw';
+import AdminDashboard from '@/pages/admin/Dashboard.tsx?raw';
+import IntakeForm from '@/pages/admin/IntakeForm.tsx?raw';
+import POAForm from '@/pages/admin/POAForm.tsx?raw';
 import supabaseClient from '@/integrations/supabase/client.ts?raw';
 
 /**
@@ -19,9 +19,9 @@ export const fileContents: Record<string, string> = {
   'src/components/workflows/AIDocumentWorkflow.tsx': AIDocumentWorkflow,
   'src/integrations/supabase/types.ts': supabaseTypes,
   'src/components/CaseCard.tsx': CaseCard,
-  'src/pages/Dashboard.tsx': Dashboard,
-  'src/components/IntakeForm.tsx': IntakeForm,
-  'src/components/POAForm.tsx': POAForm,
+  'src/pages/admin/Dashboard.tsx': AdminDashboard,
+  'src/pages/admin/IntakeForm.tsx': IntakeForm,
+  'src/pages/admin/POAForm.tsx': POAForm,
   'src/integrations/supabase/client.ts': supabaseClient,
 };
 
@@ -37,17 +37,14 @@ export const getFileContent = (path: string): string => {
     return content;
   }
   
-  // For edge functions, return a placeholder since Vite can't import them with ?raw
+  // For edge functions, they will be fetched via edge-function-analyzer
   if (path.startsWith('supabase/functions/')) {
     const functionName = path.split('/')[2];
     return `// Edge Function: ${functionName}
-// Note: Edge function code cannot be imported at build-time with Vite
-// This file exists at: ${path}
-// GPT-5: Please analyze based on the function name and typical edge function patterns
+// This file will be fetched at runtime via edge-function-analyzer
+// Path: ${path}
 // Function: ${functionName}
-// Location: ${path}
-// Type: Supabase Edge Function (Deno runtime)
-// Expected patterns: CORS headers, async handlers, Supabase client usage, error handling`;
+// Location: supabase/functions/${functionName}/index.ts`;
   }
   
   console.error(`File not found in build-time imports: ${path}`);

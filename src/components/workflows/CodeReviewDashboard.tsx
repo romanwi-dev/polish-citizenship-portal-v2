@@ -151,9 +151,30 @@ export const CodeReviewDashboard = () => {
         setCurrentFile(file.name);
         
         try {
-          // Get real file content from build-time imports
-          const fileContent = getFileContent(file.path);
-          console.log(`📄 Analyzing ${file.name} with GPT-5 (${fileContent.length} characters of real code)...`);
+          let fileContent = '';
+          
+          // For edge functions, fetch code via edge-function-analyzer
+          if (file.path.startsWith('supabase/functions/')) {
+            const functionName = file.path.split('/')[2];
+            console.log(`🔍 Fetching edge function code: ${functionName}...`);
+            
+            const { data: analyzerData, error: analyzerError } = await supabase.functions.invoke('edge-function-analyzer', {
+              body: { functionName }
+            });
+            
+            if (analyzerError || !analyzerData?.success) {
+              console.error(`Failed to fetch ${functionName}:`, analyzerError || analyzerData?.error);
+              fileContent = `// Edge Function: ${functionName}\n// ERROR: Could not fetch code - ${analyzerData?.error || analyzerError?.message}`;
+            } else {
+              fileContent = analyzerData.code;
+              console.log(`✅ Fetched ${functionName}: ${analyzerData.lineCount} lines`);
+            }
+          } else {
+            // For src/ files, use build-time imports
+            fileContent = getFileContent(file.path);
+          }
+          
+          console.log(`📄 Analyzing ${file.name} with GPT-5 (${fileContent.length} characters of code)...`);
           
           const { data, error } = await supabase.functions.invoke('ai-code-review', {
             body: {

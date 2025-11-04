@@ -63,6 +63,9 @@ verify_jwt = true
 [functions.ai-code-review]
 verify_jwt = true
 
+[functions.edge-function-analyzer]
+verify_jwt = true
+
 [functions.client-guide-agent]
 verify_jwt = true
 
