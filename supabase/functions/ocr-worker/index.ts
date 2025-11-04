@@ -109,14 +109,14 @@ serve(async (req) => {
         const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
         const downloadResponse = await fetch(
-          `${supabaseUrl}/functions/v1/dropbox-download`,
+          `${supabaseUrl}/functions/v1/download-dropbox-file`,
           {
             method: "POST",
             headers: {
               "Authorization": `Bearer ${serviceKey}`,
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ file_path: doc.dropbox_path }),
+            body: JSON.stringify({ dropboxPath: doc.dropbox_path }),
           }
         );
 

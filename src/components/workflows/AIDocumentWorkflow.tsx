@@ -16,6 +16,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { WorkflowProgressTracker } from "./WorkflowProgressTracker";
 
 interface AIWorkflowStep {
   number: string;
@@ -23,7 +24,7 @@ interface AIWorkflowStep {
   description: string;
   icon: any;
   gradient: string;
-  stage: 'upload' | 'ai_classify' | 'hac_classify' | 'form_population' | 'hac_forms' | 'ai_verify' | 'hac_verify' | 'pdf_generation';
+  stage: 'upload' | 'ai_classify' | 'hac_classify' | 'ocr' | 'form_population' | 'hac_forms' | 'ai_verify' | 'hac_verify' | 'pdf_generation';
   agent: 'human' | 'ai' | 'both';
   backDetails: string;
 }
@@ -60,11 +61,21 @@ const workflowSteps: AIWorkflowStep[] = [
     backDetails: "Attorney reviews AI-suggested document types and person assignments. Can override low-confidence classifications. Ensures data integrity before form population."
   },
   {
+    number: "03.5",
+    title: "OCR Processing",
+    description: "Extract text data from all documents using OCR technology.",
+    icon: Brain,
+    gradient: "from-primary to-secondary",
+    stage: 'ocr',
+    agent: 'ai',
+    backDetails: "OCR Worker processes all queued documents in parallel, extracting structured data for form population."
+  },
+  {
     number: "04",
     title: "Form Population",
     description: "OCR-extracted data automatically fills citizenship application forms and family tree.",
     icon: FileText,
-    gradient: "from-primary to-secondary",
+    gradient: "from-secondary to-accent",
     stage: 'form_population',
     agent: 'ai',
     backDetails: "System uses pre-existing OCR data to populate master_table, citizenship forms, and POA documents. Smart field mapping ensures accuracy. Non-overwrite mode protects manual entries."
@@ -74,7 +85,7 @@ const workflowSteps: AIWorkflowStep[] = [
     title: "HAC Review - Forms",
     description: "Attorney verifies all populated form data for accuracy and completeness.",
     icon: ShieldCheck,
-    gradient: "from-secondary to-accent",
+    gradient: "from-accent to-primary",
     stage: 'hac_forms',
     agent: 'human',
     backDetails: "Human review of all form fields populated by AI. Attorney checks data consistency, flags missing information, and approves forms for PDF generation."
@@ -84,7 +95,7 @@ const workflowSteps: AIWorkflowStep[] = [
     title: "Dual AI Verification",
     description: "Both Gemini and OpenAI GPT-5 verify data quality, completeness, and readiness for PDF generation.",
     icon: Brain,
-    gradient: "from-accent to-primary",
+    gradient: "from-primary to-secondary",
     stage: 'ai_verify',
     agent: 'ai',
     backDetails: "Gemini 2.5 Flash and OpenAI GPT-5 independently analyze form data. They check for missing fields, data consistency, legal compliance, and generate quality scores with detailed feedback."
@@ -94,7 +105,7 @@ const workflowSteps: AIWorkflowStep[] = [
     title: "HAC Review - Verification",
     description: "Attorney reviews AI verification results and makes final approval decision.",
     icon: ShieldCheck,
-    gradient: "from-primary to-secondary",
+    gradient: "from-secondary to-accent",
     stage: 'hac_verify',
     agent: 'human',
     backDetails: "Attorney analyzes dual AI verification reports. Reviews flagged issues, confidence scores, and recommendations. Final human judgment before PDF generation authorization."
@@ -104,7 +115,7 @@ const workflowSteps: AIWorkflowStep[] = [
     title: "PDF Generation",
     description: "Generate final citizenship application, POA, and family tree PDFs ready for submission.",
     icon: FileCheck,
-    gradient: "from-secondary to-accent",
+    gradient: "from-accent to-primary",
     stage: 'pdf_generation',
     agent: 'both',
     backDetails: "System generates PDFs: POA (adult/minor/spouses), Citizenship Application, Family Tree, Uzupełnienie. All forms filled with verified data, formatted for Polish authorities."
@@ -124,17 +135,23 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
   const [isRunning, setIsRunning] = useState(false);
   const [currentStage, setCurrentStage] = useState<string>('upload');
   const [isUploading, setIsUploading] = useState(false);
-  const [workflowProgress, setWorkflowProgress] = useState<{
-    total: number;
-    completed: number;
-    currentStep: string;
-    errors: Array<{ stage: string; message: string }>;
-  }>({
-    total: 8,
-    completed: 0,
-    currentStep: '',
-    errors: []
-  });
+  
+  const [trackedSteps, setTrackedSteps] = useState<Array<{
+    id: string;
+    title: string;
+    status: 'pending' | 'processing' | 'completed' | 'failed';
+    error?: string;
+    completedAt?: string;
+  }>>([
+    { id: 'upload', title: 'Document Upload & Sync', status: 'pending' },
+    { id: 'ai_classify', title: 'AI Classification', status: 'pending' },
+    { id: 'hac_classify', title: 'HAC Review (Classification)', status: 'pending' },
+    { id: 'ocr', title: 'OCR Processing', status: 'pending' },
+    { id: 'form_population', title: 'Form Population', status: 'pending' },
+    { id: 'hac_forms', title: 'HAC Review (Forms)', status: 'pending' },
+    { id: 'ai_verify', title: 'Dual AI Verification', status: 'pending' },
+    { id: 'hac_verify', title: 'HAC Final Review', status: 'pending' },
+  ]);
 
   const { data: caseData } = useQuery({
     queryKey: ['case-info', caseId],
@@ -156,7 +173,7 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('documents')
-        .select('id, name, type, ocr_status, dropbox_path, file_size, created_at')
+        .select('*')
         .eq('case_id', caseId)
         .order('created_at', { ascending: false });
       
@@ -165,6 +182,14 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
     },
     enabled: !!caseId
   });
+
+  const updateStepStatus = (stepId: string, status: 'processing' | 'completed' | 'failed', error?: string) => {
+    setTrackedSteps(prev => prev.map(step => 
+      step.id === stepId 
+        ? { ...step, status, error, completedAt: status === 'completed' ? new Date().toISOString() : undefined }
+        : step
+    ));
+  };
 
   const toggleFlip = (stepNumber: string) => {
     setFlippedCards(prev => ({
@@ -177,13 +202,12 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
     const MAX_RETRIES = 3;
     console.log(`Running workflow step: ${stage} (attempt ${retryCount + 1})`);
     setCurrentStage(stage);
-    setWorkflowProgress(prev => ({ ...prev, currentStep: stage }));
+    updateStepStatus(stage, 'processing');
     setIsRunning(true);
     
     try {
       switch (stage) {
         case 'ai_classify':
-          // Fetch documents with their file data for classification
           const { data: docs, error: docsError } = await supabase
             .from('documents')
             .select('id, name, dropbox_path')
@@ -193,60 +217,69 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
           if (docsError) throw docsError;
           if (!docs || docs.length === 0) {
             toast({ title: "No documents to classify", variant: "default" });
+            updateStepStatus('ai_classify', 'completed');
             setCurrentStage('hac_classify');
             return;
           }
 
-          // Process each document
-          let classifiedCount = 0;
-          for (const doc of docs) {
+          // Parallel processing for speed
+          const classifyPromises = docs.map(async (doc) => {
             try {
-              // Download file content
-              const { data: fileData, error: downloadError } = await supabase.functions.invoke(
-                'download-dropbox-file',
-                { body: { path: doc.dropbox_path } }
-              );
-
-              if (downloadError) throw downloadError;
-
-              // Convert to base64
-              const arrayBuffer = fileData;
-              const bytes = new Uint8Array(arrayBuffer);
-              let binary = '';
-              for (let i = 0; i < bytes.length; i++) {
-                binary += String.fromCharCode(bytes[i]);
-              }
-              const imageBase64 = btoa(binary);
-
-              // Classify with image data
-              const { data: classifyResult, error: classifyError } = await supabase.functions.invoke(
-                'ai-classify-document',
+              // Download file
+              const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+              const downloadResponse = await fetch(
+                `${supabaseUrl}/functions/v1/download-dropbox-file`,
                 {
-                  body: {
-                    documentId: doc.id,
-                    caseId,
-                    fileName: doc.name,
-                    imageBase64
-                  }
+                  method: "POST",
+                  headers: {
+                    "Authorization": `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ dropboxPath: doc.dropbox_path }),
                 }
               );
 
+              if (!downloadResponse.ok) throw new Error(`Download failed: ${downloadResponse.statusText}`);
+
+              const arrayBuffer = await downloadResponse.arrayBuffer();
+              const imageBase64 = btoa(
+                new Uint8Array(arrayBuffer).reduce((data, byte) => data + String.fromCharCode(byte), "")
+              );
+
+              // Classify
+              const { error: classifyError } = await supabase.functions.invoke(
+                'ai-classify-document',
+                { body: { documentId: doc.id, caseId, imageBase64 } }
+              );
+
               if (classifyError) throw classifyError;
-              
-              console.log(`Classified ${doc.name}:`, classifyResult);
-              classifiedCount++;
-            } catch (docError) {
-              console.error(`Failed to classify ${doc.name}:`, docError);
-              setWorkflowProgress(prev => ({
-                ...prev,
-                errors: [...prev.errors, { stage, message: `Failed to classify ${doc.name}` }]
-              }));
+              return { success: true, name: doc.name };
+            } catch (error) {
+              console.error(`Failed to classify ${doc.name}:`, error);
+              return { success: false, name: doc.name, error };
             }
-          }
+          });
+
+          const classifyResults = await Promise.all(classifyPromises);
+          const successCount = classifyResults.filter(r => r.success).length;
           
-          toast({ title: `AI Classification Complete (${classifiedCount}/${docs.length})` });
-          setWorkflowProgress(prev => ({ ...prev, completed: prev.completed + 1 }));
+          toast({ title: `AI Classification Complete (${successCount}/${docs.length})` });
+          updateStepStatus('ai_classify', 'completed');
+          await refetchDocs();
           setCurrentStage('hac_classify');
+          break;
+
+        case 'ocr':
+          // Trigger OCR Worker
+          console.log("Triggering OCR worker...");
+          const { error: ocrError } = await supabase.functions.invoke('ocr-worker');
+          
+          if (ocrError) throw ocrError;
+          
+          toast({ title: "OCR Processing Complete" });
+          updateStepStatus('ocr', 'completed');
+          await refetchDocs();
+          setCurrentStage('form_population');
           break;
 
         case 'form_population':
@@ -254,61 +287,63 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
             .from('documents')
             .select('id, name')
             .eq('case_id', caseId)
-            .not('ocr_data', 'is', null);
+            .eq('ocr_status', 'completed')
+            .eq('data_applied_to_forms', false);
 
           if (ocrDocsError) throw ocrDocsError;
           if (!ocrDocs || ocrDocs.length === 0) {
             toast({ title: "No OCR data to apply", variant: "default" });
+            updateStepStatus('form_population', 'completed');
             setCurrentStage('hac_forms');
             return;
           }
 
-          let totalApplied = 0;
-          let totalConflicts = 0;
-
-          for (const doc of ocrDocs) {
+          // Parallel form population
+          const applyPromises = ocrDocs.map(async (doc) => {
             try {
-              const { data: applyResult, error: applyError } = await supabase.functions.invoke(
+              const { error: applyError } = await supabase.functions.invoke(
                 'apply-ocr-to-forms',
-                {
-                  body: {
-                    documentId: doc.id,
-                    caseId,
-                    overwriteManual: false
-                  }
-                }
+                { body: { documentId: doc.id, caseId, overwriteManual: false } }
               );
 
               if (applyError) throw applyError;
-              
-              if (applyResult) {
-                totalApplied += applyResult.applied || 0;
-                totalConflicts += applyResult.conflicts || 0;
-              }
-            } catch (docError) {
-              console.error(`Failed to apply OCR for doc ${doc.id}:`, docError);
-              setWorkflowProgress(prev => ({
-                ...prev,
-                errors: [...prev.errors, { stage, message: `Failed to apply OCR for ${doc.name}` }]
-              }));
+              return { success: true, name: doc.name };
+            } catch (error) {
+              console.error(`Failed to apply OCR for ${doc.name}:`, error);
+              return { success: false, name: doc.name, error };
             }
-          }
-
-          toast({ 
-            title: "Forms Populated",
-            description: `${totalApplied} fields applied, ${totalConflicts} conflicts detected`
           });
-          setWorkflowProgress(prev => ({ ...prev, completed: prev.completed + 1 }));
+
+          const applyResults = await Promise.all(applyPromises);
+          const applySuccessCount = applyResults.filter(r => r.success).length;
+
+          toast({ title: `Forms Populated (${applySuccessCount}/${ocrDocs.length})` });
+          updateStepStatus('form_population', 'completed');
           setCurrentStage('hac_forms');
           break;
 
         case 'ai_verify':
-          // TODO: Create proper AI verification edge function
-          toast({ 
-            title: "AI Verification",
-            description: "Dual AI verification will be implemented in next phase"
+          // Dual AI Verification (all forms in parallel)
+          const verifyPromises = ['intake', 'oby', 'master'].map(async (formType) => {
+            try {
+              const { data, error } = await supabase.functions.invoke(
+                'ai-verify-forms',
+                { body: { caseId, formType } }
+              );
+              
+              if (error) throw error;
+              return { success: true, formType, verification: data.verification };
+            } catch (error) {
+              console.error(`Failed to verify ${formType}:`, error);
+              return { success: false, formType, error };
+            }
           });
-          setWorkflowProgress(prev => ({ ...prev, completed: prev.completed + 1 }));
+
+          const verifyResults = await Promise.all(verifyPromises);
+          const verifySuccessCount = verifyResults.filter(r => r.success).length;
+          
+          toast({ title: `AI Verification Complete (${verifySuccessCount}/3 forms)` });
+          updateStepStatus('ai_verify', 'completed');
           setCurrentStage('hac_verify');
           break;
 
@@ -321,9 +356,8 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
           
           console.log('PDF generation result:', pdfData);
           toast({ title: "PDFs Generated Successfully" });
-          setWorkflowProgress(prev => ({ ...prev, completed: prev.completed + 1 }));
+          updateStepStatus('pdf_generation', 'completed');
           
-          // Navigate to POA Form to view generated PDFs
           setTimeout(() => {
             navigate(`/admin/poa/${caseId}`);
           }, 1500);
@@ -352,10 +386,7 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
       }
 
       // Permanent failure
-      setWorkflowProgress(prev => ({
-        ...prev,
-        errors: [...prev.errors, { stage, message: error?.message || 'Unknown error' }]
-      }));
+      updateStepStatus(stage, 'failed', error?.message || 'Unknown error');
       
       toast({
         title: `${stage} Failed`,
@@ -392,6 +423,7 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
     }
 
     setIsUploading(true);
+    updateStepStatus('upload', 'processing');
     try {
       const { data, error } = await supabase.functions.invoke('list-dropbox-documents', {
         body: { caseId, dropboxPath: caseData.dropbox_path }
@@ -404,8 +436,10 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
         description: `Synced ${data.synced} new documents`
       });
       
+      updateStepStatus('upload', 'completed');
       refetchDocs();
     } catch (error) {
+      updateStepStatus('upload', 'failed', error instanceof Error ? error.message : 'Unknown error');
       toast({
         title: "Sync failed",
         description: error instanceof Error ? error.message : 'Unknown error',
@@ -429,7 +463,6 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
 
       if (error) throw error;
 
-      // Create blob from response and download
       const blob = new Blob([data]);
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -472,14 +505,25 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
     }
   };
 
+  const overallProgress = Math.round(
+    (trackedSteps.filter(s => s.status === 'completed').length / trackedSteps.length) * 100
+  );
+
   return (
     <section className="relative py-8 overflow-hidden">
       <div className="container relative z-10 mx-auto px-4">
+        {/* Progress Tracker */}
+        <WorkflowProgressTracker
+          steps={trackedSteps}
+          currentStepIndex={trackedSteps.findIndex(s => s.id === currentStage)}
+          overallProgress={overallProgress}
+        />
+
         {/* Document Upload Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="glass-card p-6 mb-8"
+          className="glass-card p-6 my-8"
         >
           <h3 className="text-2xl font-heading font-bold mb-4">Dropbox Documents</h3>
           
@@ -498,23 +542,24 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
           </div>
 
           {docsLoading ? (
-            <p className="text-muted-foreground">Loading documents...</p>
+            <p>Loading documents...</p>
           ) : documents && documents.length > 0 ? (
             <div className="space-y-2">
               {documents.map((doc) => (
-                <div key={doc.id} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                <div key={doc.id} className="flex items-center justify-between p-3 border rounded">
                   <div className="flex-1">
                     <p className="font-medium">{doc.name}</p>
-                    <div className="flex gap-3 text-sm text-muted-foreground">
-                      <span>{doc.ocr_status === 'completed' ? '✓ OCR Complete' : 'Pending OCR'}</span>
-                      {doc.file_size && <span>{(doc.file_size / 1024).toFixed(1)} KB</span>}
+                    <div className="flex gap-2 mt-1">
+                      <Badge variant="outline">{doc.ocr_status || 'pending'}</Badge>
+                      {doc.document_type && <Badge>{doc.document_type}</Badge>}
+                      {doc.person_type && <Badge variant="secondary">{doc.person_type}</Badge>}
                     </div>
                   </div>
                   <div className="flex gap-2">
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => handleDownload(doc.dropbox_path || '', doc.name || 'document')}
+                      onClick={() => handleDownload(doc.dropbox_path, doc.name)}
                     >
                       <Download className="h-4 w-4" />
                     </Button>
@@ -530,208 +575,78 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
               ))}
             </div>
           ) : (
-            <p className="text-muted-foreground">No documents in Dropbox. Click "Sync from Dropbox" to load documents.</p>
+            <p className="text-muted-foreground">No documents found. Sync from Dropbox to get started.</p>
           )}
         </motion.div>
 
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <motion.h2
-            initial={{ opacity: 0, scale: 0.9, y: 30 }}
-            whileInView={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ 
-              duration: 1.5, 
-              type: "spring",
-              stiffness: 50,
-              damping: 15
-            }}
-            viewport={{ once: true }}
-            className="text-4xl md:text-6xl font-heading font-black mb-6 tracking-tight"
-          >
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-primary">
-              AI Document Workflow
-            </span>
-          </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="text-lg text-muted-foreground max-w-3xl mx-auto"
-          >
-            Automated workflow with HAC authorization gates: Documents → AI Classification → Forms → Verification → PDFs
-          </motion.p>
-
-          {/* Progress Indicator */}
-          {workflowProgress.completed > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mt-6 max-w-md mx-auto"
-            >
-              <div className="glass-card p-4">
-                <div className="flex justify-between text-sm mb-2">
-                  <span className="font-medium">Progress: {workflowProgress.completed}/{workflowProgress.total}</span>
-                  {workflowProgress.currentStep && (
-                    <span className="text-muted-foreground">{workflowProgress.currentStep}</span>
-                  )}
-                </div>
-                <div className="h-2 bg-muted rounded-full overflow-hidden">
-                  <motion.div
-                    className="h-full bg-gradient-to-r from-primary to-secondary"
-                    initial={{ width: 0 }}
-                    animate={{ width: `${(workflowProgress.completed / workflowProgress.total) * 100}%` }}
-                    transition={{ duration: 0.5 }}
-                  />
-                </div>
-                {workflowProgress.errors.length > 0 && (
-                  <div className="mt-3 text-sm text-destructive">
-                    {workflowProgress.errors.length} error(s) occurred
-                  </div>
-                )}
-              </div>
-            </motion.div>
-          )}
-        </motion.div>
-
-        {/* Steps Grid */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        {/* Workflow Steps */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-8">
           {workflowSteps.map((step, index) => {
-            const isActive = step.stage === currentStage;
+            const isFlipped = flippedCards[step.number];
+            const isActive = currentStage === step.stage;
+            const isCompleted = trackedSteps.find(s => s.id === step.stage)?.status === 'completed';
             
             return (
               <motion.div
                 key={step.number}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true, margin: "-50px" }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="relative h-[400px] perspective"
+                onClick={() => toggleFlip(step.number)}
               >
-                <div 
-                  className="relative h-[450px]"
-                  style={{ perspective: '1000px' }}
-                >
-                  <div
-                    onClick={() => toggleFlip(step.number)}
-                    className="absolute inset-0 cursor-pointer transition-transform duration-700"
-                    style={{
-                      transformStyle: 'preserve-3d',
-                      transform: flippedCards[step.number] ? 'rotateY(180deg)' : 'rotateY(0deg)',
-                    }}
-                  >
-                    {/* Front Side */}
-                    <motion.div
-                      whileHover={{ scale: 1.03, y: -5 }}
-                      transition={{ duration: 0.3 }}
-                      className={`absolute inset-0 glass-card p-8 rounded-lg group ${
-                        isActive ? 'ring-2 ring-primary shadow-xl' : ''
-                      }`}
-                      style={{
-                        backfaceVisibility: 'hidden',
-                        WebkitBackfaceVisibility: 'hidden',
-                      }}
-                    >
-                      {/* Icon and Number */}
-                      <div className="mb-6 relative">
-                        <div className="w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/5 flex items-center justify-center">
-                          <step.icon className="w-16 h-16 text-primary opacity-80 group-hover:opacity-100 transition-opacity duration-300" />
-                        </div>
-                        <div className={`absolute top-4 left-4 text-5xl font-heading font-black bg-gradient-to-r ${step.gradient} bg-clip-text text-transparent opacity-20`}>
-                          {step.number}
-                        </div>
-                        <div className="absolute top-4 right-4">
-                          <Badge variant={step.agent === 'ai' ? 'default' : 'secondary'}>
-                            {step.agent === 'ai' ? 'AI' : step.agent === 'human' ? 'HAC' : 'BOTH'}
-                          </Badge>
-                        </div>
-                        {isActive && (
-                          <div className="absolute -top-2 -right-2">
-                            <CheckCircle2 className="h-8 w-8 text-primary animate-pulse" />
-                          </div>
-                        )}
+                <div className={`relative w-full h-full transition-transform duration-500 preserve-3d cursor-pointer ${isFlipped ? 'rotate-y-180' : ''}`}>
+                  {/* Front */}
+                  <div className={`absolute inset-0 backface-hidden rounded-2xl p-6 ${isActive ? 'ring-2 ring-primary' : ''} ${isCompleted ? 'bg-green-50' : 'glass-card'}`}>
+                    <div className="flex flex-col h-full">
+                      <div className="flex items-start justify-between mb-4">
+                        <span className="text-4xl font-bold text-primary/20">{step.number}</span>
+                        <step.icon className={`w-8 h-8 ${isCompleted ? 'text-green-600' : 'text-primary'}`} />
+                      </div>
+                      
+                      <h3 className="text-xl font-heading font-bold mb-3">{step.title}</h3>
+                      <p className="text-sm text-muted-foreground flex-1">{step.description}</p>
+                      
+                      <div className="mt-4 flex items-center justify-between">
+                        <Badge variant={step.agent === 'ai' ? 'default' : 'secondary'}>
+                          {step.agent === 'ai' ? 'AI' : step.agent === 'human' ? 'HAC' : 'Both'}
+                        </Badge>
+                        {isCompleted && <CheckCircle2 className="w-5 h-5 text-green-600" />}
+                        {isActive && <Badge variant="outline">Active</Badge>}
                       </div>
 
-                      {/* Content */}
-                      <div className="space-y-4">
-                        <motion.h3 
-                          className="text-2xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300"
+                      {step.agent === 'human' && isActive && (
+                        <Button
+                          className="mt-4 w-full"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            approveAndContinue(step.stage);
+                          }}
+                          disabled={isRunning}
                         >
-                          {step.title}
-                        </motion.h3>
-                        <p className="text-muted-foreground leading-relaxed mb-4">
-                          {step.description}
-                        </p>
-                        {isActive && step.agent === 'human' && (
-                          <Button
-                            variant="default"
-                            size="sm"
-                            className="w-full"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              approveAndContinue(step.stage);
-                            }}
-                            disabled={isRunning}
-                          >
-                            Approve & Continue
-                          </Button>
-                        )}
-                        {isActive && step.agent === 'ai' && (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="w-full"
-                            disabled
-                          >
-                            AI Processing...
-                          </Button>
-                        )}
-                        <p className="text-xs text-muted-foreground/60 text-center mt-2">Tap card for details</p>
-                      </div>
-                    </motion.div>
+                          Approve & Continue
+                        </Button>
+                      )}
 
-                    {/* Back Side */}
-                    <div 
-                      className="absolute inset-0 glass-card p-8 rounded-lg"
-                      style={{
-                        backfaceVisibility: 'hidden',
-                        WebkitBackfaceVisibility: 'hidden',
-                        transform: 'rotateY(180deg)',
-                      }}
-                    >
-                      <div className="flex flex-col gap-4 h-full">
-                        <div className="mb-4 relative">
-                          <div className="w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-secondary/5 to-accent/5 flex items-center justify-center">
-                            <step.icon className="w-16 h-16 text-secondary opacity-60" />
-                          </div>
-                          <div className={`absolute top-4 left-4 text-5xl font-heading font-black bg-gradient-to-r ${step.gradient} bg-clip-text text-transparent opacity-20`}>
-                            {step.number}
-                          </div>
-                        </div>
-                        
-                        <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground mb-2">
-                          Step Details
-                        </h3>
-                        <div className="flex-1 overflow-auto space-y-3">
-                          <div className="p-3 rounded-lg bg-muted/30">
-                            <p className="text-sm font-medium mb-1">Agent Type:</p>
-                            <Badge variant={step.agent === 'ai' ? 'default' : 'secondary'}>
-                              {step.agent === 'ai' ? '🤖 AI Agent' : step.agent === 'human' ? '👤 Human (HAC)' : '🤝 Both'}
-                            </Badge>
-                          </div>
-                          <div className="p-3 rounded-lg bg-muted/30">
-                            <p className="text-sm text-muted-foreground leading-relaxed">
-                              {step.backDetails}
-                            </p>
-                          </div>
-                        </div>
-                        <p className="text-xs text-muted-foreground/60 text-center">Tap to flip back</p>
-                      </div>
+                      {step.agent === 'ai' && isActive && !isRunning && (
+                        <Button
+                          className="mt-4 w-full"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            runWorkflowStep(step.stage);
+                          }}
+                        >
+                          Start {step.title}
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Back */}
+                  <div className="absolute inset-0 backface-hidden rotate-y-180 rounded-2xl p-6 glass-card">
+                    <div className="flex flex-col h-full">
+                      <h4 className="text-lg font-bold mb-4">Technical Details</h4>
+                      <p className="text-sm text-muted-foreground">{step.backDetails}</p>
                     </div>
                   </div>
                 </div>
@@ -740,25 +655,18 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
           })}
         </div>
 
-        {/* Start Workflow CTA */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="text-center mt-12"
-        >
-          <Button
-            size="lg"
-            className="text-xl md:text-2xl font-bold px-8 md:px-20 py-6 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow group relative overflow-hidden backdrop-blur-md border border-white/30 w-full md:w-auto"
-            onClick={() => runWorkflowStep('ai_classify')}
-            disabled={isRunning}
-          >
-            <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              {isRunning ? 'Running Workflow...' : 'Start AI Workflow'}
-            </span>
-          </Button>
-        </motion.div>
+        {/* Start Button */}
+        {currentStage === 'upload' && !isRunning && (
+          <div className="flex justify-center mt-8">
+            <Button
+              size="lg"
+              onClick={() => runWorkflowStep('ai_classify')}
+              disabled={!documents || documents.length === 0}
+            >
+              Start AI Workflow
+            </Button>
+          </div>
+        )}
       </div>
     </section>
   );
