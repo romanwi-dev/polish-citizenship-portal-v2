@@ -462,6 +462,54 @@ export type Database = {
           },
         ]
       }
+      ai_pii_processing_logs: {
+        Row: {
+          ai_provider: string
+          case_id: string
+          created_at: string | null
+          document_id: string | null
+          id: string
+          operation_type: string
+          pii_fields_sent: Json
+          user_id: string | null
+        }
+        Insert: {
+          ai_provider: string
+          case_id: string
+          created_at?: string | null
+          document_id?: string | null
+          id?: string
+          operation_type: string
+          pii_fields_sent: Json
+          user_id?: string | null
+        }
+        Update: {
+          ai_provider?: string
+          case_id?: string
+          created_at?: string | null
+          document_id?: string | null
+          id?: string
+          operation_type?: string
+          pii_fields_sent?: Json
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_pii_processing_logs_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_pii_processing_logs_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_verification_results: {
         Row: {
           case_id: string
@@ -787,6 +835,9 @@ export type Database = {
         Row: {
           active_workflows: Json | null
           admin_notes: string | null
+          ai_consent_given_at: string | null
+          ai_consent_given_by: string | null
+          ai_processing_consent: boolean | null
           ancestry: Json | null
           client_code: string | null
           client_name: string
@@ -823,6 +874,9 @@ export type Database = {
         Insert: {
           active_workflows?: Json | null
           admin_notes?: string | null
+          ai_consent_given_at?: string | null
+          ai_consent_given_by?: string | null
+          ai_processing_consent?: boolean | null
           ancestry?: Json | null
           client_code?: string | null
           client_name: string
@@ -861,6 +915,9 @@ export type Database = {
         Update: {
           active_workflows?: Json | null
           admin_notes?: string | null
+          ai_consent_given_at?: string | null
+          ai_consent_given_by?: string | null
+          ai_processing_consent?: boolean | null
           ancestry?: Json | null
           client_code?: string | null
           client_name?: string

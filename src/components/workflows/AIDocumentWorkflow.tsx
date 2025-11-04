@@ -22,6 +22,9 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { WorkflowProgressTracker } from "./WorkflowProgressTracker";
+import { AIConsentModal } from "@/components/consent/AIConsentModal";
+import { checkAIConsent, logPIIProcessing } from "@/utils/aiPIILogger";
+import { sanitizeAIJSON } from "@/utils/aiSanitizer";
 import type { RealtimeChannel } from "@supabase/supabase-js";
 
 interface AIWorkflowStep {
@@ -180,12 +183,15 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
     { id: 'hac_verify', title: 'HAC Final Review', status: 'pending' },
   ]);
 
+  const [showConsentModal, setShowConsentModal] = useState(false);
+  const [hasConsent, setHasConsent] = useState(false);
+
   const { data: caseData } = useQuery({
     queryKey: ['case-info', caseId],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('cases')
-        .select('dropbox_path')
+        .select('dropbox_path, ai_processing_consent')
         .eq('id', caseId)
         .single();
       
@@ -194,6 +200,13 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
     },
     enabled: !!caseId
   });
+
+  // Check consent on mount
+  useEffect(() => {
+    if (caseData) {
+      setHasConsent(caseData.ai_processing_consent === true);
+    }
+  }, [caseData]);
 
   const { data: documents, isLoading: docsLoading, refetch: refetchDocs } = useQuery({
     queryKey: ['case-documents', caseId],
@@ -385,36 +398,44 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
             return;
           }
 
-          // Parallel batch processing
+          // Parallel batch processing - using secure download-and-encode
           const classifyPromises = docs.map(async (doc) => {
             try {
-              const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
-              const downloadResponse = await fetch(
-                `${supabaseUrl}/functions/v1/download-dropbox-file`,
-                {
-                  method: "POST",
-                  headers: {
-                    "Authorization": `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({ dropboxPath: doc.dropbox_path }),
+              // Log PII processing for audit trail
+              await logPIIProcessing({
+                caseId,
+                documentId: doc.id,
+                operationType: 'classification',
+                piiFieldsSent: ['document_image', 'document_name'],
+                aiProvider: 'gemini'
+              });
+
+              // Use secure edge function (no token exposure)
+              const { data: downloadData, error: downloadError } = await supabase.functions.invoke(
+                'download-and-encode',
+                { 
+                  body: { 
+                    dropboxPath: doc.dropbox_path,
+                    documentId: doc.id,
+                    caseId 
+                  } 
                 }
               );
 
-              if (!downloadResponse.ok) throw new Error(`Download failed: ${downloadResponse.statusText}`);
+              if (downloadError) throw downloadError;
+              if (!downloadData?.success) throw new Error('Download failed');
 
-              const arrayBuffer = await downloadResponse.arrayBuffer();
-              const imageBase64 = btoa(
-                new Uint8Array(arrayBuffer).reduce((data, byte) => data + String.fromCharCode(byte), "")
-              );
-
-              const { error: classifyError } = await supabase.functions.invoke(
+              const { data: classifyData, error: classifyError } = await supabase.functions.invoke(
                 'ai-classify-document',
-                { body: { documentId: doc.id, caseId, imageBase64 } }
+                { body: { documentId: doc.id, caseId, imageBase64: downloadData.base64 } }
               );
 
               if (classifyError) throw classifyError;
-              return { success: true, name: doc.name };
+              
+              // Sanitize AI response
+              const sanitizedResult = sanitizeAIJSON(classifyData || {});
+              
+              return { success: true, name: doc.name, result: sanitizedResult };
             } catch (error) {
               console.error(`Failed to classify ${doc.name}:`, error);
               return { success: false, name: doc.name, error };
@@ -578,6 +599,12 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
   };
 
   const startWorkflow = async () => {
+    // Check for AI consent first
+    if (!hasConsent) {
+      setShowConsentModal(true);
+      return;
+    }
+
     setIsRunning(true);
     setIsPaused(false);
     
@@ -602,6 +629,24 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
       });
       setIsRunning(false);
     }
+  };
+
+  const handleConsentGiven = async () => {
+    setShowConsentModal(false);
+    setHasConsent(true);
+    // Refetch case data to get updated consent status
+    await queryClient.invalidateQueries({ queryKey: ['case-info', caseId] });
+    // Now start the workflow
+    startWorkflow();
+  };
+
+  const handleConsentDeclined = () => {
+    setShowConsentModal(false);
+    toast({
+      title: "Consent Required",
+      description: "AI processing cannot proceed without consent.",
+      variant: "default",
+    });
   };
 
   const pauseWorkflow = async () => {

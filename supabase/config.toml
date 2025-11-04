@@ -1,5 +1,8 @@
 project_id = "oogmuakyqadpynnrasnd"
 
+[functions.download-and-encode]
+verify_jwt = true
+
 [functions.apply-ocr-to-forms]
 verify_jwt = true
 
