@@ -45,96 +45,72 @@ export const CodeReviewDashboard = () => {
   const [showStaticOnly, setShowStaticOnly] = useState(false);
 
   const filesToReview = [
-    // === CRITICAL PATH FILES (60% weight) ===
+    // === CRITICAL PATH FILES ===
     { 
       name: 'AIDocumentWorkflow.tsx',
       path: 'src/components/workflows/AIDocumentWorkflow.tsx',
       type: 'frontend',
-      priority: 'critical'
-    },
-    { 
-      name: 'ai-classify-document',
-      path: 'supabase/functions/ai-classify-document/index.ts',
-      type: 'edge-function',
-      priority: 'critical'
-    },
-    { 
-      name: 'ai-verify-forms',
-      path: 'supabase/functions/ai-verify-forms/index.ts',
-      type: 'edge-function',
-      priority: 'critical'
-    },
-    { 
-      name: 'ocr-worker',
-      path: 'supabase/functions/ocr-worker/index.ts',
-      type: 'edge-function',
-      priority: 'critical'
-    },
-    { 
-      name: 'download-dropbox-file',
-      path: 'supabase/functions/download-dropbox-file/index.ts',
-      type: 'edge-function',
-      priority: 'critical'
-    },
-    { 
-      name: 'apply-ocr-to-forms',
-      path: 'supabase/functions/apply-ocr-to-forms/index.ts',
-      type: 'edge-function',
-      priority: 'critical'
+      priority: 'critical' as const
     },
 
-    // === PHASE 1: SECURITY (30% weight) ===
+    // === SECURITY ===
     {
       name: 'aiPIILogger.ts',
       path: 'src/utils/aiPIILogger.ts',
       type: 'security',
-      priority: 'high'
+      priority: 'high' as const
     },
     {
       name: 'secureLogger.ts',
       path: 'src/utils/secureLogger.ts',
       type: 'security',
-      priority: 'high'
+      priority: 'high' as const
     },
 
-    // === PHASE 2: PERFORMANCE (30% weight) ===
+    // === PERFORMANCE ===
     {
       name: 'useWorkflowState.ts',
       path: 'src/hooks/useWorkflowState.ts',
       type: 'performance',
-      priority: 'high'
+      priority: 'high' as const
     },
     {
       name: 'useDocumentProgress.ts',
       path: 'src/hooks/useDocumentProgress.ts',
       type: 'performance',
-      priority: 'high'
+      priority: 'high' as const
     },
     {
       name: 'base64Encoder.worker.ts',
       path: 'src/workers/base64Encoder.worker.ts',
       type: 'performance',
-      priority: 'high'
+      priority: 'high' as const
     },
 
-    // === PHASE 3: RELIABILITY (30% weight) ===
+    // === RELIABILITY ===
     {
       name: 'useRequestBatcher.ts',
       path: 'src/hooks/useRequestBatcher.ts',
       type: 'reliability',
-      priority: 'high'
+      priority: 'high' as const
     },
     {
       name: 'DocumentProgressCard.tsx',
       path: 'src/components/workflows/DocumentProgressCard.tsx',
       type: 'reliability',
-      priority: 'medium'
+      priority: 'medium' as const
     },
     {
       name: 'BatchStatsDashboard.tsx',
       path: 'src/components/workflows/BatchStatsDashboard.tsx',
       type: 'reliability',
-      priority: 'medium'
+      priority: 'medium' as const
+    },
+    {
+      name: 'staticCodeAnalyzer.ts',
+      path: 'src/utils/staticCodeAnalyzer.ts',
+      type: 'reliability',
+      priority: 'medium' as const
     }
   ];
 
@@ -145,18 +121,24 @@ export const CodeReviewDashboard = () => {
     console.log('🔍 Running static analysis...');
     
     const staticPromises = filesToReview.map(async (file) => {
-      let content = '';
-      if (file.path.startsWith('supabase/functions/')) {
-        const functionName = file.path.split('/')[2];
-        const { data, error } = await supabase.functions.invoke('edge-function-analyzer', {
-          body: { functionName }
-        });
-        if (error || !data?.success) throw new Error(`Failed to load ${functionName}`);
-        content = data.code;
-      } else {
-        content = getFileContent(file.path);
+      try {
+        const content = getFileContent(file.path);
+        return analyzeFile(file.name, content);
+      } catch (error) {
+        console.error(`Failed to load ${file.name}:`, error);
+        // Return empty analysis for failed files
+        return {
+          fileName: file.name,
+          issues: [],
+          stats: {
+            totalLines: 0,
+            consoleLogsFound: 0,
+            todosFound: 0,
+            missingErrorHandling: 0,
+            longFunctions: 0,
+          }
+        };
       }
-      return analyzeFile(file.name, content);
     });
 
     const staticAnalysisResults = await Promise.all(staticPromises);
@@ -188,20 +170,17 @@ export const CodeReviewDashboard = () => {
       // STEP 2: Load all file contents in parallel (20-40% progress)
       console.log('📦 Loading all file contents...');
       const filePromises = filesToReview.map(async (file) => {
-        if (file.path.startsWith('supabase/functions/')) {
-          const functionName = file.path.split('/')[2];
-          const { data, error } = await supabase.functions.invoke('edge-function-analyzer', {
-            body: { functionName }
-          });
-          if (error || !data?.success) throw new Error(`Failed to load ${functionName}`);
-          return { fileName: file.name, fileContent: data.code, priority: file.priority };
-        } else {
+        try {
           const content = getFileContent(file.path);
           return { fileName: file.name, fileContent: content, priority: file.priority };
+        } catch (error) {
+          console.error(`Failed to load ${file.name}:`, error);
+          return null;
         }
       });
 
-      const loadedFiles = await Promise.all(filePromises);
+      const loadedFilesWithNulls = await Promise.all(filePromises);
+      const loadedFiles = loadedFilesWithNulls.filter((f): f is { fileName: string; fileContent: string; priority: 'critical' | 'high' | 'medium' } => f !== null);
       setProgress(40);
       setCurrentFile('Analyzing with AI...');
       
@@ -408,7 +387,7 @@ Fix: ${issue.fix}
           <div>
             <h2 className="text-2xl font-bold">Sprint 3: Deep Code Review</h2>
             <p className="text-muted-foreground">
-              AI batch analysis of {filesToReview.length} files in 1 call (93% fewer API requests)
+              AI batch analysis of {filesToReview.length} frontend files in 1 call
             </p>
           </div>
         </div>
