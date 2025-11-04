@@ -179,11 +179,6 @@ function AppSidebar() {
                           <span className="text-sm font-medium capitalize group-hover:text-primary transition-colors">
                             {item.title}
                           </span>
-                          {item.badge && (
-                            <Badge variant="outline" className="text-xs px-1.5 ml-auto border-primary/30">
-                              {item.badge}
-                            </Badge>
-                          )}
                         </NavLink>
                       );
                     })}
