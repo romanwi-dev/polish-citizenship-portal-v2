@@ -99,8 +99,8 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
 
       <div className="space-y-4">
         {[
-          { field: "idk_ancestor_lost_citizenship", label: "My ancestors emigrated from POLAND before 1920" },
           { field: "idk_renounced", label: "I want to apply also for some other family members" },
+          { field: "idk_ancestor_lost_citizenship", label: "My ancestors emigrated from POLAND before 1920" },
           { field: "idk_ancestor_polish_passport", label: "I have some old original Polish documents of my family" },
           { field: "idk_ancestor_applied_citizenship", label: "One of my relatives already holds Polish citizenship confirmation" },
         ].map((item, index) => (
