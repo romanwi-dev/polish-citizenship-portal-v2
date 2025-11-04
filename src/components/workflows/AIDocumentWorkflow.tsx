@@ -1,17 +1,20 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { 
   Upload, 
   Brain, 
   ShieldCheck, 
   FileText, 
   CheckCircle2,
-  FileCheck
+  FileCheck,
+  Download,
+  Trash2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 interface AIWorkflowStep {
   number: string;
@@ -113,9 +116,27 @@ interface AIDocumentWorkflowProps {
 
 export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
   const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
   const [isRunning, setIsRunning] = useState(false);
   const [currentStage, setCurrentStage] = useState<string>('upload');
+  const [isUploading, setIsUploading] = useState(false);
+
+  const { data: documents, isLoading: docsLoading } = useQuery({
+    queryKey: ['case-documents', caseId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('documents')
+        .select('id, name, type, ocr_status, dropbox_path, created_at')
+        .eq('case_id', caseId)
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!caseId
+  });
 
   const toggleFlip = (stepNumber: string) => {
     setFlippedCards(prev => ({
@@ -208,9 +229,167 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
     }
   };
 
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setIsUploading(true);
+    try {
+      for (const file of Array.from(files)) {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${caseId}/${Date.now()}_${file.name}`;
+        
+        const { error: uploadError } = await supabase.storage
+          .from('client-photos')
+          .upload(fileName, file);
+
+        if (uploadError) throw uploadError;
+
+        const { error: dbError } = await supabase
+          .from('documents')
+          .insert({
+            case_id: caseId,
+            name: file.name,
+            type: fileExt || 'unknown',
+            dropbox_path: fileName,
+            ocr_status: 'pending'
+          });
+
+        if (dbError) throw dbError;
+      }
+
+      toast({ title: "Documents uploaded successfully" });
+      queryClient.invalidateQueries({ queryKey: ['case-documents', caseId] });
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    } catch (error) {
+      toast({
+        title: "Upload failed",
+        description: error instanceof Error ? error.message : 'Unknown error',
+        variant: "destructive"
+      });
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleDownload = async (dropboxPath: string, fileName: string) => {
+    try {
+      if (!dropboxPath) {
+        toast({ title: "No file path available", variant: "destructive" });
+        return;
+      }
+
+      const { data, error } = await supabase.storage
+        .from('client-photos')
+        .download(dropboxPath);
+
+      if (error) throw error;
+
+      const url = URL.createObjectURL(data);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      toast({
+        title: "Download failed",
+        description: error instanceof Error ? error.message : 'Unknown error',
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleDelete = async (docId: string) => {
+    if (!confirm('Delete this document?')) return;
+    
+    try {
+      const { error } = await supabase
+        .from('documents')
+        .delete()
+        .eq('id', docId);
+
+      if (error) throw error;
+      
+      toast({ title: "Document deleted" });
+      queryClient.invalidateQueries({ queryKey: ['case-documents', caseId] });
+    } catch (error) {
+      toast({
+        title: "Delete failed",
+        description: error instanceof Error ? error.message : 'Unknown error',
+        variant: "destructive"
+      });
+    }
+  };
+
   return (
     <section className="relative py-8 overflow-hidden">
       <div className="container relative z-10 mx-auto px-4">
+        {/* Document Upload Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="glass-card p-6 mb-8"
+        >
+          <h3 className="text-2xl font-heading font-bold mb-4">Case Documents</h3>
+          
+          <div className="mb-6">
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              accept=".pdf,.jpg,.jpeg,.png"
+              onChange={handleFileUpload}
+              className="hidden"
+            />
+            <Button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isUploading}
+              className="w-full md:w-auto"
+            >
+              <Upload className="h-4 w-4 mr-2" />
+              {isUploading ? 'Uploading...' : 'Upload Documents'}
+            </Button>
+          </div>
+
+          {docsLoading ? (
+            <p className="text-muted-foreground">Loading documents...</p>
+          ) : documents && documents.length > 0 ? (
+            <div className="space-y-2">
+              {documents.map((doc) => (
+                <div key={doc.id} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                  <div className="flex-1">
+                    <p className="font-medium">{doc.name}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {doc.ocr_status === 'completed' ? '✓ OCR Complete' : 'Pending OCR'}
+                    </p>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleDownload(doc.dropbox_path || '', doc.name || 'document')}
+                    >
+                      <Download className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => handleDelete(doc.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-muted-foreground">No documents uploaded yet. Upload documents to begin the workflow.</p>
+          )}
+        </motion.div>
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
