@@ -462,6 +462,95 @@ export type Database = {
           },
         ]
       }
+      ai_verification_results: {
+        Row: {
+          case_id: string
+          consensus_confidence: number | null
+          consensus_valid: boolean | null
+          created_at: string
+          disagreements: Json | null
+          form_type: string
+          gemini_completeness: number | null
+          gemini_confidence: number | null
+          gemini_is_valid: boolean | null
+          gemini_issues: Json | null
+          gemini_raw_response: Json | null
+          gemini_suggestions: Json | null
+          hac_approved: boolean | null
+          hac_notes: string | null
+          hac_reviewed_at: string | null
+          hac_reviewed_by: string | null
+          id: string
+          openai_completeness: number | null
+          openai_confidence: number | null
+          openai_is_valid: boolean | null
+          openai_issues: Json | null
+          openai_raw_response: Json | null
+          openai_suggestions: Json | null
+          updated_at: string
+        }
+        Insert: {
+          case_id: string
+          consensus_confidence?: number | null
+          consensus_valid?: boolean | null
+          created_at?: string
+          disagreements?: Json | null
+          form_type: string
+          gemini_completeness?: number | null
+          gemini_confidence?: number | null
+          gemini_is_valid?: boolean | null
+          gemini_issues?: Json | null
+          gemini_raw_response?: Json | null
+          gemini_suggestions?: Json | null
+          hac_approved?: boolean | null
+          hac_notes?: string | null
+          hac_reviewed_at?: string | null
+          hac_reviewed_by?: string | null
+          id?: string
+          openai_completeness?: number | null
+          openai_confidence?: number | null
+          openai_is_valid?: boolean | null
+          openai_issues?: Json | null
+          openai_raw_response?: Json | null
+          openai_suggestions?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          case_id?: string
+          consensus_confidence?: number | null
+          consensus_valid?: boolean | null
+          created_at?: string
+          disagreements?: Json | null
+          form_type?: string
+          gemini_completeness?: number | null
+          gemini_confidence?: number | null
+          gemini_is_valid?: boolean | null
+          gemini_issues?: Json | null
+          gemini_raw_response?: Json | null
+          gemini_suggestions?: Json | null
+          hac_approved?: boolean | null
+          hac_notes?: string | null
+          hac_reviewed_at?: string | null
+          hac_reviewed_by?: string | null
+          id?: string
+          openai_completeness?: number | null
+          openai_confidence?: number | null
+          openai_is_valid?: boolean | null
+          openai_issues?: Json | null
+          openai_raw_response?: Json | null
+          openai_suggestions?: Json | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_verification_results_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_verifications: {
         Row: {
           case_id: string | null
