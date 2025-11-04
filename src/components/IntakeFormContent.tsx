@@ -167,7 +167,7 @@ export const ApplicantSection = ({ formData, handleInputChange, clearField, isLa
       </motion.div>
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("applicant_pob_city")}>
-        <Label className={isLargeFonts ? "text-2xl" : ""}>City of birth</Label>
+        <Label className={isLargeFonts ? "text-2xl" : ""}>Place of birth</Label>
         <FormInput
           value={formData?.applicant_pob_city || ""}
           onChange={(e) => handleInputChange("applicant_pob_city", e.target.value)}
