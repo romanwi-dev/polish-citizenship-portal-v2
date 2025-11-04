@@ -1,20 +1,8 @@
 import { useState } from "react";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 import { 
-  Brain, 
-  CheckCircle2, 
-  AlertTriangle, 
-  XCircle, 
-  Play,
   Loader2,
-  FileCode,
-  Shield,
-  Zap,
-  RefreshCw,
-  Code,
+  Play,
   Copy,
   Search
 } from "lucide-react";
@@ -316,54 +304,6 @@ export const CodeReviewDashboard = () => {
     }
   };
 
-  const getSeverityColor = (severity: string) => {
-    switch (severity) {
-      case 'CRITICAL':
-        return 'text-red-600 bg-red-50 border-red-200';
-      case 'HIGH':
-        return 'text-orange-600 bg-orange-50 border-orange-200';
-      case 'MEDIUM':
-        return 'text-yellow-600 bg-yellow-50 border-yellow-200';
-      case 'LOW':
-        return 'text-blue-600 bg-blue-50 border-blue-200';
-      case 'INFO':
-        return 'text-gray-600 bg-gray-50 border-gray-200';
-      default:
-        return 'text-gray-600 bg-gray-50 border-gray-200';
-    }
-  };
-
-  const getScoreColor = (score: number) => {
-    if (score >= 90) return 'text-green-600';
-    if (score >= 75) return 'text-yellow-600';
-    return 'text-red-600';
-  };
-
-  const getCategoryIcon = (category: string) => {
-    switch (category) {
-      case 'Security':
-        return <Shield className="h-4 w-4" />;
-      case 'Performance':
-        return <Zap className="h-4 w-4" />;
-      case 'Reliability':
-        return <RefreshCw className="h-4 w-4" />;
-      case 'Correctness':
-        return <CheckCircle2 className="h-4 w-4" />;
-      case 'Maintainability':
-        return <Code className="h-4 w-4" />;
-      default:
-        return <FileCode className="h-4 w-4" />;
-    }
-  };
-
-  const overallScore = results.length > 0
-    ? Math.round(results.reduce((sum, r) => sum + r.overallScore, 0) / results.length)
-    : 0;
-
-  const totalBlockers = results.reduce((sum, r) => sum + (r.blockers?.length || 0), 0);
-  const totalStaticIssues = staticResults.reduce((sum, r) => sum + r.issues.length, 0);
-  const totalStaticWarnings = staticResults.reduce((sum, r) => sum + r.issues.filter(i => i.severity === 'warning').length, 0);
-
   const copyReport = async () => {
     if (results.length === 0) {
       toast({
@@ -373,6 +313,12 @@ export const CodeReviewDashboard = () => {
       });
       return;
     }
+
+    const overallScore = results.length > 0
+      ? Math.round(results.reduce((sum, r) => sum + r.overallScore, 0) / results.length)
+      : 0;
+
+    const totalBlockers = results.reduce((sum, r) => sum + (r.blockers?.length || 0), 0);
 
     const reportText = `
 # Deep Code Review Report - ${new Date().toLocaleDateString()}
@@ -421,203 +367,61 @@ Fix: ${issue.fix}
 
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <Brain className="h-8 w-8 text-primary" />
-          <div>
-            <h2 className="text-2xl font-bold">Sprint 3: Deep Code Review</h2>
-            <p className="text-muted-foreground">
-              AI batch analysis of {filesToReview.length} files (frontend + edge functions) in 1 call
-            </p>
-          </div>
-        </div>
+    <div className="space-y-6">
+      {/* Title */}
+      <h1 className="text-4xl font-heading font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+        Deep Code Review
+      </h1>
 
-        <div className="flex gap-2">
-          <Button
-            onClick={runStaticAnalysisOnly}
-            disabled={isRunning}
-            size="lg"
-            variant="outline"
-            className="gap-2"
-          >
-            {isRunning && showStaticOnly ? (
-              <>
-                <Loader2 className="h-4 w-4 animate-spin" />
-                Analyzing...
-              </>
-            ) : (
-              <>
-                <Search className="h-4 w-4" />
-                Quick Check (No AI)
-              </>
-            )}
-          </Button>
+      {/* Action Buttons */}
+      <div className="flex gap-3">
+        <Button
+          onClick={runStaticAnalysisOnly}
+          disabled={isRunning}
+          variant="outline"
+          className="gap-2"
+        >
+          {isRunning && showStaticOnly ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Analyzing...
+            </>
+          ) : (
+            <>
+              <Search className="h-4 w-4" />
+              Quick Check (No AI)
+            </>
+          )}
+        </Button>
 
-          <Button
-            onClick={copyReport}
-            disabled={results.length === 0 && staticResults.length === 0}
-            size="lg"
-            variant="outline"
-            className="gap-2"
-          >
-            <Copy className="h-4 w-4" />
-            Copy Report
-          </Button>
-          
-          <Button
-            onClick={() => runCodeReview()}
-            disabled={isRunning}
-            size="lg"
-            className="gap-2"
-          >
-            {isRunning && !showStaticOnly ? (
-              <>
-                <Loader2 className="h-4 w-4 animate-spin" />
-                Analyzing...
-              </>
-            ) : (
-              <>
-                <Play className="h-4 w-4" />
-                Full Review (AI)
-              </>
-            )}
-          </Button>
-        </div>
+        <Button
+          onClick={copyReport}
+          disabled={results.length === 0 && staticResults.length === 0}
+          variant="outline"
+          className="gap-2"
+        >
+          <Copy className="h-4 w-4" />
+          Copy Report
+        </Button>
+        
+        <Button
+          onClick={() => runCodeReview()}
+          disabled={isRunning}
+          className="gap-2"
+        >
+          {isRunning && !showStaticOnly ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Analyzing...
+            </>
+          ) : (
+            <>
+              <Play className="h-4 w-4" />
+              Full Review (AI)
+            </>
+          )}
+        </Button>
       </div>
-
-      {/* Progress */}
-      {isRunning && (
-        <div className="space-y-2">
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">Reviewing: {currentFile}</span>
-            <span className="font-medium">{Math.round(progress)}%</span>
-          </div>
-          <Progress value={progress} className="h-2" />
-        </div>
-      )}
-
-      {results.length > 0 && (
-        <Card className="p-6">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-4">
-              <div className={`text-4xl font-bold ${getScoreColor(overallScore)}`}>
-                {overallScore}/100
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold">Overall Score</h3>
-                <p className="text-sm text-muted-foreground">
-                  {totalBlockers === 0 ? '✅ Production Ready' : `⚠️ ${totalBlockers} Blockers Found`}
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-4 text-sm">
-              <div className="text-center">
-                <div className="text-2xl font-bold">{results.length}</div>
-                <div className="text-muted-foreground">Files</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-red-600">{totalBlockers}</div>
-                <div className="text-muted-foreground">Blockers</div>
-              </div>
-            </div>
-          </div>
-        </Card>
-      )}
-
-      {/* AI Review File Results */}
-      {results.map((result, idx) => (
-        <Card key={idx} className="p-6">
-          <div className="space-y-4">
-            <div className="flex items-start justify-between">
-              <div className="flex items-center gap-3">
-                <FileCode className="h-6 w-6 text-primary" />
-                <div>
-                  <h3 className="text-lg font-semibold">{result.fileName}</h3>
-                  <p className="text-sm text-muted-foreground">{result.summary}</p>
-                </div>
-              </div>
-              <div className={`text-2xl font-bold ${getScoreColor(result.overallScore)}`}>
-                {result.overallScore}/100
-              </div>
-            </div>
-
-            {/* Blockers */}
-            {result.blockers.length > 0 && (
-              <div className="p-4 rounded-lg bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800">
-                <h4 className="font-semibold text-red-900 dark:text-red-200 flex items-center gap-2 mb-3">
-                  <XCircle className="h-5 w-5" />
-                  🚨 Production Blockers ({result.blockers.length})
-                </h4>
-                <ul className="space-y-2">
-                  {result.blockers.map((blocker, bidx) => (
-                    <li key={bidx} className="text-sm text-red-800 dark:text-red-300 flex items-start gap-2">
-                      <span className="font-bold mt-0.5">{bidx + 1}.</span>
-                      <span>{blocker}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {/* Critical Issues */}
-            {result.criticalIssues.length > 0 && (
-              <div className="space-y-3">
-                <h4 className="font-semibold flex items-center gap-2">
-                  <AlertTriangle className="h-4 w-4" />
-                  Critical Issues ({result.criticalIssues.length})
-                </h4>
-                <div className="space-y-3">
-                  {result.criticalIssues.map((issue, iidx) => (
-                    <div key={iidx} className="p-3 rounded-lg bg-background/50 backdrop-blur border">
-                      <div className="flex items-start gap-3">
-                        {issue.severity === 'CRITICAL' ? (
-                          <XCircle className="h-5 w-5 text-red-600 mt-0.5" />
-                        ) : (
-                          <AlertTriangle className="h-5 w-5 text-orange-600 mt-0.5" />
-                        )}
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-2">
-                            <Badge className={getSeverityColor(issue.severity)}>
-                              {issue.severity}
-                            </Badge>
-                            <span className="font-semibold">{issue.title}</span>
-                          </div>
-                          <div className="p-2 rounded bg-muted/50 text-sm">
-                            <strong>Fix:</strong> {issue.fix}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </Card>
-      ))}
-
-      {/* Empty State */}
-      {!isRunning && results.length === 0 && staticResults.length === 0 && (
-        <div className="py-20 text-center">
-          <Brain className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-xl font-semibold mb-2">Ready for Code Review</h3>
-          <p className="text-muted-foreground mb-6">
-            Start with a quick local check (free) or run full AI analysis
-          </p>
-          <div className="flex gap-3 justify-center">
-            <Button onClick={runStaticAnalysisOnly} size="lg" variant="outline">
-              <Search className="h-4 w-4 mr-2" />
-              Quick Check (Free)
-            </Button>
-            <Button onClick={() => runCodeReview()} size="lg">
-              <Play className="h-4 w-4 mr-2" />
-              Full AI Review
-            </Button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
