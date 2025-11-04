@@ -41,36 +41,38 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
           </Select>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("children_count")}>
-          <Label className={isLargeFonts ? "text-2xl" : ""}>Children</Label>
-          <Select value={formData?.children_count?.toString() || ""} onValueChange={(value) => handleInputChange("children_count", parseInt(value))}>
-            <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs">
-              <SelectValue placeholder="Select" />
-            </SelectTrigger>
-            <SelectContent className="bg-background border-2 z-50">
-              {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-                <SelectItem key={num} value={num.toString()} className="cursor-pointer">{num}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </motion.div>
-
-        {/* Minor Children Count - only show if children_count > 0 */}
-        {(formData?.children_count > 0) && (
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.175 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("minor_children_count")}>
-            <Label className={isLargeFonts ? "text-2xl" : ""}>Minor children</Label>
-            <Select value={formData?.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
+        <div className="space-y-6">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("children_count")}>
+            <Label className={isLargeFonts ? "text-2xl" : ""}>Children</Label>
+            <Select value={formData?.children_count?.toString() || ""} onValueChange={(value) => handleInputChange("children_count", parseInt(value))}>
               <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs">
                 <SelectValue placeholder="Select" />
               </SelectTrigger>
               <SelectContent className="bg-background border-2 z-50">
-                {Array.from({ length: (formData?.children_count || 0) + 1 }, (_, i) => i).map((num) => (
+                {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
                   <SelectItem key={num} value={num.toString()} className="cursor-pointer">{num}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </motion.div>
-        )}
+
+          {/* Minor Children Count - only show if children_count > 0 */}
+          {(formData?.children_count > 0) && (
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.175 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("minor_children_count")}>
+              <Label className={isLargeFonts ? "text-2xl" : ""}>Minor children</Label>
+              <Select value={formData?.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
+                <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs">
+                  <SelectValue placeholder="Select" />
+                </SelectTrigger>
+                <SelectContent className="bg-background border-2 z-50">
+                  {Array.from({ length: (formData?.children_count || 0) + 1 }, (_, i) => i).map((num) => (
+                    <SelectItem key={num} value={num.toString()} className="cursor-pointer">{num}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </motion.div>
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
