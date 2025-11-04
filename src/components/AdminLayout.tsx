@@ -225,16 +225,6 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   return (
     <SidebarProvider open={sidebarOpen} onOpenChange={setSidebarOpen} defaultOpen={true}>
       <div className="min-h-screen flex w-full">
-        {/* Fixed toggle button - always visible even when sidebar is closed */}
-        {!sidebarOpen && (
-          <button
-            onClick={() => setSidebarOpen(true)}
-            className="fixed top-4 left-4 z-50 h-12 w-12 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg shadow-lg flex items-center justify-center transition-all hover:scale-110"
-          >
-            <PanelLeft className="h-6 w-6" />
-          </button>
-        )}
-        
         <AppSidebar />
         <main className="flex-1 overflow-auto">
           {children}
