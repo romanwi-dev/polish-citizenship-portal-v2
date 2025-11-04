@@ -149,19 +149,29 @@ export const CodeReviewDashboard = () => {
       const reviewPromises = filesToReview.map(async (file, index) => {
         setCurrentFile(file.name);
         
-        // Fetch file content from the repository
-        let fileContent = '';
         try {
-          // For demo purposes, we'll use placeholder content
-          // In production, you'd fetch from GitHub API or local filesystem
-          fileContent = `// ${file.name} - Code review in progress`;
+          // Fetch actual file content from the codebase
+          console.log(`Reading file content for ${file.name} from ${file.path}...`);
           
-          console.log(`Reviewing ${file.name}...`);
+          const { data: fileData, error: fileError } = await supabase.functions.invoke('read-project-file', {
+            body: { filePath: file.path }
+          });
+
+          if (fileError) {
+            console.error(`Failed to read file ${file.path}:`, fileError);
+            throw fileError;
+          }
+
+          const fileContent = fileData?.content || '';
+          console.log(`Successfully read ${fileContent.length} characters from ${file.name}`);
+          
+          // Now send the real file content to GPT-5 for analysis
+          console.log(`Analyzing ${file.name} with GPT-5...`);
           
           const { data, error } = await supabase.functions.invoke('ai-code-review', {
             body: {
               fileName: file.name,
-              fileContent: `Analyze this ${file.type} file for production readiness. Focus on security, performance, and reliability.`,
+              fileContent: fileContent,
               reviewType: 'comprehensive'
             }
           });
