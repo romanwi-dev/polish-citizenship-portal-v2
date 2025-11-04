@@ -56,16 +56,35 @@ serve(async (req) => {
       dropboxRefreshToken
     );
 
-    // Categories to process (skip OTHER)
-    const categoriesToProcess = [
-      'POTENTIAL',
-      'VIP+',
-      'VIP',
-      'CITIZEN-X',
-      'GLOBAL-P',
-      'FOURTH',
-      'FIFTH'
-    ];
+    console.log('🔍 Discovering ALL active categories from /CASES...');
+
+    // Scan /CASES root to find EVERY category folder (excluding archived ###)
+    const rootListResponse = await fetch('https://api.dropboxapi.com/2/files/list_folder', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ path: '/CASES' }),
+    });
+
+    if (!rootListResponse.ok) {
+      throw new Error(`Failed to list /CASES: ${await rootListResponse.text()}`);
+    }
+
+    const rootListData: DropboxListResult = await rootListResponse.json();
+    const allCategories = rootListData.entries
+      .filter(entry => entry[".tag"] === "folder")
+      .map(entry => entry.name);
+
+    // Filter OUT archived categories (starting with ###)
+    const categoriesToProcess = allCategories.filter(cat => !cat.startsWith('###'));
+    const skippedCategories = allCategories.filter(cat => cat.startsWith('###'));
+
+    console.log(`📂 Found ${categoriesToProcess.length} active categories to sync:`, categoriesToProcess);
+    if (skippedCategories.length > 0) {
+      console.log(`⏭️  Skipping ${skippedCategories.length} archived categories:`, skippedCategories);
+    }
 
     let totalCasesUpdated = 0;
     let totalDocumentsUpdated = 0;
