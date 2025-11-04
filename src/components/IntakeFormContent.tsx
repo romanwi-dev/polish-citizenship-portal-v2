@@ -176,13 +176,6 @@ export const ApplicantSection = ({ formData, handleInputChange, clearField, isLa
         />
       </motion.div>
 
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("applicant_pob_country")}>
-        <Label className={isLargeFonts ? "text-2xl" : ""}>Country of birth</Label>
-        <CountrySelect
-          value={formData?.applicant_pob_country || ""}
-          onChange={(value) => handleInputChange("applicant_pob_country", value)}
-        />
-      </motion.div>
     </div>
   </div>
 );
