@@ -38,24 +38,33 @@ const AIWorkflow = () => {
   return (
     <AdminLayout>
       <div className="space-y-8 p-8">
-        {/* Search and Case Selection */}
-        <div className="max-w-md space-y-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        {/* Search and Case Selection - Single Line */}
+        <div className="flex items-center gap-6 max-w-6xl">
+          {/* Search Bar */}
+          <div className="relative flex-1">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-primary/40 z-10" />
             <Input
               type="text"
-              placeholder="Search by surname..."
+              placeholder="Search for case"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
+              className="pl-12 h-16 text-2xl border-2 border-border/50 bg-card/50 rounded-none hover-glow focus:shadow-lg backdrop-blur placeholder:text-muted-foreground/30 placeholder:text-xl"
             />
           </div>
-          
-          <div>
-            <label className="block text-sm font-medium mb-2">Select Case</label>
+
+          {/* Arrow Separator */}
+          <div className="text-4xl font-bold text-primary/40 select-none">
+            {'>>>>>>'}
+          </div>
+
+          {/* Case Selection */}
+          <div className="flex-1">
             <Select value={selectedCaseId} onValueChange={setSelectedCaseId}>
-              <SelectTrigger>
-                <SelectValue placeholder="Choose a case to run AI workflow..." />
+              <SelectTrigger className="h-16 border-2 border-border/50 bg-card/50 rounded-none hover-glow focus:shadow-lg backdrop-blur">
+                <SelectValue 
+                  placeholder="Choose a case" 
+                  className="text-muted-foreground/30 text-2xl"
+                />
               </SelectTrigger>
               <SelectContent>
                 {filteredCases?.map(c => (
