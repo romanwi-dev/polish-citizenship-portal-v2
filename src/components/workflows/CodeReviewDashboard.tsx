@@ -251,108 +251,102 @@ export const CodeReviewDashboard = () => {
   const totalBlockers = results.reduce((sum, r) => sum + (r.blockers?.length || 0), 0);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header */}
-      <div className="p-6 rounded-lg border-2 bg-blue-50/30 dark:bg-blue-950/30 border-blue-200/20 dark:border-blue-800/20 backdrop-blur" 
-           style={{ boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.1)' }}>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Brain className="h-8 w-8 text-primary" />
-            <div>
-              <h2 className="text-2xl font-bold">Sprint 3: Deep Code Review</h2>
-              <p className="text-muted-foreground">
-                GPT-5 comprehensive analysis of {filesToReview.length} critical files
-              </p>
-            </div>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <Brain className="h-8 w-8 text-primary" />
+          <div>
+            <h2 className="text-2xl font-bold">Sprint 3: Deep Code Review</h2>
+            <p className="text-muted-foreground">
+              GPT-5 comprehensive analysis of {filesToReview.length} critical files
+            </p>
           </div>
-
-          <Button
-            onClick={runCodeReview}
-            disabled={isRunning}
-            size="lg"
-            className="gap-2"
-          >
-            {isRunning ? (
-              <>
-                <Loader2 className="h-4 w-4 animate-spin" />
-                Analyzing...
-              </>
-            ) : (
-              <>
-                <Play className="h-4 w-4" />
-                Start Review
-              </>
-            )}
-          </Button>
         </div>
 
-        {/* Progress */}
-        {isRunning && (
-          <div className="mt-6 space-y-2">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">Reviewing: {currentFile}</span>
-              <span className="font-medium">{Math.round(progress)}%</span>
-            </div>
-            <Progress value={progress} className="h-2" />
-          </div>
-        )}
+        <Button
+          onClick={runCodeReview}
+          disabled={isRunning}
+          size="lg"
+          className="gap-2"
+        >
+          {isRunning ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Analyzing...
+            </>
+          ) : (
+            <>
+              <Play className="h-4 w-4" />
+              Start Review
+            </>
+          )}
+        </Button>
       </div>
+
+      {/* Progress */}
+      {isRunning && (
+        <div className="space-y-2">
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-muted-foreground">Reviewing: {currentFile}</span>
+            <span className="font-medium">{Math.round(progress)}%</span>
+          </div>
+          <Progress value={progress} className="h-2" />
+        </div>
+      )}
 
       {/* Overall Score */}
       {results.length > 0 && (
-        <div className="p-6 rounded-lg border-2 bg-blue-50/30 dark:bg-blue-950/30 border-blue-200/20 dark:border-blue-800/20 backdrop-blur"
-             style={{ boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.1)' }}>
-          <div className="grid grid-cols-4 gap-6">
-            <div className="col-span-1">
-              <div className="text-center">
-                <div className={`text-6xl font-bold ${getScoreColor(overallScore)}`}>
-                  {overallScore}
-                </div>
-                <div className="text-sm text-muted-foreground mt-2">Overall Score</div>
+        <div className="grid grid-cols-4 gap-6">
+          <div className="col-span-1">
+            <div className="text-center">
+              <div className={`text-6xl font-bold ${getScoreColor(overallScore)}`}>
+                {overallScore}
+              </div>
+              <div className="text-sm text-muted-foreground mt-2">Overall Score</div>
+            </div>
+          </div>
+
+          <div className="col-span-3 grid grid-cols-3 gap-4">
+            <div className="p-4 rounded-lg bg-background/50 backdrop-blur">
+              <div className="flex items-center gap-2 mb-2">
+                <CheckCircle2 className="h-5 w-5 text-green-500" />
+                <span className="font-semibold">Files Reviewed</span>
+              </div>
+              <div className="text-2xl font-bold">{results.length}</div>
+            </div>
+
+            <div className="p-4 rounded-lg bg-background/50 backdrop-blur">
+              <div className="flex items-center gap-2 mb-2">
+                {totalBlockers > 0 ? (
+                  <XCircle className="h-5 w-5 text-destructive" />
+                ) : (
+                  <CheckCircle2 className="h-5 w-5 text-green-500" />
+                )}
+                <span className="font-semibold">Blockers</span>
+              </div>
+              <div className={`text-2xl font-bold ${totalBlockers > 0 ? 'text-destructive' : 'text-green-600'}`}>
+                {totalBlockers}
               </div>
             </div>
 
-            <div className="col-span-3 grid grid-cols-3 gap-4">
-              <div className="p-4 rounded-lg border bg-background/50 backdrop-blur">
-                <div className="flex items-center gap-2 mb-2">
-                  <CheckCircle2 className="h-5 w-5 text-green-500" />
-                  <span className="font-semibold">Files Reviewed</span>
-                </div>
-                <div className="text-2xl font-bold">{results.length}</div>
+            <div className="p-4 rounded-lg bg-background/50 backdrop-blur">
+              <div className="flex items-center gap-2 mb-2">
+                <Brain className="h-5 w-5 text-primary" />
+                <span className="font-semibold">Status</span>
               </div>
-
-              <div className="p-4 rounded-lg border bg-background/50 backdrop-blur">
-                <div className="flex items-center gap-2 mb-2">
-                  {totalBlockers > 0 ? (
-                    <XCircle className="h-5 w-5 text-destructive" />
-                  ) : (
-                    <CheckCircle2 className="h-5 w-5 text-green-500" />
-                  )}
-                  <span className="font-semibold">Blockers</span>
-                </div>
-                <div className={`text-2xl font-bold ${totalBlockers > 0 ? 'text-destructive' : 'text-green-600'}`}>
-                  {totalBlockers}
-                </div>
-              </div>
-
-              <div className="p-4 rounded-lg border bg-background/50 backdrop-blur">
-                <div className="flex items-center gap-2 mb-2">
-                  <Brain className="h-5 w-5 text-primary" />
-                  <span className="font-semibold">Status</span>
-                </div>
-                <div className="text-sm font-medium">
-                  {overallScore >= 90 ? (
-                    <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-                      Production Ready
-                    </Badge>
-                  ) : overallScore >= 75 ? (
-                    <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-200">
-                      Needs Minor Fixes
-                    </Badge>
-                  ) : (
-                    <Badge variant="destructive">Critical Issues</Badge>
-                  )}
-                </div>
+              <div className="text-sm font-medium">
+                {overallScore >= 90 ? (
+                  <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+                    Production Ready
+                  </Badge>
+                ) : overallScore >= 75 ? (
+                  <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-200">
+                    Needs Minor Fixes
+                  </Badge>
+                ) : (
+                  <Badge variant="destructive">Critical Issues</Badge>
+                )}
               </div>
             </div>
           </div>
@@ -361,10 +355,9 @@ export const CodeReviewDashboard = () => {
 
       {/* File Results */}
       {results.map((result) => (
-        <div key={result.fileName} className="p-6 rounded-lg border-2 bg-blue-50/30 dark:bg-blue-950/30 border-blue-200/20 dark:border-blue-800/20 backdrop-blur"
-             style={{ boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.1)' }}>
+        <div key={result.fileName} className="space-y-6">
           {/* File Header */}
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <FileCode className="h-6 w-6 text-primary" />
               <div>
@@ -379,16 +372,16 @@ export const CodeReviewDashboard = () => {
 
           {/* Blockers Alert */}
           {result.blockers && result.blockers.length > 0 && (
-            <div className="mb-6 p-4 rounded-lg bg-red-50 border border-red-200">
+            <div className="p-4 rounded-lg bg-red-50/80 dark:bg-red-950/30 backdrop-blur">
               <div className="flex items-start gap-3">
                 <XCircle className="h-5 w-5 text-red-600 mt-0.5" />
                 <div className="flex-1">
-                  <h4 className="font-semibold text-red-900 mb-2">
+                  <h4 className="font-semibold text-red-900 dark:text-red-200 mb-2">
                     🚨 {result.blockers.length} Production Blockers
                   </h4>
                   <ul className="space-y-1">
                     {result.blockers.map((blocker, idx) => (
-                      <li key={idx} className="text-sm text-red-800">• {blocker}</li>
+                      <li key={idx} className="text-sm text-red-800 dark:text-red-300">• {blocker}</li>
                     ))}
                   </ul>
                 </div>
@@ -397,9 +390,9 @@ export const CodeReviewDashboard = () => {
           )}
 
           {/* Category Scores */}
-          <div className="grid grid-cols-5 gap-4 mb-6">
+          <div className="grid grid-cols-5 gap-4">
             {result.categories.map((category) => (
-              <div key={category.category} className="p-3 rounded-lg border bg-background/50 backdrop-blur">
+              <div key={category.category} className="p-3 rounded-lg bg-background/50 backdrop-blur">
                 <div className="flex items-center gap-2 mb-2">
                   {getCategoryIcon(category.category)}
                   <span className="text-xs font-medium">{category.category}</span>
@@ -418,14 +411,14 @@ export const CodeReviewDashboard = () => {
             if (criticalIssues.length === 0) return null;
 
             return (
-              <div key={category.category} className="mb-4">
-                <h4 className="font-semibold mb-3 flex items-center gap-2">
+              <div key={category.category} className="space-y-3">
+                <h4 className="font-semibold flex items-center gap-2">
                   {getCategoryIcon(category.category)}
                   {category.category} - Critical Issues ({criticalIssues.length})
                 </h4>
                 <div className="space-y-3">
                   {criticalIssues.map((issue, idx) => (
-                    <div key={idx} className="p-3 rounded-lg border bg-background/50 backdrop-blur">
+                    <div key={idx} className="p-3 rounded-lg bg-background/50 backdrop-blur">
                       <div className="flex items-start gap-3">
                         {issue.severity === 'CRITICAL' ? (
                           <XCircle className="h-5 w-5 text-red-600 mt-0.5" />
@@ -443,7 +436,7 @@ export const CodeReviewDashboard = () => {
                             <span className="font-semibold">{issue.title}</span>
                           </div>
                           <p className="text-sm text-muted-foreground mb-2">{issue.description}</p>
-                          <div className="p-2 rounded bg-muted text-sm">
+                          <div className="p-2 rounded bg-muted/50 text-sm">
                             <strong>Fix:</strong> {issue.recommendation}
                           </div>
                         </div>
@@ -457,11 +450,11 @@ export const CodeReviewDashboard = () => {
 
           {/* Recommendations */}
           {result.recommendations && result.recommendations.length > 0 && (
-            <div className="mt-6 p-4 rounded-lg bg-blue-50 border border-blue-200">
-              <h4 className="font-semibold text-blue-900 mb-2">💡 Top Recommendations</h4>
+            <div className="p-4 rounded-lg bg-blue-50/80 dark:bg-blue-950/30 backdrop-blur">
+              <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-2">💡 Top Recommendations</h4>
               <ul className="space-y-1">
                 {result.recommendations.map((rec, idx) => (
-                  <li key={idx} className="text-sm text-blue-800">
+                  <li key={idx} className="text-sm text-blue-800 dark:text-blue-300">
                     {idx + 1}. {rec}
                   </li>
                 ))}
@@ -473,8 +466,7 @@ export const CodeReviewDashboard = () => {
 
       {/* Empty State */}
       {!isRunning && results.length === 0 && (
-        <div className="p-12 text-center rounded-lg border-2 bg-blue-50/30 dark:bg-blue-950/30 border-blue-200/20 dark:border-blue-800/20 backdrop-blur"
-             style={{ boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.1)' }}>
+        <div className="py-20 text-center">
           <Brain className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
           <h3 className="text-xl font-semibold mb-2">Ready for Deep Code Review</h3>
           <p className="text-muted-foreground mb-6">
