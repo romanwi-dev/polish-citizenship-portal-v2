@@ -155,7 +155,6 @@ Be thorough but practical - identify real issues that could cause problems in pr
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt }
         ],
-        temperature: 0.2, // Low temperature for consistent, analytical output
         response_format: { type: "json_object" }
       }),
     });
