@@ -3,12 +3,13 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+import { AdminLayout } from "@/components/AdminLayout";
 
 const CodeReview = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen">
+    <AdminLayout>
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Header */}
         <motion.div
@@ -46,7 +47,7 @@ const CodeReview = () => {
           <CodeReviewDashboard />
         </motion.div>
       </div>
-    </div>
+    </AdminLayout>
   );
 };
 
