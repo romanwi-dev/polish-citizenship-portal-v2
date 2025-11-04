@@ -4,9 +4,7 @@ import { AdminLayout } from "@/components/AdminLayout";
 const CodeReview = () => {
   return (
     <AdminLayout>
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
-        <CodeReviewDashboard />
-      </div>
+      <CodeReviewDashboard />
     </AdminLayout>
   );
 };
