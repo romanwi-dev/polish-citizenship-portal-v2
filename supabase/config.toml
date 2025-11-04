@@ -57,6 +57,9 @@ verify_jwt = true
 [functions.ai-verify-forms]
 verify_jwt = true
 
+[functions.ai-code-review]
+verify_jwt = true
+
 [functions.client-guide-agent]
 verify_jwt = true
 

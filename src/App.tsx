@@ -78,6 +78,7 @@ const VerifyChanges = lazy(() => import("./pages/VerifyChanges"));
 const PDFDemo = lazy(() => import("./pages/PDFDemo"));
 const SelfTest = lazy(() => import("./pages/admin/SelfTest"));
 const PDFVerificationTest = lazy(() => import("./pages/admin/PDFVerificationTest"));
+const CodeReview = lazy(() => import("./pages/admin/CodeReview"));
 
 
 const queryClient = new QueryClient({
@@ -274,6 +275,14 @@ const App = () => (
             } 
           />
           <Route 
+            path="/admin/code-review" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <CodeReview />
+              </Suspense>
+            } 
+          />
+          <Route
             path="/admin/zero-errors-checklist" 
             element={
               <Suspense fallback={<AdminLoader />}>

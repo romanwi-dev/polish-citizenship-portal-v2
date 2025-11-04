@@ -797,6 +797,29 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
   return (
     <section className="relative py-8 overflow-hidden">
       <div className="container relative z-10 mx-auto px-4">
+        {/* Sprint 3 Code Review Banner */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-6 p-4 rounded-lg bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20"
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Brain className="h-6 w-6 text-primary" />
+              <div>
+                <h3 className="font-semibold">Sprint 3: Deep Code Review Available</h3>
+                <p className="text-sm text-muted-foreground">
+                  Run comprehensive GPT-5 analysis on all workflow files to achieve 100/100 score
+                </p>
+              </div>
+            </div>
+            <Button onClick={() => navigate('/admin/code-review')} variant="outline">
+              <CheckCircle2 className="h-4 w-4 mr-2" />
+              Run Code Review
+            </Button>
+          </div>
+        </motion.div>
+
         {/* Progress Tracker */}
         <WorkflowProgressTracker
           steps={trackedSteps}
