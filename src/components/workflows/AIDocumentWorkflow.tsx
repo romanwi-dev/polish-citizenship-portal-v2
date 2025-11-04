@@ -34,6 +34,7 @@ import { DocumentProgressCard } from "./DocumentProgressCard";
 import { BatchStatsDashboard } from "./BatchStatsDashboard";
 import { PDFPreviewPanel } from "./PDFPreviewPanel";
 import { ErrorRecoveryPanel } from "./ErrorRecoveryPanel";
+import { DocumentViewer } from "./DocumentViewer";
 import type { RealtimeChannel } from "@supabase/supabase-js";
 
 interface AIWorkflowStep {
@@ -227,6 +228,17 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
   const [batchQueueSize, setBatchQueueSize] = useState(0);
   const [batchActiveCount, setBatchActiveCount] = useState(0);
   const [showPDFPreview, setShowPDFPreview] = useState(false);
+  const [previewDocument, setPreviewDocument] = useState<{
+    isOpen: boolean;
+    url: string;
+    name: string;
+    type?: string;
+    ocrText?: string;
+  }>({
+    isOpen: false,
+    url: '',
+    name: '',
+  });
 
   const { data: caseData } = useQuery({
     queryKey: ['case-info', caseId],
@@ -940,6 +952,46 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
     }
   };
 
+  const handlePreviewDocument = async (dropboxPath: string, name: string, documentId: string) => {
+    try {
+      // Get signed URL from Dropbox
+      const { data, error } = await supabase.functions.invoke('download-and-encode', {
+        body: { dropboxPath, returnUrl: true }
+      });
+
+      if (error) throw error;
+
+      // Get OCR text if available
+      const { data: docData } = await supabase
+        .from('documents')
+        .select('ocr_text')
+        .eq('id', documentId)
+        .single();
+
+      setPreviewDocument({
+        isOpen: true,
+        url: data.signedUrl,
+        name: name,
+        type: name.toLowerCase().endsWith('.pdf') ? 'pdf' : undefined,
+        ocrText: docData?.ocr_text
+      });
+    } catch (error: any) {
+      toast({
+        title: "Preview Failed",
+        description: error.message,
+        variant: "destructive"
+      });
+    }
+  };
+
+  const closePreview = () => {
+    setPreviewDocument({
+      isOpen: false,
+      url: '',
+      name: '',
+    });
+  };
+
   const syncDropboxDocuments = async () => {
     if (!caseData?.dropbox_path) {
       toast({
@@ -1190,9 +1242,16 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-              {progress.documents.map((doc) => (
-                <DocumentProgressCard key={doc.id} document={doc} />
-              ))}
+              {progress.documents.map((doc) => {
+                const fullDoc = documents?.find(d => d.id === doc.id);
+                return (
+                  <DocumentProgressCard 
+                    key={doc.id} 
+                    document={doc}
+                    onClick={fullDoc ? () => handlePreviewDocument(fullDoc.dropbox_path, doc.name, doc.id) : undefined}
+                  />
+                );
+              })}
             </div>
           </motion.div>
         )}
@@ -1284,6 +1343,14 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
                     </div>
                   </div>
                   <div className="flex gap-2">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => handlePreviewDocument(doc.dropbox_path, doc.name, doc.id)}
+                      title="Preview document"
+                    >
+                      <FileText className="h-4 w-4" />
+                    </Button>
                     <Button
                       size="sm"
                       variant="outline"
@@ -1396,6 +1463,16 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
             </Button>
           </div>
         )}
+
+        {/* Document Viewer Modal */}
+        <DocumentViewer
+          isOpen={previewDocument.isOpen}
+          onClose={closePreview}
+          documentUrl={previewDocument.url}
+          documentName={previewDocument.name}
+          documentType={previewDocument.type}
+          ocrText={previewDocument.ocrText}
+        />
       </div>
     </section>
   );

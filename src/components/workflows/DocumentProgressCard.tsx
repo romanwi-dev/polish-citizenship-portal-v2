@@ -5,6 +5,7 @@ import { DocumentProgress, DocumentStatus } from "@/hooks/useDocumentProgress";
 
 interface DocumentProgressCardProps {
   document: DocumentProgress;
+  onClick?: () => void;
 }
 
 const statusConfig: Record<DocumentStatus, { icon: React.ReactNode; label: string; color: string }> = {
@@ -18,11 +19,14 @@ const statusConfig: Record<DocumentStatus, { icon: React.ReactNode; label: strin
   skipped: { icon: <SkipForward className="h-4 w-4" />, label: "Skipped", color: "text-yellow-500" },
 };
 
-export function DocumentProgressCard({ document }: DocumentProgressCardProps) {
+export function DocumentProgressCard({ document, onClick }: DocumentProgressCardProps) {
   const config = statusConfig[document.status];
 
   return (
-    <Card className="p-4 space-y-2">
+    <Card 
+      className={`p-4 space-y-2 ${onClick ? 'cursor-pointer hover:bg-accent/50 transition-colors' : ''}`}
+      onClick={onClick}
+    >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 flex-1 min-w-0">
           <span className={config.color}>{config.icon}</span>
