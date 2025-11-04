@@ -141,9 +141,9 @@ function AppSidebar() {
           )}
           <button
             onClick={() => setOpen(!open)}
-            className="h-5 w-5 opacity-15 hover:opacity-50 mx-auto flex items-center justify-center hover:bg-accent/20 rounded-md transition-all"
+            className="px-2 py-2 opacity-40 hover:opacity-100 hover:bg-accent/50 rounded-md transition-all flex items-center justify-center"
           >
-            <PanelLeft className="h-3 w-3" />
+            <PanelLeft className="h-4 w-4" />
           </button>
         </div>
         
