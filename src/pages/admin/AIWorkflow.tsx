@@ -38,6 +38,11 @@ const AIWorkflow = () => {
   return (
     <AdminLayout>
       <div className="space-y-8 p-4 md:p-8">
+        {/* Title - matching Deep Code Review style */}
+        <h1 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-center">
+          Documents Workflow
+        </h1>
+
         {/* Search and Case Selection - Responsive Layout */}
         <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 w-full max-w-7xl mx-auto">
           {/* Search Bar */}
