@@ -14,7 +14,8 @@ import {
   Shield,
   Zap,
   RefreshCw,
-  Code
+  Code,
+  Copy
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -268,6 +269,74 @@ export const CodeReviewDashboard = () => {
 
   const totalBlockers = results.reduce((sum, r) => sum + (r.blockers?.length || 0), 0);
 
+  const copyReport = async () => {
+    if (results.length === 0) {
+      toast({
+        title: "No Report to Copy",
+        description: "Run a code review first to generate a report.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const reportText = `
+# Deep Code Review Report - ${new Date().toLocaleDateString()}
+
+## Overall Summary
+- Overall Score: ${overallScore}/100
+- Files Reviewed: ${results.length}
+- Production Blockers: ${totalBlockers}
+- Status: ${overallScore >= 90 ? 'Production Ready' : overallScore >= 75 ? 'Needs Minor Fixes' : 'Critical Issues'}
+
+${results.map(result => `
+## ${result.fileName}
+**Score: ${result.overallScore}/100**
+${result.summary}
+
+### Category Scores
+${result.categories.map(cat => `- ${cat.category}: ${cat.score}/20`).join('\n')}
+
+${result.blockers && result.blockers.length > 0 ? `
+### 🚨 Production Blockers (${result.blockers.length})
+${result.blockers.map((b, i) => `${i + 1}. ${b}`).join('\n')}
+` : ''}
+
+${result.categories.map(category => {
+  const criticalIssues = category.issues.filter(i => i.severity === 'CRITICAL' || i.severity === 'HIGH');
+  if (criticalIssues.length === 0) return '';
+  return `
+### ${category.category} - Critical Issues (${criticalIssues.length})
+${criticalIssues.map((issue, idx) => `
+**[${issue.severity}]${issue.line ? ` Line ${issue.line}` : ''} ${issue.title}**
+${issue.description}
+Fix: ${issue.recommendation}
+`).join('\n')}`;
+}).filter(Boolean).join('\n')}
+
+${result.recommendations && result.recommendations.length > 0 ? `
+### 💡 Top Recommendations
+${result.recommendations.map((rec, idx) => `${idx + 1}. ${rec}`).join('\n')}
+` : ''}
+
+---
+`).join('\n')}
+`.trim();
+
+    try {
+      await navigator.clipboard.writeText(reportText);
+      toast({
+        title: "Report Copied!",
+        description: "The full code review report has been copied to your clipboard."
+      });
+    } catch (error) {
+      toast({
+        title: "Copy Failed",
+        description: "Could not copy to clipboard. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
+
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -282,24 +351,37 @@ export const CodeReviewDashboard = () => {
           </div>
         </div>
 
-        <Button
-          onClick={runCodeReview}
-          disabled={isRunning}
-          size="lg"
-          className="gap-2"
-        >
-          {isRunning ? (
-            <>
-              <Loader2 className="h-4 w-4 animate-spin" />
-              Analyzing...
-            </>
-          ) : (
-            <>
-              <Play className="h-4 w-4" />
-              Start Review
-            </>
-          )}
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            onClick={copyReport}
+            disabled={results.length === 0}
+            size="lg"
+            variant="outline"
+            className="gap-2"
+          >
+            <Copy className="h-4 w-4" />
+            Copy Report
+          </Button>
+          
+          <Button
+            onClick={runCodeReview}
+            disabled={isRunning}
+            size="lg"
+            className="gap-2"
+          >
+            {isRunning ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Analyzing...
+              </>
+            ) : (
+              <>
+                <Play className="h-4 w-4" />
+                Start Review
+              </>
+            )}
+          </Button>
+        </div>
       </div>
 
       {/* Progress */}
