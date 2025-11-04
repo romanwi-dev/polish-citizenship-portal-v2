@@ -47,35 +47,96 @@ export const CodeReviewDashboard = () => {
   const [currentFile, setCurrentFile] = useState<string>('');
 
   const filesToReview = [
+    // === CRITICAL PATH FILES (60% weight) ===
     { 
       name: 'AIDocumentWorkflow.tsx',
       path: 'src/components/workflows/AIDocumentWorkflow.tsx',
-      type: 'frontend'
+      type: 'frontend',
+      priority: 'critical'
     },
     { 
       name: 'ai-classify-document',
       path: 'supabase/functions/ai-classify-document/index.ts',
-      type: 'edge-function'
+      type: 'edge-function',
+      priority: 'critical'
     },
     { 
       name: 'ai-verify-forms',
       path: 'supabase/functions/ai-verify-forms/index.ts',
-      type: 'edge-function'
+      type: 'edge-function',
+      priority: 'critical'
     },
     { 
       name: 'ocr-worker',
       path: 'supabase/functions/ocr-worker/index.ts',
-      type: 'edge-function'
+      type: 'edge-function',
+      priority: 'critical'
     },
     { 
       name: 'download-dropbox-file',
       path: 'supabase/functions/download-dropbox-file/index.ts',
-      type: 'edge-function'
+      type: 'edge-function',
+      priority: 'critical'
     },
     { 
       name: 'apply-ocr-to-forms',
       path: 'supabase/functions/apply-ocr-to-forms/index.ts',
-      type: 'edge-function'
+      type: 'edge-function',
+      priority: 'critical'
+    },
+
+    // === PHASE 1: SECURITY (30% weight) ===
+    {
+      name: 'aiPIILogger.ts',
+      path: 'src/utils/aiPIILogger.ts',
+      type: 'security',
+      priority: 'high'
+    },
+    {
+      name: 'secureLogger.ts',
+      path: 'src/utils/secureLogger.ts',
+      type: 'security',
+      priority: 'high'
+    },
+
+    // === PHASE 2: PERFORMANCE (30% weight) ===
+    {
+      name: 'useWorkflowState.ts',
+      path: 'src/hooks/useWorkflowState.ts',
+      type: 'performance',
+      priority: 'high'
+    },
+    {
+      name: 'useDocumentProgress.ts',
+      path: 'src/hooks/useDocumentProgress.ts',
+      type: 'performance',
+      priority: 'high'
+    },
+    {
+      name: 'base64Encoder.worker.ts',
+      path: 'src/workers/base64Encoder.worker.ts',
+      type: 'performance',
+      priority: 'high'
+    },
+
+    // === PHASE 3: RELIABILITY (30% weight) ===
+    {
+      name: 'useRequestBatcher.ts',
+      path: 'src/hooks/useRequestBatcher.ts',
+      type: 'reliability',
+      priority: 'high'
+    },
+    {
+      name: 'DocumentProgressCard.tsx',
+      path: 'src/components/workflows/DocumentProgressCard.tsx',
+      type: 'reliability',
+      priority: 'medium'
+    },
+    {
+      name: 'BatchStatsDashboard.tsx',
+      path: 'src/components/workflows/BatchStatsDashboard.tsx',
+      type: 'reliability',
+      priority: 'medium'
     }
   ];
 

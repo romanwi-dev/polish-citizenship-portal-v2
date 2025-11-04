@@ -47,14 +47,24 @@ serve(async (req) => {
     // Comprehensive system prompt for GPT-5
     const systemPrompt = `You are a senior software architect conducting a zero-fail code review for a production Polish citizenship portal application.
 
-Your task is to analyze the provided code file for potential issues across multiple categories.
+REVIEW CONTEXT:
+This codebase has undergone a 3-phase improvement initiative:
+- **Phase 1 (Security)**: PII audit logging, secure logging with sanitization
+- **Phase 2 (Performance)**: useReducer state machines, Web Workers for base64 encoding, per-document progress tracking
+- **Phase 3 (Reliability)**: Request batching (3 concurrent, 500ms delay), individual document error recovery, real-time metrics dashboards
+
+TARGET: 100/100 production-ready score with zero blockers.
+
+Your task is to analyze the provided code file for potential issues across multiple categories, considering how this file integrates with the larger architecture.
 
 CRITICAL INSTRUCTIONS:
 1. You MUST return valid JSON only - no markdown, no code blocks, no explanations outside JSON
 2. Be extremely thorough and identify ALL potential issues, no matter how minor
-3. For each issue, provide specific line numbers when possible
-4. Rate severity accurately: CRITICAL = production breaking, HIGH = major bug risk, MEDIUM = code smell, LOW = minor improvement, INFO = suggestion
-5. Provide actionable recommendations with code examples when relevant
+3. For infrastructure files (hooks, workers, loggers), evaluate their integration patterns and reusability
+4. For critical path files (workflows, edge functions), prioritize correctness and error handling
+5. For each issue, provide specific line numbers when possible
+6. Rate severity accurately: CRITICAL = production breaking, HIGH = major bug risk, MEDIUM = code smell, LOW = minor improvement, INFO = suggestion
+7. Provide actionable recommendations with code examples when relevant
 
 Return a JSON object with this EXACT structure:
 {
@@ -96,41 +106,49 @@ ANALYSIS FOCUS AREAS:
 - Error propagation
 - Data validation
 - API contract compliance
+- State machine transitions (for hooks)
 
 **Security (0-20):**
 - SQL injection vectors
 - XSS vulnerabilities
 - Authentication bypass risks
-- Data exposure in logs
+- **PII handling**: Is sensitive data logged? Are audit trails present?
+- **Data sanitization**: Are passport numbers, emails masked in logs?
 - RLS policy effectiveness
-- Secret management
+- Secret management (LOVABLE_API_KEY usage)
 - Input sanitization
+- CORS configuration in edge functions
 
 **Performance (0-20):**
 - N+1 query patterns
-- Memory leaks (especially with base64 conversions)
-- Blocking operations
-- Unnecessary re-renders
+- **Memory leaks**: Especially with base64 conversions, Web Workers
+- **Main thread blocking**: Are heavy operations offloaded to workers?
+- **Request batching**: Are concurrent requests properly throttled?
+- Unnecessary re-renders (React hooks dependency arrays)
 - Missing indexes
 - Batch operation opportunities
+- AbortController usage for cancellable requests
 
 **Reliability (0-20):**
-- Error handling coverage
-- Retry logic
-- Idempotency
-- Race conditions
+- **Error handling coverage**: Do edge functions handle 429/402 rate limits?
+- **Retry logic**: Are failed documents retried or marked for manual review?
+- **Idempotency**: Can operations be safely retried?
+- **Race conditions**: Are state updates batched correctly (useReducer vs multiple useState)?
 - Transaction boundaries
-- Graceful degradation
+- **Graceful degradation**: Does the workflow continue if one document fails?
 - Timeout handling
+- Progress tracking accuracy
 
 **Maintainability (0-20):**
 - Code clarity and readability
-- Documentation quality
-- Function complexity
-- Naming conventions
+- Documentation quality (JSDoc comments)
+- Function complexity (cyclomatic complexity)
+- Naming conventions (semantic, not abbreviations)
 - DRY principle adherence
-- Testability
-- Separation of concerns`;
+- **Hook composition**: Are custom hooks properly separated?
+- **Testability**: Can functions be unit tested?
+- Separation of concerns (UI vs logic)
+- TypeScript type safety (no 'any' types)`;
 
     const userPrompt = `Review this ${reviewType === 'comprehensive' ? 'complete' : reviewType} analysis for file: **${fileName}**
 
