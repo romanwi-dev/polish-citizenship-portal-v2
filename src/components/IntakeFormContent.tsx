@@ -374,7 +374,7 @@ export const AddressSection = ({ formData, handleInputChange, clearField, isLarg
         />
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("applicant_city")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>City</Label>
           <FormInput
@@ -394,7 +394,9 @@ export const AddressSection = ({ formData, handleInputChange, clearField, isLarg
             className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs"
           />
         </motion.div>
+      </div>
 
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("applicant_postal_code")}>
           <Label className={isLargeFonts ? "text-2xl" : ""}>Postal code</Label>
           <FormInput
@@ -404,15 +406,16 @@ export const AddressSection = ({ formData, handleInputChange, clearField, isLarg
             className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs"
           />
         </motion.div>
-      </div>
 
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("applicant_country")}>
-        <Label className={isLargeFonts ? "text-2xl" : ""}>Country</Label>
-        <CountrySelect
-          value={formData?.applicant_country || ""}
-          onChange={(value) => handleInputChange("applicant_country", value)}
-        />
-      </motion.div>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("applicant_country")}>
+          <CountrySelect
+            value={formData?.applicant_country || ""}
+            onChange={(value) => handleInputChange("applicant_country", value)}
+            label="Country"
+            isLargeFonts={isLargeFonts}
+          />
+        </motion.div>
+      </div>
     </div>
   </div>
 );
