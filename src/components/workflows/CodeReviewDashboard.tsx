@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { 
   Loader2,
   Play,
@@ -367,60 +366,124 @@ Fix: ${issue.fix}
 
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 p-4 md:p-8">
       {/* Title */}
-      <h1 className="text-4xl font-heading font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+      <h1 className="text-4xl font-heading font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-center">
         Deep Code Review
       </h1>
 
-      {/* Action Buttons */}
-      <div className="flex gap-3">
-        <Button
+      {/* Action Buttons - 3 evenly spread in a row */}
+      <div className="flex flex-col md:flex-row items-stretch gap-4 md:gap-6 w-full max-w-7xl mx-auto">
+        <button
           onClick={runStaticAnalysisOnly}
           disabled={isRunning}
-          variant="outline"
-          className="gap-2"
+          className="h-16 md:h-20 flex-1 rounded-md border-2 bg-blue-50/45 dark:bg-blue-950/40 border-blue-200/30 dark:border-blue-800/30 hover:border-transparent focus:border-transparent transition-all duration-300 backdrop-blur font-normal font-input-work text-2xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+          style={{
+            boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15)',
+            transition: 'all 0.3s ease'
+          }}
+          onMouseEnter={(e) => {
+            if (!isRunning) {
+              e.currentTarget.style.boxShadow = '0 0 50px hsla(221, 83%, 53%, 0.3)';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.boxShadow = '0 0 30px hsla(221, 83%, 53%, 0.15)';
+            e.currentTarget.style.transform = 'translateY(0)';
+          }}
+          onFocus={(e) => {
+            e.currentTarget.style.boxShadow = '0 0 60px hsla(221, 83%, 53%, 0.4)';
+            e.currentTarget.style.transform = 'translateY(-2px)';
+          }}
+          onBlur={(e) => {
+            e.currentTarget.style.boxShadow = '0 0 30px hsla(221, 83%, 53%, 0.15)';
+            e.currentTarget.style.transform = 'translateY(0)';
+          }}
         >
           {isRunning && showStaticOnly ? (
             <>
-              <Loader2 className="h-4 w-4 animate-spin" />
-              Analyzing...
+              <Loader2 className="h-5 w-5 animate-spin" />
+              <span>Analyzing...</span>
             </>
           ) : (
             <>
-              <Search className="h-4 w-4" />
-              Quick Check (No AI)
+              <Search className="h-5 w-5" />
+              <span>Quick Check (No AI)</span>
             </>
           )}
-        </Button>
+        </button>
 
-        <Button
+        <button
           onClick={copyReport}
           disabled={results.length === 0 && staticResults.length === 0}
-          variant="outline"
-          className="gap-2"
+          className="h-16 md:h-20 flex-1 rounded-md border-2 bg-blue-50/45 dark:bg-blue-950/40 border-blue-200/30 dark:border-blue-800/30 hover:border-transparent focus:border-transparent transition-all duration-300 backdrop-blur font-normal font-input-work text-2xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+          style={{
+            boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15)',
+            transition: 'all 0.3s ease'
+          }}
+          onMouseEnter={(e) => {
+            if (results.length > 0 || staticResults.length > 0) {
+              e.currentTarget.style.boxShadow = '0 0 50px hsla(221, 83%, 53%, 0.3)';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.boxShadow = '0 0 30px hsla(221, 83%, 53%, 0.15)';
+            e.currentTarget.style.transform = 'translateY(0)';
+          }}
+          onFocus={(e) => {
+            e.currentTarget.style.boxShadow = '0 0 60px hsla(221, 83%, 53%, 0.4)';
+            e.currentTarget.style.transform = 'translateY(-2px)';
+          }}
+          onBlur={(e) => {
+            e.currentTarget.style.boxShadow = '0 0 30px hsla(221, 83%, 53%, 0.15)';
+            e.currentTarget.style.transform = 'translateY(0)';
+          }}
         >
-          <Copy className="h-4 w-4" />
-          Copy Report
-        </Button>
+          <Copy className="h-5 w-5" />
+          <span>Copy Report</span>
+        </button>
         
-        <Button
+        <button
           onClick={() => runCodeReview()}
           disabled={isRunning}
-          className="gap-2"
+          className="h-16 md:h-20 flex-1 rounded-md border-2 bg-blue-50/45 dark:bg-blue-950/40 border-blue-200/30 dark:border-blue-800/30 hover:border-transparent focus:border-transparent transition-all duration-300 backdrop-blur font-normal font-input-work text-2xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+          style={{
+            boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15)',
+            transition: 'all 0.3s ease'
+          }}
+          onMouseEnter={(e) => {
+            if (!isRunning) {
+              e.currentTarget.style.boxShadow = '0 0 50px hsla(221, 83%, 53%, 0.3)';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.boxShadow = '0 0 30px hsla(221, 83%, 53%, 0.15)';
+            e.currentTarget.style.transform = 'translateY(0)';
+          }}
+          onFocus={(e) => {
+            e.currentTarget.style.boxShadow = '0 0 60px hsla(221, 83%, 53%, 0.4)';
+            e.currentTarget.style.transform = 'translateY(-2px)';
+          }}
+          onBlur={(e) => {
+            e.currentTarget.style.boxShadow = '0 0 30px hsla(221, 83%, 53%, 0.15)';
+            e.currentTarget.style.transform = 'translateY(0)';
+          }}
         >
           {isRunning && !showStaticOnly ? (
             <>
-              <Loader2 className="h-4 w-4 animate-spin" />
-              Analyzing...
+              <Loader2 className="h-5 w-5 animate-spin" />
+              <span>Analyzing...</span>
             </>
           ) : (
             <>
-              <Play className="h-4 w-4" />
-              Full Review (AI)
+              <Play className="h-5 w-5" />
+              <span>Full Review (AI)</span>
             </>
           )}
-        </Button>
+        </button>
       </div>
     </div>
   );
