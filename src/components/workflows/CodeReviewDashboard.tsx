@@ -16,11 +16,12 @@ import {
   RefreshCw,
   Code,
   Copy,
-  Wand2
+  Search
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { getFileContent } from "@/data/reviewFileContents";
+import { analyzeFile, generateSummary, type StaticAnalysisResult } from "@/utils/staticCodeAnalyzer";
 
 interface ReviewResult {
   fileName: string;
@@ -38,9 +39,10 @@ export const CodeReviewDashboard = () => {
   const { toast } = useToast();
   const [isRunning, setIsRunning] = useState(false);
   const [results, setResults] = useState<ReviewResult[]>([]);
+  const [staticResults, setStaticResults] = useState<StaticAnalysisResult[]>([]);
   const [progress, setProgress] = useState(0);
   const [currentFile, setCurrentFile] = useState<string>('');
-  const [fixingIssue, setFixingIssue] = useState<string | null>(null);
+  const [showStaticOnly, setShowStaticOnly] = useState(false);
 
   const filesToReview = [
     // === CRITICAL PATH FILES (60% weight) ===
@@ -136,14 +138,54 @@ export const CodeReviewDashboard = () => {
     }
   ];
 
-  const runCodeReview = async () => {
+  const runStaticAnalysis = async () => {
+    setCurrentFile('Running local analysis...');
+    setProgress(10);
+
+    console.log('🔍 Running static analysis...');
+    
+    const staticPromises = filesToReview.map(async (file) => {
+      let content = '';
+      if (file.path.startsWith('supabase/functions/')) {
+        const functionName = file.path.split('/')[2];
+        const { data, error } = await supabase.functions.invoke('edge-function-analyzer', {
+          body: { functionName }
+        });
+        if (error || !data?.success) throw new Error(`Failed to load ${functionName}`);
+        content = data.code;
+      } else {
+        content = getFileContent(file.path);
+      }
+      return analyzeFile(file.name, content);
+    });
+
+    const staticAnalysisResults = await Promise.all(staticPromises);
+    setStaticResults(staticAnalysisResults);
+    setProgress(20);
+
+    const summary = generateSummary(staticAnalysisResults);
+    
+    console.log('✅ Static analysis complete:', summary);
+    
+    return { staticAnalysisResults, summary };
+  };
+
+  const runCodeReview = async (skipStatic = false) => {
     setIsRunning(true);
     setResults([]);
+    setStaticResults([]);
     setProgress(0);
     setCurrentFile('Loading files...');
 
     try {
-      // STEP 1: Load all file contents in parallel (30% progress)
+      // STEP 1: Run static analysis first (0-20% progress)
+      let staticSummary;
+      if (!skipStatic) {
+        const { summary } = await runStaticAnalysis();
+        staticSummary = summary;
+      }
+
+      // STEP 2: Load all file contents in parallel (20-40% progress)
       console.log('📦 Loading all file contents...');
       const filePromises = filesToReview.map(async (file) => {
         if (file.path.startsWith('supabase/functions/')) {
@@ -160,12 +202,12 @@ export const CodeReviewDashboard = () => {
       });
 
       const loadedFiles = await Promise.all(filePromises);
-      setProgress(30);
+      setProgress(40);
       setCurrentFile('Analyzing with AI...');
       
       console.log(`✅ Loaded ${loadedFiles.length} files`);
 
-      // STEP 2: Single batch AI call (70% progress)
+      // STEP 3: Single batch AI call (40-100% progress)
       console.log('🤖 Sending batch to AI...');
       const { data, error } = await supabase.functions.invoke('ai-code-review', {
         body: { files: loadedFiles }
@@ -187,9 +229,11 @@ export const CodeReviewDashboard = () => {
       const avgScore = data.summary.averageScore;
       const totalBlockers = data.summary.totalBlockers;
 
+      const staticIssuesCount = staticSummary ? staticSummary.totalIssues : 0;
+
       toast({
         title: totalBlockers === 0 ? "✅ Production Ready!" : "⚠️ Review Complete",
-        description: `${data.reviews.length} files analyzed. Score: ${avgScore}/100. ${totalBlockers} blockers found.`,
+        description: `${data.reviews.length} files analyzed. Score: ${avgScore}/100. ${totalBlockers} blockers + ${staticIssuesCount} static issues found.`,
         variant: totalBlockers === 0 ? "default" : "destructive"
       });
 
@@ -217,6 +261,34 @@ export const CodeReviewDashboard = () => {
           variant: "destructive"
         });
       }
+    } finally {
+      setIsRunning(false);
+      setCurrentFile('');
+    }
+  };
+
+  const runStaticAnalysisOnly = async () => {
+    setIsRunning(true);
+    setResults([]);
+    setStaticResults([]);
+    setProgress(0);
+    setShowStaticOnly(true);
+
+    try {
+      const { summary } = await runStaticAnalysis();
+      setProgress(100);
+
+      toast({
+        title: "🔍 Static Analysis Complete",
+        description: `Found ${summary.totalIssues} issues (${summary.totalWarnings} warnings, ${summary.totalInfo} info) - No AI credits used!`,
+      });
+    } catch (error: any) {
+      console.error('❌ Static analysis error:', error);
+      toast({
+        title: "Static Analysis Failed",
+        description: error.message || "An unexpected error occurred",
+        variant: "destructive"
+      });
     } finally {
       setIsRunning(false);
       setCurrentFile('');
@@ -268,6 +340,8 @@ export const CodeReviewDashboard = () => {
     : 0;
 
   const totalBlockers = results.reduce((sum, r) => sum + (r.blockers?.length || 0), 0);
+  const totalStaticIssues = staticResults.reduce((sum, r) => sum + r.issues.length, 0);
+  const totalStaticWarnings = staticResults.reduce((sum, r) => sum + r.issues.filter(i => i.severity === 'warning').length, 0);
 
   const copyReport = async () => {
     if (results.length === 0) {
@@ -341,8 +415,28 @@ Fix: ${issue.fix}
 
         <div className="flex gap-2">
           <Button
+            onClick={runStaticAnalysisOnly}
+            disabled={isRunning}
+            size="lg"
+            variant="outline"
+            className="gap-2"
+          >
+            {isRunning && showStaticOnly ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Analyzing...
+              </>
+            ) : (
+              <>
+                <Search className="h-4 w-4" />
+                Quick Check (No AI)
+              </>
+            )}
+          </Button>
+
+          <Button
             onClick={copyReport}
-            disabled={results.length === 0}
+            disabled={results.length === 0 && staticResults.length === 0}
             size="lg"
             variant="outline"
             className="gap-2"
@@ -352,12 +446,12 @@ Fix: ${issue.fix}
           </Button>
           
           <Button
-            onClick={runCodeReview}
+            onClick={() => runCodeReview()}
             disabled={isRunning}
             size="lg"
             className="gap-2"
           >
-            {isRunning ? (
+            {isRunning && !showStaticOnly ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" />
                 Analyzing...
@@ -365,7 +459,7 @@ Fix: ${issue.fix}
             ) : (
               <>
                 <Play className="h-4 w-4" />
-                Start Review
+                Full Review (AI)
               </>
             )}
           </Button>
@@ -411,7 +505,7 @@ Fix: ${issue.fix}
         </Card>
       )}
 
-      {/* File Results */}
+      {/* AI Review File Results */}
       {results.map((result, idx) => (
         <Card key={idx} className="p-6">
           <div className="space-y-4">
@@ -484,17 +578,23 @@ Fix: ${issue.fix}
       ))}
 
       {/* Empty State */}
-      {!isRunning && results.length === 0 && (
+      {!isRunning && results.length === 0 && staticResults.length === 0 && (
         <div className="py-20 text-center">
           <Brain className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-xl font-semibold mb-2">Ready for Deep Code Review</h3>
+          <h3 className="text-xl font-semibold mb-2">Ready for Code Review</h3>
           <p className="text-muted-foreground mb-6">
-            Click &quot;Start Review&quot; to analyze {filesToReview.length} critical files with GPT-5
+            Start with a quick local check (free) or run full AI analysis
           </p>
-          <Button onClick={runCodeReview} size="lg">
-            <Play className="h-4 w-4 mr-2" />
-            Start Review
-          </Button>
+          <div className="flex gap-3 justify-center">
+            <Button onClick={runStaticAnalysisOnly} size="lg" variant="outline">
+              <Search className="h-4 w-4 mr-2" />
+              Quick Check (Free)
+            </Button>
+            <Button onClick={() => runCodeReview()} size="lg">
+              <Play className="h-4 w-4 mr-2" />
+              Full AI Review
+            </Button>
+          </div>
         </div>
       )}
     </div>
