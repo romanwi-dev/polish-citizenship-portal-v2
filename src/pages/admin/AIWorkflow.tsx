@@ -24,19 +24,14 @@ const AIWorkflow = () => {
     }
   });
 
-  const getSurname = (fullName: string | null) => {
-    if (!fullName) return "";
-    const parts = fullName.trim().split(/\s+/);
-    return parts[parts.length - 1];
-  };
-
   const filteredCases = useMemo(() => {
     if (!cases) return [];
-    if (!searchTerm) return cases;
+    if (!searchTerm.trim()) return cases;
     
+    const search = searchTerm.toLowerCase().trim();
     return cases.filter(c => {
-      const surname = getSurname(c.client_name);
-      return surname.toLowerCase().includes(searchTerm.toLowerCase());
+      const name = (c.client_name || "").toLowerCase();
+      return name.includes(search);
     });
   }, [cases, searchTerm]);
 
@@ -65,7 +60,7 @@ const AIWorkflow = () => {
               <SelectContent>
                 {filteredCases?.map(c => (
                   <SelectItem key={c.id} value={c.id}>
-                    {getSurname(c.client_name)}
+                    {c.client_name || 'Unnamed Case'}
                   </SelectItem>
                 ))}
               </SelectContent>
