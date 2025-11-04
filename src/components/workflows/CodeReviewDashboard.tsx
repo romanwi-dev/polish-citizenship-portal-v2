@@ -25,21 +25,13 @@ import { getFileContent } from "@/data/reviewFileContents";
 interface ReviewResult {
   fileName: string;
   overallScore: number;
-  categories: Array<{
-    category: string;
-    score: number;
-    issues: Array<{
-      line?: number;
-      severity: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW' | 'INFO';
-      title: string;
-      description: string;
-      recommendation: string;
-    }>;
-    strengths: string[];
-  }>;
   summary: string;
   blockers: string[];
-  recommendations: string[];
+  criticalIssues: Array<{
+    severity: 'CRITICAL' | 'HIGH';
+    title: string;
+    fix: string;
+  }>;
 }
 
 export const CodeReviewDashboard = () => {
@@ -148,134 +140,86 @@ export const CodeReviewDashboard = () => {
     setIsRunning(true);
     setResults([]);
     setProgress(0);
-
-    const completedResults: ReviewResult[] = [];
-    let completedCount = 0;
+    setCurrentFile('Loading files...');
 
     try {
-      // Process files sequentially to avoid overwhelming the system
-      for (const file of filesToReview) {
-        setCurrentFile(file.name);
-        
-        try {
-          let fileContent = '';
-          
-          // For edge functions, fetch code via edge-function-analyzer
-          if (file.path.startsWith('supabase/functions/')) {
-            const functionName = file.path.split('/')[2];
-            console.log(`🔍 Fetching edge function code: ${functionName}...`);
-            
-            try {
-              const { data: analyzerData, error: analyzerError } = await supabase.functions.invoke('edge-function-analyzer', {
-                body: { functionName }
-              });
-              
-              if (analyzerError) {
-                console.error(`Analyzer error for ${functionName}:`, analyzerError);
-                throw new Error(`Analyzer failed: ${analyzerError.message}`);
-              }
-              
-              if (!analyzerData?.success) {
-                console.error(`Analyzer returned error for ${functionName}:`, analyzerData?.error);
-                throw new Error(`Analyzer error: ${analyzerData?.error || 'Unknown error'}`);
-              }
-              
-              fileContent = analyzerData.code;
-              console.log(`✅ Fetched ${functionName}: ${analyzerData.lineCount} lines`);
-            } catch (error) {
-              console.error(`Failed to fetch ${functionName}:`, error);
-              throw error;
-            }
-          } else {
-            // For src/ files, use build-time imports
-            try {
-              fileContent = getFileContent(file.path);
-              console.log(`✅ Loaded ${file.name}: ${fileContent.length} characters`);
-            } catch (error) {
-              console.error(`Failed to get content for ${file.name}:`, error);
-              throw new Error(`Could not load file content: ${error instanceof Error ? error.message : 'Unknown error'}`);
-            }
-          }
-          
-          if (!fileContent || fileContent.length < 10) {
-            throw new Error('File content is empty or too short');
-          }
-          
-          console.log(`📄 Analyzing ${file.name} with AI...`);
-          
-          const { data, error } = await supabase.functions.invoke('ai-code-review', {
-            body: {
-              fileName: file.name,
-              fileContent: fileContent,
-              reviewType: 'comprehensive'
-            }
+      // STEP 1: Load all file contents in parallel (30% progress)
+      console.log('📦 Loading all file contents...');
+      const filePromises = filesToReview.map(async (file) => {
+        if (file.path.startsWith('supabase/functions/')) {
+          const functionName = file.path.split('/')[2];
+          const { data, error } = await supabase.functions.invoke('edge-function-analyzer', {
+            body: { functionName }
           });
-
-          if (error) {
-            console.error(`AI review error for ${file.name}:`, error);
-            throw new Error(`AI review failed: ${error.message}`);
-          }
-          
-          if (!data?.review) {
-            console.error(`No review data returned for ${file.name}:`, data);
-            throw new Error('No review data in response');
-          }
-
-          const result = {
-            fileName: file.name,
-            ...data.review
-          } as ReviewResult;
-          
-          completedResults.push(result);
-          setResults([...completedResults]); // Update UI with each completed result
-          
-          console.log(`✅ Completed review for ${file.name}: ${result.overallScore}/100`);
-
-          completedCount++;
-          setProgress((completedCount / filesToReview.length) * 100);
-          
-        } catch (error) {
-          console.error(`❌ Failed to review ${file.name}:`, error);
-          toast({
-            title: `Skipped: ${file.name}`,
-            description: error instanceof Error ? error.message : "Unknown error occurred",
-            variant: "destructive"
-          });
-          completedCount++;
-          setProgress((completedCount / filesToReview.length) * 100);
-          // Continue with next file
+          if (error || !data?.success) throw new Error(`Failed to load ${functionName}`);
+          return { fileName: file.name, fileContent: data.code, priority: file.priority };
+        } else {
+          const content = getFileContent(file.path);
+          return { fileName: file.name, fileContent: content, priority: file.priority };
         }
+      });
+
+      const loadedFiles = await Promise.all(filePromises);
+      setProgress(30);
+      setCurrentFile('Analyzing with AI...');
+      
+      console.log(`✅ Loaded ${loadedFiles.length} files`);
+
+      // STEP 2: Single batch AI call (70% progress)
+      console.log('🤖 Sending batch to AI...');
+      const { data, error } = await supabase.functions.invoke('ai-code-review', {
+        body: { files: loadedFiles }
+      });
+
+      if (error) {
+        console.error('AI review error:', error);
+        throw new Error(`AI review failed: ${error.message}`);
       }
 
-      // Show final results
-      if (completedResults.length === 0) {
+      if (!data?.reviews) {
+        console.error('No review data:', data);
+        throw new Error('No review data returned');
+      }
+
+      setProgress(100);
+      setResults(data.reviews);
+
+      const avgScore = data.summary.averageScore;
+      const totalBlockers = data.summary.totalBlockers;
+
+      toast({
+        title: totalBlockers === 0 ? "✅ Production Ready!" : "⚠️ Review Complete",
+        description: `${data.reviews.length} files analyzed. Score: ${avgScore}/100. ${totalBlockers} blockers found.`,
+        variant: totalBlockers === 0 ? "default" : "destructive"
+      });
+
+    } catch (error: any) {
+      console.error('❌ Code review error:', error);
+      
+      const errorMessage = error.message || "An unexpected error occurred";
+      
+      if (errorMessage.includes('AI credits exhausted') || errorMessage.includes('402')) {
         toast({
-          title: "Code Review Failed",
-          description: "No files could be reviewed. Check console for detailed errors.",
+          title: "🪙 Out of AI Credits",
+          description: "Add credits in Settings → Workspace → Usage to continue.",
+          variant: "destructive"
+        });
+      } else if (errorMessage.includes('Rate limit') || errorMessage.includes('429')) {
+        toast({
+          title: "⏱️ Rate Limited",
+          description: "Too many requests. Please wait a moment and try again.",
           variant: "destructive"
         });
       } else {
-        const avgScore = Math.round(
-          completedResults.reduce((sum, r) => sum + r.overallScore, 0) / completedResults.length
-        );
-
         toast({
-          title: "Code Review Complete",
-          description: `Successfully reviewed ${completedResults.length}/${filesToReview.length} files. Average score: ${avgScore}/100`,
+          title: "Code Review Failed",
+          description: errorMessage,
+          variant: "destructive"
         });
       }
-
-    } catch (error: any) {
-      console.error('❌ Code review fatal error:', error);
-      toast({
-        title: "Code Review Failed",
-        description: error.message || "An unexpected error occurred",
-        variant: "destructive"
-      });
     } finally {
       setIsRunning(false);
       setCurrentFile('');
-      setProgress(100);
     }
   };
 
@@ -342,37 +286,24 @@ export const CodeReviewDashboard = () => {
 - Overall Score: ${overallScore}/100
 - Files Reviewed: ${results.length}
 - Production Blockers: ${totalBlockers}
-- Status: ${overallScore >= 90 ? 'Production Ready' : overallScore >= 75 ? 'Needs Minor Fixes' : 'Critical Issues'}
+- Status: ${totalBlockers === 0 ? '✅ Production Ready' : '⚠️ Blockers Found'}
 
 ${results.map(result => `
 ## ${result.fileName}
 **Score: ${result.overallScore}/100**
 ${result.summary}
 
-### Category Scores
-${result.categories.map(cat => `- ${cat.category}: ${cat.score}/20`).join('\n')}
-
-${result.blockers && result.blockers.length > 0 ? `
+${result.blockers.length > 0 ? `
 ### 🚨 Production Blockers (${result.blockers.length})
 ${result.blockers.map((b, i) => `${i + 1}. ${b}`).join('\n')}
 ` : ''}
 
-${result.categories.map(category => {
-  const criticalIssues = category.issues.filter(i => i.severity === 'CRITICAL' || i.severity === 'HIGH');
-  if (criticalIssues.length === 0) return '';
-  return `
-### ${category.category} - Critical Issues (${criticalIssues.length})
-${criticalIssues.map((issue, idx) => `
-**[${issue.severity}]${issue.line ? ` Line ${issue.line}` : ''} ${issue.title}**
-${issue.description}
-Fix: ${issue.recommendation}
-`).join('\n')}`;
-}).filter(Boolean).join('\n')}
-
-${result.recommendations && result.recommendations.length > 0 ? `
-### 💡 Top Recommendations
-${result.recommendations.map((rec, idx) => `${idx + 1}. ${rec}`).join('\n')}
-` : ''}
+${result.criticalIssues.length > 0 ? `
+### Critical Issues (${result.criticalIssues.length})
+${result.criticalIssues.map((issue, idx) => `
+**[${issue.severity}] ${issue.title}**
+Fix: ${issue.fix}
+`).join('\n')}` : ''}
 
 ---
 `).join('\n')}
@@ -393,50 +324,6 @@ ${result.recommendations.map((rec, idx) => `${idx + 1}. ${rec}`).join('\n')}
     }
   };
 
-  const handleQuickFix = async (
-    fileName: string,
-    issue: { title: string; description: string; recommendation: string; line?: number },
-    issueId: string
-  ) => {
-    setFixingIssue(issueId);
-    
-    try {
-      const { data, error } = await supabase.functions.invoke('apply-quick-fix', {
-        body: {
-          fileName,
-          issue: {
-            title: issue.title,
-            description: issue.description,
-            recommendation: issue.recommendation,
-            line: issue.line
-          }
-        }
-      });
-
-      if (error) throw error;
-
-      if (data.success) {
-        toast({
-          title: "Fix Applied!",
-          description: `Successfully applied fix to ${fileName}`,
-        });
-        
-        // Refresh the review after applying fix
-        setTimeout(() => runCodeReview(), 1000);
-      } else {
-        throw new Error(data.error || "Failed to apply fix");
-      }
-    } catch (error) {
-      console.error('Quick fix error:', error);
-      toast({
-        title: "Fix Failed",
-        description: error instanceof Error ? error.message : "Could not apply the fix automatically.",
-        variant: "destructive"
-      });
-    } finally {
-      setFixingIssue(null);
-    }
-  };
 
   return (
     <div className="space-y-8">
@@ -447,7 +334,7 @@ ${result.recommendations.map((rec, idx) => `${idx + 1}. ${rec}`).join('\n')}
           <div>
             <h2 className="text-2xl font-bold">Sprint 3: Deep Code Review</h2>
             <p className="text-muted-foreground">
-              GPT-5 comprehensive analysis of {filesToReview.length} critical files
+              AI batch analysis of {filesToReview.length} files in 1 call (93% fewer API requests)
             </p>
           </div>
         </div>
@@ -496,195 +383,104 @@ ${result.recommendations.map((rec, idx) => `${idx + 1}. ${rec}`).join('\n')}
         </div>
       )}
 
-      {/* Overall Score */}
       {results.length > 0 && (
-        <div className="grid grid-cols-4 gap-6">
-          <div className="col-span-1">
-            <div className="text-center">
-              <div className={`text-6xl font-bold ${getScoreColor(overallScore)}`}>
-                {overallScore}
+        <Card className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-4">
+              <div className={`text-4xl font-bold ${getScoreColor(overallScore)}`}>
+                {overallScore}/100
               </div>
-              <div className="text-sm text-muted-foreground mt-2">Overall Score</div>
-            </div>
-          </div>
-
-          <div className="col-span-3 grid grid-cols-3 gap-4">
-            <div className="p-4 rounded-lg bg-background/50 backdrop-blur">
-              <div className="flex items-center gap-2 mb-2">
-                <CheckCircle2 className="h-5 w-5 text-green-500" />
-                <span className="font-semibold">Files Reviewed</span>
-              </div>
-              <div className="text-2xl font-bold">{results.length}</div>
-            </div>
-
-            <div className="p-4 rounded-lg bg-background/50 backdrop-blur">
-              <div className="flex items-center gap-2 mb-2">
-                {totalBlockers > 0 ? (
-                  <XCircle className="h-5 w-5 text-destructive" />
-                ) : (
-                  <CheckCircle2 className="h-5 w-5 text-green-500" />
-                )}
-                <span className="font-semibold">Blockers</span>
-              </div>
-              <div className={`text-2xl font-bold ${totalBlockers > 0 ? 'text-destructive' : 'text-green-600'}`}>
-                {totalBlockers}
+              <div>
+                <h3 className="text-lg font-semibold">Overall Score</h3>
+                <p className="text-sm text-muted-foreground">
+                  {totalBlockers === 0 ? '✅ Production Ready' : `⚠️ ${totalBlockers} Blockers Found`}
+                </p>
               </div>
             </div>
-
-            <div className="p-4 rounded-lg bg-background/50 backdrop-blur">
-              <div className="flex items-center gap-2 mb-2">
-                <Brain className="h-5 w-5 text-primary" />
-                <span className="font-semibold">Status</span>
+            <div className="flex items-center gap-4 text-sm">
+              <div className="text-center">
+                <div className="text-2xl font-bold">{results.length}</div>
+                <div className="text-muted-foreground">Files</div>
               </div>
-              <div className="text-sm font-medium">
-                {overallScore >= 90 ? (
-                  <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-                    Production Ready
-                  </Badge>
-                ) : overallScore >= 75 ? (
-                  <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-200">
-                    Needs Minor Fixes
-                  </Badge>
-                ) : (
-                  <Badge variant="destructive">Critical Issues</Badge>
-                )}
+              <div className="text-center">
+                <div className="text-2xl font-bold text-red-600">{totalBlockers}</div>
+                <div className="text-muted-foreground">Blockers</div>
               </div>
             </div>
           </div>
-        </div>
+        </Card>
       )}
 
       {/* File Results */}
-      {results.map((result) => (
-        <div key={result.fileName} className="space-y-6">
-          {/* File Header */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <FileCode className="h-6 w-6 text-primary" />
-              <div>
-                <h3 className="text-lg font-semibold">{result.fileName}</h3>
-                <p className="text-sm text-muted-foreground">{result.summary}</p>
-              </div>
-            </div>
-            <div className={`text-3xl font-bold ${getScoreColor(result.overallScore)}`}>
-              {result.overallScore}/100
-            </div>
-          </div>
-
-          {/* Blockers Alert */}
-          {result.blockers && result.blockers.length > 0 && (
-            <div className="p-4 rounded-lg bg-red-50/80 dark:bg-red-950/30 backdrop-blur">
-              <div className="flex items-start gap-3">
-                <XCircle className="h-5 w-5 text-red-600 mt-0.5" />
-                <div className="flex-1">
-                  <h4 className="font-semibold text-red-900 dark:text-red-200 mb-2">
-                    🚨 {result.blockers.length} Production Blockers
-                  </h4>
-                  <ul className="space-y-1">
-                    {result.blockers.map((blocker, idx) => (
-                      <li key={idx} className="text-sm text-red-800 dark:text-red-300">• {blocker}</li>
-                    ))}
-                  </ul>
+      {results.map((result, idx) => (
+        <Card key={idx} className="p-6">
+          <div className="space-y-4">
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-3">
+                <FileCode className="h-6 w-6 text-primary" />
+                <div>
+                  <h3 className="text-lg font-semibold">{result.fileName}</h3>
+                  <p className="text-sm text-muted-foreground">{result.summary}</p>
                 </div>
               </div>
-            </div>
-          )}
-
-          {/* Category Scores */}
-          <div className="grid grid-cols-5 gap-4">
-            {result.categories.map((category) => (
-              <div key={category.category} className="p-3 rounded-lg bg-background/50 backdrop-blur">
-                <div className="flex items-center gap-2 mb-2">
-                  {getCategoryIcon(category.category)}
-                  <span className="text-xs font-medium">{category.category}</span>
-                </div>
-                <div className={`text-2xl font-bold ${getScoreColor(category.score)}`}>
-                  {category.score}/20
-                </div>
+              <div className={`text-2xl font-bold ${getScoreColor(result.overallScore)}`}>
+                {result.overallScore}/100
               </div>
-            ))}
-          </div>
+            </div>
 
-          {/* Issues by Category */}
-          {result.categories.map((category) => {
-            const criticalIssues = category.issues.filter(i => i.severity === 'CRITICAL' || i.severity === 'HIGH');
-            
-            if (criticalIssues.length === 0) return null;
+            {/* Blockers */}
+            {result.blockers.length > 0 && (
+              <div className="p-4 rounded-lg bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800">
+                <h4 className="font-semibold text-red-900 dark:text-red-200 flex items-center gap-2 mb-3">
+                  <XCircle className="h-5 w-5" />
+                  🚨 Production Blockers ({result.blockers.length})
+                </h4>
+                <ul className="space-y-2">
+                  {result.blockers.map((blocker, bidx) => (
+                    <li key={bidx} className="text-sm text-red-800 dark:text-red-300 flex items-start gap-2">
+                      <span className="font-bold mt-0.5">{bidx + 1}.</span>
+                      <span>{blocker}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
-            return (
-              <div key={category.category} className="space-y-3">
+            {/* Critical Issues */}
+            {result.criticalIssues.length > 0 && (
+              <div className="space-y-3">
                 <h4 className="font-semibold flex items-center gap-2">
-                  {getCategoryIcon(category.category)}
-                  {category.category} - Critical Issues ({criticalIssues.length})
+                  <AlertTriangle className="h-4 w-4" />
+                  Critical Issues ({result.criticalIssues.length})
                 </h4>
                 <div className="space-y-3">
-                  {criticalIssues.map((issue, idx) => {
-                    const issueId = `${result.fileName}-${category.category}-${idx}`;
-                    return (
-                      <div key={idx} className="p-3 rounded-lg bg-background/50 backdrop-blur">
-                        <div className="flex items-start gap-3">
-                          {issue.severity === 'CRITICAL' ? (
-                            <XCircle className="h-5 w-5 text-red-600 mt-0.5" />
-                          ) : (
-                            <AlertTriangle className="h-5 w-5 text-orange-600 mt-0.5" />
-                          )}
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-2">
-                              <Badge className={getSeverityColor(issue.severity)}>
-                                {issue.severity}
-                              </Badge>
-                              {issue.line && (
-                                <Badge variant="outline">Line {issue.line}</Badge>
-                              )}
-                              <span className="font-semibold">{issue.title}</span>
-                            </div>
-                            <p className="text-sm text-muted-foreground mb-2">{issue.description}</p>
-                            <div className="p-2 rounded bg-muted/50 text-sm">
-                              <strong>Fix:</strong> {issue.recommendation}
-                            </div>
+                  {result.criticalIssues.map((issue, iidx) => (
+                    <div key={iidx} className="p-3 rounded-lg bg-background/50 backdrop-blur border">
+                      <div className="flex items-start gap-3">
+                        {issue.severity === 'CRITICAL' ? (
+                          <XCircle className="h-5 w-5 text-red-600 mt-0.5" />
+                        ) : (
+                          <AlertTriangle className="h-5 w-5 text-orange-600 mt-0.5" />
+                        )}
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Badge className={getSeverityColor(issue.severity)}>
+                              {issue.severity}
+                            </Badge>
+                            <span className="font-semibold">{issue.title}</span>
                           </div>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => handleQuickFix(result.fileName, issue, issueId)}
-                            disabled={fixingIssue === issueId}
-                            className="gap-2 flex-shrink-0"
-                          >
-                            {fixingIssue === issueId ? (
-                              <>
-                                <Loader2 className="h-3 w-3 animate-spin" />
-                                Fixing...
-                              </>
-                            ) : (
-                              <>
-                                <Wand2 className="h-3 w-3" />
-                                Quick Fix
-                              </>
-                            )}
-                          </Button>
+                          <div className="p-2 rounded bg-muted/50 text-sm">
+                            <strong>Fix:</strong> {issue.fix}
+                          </div>
                         </div>
                       </div>
-                    );
-                  })}
+                    </div>
+                  ))}
                 </div>
               </div>
-            );
-          })}
-
-          {/* Recommendations */}
-          {result.recommendations && result.recommendations.length > 0 && (
-            <div className="p-4 rounded-lg bg-blue-50/80 dark:bg-blue-950/30 backdrop-blur">
-              <h4 className="font-semibold text-blue-900 dark:text-blue-200 mb-2">💡 Top Recommendations</h4>
-              <ul className="space-y-1">
-                {result.recommendations.map((rec, idx) => (
-                  <li key={idx} className="text-sm text-blue-800 dark:text-blue-300">
-                    {idx + 1}. {rec}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        </Card>
       ))}
 
       {/* Empty State */}

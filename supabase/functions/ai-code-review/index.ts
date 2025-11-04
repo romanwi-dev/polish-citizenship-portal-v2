@@ -6,23 +6,26 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-interface CodeReviewRequest {
+interface FileToReview {
   fileName: string;
   fileContent: string;
-  reviewType: 'correctness' | 'security' | 'performance' | 'reliability' | 'maintainability' | 'comprehensive';
+  priority: 'critical' | 'high' | 'medium';
 }
 
-interface ReviewCategory {
-  category: string;
-  score: number; // 0-20
-  issues: Array<{
-    line?: number;
-    severity: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW' | 'INFO';
+interface BatchCodeReviewRequest {
+  files: FileToReview[];
+}
+
+interface FileReview {
+  fileName: string;
+  overallScore: number;
+  blockers: string[];
+  criticalIssues: Array<{
+    severity: 'CRITICAL' | 'HIGH';
     title: string;
-    description: string;
-    recommendation: string;
+    fix: string;
   }>;
-  strengths: string[];
+  summary: string;
 }
 
 serve(async (req) => {
@@ -31,134 +34,49 @@ serve(async (req) => {
   }
 
   try {
-    const { fileName, fileContent, reviewType = 'comprehensive' } = await req.json() as CodeReviewRequest;
+    const { files } = await req.json() as BatchCodeReviewRequest;
+    
+    console.log(`Starting batch code review for ${files.length} files`);
 
-    if (!fileName || !fileContent) {
-      throw new Error('Missing fileName or fileContent');
-    }
-
-    const lovableKey = Deno.env.get("LOVABLE_API_KEY");
+    const lovableKey = Deno.env.get('LOVABLE_API_KEY');
     if (!lovableKey) {
       throw new Error('LOVABLE_API_KEY not configured');
     }
 
-    console.log(`Starting ${reviewType} code review for ${fileName}...`);
+    // Build a compact file summary for the AI
+    const filesContext = files.map((f, idx) => 
+      `--- FILE ${idx + 1}: ${f.fileName} (${f.priority}) ---\n${f.fileContent.substring(0, 8000)}\n`
+    ).join('\n');
 
-    // Comprehensive system prompt for GPT-5
-    const systemPrompt = `You are a senior software architect conducting a zero-fail code review for a production Polish citizenship portal application.
+    const systemPrompt = `You are a senior code reviewer for a Polish Citizenship portal. Review ${files.length} files in one pass.
 
-REVIEW CONTEXT:
-This codebase has undergone a 3-phase improvement initiative:
-- **Phase 1 (Security)**: PII audit logging, secure logging with sanitization
-- **Phase 2 (Performance)**: useReducer state machines, Web Workers for base64 encoding, per-document progress tracking
-- **Phase 3 (Reliability)**: Request batching (3 concurrent, 500ms delay), individual document error recovery, real-time metrics dashboards
+Focus ONLY on:
+1. CRITICAL security issues (PII leaks, exposed secrets, RLS gaps)
+2. Production blockers (crashes, data loss, broken auth)
+3. Major performance issues (memory leaks, infinite loops)
 
-TARGET: 100/100 production-ready score with zero blockers.
+For each file, return:
+- overallScore (0-100)
+- blockers (array of strings, only CRITICAL issues that block production)
+- criticalIssues (max 3, only CRITICAL/HIGH severity)
+- summary (1 sentence)
 
-Your task is to analyze the provided code file for potential issues across multiple categories, considering how this file integrates with the larger architecture.
-
-CRITICAL INSTRUCTIONS:
-1. You MUST return valid JSON only - no markdown, no code blocks, no explanations outside JSON
-2. Be extremely thorough and identify ALL potential issues, no matter how minor
-3. For infrastructure files (hooks, workers, loggers), evaluate their integration patterns and reusability
-4. For critical path files (workflows, edge functions), prioritize correctness and error handling
-5. For each issue, provide specific line numbers when possible
-6. Rate severity accurately: CRITICAL = production breaking, HIGH = major bug risk, MEDIUM = code smell, LOW = minor improvement, INFO = suggestion
-7. Provide actionable recommendations with code examples when relevant
-
-Return a JSON object with this EXACT structure:
+Return ONLY valid JSON:
 {
-  "overallScore": number (0-100),
-  "categories": [
+  "reviews": [
     {
-      "category": "Correctness" | "Security" | "Performance" | "Reliability" | "Maintainability",
-      "score": number (0-20),
-      "issues": [
-        {
-          "line": number | null,
-          "severity": "CRITICAL" | "HIGH" | "MEDIUM" | "LOW" | "INFO",
-          "title": "Brief issue title",
-          "description": "Detailed explanation of the problem",
-          "recommendation": "Specific fix with code example if applicable"
-        }
+      "fileName": "exact-file-name.tsx",
+      "overallScore": 85,
+      "blockers": ["Critical issue preventing deployment"],
+      "criticalIssues": [
+        {"severity": "CRITICAL", "title": "Issue", "fix": "How to fix"}
       ],
-      "strengths": ["List of good practices found in this category"]
+      "summary": "Brief file assessment"
     }
-  ],
-  "summary": "Executive summary of code quality and readiness",
-  "blockers": ["List of CRITICAL and HIGH severity issues that must be fixed"],
-  "recommendations": ["Top 3-5 improvement recommendations prioritized by impact"]
-}
+  ]
+}`;
 
-SCORING RUBRIC (per category, 0-20 points):
-- 18-20: Excellent, production-ready
-- 15-17: Good, minor improvements needed
-- 12-14: Acceptable, some refactoring recommended
-- 8-11: Problematic, multiple issues to fix
-- 0-7: Critical issues, not production-ready
-
-ANALYSIS FOCUS AREAS:
-
-**Correctness (0-20):**
-- Logic errors, edge cases, type safety
-- Null/undefined handling
-- Async/await patterns
-- Error propagation
-- Data validation
-- API contract compliance
-- State machine transitions (for hooks)
-
-**Security (0-20):**
-- SQL injection vectors
-- XSS vulnerabilities
-- Authentication bypass risks
-- **PII handling**: Is sensitive data logged? Are audit trails present?
-- **Data sanitization**: Are passport numbers, emails masked in logs?
-- RLS policy effectiveness
-- Secret management (LOVABLE_API_KEY usage)
-- Input sanitization
-- CORS configuration in edge functions
-
-**Performance (0-20):**
-- N+1 query patterns
-- **Memory leaks**: Especially with base64 conversions, Web Workers
-- **Main thread blocking**: Are heavy operations offloaded to workers?
-- **Request batching**: Are concurrent requests properly throttled?
-- Unnecessary re-renders (React hooks dependency arrays)
-- Missing indexes
-- Batch operation opportunities
-- AbortController usage for cancellable requests
-
-**Reliability (0-20):**
-- **Error handling coverage**: Do edge functions handle 429/402 rate limits?
-- **Retry logic**: Are failed documents retried or marked for manual review?
-- **Idempotency**: Can operations be safely retried?
-- **Race conditions**: Are state updates batched correctly (useReducer vs multiple useState)?
-- Transaction boundaries
-- **Graceful degradation**: Does the workflow continue if one document fails?
-- Timeout handling
-- Progress tracking accuracy
-
-**Maintainability (0-20):**
-- Code clarity and readability
-- Documentation quality (JSDoc comments)
-- Function complexity (cyclomatic complexity)
-- Naming conventions (semantic, not abbreviations)
-- DRY principle adherence
-- **Hook composition**: Are custom hooks properly separated?
-- **Testability**: Can functions be unit tested?
-- Separation of concerns (UI vs logic)
-- TypeScript type safety (no 'any' types)`;
-
-    const userPrompt = `Review this ${reviewType === 'comprehensive' ? 'complete' : reviewType} analysis for file: **${fileName}**
-
-\`\`\`typescript
-${fileContent}
-\`\`\`
-
-Provide a comprehensive code review following the JSON structure specified in the system prompt.
-Focus on production-readiness, security, and reliability.
-Be thorough but practical - identify real issues that could cause problems in production.`;
+    const userPrompt = `Review these ${files.length} files for production readiness:\n\n${filesContext}\n\nFocus on critical issues only. Be concise.`;
 
     // Call Lovable AI with timeout
     const controller = new AbortController();
@@ -210,7 +128,7 @@ Be thorough but practical - identify real issues that could cause problems in pr
       reviewResult = JSON.parse(aiResponse.choices[0].message.content);
       
       // Validate response structure
-      if (!reviewResult.overallScore || !reviewResult.categories || !Array.isArray(reviewResult.categories)) {
+      if (!reviewResult.reviews || !Array.isArray(reviewResult.reviews)) {
         console.error('Invalid review result structure:', reviewResult);
         throw new Error('AI returned invalid review structure');
       }
@@ -223,15 +141,22 @@ Be thorough but practical - identify real issues that could cause problems in pr
       throw fetchError;
     }
 
-    console.log(`✓ Code review complete for ${fileName}: ${reviewResult.overallScore}/100`);
-    console.log(`  Blockers: ${reviewResult.blockers?.length || 0}`);
+    const avgScore = Math.round(
+      reviewResult.reviews.reduce((sum: number, r: FileReview) => sum + r.overallScore, 0) / reviewResult.reviews.length
+    );
+    const totalBlockers = reviewResult.reviews.reduce((sum: number, r: FileReview) => sum + r.blockers.length, 0);
+
+    console.log(`✓ Batch review complete: ${reviewResult.reviews.length} files, avg ${avgScore}/100, ${totalBlockers} blockers`);
 
     return new Response(
       JSON.stringify({
         success: true,
-        fileName,
-        reviewType,
-        review: reviewResult,
+        reviews: reviewResult.reviews,
+        summary: {
+          filesReviewed: reviewResult.reviews.length,
+          averageScore: avgScore,
+          totalBlockers
+        },
         timestamp: new Date().toISOString()
       }),
       { 
