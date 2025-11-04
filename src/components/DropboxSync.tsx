@@ -33,27 +33,27 @@ export const DropboxSync = () => {
 
   const handleSync = async () => {
     setIsSyncing(true);
-    toast.info("Starting Dropbox sync...");
+    toast.info("Starting complete Dropbox resync from scratch...");
 
     try {
-      const { data: result, error } = await supabase.functions.invoke('dropbox-sync', {
-        body: { syncType: "full" }
-      });
+      const { data: result, error } = await supabase.functions.invoke('dropbox-resync');
 
       if (error) {
-        throw new Error(error.message || "Sync failed");
+        throw new Error(error.message || "Resync failed");
       }
       setLastSync(new Date());
       
       toast.success(
-        `Sync completed! ${result.processed} cases processed${result.failed > 0 ? `, ${result.failed} failed` : ""}`,
+        `Resync completed! ${result.casesUpdated} cases & ${result.documentsUpdated} documents updated`,
         {
-          description: "All cases have been synchronized with Dropbox",
+          description: result.casesNotFound?.length > 0 
+            ? `${result.casesNotFound.length} folders not matched to cases`
+            : "All cases remapped successfully",
         }
       );
     } catch (error) {
-      console.error("Sync error:", error);
-      toast.error("Sync failed", {
+      console.error("Resync error:", error);
+      toast.error("Resync failed", {
         description: error instanceof Error ? error.message : "Unknown error occurred",
       });
     } finally {
@@ -67,12 +67,12 @@ export const DropboxSync = () => {
         {isSyncing ? (
           <>
             <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-            Syncing...
+            Resyncing...
           </>
         ) : (
           <>
             <RefreshCw className="mr-2 h-4 w-4" />
-            Sync Dropbox
+            Complete Resync
           </>
         )}
       </Button>
