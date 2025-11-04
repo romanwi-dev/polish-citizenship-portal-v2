@@ -4,6 +4,7 @@
 
 import AIDocumentWorkflow from '@/components/workflows/AIDocumentWorkflow.tsx?raw';
 import DocumentProgressCard from '@/components/workflows/DocumentProgressCard.tsx?raw';
+import BatchStatsDashboard from '@/components/workflows/BatchStatsDashboard.tsx?raw';
 import supabaseTypes from '@/integrations/supabase/types.ts?raw';
 import CaseCard from '@/components/CaseCard.tsx?raw';
 import AdminDashboard from '@/pages/admin/Dashboard.tsx?raw';
@@ -25,6 +26,7 @@ import base64EncoderWorker from '@/workers/base64Encoder.worker.ts?raw';
 export const fileContents: Record<string, string> = {
   'src/components/workflows/AIDocumentWorkflow.tsx': AIDocumentWorkflow,
   'src/components/workflows/DocumentProgressCard.tsx': DocumentProgressCard,
+  'src/components/workflows/BatchStatsDashboard.tsx': BatchStatsDashboard,
   'src/integrations/supabase/types.ts': supabaseTypes,
   'src/components/CaseCard.tsx': CaseCard,
   'src/pages/admin/Dashboard.tsx': AdminDashboard,
