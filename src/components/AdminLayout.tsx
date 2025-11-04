@@ -129,59 +129,78 @@ function AppSidebar() {
 
       <div className="relative z-10 flex flex-col h-full">
         {/* Header with close button only */}
-        <div className="flex items-center justify-between p-4 border-b border-border/50 flex-shrink-0">
-          <div className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-primary" />
-            <span className="font-semibold text-lg">Navigation</span>
-          </div>
+        <div className={cn(
+          "flex items-center justify-between border-b border-border/50 flex-shrink-0",
+          open ? "p-4" : "p-2"
+        )}>
+          {open && (
+            <div className="flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-primary" />
+              <span className="font-semibold text-lg">Navigation</span>
+            </div>
+          )}
           <button
             onClick={() => setOpen(!open)}
-            className="h-8 w-8 flex items-center justify-center hover:bg-accent rounded-md transition-colors"
+            className={cn(
+              "flex items-center justify-center hover:bg-accent/30 rounded-md transition-all",
+              open ? "h-8 w-8 opacity-100" : "h-6 w-6 opacity-40 hover:opacity-70 mx-auto"
+            )}
           >
-            <PanelLeft className="h-4 w-4" />
+            <PanelLeft className={cn(open ? "h-4 w-4" : "h-3 w-3")} />
           </button>
         </div>
         
         {/* Scrollable content */}
         <ScrollArea className="flex-1">
-          <div className="p-4 space-y-4">
+          <div className={cn("space-y-4", open ? "p-4" : "p-2")}>
             {navSections.map((section) => {
               const isGroupOpen = openGroups.includes(section.title);
               
               return (
                 <div key={section.title} className="space-y-2">
-                  <button 
-                    className="flex items-center gap-2 px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider hover:text-foreground transition-colors w-full"
-                    onClick={() => toggleGroup(section.title)}
-                  >
-                    {section.title}
-                    <ChevronDown 
-                      className={cn(
-                        "h-3 w-3 transition-transform ml-auto",
-                        isGroupOpen && "rotate-180"
-                      )}
-                    />
-                  </button>
+                  {open && (
+                    <button 
+                      className="flex items-center gap-2 px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider hover:text-foreground transition-colors w-full"
+                      onClick={() => toggleGroup(section.title)}
+                    >
+                      {section.title}
+                      <ChevronDown 
+                        className={cn(
+                          "h-3 w-3 transition-transform ml-auto",
+                          isGroupOpen && "rotate-180"
+                        )}
+                      />
+                    </button>
+                  )}
                   
-                  {isGroupOpen && (
-                    <div className="space-y-1 px-2">
+                  {(open ? isGroupOpen : true) && (
+                    <div className={cn("space-y-1", open ? "px-2" : "px-0")}>
                       {section.items.map((item) => {
                         const active = isActive(item.url, item.exact);
                         return (
                           <NavLink
                             key={item.title}
                             to={item.url}
+                            title={!open ? item.title : undefined}
                             className={cn(
-                              "flex items-center gap-3 px-3 py-2 rounded-lg transition-colors group",
+                              "flex items-center transition-colors group",
+                              open 
+                                ? "gap-3 px-3 py-2 rounded-lg" 
+                                : "gap-0 px-2 py-2 justify-center rounded-md",
                               active 
                                 ? "bg-accent text-primary font-medium" 
                                 : "hover:bg-accent/50"
                             )}
                           >
-                            <item.icon className="h-4 w-4 flex-shrink-0" />
-                            <span className="text-sm font-medium capitalize group-hover:text-primary transition-colors">
-                              {item.title}
-                            </span>
+                            <item.icon className={cn(
+                              "flex-shrink-0",
+                              open ? "h-4 w-4" : "h-5 w-5"
+                            )} />
+                            {open && (
+                              <span className="text-sm font-medium capitalize group-hover:text-primary transition-colors">
+                                {item.title}
+                              </span>
+                            )}
                           </NavLink>
                         );
                       })}
