@@ -99,7 +99,7 @@ const navSections = [
 function AppSidebar() {
   const { open } = useSidebar();
   const location = useLocation();
-  const [openGroups, setOpenGroups] = useState<string[]>(['WORKFLOWS']);
+  const [openGroups, setOpenGroups] = useState<string[]>(['Core Management', 'WORKFLOWS', 'Operations', 'System']);
 
   const isActive = (path: string, exact?: boolean) => {
     if (exact) {
@@ -133,7 +133,6 @@ function AppSidebar() {
               className="h-6 w-auto object-contain"
             />
           )}
-          <SidebarTrigger />
         </div>
         
         <SidebarContent>
