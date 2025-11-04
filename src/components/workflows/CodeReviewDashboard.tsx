@@ -299,7 +299,7 @@ export const CodeReviewDashboard = () => {
 
       {/* Overall Score */}
       {results.length > 0 && (
-        <Card className="p-6">
+        <div className="p-6 rounded-lg border bg-card/50">
           <div className="grid grid-cols-4 gap-6">
             <div className="col-span-1">
               <div className="text-center">
@@ -354,12 +354,12 @@ export const CodeReviewDashboard = () => {
               </div>
             </div>
           </div>
-        </Card>
+        </div>
       )}
 
       {/* File Results */}
       {results.map((result) => (
-        <Card key={result.fileName} className="p-6">
+        <div key={result.fileName} className="p-6 rounded-lg border bg-card/50">
           {/* File Header */}
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
@@ -465,7 +465,7 @@ export const CodeReviewDashboard = () => {
               </ul>
             </div>
           )}
-        </Card>
+        </div>
       ))}
 
       {/* Empty State */}
