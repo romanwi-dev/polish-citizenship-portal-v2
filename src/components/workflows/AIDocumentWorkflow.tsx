@@ -539,7 +539,13 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
           console.log("Triggering OCR worker...");
           const { error: ocrError } = await supabase.functions.invoke('ocr-worker');
           
-          if (ocrError) throw ocrError;
+          if (ocrError) {
+            // Check for rate limiting
+            if (ocrError.message?.includes('429') || ocrError.message?.includes('402')) {
+              throw { status: 429, message: 'Rate limit exceeded' };
+            }
+            throw ocrError;
+          }
           
           toast({ title: "OCR Processing Complete" });
           await updateStepStatus('ocr', 'completed');
@@ -628,9 +634,15 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
             body: { caseId, formType: 'all' }
           });
           
-          if (pdfError) throw pdfError;
+          if (pdfError) {
+            // Check for rate limiting
+            if (pdfError.message?.includes('429') || pdfError.message?.includes('402')) {
+              throw { status: 429, message: 'Rate limit exceeded during PDF generation' };
+            }
+            throw pdfError;
+          }
           
-          console.log('PDF generation result:', pdfData);
+          console.log('PDF generation complete');
           toast({ title: "PDFs Generated Successfully" });
           await updateStepStatus('pdf_generation', 'completed');
           
@@ -657,15 +669,27 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
       const isTransientError = error?.message?.includes('timeout') || 
                               error?.message?.includes('network') ||
                               error?.status === 429 ||
+                              error?.status === 402 || // Payment required (rate limit)
                               error?.status === 503;
 
       if (isTransientError && retryCount < MAX_RETRIES) {
         const backoffMs = Math.pow(2, retryCount) * 1000;
-        console.log(`Retrying ${stage} in ${backoffMs}ms...`);
-        toast({
-          title: `Retrying ${stage}...`,
-          description: `Attempt ${retryCount + 2} of ${MAX_RETRIES + 1}`
-        });
+        console.log(`Retrying ${stage} in ${backoffMs}ms... (attempt ${retryCount + 2}/${MAX_RETRIES + 1})`);
+        
+        // Handle payment/rate limit errors with user-friendly message
+        if (error?.status === 402 || error?.status === 429) {
+          toast({
+            title: error?.status === 402 ? "Rate Limit - Payment Required" : "Rate Limit Exceeded",
+            description: `Retrying automatically in ${backoffMs / 1000}s... (${retryCount + 2}/${MAX_RETRIES + 1})`,
+            variant: "default"
+          });
+        } else {
+          toast({
+            title: `Retrying ${stage}...`,
+            description: `Attempt ${retryCount + 2} of ${MAX_RETRIES + 1}`
+          });
+        }
+        
         await new Promise(resolve => setTimeout(resolve, backoffMs));
         return runWorkflowStep(stage, retryCount + 1);
       }
