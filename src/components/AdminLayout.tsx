@@ -33,7 +33,8 @@ import {
   BookOpen,
   Award,
   ChevronDown,
-  Plus
+  Plus,
+  Brain
 } from "lucide-react";
 import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
@@ -60,6 +61,7 @@ const navSections = [
     defaultOpen: true,
     highlighted: true,
     items: [
+      { title: "AI Workflow", url: "/admin/ai-workflow", icon: Brain, badge: "AI" },
       { title: "Translations", url: "/admin/translations", icon: Languages, badge: "PART 8" },
       { title: "Archives Search", url: "/admin/archives-search", icon: Archive, badge: "PART 7" },
       { title: "Documents Collection", url: "/admin/documents-collection", icon: FileSearch, badge: "PART 6" },
