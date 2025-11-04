@@ -31,6 +31,7 @@ import { useCancellableRequest } from "@/hooks/useCancellableRequest";
 import { useRequestBatcher } from "@/hooks/useRequestBatcher";
 import { useDocumentProgress } from "@/hooks/useDocumentProgress";
 import { DocumentProgressCard } from "./DocumentProgressCard";
+import { BatchStatsDashboard } from "./BatchStatsDashboard";
 import type { RealtimeChannel } from "@supabase/supabase-js";
 
 interface AIWorkflowStep {
@@ -220,6 +221,9 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
   const [workflowRun, setWorkflowRun] = useState<WorkflowRun | null>(null);
   const [showConsentModal, setShowConsentModal] = useState(false);
+  const [workflowStartTime, setWorkflowStartTime] = useState<Date | undefined>();
+  const [batchQueueSize, setBatchQueueSize] = useState(0);
+  const [batchActiveCount, setBatchActiveCount] = useState(0);
 
   const { data: caseData } = useQuery({
     queryKey: ['case-info', caseId],
@@ -254,6 +258,22 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
       }
     };
   }, [cancelAllEncoding, cancelAllRequests, batcher]);
+
+  // Poll batch statistics every 100ms when workflow is running
+  useEffect(() => {
+    if (!isRunning) {
+      setBatchQueueSize(0);
+      setBatchActiveCount(0);
+      return;
+    }
+
+    const interval = setInterval(() => {
+      setBatchQueueSize(batcher.getQueueSize());
+      setBatchActiveCount(batcher.getActiveCount());
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, [isRunning, batcher]);
 
   const { data: documents, isLoading: docsLoading, refetch: refetchDocs } = useQuery({
     queryKey: ['case-documents', caseId],
@@ -681,6 +701,7 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
 
     setIsRunning(true);
     setIsPaused(false);
+    setWorkflowStartTime(new Date()); // Track start time for metrics
     
     try {
       // Create new workflow run if starting fresh
@@ -702,6 +723,7 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
         variant: "destructive",
       });
       setIsRunning(false);
+      setWorkflowStartTime(undefined);
     }
   };
 
@@ -726,6 +748,7 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
   const pauseWorkflow = async () => {
     setIsPaused(true);
     setIsRunning(false);
+    setWorkflowStartTime(undefined); // Clear metrics on pause
     
     if (workflowRun) {
       await updateWorkflowRun({ 
@@ -1000,6 +1023,24 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
                 <p className="text-sm text-destructive">{workflowRun.last_error}</p>
               </div>
             )}
+          </motion.div>
+        )}
+
+        {/* Phase 3: Batch Statistics Dashboard */}
+        {isRunning && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="my-6"
+          >
+            <BatchStatsDashboard
+              queueSize={batchQueueSize}
+              activeRequests={batchActiveCount}
+              totalDocuments={progress.getStats().total}
+              completedDocuments={progress.getStats().completed}
+              failedDocuments={progress.getStats().failed}
+              startTime={workflowStartTime}
+            />
           </motion.div>
         )}
 
