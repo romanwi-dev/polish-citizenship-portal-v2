@@ -42,6 +42,12 @@ verify_jwt = true
 [functions.ai-translate]
 verify_jwt = true
 
+[functions.ai-translate-document]
+verify_jwt = true
+
+[functions.translation-workflow]
+verify_jwt = true
+
 [functions.generate-poa]
 verify_jwt = true
 

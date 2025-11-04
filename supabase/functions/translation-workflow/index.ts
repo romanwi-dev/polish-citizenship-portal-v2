@@ -101,7 +101,76 @@ Deno.serve(async (req) => {
           stage_entered_at: new Date().toISOString()
         };
         historyEntry.new_value = 'AI translation started';
-        break;
+        
+        // Update the job first
+        const { error: updateError } = await supabase
+          .from('translation_jobs')
+          .update(updates)
+          .eq('id', jobId);
+
+        if (updateError) {
+          console.error('Update error:', updateError);
+          throw updateError;
+        }
+
+        // Create history entry
+        await supabase
+          .from('translation_job_history')
+          .insert(historyEntry);
+
+        // Trigger AI translation asynchronously
+        console.log(`[Translation Workflow] Triggering AI translation for job: ${jobId}`);
+        try {
+          const aiResult = await supabase.functions.invoke('ai-translate-document', {
+            body: { jobId }
+          });
+
+          if (aiResult.error) {
+            console.error('[Translation Workflow] AI translation error:', aiResult.error);
+            // Update job to show error but don't fail the workflow transition
+            await supabase
+              .from('translation_jobs')
+              .update({
+                workflow_stage: 'pending',
+                status: 'error',
+                stage_entered_at: new Date().toISOString()
+              })
+              .eq('id', jobId);
+            
+            await supabase
+              .from('translation_job_history')
+              .insert({
+                job_id: jobId,
+                changed_by: user.id,
+                change_type: 'ai_translation_failed',
+                new_value: `AI translation failed: ${aiResult.error.message || 'Unknown error'}`
+              });
+
+            return new Response(
+              JSON.stringify({
+                success: false,
+                error: 'AI translation failed',
+                details: aiResult.error.message
+              }),
+              { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+            );
+          }
+
+          console.log(`[Translation Workflow] AI translation completed successfully`);
+        } catch (aiError) {
+          console.error('[Translation Workflow] AI invocation error:', aiError);
+        }
+
+        // Return success for the workflow transition
+        return new Response(
+          JSON.stringify({
+            success: true,
+            workflow_stage: 'ai_translating',
+            status: 'ai_translating',
+            message: 'AI translation in progress'
+          }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
 
       case 'approve_ai':
         if (job.workflow_stage !== 'ai_complete' && job.workflow_stage !== 'human_review') {
