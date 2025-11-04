@@ -111,7 +111,7 @@ export default function UploadPDFTemplates() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-slate-900 to-black p-8">
+    <div className="min-h-screen p-8">
       <div className="max-w-4xl mx-auto">
         <Card className="bg-background/95 backdrop-blur-sm border-primary/20">
           <CardHeader>

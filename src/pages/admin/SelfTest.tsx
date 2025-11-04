@@ -197,7 +197,7 @@ export default function SelfTest() {
   const edgeBase = import.meta.env.VITE_SUPABASE_URL + '/functions/v1';
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <div className="sticky top-0 z-40 bg-background/90 backdrop-blur border-b">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center gap-2">
           <h1 className="text-lg font-semibold">Self-Test: Edge Functions & PDF</h1>

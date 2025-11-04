@@ -145,7 +145,7 @@ export default function VerifyChanges() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <ChangeVerificationDialog
         open={!!proposal}
         proposal={proposal}
