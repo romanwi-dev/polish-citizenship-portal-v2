@@ -34,7 +34,8 @@ import {
   Award,
   ChevronDown,
   Plus,
-  Brain
+  Brain,
+  FileCode
 } from "lucide-react";
 import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
@@ -86,6 +87,7 @@ const navSections = [
     defaultOpen: false,
     items: [
       { title: "System Overview", url: "/admin/system-overview", icon: BookOpen },
+      { title: "Code Review", url: "/admin/code-review", icon: FileCode, badge: "GPT-5" },
       { title: "Dropbox Sync", url: "/admin/dropbox", icon: FolderSync },
       { title: "Migration Scanner", url: "/admin/dropbox-migration", icon: GitCompare },
       { title: "System Health", url: "/admin/system-health", icon: Shield },
