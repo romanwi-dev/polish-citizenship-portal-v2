@@ -226,7 +226,7 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
           const classifyPromises = docs.map(async (doc) => {
             try {
               // Download file
-              const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+              const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
               const downloadResponse = await fetch(
                 `${supabaseUrl}/functions/v1/download-dropbox-file`,
                 {
