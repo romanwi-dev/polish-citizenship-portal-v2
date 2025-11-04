@@ -3,12 +3,19 @@
 // Edge functions are analyzed via the edge-function-analyzer edge function
 
 import AIDocumentWorkflow from '@/components/workflows/AIDocumentWorkflow.tsx?raw';
+import DocumentProgressCard from '@/components/workflows/DocumentProgressCard.tsx?raw';
 import supabaseTypes from '@/integrations/supabase/types.ts?raw';
 import CaseCard from '@/components/CaseCard.tsx?raw';
 import AdminDashboard from '@/pages/admin/Dashboard.tsx?raw';
 import IntakeForm from '@/pages/admin/IntakeForm.tsx?raw';
 import POAForm from '@/pages/admin/POAForm.tsx?raw';
 import supabaseClient from '@/integrations/supabase/client.ts?raw';
+import aiPIILogger from '@/utils/aiPIILogger.ts?raw';
+import secureLogger from '@/utils/secureLogger.ts?raw';
+import useWorkflowState from '@/hooks/useWorkflowState.ts?raw';
+import useDocumentProgress from '@/hooks/useDocumentProgress.ts?raw';
+import useRequestBatcher from '@/hooks/useRequestBatcher.ts?raw';
+import base64EncoderWorker from '@/workers/base64Encoder.worker.ts?raw';
 
 /**
  * Map of file paths to their raw string content
@@ -17,12 +24,19 @@ import supabaseClient from '@/integrations/supabase/client.ts?raw';
  */
 export const fileContents: Record<string, string> = {
   'src/components/workflows/AIDocumentWorkflow.tsx': AIDocumentWorkflow,
+  'src/components/workflows/DocumentProgressCard.tsx': DocumentProgressCard,
   'src/integrations/supabase/types.ts': supabaseTypes,
   'src/components/CaseCard.tsx': CaseCard,
   'src/pages/admin/Dashboard.tsx': AdminDashboard,
   'src/pages/admin/IntakeForm.tsx': IntakeForm,
   'src/pages/admin/POAForm.tsx': POAForm,
   'src/integrations/supabase/client.ts': supabaseClient,
+  'src/utils/aiPIILogger.ts': aiPIILogger,
+  'src/utils/secureLogger.ts': secureLogger,
+  'src/hooks/useWorkflowState.ts': useWorkflowState,
+  'src/hooks/useDocumentProgress.ts': useDocumentProgress,
+  'src/hooks/useRequestBatcher.ts': useRequestBatcher,
+  'src/workers/base64Encoder.worker.ts': base64EncoderWorker,
 };
 
 /**
