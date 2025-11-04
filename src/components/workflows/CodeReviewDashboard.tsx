@@ -253,7 +253,8 @@ export const CodeReviewDashboard = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="p-6 rounded-lg border bg-card/50">
+      <div className="p-6 rounded-lg border-2 bg-blue-50/30 dark:bg-blue-950/30 border-blue-200/20 dark:border-blue-800/20 backdrop-blur" 
+           style={{ boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.1)' }}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Brain className="h-8 w-8 text-primary" />
@@ -299,7 +300,8 @@ export const CodeReviewDashboard = () => {
 
       {/* Overall Score */}
       {results.length > 0 && (
-        <div className="p-6 rounded-lg border bg-card/50">
+        <div className="p-6 rounded-lg border-2 bg-blue-50/30 dark:bg-blue-950/30 border-blue-200/20 dark:border-blue-800/20 backdrop-blur"
+             style={{ boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.1)' }}>
           <div className="grid grid-cols-4 gap-6">
             <div className="col-span-1">
               <div className="text-center">
@@ -311,7 +313,7 @@ export const CodeReviewDashboard = () => {
             </div>
 
             <div className="col-span-3 grid grid-cols-3 gap-4">
-              <div className="p-4 rounded-lg border bg-card">
+              <div className="p-4 rounded-lg border bg-background/50 backdrop-blur">
                 <div className="flex items-center gap-2 mb-2">
                   <CheckCircle2 className="h-5 w-5 text-green-500" />
                   <span className="font-semibold">Files Reviewed</span>
@@ -319,7 +321,7 @@ export const CodeReviewDashboard = () => {
                 <div className="text-2xl font-bold">{results.length}</div>
               </div>
 
-              <div className="p-4 rounded-lg border bg-card">
+              <div className="p-4 rounded-lg border bg-background/50 backdrop-blur">
                 <div className="flex items-center gap-2 mb-2">
                   {totalBlockers > 0 ? (
                     <XCircle className="h-5 w-5 text-destructive" />
@@ -333,7 +335,7 @@ export const CodeReviewDashboard = () => {
                 </div>
               </div>
 
-              <div className="p-4 rounded-lg border bg-card">
+              <div className="p-4 rounded-lg border bg-background/50 backdrop-blur">
                 <div className="flex items-center gap-2 mb-2">
                   <Brain className="h-5 w-5 text-primary" />
                   <span className="font-semibold">Status</span>
@@ -359,7 +361,8 @@ export const CodeReviewDashboard = () => {
 
       {/* File Results */}
       {results.map((result) => (
-        <div key={result.fileName} className="p-6 rounded-lg border bg-card/50">
+        <div key={result.fileName} className="p-6 rounded-lg border-2 bg-blue-50/30 dark:bg-blue-950/30 border-blue-200/20 dark:border-blue-800/20 backdrop-blur"
+             style={{ boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.1)' }}>
           {/* File Header */}
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
@@ -396,7 +399,7 @@ export const CodeReviewDashboard = () => {
           {/* Category Scores */}
           <div className="grid grid-cols-5 gap-4 mb-6">
             {result.categories.map((category) => (
-              <div key={category.category} className="p-3 rounded-lg border bg-card">
+              <div key={category.category} className="p-3 rounded-lg border bg-background/50 backdrop-blur">
                 <div className="flex items-center gap-2 mb-2">
                   {getCategoryIcon(category.category)}
                   <span className="text-xs font-medium">{category.category}</span>
@@ -422,7 +425,7 @@ export const CodeReviewDashboard = () => {
                 </h4>
                 <div className="space-y-3">
                   {criticalIssues.map((issue, idx) => (
-                    <div key={idx} className="p-3 rounded-lg border bg-card">
+                    <div key={idx} className="p-3 rounded-lg border bg-background/50 backdrop-blur">
                       <div className="flex items-start gap-3">
                         {issue.severity === 'CRITICAL' ? (
                           <XCircle className="h-5 w-5 text-red-600 mt-0.5" />
@@ -470,11 +473,12 @@ export const CodeReviewDashboard = () => {
 
       {/* Empty State */}
       {!isRunning && results.length === 0 && (
-        <div className="p-12 text-center rounded-lg border bg-card/50">
+        <div className="p-12 text-center rounded-lg border-2 bg-blue-50/30 dark:bg-blue-950/30 border-blue-200/20 dark:border-blue-800/20 backdrop-blur"
+             style={{ boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.1)' }}>
           <Brain className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
           <h3 className="text-xl font-semibold mb-2">Ready for Deep Code Review</h3>
           <p className="text-muted-foreground mb-6">
-            Click "Start Review" to analyze {filesToReview.length} critical files with GPT-5
+            Click &quot;Start Review&quot; to analyze {filesToReview.length} critical files with GPT-5
           </p>
           <Button onClick={runCodeReview} size="lg">
             <Play className="h-4 w-4 mr-2" />
