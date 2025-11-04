@@ -111,6 +111,9 @@ verify_jwt = false
 [functions.check-agent-alerts]
 verify_jwt = false
 
+[functions.cleanup-orphan-cases]
+verify_jwt = true
+
 [functions.verify-pdf-system]
 verify_jwt = true
 

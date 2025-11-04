@@ -27,6 +27,7 @@ import { ErrorState } from "@/components/ErrorState";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { GlobalSearch } from "@/components/GlobalSearch";
 import { BulkActionsToolbar } from "@/components/BulkActionsToolbar";
+import { CleanupDatabaseDialog } from "@/components/cases/CleanupDatabaseDialog";
 import { toast } from "sonner";
 import { toastSuccess, toastError } from "@/utils/toastNotifications";
 import { useBulkCaseActions } from "@/hooks/useBulkCaseActions";
@@ -60,6 +61,7 @@ export default function CasesManagement() {
   const [showShortcuts, setShowShortcuts] = useState(false);
   const [showGlobalSearch, setShowGlobalSearch] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
+  const [showCleanupDialog, setShowCleanupDialog] = useState(false);
   const [sortBy, setSortBy] = useState<"default" | "name" | "date" | "progress" | "mode" | "score" | "stage" | "pay">("default");
   
   // Bulk actions
@@ -396,6 +398,16 @@ export default function CasesManagement() {
                 New Case
               </Button>
 
+              <Button 
+                onClick={() => setShowCleanupDialog(true)}
+                variant="destructive"
+                className="w-full h-12"
+                size="lg"
+              >
+                <Database className="h-4 w-4 mr-2" />
+                Clean Database
+              </Button>
+
               <CaseFilters
                 searchTerm={searchTerm}
                 onSearchChange={setSearchTerm}
@@ -427,7 +439,7 @@ export default function CasesManagement() {
             </div>
 
             {/* Desktop layout - 3 column grid */}
-            <div className="hidden sm:grid sm:grid-cols-[140px_1fr_140px] gap-3 items-center">
+            <div className="hidden sm:grid sm:grid-cols-[140px_1fr_240px] gap-3 items-center">
               {/* Left: Filters Button */}
               <CaseFilters
                 searchTerm={searchTerm}
@@ -461,14 +473,26 @@ export default function CasesManagement() {
               </div>
 
               {/* Right: New Case Button */}
-              <Button 
-                onClick={() => navigate("/admin/cases/new")}
-                className="h-12 w-full"
-                size="lg"
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                New Case
-              </Button>
+              <div className="flex gap-2">
+                <Button 
+                  onClick={() => navigate("/admin/cases/new")}
+                  className="h-12 flex-1"
+                  size="lg"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  New Case
+                </Button>
+                
+                <Button 
+                  onClick={() => setShowCleanupDialog(true)}
+                  variant="destructive"
+                  className="h-12 flex-1"
+                  size="lg"
+                >
+                  <Database className="h-4 w-4 mr-2" />
+                  Clean Database
+                </Button>
+              </div>
             </div>
           </div>
 
@@ -594,6 +618,11 @@ export default function CasesManagement() {
       <KeyboardShortcutsDialog
         open={showShortcuts}
         onOpenChange={setShowShortcuts}
+      />
+
+      <CleanupDatabaseDialog
+        open={showCleanupDialog}
+        onOpenChange={setShowCleanupDialog}
       />
 
       <GlobalSearch
