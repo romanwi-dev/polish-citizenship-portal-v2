@@ -377,7 +377,7 @@ Fix: ${issue.fix}
         <button
           onClick={runStaticAnalysisOnly}
           disabled={isRunning}
-          className="h-16 md:h-20 flex-1 rounded-md border-2 bg-blue-50/45 dark:bg-blue-950/40 border-blue-200/30 dark:border-blue-800/30 hover:border-transparent focus:border-transparent transition-all duration-300 backdrop-blur font-normal font-input-work text-2xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+          className="h-16 md:h-20 flex-1 rounded-md border-2 bg-blue-50/45 dark:bg-blue-950/40 border-blue-200/30 dark:border-blue-800/30 hover:border-transparent focus:border-transparent transition-all duration-300 backdrop-blur font-normal font-input-work text-2xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 text-muted-foreground/80 hover:text-foreground"
           style={{
             boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15)',
             transition: 'all 0.3s ease'
@@ -417,7 +417,7 @@ Fix: ${issue.fix}
         <button
           onClick={copyReport}
           disabled={results.length === 0 && staticResults.length === 0}
-          className="h-16 md:h-20 flex-1 rounded-md border-2 bg-blue-50/45 dark:bg-blue-950/40 border-blue-200/30 dark:border-blue-800/30 hover:border-transparent focus:border-transparent transition-all duration-300 backdrop-blur font-normal font-input-work text-2xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+          className="h-16 md:h-20 flex-1 rounded-md border-2 bg-blue-50/45 dark:bg-blue-950/40 border-blue-200/30 dark:border-blue-800/30 hover:border-transparent focus:border-transparent transition-all duration-300 backdrop-blur font-normal font-input-work text-2xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 text-muted-foreground/80 hover:text-foreground"
           style={{
             boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15)',
             transition: 'all 0.3s ease'
@@ -448,7 +448,7 @@ Fix: ${issue.fix}
         <button
           onClick={() => runCodeReview()}
           disabled={isRunning}
-          className="h-16 md:h-20 flex-1 rounded-md border-2 bg-blue-50/45 dark:bg-blue-950/40 border-blue-200/30 dark:border-blue-800/30 hover:border-transparent focus:border-transparent transition-all duration-300 backdrop-blur font-normal font-input-work text-2xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+          className="h-16 md:h-20 flex-1 rounded-md border-2 bg-blue-50/45 dark:bg-blue-950/40 border-blue-200/30 dark:border-blue-800/30 hover:border-transparent focus:border-transparent transition-all duration-300 backdrop-blur font-normal font-input-work text-2xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 text-muted-foreground/80 hover:text-foreground"
           style={{
             boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15)',
             transition: 'all 0.3s ease'
