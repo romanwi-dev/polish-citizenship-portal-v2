@@ -362,6 +362,72 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_confidence_overrides: {
+        Row: {
+          ai_classification: string
+          ai_confidence: number | null
+          ai_detected_person: string | null
+          case_id: string
+          created_at: string | null
+          document_id: string
+          human_classification: string | null
+          human_override: string | null
+          id: string
+          metadata: Json | null
+          updated_at: string | null
+          verification_reason: string | null
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          ai_classification: string
+          ai_confidence?: number | null
+          ai_detected_person?: string | null
+          case_id: string
+          created_at?: string | null
+          document_id: string
+          human_classification?: string | null
+          human_override?: string | null
+          id?: string
+          metadata?: Json | null
+          updated_at?: string | null
+          verification_reason?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          ai_classification?: string
+          ai_confidence?: number | null
+          ai_detected_person?: string | null
+          case_id?: string
+          created_at?: string | null
+          document_id?: string
+          human_classification?: string | null
+          human_override?: string | null
+          id?: string
+          metadata?: Json | null
+          updated_at?: string | null
+          verification_reason?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_confidence_overrides_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_confidence_overrides_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_conversation_messages: {
         Row: {
           content: string
@@ -3431,6 +3497,85 @@ export type Database = {
           },
         ]
       }
+      quality_metrics_history: {
+        Row: {
+          accuracy_score: number | null
+          blocker_count: number | null
+          case_id: string
+          completeness_score: number | null
+          confidence_score: number | null
+          created_at: string | null
+          document_id: string | null
+          id: string
+          info_count: number | null
+          metrics_data: Json | null
+          overall_score: number | null
+          snapshot_at: string | null
+          stage: string | null
+          total_checks: number | null
+          warning_count: number | null
+          workflow_run_id: string | null
+        }
+        Insert: {
+          accuracy_score?: number | null
+          blocker_count?: number | null
+          case_id: string
+          completeness_score?: number | null
+          confidence_score?: number | null
+          created_at?: string | null
+          document_id?: string | null
+          id?: string
+          info_count?: number | null
+          metrics_data?: Json | null
+          overall_score?: number | null
+          snapshot_at?: string | null
+          stage?: string | null
+          total_checks?: number | null
+          warning_count?: number | null
+          workflow_run_id?: string | null
+        }
+        Update: {
+          accuracy_score?: number | null
+          blocker_count?: number | null
+          case_id?: string
+          completeness_score?: number | null
+          confidence_score?: number | null
+          created_at?: string | null
+          document_id?: string | null
+          id?: string
+          info_count?: number | null
+          metrics_data?: Json | null
+          overall_score?: number | null
+          snapshot_at?: string | null
+          stage?: string | null
+          total_checks?: number | null
+          warning_count?: number | null
+          workflow_run_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quality_metrics_history_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quality_metrics_history_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quality_metrics_history_workflow_run_id_fkey"
+            columns: ["workflow_run_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       rate_limit_logs: {
         Row: {
           created_at: string | null
@@ -4249,6 +4394,79 @@ export type Database = {
             columns: ["workflow_instance_id"]
             isOneToOne: false
             referencedRelation: "workflow_instances"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workflow_preflight_logs: {
+        Row: {
+          blocked_transition: boolean | null
+          case_id: string
+          check_name: string
+          check_passed: boolean
+          check_type: string
+          checked_at: string | null
+          created_at: string | null
+          details: Json | null
+          document_id: string | null
+          id: string
+          message: string | null
+          severity: string
+          stage: string
+          workflow_run_id: string
+        }
+        Insert: {
+          blocked_transition?: boolean | null
+          case_id: string
+          check_name: string
+          check_passed: boolean
+          check_type: string
+          checked_at?: string | null
+          created_at?: string | null
+          details?: Json | null
+          document_id?: string | null
+          id?: string
+          message?: string | null
+          severity: string
+          stage: string
+          workflow_run_id: string
+        }
+        Update: {
+          blocked_transition?: boolean | null
+          case_id?: string
+          check_name?: string
+          check_passed?: boolean
+          check_type?: string
+          checked_at?: string | null
+          created_at?: string | null
+          details?: Json | null
+          document_id?: string | null
+          id?: string
+          message?: string | null
+          severity?: string
+          stage?: string
+          workflow_run_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_preflight_logs_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workflow_preflight_logs_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workflow_preflight_logs_workflow_run_id_fkey"
+            columns: ["workflow_run_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_runs"
             referencedColumns: ["id"]
           },
         ]
