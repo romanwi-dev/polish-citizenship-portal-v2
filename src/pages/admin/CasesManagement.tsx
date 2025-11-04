@@ -500,8 +500,8 @@ export default function CasesManagement() {
 
           {/* Sort Controls - Horizontal Scrollable */}
           {filteredCases.length > 0 && (
-            <div className="overflow-x-auto scrollbar-hide pb-2 -mx-4 px-4 touch-pan-x">
-              <div className="flex items-center gap-2 min-w-max">
+            <div className="w-full pb-2">
+              <div className="flex items-center justify-between gap-1 w-full">
                 {[
                   { value: "default", label: "Default" },
                   { value: "name", label: "Name" },
@@ -517,7 +517,7 @@ export default function CasesManagement() {
                     variant={sortBy === option.value ? "default" : "outline"}
                     size="lg"
                     onClick={() => setSortBy(option.value as any)}
-                    className="whitespace-nowrap flex-shrink-0 h-10 min-w-[140px] text-base font-medium border-2"
+                    className="whitespace-nowrap flex-1 h-10 text-sm font-medium border-2 px-2"
                   >
                     {option.label}
                   </Button>
@@ -526,7 +526,7 @@ export default function CasesManagement() {
                   variant="outline"
                   size="lg"
                   onClick={() => resetSortOrdersMutation.mutate()}
-                  className="whitespace-nowrap flex-shrink-0 h-10 min-w-[140px] text-base font-medium border-2"
+                  className="whitespace-nowrap flex-1 h-10 text-sm font-medium border-2 px-2"
                   disabled={!cases.some(c => c.sort_order !== null)}
                 >
                   <RotateCcw className="h-4 w-4 mr-2" />
