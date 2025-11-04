@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { getFileContent } from "@/data/reviewFileContents";
 
 interface ReviewResult {
   fileName: string;
@@ -150,26 +151,9 @@ export const CodeReviewDashboard = () => {
         setCurrentFile(file.name);
         
         try {
-          // Fetch file content by importing it as raw text
-          let fileContent = '';
-          
-          try {
-            // Try to fetch the file from the dev server
-            const response = await fetch(`/${file.path}`);
-            if (response.ok) {
-              fileContent = await response.text();
-              console.log(`Successfully fetched ${fileContent.length} characters from ${file.name}`);
-            } else {
-              console.warn(`Could not fetch ${file.path}, using placeholder`);
-              fileContent = `// File: ${file.name}\n// Could not read file content\n// Path: ${file.path}`;
-            }
-          } catch (fetchError) {
-            console.error(`Error fetching ${file.path}:`, fetchError);
-            fileContent = `// File: ${file.name}\n// Error reading file\n// Path: ${file.path}`;
-          }
-          
-          // Now send the file content to GPT-5 for analysis
-          console.log(`Analyzing ${file.name} with GPT-5...`);
+          // Get real file content from build-time imports
+          const fileContent = getFileContent(file.path);
+          console.log(`📄 Analyzing ${file.name} with GPT-5 (${fileContent.length} characters of real code)...`);
           
           const { data, error } = await supabase.functions.invoke('ai-code-review', {
             body: {
