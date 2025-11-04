@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { getFileContent } from "@/data/reviewFileContents";
 import { analyzeFile, generateSummary, type StaticAnalysisResult } from "@/utils/staticCodeAnalyzer";
+import { CodeReviewResults } from "./CodeReviewResults";
 
 interface ReviewResult {
   fileName: string;
@@ -415,6 +416,11 @@ Fix: ${issue.fix}
           )}
         </button>
       </div>
+
+      {/* Results Display Panel */}
+      {(results.length > 0 || staticResults.length > 0) && (
+        <CodeReviewResults results={results} staticResults={staticResults} />
+      )}
     </div>
   );
 };
