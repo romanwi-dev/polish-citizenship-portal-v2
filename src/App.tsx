@@ -51,6 +51,7 @@ const ArchivesSearch = lazy(() => import("./pages/admin/ArchivesSearch"));
 const TranslationsWorkflow = lazy(() => import("./pages/admin/TranslationsWorkflow"));
 const ArchivesWorkflow = lazy(() => import("./pages/admin/ArchivesWorkflow"));
 const PassportWorkflow = lazy(() => import("./pages/admin/PassportWorkflow"));
+const DropboxWorkflow = lazy(() => import("./pages/admin/DropboxWorkflow"));
 const AllWorkflows = lazy(() => import("./pages/admin/AllWorkflows"));
 const WorkflowNotifications = lazy(() => import("./pages/admin/WorkflowNotifications"));
 const AIWorkflow = lazy(() => import("./pages/admin/AIWorkflow"));
@@ -215,6 +216,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <DropboxMigration />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/dropbox" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <DropboxWorkflow />
               </Suspense>
             } 
           />
