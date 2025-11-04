@@ -459,7 +459,7 @@ export default function CasesManagement() {
             </div>
 
             {/* Desktop layout - Equal width items with minimal gaps */}
-            <div className="hidden sm:grid sm:grid-cols-5 gap-0 w-full">
+            <div className="hidden sm:grid sm:grid-cols-5 gap-1 w-full">
               <Button 
                 onClick={() => {
                   if (selectedCount > 0) {
