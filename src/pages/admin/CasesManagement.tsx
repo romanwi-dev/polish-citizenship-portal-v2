@@ -28,6 +28,7 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { GlobalSearch } from "@/components/GlobalSearch";
 import { BulkActionsToolbar } from "@/components/BulkActionsToolbar";
 import { CleanupDatabaseDialog } from "@/components/cases/CleanupDatabaseDialog";
+import { ResyncConfirmationDialog } from "@/components/cases/ResyncConfirmationDialog";
 import { toast } from "sonner";
 import { toastSuccess, toastError } from "@/utils/toastNotifications";
 import { useBulkCaseActions } from "@/hooks/useBulkCaseActions";
@@ -61,6 +62,7 @@ export default function CasesManagement() {
   const [showShortcuts, setShowShortcuts] = useState(false);
   const [showGlobalSearch, setShowGlobalSearch] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
+  const [showResyncDialog, setShowResyncDialog] = useState(false);
   const [showCleanupDialog, setShowCleanupDialog] = useState(false);
   const [sortBy, setSortBy] = useState<"default" | "name" | "date" | "progress" | "mode" | "score" | "stage" | "pay">("default");
   
@@ -399,13 +401,13 @@ export default function CasesManagement() {
               </Button>
 
               <Button 
-                onClick={() => setShowCleanupDialog(true)}
+                onClick={() => setShowResyncDialog(true)}
                 variant="destructive"
                 className="w-full h-12"
                 size="lg"
               >
                 <Database className="h-4 w-4 mr-2" />
-                Clean Database
+                Resync & Clean
               </Button>
 
               <CaseFilters
@@ -484,13 +486,13 @@ export default function CasesManagement() {
                 </Button>
                 
                 <Button 
-                  onClick={() => setShowCleanupDialog(true)}
+                  onClick={() => setShowResyncDialog(true)}
                   variant="destructive"
                   className="h-12 flex-1"
                   size="lg"
                 >
                   <Database className="h-4 w-4 mr-2" />
-                  Clean Database
+                  Resync & Clean
                 </Button>
               </div>
             </div>
@@ -618,6 +620,12 @@ export default function CasesManagement() {
       <KeyboardShortcutsDialog
         open={showShortcuts}
         onOpenChange={setShowShortcuts}
+      />
+
+      <ResyncConfirmationDialog
+        open={showResyncDialog}
+        onOpenChange={setShowResyncDialog}
+        onProceedToCleanup={() => setShowCleanupDialog(true)}
       />
 
       <CleanupDatabaseDialog
