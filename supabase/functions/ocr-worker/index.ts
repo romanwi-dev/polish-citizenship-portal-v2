@@ -85,10 +85,19 @@ serve(async (req) => {
 
     let successCount = 0;
     let failedCount = 0;
-    const results = [];
+    const results: Array<{
+      documentId?: string;
+      name?: string;
+      status: string;
+      confidence?: number;
+      error?: string;
+      errorType?: string;
+      retryCount?: number;
+      willRetry?: boolean;
+    }> = [];
 
-    // Process documents sequentially to avoid rate limits
-    for (const doc of queuedDocs) {
+    // Process documents in parallel (concurrency already limited by fetch query)
+    const processPromises = queuedDocs.map(async (doc) => {
       const startTime = Date.now();
       let errorType: 'permanent' | 'transient' | null = null;
       
@@ -154,18 +163,16 @@ serve(async (req) => {
           throw new Error(`OCR failed: ${ocrError.message}`);
         }
 
-        console.log(`Successfully processed: ${doc.name}`);
-        successCount++;
-        results.push({
+        console.log(`✓ Successfully processed: ${doc.name}`);
+        return {
           documentId: doc.id,
           name: doc.name,
           status: "success",
           confidence: ocrResult?.confidence,
-        });
+        };
 
       } catch (error) {
-        console.error(`Failed to process ${doc.name}:`, error);
-        failedCount++;
+        console.error(`✗ Failed to process ${doc.name}:`, error);
 
         // Classify error type
         const errorMessage = error instanceof Error ? error.message : "Unknown error";
@@ -199,7 +206,7 @@ serve(async (req) => {
           completed_at: new Date().toISOString(),
         });
 
-        results.push({
+        return {
           documentId: doc.id,
           name: doc.name,
           status: "failed",
@@ -207,13 +214,30 @@ serve(async (req) => {
           errorType,
           retryCount: newRetryCount,
           willRetry: newStatus === "queued",
+        };
+      }
+    });
+
+    // Wait for all documents to process in parallel
+    const processResults = await Promise.allSettled(processPromises);
+    
+    // Count successes and failures
+    processResults.forEach((result) => {
+      if (result.status === 'fulfilled') {
+        results.push(result.value);
+        if (result.value.status === 'success') {
+          successCount++;
+        } else {
+          failedCount++;
+        }
+      } else {
+        failedCount++;
+        results.push({
+          status: 'failed',
+          error: result.reason?.message || 'Unknown error'
         });
       }
-
-      // Exponential backoff between documents
-      const delayMs = errorType === 'transient' ? 2000 * Math.pow(2, (doc.ocr_retry_count || 0)) : 1000;
-      await new Promise(resolve => setTimeout(resolve, Math.min(delayMs, 10000)));
-    }
+    });
 
     console.log(`OCR Worker complete: ${successCount} successful, ${failedCount} failed`);
 

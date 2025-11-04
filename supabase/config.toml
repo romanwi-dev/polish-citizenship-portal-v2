@@ -51,6 +51,12 @@ verify_jwt = false
 [functions.ai-agent]
 verify_jwt = true
 
+[functions.ai-classify-document]
+verify_jwt = true
+
+[functions.ai-verify-forms]
+verify_jwt = true
+
 [functions.client-guide-agent]
 verify_jwt = true
 
@@ -80,6 +86,9 @@ verify_jwt = false
 
 [functions.partner-api]
 verify_jwt = false
+
+[functions.download-dropbox-file]
+verify_jwt = true
 
 [functions.dropbox-download]
 verify_jwt = true

@@ -18,6 +18,15 @@ serve(async (req) => {
       throw new Error('Dropbox path is required');
     }
 
+    // Normalize path: add /CASES/ prefix if missing
+    let normalizedPath = dropboxPath;
+    if (!normalizedPath.startsWith('/')) {
+      normalizedPath = '/' + normalizedPath;
+    }
+    if (!normalizedPath.startsWith('/CASES/')) {
+      normalizedPath = '/CASES' + normalizedPath;
+    }
+
     const dropboxAppKey = Deno.env.get('DROPBOX_APP_KEY');
     const dropboxAppSecret = Deno.env.get('DROPBOX_APP_SECRET');
     const dropboxRefreshToken = Deno.env.get('DROPBOX_REFRESH_TOKEN');
@@ -28,14 +37,14 @@ serve(async (req) => {
 
     const accessToken = await generateAccessToken(dropboxAppKey, dropboxAppSecret, dropboxRefreshToken);
     
-    console.log(`Downloading file from Dropbox: ${dropboxPath}`);
+    console.log(`Downloading file from Dropbox: ${normalizedPath} (original: ${dropboxPath})`);
 
     // Download file from Dropbox
     const response = await fetch('https://content.dropboxapi.com/2/files/download', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${accessToken}`,
-        'Dropbox-API-Arg': JSON.stringify({ path: dropboxPath }),
+        'Dropbox-API-Arg': JSON.stringify({ path: normalizedPath }),
       },
     });
 
