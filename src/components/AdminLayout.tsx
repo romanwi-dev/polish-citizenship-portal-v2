@@ -146,7 +146,7 @@ function AppSidebar() {
               open ? "h-6 w-6 opacity-20 hover:opacity-60" : "h-5 w-5 opacity-15 hover:opacity-50 mx-auto"
             )}
           >
-            <PanelLeft className={cn(open ? "h-3 w-3" : "h-3 w-3")} />
+            <PanelLeft className="h-3 w-3" />
           </button>
         </div>
         
