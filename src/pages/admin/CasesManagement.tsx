@@ -389,59 +389,62 @@ export default function CasesManagement() {
 
           {/* Action Buttons Row - Mobile Optimized */}
           <div className="flex flex-col gap-3 mb-3">
-            {/* Mobile layout */}
-            <div className="grid grid-cols-1 gap-3 sm:hidden">
-              <Button 
-                onClick={() => navigate("/admin/cases/new")}
-                className="w-full h-12"
-                size="lg"
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                New Case
-              </Button>
-
-              <Button 
-                onClick={() => setShowResyncDialog(true)}
-                variant="destructive"
-                className="w-full h-12"
-                size="lg"
-              >
-                <Database className="h-4 w-4 mr-2" />
-                Resync & Clean
-              </Button>
-
-              <CaseFilters
-                searchTerm={searchTerm}
-                onSearchChange={setSearchTerm}
-                statusFilter={statusFilter}
-                onStatusChange={setStatusFilter}
-                processingModeFilter={processingModeFilter}
-                onProcessingModeChange={setProcessingModeFilter}
-                scoreFilter={scoreFilter}
-                onScoreChange={setScoreFilter}
-                ageFilter={ageFilter}
-                onAgeChange={setAgeFilter}
-                progressFilter={progressFilter}
-                onProgressChange={setProgressFilter}
-                onClearFilters={handleClearFilters}
-                activeFiltersCount={activeFiltersCount}
-                searchInputRef={searchInputRef}
-              />
-
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-40 z-10" />
-                <Input
-                  ref={searchInputRef}
-                  placeholder=""
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 h-12"
+            {/* Mobile layout - Horizontal Scroll */}
+            <div className="sm:hidden overflow-x-auto scrollbar-hide pb-2 -mx-4 px-4">
+              <div className="flex gap-2 items-center min-w-max">
+                <CaseFilters
+                  searchTerm={searchTerm}
+                  onSearchChange={setSearchTerm}
+                  statusFilter={statusFilter}
+                  onStatusChange={setStatusFilter}
+                  processingModeFilter={processingModeFilter}
+                  onProcessingModeChange={setProcessingModeFilter}
+                  scoreFilter={scoreFilter}
+                  onScoreChange={setScoreFilter}
+                  ageFilter={ageFilter}
+                  onAgeChange={setAgeFilter}
+                  progressFilter={progressFilter}
+                  onProgressChange={setProgressFilter}
+                  onClearFilters={handleClearFilters}
+                  activeFiltersCount={activeFiltersCount}
+                  searchInputRef={searchInputRef}
+                  className="w-[140px] flex-shrink-0"
                 />
+
+                <div className="relative w-[300px] flex-shrink-0">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-40 z-10" />
+                  <Input
+                    ref={searchInputRef}
+                    placeholder=""
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10 h-12"
+                  />
+                </div>
+
+                <Button 
+                  onClick={() => navigate("/admin/cases/new")}
+                  className="h-12 flex-shrink-0 whitespace-nowrap"
+                  size="lg"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  New Case
+                </Button>
+
+                <Button 
+                  onClick={() => setShowResyncDialog(true)}
+                  variant="destructive"
+                  className="h-12 flex-shrink-0 whitespace-nowrap"
+                  size="lg"
+                >
+                  <Database className="h-4 w-4 mr-2" />
+                  Resync & Clean
+                </Button>
               </div>
             </div>
 
-            {/* Desktop layout - 3 column grid */}
-            <div className="hidden sm:grid sm:grid-cols-[140px_1fr_240px] gap-3 items-center">
+            {/* Desktop layout - Tighter spacing */}
+            <div className="hidden sm:grid sm:grid-cols-[140px_1fr_auto] gap-2 items-center">
               {/* Left: Filters Button */}
               <CaseFilters
                 searchTerm={searchTerm}
@@ -474,11 +477,11 @@ export default function CasesManagement() {
                 />
               </div>
 
-              {/* Right: New Case Button */}
-              <div className="flex gap-2">
+              {/* Right: Action Buttons */}
+              <div className="flex gap-2 flex-shrink-0">
                 <Button 
                   onClick={() => navigate("/admin/cases/new")}
-                  className="h-12 flex-1"
+                  className="h-12 whitespace-nowrap"
                   size="lg"
                 >
                   <Plus className="h-4 w-4 mr-2" />
@@ -488,7 +491,7 @@ export default function CasesManagement() {
                 <Button 
                   onClick={() => setShowResyncDialog(true)}
                   variant="destructive"
-                  className="h-12 flex-1"
+                  className="h-12 whitespace-nowrap"
                   size="lg"
                 >
                   <Database className="h-4 w-4 mr-2" />
