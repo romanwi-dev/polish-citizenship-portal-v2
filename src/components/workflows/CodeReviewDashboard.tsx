@@ -53,6 +53,26 @@ export const CodeReviewDashboard = () => {
       priority: 'critical' as const
     },
 
+    // === EDGE FUNCTIONS (Backend) ===
+    {
+      name: 'ai-code-review',
+      path: 'supabase/functions/ai-code-review/index.ts',
+      type: 'edge-function',
+      priority: 'critical' as const
+    },
+    {
+      name: 'ocr-worker',
+      path: 'supabase/functions/ocr-worker/index.ts',
+      type: 'edge-function',
+      priority: 'critical' as const
+    },
+    {
+      name: 'download-dropbox-file',
+      path: 'supabase/functions/download-dropbox-file/index.ts',
+      type: 'edge-function',
+      priority: 'high' as const
+    },
+
     // === SECURITY ===
     {
       name: 'aiPIILogger.ts',
@@ -171,8 +191,30 @@ export const CodeReviewDashboard = () => {
       console.log('📦 Loading all file contents...');
       const filePromises = filesToReview.map(async (file) => {
         try {
-          const content = getFileContent(file.path);
-          return { fileName: file.name, fileContent: content, priority: file.priority };
+          // Check if this is an edge function
+          if (file.path.startsWith('supabase/functions/')) {
+            console.log(`🔌 Fetching edge function via analyzer: ${file.name}`);
+            const { data, error } = await supabase.functions.invoke('edge-function-analyzer', {
+              body: { functionName: file.name }
+            });
+
+            if (error) {
+              console.error(`Failed to analyze edge function ${file.name}:`, error);
+              return null;
+            }
+
+            if (!data?.success || !data?.code) {
+              console.error(`Edge function analyzer failed for ${file.name}:`, data);
+              return null;
+            }
+
+            console.log(`✅ Loaded edge function ${file.name}: ${data.lineCount} lines`);
+            return { fileName: file.name, fileContent: data.code, priority: file.priority };
+          } else {
+            // Regular frontend file
+            const content = getFileContent(file.path);
+            return { fileName: file.name, fileContent: content, priority: file.priority };
+          }
         } catch (error) {
           console.error(`Failed to load ${file.name}:`, error);
           return null;
@@ -387,7 +429,7 @@ Fix: ${issue.fix}
           <div>
             <h2 className="text-2xl font-bold">Sprint 3: Deep Code Review</h2>
             <p className="text-muted-foreground">
-              AI batch analysis of {filesToReview.length} frontend files in 1 call
+              AI batch analysis of {filesToReview.length} files (frontend + edge functions) in 1 call
             </p>
           </div>
         </div>
