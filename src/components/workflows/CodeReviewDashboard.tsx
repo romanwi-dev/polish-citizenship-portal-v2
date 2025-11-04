@@ -409,7 +409,7 @@ Fix: ${issue.fix}
           ) : (
             <>
               <Search className="h-5 w-5" />
-              <span>Quick Check (No AI)</span>
+              <span>Quick Check</span>
             </>
           )}
         </button>
@@ -480,7 +480,7 @@ Fix: ${issue.fix}
           ) : (
             <>
               <Play className="h-5 w-5" />
-              <span>Full Review (AI)</span>
+              <span>Full Review</span>
             </>
           )}
         </button>
