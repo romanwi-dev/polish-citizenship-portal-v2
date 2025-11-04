@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import * as React from "react";
 import {
   Sidebar,
   SidebarContent,
@@ -35,7 +36,8 @@ import {
   ChevronDown,
   Plus,
   Brain,
-  FileCode
+  FileCode,
+  PanelLeft
 } from "lucide-react";
 import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
@@ -97,7 +99,7 @@ const navSections = [
 ];
 
 function AppSidebar() {
-  const { open } = useSidebar();
+  const { open, setOpen } = useSidebar();
   const location = useLocation();
   const [openGroups, setOpenGroups] = useState<string[]>(['Core Management', 'WORKFLOWS', 'Operations', 'System']);
 
@@ -133,6 +135,12 @@ function AppSidebar() {
               className="h-6 w-auto object-contain"
             />
           )}
+          <button
+            onClick={() => setOpen(!open)}
+            className="h-8 w-8 flex items-center justify-center hover:bg-accent rounded-md transition-colors"
+          >
+            <PanelLeft className="h-4 w-4" />
+          </button>
         </div>
         
         <SidebarContent>
@@ -205,8 +213,15 @@ interface AdminLayoutProps {
 }
 
 export function AdminLayout({ children }: AdminLayoutProps) {
+  const [sidebarOpen, setSidebarOpen] = React.useState(true);
+
+  // Clear any old sidebar cookie and force it open
+  React.useEffect(() => {
+    document.cookie = "sidebar:state=true; path=/; max-age=604800";
+  }, []);
+
   return (
-    <SidebarProvider defaultOpen={true}>
+    <SidebarProvider open={sidebarOpen} onOpenChange={setSidebarOpen} defaultOpen={true}>
       <div className="min-h-screen flex w-full relative">
         {/* Full-width unified background effects */}
         <div className="fixed inset-0 pointer-events-none overflow-hidden">
@@ -216,10 +231,15 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           <div className="absolute bottom-20 right-20 w-96 h-96 bg-secondary/20 rounded-full blur-[150px] animate-pulse delay-700" />
         </div>
         
-        {/* Fixed toggle button - always visible */}
-        <div className="fixed top-4 left-4 z-50">
-          <SidebarTrigger className="h-10 w-10 bg-primary/10 hover:bg-primary/20 border-2 border-primary/30 rounded-md" />
-        </div>
+        {/* Fixed toggle button - always visible even when sidebar is closed */}
+        {!sidebarOpen && (
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="fixed top-4 left-4 z-50 h-12 w-12 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg shadow-lg flex items-center justify-center transition-all hover:scale-110"
+          >
+            <PanelLeft className="h-6 w-6" />
+          </button>
+        )}
         
         <AppSidebar />
         <main className="flex-1 overflow-auto relative z-10">
