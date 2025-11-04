@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { generateAccessToken } from "../_shared/dropbox-auth.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -18,18 +19,23 @@ serve(async (req) => {
       throw new Error('Dropbox path is required');
     }
 
-    const DROPBOX_ACCESS_TOKEN = Deno.env.get('DROPBOX_ACCESS_TOKEN');
-    if (!DROPBOX_ACCESS_TOKEN) {
-      throw new Error('Dropbox access token not configured');
+    const dropboxAppKey = Deno.env.get('DROPBOX_APP_KEY');
+    const dropboxAppSecret = Deno.env.get('DROPBOX_APP_SECRET');
+    const dropboxRefreshToken = Deno.env.get('DROPBOX_REFRESH_TOKEN');
+
+    if (!dropboxAppKey || !dropboxAppSecret || !dropboxRefreshToken) {
+      throw new Error('Missing Dropbox credentials: DROPBOX_APP_KEY, DROPBOX_APP_SECRET, and DROPBOX_REFRESH_TOKEN required');
     }
 
+    const accessToken = await generateAccessToken(dropboxAppKey, dropboxAppSecret, dropboxRefreshToken);
+    
     console.log(`Fetching files from Dropbox path: ${dropboxPath}`);
 
     // List files in the Dropbox folder
     const response = await fetch('https://api.dropboxapi.com/2/files/list_folder', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${DROPBOX_ACCESS_TOKEN}`,
+        'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
