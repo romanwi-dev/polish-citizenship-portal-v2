@@ -2,8 +2,7 @@ import { useState } from "react";
 import { 
   Loader2,
   Play,
-  Copy,
-  Search
+  Copy
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -29,7 +28,6 @@ export const CodeReviewDashboard = () => {
   const [staticResults, setStaticResults] = useState<StaticAnalysisResult[]>([]);
   const [progress, setProgress] = useState(0);
   const [currentFile, setCurrentFile] = useState<string>('');
-  const [showStaticOnly, setShowStaticOnly] = useState(false);
 
   const filesToReview = [
     // === CRITICAL PATH FILES ===
@@ -275,34 +273,6 @@ export const CodeReviewDashboard = () => {
     }
   };
 
-  const runStaticAnalysisOnly = async () => {
-    setIsRunning(true);
-    setResults([]);
-    setStaticResults([]);
-    setProgress(0);
-    setShowStaticOnly(true);
-
-    try {
-      const { summary } = await runStaticAnalysis();
-      setProgress(100);
-
-      toast({
-        title: "🔍 Static Analysis Complete",
-        description: `Found ${summary.totalIssues} issues (${summary.totalWarnings} warnings, ${summary.totalInfo} info) - No AI credits used!`,
-      });
-    } catch (error: any) {
-      console.error('❌ Static analysis error:', error);
-      toast({
-        title: "Static Analysis Failed",
-        description: error.message || "An unexpected error occurred",
-        variant: "destructive"
-      });
-    } finally {
-      setIsRunning(false);
-      setCurrentFile('');
-    }
-  };
-
   const copyReport = async () => {
     if (results.length === 0) {
       toast({
@@ -372,48 +342,8 @@ Fix: ${issue.fix}
         Deep Code Review
       </h1>
 
-      {/* Action Buttons - 3 evenly spread in a row */}
+      {/* Action Buttons - 2 evenly spread in a row */}
       <div className="flex flex-col md:flex-row items-stretch gap-4 md:gap-6 w-full max-w-7xl mx-auto">
-        <button
-          onClick={runStaticAnalysisOnly}
-          disabled={isRunning}
-          className="h-16 md:h-20 flex-1 rounded-md border-2 bg-blue-50/45 dark:bg-blue-950/40 border-blue-200/30 dark:border-blue-800/30 hover:border-transparent focus:border-transparent transition-all duration-300 backdrop-blur font-normal font-input-work text-2xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 text-muted-foreground/80 hover:text-foreground"
-          style={{
-            boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15)',
-            transition: 'all 0.3s ease'
-          }}
-          onMouseEnter={(e) => {
-            if (!isRunning) {
-              e.currentTarget.style.boxShadow = '0 0 50px hsla(221, 83%, 53%, 0.3)';
-              e.currentTarget.style.transform = 'translateY(-2px)';
-            }
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.boxShadow = '0 0 30px hsla(221, 83%, 53%, 0.15)';
-            e.currentTarget.style.transform = 'translateY(0)';
-          }}
-          onFocus={(e) => {
-            e.currentTarget.style.boxShadow = '0 0 60px hsla(221, 83%, 53%, 0.4)';
-            e.currentTarget.style.transform = 'translateY(-2px)';
-          }}
-          onBlur={(e) => {
-            e.currentTarget.style.boxShadow = '0 0 30px hsla(221, 83%, 53%, 0.15)';
-            e.currentTarget.style.transform = 'translateY(0)';
-          }}
-        >
-          {isRunning && showStaticOnly ? (
-            <>
-              <Loader2 className="h-5 w-5 animate-spin" />
-              <span>Analyzing...</span>
-            </>
-          ) : (
-            <>
-              <Search className="h-5 w-5" />
-              <span>Quick Check</span>
-            </>
-          )}
-        </button>
-
         <button
           onClick={copyReport}
           disabled={results.length === 0 && staticResults.length === 0}
@@ -472,7 +402,7 @@ Fix: ${issue.fix}
             e.currentTarget.style.transform = 'translateY(0)';
           }}
         >
-          {isRunning && !showStaticOnly ? (
+          {isRunning ? (
             <>
               <Loader2 className="h-5 w-5 animate-spin" />
               <span>Analyzing...</span>
