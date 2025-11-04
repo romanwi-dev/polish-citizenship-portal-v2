@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Bot, GitBranch, ClipboardList, Users, Archive, Languages, Award, FileCheck, Plane, BookOpen, Shield, Search, PenTool, Sun, Sparkles, FileText, Brain, FileCode } from 'lucide-react';
+import { Bot, GitBranch, ClipboardList, Users, Archive, Languages, Award, FileCheck, Plane, BookOpen, Shield, Search, PenTool, Sun, Sparkles, FileText, Brain, FileCode, RefreshCw } from 'lucide-react';
 
 interface NavigationLinksProps {
   onNavigate: () => void;
@@ -53,6 +53,7 @@ const NAVIGATION_SECTIONS: Array<{
     links: [
       { label: 'AI Agent', href: '/admin/ai-agent-diagnostics', icon: Bot },
       { label: 'Code Review', href: '/admin/code-review', icon: FileCode },
+      { label: 'Dropbox Resync', href: '/cases', icon: RefreshCw },
       { label: 'Family Tree', href: '/admin/cases', icon: GitBranch },
       { label: 'Client Intake', href: '/admin/intake-demo', icon: ClipboardList },
       { label: 'Management', href: '/admin/cases', icon: Users },
