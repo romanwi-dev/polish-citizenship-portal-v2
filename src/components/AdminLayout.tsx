@@ -117,77 +117,86 @@ function AppSidebar() {
   };
 
   return (
-    <Sidebar collapsible="icon" className="bg-background border-r">
-      <div className="flex items-center justify-between p-4 border-b">
-        {open && (
-          <img 
-            src={logo} 
-            alt="PL Citizenship" 
-            className="h-6 w-auto object-contain"
-          />
-        )}
-        <SidebarTrigger />
+    <Sidebar collapsible="icon" className="bg-background/95 backdrop-blur-xl border-r border-primary/20 relative overflow-hidden">
+      {/* Background effects matching homepage dropdown */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
       </div>
-      
-      <SidebarContent>
-        {navSections.map((section) => {
-          const isGroupOpen = openGroups.includes(section.title);
-          
-          return (
-            <SidebarGroup key={section.title}>
-              <SidebarGroupLabel 
-                className={cn(
-                  "cursor-pointer flex items-center justify-between hover:bg-accent/50 rounded-md px-2 py-1",
-                  section.highlighted && "text-primary font-bold"
-                )}
-                onClick={() => toggleGroup(section.title)}
-              >
-                <span>{section.title}</span>
-                <ChevronDown 
+
+      <div className="relative z-10">
+        <div className="flex items-center justify-between p-4 border-b border-border/50">
+          {open && (
+            <img 
+              src={logo} 
+              alt="PL Citizenship" 
+              className="h-6 w-auto object-contain"
+            />
+          )}
+          <SidebarTrigger />
+        </div>
+        
+        <SidebarContent>
+          {navSections.map((section) => {
+            const isGroupOpen = openGroups.includes(section.title);
+            
+            return (
+              <SidebarGroup key={section.title}>
+                <SidebarGroupLabel 
                   className={cn(
-                    "h-4 w-4 transition-transform",
-                    isGroupOpen && "rotate-180"
+                    "cursor-pointer flex items-center justify-between hover:bg-accent/50 rounded-md px-2 py-1 transition-all",
+                    section.highlighted && "text-primary font-bold"
                   )}
-                />
-              </SidebarGroupLabel>
-              
-              <Collapsible open={isGroupOpen}>
-                <SidebarGroupContent>
-                  <SidebarMenu>
-                    {section.items.map((item) => {
-                      const active = isActive(item.url, item.exact);
-                      return (
-                        <SidebarMenuItem key={item.title}>
-                          <SidebarMenuButton
-                            asChild
-                            className={cn(
-                              active && "bg-primary text-primary-foreground hover:bg-primary/90"
-                            )}
-                          >
-                            <NavLink to={item.url} className="flex items-center gap-2 w-full">
-                              <item.icon className="h-4 w-4 flex-shrink-0" />
-                              {open && (
-                                <div className="flex items-center justify-between flex-1">
-                                  <span>{item.title}</span>
-                                  {item.badge && (
-                                    <Badge variant="outline" className="text-xs px-1 ml-auto">
-                                      {item.badge}
-                                    </Badge>
-                                  )}
-                                </div>
+                  onClick={() => toggleGroup(section.title)}
+                >
+                  <span>{section.title}</span>
+                  <ChevronDown 
+                    className={cn(
+                      "h-4 w-4 transition-transform",
+                      isGroupOpen && "rotate-180"
+                    )}
+                  />
+                </SidebarGroupLabel>
+                
+                <Collapsible open={isGroupOpen}>
+                  <SidebarGroupContent>
+                    <SidebarMenu>
+                      {section.items.map((item) => {
+                        const active = isActive(item.url, item.exact);
+                        return (
+                          <SidebarMenuItem key={item.title}>
+                            <SidebarMenuButton
+                              asChild
+                              className={cn(
+                                "transition-all hover:bg-background/20 border border-transparent hover:border-primary/30",
+                                active && "bg-primary/20 text-primary border-primary/50 hover:bg-primary/30"
                               )}
-                            </NavLink>
-                          </SidebarMenuButton>
-                        </SidebarMenuItem>
-                      );
-                    })}
-                  </SidebarMenu>
-                </SidebarGroupContent>
-              </Collapsible>
-            </SidebarGroup>
-          );
-        })}
-      </SidebarContent>
+                            >
+                              <NavLink to={item.url} className="flex items-center gap-2 w-full">
+                                <item.icon className="h-4 w-4 flex-shrink-0" />
+                                {open && (
+                                  <div className="flex items-center justify-between flex-1">
+                                    <span>{item.title}</span>
+                                    {item.badge && (
+                                      <Badge variant="outline" className="text-xs px-1.5 ml-auto border-primary/30">
+                                        {item.badge}
+                                      </Badge>
+                                    )}
+                                  </div>
+                                )}
+                              </NavLink>
+                            </SidebarMenuButton>
+                          </SidebarMenuItem>
+                        );
+                      })}
+                    </SidebarMenu>
+                  </SidebarGroupContent>
+                </Collapsible>
+              </SidebarGroup>
+            );
+          })}
+        </SidebarContent>
+      </div>
     </Sidebar>
   );
 }
