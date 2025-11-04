@@ -21,9 +21,12 @@ import { TranslationAgenciesList } from "./TranslationAgenciesList";
 import { TranslationDashboardWorkflow } from "./TranslationDashboardWorkflow";
 import { useState } from "react";
 import { WorkflowNavigation } from "@/components/workflows/WorkflowNavigation";
+import { useTranslationNotifications } from "@/hooks/useTranslationNotifications";
+import { Badge } from "@/components/ui/badge";
 
 export const TranslationDashboard = () => {
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
+  const { pendingReviewCount } = useTranslationNotifications();
 
   const toggleFlip = (cardId: string) => {
     setFlippedCards(prev => ({
@@ -206,28 +209,43 @@ export const TranslationDashboard = () => {
       </div>
 
       {/* Urgent Alert */}
-      {counts && (counts.hac_review > 0 || counts.ready_for_submission > 0) && (
+      {(counts && (counts.hac_review > 0 || counts.ready_for_submission > 0)) || pendingReviewCount > 0 ? (
         <div className="glass-card p-4 sm:p-6 border-orange-500/50 bg-orange-500/5 rounded-lg hover-glow">
           <div className="flex items-start gap-2 sm:gap-3">
-            <AlertCircle className="h-4 w-4 sm:h-5 sm:w-5 text-orange-600 shrink-0 mt-0.5" />
-            <div className="min-w-0">
-              <p className="text-sm sm:text-base font-semibold">Action Required</p>
+            <AlertCircle className="h-4 w-4 sm:h-5 sm:w-5 text-orange-600 shrink-0 mt-0.5 animate-pulse" />
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-2 mb-1">
+                <p className="text-sm sm:text-base font-semibold">Action Required</p>
+                {pendingReviewCount > 0 && (
+                  <Badge variant="destructive" className="animate-pulse">
+                    {pendingReviewCount} new
+                  </Badge>
+                )}
+              </div>
               <p className="text-xs sm:text-sm text-muted-foreground">
-                {counts.hac_review > 0 && `${counts.hac_review} awaiting HAC review`}
-                {counts.hac_review > 0 && counts.ready_for_submission > 0 && " • "}
-                {counts.ready_for_submission > 0 && `${counts.ready_for_submission} ready for submission`}
+                {counts?.hac_review > 0 && `${counts.hac_review} awaiting HAC review`}
+                {counts?.hac_review > 0 && counts.ready_for_submission > 0 && " • "}
+                {counts?.ready_for_submission > 0 && `${counts.ready_for_submission} ready for submission`}
               </p>
             </div>
           </div>
         </div>
-      )}
+      ) : null}
 
       {/* Main Content Tabs */}
       <Tabs defaultValue="cards" className="space-y-4">
         <div className="w-full overflow-x-auto scrollbar-hide">
           <TabsList className="flex gap-1 w-full justify-between h-auto p-0 bg-transparent border-0">
-            <TabsTrigger value="cards" className="flex-1 min-h-[48px] h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.4)]">
+            <TabsTrigger value="cards" className="flex-1 min-h-[48px] h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.4)] relative">
               Workflow Cards
+              {pendingReviewCount > 0 && (
+                <Badge 
+                  variant="destructive" 
+                  className="absolute -top-2 -right-2 h-6 w-6 flex items-center justify-center p-0 rounded-full animate-pulse"
+                >
+                  {pendingReviewCount}
+                </Badge>
+              )}
             </TabsTrigger>
             <TabsTrigger value="workflow" className="flex-1 min-h-[48px] h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.4)]">
               Translation Timeline
