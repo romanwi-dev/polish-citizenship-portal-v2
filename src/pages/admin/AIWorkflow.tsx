@@ -48,7 +48,7 @@ const AIWorkflow = () => {
               placeholder="Search for case"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="h-16 md:h-20 w-full pl-12 pr-4 border-2 bg-blue-50/45 dark:bg-blue-950/40 border-blue-200/30 dark:border-blue-800/30 hover:border-transparent focus:border-transparent transition-all duration-300 backdrop-blur font-normal font-input-work text-2xl placeholder:text-muted-foreground/30"
+              className="h-16 md:h-20 w-full pl-12 pr-4 rounded-md border-2 bg-blue-50/45 dark:bg-blue-950/40 border-blue-200/30 dark:border-blue-800/30 hover:border-transparent focus:border-transparent transition-all duration-300 backdrop-blur font-normal font-input-work text-2xl placeholder:text-muted-foreground/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               style={{
                 boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15)',
                 transition: 'all 0.3s ease'
@@ -82,7 +82,7 @@ const AIWorkflow = () => {
           <div className="w-full md:flex-1">
             <Select value={selectedCaseId} onValueChange={setSelectedCaseId}>
               <SelectTrigger 
-                className="h-16 md:h-20 border-2 bg-blue-50/45 dark:bg-blue-950/40 border-blue-200/30 dark:border-blue-800/30 hover:border-transparent focus:border-transparent transition-all duration-300 backdrop-blur font-normal font-input-work text-2xl w-full"
+                className="h-16 md:h-20 rounded-md border-2 bg-blue-50/45 dark:bg-blue-950/40 border-blue-200/30 dark:border-blue-800/30 hover:border-transparent focus:border-transparent transition-all duration-300 backdrop-blur font-normal font-input-work text-2xl w-full [&>span]:text-muted-foreground/30"
                 style={{
                   boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15)',
                   transition: 'all 0.3s ease'
@@ -104,10 +104,7 @@ const AIWorkflow = () => {
                   e.currentTarget.style.transform = 'translateY(0)';
                 }}
               >
-                <SelectValue 
-                  placeholder="Choose a case" 
-                  className="text-muted-foreground/30"
-                />
+                <SelectValue placeholder="Choose a case" />
               </SelectTrigger>
               <SelectContent className="bg-background border-border z-50">
                 {filteredCases?.map(c => (
