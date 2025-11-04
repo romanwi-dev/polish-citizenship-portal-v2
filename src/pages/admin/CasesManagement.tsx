@@ -13,7 +13,8 @@ import {
   ArrowUpDown,
   Search,
   SlidersHorizontal,
-  RotateCcw
+  RotateCcw,
+  Pencil
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/useAuth";
@@ -392,6 +393,20 @@ export default function CasesManagement() {
             {/* Mobile layout - Horizontal Scroll */}
             <div className="sm:hidden overflow-x-auto scrollbar-hide pb-2 -mx-4 px-4">
               <div className="flex gap-2 items-center min-w-max">
+                <Button 
+                  onClick={() => {
+                    if (selectedCount > 0) {
+                      console.log("Edit selected cases");
+                    }
+                  }}
+                  className="h-12 flex-shrink-0 whitespace-nowrap"
+                  size="lg"
+                  variant="outline"
+                >
+                  <Pencil className="h-4 w-4 mr-2" />
+                  Edit
+                </Button>
+
                 <CaseFilters
                   searchTerm={searchTerm}
                   onSearchChange={setSearchTerm}
@@ -443,9 +458,22 @@ export default function CasesManagement() {
               </div>
             </div>
 
-            {/* Desktop layout - Tighter spacing */}
-            <div className="hidden sm:grid sm:grid-cols-[140px_1fr_auto] gap-2 items-center">
-              {/* Left: Filters Button */}
+            {/* Desktop layout - Equal width items with minimal gaps */}
+            <div className="hidden sm:flex sm:justify-between sm:items-center gap-1 w-full">
+              <Button 
+                onClick={() => {
+                  if (selectedCount > 0) {
+                    console.log("Edit selected cases");
+                  }
+                }}
+                className="h-12 whitespace-nowrap flex-1"
+                size="lg"
+                variant="outline"
+              >
+                <Pencil className="h-4 w-4 mr-2" />
+                Edit
+              </Button>
+
               <CaseFilters
                 searchTerm={searchTerm}
                 onSearchChange={setSearchTerm}
@@ -462,11 +490,10 @@ export default function CasesManagement() {
                 onClearFilters={handleClearFilters}
                 activeFiltersCount={activeFiltersCount}
                 searchInputRef={searchInputRef}
-                className="w-full"
+                className="flex-1"
               />
 
-              {/* Center: Search Bar */}
-              <div className="relative w-full max-w-2xl mx-auto">
+              <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-40 z-10" />
                 <Input
                   ref={searchInputRef}
@@ -477,27 +504,24 @@ export default function CasesManagement() {
                 />
               </div>
 
-              {/* Right: Action Buttons */}
-              <div className="flex gap-2 flex-shrink-0">
-                <Button 
-                  onClick={() => navigate("/admin/cases/new")}
-                  className="h-12 whitespace-nowrap"
-                  size="lg"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  New Case
-                </Button>
-                
-                <Button 
-                  onClick={() => setShowResyncDialog(true)}
-                  variant="destructive"
-                  className="h-12 whitespace-nowrap"
-                  size="lg"
-                >
-                  <Database className="h-4 w-4 mr-2" />
-                  Resync & Clean
-                </Button>
-              </div>
+              <Button 
+                onClick={() => navigate("/admin/cases/new")}
+                className="h-12 whitespace-nowrap flex-1"
+                size="lg"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                New Case
+              </Button>
+              
+              <Button 
+                onClick={() => setShowResyncDialog(true)}
+                variant="destructive"
+                className="h-12 whitespace-nowrap flex-1"
+                size="lg"
+              >
+                <Database className="h-4 w-4 mr-2" />
+                Resync & Clean
+              </Button>
             </div>
           </div>
 
