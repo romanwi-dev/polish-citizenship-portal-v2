@@ -255,7 +255,11 @@ export const TranslationDashboard = () => {
         </TabsContent>
 
         <TabsContent value="workflow" className="space-y-4">
-          <TranslationWorkflowTimeline />
+          <div className="text-center py-12">
+            <Workflow className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
+            <h3 className="text-xl font-semibold mb-2">Translation Workflow Timeline</h3>
+            <p className="text-muted-foreground">Select a translation job from the Workflow Cards tab to view its detailed timeline</p>
+          </div>
         </TabsContent>
 
         <TabsContent value="manage" className="space-y-4">
