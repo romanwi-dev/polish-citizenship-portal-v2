@@ -459,14 +459,14 @@ export default function CasesManagement() {
             </div>
 
             {/* Desktop layout - Equal width items with minimal gaps */}
-            <div className="hidden sm:flex sm:justify-between sm:items-center gap-1 w-full">
+            <div className="hidden sm:grid sm:grid-cols-5 gap-1 w-full">
               <Button 
                 onClick={() => {
                   if (selectedCount > 0) {
                     console.log("Edit selected cases");
                   }
                 }}
-                className="h-12 whitespace-nowrap flex-1"
+                className="h-12 whitespace-nowrap w-full"
                 size="lg"
                 variant="outline"
               >
@@ -490,10 +490,10 @@ export default function CasesManagement() {
                 onClearFilters={handleClearFilters}
                 activeFiltersCount={activeFiltersCount}
                 searchInputRef={searchInputRef}
-                className="flex-1"
+                className="w-full"
               />
 
-              <div className="relative flex-1">
+              <div className="relative w-full">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground opacity-40 z-10" />
                 <Input
                   ref={searchInputRef}
@@ -506,7 +506,7 @@ export default function CasesManagement() {
 
               <Button 
                 onClick={() => navigate("/admin/cases/new")}
-                className="h-12 whitespace-nowrap flex-1"
+                className="h-12 whitespace-nowrap w-full"
                 size="lg"
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -516,7 +516,7 @@ export default function CasesManagement() {
               <Button 
                 onClick={() => setShowResyncDialog(true)}
                 variant="destructive"
-                className="h-12 whitespace-nowrap flex-1"
+                className="h-12 whitespace-nowrap w-full"
                 size="lg"
               >
                 <Database className="h-4 w-4 mr-2" />
