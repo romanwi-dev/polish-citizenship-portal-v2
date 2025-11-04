@@ -119,83 +119,81 @@ function AppSidebar() {
   };
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-primary/20">
-      <div className="flex items-center justify-between p-4 border-b border-border/50">
-        {open && (
-          <img 
-            src={logo} 
-            alt="PL Citizenship" 
-            className="h-6 w-auto object-contain"
-          />
-        )}
-        <button
-          onClick={() => setOpen(!open)}
-          className="h-8 w-8 flex items-center justify-center hover:bg-accent rounded-md transition-colors"
-        >
-          <PanelLeft className="h-4 w-4" />
-        </button>
+    <Sidebar collapsible="icon" className="bg-background/95 backdrop-blur-xl border-r border-primary/20">
+      {/* Background effects matching homepage dropdown */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
       </div>
-      
-      <SidebarContent>
-        {navSections.map((section) => {
-          const isGroupOpen = openGroups.includes(section.title);
-          
-          return (
-            <SidebarGroup key={section.title}>
-              <SidebarGroupLabel 
-                className={cn(
-                  "cursor-pointer flex items-center justify-between hover:bg-accent/50 rounded-md px-2 py-1 transition-all",
-                  section.highlighted && "text-primary font-bold"
-                )}
-                onClick={() => toggleGroup(section.title)}
-              >
-                <span>{section.title}</span>
-                <ChevronDown 
-                  className={cn(
-                    "h-4 w-4 transition-transform",
-                    isGroupOpen && "rotate-180"
-                  )}
-                />
-              </SidebarGroupLabel>
-              
-              <Collapsible open={isGroupOpen}>
-                <SidebarGroupContent>
-                  <SidebarMenu>
+
+      <div className="relative z-10">
+        {/* Header with close button only */}
+        <div className="flex items-center justify-between p-4 border-b border-border/50">
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-primary" />
+            <span className="font-semibold text-lg">Navigation</span>
+          </div>
+          <button
+            onClick={() => setOpen(!open)}
+            className="h-8 w-8 flex items-center justify-center hover:bg-accent rounded-md transition-colors"
+          >
+            <PanelLeft className="h-4 w-4" />
+          </button>
+        </div>
+        
+        <SidebarContent className="p-4 space-y-4">
+          {navSections.map((section) => {
+            const isGroupOpen = openGroups.includes(section.title);
+            
+            return (
+              <div key={section.title} className="space-y-2">
+                <div 
+                  className="flex items-center gap-2 px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider cursor-pointer hover:text-foreground transition-colors"
+                  onClick={() => toggleGroup(section.title)}
+                >
+                  {section.title}
+                  <ChevronDown 
+                    className={cn(
+                      "h-3 w-3 transition-transform ml-auto",
+                      isGroupOpen && "rotate-180"
+                    )}
+                  />
+                </div>
+                
+                <Collapsible open={isGroupOpen}>
+                  <div className="space-y-1 px-2">
                     {section.items.map((item) => {
                       const active = isActive(item.url, item.exact);
                       return (
-                        <SidebarMenuItem key={item.title}>
-                          <SidebarMenuButton
-                            asChild
-                            className={cn(
-                              "transition-all hover:bg-background/20 border border-transparent hover:border-primary/30",
-                              active && "bg-primary/20 text-primary border-primary/50 hover:bg-primary/30"
-                            )}
-                          >
-                            <NavLink to={item.url} className="flex items-center gap-2 w-full">
-                              <item.icon className="h-4 w-4 flex-shrink-0" />
-                              {open && (
-                                <div className="flex items-center justify-between flex-1">
-                                  <span>{item.title}</span>
-                                  {item.badge && (
-                                    <Badge variant="outline" className="text-xs px-1.5 ml-auto border-primary/30">
-                                      {item.badge}
-                                    </Badge>
-                                  )}
-                                </div>
-                              )}
-                            </NavLink>
-                          </SidebarMenuButton>
-                        </SidebarMenuItem>
+                        <NavLink
+                          key={item.title}
+                          to={item.url}
+                          className={cn(
+                            "flex items-center gap-3 px-3 py-2 rounded-lg transition-colors group",
+                            active 
+                              ? "bg-accent text-primary font-medium" 
+                              : "hover:bg-accent/50"
+                          )}
+                        >
+                          <item.icon className="h-4 w-4 flex-shrink-0" />
+                          <span className="text-sm font-medium capitalize group-hover:text-primary transition-colors">
+                            {item.title}
+                          </span>
+                          {item.badge && (
+                            <Badge variant="outline" className="text-xs px-1.5 ml-auto border-primary/30">
+                              {item.badge}
+                            </Badge>
+                          )}
+                        </NavLink>
                       );
                     })}
-                  </SidebarMenu>
-                </SidebarGroupContent>
-              </Collapsible>
-            </SidebarGroup>
-          );
-        })}
-      </SidebarContent>
+                  </div>
+                </Collapsible>
+              </div>
+            );
+          })}
+        </SidebarContent>
+      </div>
     </Sidebar>
   );
 }
