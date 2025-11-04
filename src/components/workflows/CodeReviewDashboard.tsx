@@ -367,8 +367,8 @@ Fix: ${issue.fix}
 
   return (
     <div className="space-y-8 p-4 md:p-8">
-      {/* Title */}
-      <h1 className="text-4xl font-heading font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-center">
+      {/* Title - matching homepage style */}
+      <h1 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-center">
         Deep Code Review
       </h1>
 

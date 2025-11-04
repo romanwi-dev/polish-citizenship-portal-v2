@@ -13,6 +13,7 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { 
   LayoutDashboard, 
   Users, 
@@ -126,9 +127,9 @@ function AppSidebar() {
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
       </div>
 
-      <div className="relative z-10">
+      <div className="relative z-10 flex flex-col h-full">
         {/* Header with close button only */}
-        <div className="flex items-center justify-between p-4 border-b border-border/50">
+        <div className="flex items-center justify-between p-4 border-b border-border/50 flex-shrink-0">
           <div className="flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-primary" />
             <span className="font-semibold text-lg">Navigation</span>
@@ -141,53 +142,56 @@ function AppSidebar() {
           </button>
         </div>
         
-        <SidebarContent className="p-4 space-y-4">
-          {navSections.map((section) => {
-            const isGroupOpen = openGroups.includes(section.title);
-            
-            return (
-              <div key={section.title} className="space-y-2">
-                <div 
-                  className="flex items-center gap-2 px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider cursor-pointer hover:text-foreground transition-colors"
-                  onClick={() => toggleGroup(section.title)}
-                >
-                  {section.title}
-                  <ChevronDown 
-                    className={cn(
-                      "h-3 w-3 transition-transform ml-auto",
-                      isGroupOpen && "rotate-180"
-                    )}
-                  />
+        {/* Scrollable content */}
+        <ScrollArea className="flex-1">
+          <div className="p-4 space-y-4">
+            {navSections.map((section) => {
+              const isGroupOpen = openGroups.includes(section.title);
+              
+              return (
+                <div key={section.title} className="space-y-2">
+                  <button 
+                    className="flex items-center gap-2 px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider hover:text-foreground transition-colors w-full"
+                    onClick={() => toggleGroup(section.title)}
+                  >
+                    {section.title}
+                    <ChevronDown 
+                      className={cn(
+                        "h-3 w-3 transition-transform ml-auto",
+                        isGroupOpen && "rotate-180"
+                      )}
+                    />
+                  </button>
+                  
+                  {isGroupOpen && (
+                    <div className="space-y-1 px-2">
+                      {section.items.map((item) => {
+                        const active = isActive(item.url, item.exact);
+                        return (
+                          <NavLink
+                            key={item.title}
+                            to={item.url}
+                            className={cn(
+                              "flex items-center gap-3 px-3 py-2 rounded-lg transition-colors group",
+                              active 
+                                ? "bg-accent text-primary font-medium" 
+                                : "hover:bg-accent/50"
+                            )}
+                          >
+                            <item.icon className="h-4 w-4 flex-shrink-0" />
+                            <span className="text-sm font-medium capitalize group-hover:text-primary transition-colors">
+                              {item.title}
+                            </span>
+                          </NavLink>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
-                
-                <Collapsible open={isGroupOpen}>
-                  <div className="space-y-1 px-2">
-                    {section.items.map((item) => {
-                      const active = isActive(item.url, item.exact);
-                      return (
-                        <NavLink
-                          key={item.title}
-                          to={item.url}
-                          className={cn(
-                            "flex items-center gap-3 px-3 py-2 rounded-lg transition-colors group",
-                            active 
-                              ? "bg-accent text-primary font-medium" 
-                              : "hover:bg-accent/50"
-                          )}
-                        >
-                          <item.icon className="h-4 w-4 flex-shrink-0" />
-                          <span className="text-sm font-medium capitalize group-hover:text-primary transition-colors">
-                            {item.title}
-                          </span>
-                        </NavLink>
-                      );
-                    })}
-                  </div>
-                </Collapsible>
-              </div>
-            );
-          })}
-        </SidebarContent>
+              );
+            })}
+          </div>
+        </ScrollArea>
       </div>
     </Sidebar>
   );
