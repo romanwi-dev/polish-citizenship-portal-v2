@@ -66,7 +66,7 @@ const Navigation = () => {
             </button>
 
             <button
-              onClick={() => navigate('/admin/documents-workflow')}
+              onClick={() => navigate('/admin/ai-workflow')}
               className="h-9 w-9 md:h-11 md:w-11 rounded-full bg-background/5 dark:bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
               aria-label="AI Workflow"
             >
