@@ -174,3 +174,6 @@ verify_jwt = false
 [functions.quick-triple-verify]
 verify_jwt = false
 
+[functions.lock-pdf]
+verify_jwt = true
+
