@@ -3373,6 +3373,45 @@ export type Database = {
         }
         Relationships: []
       }
+      pdf_cleanup_logs: {
+        Row: {
+          bytes_freed: number
+          cleanup_date: string
+          created_at: string
+          deleted_duplicates: number
+          deleted_old: number
+          duration_ms: number
+          errors: number
+          id: string
+          kept_locked: number
+          total_scanned: number
+        }
+        Insert: {
+          bytes_freed?: number
+          cleanup_date?: string
+          created_at?: string
+          deleted_duplicates?: number
+          deleted_old?: number
+          duration_ms: number
+          errors?: number
+          id?: string
+          kept_locked?: number
+          total_scanned?: number
+        }
+        Update: {
+          bytes_freed?: number
+          cleanup_date?: string
+          created_at?: string
+          deleted_duplicates?: number
+          deleted_old?: number
+          duration_ms?: number
+          errors?: number
+          id?: string
+          kept_locked?: number
+          total_scanned?: number
+        }
+        Relationships: []
+      }
       pdf_dead_letters: {
         Row: {
           artifact_key: string | null
@@ -5295,6 +5334,16 @@ export type Database = {
           status: Database["public"]["Enums"]["case_status"]
           task_count: number
           updated_at: string
+        }[]
+      }
+      get_cleanup_stats: {
+        Args: { days_back?: number }
+        Returns: {
+          avg_duration_ms: number
+          last_cleanup: string
+          total_bytes_freed: number
+          total_cleanups: number
+          total_files_deleted: number
         }[]
       }
       get_high_token_usage_cases: {
