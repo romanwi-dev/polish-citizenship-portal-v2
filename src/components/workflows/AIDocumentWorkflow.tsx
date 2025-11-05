@@ -608,10 +608,22 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
   const runWorkflowStep = async (stage: AIWorkflowStep['stage'], retryCount = 0) => {
     if (isPaused) return;
     
-    // PHASE 1 FIX: Check AI consent before any AI stage
+    // PRODUCTION FIX: Get user context once at workflow level
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user?.id) {
+      toast({
+        title: "Authentication Required",
+        description: "Please log in to continue workflow execution.",
+        variant: "destructive"
+      });
+      setIsRunning(false);
+      return;
+    }
+    
+    // Check AI consent before any AI stage with user context
     const aiStages: AIWorkflowStep['stage'][] = ['ai_classify', 'ocr', 'form_population', 'ai_verify'];
     if (aiStages.includes(stage)) {
-      const consentGranted = await checkAIConsent(caseId);
+      const consentGranted = await checkAIConsent(caseId, user.id);
       if (!consentGranted) {
         toast({
           title: "AI Consent Required",
@@ -654,13 +666,14 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
           const classifyPromises = docs.map(async (doc) => {
             return batcher.addRequest(doc.id, async () => {
               try {
-                // PHASE 1 FIX: Log PII processing BEFORE any file handling
+                // PRODUCTION FIX: Pass user context directly
                 await logPIIProcessing({
                   caseId,
                   documentId: doc.id,
                   operationType: 'classification',
                   piiFieldsSent: ['document_image', 'document_name'],
-                  aiProvider: 'gemini'
+                  aiProvider: 'gemini',
+                  userId: user.id
                 });
                 
                 progress.updateDocument(doc.id, { status: 'downloading', progress: 25 });
@@ -732,12 +745,13 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
         case 'ocr':
           console.log("Triggering OCR worker...");
           
-          // PHASE 1 FIX: Log PII processing for OCR before invocation
+          // PRODUCTION FIX: Pass user context directly
           await logPIIProcessing({
             caseId,
             operationType: 'ocr',
             piiFieldsSent: ['document_images', 'document_text'],
-            aiProvider: 'gemini'
+            aiProvider: 'gemini',
+            userId: user.id
           });
           
           const { error: ocrError } = await supabase.functions.invoke('ocr-worker');
@@ -779,13 +793,14 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
           const applyPromises = ocrDocs.map(async (doc) => {
             return batcher.addRequest(doc.id, async () => {
               try {
-                // PHASE 1 FIX: Log PII processing for form population
+                // PRODUCTION FIX: Pass user context directly
                 await logPIIProcessing({
                   caseId,
                   documentId: doc.id,
                   operationType: 'form_population',
                   piiFieldsSent: ['ocr_extracted_data', 'form_fields'],
-                  aiProvider: 'lovable-ai'
+                  aiProvider: 'lovable-ai',
+                  userId: user.id
                 });
                 
                 progress.updateDocument(doc.id, { status: 'classifying', progress: 50 });
@@ -829,12 +844,13 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
           break;
 
         case 'ai_verify':
-          // PHASE 1 FIX: Log PII processing for AI verification
+          // PRODUCTION FIX: Pass user context directly
           await logPIIProcessing({
             caseId,
             operationType: 'verification',
             piiFieldsSent: ['form_data', 'document_metadata'],
-            aiProvider: 'gemini'
+            aiProvider: 'gemini',
+            userId: user.id
           });
           
           // Dual AI Verification (all forms in parallel)

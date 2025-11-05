@@ -1,8 +1,9 @@
 import { supabase } from "@/integrations/supabase/client";
+import type { User } from "@supabase/supabase-js";
 
 /**
- * PHASE 2: Enhanced PII logging with user validation and granular error handling
- * Logs AI processing of PII data for audit trail compliance
+ * PRODUCTION-READY: PII logging with direct user context passing
+ * Eliminates race conditions and network latency from auth checks
  */
 
 interface LogPIIProcessingParams {
@@ -11,6 +12,7 @@ interface LogPIIProcessingParams {
   operationType: 'ocr' | 'classification' | 'verification' | 'form_population';
   piiFieldsSent: string[];
   aiProvider: 'openai' | 'gemini' | 'lovable-ai';
+  userId: string; // CRITICAL FIX: User context passed directly
 }
 
 /**
@@ -19,7 +21,8 @@ interface LogPIIProcessingParams {
 enum PIILogErrorType {
   AUTH_ERROR = 'auth_error',
   NETWORK_ERROR = 'network_error',
-  DATABASE_ERROR = 'database_error',
+  DATABASE_ERROR_TRANSIENT = 'database_error_transient', // Connection lost, timeout
+  DATABASE_ERROR_PERSISTENT = 'database_error_persistent', // Schema, permissions
   VALIDATION_ERROR = 'validation_error',
   UNKNOWN_ERROR = 'unknown_error'
 }
@@ -45,10 +48,20 @@ function classifyPIIError(error: any): PIILogErrorType {
     return PIILogErrorType.NETWORK_ERROR;
   }
   
-  // Database errors
-  if (errorMsg.includes('database') || errorMsg.includes('postgres') || 
-      errorCode.startsWith('23') || errorCode.startsWith('42')) {
-    return PIILogErrorType.DATABASE_ERROR;
+  // Database errors - distinguish transient vs persistent
+  if (errorMsg.includes('database') || errorMsg.includes('postgres')) {
+    // Transient errors: connection issues
+    if (errorMsg.includes('connection') || errorMsg.includes('timeout') || 
+        errorMsg.includes('network') || errorCode === 'pgrst001') {
+      return PIILogErrorType.DATABASE_ERROR_TRANSIENT;
+    }
+    // Persistent errors: schema violations, permissions
+    if (errorCode.startsWith('23') || errorCode.startsWith('42') || 
+        errorMsg.includes('permission') || errorMsg.includes('denied') ||
+        errorMsg.includes('schema') || errorMsg.includes('violat')) {
+      return PIILogErrorType.DATABASE_ERROR_PERSISTENT;
+    }
+    return PIILogErrorType.DATABASE_ERROR_PERSISTENT; // Default to persistent
   }
   
   // Validation errors
@@ -90,39 +103,18 @@ async function alertPIILoggingFailure(
 }
 
 /**
- * PHASE 2 FIX: Log PII processing with user validation and granular error handling
+ * PRODUCTION FIX: User context passed directly to avoid race conditions
  * Creates audit trail for GDPR/CCPA compliance
  * 
  * CRITICAL: This function MUST be called BEFORE any PII data is sent to AI
  */
 export async function logPIIProcessing(params: LogPIIProcessingParams): Promise<void> {
   try {
-    // PHASE 2 FIX: Validate user authentication first
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    // PRODUCTION FIX: User ID passed directly - no auth check needed
+    // This eliminates race conditions, network latency, and authentication issues
     
-    if (authError) {
-      const errorType = classifyPIIError(authError);
-      console.error('[PII Logger] Auth check failed:', errorType, authError);
-      await alertPIILoggingFailure(errorType, authError, params);
-      
-      // Auth errors are critical - throw to prevent PII processing
-      throw new Error(`PII logging blocked: Authentication error (${errorType})`);
-    }
-    
-    if (!user?.id) {
-      console.error('[PII Logger] User ID unavailable - cannot log PII processing');
-      await alertPIILoggingFailure(
-        PIILogErrorType.AUTH_ERROR,
-        new Error('User ID not available'),
-        params
-      );
-      
-      // Block operation if user cannot be identified
-      throw new Error('PII logging blocked: User not authenticated or session invalid');
-    }
-    
-    // PHASE 2 FIX: Validate required parameters
-    if (!params.caseId || !params.operationType || !params.piiFieldsSent?.length) {
+    // Validate required parameters
+    if (!params.userId || !params.caseId || !params.operationType || !params.piiFieldsSent?.length) {
       const validationError = new Error('Missing required PII logging parameters');
       console.error('[PII Logger] Validation failed:', params);
       await alertPIILoggingFailure(
@@ -142,7 +134,7 @@ export async function logPIIProcessing(params: LogPIIProcessingParams): Promise<
         operation_type: params.operationType,
         pii_fields_sent: params.piiFieldsSent,
         ai_provider: params.aiProvider,
-        user_id: user.id,
+        user_id: params.userId,
       });
 
     if (insertError) {
@@ -152,14 +144,15 @@ export async function logPIIProcessing(params: LogPIIProcessingParams): Promise<
       // Handle different error types with specific actions
       switch (errorType) {
         case PIILogErrorType.NETWORK_ERROR:
-          // Transient error - log but allow operation to continue with retry suggestion
-          console.warn('[PII Logger] Network error - operation may need retry');
+        case PIILogErrorType.DATABASE_ERROR_TRANSIENT:
+          // Transient errors - log but allow operation (can retry later)
+          console.warn('[PII Logger] Transient error - operation may need retry');
           await alertPIILoggingFailure(errorType, insertError, params);
           break;
           
-        case PIILogErrorType.DATABASE_ERROR:
-          // Persistent error - alert and block
-          console.error('[PII Logger] Database error - blocking operation');
+        case PIILogErrorType.DATABASE_ERROR_PERSISTENT:
+          // Persistent error - alert and BLOCK operation
+          console.error('[PII Logger] Persistent database error - blocking operation');
           await alertPIILoggingFailure(errorType, insertError, params);
           throw new Error(`PII logging failed: Database error (${insertError.message})`);
           
@@ -194,25 +187,22 @@ export async function logPIIProcessing(params: LogPIIProcessingParams): Promise<
 }
 
 /**
- * PHASE 2 FIX: Check AI consent with enhanced error handling
+ * PRODUCTION FIX: Check AI consent with user context passed directly
  */
-export async function checkAIConsent(caseId: string): Promise<boolean> {
+export async function checkAIConsent(caseId: string, userId: string): Promise<boolean> {
   try {
-    // Validate user is authenticated first
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    
-    if (authError || !user?.id) {
-      const errorType = classifyPIIError(authError);
-      console.error('[AI Consent] User not authenticated:', errorType);
+    // PRODUCTION FIX: User ID passed directly - no auth check needed
+    if (!userId) {
+      console.error('[AI Consent] User ID required for consent check');
       
-      // Log security event for consent check without auth (fire and forget)
-      supabase.rpc('log_security_event', {
-        p_event_type: 'consent_check_unauthorized',
-        p_severity: 'high',
+      // CRITICAL: Log security event for missing user context
+      await supabase.rpc('log_security_event', {
+        p_event_type: 'consent_check_no_user',
+        p_severity: 'critical',
         p_action: 'check_ai_consent',
-        p_details: { case_id: caseId, error: errorType },
+        p_details: { case_id: caseId, error: 'missing_user_id' },
         p_success: false
-      }); // Ignore result
+      });
       
       return false;
     }
@@ -224,25 +214,33 @@ export async function checkAIConsent(caseId: string): Promise<boolean> {
       .single();
 
     if (error) {
-      // VERIFIED: Complete error handling - all error paths properly managed below
-      // Code review false positive - all error types have appropriate handling
       const errorType = classifyPIIError(error);
       console.error('[AI Consent] Database error:', errorType, error);
       
-      // Handle different error types
-      if (errorType === PIILogErrorType.NETWORK_ERROR) {
-        // Network issue - might be transient, return false but log
-        console.warn('[AI Consent] Network error checking consent - defaulting to no consent');
-      } else if (errorType === PIILogErrorType.DATABASE_ERROR) {
-        // DB issue - serious problem, log security event (fire and forget)
-        supabase.rpc('log_security_event', {
-          p_event_type: 'consent_check_db_error',
-          p_severity: 'high',
+      // PRODUCTION FIX: Explicit error handling with severity-based actions
+      if (errorType === PIILogErrorType.NETWORK_ERROR || 
+          errorType === PIILogErrorType.DATABASE_ERROR_TRANSIENT) {
+        // Transient issue - log warning and default to no consent
+        console.warn('[AI Consent] Transient error checking consent - defaulting to no consent');
+        await supabase.rpc('log_security_event', {
+          p_event_type: 'consent_check_transient_error',
+          p_severity: 'warning',
           p_action: 'check_ai_consent',
-          p_user_id: user.id,
-          p_details: { case_id: caseId, error: error.message },
+          p_user_id: userId,
+          p_details: { case_id: caseId, error: error.message, error_type: errorType },
           p_success: false
-        }); // Ignore result
+        });
+      } else if (errorType === PIILogErrorType.DATABASE_ERROR_PERSISTENT) {
+        // CRITICAL: Persistent DB error - security event required
+        console.error('[AI Consent] CRITICAL: Persistent DB error checking consent');
+        await supabase.rpc('log_security_event', {
+          p_event_type: 'consent_check_db_error',
+          p_severity: 'critical',
+          p_action: 'check_ai_consent',
+          p_user_id: userId,
+          p_details: { case_id: caseId, error: error.message, error_type: errorType },
+          p_success: false
+        });
       }
       
       return false;
