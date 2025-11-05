@@ -745,7 +745,25 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
           break;
 
         case 'ocr':
-          console.log("Triggering OCR worker...");
+          console.log("Queuing documents for OCR...");
+          
+          // PRODUCTION FIX: Queue documents for OCR BEFORE calling worker
+          const { error: queueError } = await supabase
+            .from('documents')
+            .update({ 
+              ocr_status: 'queued',
+              ocr_retry_count: 0 
+            })
+            .eq('case_id', caseId)
+            .in('id', Array.from(selectedDocuments))
+            .in('ocr_status', ['pending', 'failed', 'error', null]);
+          
+          if (queueError) {
+            console.error('Failed to queue documents:', queueError);
+            throw queueError;
+          }
+          
+          console.log("Documents queued. Triggering OCR worker...");
           
           // PRODUCTION FIX: Pass user context directly
           await logPIIProcessing({
@@ -766,7 +784,7 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
             throw ocrError;
           }
           
-          toast({ title: "OCR Processing Complete" });
+          toast({ title: "OCR Processing Started", description: `Processing ${selectedDocuments.size} documents...` });
           await updateStepStatus('ocr', 'completed');
           await refetchDocs();
           setCurrentStage('form_population');
