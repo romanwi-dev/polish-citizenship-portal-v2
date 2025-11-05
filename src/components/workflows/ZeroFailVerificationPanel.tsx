@@ -46,6 +46,11 @@ export function ZeroFailVerificationPanel() {
   const [isVerifying, setIsVerifying] = useState(false);
   const [response, setResponse] = useState<MultiModelResponse | null>(null);
   const [progress, setProgress] = useState(0);
+  const [selectedModels, setSelectedModels] = useState<string[]>([
+    'openai/gpt-5',
+    'google/gemini-2.5-pro',
+    'claude-sonnet-4-5'
+  ]);
   const { toast } = useToast();
 
   const runZeroFailVerification = async () => {
@@ -73,7 +78,8 @@ export function ZeroFailVerificationPanel() {
             'Code quality and maintainability',
             'Testing coverage and gaps'
           ],
-          models: ['openai/gpt-5', 'google/gemini-2.5-pro']
+          models: selectedModels,
+          useAnthropic: selectedModels.some(m => m.startsWith('claude-'))
         }
       });
 
@@ -114,7 +120,15 @@ export function ZeroFailVerificationPanel() {
   const getModelIcon = (model: string) => {
     if (model.includes('openai')) return <Sparkles className="h-4 w-4" />;
     if (model.includes('gemini')) return <Brain className="h-4 w-4" />;
+    if (model.includes('claude')) return <Shield className="h-4 w-4" />;
     return <Zap className="h-4 w-4" />;
+  };
+
+  const getModelDisplayName = (model: string) => {
+    if (model === 'openai/gpt-5') return 'OpenAI GPT-5';
+    if (model === 'google/gemini-2.5-pro') return 'Gemini 2.5 Pro';
+    if (model === 'claude-sonnet-4-5') return 'Claude Sonnet 4.5';
+    return model;
   };
 
   const getScoreColor = (score: number) => {
@@ -131,10 +145,10 @@ export function ZeroFailVerificationPanel() {
           <div>
             <CardTitle className="flex items-center gap-2">
               <Target className="h-5 w-5" />
-              ZERO-FAIL Multi-Model Verification
+              ZERO-FAIL Triple-Consensus Verification
             </CardTitle>
             <CardDescription>
-              NO-RUSH Protocol Analysis with OpenAI GPT-5 & Google Gemini 2.5 Pro
+              NO-RUSH Protocol Analysis with GPT-5, Gemini 2.5 Pro & Claude Sonnet 4.5
             </CardDescription>
           </div>
           <Button 
@@ -168,8 +182,8 @@ export function ZeroFailVerificationPanel() {
             <Alert>
               <Loader2 className="h-4 w-4 animate-spin" />
               <AlertDescription>
-                Analyzing with multiple AI models (OpenAI GPT-5, Google Gemini 2.5 Pro)...
-                This may take 2-3 minutes.
+                Analyzing with 3 AI models (GPT-5, Gemini 2.5 Pro, Claude Sonnet 4.5)...
+                Triple-consensus verification in progress. This may take 2-3 minutes.
               </AlertDescription>
             </Alert>
           </div>
@@ -205,10 +219,11 @@ export function ZeroFailVerificationPanel() {
 
             {/* Model Results */}
             <Tabs defaultValue="comparison" className="w-full">
-              <TabsList className="grid w-full grid-cols-3">
+              <TabsList className="grid w-full grid-cols-4">
                 <TabsTrigger value="comparison">Comparison</TabsTrigger>
-                <TabsTrigger value="openai">OpenAI GPT-5</TabsTrigger>
-                <TabsTrigger value="gemini">Gemini 2.5 Pro</TabsTrigger>
+                <TabsTrigger value="openai">GPT-5</TabsTrigger>
+                <TabsTrigger value="gemini">Gemini</TabsTrigger>
+                <TabsTrigger value="claude">Claude</TabsTrigger>
               </TabsList>
 
               <TabsContent value="comparison" className="space-y-4">
@@ -219,7 +234,7 @@ export function ZeroFailVerificationPanel() {
                         <div className="flex items-center justify-between">
                           <CardTitle className="flex items-center gap-2 text-base">
                             {getModelIcon(result.model)}
-                            {result.model}
+                            {getModelDisplayName(result.model)}
                           </CardTitle>
                           <div className="flex items-center gap-2">
                             {result.success ? (
@@ -300,10 +315,17 @@ export function ZeroFailVerificationPanel() {
                 </ScrollArea>
               </TabsContent>
 
-              {response.results.map((result, idx) => (
+              {response.results.map((result, idx) => {
+                const tabValue = result.model.includes('openai') 
+                  ? 'openai' 
+                  : result.model.includes('claude') 
+                  ? 'claude' 
+                  : 'gemini';
+                
+                return (
                 <TabsContent 
                   key={idx} 
-                  value={result.model.includes('openai') ? 'openai' : 'gemini'}
+                  value={tabValue}
                   className="space-y-4"
                 >
                   {result.success && result.verification ? (
@@ -376,7 +398,8 @@ export function ZeroFailVerificationPanel() {
                     </Alert>
                   )}
                 </TabsContent>
-              ))}
+                );
+              })}
             </Tabs>
           </div>
         )}

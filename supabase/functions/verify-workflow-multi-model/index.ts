@@ -15,7 +15,8 @@ interface FileToVerify {
 interface VerificationRequest {
   files: FileToVerify[];
   focusAreas: string[];
-  models?: string[]; // ['openai/gpt-5', 'google/gemini-2.5-pro', 'google/gemini-2.5-flash']
+  models?: string[]; // ['openai/gpt-5', 'google/gemini-2.5-pro', 'claude-sonnet-4-5']
+  useAnthropic?: boolean; // Enable Claude via direct Anthropic API
 }
 
 interface ModelResult {
@@ -32,7 +33,12 @@ serve(async (req) => {
   }
 
   try {
-    const { files, focusAreas, models = ['openai/gpt-5', 'google/gemini-2.5-pro'] } = await req.json() as VerificationRequest;
+    const { 
+      files, 
+      focusAreas, 
+      models = ['openai/gpt-5', 'google/gemini-2.5-pro', 'claude-sonnet-4-5'],
+      useAnthropic = true 
+    } = await req.json() as VerificationRequest;
     
     console.log(`🔍 Starting ZERO-FAIL multi-model verification for ${files.length} files`);
     console.log(`📋 Focus areas: ${focusAreas.join(', ')}`);
@@ -41,6 +47,11 @@ serve(async (req) => {
     const lovableApiKey = Deno.env.get('LOVABLE_API_KEY');
     if (!lovableApiKey) {
       throw new Error('LOVABLE_API_KEY not configured');
+    }
+
+    const anthropicApiKey = Deno.env.get('ANTHROPIC_API_KEY');
+    if (useAnthropic && !anthropicApiKey) {
+      console.warn('⚠️ ANTHROPIC_API_KEY not configured - Claude models will be skipped');
     }
 
     const filesContext = files.map((f, idx) => 
@@ -137,10 +148,63 @@ ${filesContext}
 
 Find ALL CRITICAL issues that would cause failures in production. Be specific, actionable, and reference CWE IDs where applicable.`;
 
+    // Helper function to call Claude via Anthropic API
+    const callClaudeAPI = async (model: string, systemPrompt: string, userPrompt: string): Promise<any> => {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'x-api-key': anthropicApiKey!,
+          'anthropic-version': '2023-06-01',
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          model,
+          max_tokens: 4096,
+          temperature: 0.2,
+          system: systemPrompt,
+          messages: [
+            { role: 'user', content: userPrompt }
+          ]
+        })
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Anthropic API error ${response.status}: ${errorText}`);
+      }
+
+      const data = await response.json();
+      
+      // Convert Anthropic response to OpenAI-like format for consistency
+      return {
+        choices: [{
+          message: {
+            content: data.content[0].text
+          }
+        }],
+        usage: {
+          prompt_tokens: data.usage.input_tokens,
+          completion_tokens: data.usage.output_tokens,
+          total_tokens: data.usage.input_tokens + data.usage.output_tokens
+        }
+      };
+    };
+
     // Run verification with all models in parallel
     const verificationPromises = models.map(async (model): Promise<ModelResult> => {
       const modelStartTime = Date.now();
       console.log(`🚀 Starting verification with ${model}...`);
+
+      // Skip Claude models if Anthropic API key not configured
+      if (model.startsWith('claude-') && !anthropicApiKey) {
+        console.warn(`⚠️ Skipping ${model} - ANTHROPIC_API_KEY not configured`);
+        return {
+          model,
+          success: false,
+          error: 'Anthropic API key not configured',
+          duration: Date.now() - modelStartTime
+        };
+      }
 
       try {
         const controller = new AbortController();
@@ -149,42 +213,55 @@ Find ALL CRITICAL issues that would cause failures in production. Be specific, a
           controller.abort();
         }, 180000); // 3 minute timeout
 
-        const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${lovableApiKey}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            model,
-            messages: [
-              { role: 'system', content: systemPrompt },
-              { role: 'user', content: userPrompt }
-            ],
-            max_completion_tokens: 4000,
-            response_format: { type: "json_object" }
-          }),
-          signal: controller.signal,
-        });
+        let aiResponse;
 
-        clearTimeout(timeoutId);
-        const duration = Date.now() - modelStartTime;
+        // Route to appropriate API based on model
+        if (model.startsWith('claude-')) {
+          // Use Anthropic API for Claude models
+          console.log(`📤 Calling Anthropic API for ${model}...`);
+          aiResponse = await callClaudeAPI(model, systemPrompt, userPrompt);
+          clearTimeout(timeoutId);
+        } else {
+          // Use Lovable AI Gateway for OpenAI and Google models
+          const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${lovableApiKey}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              model,
+              messages: [
+                { role: 'system', content: systemPrompt },
+                { role: 'user', content: userPrompt }
+              ],
+              max_completion_tokens: 4000,
+              response_format: { type: "json_object" }
+            }),
+            signal: controller.signal,
+          });
 
-        console.log(`✅ ${model} responded with status: ${response.status} (${duration}ms)`);
+          clearTimeout(timeoutId);
 
-        if (!response.ok) {
-          const errorText = await response.text();
-          console.error(`❌ ${model} error: ${response.status} - ${errorText.substring(0, 200)}`);
-          
-          return {
-            model,
-            success: false,
-            error: `HTTP ${response.status}: ${errorText.substring(0, 100)}`,
-            duration
-          };
+          console.log(`✅ ${model} responded with status: ${response.status}`);
+
+          if (!response.ok) {
+            const errorText = await response.text();
+            console.error(`❌ ${model} error: ${response.status} - ${errorText.substring(0, 200)}`);
+            
+            return {
+              model,
+              success: false,
+              error: `HTTP ${response.status}: ${errorText.substring(0, 100)}`,
+              duration: Date.now() - modelStartTime
+            };
+          }
+
+          aiResponse = await response.json();
         }
 
-        const aiResponse = await response.json();
+        const duration = Date.now() - modelStartTime;
+        console.log(`✅ ${model} completed in ${duration}ms`);
         
         if (!aiResponse.choices?.[0]?.message?.content) {
           console.error(`❌ ${model} invalid response structure`);
