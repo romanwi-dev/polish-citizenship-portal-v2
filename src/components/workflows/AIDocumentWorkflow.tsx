@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { 
   Upload, 
   Brain, 
@@ -10,7 +10,8 @@ import {
   Languages,
   Eye,
   Download,
-  Check
+  Check,
+  Image as ImageIcon
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -269,6 +270,38 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
     return 0;
   };
 
+  // Get documents for a specific stage
+  const getDocumentsForStage = (stage: string) => {
+    if (!documents) return [];
+    if (stage === 'upload') return documents.filter(d => !d.ocr_status);
+    if (stage === 'intake') return documents.filter(d => d.ocr_status === 'pending');
+    if (stage === 'ai_classify') return documents.filter(d => d.ai_detected_type && !d.is_verified_by_hac);
+    if (stage === 'hac_classify') return documents.filter(d => d.is_verified_by_hac && !d.ocr_status);
+    if (stage === 'ocr') return documents.filter(d => d.ocr_status === 'processing' || d.ocr_status === 'pending');
+    if (stage === 'ocr_quality') return documents.filter(d => d.ocr_status === 'completed');
+    if (stage === 'translation_detection') return documents.filter(d => d.needs_translation);
+    if (stage === 'translation') return documents.filter(d => d.needs_translation && d.is_verified_by_hac);
+    if (stage === 'translation_review') return documents.filter(d => d.needs_translation && d.is_verified_by_hac);
+    if (stage === 'form_population') return documents.filter(d => d.data_applied_to_forms);
+    return documents.slice(0, 3); // Default: show first 3
+  };
+
+  // Get storage URL for document thumbnail
+  const getDocumentThumbnail = (doc: any) => {
+    if (!doc.dropbox_path) return null;
+    
+    // For images, return storage URL
+    const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+    if (imageExts.includes(doc.file_extension?.toLowerCase())) {
+      const { data } = supabase.storage
+        .from('documents')
+        .getPublicUrl(`${caseId}/${doc.id}.${doc.file_extension}`);
+      return data.publicUrl;
+    }
+    
+    return null;
+  };
+
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!caseId) {
       toast({
@@ -346,6 +379,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
           const Icon = step.icon;
           const docCount = getDocumentCountForStage(step.stage);
           const isCompleted = completedStages[step.stage];
+          const stageDocuments = getDocumentsForStage(step.stage);
           
           return (
             <div 
@@ -454,6 +488,38 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                             </div>
                           )}
 
+                          {/* Document Thumbnails */}
+                          {stageDocuments.length > 0 && (
+                            <div className="mb-3">
+                              <div className="flex gap-2 overflow-x-auto pb-2">
+                                {stageDocuments.slice(0, 4).map((doc) => {
+                                  const thumbnail = getDocumentThumbnail(doc);
+                                  return (
+                                    <div
+                                      key={doc.id}
+                                      className="flex-shrink-0 w-16 h-16 rounded-lg border-2 border-primary/20 overflow-hidden bg-muted/50 flex items-center justify-center group hover:border-primary/60 transition-all"
+                                    >
+                                      {thumbnail ? (
+                                        <img
+                                          src={thumbnail}
+                                          alt={doc.name}
+                                          className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                                        />
+                                      ) : (
+                                        <FileText className="h-6 w-6 text-primary/40" />
+                                      )}
+                                    </div>
+                                  );
+                                })}
+                                {stageDocuments.length > 4 && (
+                                  <div className="flex-shrink-0 w-16 h-16 rounded-lg border-2 border-dashed border-primary/20 bg-muted/30 flex items-center justify-center">
+                                    <span className="text-xs font-semibold text-primary">+{stageDocuments.length - 4}</span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          )}
+
                           {/* Document Count */}
                           <div className="flex items-center justify-between">
                             <span className="text-xs px-2 py-1 md:px-3 md:py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
@@ -503,8 +569,47 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                             {step.backDetails}
                           </p>
 
-                          {/* Document Preview */}
-                          {docCount > 0 && (
+                          {/* Document Preview Grid on Back */}
+                          {stageDocuments.length > 0 && (
+                            <div className="mt-3 space-y-2">
+                              <h5 className="font-semibold text-xs flex items-center gap-2">
+                                <ImageIcon className="h-3 w-3" />
+                                Documents ({docCount})
+                              </h5>
+                              <div className="grid grid-cols-3 gap-2">
+                                {stageDocuments.slice(0, 6).map((doc) => {
+                                  const thumbnail = getDocumentThumbnail(doc);
+                                  return (
+                                    <div
+                                      key={doc.id}
+                                      className="relative aspect-square rounded-lg border border-primary/20 overflow-hidden bg-muted/50 group hover:border-primary/60 transition-all"
+                                    >
+                                      {thumbnail ? (
+                                        <img
+                                          src={thumbnail}
+                                          alt={doc.name}
+                                          className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                                        />
+                                      ) : (
+                                        <div className="w-full h-full flex items-center justify-center">
+                                          <FileText className="h-6 w-6 text-primary/40" />
+                                        </div>
+                                      )}
+                                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                              {docCount > 6 && (
+                                <p className="text-xs text-muted-foreground text-center pt-1">
+                                  +{docCount - 6} more documents
+                                </p>
+                              )}
+                            </div>
+                          )}
+
+                          {/* Document Preview - Old List View (removed) */}
+                          {docCount > 0 && stageDocuments.length === 0 && (
                             <div className="mt-2 space-y-2">
                               <h5 className="font-semibold text-xs">Documents in this stage:</h5>
                               <div className="space-y-1">
