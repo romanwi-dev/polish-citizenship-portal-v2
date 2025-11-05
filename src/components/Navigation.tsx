@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, User, Sparkles, Languages, BookOpen, Settings, Plus, Mic, Zap, Upload, Share2, LogIn, LogOut, FileText } from "lucide-react";
+import { Menu, User, Sparkles, Languages, BookOpen, Settings, Plus, Mic, Zap, Upload, Share2, LogIn, LogOut, Brain } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { useAuth } from "@/hooks/useAuth";
 import { MobileNavigationSheet } from "@/components/MobileNavigationSheet";
@@ -70,7 +70,7 @@ const Navigation = () => {
               className="h-9 w-9 md:h-11 md:w-11 rounded-full bg-background/5 dark:bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
               aria-label="AI Workflow"
             >
-              <FileText className="h-4 w-4 md:h-5 md:w-5 text-foreground" />
+              <Brain className="h-4 w-4 md:h-5 md:w-5 text-foreground" />
             </button>
             
             {/* Mobile Navigation - Full Screen Sheet */}
