@@ -26,6 +26,7 @@ import { AIConsentModal } from "@/components/consent/AIConsentModal";
 import { checkAIConsent, logPIIProcessing } from "@/utils/aiPIILogger";
 import { sanitizeAIJSON } from "@/utils/aiSanitizer";
 import { useWorkflowState } from "@/hooks/useWorkflowState";
+import { useWorkflowPersistence } from "@/hooks/useWorkflowPersistence";
 import { useBase64Worker } from "@/hooks/useBase64Worker";
 import { useCancellableRequest } from "@/hooks/useCancellableRequest";
 import { useRequestBatcher } from "@/hooks/useRequestBatcher";
@@ -180,6 +181,17 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
   // Phase 2: Use unified state machine to eliminate race conditions
   const { state: workflowState, actions } = useWorkflowState();
   
+  // Phase 4: Workflow persistence with auto-save and checkpointing
+  const {
+    persistState,
+    restoreState,
+    clearPersistedState,
+    hasRecoverableState,
+    createCheckpoint,
+    listCheckpoints,
+    restoreFromCheckpoint
+  } = useWorkflowPersistence(caseId);
+  
   // Phase 2: Web Worker for base64 encoding (prevent UI blocking)
   const { encodeToBase64, cancelAll: cancelAllEncoding } = useBase64Worker();
   
@@ -237,6 +249,8 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
   const [batchQueueSize, setBatchQueueSize] = useState(0);
   const [batchActiveCount, setBatchActiveCount] = useState(0);
   const [showPDFPreview, setShowPDFPreview] = useState(false);
+  const [hasRestoredState, setHasRestoredState] = useState(false);
+  const [showRecoveryPrompt, setShowRecoveryPrompt] = useState(false);
   const [previewDocument, setPreviewDocument] = useState<{
     isOpen: boolean;
     url: string;
@@ -280,6 +294,55 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
       actions.setConsent(caseData.ai_processing_consent === true);
     }
   }, [caseData, actions]);
+
+  // Phase 4: Auto-restore workflow state on mount
+  useEffect(() => {
+    const checkAndRestoreState = async () => {
+      if (hasRestoredState) return;
+      
+      const hasRecovery = await hasRecoverableState();
+      if (hasRecovery) {
+        console.log('[Workflow Recovery] Recoverable state found');
+        setShowRecoveryPrompt(true);
+      }
+    };
+    
+    checkAndRestoreState();
+  }, [hasRecoverableState, hasRestoredState]);
+
+  // Phase 4: Auto-save workflow state every 30 seconds while running
+  useEffect(() => {
+    if (!isRunning) return;
+    
+    const autoSaveInterval = setInterval(async () => {
+      console.log('[Workflow Persistence] Auto-saving state...');
+      const saved = await persistState(workflowState, workflowRun?.id);
+      if (saved) {
+        console.log('[Workflow Persistence] Auto-save successful');
+      }
+    }, 30000); // 30 seconds
+
+    return () => clearInterval(autoSaveInterval);
+  }, [isRunning, workflowState, workflowRun, persistState]);
+
+  // Phase 4: Create checkpoint on stage transitions
+  useEffect(() => {
+    const createStageCheckpoint = async () => {
+      if (!isRunning || !currentStage || currentStage === 'upload') return;
+      
+      console.log(`[Workflow Persistence] Creating checkpoint for stage: ${currentStage}`);
+      const checkpointId = await createCheckpoint(
+        workflowState,
+        `Stage: ${currentStage}`
+      );
+      
+      if (checkpointId) {
+        console.log(`[Workflow Persistence] Checkpoint created: ${checkpointId}`);
+      }
+    };
+    
+    createStageCheckpoint();
+  }, [currentStage, isRunning, workflowState, createCheckpoint]);
 
   // Cleanup on unmount - Phase 2 & 3: Cancel all operations
   useEffect(() => {
@@ -382,6 +445,54 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
     }
   };
 
+  // Phase 4: Handle workflow recovery restore
+  const handleRestoreWorkflow = async () => {
+    try {
+      console.log('[Workflow Recovery] Restoring saved state...');
+      const restored = await restoreState();
+      
+      if (!restored) {
+        toast({
+          title: "Restore Failed",
+          description: "Could not restore workflow state.",
+          variant: "destructive"
+        });
+        return;
+      }
+      
+      // Restore workflow state using actions
+      actions.restoreState(restored);
+      
+      setHasRestoredState(true);
+      setShowRecoveryPrompt(false);
+      
+      toast({
+        title: "Workflow Restored",
+        description: `Resumed from stage: ${restored.currentStage}`,
+      });
+      
+      console.log('[Workflow Recovery] State restored successfully');
+    } catch (error) {
+      console.error('[Workflow Recovery] Failed to restore:', error);
+      toast({
+        title: "Restore Error",
+        description: error instanceof Error ? error.message : 'Unknown error',
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleDiscardRecovery = async () => {
+    await clearPersistedState();
+    setShowRecoveryPrompt(false);
+    setHasRestoredState(true);
+    
+    toast({
+      title: "Recovery Discarded",
+      description: "Starting fresh workflow.",
+    });
+  };
+
   const subscribeToWorkflowUpdates = () => {
     const channel = supabase
       .channel(`workflow_runs:case_id=eq.${caseId}`)
@@ -462,6 +573,28 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
         progress_percentage: progress,
         current_stage: stepId,
       });
+    }
+    
+    // Phase 4: Persist workflow state after step update
+    if (status === 'completed' || status === 'failed') {
+      await persistState(workflowState, workflowRun?.id);
+      
+      // Create checkpoint on completion/failure
+      await createCheckpoint(
+        workflowState,
+        `${stepId} - ${status}`
+      );
+      
+      // Phase 4: Clear persistence on full workflow completion
+      if (status === 'completed' && stepId === 'pdf_generation') {
+        console.log('[Workflow Persistence] Workflow completed - clearing persisted state');
+        await clearPersistedState();
+        
+        toast({
+          title: "Workflow Complete!",
+          description: "All documents processed successfully. State cleared.",
+        });
+      }
     }
   };
 
@@ -1210,6 +1343,35 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
 
   return (
     <section className="relative py-8 overflow-hidden">
+      {/* Phase 4: Workflow Recovery Prompt */}
+      {showRecoveryPrompt && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm"
+        >
+          <div className="glass-card p-6 max-w-md mx-4">
+            <div className="flex items-center gap-3 mb-4">
+              <RotateCcw className="h-6 w-6 text-primary" />
+              <h3 className="text-lg font-semibold">Workflow Recovery Available</h3>
+            </div>
+            <p className="text-sm text-muted-foreground mb-6">
+              A previous workflow session was found for this case. Would you like to resume from where you left off, or start fresh?
+            </p>
+            <div className="flex gap-3">
+              <Button onClick={handleRestoreWorkflow} className="flex-1">
+                <PlayCircle className="h-4 w-4 mr-2" />
+                Resume Workflow
+              </Button>
+              <Button onClick={handleDiscardRecovery} variant="outline" className="flex-1">
+                <Trash2 className="h-4 w-4 mr-2" />
+                Start Fresh
+              </Button>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
       {/* AI Consent Modal */}
       <AIConsentModal
         open={showConsentModal}
