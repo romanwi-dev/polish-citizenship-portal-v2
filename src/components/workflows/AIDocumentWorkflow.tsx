@@ -1299,28 +1299,30 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
 
       toast({ title: "Downloading...", description: "Please wait" });
 
-      // Use direct fetch instead of supabase.functions.invoke for binary data
+      const { data, error } = await supabase.functions.invoke('download-dropbox-file', {
+        body: { dropboxPath, caseId }
+      });
+
+      if (error) throw error;
+
+      // Get the binary data and create blob
       const response = await fetch(
         `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/download-dropbox-file`,
         {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ dropboxPath }),
+          body: JSON.stringify({ dropboxPath, caseId }),
         }
       );
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: 'Download failed' }));
-        throw new Error(errorData.error || `Download failed: ${response.status}`);
+        throw new Error(`Download failed: ${response.status}`);
       }
 
-      // Get the binary data
       const blob = await response.blob();
-      
-      // Create download link
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -1440,28 +1442,6 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
       />
 
       <div className="container relative z-10 mx-auto px-4">
-        {/* Sprint 3 Code Review Banner */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-6 p-4 rounded-lg bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20"
-        >
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Brain className="h-6 w-6 text-primary" />
-              <div>
-                <h3 className="font-semibold">Sprint 3: Deep Code Review Available</h3>
-                <p className="text-sm text-muted-foreground">
-                  Run comprehensive GPT-5 analysis on all workflow files to achieve 100/100 score
-                </p>
-              </div>
-            </div>
-            <Button onClick={() => navigate('/admin/code-review')} variant="outline">
-              <CheckCircle2 className="h-4 w-4 mr-2" />
-              Run Code Review
-            </Button>
-          </div>
-        </motion.div>
 
         {/* Progress Tracker */}
         <WorkflowProgressTracker

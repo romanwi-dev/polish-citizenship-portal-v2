@@ -12,6 +12,7 @@ interface DownloadRequest {
   dropboxPath: string;
   documentId?: string;
   caseId?: string;
+  returnUrl?: boolean; // Return signed Dropbox URL instead of base64
 }
 
 serve(async (req) => {
@@ -43,10 +44,63 @@ serve(async (req) => {
     }
 
     // Parse request
-    const { dropboxPath, documentId, caseId }: DownloadRequest = await req.json();
+    const { dropboxPath, documentId, caseId, returnUrl }: DownloadRequest = await req.json();
     
     if (!dropboxPath) {
       return createSecureResponse({ error: 'dropboxPath is required' }, 400, origin);
+    }
+
+    // If returnUrl is requested, generate temporary link instead
+    if (returnUrl) {
+      const dropboxAppKey = Deno.env.get('DROPBOX_APP_KEY');
+      const dropboxAppSecret = Deno.env.get('DROPBOX_APP_SECRET');
+      const dropboxRefreshToken = Deno.env.get('DROPBOX_REFRESH_TOKEN');
+
+      if (!dropboxAppKey || !dropboxAppSecret || !dropboxRefreshToken) {
+        console.error('Missing Dropbox credentials');
+        return createSecureResponse({ error: 'Server configuration error' }, 500, origin);
+      }
+
+      const accessToken = await generateAccessToken(dropboxAppKey, dropboxAppSecret, dropboxRefreshToken);
+
+      // Normalize Dropbox path
+      let normalizedPath = dropboxPath;
+      if (!normalizedPath.startsWith('/')) {
+        normalizedPath = '/' + normalizedPath;
+      }
+      if (!normalizedPath.startsWith('/CASES/')) {
+        normalizedPath = '/CASES' + normalizedPath;
+      }
+
+      // Get temporary link from Dropbox
+      const linkResponse = await fetch('https://api.dropboxapi.com/2/files/get_temporary_link', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ path: normalizedPath }),
+      });
+
+      if (!linkResponse.ok) {
+        const errorText = await linkResponse.text();
+        console.error('Dropbox temp link error:', errorText);
+        return createSecureResponse(
+          { error: `Failed to get temp link: ${linkResponse.status}` },
+          linkResponse.status,
+          origin
+        );
+      }
+
+      const linkData = await linkResponse.json();
+      
+      console.log(`[download-and-encode] Temp link generated for: ${normalizedPath}`);
+
+      return createSecureResponse({
+        success: true,
+        signedUrl: linkData.link,
+        fileName: dropboxPath.split('/').pop() || 'document',
+      }, 200, origin);
     }
 
     // Validate user has access to this case

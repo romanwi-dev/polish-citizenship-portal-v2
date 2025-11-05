@@ -159,3 +159,6 @@ verify_jwt = true
 [functions.scan-and-queue-ocr]
 verify_jwt = false
 
+[functions.download-dropbox-file]
+verify_jwt = true
+
