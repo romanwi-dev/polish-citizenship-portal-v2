@@ -55,6 +55,7 @@ const DropboxWorkflow = lazy(() => import("./pages/admin/DropboxWorkflow"));
 const AllWorkflows = lazy(() => import("./pages/admin/AllWorkflows"));
 const WorkflowNotifications = lazy(() => import("./pages/admin/WorkflowNotifications"));
 const AIWorkflow = lazy(() => import("./pages/admin/AIWorkflow"));
+const TranslationWorkflowTest = lazy(() => import("./pages/admin/TranslationWorkflowTest"));
 const DocumentsCollection = lazy(() => import("./pages/admin/DocumentsCollection"));
 const PolishCivilActs = lazy(() => import("./pages/admin/PolishCivilActs"));
 const PolishCitizenship = lazy(() => import("./pages/admin/PolishCitizenship"));
@@ -416,6 +417,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <Translations />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/translation-workflow-test" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <TranslationWorkflowTest />
               </Suspense>
             } 
           />
