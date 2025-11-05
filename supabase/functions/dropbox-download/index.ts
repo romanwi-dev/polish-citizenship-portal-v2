@@ -44,16 +44,17 @@ Deno.serve(async (req) => {
       console.log('Internal service call authenticated');
     }
 
-    const { file_path } = await req.json();
+    const body = await req.json();
+    const filePath = body.file_path || body.dropboxPath; // Support both parameter names
 
-    if (!file_path) {
+    if (!filePath) {
       return new Response(
-        JSON.stringify({ error: 'Missing file_path parameter' }),
+        JSON.stringify({ error: 'Missing file_path or dropboxPath parameter' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    console.log(`Downloading file from Dropbox: ${file_path}`);
+    console.log(`Downloading file from Dropbox: ${filePath}`);
 
     const dropboxAppKey = Deno.env.get('DROPBOX_APP_KEY');
     const dropboxAppSecret = Deno.env.get('DROPBOX_APP_SECRET');
@@ -71,7 +72,7 @@ Deno.serve(async (req) => {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${accessToken}`,
-        'Dropbox-API-Arg': JSON.stringify({ path: file_path }),
+        'Dropbox-API-Arg': JSON.stringify({ path: filePath }),
       },
     });
 

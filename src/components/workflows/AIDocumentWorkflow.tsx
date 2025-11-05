@@ -1331,11 +1331,15 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
         .delete()
         .eq('id', docId);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Delete error:', error);
+        throw error;
+      }
       
       toast({ title: "Document deleted" });
       queryClient.invalidateQueries({ queryKey: ['case-documents', caseId] });
     } catch (error) {
+      console.error('Delete operation failed:', error);
       toast({
         title: "Delete failed",
         description: error instanceof Error ? error.message : 'Unknown error',
