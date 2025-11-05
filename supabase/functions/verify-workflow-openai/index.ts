@@ -38,399 +38,62 @@ serve(async (req) => {
       `\n${'='.repeat(80)}\nFILE ${idx + 1}: ${f.fileName} (${f.category})\n${'='.repeat(80)}\n${f.fileContent}\n`
     ).join('\n');
 
-    const systemPrompt = `You are a principal engineer and architect conducting a COMPREHENSIVE HARDENED VERIFICATION of a Polish Citizenship portal's Documents Workflow system.
+    const systemPrompt = `You are a senior engineer reviewing a Polish Citizenship portal's Documents Workflow.
 
-Your mission is to perform an EXHAUSTIVE multi-dimensional analysis:
+Analyze for:
+- Security: PII exposure, auth gaps, injection risks
+- Reliability: Race conditions, error handling, data corruption
+- Architecture: Design patterns, coupling, scalability
+- Performance: Memory leaks, inefficient algorithms
+- UX: Workflow clarity, error messaging, accessibility
 
-## 🔒 SECURITY & COMPLIANCE (CRITICAL)
-- PII exposure, leakage, and logging risks
-- Authentication and authorization gaps
-- SQL injection, XSS, CSRF vulnerabilities
-- Hardcoded secrets and API keys
-- RLS (Row Level Security) bypass risks
-- Input validation and sanitization weaknesses
-- GDPR/CCPA compliance gaps
-- Consent management before AI processing
-- Data encryption in transit and at rest
-- Session management vulnerabilities
-
-## 🏗️ ARCHITECTURE & DESIGN
-- Component coupling and cohesion
-- Separation of concerns
-- Design pattern usage and correctness
-- State management architecture
-- Data flow and control flow clarity
-- Scalability of architectural decisions
-- Technical debt accumulation
-- Code reusability and maintainability
-- Dependency injection and testability
-- Module boundaries and interfaces
-
-## ⚡ PERFORMANCE & SCALABILITY
-- Memory leaks and resource management
-- Inefficient algorithms or queries
-- N+1 query problems
-- Unnecessary re-renders or computations
-- Bundle size and code splitting
-- Lazy loading opportunities
-- Caching strategies
-- Database query optimization
-- Network request batching effectiveness
-- Worker thread usage efficiency
-
-## 🛡️ RELIABILITY & ROBUSTNESS
-- State management race conditions
-- Concurrent request handling
-- Transaction isolation and atomicity
-- Deadlock and livelock scenarios
-- Data corruption risks
-- Idempotency of operations
-- Retry logic and exponential backoff
-- Circuit breaker patterns
-- Graceful degradation
-- Fault tolerance mechanisms
-
-## 🔥 ERROR HANDLING & RECOVERY
-- Unhandled exceptions and promise rejections
-- Missing null/undefined checks
-- Network failure scenarios
-- Timeout handling
-- Partial failure recovery
-- Error boundary implementation
-- User-facing error messages
-- Error logging and tracking
-- Rollback and compensation logic
-- Data consistency after failures
-
-## 👤 USER EXPERIENCE & WORKFLOW
-- Workflow step clarity and intuition
-- User feedback during operations
-- Loading and progress indicators
-- Error message clarity
-- Accessibility (a11y) compliance
-- Responsive design implementation
-- Keyboard navigation support
-- Screen reader compatibility
-- Mobile/tablet usability
-- Workflow interruption handling
-
-## 🧪 TESTING & QUALITY
-- Test coverage gaps
-- Integration test needs
-- End-to-end test scenarios
-- Edge case identification
-- Mock and stub quality
-- Test maintainability
-- Performance test requirements
-- Load testing considerations
-- Chaos engineering opportunities
-
-## 📊 OBSERVABILITY & DEBUGGING
-- Logging completeness and quality
-- Metrics and KPI tracking
-- Error tracking integration
-- Performance monitoring
-- User analytics
-- Debug information availability
-- Audit trail completeness
-- Troubleshooting documentation
-
-## 🔄 WORKFLOW CORRECTNESS
-- State machine transitions
-- Business logic correctness
-- Data transformation accuracy
-- Validation logic completeness
-- Edge case handling
-- Rollback and undo functionality
-- Progress persistence
-- Recovery from interruptions
-- Multi-user concurrency handling
-
-## 📝 CODE QUALITY & MAINTAINABILITY
-- Code clarity and readability
-- Naming conventions
-- Comment quality and necessity
-- Function complexity (cyclomatic)
-- Code duplication
-- Magic numbers and strings
-- TypeScript type safety
-- Dead code elimination
-- Consistent coding style
-
-For EACH dimension, provide:
-
-### PER-FILE ANALYSIS
-1. **CRITICAL ISSUES** - Blockers that prevent production deployment
-2. **HIGH SEVERITY** - Must fix before launch
-3. **MEDIUM SEVERITY** - Should fix for quality/maintainability
-4. **LOW SEVERITY** - Nice to have improvements
-
-### CROSS-CUTTING CONCERNS
-- Issues spanning multiple files
-- Integration problems
-- Architectural misalignments
-- Workflow flow problems
-
-### WORKFLOW VALIDATION
-- Does the workflow actually work correctly?
-- Are all edge cases handled?
-- Can users recover from errors?
-- Is data preserved across interruptions?
-
-### RECOMMENDATIONS
-- Specific, actionable improvements
-- Priority-ranked
-- With implementation guidance
-
-Return response as VALID JSON:
+Return VALID JSON:
 {
   "overallAssessment": {
     "productionReady": boolean,
-    "overallScore": number, // 0-100
-    "confidenceLevel": "HIGH" | "MEDIUM" | "LOW",
-    "executiveSummary": "3-4 sentence summary of entire analysis"
+    "overallScore": number,
+    "executiveSummary": "2-3 sentence summary"
   },
   "criticalFindings": {
     "blockersCount": number,
-    "securityIssues": number,
-    "reliabilityIssues": number,
-    "dataIntegrityIssues": number,
-    "mustFixBeforeLaunch": [
-      {
-        "title": "Critical issue title",
-        "category": "SECURITY" | "RELIABILITY" | "DATA_INTEGRITY" | "COMPLIANCE" | "ARCHITECTURE",
-        "severity": "CRITICAL",
-        "affectedFiles": ["file1.tsx"],
-        "description": "Detailed description with impact",
-        "exploitScenario": "How this fails in production",
-        "businessImpact": "What this means for the business",
-        "remediation": "Detailed fix with code examples"
-      }
-    ]
+    "mustFixBeforeLaunch": [{
+      "title": string,
+      "category": "SECURITY"|"RELIABILITY"|"DATA_INTEGRITY",
+      "severity": "CRITICAL",
+      "affectedFiles": [string],
+      "description": string,
+      "remediation": string
+    }]
   },
-  "fileAnalysis": [
-    {
-      "fileName": "exact-file-name.tsx",
-      "overallScore": number, // 0-100
-      "category": "core" | "state" | "security" | "ui" | "worker",
-      "strengths": ["What this file does well"],
-      "weaknesses": ["What needs improvement"],
-      "criticalIssues": [
-        {
-          "title": "Issue title",
-          "severity": "CRITICAL",
-          "dimension": "SECURITY" | "ARCHITECTURE" | "PERFORMANCE" | "RELIABILITY" | "UX" | "QUALITY",
-          "description": "What's wrong and why it matters",
-          "impact": "Production consequences",
-          "codePattern": "Specific code or pattern",
-          "remediation": "How to fix with examples"
-        }
-      ],
-      "highPriorityIssues": [ /* same structure */ ],
-      "mediumPriorityIssues": [ /* same structure */ ],
-      "recommendations": [
-        {
-          "priority": "HIGH" | "MEDIUM" | "LOW",
-          "title": "Recommendation title",
-          "description": "What to do",
-          "benefit": "Why this helps",
-          "effort": "How much work"
-        }
-      ]
-    }
-  ],
-  "workflowValidation": {
-    "workflowCorrectness": {
-      "score": number, // 0-100
-      "stateTransitionsValid": boolean,
-      "edgeCasesHandled": boolean,
-      "recoveryMechanisms": boolean,
-      "dataConsistency": boolean,
-      "issues": [
-        {
-          "scenario": "Specific user scenario",
-          "problem": "What breaks",
-          "severity": "CRITICAL" | "HIGH" | "MEDIUM",
-          "fix": "How to handle correctly"
-        }
-      ]
-    },
-    "userExperience": {
-      "score": number, // 0-100
-      "loadingFeedback": "GOOD" | "NEEDS_IMPROVEMENT" | "POOR",
-      "errorMessaging": "GOOD" | "NEEDS_IMPROVEMENT" | "POOR",
-      "progressVisibility": "GOOD" | "NEEDS_IMPROVEMENT" | "POOR",
-      "accessibility": "GOOD" | "NEEDS_IMPROVEMENT" | "POOR",
-      "issues": ["Specific UX problems"]
-    },
-    "endToEndFlow": {
-      "score": number, // 0-100
-      "canComplete": boolean,
-      "interruptionHandling": "GOOD" | "NEEDS_IMPROVEMENT" | "POOR",
-      "errorRecovery": "GOOD" | "NEEDS_IMPROVEMENT" | "POOR",
-      "issues": ["Problems in complete workflow"]
-    }
-  },
-  "architectureAssessment": {
-    "score": number, // 0-100
-    "designPatterns": "GOOD" | "NEEDS_IMPROVEMENT" | "POOR",
-    "separation": "GOOD" | "NEEDS_IMPROVEMENT" | "POOR",
-    "scalability": "GOOD" | "NEEDS_IMPROVEMENT" | "POOR",
-    "maintainability": "GOOD" | "NEEDS_IMPROVEMENT" | "POOR",
-    "concerns": [
-      {
-        "area": "Specific architectural area",
-        "issue": "What's problematic",
-        "impact": "Long-term consequences",
-        "refactoring": "How to improve"
-      }
-    ]
-  },
-  "performanceAnalysis": {
-    "score": number, // 0-100
-    "memoryEfficiency": "GOOD" | "NEEDS_IMPROVEMENT" | "POOR",
-    "algorithmicEfficiency": "GOOD" | "NEEDS_IMPROVEMENT" | "POOR",
-    "networkEfficiency": "GOOD" | "NEEDS_IMPROVEMENT" | "POOR",
-    "bottlenecks": [
-      {
-        "location": "File and function",
-        "issue": "What's slow",
-        "impact": "Performance cost",
-        "optimization": "How to speed up"
-      }
-    ]
-  },
-  "reliabilityAssessment": {
-    "score": number, // 0-100
-    "errorHandling": "GOOD" | "NEEDS_IMPROVEMENT" | "POOR",
-    "raceConditionRisk": "LOW" | "MEDIUM" | "HIGH",
-    "dataCorruptionRisk": "LOW" | "MEDIUM" | "HIGH",
-    "recoveryMechanisms": "GOOD" | "NEEDS_IMPROVEMENT" | "POOR",
-    "concerns": ["Specific reliability issues"]
-  },
-  "securityAssessment": {
-    "score": number, // 0-100
-    "piiHandling": "SECURE" | "NEEDS_IMPROVEMENT" | "VULNERABLE",
-    "authentication": "SECURE" | "NEEDS_IMPROVEMENT" | "VULNERABLE",
-    "inputValidation": "SECURE" | "NEEDS_IMPROVEMENT" | "VULNERABLE",
-    "compliance": "COMPLIANT" | "GAPS" | "NON_COMPLIANT",
-    "vulnerabilities": [ /* detailed security issues */ ]
-  },
-  "complianceGaps": [
-    {
-      "regulation": "GDPR" | "CCPA" | "Best Practice",
-      "requirement": "What's required",
-      "currentState": "What you have now",
-      "gap": "What's missing",
-      "remediation": "How to comply",
-      "priority": "CRITICAL" | "HIGH" | "MEDIUM"
-    }
-  ],
-  "crossFileIssues": [
-    {
-      "title": "Issue spanning files",
-      "affectedFiles": ["file1.tsx", "file2.ts"],
-      "category": "INTEGRATION" | "STATE_SHARING" | "DATA_FLOW" | "ERROR_PROPAGATION",
-      "severity": "CRITICAL" | "HIGH" | "MEDIUM",
-      "description": "What's wrong",
-      "impact": "How it affects workflow",
-      "remediation": "Coordinated fix across files"
-    }
-  ],
-  "testingGaps": {
-    "missingTests": [
-      "Critical scenario not tested"
-    ],
-    "integrationTestNeeds": [
-      "Integration scenario to test"
-    ],
-    "e2eTestScenarios": [
-      "End-to-end scenario to validate"
-    ]
-  },
+  "fileAnalysis": [{
+    "fileName": string,
+    "overallScore": number,
+    "criticalIssues": [{
+      "title": string,
+      "severity": "CRITICAL"|"HIGH",
+      "description": string,
+      "remediation": string
+    }],
+    "recommendations": [{
+      "priority": "HIGH"|"MEDIUM"|"LOW",
+      "title": string,
+      "description": string
+    }]
+  }],
   "actionPlan": {
-    "immediate": [
-      {
-        "action": "What to do now",
-        "reason": "Why it's urgent",
-        "effort": "Time estimate"
-      }
-    ],
-    "shortTerm": [ /* same structure */ ],
-    "longTerm": [ /* same structure */ ]
+    "immediate": [{"action": string, "reason": string}],
+    "shortTerm": [{"action": string, "reason": string}]
   }
 }`;
 
-    const userPrompt = `Perform COMPREHENSIVE HARDENED VERIFICATION on the Documents Workflow system.
+    const userPrompt = `Analyze this Documents Workflow for production readiness.
 
-This is a PRODUCTION system handling sensitive Polish citizenship documents and personal data.
+Focus: ${focusAreas.slice(0, 3).join(', ')}
 
-ANALYSIS DIMENSIONS: ${focusAreas.join(' • ')}
-
-FILES TO ANALYZE:
+FILES:
 ${filesContext}
 
-VERIFICATION REQUIREMENTS:
-
-1. **WORKFLOW CORRECTNESS** - Does it actually work?
-   - Validate state machine transitions
-   - Check edge case handling
-   - Verify data consistency
-   - Test recovery mechanisms
-   - Confirm user can complete workflow
-
-2. **SECURITY & COMPLIANCE** - Is data protected?
-   - PII exposure risks
-   - Authentication gaps
-   - GDPR/CCPA compliance
-   - Injection vulnerabilities
-   - Data encryption
-
-3. **ARCHITECTURE** - Is it well designed?
-   - Design pattern correctness
-   - Component coupling
-   - Scalability
-   - Maintainability
-   - Technical debt
-
-4. **RELIABILITY** - Will it stay up?
-   - Race conditions
-   - Error handling
-   - Recovery mechanisms
-   - Resource leaks
-   - Fault tolerance
-
-5. **PERFORMANCE** - Is it fast enough?
-   - Algorithm efficiency
-   - Memory management
-   - Network optimization
-   - Caching strategies
-   - Bundle size
-
-6. **USER EXPERIENCE** - Can users use it?
-   - Workflow clarity
-   - Error messaging
-   - Loading feedback
-   - Accessibility
-   - Mobile usability
-
-7. **CODE QUALITY** - Is it maintainable?
-   - Code clarity
-   - Type safety
-   - Documentation
-   - Test coverage
-   - Consistency
-
-CRITICAL INSTRUCTIONS:
-✅ Be EXHAUSTIVE - analyze every aspect
-✅ Be SPECIFIC - cite exact code patterns and lines
-✅ Be ACTIONABLE - provide clear remediation steps
-✅ Be REALISTIC - consider production constraints
-✅ VALIDATE THE WORKFLOW - does it actually work end-to-end?
-✅ IDENTIFY GAPS - what's missing that should be there?
-✅ PRIORITIZE - what MUST be fixed vs nice-to-have
-
-Output COMPLETE JSON matching the schema. Include scores, ratings, and detailed findings for EVERY dimension.`;
+Find CRITICAL issues that block production. Be specific and actionable.`;
 
     console.log('📤 Sending request to Lovable AI (Gemini 2.5 Flash)...');
 
@@ -453,8 +116,8 @@ Output COMPLETE JSON matching the schema. Include scores, ratings, and detailed 
             { role: 'system', content: systemPrompt },
             { role: 'user', content: userPrompt }
           ],
-          max_tokens: 8000,
-          temperature: 0.3,
+          max_tokens: 4000,
+          temperature: 0.2,
           response_format: { type: "json_object" }
         }),
         signal: controller.signal,

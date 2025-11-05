@@ -284,6 +284,7 @@ export function WorkflowVerificationPanel() {
     }, 5000); // Update every 5 seconds
 
     try {
+      // Analyze only 5 critical files to avoid timeout
       const filesToVerify = [
         {
           fileName: 'AIDocumentWorkflow.tsx',
@@ -296,28 +297,8 @@ export function WorkflowVerificationPanel() {
           category: 'state' as const
         },
         {
-          fileName: 'useDocumentProgress.ts',
-          fileContent: fileContents['src/hooks/useDocumentProgress.ts'],
-          category: 'state' as const
-        },
-        {
-          fileName: 'useRequestBatcher.ts',
-          fileContent: fileContents['src/hooks/useRequestBatcher.ts'],
-          category: 'state' as const
-        },
-        {
           fileName: 'aiPIILogger.ts',
           fileContent: fileContents['src/utils/aiPIILogger.ts'],
-          category: 'security' as const
-        },
-        {
-          fileName: 'secureLogger.ts',
-          fileContent: fileContents['src/utils/secureLogger.ts'],
-          category: 'security' as const
-        },
-        {
-          fileName: 'staticCodeAnalyzer.ts',
-          fileContent: fileContents['src/utils/staticCodeAnalyzer.ts'],
           category: 'security' as const
         },
         {
@@ -326,14 +307,9 @@ export function WorkflowVerificationPanel() {
           category: 'worker' as const
         },
         {
-          fileName: 'DocumentProgressCard.tsx',
-          fileContent: fileContents['src/components/workflows/DocumentProgressCard.tsx'],
-          category: 'ui' as const
-        },
-        {
-          fileName: 'BatchStatsDashboard.tsx',
-          fileContent: fileContents['src/components/workflows/BatchStatsDashboard.tsx'],
-          category: 'ui' as const
+          fileName: 'staticCodeAnalyzer.ts',
+          fileContent: fileContents['src/utils/staticCodeAnalyzer.ts'],
+          category: 'security' as const
         }
       ];
 
