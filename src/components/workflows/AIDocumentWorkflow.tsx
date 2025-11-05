@@ -320,53 +320,54 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
     try {
       const dropboxPath = caseData?.dropbox_path || `/CASES/${caseId}`;
       let successCount = 0;
-      let failCount = 0;
 
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
-        
-        try {
-          // Create FormData for the upload
-          const formData = new FormData();
-          formData.append('file', file);
-          formData.append('caseId', caseId);
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+        const storagePath = `${caseId}/${fileName}`;
 
-          // Call edge function to upload to Dropbox
-          const { data, error } = await supabase.functions.invoke('upload-to-dropbox', {
-            body: formData,
+        // Upload to Supabase Storage
+        const { error: uploadError } = await supabase.storage
+          .from('documents')
+          .upload(storagePath, file);
+
+        if (uploadError) {
+          console.error(`Storage upload failed for ${file.name}:`, uploadError);
+          throw uploadError;
+        }
+
+        // Create document record with Dropbox path
+        const { error: dbError } = await supabase
+          .from('documents')
+          .insert({
+            case_id: caseId,
+            name: file.name,
+            dropbox_path: `${dropboxPath}/${file.name}`,
+            file_extension: fileExt,
+            file_size: file.size,
+            ocr_status: 'pending',
           });
 
-          if (error) throw error;
-          if (!data.success) throw new Error(data.error || 'Upload failed');
-
-          successCount++;
-          console.log(`Uploaded ${file.name} to ${data.dropbox_path}`);
-        } catch (error) {
-          console.error(`Failed to upload ${file.name}:`, error);
-          failCount++;
+        if (dbError) {
+          console.error(`Database insert failed for ${file.name}:`, dbError);
+          throw dbError;
         }
+
+        successCount++;
       }
 
-      if (successCount > 0) {
-        toast({
-          title: "Upload successful",
-          description: `${successCount} document(s) uploaded to ${dropboxPath}`,
-        });
-        refetchDocuments();
-      }
+      toast({
+        title: "Upload successful",
+        description: `${successCount} document(s) uploaded to ${dropboxPath}`,
+      });
 
-      if (failCount > 0) {
-        toast({
-          title: "Some uploads failed",
-          description: `${failCount} document(s) failed to upload. Please try again.`,
-          variant: "destructive",
-        });
-      }
+      refetchDocuments();
     } catch (error) {
       console.error('Upload error:', error);
       toast({
         title: "Upload failed",
-        description: "Failed to upload documents. Please try again.",
+        description: error instanceof Error ? error.message : "Failed to upload documents. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -420,15 +421,17 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                       {/* Front Side */}
                       <div 
                         className={cn(
-                          "absolute inset-0 glass-card p-6 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.02]",
-                          isCompleted && "ring-2 ring-green-500/50"
+                          "absolute inset-0 glass-card p-6 rounded-lg group transition-transform duration-300",
+                          isCompleted 
+                            ? "ring-2 ring-green-500/50" 
+                            : "hover-glow hover:scale-[1.02]"
                         )}
                         style={{
                           backfaceVisibility: 'hidden',
                           WebkitBackfaceVisibility: 'hidden',
                           boxShadow: isCompleted 
-                            ? '0 0 40px rgba(34, 197, 94, 0.3)' 
-                            : '0 0 20px rgba(59, 130, 246, 0.2)',
+                            ? '0 0 20px rgba(34, 197, 94, 0.2)' 
+                            : undefined,
                         }}
                       >
                         <div className="flex flex-col gap-3 h-full">
@@ -452,12 +455,25 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                           )}
 
                           {/* Icon */}
-                          <div className="mb-3 flex h-16 md:h-20 items-center justify-center rounded-lg bg-gradient-to-br from-primary/10 to-secondary/10">
-                            <Icon className="h-10 w-10 md:h-12 md:w-12 text-primary" />
+                          <div className={cn(
+                            "mb-3 flex h-16 md:h-20 items-center justify-center rounded-lg",
+                            isCompleted 
+                              ? "bg-green-500/10" 
+                              : "bg-gradient-to-br from-primary/10 to-secondary/10"
+                          )}>
+                            <Icon className={cn(
+                              "h-10 w-10 md:h-12 md:w-12",
+                              isCompleted ? "text-green-500" : "text-primary"
+                            )} />
                           </div>
 
                           {/* Title */}
-                          <h3 className="text-xl md:text-2xl lg:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-lg animate-fade-in">
+                          <h3 className={cn(
+                            "text-xl md:text-2xl lg:text-3xl font-heading font-black tracking-tight bg-clip-text text-transparent drop-shadow-lg animate-fade-in",
+                            isCompleted 
+                              ? "bg-gradient-to-r from-green-500 to-green-600" 
+                              : "bg-gradient-to-r from-primary to-secondary group-hover:scale-110 transition-all duration-300"
+                          )}>
                             {step.title}
                           </h3>
 
