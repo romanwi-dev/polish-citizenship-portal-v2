@@ -171,3 +171,6 @@ verify_jwt = false
 [functions.auto-heal-functions]
 verify_jwt = false
 
+[functions.quick-triple-verify]
+verify_jwt = false
+
