@@ -4159,6 +4159,53 @@ export type Database = {
         }
         Relationships: []
       }
+      workflow_checkpoints: {
+        Row: {
+          case_id: string
+          checkpoint_label: string
+          created_at: string
+          current_stage: string
+          id: string
+          retry_count: number
+          selected_document_ids: string[]
+          status: string
+          steps: Json
+          workflow_run_id: string | null
+        }
+        Insert: {
+          case_id: string
+          checkpoint_label: string
+          created_at?: string
+          current_stage: string
+          id?: string
+          retry_count?: number
+          selected_document_ids?: string[]
+          status: string
+          steps?: Json
+          workflow_run_id?: string | null
+        }
+        Update: {
+          case_id?: string
+          checkpoint_label?: string
+          created_at?: string
+          current_stage?: string
+          id?: string
+          retry_count?: number
+          selected_document_ids?: string[]
+          status?: string
+          steps?: Json
+          workflow_run_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_checkpoints_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       workflow_definitions: {
         Row: {
           assignment_rules: Json | null
@@ -4394,6 +4441,59 @@ export type Database = {
             columns: ["workflow_instance_id"]
             isOneToOne: false
             referencedRelation: "workflow_instances"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workflow_persistence: {
+        Row: {
+          case_id: string
+          created_at: string
+          current_stage: string
+          has_consent: boolean
+          id: string
+          last_error: string | null
+          retry_count: number
+          selected_document_ids: string[]
+          status: string
+          steps: Json
+          updated_at: string
+          workflow_run_id: string | null
+        }
+        Insert: {
+          case_id: string
+          created_at?: string
+          current_stage: string
+          has_consent?: boolean
+          id?: string
+          last_error?: string | null
+          retry_count?: number
+          selected_document_ids?: string[]
+          status: string
+          steps?: Json
+          updated_at?: string
+          workflow_run_id?: string | null
+        }
+        Update: {
+          case_id?: string
+          created_at?: string
+          current_stage?: string
+          has_consent?: boolean
+          id?: string
+          last_error?: string | null
+          retry_count?: number
+          selected_document_ids?: string[]
+          status?: string
+          steps?: Json
+          updated_at?: string
+          workflow_run_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_persistence_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: true
+            referencedRelation: "cases"
             referencedColumns: ["id"]
           },
         ]
