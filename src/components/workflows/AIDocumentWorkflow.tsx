@@ -15,7 +15,8 @@ import {
   RotateCcw,
   PlayCircle,
   XCircle,
-  Loader2
+  Loader2,
+  FolderSync
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -1674,14 +1675,51 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
         >
           <h3 className="text-2xl font-heading font-bold mb-4">Dropbox Documents</h3>
           
-          <div className="mb-6 flex gap-3 items-center">
+          <div className="mb-6 flex gap-3 items-center flex-wrap">
+            <Button
+              onClick={async () => {
+                try {
+                  setIsUploading(true);
+                  const { data, error } = await supabase.functions.invoke('scan-and-queue-ocr', {
+                    body: { 
+                      folderPath: caseData?.dropbox_path || '/CASES/VIP/GORNICKI',
+                      caseId: caseId
+                    }
+                  });
+                  
+                  if (error) throw error;
+                  
+                  toast({
+                    title: "Scan Complete",
+                    description: `Scanned ${data.scanned} files, queued ${data.inserted} for OCR`,
+                  });
+                  
+                  queryClient.invalidateQueries({ queryKey: ['documents', caseId] });
+                } catch (error: any) {
+                  toast({
+                    title: "Scan Failed", 
+                    description: error.message,
+                    variant: "destructive"
+                  });
+                } finally {
+                  setIsUploading(false);
+                }
+              }}
+              disabled={isUploading || !!workflowRun}
+              className="w-full md:w-auto"
+            >
+              <FolderSync className="h-4 w-4 mr-2" />
+              {isUploading ? 'Scanning...' : 'Scan & Queue OCR'}
+            </Button>
+            
             <Button
               onClick={syncDropboxDocuments}
               disabled={isUploading || !caseData?.dropbox_path || !!workflowRun}
+              variant="outline"
               className="w-full md:w-auto"
             >
               <Upload className="h-4 w-4 mr-2" />
-              {isUploading ? 'Syncing...' : 'Sync from Dropbox'}
+              {isUploading ? 'Syncing...' : 'Old Sync Method'}
             </Button>
             
             {!workflowRun && documents && documents.length > 0 && (
