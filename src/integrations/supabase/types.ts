@@ -4159,6 +4159,217 @@ export type Database = {
         }
         Relationships: []
       }
+      verification_alerts: {
+        Row: {
+          acknowledged_by: string | null
+          alert_type: string
+          created_at: string
+          description: string
+          details: Json | null
+          id: string
+          resolution_notes: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string
+          status: string
+          title: string
+          verification_run_id: string | null
+        }
+        Insert: {
+          acknowledged_by?: string | null
+          alert_type: string
+          created_at?: string
+          description: string
+          details?: Json | null
+          id?: string
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity: string
+          status?: string
+          title: string
+          verification_run_id?: string | null
+        }
+        Update: {
+          acknowledged_by?: string | null
+          alert_type?: string
+          created_at?: string
+          description?: string
+          details?: Json | null
+          id?: string
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          status?: string
+          title?: string
+          verification_run_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "verification_alerts_verification_run_id_fkey"
+            columns: ["verification_run_id"]
+            isOneToOne: false
+            referencedRelation: "verification_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      verification_runs: {
+        Row: {
+          action_items: Json | null
+          author: string | null
+          average_score: number | null
+          branch: string | null
+          changed_files: string[] | null
+          claude_result: Json | null
+          claude_score: number | null
+          claude_status: string | null
+          commit_message: string | null
+          commit_sha: string | null
+          completed_at: string | null
+          consensus_level: string | null
+          created_at: string
+          critical_findings: Json | null
+          duration_ms: number | null
+          error_details: Json | null
+          error_message: string | null
+          files_analyzed: number | null
+          gemini_result: Json | null
+          gemini_score: number | null
+          gemini_status: string | null
+          gpt5_result: Json | null
+          gpt5_score: number | null
+          gpt5_status: string | null
+          id: string
+          started_at: string | null
+          status: string
+          successful_models: number | null
+          total_blockers: number | null
+          total_models: number | null
+          trigger_metadata: Json | null
+          trigger_type: string
+          updated_at: string
+          verification_scope: string
+        }
+        Insert: {
+          action_items?: Json | null
+          author?: string | null
+          average_score?: number | null
+          branch?: string | null
+          changed_files?: string[] | null
+          claude_result?: Json | null
+          claude_score?: number | null
+          claude_status?: string | null
+          commit_message?: string | null
+          commit_sha?: string | null
+          completed_at?: string | null
+          consensus_level?: string | null
+          created_at?: string
+          critical_findings?: Json | null
+          duration_ms?: number | null
+          error_details?: Json | null
+          error_message?: string | null
+          files_analyzed?: number | null
+          gemini_result?: Json | null
+          gemini_score?: number | null
+          gemini_status?: string | null
+          gpt5_result?: Json | null
+          gpt5_score?: number | null
+          gpt5_status?: string | null
+          id?: string
+          started_at?: string | null
+          status?: string
+          successful_models?: number | null
+          total_blockers?: number | null
+          total_models?: number | null
+          trigger_metadata?: Json | null
+          trigger_type: string
+          updated_at?: string
+          verification_scope: string
+        }
+        Update: {
+          action_items?: Json | null
+          author?: string | null
+          average_score?: number | null
+          branch?: string | null
+          changed_files?: string[] | null
+          claude_result?: Json | null
+          claude_score?: number | null
+          claude_status?: string | null
+          commit_message?: string | null
+          commit_sha?: string | null
+          completed_at?: string | null
+          consensus_level?: string | null
+          created_at?: string
+          critical_findings?: Json | null
+          duration_ms?: number | null
+          error_details?: Json | null
+          error_message?: string | null
+          files_analyzed?: number | null
+          gemini_result?: Json | null
+          gemini_score?: number | null
+          gemini_status?: string | null
+          gpt5_result?: Json | null
+          gpt5_score?: number | null
+          gpt5_status?: string | null
+          id?: string
+          started_at?: string | null
+          status?: string
+          successful_models?: number | null
+          total_blockers?: number | null
+          total_models?: number | null
+          trigger_metadata?: Json | null
+          trigger_type?: string
+          updated_at?: string
+          verification_scope?: string
+        }
+        Relationships: []
+      }
+      verification_trends: {
+        Row: {
+          change_percent: number | null
+          created_at: string
+          id: string
+          metric_name: string
+          metric_value: number
+          previous_value: number | null
+          trend: string | null
+          verification_run_id: string | null
+          verification_scope: string
+        }
+        Insert: {
+          change_percent?: number | null
+          created_at?: string
+          id?: string
+          metric_name: string
+          metric_value: number
+          previous_value?: number | null
+          trend?: string | null
+          verification_run_id?: string | null
+          verification_scope: string
+        }
+        Update: {
+          change_percent?: number | null
+          created_at?: string
+          id?: string
+          metric_name?: string
+          metric_value?: number
+          previous_value?: number | null
+          trend?: string | null
+          verification_run_id?: string | null
+          verification_scope?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "verification_trends_verification_run_id_fkey"
+            columns: ["verification_run_id"]
+            isOneToOne: false
+            referencedRelation: "verification_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       workflow_checkpoints: {
         Row: {
           case_id: string
@@ -4913,6 +5124,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      calculate_verification_trend: {
+        Args: {
+          p_current_value: number
+          p_metric_name: string
+          p_scope: string
+          p_verification_run_id: string
+        }
+        Returns: undefined
+      }
       check_ai_consent: { Args: { p_case_id: string }; Returns: boolean }
       check_rls_status: {
         Args: never
@@ -4938,6 +5158,17 @@ export type Database = {
         }[]
       }
       cleanup_rate_limit_logs: { Args: never; Returns: undefined }
+      create_verification_alert: {
+        Args: {
+          p_alert_type: string
+          p_description: string
+          p_details?: Json
+          p_severity: string
+          p_title: string
+          p_verification_run_id: string
+        }
+        Returns: string
+      }
       get_case_document_count: { Args: { case_uuid: string }; Returns: number }
       get_cases_with_counts: {
         Args: never

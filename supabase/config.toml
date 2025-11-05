@@ -3,6 +3,15 @@ project_id = "oogmuakyqadpynnrasnd"
 [functions.verify-workflow-multi-model]
 verify_jwt = false
 
+[functions.github-webhook-verify]
+verify_jwt = false
+
+[functions.auto-verify-portal]
+verify_jwt = false
+
+[functions.scheduled-verification]
+verify_jwt = false
+
 [functions.download-and-encode]
 verify_jwt = true
 
