@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, FolderSync, Undo2, Play, CheckCircle2, XCircle, AlertTriangle } from "lucide-react";
+import { Loader2, FolderSync, Undo2, Play, CheckCircle2, XCircle, AlertTriangle, RefreshCw, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
@@ -90,6 +90,47 @@ export default function DropboxMigration() {
     },
   });
 
+  // Execute Dropbox resync
+  const resyncMutation = useMutation({
+    mutationFn: async () => {
+      const { data, error } = await supabase.functions.invoke("dropbox-resync");
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (data) => {
+      toast.success(`Dropbox resync completed: ${data.updatedCases} cases, ${data.updatedDocuments} documents updated`);
+      queryClient.invalidateQueries({ queryKey: ["migration-plan"] });
+      // Re-queue failed OCR after resync
+      reQueueOCRMutation.mutate();
+    },
+    onError: (error: Error) => {
+      toast.error(`Resync failed: ${error.message}`);
+    },
+  });
+
+  // Re-queue failed OCR documents
+  const reQueueOCRMutation = useMutation({
+    mutationFn: async () => {
+      const { data, error } = await supabase
+        .from('documents')
+        .update({ 
+          ocr_status: 'queued',
+          ocr_retry_count: 0 
+        })
+        .in('ocr_status', ['failed', 'error'])
+        .select('id');
+      
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (data) => {
+      toast.success(`${data?.length || 0} documents re-queued for OCR`);
+    },
+    onError: (error: Error) => {
+      toast.error(`Re-queue failed: ${error.message}`);
+    },
+  });
+
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "completed":
@@ -107,20 +148,79 @@ export default function DropboxMigration() {
     <div className="container mx-auto p-6 space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Dropbox Migration Scanner</h1>
+          <h1 className="text-3xl font-bold">Dropbox Migration & Sync</h1>
           <p className="text-muted-foreground">
-            Scan and fix naming inconsistencies in Dropbox /CASES folder
+            Scan actual Dropbox files and fix path mismatches in database
           </p>
         </div>
         <FolderSync className="h-10 w-10 text-primary" />
       </div>
 
-      {/* Migration Plan */}
+      {/* Dropbox Resync Section */}
       <Card>
         <CardHeader>
-          <CardTitle>Migration Plan</CardTitle>
+          <CardTitle>Dropbox File Sync</CardTitle>
           <CardDescription>
-            Proposed changes to align Dropbox folders with database
+            Scan actual Dropbox folder structure and update database paths
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Alert>
+            <RefreshCw className="h-4 w-4" />
+            <AlertDescription>
+              This will scan your /CASES folder in Dropbox, compare actual file locations with database paths,
+              fix any mismatches, and re-queue failed OCR documents.
+            </AlertDescription>
+          </Alert>
+
+          <div className="flex gap-2">
+            <Button
+              onClick={() => resyncMutation.mutate()}
+              disabled={resyncMutation.isPending}
+              className="gap-2"
+              variant="default"
+            >
+              {resyncMutation.isPending ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Scanning Dropbox...
+                </>
+              ) : (
+                <>
+                  <RefreshCw className="h-4 w-4" />
+                  Scan & Sync Dropbox
+                </>
+              )}
+            </Button>
+
+            <Button
+              onClick={() => reQueueOCRMutation.mutate()}
+              disabled={reQueueOCRMutation.isPending}
+              variant="outline"
+              className="gap-2"
+            >
+              {reQueueOCRMutation.isPending ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Re-queuing...
+                </>
+              ) : (
+                <>
+                  <FileText className="h-4 w-4" />
+                  Re-queue Failed OCR
+                </>
+              )}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Database Path Normalization */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Database Path Normalization</CardTitle>
+          <CardDescription>
+            Normalize folder naming conventions in database only (does not scan actual Dropbox files)
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
