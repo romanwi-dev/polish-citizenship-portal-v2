@@ -156,3 +156,6 @@ verify_jwt = false
 [functions.verify-workflow-openai]
 verify_jwt = true
 
+[functions.scan-and-queue-ocr]
+verify_jwt = true
+
