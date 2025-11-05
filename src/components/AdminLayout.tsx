@@ -224,9 +224,15 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
   return (
     <SidebarProvider open={sidebarOpen} onOpenChange={setSidebarOpen} defaultOpen={true}>
-      <div className="min-h-screen flex w-full">
+      <div className="min-h-screen flex w-full relative">
+        {/* Default blue gradient background - Layout Level Only (DBGK compliant) */}
+        <div className="fixed inset-0 pointer-events-none -z-10">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-background to-blue-50/30 dark:from-blue-950/20 dark:via-background dark:to-blue-950/10" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+        </div>
+        
         <AppSidebar />
-        <main className="flex-1 overflow-auto">
+        <main className="flex-1 overflow-auto relative z-0">
           {children}
         </main>
       </div>
