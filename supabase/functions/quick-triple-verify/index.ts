@@ -71,14 +71,23 @@ ${JSON.stringify(proposal, null, 2)}`;
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: 'gpt-5-mini-2025-08-07',
+          model: 'gpt-4o-mini', // Using the latest available mini model
           messages: [
             { role: 'system', content: systemPrompt },
             { role: 'user', content: userPrompt }
           ],
-          max_completion_tokens: 500,
+          max_completion_tokens: 2000, // Increased to allow for reasoning + response
         }),
-      }).then(r => r.json()),
+      }).then(async r => {
+        const json = await r.json();
+        console.log('[OpenAI] Status:', r.status);
+        console.log('[OpenAI] Response:', JSON.stringify(json).substring(0, 500));
+        return json;
+      })
+      .catch(err => {
+        console.error('[OpenAI] Fetch error:', err);
+        throw err;
+      }),
 
       // Anthropic (Claude)
       fetch('https://api.anthropic.com/v1/messages', {
@@ -117,18 +126,24 @@ ${JSON.stringify(proposal, null, 2)}`;
 
     const processResult = (result: any, modelName: string) => {
       if (result.status === 'rejected') {
+        console.error(`[${modelName}] Promise rejected:`, result.reason);
         return { model: modelName, error: result.reason?.message || 'Request failed' };
       }
       
       const data = result.value;
+      console.log(`[${modelName}] Processing result. Keys:`, Object.keys(data || {}));
+      
       let content = '';
       
       if (data.choices?.[0]?.message?.content) {
         content = data.choices[0].message.content; // OpenAI/Gemini
+        console.log(`[${modelName}] Content length:`, content.length);
       } else if (data.content?.[0]?.text) {
         content = data.content[0].text; // Claude
+        console.log(`[${modelName}] Content length:`, content.length);
       } else {
-        return { model: modelName, error: 'No content in response' };
+        console.error(`[${modelName}] No content found. Response structure:`, JSON.stringify(data).substring(0, 300));
+        return { model: modelName, error: 'No content in response', rawResponse: data };
       }
       
       return { model: modelName, verdict: content };
