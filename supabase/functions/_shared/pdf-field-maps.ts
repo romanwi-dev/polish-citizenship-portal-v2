@@ -1,19 +1,15 @@
 /**
  * Centralized PDF Field Mappings
  * Single source of truth for all PDF template field mappings
- * 
- * Imports from frontend config to ensure consistency
  */
 
-// Import all field mappings from frontend config
-import { 
-  POA_ADULT_PDF_MAP,
-  POA_MINOR_PDF_MAP,
-  POA_SPOUSES_PDF_MAP,
-  UZUPELNIENIE_PDF_MAP,
-  CITIZENSHIP_PDF_MAP,
-  FAMILY_TREE_PDF_MAP,
-} from '../../../src/config/pdfMappings/index.ts';
+// Import all field mappings from edge function mappings directory
+import { POA_ADULT_PDF_MAP } from './mappings/poa-adult.ts';
+import { POA_MINOR_PDF_MAP } from './mappings/poa-minor.ts';
+import { POA_SPOUSES_PDF_MAP } from './mappings/poa-spouses.ts';
+import { UZUPELNIENIE_PDF_MAP } from './mappings/uzupelnienie.ts';
+import { CITIZENSHIP_PDF_MAP } from './mappings/citizenship.ts';
+import { FAMILY_TREE_PDF_MAP } from './mappings/family-tree.ts';
 
 /**
  * Template field mappings registry
