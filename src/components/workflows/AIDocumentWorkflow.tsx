@@ -1718,6 +1718,12 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
                   <div className="flex-1">
                     <p className="font-medium">{doc.name}</p>
                     <div className="flex gap-2 mt-1">
+                      {doc.ocr_status === 'queued' && (
+                        <Badge variant="outline" className="gap-1 bg-blue-50 text-blue-700 border-blue-200">
+                          <Loader2 className="h-3 w-3 animate-spin" />
+                          Queued for OCR
+                        </Badge>
+                      )}
                       {doc.ocr_status === 'failed' && (
                         <Badge variant="destructive" className="gap-1">
                           <XCircle className="h-3 w-3" />
