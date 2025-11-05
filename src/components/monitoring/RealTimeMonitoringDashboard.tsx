@@ -63,16 +63,16 @@ export function RealTimeMonitoringDashboard() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('generated_documents')
-        .select('size', { count: 'exact' });
+        .select('size, created_at', { count: 'exact' });
 
       if (error) throw error;
 
-      const totalSize = data.reduce((acc, doc) => acc + (doc.size || 0), 0);
+      const totalSize = (data || []).reduce((acc: number, doc: any) => acc + (doc.size || 0), 0);
       
       return {
         total_size_mb: totalSize / (1024 * 1024),
-        file_count: data.length,
-        recent_uploads: data.filter(doc => 
+        file_count: data?.length || 0,
+        recent_uploads: (data || []).filter((doc: any) => 
           new Date(doc.created_at).getTime() > Date.now() - 3600000
         ).length,
       };
@@ -90,12 +90,12 @@ export function RealTimeMonitoringDashboard() {
 
       if (error) throw error;
 
-      const last24h = data.filter(doc =>
+      const last24h = (data || []).filter((doc: any) =>
         new Date(doc.created_at).getTime() > Date.now() - 86400000
       ).length;
 
       return {
-        total: data.length,
+        total: data?.length || 0,
         last24h,
         successRate: 98.5, // Mock - would need error tracking
       };
