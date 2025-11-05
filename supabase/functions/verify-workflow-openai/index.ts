@@ -435,7 +435,10 @@ Output COMPLETE JSON matching the schema. Include scores, ratings, and detailed 
     console.log('📤 Sending request to OpenAI GPT-5...');
 
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 480000); // 8 minute timeout for comprehensive analysis
+    const timeoutId = setTimeout(() => {
+      console.error('⏱️ Analysis timeout - exceeding 3 minutes');
+      controller.abort();
+    }, 180000); // 3 minute timeout (edge functions have 150s limit, be safe)
 
     try {
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -445,39 +448,72 @@ Output COMPLETE JSON matching the schema. Include scores, ratings, and detailed 
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: 'gpt-5-mini-2025-08-07', // Use mini for faster analysis
+          model: 'gpt-5-2025-08-07', // Use full GPT-5 for reliability
           messages: [
             { role: 'system', content: systemPrompt },
             { role: 'user', content: userPrompt }
           ],
-          max_completion_tokens: 16000,
+          max_completion_tokens: 12000, // Reduced for faster response
           response_format: { type: "json_object" }
         }),
         signal: controller.signal,
       });
 
       clearTimeout(timeoutId);
+      console.log(`✅ OpenAI responded with status: ${response.status}`);
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('❌ OpenAI API error:', response.status, errorText);
+        console.error(`❌ OpenAI API error: ${response.status}`);
+        console.error(`Error details: ${errorText.substring(0, 500)}`);
         
         if (response.status === 429) {
-          throw new Error('Rate limit exceeded. Please wait a moment and try again.');
+          return new Response(
+            JSON.stringify({ 
+              success: false, 
+              error: 'OpenAI rate limit exceeded. Please wait a moment and try again.' 
+            }),
+            { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
         }
-        if (response.status === 401) {
-          throw new Error('Invalid OpenAI API key. Please check your configuration.');
+        if (response.status === 401 || response.status === 403) {
+          return new Response(
+            JSON.stringify({ 
+              success: false, 
+              error: 'OpenAI API authentication failed. Check your API key configuration.' 
+            }),
+            { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+        if (response.status === 400) {
+          return new Response(
+            JSON.stringify({ 
+              success: false, 
+              error: `OpenAI request error: ${errorText}` 
+            }),
+            { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
         }
         
-        throw new Error(`OpenAI API error: ${response.status} - ${errorText}`);
+        throw new Error(`OpenAI API error ${response.status}: ${errorText.substring(0, 200)}`);
       }
 
       const aiResponse = await response.json();
       console.log('📥 Received response from OpenAI');
+      console.log(`Response has ${aiResponse.choices?.length || 0} choices`);
+      console.log(`Usage: ${JSON.stringify(aiResponse.usage || {})}`);
       
       if (!aiResponse.choices?.[0]?.message?.content) {
-        console.error('❌ Invalid AI response structure:', aiResponse);
-        throw new Error('Invalid response from OpenAI - no content returned');
+        console.error('❌ Invalid AI response structure:', JSON.stringify(aiResponse).substring(0, 500));
+        return new Response(
+          JSON.stringify({ 
+            success: false, 
+            error: 'Invalid response from OpenAI - no content returned. The model may have failed to generate a response.' 
+          }),
+          { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
       }
 
       // Parse with robust error handling
@@ -486,26 +522,56 @@ Output COMPLETE JSON matching the schema. Include scores, ratings, and detailed 
 
       try {
         verificationResult = JSON.parse(rawContent);
+        console.log('✅ JSON parsed successfully');
       } catch (parseError) {
         console.error('❌ JSON parse error:', parseError);
+        console.error('Raw content preview:', rawContent.substring(0, 500));
         
         // Try to extract JSON from markdown code blocks
         const jsonMatch = rawContent.match(/```(?:json)?\s*(\{[\s\S]*\})\s*```/);
         if (jsonMatch) {
-          verificationResult = JSON.parse(jsonMatch[1]);
-          console.log('✓ JSON extracted from code block');
+          try {
+            verificationResult = JSON.parse(jsonMatch[1]);
+            console.log('✓ JSON extracted from markdown code block');
+          } catch (innerError) {
+            console.error('Failed to parse extracted JSON:', innerError);
+            return new Response(
+              JSON.stringify({ 
+                success: false, 
+                error: 'OpenAI returned malformed JSON. Try again or reduce the number of files.',
+                rawPreview: rawContent.substring(0, 200)
+              }),
+              { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+            );
+          }
         } else {
-          throw new Error(`Failed to parse OpenAI response: ${parseError instanceof Error ? parseError.message : 'Unknown error'}`);
+          return new Response(
+            JSON.stringify({ 
+              success: false, 
+              error: `Failed to parse OpenAI response: ${parseError instanceof Error ? parseError.message : 'Unknown error'}`,
+              rawPreview: rawContent.substring(0, 200)
+            }),
+            { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
         }
       }
 
       // Validate response structure
       if (!verificationResult.fileAnalysis || !Array.isArray(verificationResult.fileAnalysis)) {
         console.error('❌ Invalid verification result structure');
-        throw new Error('OpenAI returned invalid verification structure');
+        console.error('Missing or invalid fileAnalysis array');
+        return new Response(
+          JSON.stringify({ 
+            success: false, 
+            error: 'OpenAI returned incomplete verification structure. The analysis may have been cut off.' 
+          }),
+          { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
       }
 
-      console.log(`✅ Verification complete: ${verificationResult.overallRisk} risk, ${verificationResult.blockersCount} blockers`);
+      const blockersCount = verificationResult.criticalFindings?.blockersCount || 0;
+      const overallScore = verificationResult.overallAssessment?.overallScore || 0;
+      console.log(`✅ Verification complete: Score ${overallScore}/100, ${blockersCount} blockers`);
 
       return new Response(
         JSON.stringify({
@@ -515,7 +581,7 @@ Output COMPLETE JSON matching the schema. Include scores, ratings, and detailed 
             filesAnalyzed: files.length,
             focusAreas,
             timestamp: new Date().toISOString(),
-            model: 'gpt-5-mini-2025-08-07'
+            model: 'gpt-5-2025-08-07'
           }
         }),
         { 
@@ -526,18 +592,27 @@ Output COMPLETE JSON matching the schema. Include scores, ratings, and detailed 
     } catch (fetchError: unknown) {
       clearTimeout(timeoutId);
       if (fetchError instanceof Error && fetchError.name === 'AbortError') {
-        console.error('⏱️ Timeout error - analysis exceeded time limit');
-        throw new Error('Analysis timeout - verification took too long. Try analyzing fewer files or reduce complexity.');
+        console.error('⏱️ Analysis timeout - exceeded 3 minute limit');
+        return new Response(
+          JSON.stringify({ 
+            success: false, 
+            error: 'Analysis timeout - verification took too long. Try analyzing fewer files or simplify focus areas.' 
+          }),
+          { status: 408, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
       }
       throw fetchError;
     }
 
   } catch (error) {
-    console.error('❌ Verification error:', error);
+    console.error('❌ Verification function error:', error);
+    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
+    
     return new Response(
       JSON.stringify({
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: error instanceof Error ? error.message : 'Unknown verification error',
+        errorType: error instanceof Error ? error.name : 'UnknownError'
       }),
       {
         status: 500,
