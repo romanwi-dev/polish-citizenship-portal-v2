@@ -45,76 +45,106 @@ const workflowSteps: AIWorkflowStep[] = [
   },
   {
     number: "02",
+    title: "Document Intake",
+    description: "System receives and validates uploaded documents for processing readiness.",
+    icon: FileText,
+    gradient: "from-secondary to-accent",
+    stage: 'intake',
+    agent: 'ai',
+    backDetails: "Automated validation checks file formats, sizes, and quality. Documents are indexed and prepared for AI classification pipeline."
+  },
+  {
+    number: "03",
     title: "AI Classification",
     description: "AI automatically names, describes, and categorizes each document by type and person.",
     icon: Brain,
-    gradient: "from-secondary to-accent",
+    gradient: "from-accent to-primary",
     stage: 'ai_classify',
     agent: 'ai',
     backDetails: "Advanced AI analyzes document images to identify type and match to relevant family members with confidence scoring."
   },
   {
-    number: "03",
+    number: "04",
     title: "HAC Review - Classification",
     description: "Human attorney approves or corrects AI document classification before proceeding.",
     icon: ShieldCheck,
-    gradient: "from-accent to-primary",
+    gradient: "from-primary to-secondary",
     stage: 'hac_classify',
     agent: 'human',
     backDetails: "Attorney reviews AI-suggested document types and person assignments. Can override low-confidence classifications. Ensures data integrity before form population."
   },
   {
-    number: "04",
+    number: "05",
     title: "OCR Processing",
     description: "Extract text data from all documents using OCR technology.",
     icon: Brain,
-    gradient: "from-primary to-secondary",
+    gradient: "from-secondary to-accent",
     stage: 'ocr',
     agent: 'ai',
     backDetails: "Automated OCR processing extracts structured data from documents in parallel for efficient form population."
   },
   {
-    number: "05",
+    number: "06",
+    title: "OCR Quality Check",
+    description: "Verify OCR accuracy and data extraction quality for critical fields.",
+    icon: Eye,
+    gradient: "from-accent to-primary",
+    stage: 'ocr_quality',
+    agent: 'both',
+    backDetails: "AI and human review OCR results for accuracy. Critical fields like names, dates, and document numbers are verified for errors."
+  },
+  {
+    number: "07",
     title: "Translation Detection",
     description: "Identify documents requiring translation from foreign languages to Polish.",
     icon: Languages,
-    gradient: "from-accent to-primary",
+    gradient: "from-primary to-secondary",
     stage: 'translation_detection',
     agent: 'ai',
     backDetails: "AI detects document language and flags non-Polish documents for certified translation. Creates translation tasks automatically."
   },
   {
-    number: "06",
+    number: "08",
     title: "Document Translation",
     description: "Professional sworn translators translate foreign documents to Polish.",
     icon: FileText,
-    gradient: "from-primary to-secondary",
+    gradient: "from-secondary to-accent",
     stage: 'translation',
     agent: 'both',
     backDetails: "Certified sworn translators convert foreign-language documents to Polish. Both AI-assisted and human professional translation workflows supported."
   },
   {
-    number: "07",
+    number: "09",
     title: "Translation Review",
     description: "HAC reviews and approves all translated documents for accuracy.",
     icon: ShieldCheck,
-    gradient: "from-secondary to-accent",
+    gradient: "from-accent to-primary",
     stage: 'translation_review',
     agent: 'human',
     backDetails: "Attorney verifies translation accuracy, legal terminology, and ensures all documents meet Polish authority requirements."
   },
   {
-    number: "08",
+    number: "10",
     title: "Form Population",
     description: "OCR-extracted data automatically fills citizenship application forms and family tree.",
     icon: FileText,
-    gradient: "from-accent to-primary",
+    gradient: "from-primary to-secondary",
     stage: 'form_population',
     agent: 'ai',
     backDetails: "Smart system populates citizenship forms and documents using OCR data with intelligent field mapping and manual entry protection."
   },
   {
-    number: "09",
+    number: "11",
+    title: "Data Validation",
+    description: "Cross-reference and validate all populated data across multiple documents.",
+    icon: CheckCircle2,
+    gradient: "from-secondary to-accent",
+    stage: 'data_validation',
+    agent: 'ai',
+    backDetails: "AI cross-checks data consistency across documents. Flags discrepancies in names, dates, and relationships for human review."
+  },
+  {
+    number: "12",
     title: "HAC Review - Forms",
     description: "Attorney verifies all populated form data for accuracy and completeness.",
     icon: ShieldCheck,
@@ -124,7 +154,7 @@ const workflowSteps: AIWorkflowStep[] = [
     backDetails: "Human review of all form fields populated by AI. Attorney checks data consistency, flags missing information, and approves forms for PDF generation."
   },
   {
-    number: "10",
+    number: "13",
     title: "Dual AI Verification",
     description: "Multiple AI systems verify data quality, completeness, and readiness for PDF generation.",
     icon: Brain,
@@ -134,7 +164,7 @@ const workflowSteps: AIWorkflowStep[] = [
     backDetails: "Independent AI systems analyze form data to check for missing fields, data consistency, legal compliance, and generate quality scores with detailed feedback."
   },
   {
-    number: "11",
+    number: "14",
     title: "HAC Review - Verification",
     description: "Attorney reviews AI verification results and makes final approval decision.",
     icon: ShieldCheck,
@@ -144,11 +174,21 @@ const workflowSteps: AIWorkflowStep[] = [
     backDetails: "Attorney analyzes dual AI verification reports. Reviews flagged issues, confidence scores, and recommendations. Final human judgment before PDF generation authorization."
   },
   {
-    number: "12",
-    title: "PDF Generation",
-    description: "Generate final citizenship application, POA, and family tree PDFs ready for submission.",
+    number: "15",
+    title: "Final Quality Audit",
+    description: "Complete audit of all documents, translations, and forms before PDF generation.",
     icon: FileCheck,
     gradient: "from-accent to-primary",
+    stage: 'final_audit',
+    agent: 'both',
+    backDetails: "Comprehensive review ensuring all documents are present, translated, verified, and forms are complete. Last checkpoint before official PDF creation."
+  },
+  {
+    number: "16",
+    title: "PDF Generation",
+    description: "Generate final citizenship application, POA, and family tree PDFs ready for submission.",
+    icon: Download,
+    gradient: "from-primary to-secondary",
     stage: 'pdf_generation',
     agent: 'both',
     backDetails: "System generates PDFs: POA (adult/minor/spouses), Citizenship Application, Family Tree, Uzupełnienie. All forms filled with verified data, formatted for Polish authorities."
@@ -229,13 +269,13 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
             return (
               <div 
                 key={step.stage}
-                className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-8 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''} animate-fade-in`}
+                className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-8 ${index % 2 === 1 ? 'md:flex-row-reverse' : ''} animate-fade-in`}
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 {/* Content Card - 5/12 width on desktop */}
                 <div className="w-full md:w-5/12">
                   <div 
-                    className="relative h-[280px] md:h-[400px]"
+                    className="relative h-[350px] md:h-[450px]"
                     style={{ perspective: '1000px' }}
                   >
                     <div
