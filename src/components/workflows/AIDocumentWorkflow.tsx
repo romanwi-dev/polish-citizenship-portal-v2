@@ -13,7 +13,9 @@ import {
   Play,
   Pause,
   RotateCcw,
-  PlayCircle
+  PlayCircle,
+  XCircle,
+  Loader2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -1276,13 +1278,30 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
         return;
       }
 
-      const { data, error } = await supabase.functions.invoke('download-dropbox-file', {
-        body: { dropboxPath }
-      });
+      toast({ title: "Downloading...", description: "Please wait" });
 
-      if (error) throw error;
+      // Use direct fetch instead of supabase.functions.invoke for binary data
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/download-dropbox-file`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ dropboxPath }),
+        }
+      );
 
-      const blob = new Blob([data]);
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Download failed' }));
+        throw new Error(errorData.error || `Download failed: ${response.status}`);
+      }
+
+      // Get the binary data
+      const blob = await response.blob();
+      
+      // Create download link
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -1292,8 +1311,9 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
       
-      toast({ title: "Download started" });
+      toast({ title: "Download complete", description: fileName });
     } catch (error) {
+      console.error('Download error:', error);
       toast({
         title: "Download failed",
         description: error instanceof Error ? error.message : 'Unknown error',
@@ -1676,7 +1696,27 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
                   <div className="flex-1">
                     <p className="font-medium">{doc.name}</p>
                     <div className="flex gap-2 mt-1">
-                      <Badge variant="outline">{doc.ocr_status || 'pending'}</Badge>
+                      {doc.ocr_status === 'failed' && (
+                        <Badge variant="destructive" className="gap-1">
+                          <XCircle className="h-3 w-3" />
+                          OCR Failed
+                        </Badge>
+                      )}
+                      {doc.ocr_status === 'completed' && (
+                        <Badge variant="outline" className="gap-1 bg-green-50 text-green-700 border-green-200">
+                          <CheckCircle2 className="h-3 w-3" />
+                          OCR Complete
+                        </Badge>
+                      )}
+                      {doc.ocr_status === 'processing' && (
+                        <Badge variant="secondary" className="gap-1">
+                          <Loader2 className="h-3 w-3 animate-spin" />
+                          Processing
+                        </Badge>
+                      )}
+                      {!doc.ocr_status && (
+                        <Badge variant="outline">Pending</Badge>
+                      )}
                       {doc.document_type && <Badge>{doc.document_type}</Badge>}
                       {doc.person_type && <Badge variant="secondary">{doc.person_type}</Badge>}
                     </div>
