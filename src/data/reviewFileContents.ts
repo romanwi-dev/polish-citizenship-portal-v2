@@ -17,6 +17,7 @@ import useWorkflowState from '@/hooks/useWorkflowState.ts?raw';
 import useDocumentProgress from '@/hooks/useDocumentProgress.ts?raw';
 import useRequestBatcher from '@/hooks/useRequestBatcher.ts?raw';
 import base64EncoderWorker from '@/workers/base64Encoder.worker.ts?raw';
+import staticCodeAnalyzer from '@/utils/staticCodeAnalyzer.ts?raw';
 
 /**
  * Map of file paths to their raw string content
@@ -39,6 +40,7 @@ export const fileContents: Record<string, string> = {
   'src/hooks/useDocumentProgress.ts': useDocumentProgress,
   'src/hooks/useRequestBatcher.ts': useRequestBatcher,
   'src/workers/base64Encoder.worker.ts': base64EncoderWorker,
+  'src/utils/staticCodeAnalyzer.ts': staticCodeAnalyzer,
 };
 
 /**

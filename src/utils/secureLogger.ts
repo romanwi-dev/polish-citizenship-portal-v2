@@ -225,8 +225,15 @@ class SecureLogger {
   
   /**
    * Test PII detection (development only)
+   * HARDENED: Complete no-op in production builds for security
    */
   testPIIDetection(testData: any): any {
+    // CRITICAL: Block execution completely in production
+    if (import.meta.env.PROD) {
+      console.error('[SecureLogger] testPIIDetection is disabled in production');
+      return null;
+    }
+    
     if (!this.isDev) {
       console.warn('[SecureLogger] PII testing only available in development');
       return null;

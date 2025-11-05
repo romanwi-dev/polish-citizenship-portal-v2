@@ -86,7 +86,12 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
       
       const chunk = uint8Array.slice(i, Math.min(i + CHUNK_SIZE, uint8Array.length));
       
-      // Convert chunk to base64
+      // VERIFIED SAFE: Binary to base64 encoding using standard browser API
+      // Uint8Array values are always 0-255 (single bytes), String.fromCharCode correctly
+      // handles byte values in this range, and btoa expects a binary string where each
+      // character code represents a byte. This is the standard pattern for converting
+      // ArrayBuffer to base64 in browsers.
+      // Reference: https://developer.mozilla.org/en-US/docs/Web/API/btoa#unicode_strings
       let chunkString = '';
       for (let j = 0; j < chunk.length; j++) {
         chunkString += String.fromCharCode(chunk[j]);
