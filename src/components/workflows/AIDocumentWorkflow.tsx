@@ -43,7 +43,7 @@ import { DocumentProgressCard } from "./DocumentProgressCard";
 import { BatchStatsDashboard } from "./BatchStatsDashboard";
 import { PDFPreviewPanel } from "./PDFPreviewPanel";
 import { ErrorRecoveryPanel } from "./ErrorRecoveryPanel";
-import { PDFPreviewDialog } from "@/components/PDFPreviewDialog";
+import { DocumentViewer } from "./DocumentViewer";
 import { PrePrintChecklist } from "@/components/PrePrintChecklist";
 import { useDocumentWorkflowActions } from "@/hooks/useDocumentWorkflowActions";
 import type { RealtimeChannel } from "@supabase/supabase-js";
@@ -306,6 +306,8 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const [previewDocName, setPreviewDocName] = useState<string>("");
   const [selectedDocId, setSelectedDocId] = useState<string>("");
+  const [previewOcrText, setPreviewOcrText] = useState<string>("");
+  const [previewDocType, setPreviewDocType] = useState<string>("");
   
   // Document workflow actions with platform support
   const {
@@ -1292,16 +1294,18 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
 
       if (error) throw error;
 
-      // Get OCR text if available
+      // Get OCR text and document type if available
       const { data: docData } = await supabase
         .from('documents')
-        .select('ocr_text')
+        .select('ocr_text, type, file_extension')
         .eq('id', documentId)
         .single();
 
       setPreviewUrl(data.signedUrl);
       setPreviewDocName(name);
       setSelectedDocId(documentId);
+      setPreviewOcrText(docData?.ocr_text || '');
+      setPreviewDocType(docData?.type || docData?.file_extension || '');
       setIsPDFDialogOpen(true);
     } catch (error: any) {
       toast({
@@ -1317,6 +1321,8 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
     setPreviewUrl('');
     setPreviewDocName('');
     setSelectedDocId('');
+    setPreviewOcrText('');
+    setPreviewDocType('');
   };
 
   const handleDownloadEditable = async () => {
@@ -2177,14 +2183,14 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
           </div>
         )}
 
-        {/* PDF Preview Dialog */}
-        <PDFPreviewDialog
-          open={isPDFDialogOpen}
+        {/* Document Preview Dialog */}
+        <DocumentViewer
+          isOpen={isPDFDialogOpen}
           onClose={closePreview}
-          pdfUrl={previewUrl}
-          onDownloadEditable={handleDownloadEditable}
-          onDownloadFinal={handleDownloadFinal}
-          documentTitle={previewDocName}
+          documentUrl={previewUrl}
+          documentName={previewDocName}
+          documentType={previewDocType}
+          ocrText={previewOcrText}
         />
 
         {/* AI Pre-Print Checklist */}
