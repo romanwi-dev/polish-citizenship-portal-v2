@@ -1,5 +1,8 @@
 project_id = "oogmuakyqadpynnrasnd"
 
+[functions.verify-workflow-multi-model]
+verify_jwt = false
+
 [functions.download-and-encode]
 verify_jwt = true
 
