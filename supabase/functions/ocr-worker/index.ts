@@ -12,6 +12,7 @@ const MAX_RETRIES = 3;
 
 /**
  * Classify errors as permanent (no retry) vs transient (retry with backoff)
+ * PHASE 1 FIX: Enhanced classification for Dropbox path errors
  */
 function classifyError(errorMessage: string): 'permanent' | 'transient' {
   const permanentPatterns = [
@@ -21,7 +22,11 @@ function classifyError(errorMessage: string): 'permanent' | 'transient' {
     /file path does not exist/i,
     /malformed_path/i,
     /path.*not found/i,
+    /path.*not_found/i, // Dropbox error format
     /missing required fields/i,
+    /409/, // Dropbox conflict (usually path issues)
+    /all.*path variations failed/i, // Our new comprehensive path check
+    /dropbox download failed.*409/i,
   ];
 
   const transientPatterns = [
@@ -37,14 +42,21 @@ function classifyError(errorMessage: string): 'permanent' | 'transient' {
   ];
 
   for (const pattern of permanentPatterns) {
-    if (pattern.test(errorMessage)) return 'permanent';
+    if (pattern.test(errorMessage)) {
+      console.log(`  🚫 Classified as PERMANENT error (pattern: ${pattern})`);
+      return 'permanent';
+    }
   }
 
   for (const pattern of transientPatterns) {
-    if (pattern.test(errorMessage)) return 'transient';
+    if (pattern.test(errorMessage)) {
+      console.log(`  ⏳ Classified as TRANSIENT error (pattern: ${pattern})`);
+      return 'transient';
+    }
   }
 
   // Default to transient for unknown errors (safer to retry)
+  console.log(`  ⚠️ Unknown error type - defaulting to TRANSIENT`);
   return 'transient';
 }
 
@@ -104,9 +116,15 @@ serve(async (req) => {
     const processPromises = queuedDocs.map(async (doc) => {
       const startTime = Date.now();
       let errorType: 'permanent' | 'transient' | null = null;
+      let resolvedPath: string | null = null;
       
       try {
-        console.log(`Processing document: ${doc.name} (${doc.id})`);
+        console.log(`\n${'='.repeat(60)}`);
+        console.log(`📄 Processing: ${doc.name}`);
+        console.log(`   Document ID: ${doc.id}`);
+        console.log(`   Original Path: ${doc.dropbox_path}`);
+        console.log(`   Retry Count: ${doc.ocr_retry_count || 0}/${MAX_RETRIES}`);
+        console.log(`${'='.repeat(60)}`);
 
         // Update status to processing
         await supabase
@@ -117,10 +135,11 @@ serve(async (req) => {
           })
           .eq("id", doc.id);
 
-        // Download file from Dropbox using direct fetch with auth header
+        // Download file from Dropbox using enhanced path resolution
         const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
         const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
+        console.log('📥 Calling download-dropbox-file with path validation...');
         const downloadResponse = await fetch(
           `${supabaseUrl}/functions/v1/download-dropbox-file`,
           {
@@ -135,13 +154,35 @@ serve(async (req) => {
 
         if (!downloadResponse.ok) {
           const errorText = await downloadResponse.text();
+          console.error(`❌ Download failed: ${downloadResponse.status} ${downloadResponse.statusText}`);
+          console.error(`   Error details: ${errorText}`);
           throw new Error(`Download failed: ${downloadResponse.status} ${downloadResponse.statusText} - ${errorText}`);
+        }
+
+        // Extract resolved path from response header (if available)
+        resolvedPath = downloadResponse.headers.get('X-Dropbox-Path-Resolved');
+        if (resolvedPath) {
+          console.log(`✓ Download successful!`);
+          console.log(`  Resolved Path: ${resolvedPath}`);
+          
+          // Update document with corrected path if different
+          if (resolvedPath !== doc.dropbox_path) {
+            console.log(`  → Updating database with corrected path`);
+            await supabase
+              .from("documents")
+              .update({ dropbox_path: resolvedPath })
+              .eq("id", doc.id);
+          }
+        } else {
+          console.log(`✓ Download successful (no path resolution needed)`);
         }
 
         // Get file content as ArrayBuffer
         const arrayBuffer = await downloadResponse.arrayBuffer();
+        console.log(`  File size: ${(arrayBuffer.byteLength / 1024).toFixed(1)} KB`);
         
         // Convert to base64
+        console.log('🔄 Converting to base64...');
         const base64 = btoa(
           new Uint8Array(arrayBuffer).reduce(
             (data, byte) => data + String.fromCharCode(byte),
@@ -150,6 +191,7 @@ serve(async (req) => {
         );
 
         // Call OCR function
+        console.log('🤖 Calling OCR universal...');
         const { data: ocrResult, error: ocrError } = await supabase.functions.invoke(
           "ocr-universal",
           {
@@ -164,29 +206,50 @@ serve(async (req) => {
         );
 
         if (ocrError) {
+          console.error(`❌ OCR failed: ${ocrError.message}`);
           throw new Error(`OCR failed: ${ocrError.message}`);
         }
 
-        console.log(`✓ Successfully processed: ${doc.name}`);
+        const processingTime = Date.now() - startTime;
+        console.log(`✅ Successfully processed in ${(processingTime / 1000).toFixed(1)}s`);
+        console.log(`   Confidence: ${ocrResult?.confidence || 'N/A'}`);
+        console.log(`${'='.repeat(60)}\n`);
+        
         return {
           documentId: doc.id,
           name: doc.name,
           status: "success",
           confidence: ocrResult?.confidence,
+          resolvedPath,
         };
 
       } catch (error) {
-        console.error(`✗ Failed to process ${doc.name}:`, error);
-
-        // Classify error type
         const errorMessage = error instanceof Error ? error.message : "Unknown error";
+        const processingTime = Date.now() - startTime;
+        
+        console.error(`\n${'='.repeat(60)}`);
+        console.error(`❌ PROCESSING FAILED: ${doc.name}`);
+        console.error(`   Error: ${errorMessage}`);
+        console.error(`   Processing time: ${(processingTime / 1000).toFixed(1)}s`);
+        
+        // Classify error type
         errorType = classifyError(errorMessage);
+        console.error(`   Error type: ${errorType.toUpperCase()}`);
 
         // Increment retry count
         const newRetryCount = (doc.ocr_retry_count || 0) + 1;
         
         // Permanent errors skip retry - mark as failed immediately
         const newStatus = errorType === 'permanent' || newRetryCount >= MAX_RETRIES ? "failed" : "queued";
+        
+        if (errorType === 'permanent') {
+          console.error(`   → Marking as FAILED (permanent error - no retry)`);
+        } else if (newRetryCount >= MAX_RETRIES) {
+          console.error(`   → Marking as FAILED (max retries reached: ${MAX_RETRIES})`);
+        } else {
+          console.error(`   → Re-queuing for retry (attempt ${newRetryCount}/${MAX_RETRIES})`);
+        }
+        console.error(`${'='.repeat(60)}\n`);
 
         await supabase
           .from("documents")
@@ -198,7 +261,6 @@ serve(async (req) => {
           .eq("id", doc.id);
 
         // Log to ocr_processing_logs
-        const processingTime = Date.now() - startTime;
         await supabase.from("ocr_processing_logs").insert({
           document_id: doc.id,
           case_id: doc.case_id,
