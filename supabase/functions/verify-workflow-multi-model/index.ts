@@ -159,16 +159,18 @@ Find ALL CRITICAL issues that would cause failures in production. Be specific, a
 
     // Helper function to call Claude via Anthropic API with retry logic
     const callClaudeAPI = async (model: string, systemPrompt: string, userPrompt: string): Promise<any> => {
-      const maxRetries = 2;
+      const maxRetries = 3; // FIXED: Increased retries
       let lastError: Error | null = null;
 
       for (let attempt = 0; attempt <= maxRetries; attempt++) {
         try {
           if (attempt > 0) {
-            const backoffMs = 1000 * Math.pow(2, attempt - 1);
+            const backoffMs = 2000 * Math.pow(2, attempt - 1); // FIXED: Longer backoff
             console.log(`⏱️ ${model} retry attempt ${attempt}/${maxRetries} after ${backoffMs}ms backoff`);
             await new Promise(resolve => setTimeout(resolve, backoffMs));
           }
+
+          console.log(`📤 Calling Anthropic API for ${model} (attempt ${attempt + 1}/${maxRetries + 1})...`);
 
           const response = await fetch('https://api.anthropic.com/v1/messages', {
             method: 'POST',
@@ -179,7 +181,7 @@ Find ALL CRITICAL issues that would cause failures in production. Be specific, a
             },
             body: JSON.stringify({
               model,
-              max_tokens: 4096,
+              max_tokens: 16000, // FIXED: Increased token limit to prevent truncation
               temperature: 0.2,
               system: systemPrompt,
               messages: [
@@ -188,19 +190,21 @@ Find ALL CRITICAL issues that would cause failures in production. Be specific, a
             })
           });
 
-          // Retry on 502 errors (infrastructure issues)
-          if (response.status === 502 && attempt < maxRetries) {
-            console.warn(`⚠️ ${model} returned 502 Bad Gateway - will retry`);
-            lastError = new Error(`502 Bad Gateway (attempt ${attempt + 1}/${maxRetries + 1})`);
+          // Retry on 502 errors (infrastructure issues) and 529 errors (overloaded)
+          if ((response.status === 502 || response.status === 529) && attempt < maxRetries) {
+            console.warn(`⚠️ ${model} returned ${response.status} - will retry`);
+            lastError = new Error(`${response.status} error (attempt ${attempt + 1}/${maxRetries + 1})`);
             continue;
           }
 
           if (!response.ok) {
             const errorText = await response.text();
-            throw new Error(`Anthropic API error ${response.status}: ${errorText}`);
+            console.error(`❌ ${model} API error ${response.status}:`, errorText.substring(0, 200));
+            throw new Error(`Anthropic API error ${response.status}: ${errorText.substring(0, 200)}`);
           }
 
           const data = await response.json();
+          console.log(`✅ ${model} API response received - ${data.usage?.input_tokens || 0} input tokens`);
           
           // Convert Anthropic response to OpenAI-like format for consistency
           return {
@@ -217,6 +221,7 @@ Find ALL CRITICAL issues that would cause failures in production. Be specific, a
           };
         } catch (error) {
           lastError = error instanceof Error ? error : new Error('Unknown error');
+          console.error(`❌ ${model} attempt ${attempt + 1} failed:`, lastError.message);
           if (attempt === maxRetries) {
             throw lastError;
           }
@@ -244,8 +249,8 @@ Find ALL CRITICAL issues that would cause failures in production. Be specific, a
 
       try {
         const controller = new AbortController();
-        // GPT-5 needs more time for complex verification
-        const timeoutMs = model.startsWith('openai/gpt-5') ? 300000 : 180000; // 5 min for GPT-5, 3 min for others
+        // FIXED: Extended timeouts for complex analysis - 10 min for GPT-5, 8 min for others
+        const timeoutMs = model.startsWith('openai/gpt-5') ? 600000 : 480000;
         const timeoutId = setTimeout(() => {
           console.error(`⏱️ ${model} timeout - exceeding ${timeoutMs / 60000} minutes`);
           controller.abort();
@@ -274,8 +279,8 @@ Find ALL CRITICAL issues that would cause failures in production. Be specific, a
                 { role: 'system', content: systemPrompt },
                 { role: 'user', content: userPrompt }
               ],
-              max_completion_tokens: 16000  // Fixed: GPT-5 needs higher limit to avoid truncation
-              // Note: Removed response_format for compatibility with all models
+              max_completion_tokens: 16000,  // Fixed: GPT-5 needs higher limit to avoid truncation
+              temperature: 0.2  // FIXED: Added temperature for consistency
             }),
             signal: controller.signal,
           });
