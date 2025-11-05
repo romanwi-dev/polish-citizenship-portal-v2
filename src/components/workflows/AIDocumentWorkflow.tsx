@@ -318,43 +318,50 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
     setUploading(true);
 
     try {
-      // Get Dropbox path for the case
       const dropboxPath = caseData?.dropbox_path || `/CASES/${caseId}`;
+      let successCount = 0;
+      let failCount = 0;
 
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-        const filePath = `${caseId}/${fileName}`;
+        
+        try {
+          // Create FormData for the upload
+          const formData = new FormData();
+          formData.append('file', file);
+          formData.append('caseId', caseId);
 
-        // Upload to Supabase Storage
-        const { error: uploadError } = await supabase.storage
-          .from('documents')
-          .upload(filePath, file);
-
-        if (uploadError) throw uploadError;
-
-        // Create document record with Dropbox path
-        const { error: dbError } = await supabase
-          .from('documents')
-          .insert({
-            case_id: caseId,
-            name: file.name,
-            dropbox_path: `${dropboxPath}/${file.name}`,
-            file_extension: fileExt,
-            file_size: file.size,
-            ocr_status: 'pending',
+          // Call edge function to upload to Dropbox
+          const { data, error } = await supabase.functions.invoke('upload-to-dropbox', {
+            body: formData,
           });
 
-        if (dbError) throw dbError;
+          if (error) throw error;
+          if (!data.success) throw new Error(data.error || 'Upload failed');
+
+          successCount++;
+          console.log(`Uploaded ${file.name} to ${data.dropbox_path}`);
+        } catch (error) {
+          console.error(`Failed to upload ${file.name}:`, error);
+          failCount++;
+        }
       }
 
-      toast({
-        title: "Upload successful",
-        description: `${files.length} document(s) uploaded to ${dropboxPath}`,
-      });
+      if (successCount > 0) {
+        toast({
+          title: "Upload successful",
+          description: `${successCount} document(s) uploaded to ${dropboxPath}`,
+        });
+        refetchDocuments();
+      }
 
-      refetchDocuments();
+      if (failCount > 0) {
+        toast({
+          title: "Some uploads failed",
+          description: `${failCount} document(s) failed to upload. Please try again.`,
+          variant: "destructive",
+        });
+      }
     } catch (error) {
       console.error('Upload error:', error);
       toast({
