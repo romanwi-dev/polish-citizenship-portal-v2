@@ -115,8 +115,69 @@ const SECURITY_PATTERNS = {
   ],
 
   /**
-   * PHASE 2 FIX: Comprehensive PII detection patterns
-   * Detects hardcoded or logged PII in source code
+   * PRODUCTION FIX: Authentication and authorization vulnerability patterns
+   */
+  insecureAuth: [
+    {
+      pattern: /localStorage\.(setItem|getItem)\s*\([^)]*(?:isAdmin|is_admin|role|userRole|admin|isAuthenticated)/gi,
+      message: 'Insecure auth: Client-side role/admin check using localStorage (easily manipulated)',
+      cwe: 'CWE-602'
+    },
+    {
+      pattern: /if\s*\([^)]*localStorage\.(getItem|get)[^)]*(?:admin|role)\)/gi,
+      message: 'Insecure auth: Client-side authorization decision based on localStorage',
+      cwe: 'CWE-602'
+    },
+    {
+      pattern: /(?:username|email)\s*===\s*['\"`][^'\"]+['\"`]\s*&&\s*password\s*===\s*['\"`][^'\"]+['\"`]/gi,
+      message: 'Insecure auth: Hardcoded credentials in source code',
+      cwe: 'CWE-798'
+    },
+    {
+      pattern: /Authorization:\s*['\"`]Bearer\s+[A-Za-z0-9\-_\.]{20,}['\"`]/gi,
+      message: 'Insecure auth: Hardcoded Bearer token in authorization header',
+      cwe: 'CWE-798'
+    },
+    {
+      pattern: /setItem\(['\"`]token['\"`]\s*,\s*(?!.*encrypt)/gi,
+      message: 'Insecure auth: Storing authentication token without encryption',
+      cwe: 'CWE-311'
+    }
+  ],
+
+  /**
+   * PRODUCTION FIX: Input validation vulnerability patterns
+   */
+  missingValidation: [
+    {
+      pattern: /\.from\(['\"`]\w+['\"`]\)\.insert\([^)]*req\.body/gi,
+      message: 'Missing validation: Direct database insertion of request body without validation',
+      cwe: 'CWE-20'
+    },
+    {
+      pattern: /\.from\(['\"`]\w+['\"`]\)\.update\([^)]*req\.body/gi,
+      message: 'Missing validation: Direct database update with request body without validation',
+      cwe: 'CWE-20'
+    },
+    {
+      pattern: /<input[^>]*(?!.*(?:pattern|maxLength|minLength|required|type=))/gi,
+      message: 'Missing validation: Input field without validation attributes',
+      cwe: 'CWE-20'
+    },
+    {
+      pattern: /onChange=\{[^}]*setValue[^}]*\}(?!.*validation|.*schema|.*zod)/gi,
+      message: 'Missing validation: Form field onChange without validation schema',
+      cwe: 'CWE-20'
+    },
+    {
+      pattern: /fetch\([^)]*\$\{[^}]*\}/gi,
+      message: 'Missing validation: URL constructed with template literals (potential injection)',
+      cwe: 'CWE-20'
+    }
+  ],
+
+  /**
+   * PRODUCTION FIX: Enhanced PII detection with Polish-specific patterns
    */
   exposedPII: [
     {
@@ -130,13 +191,32 @@ const SECURITY_PATTERNS = {
       cwe: 'CWE-359'
     },
     {
+      // Polish NIP (Tax ID): XXX-XXX-XX-XX or XXXXXXXXXX
+      pattern: /\b\d{3}-\d{3}-\d{2}-\d{2}\b|\b\d{10}\b/g,
+      message: 'Exposed PII: Polish NIP (Tax ID) pattern detected',
+      cwe: 'CWE-359'
+    },
+    {
+      // Polish REGON: 9 or 14 digits
+      pattern: /\b\d{9}\b|\b\d{14}\b/g,
+      message: 'Exposed PII: Polish REGON number pattern detected',
+      cwe: 'CWE-359'
+    },
+    {
+      // Polish address patterns (ul. = street, al. = avenue)
+      pattern: /\b(?:ul\.|al\.)\s+[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+\s+\d+/gi,
+      message: 'Exposed PII: Polish street address pattern detected',
+      cwe: 'CWE-359'
+    },
+    {
       pattern: /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g,
       message: 'Exposed PII: Email address detected in source code',
       cwe: 'CWE-359'
     },
     {
-      pattern: /\b(?:\+\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b/g,
-      message: 'Exposed PII: Phone number pattern detected in code',
+      // Polish phone: +48 XXX XXX XXX or various formats
+      pattern: /\b(?:\+48)?[-.\s]?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{3}\b/g,
+      message: 'Exposed PII: Polish phone number pattern detected',
       cwe: 'CWE-359'
     },
     {
@@ -150,12 +230,12 @@ const SECURITY_PATTERNS = {
       cwe: 'CWE-359'
     },
     {
-      pattern: /console\.(log|info|warn|error|debug)\s*\([^)]*(?:pesel|passport|ssn|email|phone|credit[_-]?card)/gi,
+      pattern: /console\.(log|info|warn|error|debug)\s*\([^)]*(?:pesel|passport|ssn|email|phone|credit[_-]?card|nip|regon)/gi,
       message: 'Exposed PII: Logging sensitive data to console',
       cwe: 'CWE-532'
     },
     {
-      pattern: /localStorage\.(setItem|set)\s*\([^)]*(?:pesel|passport|ssn|email|phone|password|token)/gi,
+      pattern: /localStorage\.(setItem|set)\s*\([^)]*(?:pesel|passport|ssn|email|phone|password|token|nip|regon)/gi,
       message: 'Exposed PII: Storing sensitive data in browser localStorage',
       cwe: 'CWE-922'
     }
@@ -221,6 +301,16 @@ export class StaticCodeAnalyzer {
       this.checkExposedPII(code);
     }
 
+    // PRODUCTION FIX: Authentication vulnerability detection
+    if (shouldCheckAll) {
+      this.checkInsecureAuth(code);
+    }
+
+    // PRODUCTION FIX: Input validation vulnerability detection
+    if (shouldCheckAll) {
+      this.checkMissingValidation(code);
+    }
+
     return this.findings;
   }
 
@@ -255,6 +345,26 @@ export class StaticCodeAnalyzer {
   private checkExposedPII(code: string): void {
     SECURITY_PATTERNS.exposedPII.forEach(({ pattern, message, cwe }) => {
       this.findMatches(code, pattern, 'exposed_pii', message, cwe);
+    });
+  }
+
+  /**
+   * PRODUCTION FIX: Check for insecure authentication patterns
+   * Detects client-side auth checks and hardcoded credentials
+   */
+  private checkInsecureAuth(code: string): void {
+    SECURITY_PATTERNS.insecureAuth.forEach(({ pattern, message, cwe }) => {
+      this.findMatches(code, pattern, 'insecure_auth', message, cwe);
+    });
+  }
+
+  /**
+   * PRODUCTION FIX: Check for missing input validation
+   * Detects direct use of user input without validation
+   */
+  private checkMissingValidation(code: string): void {
+    SECURITY_PATTERNS.missingValidation.forEach(({ pattern, message, cwe }) => {
+      this.findMatches(code, pattern, 'missing_validation', message, cwe);
     });
   }
 

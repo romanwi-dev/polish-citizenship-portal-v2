@@ -74,12 +74,12 @@ const workflowSteps: AIWorkflowStep[] = [
   {
     number: "02",
     title: "AI Classification",
-    description: "Gemini AI automatically names, describes, and categorizes each document by type and person.",
+    description: "AI automatically names, describes, and categorizes each document by type and person.",
     icon: Brain,
     gradient: "from-secondary to-accent",
     stage: 'ai_classify',
     agent: 'ai',
-    backDetails: "Gemini 2.5 Flash analyzes each document image, identifies document type (birth cert, marriage cert, passport, etc.) and matches to family members (AP, F, M, PGF, etc.) with confidence scoring."
+    backDetails: "Advanced AI analyzes document images to identify type and match to relevant family members with confidence scoring."
   },
   {
     number: "03",
@@ -99,7 +99,7 @@ const workflowSteps: AIWorkflowStep[] = [
     gradient: "from-primary to-secondary",
     stage: 'ocr',
     agent: 'ai',
-    backDetails: "OCR Worker processes all queued documents in parallel, extracting structured data for form population."
+    backDetails: "Automated OCR processing extracts structured data from documents in parallel for efficient form population."
   },
   {
     number: "04",
@@ -109,7 +109,7 @@ const workflowSteps: AIWorkflowStep[] = [
     gradient: "from-secondary to-accent",
     stage: 'form_population',
     agent: 'ai',
-    backDetails: "System uses pre-existing OCR data to populate master_table, citizenship forms, and POA documents. Smart field mapping ensures accuracy. Non-overwrite mode protects manual entries."
+    backDetails: "Smart system populates citizenship forms and documents using OCR data with intelligent field mapping and manual entry protection."
   },
   {
     number: "05",
@@ -124,12 +124,12 @@ const workflowSteps: AIWorkflowStep[] = [
   {
     number: "06",
     title: "Dual AI Verification",
-    description: "Both Gemini and OpenAI GPT-5 verify data quality, completeness, and readiness for PDF generation.",
+    description: "Multiple AI systems verify data quality, completeness, and readiness for PDF generation.",
     icon: Brain,
     gradient: "from-primary to-secondary",
     stage: 'ai_verify',
     agent: 'ai',
-    backDetails: "Gemini 2.5 Flash and OpenAI GPT-5 independently analyze form data. They check for missing fields, data consistency, legal compliance, and generate quality scores with detailed feedback."
+    backDetails: "Independent AI systems analyze form data to check for missing fields, data consistency, legal compliance, and generate quality scores with detailed feedback."
   },
   {
     number: "07",
