@@ -122,7 +122,7 @@ const AIWorkflow = () => {
         </div>
 
         {/* Workflow Component */}
-        {selectedCaseId && <AIDocumentWorkflow caseId={selectedCaseId} />}
+        <AIDocumentWorkflow caseId={selectedCaseId} />
       </div>
     </AdminLayout>
   );
