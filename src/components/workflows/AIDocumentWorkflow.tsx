@@ -19,6 +19,7 @@ import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
 import { DocumentUploadFAB } from "./DocumentUploadFAB";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface AIWorkflowStep {
   number: string;
@@ -160,6 +161,7 @@ interface AIDocumentWorkflowProps {
 
 export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
   const { toast } = useToast();
+  const isMobile = useIsMobile();
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
   const [completedStages, setCompletedStages] = useState<Record<string, boolean>>({});
 
@@ -207,216 +209,189 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
     return 0;
   };
 
-  // Handle preview document
-  const handlePreviewDocument = async (docId: string) => {
-    toast({
-      title: "Opening preview...",
-      description: "Loading document preview",
-    });
-  };
-
   return (
     <>
       <DocumentUploadFAB caseId={caseId} onUploadComplete={refetchDocuments} />
       
-      <div className="w-full max-w-[1800px] mx-auto space-y-12">
-        {/* Horizontal scrollable workflow cards */}
-        <div className="relative">
-          <div className="overflow-x-auto pb-8 px-4">
-            <div className="flex gap-6 min-w-max">
-              {workflowSteps.map((step, index) => {
-                const Icon = step.icon;
-                const docCount = getDocumentCountForStage(step.stage);
-                const isCompleted = completedStages[step.stage];
-                
-                return (
-                  <motion.div
-                    key={step.stage}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                    className="relative w-[340px] flex-shrink-0"
+      <div className="w-full pb-40">
+        {/* Vertical Timeline - Matching Homepage */}
+        <div className="relative max-w-5xl mx-auto">
+          {/* Center line - hidden on mobile, visible on desktop */}
+          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block" />
+
+          {workflowSteps.map((step, index) => {
+            const Icon = step.icon;
+            const docCount = getDocumentCountForStage(step.stage);
+            const isCompleted = completedStages[step.stage];
+            
+            return (
+              <div 
+                key={step.stage}
+                className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-8 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''} animate-fade-in`}
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                {/* Content Card - 5/12 width on desktop */}
+                <div className="w-full md:w-5/12">
+                  <div 
+                    className="relative h-[280px] md:h-[400px]"
+                    style={{ perspective: '1000px' }}
                   >
-                    <div 
-                      className="relative w-full h-[420px]"
-                      style={{ perspective: '1000px' }}
+                    <div
+                      onClick={() => toggleFlip(step.stage)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          toggleFlip(step.stage);
+                        }
+                      }}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`${step.title} - ${isMobile ? 'Tap' : 'Click'} to view details`}
+                      className="absolute inset-0 cursor-pointer transition-transform duration-700 focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-lg"
+                      style={{
+                        transformStyle: 'preserve-3d',
+                        transform: flippedCards[step.stage] ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                      }}
                     >
-                      <div
-                        onClick={() => toggleFlip(step.stage)}
-                        className="absolute inset-0 cursor-pointer transition-transform duration-700"
+                      {/* Front Side */}
+                      <div 
+                        className={cn(
+                          "absolute inset-0 glass-card p-6 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.02]",
+                          isCompleted && "ring-2 ring-green-500/50"
+                        )}
                         style={{
-                          transformStyle: 'preserve-3d',
-                          transform: flippedCards[step.stage] ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                          backfaceVisibility: 'hidden',
+                          WebkitBackfaceVisibility: 'hidden',
+                          boxShadow: isCompleted 
+                            ? '0 0 40px rgba(34, 197, 94, 0.3)' 
+                            : '0 0 20px rgba(59, 130, 246, 0.2)',
                         }}
                       >
-                        {/* Front Side */}
-                        <motion.div
-                          whileHover={{ scale: 1.02, y: -4 }}
-                          transition={{ duration: 0.3 }}
-                          className={cn(
-                            "absolute inset-0 rounded-lg border-2 p-6 backdrop-blur-sm",
-                            "bg-gradient-to-br from-background/80 to-background/60",
-                            isCompleted ? "border-green-500/50 bg-green-500/5" : "border-primary/20",
-                            "transition-all duration-300"
-                          )}
-                          style={{
-                            backfaceVisibility: 'hidden',
-                            WebkitBackfaceVisibility: 'hidden',
-                            boxShadow: isCompleted 
-                              ? '0 0 40px rgba(34, 197, 94, 0.2)' 
-                              : '0 0 30px rgba(59, 130, 246, 0.15)',
-                          }}
-                        >
-                          {/* Stage Number Badge */}
-                          <div className="absolute -top-4 left-6">
-                            <div className={cn(
-                              "flex h-12 w-12 items-center justify-center rounded-full text-lg font-bold text-white shadow-xl",
-                              "bg-gradient-to-br",
-                              step.gradient
-                            )}>
+                        <div className="flex flex-col gap-3 h-full">
+                          {/* Header */}
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className={`text-sm md:text-xs font-bold px-3 py-1.5 md:px-2 md:py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
                               {step.number}
-                            </div>
+                            </span>
+                            <Badge variant={step.agent === 'ai' ? 'default' : step.agent === 'human' ? 'secondary' : 'outline'} className="text-xs">
+                              {step.agent === 'ai' ? 'AI' : step.agent === 'human' ? 'HAC' : 'AI+HAC'}
+                            </Badge>
                           </div>
 
-                          {/* Completed Checkmark */}
+                          {/* Completed Badge */}
                           {isCompleted && (
-                            <div className="absolute -top-4 -right-4">
-                              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-500 text-white shadow-lg">
-                                <Check className="h-6 w-6" />
+                            <div className="absolute top-4 right-4">
+                              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-500 text-white shadow-lg">
+                                <Check className="h-5 w-5" />
                               </div>
                             </div>
                           )}
 
                           {/* Icon */}
-                          <div className="mb-4 mt-8 flex h-24 items-center justify-center rounded-lg bg-gradient-to-br from-primary/10 to-secondary/10">
-                            <Icon className="h-14 w-14 text-primary" />
+                          <div className="mb-3 flex h-16 md:h-20 items-center justify-center rounded-lg bg-gradient-to-br from-primary/10 to-secondary/10">
+                            <Icon className="h-10 w-10 md:h-12 md:w-12 text-primary" />
                           </div>
 
-                          {/* Content */}
-                          <div className="space-y-3">
-                            <div className="flex items-center justify-between gap-2">
-                              <h3 className="text-xl font-bold">{step.title}</h3>
-                              <Badge variant={step.agent === 'ai' ? 'default' : step.agent === 'human' ? 'secondary' : 'outline'} className="text-xs">
-                                {step.agent === 'ai' ? 'AI' : step.agent === 'human' ? 'HAC' : 'AI+HAC'}
-                              </Badge>
-                            </div>
-                            
-                            <p className="text-sm text-muted-foreground line-clamp-3">
-                              {step.description}
-                            </p>
+                          {/* Title */}
+                          <h3 className="text-xl md:text-2xl lg:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-lg animate-fade-in">
+                            {step.title}
+                          </h3>
 
-                            {/* Document Count */}
-                            <div className="flex items-center justify-between pt-2 border-t">
-                              <span className="text-sm text-muted-foreground">Documents</span>
-                              <Badge variant="outline" className="text-base px-3">
-                                {docCount}
-                              </Badge>
-                            </div>
-                          </div>
+                          {/* Description */}
+                          <p className="text-xs md:text-sm text-muted-foreground mb-3 flex-1 line-clamp-3 md:line-clamp-none">
+                            {step.description}
+                          </p>
 
-                          {/* Actions */}
-                          <div className="absolute bottom-6 left-6 right-6 space-y-2">
+                          {/* Document Count */}
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs px-2 py-1 md:px-3 md:py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
+                              {docCount} documents
+                            </span>
                             <Button
                               onClick={(e) => {
                                 e.stopPropagation();
                                 toggleComplete(step.stage);
                               }}
                               variant={isCompleted ? "default" : "outline"}
-                              className="w-full"
                               size="sm"
+                              className="text-xs"
                             >
-                              {isCompleted ? "✓ Completed" : "Mark Complete"}
+                              {isCompleted ? "✓ Done" : "Mark Done"}
                             </Button>
-                            <p className="text-xs text-center text-muted-foreground">
-                              Click card for details
-                            </p>
                           </div>
-                        </motion.div>
 
-                        {/* Back Side */}
-                        <motion.div
-                          className={cn(
-                            "absolute inset-0 rounded-lg border-2 p-6 backdrop-blur-sm",
-                            "bg-gradient-to-br from-background/90 to-background/70",
-                            "border-accent/30"
+                          <p className="text-xs text-muted-foreground/60 mt-1 text-center">
+                            {isMobile ? 'Tap' : 'Click'} to see details
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Back Side */}
+                      <div 
+                        className="absolute inset-0 glass-card p-6 rounded-lg hover-glow"
+                        style={{
+                          backfaceVisibility: 'hidden',
+                          WebkitBackfaceVisibility: 'hidden',
+                          transform: 'rotateY(180deg)',
+                        }}
+                      >
+                        <div className="flex flex-col gap-3 h-full">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className={`text-base md:text-xs font-bold px-3 py-1.5 md:px-2 md:py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
+                              {step.number}
+                            </span>
+                            <span className="text-xs text-primary/60">Details</span>
+                          </div>
+                          
+                          <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground mb-2">
+                            {step.title}
+                          </h3>
+
+                          <p className="text-xs md:text-sm text-muted-foreground leading-relaxed flex-1 overflow-y-auto">
+                            {step.backDetails}
+                          </p>
+
+                          {/* Document Preview */}
+                          {docCount > 0 && (
+                            <div className="mt-2 space-y-2">
+                              <h5 className="font-semibold text-xs">Documents in this stage:</h5>
+                              <div className="space-y-1">
+                                {documents
+                                  ?.slice(0, 2)
+                                  .map(doc => (
+                                    <div key={doc.id} className="flex items-center gap-2 p-1.5 rounded bg-muted/50">
+                                      <FileText className="h-3 w-3 text-primary flex-shrink-0" />
+                                      <span className="text-xs truncate flex-1">{doc.name}</span>
+                                    </div>
+                                  ))}
+                                {docCount > 2 && (
+                                  <p className="text-xs text-muted-foreground text-center">
+                                    +{docCount - 2} more
+                                  </p>
+                                )}
+                              </div>
+                            </div>
                           )}
-                          style={{
-                            backfaceVisibility: 'hidden',
-                            WebkitBackfaceVisibility: 'hidden',
-                            transform: 'rotateY(180deg)',
-                            boxShadow: '0 0 30px rgba(168, 85, 247, 0.15)',
-                          }}
-                        >
-                          <div className="h-full flex flex-col">
-                            {/* Header */}
-                            <div className="flex items-start justify-between mb-4">
-                              <div>
-                                <Badge className="mb-2">{step.number}</Badge>
-                                <h4 className="font-bold text-lg">{step.title}</h4>
-                              </div>
-                            </div>
 
-                            {/* Details */}
-                            <div className="flex-1 overflow-y-auto">
-                              <p className="text-sm text-muted-foreground leading-relaxed">
-                                {step.backDetails}
-                              </p>
-
-                              {/* Document Preview */}
-                              {docCount > 0 && (
-                                <div className="mt-4 space-y-2">
-                                  <h5 className="font-semibold text-sm">Documents in this stage:</h5>
-                                  <div className="space-y-2">
-                                    {documents
-                                      ?.slice(0, 3)
-                                      .map(doc => (
-                                        <div key={doc.id} className="flex items-center gap-2 p-2 rounded bg-muted/50">
-                                          <FileText className="h-4 w-4 text-primary flex-shrink-0" />
-                                          <span className="text-xs truncate flex-1">{doc.name}</span>
-                                        </div>
-                                      ))}
-                                    {docCount > 3 && (
-                                      <p className="text-xs text-muted-foreground text-center">
-                                        +{docCount - 3} more
-                                      </p>
-                                    )}
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-
-                            {/* Back Actions */}
-                            <div className="space-y-2 mt-4">
-                              <div className="flex gap-2">
-                                <Button variant="outline" size="sm" className="flex-1">
-                                  <Eye className="h-4 w-4 mr-1" />
-                                  View All
-                                </Button>
-                                <Button variant="outline" size="sm" className="flex-1">
-                                  <Download className="h-4 w-4 mr-1" />
-                                  Export
-                                </Button>
-                              </div>
-                              <p className="text-xs text-center text-muted-foreground">
-                                Click to flip back
-                              </p>
-                            </div>
-                          </div>
-                        </motion.div>
+                          <p className="text-xs text-muted-foreground/60 mt-2 text-center">
+                            {isMobile ? 'Tap' : 'Click'} to flip back
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
+                  </div>
+                </div>
 
-          {/* Scroll indicator */}
-          <div className="flex items-center justify-center gap-2 mt-4">
-            <div className="h-1 w-12 bg-primary/20 rounded-full" />
-            <span className="text-xs text-muted-foreground">← Scroll to see all stages →</span>
-            <div className="h-1 w-12 bg-primary/20 rounded-full" />
-          </div>
+                {/* Center Circle Node - Only visible on desktop */}
+                <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full bg-gradient-to-br from-primary to-secondary shadow-xl items-center justify-center z-10">
+                  <Icon className="h-6 w-6 text-white" />
+                </div>
+
+                {/* Empty spacer for alternating layout - 5/12 width */}
+                <div className="hidden md:block md:w-5/12" />
+              </div>
+            );
+          })}
         </div>
 
         {/* Summary Stats - Sticky Bottom Bar */}
@@ -488,9 +463,6 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
             </div>
           </div>
         </div>
-
-        {/* Bottom padding to prevent content being hidden under sticky bar */}
-        <div className="h-32" />
       </div>
     </>
   );
