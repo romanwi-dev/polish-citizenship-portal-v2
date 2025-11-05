@@ -62,7 +62,7 @@ interface AIWorkflowStep {
   description: string;
   icon: any;
   gradient: string;
-  stage: 'upload' | 'ai_classify' | 'hac_classify' | 'ocr' | 'form_population' | 'hac_forms' | 'ai_verify' | 'hac_verify' | 'pdf_generation';
+  stage: 'upload' | 'ai_classify' | 'hac_classify' | 'ocr' | 'form_population' | 'hac_forms' | 'ai_verify' | 'hac_verify' | 'pdf_generation' | 'ready_to_print' | 'in_signature' | 'ready_for_filing' | 'filed';
   agent: 'human' | 'ai' | 'both';
   backDetails: string;
 }
@@ -157,6 +157,46 @@ const workflowSteps: AIWorkflowStep[] = [
     stage: 'pdf_generation',
     agent: 'both',
     backDetails: "System generates PDFs: POA (adult/minor/spouses), Citizenship Application, Family Tree, Uzupełnienie. All forms filled with verified data, formatted for Polish authorities."
+  },
+  {
+    number: "09",
+    title: "Ready to Print",
+    description: "Documents are prepared and ready for printing.",
+    icon: FileText,
+    gradient: "from-primary to-secondary",
+    stage: 'ready_to_print',
+    agent: 'human',
+    backDetails: "All documents have been generated and are ready to be printed for physical submission."
+  },
+  {
+    number: "10",
+    title: "In Signature",
+    description: "Documents are currently being signed by the client.",
+    icon: FileCheck,
+    gradient: "from-secondary to-accent",
+    stage: 'in_signature',
+    agent: 'human',
+    backDetails: "Physical documents are with the client for signature. Track signature completion status."
+  },
+  {
+    number: "11",
+    title: "Ready for Filing",
+    description: "Signed documents are prepared and ready for official filing.",
+    icon: CheckCircle2,
+    gradient: "from-accent to-primary",
+    stage: 'ready_for_filing',
+    agent: 'human',
+    backDetails: "All signed documents have been received and verified. Ready to submit to authorities."
+  },
+  {
+    number: "12",
+    title: "Filed",
+    description: "Documents have been officially filed with the Polish authorities.",
+    icon: ShieldCheck,
+    gradient: "from-primary to-secondary",
+    stage: 'filed',
+    agent: 'human',
+    backDetails: "Official filing completed. Documents submitted to Masovian Voivoda's office. Tracking reference number recorded."
   },
 ];
 
@@ -1325,13 +1365,7 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
 
       toast({ title: "Downloading...", description: "Please wait" });
 
-      const { data, error } = await supabase.functions.invoke('download-dropbox-file', {
-        body: { dropboxPath, caseId }
-      });
-
-      if (error) throw error;
-
-      // Get the binary data and create blob
+      // FIXED: Call edge function only once directly via fetch
       const response = await fetch(
         `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/download-dropbox-file`,
         {
@@ -1345,7 +1379,8 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
       );
 
       if (!response.ok) {
-        throw new Error(`Download failed: ${response.status}`);
+        const errorText = await response.text();
+        throw new Error(`Download failed: ${response.status} - ${errorText}`);
       }
 
       const blob = await response.blob();
@@ -1909,7 +1944,7 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
               className="w-full md:w-auto"
             >
               <Upload className="h-4 w-4 mr-2" />
-              {isUploading ? 'Syncing...' : 'Old Sync Method'}
+              {isUploading ? 'Syncing...' : 'Sync Documents (No OCR)'}
             </Button>
 
             <Button

@@ -70,6 +70,7 @@ serve(async (req) => {
     const existingFileIds = new Set(existingDocs?.map(d => d.dropbox_file_id) || []);
 
     // Insert new documents
+    // FIXED: Don't set ocr_status when just syncing - only set it when explicitly queueing OCR
     const newDocuments = files
       .filter((file: any) => !existingFileIds.has(file.id))
       .map((file: any) => ({
@@ -79,7 +80,7 @@ serve(async (req) => {
         dropbox_path: file.path_display,
         dropbox_file_id: file.id,
         file_size: file.size,
-        ocr_status: 'pending',
+        ocr_status: null, // No OCR status - document just synced, not queued
       }));
 
     if (newDocuments.length > 0) {

@@ -114,6 +114,15 @@ Deno.serve(async (req) => {
       );
     }
 
+    // CRITICAL FIX: Ensure base64 has proper data URL prefix for Lovable AI
+    if (!imageBase64.startsWith('data:')) {
+      // Detect format from first bytes or assume JPEG as default
+      const prefix = imageBase64.startsWith('/9j/') || imageBase64.startsWith('iVBOR') 
+        ? (imageBase64.startsWith('iVBOR') ? 'data:image/png;base64,' : 'data:image/jpeg;base64,')
+        : 'data:application/pdf;base64,';
+      imageBase64 = prefix + imageBase64;
+    }
+
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     if (!LOVABLE_API_KEY) {
       throw new Error('LOVABLE_API_KEY not configured');
