@@ -72,7 +72,7 @@ serve(async (req) => {
     // PRIORITY 1: Ownership verification
     const { data: document, error: docError } = await supabase
       .from('documents')
-      .select('id, case_id, cases!inner(user_id), pdf_status')
+      .select('id, case_id, pdf_status, cases(user_id)')
       .eq('id', documentId)
       .single();
 
@@ -84,14 +84,17 @@ serve(async (req) => {
       );
     }
 
+    // Extract user_id from nested cases object
+    const caseUserId = (document.cases as any)?.user_id;
+
     // Check ownership (user must own the case OR be admin)
     const { data: isAdmin } = await supabase.rpc('has_role', {
       _user_id: user.id,
       _role: 'admin'
     });
 
-    if (document.cases.user_id !== user.id && !isAdmin) {
-      console.warn(`[lock-pdf] Access denied: User ${user.id} attempted to lock document ${documentId} owned by ${document.cases.user_id}`);
+    if (caseUserId !== user.id && !isAdmin) {
+      console.warn(`[lock-pdf] Access denied: User ${user.id} attempted to lock document ${documentId} owned by ${caseUserId}`);
       
       // Log security event
       await supabase.rpc('log_security_event', {
@@ -101,7 +104,7 @@ serve(async (req) => {
         p_user_id: user.id,
         p_resource_type: 'document',
         p_resource_id: documentId,
-        p_details: { caseId, ownerId: document.cases.user_id },
+        p_details: { caseId, ownerId: caseUserId },
         p_success: false
       });
 
