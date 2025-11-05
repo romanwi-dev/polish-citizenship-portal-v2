@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -9,6 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ABEXProtocolEnforcer } from './ABEXProtocolEnforcer';
+import { useVerificationPersistence } from '@/hooks/useVerificationPersistence';
 import { 
   Shield, 
   AlertTriangle, 
@@ -18,7 +19,8 @@ import {
   Target,
   Zap,
   Brain,
-  Sparkles
+  Sparkles,
+  RefreshCw
 } from 'lucide-react';
 import { fileContents } from '@/data/reviewFileContents';
 
@@ -49,14 +51,29 @@ export function ZeroFailVerificationPanel() {
   const [isVerifying, setIsVerifying] = useState(false);
   const [response, setResponse] = useState<MultiModelResponse | null>(null);
   const [progress, setProgress] = useState(0);
-  const [phaseAComplete, setPhaseAComplete] = useState(false);
-  const [phaseAIssues, setPhaseAIssues] = useState<Array<{ id: string; title: string; severity: string }>>([]);
   const [selectedModels] = useState<string[]>([
     'openai/gpt-5',
     'google/gemini-2.5-pro',
     'claude-sonnet-4-5'
   ]);
   const { toast } = useToast();
+  
+  // Database persistence
+  const {
+    verificationData,
+    isLoading: isPersistenceLoading,
+    savePhaseA,
+    savePhaseB,
+    authorizePhaseEX,
+    resetVerification
+  } = useVerificationPersistence('documents_workflow');
+
+  // Sync state from database on load
+  useEffect(() => {
+    if (verificationData?.phaseB.response) {
+      setResponse(verificationData.phaseB.response);
+    }
+  }, [verificationData]);
 
   const runZeroFailVerification = async () => {
     setIsVerifying(true);
@@ -117,11 +134,16 @@ export function ZeroFailVerificationPanel() {
           });
         }
       });
-      setPhaseAIssues(issues);
-      setPhaseAComplete(true);
+      
+      // Save Phase A to database
+      await savePhaseA(issues, fileContents as any);
 
       // Check if Phase B passed (all 3 models at 100/100)
       const phaseBPassed = data.passedABEXProtocol || false;
+      const averageScore = data.summary.averageScore;
+
+      // Save Phase B to database
+      await savePhaseB(averageScore, phaseBPassed, data);
 
       toast({
         title: phaseBPassed ? '✅ Phase B Complete - ALL MODELS 100/100' : 'Verification Complete',
@@ -144,20 +166,40 @@ export function ZeroFailVerificationPanel() {
     }
   };
 
-  const handleProceedToEX = () => {
+  const handleProceedToEX = async () => {
+    await authorizePhaseEX();
     toast({
       title: '🚀 Phase EX Authorized',
       description: 'Implementation can now proceed with 100% confidence.',
     });
   };
 
-  // Calculate Phase B status
-  const phaseBCompleted = response !== null;
-  const phaseBScore = response?.summary?.averageScore || null;
-  const allModelsAt100 = response?.passedABEXProtocol || false;
+  const handleReset = async () => {
+    await resetVerification();
+    setResponse(null);
+    toast({
+      title: 'Verification Reset',
+      description: 'Starting new verification session'
+    });
+  };
+
+  // Calculate Phase B status from persistence or current response
+  const phaseAComplete = verificationData?.phaseA.completed || false;
+  const phaseAIssues = verificationData?.phaseA.issues || [];
+  const phaseBCompleted = verificationData?.phaseB.completed || response !== null;
+  const phaseBScore = verificationData?.phaseB.score || response?.summary?.averageScore || null;
+  const allModelsAt100 = verificationData?.phaseB.allModelsAt100 || response?.passedABEXProtocol || false;
 
   return (
     <div className="space-y-6">
+      {/* Loading State */}
+      {isPersistenceLoading && (
+        <Alert>
+          <Loader2 className="h-4 w-4 animate-spin" />
+          <AlertDescription>Loading previous verification state...</AlertDescription>
+        </Alert>
+      )}
+
       {/* A→B→EX Protocol Enforcer */}
       <ABEXProtocolEnforcer
         phaseA={{
@@ -186,6 +228,14 @@ export function ZeroFailVerificationPanel() {
                 NO-RUSH Protocol Analysis with GPT-5, Gemini 2.5 Pro & Claude Sonnet 4.5
               </CardDescription>
             </div>
+            <Button 
+              onClick={handleReset}
+              variant="outline"
+              size="sm"
+            >
+              <RefreshCw className="mr-2 h-4 w-4" />
+              New Verification
+            </Button>
           </div>
         </CardHeader>
 

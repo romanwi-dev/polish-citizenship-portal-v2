@@ -4338,6 +4338,89 @@ export type Database = {
           },
         ]
       }
+      verification_phase_results: {
+        Row: {
+          case_id: string | null
+          created_at: string | null
+          created_by: string | null
+          focus_areas: string[] | null
+          id: string
+          models_used: string[] | null
+          phase_a_completed: boolean | null
+          phase_a_completed_at: string | null
+          phase_a_files_analyzed: Json | null
+          phase_a_issues: Json | null
+          phase_b_all_models_100: boolean | null
+          phase_b_completed: boolean | null
+          phase_b_completed_at: string | null
+          phase_b_response: Json | null
+          phase_b_score: number | null
+          phase_ex_authorized: boolean | null
+          phase_ex_authorized_at: string | null
+          phase_ex_completed: boolean | null
+          phase_ex_completed_at: string | null
+          updated_at: string | null
+          verification_run_id: string | null
+          workflow_type: string
+        }
+        Insert: {
+          case_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          focus_areas?: string[] | null
+          id?: string
+          models_used?: string[] | null
+          phase_a_completed?: boolean | null
+          phase_a_completed_at?: string | null
+          phase_a_files_analyzed?: Json | null
+          phase_a_issues?: Json | null
+          phase_b_all_models_100?: boolean | null
+          phase_b_completed?: boolean | null
+          phase_b_completed_at?: string | null
+          phase_b_response?: Json | null
+          phase_b_score?: number | null
+          phase_ex_authorized?: boolean | null
+          phase_ex_authorized_at?: string | null
+          phase_ex_completed?: boolean | null
+          phase_ex_completed_at?: string | null
+          updated_at?: string | null
+          verification_run_id?: string | null
+          workflow_type: string
+        }
+        Update: {
+          case_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          focus_areas?: string[] | null
+          id?: string
+          models_used?: string[] | null
+          phase_a_completed?: boolean | null
+          phase_a_completed_at?: string | null
+          phase_a_files_analyzed?: Json | null
+          phase_a_issues?: Json | null
+          phase_b_all_models_100?: boolean | null
+          phase_b_completed?: boolean | null
+          phase_b_completed_at?: string | null
+          phase_b_response?: Json | null
+          phase_b_score?: number | null
+          phase_ex_authorized?: boolean | null
+          phase_ex_authorized_at?: string | null
+          phase_ex_completed?: boolean | null
+          phase_ex_completed_at?: string | null
+          updated_at?: string | null
+          verification_run_id?: string | null
+          workflow_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "verification_phase_results_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       verification_runs: {
         Row: {
           action_items: Json | null
@@ -5353,9 +5436,57 @@ export type Database = {
           total_tokens: number
         }[]
       }
+      get_latest_verification_for_case: {
+        Args: { p_case_id: string }
+        Returns: {
+          case_id: string | null
+          created_at: string | null
+          created_by: string | null
+          focus_areas: string[] | null
+          id: string
+          models_used: string[] | null
+          phase_a_completed: boolean | null
+          phase_a_completed_at: string | null
+          phase_a_files_analyzed: Json | null
+          phase_a_issues: Json | null
+          phase_b_all_models_100: boolean | null
+          phase_b_completed: boolean | null
+          phase_b_completed_at: string | null
+          phase_b_response: Json | null
+          phase_b_score: number | null
+          phase_ex_authorized: boolean | null
+          phase_ex_authorized_at: string | null
+          phase_ex_completed: boolean | null
+          phase_ex_completed_at: string | null
+          updated_at: string | null
+          verification_run_id: string | null
+          workflow_type: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "verification_phase_results"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       get_next_case_sequence: {
         Args: { sequence_name: string }
         Returns: number
+      }
+      get_verification_history: {
+        Args: { p_limit?: number; p_workflow_type?: string }
+        Returns: {
+          case_id: string
+          case_name: string
+          created_at: string
+          id: string
+          phase_a_completed: boolean
+          phase_b_all_models_100: boolean
+          phase_b_completed: boolean
+          phase_b_score: number
+          phase_ex_authorized: boolean
+          workflow_type: string
+        }[]
       }
       has_role: {
         Args: {
