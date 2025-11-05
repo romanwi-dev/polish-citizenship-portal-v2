@@ -44,6 +44,8 @@ import { BatchStatsDashboard } from "./BatchStatsDashboard";
 import { PDFPreviewPanel } from "./PDFPreviewPanel";
 import { ErrorRecoveryPanel } from "./ErrorRecoveryPanel";
 import { PDFPreviewDialog } from "@/components/PDFPreviewDialog";
+import { PrePrintChecklist } from "@/components/PrePrintChecklist";
+import { useDocumentWorkflowActions } from "@/hooks/useDocumentWorkflowActions";
 import type { RealtimeChannel } from "@supabase/supabase-js";
 // Phase 2: Phase 3 component integrations
 import { QualityMetricsDashboard } from "./QualityMetricsDashboard";
@@ -303,6 +305,17 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
   const [isPDFDialogOpen, setIsPDFDialogOpen] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const [previewDocName, setPreviewDocName] = useState<string>("");
+  const [selectedDocId, setSelectedDocId] = useState<string>("");
+  
+  // Document workflow actions with platform support
+  const {
+    downloadEditableDocument,
+    downloadFinalDocument,
+    isPrePrintChecklistOpen,
+    setIsPrePrintChecklistOpen,
+    formDataForChecklist,
+    handleChecklistProceed,
+  } = useDocumentWorkflowActions({ caseId });
   
   // Phase 2: PreFlight checks state
   const [showPreFlightModal, setShowPreFlightModal] = useState(false);
@@ -1288,6 +1301,7 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
 
       setPreviewUrl(data.signedUrl);
       setPreviewDocName(name);
+      setSelectedDocId(documentId);
       setIsPDFDialogOpen(true);
     } catch (error: any) {
       toast({
@@ -1302,29 +1316,18 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
     setIsPDFDialogOpen(false);
     setPreviewUrl('');
     setPreviewDocName('');
+    setSelectedDocId('');
   };
 
   const handleDownloadEditable = async () => {
     if (!previewUrl) return;
-    try {
-      const response = await fetch(previewUrl);
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = previewDocName;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-      toast({ title: "Download started" });
-    } catch (error: any) {
-      toast({ title: "Download failed", description: error.message, variant: "destructive" });
-    }
+    await downloadEditableDocument(previewUrl, previewDocName, selectedDocId);
   };
 
   const handleDownloadFinal = async () => {
-    await handleDownloadEditable();
+    if (!previewUrl) return;
+    // Enable AI checklist for final downloads when form data is critical
+    await downloadFinalDocument(previewUrl, previewDocName, false, selectedDocId);
   };
 
   const syncDropboxDocuments = async () => {
@@ -2182,6 +2185,15 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
           onDownloadEditable={handleDownloadEditable}
           onDownloadFinal={handleDownloadFinal}
           documentTitle={previewDocName}
+        />
+
+        {/* AI Pre-Print Checklist */}
+        <PrePrintChecklist
+          open={isPrePrintChecklistOpen}
+          onClose={() => setIsPrePrintChecklistOpen(false)}
+          onProceed={handleChecklistProceed}
+          formData={formDataForChecklist}
+          templateType="document"
         />
       </div>
     </section>
