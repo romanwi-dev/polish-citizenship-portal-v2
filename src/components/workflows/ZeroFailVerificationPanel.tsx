@@ -8,6 +8,7 @@ import { Progress } from '@/components/ui/progress';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ABEXProtocolEnforcer } from './ABEXProtocolEnforcer';
 import { 
   Shield, 
   AlertTriangle, 
@@ -31,6 +32,8 @@ interface ModelResult {
 
 interface MultiModelResponse {
   success: boolean;
+  passedABEXProtocol?: boolean;
+  allModelsCompleted?: boolean;
   results: ModelResult[];
   summary: {
     totalModels: number;
@@ -46,7 +49,9 @@ export function ZeroFailVerificationPanel() {
   const [isVerifying, setIsVerifying] = useState(false);
   const [response, setResponse] = useState<MultiModelResponse | null>(null);
   const [progress, setProgress] = useState(0);
-  const [selectedModels, setSelectedModels] = useState<string[]>([
+  const [phaseAComplete, setPhaseAComplete] = useState(false);
+  const [phaseAIssues, setPhaseAIssues] = useState<Array<{ id: string; title: string; severity: string }>>([]);
+  const [selectedModels] = useState<string[]>([
     'openai/gpt-5',
     'google/gemini-2.5-pro',
     'claude-sonnet-4-5'
@@ -99,9 +104,31 @@ export function ZeroFailVerificationPanel() {
       console.log('✅ Multi-model verification complete:', data);
       setResponse(data);
 
+      // Extract issues from verification results for Phase A tracking
+      const issues: Array<{ id: string; title: string; severity: string }> = [];
+      data.results.forEach((result: ModelResult) => {
+        if (result.success && result.verification?.criticalFindings?.mustFixBeforeLaunch) {
+          result.verification.criticalFindings.mustFixBeforeLaunch.forEach((finding: any, idx: number) => {
+            issues.push({
+              id: `${result.model}-${idx}`,
+              title: finding.title,
+              severity: finding.severity
+            });
+          });
+        }
+      });
+      setPhaseAIssues(issues);
+      setPhaseAComplete(true);
+
+      // Check if Phase B passed (all 3 models at 100/100)
+      const phaseBPassed = data.passedABEXProtocol || false;
+
       toast({
-        title: 'Verification Complete',
-        description: `${data.summary.successfulModels}/${data.summary.totalModels} models analyzed successfully. Average score: ${data.summary.averageScore}/100`
+        title: phaseBPassed ? '✅ Phase B Complete - ALL MODELS 100/100' : 'Verification Complete',
+        description: phaseBPassed 
+          ? 'Triple-consensus achieved. Ready for Phase EX.'
+          : `${data.summary.successfulModels}/${data.summary.totalModels} models analyzed. Average: ${data.summary.averageScore}/100`,
+        variant: phaseBPassed ? 'default' : issues.length > 0 ? 'destructive' : 'default'
       });
 
     } catch (err) {
@@ -117,114 +144,132 @@ export function ZeroFailVerificationPanel() {
     }
   };
 
-  const getModelIcon = (model: string) => {
-    if (model.includes('openai')) return <Sparkles className="h-4 w-4" />;
-    if (model.includes('gemini')) return <Brain className="h-4 w-4" />;
-    if (model.includes('claude')) return <Shield className="h-4 w-4" />;
-    return <Zap className="h-4 w-4" />;
+  const handleProceedToEX = () => {
+    toast({
+      title: '🚀 Phase EX Authorized',
+      description: 'Implementation can now proceed with 100% confidence.',
+    });
   };
 
-  const getModelDisplayName = (model: string) => {
-    if (model === 'openai/gpt-5') return 'OpenAI GPT-5';
-    if (model === 'google/gemini-2.5-pro') return 'Gemini 2.5 Pro';
-    if (model === 'claude-sonnet-4-5') return 'Claude Sonnet 4.5';
-    return model;
-  };
-
-  const getScoreColor = (score: number) => {
-    if (score >= 90) return 'text-green-600';
-    if (score >= 75) return 'text-blue-600';
-    if (score >= 60) return 'text-yellow-600';
-    return 'text-destructive';
-  };
+  // Calculate Phase B status
+  const phaseBCompleted = response !== null;
+  const phaseBScore = response?.summary?.averageScore || null;
+  const allModelsAt100 = response?.passedABEXProtocol || false;
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <div>
-            <CardTitle className="flex items-center gap-2">
-              <Target className="h-5 w-5" />
-              ZERO-FAIL Triple-Consensus Verification
-            </CardTitle>
-            <CardDescription>
-              NO-RUSH Protocol Analysis with GPT-5, Gemini 2.5 Pro & Claude Sonnet 4.5
-            </CardDescription>
-          </div>
-          <Button 
-            onClick={runZeroFailVerification}
-            disabled={isVerifying}
-            size="lg"
-          >
-            {isVerifying ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Analyzing...
-              </>
-            ) : (
-              <>
-                <Shield className="mr-2 h-4 w-4" />
-                Run ZERO-FAIL Verification
-              </>
-            )}
-          </Button>
-        </div>
-      </CardHeader>
+    <div className="space-y-6">
+      {/* A→B→EX Protocol Enforcer */}
+      <ABEXProtocolEnforcer
+        phaseA={{
+          completed: phaseAComplete,
+          issues: phaseAIssues
+        }}
+        phaseB={{
+          completed: phaseBCompleted,
+          score: phaseBScore,
+          allModelsAt100
+        }}
+        onRunPhaseB={runZeroFailVerification}
+        onProceedToEX={handleProceedToEX}
+      />
 
-      <CardContent className="space-y-6">
-        {isVerifying && (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">Running multi-model analysis...</span>
-              <span className="font-medium">{progress}%</span>
+      {/* Verification Results Card */}
+      <Card className="w-full">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="flex items-center gap-2">
+                <Target className="h-5 w-5" />
+                ZERO-FAIL Triple-Consensus Verification Results
+              </CardTitle>
+              <CardDescription>
+                NO-RUSH Protocol Analysis with GPT-5, Gemini 2.5 Pro & Claude Sonnet 4.5
+              </CardDescription>
             </div>
-            <Progress value={progress} className="h-2" />
-            <Alert>
-              <Loader2 className="h-4 w-4 animate-spin" />
-              <AlertDescription>
-                Analyzing with 3 AI models (GPT-5, Gemini 2.5 Pro, Claude Sonnet 4.5)...
-                Triple-consensus verification in progress. This may take 2-3 minutes.
-              </AlertDescription>
-            </Alert>
           </div>
-        )}
+        </CardHeader>
 
-        {response && (
-          <div className="space-y-6">
-            {/* Summary Card */}
-            <Alert className={response.summary.averageScore >= 75 ? 'border-green-500' : 'border-yellow-500'}>
-              <Shield className="h-4 w-4" />
-              <AlertDescription>
-                <div className="space-y-2">
-                  <div className="font-semibold text-lg">
-                    Multi-Model Consensus: {response.summary.consensus}
-                  </div>
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div>
-                      <span className="text-muted-foreground">Average Score:</span>
-                      <span className={`ml-2 font-bold text-lg ${getScoreColor(response.summary.averageScore)}`}>
-                        {response.summary.averageScore}/100
-                      </span>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Models:</span>
-                      <span className="ml-2 font-medium">
-                        {response.summary.successfulModels}/{response.summary.totalModels} successful
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </AlertDescription>
-            </Alert>
+        <CardContent className="space-y-6">
+          {isVerifying && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">Running Phase B verification (8-10 minutes)...</span>
+                <span className="font-medium">{progress}%</span>
+              </div>
+              <Progress value={progress} className="h-2" />
+              <Alert>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                <AlertDescription>
+                  Analyzing with 3 AI models (GPT-5, Gemini 2.5 Pro, Claude Sonnet 4.5)...
+                  This verification requires ALL 3 models to score 100/100 to pass Phase B.
+                </AlertDescription>
+              </Alert>
+            </div>
+          )}
 
-            {/* Model Results */}
-            <Tabs defaultValue="comparison" className="w-full">
-              <TabsList className="grid w-full grid-cols-4">
-                <TabsTrigger value="comparison">Comparison</TabsTrigger>
-                <TabsTrigger value="openai">GPT-5</TabsTrigger>
-                <TabsTrigger value="gemini">Gemini</TabsTrigger>
-                <TabsTrigger value="claude">Claude</TabsTrigger>
-              </TabsList>
+          {response && (
+            <div className="space-y-6">
+              {/* A→B→EX Status Alert */}
+              <Alert 
+                className={
+                  response.passedABEXProtocol 
+                    ? 'border-green-500 bg-green-50' 
+                    : response.summary.averageScore >= 75 
+                    ? 'border-yellow-500 bg-yellow-50' 
+                    : 'border-red-500 bg-red-50'
+                }
+              >
+                <Shield className="h-4 w-4" />
+                <AlertDescription>
+                  <div className="space-y-2">
+                    <div className="font-semibold text-lg">
+                      {response.passedABEXProtocol 
+                        ? '✅ A→B→EX Protocol: PASSED' 
+                        : '❌ A→B→EX Protocol: FAILED'}
+                    </div>
+                    <div className="text-sm">
+                      {response.passedABEXProtocol 
+                        ? 'All 3 models scored 100/100. Phase EX (Implementation) authorized.'
+                        : `Phase B requirement not met. All models must score 100/100 (Current avg: ${response.summary.averageScore}/100)`}
+                    </div>
+                  </div>
+                </AlertDescription>
+              </Alert>
+
+              {/* Summary Card */}
+              <Alert className={response.summary.averageScore >= 75 ? 'border-blue-500' : 'border-yellow-500'}>
+                <Shield className="h-4 w-4" />
+                <AlertDescription>
+                  <div className="space-y-2">
+                    <div className="font-semibold text-lg">
+                      Multi-Model Consensus: {response.summary.consensus}
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <span className="text-muted-foreground">Average Score:</span>
+                        <span className={`ml-2 font-bold text-lg ${getScoreColor(response.summary.averageScore)}`}>
+                          {response.summary.averageScore}/100
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">Models:</span>
+                        <span className="ml-2 font-medium">
+                          {response.summary.successfulModels}/{response.summary.totalModels} successful
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </AlertDescription>
+              </Alert>
+
+              {/* Model Results */}
+              <Tabs defaultValue="comparison" className="w-full">
+                <TabsList className="grid w-full grid-cols-4">
+                  <TabsTrigger value="comparison">Comparison</TabsTrigger>
+                  <TabsTrigger value="openai">GPT-5</TabsTrigger>
+                  <TabsTrigger value="gemini">Gemini</TabsTrigger>
+                  <TabsTrigger value="claude">Claude</TabsTrigger>
+                </TabsList>
 
               <TabsContent value="comparison" className="space-y-4">
                 <ScrollArea className="h-[600px] pr-4">
@@ -405,5 +450,27 @@ export function ZeroFailVerificationPanel() {
         )}
       </CardContent>
     </Card>
+    </div>
   );
+
+  function getScoreColor(score: number) {
+    if (score >= 90) return 'text-green-600';
+    if (score >= 75) return 'text-blue-600';
+    if (score >= 60) return 'text-yellow-600';
+    return 'text-destructive';
+  }
+
+  function getModelIcon(model: string) {
+    if (model.includes('openai')) return <Sparkles className="h-4 w-4" />;
+    if (model.includes('gemini')) return <Brain className="h-4 w-4" />;
+    if (model.includes('claude')) return <Shield className="h-4 w-4" />;
+    return <Zap className="h-4 w-4" />;
+  }
+
+  function getModelDisplayName(model: string) {
+    if (model === 'openai/gpt-5') return 'OpenAI GPT-5';
+    if (model === 'google/gemini-2.5-pro') return 'Gemini 2.5 Pro';
+    if (model === 'claude-sonnet-4-5') return 'Claude Sonnet 4.5';
+    return model;
+  }
 }
