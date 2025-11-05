@@ -61,7 +61,12 @@ For each file, return:
 - criticalIssues (max 3, only CRITICAL/HIGH severity)
 - summary (1 sentence)
 
-Return ONLY valid JSON:
+CRITICAL: Return ONLY valid JSON with properly escaped strings:
+- Use \\n for newlines in strings
+- Use \\\\ for backslashes
+- Use \\" for quotes within strings
+- Keep code snippets short and avoid complex escaping
+
 {
   "reviews": [
     {
@@ -125,7 +130,41 @@ Return ONLY valid JSON:
         throw new Error('Invalid response from AI - no content returned');
       }
 
-      reviewResult = JSON.parse(aiResponse.choices[0].message.content);
+      // Robust JSON parsing with error recovery
+      const rawContent = aiResponse.choices[0].message.content;
+      
+      try {
+        reviewResult = JSON.parse(rawContent);
+      } catch (parseError) {
+        console.error('JSON parse error, attempting recovery:', parseError);
+        
+        // Try to fix common JSON escaping issues
+        let cleanedContent = rawContent;
+        
+        // Fix unescaped backslashes in strings (common in code snippets)
+        cleanedContent = cleanedContent.replace(/\\([^"\\\/bfnrtu])/g, '\\\\$1');
+        
+        // Fix unescaped quotes in strings
+        cleanedContent = cleanedContent.replace(/([^\\])"([^"]*)"([^:])/g, '$1\\"$2\\"$3');
+        
+        try {
+          reviewResult = JSON.parse(cleanedContent);
+          console.log('✓ JSON recovered after cleaning');
+        } catch (secondError) {
+          // Last resort: try to extract JSON from markdown code blocks
+          const jsonMatch = cleanedContent.match(/```(?:json)?\s*(\{[\s\S]*\})\s*```/);
+          if (jsonMatch) {
+            reviewResult = JSON.parse(jsonMatch[1]);
+            console.log('✓ JSON extracted from code block');
+          } else {
+            console.error('Failed to parse or recover JSON:', {
+              original: rawContent.substring(0, 500),
+              cleaned: cleanedContent.substring(0, 500)
+            });
+            throw new Error(`Invalid JSON from AI: ${parseError instanceof Error ? parseError.message : 'Unknown parse error'}`);
+          }
+        }
+      }
       
       // Validate response structure
       if (!reviewResult.reviews || !Array.isArray(reviewResult.reviews)) {
