@@ -156,10 +156,10 @@ const workflowSteps: AIWorkflowStep[] = [
 ];
 
 interface AIDocumentWorkflowProps {
-  caseId: string;
+  caseId?: string;
 }
 
-export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
+export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
   const { toast } = useToast();
   const isMobile = useIsMobile();
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
@@ -169,6 +169,8 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
   const { data: documents, refetch: refetchDocuments } = useQuery({
     queryKey: ['case-documents', caseId],
     queryFn: async () => {
+      if (!caseId) return [];
+      
       const { data, error } = await supabase
         .from('documents')
         .select(`
@@ -187,7 +189,7 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
       if (error) throw error;
       return data;
     },
-    enabled: !!caseId
+    enabled: true
   });
 
   const toggleFlip = (stage: string) => {
@@ -211,7 +213,7 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
 
   return (
     <>
-      <DocumentUploadFAB caseId={caseId} onUploadComplete={refetchDocuments} />
+      {caseId && <DocumentUploadFAB caseId={caseId} onUploadComplete={refetchDocuments} />}
       
       <div className="w-full pb-40">
         {/* Vertical Timeline - Matching Homepage */}
