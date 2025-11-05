@@ -384,11 +384,11 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
           return (
             <div 
               key={step.stage}
-              className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-12 ${index % 2 === 1 ? 'md:flex-row-reverse' : ''} animate-fade-in`}
+              className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-16 ${index % 2 === 1 ? 'md:flex-row-reverse' : ''} animate-fade-in`}
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              {/* Content Card - 6/12 width on desktop for wider spacing */}
-              <div className="w-full md:w-6/12">
+              {/* Content Card - 5/12 width on desktop, larger gap for spacing */}
+              <div className="w-full md:w-5/12">
                 <div 
                   className="relative h-[350px] md:h-[450px]"
                   style={{ perspective: '1000px' }}
@@ -644,8 +644,8 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                 <Icon className="h-6 w-6 text-white" />
               </div>
 
-              {/* Empty spacer for alternating layout - 6/12 width */}
-              <div className="hidden md:block md:w-6/12" />
+              {/* Empty spacer for alternating layout - 5/12 width */}
+              <div className="hidden md:block md:w-5/12" />
             </div>
           );
         })}
@@ -666,56 +666,53 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
           }}
         />
         
-        <div className="max-w-[1800px] mx-auto px-4 py-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="max-w-[1800px] mx-auto px-4 py-3">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="text-center p-4 rounded-lg bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 transition-all"
+              className="text-center p-2 rounded-lg bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 transition-all"
             >
-              <div className="text-3xl md:text-4xl font-bold text-primary mb-1">{documents?.length || 0}</div>
-              <div className="text-xs md:text-sm text-muted-foreground">Total Documents</div>
+              <div className="text-2xl md:text-3xl font-bold text-primary mb-0.5">{documents?.length || 0}</div>
+              <div className="text-[10px] md:text-xs text-muted-foreground">Documents</div>
             </motion.div>
-            
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="text-center p-4 rounded-lg bg-gradient-to-br from-green-500/10 to-green-500/5 border border-green-500/20 transition-all"
+              className="text-center p-2 rounded-lg bg-gradient-to-br from-green-500/10 to-green-500/5 border border-green-500/20 transition-all"
             >
               <motion.div
                 key={Object.values(completedStages).filter(Boolean).length}
                 initial={{ scale: 1.2, color: '#22c55e' }}
                 animate={{ scale: 1, color: '#16a34a' }}
                 transition={{ duration: 0.5 }}
-                className="text-3xl md:text-4xl font-bold text-green-600 mb-1"
+                className="text-2xl md:text-3xl font-bold text-green-600 mb-0.5"
               >
                 {Object.values(completedStages).filter(Boolean).length}
               </motion.div>
-              <div className="text-xs md:text-sm text-muted-foreground">Completed Stages</div>
+              <div className="text-[10px] md:text-xs text-muted-foreground">Completed</div>
             </motion.div>
-            
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="text-center p-4 rounded-lg bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20 transition-all"
+              className="text-center p-2 rounded-lg bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20 transition-all"
             >
-              <div className="text-3xl md:text-4xl font-bold text-accent mb-1">
+              <div className="text-2xl md:text-3xl font-bold text-accent mb-0.5">
                 {workflowSteps.length - Object.values(completedStages).filter(Boolean).length}
               </div>
-              <div className="text-xs md:text-sm text-muted-foreground">Remaining</div>
+              <div className="text-[10px] md:text-xs text-muted-foreground">Remaining</div>
             </motion.div>
-            
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="text-center p-4 rounded-lg bg-gradient-to-br from-secondary/10 to-secondary/5 border border-secondary/20 transition-all"
+              className="text-center p-2 rounded-lg bg-gradient-to-br from-secondary/10 to-secondary/5 border border-secondary/20 transition-all"
             >
               <motion.div
                 key={Object.values(completedStages).filter(Boolean).length}
                 initial={{ scale: 1.3 }}
                 animate={{ scale: 1 }}
                 transition={{ duration: 0.5, type: "spring" }}
-                className="text-3xl md:text-4xl font-bold text-secondary mb-1"
+                className="text-2xl md:text-3xl font-bold text-secondary mb-0.5"
               >
                 {Math.round((Object.values(completedStages).filter(Boolean).length / workflowSteps.length) * 100)}%
               </motion.div>
-              <div className="text-xs md:text-sm text-muted-foreground">Progress</div>
+              <div className="text-[10px] md:text-xs text-muted-foreground">Progress</div>
             </motion.div>
           </div>
         </div>
