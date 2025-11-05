@@ -5190,6 +5190,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      acquire_document_lock_v7: {
+        Args: {
+          p_document_id: string
+          p_lock_timeout?: number
+          p_worker_id: string
+        }
+        Returns: Json
+      }
       calculate_verification_trend: {
         Args: {
           p_current_value: number
@@ -5221,6 +5229,16 @@ export type Database = {
         Returns: {
           hours_remaining: number
           workflow_id: string
+        }[]
+      }
+      cleanup_expired_locks_v7: {
+        Args: { p_timeout_seconds?: number }
+        Returns: {
+          case_id: string
+          document_id: string
+          lock_age_seconds: number
+          locked_at: string
+          locked_by: string
         }[]
       }
       cleanup_old_health_data: { Args: never; Returns: undefined }
@@ -5312,6 +5330,10 @@ export type Database = {
           p_metric_value: number
         }
         Returns: string
+      }
+      release_document_lock_v7: {
+        Args: { p_document_id: string }
+        Returns: Json
       }
       send_workflow_notification: {
         Args: {
