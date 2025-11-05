@@ -81,6 +81,7 @@ const PDFDemo = lazy(() => import("./pages/PDFDemo"));
 const SelfTest = lazy(() => import("./pages/admin/SelfTest"));
 const PDFVerificationTest = lazy(() => import("./pages/admin/PDFVerificationTest"));
 const CodeReview = lazy(() => import("./pages/admin/CodeReview"));
+const TestLockPdf = lazy(() => import("./pages/TestLockPdf"));
 
 
 const queryClient = new QueryClient({
@@ -647,6 +648,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <SelfTest />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/test-lock-pdf" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <TestLockPdf />
               </Suspense>
             } 
           />

@@ -5457,6 +5457,8 @@ export type Database = {
         | "sent"
         | "received"
         | "archived"
+        | "locked_for_print"
+        | "downloaded"
       processing_mode: "standard" | "expedited" | "vip" | "vip_plus"
       workflow_status:
         | "pending"
@@ -5624,6 +5626,8 @@ export const Constants = {
         "sent",
         "received",
         "archived",
+        "locked_for_print",
+        "downloaded",
       ],
       processing_mode: ["standard", "expedited", "vip", "vip_plus"],
       workflow_status: [
