@@ -157,46 +157,73 @@ ${filesContext}
 
 Find ALL CRITICAL issues that would cause failures in production. Be specific, actionable, and reference CWE IDs where applicable.`;
 
-    // Helper function to call Claude via Anthropic API
+    // Helper function to call Claude via Anthropic API with retry logic
     const callClaudeAPI = async (model: string, systemPrompt: string, userPrompt: string): Promise<any> => {
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'x-api-key': anthropicApiKey!,
-          'anthropic-version': '2023-06-01',
-          'content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          model,
-          max_tokens: 4096,
-          temperature: 0.2,
-          system: systemPrompt,
-          messages: [
-            { role: 'user', content: userPrompt }
-          ]
-        })
-      });
+      const maxRetries = 2;
+      let lastError: Error | null = null;
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Anthropic API error ${response.status}: ${errorText}`);
+      for (let attempt = 0; attempt <= maxRetries; attempt++) {
+        try {
+          if (attempt > 0) {
+            const backoffMs = 1000 * Math.pow(2, attempt - 1);
+            console.log(`⏱️ ${model} retry attempt ${attempt}/${maxRetries} after ${backoffMs}ms backoff`);
+            await new Promise(resolve => setTimeout(resolve, backoffMs));
+          }
+
+          const response = await fetch('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: {
+              'x-api-key': anthropicApiKey!,
+              'anthropic-version': '2023-06-01',
+              'content-type': 'application/json',
+            },
+            body: JSON.stringify({
+              model,
+              max_tokens: 4096,
+              temperature: 0.2,
+              system: systemPrompt,
+              messages: [
+                { role: 'user', content: userPrompt }
+              ]
+            })
+          });
+
+          // Retry on 502 errors (infrastructure issues)
+          if (response.status === 502 && attempt < maxRetries) {
+            console.warn(`⚠️ ${model} returned 502 Bad Gateway - will retry`);
+            lastError = new Error(`502 Bad Gateway (attempt ${attempt + 1}/${maxRetries + 1})`);
+            continue;
+          }
+
+          if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Anthropic API error ${response.status}: ${errorText}`);
+          }
+
+          const data = await response.json();
+          
+          // Convert Anthropic response to OpenAI-like format for consistency
+          return {
+            choices: [{
+              message: {
+                content: data.content[0].text
+              }
+            }],
+            usage: {
+              prompt_tokens: data.usage.input_tokens,
+              completion_tokens: data.usage.output_tokens,
+              total_tokens: data.usage.input_tokens + data.usage.output_tokens
+            }
+          };
+        } catch (error) {
+          lastError = error instanceof Error ? error : new Error('Unknown error');
+          if (attempt === maxRetries) {
+            throw lastError;
+          }
+        }
       }
 
-      const data = await response.json();
-      
-      // Convert Anthropic response to OpenAI-like format for consistency
-      return {
-        choices: [{
-          message: {
-            content: data.content[0].text
-          }
-        }],
-        usage: {
-          prompt_tokens: data.usage.input_tokens,
-          completion_tokens: data.usage.output_tokens,
-          total_tokens: data.usage.input_tokens + data.usage.output_tokens
-        }
-      };
+      throw lastError || new Error('Claude API call failed after retries');
     };
 
     // Run verification with all models in parallel
@@ -245,7 +272,7 @@ Find ALL CRITICAL issues that would cause failures in production. Be specific, a
                 { role: 'system', content: systemPrompt },
                 { role: 'user', content: userPrompt }
               ],
-              max_completion_tokens: 8000  // Increased for DEEP analysis
+              max_completion_tokens: 16000  // Fixed: GPT-5 needs higher limit to avoid truncation
               // Note: Removed response_format for compatibility with all models
             }),
             signal: controller.signal,
@@ -290,9 +317,9 @@ Find ALL CRITICAL issues that would cause failures in production. Be specific, a
         console.log(`📄 ${model} raw content preview:`, rawContent.substring(0, 300));
         let verificationResult;
 
-        // STRATEGY: Try markdown extraction FIRST (most common), then direct parse, then fallback
+        // STRATEGY: Try markdown extraction FIRST (Gemini wraps in markdown), then direct parse
         
-        // 1. Try extracting from markdown code blocks (```json or ```)
+        // 1. Try extracting from markdown code blocks FIRST (```json or ```)
         const jsonMatch = rawContent.match(/```(?:json)?\s*(\{[\s\S]*\})\s*```/);
         if (jsonMatch) {
           try {
@@ -308,9 +335,8 @@ Find ALL CRITICAL issues that would cause failures in production. Be specific, a
               duration
             };
           }
-        } 
-        // 2. Try direct JSON parse (if no markdown)
-        else {
+        } else {
+          // 2. Try direct JSON parse (if no markdown detected)
           try {
             verificationResult = JSON.parse(rawContent);
             console.log(`✅ ${model} JSON parsed directly - score: ${verificationResult.overallAssessment?.overallScore || 'N/A'}`);
