@@ -130,20 +130,22 @@ export const CodeReviewDashboard = () => {
     const staticPromises = filesToReview.map(async (file) => {
       try {
         const content = getFileContent(file.path);
-        return analyzeFile(file.name, content);
+        return await analyzeFile(file.name, content);
       } catch (error) {
-        // Return empty analysis for failed files
+        // Return empty analysis for failed files (matching StaticAnalysisResult structure)
         return {
           fileName: file.name,
-          issues: [],
-          stats: {
-            totalLines: 0,
-            consoleLogsFound: 0,
-            todosFound: 0,
-            missingErrorHandling: 0,
-            longFunctions: 0,
+          findings: [],
+          summary: {
+            total: 0,
+            critical: 0,
+            high: 0,
+            medium: 0,
+            low: 0,
+            info: 0,
+            byType: {} as Record<string, number>
           }
-        };
+        } as StaticAnalysisResult;
       }
     });
 

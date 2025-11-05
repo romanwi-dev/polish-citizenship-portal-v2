@@ -1,224 +1,346 @@
 /**
- * Static Code Analyzer
- * Performs local analysis without AI credits
- * Catches common code smells and issues
+ * PHASE 3: Static Code Analyzer for Security Scanning
+ * Detects common vulnerabilities: SQL injection, XSS, hardcoded secrets, insecure API calls
  */
 
-export interface StaticIssue {
-  line: number;
-  severity: 'warning' | 'info';
-  category: string;
-  title: string;
+export type VulnerabilitySeverity = 'critical' | 'high' | 'medium' | 'low' | 'info';
+
+export interface SecurityFinding {
+  id: string;
+  type: VulnerabilityType;
+  severity: VulnerabilitySeverity;
+  line?: number;
+  column?: number;
+  message: string;
   description: string;
+  recommendation: string;
+  codeSnippet?: string;
+  cwe?: string;
 }
 
+export type VulnerabilityType =
+  | 'sql_injection'
+  | 'xss'
+  | 'hardcoded_secret'
+  | 'insecure_api'
+  | 'insecure_random'
+  | 'path_traversal'
+  | 'command_injection'
+  | 'weak_crypto'
+  | 'exposed_pii'
+  | 'missing_validation'
+  | 'insecure_auth';
+
+interface ScanOptions {
+  checkSQLInjection?: boolean;
+  checkXSS?: boolean;
+  checkSecrets?: boolean;
+  checkInsecureAPIs?: boolean;
+  checkAll?: boolean;
+}
+
+const SECURITY_PATTERNS = {
+  sqlInjection: [
+    {
+      pattern: /(\$\{[^}]*\}|\+\s*['\"`]|['\"`]\s*\+).*?(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER)/gi,
+      message: 'Potential SQL injection: Dynamic SQL construction with string concatenation',
+      cwe: 'CWE-89'
+    }
+  ],
+
+  xss: [
+    {
+      pattern: /dangerouslySetInnerHTML\s*=\s*\{\s*\{\s*__html:/gi,
+      message: 'XSS risk: dangerouslySetInnerHTML without sanitization',
+      cwe: 'CWE-79'
+    },
+    {
+      pattern: /eval\s*\(/gi,
+      message: 'XSS/Code injection risk: eval() executes arbitrary code',
+      cwe: 'CWE-95'
+    }
+  ],
+
+  secrets: [
+    {
+      pattern: /(?:api[_-]?key|apikey|secret[_-]?key|password|passwd|pwd|token|auth[_-]?token|access[_-]?token|private[_-]?key)\s*[:=]\s*['\"`][\w\-_]{16,}['\"`]/gi,
+      message: 'Hardcoded secret detected: API key or password in source code',
+      cwe: 'CWE-798'
+    }
+  ],
+
+  insecureAPI: [
+    {
+      pattern: /fetch\s*\(\s*['\"`]http:\/\//gi,
+      message: 'Insecure API call: Using HTTP instead of HTTPS',
+      cwe: 'CWE-319'
+    }
+  ]
+};
+
+const SEVERITY_MAP: Record<VulnerabilityType, VulnerabilitySeverity> = {
+  sql_injection: 'critical',
+  xss: 'high',
+  hardcoded_secret: 'critical',
+  insecure_api: 'high',
+  insecure_random: 'medium',
+  path_traversal: 'high',
+  command_injection: 'critical',
+  weak_crypto: 'medium',
+  exposed_pii: 'high',
+  missing_validation: 'medium',
+  insecure_auth: 'critical'
+};
+
+const RECOMMENDATIONS: Record<VulnerabilityType, string> = {
+  sql_injection: 'Use parameterized queries or prepared statements.',
+  xss: 'Sanitize user input with DOMPurify before rendering.',
+  hardcoded_secret: 'Store secrets in Lovable Cloud secrets.',
+  insecure_api: 'Always use HTTPS for API calls.',
+  insecure_random: 'Use crypto.getRandomValues() for security operations.',
+  path_traversal: 'Validate and sanitize file paths.',
+  command_injection: 'Avoid shell command execution with user input.',
+  weak_crypto: 'Use strong algorithms: AES-256-GCM for encryption.',
+  exposed_pii: 'Never log PII to console or store in browser storage.',
+  missing_validation: 'Validate all user inputs with schema validation.',
+  insecure_auth: 'Implement server-side authentication.'
+};
+
+export class StaticCodeAnalyzer {
+  private findings: SecurityFinding[] = [];
+  private findingIdCounter = 0;
+
+  scanCode(code: string, options: ScanOptions = { checkAll: true }): SecurityFinding[] {
+    this.findings = [];
+    this.findingIdCounter = 0;
+
+    const shouldCheckAll = options.checkAll !== false;
+
+    if (shouldCheckAll || options.checkSQLInjection) {
+      this.checkSQLInjection(code);
+    }
+
+    if (shouldCheckAll || options.checkXSS) {
+      this.checkXSS(code);
+    }
+
+    if (shouldCheckAll || options.checkSecrets) {
+      this.checkHardcodedSecrets(code);
+    }
+
+    if (shouldCheckAll || options.checkInsecureAPIs) {
+      this.checkInsecureAPIs(code);
+    }
+
+    return this.findings;
+  }
+
+  private checkSQLInjection(code: string): void {
+    SECURITY_PATTERNS.sqlInjection.forEach(({ pattern, message, cwe }) => {
+      this.findMatches(code, pattern, 'sql_injection', message, cwe);
+    });
+  }
+
+  private checkXSS(code: string): void {
+    SECURITY_PATTERNS.xss.forEach(({ pattern, message, cwe }) => {
+      this.findMatches(code, pattern, 'xss', message, cwe);
+    });
+  }
+
+  private checkHardcodedSecrets(code: string): void {
+    SECURITY_PATTERNS.secrets.forEach(({ pattern, message, cwe }) => {
+      this.findMatches(code, pattern, 'hardcoded_secret', message, cwe);
+    });
+  }
+
+  private checkInsecureAPIs(code: string): void {
+    SECURITY_PATTERNS.insecureAPI.forEach(({ pattern, message, cwe }) => {
+      this.findMatches(code, pattern, 'insecure_api', message, cwe);
+    });
+  }
+
+  private findMatches(
+    code: string,
+    pattern: RegExp,
+    type: VulnerabilityType,
+    message: string,
+    cwe?: string
+  ): void {
+    const lines = code.split('\n');
+    let match: RegExpExecArray | null;
+
+    pattern.lastIndex = 0;
+
+    while ((match = pattern.exec(code)) !== null) {
+      const matchIndex = match.index;
+      const lineNumber = this.getLineNumber(code, matchIndex);
+      const column = this.getColumnNumber(code, matchIndex);
+      const codeSnippet = this.extractCodeSnippet(lines, lineNumber);
+
+      this.findings.push({
+        id: `finding-${++this.findingIdCounter}`,
+        type,
+        severity: SEVERITY_MAP[type],
+        line: lineNumber,
+        column,
+        message,
+        description: this.getDescription(type, match[0]),
+        recommendation: RECOMMENDATIONS[type],
+        codeSnippet,
+        cwe
+      });
+    }
+  }
+
+  private getLineNumber(code: string, index: number): number {
+    return code.substring(0, index).split('\n').length;
+  }
+
+  private getColumnNumber(code: string, index: number): number {
+    const lastNewline = code.lastIndexOf('\n', index);
+    return index - lastNewline;
+  }
+
+  private extractCodeSnippet(lines: string[], lineNumber: number): string {
+    const startLine = Math.max(0, lineNumber - 2);
+    const endLine = Math.min(lines.length, lineNumber + 1);
+    return lines.slice(startLine, endLine).join('\n');
+  }
+
+  private getDescription(type: VulnerabilityType, matchedCode: string): string {
+    const descriptions: Record<VulnerabilityType, string> = {
+      sql_injection: `SQL injection vulnerability found: "${matchedCode.substring(0, 50)}..."`,
+      xss: `XSS vulnerability found: "${matchedCode.substring(0, 50)}..."`,
+      hardcoded_secret: `Hardcoded secret found: "${matchedCode.substring(0, 30)}..."`,
+      insecure_api: `Insecure API found: "${matchedCode.substring(0, 50)}..."`,
+      insecure_random: `Insecure random found: "${matchedCode.substring(0, 50)}..."`,
+      path_traversal: `Path traversal found: "${matchedCode.substring(0, 50)}..."`,
+      command_injection: `Command injection found: "${matchedCode.substring(0, 50)}..."`,
+      weak_crypto: `Weak crypto found: "${matchedCode.substring(0, 50)}..."`,
+      exposed_pii: `Exposed PII found: "${matchedCode.substring(0, 50)}..."`,
+      missing_validation: `Missing validation found: "${matchedCode.substring(0, 50)}..."`,
+      insecure_auth: `Insecure auth found: "${matchedCode.substring(0, 50)}..."`
+    };
+
+    return descriptions[type];
+  }
+
+  getSummary() {
+    const summary = {
+      total: this.findings.length,
+      critical: 0,
+      high: 0,
+      medium: 0,
+      low: 0,
+      info: 0,
+      byType: {} as Record<VulnerabilityType, number>
+    };
+
+    this.findings.forEach(finding => {
+      summary[finding.severity]++;
+      summary.byType[finding.type] = (summary.byType[finding.type] || 0) + 1;
+    });
+
+    return summary;
+  }
+}
+
+export function scanCodeForVulnerabilities(code: string, options?: ScanOptions): SecurityFinding[] {
+  const analyzer = new StaticCodeAnalyzer();
+  return analyzer.scanCode(code, options);
+}
+
+/**
+ * Legacy compatibility exports for existing components
+ */
 export interface StaticAnalysisResult {
   fileName: string;
-  issues: StaticIssue[];
-  stats: {
-    totalLines: number;
-    consoleLogsFound: number;
-    todosFound: number;
-    missingErrorHandling: number;
-    longFunctions: number;
+  findings: SecurityFinding[];
+  summary: {
+    total: number;
+    critical: number;
+    high: number;
+    medium: number;
+    low: number;
+    info: number;
+    byType: Record<VulnerabilityType, number>;
   };
 }
 
-/**
- * Analyze a single file for common issues
- */
-export function analyzeFile(fileName: string, content: string): StaticAnalysisResult {
-  const lines = content.split('\n');
-  const issues: StaticIssue[] = [];
-  
-  const stats = {
-    totalLines: lines.length,
-    consoleLogsFound: 0,
-    todosFound: 0,
-    missingErrorHandling: 0,
-    longFunctions: 0,
+export async function analyzeFile(
+  fileName: string,
+  content: string,
+  options?: ScanOptions
+): Promise<StaticAnalysisResult> {
+  try {
+    const analyzer = new StaticCodeAnalyzer();
+    const findings = analyzer.scanCode(content, options);
+    const summary = analyzer.getSummary();
+
+    return {
+      fileName,
+      findings,
+      summary
+    };
+  } catch (error) {
+    // Return empty analysis on error
+    console.error(`Static analysis failed for ${fileName}:`, error);
+    return {
+      fileName,
+      findings: [],
+      summary: {
+        total: 0,
+        critical: 0,
+        high: 0,
+        medium: 0,
+        low: 0,
+        info: 0,
+        byType: {} as Record<VulnerabilityType, number>
+      }
+    };
+  }
+}
+
+export function generateSummary(results: StaticAnalysisResult[]): {
+  totalFiles: number;
+  totalFindings: number;
+  criticalCount: number;
+  highCount: number;
+  mediumCount: number;
+  lowCount: number;
+  infoCount: number;
+  mostCommonVulnerability: VulnerabilityType | null;
+} {
+  const summary = {
+    totalFiles: results.length,
+    totalFindings: 0,
+    criticalCount: 0,
+    highCount: 0,
+    mediumCount: 0,
+    lowCount: 0,
+    infoCount: 0,
+    mostCommonVulnerability: null as VulnerabilityType | null
   };
 
-  // Track function boundaries for error handling checks
-  let inFunction = false;
-  let functionStartLine = 0;
-  let functionHasErrorHandling = false;
-  let functionName = '';
-  let functionLineCount = 0;
+  const vulnerabilityCounts: Record<string, number> = {};
 
-  lines.forEach((line, index) => {
-    const lineNumber = index + 1;
-    const trimmedLine = line.trim();
+  results.forEach(result => {
+    summary.totalFindings += result.findings.length;
+    summary.criticalCount += result.summary.critical;
+    summary.highCount += result.summary.high;
+    summary.mediumCount += result.summary.medium;
+    summary.lowCount += result.summary.low;
+    summary.infoCount += result.summary.info;
 
-    // 1. Check for console.log statements
-    if (/console\.(log|warn|error|debug|info)/.test(line)) {
-      stats.consoleLogsFound++;
-      issues.push({
-        line: lineNumber,
-        severity: 'warning',
-        category: 'Debug Code',
-        title: 'Console statement found',
-        description: 'Remove console statements before production. Use proper logging utilities instead.',
-      });
-    }
-
-    // 2. Check for TODO/FIXME comments
-    if (/\/\/\s*(TODO|FIXME|XXX|HACK)/i.test(line)) {
-      stats.todosFound++;
-      issues.push({
-        line: lineNumber,
-        severity: 'info',
-        category: 'Technical Debt',
-        title: 'TODO comment found',
-        description: 'Unresolved TODO comment. Consider creating a task or fixing before production.',
-      });
-    }
-
-    // 3. Check for debugger statements
-    if (/^\s*debugger[;\s]*$/.test(trimmedLine)) {
-      issues.push({
-        line: lineNumber,
-        severity: 'warning',
-        category: 'Debug Code',
-        title: 'Debugger statement found',
-        description: 'Remove debugger statements before production deployment.',
-      });
-    }
-
-    // 4. Track function boundaries for error handling and length checks
-    const functionMatch = line.match(/(async\s+)?function\s+(\w+)|const\s+(\w+)\s*=\s*(async\s+)?\(/);
-    if (functionMatch && trimmedLine.includes('{')) {
-      inFunction = true;
-      functionStartLine = lineNumber;
-      functionHasErrorHandling = false;
-      functionName = functionMatch[2] || functionMatch[3] || 'anonymous';
-      functionLineCount = 0;
-    }
-
-    if (inFunction) {
-      functionLineCount++;
-      
-      // Check for error handling patterns
-      if (/try\s*{|catch\s*\(|\.catch\(|throw\s+/.test(line)) {
-        functionHasErrorHandling = true;
-      }
-
-      // Check for function end
-      if (trimmedLine === '}' && functionLineCount > 1) {
-        // Function ended - check for issues
-        
-        // Check if function is too long (>50 lines)
-        if (functionLineCount > 50) {
-          stats.longFunctions++;
-          issues.push({
-            line: functionStartLine,
-            severity: 'info',
-            category: 'Maintainability',
-            title: `Function "${functionName}" is too long (${functionLineCount} lines)`,
-            description: 'Consider breaking down into smaller functions. Functions over 50 lines are harder to maintain.',
-          });
-        }
-
-        // Check for missing error handling in async functions
-        const isAsync = lines[functionStartLine - 1]?.includes('async');
-        if (isAsync && !functionHasErrorHandling && functionLineCount > 5) {
-          stats.missingErrorHandling++;
-          issues.push({
-            line: functionStartLine,
-            severity: 'warning',
-            category: 'Error Handling',
-            title: `Async function "${functionName}" missing error handling`,
-            description: 'Async functions should have try-catch blocks or .catch() handlers to prevent unhandled promise rejections.',
-          });
-        }
-
-        inFunction = false;
-      }
-    }
-
-    // 5. Check for any type usage
-    if (/:\s*any[\s,;\)\]]/.test(line) || /as\s+any/.test(line)) {
-      issues.push({
-        line: lineNumber,
-        severity: 'info',
-        category: 'Type Safety',
-        title: 'Usage of "any" type',
-        description: 'Avoid using "any" type. Use specific types or "unknown" for better type safety.',
-      });
-    }
-
-    // 6. Check for hardcoded credentials patterns
-    if (/password\s*=\s*['"][^'"]+['"]|api[_-]?key\s*=\s*['"][^'"]+['"]/i.test(line)) {
-      issues.push({
-        line: lineNumber,
-        severity: 'warning',
-        category: 'Security',
-        title: 'Potential hardcoded credentials',
-        description: 'Never hardcode passwords or API keys. Use environment variables or secrets management.',
-      });
-    }
-
-    // 7. Check for direct DOM manipulation in React files
-    if (fileName.endsWith('.tsx') || fileName.endsWith('.jsx')) {
-      if (/document\.(getElementById|querySelector|getElementsBy)/.test(line)) {
-        issues.push({
-          line: lineNumber,
-          severity: 'info',
-          category: 'React Best Practices',
-          title: 'Direct DOM manipulation in React',
-          description: 'Use React refs instead of direct DOM queries. Direct DOM access can cause conflicts with React\'s virtual DOM.',
-        });
-      }
-    }
-
-    // 8. Check for eval usage
-    if (/\beval\s*\(/.test(line)) {
-      issues.push({
-        line: lineNumber,
-        severity: 'warning',
-        category: 'Security',
-        title: 'eval() usage detected',
-        description: 'Avoid using eval(). It poses security risks and performance issues.',
-      });
-    }
+    result.findings.forEach(finding => {
+      vulnerabilityCounts[finding.type] = (vulnerabilityCounts[finding.type] || 0) + 1;
+    });
   });
 
-  return {
-    fileName,
-    issues,
-    stats,
-  };
-}
+  if (Object.keys(vulnerabilityCounts).length > 0) {
+    const mostCommon = Object.entries(vulnerabilityCounts).sort((a, b) => b[1] - a[1])[0];
+    summary.mostCommonVulnerability = mostCommon[0] as VulnerabilityType;
+  }
 
-/**
- * Generate a summary report for multiple files
- */
-export function generateSummary(results: StaticAnalysisResult[]) {
-  const totalIssues = results.reduce((sum, r) => sum + r.issues.length, 0);
-  const totalWarnings = results.reduce(
-    (sum, r) => sum + r.issues.filter(i => i.severity === 'warning').length, 
-    0
-  );
-  const totalInfo = results.reduce(
-    (sum, r) => sum + r.issues.filter(i => i.severity === 'info').length, 
-    0
-  );
-
-  const categoryBreakdown = results.reduce((acc, result) => {
-    result.issues.forEach(issue => {
-      acc[issue.category] = (acc[issue.category] || 0) + 1;
-    });
-    return acc;
-  }, {} as Record<string, number>);
-
-  return {
-    totalFiles: results.length,
-    totalIssues,
-    totalWarnings,
-    totalInfo,
-    categoryBreakdown,
-    criticalFiles: results
-      .filter(r => r.issues.filter(i => i.severity === 'warning').length > 3)
-      .map(r => r.fileName),
-  };
+  return summary;
 }
