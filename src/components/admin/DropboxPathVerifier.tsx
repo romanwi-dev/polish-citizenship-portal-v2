@@ -27,6 +27,11 @@ interface VerificationResults {
     name: string;
     path: string;
   }>;
+  duplicates: Array<{
+    path: string;
+    count: number;
+    documents: Array<{ id: string; name: string; case_id: string }>;
+  }>;
 }
 
 export function DropboxPathVerifier() {
@@ -51,8 +56,8 @@ export function DropboxPathVerifier() {
         
         const summary = data.summary;
         toast({
-          title: "Verification Complete",
-          description: `${summary.valid}/${summary.total} paths verified (${summary.verificationRate})`,
+          title: "Phase 3: Path Integrity Scan Complete",
+          description: `Integrity Score: ${summary.integrityScore} | ${summary.valid}/${summary.total} verified | ${summary.duplicates} duplicate groups found`,
         });
       } else {
         throw new Error(data?.error || 'Verification failed');
@@ -120,10 +125,10 @@ export function DropboxPathVerifier() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <AlertCircle className="h-5 w-5" />
-          Dropbox Path Verifier
+          Phase 3: Path Integrity Scan
         </CardTitle>
         <CardDescription>
-          Verify that document paths in the database match actual files in Dropbox
+          Comprehensive path verification including duplicate detection, validation, and automated fixing
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -153,7 +158,7 @@ export function DropboxPathVerifier() {
 
         {results && (
           <div className="space-y-4">
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-4 gap-4">
               <Alert>
                 <CheckCircle className="h-4 w-4" />
                 <AlertDescription>
@@ -175,6 +180,14 @@ export function DropboxPathVerifier() {
                 <AlertDescription>
                   <div className="font-semibold">{results.missing.length}</div>
                   <div className="text-xs">Missing Files</div>
+                </AlertDescription>
+              </Alert>
+
+              <Alert variant={results.duplicates.length > 0 ? "destructive" : "default"}>
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>
+                  <div className="font-semibold">{results.duplicates.length}</div>
+                  <div className="text-xs">Duplicate Groups</div>
                 </AlertDescription>
               </Alert>
             </div>
@@ -209,6 +222,28 @@ export function DropboxPathVerifier() {
                       <div className="font-mono">{item.path}</div>
                       <div className="text-muted-foreground">{item.name}</div>
                       <div className="text-xs text-destructive">{item.error}</div>
+                    </div>
+                  ))}
+                </ScrollArea>
+              </div>
+            )}
+
+            {results.duplicates.length > 0 && (
+              <div className="space-y-2">
+                <h4 className="font-semibold text-sm flex items-center gap-2">
+                  <AlertCircle className="h-4 w-4 text-destructive" />
+                  Duplicate Paths ({results.duplicates.reduce((sum, d) => sum + d.count, 0)} docs in {results.duplicates.length} groups)
+                </h4>
+                <ScrollArea className="h-48 border rounded-md p-2">
+                  {results.duplicates.map((item, idx) => (
+                    <div key={idx} className="text-xs mb-3 p-2 bg-destructive/10 border border-destructive/20 rounded">
+                      <div className="font-mono text-destructive font-semibold mb-1">{item.path}</div>
+                      <div className="text-xs text-muted-foreground mb-1">{item.count} documents using this path:</div>
+                      {item.documents.map((doc) => (
+                        <div key={doc.id} className="ml-2 text-xs text-muted-foreground">
+                          • {doc.name} (Case: {doc.case_id})
+                        </div>
+                      ))}
                     </div>
                   ))}
                 </ScrollArea>

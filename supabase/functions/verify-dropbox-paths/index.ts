@@ -49,8 +49,32 @@ serve(async (req) => {
       invalid: [] as any[],
       valid: 0,
       missing: [] as any[],
-      verified: [] as any[]
+      verified: [] as any[],
+      duplicates: [] as any[]
     };
+
+    // Phase 3: Detect duplicate paths
+    const pathMap = new Map<string, any[]>();
+    for (const doc of documents || []) {
+      if (doc.dropbox_path) {
+        const normalized = doc.dropbox_path.toLowerCase().trim();
+        if (!pathMap.has(normalized)) {
+          pathMap.set(normalized, []);
+        }
+        pathMap.get(normalized)!.push(doc);
+      }
+    }
+
+    // Extract duplicates
+    for (const [path, docs] of pathMap.entries()) {
+      if (docs.length > 1) {
+        results.duplicates.push({
+          path: path,
+          count: docs.length,
+          documents: docs.map(d => ({ id: d.id, name: d.name, case_id: d.case_id }))
+        });
+      }
+    }
 
     for (const doc of documents || []) {
       const path = doc.dropbox_path;
@@ -62,6 +86,17 @@ serve(async (req) => {
           name: doc.name,
           path: path,
           reason: 'Invalid path format (no extension or empty)'
+        });
+        continue;
+      }
+
+      // Check for suspicious patterns
+      if (path.includes('//') || path.includes('\\')) {
+        results.invalid.push({
+          id: doc.id,
+          name: doc.name,
+          path: path,
+          reason: 'Path contains invalid characters (double slashes or backslashes)'
         });
         continue;
       }
@@ -106,7 +141,11 @@ serve(async (req) => {
       await new Promise(resolve => setTimeout(resolve, 100));
     }
 
-    console.log(`Verification complete: ${results.valid} valid, ${results.invalid.length} invalid, ${results.missing.length} missing`);
+    console.log(`✅ Phase 3 Verification complete:`);
+    console.log(`  • Valid: ${results.valid}`);
+    console.log(`  • Invalid: ${results.invalid.length}`);
+    console.log(`  • Missing: ${results.missing.length}`);
+    console.log(`  • Duplicates: ${results.duplicates.length} (${results.duplicates.reduce((sum, d) => sum + d.count, 0)} total docs)`);
 
     return createSecureResponse({
       success: true,
@@ -116,7 +155,10 @@ serve(async (req) => {
         valid: results.valid,
         invalid: results.invalid.length,
         missing: results.missing.length,
-        verificationRate: `${((results.valid / results.total) * 100).toFixed(1)}%`
+        duplicates: results.duplicates.length,
+        duplicateDocCount: results.duplicates.reduce((sum: number, d: any) => sum + d.count, 0),
+        verificationRate: `${((results.valid / results.total) * 100).toFixed(1)}%`,
+        integrityScore: `${(((results.valid - results.duplicates.reduce((sum: number, d: any) => sum + d.count - 1, 0)) / results.total) * 100).toFixed(1)}%`
       }
     }, 200, origin);
 
