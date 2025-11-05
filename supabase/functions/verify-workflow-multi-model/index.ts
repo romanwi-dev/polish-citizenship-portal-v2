@@ -236,7 +236,7 @@ Find ALL CRITICAL issues that would cause failures in production. Be specific, a
                 { role: 'system', content: systemPrompt },
                 { role: 'user', content: userPrompt }
               ],
-              max_completion_tokens: 4000
+              max_completion_tokens: 8000  // Increased for DEEP analysis
               // Note: Removed response_format for compatibility with all models
             }),
             signal: controller.signal,
@@ -281,40 +281,45 @@ Find ALL CRITICAL issues that would cause failures in production. Be specific, a
         console.log(`📄 ${model} raw content preview:`, rawContent.substring(0, 300));
         let verificationResult;
 
-        try {
-          verificationResult = JSON.parse(rawContent);
-          console.log(`✅ ${model} JSON parsed successfully - score: ${verificationResult.overallAssessment?.overallScore || 'N/A'}`);
-        } catch (parseError) {
-          console.error(`❌ ${model} JSON parse error:`, parseError);
-          console.error(`📄 ${model} raw content that failed to parse:`, rawContent.substring(0, 500));
-          
-          // Try to extract JSON from markdown code blocks
-          const jsonMatch = rawContent.match(/```(?:json)?\s*(\{[\s\S]*\})\s*```/);
-          if (jsonMatch) {
-            try {
-              verificationResult = JSON.parse(jsonMatch[1]);
-              console.log(`✓ ${model} JSON extracted from markdown code block`);
-            } catch (markdownError) {
-              console.error(`❌ ${model} failed to parse JSON from markdown:`, markdownError);
-              return {
-                model,
-                success: false,
-                error: `Failed to parse JSON from markdown: ${markdownError instanceof Error ? markdownError.message : 'Unknown'}`,
-                duration
-              };
-            }
-          } else {
-            // Try to find any JSON object in the response
+        // STRATEGY: Try markdown extraction FIRST (most common), then direct parse, then fallback
+        
+        // 1. Try extracting from markdown code blocks (```json or ```)
+        const jsonMatch = rawContent.match(/```(?:json)?\s*(\{[\s\S]*\})\s*```/);
+        if (jsonMatch) {
+          try {
+            verificationResult = JSON.parse(jsonMatch[1]);
+            console.log(`✅ ${model} JSON extracted from markdown code block - score: ${verificationResult.overallAssessment?.overallScore || 'N/A'}`);
+          } catch (markdownError) {
+            console.error(`❌ ${model} failed to parse JSON from markdown:`, markdownError);
+            console.error(`📄 ${model} markdown content:`, jsonMatch[1].substring(0, 500));
+            return {
+              model,
+              success: false,
+              error: `Failed to parse JSON from markdown: ${markdownError instanceof Error ? markdownError.message : 'Unknown'}`,
+              duration
+            };
+          }
+        } 
+        // 2. Try direct JSON parse (if no markdown)
+        else {
+          try {
+            verificationResult = JSON.parse(rawContent);
+            console.log(`✅ ${model} JSON parsed directly - score: ${verificationResult.overallAssessment?.overallScore || 'N/A'}`);
+          } catch (parseError) {
+            console.error(`❌ ${model} direct JSON parse failed:`, parseError);
+            console.error(`📄 ${model} raw content that failed:`, rawContent.substring(0, 500));
+            
+            // 3. Fallback: Try to find any JSON object in the response
             const jsonObjectMatch = rawContent.match(/\{[\s\S]*\}/);
             if (jsonObjectMatch) {
               try {
                 verificationResult = JSON.parse(jsonObjectMatch[0]);
-                console.log(`✓ ${model} JSON extracted from raw text`);
+                console.log(`✓ ${model} JSON extracted from raw text fallback`);
               } catch {
                 return {
                   model,
                   success: false,
-                  error: `JSON parse failed - content preview: ${rawContent.substring(0, 200)}`,
+                  error: `All JSON parsing attempts failed - content preview: ${rawContent.substring(0, 200)}`,
                   duration
                 };
               }
