@@ -42,13 +42,14 @@ export default function TranslationWorkflowTest() {
 
       const caseId = (cases[0] as any).id;
 
-      // Create a test document
+      // Create a test document with unique path
+      const uniquePath = `/test/${formData.documentName}_${Date.now()}`;
       const { data: document, error: docError } = await supabase
         .from('documents' as any)
         .insert({
           case_id: caseId,
           name: formData.documentName,
-          dropbox_path: `/test/${formData.documentName}`,
+          dropbox_path: uniquePath,
           type: 'birth_certificate',
           category: 'LOCAL',
           language: formData.sourceLanguage,
