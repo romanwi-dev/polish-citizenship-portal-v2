@@ -40,7 +40,7 @@ export const LockPdfTester = () => {
 
   const testOwnershipVerification = async (): Promise<TestResult> => {
     try {
-      // Try to lock a document without proper authorization
+      // Try to lock a document that doesn't exist
       const { data, error } = await supabase.functions.invoke('lock-pdf', {
         body: {
           documentId: 'fake-uuid',
@@ -49,27 +49,45 @@ export const LockPdfTester = () => {
         }
       });
 
+      // If we get an error, that's GOOD - it means the function is protecting access
       if (error) {
-        if (error.message.includes('Access denied') || error.message.includes('not found')) {
+        // Check if it's the expected "document not found" or "access denied" error
+        const errorStr = JSON.stringify(error).toLowerCase();
+        if (errorStr.includes('not found') || 
+            errorStr.includes('access denied') || 
+            errorStr.includes('404') ||
+            errorStr.includes('unauthorized')) {
           return {
             success: true,
-            message: '✅ Ownership verification working - rejected unauthorized access'
+            message: '✅ Ownership verification working - correctly rejected fake document'
           };
         }
+        
+        // If it's a different error, that's unexpected
         return {
           success: false,
-          message: `Unexpected error: ${error.message}`
+          message: `⚠️ Unexpected error type: ${error.message || JSON.stringify(error)}`
         };
       }
 
+      // If no error, that's BAD - it means we could lock a fake document
       return {
         success: false,
-        message: '❌ Security issue: Function allowed unauthorized access'
+        message: '❌ Security issue: Function allowed access to fake document'
       };
     } catch (error) {
+      // Catch block should also treat errors as success for this test
+      const errorStr = String(error).toLowerCase();
+      if (errorStr.includes('not found') || errorStr.includes('404')) {
+        return {
+          success: true,
+          message: '✅ Ownership verification working - rejected at network level'
+        };
+      }
+      
       return {
-        success: true,
-        message: '✅ Ownership verification working - rejected at network level'
+        success: false,
+        message: `Unexpected exception: ${error}`
       };
     }
   };
