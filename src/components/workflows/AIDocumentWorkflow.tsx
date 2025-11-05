@@ -1680,32 +1680,56 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
               onClick={async () => {
                 try {
                   setIsUploading(true);
+                  
+                  if (!caseData?.dropbox_path) {
+                    toast({
+                      title: "No Dropbox Path",
+                      description: "This case doesn't have a Dropbox path configured",
+                      variant: "destructive"
+                    });
+                    return;
+                  }
+                  
+                  console.log('Scanning folder:', caseData.dropbox_path);
+                  
                   const { data, error } = await supabase.functions.invoke('scan-and-queue-ocr', {
                     body: { 
-                      folderPath: caseData?.dropbox_path || '/CASES/VIP/GORNICKI',
+                      folderPath: caseData.dropbox_path,
                       caseId: caseId
                     }
                   });
                   
-                  if (error) throw error;
+                  if (error) {
+                    console.error('Scan error:', error);
+                    throw new Error(error.message || 'Scan failed');
+                  }
+                  
+                  if (data?.error) {
+                    throw new Error(data.error);
+                  }
                   
                   toast({
                     title: "Scan Complete",
-                    description: `Scanned ${data.scanned} files, queued ${data.inserted} for OCR`,
+                    description: `Found ${data.scanned} files, queued ${data.inserted} for OCR`,
                   });
                   
                   queryClient.invalidateQueries({ queryKey: ['documents', caseId] });
                 } catch (error: any) {
+                  console.error('Scan failed:', error);
+                  const errorMsg = error.message || 'Unknown error';
+                  
                   toast({
                     title: "Scan Failed", 
-                    description: error.message,
+                    description: errorMsg.includes('path/not_found') 
+                      ? `Dropbox folder not found: ${caseData?.dropbox_path || 'unknown'}. This folder may not exist in your Dropbox.`
+                      : errorMsg,
                     variant: "destructive"
                   });
                 } finally {
                   setIsUploading(false);
                 }
               }}
-              disabled={isUploading || !!workflowRun}
+              disabled={isUploading || !caseData?.dropbox_path || !!workflowRun}
               className="w-full md:w-auto"
             >
               <FolderSync className="h-4 w-4 mr-2" />
