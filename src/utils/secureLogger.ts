@@ -1,6 +1,6 @@
 /**
- * Secure logging utility that only logs in development mode
- * and sanitizes sensitive data in production error tracking
+ * PHASE 2: Enhanced secure logging with regex-based PII detection
+ * Logs only in development mode and sanitizes sensitive data in production
  */
 
 type LogLevel = 'info' | 'warn' | 'error' | 'debug';
@@ -12,25 +12,111 @@ interface LogOptions {
 
 const SENSITIVE_KEYS = [
   'password', 'token', 'secret', 'apiKey', 'api_key',
-  'passport_number', 'pesel', 'email', 'phone'
+  'passport_number', 'pesel', 'email', 'phone', 'ssn',
+  'credit_card', 'cvv', 'pin', 'authorization', 'bearer'
 ];
 
 /**
- * Sanitizes object by removing sensitive keys
+ * PHASE 2: Regex patterns for PII detection
+ * Detects data patterns regardless of field names
+ */
+const PII_PATTERNS = {
+  // Polish PESEL: 11 digits
+  pesel: /\b\d{11}\b/g,
+  
+  // Passport numbers: 2 letters + 7 digits (common format)
+  passport: /\b[A-Z]{2}\d{7}\b/g,
+  
+  // Email addresses
+  email: /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g,
+  
+  // Phone numbers (various formats)
+  phone: /\b(?:\+\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b/g,
+  
+  // Credit card numbers (basic pattern)
+  creditCard: /\b\d{4}[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4}\b/g,
+  
+  // SSN: XXX-XX-XXXX
+  ssn: /\b\d{3}-\d{2}-\d{4}\b/g,
+  
+  // JWT tokens (basic detection)
+  jwt: /\beyJ[A-Za-z0-9_-]*\.[A-Za-z0-9_-]*\.[A-Za-z0-9_-]*\b/g,
+  
+  // API keys (generic pattern for common formats)
+  apiKey: /\b[A-Za-z0-9_-]{32,}\b/g,
+};
+
+/**
+ * PHASE 2 FIX: Sanitize string values using regex patterns
+ */
+function sanitizeStringValue(value: string): string {
+  if (typeof value !== 'string') return value;
+  
+  let sanitized = value;
+  
+  // Apply each PII pattern
+  if (PII_PATTERNS.pesel.test(sanitized)) {
+    sanitized = sanitized.replace(PII_PATTERNS.pesel, '[PESEL-REDACTED]');
+  }
+  if (PII_PATTERNS.passport.test(sanitized)) {
+    sanitized = sanitized.replace(PII_PATTERNS.passport, '[PASSPORT-REDACTED]');
+  }
+  if (PII_PATTERNS.email.test(sanitized)) {
+    sanitized = sanitized.replace(PII_PATTERNS.email, '[EMAIL-REDACTED]');
+  }
+  if (PII_PATTERNS.phone.test(sanitized)) {
+    sanitized = sanitized.replace(PII_PATTERNS.phone, '[PHONE-REDACTED]');
+  }
+  if (PII_PATTERNS.creditCard.test(sanitized)) {
+    sanitized = sanitized.replace(PII_PATTERNS.creditCard, '[CARD-REDACTED]');
+  }
+  if (PII_PATTERNS.ssn.test(sanitized)) {
+    sanitized = sanitized.replace(PII_PATTERNS.ssn, '[SSN-REDACTED]');
+  }
+  if (PII_PATTERNS.jwt.test(sanitized)) {
+    sanitized = sanitized.replace(PII_PATTERNS.jwt, '[JWT-REDACTED]');
+  }
+  
+  // Reset regex lastIndex for next use
+  Object.values(PII_PATTERNS).forEach(pattern => {
+    pattern.lastIndex = 0;
+  });
+  
+  return sanitized;
+}
+
+/**
+ * PHASE 2 FIX: Enhanced sanitization with regex-based PII detection
+ * Sanitizes object by removing sensitive keys AND detecting PII patterns
  */
 function sanitizeData(data: any): any {
-  if (!data || typeof data !== 'object') return data;
+  if (!data) return data;
   
+  // Handle primitive types
+  if (typeof data === 'string') {
+    return sanitizeStringValue(data);
+  }
+  
+  if (typeof data !== 'object') return data;
+  
+  // Handle arrays
   if (Array.isArray(data)) {
     return data.map(item => sanitizeData(item));
   }
   
+  // Handle objects
   const sanitized: Record<string, any> = {};
   for (const [key, value] of Object.entries(data)) {
     const lowerKey = key.toLowerCase();
+    
+    // Check if key is sensitive
     if (SENSITIVE_KEYS.some(sensitive => lowerKey.includes(sensitive))) {
       sanitized[key] = '[REDACTED]';
+    } else if (typeof value === 'string') {
+      // Apply regex-based sanitization to string values
+      sanitized[key] = sanitizeStringValue(value);
     } else if (typeof value === 'object') {
+      // Recursively sanitize nested objects
       sanitized[key] = sanitizeData(value);
     } else {
       sanitized[key] = value;
@@ -40,46 +126,119 @@ function sanitizeData(data: any): any {
 }
 
 /**
- * Development-only logger
+ * PHASE 2: Enhanced logger with live error tracking
  */
 class SecureLogger {
   private isDev = import.meta.env.DEV;
+  private errorTrackingEnabled = !this.isDev; // Enable in production
+
+  /**
+   * Send error to production error tracking service
+   */
+  private async trackProductionError(
+    level: LogLevel,
+    message: string,
+    error?: any,
+    context?: Record<string, any>
+  ): Promise<void> {
+    if (!this.errorTrackingEnabled) return;
+    
+    try {
+      // Sanitize error data before sending to external service
+      const sanitizedError = error ? sanitizeData(error) : null;
+      const sanitizedContext = context ? sanitizeData(context) : null;
+      
+      // Use dynamic import to avoid loading in development
+      const { supabase } = await import('@/integrations/supabase/client');
+      
+      // Log to internal security metrics
+      await supabase.rpc('record_security_metric', {
+        p_metric_type: `error_${level}`,
+        p_metric_value: 1,
+        p_metadata: {
+          message,
+          error: sanitizedError,
+          context: sanitizedContext,
+          timestamp: new Date().toISOString(),
+          userAgent: navigator.userAgent,
+        }
+      });
+      
+      // TODO: Add external error tracking service integration
+      // Example with Sentry (uncomment when configured):
+      // const Sentry = await import('@sentry/browser');
+      // Sentry.captureException(error || new Error(message), {
+      //   level: level as any,
+      //   tags: { message },
+      //   extra: sanitizedContext
+      // });
+      
+    } catch (trackingError) {
+      // Fail silently - error tracking failure shouldn't break app
+      console.error('[SecureLogger] Error tracking failed:', trackingError);
+    }
+  }
 
   log(message: string, data?: any, options?: LogOptions) {
     if (this.isDev) {
-      const logData = options?.sanitize && data ? sanitizeData(data) : data;
+      const logData = options?.sanitize !== false && data ? sanitizeData(data) : data;
       console.log(`[LOG] ${message}`, logData || '');
     }
   }
 
   info(message: string, data?: any, options?: LogOptions) {
     if (this.isDev) {
-      const logData = options?.sanitize && data ? sanitizeData(data) : data;
+      const logData = options?.sanitize !== false && data ? sanitizeData(data) : data;
       console.info(`[INFO] ${message}`, logData || '');
     }
   }
 
   warn(message: string, data?: any, options?: LogOptions) {
     if (this.isDev) {
-      const logData = options?.sanitize && data ? sanitizeData(data) : data;
+      const logData = options?.sanitize !== false && data ? sanitizeData(data) : data;
       console.warn(`[WARN] ${message}`, logData || '');
     }
+    
+    // Track warnings in production
+    this.trackProductionError('warn', message, data, options?.context);
   }
 
   error(message: string, error?: any, options?: LogOptions) {
+    // Always sanitize errors
+    const errorData = error ? sanitizeData(error) : null;
+    
     if (this.isDev) {
-      const errorData = options?.sanitize && error ? sanitizeData(error) : error;
       console.error(`[ERROR] ${message}`, errorData || '');
     }
     
-    // Production error tracking can be configured with services like Sentry
-    // Sentry.captureException(error, { tags: { message } });
+    // PHASE 2 FIX: Live error tracking in production
+    this.trackProductionError('error', message, errorData, options?.context);
   }
 
   debug(message: string, data?: any) {
     if (this.isDev) {
-      console.debug(`[DEBUG] ${message}`, data || '');
+      // Always sanitize debug data (might contain PII)
+      const sanitizedData = data ? sanitizeData(data) : null;
+      console.debug(`[DEBUG] ${message}`, sanitizedData || '');
     }
+  }
+  
+  /**
+   * Test PII detection (development only)
+   */
+  testPIIDetection(testData: any): any {
+    if (!this.isDev) {
+      console.warn('[SecureLogger] PII testing only available in development');
+      return null;
+    }
+    
+    console.group('[SecureLogger] PII Detection Test');
+    console.log('Original:', testData);
+    const sanitized = sanitizeData(testData);
+    console.log('Sanitized:', sanitized);
+    console.groupEnd();
+    
+    return sanitized;
   }
 }
 
