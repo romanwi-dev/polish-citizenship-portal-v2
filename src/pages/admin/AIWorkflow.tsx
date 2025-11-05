@@ -1,8 +1,10 @@
 import { useState, useMemo } from "react";
 import { AdminLayout } from "@/components/AdminLayout";
 import { AIDocumentWorkflow } from "@/components/workflows/AIDocumentWorkflow";
+import { WorkflowVerificationPanel } from "@/components/workflows/WorkflowVerificationPanel";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Search, ArrowRight, ArrowDown } from "lucide-react";
@@ -124,7 +126,18 @@ const AIWorkflow = () => {
 
         {/* Workflow Component */}
         {selectedCaseId && (
-          <AIDocumentWorkflow caseId={selectedCaseId} />
+          <Tabs defaultValue="workflow" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="workflow">Documents Workflow</TabsTrigger>
+              <TabsTrigger value="verification">Security Verification</TabsTrigger>
+            </TabsList>
+            <TabsContent value="workflow" className="mt-6">
+              <AIDocumentWorkflow caseId={selectedCaseId} />
+            </TabsContent>
+            <TabsContent value="verification" className="mt-6">
+              <WorkflowVerificationPanel />
+            </TabsContent>
+          </Tabs>
         )}
       </div>
     </AdminLayout>
