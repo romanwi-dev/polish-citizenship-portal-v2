@@ -16,13 +16,30 @@ serve(async (req) => {
       throw new Error('Dropbox path is required');
     }
 
+    console.log(`Original path received: "${dropboxPath}"`);
+
+    // Validate path is not empty or just whitespace
+    const trimmedPath = dropboxPath.trim();
+    if (!trimmedPath || trimmedPath === '/' || trimmedPath === '.') {
+      console.error(`Invalid path: "${dropboxPath}"`);
+      throw new Error('Invalid Dropbox path: path is empty or invalid');
+    }
+
     // Normalize path: add /CASES/ prefix if missing
-    let normalizedPath = dropboxPath;
+    let normalizedPath = trimmedPath;
     if (!normalizedPath.startsWith('/')) {
       normalizedPath = '/' + normalizedPath;
     }
     if (!normalizedPath.startsWith('/CASES/')) {
       normalizedPath = '/CASES' + normalizedPath;
+    }
+
+    // Additional validation: ensure path has a filename with extension
+    const pathParts = normalizedPath.split('/');
+    const filename = pathParts[pathParts.length - 1];
+    if (!filename || !filename.includes('.')) {
+      console.error(`Invalid path structure: "${dropboxPath}" -> "${normalizedPath}" (no filename/extension)`);
+      throw new Error('Invalid Dropbox path: missing filename or file extension');
     }
 
     const dropboxAppKey = Deno.env.get('DROPBOX_APP_KEY');
@@ -48,8 +65,8 @@ serve(async (req) => {
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('Dropbox download error:', errorText);
-      throw new Error(`Dropbox download error: ${response.status}`);
+      console.error(`Dropbox download error for path "${normalizedPath}":`, errorText);
+      throw new Error(`Dropbox download failed: ${response.status} - Path: ${normalizedPath}`);
     }
 
     const fileData = await response.arrayBuffer();

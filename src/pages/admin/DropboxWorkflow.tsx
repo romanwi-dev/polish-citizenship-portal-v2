@@ -8,6 +8,7 @@ import { SyncHistoryLog } from "@/components/dropbox/SyncHistoryLog";
 import { ResyncConfirmationDialog } from "@/components/cases/ResyncConfirmationDialog";
 import { CleanupDatabaseDialog } from "@/components/cases/CleanupDatabaseDialog";
 import { ArchivedCategoriesManager } from "@/components/dropbox/ArchivedCategoriesManager";
+import { DropboxPathVerifier } from "@/components/admin/DropboxPathVerifier";
 import DropboxMigration from "./DropboxMigration";
 
 const DropboxWorkflow = () => {
@@ -33,7 +34,7 @@ const DropboxWorkflow = () => {
         </div>
 
         <Tabs defaultValue="operations" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="operations" className="gap-2">
               <FolderSync className="h-4 w-4" />
               Operations Dashboard
@@ -41,6 +42,10 @@ const DropboxWorkflow = () => {
             <TabsTrigger value="analytics" className="gap-2">
               <BarChart3 className="h-4 w-4" />
               Sync Analytics
+            </TabsTrigger>
+            <TabsTrigger value="diagnostics" className="gap-2">
+              <Settings className="h-4 w-4" />
+              Diagnostics
             </TabsTrigger>
             <TabsTrigger value="migration" className="gap-2">
               <Settings className="h-4 w-4" />
@@ -160,6 +165,10 @@ const DropboxWorkflow = () => {
 
           <TabsContent value="analytics" className="mt-6">
             <SyncHistoryLog />
+          </TabsContent>
+
+          <TabsContent value="diagnostics" className="mt-6">
+            <DropboxPathVerifier />
           </TabsContent>
 
           <TabsContent value="migration" className="mt-6">
