@@ -9,6 +9,7 @@ import { Progress } from '@/components/ui/progress';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { VerificationProgressIndicator } from './VerificationProgressIndicator';
 import { 
   Shield, 
   AlertTriangle, 
@@ -199,11 +200,88 @@ const getRatingColor = (rating: string) => {
 export function WorkflowVerificationPanel() {
   const [isVerifying, setIsVerifying] = useState(false);
   const [result, setResult] = useState<ComprehensiveVerificationResult | null>(null);
+  const [progressStages, setProgressStages] = useState<Array<{
+    stage: string;
+    progress: number;
+    message: string;
+    timestamp: string;
+  }>>([]);
+  const [startTime, setStartTime] = useState<number>(0);
   const { toast } = useToast();
 
   const runVerification = async () => {
     setIsVerifying(true);
     setResult(null);
+    setProgressStages([]);
+    setStartTime(Date.now());
+    
+    // Simulate progress stages for better UX
+    const progressInterval = setInterval(() => {
+      setProgressStages(prev => {
+        const elapsed = (Date.now() - startTime) / 1000;
+        const newStages = [...prev];
+        
+        if (elapsed < 30 && newStages.length === 0) {
+          newStages.push({
+            stage: "Preparing Files",
+            progress: 10,
+            message: "Reading and organizing code files for analysis...",
+            timestamp: new Date().toISOString()
+          });
+        } else if (elapsed < 60 && newStages.length === 1) {
+          newStages.push({
+            stage: "Sending to OpenAI GPT-5 Mini",
+            progress: 20,
+            message: "Uploading files to AI for comprehensive analysis...",
+            timestamp: new Date().toISOString()
+          });
+        } else if (elapsed < 120 && newStages.length === 2) {
+          newStages.push({
+            stage: "Security Analysis",
+            progress: 35,
+            message: "Analyzing security vulnerabilities, PII handling, and GDPR compliance...",
+            timestamp: new Date().toISOString()
+          });
+        } else if (elapsed < 180 && newStages.length === 3) {
+          newStages.push({
+            stage: "Architecture Review",
+            progress: 50,
+            message: "Evaluating design patterns, component structure, and scalability...",
+            timestamp: new Date().toISOString()
+          });
+        } else if (elapsed < 240 && newStages.length === 4) {
+          newStages.push({
+            stage: "Performance Analysis",
+            progress: 65,
+            message: "Checking for memory leaks, inefficient algorithms, and optimization opportunities...",
+            timestamp: new Date().toISOString()
+          });
+        } else if (elapsed < 300 && newStages.length === 5) {
+          newStages.push({
+            stage: "Reliability Assessment",
+            progress: 75,
+            message: "Testing error handling, race conditions, and recovery mechanisms...",
+            timestamp: new Date().toISOString()
+          });
+        } else if (elapsed < 360 && newStages.length === 6) {
+          newStages.push({
+            stage: "Workflow Validation",
+            progress: 85,
+            message: "Validating state machine transitions and end-to-end workflow correctness...",
+            timestamp: new Date().toISOString()
+          });
+        } else if (elapsed < 420 && newStages.length === 7) {
+          newStages.push({
+            stage: "Final Analysis",
+            progress: 95,
+            message: "Generating comprehensive report with actionable recommendations...",
+            timestamp: new Date().toISOString()
+          });
+        }
+        
+        return newStages;
+      });
+    }, 5000); // Update every 5 seconds
 
     try {
       const filesToVerify = [
@@ -292,14 +370,16 @@ export function WorkflowVerificationPanel() {
         variant: assessment.productionReady ? 'default' : 'destructive'
       });
 
+    clearInterval(progressInterval);
     } catch (error) {
-      console.error('Verification error:', error);
+      clearInterval(progressInterval);
       toast({
         title: 'Verification Failed',
         description: error instanceof Error ? error.message : 'Unknown error',
         variant: 'destructive'
       });
     } finally {
+      clearInterval(progressInterval);
       setIsVerifying(false);
     }
   };
@@ -316,6 +396,17 @@ export function WorkflowVerificationPanel() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
+        
+        {/* Progress Indicator */}
+        {isVerifying && (
+          <VerificationProgressIndicator
+            isVerifying={isVerifying}
+            stages={progressStages}
+            elapsedSeconds={Math.floor((Date.now() - startTime) / 1000)}
+            filesCount={10}
+          />
+        )}
+        
         <Button
           onClick={runVerification}
           disabled={isVerifying}
