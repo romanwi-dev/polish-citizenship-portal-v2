@@ -7,21 +7,46 @@ interface EncodingJob {
   onProgress?: (progress: number) => void;
   onComplete: (base64: string) => void;
   onError: (error: string) => void;
+  chunks: string[]; // Accumulate chunks for streaming
 }
 
-interface WorkerMessage {
-  type: 'progress' | 'complete' | 'error';
+interface ChunkMessage {
+  type: 'chunk';
   id: string;
-  base64?: string;
-  progress?: number;
-  error?: string;
-  fileName?: string;
-  size?: number;
+  chunk: string;
+  chunkIndex: number;
+  totalChunks: number;
+  progress: number;
+  fileName: string;
 }
+
+interface CompleteMessage {
+  type: 'complete';
+  id: string;
+  fileName: string;
+  size: number;
+  totalChunks: number;
+}
+
+interface ProgressMessage {
+  type: 'progress';
+  id: string;
+  progress: number;
+  fileName: string;
+}
+
+interface ErrorMessage {
+  type: 'error';
+  id: string;
+  fileName: string;
+  error: string;
+}
+
+type WorkerMessage = ChunkMessage | CompleteMessage | ProgressMessage | ErrorMessage;
 
 /**
  * Hook to manage Web Worker for base64 encoding
- * Prevents UI blocking during large file encoding
+ * PHASE 1 FIX: Handle streaming chunks and support cancellation
  */
 export function useBase64Worker() {
   const workerRef = useRef<Worker | null>(null);
@@ -46,6 +71,14 @@ export function useBase64Worker() {
       }
 
       switch (message.type) {
+        case 'chunk':
+          // Accumulate chunk
+          job.chunks[message.chunkIndex] = message.chunk;
+          if (job.onProgress) {
+            job.onProgress(message.progress);
+          }
+          break;
+
         case 'progress':
           if (message.progress !== undefined && job.onProgress) {
             job.onProgress(message.progress);
@@ -53,10 +86,10 @@ export function useBase64Worker() {
           break;
 
         case 'complete':
-          if (message.base64) {
-            job.onComplete(message.base64);
-            jobsRef.current.delete(message.id);
-          }
+          // Concatenate all chunks and return complete base64
+          const completeBase64 = job.chunks.join('');
+          job.onComplete(completeBase64);
+          jobsRef.current.delete(message.id);
           break;
 
         case 'error':
@@ -86,7 +119,7 @@ export function useBase64Worker() {
   }, []);
 
   /**
-   * Encode ArrayBuffer to base64 using Web Worker
+   * Encode ArrayBuffer to base64 using Web Worker with streaming
    */
   const encodeToBase64 = useCallback(
     (
@@ -111,6 +144,7 @@ export function useBase64Worker() {
           onProgress: options?.onProgress,
           onComplete: resolve,
           onError: reject,
+          chunks: [], // Initialize empty chunks array
         };
 
         jobsRef.current.set(id, job);
@@ -127,10 +161,36 @@ export function useBase64Worker() {
   );
 
   /**
+   * Cancel a specific encoding job
+   */
+  const cancelJob = useCallback((jobId: string) => {
+    if (!workerRef.current) return;
+    
+    // Send cancellation message to worker
+    workerRef.current.postMessage({
+      type: 'cancel',
+      id: jobId,
+    });
+    
+    const job = jobsRef.current.get(jobId);
+    if (job) {
+      job.onError('Cancelled by user');
+      jobsRef.current.delete(jobId);
+    }
+  }, []);
+
+  /**
    * Cancel all pending encoding jobs
    */
   const cancelAll = useCallback(() => {
-    jobsRef.current.forEach((job) => {
+    if (!workerRef.current) return;
+    
+    jobsRef.current.forEach((job, jobId) => {
+      // Send cancellation to worker for each job
+      workerRef.current?.postMessage({
+        type: 'cancel',
+        id: jobId,
+      });
       job.onError('Cancelled by user');
     });
     jobsRef.current.clear();
@@ -138,6 +198,7 @@ export function useBase64Worker() {
 
   return {
     encodeToBase64,
+    cancelJob,
     cancelAll,
     hasPendingJobs: jobsRef.current.size > 0,
   };

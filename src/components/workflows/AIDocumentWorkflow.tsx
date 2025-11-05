@@ -475,6 +475,22 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
   const runWorkflowStep = async (stage: AIWorkflowStep['stage'], retryCount = 0) => {
     if (isPaused) return;
     
+    // PHASE 1 FIX: Check AI consent before any AI stage
+    const aiStages: AIWorkflowStep['stage'][] = ['ai_classify', 'ocr', 'form_population', 'ai_verify'];
+    if (aiStages.includes(stage)) {
+      const consentGranted = await checkAIConsent(caseId);
+      if (!consentGranted) {
+        toast({
+          title: "AI Consent Required",
+          description: "This step requires AI processing consent. Please grant consent to continue.",
+          variant: "destructive"
+        });
+        setShowConsentModal(true);
+        setIsRunning(false);
+        return;
+      }
+    }
+    
     const MAX_RETRIES = 3;
     setCurrentStage(stage);
     await updateStepStatus(stage, 'processing');
@@ -505,9 +521,7 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
           const classifyPromises = docs.map(async (doc) => {
             return batcher.addRequest(doc.id, async () => {
               try {
-                progress.updateDocument(doc.id, { status: 'downloading', progress: 25 });
-                
-                // Log PII processing for audit trail
+                // PHASE 1 FIX: Log PII processing BEFORE any file handling
                 await logPIIProcessing({
                   caseId,
                   documentId: doc.id,
@@ -515,6 +529,8 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
                   piiFieldsSent: ['document_image', 'document_name'],
                   aiProvider: 'gemini'
                 });
+                
+                progress.updateDocument(doc.id, { status: 'downloading', progress: 25 });
 
                 // Use secure edge function (no token exposure)
                 const { data: downloadData, error: downloadError } = await supabase.functions.invoke(
@@ -582,6 +598,15 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
 
         case 'ocr':
           console.log("Triggering OCR worker...");
+          
+          // PHASE 1 FIX: Log PII processing for OCR before invocation
+          await logPIIProcessing({
+            caseId,
+            operationType: 'ocr',
+            piiFieldsSent: ['document_images', 'document_text'],
+            aiProvider: 'gemini'
+          });
+          
           const { error: ocrError } = await supabase.functions.invoke('ocr-worker');
           
           if (ocrError) {
@@ -621,6 +646,15 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
           const applyPromises = ocrDocs.map(async (doc) => {
             return batcher.addRequest(doc.id, async () => {
               try {
+                // PHASE 1 FIX: Log PII processing for form population
+                await logPIIProcessing({
+                  caseId,
+                  documentId: doc.id,
+                  operationType: 'form_population',
+                  piiFieldsSent: ['ocr_extracted_data', 'form_fields'],
+                  aiProvider: 'lovable-ai'
+                });
+                
                 progress.updateDocument(doc.id, { status: 'classifying', progress: 50 });
                 
                 const { error: applyError } = await supabase.functions.invoke(
@@ -662,6 +696,14 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
           break;
 
         case 'ai_verify':
+          // PHASE 1 FIX: Log PII processing for AI verification
+          await logPIIProcessing({
+            caseId,
+            operationType: 'verification',
+            piiFieldsSent: ['form_data', 'document_metadata'],
+            aiProvider: 'gemini'
+          });
+          
           // Dual AI Verification (all forms in parallel)
           const verifyPromises = ['intake', 'oby', 'master'].map(async (formType) => {
             try {
