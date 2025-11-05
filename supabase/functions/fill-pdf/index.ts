@@ -1,7 +1,24 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { 
+  getFieldMapping, 
+  getRequiredFields, 
+  isValidTemplate,
+  normalizeTemplateType 
+} from '../_shared/pdf-field-maps.ts';
+import { 
+  PDFErrorCode, 
+  createPDFError, 
+  logPDFError, 
+  getUserMessage 
+} from '../_shared/pdf-errors.ts';
+import { 
+  retryStorageUpload, 
+  retryTemplateFetch, 
+  retrySignedUrl 
+} from '../_shared/pdf-retry.ts';
 
-// DEPLOYMENT VERSION: 2024-11-03-V3-FINAL
-// Template paths: LOWERCASE with hyphens (poa-adult.pdf, family-tree.pdf, etc.)
+// DEPLOYMENT VERSION: 2024-11-05-V4-MODULAR
+// Uses shared modules for field mappings, errors, and retry logic
 
 // ===== CORS & Security Utilities =====
 const corsHeaders = {
@@ -27,10 +44,7 @@ function sanitizeCaseId(raw: unknown): string | null {
   return /^[A-Za-z0-9_-]{1,64}$/.test(s) ? s : null;
 }
 
-const VALID_TEMPLATES = new Set([
-  'citizenship', 'family-tree', 'transcription', 'registration',
-  'poa-adult', 'poa-minor', 'poa-spouses'
-]);
+// Template validation now handled by shared module
 
 const TTL = Number(Deno.env.get('SIGNED_URL_TTL_SECONDS') ?? '2700');
 
@@ -56,270 +70,7 @@ function evictOldestCacheEntry() {
   }
 }
 
-// ===== PDF Field Mappings =====
-const POA_ADULT_PDF_MAP: Record<string, string> = {
-  'applicant_given_names': 'applicant_first_name',
-  'applicant_surname': 'applicant_last_name',
-  'passport_number': 'applicant_passport_number',
-  'poa_date': 'poa_date_filed',
-};
-
-const POA_MINOR_PDF_MAP: Record<string, string> = {
-  'applicant_given_names': 'applicant_first_name',
-  'applicant_surname': 'applicant_last_name',
-  'passport_number': 'applicant_passport_number',
-  'minor_given_names': 'child_1_first_name',
-  'minor_surname': 'child_1_last_name',
-  'poa_date': 'poa_date_filed',
-};
-
-const POA_SPOUSES_PDF_MAP: Record<string, string> = {
-  'imie_nazwisko_wniosko': 'applicant_first_name|applicant_last_name',
-  'applicant_given_names': 'applicant_first_name',
-  'applicant_surname': 'applicant_last_name',
-  'passport_number': 'applicant_passport_number',
-  'nr_dok_tozsamosci': 'applicant_passport_number',
-  'spouse_given_names': 'spouse_first_name',
-  'spouse_surname': 'spouse_last_name',
-  'spouse_passport_number': 'spouse_passport_number',
-  'husband_surname': 'husband_last_name_after_marriage',
-  'wife_surname': 'wife_last_name_after_marriage',
-  'minor_surname': 'child_1_last_name',
-  'imie_nazwisko_dziecka': 'child_1_first_name|child_1_last_name',
-  'data_pelnomocnictwa': 'poa_date_filed',
-  'poa_date': 'poa_date_filed',
-};
-
-const CITIZENSHIP_PDF_MAP: Record<string, string> = {
-  'wojewoda': 'voivodeship',
-  'decyzja': 'decision_type',
-  'posiadanie1': 'citizenship_possession_info',
-  'cel_ubiegania': 'application_purpose',
-  'nazwa_organu': 'authority_name',
-  'r_w_obyw_dziec': 'residence_citizenship_info',
-  'dzien_zloz': 'application_submission_date.day',
-  'miesiac_zloz': 'application_submission_date.month',
-  'rok_zloz': 'application_submission_date.year',
-  'miejscowosc_zl': 'submission_location',
-  'imie_wniosko': 'applicant_first_name',
-  'nazwisko_wniosko': 'applicant_last_name',
-  'nazwisko_rodowe_wniosko': 'applicant_maiden_name',
-  'imie_nazwisko_wniosko': 'applicant_first_name|applicant_last_name',
-  'imie_nazwisko_wniosko_cd': 'applicant_first_name|applicant_last_name',
-  'dzien_uro': 'applicant_dob.day',
-  'miesiac_uro': 'applicant_dob.month',
-  'rok_uro': 'applicant_dob.year',
-  'miejsce_uro': 'applicant_pob',
-  'plec': 'applicant_sex',
-  'stan_cywilny': 'applicant_is_married',
-  'nr_pesel': 'applicant_pesel',
-  'miasto_zam': 'applicant_address.city',
-  'miejscowosc_zamieszkania': 'applicant_address.city',
-  'kod_pocztowy': 'applicant_address.postal_code',
-  'kraj_zam': 'applicant_address.country',
-  'nr_domu': 'applicant_address.house_number',
-  'nr_mieszkania': 'applicant_address.apartment_number',
-  'telefon': 'applicant_phone',
-  'obce_obywatelstwa': 'applicant_other_citizenships',
-  'obce_obywatelstwa_cd1': 'applicant_other_citizenships',
-  'obce_obywatelstwa_cd2': 'applicant_other_citizenships',
-  'uzywane_nazwiska': 'applicant_previous_names',
-  'uzywane_nazwiska_cd': 'applicant_previous_names',
-  'wydana_decyzja': 'previous_decision_info',
-  'zezwolenie_na_zmiane_obyw': 'citizenship_change_permission',
-  'pozbawienie_obywatelstwa_polskiego': 'polish_citizenship_deprivation',
-  'miejsce_zamieszk_pl_granica': 'residence_citizenship_info',
-  'imie_nazw_3': 'applicant_first_name',
-  'imie_nazw_4': 'applicant_last_name',
-  'nazwisko_matki': 'mother_last_name',
-  'nazwisko_rodowe_matki': 'mother_maiden_name',
-  'imie_matki': 'mother_first_name',
-  'imie_nazwisko_rodowe_matki': 'mother_first_name|mother_maiden_name',
-  'imie_nazwisko_ojca_matki': 'mgf_first_name|mgf_last_name',
-  'imie_nazw_rod_matki_matki': 'mgm_first_name|mgm_maiden_name',
-  'dzien_uro_matki': 'mother_dob.day',
-  'miesiac_uro_matki': 'mother_dob.month',
-  'rok_uro_matki': 'mother_dob.year',
-  'miejsce_uro_matki': 'mother_pob',
-  'stan_cywilny_matki': 'mother_marital_status',
-  'pesel_matki': 'mother_pesel',
-  'uzywane_nazwiska_matki': 'mother_previous_names',
-  'dzien_zaw_zwiazku_matki': 'mother_marriage_date.day',
-  'miesiac_zaw_zwiazku_matki': 'mother_marriage_date.month',
-  'rok_zaw_zwiazku_matki': 'mother_marriage_date.year',
-  'miejsce_zaw_zwiazku_matki': 'father_mother_marriage_place',
-  'nazwisko_ojca': 'father_last_name',
-  'nazwisko_rodowe_ojca': 'father_maiden_name',
-  'imie_ojca': 'father_first_name',
-  'imie_nazwisko_ojca': 'father_first_name|father_last_name',
-  'imie_nazwisko_ojca_ojca': 'pgf_first_name|pgf_last_name',
-  'imie_nazw_rod_matki_ojca': 'pgm_first_name|pgm_maiden_name',
-  'dzien_uro_ojca': 'father_dob.day',
-  'miesiac_uro_ojca': 'father_dob.month',
-  'rok_uro_ojca': 'father_dob.year',
-  'miejsce_uro_ojca': 'father_pob',
-  'stan_cywilny_ojca': 'father_marital_status',
-  'pesel_ojca': 'father_pesel',
-  'uzywane_nazwiska_ojca': 'father_previous_names',
-  'dzien_zaw_zwiazku_ojca': 'father_marriage_date.day',
-  'miesiac_zaw_zwiazku_ojca': 'father_marriage_date.month',
-  'rok_zaw_zwiazku_ojca': 'father_marriage_date.year',
-  'miejsce_zaw_zwiazku_ojca': 'father_mother_marriage_place',
-  'nazwisko_dziadka_m': 'mgf_last_name',
-  'nazwisko_rodowe_dziadka_m': 'mgf_maiden_name',
-  'imie_dziadka_m': 'mgf_first_name',
-  'imie_nazw_pradziadek_d_m': 'mggf_first_name|mggf_last_name',
-  'imie_nazw_prababka_d_m': 'mggm_first_name|mggm_maiden_name',
-  'dzien_uro_dziadka_m': 'mgf_dob.day',
-  'miesiac_uro_dziadka_m': 'mgf_dob.month',
-  'rok_uro_dziadka_m': 'mgf_dob.year',
-  'miejsce_uro_dziadka_m': 'mgf_pob',
-  'pesel_dziadka_m': 'mgf_pesel',
-  'posiadane_obywatel_matki_uro_wniosko': 'mgf_citizenship_at_birth',
-  'posiadane_obywatel_matki_uro_wniosko_cd': 'mgf_citizenship_at_birth',
-  'nazwisko_babki_m': 'mgm_last_name',
-  'nazwisko_rodowe_babki_m': 'mgm_maiden_name',
-  'imie_babki_m': 'mgm_first_name',
-  'imie_nazw_pradziadek_b_m': 'mggf_first_name|mggf_last_name',
-  'imie_nazw_rod_prababka_b_m': 'mggm_first_name|mggm_maiden_name',
-  'dzien_uro_babki_m': 'mgm_dob.day',
-  'miesiac_uro_babki_m': 'mgm_dob.month',
-  'rok_uro_babki_m': 'mgm_dob.year',
-  'miejsce_uro_babki_m': 'mgm_pob',
-  'pesel_babki_m': 'mgm_pesel',
-  'nazwisko_dziadka_o': 'pgf_last_name',
-  'nazwisko_rodowe_dziadka_o': 'pgf_maiden_name',
-  'imie_dziadka_o': 'pgf_first_name',
-  'imie_nazw_pradziadek_d_o': 'pggf_first_name|pggf_last_name',
-  'imie_nazw_rod_prababka_d_o': 'pggm_first_name|pggm_maiden_name',
-  'dzien_uro_dziadka_o': 'pgf_dob.day',
-  'miesiac_uro_dziadka_o': 'pgf_dob.month',
-  'rok_uro_dziadka_o': 'pgf_dob.year',
-  'miejsce_uro_dziadka_o': 'pgf_pob',
-  'pesel_dziadka_o': 'pgf_pesel',
-  'posiadane_obywatel_ojca_uro_wniosko': 'pgf_citizenship_at_birth',
-  'posiadane_obywatel_ojca_uro_wniosko_cd': 'pgf_citizenship_at_birth',
-  'nazwisko_babki_o': 'pgm_last_name',
-  'nazwisko_rodowe_babki_o': 'pgm_maiden_name',
-  'imie_babki_o': 'pgm_first_name',
-  'imie_nazw_pradziadek_b_o': 'pggf_first_name|pggf_last_name',
-  'imie_nazw_rod_prababka_b_o': 'pggm_first_name|pggm_maiden_name',
-  'dzien_uro_babki_o': 'pgm_dob.day',
-  'miesiac_uro_babki_o': 'pgm_dob.month',
-  'rok_uro_babki_o': 'pgm_dob.year',
-  'miejsce_uro_babki_o': 'pgm_pob',
-  'pesel_babki_o': 'pgm_pesel',
-  'zyciorys_wniosko': 'applicant_notes',
-  'zyciorys_matki': 'mother_notes',
-  'zyciorys_ojca': 'father_notes',
-  'zyciorys_dziadka_m': 'mgf_notes',
-  'zyciorys_babki_m': 'mgm_notes',
-  'zyciorys_dziadka_o': 'pgf_notes',
-  'zyciorys_babki_o': 'pgm_notes',
-  'pradziadkowie': 'pggf_notes|mggf_notes',
-  'zal1': 'attachment_1_included',
-  'zal2': 'attachment_2_included',
-  'zal3': 'attachment_3_included',
-  'zal4': 'attachment_4_included',
-  'zal5': 'attachment_5_included',
-  'zal6': 'attachment_6_included',
-  'zal7': 'attachment_7_included',
-  'zal8': 'attachment_8_included',
-  'zal9': 'attachment_9_included',
-  'zal10': 'attachment_10_included',
-  'polskie_dok_wstepnych': 'polish_preliminary_docs_info',
-  'istotne_info': 'important_additional_info',
-  'decyzja_rodzenstwo': 'sibling_decision_info',
-};
-
-const FAMILY_TREE_PDF_MAP: Record<string, string> = {
-  'applicant_full_name': 'applicant_first_name|applicant_last_name',
-  'applicant_date_of_birth': 'applicant_dob',
-  'applicant_place_of_birth': 'applicant_pob',
-  'applicant_date_of_marriage': 'date_of_marriage',
-  'applicant_place_of_marriage': 'place_of_marriage',
-  'applicant_spouse_full_name_and_maiden_name': 'spouse_first_name|spouse_last_name',
-  'polish_parent_full_name': 'father_first_name|father_last_name',
-  'polish_parent_spouse_full_name': 'mother_first_name|mother_last_name',
-  'polish_parent_date_of_birth': 'father_dob',
-  'polish_parent_place_of_birth': 'father_pob',
-  'polish_parent_date_of_marriage': 'father_mother_marriage_date',
-  'polish_parent_place_of_marriage': 'father_mother_marriage_place',
-  'polish_parent_date_of_emigration': 'father_date_of_emigration',
-  'polish_parent_date_of_naturalization': 'father_date_of_naturalization',
-  'polish_grandparent_full_name': 'pgf_first_name|pgf_last_name',
-  'polish_grandparent_spouse_full_name': 'pgm_first_name|pgm_last_name',
-  'polish_grandparent_date_of_birth': 'pgf_dob',
-  'polish_grandparent_place_of_birth': 'pgf_pob',
-  'polish_grandparent_date_of_mariage': 'pgf_pgm_marriage_date',
-  'polish_grandparent_place_of_mariage': 'pgf_pgm_marriage_place',
-  'polish_grandparent_date_of_emigration': 'pgf_date_of_emigration',
-  'polish_grandparent_date_of_naturalization': 'pgf_date_of_naturalization',
-  'great_grandfather_full_name': 'pggf_first_name|pggf_last_name',
-  'great_grandmother_full_name': 'pggm_first_name|pggm_last_name',
-  'great_grandfather_date_of_birth': 'pggf_dob',
-  'great_grandfather_place_of_birth': 'pggf_pob',
-  'great_grandfather_date_of_marriage': 'pggf_pggm_marriage_date',
-  'great_grandfather_place_of_marriage': 'pggf_pggm_marriage_place',
-  'great_grandfather_date_of_emigartion': 'pggf_date_of_emigration',
-  'great_grandfather_date_of_naturalization': 'pggf_date_of_naturalization',
-  'minor_1_full_name': 'child_1_first_name|child_1_last_name',
-  'minor_1_date_of_birth': 'child_1_dob',
-  'minor_1_place_of_birth': 'child_1_pob',
-  'minor_2_full_name': 'child_2_first_name|child_2_last_name',
-  'minor_2_date_of_birth': 'child_2_dob',
-  'minor_2_place_of_birth': 'child_2_pob',
-  'minor_3_full_name': 'child_3_first_name|child_3_last_name',
-  'minor_3_date_of_birth': 'child_3_dob',
-};
-
-const TRANSCRIPTION_PDF_MAP: Record<string, string> = {
-  'imie_nazwisko_wniosko': 'applicant_first_name|applicant_last_name',
-  'kraj_wniosko': 'applicant_country',
-  'imie_nazwisko_pelnomocnik': 'representative_full_name',
-  'miejsce_zamieszkania_pelnomocnik': 'representative_address_line1',
-  'miejsce_zamieszkania_pelnomocnik_cd': 'representative_address_line2',
-  'telefon_pelnomocnik': 'representative_phone',
-  'email_pelnomocnik': 'representative_email',
-  'miejscowosc_zloz': 'submission_location',
-  'dzien_zloz': 'submission_date.day',
-  'miesiac_zloz': 'submission_date.month',
-  'rok_zloz': 'submission_date.year',
-  'wyslanie': 'sending_method',
-  'akt_uro': 'act_type_birth',
-  'akt_malz': 'act_type_marriage',
-  'miejsce_sporz_aktu_u': 'birth_act_location',
-  'imie_nazwisko_u': 'birth_person_full_name',
-  'miejsce_urodzenia': 'birth_place',
-  'dzien_urodzenia': 'birth_date.day',
-  'miesiac_urodzenia': 'birth_date.month',
-  'rok_urodzenia': 'birth_date.year',
-  'miejsce_sporz_aktu_m': 'marriage_act_location',
-  'imie_nazwisko_malzonka': 'spouse_full_name',
-  'miejsce_malzenstwa_wniosko': 'place_of_marriage',
-  'dzien_malzenstwa_wniosko': 'date_of_marriage.day',
-  'miesiac_malzenstwa_wniosko': 'date_of_marriage.month',
-  'rok_malzenstwa_wniosko': 'date_of_marriage.year',
-};
-
-const REGISTRATION_PDF_MAP: Record<string, string> = {
-  'imie_nazwisko_wniosko': 'applicant_first_name|applicant_last_name',
-  'kraj_wniosko': 'applicant_country',
-  'imie_nazwisko_pelnomocnik': 'representative_full_name',
-  'miejsce_zamieszkania_pelnomocnik': 'representative_address_line1',
-  'miejsce_zamieszkania_pelnomocnik_cd': 'representative_address_line2',
-  'telefon_pelnomocnik': 'representative_phone',
-  'email_pelnomocnik': 'representative_email',
-  'miejscowosc_zloz': 'submission_location',
-  'dzien_zloz': 'submission_date.day',
-  'miesiac_zloz': 'submission_date.month',
-  'rok_zloz': 'submission_date.year',
-  'nazwisko_rodowe_ojca': 'father_last_name',
-  'nazwisko_rodowe_matki': 'mother_maiden_name',
-  'miejsce_sporządzenia_aktu_zagranicznego': 'foreign_act_location',
-  'nr_aktu_urodzenia_polskiego': 'polish_birth_act_number',
-  'rok_aktu_urodzenia_polskiego': 'birth_act_year',
-};
+// Field mappings now imported from shared module
 
 // ===== Formatting Utilities =====
 const formatDate = (date: string | null | undefined): string => {
@@ -617,8 +368,17 @@ Deno.serve(async (req) => {
 
     // Validate inputs
     const caseId = sanitizeCaseId(rawCaseId);
-    if (!caseId) return j(req, { code: 'INVALID_CASE_ID', message: 'Invalid caseId' }, 400);
-    if (!VALID_TEMPLATES.has(String(templateType))) return j(req, { code: 'INVALID_TEMPLATE', message: 'Invalid templateType' }, 400);
+    if (!caseId) {
+      const error = createPDFError(PDFErrorCode.INVALID_CASE_ID, 'Invalid caseId format');
+      logPDFError(error);
+      return j(req, { code: error.code, message: error.message }, 400);
+    }
+    
+    if (!isValidTemplate(String(templateType))) {
+      const error = createPDFError(PDFErrorCode.INVALID_TEMPLATE_TYPE, 'Invalid template type', { templateType });
+      logPDFError(error);
+      return j(req, { code: error.code, message: error.message }, 400);
+    }
 
     // Initialize clients
     const URL = Deno.env.get('SUPABASE_URL')!;
@@ -682,46 +442,62 @@ Deno.serve(async (req) => {
 
       log('data_retrieved', { caseId });
 
-      // Template mapping - DEPLOYMENT FIX v3
-      const templateMap: Record<string, { path: string; map: Record<string, string> }> = {
-        'citizenship': { path: 'citizenship.pdf', map: CITIZENSHIP_PDF_MAP },
-        'family-tree': { path: 'family-tree.pdf', map: FAMILY_TREE_PDF_MAP },
-        'transcription': { path: 'umiejscowienie.pdf', map: TRANSCRIPTION_PDF_MAP },
-        'registration': { path: 'uzupelnienie.pdf', map: REGISTRATION_PDF_MAP },
-        'poa-adult': { path: 'poa-adult.pdf', map: POA_ADULT_PDF_MAP },
-        'poa-minor': { path: 'poa-minor.pdf', map: POA_MINOR_PDF_MAP },
-        'poa-spouses': { path: 'poa-spouses.pdf', map: POA_SPOUSES_PDF_MAP },
+      // Template mapping - Using shared module
+      const normalizedType = normalizeTemplateType(templateType);
+      const fieldMap = getFieldMapping(normalizedType);
+      
+      if (!fieldMap) {
+        const error = createPDFError(PDFErrorCode.TEMPLATE_NOT_FOUND, 'Template configuration not found', { templateType });
+        logPDFError(error);
+        return j(req, { code: error.code, message: error.message }, 404);
+      }
+      
+      // Template path mapping (PDF filenames)
+      const templatePaths: Record<string, string> = {
+        'citizenship': 'citizenship.pdf',
+        'family-tree': 'family-tree.pdf',
+        'uzupelnienie': 'umiejscowienie.pdf',
+        'poa-adult': 'poa-adult.pdf',
+        'poa-minor': 'poa-minor.pdf',
+        'poa-spouses': 'poa-spouses.pdf',
       };
-      log('template_map_loaded', { version: 'v3-lowercase-paths', templateType });
-
-      const config = templateMap[templateType];
-      if (!config) {
-        log('template_config_missing', { templateType });
-        return j(req, { code: 'TEMPLATE_CONFIG_MISSING', message: 'Template configuration not found' }, 500);
+      
+      const pdfTemplatePath = templatePaths[normalizedType];
+      if (!pdfTemplatePath) {
+        const error = createPDFError(PDFErrorCode.TEMPLATE_NOT_FOUND, 'Template file path not found', { templateType: normalizedType });
+        logPDFError(error);
+        return j(req, { code: error.code, message: error.message }, 404);
       }
 
-      const templatePath = config.path;
-      log('template_load_v3', { templatePath, deployment: 'V3-FINAL', timestamp: Date.now() });
+      log('template_load_v4', { pdfTemplatePath, deployment: 'V4-MODULAR', templateType: normalizedType, timestamp: Date.now() });
 
       // Template cache
       let templateBytes: Uint8Array;
-      const cached = pdfTemplateCache.get(templatePath);
+      const cached = pdfTemplateCache.get(pdfTemplatePath);
       if (cached) {
         templateBytes = cached;
-        cacheTimestamps.set(templatePath, Date.now());
-        log('template_cache_hit', { templatePath });
+        cacheTimestamps.set(pdfTemplatePath, Date.now());
+        log('template_cache_hit', { pdfTemplatePath });
       } else {
-        const { data: templateData, error: downloadError } = await admin.storage.from('pdf-templates').download(templatePath);
-        if (downloadError || !templateData) {
-          log('template_download_fail', { templatePath, err: downloadError?.message });
-          return j(req, { code: 'TEMPLATE_DOWNLOAD_FAIL', message: 'Failed to download template' }, 500);
-        }
+        // Use retry logic for template download
+        const templateData = await retryTemplateFetch(async () => {
+          const { data, error: downloadError } = await admin.storage.from('pdf-templates').download(pdfTemplatePath);
+          if (downloadError || !data) {
+            const error = createPDFError(PDFErrorCode.TEMPLATE_LOAD_FAILED, 'Failed to download template', { 
+              path: pdfTemplatePath, 
+              error: downloadError?.message 
+            });
+            throw new Error(error.message);
+          }
+          return data;
+        });
+        
         const arrayBuffer = await templateData.arrayBuffer();
         templateBytes = new Uint8Array(arrayBuffer);
         if (pdfTemplateCache.size >= MAX_CACHE_SIZE) evictOldestCacheEntry();
-        pdfTemplateCache.set(templatePath, templateBytes);
-        cacheTimestamps.set(templatePath, Date.now());
-        log('template_cached', { templatePath });
+        pdfTemplateCache.set(pdfTemplatePath, templateBytes);
+        cacheTimestamps.set(pdfTemplatePath, Date.now());
+        log('template_cached', { pdfTemplatePath });
       }
 
       // Load PDF
@@ -730,8 +506,8 @@ Deno.serve(async (req) => {
       const form = pdfDoc.getForm();
       log('pdf_loaded', { caseId, templateType });
 
-      // Fill fields
-      const result = fillPDFFields(form, masterData, config.map);
+      // Fill fields using shared field mapping
+      const result = fillPDFFields(form, masterData, fieldMap);
       log('fields_filled', { caseId, templateType, filled: result.filledCount, total: result.totalFields, errors: result.errors.length });
       if (result.errors.length > 0) console.warn('[fill-pdf] Field filling errors:', result.errors);
 
@@ -747,15 +523,30 @@ Deno.serve(async (req) => {
       }
       const filledPdfBytes = await pdfDoc.save();
 
-      // Upload
+      // Upload with retry logic
       const filename = `${templateType}-${Date.now()}.pdf`;
       path = `${caseId}/${filename}`;
-      log('upload_start', { caseId, path });
-      const { error: uploadError } = await admin.storage.from('generated-pdfs')
-        .upload(path, filledPdfBytes, { contentType: 'application/pdf', upsert: true });
-      if (uploadError) {
-        log('upload_fail', { caseId, templateType, err: uploadError.message });
-        return j(req, { code: 'UPLOAD_FAIL', message: 'Upload failed' }, 500);
+      log('upload_start', { caseId, path, bytes: filledPdfBytes.byteLength });
+      
+      try {
+        await retryStorageUpload(async () => {
+          const { error: uploadError } = await admin.storage.from('generated-pdfs')
+            .upload(path, filledPdfBytes, { contentType: 'application/pdf', upsert: true });
+          if (uploadError) {
+            const error = createPDFError(PDFErrorCode.STORAGE_UPLOAD_FAILED, 'Storage upload failed', {
+              path,
+              error: uploadError.message
+            });
+            throw new Error(error.message);
+          }
+        });
+      } catch (error) {
+        const pdfError = createPDFError(PDFErrorCode.STORAGE_UPLOAD_FAILED, 'Upload failed after retries', {
+          path,
+          error: error instanceof Error ? error.message : String(error)
+        });
+        logPDFError(pdfError);
+        return j(req, { code: pdfError.code, message: pdfError.message }, 500);
       }
 
       // Audit (no user ID since this is a public endpoint)
@@ -768,15 +559,33 @@ Deno.serve(async (req) => {
       log('gen_ok', { caseId, templateType, path, bytes: filledPdfBytes.byteLength, filled: result.filledCount, total: result.totalFields });
     }
 
-    // Signed URL
-    const sign = await admin.storage.from('generated-pdfs')
-      .createSignedUrl(path, TTL, { download: path.split('/').pop() ?? 'document.pdf' });
-    if (sign.error || !sign.data?.signedUrl) {
-      log('sign_fail', { caseId, templateType, err: sign.error?.message });
-      return j(req, { code: 'SIGN_FAIL', message: 'Signing failed' }, 500);
+    // Signed URL with retry logic
+    let signedUrl: string;
+    try {
+      const sign = await retrySignedUrl(async () => {
+        const result = await admin.storage.from('generated-pdfs')
+          .createSignedUrl(path, TTL, { download: path.split('/').pop() ?? 'document.pdf' });
+        if (result.error || !result.data?.signedUrl) {
+          const error = createPDFError(PDFErrorCode.SIGNED_URL_FAILED, 'Signed URL generation failed', {
+            path,
+            error: result.error?.message
+          });
+          throw new Error(error.message);
+        }
+        return result.data.signedUrl;
+      });
+      signedUrl = sign;
+    } catch (error) {
+      const pdfError = createPDFError(PDFErrorCode.SIGNED_URL_FAILED, 'Signed URL generation failed after retries', {
+        path,
+        error: error instanceof Error ? error.message : String(error)
+      });
+      logPDFError(pdfError);
+      return j(req, { code: pdfError.code, message: pdfError.message }, 500);
     }
 
-    return j(req, { url: sign.data.signedUrl, filename: path.split('/').pop(), templateType, caseId }, 200);
+    log('fill_pdf_success', { caseId, templateType, path, signedUrl: signedUrl.substring(0, 50) + '...' });
+    return j(req, { url: signedUrl, filename: path.split('/').pop(), templateType, caseId }, 200);
   } catch (e) {
     log('exception', { err: String((e as Error)?.message ?? e) });
     return j(req, { code: 'INTERNAL', message: 'Internal error' }, 500);
