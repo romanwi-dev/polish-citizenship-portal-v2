@@ -15,6 +15,7 @@ import { Badge } from '@/components/ui/badge';
 export default function TranslationWorkflowTest() {
   const [isCreating, setIsCreating] = useState(false);
   const [isTranslating, setIsTranslating] = useState(false);
+  const [isCleaning, setIsCleaning] = useState(false);
   const [testJobId, setTestJobId] = useState<string | null>(null);
   const { pendingReviewCount } = useTranslationNotifications();
   
@@ -154,11 +155,66 @@ export default function TranslationWorkflowTest() {
     }
   };
 
+  const cleanupTestData = async () => {
+    setIsCleaning(true);
+    try {
+      // Delete test translation jobs (where metadata.test = true)
+      const { data: testJobs, error: jobsError } = await supabase
+        .from('translation_jobs' as any)
+        .select('id')
+        .contains('metadata', { test: true });
+
+      if (jobsError) throw jobsError;
+
+      if (testJobs && testJobs.length > 0) {
+        const jobIds = testJobs.map((job: any) => job.id);
+        const { error: deleteJobsError } = await supabase
+          .from('translation_jobs' as any)
+          .delete()
+          .in('id', jobIds);
+
+        if (deleteJobsError) throw deleteJobsError;
+      }
+
+      // Delete test documents (where dropbox_path starts with /test/)
+      const { data: testDocs, error: docsError } = await supabase
+        .from('documents' as any)
+        .select('id')
+        .like('dropbox_path', '/test/%');
+
+      if (docsError) throw docsError;
+
+      if (testDocs && testDocs.length > 0) {
+        const docIds = testDocs.map((doc: any) => doc.id);
+        const { error: deleteDocsError } = await supabase
+          .from('documents' as any)
+          .delete()
+          .in('id', docIds);
+
+        if (deleteDocsError) throw deleteDocsError;
+      }
+
+      const totalDeleted = (testJobs?.length || 0) + (testDocs?.length || 0);
+      
+      setTestJobId(null);
+      toast.success('Cleanup Complete!', {
+        description: `Deleted ${totalDeleted} test records (${testJobs?.length || 0} jobs, ${testDocs?.length || 0} documents)`,
+      });
+    } catch (error: any) {
+      console.error('Error cleaning up test data:', error);
+      toast.error('Failed to cleanup test data', {
+        description: error.message,
+      });
+    } finally {
+      setIsCleaning(false);
+    }
+  };
+
   return (
     <AdminLayout>
       <div className="space-y-6 max-w-4xl mx-auto p-6">
         <div className="flex items-center justify-between">
-          <div>
+          <div className="flex-1">
             <h1 className="text-3xl font-bold flex items-center gap-3">
               <TestTube className="h-8 w-8 text-primary" />
               Translation Workflow Test
@@ -167,11 +223,28 @@ export default function TranslationWorkflowTest() {
               Test the complete AI translation workflow with real-time notifications
             </p>
           </div>
-          {pendingReviewCount > 0 && (
-            <Badge variant="destructive" className="h-12 w-12 text-lg animate-pulse">
-              {pendingReviewCount}
-            </Badge>
-          )}
+          <div className="flex items-center gap-3">
+            <Button
+              onClick={cleanupTestData}
+              disabled={isCleaning}
+              variant="outline"
+              size="sm"
+            >
+              {isCleaning ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Cleaning...
+                </>
+              ) : (
+                'Cleanup Test Data'
+              )}
+            </Button>
+            {pendingReviewCount > 0 && (
+              <Badge variant="destructive" className="h-12 w-12 text-lg animate-pulse">
+                {pendingReviewCount}
+              </Badge>
+            )}
+          </div>
         </div>
 
         {/* Instructions Card */}
