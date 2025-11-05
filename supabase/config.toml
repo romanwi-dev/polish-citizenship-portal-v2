@@ -114,9 +114,6 @@ verify_jwt = false
 [functions.partner-api]
 verify_jwt = false
 
-[functions.download-dropbox-file]
-verify_jwt = true
-
 [functions.dropbox-download]
 verify_jwt = true
 

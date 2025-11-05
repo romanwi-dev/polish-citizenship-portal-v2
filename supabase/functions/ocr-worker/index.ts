@@ -139,9 +139,9 @@ serve(async (req) => {
         const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
         const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
-        console.log('📥 Calling download-dropbox-file with path validation...');
+        console.log('📥 Calling dropbox-download with path validation...');
         const downloadResponse = await fetch(
-          `${supabaseUrl}/functions/v1/download-dropbox-file`,
+          `${supabaseUrl}/functions/v1/dropbox-download`,
           {
             method: "POST",
             headers: {
