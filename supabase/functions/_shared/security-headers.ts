@@ -8,7 +8,8 @@ export function getSecurityHeaders(origin: string | null): Record<string, string
     (Deno.env.get('ALLOWED_ORIGINS') ?? '').split(',').map(s => s.trim()).filter(Boolean)
   );
   
-  const allowOrigin = origin && allowedOrigins.has(origin) ? origin : 'null';
+  // Allow all origins if ALLOWED_ORIGINS is not set, otherwise check against whitelist
+  const allowOrigin = origin && (allowedOrigins.size === 0 || allowedOrigins.has(origin)) ? origin : '*';
   
   return {
     'Access-Control-Allow-Origin': allowOrigin,
