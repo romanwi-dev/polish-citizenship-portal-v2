@@ -105,11 +105,7 @@ serve(async (req) => {
       );
     }
 
-    // Convert to base64
-    const fileData = await response.arrayBuffer();
-    const base64 = btoa(String.fromCharCode(...new Uint8Array(fileData)));
-    
-    // Get file metadata
+    // Get file metadata first
     const fileName = dropboxPath.split('/').pop() || 'document';
     const ext = fileName.split('.').pop()?.toLowerCase() || '';
     
@@ -118,20 +114,56 @@ serve(async (req) => {
       'jpg': 'image/jpeg',
       'jpeg': 'image/jpeg',
       'png': 'image/png',
+      'gif': 'image/gif',
       'doc': 'application/msword',
       'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     };
     
     const mimeType = mimeTypes[ext] || 'application/octet-stream';
 
-    console.log(`[download-and-encode] Success: ${fileName} (${fileData.byteLength} bytes)`);
+    // Validate file format for OCR-able files
+    const ocrFormats = ['pdf', 'jpg', 'jpeg', 'png', 'gif'];
+    if (!ocrFormats.includes(ext)) {
+      console.warn(`[download-and-encode] Unsupported format: ${ext}`);
+      return createSecureResponse({
+        error: `Unsupported file format: ${ext}. Supported: ${ocrFormats.join(', ')}`,
+      }, 400, origin);
+    }
+
+    // Download and validate size
+    const fileData = await response.arrayBuffer();
+    const fileSizeBytes = fileData.byteLength;
+    const fileSizeMB = fileSizeBytes / (1024 * 1024);
+    
+    // Reject files over 5MB (AI service limit)
+    if (fileSizeMB > 5) {
+      console.error(`[download-and-encode] File too large: ${fileSizeMB.toFixed(2)}MB (max 5MB)`);
+      return createSecureResponse({
+        error: `File too large: ${fileSizeMB.toFixed(2)}MB. Maximum size is 5MB.`,
+        fileName,
+        size: fileSizeBytes,
+      }, 413, origin);
+    }
+
+    // Convert to base64 with proper data URL prefix
+    const uint8Array = new Uint8Array(fileData);
+    let binaryString = '';
+    for (let i = 0; i < uint8Array.length; i++) {
+      binaryString += String.fromCharCode(uint8Array[i]);
+    }
+    const base64Data = btoa(binaryString);
+    
+    // Add proper data URL prefix for AI service
+    const dataUrl = `data:${mimeType};base64,${base64Data}`;
+
+    console.log(`[download-and-encode] Success: ${fileName} (${fileSizeMB.toFixed(2)}MB, ${mimeType})`);
 
     return createSecureResponse({
       success: true,
-      base64,
+      base64: dataUrl, // Return full data URL with prefix
       fileName,
       mimeType,
-      size: fileData.byteLength,
+      size: fileSizeBytes,
     }, 200, origin);
 
   } catch (error) {
