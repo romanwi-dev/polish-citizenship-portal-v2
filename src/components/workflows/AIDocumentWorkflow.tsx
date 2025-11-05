@@ -19,7 +19,8 @@ import {
   FolderSync,
   Search,
   Filter,
-  Sparkles
+  Sparkles,
+  Languages
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -64,7 +65,7 @@ interface AIWorkflowStep {
   description: string;
   icon: any;
   gradient: string;
-  stage: 'upload' | 'ai_classify' | 'hac_classify' | 'ocr' | 'form_population' | 'hac_forms' | 'ai_verify' | 'hac_verify' | 'pdf_generation' | 'ready_to_print' | 'in_signature' | 'ready_for_filing' | 'filed';
+  stage: 'upload' | 'ai_classify' | 'hac_classify' | 'ocr' | 'translation_detection' | 'translation' | 'translation_review' | 'form_population' | 'hac_forms' | 'ai_verify' | 'hac_verify' | 'pdf_generation' | 'ready_to_print' | 'in_signature' | 'ready_for_filing' | 'filed';
   agent: 'human' | 'ai' | 'both';
   backDetails: string;
 }
@@ -111,11 +112,41 @@ const workflowSteps: AIWorkflowStep[] = [
     backDetails: "Automated OCR processing extracts structured data from documents in parallel for efficient form population."
   },
   {
+    number: "03.75",
+    title: "Translation Detection",
+    description: "Identify documents requiring translation from foreign languages to Polish.",
+    icon: Languages,
+    gradient: "from-accent to-primary",
+    stage: 'translation_detection',
+    agent: 'ai',
+    backDetails: "AI detects document language and flags non-Polish documents for certified translation. Creates translation tasks automatically."
+  },
+  {
+    number: "03.85",
+    title: "Document Translation",
+    description: "Professional sworn translators translate foreign documents to Polish.",
+    icon: FileText,
+    gradient: "from-primary to-secondary",
+    stage: 'translation',
+    agent: 'both',
+    backDetails: "Certified sworn translators convert foreign-language documents to Polish. Both AI-assisted and human professional translation workflows supported."
+  },
+  {
+    number: "03.95",
+    title: "Translation Review",
+    description: "HAC reviews and approves all translated documents for accuracy.",
+    icon: ShieldCheck,
+    gradient: "from-secondary to-accent",
+    stage: 'translation_review',
+    agent: 'human',
+    backDetails: "Attorney verifies translation accuracy, legal terminology, and ensures all documents meet Polish authority requirements."
+  },
+  {
     number: "04",
     title: "Form Population",
     description: "OCR-extracted data automatically fills citizenship application forms and family tree.",
     icon: FileText,
-    gradient: "from-secondary to-accent",
+    gradient: "from-accent to-primary",
     stage: 'form_population',
     agent: 'ai',
     backDetails: "Smart system populates citizenship forms and documents using OCR data with intelligent field mapping and manual entry protection."
