@@ -244,10 +244,12 @@ Find ALL CRITICAL issues that would cause failures in production. Be specific, a
 
       try {
         const controller = new AbortController();
+        // GPT-5 needs more time for complex verification
+        const timeoutMs = model.startsWith('openai/gpt-5') ? 300000 : 180000; // 5 min for GPT-5, 3 min for others
         const timeoutId = setTimeout(() => {
-          console.error(`⏱️ ${model} timeout - exceeding 3 minutes`);
+          console.error(`⏱️ ${model} timeout - exceeding ${timeoutMs / 60000} minutes`);
           controller.abort();
-        }, 180000); // 3 minute timeout
+        }, timeoutMs);
 
         let aiResponse;
 
