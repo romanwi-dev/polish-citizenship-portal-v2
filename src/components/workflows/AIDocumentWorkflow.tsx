@@ -18,7 +18,6 @@ import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
-import { DocumentUploadFAB } from "./DocumentUploadFAB";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface AIWorkflowStep {
@@ -204,6 +203,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
   const isMobile = useIsMobile();
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
   const [completedStages, setCompletedStages] = useState<Record<string, boolean>>({});
+  const [uploading, setUploading] = useState(false);
 
   // Fetch documents for this case
   const { data: documents, refetch: refetchDocuments } = useQuery({
@@ -251,13 +251,70 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
     return 0;
   };
 
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!caseId) {
+      toast({
+        title: "No case selected",
+        description: "Please select a case first to upload documents.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+
+    setUploading(true);
+
+    try {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Math.random()}.${fileExt}`;
+        const filePath = `${caseId}/${fileName}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('documents')
+          .upload(filePath, file);
+
+        if (uploadError) throw uploadError;
+
+        const { error: dbError } = await supabase
+          .from('documents')
+          .insert({
+            case_id: caseId,
+            name: file.name,
+            file_path: filePath,
+            file_type: file.type,
+            file_size: file.size,
+          });
+
+        if (dbError) throw dbError;
+      }
+
+      toast({
+        title: "Upload successful",
+        description: `${files.length} document(s) uploaded successfully.`,
+      });
+
+      refetchDocuments();
+    } catch (error) {
+      console.error('Upload error:', error);
+      toast({
+        title: "Upload failed",
+        description: "Failed to upload documents. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setUploading(false);
+      event.target.value = '';
+    }
+  };
+
   return (
-    <>
-      {caseId && <DocumentUploadFAB caseId={caseId} onUploadComplete={refetchDocuments} />}
-      
-      <div className="w-full pb-40">
-        {/* Vertical Timeline - Matching Homepage */}
-        <div className="relative max-w-5xl mx-auto">
+    <div className="w-full pb-40">
+      {/* Vertical Timeline - Matching Homepage */}
+      <div className="relative max-w-5xl mx-auto">
           {/* Center line - hidden on mobile, visible on desktop */}
           <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block" />
 
@@ -343,6 +400,35 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                           <p className="text-xs md:text-sm text-muted-foreground mb-3 flex-1 line-clamp-3 md:line-clamp-none">
                             {step.description}
                           </p>
+
+                          {/* Upload Section for First Card */}
+                          {step.stage === 'upload' && (
+                            <div className="mb-3">
+                              <input
+                                type="file"
+                                id="doc-upload"
+                                multiple
+                                accept=".pdf,.jpg,.jpeg,.png"
+                                onChange={handleFileUpload}
+                                className="hidden"
+                                disabled={!caseId || uploading}
+                              />
+                              <label htmlFor="doc-upload">
+                                <Button
+                                  variant="default"
+                                  size="lg"
+                                  className="w-full"
+                                  disabled={!caseId || uploading}
+                                  asChild
+                                >
+                                  <span className="cursor-pointer flex items-center justify-center gap-2">
+                                    <Upload className="h-5 w-5" />
+                                    {uploading ? 'Uploading...' : caseId ? 'Upload Documents' : 'Select a case first'}
+                                  </span>
+                                </Button>
+                              </label>
+                            </div>
+                          )}
 
                           {/* Document Count */}
                           <div className="flex items-center justify-between">
@@ -505,7 +591,10 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
             </div>
           </div>
         </div>
+
+        {/* Bottom Padding */}
+        <div className="h-32"></div>
       </div>
-    </>
+    </div>
   );
 }
