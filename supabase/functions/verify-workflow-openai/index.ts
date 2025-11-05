@@ -116,8 +116,8 @@ Find CRITICAL issues that block production. Be specific and actionable.`;
             { role: 'system', content: systemPrompt },
             { role: 'user', content: userPrompt }
           ],
-          max_tokens: 4000,
-          temperature: 0.2,
+          // Gemini 2.5 Flash doesn't support temperature or max_tokens parameters
+          // It will use defaults which is sufficient for JSON responses
           response_format: { type: "json_object" }
         }),
         signal: controller.signal,
