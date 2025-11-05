@@ -21,6 +21,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
+import { DocumentUploadFAB } from "./DocumentUploadFAB";
 
 interface AIWorkflowStep {
   number: string;
@@ -264,7 +265,10 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto space-y-8">
+    <>
+      <DocumentUploadFAB caseId={caseId} onUploadComplete={refetchDocuments} />
+      
+      <div className="w-full max-w-7xl mx-auto space-y-8">
       {/* Stage Timeline */}
       <div className="relative">
         {/* Connection Line */}
@@ -475,6 +479,8 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
           <div className="text-sm text-muted-foreground">Pending Stages</div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
+
