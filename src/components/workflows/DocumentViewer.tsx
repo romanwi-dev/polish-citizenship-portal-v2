@@ -76,12 +76,58 @@ export function DocumentViewer({
   };
 
   const isPDF = documentType?.toLowerCase() === 'pdf' || documentName.toLowerCase().endsWith('.pdf');
-  const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].some(ext => 
+  const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'].some(ext => 
+    documentName.toLowerCase().endsWith(`.${ext}`)
+  );
+  const isText = ['txt', 'md', 'json', 'xml', 'csv', 'log'].some(ext =>
+    documentName.toLowerCase().endsWith(`.${ext}`)
+  );
+  const isOffice = ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'].some(ext =>
     documentName.toLowerCase().endsWith(`.${ext}`)
   );
 
+  const [textContent, setTextContent] = useState<string>('');
+  const [isLoadingText, setIsLoadingText] = useState(false);
+
+  // Load text content for text files
+  const loadTextContent = async () => {
+    if (!isText || !documentUrl) return;
+    
+    setIsLoadingText(true);
+    try {
+      const response = await fetch(documentUrl);
+      const text = await response.text();
+      setTextContent(text);
+    } catch (error) {
+      console.error('Failed to load text content:', error);
+      setTextContent('Failed to load file content');
+    } finally {
+      setIsLoadingText(false);
+    }
+  };
+
+  // Load text when document opens
+  const handleDocumentOpen = () => {
+    if (isText && isOpen) {
+      loadTextContent();
+    }
+  };
+
+  // Reset state when dialog closes
+  const handleClose = () => {
+    setTextContent('');
+    setPageNumber(1);
+    setScale(1.0);
+    onClose();
+  };
+
+  // Handle text loading on open
+  if (isOpen && isText && !textContent && !isLoadingText) {
+    loadTextContent();
+  }
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-5xl max-h-[90vh] p-0 overflow-hidden flex flex-col">
         <DialogHeader className="px-6 py-4 border-b">
           <div className="flex items-center justify-between">
@@ -196,12 +242,48 @@ export function DocumentViewer({
                 style={{ transform: `scale(${scale})`, transformOrigin: 'center top' }}
                 className="max-w-full h-auto rounded-lg shadow-lg"
               />
+            ) : isText ? (
+              <div className="w-full max-w-4xl">
+                {isLoadingText ? (
+                  <div className="flex items-center justify-center h-96">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                  </div>
+                ) : (
+                  <div 
+                    className="bg-card border rounded-lg p-6 shadow-lg overflow-auto max-h-[600px]"
+                    style={{ transform: `scale(${scale})`, transformOrigin: 'top left' }}
+                  >
+                    <pre className="text-sm font-mono whitespace-pre-wrap break-words">
+                      {textContent}
+                    </pre>
+                  </div>
+                )}
+              </div>
+            ) : isOffice ? (
+              <div className="flex flex-col items-center justify-center h-96 text-center space-y-4">
+                <div className="text-muted-foreground space-y-2">
+                  <p className="text-lg font-semibold">Office Document Preview</p>
+                  <p className="text-sm">
+                    Preview for {documentName.split('.').pop()?.toUpperCase()} files requires downloading
+                  </p>
+                  <p className="text-xs">
+                    You can use Microsoft Office, Google Docs, or LibreOffice to view this file
+                  </p>
+                </div>
+                <Button onClick={handleDownload} size="lg">
+                  <Download className="h-4 w-4 mr-2" />
+                  Download to View
+                </Button>
+              </div>
             ) : (
-              <div className="flex flex-col items-center justify-center h-96 text-center">
-                <p className="text-muted-foreground mb-4">
-                  Preview not available for this file type
-                </p>
-                <Button onClick={handleDownload}>
+              <div className="flex flex-col items-center justify-center h-96 text-center space-y-4">
+                <div className="text-muted-foreground space-y-2">
+                  <p className="text-lg font-semibold">Preview Not Available</p>
+                  <p className="text-sm">
+                    This file type ({documentName.split('.').pop()?.toUpperCase()}) cannot be previewed in the browser
+                  </p>
+                </div>
+                <Button onClick={handleDownload} size="lg">
                   <Download className="h-4 w-4 mr-2" />
                   Download to View
                 </Button>
