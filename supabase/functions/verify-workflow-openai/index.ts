@@ -435,7 +435,7 @@ Output COMPLETE JSON matching the schema. Include scores, ratings, and detailed 
     console.log('📤 Sending request to OpenAI GPT-5...');
 
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 180000); // 3 minute timeout for thorough analysis
+    const timeoutId = setTimeout(() => controller.abort(), 480000); // 8 minute timeout for comprehensive analysis
 
     try {
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -445,12 +445,12 @@ Output COMPLETE JSON matching the schema. Include scores, ratings, and detailed 
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: 'gpt-5-2025-08-07',
+          model: 'gpt-5-mini-2025-08-07', // Use mini for faster analysis
           messages: [
             { role: 'system', content: systemPrompt },
             { role: 'user', content: userPrompt }
           ],
-          max_completion_tokens: 16000, // GPT-5 uses max_completion_tokens
+          max_completion_tokens: 16000,
           response_format: { type: "json_object" }
         }),
         signal: controller.signal,
@@ -515,7 +515,7 @@ Output COMPLETE JSON matching the schema. Include scores, ratings, and detailed 
             filesAnalyzed: files.length,
             focusAreas,
             timestamp: new Date().toISOString(),
-            model: 'gpt-5-2025-08-07'
+            model: 'gpt-5-mini-2025-08-07'
           }
         }),
         { 
@@ -526,7 +526,8 @@ Output COMPLETE JSON matching the schema. Include scores, ratings, and detailed 
     } catch (fetchError: unknown) {
       clearTimeout(timeoutId);
       if (fetchError instanceof Error && fetchError.name === 'AbortError') {
-        throw new Error('Request timeout - analysis took too long (>3 minutes)');
+        console.error('⏱️ Timeout error - analysis exceeded time limit');
+        throw new Error('Analysis timeout - verification took too long. Try analyzing fewer files or reduce complexity.');
       }
       throw fetchError;
     }
