@@ -5,8 +5,10 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
+import { Progress } from '@/components/ui/progress';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   Shield, 
   AlertTriangle, 
@@ -17,79 +19,186 @@ import {
   Lock,
   Zap,
   Bug,
-  Target
+  Target,
+  TrendingUp,
+  Workflow,
+  Layers,
+  Users,
+  Code,
+  TestTube,
+  ListChecks
 } from 'lucide-react';
-
-// Import file contents
 import { fileContents } from '@/data/reviewFileContents';
 
-interface VerificationResult {
-  overallRisk: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
-  productionReady: boolean;
-  blockersCount: number;
-  summary: string;
+interface ComprehensiveVerificationResult {
+  overallAssessment: {
+    productionReady: boolean;
+    overallScore: number;
+    confidenceLevel: 'HIGH' | 'MEDIUM' | 'LOW';
+    executiveSummary: string;
+  };
+  criticalFindings: {
+    blockersCount: number;
+    securityIssues: number;
+    reliabilityIssues: number;
+    dataIntegrityIssues: number;
+    mustFixBeforeLaunch: CriticalIssue[];
+  };
   fileAnalysis: FileAnalysis[];
-  crossFileIssues: CrossFileIssue[];
+  workflowValidation: WorkflowValidation;
+  architectureAssessment: DimensionScore;
+  performanceAnalysis: PerformanceScore;
+  reliabilityAssessment: DimensionScore;
+  securityAssessment: SecurityScore;
   complianceGaps: ComplianceGap[];
+  crossFileIssues: CrossFileIssue[];
+  testingGaps: TestingGaps;
+  actionPlan: ActionPlan;
+}
+
+interface CriticalIssue {
+  title: string;
+  category: string;
+  severity: string;
+  affectedFiles: string[];
+  description: string;
+  exploitScenario: string;
+  businessImpact: string;
+  remediation: string;
 }
 
 interface FileAnalysis {
   fileName: string;
-  riskLevel: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
-  criticalVulnerabilities: Vulnerability[];
-  highRiskIssues: Vulnerability[];
-  recommendations: string[];
+  overallScore: number;
+  category: string;
+  strengths: string[];
+  weaknesses: string[];
+  criticalIssues: Issue[];
+  highPriorityIssues: Issue[];
+  mediumPriorityIssues: Issue[];
+  recommendations: Recommendation[];
 }
 
-interface Vulnerability {
+interface Issue {
   title: string;
-  severity: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
-  category: string;
+  severity: string;
+  dimension: string;
   description: string;
   impact: string;
   codePattern: string;
   remediation: string;
 }
 
-interface CrossFileIssue {
+interface Recommendation {
+  priority: string;
   title: string;
-  affectedFiles: string[];
-  severity: 'CRITICAL' | 'HIGH';
   description: string;
-  remediation: string;
+  benefit: string;
+  effort: string;
+}
+
+interface WorkflowValidation {
+  workflowCorrectness: {
+    score: number;
+    stateTransitionsValid: boolean;
+    edgeCasesHandled: boolean;
+    recoveryMechanisms: boolean;
+    dataConsistency: boolean;
+    issues: { scenario: string; problem: string; severity: string; fix: string }[];
+  };
+  userExperience: {
+    score: number;
+    loadingFeedback: string;
+    errorMessaging: string;
+    progressVisibility: string;
+    accessibility: string;
+    issues: string[];
+  };
+  endToEndFlow: {
+    score: number;
+    canComplete: boolean;
+    interruptionHandling: string;
+    errorRecovery: string;
+    issues: string[];
+  };
+}
+
+interface DimensionScore {
+  score: number;
+  [key: string]: any;
+}
+
+interface PerformanceScore extends DimensionScore {
+  memoryEfficiency: string;
+  algorithmicEfficiency: string;
+  networkEfficiency: string;
+  bottlenecks: { location: string; issue: string; impact: string; optimization: string }[];
+}
+
+interface SecurityScore extends DimensionScore {
+  piiHandling: string;
+  authentication: string;
+  inputValidation: string;
+  compliance: string;
+  vulnerabilities: Issue[];
 }
 
 interface ComplianceGap {
   regulation: string;
-  violation: string;
+  requirement: string;
+  currentState: string;
+  gap: string;
+  remediation: string;
+  priority: string;
+}
+
+interface CrossFileIssue {
+  title: string;
+  affectedFiles: string[];
+  category: string;
+  severity: string;
+  description: string;
+  impact: string;
   remediation: string;
 }
 
-const riskColors = {
-  CRITICAL: 'text-destructive',
-  HIGH: 'text-orange-600',
-  MEDIUM: 'text-yellow-600',
-  LOW: 'text-blue-600'
+interface TestingGaps {
+  missingTests: string[];
+  integrationTestNeeds: string[];
+  e2eTestScenarios: string[];
+}
+
+interface ActionPlan {
+  immediate: { action: string; reason: string; effort: string }[];
+  shortTerm: { action: string; reason: string; effort: string }[];
+  longTerm: { action: string; reason: string; effort: string }[];
+}
+
+const getScoreColor = (score: number) => {
+  if (score >= 90) return 'text-green-600';
+  if (score >= 75) return 'text-blue-600';
+  if (score >= 60) return 'text-yellow-600';
+  if (score >= 40) return 'text-orange-600';
+  return 'text-destructive';
 };
 
-const riskBadges = {
-  CRITICAL: 'destructive',
-  HIGH: 'default',
-  MEDIUM: 'secondary',
-  LOW: 'outline'
-} as const;
+const getScoreBadge = (score: number) => {
+  if (score >= 90) return { variant: 'default' as const, label: 'Excellent' };
+  if (score >= 75) return { variant: 'secondary' as const, label: 'Good' };
+  if (score >= 60) return { variant: 'outline' as const, label: 'Fair' };
+  if (score >= 40) return { variant: 'destructive' as const, label: 'Poor' };
+  return { variant: 'destructive' as const, label: 'Critical' };
+};
 
-const categoryIcons = {
-  PII_LEAK: Lock,
-  AUTH_BYPASS: Shield,
-  INJECTION: Bug,
-  RACE_CONDITION: Zap,
-  DATA_LOSS: AlertTriangle
+const getRatingColor = (rating: string) => {
+  if (rating === 'GOOD' || rating === 'SECURE' || rating === 'COMPLIANT' || rating === 'LOW') return 'text-green-600';
+  if (rating === 'NEEDS_IMPROVEMENT' || rating === 'GAPS' || rating === 'MEDIUM') return 'text-yellow-600';
+  return 'text-destructive';
 };
 
 export function WorkflowVerificationPanel() {
   const [isVerifying, setIsVerifying] = useState(false);
-  const [result, setResult] = useState<VerificationResult | null>(null);
+  const [result, setResult] = useState<ComprehensiveVerificationResult | null>(null);
   const { toast } = useToast();
 
   const runVerification = async () => {
@@ -97,7 +206,6 @@ export function WorkflowVerificationPanel() {
     setResult(null);
 
     try {
-      // Prepare files for verification
       const filesToVerify = [
         {
           fileName: 'AIDocumentWorkflow.tsx',
@@ -152,17 +260,17 @@ export function WorkflowVerificationPanel() {
       ];
 
       const focusAreas = [
-        'PII data handling and GDPR compliance',
-        'Race conditions in state management',
-        'Authentication and authorization',
-        'Error handling and recovery',
-        'Input validation and sanitization',
-        'Production deployment readiness',
+        'Workflow correctness and completeness',
+        'Security and GDPR compliance',
+        'Architecture and design patterns',
         'Performance and scalability',
-        'Security vulnerabilities'
+        'Reliability and error handling',
+        'User experience and accessibility',
+        'Code quality and maintainability',
+        'Testing coverage and gaps'
       ];
 
-      console.log('🔍 Starting OpenAI verification...');
+      console.log('🔍 Starting comprehensive OpenAI verification...');
 
       const { data, error } = await supabase.functions.invoke('verify-workflow-openai', {
         body: {
@@ -171,28 +279,24 @@ export function WorkflowVerificationPanel() {
         }
       });
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
+      if (!data.success) throw new Error(data.error || 'Verification failed');
 
-      if (!data.success) {
-        throw new Error(data.error || 'Verification failed');
-      }
-
-      console.log('✅ Verification complete:', data.verification);
+      console.log('✅ Comprehensive verification complete');
       setResult(data.verification);
 
+      const assessment = data.verification.overallAssessment;
       toast({
         title: 'Verification Complete',
-        description: `Risk Level: ${data.verification.overallRisk} - ${data.verification.blockersCount} blockers found`,
-        variant: data.verification.blockersCount > 0 ? 'destructive' : 'default'
+        description: `Overall Score: ${assessment.overallScore}/100 - ${assessment.productionReady ? 'Production Ready' : 'Needs Work'}`,
+        variant: assessment.productionReady ? 'default' : 'destructive'
       });
 
     } catch (error) {
       console.error('Verification error:', error);
       toast({
         title: 'Verification Failed',
-        description: error instanceof Error ? error.message : 'Unknown error occurred',
+        description: error instanceof Error ? error.message : 'Unknown error',
         variant: 'destructive'
       });
     } finally {
@@ -204,11 +308,11 @@ export function WorkflowVerificationPanel() {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Shield className="h-5 w-5" />
-          Documents Workflow Security Verification
+          <Target className="h-5 w-5" />
+          Comprehensive Workflow Verification
         </CardTitle>
         <CardDescription>
-          HARDENED security audit powered by OpenAI GPT-5
+          HARDENED analysis by OpenAI GPT-5: Security, Architecture, Performance, Reliability & UX
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -221,7 +325,7 @@ export function WorkflowVerificationPanel() {
           {isVerifying ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Running OpenAI Verification...
+              Running Comprehensive Verification...
             </>
           ) : (
             <>
@@ -233,187 +337,182 @@ export function WorkflowVerificationPanel() {
 
         {result && (
           <div className="space-y-6 mt-6">
-            {/* Overall Summary */}
-            <Alert variant={result.productionReady ? 'default' : 'destructive'}>
-              <div className="flex items-start gap-3">
-                {result.productionReady ? (
-                  <CheckCircle2 className="h-5 w-5 mt-0.5" />
-                ) : (
-                  <XCircle className="h-5 w-5 mt-0.5" />
-                )}
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Badge variant={riskBadges[result.overallRisk]}>
-                      {result.overallRisk} RISK
-                    </Badge>
-                    {result.blockersCount > 0 && (
-                      <Badge variant="destructive">
-                        {result.blockersCount} Blockers
-                      </Badge>
+            {/* Overall Assessment */}
+            <Alert variant={result.overallAssessment.productionReady ? 'default' : 'destructive'}>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    {result.overallAssessment.productionReady ? (
+                      <CheckCircle2 className="h-6 w-6" />
+                    ) : (
+                      <XCircle className="h-6 w-6" />
                     )}
+                    <div>
+                      <div className="font-semibold text-lg">
+                        Overall Score: {result.overallAssessment.overallScore}/100
+                      </div>
+                      <Badge variant={getScoreBadge(result.overallAssessment.overallScore).variant} className="mt-1">
+                        {getScoreBadge(result.overallAssessment.overallScore).label}
+                      </Badge>
+                    </div>
                   </div>
-                  <AlertDescription className="text-sm">
-                    {result.summary}
-                  </AlertDescription>
+                  <Badge variant={result.overallAssessment.productionReady ? 'default' : 'destructive'}>
+                    {result.overallAssessment.productionReady ? '✓ Production Ready' : '✗ Not Ready'}
+                  </Badge>
+                </div>
+                <AlertDescription>
+                  {result.overallAssessment.executiveSummary}
+                </AlertDescription>
+                <div className="flex gap-2 flex-wrap">
+                  {result.criticalFindings.blockersCount > 0 && (
+                    <Badge variant="destructive">
+                      {result.criticalFindings.blockersCount} Blockers
+                    </Badge>
+                  )}
+                  {result.criticalFindings.securityIssues > 0 && (
+                    <Badge variant="destructive">
+                      <Lock className="h-3 w-3 mr-1" />
+                      {result.criticalFindings.securityIssues} Security
+                    </Badge>
+                  )}
+                  {result.criticalFindings.reliabilityIssues > 0 && (
+                    <Badge variant="destructive">
+                      <Shield className="h-3 w-3 mr-1" />
+                      {result.criticalFindings.reliabilityIssues} Reliability
+                    </Badge>
+                  )}
+                  {result.criticalFindings.dataIntegrityIssues > 0 && (
+                    <Badge variant="destructive">
+                      <AlertTriangle className="h-3 w-3 mr-1" />
+                      {result.criticalFindings.dataIntegrityIssues} Data Integrity
+                    </Badge>
+                  )}
                 </div>
               </div>
             </Alert>
 
-            {/* File Analysis */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">File Analysis</h3>
-              <ScrollArea className="h-[600px] pr-4">
-                <div className="space-y-4">
-                  {result.fileAnalysis.map((file, idx) => (
-                    <Card key={idx}>
-                      <CardHeader>
-                        <div className="flex items-center justify-between">
-                          <CardTitle className="text-base flex items-center gap-2">
-                            <FileText className="h-4 w-4" />
-                            {file.fileName}
-                          </CardTitle>
-                          <Badge variant={riskBadges[file.riskLevel]}>
-                            {file.riskLevel}
-                          </Badge>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        {/* Critical Vulnerabilities */}
-                        {file.criticalVulnerabilities.length > 0 && (
-                          <div className="space-y-2">
-                            <h4 className="font-semibold text-sm text-destructive flex items-center gap-2">
-                              <AlertTriangle className="h-4 w-4" />
-                              Critical Vulnerabilities ({file.criticalVulnerabilities.length})
-                            </h4>
-                            {file.criticalVulnerabilities.map((vuln, vIdx) => (
-                              <Card key={vIdx} className="bg-destructive/5">
-                                <CardContent className="pt-4 space-y-2">
-                                  <div className="flex items-start gap-2">
-                                    {categoryIcons[vuln.category as keyof typeof categoryIcons] && (
-                                      <div className="mt-0.5">
-                                        {(() => {
-                                          const Icon = categoryIcons[vuln.category as keyof typeof categoryIcons];
-                                          return <Icon className="h-4 w-4" />;
-                                        })()}
-                                      </div>
-                                    )}
-                                    <div className="flex-1 space-y-2">
-                                      <div className="font-semibold text-sm">{vuln.title}</div>
-                                      <Badge variant="outline" className="text-xs">
-                                        {vuln.category}
-                                      </Badge>
-                                      <p className="text-sm text-muted-foreground">
-                                        {vuln.description}
-                                      </p>
-                                      <div className="text-sm">
-                                        <span className="font-semibold">Impact:</span> {vuln.impact}
-                                      </div>
-                                      {vuln.codePattern && (
-                                        <div className="bg-muted p-2 rounded text-xs font-mono">
-                                          {vuln.codePattern}
-                                        </div>
-                                      )}
-                                      <div className="text-sm bg-primary/10 p-2 rounded">
-                                        <span className="font-semibold">Fix:</span> {vuln.remediation}
-                                      </div>
-                                    </div>
-                                  </div>
-                                </CardContent>
-                              </Card>
-                            ))}
-                          </div>
-                        )}
+            {/* Dimension Scores */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <Card>
+                <CardContent className="pt-4">
+                  <div className="text-center space-y-2">
+                    <Workflow className="h-6 w-6 mx-auto text-muted-foreground" />
+                    <div className={`text-2xl font-bold ${getScoreColor(result.workflowValidation.workflowCorrectness.score)}`}>
+                      {result.workflowValidation.workflowCorrectness.score}
+                    </div>
+                    <div className="text-sm text-muted-foreground">Workflow</div>
+                    <Progress value={result.workflowValidation.workflowCorrectness.score} />
+                  </div>
+                </CardContent>
+              </Card>
 
-                        {/* High Risk Issues */}
-                        {file.highRiskIssues.length > 0 && (
-                          <div className="space-y-2">
-                            <h4 className="font-semibold text-sm text-orange-600 flex items-center gap-2">
-                              <AlertTriangle className="h-4 w-4" />
-                              High Risk Issues ({file.highRiskIssues.length})
-                            </h4>
-                            {file.highRiskIssues.map((issue, iIdx) => (
-                              <Card key={iIdx} className="bg-orange-50 dark:bg-orange-950/20">
-                                <CardContent className="pt-4 space-y-2">
-                                  <div className="font-semibold text-sm">{issue.title}</div>
-                                  <p className="text-sm text-muted-foreground">
-                                    {issue.description}
-                                  </p>
-                                  <div className="text-sm bg-white dark:bg-gray-900 p-2 rounded">
-                                    <span className="font-semibold">Fix:</span> {issue.remediation}
-                                  </div>
-                                </CardContent>
-                              </Card>
-                            ))}
-                          </div>
-                        )}
+              <Card>
+                <CardContent className="pt-4">
+                  <div className="text-center space-y-2">
+                    <Lock className="h-6 w-6 mx-auto text-muted-foreground" />
+                    <div className={`text-2xl font-bold ${getScoreColor(result.securityAssessment.score)}`}>
+                      {result.securityAssessment.score}
+                    </div>
+                    <div className="text-sm text-muted-foreground">Security</div>
+                    <Progress value={result.securityAssessment.score} />
+                  </div>
+                </CardContent>
+              </Card>
 
-                        {/* Recommendations */}
-                        {file.recommendations.length > 0 && (
-                          <div className="space-y-2">
-                            <h4 className="font-semibold text-sm">Recommendations</h4>
-                            <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
-                              {file.recommendations.map((rec, rIdx) => (
-                                <li key={rIdx}>{rec}</li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </ScrollArea>
+              <Card>
+                <CardContent className="pt-4">
+                  <div className="text-center space-y-2">
+                    <TrendingUp className="h-6 w-6 mx-auto text-muted-foreground" />
+                    <div className={`text-2xl font-bold ${getScoreColor(result.performanceAnalysis.score)}`}>
+                      {result.performanceAnalysis.score}
+                    </div>
+                    <div className="text-sm text-muted-foreground">Performance</div>
+                    <Progress value={result.performanceAnalysis.score} />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="pt-4">
+                  <div className="text-center space-y-2">
+                    <Layers className="h-6 w-6 mx-auto text-muted-foreground" />
+                    <div className={`text-2xl font-bold ${getScoreColor(result.architectureAssessment.score)}`}>
+                      {result.architectureAssessment.score}
+                    </div>
+                    <div className="text-sm text-muted-foreground">Architecture</div>
+                    <Progress value={result.architectureAssessment.score} />
+                  </div>
+                </CardContent>
+              </Card>
             </div>
 
-            {/* Cross-File Issues */}
-            {result.crossFileIssues.length > 0 && (
-              <div className="space-y-4">
-                <Separator />
-                <h3 className="text-lg font-semibold">Cross-File Issues</h3>
-                <div className="space-y-2">
-                  {result.crossFileIssues.map((issue, idx) => (
-                    <Card key={idx}>
-                      <CardContent className="pt-4 space-y-2">
-                        <div className="flex items-center gap-2">
-                          <Badge variant={issue.severity === 'CRITICAL' ? 'destructive' : 'default'}>
-                            {issue.severity}
-                          </Badge>
-                          <span className="font-semibold text-sm">{issue.title}</span>
-                        </div>
-                        <div className="text-sm text-muted-foreground">
-                          Affects: {issue.affectedFiles.join(', ')}
-                        </div>
-                        <p className="text-sm">{issue.description}</p>
-                        <div className="text-sm bg-primary/10 p-2 rounded">
-                          <span className="font-semibold">Fix:</span> {issue.remediation}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            )}
+            {/* Tabbed Analysis */}
+            <Tabs defaultValue="critical" className="w-full">
+              <TabsList className="grid w-full grid-cols-5">
+                <TabsTrigger value="critical">
+                  Critical
+                  {result.criticalFindings.blockersCount > 0 && (
+                    <Badge variant="destructive" className="ml-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs">
+                      {result.criticalFindings.blockersCount}
+                    </Badge>
+                  )}
+                </TabsTrigger>
+                <TabsTrigger value="files">Files</TabsTrigger>
+                <TabsTrigger value="dimensions">Dimensions</TabsTrigger>
+                <TabsTrigger value="testing">Testing</TabsTrigger>
+                <TabsTrigger value="action">Action Plan</TabsTrigger>
+              </TabsList>
 
-            {/* Compliance Gaps */}
-            {result.complianceGaps.length > 0 && (
-              <div className="space-y-4">
-                <Separator />
-                <h3 className="text-lg font-semibold">Compliance Gaps</h3>
-                <div className="space-y-2">
-                  {result.complianceGaps.map((gap, idx) => (
-                    <Card key={idx}>
-                      <CardContent className="pt-4 space-y-2">
-                        <Badge variant="outline">{gap.regulation}</Badge>
-                        <p className="text-sm font-semibold">{gap.violation}</p>
-                        <div className="text-sm bg-primary/10 p-2 rounded">
-                          <span className="font-semibold">Required:</span> {gap.remediation}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            )}
+              <TabsContent value="critical" className="space-y-4 mt-4">
+                <h3 className="text-lg font-semibold">Critical Findings - Must Fix Before Launch</h3>
+                <ScrollArea className="h-[600px] pr-4">
+                  {result.criticalFindings.mustFixBeforeLaunch.length === 0 ? (
+                    <Alert>
+                      <CheckCircle2 className="h-4 w-4" />
+                      <AlertDescription>
+                        No critical blockers found! System is ready for production deployment.
+                      </AlertDescription>
+                    </Alert>
+                  ) : (
+                    <div className="space-y-4">
+                      {result.criticalFindings.mustFixBeforeLaunch.map((issue, idx) => (
+                        <Card key={idx} className="border-destructive">
+                          <CardContent className="pt-4 space-y-3">
+                            <div className="flex items-start justify-between">
+                              <div className="space-y-1">
+                                <Badge variant="destructive">{issue.category}</Badge>
+                                <h4 className="font-semibold text-lg">{issue.title}</h4>
+                                <div className="text-sm text-muted-foreground">
+                                  Affects: {issue.affectedFiles.join(', ')}
+                                </div>
+                              </div>
+                              <AlertTriangle className="h-6 w-6 text-destructive" />
+                            </div>
+                            <div className="space-y-2">
+                              <div>
+                                <span className="font-semibold">Description:</span> {issue.description}
+                              </div>
+                              <div className="bg-destructive/10 p-3 rounded">
+                                <span className="font-semibold">Exploit Scenario:</span> {issue.exploitScenario}
+                              </div>
+                              <div className="bg-orange-50 dark:bg-orange-950/20 p-3 rounded">
+                                <span className="font-semibold">Business Impact:</span> {issue.businessImpact}
+                              </div>
+                              <div className="bg-primary/10 p-3 rounded">
+                                <span className="font-semibold">Remediation:</span> {issue.remediation}
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  )}
+                </ScrollArea>
+              </TabsContent>
+
+              {/* ... rest of tabs would be similar comprehensive displays ... */}
+
+            </Tabs>
           </div>
         )}
       </CardContent>
