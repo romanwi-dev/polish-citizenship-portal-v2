@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { 
   Dialog, 
@@ -16,7 +14,6 @@ import {
   TrendingDown, 
   Minus,
   Clock,
-  AlertCircle,
   CheckCircle2,
   ChevronRight
 } from "lucide-react";
@@ -83,88 +80,105 @@ export function ReviewHistory() {
 
   if (!reviews || reviews.length === 0) {
     return (
-      <Card>
-        <CardContent className="pt-6 text-center text-muted-foreground">
-          <History className="h-12 w-12 mx-auto mb-3 opacity-50" />
-          <p>No review history yet. Run your first review to see results here.</p>
-        </CardContent>
-      </Card>
+      <div className="w-full max-w-7xl mx-auto py-8 text-center text-muted-foreground">
+        <History className="h-12 w-12 mx-auto mb-3 opacity-50" />
+        <p>No review history yet. Run your first review to see results here.</p>
+      </div>
     );
   }
 
   return (
     <>
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <History className="h-5 w-5" />
-            Review History
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            {reviews.map((review, index) => {
-              const previousReview = reviews[index + 1];
-              const trend = getScoreTrend(review.overall_score, previousReview?.overall_score);
-              const scoreColor = getScoreColor(review.overall_score);
+      <div className="w-full max-w-7xl mx-auto space-y-4">
+        {/* Section Title */}
+        <h2 className="text-2xl font-heading font-semibold flex items-center gap-2 text-foreground">
+          <History className="h-6 w-6" />
+          Review History
+        </h2>
 
-              return (
-                <div
-                  key={review.id}
-                  className="flex items-center justify-between p-4 rounded-lg border hover:border-primary/50 transition-colors cursor-pointer"
-                  onClick={() => openReviewDetails(review)}
-                >
-                  <div className="flex items-center gap-4 flex-1">
-                    {/* Score Badge */}
-                    <div className={cn("text-2xl font-bold", scoreColor)}>
-                      {review.overall_score}
-                    </div>
+        {/* Review Items */}
+        <div className="space-y-4">
+          {reviews.map((review, index) => {
+            const previousReview = reviews[index + 1];
+            const trend = getScoreTrend(review.overall_score, previousReview?.overall_score);
+            const scoreColor = getScoreColor(review.overall_score);
 
-                    {/* Trend Indicator */}
-                    {trend && (
-                      <div className={cn("flex items-center gap-1", trend.color)}>
-                        <trend.icon className="h-4 w-4" />
-                        <span className="text-sm font-medium">{trend.text}</span>
-                      </div>
-                    )}
-
-                    {/* Details */}
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-sm font-medium">
-                          {review.files_count} files reviewed
-                        </span>
-                        {review.total_blockers > 0 && (
-                          <Badge variant="destructive" className="text-xs">
-                            {review.total_blockers} blocker{review.total_blockers > 1 ? 's' : ''}
-                          </Badge>
-                        )}
-                        {review.status === 'completed' && review.total_blockers === 0 && (
-                          <Badge variant="default" className="text-xs bg-success">
-                            <CheckCircle2 className="h-3 w-3 mr-1" />
-                            Clean
-                          </Badge>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                        <span className="flex items-center gap-1">
-                          <Clock className="h-3 w-3" />
-                          {formatDistanceToNow(new Date(review.created_at), { addSuffix: true })}
-                        </span>
-                        <span>
-                          Duration: {Math.round(review.duration_seconds / 60)}m {review.duration_seconds % 60}s
-                        </span>
-                      </div>
-                    </div>
+            return (
+              <button
+                key={review.id}
+                onClick={() => openReviewDetails(review)}
+                className="w-full h-auto min-h-[80px] rounded-md border-2 bg-blue-50/45 dark:bg-blue-950/40 border-blue-200/30 dark:border-blue-800/30 hover:border-transparent focus:border-transparent transition-all duration-300 backdrop-blur flex items-center justify-between p-4 text-left"
+                style={{
+                  boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15)',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.boxShadow = '0 0 50px hsla(221, 83%, 53%, 0.3)';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.boxShadow = '0 0 30px hsla(221, 83%, 53%, 0.15)';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.boxShadow = '0 0 60px hsla(221, 83%, 53%, 0.4)';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.boxShadow = '0 0 30px hsla(221, 83%, 53%, 0.15)';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                }}
+              >
+                <div className="flex items-center gap-4 flex-1">
+                  {/* Score Badge */}
+                  <div className={cn("text-3xl font-bold", scoreColor)}>
+                    {review.overall_score}
                   </div>
 
-                  <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                  {/* Trend Indicator */}
+                  {trend && (
+                    <div className={cn("flex items-center gap-1", trend.color)}>
+                      <trend.icon className="h-5 w-5" />
+                      <span className="text-sm font-medium">{trend.text}</span>
+                    </div>
+                  )}
+
+                  {/* Details */}
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-base font-medium text-foreground">
+                        {review.files_count} files reviewed
+                      </span>
+                      {review.total_blockers > 0 && (
+                        <Badge variant="destructive" className="text-xs">
+                          {review.total_blockers} blocker{review.total_blockers > 1 ? 's' : ''}
+                        </Badge>
+                      )}
+                      {review.status === 'completed' && review.total_blockers === 0 && (
+                        <Badge variant="default" className="text-xs bg-success">
+                          <CheckCircle2 className="h-3 w-3 mr-1" />
+                          Clean
+                        </Badge>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                      <span className="flex items-center gap-1">
+                        <Clock className="h-4 w-4" />
+                        {formatDistanceToNow(new Date(review.created_at), { addSuffix: true })}
+                      </span>
+                      <span>
+                        Duration: {Math.round(review.duration_seconds / 60)}m {review.duration_seconds % 60}s
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              );
-            })}
-          </div>
-        </CardContent>
-      </Card>
+
+                <ChevronRight className="h-5 w-5 text-muted-foreground" />
+              </button>
+            );
+          })}
+        </div>
+      </div>
 
       {/* Review Details Modal */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
