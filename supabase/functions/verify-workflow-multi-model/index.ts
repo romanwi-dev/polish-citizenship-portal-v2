@@ -54,6 +54,15 @@ serve(async (req) => {
       console.warn('⚠️ ANTHROPIC_API_KEY not configured - Claude models will be skipped');
     }
 
+    // Validate that files have content
+    for (const file of files) {
+      if (!file.fileContent || file.fileContent.trim() === '') {
+        console.error(`❌ File ${file.fileName} has no content!`);
+        throw new Error(`File ${file.fileName} must have content for verification`);
+      }
+      console.log(`✅ File ${file.fileName}: ${file.fileContent.length} characters`);
+    }
+
     const filesContext = files.map((f, idx) => 
       `\n${'='.repeat(80)}\nFILE ${idx + 1}: ${f.fileName} (${f.category})\n${'='.repeat(80)}\n${f.fileContent}\n`
     ).join('\n');
