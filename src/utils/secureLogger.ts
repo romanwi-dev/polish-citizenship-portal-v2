@@ -126,14 +126,53 @@ function sanitizeData(data: any): any {
 }
 
 /**
+ * PHASE 2 FIX: Singleton Supabase client for production error tracking
+ * Prevents redundant imports and ensures consistent client instance
+ */
+let supabaseClientCache: any = null;
+let supabaseClientPromise: Promise<any> | null = null;
+
+async function getSupabaseClient() {
+  // Return cached client if available
+  if (supabaseClientCache) {
+    return supabaseClientCache;
+  }
+  
+  // Return existing promise if import is in progress
+  if (supabaseClientPromise) {
+    return supabaseClientPromise;
+  }
+  
+  // Import and cache the client
+  supabaseClientPromise = import('@/integrations/supabase/client')
+    .then(module => {
+      supabaseClientCache = module.supabase;
+      supabaseClientPromise = null;
+      return supabaseClientCache;
+    })
+    .catch(error => {
+      supabaseClientPromise = null;
+      throw error;
+    });
+  
+  return supabaseClientPromise;
+}
+
+/**
  * PHASE 2: Enhanced logger with live error tracking
+ * PRODUCTION FIX: Uses singleton Supabase client pattern
  */
 class SecureLogger {
   private isDev = import.meta.env.DEV;
   private errorTrackingEnabled = !this.isDev; // Enable in production
 
   /**
-   * Send error to production error tracking service
+   * PRODUCTION FIX: Send error to production error tracking service
+   * Uses singleton Supabase client to prevent redundant imports
+   * @param level - Error severity level
+   * @param message - Error message
+   * @param error - Error object or data
+   * @param context - Additional context
    */
   private async trackProductionError(
     level: LogLevel,
@@ -148,8 +187,8 @@ class SecureLogger {
       const sanitizedError = error ? sanitizeData(error) : null;
       const sanitizedContext = context ? sanitizeData(context) : null;
       
-      // Use dynamic import to avoid loading in development
-      const { supabase } = await import('@/integrations/supabase/client');
+      // PRODUCTION FIX: Use singleton client to avoid re-importing
+      const supabase = await getSupabaseClient();
       
       // Log to internal security metrics
       await supabase.rpc('record_security_metric', {

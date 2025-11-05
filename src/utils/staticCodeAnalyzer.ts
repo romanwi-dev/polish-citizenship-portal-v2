@@ -39,6 +39,10 @@ interface ScanOptions {
   checkAll?: boolean;
 }
 
+/**
+ * PHASE 2 FIX: Enhanced security patterns with comprehensive PII detection
+ * Aligned with secureLogger.ts PII patterns for consistency
+ */
 const SECURITY_PATTERNS = {
   sqlInjection: [
     {
@@ -74,6 +78,53 @@ const SECURITY_PATTERNS = {
       pattern: /fetch\s*\(\s*['\"`]http:\/\//gi,
       message: 'Insecure API call: Using HTTP instead of HTTPS',
       cwe: 'CWE-319'
+    }
+  ],
+
+  /**
+   * PHASE 2 FIX: Comprehensive PII detection patterns
+   * Detects hardcoded or logged PII in source code
+   */
+  exposedPII: [
+    {
+      pattern: /\b\d{11}\b/g,
+      message: 'Exposed PII: Polish PESEL number (11 digits) detected in code',
+      cwe: 'CWE-359'
+    },
+    {
+      pattern: /\b[A-Z]{2}\d{7}\b/g,
+      message: 'Exposed PII: Passport number pattern (2 letters + 7 digits) detected',
+      cwe: 'CWE-359'
+    },
+    {
+      pattern: /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g,
+      message: 'Exposed PII: Email address detected in source code',
+      cwe: 'CWE-359'
+    },
+    {
+      pattern: /\b(?:\+\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b/g,
+      message: 'Exposed PII: Phone number pattern detected in code',
+      cwe: 'CWE-359'
+    },
+    {
+      pattern: /\b\d{4}[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4}\b/g,
+      message: 'Exposed PII: Credit card number pattern detected',
+      cwe: 'CWE-359'
+    },
+    {
+      pattern: /\b\d{3}-\d{2}-\d{4}\b/g,
+      message: 'Exposed PII: US SSN pattern (XXX-XX-XXXX) detected',
+      cwe: 'CWE-359'
+    },
+    {
+      pattern: /console\.(log|info|warn|error|debug)\s*\([^)]*(?:pesel|passport|ssn|email|phone|credit[_-]?card)/gi,
+      message: 'Exposed PII: Logging sensitive data to console',
+      cwe: 'CWE-532'
+    },
+    {
+      pattern: /localStorage\.(setItem|set)\s*\([^)]*(?:pesel|passport|ssn|email|phone|password|token)/gi,
+      message: 'Exposed PII: Storing sensitive data in browser localStorage',
+      cwe: 'CWE-922'
     }
   ]
 };
@@ -132,6 +183,11 @@ export class StaticCodeAnalyzer {
       this.checkInsecureAPIs(code);
     }
 
+    // PHASE 2 FIX: Add PII exposure detection
+    if (shouldCheckAll) {
+      this.checkExposedPII(code);
+    }
+
     return this.findings;
   }
 
@@ -156,6 +212,16 @@ export class StaticCodeAnalyzer {
   private checkInsecureAPIs(code: string): void {
     SECURITY_PATTERNS.insecureAPI.forEach(({ pattern, message, cwe }) => {
       this.findMatches(code, pattern, 'insecure_api', message, cwe);
+    });
+  }
+
+  /**
+   * PHASE 2 FIX: Check for exposed PII in source code
+   * Detects hardcoded PII values and insecure PII handling
+   */
+  private checkExposedPII(code: string): void {
+    SECURITY_PATTERNS.exposedPII.forEach(({ pattern, message, cwe }) => {
+      this.findMatches(code, pattern, 'exposed_pii', message, cwe);
     });
   }
 
