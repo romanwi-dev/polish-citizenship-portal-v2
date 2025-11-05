@@ -123,8 +123,30 @@ serve(async (req) => {
         console.log(`📄 Processing: ${doc.name}`);
         console.log(`   Document ID: ${doc.id}`);
         console.log(`   Original Path: ${doc.dropbox_path}`);
+        console.log(`   Extension: ${doc.file_extension}`);
         console.log(`   Retry Count: ${doc.ocr_retry_count || 0}/${MAX_RETRIES}`);
         console.log(`${'='.repeat(60)}`);
+
+        // Skip PDFs - they cannot be OCR'd via image API
+        if (doc.file_extension === '.pdf' || doc.file_extension === 'pdf') {
+          console.log('⏭️  Skipping PDF - requires text extraction, not OCR');
+          await supabase
+            .from("documents")
+            .update({ 
+              ocr_status: "failed",
+              ocr_error_message: "PDFs cannot be OCR'd via image API. Download directly to view content.",
+              updated_at: new Date().toISOString()
+            })
+            .eq("id", doc.id);
+          
+          successfulDocs.push({
+            documentId: doc.id,
+            name: doc.name,
+            status: 'skipped',
+            reason: 'PDF format not supported for OCR'
+          });
+          return; // Exit early from this async function
+        }
 
         // Update status to processing
         await supabase

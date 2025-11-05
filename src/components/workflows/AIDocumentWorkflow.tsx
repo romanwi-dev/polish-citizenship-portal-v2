@@ -1287,12 +1287,32 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
 
   const handlePreviewDocument = async (dropboxPath: string, name: string, documentId: string) => {
     try {
-      // Get signed URL from Dropbox
-      const { data, error } = await supabase.functions.invoke('download-and-encode', {
-        body: { dropboxPath, returnUrl: true }
-      });
+      // Get user's session for authenticated request
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        throw new Error('Not authenticated');
+      }
 
-      if (error) throw error;
+      // Get signed URL from Dropbox with user's JWT token
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/download-and-encode`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${session.access_token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ dropboxPath, returnUrl: true }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to get preview URL');
+      }
+
+      const data = await response.json();
 
       // Get OCR text and document type if available
       const { data: docData } = await supabase
@@ -1383,13 +1403,20 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
 
       toast({ title: "Downloading...", description: "Please wait" });
 
-      // FIXED: Call edge function only once directly via fetch
+      // Get user's session token for authenticated download
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        throw new Error('Not authenticated');
+      }
+
+      // Call edge function with user's JWT token
       const response = await fetch(
         `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/download-dropbox-file`,
         {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+            'Authorization': `Bearer ${session.access_token}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ dropboxPath, caseId }),
