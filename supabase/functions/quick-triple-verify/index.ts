@@ -24,38 +24,43 @@ Deno.serve(async (req) => {
       });
     }
 
-    const systemPrompt = `You are a senior code reviewer. Analyze this code change proposal and provide:
-1. VERDICT: APPROVE or REJECT
-2. CONFIDENCE: 0-100%
-3. RISKS: List any security, logic, or implementation risks
-4. RECOMMENDATION: Go/No-Go with reasoning
+    const systemPrompt = `You are a senior software architect performing zero-fail verification. Analyze this code architecture deeply and provide:
 
-Be concise and direct.`;
+1. VERDICT: APPROVE (100/100) or REJECT
+2. SCORE: Must be exactly 100/100 to approve, otherwise 0-99
+3. CRITICAL ISSUES: Any blocking problems (security, logic, architecture)
+4. WARNINGS: Non-blocking concerns
+5. RECOMMENDATION: Clear Go/No-Go with detailed reasoning
 
-    const userPrompt = `Review this authentication fix:
+Standards for 100/100:
+- Zero critical security vulnerabilities
+- No architectural flaws or anti-patterns
+- Proper error handling throughout
+- Performance optimizations in place
+- Code follows best practices
+- No silent failures or data loss risks
 
-CURRENT PROBLEM:
-- Edge function "download-and-encode" requires JWT authentication
-- Current code uses supabase.functions.invoke() directly without auth headers
-- Result: 401 Unauthorized (no POST requests reaching edge function)
+Be extremely thorough. If you have ANY doubt, score below 100.`;
 
-PROPOSED FIX:
-1. Import useAuthenticatedInvoke hook
-2. Initialize: const { invoke } = useAuthenticatedInvoke()
-3. Replace: supabase.functions.invoke('download-and-encode', {...})
-   With: invoke('download-and-encode', {...})
+    const userPrompt = typeof proposal === 'string' 
+      ? proposal 
+      : `ARCHITECTURE REVIEW REQUEST:
 
-The hook explicitly:
-- Fetches current session token
-- Attaches Authorization: Bearer <token> header
-- Returns proper error if no session
+${proposal.title || 'Code Analysis'}
 
-FILES:
-- src/components/workflows/AIDocumentWorkflow.tsx (3 line changes)
-- Uses existing hook: src/hooks/useAuthenticatedInvoke.ts
+${proposal.description || ''}
 
+ANALYSIS SCOPE:
+${proposal.scope || 'Full system review'}
+
+KEY CONCERNS:
+${proposal.concerns ? proposal.concerns.join('\n') : 'General code quality and architecture'}
+
+FILES INVOLVED:
+${proposal.files ? proposal.files.join('\n') : 'See attached proposal'}
+
+DETAILS:
 ${JSON.stringify(proposal, null, 2)}`;
-
     // Parallel calls
     const results = await Promise.allSettled([
       // OpenAI
