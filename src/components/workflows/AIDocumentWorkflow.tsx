@@ -43,7 +43,7 @@ import { DocumentProgressCard } from "./DocumentProgressCard";
 import { BatchStatsDashboard } from "./BatchStatsDashboard";
 import { PDFPreviewPanel } from "./PDFPreviewPanel";
 import { ErrorRecoveryPanel } from "./ErrorRecoveryPanel";
-import { DocumentViewer } from "./DocumentViewer";
+import { PDFPreviewDialog } from "@/components/PDFPreviewDialog";
 import type { RealtimeChannel } from "@supabase/supabase-js";
 // Phase 2: Phase 3 component integrations
 import { QualityMetricsDashboard } from "./QualityMetricsDashboard";
@@ -300,17 +300,9 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
   const [showPDFPreview, setShowPDFPreview] = useState(false);
   const [hasRestoredState, setHasRestoredState] = useState(false);
   const [showRecoveryPrompt, setShowRecoveryPrompt] = useState(false);
-  const [previewDocument, setPreviewDocument] = useState<{
-    isOpen: boolean;
-    url: string;
-    name: string;
-    type?: string;
-    ocrText?: string;
-  }>({
-    isOpen: false,
-    url: '',
-    name: '',
-  });
+  const [isPDFDialogOpen, setIsPDFDialogOpen] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string>("");
+  const [previewDocName, setPreviewDocName] = useState<string>("");
   
   // Phase 2: PreFlight checks state
   const [showPreFlightModal, setShowPreFlightModal] = useState(false);
@@ -1294,13 +1286,9 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
         .eq('id', documentId)
         .single();
 
-      setPreviewDocument({
-        isOpen: true,
-        url: data.signedUrl,
-        name: name,
-        type: name.toLowerCase().endsWith('.pdf') ? 'pdf' : undefined,
-        ocrText: docData?.ocr_text
-      });
+      setPreviewUrl(data.signedUrl);
+      setPreviewDocName(name);
+      setIsPDFDialogOpen(true);
     } catch (error: any) {
       toast({
         title: "Preview Failed",
@@ -1311,11 +1299,32 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
   };
 
   const closePreview = () => {
-    setPreviewDocument({
-      isOpen: false,
-      url: '',
-      name: '',
-    });
+    setIsPDFDialogOpen(false);
+    setPreviewUrl('');
+    setPreviewDocName('');
+  };
+
+  const handleDownloadEditable = async () => {
+    if (!previewUrl) return;
+    try {
+      const response = await fetch(previewUrl);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = previewDocName;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      toast({ title: "Download started" });
+    } catch (error: any) {
+      toast({ title: "Download failed", description: error.message, variant: "destructive" });
+    }
+  };
+
+  const handleDownloadFinal = async () => {
+    await handleDownloadEditable();
   };
 
   const syncDropboxDocuments = async () => {
@@ -2165,14 +2174,14 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
           </div>
         )}
 
-        {/* Document Viewer Modal */}
-        <DocumentViewer
-          isOpen={previewDocument.isOpen}
+        {/* PDF Preview Dialog */}
+        <PDFPreviewDialog
+          open={isPDFDialogOpen}
           onClose={closePreview}
-          documentUrl={previewDocument.url}
-          documentName={previewDocument.name}
-          documentType={previewDocument.type}
-          ocrText={previewDocument.ocrText}
+          pdfUrl={previewUrl}
+          onDownloadEditable={handleDownloadEditable}
+          onDownloadFinal={handleDownloadFinal}
+          documentTitle={previewDocName}
         />
       </div>
     </section>
