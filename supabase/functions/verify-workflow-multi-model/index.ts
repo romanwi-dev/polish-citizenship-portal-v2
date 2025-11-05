@@ -85,7 +85,7 @@ Focus areas:
 - Code Quality: Testing coverage, documentation, technical debt
 - Production Readiness: Deployment blockers, monitoring, rollback plans
 
-Return VALID JSON (no markdown, no code blocks):
+CRITICAL: Your response must be ONLY valid JSON. Do not wrap in markdown code blocks. Do not include any text before or after the JSON. Start with { and end with }.
 {
   "overallAssessment": {
     "productionReady": boolean,
@@ -223,6 +223,7 @@ Find ALL CRITICAL issues that would cause failures in production. Be specific, a
           clearTimeout(timeoutId);
         } else {
           // Use Lovable AI Gateway for OpenAI and Google models
+          console.log(`📤 Calling Lovable AI Gateway for ${model}...`);
           const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
             method: 'POST',
             headers: {
@@ -235,8 +236,8 @@ Find ALL CRITICAL issues that would cause failures in production. Be specific, a
                 { role: 'system', content: systemPrompt },
                 { role: 'user', content: userPrompt }
               ],
-              max_completion_tokens: 4000,
-              response_format: { type: "json_object" }
+              max_completion_tokens: 4000
+              // Note: Removed response_format for compatibility with all models
             }),
             signal: controller.signal,
           });
@@ -263,46 +264,68 @@ Find ALL CRITICAL issues that would cause failures in production. Be specific, a
         const duration = Date.now() - modelStartTime;
         console.log(`✅ ${model} completed in ${duration}ms`);
         
+        // Log full response for debugging
+        console.log(`📋 ${model} full response:`, JSON.stringify(aiResponse).substring(0, 500));
+        
         if (!aiResponse.choices?.[0]?.message?.content) {
-          console.error(`❌ ${model} invalid response structure`);
+          console.error(`❌ ${model} invalid response structure - full response:`, JSON.stringify(aiResponse));
           return {
             model,
             success: false,
-            error: 'Invalid response structure - no content',
+            error: `Invalid response structure - no content. Response: ${JSON.stringify(aiResponse).substring(0, 200)}`,
             duration
           };
         }
 
         const rawContent = aiResponse.choices[0].message.content;
+        console.log(`📄 ${model} raw content preview:`, rawContent.substring(0, 300));
         let verificationResult;
 
         try {
           verificationResult = JSON.parse(rawContent);
-          console.log(`✅ ${model} JSON parsed successfully`);
+          console.log(`✅ ${model} JSON parsed successfully - score: ${verificationResult.overallAssessment?.overallScore || 'N/A'}`);
         } catch (parseError) {
           console.error(`❌ ${model} JSON parse error:`, parseError);
+          console.error(`📄 ${model} raw content that failed to parse:`, rawContent.substring(0, 500));
           
-          // Try to extract JSON from markdown
+          // Try to extract JSON from markdown code blocks
           const jsonMatch = rawContent.match(/```(?:json)?\s*(\{[\s\S]*\})\s*```/);
           if (jsonMatch) {
             try {
               verificationResult = JSON.parse(jsonMatch[1]);
-              console.log(`✓ ${model} JSON extracted from markdown`);
-            } catch {
+              console.log(`✓ ${model} JSON extracted from markdown code block`);
+            } catch (markdownError) {
+              console.error(`❌ ${model} failed to parse JSON from markdown:`, markdownError);
               return {
                 model,
                 success: false,
-                error: 'Failed to parse JSON from markdown',
+                error: `Failed to parse JSON from markdown: ${markdownError instanceof Error ? markdownError.message : 'Unknown'}`,
                 duration
               };
             }
           } else {
-            return {
-              model,
-              success: false,
-              error: `JSON parse failed: ${parseError instanceof Error ? parseError.message : 'Unknown'}`,
-              duration
-            };
+            // Try to find any JSON object in the response
+            const jsonObjectMatch = rawContent.match(/\{[\s\S]*\}/);
+            if (jsonObjectMatch) {
+              try {
+                verificationResult = JSON.parse(jsonObjectMatch[0]);
+                console.log(`✓ ${model} JSON extracted from raw text`);
+              } catch {
+                return {
+                  model,
+                  success: false,
+                  error: `JSON parse failed - content preview: ${rawContent.substring(0, 200)}`,
+                  duration
+                };
+              }
+            } else {
+              return {
+                model,
+                success: false,
+                error: `No JSON found in response - content preview: ${rawContent.substring(0, 200)}`,
+                duration
+              };
+            }
           }
         }
 
