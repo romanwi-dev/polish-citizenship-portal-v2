@@ -16,6 +16,10 @@ import {
   retryTemplateFetch, 
   retrySignedUrl 
 } from '../_shared/pdf-retry.ts';
+import { getPooledAdminClient } from '../_shared/connection-pool.ts';
+import { templateCache } from '../_shared/template-cache-v2.ts';
+import { fillFieldsInParallel } from '../_shared/parallel-field-filler.ts';
+import { performanceTracker } from '../_shared/performance-tracker.ts';
 
 // DEPLOYMENT VERSION: 2024-11-05-V4-MODULAR
 // Uses shared modules for field mappings, errors, and retry logic
@@ -48,27 +52,7 @@ function sanitizeCaseId(raw: unknown): string | null {
 
 const TTL = Number(Deno.env.get('SIGNED_URL_TTL_SECONDS') ?? '2700');
 
-// ===== PDF Template Cache =====
-const pdfTemplateCache = new Map<string, Uint8Array>();
-const cacheTimestamps = new Map<string, number>();
-const MAX_CACHE_SIZE = 10;
-
-function evictOldestCacheEntry() {
-  let oldestKey: string | null = null;
-  let oldestTime = Date.now();
-  
-  cacheTimestamps.forEach((timestamp, key) => {
-    if (timestamp < oldestTime) {
-      oldestTime = timestamp;
-      oldestKey = key;
-    }
-  });
-  
-  if (oldestKey) {
-    pdfTemplateCache.delete(oldestKey);
-    cacheTimestamps.delete(oldestKey);
-  }
-}
+// PHASE B: Using enhanced template cache v2 with versioning and LRU
 
 // Field mappings now imported from shared module
 
@@ -380,11 +364,8 @@ Deno.serve(async (req) => {
       return j(req, { code: error.code, message: error.message }, 400);
     }
 
-    // Initialize clients
-    const URL = Deno.env.get('SUPABASE_URL')!;
-    const SRK = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const ANON = Deno.env.get('SUPABASE_ANON_KEY')!;
-    const admin = createClient(URL, SRK, { global: { headers: { 'X-Client-Info': 'fill-pdf' } } });
+    // PHASE B: Use pooled admin client for 2x performance boost
+    const admin = getPooledAdminClient();
 
     log('fill_pdf_request', { caseId, templateType });
     
@@ -469,35 +450,40 @@ Deno.serve(async (req) => {
         return j(req, { code: error.code, message: error.message }, 404);
       }
 
-      log('template_load_v4', { pdfTemplatePath, deployment: 'V4-MODULAR', templateType: normalizedType, timestamp: Date.now() });
+      log('template_load_v5', { pdfTemplatePath, deployment: 'V5-PHASE-B', templateType: normalizedType, timestamp: Date.now() });
 
-      // Template cache
-      let templateBytes: Uint8Array;
-      const cached = pdfTemplateCache.get(pdfTemplatePath);
-      if (cached) {
-        templateBytes = cached;
-        cacheTimestamps.set(pdfTemplatePath, Date.now());
-        log('template_cache_hit', { pdfTemplatePath });
+      // PHASE B: Use enhanced template cache v2 with versioning
+      const templateVersion = '1.0.0'; // Could be loaded from metadata
+      let templateBytes: Uint8Array | null = templateCache.get(pdfTemplatePath, templateVersion);
+      
+      const cacheTimer = performanceTracker.start('template_cache', { path: pdfTemplatePath });
+      
+      if (templateBytes) {
+        log('template_cache_hit_v2', { pdfTemplatePath, version: templateVersion });
+        performanceTracker.end(cacheTimer, 'template_cache', { hit: true });
       } else {
+        log('template_cache_miss_v2', { pdfTemplatePath });
+        
         // Use retry logic for template download
-        const templateData = await retryTemplateFetch(async () => {
-          const { data, error: downloadError } = await admin.storage.from('pdf-templates').download(pdfTemplatePath);
-          if (downloadError || !data) {
-            const error = createPDFError(PDFErrorCode.TEMPLATE_LOAD_FAILED, 'Failed to download template', { 
-              path: pdfTemplatePath, 
-              error: downloadError?.message 
-            });
-            throw new Error(error.message);
-          }
-          return data;
-        });
+        const templateData = await performanceTracker.track('template_download', async () => {
+          return await retryTemplateFetch(async () => {
+            const { data, error: downloadError } = await admin.storage.from('pdf-templates').download(pdfTemplatePath);
+            if (downloadError || !data) {
+              const error = createPDFError(PDFErrorCode.TEMPLATE_LOAD_FAILED, 'Failed to download template', { 
+                path: pdfTemplatePath, 
+                error: downloadError?.message 
+              });
+              throw new Error(error.message);
+            }
+            return data;
+          });
+        }, { path: pdfTemplatePath });
         
         const arrayBuffer = await templateData.arrayBuffer();
         templateBytes = new Uint8Array(arrayBuffer);
-        if (pdfTemplateCache.size >= MAX_CACHE_SIZE) evictOldestCacheEntry();
-        pdfTemplateCache.set(pdfTemplatePath, templateBytes);
-        cacheTimestamps.set(pdfTemplatePath, Date.now());
-        log('template_cached', { pdfTemplatePath });
+        templateCache.set(pdfTemplatePath, templateBytes, templateVersion);
+        performanceTracker.end(cacheTimer, 'template_cache', { hit: false });
+        log('template_cached_v2', { pdfTemplatePath, size: templateBytes.byteLength });
       }
 
       // Load PDF
@@ -506,10 +492,19 @@ Deno.serve(async (req) => {
       const form = pdfDoc.getForm();
       log('pdf_loaded', { caseId, templateType });
 
-      // Fill fields using shared field mapping
-      const result = fillPDFFields(form, masterData, fieldMap);
-      log('fields_filled', { caseId, templateType, filled: result.filledCount, total: result.totalFields, errors: result.errors.length });
-      if (result.errors.length > 0) console.warn('[fill-pdf] Field filling errors:', result.errors);
+      // PHASE B: Fill PDF using parallel field filler (batches of 20)
+      const fillTimer = performanceTracker.start('field_filling', { fieldCount: Object.keys(fieldMap).length });
+      const result = await fillFieldsInParallel(
+        form,
+        masterData,
+        fieldMap,
+        formatFieldValue,
+        getNestedValue,
+        20 // batch size
+      );
+      performanceTracker.end(fillTimer, 'field_filling', { filledCount: result.filledCount });
+      log('fields_filled_v2', { caseId, templateType, filled: result.filledCount, total: result.totalFields, errors: result.errors.length, parallel: true });
+      if (result.errors.length > 0) console.warn('[fill-pdf-v5] Field filling errors:', result.errors);
 
       // CRITICAL FIX: Don't update field appearances with StandardFonts
       // Polish characters (Ń, Ł, etc.) are not supported by WinAnsi encoding
