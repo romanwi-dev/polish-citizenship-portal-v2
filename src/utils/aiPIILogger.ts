@@ -2,6 +2,40 @@ import { supabase } from "@/integrations/supabase/client";
 import type { User } from "@supabase/supabase-js";
 
 /**
+ * PRODUCTION-CRITICAL: Out-of-band alerting for system failures
+ * This is the final fallback when Supabase is completely unavailable
+ */
+async function triggerOutOfBandAlert(alertType: string, data: any): Promise<void> {
+  try {
+    // PRODUCTION FIX: Use a separate, highly resilient monitoring webhook
+    // This should be a third-party service like PagerDuty, Sentry, or a dedicated monitoring endpoint
+    const monitoringEndpoint = import.meta.env.VITE_MONITORING_WEBHOOK_URL;
+    
+    if (!monitoringEndpoint) {
+      console.error('[Out-of-Band Alert] No monitoring endpoint configured');
+      return;
+    }
+    
+    await fetch(monitoringEndpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        alert_type: alertType,
+        severity: 'critical',
+        timestamp: new Date().toISOString(),
+        data
+      })
+    });
+    
+    console.log('[Out-of-Band Alert] Successfully sent to external monitoring');
+  } catch (error) {
+    console.error('[Out-of-Band Alert] Failed to send external alert:', error);
+    // This is the absolute last line of defense - nothing more can be done
+  }
+}
+
+
+/**
  * PRODUCTION-READY: PII logging with direct user context passing
  * Eliminates race conditions and network latency from auth checks
  */
@@ -73,10 +107,12 @@ function classifyPIIError(error: any): PIILogErrorType {
   return PIILogErrorType.UNKNOWN_ERROR;
 }
 
-// Rate limiting state for transient error alerts
+// PRODUCTION-CRITICAL FIX: Rate limiting for BOTH transient AND persistent errors
 const transientErrorTracker = new Map<string, { count: number; lastAlert: number }>();
+const persistentErrorTracker = new Map<string, { count: number; lastAlert: number; escalated: boolean }>();
 const ALERT_RATE_LIMIT_MS = 60000; // 1 minute between alerts for same error type
 const MAX_ALERTS_PER_MINUTE = 3;
+const MAX_PERSISTENT_ALERTS = 5; // After 5 persistent errors, escalate and pause
 
 /**
  * Send internal alert for critical PII logging failures
@@ -87,6 +123,39 @@ async function alertPIILoggingFailure(
   error: any,
   params: LogPIIProcessingParams
 ): Promise<void> {
+  // PRODUCTION-CRITICAL FIX: Rate limit PERSISTENT errors to prevent log overload
+  if (errorType === PIILogErrorType.DATABASE_ERROR_PERSISTENT) {
+    const key = `${errorType}-${params.caseId}`;
+    const now = Date.now();
+    const tracker = persistentErrorTracker.get(key);
+    
+    if (tracker) {
+      if (tracker.escalated) {
+        // Already escalated - stop further alerts until manual intervention
+        console.error(`[PII Logger] ESCALATED: Persistent error - manual intervention required`);
+        return;
+      }
+      
+      tracker.count++;
+      
+      if (tracker.count >= MAX_PERSISTENT_ALERTS) {
+        // Escalate and pause further alerts
+        tracker.escalated = true;
+        console.error(`[PII Logger] ESCALATING: ${MAX_PERSISTENT_ALERTS} persistent errors detected. Pausing alerts.`);
+        // PRODUCTION FIX: Trigger out-of-band alert (email/SMS)
+        await triggerOutOfBandAlert('persistent_pii_log_failure', {
+          errorType,
+          caseId: params.caseId,
+          errorCount: tracker.count,
+          errorMessage: error?.message
+        });
+        return;
+      }
+    } else {
+      persistentErrorTracker.set(key, { count: 1, lastAlert: now, escalated: false });
+    }
+  }
+  
   // Check rate limiting for transient errors
   if (errorType === PIILogErrorType.NETWORK_ERROR || errorType === PIILogErrorType.DATABASE_ERROR_TRANSIENT) {
     const key = `${errorType}-${params.caseId}`;
@@ -142,14 +211,27 @@ async function alertPIILoggingFailure(
       console.warn('[PII Logger] Alert logged to metrics (primary logging failed)');
       return; // Fallback success, exit
     } catch (metricsError) {
-      // Layer 3: Last resort - console error with structured data
-      console.error('[CRITICAL] PII logging failure alert COMPLETELY FAILED:', {
-        primaryError: alertError,
-        fallbackError: metricsError,
-        errorType,
-        caseId: params.caseId,
-        operationType: params.operationType
-      });
+      // PRODUCTION-CRITICAL FIX: Out-of-band alerting when all Supabase layers fail
+      console.error('[CRITICAL] All Supabase alerting failed - triggering out-of-band alert');
+      
+      try {
+        await triggerOutOfBandAlert('supabase_complete_failure', {
+          errorType,
+          caseId: params.caseId,
+          primaryError: alertError,
+          fallbackError: metricsError
+        });
+      } catch (outOfBandError) {
+        // Absolute last resort - console with structured data
+        console.error('[ABSOLUTE CRITICAL] ALL ALERTING MECHANISMS FAILED:', {
+          primaryError: alertError,
+          fallbackError: metricsError,
+          outOfBandError,
+          errorType,
+          caseId: params.caseId,
+          operationType: params.operationType
+        });
+      }
     }
   }
 }

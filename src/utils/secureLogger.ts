@@ -93,24 +93,24 @@ function sanitizeStringValue(value: string): string {
  * even if environment detection fails or is misconfigured.
  */
 function sanitizeData(data: any): any {
-  // CRITICAL: Always sanitize - never skip based on environment
-  // This prevents production misconfigurations from leaking PII
+  // PRODUCTION-CRITICAL FIX: Always sanitize - defense-in-depth
+  // Even if environment detection fails, PII will be redacted
   
   if (!data) return data;
   
-  // Handle primitive types
+  // Handle primitive types  
   if (typeof data === 'string') {
     return sanitizeStringValue(data);
   }
   
   if (typeof data !== 'object') return data;
   
-  // Handle arrays
+  // Handle arrays - PRODUCTION FIX: Recursively sanitize all elements
   if (Array.isArray(data)) {
     return data.map(item => sanitizeData(item));
   }
   
-  // Handle objects
+  // PRODUCTION-CRITICAL FIX: Recursively sanitize ALL string values in nested objects
   const sanitized: Record<string, any> = {};
   for (const [key, value] of Object.entries(data)) {
     const lowerKey = key.toLowerCase();
@@ -119,10 +119,10 @@ function sanitizeData(data: any): any {
     if (SENSITIVE_KEYS.some(sensitive => lowerKey.includes(sensitive))) {
       sanitized[key] = '[REDACTED]';
     } else if (typeof value === 'string') {
-      // Apply regex-based sanitization to string values
+      // CRITICAL: Apply regex-based sanitization to ALL string values
       sanitized[key] = sanitizeStringValue(value);
-    } else if (typeof value === 'object') {
-      // Recursively sanitize nested objects
+    } else if (value && typeof value === 'object') {
+      // CRITICAL: Recursively sanitize nested objects AND arrays
       sanitized[key] = sanitizeData(value);
     } else {
       sanitized[key] = value;
@@ -151,20 +151,28 @@ async function getSupabaseClient() {
     return supabaseClientPromise;
   }
   
-  // PHASE 2 FIX: Set bootstrap flag to prevent recursive logging
+  // PRODUCTION-CRITICAL FIX: Set bootstrap flag AND add timeout
   isBootstrapping = true;
+  const bootstrapTimeout = setTimeout(() => {
+    console.error('[SecureLogger] Supabase client bootstrap timeout');
+    isBootstrapping = false;
+    supabaseClientPromise = null;
+  }, 5000); // 5 second timeout
   
   // Import and cache the client
   supabaseClientPromise = import('@/integrations/supabase/client')
     .then(module => {
+      clearTimeout(bootstrapTimeout);
       supabaseClientCache = module.supabase;
       supabaseClientPromise = null;
       isBootstrapping = false; // Bootstrap complete
       return supabaseClientCache;
     })
     .catch(error => {
+      clearTimeout(bootstrapTimeout);
       supabaseClientPromise = null;
-      isBootstrapping = false; // Bootstrap failed
+      isBootstrapping = false; // Bootstrap failed - CRITICAL: Reset flag
+      console.error('[SecureLogger] Failed to load Supabase client:', error);
       throw error;
     });
   
@@ -177,7 +185,8 @@ async function getSupabaseClient() {
  */
 class SecureLogger {
   private isDev = import.meta.env.DEV;
-  private errorTrackingEnabled = !this.isDev; // Enable in production
+  // PRODUCTION-CRITICAL FIX: Error tracking enabled via explicit env var, not DEV flag
+  private errorTrackingEnabled = import.meta.env.VITE_ENABLE_ERROR_TRACKING !== 'false'; // Defaults to enabled
 
   /**
    * PRODUCTION FIX: Send error to production error tracking service

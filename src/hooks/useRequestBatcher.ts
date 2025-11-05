@@ -8,6 +8,7 @@ import { useCallback, useRef } from 'react';
 interface BatchConfig {
   batchSize: number;
   delayMs: number;
+  maxQueueSize?: number; // PRODUCTION FIX: Prevent unbounded queue growth
 }
 
 interface BatchRequest<T> {
@@ -17,10 +18,15 @@ interface BatchRequest<T> {
   reject: (error: Error) => void;
 }
 
-export function useRequestBatcher<T>(config: BatchConfig = { batchSize: 3, delayMs: 500 }) {
+export function useRequestBatcher<T>(config: BatchConfig = { 
+  batchSize: 3, 
+  delayMs: 500,
+  maxQueueSize: 100 // PRODUCTION FIX: Default max queue size to prevent memory exhaustion
+}) {
   const queueRef = useRef<BatchRequest<T>[]>([]);
   const activeRef = useRef<number>(0);
   const processingRef = useRef<boolean>(false);
+  const droppedCountRef = useRef<number>(0); // Track dropped requests
 
   const processQueue = useCallback(async () => {
     if (processingRef.current || queueRef.current.length === 0) {
@@ -60,10 +66,23 @@ export function useRequestBatcher<T>(config: BatchConfig = { batchSize: 3, delay
 
   const addRequest = useCallback((id: string, request: () => Promise<T>): Promise<T> => {
     return new Promise<T>((resolve, reject) => {
+      // PRODUCTION-CRITICAL FIX: Prevent unbounded queue growth (CWE-400)
+      const maxSize = config.maxQueueSize || 100;
+      
+      if (queueRef.current.length >= maxSize) {
+        droppedCountRef.current++;
+        console.warn(
+          `[Request Batcher] Queue at max capacity (${maxSize}). Rejecting request.`,
+          `Total dropped: ${droppedCountRef.current}`
+        );
+        reject(new Error(`Queue full (${maxSize}). Request rejected to prevent memory exhaustion.`));
+        return;
+      }
+      
       queueRef.current.push({ id, request, resolve, reject });
       processQueue();
     });
-  }, [processQueue]);
+  }, [processQueue, config.maxQueueSize]);
 
   const clearQueue = useCallback(() => {
     queueRef.current.forEach(item => {
@@ -74,11 +93,13 @@ export function useRequestBatcher<T>(config: BatchConfig = { batchSize: 3, delay
 
   const getQueueSize = useCallback(() => queueRef.current.length, []);
   const getActiveCount = useCallback(() => activeRef.current, []);
+  const getDroppedCount = useCallback(() => droppedCountRef.current, []); // PRODUCTION FIX: Monitor dropped requests
 
   return {
     addRequest,
     clearQueue,
     getQueueSize,
     getActiveCount,
+    getDroppedCount, // PRODUCTION FIX: Expose dropped count for monitoring
   };
 }
