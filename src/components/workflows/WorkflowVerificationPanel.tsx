@@ -230,9 +230,9 @@ export function WorkflowVerificationPanel() {
           });
         } else if (elapsed < 60 && newStages.length === 1) {
           newStages.push({
-            stage: "Sending to OpenAI GPT-5 Mini",
+            stage: "Sending to Lovable AI",
             progress: 20,
-            message: "Uploading files to AI for comprehensive analysis...",
+            message: "Uploading files to Gemini 2.5 Flash for comprehensive analysis...",
             timestamp: new Date().toISOString()
           });
         } else if (elapsed < 120 && newStages.length === 2) {
@@ -348,13 +348,13 @@ export function WorkflowVerificationPanel() {
         'Testing coverage and gaps'
       ];
 
-      console.log('🔍 Starting comprehensive OpenAI verification...');
+      console.log('🔍 Starting comprehensive AI verification...');
 
-      // Create a timeout promise (3.5 minutes - slightly longer than edge function)
+      // Create a timeout promise (3 minutes - slightly longer than edge function)
       const timeoutPromise = new Promise((_, reject) => {
         setTimeout(() => {
           reject(new Error('Verification timeout - analysis took too long. Try again or contact support if this persists.'));
-        }, 210000); // 3.5 minutes in ms
+        }, 180000); // 3 minutes in ms
       });
 
       // Race between the verification and the timeout
@@ -430,7 +430,7 @@ export function WorkflowVerificationPanel() {
           Comprehensive Workflow Verification
         </CardTitle>
         <CardDescription>
-          HARDENED analysis by OpenAI GPT-5: Security, Architecture, Performance, Reliability & UX
+          HARDENED analysis by Lovable AI (Gemini 2.5 Flash): Security, Architecture, Performance, Reliability & UX
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">

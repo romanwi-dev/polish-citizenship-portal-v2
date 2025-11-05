@@ -25,12 +25,12 @@ serve(async (req) => {
   try {
     const { files, focusAreas } = await req.json() as VerificationRequest;
     
-    console.log(`🔍 Starting OpenAI verification for ${files.length} files`);
+    console.log(`🔍 Starting AI verification for ${files.length} files`);
     console.log(`📋 Focus areas: ${focusAreas.join(', ')}`);
 
-    const openaiKey = Deno.env.get('OPENAI_API_KEY');
-    if (!openaiKey) {
-      throw new Error('OPENAI_API_KEY not configured');
+    const lovableApiKey = Deno.env.get('LOVABLE_API_KEY');
+    if (!lovableApiKey) {
+      throw new Error('LOVABLE_API_KEY not configured');
     }
 
     // Build comprehensive context for GPT-5
@@ -432,57 +432,65 @@ CRITICAL INSTRUCTIONS:
 
 Output COMPLETE JSON matching the schema. Include scores, ratings, and detailed findings for EVERY dimension.`;
 
-    console.log('📤 Sending request to OpenAI GPT-5...');
+    console.log('📤 Sending request to Lovable AI (Gemini 2.5 Flash)...');
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => {
-      console.error('⏱️ Analysis timeout - exceeding 3 minutes');
+      console.error('⏱️ Analysis timeout - exceeding 2.5 minutes');
       controller.abort();
-    }, 180000); // 3 minute timeout (edge functions have 150s limit, be safe)
+    }, 150000); // 2.5 minute timeout (faster than OpenAI)
 
     try {
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${openaiKey}`,
+          'Authorization': `Bearer ${lovableApiKey}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: 'gpt-5-2025-08-07', // Use full GPT-5 for reliability
+          model: 'google/gemini-2.5-flash',
           messages: [
             { role: 'system', content: systemPrompt },
             { role: 'user', content: userPrompt }
           ],
-          max_completion_tokens: 12000, // Reduced for faster response
+          max_tokens: 8000,
+          temperature: 0.3,
           response_format: { type: "json_object" }
         }),
         signal: controller.signal,
       });
 
       clearTimeout(timeoutId);
-      console.log(`✅ OpenAI responded with status: ${response.status}`);
-
-      clearTimeout(timeoutId);
+      console.log(`✅ Lovable AI responded with status: ${response.status}`);
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error(`❌ OpenAI API error: ${response.status}`);
+        console.error(`❌ Lovable AI error: ${response.status}`);
         console.error(`Error details: ${errorText.substring(0, 500)}`);
         
         if (response.status === 429) {
           return new Response(
             JSON.stringify({ 
               success: false, 
-              error: 'OpenAI rate limit exceeded. Please wait a moment and try again.' 
+              error: 'Rate limit exceeded. Please wait a moment and try again.' 
             }),
             { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+        if (response.status === 402) {
+          return new Response(
+            JSON.stringify({ 
+              success: false, 
+              error: 'Payment required. Please add credits to your Lovable AI workspace.' 
+            }),
+            { status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
           );
         }
         if (response.status === 401 || response.status === 403) {
           return new Response(
             JSON.stringify({ 
               success: false, 
-              error: 'OpenAI API authentication failed. Check your API key configuration.' 
+              error: 'Lovable AI authentication failed. Please contact support.' 
             }),
             { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
           );
@@ -491,17 +499,17 @@ Output COMPLETE JSON matching the schema. Include scores, ratings, and detailed 
           return new Response(
             JSON.stringify({ 
               success: false, 
-              error: `OpenAI request error: ${errorText}` 
+              error: `Lovable AI request error: ${errorText}` 
             }),
             { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
           );
         }
         
-        throw new Error(`OpenAI API error ${response.status}: ${errorText.substring(0, 200)}`);
+        throw new Error(`Lovable AI error ${response.status}: ${errorText.substring(0, 200)}`);
       }
 
       const aiResponse = await response.json();
-      console.log('📥 Received response from OpenAI');
+      console.log('📥 Received response from Lovable AI');
       console.log(`Response has ${aiResponse.choices?.length || 0} choices`);
       console.log(`Usage: ${JSON.stringify(aiResponse.usage || {})}`);
       
@@ -510,7 +518,7 @@ Output COMPLETE JSON matching the schema. Include scores, ratings, and detailed 
         return new Response(
           JSON.stringify({ 
             success: false, 
-            error: 'Invalid response from OpenAI - no content returned. The model may have failed to generate a response.' 
+            error: 'Invalid response from Lovable AI - no content returned. The model may have failed to generate a response.' 
           }),
           { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
@@ -538,7 +546,7 @@ Output COMPLETE JSON matching the schema. Include scores, ratings, and detailed 
             return new Response(
               JSON.stringify({ 
                 success: false, 
-                error: 'OpenAI returned malformed JSON. Try again or reduce the number of files.',
+                error: 'Lovable AI returned malformed JSON. Try again or reduce the number of files.',
                 rawPreview: rawContent.substring(0, 200)
               }),
               { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -548,7 +556,7 @@ Output COMPLETE JSON matching the schema. Include scores, ratings, and detailed 
           return new Response(
             JSON.stringify({ 
               success: false, 
-              error: `Failed to parse OpenAI response: ${parseError instanceof Error ? parseError.message : 'Unknown error'}`,
+              error: `Failed to parse Lovable AI response: ${parseError instanceof Error ? parseError.message : 'Unknown error'}`,
               rawPreview: rawContent.substring(0, 200)
             }),
             { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -563,7 +571,7 @@ Output COMPLETE JSON matching the schema. Include scores, ratings, and detailed 
         return new Response(
           JSON.stringify({ 
             success: false, 
-            error: 'OpenAI returned incomplete verification structure. The analysis may have been cut off.' 
+            error: 'Lovable AI returned incomplete verification structure. The analysis may have been cut off.' 
           }),
           { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
@@ -581,7 +589,7 @@ Output COMPLETE JSON matching the schema. Include scores, ratings, and detailed 
             filesAnalyzed: files.length,
             focusAreas,
             timestamp: new Date().toISOString(),
-            model: 'gpt-5-2025-08-07'
+            model: 'google/gemini-2.5-flash'
           }
         }),
         { 
@@ -592,7 +600,7 @@ Output COMPLETE JSON matching the schema. Include scores, ratings, and detailed 
     } catch (fetchError: unknown) {
       clearTimeout(timeoutId);
       if (fetchError instanceof Error && fetchError.name === 'AbortError') {
-        console.error('⏱️ Analysis timeout - exceeded 3 minute limit');
+        console.error('⏱️ Analysis timeout - exceeded 2.5 minute limit');
         return new Response(
           JSON.stringify({ 
             success: false, 
