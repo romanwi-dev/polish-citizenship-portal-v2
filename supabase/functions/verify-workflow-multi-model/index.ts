@@ -404,15 +404,39 @@ Find ALL CRITICAL issues that would cause failures in production. Be specific, a
 
     const results = await Promise.all(verificationPromises);
 
+    // CRITICAL: Verify ALL 3 models completed
+    if (results.length !== 3) {
+      throw new Error(`CRITICAL: Expected 3 model results, got ${results.length}`);
+    }
+
     // Aggregate results
     const successful = results.filter(r => r.success);
     const failed = results.filter(r => !r.success);
 
-    console.log(`📊 Multi-model verification complete: ${successful.length} successful, ${failed.length} failed`);
+    console.log(`📊 Multi-model verification complete: ${successful.length}/3 successful, ${failed.length}/3 failed`);
+    console.log(`🎯 Model scores:`, results.map(r => 
+      `${r.model}: ${r.success ? (r.verification?.overallAssessment?.overallScore || 0) + '/100' : 'FAILED'}`
+    ).join(', '));
+
+    // A→B→EX Protocol enforcement: ALL 3 models must succeed with 100/100
+    const allScoresAt100 = successful.length === 3 && successful.every(r => 
+      r.verification?.overallAssessment?.overallScore === 100
+    );
+
+    if (!allScoresAt100) {
+      console.log(`❌ A→B→EX VERIFICATION FAILED - Requirement: ALL 3 models at 100/100`);
+      console.log(`   Results: ${results.map(r => 
+        `${r.model}: ${r.success ? r.verification?.overallAssessment?.overallScore : 'ERROR'}`
+      ).join(', ')}`);
+    } else {
+      console.log(`✅ A→B→EX VERIFICATION PASSED - All 3 models scored 100/100`);
+    }
 
     return new Response(
       JSON.stringify({
-        success: successful.length > 0,
+        success: allScoresAt100,  // STRICT: Only true if ALL 3 scored 100/100
+        allModelsCompleted: results.length === 3,
+        passedABEXProtocol: allScoresAt100,
         results,
         summary: {
           totalModels: models.length,
@@ -421,7 +445,14 @@ Find ALL CRITICAL issues that would cause failures in production. Be specific, a
           averageScore: successful.length > 0 
             ? Math.round(successful.reduce((sum, r) => sum + (r.verification?.overallAssessment?.overallScore || 0), 0) / successful.length)
             : 0,
-          consensus: successful.length >= 2 ? 'HIGH' : successful.length === 1 ? 'MEDIUM' : 'LOW',
+          minimumScore: successful.length > 0
+            ? Math.min(...successful.map(r => r.verification?.overallAssessment?.overallScore || 0))
+            : 0,
+          maximumScore: successful.length > 0
+            ? Math.max(...successful.map(r => r.verification?.overallAssessment?.overallScore || 0))
+            : 0,
+          consensus: successful.length === 3 ? 'ALL_AGREE' : successful.length >= 2 ? 'MAJORITY' : successful.length === 1 ? 'LOW' : 'NONE',
+          protocolStatus: allScoresAt100 ? 'PASS - Ready for Phase EX' : 'FAIL - Return to Phase A',
           timestamp: new Date().toISOString()
         }
       }),
