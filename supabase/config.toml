@@ -157,5 +157,5 @@ verify_jwt = false
 verify_jwt = true
 
 [functions.scan-and-queue-ocr]
-verify_jwt = true
+verify_jwt = false
 
