@@ -16,9 +16,14 @@ import {
   PlayCircle,
   XCircle,
   Loader2,
-  FolderSync
+  FolderSync,
+  Search,
+  Filter,
+  Sparkles
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
@@ -49,6 +54,7 @@ import { useQualityMetrics } from "@/hooks/useQualityMetrics";
 import { useAIConfidenceData } from "@/hooks/useAIConfidenceData";
 import { useStagePerformance } from "@/hooks/useStagePerformance";
 import { usePreFlightValidation } from "@/hooks/usePreFlightValidation";
+import { useDocumentFilters } from "@/hooks/useDocumentFilters";
 
 interface AIWorkflowStep {
   number: string;
@@ -389,6 +395,26 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
     },
     enabled: !!caseId
   });
+
+  // Document filtering and search
+  const {
+    searchQuery,
+    setSearchQuery,
+    documentTypeFilter,
+    setDocumentTypeFilter,
+    personTypeFilter,
+    setPersonTypeFilter,
+    ocrStatusFilter,
+    setOcrStatusFilter,
+    documentTypes,
+    personTypes,
+    filteredDocuments,
+    totalCount,
+    filteredCount
+  } = useDocumentFilters(documents);
+
+  // State for AI recognition
+  const [recognizingDocId, setRecognizingDocId] = useState<string | null>(null);
 
   // Initialize workflow and realtime subscriptions
   useEffect(() => {
@@ -1385,12 +1411,93 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
 
   const selectAllDocuments = () => {
     if (workflowRun) return;
-    setSelectedDocuments(new Set(documents?.map(d => d.id) || []));
+    setSelectedDocuments(new Set(filteredDocuments?.map(d => d.id) || []));
   };
 
   const deselectAllDocuments = () => {
     if (workflowRun) return;
     setSelectedDocuments(new Set());
+  };
+
+  // AI Document Recognition
+  const handleRecognizeDocument = async (documentId: string) => {
+    try {
+      setRecognizingDocId(documentId);
+      
+      const { data, error } = await supabase.functions.invoke('ai-recognize-document', {
+        body: { documentId, caseId }
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Document Recognized",
+        description: `Type: ${data.recognition.documentType}, Person: ${data.recognition.personType}`,
+      });
+
+      // Refresh documents to show updated classification
+      refetchDocs();
+    } catch (error: any) {
+      console.error('Recognition error:', error);
+      toast({
+        title: "Recognition Failed",
+        description: error.message,
+        variant: "destructive"
+      });
+    } finally {
+      setRecognizingDocId(null);
+    }
+  };
+
+  // Batch recognize all documents
+  const handleBatchRecognize = async () => {
+    try {
+      setIsUploading(true);
+      
+      const docsToRecognize = filteredDocuments.filter(d => 
+        d.ocr_status === 'completed' && (!d.document_type || !d.person_type)
+      );
+
+      if (docsToRecognize.length === 0) {
+        toast({
+          title: "No Documents to Recognize",
+          description: "All documents are already classified or pending OCR.",
+        });
+        return;
+      }
+
+      toast({
+        title: "Batch Recognition Started",
+        description: `Processing ${docsToRecognize.length} documents...`,
+      });
+
+      let successCount = 0;
+      for (const doc of docsToRecognize) {
+        try {
+          const { error } = await supabase.functions.invoke('ai-recognize-document', {
+            body: { documentId: doc.id, caseId }
+          });
+          if (!error) successCount++;
+        } catch (err) {
+          console.error(`Failed to recognize ${doc.name}:`, err);
+        }
+      }
+
+      toast({
+        title: "Batch Recognition Complete",
+        description: `${successCount}/${docsToRecognize.length} documents recognized successfully.`,
+      });
+
+      refetchDocs();
+    } catch (error: any) {
+      toast({
+        title: "Batch Recognition Failed",
+        description: error.message,
+        variant: "destructive"
+      });
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const overallProgress = Math.round(
@@ -1655,6 +1762,85 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
         >
           <h3 className="text-2xl font-heading font-bold mb-4">Dropbox Documents</h3>
           
+          {/* Search and Filter Controls */}
+          <div className="mb-6 space-y-4">
+            <div className="flex gap-3 items-center flex-wrap">
+              {/* Search */}
+              <div className="relative flex-1 min-w-[200px]">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search documents by name or OCR text..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-9"
+                />
+              </div>
+
+              {/* Document Type Filter */}
+              <Select value={documentTypeFilter} onValueChange={setDocumentTypeFilter}>
+                <SelectTrigger className="w-[180px]">
+                  <Filter className="h-4 w-4 mr-2" />
+                  <SelectValue placeholder="Document Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Types</SelectItem>
+                  {documentTypes.map(type => (
+                    <SelectItem key={type} value={type}>{type}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              {/* Person Type Filter */}
+              <Select value={personTypeFilter} onValueChange={setPersonTypeFilter}>
+                <SelectTrigger className="w-[150px]">
+                  <SelectValue placeholder="Person" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Persons</SelectItem>
+                  {personTypes.map(type => (
+                    <SelectItem key={type} value={type}>{type}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              {/* OCR Status Filter */}
+              <Select value={ocrStatusFilter} onValueChange={setOcrStatusFilter}>
+                <SelectTrigger className="w-[150px]">
+                  <SelectValue placeholder="OCR Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="queued">Queued</SelectItem>
+                  <SelectItem value="processing">Processing</SelectItem>
+                  <SelectItem value="completed">Completed</SelectItem>
+                  <SelectItem value="failed">Failed</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Filter Results Summary */}
+            {(searchQuery || documentTypeFilter !== 'all' || personTypeFilter !== 'all' || ocrStatusFilter !== 'all') && (
+              <div className="flex items-center justify-between text-sm text-muted-foreground">
+                <span>
+                  Showing {filteredCount} of {totalCount} documents
+                </span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    setSearchQuery('');
+                    setDocumentTypeFilter('all');
+                    setPersonTypeFilter('all');
+                    setOcrStatusFilter('all');
+                  }}
+                >
+                  Clear Filters
+                </Button>
+              </div>
+            )}
+          </div>
+
+          {/* Action Buttons */}
           <div className="mb-6 flex gap-3 items-center flex-wrap">
             <Button
               onClick={async () => {
@@ -1725,8 +1911,18 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
               <Upload className="h-4 w-4 mr-2" />
               {isUploading ? 'Syncing...' : 'Old Sync Method'}
             </Button>
+
+            <Button
+              onClick={handleBatchRecognize}
+              disabled={isUploading || !filteredDocuments || filteredDocuments.length === 0 || !!workflowRun}
+              variant="secondary"
+              className="w-full md:w-auto"
+            >
+              <Sparkles className="h-4 w-4 mr-2" />
+              {isUploading ? 'Recognizing...' : 'AI Recognize All'}
+            </Button>
             
-            {!workflowRun && documents && documents.length > 0 && (
+            {!workflowRun && filteredDocuments && filteredDocuments.length > 0 && (
               <>
                 <Button size="sm" variant="outline" onClick={selectAllDocuments}>
                   Select All
@@ -1735,7 +1931,7 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
                   Deselect All
                 </Button>
                 <span className="text-sm text-muted-foreground">
-                  {selectedDocuments.size} of {documents.length} selected
+                  {selectedDocuments.size} of {filteredDocuments.length} selected
                 </span>
               </>
             )}
@@ -1747,10 +1943,10 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
 
           {docsLoading ? (
             <p>Loading documents...</p>
-          ) : documents && documents.length > 0 ? (
+          ) : filteredDocuments && filteredDocuments.length > 0 ? (
             <div className="space-y-2">
-              {documents.map((doc) => (
-                <div key={doc.id} className="flex items-center gap-3 p-3 border rounded">
+              {filteredDocuments.map((doc) => (
+                <div key={doc.id} className="flex items-center gap-3 p-3 border rounded hover:bg-accent/5 transition-colors">
                   {!workflowRun && (
                     <Checkbox
                       checked={selectedDocuments.has(doc.id)}
@@ -1759,7 +1955,7 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
                   )}
                   <div className="flex-1">
                     <p className="font-medium">{doc.name}</p>
-                    <div className="flex gap-2 mt-1">
+                    <div className="flex gap-2 mt-1 flex-wrap">
                       {doc.ocr_status === 'queued' && (
                         <Badge variant="outline" className="gap-1 bg-blue-50 text-blue-700 border-blue-200">
                           <Loader2 className="h-3 w-3 animate-spin" />
@@ -1787,11 +1983,26 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
                       {!doc.ocr_status && (
                         <Badge variant="outline">Pending</Badge>
                       )}
-                      {doc.document_type && <Badge>{doc.document_type}</Badge>}
+                      {doc.document_type && <Badge className="bg-primary/10 text-primary border-primary/20">{doc.document_type}</Badge>}
                       {doc.person_type && <Badge variant="secondary">{doc.person_type}</Badge>}
                     </div>
                   </div>
                   <div className="flex gap-2">
+                    {doc.ocr_status === 'completed' && (!doc.document_type || !doc.person_type) && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleRecognizeDocument(doc.id)}
+                        disabled={recognizingDocId === doc.id}
+                        title="AI recognize document type and person"
+                      >
+                        {recognizingDocId === doc.id ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <Sparkles className="h-4 w-4" />
+                        )}
+                      </Button>
+                    )}
                     <Button
                       size="sm"
                       variant="ghost"
@@ -1804,6 +2015,7 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
                       size="sm"
                       variant="outline"
                       onClick={() => handleDownload(doc.dropbox_path, doc.name)}
+                      title="Download document"
                     >
                       <Download className="h-4 w-4" />
                     </Button>
@@ -1812,6 +2024,7 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
                       variant="destructive"
                       onClick={() => handleDelete(doc.id)}
                       disabled={!!workflowRun}
+                      title="Delete document"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -1820,7 +2033,11 @@ export function AIDocumentWorkflow({ caseId }: AIDocumentWorkflowProps) {
               ))}
             </div>
           ) : (
-            <p className="text-muted-foreground">No documents found. Sync from Dropbox to get started.</p>
+            <p className="text-muted-foreground">
+              {searchQuery || documentTypeFilter !== 'all' || personTypeFilter !== 'all' || ocrStatusFilter !== 'all'
+                ? 'No documents match your filters. Try adjusting your search criteria.'
+                : 'No documents found. Sync from Dropbox to get started.'}
+            </p>
           )}
         </motion.div>
 

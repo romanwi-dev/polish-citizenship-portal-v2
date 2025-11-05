@@ -162,3 +162,6 @@ verify_jwt = false
 [functions.download-dropbox-file]
 verify_jwt = true
 
+[functions.ai-recognize-document]
+verify_jwt = true
+
