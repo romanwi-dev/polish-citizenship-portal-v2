@@ -108,15 +108,57 @@ async function alertPIILoggingFailure(
  * 
  * CRITICAL: This function MUST be called BEFORE any PII data is sent to AI
  */
+/**
+ * PRODUCTION-CRITICAL FIX: Validate UUID format to prevent injection attacks
+ */
+function isValidUUID(uuid: string): boolean {
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  return uuidRegex.test(uuid);
+}
+
 export async function logPIIProcessing(params: LogPIIProcessingParams): Promise<void> {
   try {
     // PRODUCTION FIX: User ID passed directly - no auth check needed
     // This eliminates race conditions, network latency, and authentication issues
     
-    // Validate required parameters
+    // CRITICAL FIX: Validate required parameters AND format
     if (!params.userId || !params.caseId || !params.operationType || !params.piiFieldsSent?.length) {
       const validationError = new Error('Missing required PII logging parameters');
       console.error('[PII Logger] Validation failed:', params);
+      await alertPIILoggingFailure(
+        PIILogErrorType.VALIDATION_ERROR,
+        validationError,
+        params
+      );
+      throw validationError;
+    }
+    
+    // PRODUCTION-CRITICAL: Validate UUID formats to prevent injection
+    if (!isValidUUID(params.userId)) {
+      const validationError = new Error('Invalid userId format: Must be valid UUID');
+      console.error('[PII Logger] Invalid userId format:', params.userId);
+      await alertPIILoggingFailure(
+        PIILogErrorType.VALIDATION_ERROR,
+        validationError,
+        params
+      );
+      throw validationError;
+    }
+    
+    if (!isValidUUID(params.caseId)) {
+      const validationError = new Error('Invalid caseId format: Must be valid UUID');
+      console.error('[PII Logger] Invalid caseId format:', params.caseId);
+      await alertPIILoggingFailure(
+        PIILogErrorType.VALIDATION_ERROR,
+        validationError,
+        params
+      );
+      throw validationError;
+    }
+    
+    if (params.documentId && !isValidUUID(params.documentId)) {
+      const validationError = new Error('Invalid documentId format: Must be valid UUID');
+      console.error('[PII Logger] Invalid documentId format:', params.documentId);
       await alertPIILoggingFailure(
         PIILogErrorType.VALIDATION_ERROR,
         validationError,
@@ -191,7 +233,7 @@ export async function logPIIProcessing(params: LogPIIProcessingParams): Promise<
  */
 export async function checkAIConsent(caseId: string, userId: string): Promise<boolean> {
   try {
-    // PRODUCTION FIX: User ID passed directly - no auth check needed
+    // PRODUCTION-CRITICAL FIX: Validate user ID format
     if (!userId) {
       console.error('[AI Consent] User ID required for consent check');
       
@@ -204,6 +246,32 @@ export async function checkAIConsent(caseId: string, userId: string): Promise<bo
         p_success: false
       });
       
+      return false;
+    }
+    
+    // PRODUCTION-CRITICAL: Validate UUID format to prevent injection
+    if (!isValidUUID(userId)) {
+      console.error('[AI Consent] Invalid userId format:', userId);
+      await supabase.rpc('log_security_event', {
+        p_event_type: 'consent_check_invalid_user',
+        p_severity: 'critical',
+        p_action: 'check_ai_consent',
+        p_details: { case_id: caseId, error: 'invalid_user_id_format' },
+        p_success: false
+      });
+      return false;
+    }
+    
+    if (!isValidUUID(caseId)) {
+      console.error('[AI Consent] Invalid caseId format:', caseId);
+      await supabase.rpc('log_security_event', {
+        p_event_type: 'consent_check_invalid_case',
+        p_severity: 'critical',
+        p_action: 'check_ai_consent',
+        p_user_id: userId,
+        p_details: { case_id: caseId, error: 'invalid_case_id_format' },
+        p_success: false
+      });
       return false;
     }
     

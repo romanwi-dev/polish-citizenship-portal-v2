@@ -65,10 +65,45 @@ const SECURITY_PATTERNS = {
     }
   ],
 
+  /**
+   * PRODUCTION-CRITICAL FIX: Comprehensive secret detection
+   * Catches multiple secret patterns including const assignments
+   */
   secrets: [
     {
+      // Pattern 1: Traditional key:value or key=value with keywords
       pattern: /(?:api[_-]?key|apikey|secret[_-]?key|password|passwd|pwd|token|auth[_-]?token|access[_-]?token|private[_-]?key)\s*[:=]\s*['\"`][\w\-_]{16,}['\"`]/gi,
       message: 'Hardcoded secret detected: API key or password in source code',
+      cwe: 'CWE-798'
+    },
+    {
+      // Pattern 2: const/let/var assignments with suspicious keywords
+      pattern: /(?:const|let|var)\s+(?:api[_-]?key|apikey|secret|password|token|auth[_-]?token|access[_-]?token|private[_-]?key)\s*=\s*['\"`][\w\-_]{16,}['\"`]/gi,
+      message: 'Hardcoded secret in variable: API key or token assigned to constant',
+      cwe: 'CWE-798'
+    },
+    {
+      // Pattern 3: Suspicious long string assignments (potential unkeyed secrets)
+      pattern: /(?:const|let|var)\s+\w*(?:Key|Token|Secret|Password|Auth)\w*\s*=\s*['\"`][A-Za-z0-9\-_]{32,}['\"`]/gi,
+      message: 'Potential hardcoded secret: Long alphanumeric string in variable with sensitive name',
+      cwe: 'CWE-798'
+    },
+    {
+      // Pattern 4: Bearer tokens and Authorization headers
+      pattern: /(?:Authorization|Bearer)\s*[:=]\s*['\"`](?:Bearer\s+)?[\w\-_.]{20,}['\"`]/gi,
+      message: 'Hardcoded authorization token or Bearer token detected',
+      cwe: 'CWE-798'
+    },
+    {
+      // Pattern 5: AWS/Cloud provider access keys
+      pattern: /(?:AKIA|ASIA)[0-9A-Z]{16}/g,
+      message: 'Hardcoded AWS access key detected',
+      cwe: 'CWE-798'
+    },
+    {
+      // Pattern 6: Generic base64-like secrets (common in tokens)
+      pattern: /['\"`][A-Za-z0-9+/]{40,}={0,2}['\"`]/g,
+      message: 'Potential base64-encoded secret detected',
       cwe: 'CWE-798'
     }
   ],

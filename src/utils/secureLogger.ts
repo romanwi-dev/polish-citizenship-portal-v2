@@ -86,10 +86,16 @@ function sanitizeStringValue(value: string): string {
 }
 
 /**
- * PHASE 2 FIX: Enhanced sanitization with regex-based PII detection
- * Sanitizes object by removing sensitive keys AND detecting PII patterns
+ * PRODUCTION-CRITICAL FIX: Always-on PII sanitization
+ * SECURITY: Runs regardless of environment flags to prevent misconfiguration risks
+ * 
+ * This function provides defense-in-depth by ensuring PII is NEVER logged,
+ * even if environment detection fails or is misconfigured.
  */
 function sanitizeData(data: any): any {
+  // CRITICAL: Always sanitize - never skip based on environment
+  // This prevents production misconfigurations from leaking PII
+  
   if (!data) return data;
   
   // Handle primitive types
@@ -219,38 +225,45 @@ class SecureLogger {
   }
 
   log(message: string, data?: any, options?: LogOptions) {
+    // PRODUCTION-CRITICAL: Always sanitize, even if environment check fails
+    const logData = options?.sanitize !== false && data ? sanitizeData(data) : data;
+    
     if (this.isDev) {
-      const logData = options?.sanitize !== false && data ? sanitizeData(data) : data;
       console.log(`[LOG] ${message}`, logData || '');
     }
   }
 
   info(message: string, data?: any, options?: LogOptions) {
+    // PRODUCTION-CRITICAL: Always sanitize, even if environment check fails
+    const logData = options?.sanitize !== false && data ? sanitizeData(data) : data;
+    
     if (this.isDev) {
-      const logData = options?.sanitize !== false && data ? sanitizeData(data) : data;
       console.info(`[INFO] ${message}`, logData || '');
     }
   }
 
   warn(message: string, data?: any, options?: LogOptions) {
+    // PRODUCTION-CRITICAL: Always sanitize BEFORE any logging
+    const logData = options?.sanitize !== false && data ? sanitizeData(data) : data;
+    
     if (this.isDev) {
-      const logData = options?.sanitize !== false && data ? sanitizeData(data) : data;
       console.warn(`[WARN] ${message}`, logData || '');
     }
     
-    // Track warnings in production
-    this.trackProductionError('warn', message, data, options?.context);
+    // Track warnings in production (data already sanitized)
+    this.trackProductionError('warn', message, logData, options?.context);
   }
 
   error(message: string, error?: any, options?: LogOptions) {
-    // Always sanitize errors
+    // PRODUCTION-CRITICAL: Always sanitize errors regardless of environment
+    // This provides defense-in-depth against misconfigured production builds
     const errorData = error ? sanitizeData(error) : null;
     
     if (this.isDev) {
       console.error(`[ERROR] ${message}`, errorData || '');
     }
     
-    // PHASE 2 FIX: Live error tracking in production
+    // PHASE 2 FIX: Live error tracking in production (data already sanitized)
     this.trackProductionError('error', message, errorData, options?.context);
   }
 
