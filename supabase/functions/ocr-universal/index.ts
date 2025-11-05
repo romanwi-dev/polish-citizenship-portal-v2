@@ -114,12 +114,25 @@ Deno.serve(async (req) => {
       );
     }
 
-    // CRITICAL FIX: Ensure base64 has proper data URL prefix for Lovable AI
+    // CRITICAL FIX: Detect if this is a PDF and reject it
+    // Gemini cannot process PDFs via image_url parameter - they need document processing
+    const isPDF = imageBase64.startsWith('JVBER') || // PDF magic bytes in base64
+                  imageBase64.startsWith('%PDF') ||
+                  imageBase64.includes('application/pdf');
+    
+    if (isPDF) {
+      console.error('❌ PDF detected - cannot process via image_url parameter');
+      throw new Error('PDF documents cannot be processed via OCR. Use PDF extraction instead.');
+    }
+
+    // CRITICAL FIX: Ensure base64 has proper data URL prefix for Lovable AI (images only)
     if (!imageBase64.startsWith('data:')) {
-      // Detect format from first bytes or assume JPEG as default
-      const prefix = imageBase64.startsWith('/9j/') || imageBase64.startsWith('iVBOR') 
-        ? (imageBase64.startsWith('iVBOR') ? 'data:image/png;base64,' : 'data:image/jpeg;base64,')
-        : 'data:application/pdf;base64,';
+      // Detect format from first bytes
+      const prefix = imageBase64.startsWith('iVBOR') 
+        ? 'data:image/png;base64,'
+        : imageBase64.startsWith('/9j/') || imageBase64.startsWith('iV')
+        ? 'data:image/jpeg;base64,'
+        : 'data:image/jpeg;base64,'; // Default to JPEG
       imageBase64 = prefix + imageBase64;
     }
 

@@ -1394,6 +1394,69 @@ export type Database = {
           },
         ]
       }
+      edge_function_healing_log: {
+        Row: {
+          details: string | null
+          function_name: string
+          healing_action: string
+          id: string
+          performed_at: string
+          result: string
+        }
+        Insert: {
+          details?: string | null
+          function_name: string
+          healing_action: string
+          id?: string
+          performed_at?: string
+          result: string
+        }
+        Update: {
+          details?: string | null
+          function_name?: string
+          healing_action?: string
+          id?: string
+          performed_at?: string
+          result?: string
+        }
+        Relationships: []
+      }
+      edge_function_health: {
+        Row: {
+          check_timestamp: string
+          created_at: string
+          degraded_count: number
+          down_count: number
+          health_report: Json
+          healthy_count: number
+          id: string
+          overall_status: string
+          total_functions: number
+        }
+        Insert: {
+          check_timestamp?: string
+          created_at?: string
+          degraded_count: number
+          down_count: number
+          health_report: Json
+          healthy_count: number
+          id?: string
+          overall_status: string
+          total_functions: number
+        }
+        Update: {
+          check_timestamp?: string
+          created_at?: string
+          degraded_count?: number
+          down_count?: number
+          health_report?: Json
+          healthy_count?: number
+          id?: string
+          overall_status?: string
+          total_functions?: number
+        }
+        Relationships: []
+      }
       form_field_sources: {
         Row: {
           applied_at: string | null
@@ -5160,6 +5223,7 @@ export type Database = {
           workflow_id: string
         }[]
       }
+      cleanup_old_health_data: { Args: never; Returns: undefined }
       cleanup_rate_limit_logs: { Args: never; Returns: undefined }
       create_verification_alert: {
         Args: {

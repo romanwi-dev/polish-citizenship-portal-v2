@@ -165,3 +165,9 @@ verify_jwt = true
 [functions.ai-recognize-document]
 verify_jwt = true
 
+[functions.health-monitor]
+verify_jwt = false
+
+[functions.auto-heal-functions]
+verify_jwt = false
+
