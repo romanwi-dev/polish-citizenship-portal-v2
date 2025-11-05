@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { AlertCircle, CheckCircle, Loader2, XCircle } from "lucide-react";
+import { AlertCircle, CheckCircle, Loader2, XCircle, Wrench } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -31,6 +31,7 @@ interface VerificationResults {
 
 export function DropboxPathVerifier() {
   const [isVerifying, setIsVerifying] = useState(false);
+  const [isFixing, setIsFixing] = useState(false);
   const [results, setResults] = useState<VerificationResults | null>(null);
   const { toast } = useToast();
 
@@ -68,6 +69,52 @@ export function DropboxPathVerifier() {
     }
   };
 
+  const fixInvalidPaths = async () => {
+    if (!results) return;
+    
+    const invalidDocIds = [...results.invalid, ...results.missing].map(doc => doc.id);
+    
+    if (invalidDocIds.length === 0) {
+      toast({
+        title: "No Paths to Fix",
+        description: "All paths are already valid",
+      });
+      return;
+    }
+
+    setIsFixing(true);
+
+    try {
+      const { data, error } = await supabase.functions.invoke('fix-dropbox-paths', {
+        body: { documentIds: invalidDocIds }
+      });
+
+      if (error) throw error;
+
+      if (data?.success && data?.summary) {
+        const summary = data.summary;
+        toast({
+          title: "Path Fixing Complete",
+          description: `${summary.fixed}/${summary.total} paths fixed (${summary.fixRate})`,
+        });
+        
+        // Re-run verification to get updated results
+        await verifyPaths();
+      } else {
+        throw new Error(data?.error || 'Path fixing failed');
+      }
+    } catch (error) {
+      console.error('Path fixing error:', error);
+      toast({
+        title: "Path Fixing Failed",
+        description: error instanceof Error ? error.message : "Failed to fix paths",
+        variant: "destructive",
+      });
+    } finally {
+      setIsFixing(false);
+    }
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -80,14 +127,29 @@ export function DropboxPathVerifier() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <Button 
-          onClick={verifyPaths} 
-          disabled={isVerifying}
-          className="w-full"
-        >
-          {isVerifying && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {isVerifying ? "Verifying Paths..." : "Run Path Verification"}
-        </Button>
+        <div className="flex gap-2">
+          <Button 
+            onClick={verifyPaths} 
+            disabled={isVerifying || isFixing}
+            className="flex-1"
+          >
+            {isVerifying && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {isVerifying ? "Verifying Paths..." : "Run Path Verification"}
+          </Button>
+          
+          {results && (results.invalid.length > 0 || results.missing.length > 0) && (
+            <Button 
+              onClick={fixInvalidPaths} 
+              disabled={isVerifying || isFixing}
+              variant="secondary"
+              className="flex-1"
+            >
+              {isFixing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              <Wrench className="mr-2 h-4 w-4" />
+              {isFixing ? "Fixing Paths..." : `Fix ${results.invalid.length + results.missing.length} Paths`}
+            </Button>
+          )}
+        </div>
 
         {results && (
           <div className="space-y-4">
