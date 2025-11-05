@@ -2,13 +2,14 @@ import { useState } from "react";
 import { AdminLayout } from "@/components/AdminLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { FolderSync, BarChart3, Settings, RefreshCw, Trash2, Archive, History } from "lucide-react";
+import { FolderSync, BarChart3, Settings, RefreshCw, Trash2, Archive, History, Activity } from "lucide-react";
 import { DropboxSyncStats } from "@/components/dropbox/DropboxSyncStats";
 import { SyncHistoryLog } from "@/components/dropbox/SyncHistoryLog";
 import { ResyncConfirmationDialog } from "@/components/cases/ResyncConfirmationDialog";
 import { CleanupDatabaseDialog } from "@/components/cases/CleanupDatabaseDialog";
 import { ArchivedCategoriesManager } from "@/components/dropbox/ArchivedCategoriesManager";
 import { DropboxPathVerifier } from "@/components/admin/DropboxPathVerifier";
+import { OCRMonitoringDashboard } from "@/components/admin/OCRMonitoringDashboard";
 import { WorkflowRecoveryBrowser } from "@/components/admin/WorkflowRecoveryBrowser";
 import DropboxMigration from "./DropboxMigration";
 
@@ -35,7 +36,7 @@ const DropboxWorkflow = () => {
         </div>
 
         <Tabs defaultValue="operations" className="w-full">
-          <TabsList className="grid w-full grid-cols-6">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="operations" className="gap-2">
               <FolderSync className="h-4 w-4" />
               Operations Dashboard
@@ -47,6 +48,10 @@ const DropboxWorkflow = () => {
             <TabsTrigger value="diagnostics" className="gap-2">
               <Settings className="h-4 w-4" />
               Diagnostics
+            </TabsTrigger>
+            <TabsTrigger value="monitoring" className="gap-2">
+              <Activity className="h-4 w-4" />
+              Monitoring
             </TabsTrigger>
             <TabsTrigger value="recovery" className="gap-2">
               <History className="h-4 w-4" />
@@ -174,6 +179,10 @@ const DropboxWorkflow = () => {
 
           <TabsContent value="diagnostics" className="mt-6">
             <DropboxPathVerifier />
+          </TabsContent>
+
+          <TabsContent value="monitoring" className="mt-6">
+            <OCRMonitoringDashboard />
           </TabsContent>
 
           <TabsContent value="recovery" className="mt-6">
