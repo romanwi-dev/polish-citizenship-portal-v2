@@ -4813,6 +4813,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      check_ai_consent: { Args: { p_case_id: string }; Returns: boolean }
       check_rls_status: {
         Args: never
         Returns: {

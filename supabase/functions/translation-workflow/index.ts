@@ -1,359 +1,293 @@
-import { createClient } from "npm:@supabase/supabase-js@2";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-interface WorkflowTransitionRequest {
-  jobId: string;
-  action: 'start_ai' | 'approve_ai' | 'reject_ai' | 'assign_translator' | 'translator_complete' | 'upload_final' | 'complete';
-  data?: {
-    translatorId?: string;
-    humanTranslation?: string;
-    qualityScore?: number;
-    reviewNotes?: string;
-    finalDocumentId?: string;
-    certificationDate?: string;
-  };
+interface TranslationRequest {
+  action: 'start_ai' | 'approve' | 'reject';
+  job_id: string;
+  hac_notes?: string;
 }
 
-const workflowStages = {
-  'pending': { next: 'ai_translating', status: 'ai_translating' },
-  'ai_translating': { next: 'ai_complete', status: 'ai_complete' },
-  'ai_complete': { next: 'human_review', status: 'human_review' },
-  'human_review': { next: 'approved_for_translator', status: 'approved_for_translator' },
-  'approved_for_translator': { next: 'assigned_to_translator', status: 'assigned' },
-  'assigned_to_translator': { next: 'translator_in_progress', status: 'in_progress' },
-  'translator_in_progress': { next: 'translator_complete', status: 'translator_complete' },
-  'translator_complete': { next: 'document_uploaded', status: 'document_uploaded' },
-  'document_uploaded': { next: 'completed', status: 'completed' },
-  'completed': { next: null, status: 'completed' }
-};
-
-Deno.serve(async (req) => {
+serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
-    // Get user from auth header
-    const authHeader = req.headers.get('Authorization');
-    if (!authHeader) {
-      return new Response(
-        JSON.stringify({ error: 'Authorization required' }),
-        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
-
-    const { data: { user }, error: authError } = await supabase.auth.getUser(
-      authHeader.replace('Bearer ', '')
+    const supabaseClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+      {
+        global: {
+          headers: { Authorization: req.headers.get('Authorization')! },
+        },
+      }
     );
 
-    if (authError || !user) {
+    const { action, job_id, hac_notes } = await req.json() as TranslationRequest;
+
+    if (!job_id) {
       return new Response(
-        JSON.stringify({ error: 'Invalid authorization' }),
-        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        JSON.stringify({ error: 'job_id is required' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    const { jobId, action, data: actionData }: WorkflowTransitionRequest = await req.json();
-
-    console.log(`[Translation Workflow] Action: ${action} for job: ${jobId}`);
-
-    // Get current job
-    const { data: job, error: jobError } = await supabase
+    // Fetch the translation job
+    const { data: job, error: jobError } = await supabaseClient
       .from('translation_jobs')
-      .select('*')
-      .eq('id', jobId)
+      .select('*, cases!inner(id)')
+      .eq('id', job_id)
       .single();
 
     if (jobError || !job) {
+      console.error('Error fetching job:', jobError);
       return new Response(
         JSON.stringify({ error: 'Translation job not found' }),
         { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    let updates: any = {};
-    let historyEntry: any = {
-      job_id: jobId,
-      changed_by: user.id,
-      change_type: action
-    };
+    // Check AI consent for PII processing
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    
+    if (action === 'start_ai') {
+      // Check if AI consent is granted for this case
+      const { data: consentData, error: consentError } = await supabaseClient
+        .rpc('check_ai_consent', { p_case_id: job.case_id });
 
-    // Process action
-    switch (action) {
-      case 'start_ai':
-        if (job.workflow_stage !== 'pending') {
-          return new Response(
-            JSON.stringify({ error: 'Job must be in pending stage to start AI translation' }),
-            { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-          );
-        }
-        updates = {
+      if (consentError) {
+        console.error('Error checking AI consent:', consentError);
+        return new Response(
+          JSON.stringify({ error: 'Failed to check AI consent' }),
+          { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      if (!consentData) {
+        return new Response(
+          JSON.stringify({ error: 'AI processing consent not granted for this case' }),
+          { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      // Log PII processing
+      await supabaseClient.from('ai_pii_processing_logs').insert({
+        case_id: job.case_id,
+        document_id: job.document_id,
+        operation_type: 'translation',
+        ai_provider: 'lovable-ai',
+        pii_fields_sent: {
+          source_text: true,
+          document_name: true,
+        },
+        user_id: user?.id,
+      });
+
+      // Update job to ai_translating stage
+      await supabaseClient
+        .from('translation_jobs')
+        .update({ 
           workflow_stage: 'ai_translating',
-          status: 'ai_translating',
-          stage_entered_at: new Date().toISOString()
-        };
-        historyEntry.new_value = 'AI translation started';
-        
-        // Update the job first
-        const { error: updateError } = await supabase
-          .from('translation_jobs')
-          .update(updates)
-          .eq('id', jobId);
+          metadata: { ...job.metadata, started_at: new Date().toISOString() }
+        })
+        .eq('id', job_id);
 
-        if (updateError) {
-          console.error('Update error:', updateError);
-          throw updateError;
-        }
+      // Get source text from metadata or document
+      const sourceText = job.metadata?.source_text || job.source_text;
 
-        // Create history entry
-        await supabase
-          .from('translation_job_history')
-          .insert(historyEntry);
+      if (!sourceText) {
+        throw new Error('No source text available for translation');
+      }
 
-        // Trigger AI translation asynchronously
-        console.log(`[Translation Workflow] Triggering AI translation for job: ${jobId}`);
-        try {
-          const aiResult = await supabase.functions.invoke('ai-translate-document', {
-            body: { jobId }
-          });
+      // Call Lovable AI for translation
+      const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
+      if (!LOVABLE_API_KEY) {
+        throw new Error('LOVABLE_API_KEY is not configured');
+      }
 
-          if (aiResult.error) {
-            console.error('[Translation Workflow] AI translation error:', aiResult.error);
-            // Update job to show error but don't fail the workflow transition
-            await supabase
-              .from('translation_jobs')
-              .update({
-                workflow_stage: 'pending',
-                status: 'error',
-                stage_entered_at: new Date().toISOString()
-              })
-              .eq('id', jobId);
-            
-            await supabase
-              .from('translation_job_history')
-              .insert({
-                job_id: jobId,
-                changed_by: user.id,
-                change_type: 'ai_translation_failed',
-                new_value: `AI translation failed: ${aiResult.error.message || 'Unknown error'}`
-              });
+      const systemPrompt = `You are a professional Polish Certified Sworn Translator specializing in legal and official documents for Polish citizenship applications.
 
-            return new Response(
-              JSON.stringify({
-                success: false,
-                error: 'AI translation failed',
-                details: aiResult.error.message
-              }),
-              { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-            );
-          }
+Your task is to translate documents with:
+1. Legal accuracy and formal Polish terminology
+2. Preservation of all names, dates, and official numbers
+3. Proper Polish legal document formatting
+4. Certification-ready quality
 
-          console.log(`[Translation Workflow] AI translation completed successfully`);
-        } catch (aiError) {
-          console.error('[Translation Workflow] AI invocation error:', aiError);
-        }
+Translate the following ${job.source_language} text to ${job.target_language}.`;
 
-        // Return success for the workflow transition
-        return new Response(
-          JSON.stringify({
-            success: true,
-            workflow_stage: 'ai_translating',
-            status: 'ai_translating',
-            message: 'AI translation in progress'
-          }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
+      const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'google/gemini-2.5-flash',
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: sourceText }
+          ],
+        }),
+      });
 
-      case 'approve_ai':
-        if (job.workflow_stage !== 'ai_complete' && job.workflow_stage !== 'human_review') {
-          return new Response(
-            JSON.stringify({ error: 'Job must be in ai_complete or human_review stage' }),
-            { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-          );
-        }
-        updates = {
-          workflow_stage: 'approved_for_translator',
-          status: 'approved_for_translator',
-          human_reviewed_by: user.id,
-          human_reviewed_at: new Date().toISOString(),
-          human_review_notes: actionData?.reviewNotes,
-          quality_score: actionData?.qualityScore,
-          stage_entered_at: new Date().toISOString()
-        };
-        if (actionData?.humanTranslation) {
-          updates.human_translation = actionData.humanTranslation;
-        }
-        historyEntry.new_value = `Approved by HAC with quality score: ${actionData?.qualityScore || 'N/A'}`;
-        break;
+      if (!aiResponse.ok) {
+        const errorText = await aiResponse.text();
+        console.error('Lovable AI error:', aiResponse.status, errorText);
 
-      case 'reject_ai':
-        if (job.workflow_stage !== 'ai_complete' && job.workflow_stage !== 'human_review') {
-          return new Response(
-            JSON.stringify({ error: 'Job must be in ai_complete or human_review stage' }),
-            { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-          );
-        }
-        updates = {
-          workflow_stage: 'human_review',
-          status: 'human_review',
-          human_reviewed_by: user.id,
-          human_reviewed_at: new Date().toISOString(),
-          human_review_notes: actionData?.reviewNotes,
-          human_translation: actionData?.humanTranslation || job.ai_translation,
-          stage_entered_at: new Date().toISOString()
-        };
-        historyEntry.new_value = 'AI translation rejected, human translation required';
-        break;
-
-      case 'assign_translator':
-        if (job.workflow_stage !== 'approved_for_translator') {
-          return new Response(
-            JSON.stringify({ error: 'Job must be approved before assigning translator' }),
-            { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-          );
-        }
-        if (!actionData?.translatorId) {
-          return new Response(
-            JSON.stringify({ error: 'Translator ID required' }),
-            { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-          );
-        }
-        updates = {
-          workflow_stage: 'assigned_to_translator',
-          status: 'assigned',
-          assigned_translator_id: actionData.translatorId,
-          assigned_at: new Date().toISOString(),
-          stage_entered_at: new Date().toISOString()
-        };
-        historyEntry.new_value = `Assigned to translator: ${actionData.translatorId}`;
-        break;
-
-      case 'translator_complete':
-        if (job.workflow_stage !== 'translator_in_progress' && job.workflow_stage !== 'assigned_to_translator') {
-          return new Response(
-            JSON.stringify({ error: 'Invalid workflow stage for completion' }),
-            { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-          );
-        }
-        updates = {
-          workflow_stage: 'translator_complete',
-          status: 'translator_complete',
-          translator_completed_at: new Date().toISOString(),
-          translator_notes: actionData?.reviewNotes,
-          final_translation: actionData?.humanTranslation || job.human_translation || job.ai_translation,
-          stage_entered_at: new Date().toISOString()
-        };
-        historyEntry.new_value = 'Sworn translator completed translation';
-        break;
-
-      case 'upload_final':
-        if (job.workflow_stage !== 'translator_complete') {
-          return new Response(
-            JSON.stringify({ error: 'Translation must be complete before uploading document' }),
-            { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-          );
-        }
-        if (!actionData?.finalDocumentId) {
-          return new Response(
-            JSON.stringify({ error: 'Final document ID required' }),
-            { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-          );
-        }
-        updates = {
-          workflow_stage: 'document_uploaded',
-          status: 'document_uploaded',
-          final_document_id: actionData.finalDocumentId,
-          certification_date: actionData?.certificationDate,
-          stage_entered_at: new Date().toISOString()
-        };
-        historyEntry.new_value = `Final document uploaded: ${actionData.finalDocumentId}`;
-        break;
-
-      case 'complete':
-        if (job.workflow_stage !== 'document_uploaded') {
-          return new Response(
-            JSON.stringify({ error: 'Document must be uploaded before completing' }),
-            { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-          );
-        }
-        updates = {
-          workflow_stage: 'completed',
-          status: 'completed',
-          completed_at: new Date().toISOString(),
-          stage_entered_at: new Date().toISOString()
-        };
-        historyEntry.new_value = 'Translation workflow completed';
-        
-        // Update related task if exists
-        if (job.task_id) {
-          await supabase
-            .from('tasks')
-            .update({ status: 'completed', completed_at: new Date().toISOString() })
-            .eq('id', job.task_id);
-        }
-        
-        // Update document translation status
-        if (job.document_id) {
-          await supabase
-            .from('documents')
+        if (aiResponse.status === 429) {
+          await supabaseClient
+            .from('translation_jobs')
             .update({ 
-              is_translated: true, 
-              translation_required: false,
-              needs_translation: false 
+              workflow_stage: 'pending',
+              metadata: { ...job.metadata, error: 'Rate limit exceeded. Please try again later.' }
             })
-            .eq('id', job.document_id);
+            .eq('id', job_id);
+
+          return new Response(
+            JSON.stringify({ error: 'Rate limit exceeded. Please try again later.' }),
+            { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
         }
-        break;
 
-      default:
-        return new Response(
-          JSON.stringify({ error: 'Invalid action' }),
-          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
+        if (aiResponse.status === 402) {
+          await supabaseClient
+            .from('translation_jobs')
+            .update({ 
+              workflow_stage: 'pending',
+              metadata: { ...job.metadata, error: 'Payment required. Please add credits to your workspace.' }
+            })
+            .eq('id', job_id);
+
+          return new Response(
+            JSON.stringify({ error: 'Payment required. Please add credits to your Lovable workspace.' }),
+            { status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+
+        throw new Error(`AI translation failed: ${errorText}`);
+      }
+
+      const aiData = await aiResponse.json();
+      const translatedText = aiData.choices[0].message.content;
+
+      // Calculate confidence score (simple heuristic based on length ratio)
+      const lengthRatio = translatedText.length / sourceText.length;
+      const confidenceScore = Math.min(95, Math.max(60, 80 - Math.abs(1 - lengthRatio) * 20));
+
+      // Update job with AI translation
+      const { error: updateError } = await supabaseClient
+        .from('translation_jobs')
+        .update({
+          ai_translated_text: translatedText,
+          ai_confidence_score: confidenceScore,
+          workflow_stage: 'ai_complete',
+          metadata: {
+            ...job.metadata,
+            completed_at: new Date().toISOString(),
+            model: 'google/gemini-2.5-flash',
+          }
+        })
+        .eq('id', job_id);
+
+      if (updateError) {
+        console.error('Error updating job:', updateError);
+        throw updateError;
+      }
+
+      // Add history entry
+      await supabaseClient.from('translation_job_history').insert({
+        job_id: job_id,
+        change_type: 'ai_translation_complete',
+        old_value: job.workflow_stage,
+        new_value: 'ai_complete',
+        changed_by: user?.id,
+        metadata: {
+          confidence_score: confidenceScore,
+          model: 'google/gemini-2.5-flash',
+        }
+      });
+
+      return new Response(
+        JSON.stringify({ 
+          success: true, 
+          translated_text: translatedText,
+          confidence_score: confidenceScore,
+          workflow_stage: 'ai_complete'
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
-    // Update job
-    const { error: updateError } = await supabase
-      .from('translation_jobs')
-      .update(updates)
-      .eq('id', jobId);
+    if (action === 'approve') {
+      const { error: updateError } = await supabaseClient
+        .from('translation_jobs')
+        .update({
+          workflow_stage: 'approved',
+          hac_approved: true,
+          hac_approved_by: user?.id,
+          hac_approved_at: new Date().toISOString(),
+          hac_notes: hac_notes,
+        })
+        .eq('id', job_id);
 
-    if (updateError) {
-      console.error('Update error:', updateError);
-      throw updateError;
+      if (updateError) throw updateError;
+
+      await supabaseClient.from('translation_job_history').insert({
+        job_id: job_id,
+        change_type: 'hac_approved',
+        old_value: job.workflow_stage,
+        new_value: 'approved',
+        changed_by: user?.id,
+        metadata: { notes: hac_notes }
+      });
+
+      return new Response(
+        JSON.stringify({ success: true, workflow_stage: 'approved' }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
-    // Create history entry
-    await supabase
-      .from('translation_job_history')
-      .insert(historyEntry);
+    if (action === 'reject') {
+      const { error: updateError } = await supabaseClient
+        .from('translation_jobs')
+        .update({
+          workflow_stage: 'hac_review',
+          hac_notes: hac_notes,
+        })
+        .eq('id', job_id);
 
-    console.log(`[Translation Workflow] Successfully transitioned to: ${updates.workflow_stage}`);
+      if (updateError) throw updateError;
+
+      await supabaseClient.from('translation_job_history').insert({
+        job_id: job_id,
+        change_type: 'hac_rejected',
+        old_value: job.workflow_stage,
+        new_value: 'hac_review',
+        changed_by: user?.id,
+        metadata: { notes: hac_notes }
+      });
+
+      return new Response(
+        JSON.stringify({ success: true, workflow_stage: 'hac_review' }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
     return new Response(
-      JSON.stringify({
-        success: true,
-        workflow_stage: updates.workflow_stage,
-        status: updates.status
-      }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      JSON.stringify({ error: 'Invalid action' }),
+      { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
   } catch (error) {
     console.error('Translation workflow error:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Translation workflow processing failed';
     return new Response(
-      JSON.stringify({
-        success: false,
-        error: errorMessage
+      JSON.stringify({ 
+        error: error instanceof Error ? error.message : 'Unknown error occurred' 
       }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
