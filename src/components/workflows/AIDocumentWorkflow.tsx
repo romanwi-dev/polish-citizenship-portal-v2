@@ -23,6 +23,7 @@ import { motion } from "framer-motion";
 import { WorkflowStageCard } from "./WorkflowStageCard";
 import { WorkflowProgressBar } from "./WorkflowProgressBar";
 import { useDocumentWorkflowState } from "@/hooks/useDocumentWorkflowState";
+import type { Document, UploadResult, UploadProgress } from "@/types/documentWorkflow";
 
 interface AIWorkflowStep {
   number: string;
@@ -206,6 +207,13 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
   const { toast } = useToast();
   const isMobile = useIsMobile();
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<UploadProgress>({
+    total: 0,
+    completed: 0,
+    failed: 0,
+    uploading: 0,
+    errors: []
+  });
   
   // Use workflow state hook for persistence
   const {
@@ -235,7 +243,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
     enabled: !!caseId
   });
 
-  // FIX #10: Fetch documents with security validation
+  // FIX #10: Fetch documents with security validation and proper typing
   const { data: documents, refetch: refetchDocuments } = useQuery({
     queryKey: ['case-documents', caseId],
     queryFn: async () => {
@@ -258,8 +266,8 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
       
       if (error) throw error;
       
-      // Additional client-side validation
-      return data?.filter(d => d.case_id === caseId) || [];
+      // Additional client-side validation with proper typing
+      return (data as unknown as Document[])?.filter(d => d.case_id === caseId) || [];
     },
     enabled: !!caseId
   });
@@ -293,13 +301,13 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
     return documents.slice(0, 3); // Default: show first 3
   };
 
-  // Get storage URL for document thumbnail
-  const getDocumentThumbnail = (doc: any) => {
+  // Get storage URL for document thumbnail with proper typing
+  const getDocumentThumbnail = (doc: Document): string | null => {
     if (!doc.dropbox_path) return null;
     
     // For images, return storage URL
     const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-    if (imageExts.includes(doc.file_extension?.toLowerCase())) {
+    if (doc.file_extension && imageExts.includes(doc.file_extension.toLowerCase())) {
       const { data } = supabase.storage
         .from('documents')
         .getPublicUrl(`${caseId}/${doc.id}.${doc.file_extension}`);
@@ -309,7 +317,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
     return null;
   };
 
-  // FIX #1, #2, #5: Integrated upload handler with workflow engine and OCR triggering
+  // ARCHITECTURAL FIX: Parallelized upload handler with comprehensive error tracking
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!caseId) {
       toast({
@@ -324,83 +332,180 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
     if (!files || files.length === 0) return;
 
     setUploading(true);
+    setUploadProgress({
+      total: files.length,
+      completed: 0,
+      failed: 0,
+      uploading: files.length,
+      errors: []
+    });
 
     try {
-      let successCount = 0;
-      const uploadedDocIds: string[] = [];
+      // PARALLEL UPLOAD: Process all files simultaneously
+      const uploadPromises = Array.from(files).map(async (file): Promise<UploadResult> => {
+        try {
+          // Phase 1: Upload to Dropbox
+          const formData = new FormData();
+          formData.append('file', file);
+          formData.append('caseId', caseId);
 
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        
-        // FIX #1: Use upload-to-dropbox edge function
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('caseId', caseId);
+          const { data: uploadData, error: uploadError } = await supabase.functions.invoke(
+            'upload-to-dropbox',
+            { body: formData }
+          );
 
-        const { data: uploadData, error: uploadError } = await supabase.functions.invoke(
-          'upload-to-dropbox',
-          {
-            body: formData,
+          if (uploadError || !uploadData?.success) {
+            throw new Error(uploadData?.error || 'Upload failed');
           }
-        );
 
-        if (uploadError) {
-          console.error(`Upload failed for ${file.name}:`, uploadError);
-          throw uploadError;
+          const docId = uploadData.document.id;
+
+          // Phase 2: Create workflow instance
+          try {
+            const { error: workflowError } = await supabase
+              .from('workflow_instances')
+              .insert({
+                workflow_type: 'ai_documents',
+                case_id: caseId,
+                source_table: 'documents',
+                source_id: docId,
+                current_stage: 'upload',
+                status: 'in_progress',
+                priority: 'medium',
+              });
+
+            if (workflowError) {
+              console.error('Workflow creation failed:', workflowError);
+              return {
+                documentId: docId,
+                success: false,
+                error: `Workflow creation failed: ${workflowError.message}`,
+                phase: 'workflow'
+              };
+            }
+          } catch (workflowError) {
+            return {
+              documentId: docId,
+              success: false,
+              error: `Workflow error: ${workflowError instanceof Error ? workflowError.message : 'Unknown'}`,
+              phase: 'workflow'
+            };
+          }
+
+          // Phase 3: Trigger OCR
+          try {
+            const { error: ocrError } = await supabase.functions.invoke('ocr-document', {
+              body: { documentId: docId },
+            });
+
+            if (ocrError) {
+              console.error('OCR trigger failed:', ocrError);
+              return {
+                documentId: docId,
+                success: false,
+                error: `OCR trigger failed: ${ocrError.message}`,
+                phase: 'ocr'
+              };
+            }
+          } catch (ocrError) {
+            return {
+              documentId: docId,
+              success: false,
+              error: `OCR error: ${ocrError instanceof Error ? ocrError.message : 'Unknown'}`,
+              phase: 'ocr'
+            };
+          }
+
+          return {
+            documentId: docId,
+            success: true,
+            phase: 'ocr'
+          };
+
+        } catch (error) {
+          return {
+            documentId: 'unknown',
+            success: false,
+            error: `Upload failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+            phase: 'upload'
+          };
         }
-
-        if (!uploadData?.success) {
-          throw new Error(uploadData?.error || 'Upload failed');
-        }
-
-        uploadedDocIds.push(uploadData.document.id);
-        successCount++;
-      }
-
-      toast({
-        title: "Upload successful",
-        description: `${successCount} document(s) uploaded successfully`,
       });
 
-      // FIX #2: Create workflow instances for uploaded documents
-      for (const docId of uploadedDocIds) {
-        const { error: workflowError } = await supabase
-          .from('workflow_instances')
-          .insert({
-            workflow_type: 'ai_documents',
-            case_id: caseId,
-            source_table: 'documents',
-            source_id: docId,
-            current_stage: 'upload',
-            status: 'in_progress',
-            priority: 'medium',
-          });
+      // Wait for all uploads to complete
+      const results = await Promise.allSettled(uploadPromises);
+      
+      // Process results
+      const successCount = results.filter(r => 
+        r.status === 'fulfilled' && r.value.success
+      ).length;
+      
+      const failures = results
+        .map((r, idx) => ({
+          file: files[idx].name,
+          result: r.status === 'fulfilled' ? r.value : { success: false, error: 'Promise rejected', phase: 'upload' }
+        }))
+        .filter(f => !f.result.success);
 
-        if (workflowError) {
-          console.error('Failed to create workflow instance:', workflowError);
-        }
+      // Update progress state
+      setUploadProgress({
+        total: files.length,
+        completed: successCount,
+        failed: failures.length,
+        uploading: 0,
+        errors: failures.map(f => ({
+          file: f.file,
+          error: f.result.error || 'Unknown error',
+          phase: f.result.phase || 'unknown'
+        }))
+      });
+
+      // Show comprehensive toast notification
+      if (successCount === files.length) {
+        toast({
+          title: "Upload successful",
+          description: `All ${successCount} document(s) uploaded and processing started`,
+        });
+      } else if (successCount > 0) {
+        toast({
+          title: "Partial success",
+          description: `${successCount} of ${files.length} documents uploaded. ${failures.length} failed.`,
+          variant: "destructive",
+        });
+        
+        // Show detailed error toast for failures
+        failures.forEach(({ file, result }) => {
+          toast({
+            title: `${file} failed`,
+            description: `${result.phase.toUpperCase()}: ${result.error}`,
+            variant: "destructive",
+          });
+        });
+      } else {
+        toast({
+          title: "Upload failed",
+          description: `All ${files.length} documents failed to upload. Check errors below.`,
+          variant: "destructive",
+        });
+        
+        failures.slice(0, 3).forEach(({ file, result }) => {
+          toast({
+            title: `${file} failed`,
+            description: `${result.phase.toUpperCase()}: ${result.error}`,
+            variant: "destructive",
+          });
+        });
       }
 
-      // FIX #5: Trigger OCR for uploaded documents
-      for (const docId of uploadedDocIds) {
-        try {
-          await supabase.functions.invoke('ocr-document', {
-            body: { documentId: docId },
-          });
-        } catch (ocrError) {
-          console.error(`OCR trigger failed for document ${docId}:`, ocrError);
-          // Don't fail the entire upload if OCR fails
-        }
-      }
-
-      // Refresh both documents and workflows
+      // Refresh data
       refetchDocuments();
       refetchWorkflows();
+
     } catch (error) {
-      console.error('Upload error:', error);
+      console.error('Upload batch error:', error);
       toast({
-        title: "Upload failed",
-        description: error instanceof Error ? error.message : "Failed to upload documents. Please try again.",
+        title: "System error",
+        description: error instanceof Error ? error.message : "Failed to process uploads. Please try again.",
         variant: "destructive",
       });
     } finally {
