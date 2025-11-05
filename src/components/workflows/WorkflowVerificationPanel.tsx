@@ -350,15 +350,49 @@ export function WorkflowVerificationPanel() {
 
       console.log('🔍 Starting comprehensive OpenAI verification...');
 
-      const { data, error } = await supabase.functions.invoke('verify-workflow-openai', {
+      // Create a timeout promise (3.5 minutes - slightly longer than edge function)
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => {
+          reject(new Error('Verification timeout - analysis took too long. Try again or contact support if this persists.'));
+        }, 210000); // 3.5 minutes in ms
+      });
+
+      // Race between the verification and the timeout
+      const verificationPromise = supabase.functions.invoke('verify-workflow-openai', {
         body: {
           files: filesToVerify,
           focusAreas
         }
       });
 
-      if (error) throw error;
-      if (!data.success) throw new Error(data.error || 'Verification failed');
+      const { data, error } = await Promise.race([
+        verificationPromise,
+        timeoutPromise
+      ]) as { data: any; error: any };
+
+      if (error) {
+        console.error('Edge function error:', error);
+        throw error;
+      }
+      
+      if (!data) {
+        throw new Error('No response from verification service');
+      }
+
+      if (!data.success) {
+        // Handle specific error types from edge function
+        const errorMsg = data.error || 'Verification failed';
+        if (errorMsg.includes('timeout')) {
+          throw new Error('⏱️ Analysis timeout - The comprehensive verification exceeded the time limit. Try reducing the number of files or focus areas.');
+        }
+        if (errorMsg.includes('rate limit')) {
+          throw new Error('🚦 OpenAI rate limit reached. Please wait a moment and try again.');
+        }
+        if (errorMsg.includes('API key') || errorMsg.includes('authentication')) {
+          throw new Error('🔑 OpenAI API authentication failed. Please check your API key configuration.');
+        }
+        throw new Error(errorMsg);
+      }
 
       console.log('✅ Comprehensive verification complete');
       setResult(data.verification);
@@ -370,12 +404,16 @@ export function WorkflowVerificationPanel() {
         variant: assessment.productionReady ? 'default' : 'destructive'
       });
 
-    clearInterval(progressInterval);
+      clearInterval(progressInterval);
     } catch (error) {
       clearInterval(progressInterval);
+      console.error('Verification error:', error);
+      
+      const errorMessage = error instanceof Error ? error.message : 'Unknown verification error';
+      
       toast({
         title: 'Verification Failed',
-        description: error instanceof Error ? error.message : 'Unknown error',
+        description: errorMessage,
         variant: 'destructive'
       });
     } finally {

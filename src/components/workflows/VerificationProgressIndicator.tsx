@@ -41,7 +41,7 @@ export function VerificationProgressIndicator({
 
   const currentStage = stages[stages.length - 1];
   const overallProgress = currentStage?.progress || 0;
-  const estimatedTotal = 480; // 8 minutes in seconds
+  const estimatedTotal = 180; // 3 minutes in seconds (edge function timeout limit)
   const progressPercent = Math.min((localElapsed / estimatedTotal) * 100, 95);
 
   const formatTime = (seconds: number) => {
@@ -142,8 +142,8 @@ export function VerificationProgressIndicator({
 
         {/* Helpful Tips */}
         <div className="text-xs text-muted-foreground bg-secondary/20 p-2 rounded">
-          💡 <span className="font-medium">Tip:</span> Large verifications can take 5-8 minutes. 
-          The analysis is comprehensive and worth the wait.
+          💡 <span className="font-medium">Tip:</span> Comprehensive analysis takes 2-3 minutes. 
+          GPT-5 is analyzing security, architecture, performance, and reliability.
         </div>
       </CardContent>
     </Card>
