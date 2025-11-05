@@ -10,6 +10,7 @@ interface UseDocumentWorkflowActionsProps {
 export function useDocumentWorkflowActions({ caseId }: UseDocumentWorkflowActionsProps = {}) {
   const [isPrePrintChecklistOpen, setIsPrePrintChecklistOpen] = useState(false);
   const [formDataForChecklist, setFormDataForChecklist] = useState<any>(null);
+  const [isLockingPDF, setIsLockingPDF] = useState(false);
 
   const handlePlatformDownload = (blob: Blob, filename: string, isEditable: boolean) => {
     const device = detectDevice();
@@ -128,6 +129,58 @@ export function useDocumentWorkflowActions({ caseId }: UseDocumentWorkflowAction
     }
   };
 
+  const lockPDFForPrinting = async (
+    documentId: string,
+    pdfUrl: string,
+    documentName: string
+  ): Promise<{ success: boolean; lockedUrl?: string }> => {
+    if (!caseId) {
+      toast.error("Case ID is required to lock PDF");
+      return { success: false };
+    }
+
+    setIsLockingPDF(true);
+    const loadingToast = toast.loading("Preparing print-ready PDF...");
+
+    try {
+      const { data, error } = await supabase.functions.invoke('lock-pdf', {
+        body: {
+          documentId,
+          caseId,
+          pdfUrl
+        }
+      });
+
+      toast.dismiss(loadingToast);
+
+      if (error) {
+        console.error('Lock PDF error:', error);
+        toast.error(`Failed to prepare PDF: ${error.message}`);
+        return { success: false };
+      }
+
+      if (!data?.success) {
+        toast.error(data?.error || 'Failed to lock PDF');
+        return { success: false };
+      }
+
+      toast.success(`Print-ready PDF prepared (${data.fieldsFlattened} fields locked)`);
+      
+      return {
+        success: true,
+        lockedUrl: data.lockedUrl
+      };
+
+    } catch (error: any) {
+      console.error('Lock PDF exception:', error);
+      toast.dismiss(loadingToast);
+      toast.error(`Failed to prepare PDF: ${error.message}`);
+      return { success: false };
+    } finally {
+      setIsLockingPDF(false);
+    }
+  };
+
   return {
     downloadEditableDocument,
     downloadFinalDocument,
@@ -136,5 +189,7 @@ export function useDocumentWorkflowActions({ caseId }: UseDocumentWorkflowAction
     setIsPrePrintChecklistOpen,
     formDataForChecklist,
     handleChecklistProceed,
+    lockPDFForPrinting,
+    isLockingPDF,
   };
 }

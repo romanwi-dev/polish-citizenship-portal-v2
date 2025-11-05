@@ -1202,6 +1202,7 @@ export type Database = {
           document_type: string | null
           dropbox_file_id: string | null
           dropbox_path: string
+          edit_count: number | null
           fedex_label_url: string | null
           file_extension: string | null
           file_size: number | null
@@ -1211,7 +1212,9 @@ export type Database = {
           is_verified: boolean | null
           is_verified_by_hac: boolean | null
           language: string | null
+          last_edited_at: string | null
           legal_validity: string | null
+          locked_at: string | null
           metadata: Json | null
           name: string
           name_confidence: number | null
@@ -1224,6 +1227,9 @@ export type Database = {
           ocr_reviewed_by: string | null
           ocr_status: string | null
           ocr_text: string | null
+          pdf_edited_url: string | null
+          pdf_locked_url: string | null
+          pdf_original_url: string | null
           pdf_status: Database["public"]["Enums"]["pdf_status"] | null
           person_type: string | null
           post_verification_result: Json | null
@@ -1269,6 +1275,7 @@ export type Database = {
           document_type?: string | null
           dropbox_file_id?: string | null
           dropbox_path: string
+          edit_count?: number | null
           fedex_label_url?: string | null
           file_extension?: string | null
           file_size?: number | null
@@ -1278,7 +1285,9 @@ export type Database = {
           is_verified?: boolean | null
           is_verified_by_hac?: boolean | null
           language?: string | null
+          last_edited_at?: string | null
           legal_validity?: string | null
+          locked_at?: string | null
           metadata?: Json | null
           name: string
           name_confidence?: number | null
@@ -1291,6 +1300,9 @@ export type Database = {
           ocr_reviewed_by?: string | null
           ocr_status?: string | null
           ocr_text?: string | null
+          pdf_edited_url?: string | null
+          pdf_locked_url?: string | null
+          pdf_original_url?: string | null
           pdf_status?: Database["public"]["Enums"]["pdf_status"] | null
           person_type?: string | null
           post_verification_result?: Json | null
@@ -1336,6 +1348,7 @@ export type Database = {
           document_type?: string | null
           dropbox_file_id?: string | null
           dropbox_path?: string
+          edit_count?: number | null
           fedex_label_url?: string | null
           file_extension?: string | null
           file_size?: number | null
@@ -1345,7 +1358,9 @@ export type Database = {
           is_verified?: boolean | null
           is_verified_by_hac?: boolean | null
           language?: string | null
+          last_edited_at?: string | null
           legal_validity?: string | null
+          locked_at?: string | null
           metadata?: Json | null
           name?: string
           name_confidence?: number | null
@@ -1358,6 +1373,9 @@ export type Database = {
           ocr_reviewed_by?: string | null
           ocr_status?: string | null
           ocr_text?: string | null
+          pdf_edited_url?: string | null
+          pdf_locked_url?: string | null
+          pdf_original_url?: string | null
           pdf_status?: Database["public"]["Enums"]["pdf_status"] | null
           person_type?: string | null
           post_verification_result?: Json | null

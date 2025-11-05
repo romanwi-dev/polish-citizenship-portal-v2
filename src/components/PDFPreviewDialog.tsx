@@ -20,6 +20,9 @@ interface PDFPreviewDialogProps {
   onDownloadEditable: () => void;
   onDownloadFinal: () => void;
   documentTitle: string;
+  documentId?: string;
+  caseId?: string;
+  onLockForPrint?: (lockedUrl: string) => void;
 }
 
 export function PDFPreviewDialog({
@@ -28,11 +31,15 @@ export function PDFPreviewDialog({
   pdfUrl,
   onDownloadEditable,
   onDownloadFinal,
-  documentTitle
+  documentTitle,
+  documentId,
+  caseId,
+  onLockForPrint
 }: PDFPreviewDialogProps) {
   const [isPrinting, setIsPrinting] = useState(false);
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLocking, setIsLocking] = useState(false);
   const isMobile = useIsMobile();
 
   // Download PDF and create blob URL for preview
@@ -88,6 +95,60 @@ export function PDFPreviewDialog({
     const urlToUse = blobUrl || pdfUrl;
     window.open(urlToUse, '_blank');
     toast.info("PDF opened in new tab", { duration: 2000 });
+  };
+
+  const handleLockForPrint = async () => {
+    if (!documentId || !caseId || !onLockForPrint) {
+      toast.error("Cannot lock PDF - missing required information");
+      return;
+    }
+
+    setIsLocking(true);
+    const loadingToast = toast.loading("Preparing print-ready PDF...");
+
+    try {
+      const { supabase } = await import("@/integrations/supabase/client");
+      
+      const { data, error } = await supabase.functions.invoke('lock-pdf', {
+        body: {
+          documentId,
+          caseId,
+          pdfUrl
+        }
+      });
+
+      toast.dismiss(loadingToast);
+
+      if (error) {
+        console.error('Lock PDF error:', error);
+        toast.error(`Failed to prepare PDF: ${error.message}`);
+        return;
+      }
+
+      if (!data?.success) {
+        toast.error(data?.error || 'Failed to lock PDF');
+        return;
+      }
+
+      toast.success(`Print-ready PDF prepared (${data.fieldsFlattened} fields locked)`);
+      onLockForPrint(data.lockedUrl);
+      
+      // Update blob URL with locked PDF
+      const response = await fetch(data.lockedUrl);
+      const blob = await response.blob();
+      if (blobUrl) {
+        URL.revokeObjectURL(blobUrl);
+      }
+      const newBlobUrl = URL.createObjectURL(blob);
+      setBlobUrl(newBlobUrl);
+
+    } catch (error: any) {
+      console.error('Lock PDF exception:', error);
+      toast.dismiss(loadingToast);
+      toast.error(`Failed to prepare PDF: ${error.message}`);
+    } finally {
+      setIsLocking(false);
+    }
   };
 
   return (
@@ -156,6 +217,27 @@ export function PDFPreviewDialog({
               <Button variant="outline" onClick={onClose}>
                 Close
               </Button>
+              {documentId && caseId && onLockForPrint && (
+                <Button 
+                  variant="default"
+                  onClick={handleLockForPrint}
+                  disabled={isLocking}
+                  className="gap-2"
+                >
+                  {isLocking ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Preparing...
+                    </>
+                  ) : (
+                    <>
+                      <Lock className="h-4 w-4" />
+                      Lock for Print
+                    </>
+                  )}
+                </Button>
+              )}
+              
               <Button 
                 variant="secondary" 
                 onClick={handlePrint} 
