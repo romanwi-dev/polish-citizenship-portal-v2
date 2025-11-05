@@ -205,6 +205,24 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
   const [completedStages, setCompletedStages] = useState<Record<string, boolean>>({});
   const [uploading, setUploading] = useState(false);
 
+  // Fetch case details including Dropbox path
+  const { data: caseData } = useQuery({
+    queryKey: ['case-details', caseId],
+    queryFn: async () => {
+      if (!caseId) return null;
+      
+      const { data, error } = await supabase
+        .from('cases')
+        .select('id, client_name, dropbox_path')
+        .eq('id', caseId)
+        .single();
+      
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!caseId
+  });
+
   // Fetch documents for this case
   const { data: documents, refetch: refetchDocuments } = useQuery({
     queryKey: ['case-documents', caseId],
@@ -267,26 +285,32 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
     setUploading(true);
 
     try {
+      // Get Dropbox path for the case
+      const dropboxPath = caseData?.dropbox_path || `/CASES/${caseId}`;
+
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         const fileExt = file.name.split('.').pop();
-        const fileName = `${Math.random()}.${fileExt}`;
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
         const filePath = `${caseId}/${fileName}`;
 
+        // Upload to Supabase Storage
         const { error: uploadError } = await supabase.storage
           .from('documents')
           .upload(filePath, file);
 
         if (uploadError) throw uploadError;
 
+        // Create document record with Dropbox path
         const { error: dbError } = await supabase
           .from('documents')
           .insert({
             case_id: caseId,
             name: file.name,
-            file_path: filePath,
-            file_type: file.type,
+            dropbox_path: `${dropboxPath}/${file.name}`,
+            file_extension: fileExt,
             file_size: file.size,
+            ocr_status: 'pending',
           });
 
         if (dbError) throw dbError;
@@ -294,7 +318,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
 
       toast({
         title: "Upload successful",
-        description: `${files.length} document(s) uploaded successfully.`,
+        description: `${files.length} document(s) uploaded to ${dropboxPath}`,
       });
 
       refetchDocuments();
@@ -314,44 +338,44 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
   return (
     <div className="w-full pb-40">
       {/* Vertical Timeline - Matching Homepage */}
-      <div className="relative max-w-5xl mx-auto">
-          {/* Center line - hidden on mobile, visible on desktop */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block" />
+      <div className="relative max-w-7xl mx-auto">
+        {/* Center line - hidden on mobile, visible on desktop */}
+        <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block" />
 
-          {workflowSteps.map((step, index) => {
-            const Icon = step.icon;
-            const docCount = getDocumentCountForStage(step.stage);
-            const isCompleted = completedStages[step.stage];
-            
-            return (
-              <div 
-                key={step.stage}
-                className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-8 ${index % 2 === 1 ? 'md:flex-row-reverse' : ''} animate-fade-in`}
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                {/* Content Card - 5/12 width on desktop */}
-                <div className="w-full md:w-5/12">
-                  <div 
-                    className="relative h-[350px] md:h-[450px]"
-                    style={{ perspective: '1000px' }}
+        {workflowSteps.map((step, index) => {
+          const Icon = step.icon;
+          const docCount = getDocumentCountForStage(step.stage);
+          const isCompleted = completedStages[step.stage];
+          
+          return (
+            <div 
+              key={step.stage}
+              className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-12 ${index % 2 === 1 ? 'md:flex-row-reverse' : ''} animate-fade-in`}
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              {/* Content Card - 6/12 width on desktop for wider spacing */}
+              <div className="w-full md:w-6/12">
+                <div 
+                  className="relative h-[350px] md:h-[450px]"
+                  style={{ perspective: '1000px' }}
+                >
+                  <div
+                    onClick={() => toggleFlip(step.stage)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggleFlip(step.stage);
+                      }
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`${step.title} - ${isMobile ? 'Tap' : 'Click'} to view details`}
+                    className="absolute inset-0 cursor-pointer transition-transform duration-700 focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-lg"
+                    style={{
+                      transformStyle: 'preserve-3d',
+                      transform: flippedCards[step.stage] ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                    }}
                   >
-                    <div
-                      onClick={() => toggleFlip(step.stage)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault();
-                          toggleFlip(step.stage);
-                        }
-                      }}
-                      role="button"
-                      tabIndex={0}
-                      aria-label={`${step.title} - ${isMobile ? 'Tap' : 'Click'} to view details`}
-                      className="absolute inset-0 cursor-pointer transition-transform duration-700 focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-lg"
-                      style={{
-                        transformStyle: 'preserve-3d',
-                        transform: flippedCards[step.stage] ? 'rotateY(180deg)' : 'rotateY(0deg)',
-                      }}
-                    >
                       {/* Front Side */}
                       <div 
                         className={cn(
@@ -505,96 +529,95 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                             {isMobile ? 'Tap' : 'Click'} to flip back
                           </p>
                         </div>
-                      </div>
                     </div>
                   </div>
                 </div>
-
-                {/* Center Circle Node - Only visible on desktop */}
-                <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full bg-gradient-to-br from-primary to-secondary shadow-xl items-center justify-center z-10">
-                  <Icon className="h-6 w-6 text-white" />
-                </div>
-
-                {/* Empty spacer for alternating layout - 5/12 width */}
-                <div className="hidden md:block md:w-5/12" />
               </div>
-            );
-          })}
-        </div>
 
-        {/* Summary Stats - Sticky Bottom Bar */}
-        <div className="fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-lg border-t shadow-2xl">
-          {/* Animated Progress Bar Fill */}
-          <motion.div
-            initial={{ width: 0 }}
-            animate={{ 
-              width: `${Math.round((Object.values(completedStages).filter(Boolean).length / workflowSteps.length) * 100)}%` 
-            }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="absolute top-0 left-0 h-1 bg-gradient-to-r from-primary via-secondary to-accent"
-            style={{
-              boxShadow: '0 0 20px rgba(59, 130, 246, 0.5)'
-            }}
-          />
-          
-          <div className="max-w-[1800px] mx-auto px-4 py-4">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="text-center p-4 rounded-lg bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 transition-all"
-              >
-                <div className="text-3xl md:text-4xl font-bold text-primary mb-1">{documents?.length || 0}</div>
-                <div className="text-xs md:text-sm text-muted-foreground">Total Documents</div>
-              </motion.div>
-              
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="text-center p-4 rounded-lg bg-gradient-to-br from-green-500/10 to-green-500/5 border border-green-500/20 transition-all"
-              >
-                <motion.div
-                  key={Object.values(completedStages).filter(Boolean).length}
-                  initial={{ scale: 1.2, color: '#22c55e' }}
-                  animate={{ scale: 1, color: '#16a34a' }}
-                  transition={{ duration: 0.5 }}
-                  className="text-3xl md:text-4xl font-bold text-green-600 mb-1"
-                >
-                  {Object.values(completedStages).filter(Boolean).length}
-                </motion.div>
-                <div className="text-xs md:text-sm text-muted-foreground">Completed Stages</div>
-              </motion.div>
-              
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="text-center p-4 rounded-lg bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20 transition-all"
-              >
-                <div className="text-3xl md:text-4xl font-bold text-accent mb-1">
-                  {workflowSteps.length - Object.values(completedStages).filter(Boolean).length}
-                </div>
-                <div className="text-xs md:text-sm text-muted-foreground">Remaining</div>
-              </motion.div>
-              
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="text-center p-4 rounded-lg bg-gradient-to-br from-secondary/10 to-secondary/5 border border-secondary/20 transition-all"
-              >
-                <motion.div
-                  key={Object.values(completedStages).filter(Boolean).length}
-                  initial={{ scale: 1.3 }}
-                  animate={{ scale: 1 }}
-                  transition={{ duration: 0.5, type: "spring" }}
-                  className="text-3xl md:text-4xl font-bold text-secondary mb-1"
-                >
-                  {Math.round((Object.values(completedStages).filter(Boolean).length / workflowSteps.length) * 100)}%
-                </motion.div>
-                <div className="text-xs md:text-sm text-muted-foreground">Progress</div>
-              </motion.div>
+              {/* Center Circle Node - Only visible on desktop */}
+              <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full bg-gradient-to-br from-primary to-secondary shadow-xl items-center justify-center z-10">
+                <Icon className="h-6 w-6 text-white" />
+              </div>
+
+              {/* Empty spacer for alternating layout - 6/12 width */}
+              <div className="hidden md:block md:w-6/12" />
             </div>
+          );
+        })}
+      </div>
+
+      {/* Summary Stats - Sticky Bottom Bar */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-lg border-t shadow-2xl">
+        {/* Animated Progress Bar Fill */}
+        <motion.div
+          initial={{ width: 0 }}
+          animate={{ 
+            width: `${Math.round((Object.values(completedStages).filter(Boolean).length / workflowSteps.length) * 100)}%` 
+          }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="absolute top-0 left-0 h-1 bg-gradient-to-r from-primary via-secondary to-accent"
+          style={{
+            boxShadow: '0 0 20px rgba(59, 130, 246, 0.5)'
+          }}
+        />
+        
+        <div className="max-w-[1800px] mx-auto px-4 py-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="text-center p-4 rounded-lg bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 transition-all"
+            >
+              <div className="text-3xl md:text-4xl font-bold text-primary mb-1">{documents?.length || 0}</div>
+              <div className="text-xs md:text-sm text-muted-foreground">Total Documents</div>
+            </motion.div>
+            
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="text-center p-4 rounded-lg bg-gradient-to-br from-green-500/10 to-green-500/5 border border-green-500/20 transition-all"
+            >
+              <motion.div
+                key={Object.values(completedStages).filter(Boolean).length}
+                initial={{ scale: 1.2, color: '#22c55e' }}
+                animate={{ scale: 1, color: '#16a34a' }}
+                transition={{ duration: 0.5 }}
+                className="text-3xl md:text-4xl font-bold text-green-600 mb-1"
+              >
+                {Object.values(completedStages).filter(Boolean).length}
+              </motion.div>
+              <div className="text-xs md:text-sm text-muted-foreground">Completed Stages</div>
+            </motion.div>
+            
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="text-center p-4 rounded-lg bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20 transition-all"
+            >
+              <div className="text-3xl md:text-4xl font-bold text-accent mb-1">
+                {workflowSteps.length - Object.values(completedStages).filter(Boolean).length}
+              </div>
+              <div className="text-xs md:text-sm text-muted-foreground">Remaining</div>
+            </motion.div>
+            
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="text-center p-4 rounded-lg bg-gradient-to-br from-secondary/10 to-secondary/5 border border-secondary/20 transition-all"
+            >
+              <motion.div
+                key={Object.values(completedStages).filter(Boolean).length}
+                initial={{ scale: 1.3 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.5, type: "spring" }}
+                className="text-3xl md:text-4xl font-bold text-secondary mb-1"
+              >
+                {Math.round((Object.values(completedStages).filter(Boolean).length / workflowSteps.length) * 100)}%
+              </motion.div>
+              <div className="text-xs md:text-sm text-muted-foreground">Progress</div>
+            </motion.div>
           </div>
         </div>
-
-        {/* Bottom Padding */}
-        <div className="h-32"></div>
       </div>
+
+      {/* Bottom Padding */}
+      <div className="h-32"></div>
     </div>
   );
 }
