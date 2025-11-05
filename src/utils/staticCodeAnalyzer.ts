@@ -36,6 +36,7 @@ interface ScanOptions {
   checkXSS?: boolean;
   checkSecrets?: boolean;
   checkInsecureAPIs?: boolean;
+  checkPII?: boolean; // PHASE 3 FIX: Explicit PII checking option
   checkAll?: boolean;
 }
 
@@ -68,6 +69,7 @@ const SECURITY_PATTERNS = {
   /**
    * PRODUCTION-CRITICAL FIX: Comprehensive secret detection
    * Catches multiple secret patterns including const assignments
+   * PHASE 3 FIX: Refined patterns to reduce false positives
    */
   secrets: [
     {
@@ -95,17 +97,13 @@ const SECURITY_PATTERNS = {
       cwe: 'CWE-798'
     },
     {
-      // Pattern 5: AWS/Cloud provider access keys
-      pattern: /(?:AKIA|ASIA)[0-9A-Z]{16}/g,
+      // Pattern 5: AWS/Cloud provider access keys (more specific)
+      pattern: /(?:AKIA|ASIA)[0-9A-Z]{16}(?![0-9A-Z])/g,
       message: 'Hardcoded AWS access key detected',
       cwe: 'CWE-798'
-    },
-    {
-      // Pattern 6: Generic base64-like secrets (common in tokens)
-      pattern: /['\"`][A-Za-z0-9+/]{40,}={0,2}['\"`]/g,
-      message: 'Potential base64-encoded secret detected',
-      cwe: 'CWE-798'
     }
+    // PHASE 3 FIX: Removed overly broad base64 pattern to reduce false positives
+    // Base64 detection moved to context-aware analysis (could be re-added with entropy checking)
   ],
 
   insecureAPI: [
@@ -218,8 +216,8 @@ export class StaticCodeAnalyzer {
       this.checkInsecureAPIs(code);
     }
 
-    // PHASE 2 FIX: Add PII exposure detection
-    if (shouldCheckAll) {
+    // PHASE 3 FIX: PII exposure detection - run if checkAll OR explicit checkPII option
+    if (shouldCheckAll || options.checkPII) {
       this.checkExposedPII(code);
     }
 

@@ -134,9 +134,11 @@ function sanitizeData(data: any): any {
 /**
  * PHASE 2 FIX: Singleton Supabase client for production error tracking
  * Prevents redundant imports and ensures consistent client instance
+ * PHASE 2 ENHANCEMENT: Bootstrap mode prevents recursive logging
  */
 let supabaseClientCache: any = null;
 let supabaseClientPromise: Promise<any> | null = null;
+let isBootstrapping = false; // Prevent recursive logging during initialization
 
 async function getSupabaseClient() {
   // Return cached client if available
@@ -149,15 +151,20 @@ async function getSupabaseClient() {
     return supabaseClientPromise;
   }
   
+  // PHASE 2 FIX: Set bootstrap flag to prevent recursive logging
+  isBootstrapping = true;
+  
   // Import and cache the client
   supabaseClientPromise = import('@/integrations/supabase/client')
     .then(module => {
       supabaseClientCache = module.supabase;
       supabaseClientPromise = null;
+      isBootstrapping = false; // Bootstrap complete
       return supabaseClientCache;
     })
     .catch(error => {
       supabaseClientPromise = null;
+      isBootstrapping = false; // Bootstrap failed
       throw error;
     });
   
@@ -187,6 +194,12 @@ class SecureLogger {
     context?: Record<string, any>
   ): Promise<void> {
     if (!this.errorTrackingEnabled) return;
+    
+    // PHASE 2 FIX: Skip tracking during bootstrap to prevent recursive import
+    if (isBootstrapping) {
+      console.warn('[SecureLogger] Skipping error tracking during bootstrap');
+      return;
+    }
     
     try {
       // Sanitize error data before sending to external service

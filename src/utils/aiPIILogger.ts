@@ -73,15 +73,44 @@ function classifyPIIError(error: any): PIILogErrorType {
   return PIILogErrorType.UNKNOWN_ERROR;
 }
 
+// Rate limiting state for transient error alerts
+const transientErrorTracker = new Map<string, { count: number; lastAlert: number }>();
+const ALERT_RATE_LIMIT_MS = 60000; // 1 minute between alerts for same error type
+const MAX_ALERTS_PER_MINUTE = 3;
+
 /**
  * Send internal alert for critical PII logging failures
+ * PHASE 1 FIX: Multi-layer fallback error handling with rate limiting
  */
 async function alertPIILoggingFailure(
   errorType: PIILogErrorType,
   error: any,
   params: LogPIIProcessingParams
 ): Promise<void> {
-  // Log to security audit system
+  // Check rate limiting for transient errors
+  if (errorType === PIILogErrorType.NETWORK_ERROR || errorType === PIILogErrorType.DATABASE_ERROR_TRANSIENT) {
+    const key = `${errorType}-${params.caseId}`;
+    const now = Date.now();
+    const tracker = transientErrorTracker.get(key);
+    
+    if (tracker) {
+      if (now - tracker.lastAlert < ALERT_RATE_LIMIT_MS) {
+        tracker.count++;
+        if (tracker.count > MAX_ALERTS_PER_MINUTE) {
+          console.warn(`[PII Logger] Rate limit: Suppressing alert for ${errorType}`);
+          return; // Suppress alert
+        }
+      } else {
+        // Reset counter after time window
+        tracker.count = 1;
+        tracker.lastAlert = now;
+      }
+    } else {
+      transientErrorTracker.set(key, { count: 1, lastAlert: now });
+    }
+  }
+  
+  // Layer 1: Try to log to security audit system
   try {
     await supabase.rpc('log_security_event', {
       p_event_type: 'pii_logging_failure',
@@ -96,9 +125,32 @@ async function alertPIILoggingFailure(
       },
       p_success: false
     });
+    return; // Success, exit
   } catch (alertError) {
-    // Last resort: console error
-    console.error('[CRITICAL] PII logging failure alert failed:', alertError);
+    // Layer 2: Try to log to security metrics as fallback
+    try {
+      await supabase.rpc('record_security_metric', {
+        p_metric_type: 'pii_logging_failure',
+        p_metric_value: 1,
+        p_metadata: {
+          error_type: errorType,
+          case_id: params.caseId,
+          operation_type: params.operationType,
+          timestamp: new Date().toISOString()
+        }
+      });
+      console.warn('[PII Logger] Alert logged to metrics (primary logging failed)');
+      return; // Fallback success, exit
+    } catch (metricsError) {
+      // Layer 3: Last resort - console error with structured data
+      console.error('[CRITICAL] PII logging failure alert COMPLETELY FAILED:', {
+        primaryError: alertError,
+        fallbackError: metricsError,
+        errorType,
+        caseId: params.caseId,
+        operationType: params.operationType
+      });
+    }
   }
 }
 
@@ -217,14 +269,21 @@ export async function logPIIProcessing(params: LogPIIProcessingParams): Promise<
     const errorType = classifyPIIError(error);
     console.error('[PII Logger] Critical error in logPIIProcessing:', errorType, error);
     
+    // PHASE 1 FIX: Ensure all errors are properly classified and alerted
+    try {
+      await alertPIILoggingFailure(errorType, error, params);
+    } catch (alertFailure) {
+      // Even alert failed - log to console as absolute last resort
+      console.error('[CRITICAL] Failed to alert PII logging failure:', alertFailure);
+    }
+    
     // Re-throw auth and validation errors to block operation
     if (errorType === PIILogErrorType.AUTH_ERROR || 
         errorType === PIILogErrorType.VALIDATION_ERROR) {
       throw error;
     }
     
-    // Other errors: alert but don't block workflow (graceful degradation)
-    await alertPIILoggingFailure(errorType, error, params);
+    // Other errors: already alerted, don't block workflow (graceful degradation)
   }
 }
 
