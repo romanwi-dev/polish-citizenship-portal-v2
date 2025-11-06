@@ -40,7 +40,18 @@ export interface UploadResult {
   documentId: string;
   success: boolean;
   error?: string;
-  phase: 'validation' | 'upload' | 'workflow' | 'ocr';
+  phase: 'validation' | 'upload' | 'workflow' | 'ocr' | 'ocr_retry_scheduled';
+}
+
+// Atomic workflow creation response type
+export interface AtomicWorkflowResponse {
+  success: boolean;
+  error?: string;
+  workflow_instance_id?: string;
+  document_id?: string;
+  version_verified?: boolean;
+  expected_version?: number;
+  actual_version?: number;
 }
 
 export interface UploadProgress {

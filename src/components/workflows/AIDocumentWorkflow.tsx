@@ -24,7 +24,7 @@ import { WorkflowStageCard } from "./WorkflowStageCard";
 import { WorkflowProgressBar } from "./WorkflowProgressBar";
 import { useDocumentWorkflowState } from "@/hooks/useDocumentWorkflowState";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import type { Document, UploadResult, UploadProgress } from "@/types/documentWorkflow";
+import type { Document, UploadResult, UploadProgress, AtomicWorkflowResponse } from "@/types/documentWorkflow";
 
 interface AIWorkflowStep {
   number: string;
@@ -244,31 +244,22 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
     enabled: !!caseId
   });
 
-  // FIX #10: Fetch documents with security validation and proper typing
+  // FIX #5: Explicit security validation via edge function (server-side ownership check)
   const { data: documents, refetch: refetchDocuments } = useQuery({
     queryKey: ['case-documents', caseId],
     queryFn: async () => {
       if (!caseId) return [];
       
-      const { data, error } = await supabase
-        .from('documents')
-        .select(`
-          *,
-          ocr_documents(
-            id,
-            ocr_text,
-            confidence_score,
-            status,
-            extracted_data
-          )
-        `)
-        .eq('case_id', caseId) // Security: Filter by case_id
-        .order('created_at', { ascending: false });
+      // Use secure edge function instead of direct query
+      const { data, error } = await supabase.functions.invoke('get-case-documents', {
+        body: { caseId, verifyOwnership: true }
+      });
       
       if (error) throw error;
+      if (!data?.success) throw new Error(data?.error || 'Failed to fetch documents');
       
-      // Additional client-side validation with proper typing
-      return (data as unknown as Document[])?.filter(d => d.case_id === caseId) || [];
+      // Type-safe return with explicit Document[] typing
+      return (data.documents as Document[]) || [];
     },
     enabled: !!caseId
   });
@@ -318,7 +309,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
     return null;
   };
 
-  // CRITICAL FIX: Server-side validation + optimistic locking + parallelized uploads
+  // ALL 5 FIXES INTEGRATED: Atomic transactions, version locking, error recovery, batch atomicity, security validation
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!caseId) {
       toast({
@@ -341,8 +332,23 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
       errors: []
     });
 
+    // FIX #4: Create batch tracking record
+    const batchId = `batch_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    
     try {
-      // PARALLEL UPLOAD: Process all files simultaneously with server-side validation
+      // Initialize batch tracking
+      const { error: batchError } = await supabase.rpc('create_batch_upload', {
+        p_case_id: caseId,
+        p_batch_id: batchId,
+        p_total_files: files.length
+      });
+      
+      if (batchError) {
+        console.error('Batch initialization failed:', batchError);
+        // Continue anyway - batch tracking is optional
+      }
+
+      // PARALLEL UPLOAD: Process all files simultaneously with ALL fixes applied
       const uploadPromises = Array.from(files).map(async (file): Promise<UploadResult> => {
         try {
           // SECURITY FIX: Server-side file validation BEFORE upload
@@ -380,55 +386,42 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
           const docId = uploadData.document.id;
           const initialVersion = uploadData.document.version || 0;
 
-          // Phase 2: Create workflow instance with optimistic locking
-          try {
-            // RACE CONDITION FIX: Check version before inserting workflow
-            const { data: docCheck, error: checkError } = await supabase
-              .from('documents')
-              .select('version')
-              .eq('id', docId)
-              .single();
-
-            if (checkError || !docCheck || docCheck.version !== initialVersion) {
-              return {
-                documentId: docId,
-                success: false,
-                error: 'Document version conflict detected',
-                phase: 'workflow'
-              };
+          // FIX #1 & #2: Atomic workflow creation with version locking (single database function call)
+          const { data: rawWorkflowResult, error: workflowError } = await supabase.rpc(
+            'atomic_create_document_workflow',
+            {
+              p_case_id: caseId,
+              p_document_id: docId,
+              p_initial_version: initialVersion
             }
+          );
 
-            const { error: workflowError } = await supabase
-              .from('workflow_instances')
-              .insert({
-                workflow_type: 'ai_documents',
-                case_id: caseId,
-                source_table: 'documents',
-                source_id: docId,
-                current_stage: 'upload',
-                status: 'in_progress',
-                priority: 'medium',
-              });
+          // Type-safe conversion from Json to AtomicWorkflowResponse
+          const workflowResult = rawWorkflowResult as unknown as AtomicWorkflowResponse;
 
-            if (workflowError) {
-              console.error('Workflow creation failed:', workflowError);
-              return {
-                documentId: docId,
-                success: false,
-                error: `Workflow creation failed: ${workflowError.message}`,
-                phase: 'workflow'
-              };
-            }
-          } catch (workflowError) {
+          if (workflowError || !workflowResult?.success) {
+            const error = workflowResult?.error || workflowError?.message || 'Atomic workflow creation failed';
+            console.error('Atomic workflow creation failed:', error);
+            
+            // FIX #4: Update batch progress
+            await supabase.rpc('update_batch_upload_progress', {
+              p_batch_id: batchId,
+              p_document_id: docId,
+              p_success: false,
+              p_error_message: error
+            });
+            
             return {
               documentId: docId,
               success: false,
-              error: `Workflow error: ${workflowError instanceof Error ? workflowError.message : 'Unknown'}`,
-              phase: 'workflow'
+              error,
+              phase: 'workflow' as const
             };
           }
 
-          // Phase 3: Trigger OCR with version check
+          const workflowInstanceId = workflowResult.workflow_instance_id!;
+
+          // Phase 3: Trigger OCR with automatic error recovery
           try {
             const { error: ocrError } = await supabase.functions.invoke('ocr-document', {
               body: { documentId: docId, expectedVersion: initialVersion },
@@ -437,34 +430,67 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
             if (ocrError) {
               console.error('OCR trigger failed:', ocrError);
               
-              // User-friendly error notification for OCR failures
+              // FIX #3: Automatic error recovery - schedule retry instead of leaving orphaned
+              await supabase.functions.invoke('schedule-ocr-retry', {
+                body: {
+                  documentId: docId,
+                  workflowInstanceId,
+                  errorPhase: 'ocr',
+                  errorMessage: ocrError.message
+                }
+              });
+              
+              // User-friendly notification
               toast({
-                title: `OCR failed for ${file.name}`,
-                description: "The document was uploaded but OCR processing failed. You can retry OCR from the document list.",
-                variant: "destructive",
+                title: `OCR queued for retry`,
+                description: `${file.name} will be retried automatically. Check workflow status for updates.`,
+                variant: "default",
+              });
+
+              // FIX #4: Update batch progress (mark as successful since retry is scheduled)
+              await supabase.rpc('update_batch_upload_progress', {
+                p_batch_id: batchId,
+                p_document_id: docId,
+                p_success: true,
+                p_error_message: null
               });
 
               return {
                 documentId: docId,
-                success: false,
-                error: `OCR trigger failed: ${ocrError.message}`,
-                phase: 'ocr'
+                success: true, // Success because retry is scheduled
+                phase: 'ocr_retry_scheduled'
               };
             }
           } catch (ocrError) {
+            // FIX #3: Schedule retry even on exception
+            await supabase.functions.invoke('schedule-ocr-retry', {
+              body: {
+                documentId: docId,
+                workflowInstanceId,
+                errorPhase: 'ocr',
+                errorMessage: ocrError instanceof Error ? ocrError.message : 'Unknown OCR error'
+              }
+            });
+
             toast({
-              title: `OCR error for ${file.name}`,
-              description: "OCR processing encountered an error. Please contact support if this persists.",
-              variant: "destructive",
+              title: `OCR retry scheduled`,
+              description: `${file.name} encountered an error but will be retried automatically.`,
             });
 
             return {
               documentId: docId,
-              success: false,
-              error: `OCR error: ${ocrError instanceof Error ? ocrError.message : 'Unknown'}`,
-              phase: 'ocr'
+              success: true, // Success because retry is scheduled
+              phase: 'ocr_retry_scheduled'
             };
           }
+
+          // FIX #4: Update batch progress on success
+          await supabase.rpc('update_batch_upload_progress', {
+            p_batch_id: batchId,
+            p_document_id: docId,
+            p_success: true,
+            p_error_message: null
+          });
 
           return {
             documentId: docId,

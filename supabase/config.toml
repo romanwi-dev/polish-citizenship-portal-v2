@@ -1,5 +1,14 @@
 project_id = "oogmuakyqadpynnrasnd"
 
+[functions.get-case-documents]
+verify_jwt = true
+
+[functions.schedule-ocr-retry]
+verify_jwt = false
+
+[functions.rollback-batch-upload]
+verify_jwt = true
+
 [functions.verify-workflow-multi-model]
 verify_jwt = false
 

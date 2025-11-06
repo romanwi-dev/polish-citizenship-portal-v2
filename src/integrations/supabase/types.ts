@@ -1182,6 +1182,51 @@ export type Database = {
         }
         Relationships: []
       }
+      document_batch_uploads: {
+        Row: {
+          batch_id: string
+          case_id: string
+          completed_at: string | null
+          created_at: string
+          created_by: string | null
+          document_ids: string[] | null
+          error_details: Json | null
+          failed_count: number | null
+          id: string
+          status: string
+          total_files: number
+          uploaded_count: number | null
+        }
+        Insert: {
+          batch_id: string
+          case_id: string
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          document_ids?: string[] | null
+          error_details?: Json | null
+          failed_count?: number | null
+          id?: string
+          status?: string
+          total_files: number
+          uploaded_count?: number | null
+        }
+        Update: {
+          batch_id?: string
+          case_id?: string
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          document_ids?: string[] | null
+          error_details?: Json | null
+          failed_count?: number | null
+          id?: string
+          status?: string
+          total_files?: number
+          uploaded_count?: number | null
+        }
+        Relationships: []
+      }
       documents: {
         Row: {
           ai_corrections: Json | null
@@ -5357,6 +5402,14 @@ export type Database = {
         }
         Returns: Json
       }
+      atomic_create_document_workflow: {
+        Args: {
+          p_case_id: string
+          p_document_id: string
+          p_initial_version: number
+        }
+        Returns: Json
+      }
       calculate_verification_trend: {
         Args: {
           p_current_value: number
@@ -5402,6 +5455,10 @@ export type Database = {
       }
       cleanup_old_health_data: { Args: never; Returns: undefined }
       cleanup_rate_limit_logs: { Args: never; Returns: undefined }
+      create_batch_upload: {
+        Args: { p_batch_id: string; p_case_id: string; p_total_files: number }
+        Returns: Json
+      }
       create_verification_alert: {
         Args: {
           p_alert_type: string
@@ -5540,6 +5597,15 @@ export type Database = {
         }
         Returns: string
       }
+      mark_workflow_for_retry: {
+        Args: {
+          p_error_message: string
+          p_error_phase: string
+          p_retry_delay_minutes?: number
+          p_workflow_instance_id: string
+        }
+        Returns: Json
+      }
       record_security_metric: {
         Args: {
           p_metadata?: Json
@@ -5579,6 +5645,15 @@ export type Database = {
           p_to_stage: string
           p_transitioned_by?: string
           p_workflow_instance_id: string
+        }
+        Returns: Json
+      }
+      update_batch_upload_progress: {
+        Args: {
+          p_batch_id: string
+          p_document_id: string
+          p_error_message?: string
+          p_success: boolean
         }
         Returns: Json
       }
