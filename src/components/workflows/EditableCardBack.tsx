@@ -115,7 +115,8 @@ export const EditableCardBack = ({
               value={editedText}
               onChange={(e) => setEditedText(e.target.value)}
               onClick={(e) => e.stopPropagation()}
-              className="min-h-[80px] w-full resize-none text-sm text-left align-top"
+              className="!min-h-[70px] h-[70px] w-full resize-none text-sm !py-2 !px-2 align-text-top"
+              style={{ verticalAlign: 'top', textAlign: 'left' }}
               placeholder="Enter card description..."
               autoFocus
             />
