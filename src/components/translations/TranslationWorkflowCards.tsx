@@ -148,161 +148,139 @@ export default function TranslationWorkflowCards({ caseId }: TranslationWorkflow
               Translation Workflow
             </span>
           </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            viewport={{ once: true }}
-            className="text-lg text-muted-foreground max-w-3xl mx-auto mb-8"
-          >
-            Smart step-by-step human and AI supervised process from document collection to official submission
-          </motion.p>
         </motion.div>
 
-        {/* Steps Grid */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        {/* Steps - Left-Right Alternating Layout */}
+        <div className="relative max-w-6xl mx-auto">
+          {/* Center line for desktop */}
+          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block" />
+
           {translationSteps.map((step, index) => {
+            const isLeft = index % 2 === 0;
             const documentCount = workflowStats?.[step.stage] || 0;
             
             return (
               <motion.div
                 key={step.number}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.15 }}
+                initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true, margin: "-50px" }}
+                className={`mb-12 md:flex ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-8`}
               >
-                <div 
-                  className="relative h-[450px]"
-                  style={{ perspective: '1000px' }}
-                >
-                  <div
-                    onClick={() => toggleFlip(step.number)}
-                    className="absolute inset-0 cursor-pointer transition-transform duration-700"
-                    style={{
-                      transformStyle: 'preserve-3d',
-                      transform: flippedCards[step.number] ? 'rotateY(180deg)' : 'rotateY(0deg)',
-                    }}
+                {/* Card */}
+                <div className={`md:w-5/12 ${isLeft ? 'md:text-right' : 'md:text-left'}`}>
+                  <div 
+                    className="relative h-[400px]"
+                    style={{ perspective: '1000px' }}
                   >
-                    {/* Front Side */}
-                    <motion.div
-                      whileHover={{ scale: 1.03, y: -5 }}
-                      transition={{ duration: 0.3 }}
-                      className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group"
+                    <div
+                      onClick={() => toggleFlip(step.number)}
+                      className="absolute inset-0 cursor-pointer transition-transform duration-700"
                       style={{
-                        backfaceVisibility: 'hidden',
-                        WebkitBackfaceVisibility: 'hidden',
+                        transformStyle: 'preserve-3d',
+                        transform: flippedCards[step.number] ? 'rotateY(180deg)' : 'rotateY(0deg)',
                       }}
                     >
-                      {/* Icon and Number */}
-                      <div className="mb-6 relative">
-                        <div className="w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/5 flex items-center justify-center">
-                          <step.icon className="w-16 h-16 text-primary opacity-80 group-hover:opacity-100 transition-opacity duration-300" />
-                        </div>
-                        <div className={`absolute top-4 left-4 text-5xl font-heading font-black bg-gradient-to-r ${step.gradient} bg-clip-text text-transparent opacity-20`}>
-                          {step.number}
-                        </div>
-                        {documentCount > 0 && (
-                          <div className="absolute top-4 right-4 bg-primary text-primary-foreground rounded-full w-10 h-10 flex items-center justify-center font-bold text-sm">
-                            {documentCount}
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Content */}
-                      <div className="space-y-4">
-                        <motion.h3 
-                          initial={{ opacity: 0, x: -20 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.5, delay: index * 0.1 }}
-                          viewport={{ once: true }}
-                          className="text-2xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300"
-                        >
-                          {step.title}
-                        </motion.h3>
-                        <p className="text-muted-foreground leading-relaxed mb-4">
-                          {step.description}
-                        </p>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="w-full"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          {step.cta}
-                        </Button>
-                        <p className="text-xs text-muted-foreground/60 text-center mt-2">Tap card for details</p>
-                      </div>
-                    </motion.div>
-
-                    {/* Back Side */}
-                    <div 
-                      className="absolute inset-0 glass-card p-8 rounded-lg hover-glow"
-                      style={{
-                        backfaceVisibility: 'hidden',
-                        WebkitBackfaceVisibility: 'hidden',
-                        transform: 'rotateY(180deg)',
-                      }}
-                    >
-                      <div className="flex flex-col gap-4 h-full">
-                        <div className="mb-4 relative">
-                          <div className="w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-secondary/5 to-accent/5 flex items-center justify-center">
-                            <step.icon className="w-16 h-16 text-secondary opacity-60" />
+                      {/* Front Side */}
+                      <motion.div
+                        whileHover={{ scale: 1.03, y: -5 }}
+                        transition={{ duration: 0.3 }}
+                        className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group"
+                        style={{
+                          backfaceVisibility: 'hidden',
+                          WebkitBackfaceVisibility: 'hidden',
+                        }}
+                      >
+                        <div className="mb-6 relative">
+                          <div className="w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/5 flex items-center justify-center">
+                            <step.icon className="w-16 h-16 text-primary opacity-80 group-hover:opacity-100 transition-opacity duration-300" />
                           </div>
                           <div className={`absolute top-4 left-4 text-5xl font-heading font-black bg-gradient-to-r ${step.gradient} bg-clip-text text-transparent opacity-20`}>
                             {step.number}
                           </div>
+                          {documentCount > 0 && (
+                            <div className="absolute top-4 right-4 bg-primary text-primary-foreground rounded-full w-10 h-10 flex items-center justify-center font-bold text-sm">
+                              {documentCount}
+                            </div>
+                          )}
                         </div>
-                        
-                        <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground mb-2">
-                          Stage Details
-                        </h3>
-                        <div className="flex-1 overflow-auto space-y-3">
-                          <div className="p-3 rounded-lg bg-muted/30">
-                            <p className="text-sm font-medium mb-1">Documents in this stage:</p>
-                            <p className="text-2xl font-bold text-primary">{documentCount}</p>
-                          </div>
-                          <div className="p-3 rounded-lg bg-muted/30">
-                            <p className="text-sm text-muted-foreground">
-                              {step.stage === 'requirements_set' && 'Set up document requirements for each case and family member.'}
-                              {step.stage === 'translation_identified' && 'Identify which documents require Polish translation.'}
-                              {step.stage === 'upload_pending' && 'Awaiting client to upload document scans to their portal.'}
-                              {step.stage === 'ocr_processing' && 'AI scanning and extracting text from uploaded documents.'}
-                              {step.stage === 'ai_translating' && 'AI generating translations using official templates.'}
-                              {step.stage === 'hac_review' && 'Attorney reviewing translations for accuracy and compliance.'}
-                              {step.stage === 'sent_to_translator' && 'Documents sent to certified Polish translator for official certification.'}
-                              {step.stage === 'submitted' && 'Certified documents submitted to Polish authorities for processing.'}
-                            </p>
-                          </div>
+
+                        <div className="space-y-4">
+                          <h3 className="text-2xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                            {step.title}
+                          </h3>
+                          <p className="text-muted-foreground leading-relaxed mb-4">
+                            {step.description}
+                          </p>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="w-full"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            {step.cta}
+                          </Button>
+                          <p className="text-xs text-muted-foreground/60 text-center mt-2">Tap card for details</p>
                         </div>
-                        <p className="text-xs text-muted-foreground/60 text-center">Tap to flip back</p>
+                      </motion.div>
+
+                      {/* Back Side */}
+                      <div 
+                        className="absolute inset-0 glass-card p-8 rounded-lg hover-glow"
+                        style={{
+                          backfaceVisibility: 'hidden',
+                          WebkitBackfaceVisibility: 'hidden',
+                          transform: 'rotateY(180deg)',
+                        }}
+                      >
+                        <div className="flex flex-col gap-4 h-full">
+                          <div className="mb-4 relative">
+                            <div className="w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-secondary/5 to-accent/5 flex items-center justify-center">
+                              <step.icon className="w-16 h-16 text-secondary opacity-60" />
+                            </div>
+                          </div>
+                          
+                          <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground mb-2">
+                            Stage Details
+                          </h3>
+                          <div className="flex-1 overflow-auto space-y-3">
+                            <div className="p-3 rounded-lg bg-muted/30">
+                              <p className="text-sm font-medium mb-1">Documents in this stage:</p>
+                              <p className="text-2xl font-bold text-primary">{documentCount}</p>
+                            </div>
+                            <div className="p-3 rounded-lg bg-muted/30">
+                              <p className="text-sm text-muted-foreground">
+                                {step.stage === 'requirements_set' && 'Set up document requirements for each case and family member.'}
+                                {step.stage === 'translation_identified' && 'Identify which documents require Polish translation.'}
+                                {step.stage === 'upload_pending' && 'Awaiting client to upload document scans to their portal.'}
+                                {step.stage === 'ocr_processing' && 'AI scanning and extracting text from uploaded documents.'}
+                                {step.stage === 'ai_translating' && 'AI generating translations using official templates.'}
+                                {step.stage === 'hac_review' && 'Attorney reviewing translations for accuracy and compliance.'}
+                                {step.stage === 'sent_to_translator' && 'Documents sent to certified Polish translator for official certification.'}
+                                {step.stage === 'submitted' && 'Certified documents submitted to Polish authorities for processing.'}
+                              </p>
+                            </div>
+                          </div>
+                          <p className="text-xs text-muted-foreground/60 text-center">Tap to flip back</p>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
+
+                {/* Timeline Dot */}
+                <div className="hidden md:block w-2/12 flex-shrink-0 relative">
+                  <div className="w-8 h-8 rounded-full bg-primary border-4 border-background mx-auto relative z-10" />
+                </div>
+
+                {/* Empty space on other side */}
+                <div className="hidden md:block md:w-5/12" />
               </motion.div>
             );
           })}
         </div>
 
-        {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="text-center mt-16"
-        >
-          <Button
-            size="lg"
-            className="text-xl md:text-2xl font-bold px-8 md:px-20 py-6 h-auto rounded-lg bg-white/5 hover:bg-white/10 shadow-glow hover-glow group relative overflow-hidden backdrop-blur-md border border-white/30 w-full md:w-auto"
-          >
-            <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              View All Translation Jobs
-            </span>
-            <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </Button>
-        </motion.div>
       </div>
     </section>
   );
