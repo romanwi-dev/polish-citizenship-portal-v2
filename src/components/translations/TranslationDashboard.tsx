@@ -74,7 +74,7 @@ export const TranslationDashboard = () => {
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
                   <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.in_progress || ''}</p>
-                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">In Progress</p>
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Documents</p>
                 </div>
               </div>
             </div>
@@ -150,7 +150,7 @@ export const TranslationDashboard = () => {
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
                   <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.quality_check || ''}</p>
-                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Quality Check</p>
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Check</p>
                 </div>
               </div>
             </div>
