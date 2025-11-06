@@ -688,7 +688,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                 {/* Content Card - Left or Right */}
                 <div className="md:w-5/12">
                   <div
-                    className="relative h-[400px]"
+                    className="relative h-[500px] md:h-[600px]"
                     style={{ perspective: '1000px' }}
                   >
                     <motion.div
@@ -932,7 +932,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.9 }}
                     transition={{ duration: 0.4, ease: "easeOut" }}
-                    className="md:w-5/12 h-[400px] glass-card p-6 rounded-lg border-2 border-primary/20 mt-4 md:mt-0"
+                    className="md:w-5/12 h-[500px] md:h-[600px] glass-card p-6 rounded-lg border-2 border-primary/20 mt-4 md:mt-0"
                     style={{
                       boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15)'
                     }}

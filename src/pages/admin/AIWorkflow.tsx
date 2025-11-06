@@ -53,7 +53,7 @@ const AIWorkflow = () => {
         </h1>
 
         {/* Search and Case Selection - Responsive Layout */}
-        <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 w-full max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 w-full max-w-7xl mx-auto mb-16 md:mb-24">
           {/* Search Bar */}
           <div className="relative w-full md:flex-1">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-primary/40 z-10" />
