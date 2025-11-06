@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { 
   Upload, 
   Brain, 
@@ -11,6 +11,7 @@ import {
   Download,
   Check,
   Image as ImageIcon,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -25,7 +26,7 @@ import { WorkflowProgressBar } from "./WorkflowProgressBar";
 import { useDocumentWorkflowState } from "@/hooks/useDocumentWorkflowState";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import type { Document, UploadResult, UploadProgress, AtomicWorkflowResponse } from "@/types/documentWorkflow";
-import { FileUploadWithPreview } from "./FileUploadWithPreview";
+import { DocumentViewer } from "./DocumentViewer";
 
 interface AIWorkflowStep {
   number: string;
@@ -208,6 +209,7 @@ interface AIDocumentWorkflowProps {
 export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
   const { toast } = useToast();
   const isMobile = useIsMobile();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<UploadProgress>({
     total: 0,
@@ -216,6 +218,8 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
     uploading: 0,
     errors: []
   });
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [viewerDoc, setViewerDoc] = useState<{ url: string; name: string; type: string; ocrText?: string } | null>(null);
   
   // Use workflow state hook for persistence
   const {
@@ -310,8 +314,21 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
     return null;
   };
 
+  // Handle file selection and show previews
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      setSelectedFiles(Array.from(files));
+    }
+  };
+
+  // Remove file from preview
+  const removeFile = (index: number) => {
+    setSelectedFiles(prev => prev.filter((_, i) => i !== index));
+  };
+
   // ALL 5 FIXES INTEGRATED: Atomic transactions, version locking, error recovery, batch atomicity, security validation
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (filesToUpload: File[]) => {
     if (!caseId) {
       toast({
         title: "No case selected",
@@ -321,15 +338,14 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
       return;
     }
 
-    const files = event.target.files;
-    if (!files || files.length === 0) return;
+    if (!filesToUpload || filesToUpload.length === 0) return;
 
     setUploading(true);
     setUploadProgress({
-      total: files.length,
+      total: filesToUpload.length,
       completed: 0,
       failed: 0,
-      uploading: files.length,
+      uploading: filesToUpload.length,
       errors: []
     });
 
@@ -341,7 +357,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
       const { error: batchError } = await supabase.rpc('create_batch_upload', {
         p_case_id: caseId,
         p_batch_id: batchId,
-        p_total_files: files.length
+        p_total_files: filesToUpload.length
       });
       
       if (batchError) {
@@ -350,7 +366,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
       }
 
       // PARALLEL UPLOAD: Process all files simultaneously with ALL fixes applied
-      const uploadPromises = Array.from(files).map(async (file): Promise<UploadResult> => {
+      const uploadPromises = filesToUpload.map(async (file): Promise<UploadResult> => {
         try {
           // SECURITY FIX: Server-side file validation BEFORE upload
           const validationFormData = new FormData();
@@ -528,14 +544,14 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
       
       const failures = results
         .map((r, idx) => ({
-          file: files[idx].name,
+          file: filesToUpload[idx].name,
           result: r.status === 'fulfilled' ? r.value : { success: false, error: 'Promise rejected', phase: 'upload' }
         }))
         .filter(f => !f.result.success);
 
       // ATOMIC state update - single setState call to prevent race conditions
       setUploadProgress({
-        total: files.length,
+        total: filesToUpload.length,
         completed: successCount,
         failed: failures.length,
         uploading: 0,
@@ -547,15 +563,17 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
       });
 
       // Show comprehensive toast notification
-      if (successCount === files.length) {
+      if (successCount === filesToUpload.length) {
         toast({
           title: "Upload successful",
           description: `All ${successCount} document(s) uploaded and processing started`,
         });
+        setSelectedFiles([]); // Clear preview on success
+        if (fileInputRef.current) fileInputRef.current.value = '';
       } else if (successCount > 0) {
         toast({
           title: "Partial success",
-          description: `${successCount} of ${files.length} documents uploaded. ${failures.length} failed.`,
+          description: `${successCount} of ${filesToUpload.length} documents uploaded. ${failures.length} failed.`,
           variant: "destructive",
         });
         
@@ -570,7 +588,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
       } else {
         toast({
           title: "Upload failed",
-          description: `All ${files.length} documents failed to upload. Check errors below.`,
+          description: `All ${filesToUpload.length} documents failed to upload. Check errors below.`,
           variant: "destructive",
         });
         
@@ -596,7 +614,19 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
       });
     } finally {
       setUploading(false);
-      event.target.value = '';
+    }
+  };
+
+  // Handle document preview
+  const handleDocumentView = (doc: Document) => {
+    const thumbnail = getDocumentThumbnail(doc);
+    if (thumbnail || doc.dropbox_path) {
+      setViewerDoc({
+        url: thumbnail || doc.dropbox_path || '',
+        name: doc.name,
+        type: doc.file_extension || 'pdf',
+        ocrText: undefined // OCR text available in doc.ocr_data if needed
+      });
     }
   };
 
@@ -710,22 +740,28 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                           {/* Upload Section for First Card */}
                           {step.stage === 'upload' && (
                             <div className="mb-3">
-                              <FileUploadWithPreview
-                                caseId={caseId}
-                                onUpload={async (files) => {
-                                  // Convert Files to a FileList-like structure
-                                  const dataTransfer = new DataTransfer();
-                                  files.forEach(file => dataTransfer.items.add(file));
-                                  
-                                  // Create a synthetic event
-                                  const event = {
-                                    target: { files: dataTransfer.files, value: '' }
-                                  } as React.ChangeEvent<HTMLInputElement>;
-                                  
-                                  await handleFileUpload(event);
-                                }}
-                                uploading={uploading}
+                              <input
+                                ref={fileInputRef}
+                                type="file"
+                                multiple
+                                accept=".jpg,.jpeg,.png,.webp,.pdf"
+                                onChange={handleFileSelect}
+                                className="hidden"
                               />
+                              <Button
+                                onClick={() => fileInputRef.current?.click()}
+                                disabled={!caseId || uploading}
+                                className="w-full"
+                                size="lg"
+                              >
+                                <Upload className="h-5 w-5 mr-2" />
+                                Upload Documents
+                              </Button>
+                              {uploading && (
+                                <p className="text-xs text-center mt-2 text-primary">
+                                  Uploading {uploadProgress.uploading} file(s)...
+                                </p>
+                              )}
                             </div>
                           )}
 
@@ -736,20 +772,24 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                                 {stageDocuments.slice(0, 4).map((doc) => {
                                   const thumbnail = getDocumentThumbnail(doc);
                                   return (
-                                    <div
-                                      key={doc.id}
-                                      className="flex-shrink-0 w-16 h-16 rounded-lg border-2 border-primary/20 overflow-hidden bg-muted/50 flex items-center justify-center group hover:border-primary/60 transition-all"
-                                    >
-                                      {thumbnail ? (
-                                        <img
-                                          src={thumbnail}
-                                          alt={doc.name}
-                                          className="w-full h-full object-cover group-hover:scale-110 transition-transform"
-                                        />
-                                      ) : (
-                                        <FileText className="h-6 w-6 text-primary/40" />
-                                      )}
-                                    </div>
+                                     <div
+                                       key={doc.id}
+                                       onClick={() => handleDocumentView(doc)}
+                                       className="flex-shrink-0 w-16 h-16 rounded-lg border-2 border-primary/20 overflow-hidden bg-muted/50 flex items-center justify-center group hover:border-primary/60 transition-all cursor-pointer"
+                                     >
+                                       {thumbnail ? (
+                                         <img
+                                           src={thumbnail}
+                                           alt={doc.name}
+                                           className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                                         />
+                                       ) : (
+                                         <FileText className="h-6 w-6 text-primary/40" />
+                                       )}
+                                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">
+                                         <Eye className="h-4 w-4 text-white" />
+                                       </div>
+                                     </div>
                                   );
                                 })}
                                 {stageDocuments.length > 4 && (
@@ -961,6 +1001,82 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
 
       {/* Bottom Padding */}
       <div className="h-32"></div>
+
+      {/* File Preview Sidebar */}
+      {selectedFiles.length > 0 && (
+        <div className="fixed right-4 top-1/2 -translate-y-1/2 z-50 w-80 max-h-[600px] glass-card p-4 rounded-lg shadow-2xl border-2 border-primary/20">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-semibold text-sm flex items-center gap-2">
+              <Eye className="h-4 w-4 text-primary" />
+              Preview ({selectedFiles.length})
+            </h3>
+            <Button
+              onClick={() => setSelectedFiles([])}
+              variant="ghost"
+              size="sm"
+              className="h-7 w-7 p-0"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+
+          <div className="space-y-2 max-h-[450px] overflow-y-auto mb-3">
+            {selectedFiles.map((file, index) => (
+              <div
+                key={index}
+                className="relative p-2 rounded border border-primary/20 bg-background/50 group hover:border-primary/40 transition-all"
+              >
+                <button
+                  onClick={() => removeFile(index)}
+                  className="absolute -top-1 -right-1 z-10 bg-destructive text-destructive-foreground rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+
+                <div className="flex items-center gap-2">
+                  <div className="w-12 h-12 rounded bg-muted flex items-center justify-center flex-shrink-0">
+                    {file.type.startsWith('image/') ? (
+                      <img
+                        src={URL.createObjectURL(file)}
+                        alt={file.name}
+                        className="w-full h-full object-cover rounded"
+                      />
+                    ) : (
+                      <FileText className="h-6 w-6 text-primary/40" />
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-medium truncate">{file.name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {(file.size / 1024).toFixed(0)} KB
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <Button
+            onClick={() => handleFileUpload(selectedFiles)}
+            disabled={uploading}
+            className="w-full"
+          >
+            {uploading ? 'Uploading...' : `Upload ${selectedFiles.length} file(s)`}
+          </Button>
+        </div>
+      )}
+
+      {/* Document Viewer Modal */}
+      {viewerDoc && (
+        <DocumentViewer
+          isOpen={!!viewerDoc}
+          onClose={() => setViewerDoc(null)}
+          documentUrl={viewerDoc.url}
+          documentName={viewerDoc.name}
+          documentType={viewerDoc.type}
+          ocrText={viewerDoc.ocrText}
+        />
+      )}
     </div>
     </ErrorBoundary>
   );
