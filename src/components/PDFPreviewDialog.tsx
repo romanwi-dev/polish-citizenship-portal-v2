@@ -153,7 +153,7 @@ export function PDFPreviewDialog({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="w-full max-w-[95vw] md:max-w-6xl h-[90vh] flex flex-col p-3 md:p-6">
+      <DialogContent className="w-full max-w-[98vw] md:max-w-7xl h-[95vh] flex flex-col p-3 md:p-6">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold">
             {documentTitle} - Preview

@@ -413,7 +413,21 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
           );
 
           if (uploadError || !uploadData?.success) {
-            throw new Error(uploadData?.error || 'Upload failed');
+            const errorMsg = uploadData?.error || uploadError?.message || 'Upload failed';
+            console.error('UPLOAD FAILURE:', {
+              fileName: file.name,
+              uploadError,
+              uploadData,
+              errorMessage: errorMsg
+            });
+            
+            toast({
+              title: "Upload Failed",
+              description: `${file.name}: ${errorMsg}`,
+              variant: "destructive",
+            });
+            
+            throw new Error(errorMsg);
           }
 
           const docId = uploadData.document.id;
@@ -532,10 +546,17 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
           };
 
         } catch (error) {
+          const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+          console.error('UPLOAD EXCEPTION:', {
+            fileName: filesToUpload.find((f, i) => i === filesToUpload.indexOf(filesToUpload[0]))?.name,
+            error: errorMsg,
+            stack: error instanceof Error ? error.stack : undefined
+          });
+          
           return {
             documentId: 'unknown',
             success: false,
-            error: `Upload failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+            error: `Upload failed: ${errorMsg}`,
             phase: 'upload'
           };
         }
