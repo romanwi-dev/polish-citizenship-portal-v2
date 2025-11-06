@@ -1,16 +1,15 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
-  Award,
-  FileText, 
-  Package, 
-  Calendar, 
+  Plane,
+  Calendar,
+  Building2,
   CheckCircle,
+  FileText,
   Workflow,
   ClipboardList,
   UserCog,
-  Building2,
-  PartyPopper
+  MapPin
 } from "lucide-react";
 import { WorkflowNavigation } from "@/components/workflows/WorkflowNavigation";
 
@@ -38,7 +37,7 @@ export const PassportDashboard = () => {
       {/* Workflow Navigation */}
       <WorkflowNavigation />
 
-      <div className="grid gap-3 grid-cols-2 md:grid-cols-4">
+      <div className="grid gap-3 grid-cols-2 md:grid-cols-4 px-2 sm:px-0">
         {/* Preparing Card */}
         <div 
           className="relative h-[140px] cursor-pointer"
@@ -54,12 +53,16 @@ export const PassportDashboard = () => {
           >
             {/* Front */}
             <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow opacity-50"
-              style={{ backfaceVisibility: 'hidden' }}
+              className="absolute inset-0 p-4 sm:p-6 rounded-lg transition-all duration-300 border-2 border-primary/10 backdrop-blur-md opacity-50"
+              style={{ 
+                backfaceVisibility: 'hidden',
+                background: 'rgba(255, 255, 255, 0.05)',
+                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
+              }}
             >
               <div className="flex items-center gap-3 sm:gap-4 justify-center">
                 <div className="min-w-0 text-center">
-                  <p className="text-base font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Preparing</p>
+                  <p className="text-base sm:text-sm font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Preparing</p>
                 </div>
               </div>
             </div>
@@ -88,12 +91,16 @@ export const PassportDashboard = () => {
           >
             {/* Front */}
             <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow opacity-50"
-              style={{ backfaceVisibility: 'hidden' }}
+              className="absolute inset-0 p-4 sm:p-6 rounded-lg transition-all duration-300 border-2 border-primary/10 backdrop-blur-md opacity-50"
+              style={{ 
+                backfaceVisibility: 'hidden',
+                background: 'rgba(255, 255, 255, 0.05)',
+                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
+              }}
             >
               <div className="flex items-center gap-3 sm:gap-4 justify-center">
                 <div className="min-w-0 text-center">
-                  <p className="text-base font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Scheduled</p>
+                  <p className="text-base sm:text-sm font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Scheduled</p>
                 </div>
               </div>
             </div>
@@ -102,32 +109,36 @@ export const PassportDashboard = () => {
               className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
               style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
             >
-              <p className="text-sm text-muted-foreground text-center">Consulate appointments scheduled for passport application</p>
+              <p className="text-sm text-muted-foreground text-center">Appointment scheduled at Polish Consulate</p>
             </div>
           </div>
         </div>
 
-        {/* Processing Card */}
+        {/* Applied Card */}
         <div 
           className="relative h-[140px] cursor-pointer"
           style={{ perspective: '1000px' }}
-          onClick={() => toggleFlip('processing')}
+          onClick={() => toggleFlip('applied')}
         >
           <div
             className="absolute inset-0 transition-transform duration-700"
             style={{
               transformStyle: 'preserve-3d',
-              transform: flippedCards['processing'] ? 'rotateY(180deg)' : 'rotateY(0deg)',
+              transform: flippedCards['applied'] ? 'rotateY(180deg)' : 'rotateY(0deg)',
             }}
           >
             {/* Front */}
             <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow opacity-50"
-              style={{ backfaceVisibility: 'hidden' }}
+              className="absolute inset-0 p-4 sm:p-6 rounded-lg transition-all duration-300 border-2 border-primary/10 backdrop-blur-md opacity-50"
+              style={{ 
+                backfaceVisibility: 'hidden',
+                background: 'rgba(255, 255, 255, 0.05)',
+                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
+              }}
             >
               <div className="flex items-center gap-3 sm:gap-4 justify-center">
                 <div className="min-w-0 text-center">
-                  <p className="text-base font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Processing</p>
+                  <p className="text-base sm:text-sm font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Applied</p>
                 </div>
               </div>
             </div>
@@ -136,7 +147,7 @@ export const PassportDashboard = () => {
               className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
               style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
             >
-              <p className="text-sm text-muted-foreground text-center">Passports being processed by Polish consulates</p>
+              <p className="text-sm text-muted-foreground text-center">Application submitted, awaiting passport issuance</p>
             </div>
           </div>
         </div>
@@ -156,12 +167,16 @@ export const PassportDashboard = () => {
           >
             {/* Front */}
             <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow opacity-50"
-              style={{ backfaceVisibility: 'hidden' }}
+              className="absolute inset-0 p-4 sm:p-6 rounded-lg transition-all duration-300 border-2 border-primary/10 backdrop-blur-md opacity-50"
+              style={{ 
+                backfaceVisibility: 'hidden',
+                background: 'rgba(255, 255, 255, 0.05)',
+                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
+              }}
             >
               <div className="flex items-center gap-3 sm:gap-4 justify-center">
                 <div className="min-w-0 text-center">
-                  <p className="text-base font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Obtained 🎉</p>
+                  <p className="text-base sm:text-sm font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Obtained</p>
                 </div>
               </div>
             </div>
@@ -170,7 +185,7 @@ export const PassportDashboard = () => {
               className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
               style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
             >
-              <p className="text-sm text-muted-foreground text-center">Polish passports successfully obtained - congratulations!</p>
+              <p className="text-sm text-muted-foreground text-center">Polish passport successfully obtained</p>
             </div>
           </div>
         </div>
@@ -189,14 +204,14 @@ export const PassportDashboard = () => {
             <TabsTrigger value="supervisor" className="flex-1 min-h-[48px] h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.4)]">
               Supervisor
             </TabsTrigger>
-            <TabsTrigger value="directory" className="flex-1 min-h-[48px] h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.4)]">
-              Consulate Directory
+            <TabsTrigger value="consulates" className="flex-1 min-h-[48px] h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.4)]">
+              Consulates
             </TabsTrigger>
-            <TabsTrigger value="kit" className="flex-1 min-h-[48px] h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.4)]">
-              Kit Generator
+            <TabsTrigger value="requirements" className="flex-1 min-h-[48px] h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.4)]">
+              Requirements
             </TabsTrigger>
-            <TabsTrigger value="success" className="flex-1 min-h-[48px] h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.4)]">
-              Success Dashboard
+            <TabsTrigger value="checklist" className="flex-1 min-h-[48px] h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.4)]">
+              Checklist
             </TabsTrigger>
           </TabsList>
         </div>
@@ -212,7 +227,7 @@ export const PassportDashboard = () => {
         <TabsContent value="timeline">
           <div className="text-center py-12">
             <Workflow className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">8-Stage Timeline</h3>
+            <h3 className="text-xl font-semibold mb-2">6-Stage Timeline</h3>
             <p className="text-muted-foreground">Timeline visualization coming soon</p>
           </div>
         </TabsContent>
@@ -225,27 +240,27 @@ export const PassportDashboard = () => {
           </div>
         </TabsContent>
 
-        <TabsContent value="directory">
+        <TabsContent value="consulates">
           <div className="text-center py-12">
             <Building2 className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">Consulate Directory</h3>
-            <p className="text-muted-foreground">Polish consulates worldwide database coming soon</p>
+            <h3 className="text-xl font-semibold mb-2">Polish Consulates</h3>
+            <p className="text-muted-foreground">Consulate directory and appointment info coming soon</p>
           </div>
         </TabsContent>
 
-        <TabsContent value="kit">
+        <TabsContent value="requirements">
+          <div className="text-center py-12">
+            <FileText className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
+            <h3 className="text-xl font-semibold mb-2">Application Requirements</h3>
+            <p className="text-muted-foreground">Document requirements and guidelines coming soon</p>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="checklist">
           <div className="text-center py-12">
             <ClipboardList className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">Kit Generator</h3>
-            <p className="text-muted-foreground">Consulate kit generator coming soon</p>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="success">
-          <div className="text-center py-12">
-            <PartyPopper className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">Success Celebration</h3>
-            <p className="text-muted-foreground">Success celebration dashboard coming soon</p>
+            <h3 className="text-xl font-semibold mb-2">Application Checklist</h3>
+            <p className="text-muted-foreground">Step-by-step checklist coming soon</p>
           </div>
         </TabsContent>
       </Tabs>
@@ -256,7 +271,7 @@ export const PassportDashboard = () => {
           Professional Passport Application Service
         </h3>
         <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-          After citizenship confirmation, we prepare your complete passport application kit with all required documents. We schedule your consulate appointment, provide detailed guidance, and track the process until you receive your Polish passport. Final payment is charged at this stage.
+          We guide you through the entire Polish passport application process. From preparing your citizenship decision documents to scheduling your consulate appointment and ensuring you have all required paperwork, we make obtaining your Polish passport seamless and stress-free.
         </p>
       </div>
     </div>
