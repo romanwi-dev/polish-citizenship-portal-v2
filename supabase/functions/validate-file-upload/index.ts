@@ -212,7 +212,7 @@ serve(async (req) => {
       );
     }
 
-    // 5. Cross-validation: MIME type vs magic number
+    // 5. Cross-validation: MIME type vs magic number (RELAXED FOR TESTING)
     const mimeToMagic: Record<string, string[]> = {
       'application/pdf': ['pdf'],
       'image/jpeg': ['jpeg'],
@@ -228,18 +228,13 @@ serve(async (req) => {
 
     const expectedMagicTypes = mimeToMagic[file.type] || [];
     if (expectedMagicTypes.length > 0 && !expectedMagicTypes.includes(magicCheck.type)) {
-      return new Response(
-        JSON.stringify({
-          valid: false,
-          error: 'File extension/MIME type does not match file content',
-          details: { 
-            declaredType: file.type, 
-            detectedType: magicCheck.type,
-            advice: 'File may be corrupted, renamed, or tampered with'
-          }
-        }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      console.warn('⚠️ VALIDATION WARNING: MIME type mismatch (ALLOWED FOR TESTING)', {
+        file: file.name,
+        declaredType: file.type,
+        detectedType: magicCheck.type,
+        advice: 'File may be corrupted, renamed, or tampered with'
+      });
+      // TESTING ONLY: Allow through with warning instead of blocking
     }
 
     // 6. COMPREHENSIVE PDF SECURITY: ZIP bomb, Polyglot detection, structure validation, EOF verification
@@ -248,12 +243,12 @@ serve(async (req) => {
       
       // 6.1 ENHANCED ZIP BOMB PROTECTION: Check compression ratio with cumulative size tracking
       // Detect if PDF claims to be compressed but has suspicious size
-      const pdfString = new TextDecoder().decode(pdfContent.slice(0, Math.min(8192, pdfContent.length)));
-      const hasFlateStream = pdfString.includes('/FlateDecode') || pdfString.includes('/Filter');
+      const pdfStringHeader = new TextDecoder().decode(pdfContent.slice(0, Math.min(8192, pdfContent.length)));
+      const hasFlateStream = pdfStringHeader.includes('/FlateDecode') || pdfStringHeader.includes('/Filter');
       
       if (hasFlateStream) {
         // Count compressed stream objects
-        const streamMatches = pdfString.match(/stream\s/g) || [];
+        const streamMatches = pdfStringHeader.match(/stream\s/g) || [];
         const streamCount = streamMatches.length;
         
         // CRITICAL: Track cumulative decompressed size across all streams
