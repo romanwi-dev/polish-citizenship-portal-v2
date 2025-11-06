@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useMemo } from "react";
 import { 
   Upload, 
   Brain, 
@@ -24,9 +24,10 @@ import { motion } from "framer-motion";
 import { WorkflowStageCard } from "./WorkflowStageCard";
 import { WorkflowProgressBar } from "./WorkflowProgressBar";
 import { useDocumentWorkflowState } from "@/hooks/useDocumentWorkflowState";
-import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { useSidebar } from "@/components/ui/sidebar";
 import type { Document, UploadResult, UploadProgress, AtomicWorkflowResponse } from "@/types/documentWorkflow";
 import { DocumentViewer } from "./DocumentViewer";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 interface AIWorkflowStep {
   number: string;
@@ -209,6 +210,7 @@ interface AIDocumentWorkflowProps {
 export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
   const { toast } = useToast();
   const isMobile = useIsMobile();
+  const { open: sidebarOpen } = useSidebar();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<UploadProgress>({
@@ -220,6 +222,11 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
   });
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [viewerDoc, setViewerDoc] = useState<{ url: string; name: string; type: string; ocrText?: string } | null>(null);
+  
+  // Calculate responsive left margin for bottom bar
+  const bottomBarLeftClass = useMemo(() => {
+    return sidebarOpen ? 'md:left-64' : 'md:left-16';
+  }, [sidebarOpen]);
   
   // Use workflow state hook for persistence
   const {
@@ -1008,7 +1015,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
       </div>
 
       {/* Summary Stats - Sticky Bottom Bar - Clean design matching top fields */}
-      <div className="fixed bottom-0 left-0 md:left-64 right-0 z-40 border-t border-primary/10">
+      <div className={cn("fixed bottom-0 left-0 right-0 z-40 border-t border-primary/10 transition-all duration-300", bottomBarLeftClass)}>
         {/* Animated Progress Bar Fill */}
         <motion.div
           initial={{ width: 0 }}
