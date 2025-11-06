@@ -1002,67 +1002,70 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
       {/* Bottom Padding */}
       <div className="h-32"></div>
 
-      {/* File Preview Sidebar */}
+      {/* File Preview Card - Matches left card size and position */}
       {selectedFiles.length > 0 && (
-        <div className="fixed right-4 top-1/2 -translate-y-1/2 z-50 w-80 max-h-[600px] glass-card p-4 rounded-lg shadow-2xl border-2 border-primary/20">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="font-semibold text-sm flex items-center gap-2">
-              <Eye className="h-4 w-4 text-primary" />
-              Preview ({selectedFiles.length})
-            </h3>
-            <Button
-              onClick={() => setSelectedFiles([])}
-              variant="ghost"
-              size="sm"
-              className="h-7 w-7 p-0"
-            >
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
-
-          <div className="space-y-2 max-h-[450px] overflow-y-auto mb-3">
-            {selectedFiles.map((file, index) => (
-              <div
-                key={index}
-                className="relative p-2 rounded border border-primary/20 bg-background/50 group hover:border-primary/40 transition-all"
+        <div className="fixed right-0 top-0 w-full md:w-5/12 h-screen flex items-center justify-end pr-4 md:pr-8 pointer-events-none z-50">
+          <div className="w-full max-w-md h-[350px] md:h-[450px] glass-card p-6 rounded-lg shadow-2xl border-2 border-primary/20 pointer-events-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-semibold text-lg flex items-center gap-2">
+                <Eye className="h-5 w-5 text-primary" />
+                Preview ({selectedFiles.length})
+              </h3>
+              <Button
+                onClick={() => setSelectedFiles([])}
+                variant="ghost"
+                size="sm"
+                className="h-8 w-8 p-0"
               >
-                <button
-                  onClick={() => removeFile(index)}
-                  className="absolute -top-1 -right-1 z-10 bg-destructive text-destructive-foreground rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  <X className="h-3 w-3" />
-                </button>
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
 
-                <div className="flex items-center gap-2">
-                  <div className="w-12 h-12 rounded bg-muted flex items-center justify-center flex-shrink-0">
-                    {file.type.startsWith('image/') ? (
-                      <img
-                        src={URL.createObjectURL(file)}
-                        alt={file.name}
-                        className="w-full h-full object-cover rounded"
-                      />
-                    ) : (
-                      <FileText className="h-6 w-6 text-primary/40" />
-                    )}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs font-medium truncate">{file.name}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {(file.size / 1024).toFixed(0)} KB
-                    </p>
+            <div className="space-y-2 max-h-[280px] md:max-h-[320px] overflow-y-auto mb-4">
+              {selectedFiles.map((file, index) => (
+                <div
+                  key={index}
+                  className="relative p-3 rounded border border-primary/20 bg-background/50 group hover:border-primary/40 transition-all"
+                >
+                  <button
+                    onClick={() => removeFile(index)}
+                    className="absolute -top-2 -right-2 z-10 bg-destructive text-destructive-foreground rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+
+                  <div className="flex items-center gap-3">
+                    <div className="w-14 h-14 rounded bg-muted flex items-center justify-center flex-shrink-0">
+                      {file.type.startsWith('image/') ? (
+                        <img
+                          src={URL.createObjectURL(file)}
+                          alt={file.name}
+                          className="w-full h-full object-cover rounded"
+                        />
+                      ) : (
+                        <FileText className="h-7 w-7 text-primary/40" />
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium truncate">{file.name}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {(file.size / 1024).toFixed(0)} KB
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
 
-          <Button
-            onClick={() => handleFileUpload(selectedFiles)}
-            disabled={uploading}
-            className="w-full"
-          >
-            {uploading ? 'Uploading...' : `Upload ${selectedFiles.length} file(s)`}
-          </Button>
+            <Button
+              onClick={() => handleFileUpload(selectedFiles)}
+              disabled={uploading}
+              className="w-full"
+              size="lg"
+            >
+              {uploading ? 'Uploading...' : `Upload ${selectedFiles.length} file(s)`}
+            </Button>
+          </div>
         </div>
       )}
 
