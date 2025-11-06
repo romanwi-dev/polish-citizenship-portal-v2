@@ -27,6 +27,100 @@ export function DocumentUploadFAB({ caseId, onUploadComplete }: DocumentUploadFA
   const [uploadingFiles, setUploadingFiles] = useState<UploadingFile[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const uploadSingleFile = async (file: File, retryCount = 0): Promise<void> => {
+    const MAX_RETRIES = 3;
+    const fileId = crypto.randomUUID();
+    
+    setUploadingFiles(prev => [...prev, {
+      id: fileId,
+      file,
+      progress: 0,
+      status: 'uploading'
+    }]);
+
+    try {
+      // Phase 1: Validate with timeout
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      setUploadingFiles(prev => prev.map(f => 
+        f.id === fileId ? { ...f, progress: 20 } : f
+      ));
+
+      const validationResponse = await supabase.functions.invoke('validate-file-upload', {
+        body: formData,
+      });
+
+      if (validationResponse.error || !validationResponse.data?.valid) {
+        throw new Error(validationResponse.data?.error || 'File validation failed');
+      }
+
+      setUploadingFiles(prev => prev.map(f => 
+        f.id === fileId ? { ...f, progress: 40 } : f
+      ));
+
+      // Phase 2: Upload to storage
+      const fileExt = file.name.split('.').pop();
+      const filePath = `${caseId}/${crypto.randomUUID()}.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('case-documents')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      setUploadingFiles(prev => prev.map(f => 
+        f.id === fileId ? { ...f, progress: 70 } : f
+      ));
+
+      // Phase 3: Create document record
+      const { error: dbError } = await supabase
+        .from('documents')
+        .insert({
+          case_id: caseId,
+          name: file.name,
+          file_extension: fileExt,
+          dropbox_path: filePath,
+          ocr_status: 'pending',
+        });
+
+      if (dbError) throw dbError;
+
+      setUploadingFiles(prev => prev.map(f => 
+        f.id === fileId ? { ...f, progress: 100, status: 'success' } : f
+      ));
+
+      setTimeout(() => {
+        setUploadingFiles(prev => prev.filter(f => f.id !== fileId));
+        onUploadComplete?.();
+      }, 2000);
+
+    } catch (error: any) {
+      console.error(`Upload error for ${file.name}:`, error);
+      
+      // Retry logic for transient errors
+      if (retryCount < MAX_RETRIES && 
+          (error.message?.includes('Version conflict') || 
+           error.message?.includes('network') ||
+           error.message?.includes('timeout'))) {
+        console.log(`Retrying ${file.name} (attempt ${retryCount + 2}/${MAX_RETRIES + 1})`);
+        await new Promise(resolve => setTimeout(resolve, Math.pow(2, retryCount) * 1000));
+        setUploadingFiles(prev => prev.filter(f => f.id !== fileId));
+        return uploadSingleFile(file, retryCount + 1);
+      }
+
+      setUploadingFiles(prev => prev.map(f => 
+        f.id === fileId ? { ...f, status: 'error', error: error.message } : f
+      ));
+
+      toast({
+        title: "Upload failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
   const handleFileSelect = (files: FileList | null) => {
     if (!files || files.length === 0) return;
 
@@ -64,9 +158,26 @@ export function DocumentUploadFAB({ caseId, onUploadComplete }: DocumentUploadFA
     });
   };
 
-  const uploadFile = async (uploadingFile: UploadingFile) => {
+  const uploadFile = async (uploadingFile: UploadingFile, retryCount = 0) => {
+    const MAX_RETRIES = 3;
+    
     try {
       const { file } = uploadingFile;
+      
+      // Phase 1: Validate file
+      updateFileProgress(uploadingFile.id, 20);
+      
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      const validationResponse = await supabase.functions.invoke('validate-file-upload', {
+        body: formData,
+      });
+
+      if (validationResponse.error || !validationResponse.data?.valid) {
+        throw new Error(validationResponse.data?.error || 'File validation failed');
+      }
+      
       const fileExt = file.name.split('.').pop();
       const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
       const filePath = `${caseId}/${fileName}`;

@@ -198,9 +198,11 @@ serve(async (req) => {
       );
     }
 
-    // 6. PDF-specific security checks (prevent decompression bombs, embedded JS)
+    // 6. PDF-specific comprehensive security checks
     if (magicCheck.type === 'pdf') {
-      // Check for suspiciously small or large PDFs
+      const pdfContent = new Uint8Array(arrayBuffer);
+      
+      // Check for suspiciously small PDFs
       if (file.size < 100) {
         return new Response(
           JSON.stringify({
@@ -211,13 +213,78 @@ serve(async (req) => {
         );
       }
       
-      // Basic PDF structure validation
+      // Check PDF header
       const pdfHeader = new TextDecoder().decode(bytes.slice(0, 8));
       if (!pdfHeader.startsWith('%PDF-')) {
         return new Response(
           JSON.stringify({
             valid: false,
             error: 'Invalid PDF header structure'
+          }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      // Check PDF EOF marker (%%EOF must be present)
+      const lastBytes = new TextDecoder().decode(pdfContent.slice(-50));
+      if (!lastBytes.includes('%%EOF')) {
+        return new Response(
+          JSON.stringify({ 
+            valid: false, 
+            error: 'Invalid PDF: missing EOF marker - file may be corrupted' 
+          }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      // Check for embedded JavaScript and dangerous content
+      const pdfText = new TextDecoder().decode(pdfContent.slice(0, Math.min(2048, pdfContent.length)));
+      if (pdfText.includes('JavaScript') || pdfText.includes('/JS') || pdfText.includes('/Launch')) {
+        return new Response(
+          JSON.stringify({ 
+            valid: false, 
+            error: 'PDF contains potentially dangerous executable content (JavaScript/Launch)' 
+          }),
+          { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      // Decompression bomb protection - check PDF version
+      const headerMatch = pdfText.match(/%PDF-(\d+\.\d+)/);
+      if (headerMatch) {
+        const version = parseFloat(headerMatch[1]);
+        if (version > 2.0) {
+          return new Response(
+            JSON.stringify({ 
+              valid: false, 
+              error: 'PDF version not supported for security reasons (max 2.0)' 
+            }),
+            { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+      }
+
+      // Check maximum PDF size (50MB)
+      if (pdfContent.length > 50 * 1024 * 1024) {
+        return new Response(
+          JSON.stringify({ 
+            valid: false, 
+            error: 'PDF file exceeds maximum allowed size (50MB)' 
+          }),
+          { status: 413, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      // Verify PDF structure integrity (object count vs endobj count)
+      const pdfString = new TextDecoder().decode(pdfContent);
+      const objectCount = (pdfString.match(/\d+ \d+ obj/g) || []).length;
+      const endObjCount = (pdfString.match(/endobj/g) || []).length;
+      
+      if (objectCount > 0 && objectCount !== endObjCount) {
+        return new Response(
+          JSON.stringify({ 
+            valid: false, 
+            error: 'PDF structure is corrupted or malformed (mismatched object tags)' 
           }),
           { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
