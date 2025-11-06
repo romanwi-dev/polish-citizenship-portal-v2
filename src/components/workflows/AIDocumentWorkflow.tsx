@@ -929,7 +929,12 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
               {/* Empty spacer for alternating layout - 5/12 width OR Preview Card */}
               <div className="hidden md:block md:w-5/12">
                 {isFirstCard && selectedFiles.length > 0 && (
-                  <div className="h-[350px] md:h-[450px] glass-card p-6 rounded-lg border-2 border-primary/20"
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.9, x: 50 }}
+                    animate={{ opacity: 1, scale: 1, x: 0 }}
+                    exit={{ opacity: 0, scale: 0.9, x: 50 }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    className="h-[350px] md:h-[450px] glass-card p-6 rounded-lg border-2 border-primary/20"
                     style={{
                       boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15)'
                     }}
@@ -951,8 +956,11 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
 
                     <div className="space-y-2 max-h-[280px] md:max-h-[320px] overflow-y-auto mb-4">
                       {selectedFiles.map((file, index) => (
-                        <div
+                        <motion.div
                           key={index}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.05 }}
                           className="relative p-3 rounded border border-primary/20 bg-background/50 group hover:border-primary/40 transition-all"
                         >
                           <button
@@ -981,7 +989,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                               </p>
                             </div>
                           </div>
-                        </div>
+                        </motion.div>
                       ))}
                     </div>
 
@@ -993,7 +1001,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                     >
                       {uploading ? 'Uploading...' : `Upload ${selectedFiles.length} file(s)`}
                     </Button>
-                  </div>
+                  </motion.div>
                 )}
               </div>
             </div>
