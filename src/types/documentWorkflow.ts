@@ -40,7 +40,8 @@ export interface UploadResult {
   documentId: string;
   success: boolean;
   error?: string;
-  phase: 'validation' | 'upload' | 'workflow' | 'ocr' | 'ocr_retry_scheduled';
+  phase: 'validation' | 'upload' | 'workflow' | 'ocr' | 'ocr_retry_scheduled' | 'unknown';
+  details?: any; // Validation details from edge function for debugging
 }
 
 // Atomic workflow creation response type

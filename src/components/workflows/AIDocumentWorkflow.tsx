@@ -361,11 +361,20 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
           );
 
           if (validationError || !validationData?.valid) {
+            // Enhanced error logging with details
+            console.error('File validation failed:', {
+              file: file.name,
+              error: validationData?.error,
+              details: validationData?.details,
+              functionError: validationError
+            });
+
             return {
               documentId: 'validation-failed',
               success: false,
-              error: validationData?.error || 'File validation failed',
-              phase: 'validation'
+              error: validationData?.error || validationError?.message || 'File validation failed',
+              phase: 'validation',
+              details: validationData?.details // Include validation details for debugging
             };
           }
 
