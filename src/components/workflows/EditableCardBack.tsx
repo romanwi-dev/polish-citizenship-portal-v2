@@ -88,64 +88,61 @@ export const EditableCardBack = ({
 
   return (
     <div 
-      className="absolute inset-0 glass-card p-6 rounded-lg hover-glow flex items-center justify-center"
+      className="absolute inset-0 glass-card p-3 rounded-lg hover-glow flex items-center justify-center overflow-hidden"
       style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
     >
-      <div className="flex flex-col gap-3 w-full h-full" onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-center justify-between">
-          {!isEditing && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleEdit}
-              className="h-7 w-7 p-0 absolute top-3 left-3"
-            >
-              <Pencil className="h-3.5 w-3.5" />
-            </Button>
-          )}
-        </div>
+      <div className="flex flex-col w-full h-full relative" onClick={(e) => e.stopPropagation()}>
+        {!isEditing && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleEdit}
+            className="h-6 w-6 p-0 absolute top-0 left-0 z-10"
+          >
+            <Pencil className="h-3 w-3" />
+          </Button>
+        )}
 
-        <div className="flex-1 flex items-start justify-center px-2 pt-8">
+        <div className="flex-1 flex items-center justify-center px-2 w-full overflow-hidden">
           {!isEditing ? (
-            <p className="text-sm text-muted-foreground text-center whitespace-pre-wrap">
+            <p className="text-sm text-muted-foreground text-center whitespace-pre-wrap px-2">
               {displayDescription || "Click edit to add description"}
             </p>
           ) : (
-            <Textarea
-              value={editedText}
-              onChange={(e) => setEditedText(e.target.value)}
-              onClick={(e) => e.stopPropagation()}
-              className="!min-h-[70px] h-[70px] w-full resize-none text-sm !py-2 !px-2 align-text-top"
-              style={{ verticalAlign: 'top', textAlign: 'left' }}
-              placeholder="Enter card description..."
-              autoFocus
-            />
+            <div className="flex flex-col gap-2 w-full h-full justify-center">
+              <Textarea
+                value={editedText}
+                onChange={(e) => setEditedText(e.target.value)}
+                onClick={(e) => e.stopPropagation()}
+                className="!min-h-[50px] !h-[50px] w-full resize-none text-xs !py-1 !px-2"
+                style={{ verticalAlign: 'top', textAlign: 'left' }}
+                placeholder="Enter description..."
+                autoFocus
+              />
+              <div className="flex gap-1.5 w-full">
+                <Button
+                  onClick={handleSave}
+                  size="sm"
+                  className="flex-1 h-6 text-xs py-0"
+                  disabled={saveMutation.isPending}
+                >
+                  <Save className="h-2.5 w-2.5 mr-1" />
+                  Save
+                </Button>
+                <Button
+                  onClick={handleCancel}
+                  size="sm"
+                  variant="outline"
+                  className="flex-1 h-6 text-xs py-0"
+                  disabled={saveMutation.isPending}
+                >
+                  <X className="h-2.5 w-2.5 mr-1" />
+                  Cancel
+                </Button>
+              </div>
+            </div>
           )}
         </div>
-
-        {isEditing && (
-          <div className="flex gap-2">
-            <Button
-              onClick={handleSave}
-              size="sm"
-              className="flex-1 h-7 text-xs"
-              disabled={saveMutation.isPending}
-            >
-              <Save className="h-3 w-3 mr-1" />
-              Save
-            </Button>
-            <Button
-              onClick={handleCancel}
-              size="sm"
-              variant="outline"
-              className="flex-1 h-7 text-xs"
-              disabled={saveMutation.isPending}
-            >
-              <X className="h-3 w-3 mr-1" />
-              Cancel
-            </Button>
-          </div>
-        )}
       </div>
     </div>
   );
