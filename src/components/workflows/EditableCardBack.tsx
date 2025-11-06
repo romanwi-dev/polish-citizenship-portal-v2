@@ -90,16 +90,15 @@ export const EditableCardBack = ({
     <div 
       className="absolute inset-0 glass-card p-6 rounded-lg hover-glow flex items-center justify-center"
       style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-      onClick={(e) => e.stopPropagation()} // Prevent card flip when clicking anywhere inside
     >
-      <div className="flex flex-col gap-3 w-full h-full">
+      <div className="flex flex-col gap-3 w-full h-full" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between">
           {!isEditing && (
             <Button
               variant="ghost"
               size="sm"
               onClick={handleEdit}
-              className="h-7 w-7 p-0 absolute top-3 right-3"
+              className="h-7 w-7 p-0 absolute top-3 left-3"
             >
               <Pencil className="h-3.5 w-3.5" />
             </Button>
