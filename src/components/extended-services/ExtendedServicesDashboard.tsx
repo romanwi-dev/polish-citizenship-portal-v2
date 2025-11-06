@@ -192,22 +192,22 @@ export const ExtendedServicesDashboard = () => {
       <Tabs defaultValue="cards" className="space-y-4">
         <div className="w-full overflow-x-auto scrollbar-hide">
           <TabsList className="flex gap-1 w-full justify-between h-auto p-0 bg-transparent border-0">
-            <TabsTrigger value="cards" className="flex-1 min-h-[48px] h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.4)]">
+            <TabsTrigger value="cards" className="flex-1 min-h-[48px] h-14 bg-red-500/20 border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/15 data-[state=active]:border-red-500/20 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.15)] text-white/40 data-[state=active]:text-white font-bold text-lg">
               Service Cards
             </TabsTrigger>
-            <TabsTrigger value="family" className="flex-1 min-h-[48px] h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.4)]">
+            <TabsTrigger value="family" className="flex-1 min-h-[48px] h-14 bg-red-500/20 border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/15 data-[state=active]:border-red-500/20 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.15)] text-white/40 data-[state=active]:text-white font-bold text-lg">
               Family Legal
             </TabsTrigger>
-            <TabsTrigger value="procurement" className="flex-1 min-h-[48px] h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.4)]">
+            <TabsTrigger value="procurement" className="flex-1 min-h-[48px] h-14 bg-red-500/20 border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/15 data-[state=active]:border-red-500/20 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.15)] text-white/40 data-[state=active]:text-white font-bold text-lg">
               Document Procurement
             </TabsTrigger>
-            <TabsTrigger value="heritage" className="flex-1 min-h-[48px] h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.4)]">
+            <TabsTrigger value="heritage" className="flex-1 min-h-[48px] h-14 bg-red-500/20 border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/15 data-[state=active]:border-red-500/20 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.15)] text-white/40 data-[state=active]:text-white font-bold text-lg">
               Heritage Research
             </TabsTrigger>
-            <TabsTrigger value="relocation" className="flex-1 min-h-[48px] h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.4)]">
+            <TabsTrigger value="relocation" className="flex-1 min-h-[48px] h-14 bg-red-500/20 border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/15 data-[state=active]:border-red-500/20 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.15)] text-white/40 data-[state=active]:text-white font-bold text-lg">
               Relocation
             </TabsTrigger>
-            <TabsTrigger value="analytics" className="flex-1 min-h-[48px] h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.4)]">
+            <TabsTrigger value="analytics" className="flex-1 min-h-[48px] h-14 bg-red-500/20 border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/15 data-[state=active]:border-red-500/20 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.15)] text-white/40 data-[state=active]:text-white font-bold text-lg">
               Analytics
             </TabsTrigger>
           </TabsList>

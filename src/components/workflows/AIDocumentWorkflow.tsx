@@ -25,6 +25,7 @@ import { WorkflowProgressBar } from "./WorkflowProgressBar";
 import { useDocumentWorkflowState } from "@/hooks/useDocumentWorkflowState";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import type { Document, UploadResult, UploadProgress, AtomicWorkflowResponse } from "@/types/documentWorkflow";
+import { FileUploadWithPreview } from "./FileUploadWithPreview";
 
 interface AIWorkflowStep {
   number: string;
@@ -709,29 +710,22 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                           {/* Upload Section for First Card */}
                           {step.stage === 'upload' && (
                             <div className="mb-3">
-                              <input
-                                type="file"
-                                id="doc-upload"
-                                multiple
-                                accept=".pdf,.jpg,.jpeg,.png"
-                                onChange={handleFileUpload}
-                                className="hidden"
-                                disabled={!caseId || uploading}
+                              <FileUploadWithPreview
+                                caseId={caseId}
+                                onUpload={async (files) => {
+                                  // Convert Files to a FileList-like structure
+                                  const dataTransfer = new DataTransfer();
+                                  files.forEach(file => dataTransfer.items.add(file));
+                                  
+                                  // Create a synthetic event
+                                  const event = {
+                                    target: { files: dataTransfer.files, value: '' }
+                                  } as React.ChangeEvent<HTMLInputElement>;
+                                  
+                                  await handleFileUpload(event);
+                                }}
+                                uploading={uploading}
                               />
-                              <label htmlFor="doc-upload">
-                                <Button
-                                  variant="default"
-                                  size="lg"
-                                  className="w-full"
-                                  disabled={!caseId || uploading}
-                                  asChild
-                                >
-                                  <span className="cursor-pointer flex items-center justify-center gap-2">
-                                    <Upload className="h-5 w-5" />
-                                    {uploading ? 'Uploading...' : caseId ? 'Upload Documents' : 'Select a case first'}
-                                  </span>
-                                </Button>
-                              </label>
                             </div>
                           )}
 
