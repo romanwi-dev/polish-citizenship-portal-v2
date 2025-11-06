@@ -1232,6 +1232,48 @@ export type Database = {
           },
         ]
       }
+      crash_states: {
+        Row: {
+          component_stack: string | null
+          crash_data: Json
+          created_at: string
+          error_message: string | null
+          expires_at: string
+          id: string
+          recovered_at: string | null
+          session_id: string
+          url: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          component_stack?: string | null
+          crash_data: Json
+          created_at?: string
+          error_message?: string | null
+          expires_at?: string
+          id?: string
+          recovered_at?: string | null
+          session_id: string
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          component_stack?: string | null
+          crash_data?: Json
+          created_at?: string
+          error_message?: string | null
+          expires_at?: string
+          id?: string
+          recovered_at?: string | null
+          session_id?: string
+          url?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       document_batch_uploads: {
         Row: {
           batch_id: string
@@ -5535,6 +5577,7 @@ export type Database = {
           workflow_id: string
         }[]
       }
+      cleanup_expired_crash_states: { Args: never; Returns: undefined }
       cleanup_expired_locks_v7: {
         Args: { p_timeout_seconds?: number }
         Returns: {
