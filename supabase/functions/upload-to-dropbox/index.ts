@@ -3,6 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { withRetry, RETRY_CONFIGS } from '../_shared/pdf-retry.ts';
 import { performanceTracker } from '../_shared/performance-tracker.ts';
 import { logEdgeFunctionCall } from '../_shared/monitoring.ts';
+import { validateFile } from '../_shared/validation.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -38,6 +39,30 @@ serve(async (req) => {
     if (!file || !caseId) {
       console.error('[upload-to-dropbox] ❌ Missing file or caseId');
       throw new Error('Missing file or caseId');
+    }
+
+    // SECURITY: Re-validate file to prevent TOCTOU race condition
+    // Files are validated client-side and in validate-file-upload, but we MUST re-validate here
+    // to prevent an attacker from swapping the file between validation and upload
+    const fileValidation = validateFile(file);
+    if (!fileValidation.valid) {
+      console.error('[upload-to-dropbox] ❌ File validation failed:', fileValidation.error);
+      await logEdgeFunctionCall('upload-to-dropbox', 'error', {
+        duration_ms: Date.now() - startTime,
+        error_message: `File validation failed: ${fileValidation.error}`,
+        case_id: caseId
+      });
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: fileValidation.error,
+          errorCode: 'INVALID_FILE'
+        }),
+        {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 400,
+        }
+      );
     }
 
     console.log(`[upload-to-dropbox] 📄 Processing upload for case ${caseId}: ${file.name} (${(file.size / 1024).toFixed(2)}KB)`);
