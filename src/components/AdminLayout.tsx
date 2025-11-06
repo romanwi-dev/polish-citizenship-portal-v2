@@ -215,15 +215,15 @@ interface AdminLayoutProps {
 }
 
 export function AdminLayout({ children }: AdminLayoutProps) {
-  const [sidebarOpen, setSidebarOpen] = React.useState(true);
+  const [sidebarOpen, setSidebarOpen] = React.useState(false);
 
-  // Clear any old sidebar cookie and force it open
+  // Set sidebar to closed by default (icon-only view)
   React.useEffect(() => {
-    document.cookie = "sidebar:state=true; path=/; max-age=604800";
+    document.cookie = "sidebar:state=false; path=/; max-age=604800";
   }, []);
 
   return (
-    <SidebarProvider open={sidebarOpen} onOpenChange={setSidebarOpen} defaultOpen={true}>
+    <SidebarProvider open={sidebarOpen} onOpenChange={setSidebarOpen} defaultOpen={false}>
       <div className="min-h-screen flex w-full relative">
         {/* Default blue gradient background - Layout Level Only (DBGK compliant) */}
         <div className="fixed inset-0 pointer-events-none -z-10">
