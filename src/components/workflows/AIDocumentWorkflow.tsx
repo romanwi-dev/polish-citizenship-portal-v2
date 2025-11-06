@@ -659,7 +659,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
               style={{ animationDelay: `${index * 100}ms` }}
             >
               {/* Content Card - Absolute positioned on desktop for perfect mirroring */}
-              <div className={`w-full ${index % 2 === 0 ? 'md:absolute md:right-[calc(50%+3rem)] md:w-[41.67%] md:max-w-[500px]' : 'md:absolute md:left-[calc(50%+3rem)] md:w-[41.67%] md:max-w-[500px]'}`}>
+              <div className={`w-full ${index % 2 === 0 ? 'md:absolute md:right-[calc(50%+5rem)] md:w-[41.67%] md:max-w-[500px]' : 'md:absolute md:left-[calc(50%+5rem)] md:w-[41.67%] md:max-w-[500px]'}`}>
                 <div
                   className="relative h-[350px] md:h-[450px]"
                   style={{ perspective: '1000px' }}
@@ -929,8 +929,8 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
               </div>
 
               {/* Center Circle Node - Only visible on desktop */}
-              <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full bg-gradient-to-br from-primary to-secondary shadow-xl items-center justify-center z-10">
-                <Icon className="h-6 w-6 text-white" />
+              <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full bg-gradient-to-br from-primary/30 to-secondary/30 shadow-xl items-center justify-center z-10">
+                <Icon className="h-6 w-6 text-white/30" />
               </div>
 
               {/* Preview Card - Absolute positioned on desktop, mirrors first card */}
