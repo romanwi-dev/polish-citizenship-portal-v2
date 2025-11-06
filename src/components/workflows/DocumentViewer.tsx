@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { 
   X, 
   Download, 
@@ -10,7 +11,9 @@ import {
   ChevronRight,
   Eye,
   EyeOff,
-  Maximize2
+  Maximize2,
+  AlertTriangle,
+  RefreshCw
 } from "lucide-react";
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
@@ -40,10 +43,30 @@ export function DocumentViewer({
   const [pageNumber, setPageNumber] = useState(1);
   const [scale, setScale] = useState(1.0);
   const [showOCR, setShowOCR] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
+  const MAX_RETRIES = 3;
 
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);
     setPageNumber(1);
+    setLoadError(null);
+    console.log(`[DocumentViewer] PDF loaded successfully: ${numPages} pages`);
+  };
+
+  const onDocumentLoadError = (error: Error) => {
+    console.error('[DocumentViewer] PDF load error:', error);
+    setLoadError(error.message || 'Failed to load PDF');
+  };
+
+  const handleRetry = () => {
+    if (retryCount < MAX_RETRIES) {
+      console.log(`[DocumentViewer] Retrying (${retryCount + 1}/${MAX_RETRIES})...`);
+      setRetryCount(prev => prev + 1);
+      setLoadError(null);
+      setNumPages(null);
+      setPageNumber(1);
+    }
   };
 
   const goToPrevPage = () => {
@@ -118,6 +141,8 @@ export function DocumentViewer({
     setTextContent('');
     setPageNumber(1);
     setScale(1.0);
+    setLoadError(null);
+    setRetryCount(0);
     onClose();
   };
 
@@ -212,29 +237,55 @@ export function DocumentViewer({
 
         {/* Document Content */}
         <div className="flex-1 overflow-auto p-6 bg-muted/20">
-          <div className="flex justify-center">
-            {isPDF ? (
-              <Document
-                file={documentUrl}
-                onLoadSuccess={onDocumentLoadSuccess}
-                loading={
-                  <div className="flex items-center justify-center h-96">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          {loadError ? (
+            <div className="flex flex-col items-center justify-center h-96 p-8">
+              <Alert variant="destructive" className="max-w-md">
+                <AlertTriangle className="h-5 w-5" />
+                <AlertDescription className="mt-2">
+                  <p className="font-semibold mb-2">Failed to load document</p>
+                  <p className="text-sm mb-4">{loadError}</p>
+                  <div className="flex gap-2">
+                    {retryCount < MAX_RETRIES && (
+                      <Button onClick={handleRetry} size="sm" variant="default">
+                        <RefreshCw className="h-4 w-4 mr-2" />
+                        Retry ({MAX_RETRIES - retryCount} attempts left)
+                      </Button>
+                    )}
+                    <Button onClick={handleDownload} size="sm" variant="outline">
+                      <Download className="h-4 w-4 mr-2" />
+                      Download Instead
+                    </Button>
                   </div>
-                }
-                error={
-                  <div className="flex items-center justify-center h-96 text-destructive">
-                    Failed to load PDF. Please try downloading the file.
-                  </div>
-                }
-              >
-                <Page
-                  pageNumber={pageNumber}
-                  scale={scale}
-                  renderTextLayer={true}
-                  renderAnnotationLayer={true}
-                />
-              </Document>
+                </AlertDescription>
+              </Alert>
+            </div>
+          ) : (
+            <div className="flex justify-center">
+              {isPDF ? (
+                <Document
+                  file={documentUrl}
+                  key={retryCount} // Force reload on retry
+                  onLoadSuccess={onDocumentLoadSuccess}
+                  onLoadError={onDocumentLoadError}
+                  loading={
+                    <div className="flex flex-col items-center justify-center h-96 gap-4">
+                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                      <p className="text-sm text-muted-foreground">Loading PDF...</p>
+                    </div>
+                  }
+                >
+                  <Page
+                    pageNumber={pageNumber}
+                    scale={scale}
+                    renderTextLayer={true}
+                    renderAnnotationLayer={true}
+                    loading={
+                      <div className="flex items-center justify-center h-96">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                      </div>
+                    }
+                  />
+                </Document>
             ) : isImage ? (
               <img
                 src={documentUrl}

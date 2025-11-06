@@ -1,7 +1,8 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { AlertTriangle } from 'lucide-react';
+import { AlertTriangle, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { supabase } from '@/integrations/supabase/client';
 
 interface Props {
   children: ReactNode;
@@ -13,14 +14,30 @@ interface State {
   hasError: boolean;
   error: Error | null;
   errorInfo: ErrorInfo | null;
+  recoveredState: any | null;
 }
 
 export class ErrorBoundary extends Component<Props, State> {
   public state: State = {
     hasError: false,
     error: null,
-    errorInfo: null
+    errorInfo: null,
+    recoveredState: null
   };
+
+  public componentDidMount() {
+    // Check for recovered state on mount
+    try {
+      const savedState = localStorage.getItem('crash_recovery_state');
+      if (savedState) {
+        const parsed = JSON.parse(savedState);
+        this.setState({ recoveredState: parsed });
+        console.log('[ErrorBoundary] Recovered state from previous crash:', parsed);
+      }
+    } catch (error) {
+      console.error('[ErrorBoundary] Failed to recover state:', error);
+    }
+  }
 
   public static getDerivedStateFromError(error: Error): State {
     return { hasError: true, error, errorInfo: null };
@@ -28,6 +45,9 @@ export class ErrorBoundary extends Component<Props, State> {
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('ErrorBoundary caught an error:', error, errorInfo);
+    
+    // Save current state to localStorage before crash
+    this.captureAppState(error, errorInfo);
     
     this.setState({
       error,
@@ -37,17 +57,77 @@ export class ErrorBoundary extends Component<Props, State> {
     // Call optional error handler
     this.props.onError?.(error, errorInfo);
 
+    // Send crash report to backend
+    this.sendCrashReport(error, errorInfo);
+
     // Log to monitoring service if available
     if (typeof window !== 'undefined' && (window as any).ErrorReporting) {
       (window as any).ErrorReporting.logError(error, errorInfo);
     }
   }
 
+  private captureAppState(error: Error, errorInfo: ErrorInfo) {
+    try {
+      const currentState = {
+        timestamp: new Date().toISOString(),
+        error: error.message,
+        errorStack: error.stack,
+        componentStack: errorInfo.componentStack,
+        url: window.location.href,
+        userAgent: navigator.userAgent,
+        // Capture any app state from sessionStorage/localStorage
+        sessionData: Object.keys(sessionStorage).reduce((acc, key) => {
+          try {
+            acc[key] = sessionStorage.getItem(key);
+          } catch (e) {
+            acc[key] = '[Unable to capture]';
+          }
+          return acc;
+        }, {} as Record<string, any>)
+      };
+      
+      // Save to localStorage (limit to 5MB)
+      const stateJson = JSON.stringify(currentState);
+      if (stateJson.length < 5 * 1024 * 1024) { // 5MB limit
+        localStorage.setItem('crash_recovery_state', stateJson);
+        console.log('[ErrorBoundary] State captured before crash');
+      } else {
+        console.warn('[ErrorBoundary] State too large to save');
+      }
+    } catch (storageError) {
+      console.error('[ErrorBoundary] Failed to save crash state:', storageError);
+    }
+  }
+
+  private async sendCrashReport(error: Error, errorInfo: ErrorInfo) {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      await supabase.from('crash_reports').insert({
+        error_message: error.message,
+        error_stack: error.stack,
+        component_stack: errorInfo.componentStack,
+        user_agent: navigator.userAgent,
+        user_id: user?.id || null,
+        url: window.location.href,
+        timestamp: new Date().toISOString()
+      });
+      
+      console.log('[ErrorBoundary] Crash report sent to backend');
+    } catch (reportError) {
+      console.error('[ErrorBoundary] Failed to send crash report:', reportError);
+    }
+  }
+
   private handleReset = () => {
+    // Clear recovery state
+    localStorage.removeItem('crash_recovery_state');
+    
     this.setState({
       hasError: false,
       error: null,
-      errorInfo: null
+      errorInfo: null,
+      recoveredState: null
     });
   };
 
@@ -93,6 +173,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
             <div className="flex gap-3">
               <Button onClick={this.handleReset} variant="default">
+                <RefreshCw className="h-4 w-4 mr-2" />
                 Try Again
               </Button>
               <Button
@@ -102,6 +183,15 @@ export class ErrorBoundary extends Component<Props, State> {
                 Go Home
               </Button>
             </div>
+
+            {this.state.recoveredState && (
+              <Alert className="mt-4">
+                <AlertTitle className="text-sm">State Recovered</AlertTitle>
+                <AlertDescription className="text-xs">
+                  Your previous session was recovered. Last crash: {new Date(this.state.recoveredState.timestamp).toLocaleString()}
+                </AlertDescription>
+              </Alert>
+            )}
           </div>
         </div>
       );
