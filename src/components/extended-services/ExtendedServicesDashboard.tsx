@@ -63,7 +63,7 @@ export const ExtendedServicesDashboard = () => {
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Family Legal</p>
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Family</p>
                 </div>
               </div>
             </div>
