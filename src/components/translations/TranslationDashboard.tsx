@@ -227,7 +227,7 @@ export const TranslationDashboard = () => {
       <Tabs defaultValue="cards" className="space-y-4">
         <div className="w-full overflow-x-auto scrollbar-hide">
           <TabsList className="flex gap-1 w-full justify-between h-auto p-0 bg-transparent border-0">
-            <TabsTrigger value="cards" className="flex-1 h-14 bg-red-500/5 border-2 border-red-500/10 shadow-[0_0_20px_rgba(239,68,68,0.08)] hover:bg-red-500/10 hover:border-red-500/15 hover:shadow-[0_0_30px_rgba(239,68,68,0.12)] data-[state=active]:bg-red-500/15 data-[state=active]:border-red-500/20 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.15)] text-white font-bold text-lg transition-all relative">
+            <TabsTrigger value="cards" className="flex-1 h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/15 data-[state=active]:border-red-500/20 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.15)] relative">
               Workflow Cards
               {pendingReviewCount > 0 && (
                 <Badge 
@@ -238,19 +238,19 @@ export const TranslationDashboard = () => {
                 </Badge>
               )}
             </TabsTrigger>
-            <TabsTrigger value="workflow" className="flex-1 h-14 bg-red-500/5 border-2 border-red-500/10 shadow-[0_0_20px_rgba(239,68,68,0.08)] hover:bg-red-500/10 hover:border-red-500/15 hover:shadow-[0_0_30px_rgba(239,68,68,0.12)] data-[state=active]:bg-red-500/15 data-[state=active]:border-red-500/20 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.15)] text-white font-bold text-lg transition-all">
+            <TabsTrigger value="workflow" className="flex-1 h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/15 data-[state=active]:border-red-500/20 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.15)]">
               Translation Timeline
             </TabsTrigger>
-            <TabsTrigger value="supervisor" className="flex-1 h-14 bg-red-500/5 border-2 border-red-500/10 shadow-[0_0_20px_rgba(239,68,68,0.08)] hover:bg-red-500/10 hover:border-red-500/15 hover:shadow-[0_0_30px_rgba(239,68,68,0.12)] data-[state=active]:bg-red-500/15 data-[state=active]:border-red-500/20 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.15)] text-white font-bold text-lg transition-all">
+            <TabsTrigger value="supervisor" className="flex-1 h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/15 data-[state=active]:border-red-500/20 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.15)]">
               Supervisor
             </TabsTrigger>
-            <TabsTrigger value="requirements" className="flex-1 h-14 bg-red-500/5 border-2 border-red-500/10 shadow-[0_0_20px_rgba(239,68,68,0.08)] hover:bg-red-500/10 hover:border-red-500/15 hover:shadow-[0_0_30px_rgba(239,68,68,0.12)] data-[state=active]:bg-red-500/15 data-[state=active]:border-red-500/20 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.15)] text-white font-bold text-lg transition-all">
+            <TabsTrigger value="requirements" className="flex-1 h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/15 data-[state=active]:border-red-500/20 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.15)]">
               Requirements
             </TabsTrigger>
-            <TabsTrigger value="translators" className="flex-1 h-14 bg-red-500/5 border-2 border-red-500/10 shadow-[0_0_20px_rgba(239,68,68,0.08)] hover:bg-red-500/10 hover:border-red-500/15 hover:shadow-[0_0_30px_rgba(239,68,68,0.12)] data-[state=active]:bg-red-500/15 data-[state=active]:border-red-500/20 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.15)] text-white font-bold text-lg transition-all">
+            <TabsTrigger value="translators" className="flex-1 h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/15 data-[state=active]:border-red-500/20 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.15)]">
               Sworn Translators
             </TabsTrigger>
-            <TabsTrigger value="agencies" className="flex-1 h-14 bg-red-500/5 border-2 border-red-500/10 shadow-[0_0_20px_rgba(239,68,68,0.08)] hover:bg-red-500/10 hover:border-red-500/15 hover:shadow-[0_0_30px_rgba(239,68,68,0.12)] data-[state=active]:bg-red-500/15 data-[state=active]:border-red-500/20 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.15)] text-white font-bold text-lg transition-all">
+            <TabsTrigger value="agencies" className="flex-1 h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/15 data-[state=active]:border-red-500/20 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.15)]">
               Agencies
             </TabsTrigger>
           </TabsList>
@@ -284,11 +284,11 @@ export const TranslationDashboard = () => {
         </TabsContent>
 
         <TabsContent value="translators">
-          <SwornTranslatorsList />
+          {/* Content removed temporarily */}
         </TabsContent>
 
         <TabsContent value="agencies">
-          <TranslationAgenciesList />
+          {/* Content removed temporarily */}
         </TabsContent>
       </Tabs>
 
