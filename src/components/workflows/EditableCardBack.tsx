@@ -105,7 +105,7 @@ export const EditableCardBack = ({
           )}
         </div>
 
-        <div className="flex-1 flex items-center justify-center px-2">
+        <div className="flex-1 flex items-start justify-center px-2 pt-8">
           {!isEditing ? (
             <p className="text-sm text-muted-foreground text-center whitespace-pre-wrap">
               {displayDescription || "Click edit to add description"}
@@ -114,8 +114,8 @@ export const EditableCardBack = ({
             <Textarea
               value={editedText}
               onChange={(e) => setEditedText(e.target.value)}
-              onClick={(e) => e.stopPropagation()} // Prevent card flip when clicking in textarea
-              className="min-h-[80px] resize-none text-sm"
+              onClick={(e) => e.stopPropagation()}
+              className="min-h-[80px] w-full resize-none text-sm text-left align-top"
               placeholder="Enter card description..."
               autoFocus
             />

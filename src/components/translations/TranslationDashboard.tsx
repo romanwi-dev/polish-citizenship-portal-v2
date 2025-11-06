@@ -80,17 +80,10 @@ export const TranslationDashboard = () => {
               </div>
             </div>
             {/* Back */}
-            <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
-              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-            >
-              <EditableCardBack
-                workflowName="translations"
-                cardId="documents"
-                defaultDescription="Total documents prepared for translation workflow"
-                icon={Languages}
-              />
-            </div>
+            <EditableCardBack
+              workflowName="translations"
+              cardId="documents"
+            />
           </div>
         </div>
 
@@ -123,17 +116,10 @@ export const TranslationDashboard = () => {
               </div>
             </div>
             {/* Back */}
-            <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
-              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-            >
-              <EditableCardBack
-                workflowName="translations"
-                cardId="pending"
-                defaultDescription="Documents awaiting client upload to portal"
-                icon={Clock}
-              />
-            </div>
+            <EditableCardBack
+              workflowName="translations"
+              cardId="pending"
+            />
           </div>
         </div>
 
@@ -166,17 +152,10 @@ export const TranslationDashboard = () => {
               </div>
             </div>
             {/* Back */}
-            <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
-              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-            >
-              <EditableCardBack
-                workflowName="translations"
-                cardId="check"
-                defaultDescription="Documents currently with sworn translator for certification"
-                icon={FileText}
-              />
-            </div>
+            <EditableCardBack
+              workflowName="translations"
+              cardId="check"
+            />
           </div>
         </div>
 
@@ -209,17 +188,10 @@ export const TranslationDashboard = () => {
               </div>
             </div>
             {/* Back */}
-            <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
-              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-            >
-              <EditableCardBack
-                workflowName="translations"
-                cardId="completed"
-                defaultDescription="Certified translations ready for submission to authorities"
-                icon={CheckCircle}
-              />
-            </div>
+            <EditableCardBack
+              workflowName="translations"
+              cardId="completed"
+            />
           </div>
         </div>
       </div>
