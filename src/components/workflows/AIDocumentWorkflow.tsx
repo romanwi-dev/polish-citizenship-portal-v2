@@ -847,10 +847,6 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                               {isCompleted ? "✓ Done" : "Mark Done"}
                             </Button>
                           </div>
-
-                          <p className="text-xs text-muted-foreground/60 mt-1 text-center">
-                            {isMobile ? 'Tap' : 'Click'} to see details
-                          </p>
                         </div>
                       </div>
 
@@ -939,10 +935,6 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                               </div>
                             </div>
                           )}
-
-                          <p className="text-xs text-muted-foreground/60 mt-2 text-center">
-                            {isMobile ? 'Tap' : 'Click'} to flip back
-                          </p>
                         </div>
                     </div>
                   </div>
