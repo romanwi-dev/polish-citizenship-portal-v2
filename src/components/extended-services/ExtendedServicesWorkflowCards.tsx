@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 const extendedServicesSteps = [
   {
     number: "01",
-    title: "Family Legal Services",
+    title: "Family",
     description: "Assist multiple family members with citizenship applications, coordinating complex multi-generation cases.",
     icon: Users,
     gradient: "from-primary to-secondary",
