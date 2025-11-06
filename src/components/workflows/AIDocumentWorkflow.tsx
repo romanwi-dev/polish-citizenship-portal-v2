@@ -648,12 +648,12 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
           return (
             <div 
               key={step.stage}
-              className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-16 ${index % 2 === 1 ? 'md:flex-row-reverse' : ''} animate-fade-in`}
+              className="relative mb-16 md:mb-24 md:min-h-[450px] animate-fade-in"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              {/* Content Card - 5/12 width on desktop, larger gap for spacing */}
-              <div className="w-full md:w-5/12">
-                <div 
+              {/* Content Card - Absolute positioned on desktop for perfect mirroring */}
+              <div className={`w-full ${index % 2 === 0 ? 'md:absolute md:right-[calc(50%+1.5rem)] md:w-[500px]' : 'md:absolute md:left-[calc(50%+1.5rem)] md:w-[500px]'}`}>
+                <div
                   className="relative h-[350px] md:h-[450px]"
                   style={{ perspective: '1000px' }}
                 >
@@ -926,19 +926,18 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                 <Icon className="h-6 w-6 text-white" />
               </div>
 
-              {/* Empty spacer for alternating layout - 5/12 width OR Preview Card */}
-              <div className="hidden md:block md:w-5/12">
-                {isFirstCard && selectedFiles.length > 0 && (
-                  <motion.div 
-                    initial={{ opacity: 0, scale: 0.9, x: 50 }}
-                    animate={{ opacity: 1, scale: 1, x: 0 }}
-                    exit={{ opacity: 0, scale: 0.9, x: 50 }}
-                    transition={{ duration: 0.4, ease: "easeOut" }}
-                    className="h-[350px] md:h-[450px] glass-card p-6 rounded-lg border-2 border-primary/20"
-                    style={{
-                      boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15)'
-                    }}
-                  >
+              {/* Preview Card - Absolute positioned on desktop, mirrors first card */}
+              {isFirstCard && selectedFiles.length > 0 && (
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.9, x: 50 }}
+                  animate={{ opacity: 1, scale: 1, x: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, x: 50 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  className="w-full md:absolute md:left-[calc(50%+1.5rem)] md:w-[500px] h-[350px] md:h-[450px] glass-card p-6 rounded-lg border-2 border-primary/20"
+                  style={{
+                    boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15)'
+                  }}
+                >
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="font-semibold text-lg flex items-center gap-2">
                         <Eye className="h-5 w-5 text-primary" />
@@ -1001,9 +1000,8 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                     >
                       {uploading ? 'Uploading...' : `Upload ${selectedFiles.length} file(s)`}
                     </Button>
-                  </motion.div>
-                )}
-              </div>
+                </motion.div>
+              )}
             </div>
           );
         })}
