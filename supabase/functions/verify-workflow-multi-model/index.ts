@@ -267,21 +267,28 @@ Find ALL CRITICAL issues that would cause failures in production. Be specific, a
         } else {
           // Use Lovable AI Gateway for OpenAI and Google models
           console.log(`📤 Calling Lovable AI Gateway for ${model}...`);
+          // Build request body - GPT-5 doesn't support temperature parameter
+          const requestBody: any = {
+            model,
+            messages: [
+              { role: 'system', content: systemPrompt },
+              { role: 'user', content: userPrompt }
+            ],
+            max_completion_tokens: 16000,
+          };
+          
+          // Only add temperature for non-GPT-5 models
+          if (!model.startsWith('openai/gpt-5')) {
+            requestBody.temperature = 0.2;
+          }
+
           const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${lovableApiKey}`,
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-              model,
-              messages: [
-                { role: 'system', content: systemPrompt },
-                { role: 'user', content: userPrompt }
-              ],
-              max_completion_tokens: 16000,  // Fixed: GPT-5 needs higher limit to avoid truncation
-              temperature: 0.2  // FIXED: Added temperature for consistency
-            }),
+            body: JSON.stringify(requestBody),
             signal: controller.signal,
           });
 
