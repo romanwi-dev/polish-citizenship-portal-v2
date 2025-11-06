@@ -432,41 +432,44 @@ const Cases = () => {
               }
             />
           ) : (
-            <div className="relative max-w-6xl mx-auto space-y-12 md:space-y-0">
-              {/* Center line for desktop */}
-              <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block" />
+            <div className="relative max-w-6xl mx-auto">
+              {/* Center line for desktop - vertical timeline */}
+              <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block z-0" />
               
               {filteredCases.map((clientCase, index) => {
                 const isLeft = index % 2 === 0;
                 return (
                   <div
                     key={clientCase.id}
-                    className="relative mb-12"
+                    className="mb-12 last:mb-0"
                   >
-                    <div className={`md:flex ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-8`}>
-                      {/* Card - Animated */}
+                    {/* Desktop: Timeline layout with alternating cards */}
+                    <div className={`flex flex-col md:flex-row ${!isLeft ? 'md:flex-row-reverse' : ''} items-stretch md:items-center gap-4 md:gap-8`}>
+                      {/* Card - Left or Right */}
                       <div 
-                        className="md:w-5/12 animate-fade-in hover:scale-[1.02] transition-transform duration-300"
+                        className="w-full md:w-5/12 animate-fade-in"
                         style={{
                           animationDelay: `${index * 0.1}s`,
                           animationFillMode: 'backwards'
                         }}
                       >
-                        <CaseCard 
-                          clientCase={clientCase}
-                          onEdit={handleEdit}
-                          onDelete={handleDeleteCase}
-                          onUpdateStatus={handleUpdateStatus}
-                        />
+                        <div className="hover:scale-[1.02] transition-transform duration-300">
+                          <CaseCard 
+                            clientCase={clientCase}
+                            onEdit={handleEdit}
+                            onDelete={handleDeleteCase}
+                            onUpdateStatus={handleUpdateStatus}
+                          />
+                        </div>
                       </div>
 
-                      {/* Timeline Dot - Matching Workflow Design */}
-                      <div className="hidden md:block w-2/12 flex-shrink-0 relative">
-                        <div className="w-8 h-8 rounded-full bg-primary border-4 border-background mx-auto relative z-20 transition-all duration-300 shadow-[0_0_20px_rgba(59,130,246,0.3)]" />
+                      {/* Timeline Dot - Center */}
+                      <div className="hidden md:flex w-2/12 flex-shrink-0 justify-center relative z-10">
+                        <div className="w-8 h-8 rounded-full bg-primary border-4 border-background shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300" />
                       </div>
 
-                      {/* Empty space on other side */}
-                      <div className="hidden md:block md:w-5/12" />
+                      {/* Empty space on opposite side */}
+                      <div className="hidden md:block w-5/12" />
                     </div>
                   </div>
                 );
