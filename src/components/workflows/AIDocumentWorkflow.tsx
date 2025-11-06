@@ -634,7 +634,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
     <ErrorBoundary>
     <div className="w-full pb-40">
       {/* Vertical Timeline - Matching Homepage */}
-      <div className="relative max-w-7xl mx-auto">
+      <div className="relative max-w-[1800px] mx-auto">
         {/* Center line - hidden on mobile, visible on desktop */}
         <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block" />
 
@@ -1009,8 +1009,8 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
         })}
       </div>
 
-      {/* Summary Stats - Sticky Bottom Bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-lg border-t shadow-2xl">
+      {/* Summary Stats - Sticky Bottom Bar - Responsive to sidebar */}
+      <div className="fixed bottom-0 left-0 md:left-16 right-0 z-40 bg-background/95 backdrop-blur-lg border-t shadow-2xl">
         {/* Animated Progress Bar Fill */}
         <motion.div
           initial={{ width: 0 }}
