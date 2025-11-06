@@ -1002,9 +1002,13 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
       {/* Bottom Padding */}
       <div className="h-32"></div>
 
-      {/* File Preview Card - Always visible, matches left card size and position */}
-      <div className="fixed right-0 top-0 w-full md:w-5/12 h-screen flex items-center justify-end pr-4 md:pr-8 pointer-events-none z-50">
-        <div className="w-full max-w-md h-[350px] md:h-[450px] glass-card p-6 rounded-lg shadow-2xl border-2 border-primary/20 pointer-events-auto">
+      {/* File Preview Card - Always visible, mirrors the stage card on opposite side */}
+      <div className="fixed top-[320px] md:top-[280px] right-4 md:right-[calc((100%-1536px)/2)] w-[calc(100%-2rem)] md:w-[calc(41.666%-2rem)] pointer-events-none z-50">
+        <div className="w-full h-[350px] md:h-[450px] glass-card p-6 rounded-lg shadow-2xl border-2 border-primary/20 pointer-events-auto"
+          style={{
+            boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15)'
+          }}
+        >
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold text-lg flex items-center gap-2">
               <Eye className="h-5 w-5 text-primary" />
