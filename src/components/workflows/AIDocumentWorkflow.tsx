@@ -258,7 +258,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
   });
 
   // FIX #5: Explicit security validation via edge function (server-side ownership check)
-  const { data: documents, refetch: refetchDocuments } = useQuery({
+  const { data: documents, refetch: refetchDocuments, isLoading: isLoadingDocuments } = useQuery({
     queryKey: ['case-documents', caseId],
     queryFn: async () => {
       if (!caseId) return [];
@@ -682,297 +682,261 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true, margin: "-50px" }}
-              className={`mb-12 md:flex ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-8`}
+              className="mb-12"
             >
-              {/* Content Card - Left or Right */}
-              <div className={`md:w-5/12 ${isLeft ? 'md:text-right' : 'md:text-left'}`}>
-                <div
-                  className="relative h-[400px]"
-                  style={{ perspective: '1000px' }}
-                >
-                  <motion.div
-                    onClick={() => toggleFlip(step.stage)}
-                    whileHover={{ scale: 1.03, y: -5 }}
-                    transition={{ duration: 0.3 }}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        toggleFlip(step.stage);
-                      }
-                    }}
-                    role="button"
-                    tabIndex={0}
-                    aria-label={`${step.title} - Click to view details`}
-                    className="absolute inset-0 cursor-pointer transition-transform duration-700 focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-lg"
-                    style={{
-                      transformStyle: 'preserve-3d',
-                      transform: flippedCards[step.stage] ? 'rotateY(180deg)' : 'rotateY(0deg)',
-                    }}
+              <div className={`md:flex ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-8`}>
+                {/* Content Card - Left or Right */}
+                <div className="md:w-5/12">
+                  <div
+                    className="relative h-[400px]"
+                    style={{ perspective: '1000px' }}
                   >
-                      {/* Front Side */}
-                      <motion.div 
-                        className={cn(
-                          "absolute inset-0 glass-card p-6 rounded-lg group transition-transform duration-300 hover-glow",
-                          isCompleted 
-                            ? "ring-2 ring-green-500/50" 
-                            : ""
-                        )}
-                        style={{
-                          backfaceVisibility: 'hidden',
-                          WebkitBackfaceVisibility: 'hidden',
-                          boxShadow: isCompleted 
-                            ? '0 0 20px rgba(34, 197, 94, 0.2)' 
-                            : undefined,
-                        }}
-                      >
-                        <div className="flex flex-col gap-3 h-full">
-                          {/* Header */}
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className={`text-sm md:text-xs font-bold px-3 py-1.5 md:px-2 md:py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
-                              {step.number}
-                            </span>
-                            <Badge variant={step.agent === 'ai' ? 'default' : step.agent === 'human' ? 'secondary' : 'outline'} className="text-xs">
-                              {step.agent === 'ai' ? 'AI' : step.agent === 'human' ? 'HAC' : 'AI+HAC'}
-                            </Badge>
-                          </div>
-
-                          {/* Completed Badge */}
-                          {isCompleted && (
-                            <div className="absolute top-4 right-4">
-                              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-500 text-white shadow-lg">
-                                <Check className="h-5 w-5" />
-                              </div>
-                            </div>
-                          )}
-
-                          {/* Icon */}
-                          <div className={cn(
-                            "mb-3 flex h-16 md:h-20 items-center justify-center rounded-lg",
+                    <motion.div
+                      onClick={() => toggleFlip(step.stage)}
+                      whileHover={{ scale: 1.03, y: -5 }}
+                      transition={{ duration: 0.3 }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          toggleFlip(step.stage);
+                        }
+                      }}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`${step.title} - Click to view details`}
+                      className="absolute inset-0 cursor-pointer transition-transform duration-700 focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-lg"
+                      style={{
+                        transformStyle: 'preserve-3d',
+                        transform: flippedCards[step.stage] ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                      }}
+                    >
+                        {/* Front Side */}
+                        <motion.div 
+                          className={cn(
+                            "absolute inset-0 glass-card p-6 rounded-lg group transition-transform duration-300 hover-glow",
                             isCompleted 
-                              ? "bg-green-500/10" 
-                              : "bg-gradient-to-br from-primary/10 to-secondary/10"
-                          )}>
-                            <Icon className={cn(
-                              "h-10 w-10 md:h-12 md:w-12",
-                              isCompleted ? "text-green-500" : "text-primary"
-                            )} />
-                          </div>
-
-                          {/* Title */}
-                          <h3 className={cn(
-                            "text-xl md:text-2xl lg:text-3xl font-heading font-black tracking-tight bg-clip-text text-transparent drop-shadow-lg animate-fade-in",
-                            isCompleted 
-                              ? "bg-gradient-to-r from-green-500 to-green-600" 
-                              : "bg-gradient-to-r from-primary to-secondary group-hover:scale-110 transition-all duration-300"
-                          )}>
-                            {step.title}
-                          </h3>
-
-                          {/* Description */}
-                          <p className="text-xs md:text-sm text-muted-foreground mb-3 flex-1 line-clamp-3 md:line-clamp-none">
-                            {step.description}
-                          </p>
-
-                          {/* Upload Section for First Card */}
-                          {step.stage === 'upload' && (
-                            <div className="mb-3">
-                              <input
-                                ref={fileInputRef}
-                                type="file"
-                                multiple
-                                accept=".jpg,.jpeg,.png,.webp,.pdf"
-                                onChange={handleFileSelect}
-                                className="hidden"
-                              />
-                              <Button
-                                onClick={() => fileInputRef.current?.click()}
-                                disabled={!caseId || uploading}
-                                className="w-full"
-                                size="lg"
-                              >
-                                <Upload className="h-5 w-5 mr-2" />
-                                Upload Documents
-                              </Button>
-                              {uploading && (
-                                <p className="text-xs text-center mt-2 text-primary">
-                                  Uploading {uploadProgress.uploading} file(s)...
-                                </p>
-                              )}
-                            </div>
+                              ? "ring-2 ring-green-500/50" 
+                              : ""
                           )}
+                          style={{
+                            backfaceVisibility: 'hidden',
+                            WebkitBackfaceVisibility: 'hidden',
+                          }}
+                        >
+                          <div className="flex flex-col gap-3 h-full">
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className={`text-base md:text-xs font-bold px-3 py-1.5 md:px-2 md:py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
+                                {step.number}
+                              </span>
+                              <span className="text-xs text-primary/60">{step.agent === 'human' ? 'Manual' : step.agent === 'ai' ? 'Automated' : 'Hybrid'}</span>
+                            </div>
+                            
+                            <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground mb-1">
+                              {step.title}
+                            </h3>
 
-                          {/* Document Thumbnails */}
-                          {stageDocuments.length > 0 && (
-                            <div className="mb-3">
-                              <div className="flex gap-2 overflow-x-auto pb-2">
-                                {stageDocuments.slice(0, 4).map((doc) => {
-                                  const thumbnail = getDocumentThumbnail(doc);
-                                  return (
-                                     <div
-                                       key={doc.id}
-                                       onClick={() => handleDocumentView(doc)}
-                                       className="flex-shrink-0 w-16 h-16 rounded-lg border-2 border-primary/20 overflow-hidden bg-muted/50 flex items-center justify-center group hover:border-primary/60 transition-all cursor-pointer"
-                                     >
-                                       {thumbnail ? (
-                                         <img
-                                           src={thumbnail}
-                                           alt={doc.name}
-                                           className="w-full h-full object-cover group-hover:scale-110 transition-transform"
-                                         />
-                                       ) : (
-                                         <FileText className="h-6 w-6 text-primary/40" />
-                                       )}
-                                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">
-                                         <Eye className="h-4 w-4 text-white" />
-                                       </div>
-                                     </div>
-                                  );
-                                })}
-                                {stageDocuments.length > 4 && (
-                                  <div className="flex-shrink-0 w-16 h-16 rounded-lg border-2 border-dashed border-primary/20 bg-muted/30 flex items-center justify-center">
-                                    <span className="text-xs font-semibold text-primary">+{stageDocuments.length - 4}</span>
-                                  </div>
+                            <p className="text-xs md:text-sm text-muted-foreground leading-relaxed flex-1 overflow-y-auto">
+                              {step.description}
+                            </p>
+
+                            {/* File Upload Section for First Card */}
+                            {isFirstCard && !isLoadingDocuments && (
+                              <div className="mt-auto space-y-3">
+                                <input
+                                  type="file"
+                                  ref={fileInputRef}
+                                  onChange={handleFileSelect}
+                                  multiple
+                                  accept="image/*,.pdf,.doc,.docx"
+                                  className="hidden"
+                                />
+                                <Button
+                                  onClick={() => fileInputRef.current?.click()}
+                                  variant="outline"
+                                  size="sm"
+                                  className="w-full"
+                                  disabled={uploading}
+                                >
+                                  <Upload className="h-4 w-4 mr-2" />
+                                  {uploading ? 'Uploading...' : 'Select Files'}
+                                </Button>
+                                {selectedFiles.length > 0 && (
+                                  <Badge variant="secondary" className="w-full justify-center">
+                                    {selectedFiles.length} file(s) selected
+                                  </Badge>
                                 )}
                               </div>
-                            </div>
-                          )}
+                            )}
 
-                          {/* Document Count */}
-                          <div className="flex items-center justify-between">
-                            <span className="text-xs px-2 py-1 md:px-3 md:py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
-                              {docCount} documents
-                            </span>
-                            <Button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                toggleComplete(step.stage);
-                              }}
-                              variant={isCompleted ? "default" : "outline"}
-                              size="sm"
-                              className="text-xs"
-                            >
-                              {isCompleted ? "✓ Done" : "Mark Done"}
-                            </Button>
-                          </div>
-                        </div>
-                      </motion.div>
-
-                      {/* Back Side */}
-                      <div 
-                        className="absolute inset-0 glass-card p-6 rounded-lg hover-glow"
-                        style={{
-                          backfaceVisibility: 'hidden',
-                          WebkitBackfaceVisibility: 'hidden',
-                          transform: 'rotateY(180deg)',
-                        }}
-                      >
-                        <div className="flex flex-col gap-3 h-full">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className={`text-base md:text-xs font-bold px-3 py-1.5 md:px-2 md:py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
-                              {step.number}
-                            </span>
-                            <span className="text-xs text-primary/60">Details</span>
-                          </div>
-                          
-                          <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground mb-2">
-                            {step.title}
-                          </h3>
-
-                          <p className="text-xs md:text-sm text-muted-foreground leading-relaxed flex-1 overflow-y-auto">
-                            {step.backDetails}
-                          </p>
-
-                          {/* Document Preview Grid on Back */}
-                          {stageDocuments.length > 0 && (
-                            <div className="mt-3 space-y-2">
-                              <h5 className="font-semibold text-xs flex items-center gap-2">
-                                <ImageIcon className="h-3 w-3" />
-                                Documents ({docCount})
-                              </h5>
-                              <div className="grid grid-cols-3 gap-2">
-                                {stageDocuments.slice(0, 6).map((doc) => {
-                                  const thumbnail = getDocumentThumbnail(doc);
-                                  return (
-                                    <div
-                                      key={doc.id}
-                                      className="relative aspect-square rounded-lg border border-primary/20 overflow-hidden bg-muted/50 group hover:border-primary/60 transition-all"
-                                    >
-                                      {thumbnail ? (
-                                        <img
-                                          src={thumbnail}
-                                          alt={doc.name}
-                                          className="w-full h-full object-cover group-hover:scale-110 transition-transform"
-                                        />
-                                      ) : (
-                                        <div className="w-full h-full flex items-center justify-center">
-                                          <FileText className="h-6 w-6 text-primary/40" />
-                                        </div>
-                                      )}
-                                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+                            {/* Document Thumbnails */}
+                            {stageDocuments.length > 0 && (
+                              <div className="mb-3">
+                                <div className="flex gap-2 overflow-x-auto pb-2">
+                                  {stageDocuments.slice(0, 4).map((doc) => {
+                                    const thumbnail = getDocumentThumbnail(doc);
+                                    return (
+                                       <div
+                                         key={doc.id}
+                                         onClick={() => handleDocumentView(doc)}
+                                         className="flex-shrink-0 w-16 h-16 rounded-lg border-2 border-primary/20 overflow-hidden bg-muted/50 flex items-center justify-center group hover:border-primary/60 transition-all cursor-pointer"
+                                       >
+                                         {thumbnail ? (
+                                           <img
+                                             src={thumbnail}
+                                             alt={doc.name}
+                                             className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                                           />
+                                         ) : (
+                                           <FileText className="h-6 w-6 text-primary/40" />
+                                         )}
+                                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">
+                                           <Eye className="h-4 w-4 text-white" />
+                                         </div>
+                                       </div>
+                                    );
+                                  })}
+                                  {stageDocuments.length > 4 && (
+                                    <div className="flex-shrink-0 w-16 h-16 rounded-lg border-2 border-dashed border-primary/20 bg-muted/30 flex items-center justify-center">
+                                      <span className="text-xs font-semibold text-primary">+{stageDocuments.length - 4}</span>
                                     </div>
-                                  );
-                                })}
+                                  )}
+                                </div>
                               </div>
-                              {docCount > 6 && (
-                                <p className="text-xs text-muted-foreground text-center pt-1">
-                                  +{docCount - 6} more documents
-                                </p>
-                              )}
-                            </div>
-                          )}
+                            )}
 
-                          {/* Document Preview - Old List View (removed) */}
-                          {docCount > 0 && stageDocuments.length === 0 && (
-                            <div className="mt-2 space-y-2">
-                              <h5 className="font-semibold text-xs">Documents in this stage:</h5>
-                              <div className="space-y-1">
-                                {documents
-                                  ?.slice(0, 2)
-                                  .map(doc => (
-                                    <div key={doc.id} className="flex items-center gap-2 p-1.5 rounded bg-muted/50">
-                                      <FileText className="h-3 w-3 text-primary flex-shrink-0" />
-                                      <span className="text-xs truncate flex-1">{doc.name}</span>
-                                    </div>
-                                  ))}
-                                {docCount > 2 && (
-                                  <p className="text-xs text-muted-foreground text-center">
-                                    +{docCount - 2} more
+                            {/* Document Count */}
+                            <div className="flex items-center justify-between">
+                              <span className="text-xs px-2 py-1 md:px-3 md:py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
+                                {docCount} documents
+                              </span>
+                              <Button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  toggleComplete(step.stage);
+                                }}
+                                variant={isCompleted ? "default" : "outline"}
+                                size="sm"
+                                className="text-xs"
+                              >
+                                {isCompleted ? "✓ Done" : "Mark Done"}
+                              </Button>
+                            </div>
+                          </div>
+                        </motion.div>
+
+                        {/* Back Side */}
+                        <div 
+                          className="absolute inset-0 glass-card p-6 rounded-lg hover-glow"
+                          style={{
+                            backfaceVisibility: 'hidden',
+                            WebkitBackfaceVisibility: 'hidden',
+                            transform: 'rotateY(180deg)',
+                          }}
+                        >
+                          <div className="flex flex-col gap-3 h-full">
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className={`text-base md:text-xs font-bold px-3 py-1.5 md:px-2 md:py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
+                                {step.number}
+                              </span>
+                              <span className="text-xs text-primary/60">Details</span>
+                            </div>
+                            
+                            <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground mb-2">
+                              {step.title}
+                            </h3>
+
+                            <p className="text-xs md:text-sm text-muted-foreground leading-relaxed flex-1 overflow-y-auto">
+                              {step.backDetails}
+                            </p>
+
+                            {/* Document Preview Grid on Back */}
+                            {stageDocuments.length > 0 && (
+                              <div className="mt-3 space-y-2">
+                                <h5 className="font-semibold text-xs flex items-center gap-2">
+                                  <ImageIcon className="h-3 w-3" />
+                                  Documents ({docCount})
+                                </h5>
+                                <div className="grid grid-cols-3 gap-2">
+                                  {stageDocuments.slice(0, 6).map((doc) => {
+                                    const thumbnail = getDocumentThumbnail(doc);
+                                    return (
+                                      <div
+                                        key={doc.id}
+                                        className="relative aspect-square rounded-lg border border-primary/20 overflow-hidden bg-muted/50 group hover:border-primary/60 transition-all"
+                                      >
+                                        {thumbnail ? (
+                                          <img
+                                            src={thumbnail}
+                                            alt={doc.name}
+                                            className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                                          />
+                                        ) : (
+                                          <div className="w-full h-full flex items-center justify-center">
+                                            <FileText className="h-6 w-6 text-primary/40" />
+                                          </div>
+                                        )}
+                                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                                {docCount > 6 && (
+                                  <p className="text-xs text-muted-foreground text-center pt-1">
+                                    +{docCount - 6} more documents
                                   </p>
                                 )}
                               </div>
-                            </div>
-                          )}
-                        </div>
-                    </div>
-                  </motion.div>
+                            )}
+
+                            {/* Document Preview - Old List View (removed) */}
+                            {docCount > 0 && stageDocuments.length === 0 && (
+                              <div className="mt-2 space-y-2">
+                                <h5 className="font-semibold text-xs">Documents in this stage:</h5>
+                                <div className="space-y-1">
+                                  {documents
+                                    ?.slice(0, 2)
+                                    .map(doc => (
+                                      <div key={doc.id} className="flex items-center gap-2 p-1.5 rounded bg-muted/50">
+                                        <FileText className="h-3 w-3 text-primary flex-shrink-0" />
+                                        <span className="text-xs truncate flex-1">{doc.name}</span>
+                                      </div>
+                                    ))}
+                                  {docCount > 2 && (
+                                    <p className="text-xs text-muted-foreground text-center">
+                                      +{docCount - 2} more
+                                    </p>
+                                  )}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                      </div>
+                    </motion.div>
+                  </div>
                 </div>
-              </div>
 
-              {/* Timeline Dot - Matching Translations Workflow */}
-              <div className="hidden md:block w-2/12 flex-shrink-0 relative">
-                <div className={cn(
-                  "w-8 h-8 rounded-full border-4 border-background mx-auto relative z-20 transition-all duration-300",
-                  docCount > 0 
-                    ? "bg-primary animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite] shadow-[0_0_20px_rgba(59,130,246,0.5)]" 
-                    : "bg-primary"
-                )} />
-              </div>
+                {/* Timeline Dot - Matching Translations Workflow */}
+                <div className="hidden md:block w-2/12 flex-shrink-0 relative">
+                  <div className={cn(
+                    "w-8 h-8 rounded-full border-4 border-background mx-auto relative z-20 transition-all duration-300",
+                    docCount > 0 
+                      ? "bg-primary animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite] shadow-[0_0_20px_rgba(59,130,246,0.5)]" 
+                      : "bg-primary"
+                  )} />
+                </div>
 
-              {/* Empty space on other side */}
-              <div className="hidden md:block md:w-5/12" />
-
-              {/* Preview Card - Only for first card */}
-              {isFirstCard && selectedFiles.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9, x: isLeft ? 50 : -50 }}
-                  animate={{ opacity: 1, scale: 1, x: 0 }}
-                  exit={{ opacity: 0, scale: 0.9, x: isLeft ? 50 : -50 }}
-                  transition={{ duration: 0.4, ease: "easeOut" }}
-                  className={`hidden md:block md:w-5/12 ${isLeft ? 'md:order-last' : 'md:order-first'} h-[400px] glass-card p-6 rounded-lg border-2 border-primary/20`}
-                  style={{
-                    boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15)'
-                  }}
-                >
+                {/* Preview Card OR Empty Space - Properly positioned */}
+                {isFirstCard && selectedFiles.length > 0 ? (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    className="md:w-5/12 h-[400px] glass-card p-6 rounded-lg border-2 border-primary/20 mt-4 md:mt-0"
+                    style={{
+                      boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15)'
+                    }}
+                  >
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="font-semibold text-lg flex items-center gap-2">
                         <Eye className="h-5 w-5 text-primary" />
@@ -1035,8 +999,11 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                     >
                       {uploading ? 'Uploading...' : `Upload ${selectedFiles.length} file(s)`}
                     </Button>
-                </motion.div>
-              )}
+                  </motion.div>
+                ) : (
+                  <div className="hidden md:block md:w-5/12" />
+                )}
+              </div>
             </motion.div>
           );
         })}
