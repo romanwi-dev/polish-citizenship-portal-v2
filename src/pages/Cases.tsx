@@ -432,7 +432,7 @@ const Cases = () => {
               }
             />
           ) : (
-            <div className="relative max-w-6xl mx-auto">
+            <div className="relative max-w-6xl mx-auto space-y-12 md:space-y-0">
               {/* Center line for desktop */}
               <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block" />
               
@@ -441,25 +441,33 @@ const Cases = () => {
                 return (
                   <div
                     key={clientCase.id}
-                    className={`mb-12 md:flex ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-8`}
+                    className="relative mb-12"
                   >
-                    {/* Card */}
-                    <div className="md:w-5/12">
-                      <CaseCard 
-                        clientCase={clientCase}
-                        onEdit={handleEdit}
-                        onDelete={handleDeleteCase}
-                        onUpdateStatus={handleUpdateStatus}
-                      />
-                    </div>
+                    <div className={`md:flex ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-8`}>
+                      {/* Card - Animated */}
+                      <div 
+                        className="md:w-5/12 animate-fade-in hover:scale-[1.02] transition-transform duration-300"
+                        style={{
+                          animationDelay: `${index * 0.1}s`,
+                          animationFillMode: 'backwards'
+                        }}
+                      >
+                        <CaseCard 
+                          clientCase={clientCase}
+                          onEdit={handleEdit}
+                          onDelete={handleDeleteCase}
+                          onUpdateStatus={handleUpdateStatus}
+                        />
+                      </div>
 
-                    {/* Timeline Dot */}
-                    <div className="hidden md:block w-2/12 flex-shrink-0 relative">
-                      <div className="w-8 h-8 rounded-full bg-primary border-4 border-background mx-auto relative z-10" />
-                    </div>
+                      {/* Timeline Dot - Matching Workflow Design */}
+                      <div className="hidden md:block w-2/12 flex-shrink-0 relative">
+                        <div className="w-8 h-8 rounded-full bg-primary border-4 border-background mx-auto relative z-20 transition-all duration-300 shadow-[0_0_20px_rgba(59,130,246,0.3)]" />
+                      </div>
 
-                    {/* Empty space on other side */}
-                    <div className="hidden md:block md:w-5/12" />
+                      {/* Empty space on other side */}
+                      <div className="hidden md:block md:w-5/12" />
+                    </div>
                   </div>
                 );
               })}
