@@ -46,7 +46,7 @@ const AIWorkflow = () => {
 
   return (
     <AdminLayout>
-      <div className="space-y-8 p-4 md:p-8 bg-[hsl(220,70%,12%)] min-h-screen">
+      <div className="space-y-8 p-4 md:p-8 bg-[hsl(220,70%,8%)] min-h-screen">
         {/* Title */}
         <h1 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-center">
           Documents Workflow
