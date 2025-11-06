@@ -104,16 +104,7 @@ serve(async (req) => {
     // Fetch documents with explicit server-side filtering
     const { data: documents, error: docsError } = await supabaseClient
       .from('documents')
-      .select(`
-        *,
-        ocr_documents(
-          id,
-          ocr_text,
-          confidence_score,
-          status,
-          extracted_data
-        )
-      `)
+      .select('*')
       .eq('case_id', caseId)
       .order('created_at', { ascending: false });
 
