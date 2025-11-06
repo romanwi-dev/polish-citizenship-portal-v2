@@ -408,6 +408,20 @@ export const CaseCard = memo(({
 
           {!isFlipped && (
             <div className="space-y-3 sm:space-y-4 mt-auto pt-5 sm:pt-5">
+              {/* AI Documents Workflow Button */}
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full font-medium font-label border-2 border-purple-500/30 bg-purple-500/10 text-purple-400 hover:bg-purple-500/20 hover:border-purple-500/50 transition-all shadow-sm hover:shadow-md h-14 text-lg"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/admin/ai-workflow?caseId=${clientCase.id}`);
+                }}
+              >
+                <FileEdit className="w-5 h-5 mr-2" />
+                AI Documents
+              </Button>
+
               {/* Control Room Button - Premium Feature */}
               <Button
                 size="lg"

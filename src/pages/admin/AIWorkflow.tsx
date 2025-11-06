@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { AdminLayout } from "@/components/AdminLayout";
 import { AIDocumentWorkflow } from "@/components/workflows/AIDocumentWorkflow";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -7,8 +8,17 @@ import { supabase } from "@/integrations/supabase/client";
 import { Search, ArrowRight, ArrowDown } from "lucide-react";
 
 const AIWorkflow = () => {
-  const [selectedCaseId, setSelectedCaseId] = useState<string>("");
+  const [searchParams] = useSearchParams();
+  const caseIdFromUrl = searchParams.get('caseId');
+  const [selectedCaseId, setSelectedCaseId] = useState<string>(caseIdFromUrl || "");
   const [searchTerm, setSearchTerm] = useState<string>("");
+
+  // Auto-select case from URL param
+  useEffect(() => {
+    if (caseIdFromUrl) {
+      setSelectedCaseId(caseIdFromUrl);
+    }
+  }, [caseIdFromUrl]);
 
   const { data: cases } = useQuery({
     queryKey: ['cases-for-workflow'],

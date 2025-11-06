@@ -140,10 +140,9 @@ export function usePDFGeneration(caseId: string) {
       // Log approval
       await supabase.from("hac_logs").insert({
         case_id: caseId,
+        performed_by: (await supabase.auth.getUser()).data.user?.id || '',
         action_type: "pdf_approval",
-        action_description: "PDFs approved for final generation",
-        field_changed: "approved_for_generation_at",
-        new_value: new Date().toISOString(),
+        action_details: "PDFs approved for final generation - " + new Date().toISOString(),
       });
 
       toast({
