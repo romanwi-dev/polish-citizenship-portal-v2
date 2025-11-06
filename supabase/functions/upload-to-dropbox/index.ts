@@ -81,10 +81,52 @@ serve(async (req) => {
 
     console.log(`Uploading to Dropbox: ${dropboxFilePath}`);
 
-    // Get Dropbox access token
-    const dropboxAccessToken = Deno.env.get('DROPBOX_ACCESS_TOKEN');
-    if (!dropboxAccessToken) {
-      throw new Error('Dropbox access token not configured');
+    // Function to refresh Dropbox access token
+    async function refreshDropboxToken(): Promise<string> {
+      const refreshToken = Deno.env.get('DROPBOX_REFRESH_TOKEN');
+      const appKey = Deno.env.get('DROPBOX_APP_KEY');
+      const appSecret = Deno.env.get('DROPBOX_APP_SECRET');
+
+      if (!refreshToken || !appKey || !appSecret) {
+        throw new Error('Dropbox refresh credentials not configured');
+      }
+
+      console.log('[upload-to-dropbox] 🔄 Refreshing Dropbox access token...');
+
+      const response = await fetch('https://api.dropbox.com/oauth2/token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          grant_type: 'refresh_token',
+          refresh_token: refreshToken,
+          client_id: appKey,
+          client_secret: appSecret,
+        }).toString(),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('[upload-to-dropbox] ❌ Token refresh failed:', response.status, errorText);
+        throw new Error(`Failed to refresh Dropbox token: ${response.status} - ${errorText}`);
+      }
+
+      const data = await response.json();
+      console.log('[upload-to-dropbox] ✅ Access token refreshed successfully');
+      return data.access_token;
+    }
+
+    // Get fresh Dropbox access token
+    let dropboxAccessToken: string;
+    try {
+      dropboxAccessToken = await refreshDropboxToken();
+    } catch (refreshError) {
+      console.error('[upload-to-dropbox] ⚠️ Token refresh failed, falling back to stored token');
+      dropboxAccessToken = Deno.env.get('DROPBOX_ACCESS_TOKEN') || '';
+      if (!dropboxAccessToken) {
+        throw new Error('Dropbox access token not configured and refresh failed');
+      }
     }
 
     // Read file as ArrayBuffer
