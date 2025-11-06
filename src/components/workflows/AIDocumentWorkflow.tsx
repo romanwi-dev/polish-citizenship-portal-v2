@@ -1008,7 +1008,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
       </div>
 
       {/* Summary Stats - Sticky Bottom Bar - Clean design matching top fields */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-primary/10">
+      <div className="fixed bottom-0 left-0 md:left-16 right-0 z-40 border-t border-primary/10">
         {/* Animated Progress Bar Fill */}
         <motion.div
           initial={{ width: 0 }}
