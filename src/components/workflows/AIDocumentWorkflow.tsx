@@ -1022,65 +1022,57 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
           }}
         />
         
-        <div className="max-w-7xl mx-auto px-4 py-2">
+        <div className="max-w-7xl mx-auto px-4 py-1.5">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
             <motion.div
               whileHover={{ scale: 1.02 }}
-              className="text-center p-2 md:p-3 rounded-md border-2 bg-blue-50/45 dark:bg-blue-950/40 border-blue-200/30 dark:border-blue-800/30 transition-all duration-300"
-              style={{
-                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15)'
-              }}
+              className="text-center p-1.5 md:p-2 rounded-md border-2 bg-blue-50/45 dark:bg-blue-950/40 border-blue-200/30 dark:border-blue-800/30 transition-all duration-300"
+              style={{ boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15)' }}
             >
-              <div className="text-xl md:text-2xl font-bold text-primary mb-0.5">{documents?.length || 0}</div>
-              <div className="text-[10px] md:text-xs text-muted-foreground/40 font-medium">Documents</div>
+              <div className="text-lg md:text-xl font-bold text-primary">{documents?.length || 0}</div>
+              <div className="text-[9px] md:text-[10px] text-muted-foreground/40 font-medium">Documents</div>
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.02 }}
-              className="text-center p-2 md:p-3 rounded-md border-2 bg-green-50/45 dark:bg-green-950/40 border-green-200/30 dark:border-green-800/30 transition-all duration-300"
-              style={{
-                boxShadow: '0 0 30px hsla(142, 71%, 45%, 0.15)'
-              }}
+              className="text-center p-1.5 md:p-2 rounded-md border-2 bg-green-50/45 dark:bg-green-950/40 border-green-200/30 dark:border-green-800/30 transition-all duration-300"
+              style={{ boxShadow: '0 0 30px hsla(142, 71%, 45%, 0.15)' }}
             >
               <motion.div
                 key={Object.values(completedStages).filter(Boolean).length}
                 initial={{ scale: 1.2, color: '#22c55e' }}
                 animate={{ scale: 1, color: '#16a34a' }}
                 transition={{ duration: 0.5 }}
-                className="text-xl md:text-2xl font-bold text-green-600 mb-0.5"
+                className="text-lg md:text-xl font-bold text-green-600"
               >
                 {Object.values(completedStages).filter(Boolean).length}
               </motion.div>
-              <div className="text-[10px] md:text-xs text-muted-foreground/40 font-medium">Completed</div>
+              <div className="text-[9px] md:text-[10px] text-muted-foreground/40 font-medium">Completed</div>
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.02 }}
-              className="text-center p-2 md:p-3 rounded-md border-2 bg-orange-50/45 dark:bg-orange-950/40 border-orange-200/30 dark:border-orange-800/30 transition-all duration-300"
-              style={{
-                boxShadow: '0 0 30px hsla(25, 95%, 53%, 0.15)'
-              }}
+              className="text-center p-1.5 md:p-2 rounded-md border-2 bg-orange-50/45 dark:bg-orange-950/40 border-orange-200/30 dark:border-orange-800/30 transition-all duration-300"
+              style={{ boxShadow: '0 0 30px hsla(25, 95%, 53%, 0.15)' }}
             >
-              <div className="text-xl md:text-2xl font-bold text-accent mb-0.5">
+              <div className="text-lg md:text-xl font-bold text-accent">
                 {workflowSteps.length - Object.values(completedStages).filter(Boolean).length}
               </div>
-              <div className="text-[10px] md:text-xs text-muted-foreground/40 font-medium">Remaining</div>
+              <div className="text-[9px] md:text-[10px] text-muted-foreground/40 font-medium">Remaining</div>
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.02 }}
-              className="text-center p-2 md:p-3 rounded-md border-2 bg-purple-50/45 dark:bg-purple-950/40 border-purple-200/30 dark:border-purple-800/30 transition-all duration-300"
-              style={{
-                boxShadow: '0 0 30px hsla(262, 83%, 58%, 0.15)'
-              }}
+              className="text-center p-1.5 md:p-2 rounded-md border-2 bg-purple-50/45 dark:bg-purple-950/40 border-purple-200/30 dark:border-purple-800/30 transition-all duration-300"
+              style={{ boxShadow: '0 0 30px hsla(262, 83%, 58%, 0.15)' }}
             >
               <motion.div
                 key={Object.values(completedStages).filter(Boolean).length}
                 initial={{ scale: 1.3 }}
                 animate={{ scale: 1 }}
                 transition={{ duration: 0.5, type: "spring" }}
-                className="text-xl md:text-2xl font-bold text-secondary mb-0.5"
+                className="text-lg md:text-xl font-bold text-secondary"
               >
                 {Math.round((Object.values(completedStages).filter(Boolean).length / workflowSteps.length) * 100)}%
               </motion.div>
-              <div className="text-[10px] md:text-xs text-muted-foreground/40 font-medium">Progress</div>
+              <div className="text-[9px] md:text-[10px] text-muted-foreground/40 font-medium">Progress</div>
             </motion.div>
           </div>
         </div>
