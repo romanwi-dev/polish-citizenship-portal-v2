@@ -643,6 +643,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
           const docCount = getDocumentCountForStage(step.stage);
           const isCompleted = completedStages[step.stage];
           const stageDocuments = getDocumentsForStage(step.stage);
+          const isFirstCard = index === 0;
           
           return (
             <div 
@@ -925,8 +926,76 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                 <Icon className="h-6 w-6 text-white" />
               </div>
 
-              {/* Empty spacer for alternating layout - 5/12 width */}
-              <div className="hidden md:block md:w-5/12" />
+              {/* Empty spacer for alternating layout - 5/12 width OR Preview Card */}
+              <div className="hidden md:block md:w-5/12">
+                {isFirstCard && selectedFiles.length > 0 && (
+                  <div className="h-[350px] md:h-[450px] glass-card p-6 rounded-lg border-2 border-primary/20"
+                    style={{
+                      boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15)'
+                    }}
+                  >
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="font-semibold text-lg flex items-center gap-2">
+                        <Eye className="h-5 w-5 text-primary" />
+                        Preview ({selectedFiles.length})
+                      </h3>
+                      <Button
+                        onClick={() => setSelectedFiles([])}
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 w-8 p-0"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+
+                    <div className="space-y-2 max-h-[280px] md:max-h-[320px] overflow-y-auto mb-4">
+                      {selectedFiles.map((file, index) => (
+                        <div
+                          key={index}
+                          className="relative p-3 rounded border border-primary/20 bg-background/50 group hover:border-primary/40 transition-all"
+                        >
+                          <button
+                            onClick={() => removeFile(index)}
+                            className="absolute -top-2 -right-2 z-10 bg-destructive text-destructive-foreground rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <X className="h-3 w-3" />
+                          </button>
+
+                          <div className="flex items-center gap-3">
+                            <div className="w-14 h-14 rounded bg-muted flex items-center justify-center flex-shrink-0">
+                              {file.type.startsWith('image/') ? (
+                                <img
+                                  src={URL.createObjectURL(file)}
+                                  alt={file.name}
+                                  className="w-full h-full object-cover rounded"
+                                />
+                              ) : (
+                                <FileText className="h-7 w-7 text-primary/40" />
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium truncate">{file.name}</p>
+                              <p className="text-xs text-muted-foreground">
+                                {(file.size / 1024).toFixed(0)} KB
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <Button
+                      onClick={() => handleFileUpload(selectedFiles)}
+                      disabled={uploading}
+                      className="w-full"
+                      size="lg"
+                    >
+                      {uploading ? 'Uploading...' : `Upload ${selectedFiles.length} file(s)`}
+                    </Button>
+                  </div>
+                )}
+              </div>
             </div>
           );
         })}
@@ -1001,89 +1070,6 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
 
       {/* Bottom Padding */}
       <div className="h-32"></div>
-
-      {/* File Preview Card - Always visible, mirrors the stage card on opposite side */}
-      <div className="fixed top-[320px] md:top-[280px] right-4 md:right-[calc((100%-1536px)/2)] w-[calc(100%-2rem)] md:w-[calc(41.666%-2rem)] pointer-events-none z-50">
-        <div className="w-full h-[350px] md:h-[450px] glass-card p-6 rounded-lg shadow-2xl border-2 border-primary/20 pointer-events-auto"
-          style={{
-            boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15)'
-          }}
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-lg flex items-center gap-2">
-              <Eye className="h-5 w-5 text-primary" />
-              Preview {selectedFiles.length > 0 && `(${selectedFiles.length})`}
-            </h3>
-            {selectedFiles.length > 0 && (
-              <Button
-                onClick={() => setSelectedFiles([])}
-                variant="ghost"
-                size="sm"
-                className="h-8 w-8 p-0"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            )}
-          </div>
-
-          {selectedFiles.length > 0 ? (
-            <>
-              <div className="space-y-2 max-h-[280px] md:max-h-[320px] overflow-y-auto mb-4">
-                {selectedFiles.map((file, index) => (
-                  <div
-                    key={index}
-                    className="relative p-3 rounded border border-primary/20 bg-background/50 group hover:border-primary/40 transition-all"
-                  >
-                    <button
-                      onClick={() => removeFile(index)}
-                      className="absolute -top-2 -right-2 z-10 bg-destructive text-destructive-foreground rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                      <X className="h-3 w-3" />
-                    </button>
-
-                    <div className="flex items-center gap-3">
-                      <div className="w-14 h-14 rounded bg-muted flex items-center justify-center flex-shrink-0">
-                        {file.type.startsWith('image/') ? (
-                          <img
-                            src={URL.createObjectURL(file)}
-                            alt={file.name}
-                            className="w-full h-full object-cover rounded"
-                          />
-                        ) : (
-                          <FileText className="h-7 w-7 text-primary/40" />
-                        )}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium truncate">{file.name}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {(file.size / 1024).toFixed(0)} KB
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <Button
-                onClick={() => handleFileUpload(selectedFiles)}
-                disabled={uploading}
-                className="w-full"
-                size="lg"
-              >
-                {uploading ? 'Uploading...' : `Upload ${selectedFiles.length} file(s)`}
-              </Button>
-            </>
-          ) : (
-            <div className="flex flex-col items-center justify-center h-full text-center">
-              <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                <ImageIcon className="h-10 w-10 text-primary/40" />
-              </div>
-              <p className="text-sm text-muted-foreground">No files selected</p>
-              <p className="text-xs text-muted-foreground/60 mt-1">Select files from the upload button</p>
-            </div>
-          )}
-        </div>
-      </div>
 
       {/* Document Viewer Modal */}
       {viewerDoc && (
