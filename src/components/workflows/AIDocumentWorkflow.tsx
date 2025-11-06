@@ -950,8 +950,16 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
               </div>
 
               {/* Center Circle Node - Only visible on desktop */}
-              <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full bg-gradient-to-br from-primary/30 to-secondary/30 shadow-xl items-center justify-center z-20 ring-4 ring-background">
-                <Icon className="h-6 w-6 text-white/30" />
+              <div className={cn(
+                "hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full bg-gradient-to-br shadow-xl items-center justify-center z-20 ring-4 ring-background transition-all duration-300",
+                docCount > 0 
+                  ? "from-primary/60 to-secondary/60 animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite] shadow-[0_0_20px_rgba(59,130,246,0.5)]" 
+                  : "from-primary/30 to-secondary/30"
+              )}>
+                <Icon className={cn(
+                  "h-6 w-6 transition-all duration-300",
+                  docCount > 0 ? "text-white/70" : "text-white/30"
+                )} />
               </div>
 
               {/* Preview Card - Absolute positioned on desktop, mirrors first card */}
