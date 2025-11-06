@@ -12,6 +12,7 @@ import { AlertCircle, Sparkles, LogIn, UserPlus, Type } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
+import { GlobalBackground } from "@/components/GlobalBackground";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -94,7 +95,8 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen relative">
+    <div className="min-h-screen overflow-x-hidden relative">
+      <GlobalBackground />
       <div className="container mx-auto py-12 px-4 md:px-6 lg:px-8 relative z-10 max-w-7xl">
         {/* Header */}
         <div className="animate-fade-in-up mb-6">

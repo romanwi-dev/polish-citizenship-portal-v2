@@ -34,6 +34,7 @@ import { STATUS_COLORS } from "@/lib/constants";
 import { useToast } from "@/hooks/use-toast";
 import { celebrateStatusChange, celebrateCompletion } from "@/utils/confetti";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { GlobalBackground } from "@/components/GlobalBackground";
 
 interface FullscreenCase {
   id: string;
@@ -211,7 +212,9 @@ const Cases = () => {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen overflow-x-hidden relative">
+      <GlobalBackground />
+      <div className="relative z-10">
       <Navigation />
       
       <section className="relative py-16 overflow-hidden">
@@ -625,6 +628,7 @@ const Cases = () => {
       )}
       
       <ScrollToTop />
+      </div>
     </div>
   );
 };
