@@ -108,15 +108,6 @@ export default function ArchivesWorkflowCards() {
               Archives Search Workflow
             </span>
           </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            viewport={{ once: true }}
-            className="text-lg text-muted-foreground max-w-3xl mx-auto mb-8"
-          >
-            Comprehensive archive research across Poland and international repositories
-          </motion.p>
         </motion.div>
 
         {/* Steps - Left-Right Alternating Layout */}
