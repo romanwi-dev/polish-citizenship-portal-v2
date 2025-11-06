@@ -3,6 +3,12 @@ import { AlertTriangle, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { supabase } from '@/integrations/supabase/client';
+import { 
+  saveCrashState, 
+  recoverCrashState, 
+  clearCrashState, 
+  createCrashState 
+} from '@/utils/crashRecovery';
 
 interface Props {
   children: ReactNode;
@@ -25,17 +31,17 @@ export class ErrorBoundary extends Component<Props, State> {
     recoveredState: null
   };
 
-  public componentDidMount() {
-    // Check for recovered state on mount
+  public async componentDidMount() {
+    // Check for recovered state with HMAC signature verification
     try {
-      const savedState = localStorage.getItem('crash_recovery_state');
-      if (savedState) {
-        const parsed = JSON.parse(savedState);
-        this.setState({ recoveredState: parsed });
-        console.log('[ErrorBoundary] Recovered state from previous crash:', parsed);
+      const recoveredState = await recoverCrashState();
+      if (recoveredState) {
+        this.setState({ recoveredState });
+        console.log('[ErrorBoundary] Recovered state from previous crash (HMAC verified):', recoveredState);
       }
     } catch (error) {
       console.error('[ErrorBoundary] Failed to recover state:', error);
+      clearCrashState(); // Clear potentially corrupted state
     }
   }
 
@@ -46,7 +52,7 @@ export class ErrorBoundary extends Component<Props, State> {
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('ErrorBoundary caught an error:', error, errorInfo);
     
-    // Save current state to localStorage before crash
+    // Save current state with HMAC signature
     this.captureAppState(error, errorInfo);
     
     this.setState({
@@ -66,34 +72,14 @@ export class ErrorBoundary extends Component<Props, State> {
     }
   }
 
-  private captureAppState(error: Error, errorInfo: ErrorInfo) {
+  private async captureAppState(error: Error, errorInfo: ErrorInfo) {
     try {
-      const currentState = {
-        timestamp: new Date().toISOString(),
-        error: error.message,
-        errorStack: error.stack,
-        componentStack: errorInfo.componentStack,
-        url: window.location.href,
-        userAgent: navigator.userAgent,
-        // Capture any app state from sessionStorage/localStorage
-        sessionData: Object.keys(sessionStorage).reduce((acc, key) => {
-          try {
-            acc[key] = sessionStorage.getItem(key);
-          } catch (e) {
-            acc[key] = '[Unable to capture]';
-          }
-          return acc;
-        }, {} as Record<string, any>)
-      };
+      // Create crash state with HMAC signature
+      const crashState = createCrashState(error, errorInfo);
       
-      // Save to localStorage (limit to 5MB)
-      const stateJson = JSON.stringify(currentState);
-      if (stateJson.length < 5 * 1024 * 1024) { // 5MB limit
-        localStorage.setItem('crash_recovery_state', stateJson);
-        console.log('[ErrorBoundary] State captured before crash');
-      } else {
-        console.warn('[ErrorBoundary] State too large to save');
-      }
+      // Save securely with HMAC validation
+      await saveCrashState(crashState);
+      console.log('[ErrorBoundary] State captured with HMAC signature');
     } catch (storageError) {
       console.error('[ErrorBoundary] Failed to save crash state:', storageError);
     }
@@ -120,8 +106,8 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   private handleReset = () => {
-    // Clear recovery state
-    localStorage.removeItem('crash_recovery_state');
+    // Clear recovery state securely
+    clearCrashState();
     
     this.setState({
       hasError: false,
