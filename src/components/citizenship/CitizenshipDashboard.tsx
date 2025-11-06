@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { EditableCardBack } from "@/components/workflows/EditableCardBack";
 import CitizenshipWorkflowCards from "./CitizenshipWorkflowCards";
 import { 
   Award,
@@ -71,12 +72,10 @@ export const CitizenshipDashboard = () => {
               </div>
             </div>
             {/* Back */}
-            <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
-              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-            >
-              <p className="text-sm text-muted-foreground text-center">Active citizenship applications in process</p>
-            </div>
+            <EditableCardBack 
+              workflowName="citizenship"
+              cardId="preparing"
+            />
           </div>
         </div>
 
@@ -109,12 +108,10 @@ export const CitizenshipDashboard = () => {
               </div>
             </div>
             {/* Back */}
-            <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
-              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-            >
-              <p className="text-sm text-muted-foreground text-center">Letters received from Masovian Voivoda requiring response</p>
-            </div>
+            <EditableCardBack 
+              workflowName="citizenship"
+              cardId="submitted"
+            />
           </div>
         </div>
 
@@ -147,12 +144,10 @@ export const CitizenshipDashboard = () => {
               </div>
             </div>
             {/* Back */}
-            <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
-              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-            >
-              <p className="text-sm text-muted-foreground text-center">Cases with active strategies (PUSH/NUDGE/SITDOWN/SLOW)</p>
-            </div>
+            <EditableCardBack 
+              workflowName="citizenship"
+              cardId="schemes"
+            />
           </div>
         </div>
 
@@ -185,12 +180,10 @@ export const CitizenshipDashboard = () => {
               </div>
             </div>
             {/* Back */}
-            <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
-              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-            >
-              <p className="text-sm text-muted-foreground text-center">Total citizenship confirmation decisions received</p>
-            </div>
+            <EditableCardBack 
+              workflowName="citizenship"
+              cardId="decision"
+            />
           </div>
         </div>
       </div>

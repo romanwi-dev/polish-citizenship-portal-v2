@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { EditableCardBack } from "@/components/workflows/EditableCardBack";
 import PassportWorkflowCards from "./PassportWorkflowCards";
 import { 
   Plane,
@@ -70,12 +71,10 @@ export const PassportDashboard = () => {
               </div>
             </div>
             {/* Back */}
-            <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
-              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-            >
-              <p className="text-sm text-muted-foreground text-center">Documents being prepared for passport application</p>
-            </div>
+            <EditableCardBack 
+              workflowName="passport"
+              cardId="documents"
+            />
           </div>
         </div>
 
@@ -108,12 +107,10 @@ export const PassportDashboard = () => {
               </div>
             </div>
             {/* Back */}
-            <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
-              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-            >
-              <p className="text-sm text-muted-foreground text-center">Appointment scheduled at Polish Consulate</p>
-            </div>
+            <EditableCardBack 
+              workflowName="passport"
+              cardId="appointment"
+            />
           </div>
         </div>
 
@@ -146,12 +143,10 @@ export const PassportDashboard = () => {
               </div>
             </div>
             {/* Back */}
-            <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
-              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-            >
-              <p className="text-sm text-muted-foreground text-center">Application submitted, awaiting passport issuance</p>
-            </div>
+            <EditableCardBack 
+              workflowName="passport"
+              cardId="application"
+            />
           </div>
         </div>
 
@@ -184,12 +179,10 @@ export const PassportDashboard = () => {
               </div>
             </div>
             {/* Back */}
-            <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
-              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-            >
-              <p className="text-sm text-muted-foreground text-center">Polish passport successfully obtained</p>
-            </div>
+            <EditableCardBack 
+              workflowName="passport"
+              cardId="passport"
+            />
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { EditableCardBack } from "@/components/workflows/EditableCardBack";
 import ArchivesWorkflowCards from "./ArchivesWorkflowCards";
 import { 
   Archive, 
@@ -70,12 +71,10 @@ export const ArchivesSearchDashboard = () => {
               </div>
             </div>
             {/* Back */}
-            <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
-              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-            >
-              <p className="text-sm text-muted-foreground text-center">Active searches in Polish archives</p>
-            </div>
+            <EditableCardBack 
+              workflowName="archives"
+              cardId="pending"
+            />
           </div>
         </div>
 
@@ -108,12 +107,10 @@ export const ArchivesSearchDashboard = () => {
               </div>
             </div>
             {/* Back */}
-            <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
-              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-            >
-              <p className="text-sm text-muted-foreground text-center">Ongoing international archive searches</p>
-            </div>
+            <EditableCardBack 
+              workflowName="archives"
+              cardId="submitted"
+            />
           </div>
         </div>
 
@@ -146,12 +143,10 @@ export const ArchivesSearchDashboard = () => {
               </div>
             </div>
             {/* Back */}
-            <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
-              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-            >
-              <p className="text-sm text-muted-foreground text-center">Total documents recovered from archives</p>
-            </div>
+            <EditableCardBack 
+              workflowName="archives"
+              cardId="located"
+            />
           </div>
         </div>
 
@@ -184,12 +179,10 @@ export const ArchivesSearchDashboard = () => {
               </div>
             </div>
             {/* Back */}
-            <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
-              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-            >
-              <p className="text-sm text-muted-foreground text-center">Documents located success rate across all searches</p>
-            </div>
+            <EditableCardBack 
+              workflowName="archives"
+              cardId="obtained"
+            />
           </div>
         </div>
       </div>

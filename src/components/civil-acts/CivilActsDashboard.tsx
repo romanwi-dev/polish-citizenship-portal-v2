@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { EditableCardBack } from "@/components/workflows/EditableCardBack";
 import CivilActsWorkflowCards from "./CivilActsWorkflowCards";
 import { 
   FileCheck,
@@ -70,12 +71,10 @@ export const CivilActsDashboard = () => {
               </div>
             </div>
             {/* Back */}
-            <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
-              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-            >
-              <p className="text-sm text-muted-foreground text-center">Applications being prepared for submission to USC</p>
-            </div>
+            <EditableCardBack 
+              workflowName="civil-acts"
+              cardId="documents"
+            />
           </div>
         </div>
 
@@ -108,12 +107,10 @@ export const CivilActsDashboard = () => {
               </div>
             </div>
             {/* Back */}
-            <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
-              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-            >
-              <p className="text-sm text-muted-foreground text-center">Applications submitted to Polish Civil Registry offices</p>
-            </div>
+            <EditableCardBack 
+              workflowName="civil-acts"
+              cardId="applications"
+            />
           </div>
         </div>
 
@@ -146,12 +143,10 @@ export const CivilActsDashboard = () => {
               </div>
             </div>
             {/* Back */}
-            <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
-              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-            >
-              <p className="text-sm text-muted-foreground text-center">Awaiting response from USC offices (4-12 weeks typical)</p>
-            </div>
+            <EditableCardBack 
+              workflowName="civil-acts"
+              cardId="awaiting"
+            />
           </div>
         </div>
 
@@ -184,12 +179,10 @@ export const CivilActsDashboard = () => {
               </div>
             </div>
             {/* Back */}
-            <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
-              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-            >
-              <p className="text-sm text-muted-foreground text-center">Polish civil acts received and ready for use in citizenship case</p>
-            </div>
+            <EditableCardBack 
+              workflowName="civil-acts"
+              cardId="certificates"
+            />
           </div>
         </div>
       </div>

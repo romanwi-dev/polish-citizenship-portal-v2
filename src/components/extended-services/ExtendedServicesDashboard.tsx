@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { EditableCardBack } from "@/components/workflows/EditableCardBack";
 import ExtendedServicesWorkflowCards from "./ExtendedServicesWorkflowCards";
 import { 
   Users,
@@ -68,12 +69,10 @@ export const ExtendedServicesDashboard = () => {
               </div>
             </div>
             {/* Back */}
-            <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
-              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-            >
-              <p className="text-sm text-muted-foreground text-center">Extended family members being assisted with citizenship</p>
-            </div>
+            <EditableCardBack 
+              workflowName="extended-services"
+              cardId="family"
+            />
           </div>
         </div>
 
@@ -105,12 +104,10 @@ export const ExtendedServicesDashboard = () => {
               </div>
             </div>
             {/* Back */}
-            <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
-              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-            >
-              <p className="text-sm text-muted-foreground text-center">Special document procurement projects active</p>
-            </div>
+            <EditableCardBack 
+              workflowName="extended-services"
+              cardId="documents"
+            />
           </div>
         </div>
 
@@ -142,12 +139,10 @@ export const ExtendedServicesDashboard = () => {
               </div>
             </div>
             {/* Back */}
-            <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
-              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-            >
-              <p className="text-sm text-muted-foreground text-center">International coordination cases with foreign authorities</p>
-            </div>
+            <EditableCardBack 
+              workflowName="extended-services"
+              cardId="international"
+            />
           </div>
         </div>
 
@@ -179,12 +174,10 @@ export const ExtendedServicesDashboard = () => {
               </div>
             </div>
             {/* Back */}
-            <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
-              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-            >
-              <p className="text-sm text-muted-foreground text-center">Deep genealogical research projects in progress</p>
-            </div>
+            <EditableCardBack 
+              workflowName="extended-services"
+              cardId="heritage"
+            />
           </div>
         </div>
       </div>

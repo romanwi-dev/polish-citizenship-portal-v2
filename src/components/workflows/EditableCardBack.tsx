@@ -9,15 +9,15 @@ import { toast } from "sonner";
 interface EditableCardBackProps {
   workflowName: string;
   cardId: string;
-  defaultDescription: string;
-  icon: React.ComponentType<{ className?: string }>;
+  defaultDescription?: string;
+  icon?: React.ComponentType<{ className?: string }>;
 }
 
-export const EditableCardBack = ({ 
-  workflowName, 
-  cardId, 
-  defaultDescription,
-  icon: Icon 
+export const EditableCardBack = ({
+  workflowName,
+  cardId,
+  defaultDescription = "",
+  icon: Icon
 }: EditableCardBackProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState("");
@@ -84,75 +84,63 @@ export const EditableCardBack = ({
   };
 
   return (
-    <div className="flex flex-col gap-4 h-full">
-      <div className="mb-4 relative">
-        <div className="w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-secondary/5 to-accent/5 flex items-center justify-center">
-          <Icon className="w-16 h-16 text-secondary opacity-60" />
+    <div 
+      className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
+      style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+    >
+      <div className="flex flex-col gap-2 w-full h-full">
+        <div className="flex items-center justify-between">
+          {!isEditing && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleEdit}
+              className="h-6 w-6 p-0 absolute top-2 right-2"
+            >
+              <Pencil className="h-3 w-3" />
+            </Button>
+          )}
         </div>
-      </div>
-      
-      <div className="flex items-center justify-between mb-2">
-        <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground">
-          Stage Details
-        </h3>
-        {!isEditing && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleEdit}
-            className="h-8 w-8 p-0"
-          >
-            <Pencil className="h-4 w-4" />
-          </Button>
-        )}
-      </div>
 
-      <div className="flex-1 overflow-auto">
-        {isEditing ? (
-          <Textarea
-            value={editedText}
-            onChange={(e) => setEditedText(e.target.value)}
-            className="min-h-[120px] resize-none"
-            placeholder="Enter card description..."
-          />
-        ) : (
-          <div className="p-3 rounded-lg bg-muted/30">
-            <p className="text-sm text-muted-foreground whitespace-pre-wrap">
-              {displayDescription}
+        <div className="flex-1 flex items-center justify-center">
+          {!isEditing ? (
+            <p className="text-sm text-muted-foreground text-center whitespace-pre-wrap">
+              {displayDescription || "Click edit to add description"}
             </p>
+          ) : (
+            <Textarea
+              value={editedText}
+              onChange={(e) => setEditedText(e.target.value)}
+              className="min-h-[80px] resize-none text-sm"
+              placeholder="Enter card description..."
+            />
+          )}
+        </div>
+
+        {isEditing && (
+          <div className="flex gap-2">
+            <Button
+              onClick={handleSave}
+              size="sm"
+              className="flex-1 h-7 text-xs"
+              disabled={saveMutation.isPending}
+            >
+              <Save className="h-3 w-3 mr-1" />
+              Save
+            </Button>
+            <Button
+              onClick={handleCancel}
+              size="sm"
+              variant="outline"
+              className="flex-1 h-7 text-xs"
+              disabled={saveMutation.isPending}
+            >
+              <X className="h-3 w-3 mr-1" />
+              Cancel
+            </Button>
           </div>
         )}
       </div>
-
-      {isEditing && (
-        <div className="flex gap-2 mt-2">
-          <Button
-            onClick={handleSave}
-            size="sm"
-            className="flex-1"
-            disabled={saveMutation.isPending}
-          >
-            <Save className="h-4 w-4 mr-2" />
-            Save
-          </Button>
-          <Button
-            onClick={handleCancel}
-            size="sm"
-            variant="outline"
-            className="flex-1"
-            disabled={saveMutation.isPending}
-          >
-            <X className="h-4 w-4 mr-2" />
-            Cancel
-          </Button>
-        </div>
-      )}
-
-      {!isEditing && (
-        <p className="text-xs text-muted-foreground/60 text-center">
-          Tap to flip back
-        </p>
-      )}
     </div>
   );
 };
