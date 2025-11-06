@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ExtendedServicesWorkflowCards from "./ExtendedServicesWorkflowCards";
 import { 
   Users,
   FileText, 
@@ -214,6 +215,7 @@ export const ExtendedServicesDashboard = () => {
         </div>
 
         <TabsContent value="cards">
+          <ExtendedServicesWorkflowCards />
         </TabsContent>
 
         <TabsContent value="family">

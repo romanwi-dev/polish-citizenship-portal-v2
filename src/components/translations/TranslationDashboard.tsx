@@ -257,6 +257,7 @@ export const TranslationDashboard = () => {
         </div>
 
         <TabsContent value="cards" className="space-y-4">
+          <TranslationWorkflowCards />
         </TabsContent>
 
         <TabsContent value="workflow" className="space-y-4">

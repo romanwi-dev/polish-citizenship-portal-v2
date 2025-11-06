@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import CivilActsWorkflowCards from "./CivilActsWorkflowCards";
 import { 
   FileCheck,
   Building2, 
@@ -219,6 +220,7 @@ export const CivilActsDashboard = () => {
         </div>
 
         <TabsContent value="cards">
+          <CivilActsWorkflowCards />
         </TabsContent>
 
         <TabsContent value="timeline">

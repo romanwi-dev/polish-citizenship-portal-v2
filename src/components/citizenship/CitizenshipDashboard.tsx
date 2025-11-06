@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import CitizenshipWorkflowCards from "./CitizenshipWorkflowCards";
 import { 
   Award,
   FileEdit, 
@@ -220,6 +221,7 @@ export const CitizenshipDashboard = () => {
         </div>
 
         <TabsContent value="cards">
+          <CitizenshipWorkflowCards />
         </TabsContent>
 
         <TabsContent value="timeline">

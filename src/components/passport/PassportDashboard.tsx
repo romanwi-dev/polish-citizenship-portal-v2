@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import PassportWorkflowCards from "./PassportWorkflowCards";
 import { 
   Plane,
   Calendar,
@@ -219,6 +220,7 @@ export const PassportDashboard = () => {
         </div>
 
         <TabsContent value="cards">
+          <PassportWorkflowCards />
         </TabsContent>
 
         <TabsContent value="timeline">

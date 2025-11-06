@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ArchivesWorkflowCards from "./ArchivesWorkflowCards";
 import { 
   Archive, 
   FileSearch, 
@@ -219,6 +220,7 @@ export const ArchivesSearchDashboard = () => {
         </div>
 
         <TabsContent value="cards">
+          <ArchivesWorkflowCards />
         </TabsContent>
 
         <TabsContent value="timeline">
