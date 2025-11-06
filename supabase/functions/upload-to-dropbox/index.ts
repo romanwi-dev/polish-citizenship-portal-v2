@@ -10,6 +10,10 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Token cache: stores { token: string, expiresAt: number }
+let tokenCache: { token: string; expiresAt: number } | null = null;
+const TOKEN_CACHE_DURATION_MS = 3 * 60 * 60 * 1000; // 3 hours
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -81,14 +85,26 @@ serve(async (req) => {
 
     console.log(`Uploading to Dropbox: ${dropboxFilePath}`);
 
-    // Function to refresh Dropbox access token
-    async function refreshDropboxToken(): Promise<string> {
+    // Function to get cached or refresh Dropbox access token
+    async function getDropboxToken(): Promise<string> {
+      // Check if we have a valid cached token
+      if (tokenCache && tokenCache.expiresAt > Date.now()) {
+        console.log('[upload-to-dropbox] ✅ Using cached access token');
+        return tokenCache.token;
+      }
+
+      // Token expired or not cached, refresh it
       const refreshToken = Deno.env.get('DROPBOX_REFRESH_TOKEN');
       const appKey = Deno.env.get('DROPBOX_APP_KEY');
       const appSecret = Deno.env.get('DROPBOX_APP_SECRET');
 
       if (!refreshToken || !appKey || !appSecret) {
-        throw new Error('Dropbox refresh credentials not configured');
+        console.log('[upload-to-dropbox] ⚠️ Refresh credentials not configured, using stored token');
+        const storedToken = Deno.env.get('DROPBOX_ACCESS_TOKEN') || '';
+        if (!storedToken) {
+          throw new Error('Dropbox access token not configured');
+        }
+        return storedToken;
       }
 
       console.log('[upload-to-dropbox] 🔄 Refreshing Dropbox access token...');
@@ -113,21 +129,20 @@ serve(async (req) => {
       }
 
       const data = await response.json();
-      console.log('[upload-to-dropbox] ✅ Access token refreshed successfully');
-      return data.access_token;
+      const newToken = data.access_token;
+      
+      // Cache the new token for 3 hours
+      tokenCache = {
+        token: newToken,
+        expiresAt: Date.now() + TOKEN_CACHE_DURATION_MS
+      };
+      
+      console.log('[upload-to-dropbox] ✅ Access token refreshed and cached for 3 hours');
+      return newToken;
     }
 
-    // Get fresh Dropbox access token
-    let dropboxAccessToken: string;
-    try {
-      dropboxAccessToken = await refreshDropboxToken();
-    } catch (refreshError) {
-      console.error('[upload-to-dropbox] ⚠️ Token refresh failed, falling back to stored token');
-      dropboxAccessToken = Deno.env.get('DROPBOX_ACCESS_TOKEN') || '';
-      if (!dropboxAccessToken) {
-        throw new Error('Dropbox access token not configured and refresh failed');
-      }
-    }
+    // Get fresh or cached Dropbox access token
+    const dropboxAccessToken = await getDropboxToken();
 
     // Read file as ArrayBuffer
     const fileBuffer = await file.arrayBuffer();
