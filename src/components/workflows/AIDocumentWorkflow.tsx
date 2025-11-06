@@ -652,7 +652,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
               style={{ animationDelay: `${index * 100}ms` }}
             >
               {/* Content Card - Absolute positioned on desktop for perfect mirroring */}
-              <div className={`w-full ${index % 2 === 0 ? 'md:absolute md:right-[calc(50%+1.5rem)] md:w-[41.67%] md:max-w-[500px]' : 'md:absolute md:left-[calc(50%+1.5rem)] md:w-[41.67%] md:max-w-[500px]'}`}>
+              <div className={`w-full ${index % 2 === 0 ? 'md:absolute md:right-[calc(50%+3rem)] md:w-[41.67%] md:max-w-[500px]' : 'md:absolute md:left-[calc(50%+3rem)] md:w-[41.67%] md:max-w-[500px]'}`}>
                 <div
                   className="relative h-[350px] md:h-[450px]"
                   style={{ perspective: '1000px' }}
@@ -933,7 +933,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                   animate={{ opacity: 1, scale: 1, x: 0 }}
                   exit={{ opacity: 0, scale: 0.9, x: 50 }}
                   transition={{ duration: 0.4, ease: "easeOut" }}
-                  className="w-full md:absolute md:left-[calc(50%+1.5rem)] md:w-[41.67%] md:max-w-[500px] h-[350px] md:h-[450px] glass-card p-6 rounded-lg border-2 border-primary/20"
+                  className="w-full md:absolute md:left-[calc(50%+3rem)] md:w-[41.67%] md:max-w-[500px] h-[350px] md:h-[450px] glass-card p-6 rounded-lg border-2 border-primary/20"
                   style={{
                     boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15)'
                   }}
