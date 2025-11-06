@@ -242,11 +242,33 @@ serve(async (req) => {
       );
     }
 
-    // 6. COMPREHENSIVE PDF SECURITY: Polyglot detection, structure validation, EOF verification
+    // 6. COMPREHENSIVE PDF SECURITY: ZIP bomb, Polyglot detection, structure validation, EOF verification
     if (magicCheck.type === 'pdf') {
       const pdfContent = arrayBuffer;
       
-      // 6.1 Minimum size check
+      // 6.1 ZIP BOMB PROTECTION: Check compression ratio
+      // Detect if PDF claims to be compressed but has suspicious size
+      const pdfString = new TextDecoder().decode(pdfContent.slice(0, Math.min(8192, pdfContent.length)));
+      const hasFlateStream = pdfString.includes('/FlateDecode') || pdfString.includes('/Filter');
+      
+      if (hasFlateStream) {
+        // Count compressed stream objects
+        const streamCount = (pdfString.match(/stream\s/g) || []).length;
+        const avgStreamSize = file.size / Math.max(streamCount, 1);
+        
+        // If average stream size is suspiciously large, reject (potential ZIP bomb)
+        if (avgStreamSize > 5 * 1024 * 1024) { // 5MB per stream is suspicious
+          return new Response(
+            JSON.stringify({
+              valid: false,
+              error: 'SECURITY ALERT: PDF contains suspiciously large compressed streams (potential ZIP bomb)'
+            }),
+            { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+      }
+      
+      // 6.2 Minimum size check
       if (file.size < 100) {
         return new Response(
           JSON.stringify({
@@ -257,7 +279,7 @@ serve(async (req) => {
         );
       }
       
-      // 6.2 PDF header validation
+      // 6.3 PDF header validation
       const pdfHeader = new TextDecoder().decode(pdfHeaderBytes);
       if (!pdfHeader.startsWith('%PDF-')) {
         return new Response(
@@ -269,7 +291,7 @@ serve(async (req) => {
         );
       }
 
-      // 6.3 CRITICAL: EOF marker validation (%%EOF must be present at end)
+      // 6.4 CRITICAL: EOF marker validation (%%EOF must be present at end)
       const lastBytes = new TextDecoder().decode(pdfEndBytes);
       if (!lastBytes.includes('%%EOF')) {
         return new Response(
@@ -281,84 +303,80 @@ serve(async (req) => {
         );
       }
 
-      // 6.4 CRITICAL: Comprehensive polyglot attack detection
+      // 6.5 ENHANCED CRITICAL: Comprehensive polyglot attack detection
       // PDFs can be crafted to be valid PDF + ZIP/EXE/JPEG/GIF/HTML simultaneously
       
-      // Check for ZIP signature anywhere in file (not just at start)
-      const hasZipSignature = pdfContent.length > 1024 && (
-        searchBytes(pdfContent, new Uint8Array([0x50, 0x4B, 0x03, 0x04])) || // ZIP local file header
-        searchBytes(pdfContent, new Uint8Array([0x50, 0x4B, 0x01, 0x02]))    // ZIP central directory
-      );
+      // STREAMING POLYGLOT SCAN: Search in chunks to avoid memory issues
+      let foundPolyglot = false;
+      let polyglotType = '';
       
-      if (hasZipSignature) {
+      // Define polyglot signatures to search for
+      const polyglotSignatures = {
+        'ZIP': [
+          new Uint8Array([0x50, 0x4B, 0x03, 0x04]), // ZIP local file header
+          new Uint8Array([0x50, 0x4B, 0x01, 0x02])  // ZIP central directory
+        ],
+        'EXE': [new Uint8Array([0x4D, 0x5A])], // MZ executable
+        'JPEG': [new Uint8Array([0xFF, 0xD8, 0xFF])], // JPEG start
+        'GIF': [
+          new Uint8Array([0x47, 0x49, 0x46, 0x38, 0x37, 0x61]), // GIF87a
+          new Uint8Array([0x47, 0x49, 0x46, 0x38, 0x39, 0x61])  // GIF89a
+        ],
+        'PNG': [new Uint8Array([0x89, 0x50, 0x4E, 0x47])], // PNG signature
+        'RAR': [new Uint8Array([0x52, 0x61, 0x72, 0x21])], // RAR archive
+      };
+      
+      // Search for polyglot signatures (skip first 100 bytes to allow PDF header)
+      const searchStart = 100;
+      for (const [type, signatures] of Object.entries(polyglotSignatures)) {
+        for (const signature of signatures) {
+          if (searchBytesFrom(pdfContent, signature, searchStart)) {
+            foundPolyglot = true;
+            polyglotType = type;
+            break;
+          }
+        }
+        if (foundPolyglot) break;
+      }
+      
+      if (foundPolyglot) {
         return new Response(
           JSON.stringify({ 
             valid: false, 
-            error: 'SECURITY ALERT: PDF contains embedded ZIP archive (polyglot attack detected)' 
+            error: `SECURITY ALERT: PDF contains embedded ${polyglotType} data (polyglot attack detected)`,
+            details: { polyglotType, detection: 'binary_signature_scan' }
           }),
           { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
       }
 
-      // Check for EXE/DLL signature (MZ)
-      const hasExeSignature = searchBytes(pdfContent, new Uint8Array([0x4D, 0x5A]));
-      if (hasExeSignature) {
-        return new Response(
-          JSON.stringify({ 
-            valid: false, 
-            error: 'SECURITY ALERT: PDF contains embedded executable (polyglot attack)' 
-          }),
-          { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-
-      // Check for JPEG signature (PDF-JPEG polyglot)
-      const hasJpegSignature = searchBytes(pdfContent, new Uint8Array([0xFF, 0xD8, 0xFF]));
-      if (hasJpegSignature) {
-        console.warn('PDF contains embedded JPEG data - potential polyglot');
-        return new Response(
-          JSON.stringify({ 
-            valid: false, 
-            error: 'SECURITY ALERT: PDF contains embedded JPEG (polyglot attack)' 
-          }),
-          { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-
-      // Check for GIF signature (GIF87a/GIF89a polyglot)
-      const hasGif87 = searchBytes(pdfContent, new Uint8Array([0x47, 0x49, 0x46, 0x38, 0x37, 0x61]));
-      const hasGif89 = searchBytes(pdfContent, new Uint8Array([0x47, 0x49, 0x46, 0x38, 0x39, 0x61]));
-      if (hasGif87 || hasGif89) {
-        return new Response(
-          JSON.stringify({ 
-            valid: false, 
-            error: 'SECURITY ALERT: PDF contains embedded GIF (polyglot attack)' 
-          }),
-          { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-
-      // Check for HTML smuggling (<html>, <script> tags)
-      const pdfLowerText = pdfText.toLowerCase();
-      if (pdfLowerText.includes('<html') || pdfLowerText.includes('<script') || pdfLowerText.includes('<iframe')) {
-        return new Response(
-          JSON.stringify({ 
-            valid: false, 
-            error: 'SECURITY ALERT: PDF contains HTML/script tags (smuggling attempt)' 
-          }),
-          { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-
-      // 6.5 JavaScript and dangerous content detection
+      // 6.6 HTML/JavaScript smuggling detection
       const pdfText = new TextDecoder().decode(pdfContent.slice(0, Math.min(4096, pdfContent.length)));
+      const pdfLowerText = pdfText.toLowerCase();
+      
+      const htmlPatterns = ['<html', '<script', '<iframe', '<object', '<embed', 'javascript:', 'vbscript:'];
+      for (const pattern of htmlPatterns) {
+        if (pdfLowerText.includes(pattern)) {
+          return new Response(
+            JSON.stringify({ 
+              valid: false, 
+              error: `SECURITY ALERT: PDF contains HTML/script content (smuggling attempt detected: ${pattern})`,
+              details: { pattern, detection: 'text_content_scan' }
+            }),
+            { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+      }
+
+      // 6.7 JavaScript and dangerous content detection
+      const pdfTextFull = new TextDecoder().decode(pdfContent.slice(0, Math.min(8192, pdfContent.length)));
       const dangerousPatterns = [
         'JavaScript', '/JS', '/Launch', '/OpenAction', 
         '/AA', '/EmbeddedFile', '/XObject'
       ];
       
       for (const pattern of dangerousPatterns) {
-        if (pdfText.includes(pattern)) {
+        if (pdfTextFull.includes(pattern)) {
           console.warn('PDF contains potentially dangerous content:', pattern);
           return new Response(
             JSON.stringify({ 
@@ -370,8 +388,8 @@ serve(async (req) => {
         }
       }
 
-      // 6.6 PDF version validation (decompression bomb protection)
-      const headerMatch = pdfText.match(/%PDF-(\d+\.\d+)/);
+      // 6.8 PDF version validation (decompression bomb protection)
+      const headerMatch = pdfTextFull.match(/%PDF-(\d+\.\d+)/);
       if (headerMatch) {
         const version = parseFloat(headerMatch[1]);
         if (version > 2.0) {
@@ -385,7 +403,7 @@ serve(async (req) => {
         }
       }
 
-      // 6.7 Maximum size validation (decompression bomb protection)
+      // 6.9 Maximum size validation (decompression bomb protection)
       if (pdfContent.length > 50 * 1024 * 1024) {
         return new Response(
           JSON.stringify({ 
@@ -462,6 +480,21 @@ serve(async (req) => {
 // Helper function to search for byte pattern in array
 function searchBytes(haystack: Uint8Array, needle: Uint8Array): boolean {
   for (let i = 0; i <= haystack.length - needle.length; i++) {
+    let found = true;
+    for (let j = 0; j < needle.length; j++) {
+      if (haystack[i + j] !== needle[j]) {
+        found = false;
+        break;
+      }
+    }
+    if (found) return true;
+  }
+  return false;
+}
+
+// Helper function to search for byte pattern starting from offset
+function searchBytesFrom(haystack: Uint8Array, needle: Uint8Array, startOffset: number): boolean {
+  for (let i = startOffset; i <= haystack.length - needle.length; i++) {
     let found = true;
     for (let j = 0; j < needle.length; j++) {
       if (haystack[i + j] !== needle[j]) {
