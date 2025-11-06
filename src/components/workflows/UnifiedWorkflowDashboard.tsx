@@ -176,7 +176,7 @@ export const UnifiedWorkflowDashboard = ({
 
       {/* SLA Alerts */}
       {(violatedSLA > 0 || warningSLA > 0) && (
-        <Card className="border-red-500 bg-red-50 dark:bg-red-950/20">
+        <Card className="border-red-500/30 bg-red-500/10 dark:bg-red-950/20">
           <CardHeader>
             <div className="flex items-center gap-2">
               <AlertTriangle className="h-5 w-5 text-red-600" />
@@ -203,7 +203,7 @@ export const UnifiedWorkflowDashboard = ({
             <Card 
               key={workflow.id} 
               className={`border-2 ${getPriorityColor(workflow.priority)} ${
-                slaViolated ? 'bg-red-50 dark:bg-red-950/10' : 
+                slaViolated ? 'bg-red-500/10 dark:bg-red-950/10' : 
                 slaWarning ? 'bg-yellow-50 dark:bg-yellow-950/10' : ''
               }`}
             >

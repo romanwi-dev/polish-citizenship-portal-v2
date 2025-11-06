@@ -52,17 +52,17 @@ export const SLAViolationsPanel = () => {
         {activeViolations.map((violation: any) => (
           <Card 
             key={violation.id}
-            className="border-l-4 border-l-red-500 bg-red-50 dark:bg-red-950/20"
+            className="border-l-4 border-l-red-500/50 bg-red-500/10 dark:bg-red-950/20"
           >
             <CardHeader>
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-2">
-                    <Badge className="bg-red-600 text-white">
+                    <Badge className="bg-red-500/20 text-red-400 border border-red-500/30">
                       {violation.violation_type.replace(/_/g, ' ')}
                     </Badge>
                     {violation.delay_hours && (
-                      <Badge variant="outline" className="border-red-500 text-red-600">
+                      <Badge variant="outline" className="border-red-500/30 text-red-400">
                         {violation.delay_hours}h overdue
                       </Badge>
                     )}

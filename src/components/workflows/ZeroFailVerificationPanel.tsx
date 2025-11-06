@@ -263,10 +263,10 @@ export function ZeroFailVerificationPanel() {
               <Alert 
                 className={
                   response.passedABEXProtocol 
-                    ? 'border-green-500 bg-green-50' 
+                    ? 'border-green-500/30 bg-green-500/10' 
                     : response.summary.averageScore >= 75 
-                    ? 'border-yellow-500 bg-yellow-50' 
-                    : 'border-red-500 bg-red-50'
+                    ? 'border-yellow-500/30 bg-yellow-500/10' 
+                    : 'border-red-500/30 bg-red-500/10'
                 }
               >
                 <Shield className="h-4 w-4" />
