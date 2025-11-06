@@ -652,7 +652,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
               style={{ animationDelay: `${index * 100}ms` }}
             >
               {/* Content Card - Absolute positioned on desktop for perfect mirroring */}
-              <div className={`w-full ${index % 2 === 0 ? 'md:absolute md:right-[calc(50%+1.5rem+8.33%)] md:w-[41.67%] md:max-w-[500px]' : 'md:absolute md:left-[calc(50%+1.5rem+8.33%)] md:w-[41.67%] md:max-w-[500px]'}`}>
+              <div className={`w-full ${index % 2 === 0 ? 'md:absolute md:right-[calc(50%+1.5rem)] md:w-[41.67%] md:max-w-[500px]' : 'md:absolute md:left-[calc(50%+1.5rem)] md:w-[41.67%] md:max-w-[500px]'}`}>
                 <div
                   className="relative h-[350px] md:h-[450px]"
                   style={{ perspective: '1000px' }}
@@ -933,7 +933,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                   animate={{ opacity: 1, scale: 1, x: 0 }}
                   exit={{ opacity: 0, scale: 0.9, x: 50 }}
                   transition={{ duration: 0.4, ease: "easeOut" }}
-                  className="w-full md:absolute md:left-[calc(50%+1.5rem+8.33%)] md:w-[41.67%] md:max-w-[500px] h-[350px] md:h-[450px] glass-card p-6 rounded-lg border-2 border-primary/20"
+                  className="w-full md:absolute md:left-[calc(50%+1.5rem)] md:w-[41.67%] md:max-w-[500px] h-[350px] md:h-[450px] glass-card p-6 rounded-lg border-2 border-primary/20"
                   style={{
                     boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15)'
                   }}
@@ -1008,7 +1008,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
       </div>
 
       {/* Summary Stats - Sticky Bottom Bar - Clean design matching top fields */}
-      <div className="fixed bottom-0 left-0 md:left-16 right-0 z-40 border-t border-primary/10">
+      <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-primary/10">
         {/* Animated Progress Bar Fill */}
         <motion.div
           initial={{ width: 0 }}
@@ -1022,19 +1022,19 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
           }}
         />
         
-        <div className="max-w-7xl mx-auto px-4 py-1.5">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+        <div className="max-w-7xl mx-auto px-4 py-1">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
             <motion.div
               whileHover={{ scale: 1.02 }}
-              className="text-center p-1.5 md:p-2 rounded-md border-2 bg-blue-50/45 dark:bg-blue-950/40 border-blue-200/30 dark:border-blue-800/30 transition-all duration-300"
+              className="text-center p-1 rounded-md border-2 bg-blue-50/45 dark:bg-blue-950/40 border-blue-200/30 dark:border-blue-800/30 transition-all duration-300"
               style={{ boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15)' }}
             >
-              <div className="text-lg md:text-xl font-bold text-primary">{documents?.length || 0}</div>
-              <div className="text-[9px] md:text-[10px] text-muted-foreground/40 font-medium">Documents</div>
+              <div className="text-base md:text-lg font-bold text-primary">{documents?.length || 0}</div>
+              <div className="text-[8px] md:text-[9px] text-muted-foreground/40 font-medium">Documents</div>
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.02 }}
-              className="text-center p-1.5 md:p-2 rounded-md border-2 bg-green-50/45 dark:bg-green-950/40 border-green-200/30 dark:border-green-800/30 transition-all duration-300"
+              className="text-center p-1 rounded-md border-2 bg-green-50/45 dark:bg-green-950/40 border-green-200/30 dark:border-green-800/30 transition-all duration-300"
               style={{ boxShadow: '0 0 30px hsla(142, 71%, 45%, 0.15)' }}
             >
               <motion.div
@@ -1042,25 +1042,25 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                 initial={{ scale: 1.2, color: '#22c55e' }}
                 animate={{ scale: 1, color: '#16a34a' }}
                 transition={{ duration: 0.5 }}
-                className="text-lg md:text-xl font-bold text-green-600"
+                className="text-base md:text-lg font-bold text-green-600"
               >
                 {Object.values(completedStages).filter(Boolean).length}
               </motion.div>
-              <div className="text-[9px] md:text-[10px] text-muted-foreground/40 font-medium">Completed</div>
+              <div className="text-[8px] md:text-[9px] text-muted-foreground/40 font-medium">Completed</div>
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.02 }}
-              className="text-center p-1.5 md:p-2 rounded-md border-2 bg-orange-50/45 dark:bg-orange-950/40 border-orange-200/30 dark:border-orange-800/30 transition-all duration-300"
+              className="text-center p-1 rounded-md border-2 bg-orange-50/45 dark:bg-orange-950/40 border-orange-200/30 dark:border-orange-800/30 transition-all duration-300"
               style={{ boxShadow: '0 0 30px hsla(25, 95%, 53%, 0.15)' }}
             >
-              <div className="text-lg md:text-xl font-bold text-accent">
+              <div className="text-base md:text-lg font-bold text-accent">
                 {workflowSteps.length - Object.values(completedStages).filter(Boolean).length}
               </div>
-              <div className="text-[9px] md:text-[10px] text-muted-foreground/40 font-medium">Remaining</div>
+              <div className="text-[8px] md:text-[9px] text-muted-foreground/40 font-medium">Remaining</div>
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.02 }}
-              className="text-center p-1.5 md:p-2 rounded-md border-2 bg-purple-50/45 dark:bg-purple-950/40 border-purple-200/30 dark:border-purple-800/30 transition-all duration-300"
+              className="text-center p-1 rounded-md border-2 bg-purple-50/45 dark:bg-purple-950/40 border-purple-200/30 dark:border-purple-800/30 transition-all duration-300"
               style={{ boxShadow: '0 0 30px hsla(262, 83%, 58%, 0.15)' }}
             >
               <motion.div
@@ -1068,11 +1068,11 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                 initial={{ scale: 1.3 }}
                 animate={{ scale: 1 }}
                 transition={{ duration: 0.5, type: "spring" }}
-                className="text-lg md:text-xl font-bold text-secondary"
+                className="text-base md:text-lg font-bold text-secondary"
               >
                 {Math.round((Object.values(completedStages).filter(Boolean).length / workflowSteps.length) * 100)}%
               </motion.div>
-              <div className="text-[9px] md:text-[10px] text-muted-foreground/40 font-medium">Progress</div>
+              <div className="text-[8px] md:text-[9px] text-muted-foreground/40 font-medium">Progress</div>
             </motion.div>
           </div>
         </div>
