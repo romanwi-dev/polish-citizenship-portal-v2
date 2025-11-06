@@ -64,7 +64,7 @@ export const ArchivesSearchDashboard = () => {
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.pending || 0}</p>
+                  <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.pending || ''}</p>
                   <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Pending Searches</p>
                 </div>
               </div>
@@ -102,7 +102,7 @@ export const ArchivesSearchDashboard = () => {
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.submitted || 0}</p>
+                  <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.submitted || ''}</p>
                   <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Submitted Requests</p>
                 </div>
               </div>
@@ -140,7 +140,7 @@ export const ArchivesSearchDashboard = () => {
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.received || 0}</p>
+                  <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.received || ''}</p>
                   <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Documents Received</p>
                 </div>
               </div>
@@ -178,7 +178,7 @@ export const ArchivesSearchDashboard = () => {
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.completed || 0}</p>
+                  <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.completed || ''}</p>
                   <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Completed</p>
                 </div>
               </div>

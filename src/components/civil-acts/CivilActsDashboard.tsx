@@ -64,7 +64,7 @@ export const CivilActsDashboard = () => {
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.pending || 0}</p>
+                  <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.pending || ''}</p>
                   <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Pending Requests</p>
                 </div>
               </div>
@@ -102,7 +102,7 @@ export const CivilActsDashboard = () => {
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.in_progress || 0}</p>
+                  <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.in_progress || ''}</p>
                   <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">In Progress</p>
                 </div>
               </div>
@@ -140,7 +140,7 @@ export const CivilActsDashboard = () => {
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.awaiting || 0}</p>
+                  <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.awaiting || ''}</p>
                   <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Awaiting Documents</p>
                 </div>
               </div>
@@ -178,7 +178,7 @@ export const CivilActsDashboard = () => {
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.completed || 0}</p>
+                  <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.completed || ''}</p>
                   <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Completed</p>
                 </div>
               </div>
