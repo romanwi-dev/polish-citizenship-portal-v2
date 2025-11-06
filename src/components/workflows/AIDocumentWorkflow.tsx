@@ -950,7 +950,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
               </div>
 
               {/* Center Circle Node - Only visible on desktop */}
-              <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full bg-gradient-to-br from-primary/30 to-secondary/30 shadow-xl items-center justify-center z-10">
+              <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full bg-gradient-to-br from-primary/30 to-secondary/30 shadow-xl items-center justify-center z-20 ring-4 ring-background">
                 <Icon className="h-6 w-6 text-white/30" />
               </div>
 
