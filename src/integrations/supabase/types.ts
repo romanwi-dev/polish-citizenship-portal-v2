@@ -4791,6 +4791,8 @@ export type Database = {
       }
       workflow_instances: {
         Row: {
+          approved_by_user_id: string | null
+          approved_for_generation_at: string | null
           assigned_at: string | null
           assigned_to: string | null
           case_id: string
@@ -4800,6 +4802,7 @@ export type Database = {
           deadline: string | null
           id: string
           metadata: Json | null
+          pdf_generation_status: string | null
           priority: string | null
           sla_violated: boolean | null
           source_id: string
@@ -4810,6 +4813,8 @@ export type Database = {
           workflow_type: string
         }
         Insert: {
+          approved_by_user_id?: string | null
+          approved_for_generation_at?: string | null
           assigned_at?: string | null
           assigned_to?: string | null
           case_id: string
@@ -4819,6 +4824,7 @@ export type Database = {
           deadline?: string | null
           id?: string
           metadata?: Json | null
+          pdf_generation_status?: string | null
           priority?: string | null
           sla_violated?: boolean | null
           source_id: string
@@ -4829,6 +4835,8 @@ export type Database = {
           workflow_type: string
         }
         Update: {
+          approved_by_user_id?: string | null
+          approved_for_generation_at?: string | null
           assigned_at?: string | null
           assigned_to?: string | null
           case_id?: string
@@ -4838,6 +4846,7 @@ export type Database = {
           deadline?: string | null
           id?: string
           metadata?: Json | null
+          pdf_generation_status?: string | null
           priority?: string | null
           sla_violated?: boolean | null
           source_id?: string

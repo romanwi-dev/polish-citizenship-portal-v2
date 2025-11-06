@@ -1,17 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import { 
   FileText, 
   Eye, 
   Download, 
   CheckCircle2,
   Loader2,
-  AlertCircle
+  AlertCircle,
+  Lock
 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import { usePDFGeneration } from "@/hooks/usePDFGeneration";
 import { DocumentViewer } from "./DocumentViewer";
 import { cn } from "@/lib/utils";
 
@@ -73,121 +74,40 @@ export function PDFPreviewPanel({
   onConfirmGeneration,
   onRegenerateWithChanges 
 }: PDFPreviewPanelProps) {
-  const { toast } = useToast();
-  const [templates, setTemplates] = useState<PDFTemplate[]>(PDF_TEMPLATES);
-  const [isGeneratingPreviews, setIsGeneratingPreviews] = useState(false);
-  const [selectedPDF, setSelectedPDF] = useState<PDFTemplate | null>(null);
+  const { generatePDFs, downloadPDF, approvePDFs, isGenerating, results, progress } = usePDFGeneration(caseId);
+  const [selectedPDF, setSelectedPDF] = useState<{ url: string; name: string } | null>(null);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
 
-  const generatePreviews = async () => {
-    setIsGeneratingPreviews(true);
-    
-    try {
-      // Update all to generating status
-      setTemplates(prev => prev.map(t => ({ ...t, status: 'generating' as const })));
-
-      // Call edge function to generate draft PDFs
-      const { data, error } = await supabase.functions.invoke('generate-pdf-previews', {
-        body: { caseId }
-      });
-
-      if (error) throw error;
-
-      // Update templates with preview URLs
-      setTemplates(prev => prev.map(template => {
-        const preview = data?.previews?.find((p: any) => p.templateId === template.id);
-        return {
-          ...template,
-          status: preview ? 'ready' as const : 'error' as const,
-          previewUrl: preview?.url
-        };
-      }));
-
-      toast({
-        title: "Previews Generated",
-        description: "PDF previews are ready for review."
-      });
-    } catch (error: any) {
-      console.error('Preview generation failed:', error);
-      
-      setTemplates(prev => prev.map(t => ({ ...t, status: 'error' as const })));
-      
-      toast({
-        title: "Preview Generation Failed",
-        description: error.message || "Could not generate PDF previews.",
-        variant: "destructive"
-      });
-    } finally {
-      setIsGeneratingPreviews(false);
-    }
+  const handleGeneratePreviews = async () => {
+    await generatePDFs(true);
   };
 
-  const viewPDF = (template: PDFTemplate) => {
-    if (!template.previewUrl) return;
-    
-    setSelectedPDF(template);
+  const handleViewPDF = (result: any) => {
+    if (!result.url) return;
+    setSelectedPDF({ url: result.url, name: result.name });
     setIsViewerOpen(true);
   };
 
-  const downloadPDF = async (template: PDFTemplate) => {
-    if (!template.previewUrl) return;
-
-    try {
-      const response = await fetch(template.previewUrl);
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `${template.name}_preview.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      toast({
-        title: "Download Failed",
-        description: "Could not download the preview PDF.",
-        variant: "destructive"
-      });
-    }
+  const handleDownloadPDF = async (result: any) => {
+    if (!result.url) return;
+    await downloadPDF(result.url, `${result.name}_draft.pdf`);
   };
 
-  const handleConfirm = async () => {
-    try {
+  const handleApprove = async () => {
+    const success = await approvePDFs();
+    if (success) {
       await onConfirmGeneration();
-      toast({
-        title: "PDFs Generated",
-        description: "Final PDFs have been generated successfully."
-      });
-    } catch (error: any) {
-      toast({
-        title: "Generation Failed",
-        description: error.message,
-        variant: "destructive"
-      });
     }
   };
 
-  const handleRegenerateWithChanges = async () => {
-    try {
-      await onRegenerateWithChanges();
-      // Reset templates to pending
-      setTemplates(PDF_TEMPLATES);
-      toast({
-        title: "Regenerating",
-        description: "Apply your changes, then generate previews again."
-      });
-    } catch (error: any) {
-      toast({
-        title: "Regeneration Failed",
-        description: error.message,
-        variant: "destructive"
-      });
-    }
+  const handleRegenerate = async () => {
+    await onRegenerateWithChanges();
   };
 
-  const allReady = templates.every(t => t.status === 'ready');
-  const anyError = templates.some(t => t.status === 'error');
+  const successCount = results.filter(r => r.status === 'ready').length;
+  const totalCount = results.length || 6;
+  const allReady = results.length > 0 && results.every(r => r.status === 'ready');
+  const anyError = results.some(r => r.status === 'error');
 
   return (
     <>
@@ -203,96 +123,120 @@ export function PDFPreviewPanel({
                 Review all PDFs before final generation
               </p>
             </div>
-            <Button
-              onClick={generatePreviews}
-              disabled={isGeneratingPreviews}
-            >
-              {isGeneratingPreviews ? (
-                <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Generating...
-                </>
-              ) : (
-                <>
-                  <Eye className="h-4 w-4 mr-2" />
-                  Generate Previews
-                </>
+            <div className="flex items-center gap-3">
+              {isGenerating && (
+                <div className="flex items-center gap-2 text-sm">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <span>{Math.round(progress)}%</span>
+                </div>
               )}
-            </Button>
+              <Button
+                onClick={handleGeneratePreviews}
+                disabled={isGenerating}
+              >
+                {isGenerating ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <Eye className="h-4 w-4 mr-2" />
+                    Generate Previews
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
         </CardHeader>
 
         <CardContent className="space-y-4">
-          {/* PDF Templates Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {templates.map((template) => (
-              <div
-                key={template.id}
-                className={cn(
-                  "border rounded-lg p-4 transition-all",
-                  template.status === 'ready' && "border-success/50 bg-success/5",
-                  template.status === 'error' && "border-destructive/50 bg-destructive/5"
-                )}
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <h4 className="font-semibold">{template.name}</h4>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {template.description}
-                    </p>
-                  </div>
-                  {template.status === 'ready' && (
-                    <CheckCircle2 className="h-5 w-5 text-success" />
-                  )}
-                  {template.status === 'error' && (
-                    <AlertCircle className="h-5 w-5 text-destructive" />
-                  )}
-                  {template.status === 'generating' && (
-                    <Loader2 className="h-5 w-5 animate-spin text-primary" />
-                  )}
-                </div>
+          {/* Progress Bar */}
+          {isGenerating && (
+            <div className="space-y-2">
+              <Progress value={progress} className="h-2" />
+              <p className="text-sm text-muted-foreground text-center">
+                Generating {successCount}/{totalCount} PDFs...
+              </p>
+            </div>
+          )}
 
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => viewPDF(template)}
-                    disabled={template.status !== 'ready'}
-                    className="flex-1"
-                  >
-                    <Eye className="h-4 w-4 mr-1" />
-                    View
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => downloadPDF(template)}
-                    disabled={template.status !== 'ready'}
-                  >
-                    <Download className="h-4 w-4" />
-                  </Button>
+          {/* PDF Results Grid */}
+          {results.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {results.map((result) => (
+                <div
+                  key={result.templateId}
+                  className={cn(
+                    "border rounded-lg p-4 transition-all",
+                    result.status === 'ready' && "border-success/50 bg-success/5",
+                    result.status === 'error' && "border-destructive/50 bg-destructive/5"
+                  )}
+                >
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex-1">
+                      <h4 className="font-semibold">{result.name}</h4>
+                      {result.fieldsPopulated !== undefined && (
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {result.fieldsPopulated}/{result.totalFields} fields filled
+                        </p>
+                      )}
+                      {result.error && (
+                        <p className="text-xs text-destructive mt-1">
+                          {result.error}
+                        </p>
+                      )}
+                    </div>
+                    {result.status === 'ready' && (
+                      <CheckCircle2 className="h-5 w-5 text-success" />
+                    )}
+                    {result.status === 'error' && (
+                      <AlertCircle className="h-5 w-5 text-destructive" />
+                    )}
+                  </div>
+
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleViewPDF(result)}
+                      disabled={result.status !== 'ready'}
+                      className="flex-1"
+                    >
+                      <Eye className="h-4 w-4 mr-1" />
+                      View
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleDownloadPDF(result)}
+                      disabled={result.status !== 'ready'}
+                    >
+                      <Download className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* Action Buttons */}
-          {templates.some(t => t.status !== 'pending') && (
+          {results.length > 0 && (
             <div className="flex gap-3 pt-4 border-t">
               <Button
                 variant="outline"
-                onClick={handleRegenerateWithChanges}
+                onClick={handleRegenerate}
                 className="flex-1"
               >
                 Regenerate with Changes
               </Button>
               <Button
-                onClick={handleConfirm}
+                onClick={handleApprove}
                 disabled={!allReady || anyError}
                 className="flex-1"
               >
-                <CheckCircle2 className="h-4 w-4 mr-2" />
-                Confirm & Generate Final PDFs
+                <Lock className="h-4 w-4 mr-2" />
+                Approve & Lock for Final
               </Button>
             </div>
           )}
@@ -315,8 +259,8 @@ export function PDFPreviewPanel({
         <DocumentViewer
           isOpen={isViewerOpen}
           onClose={() => setIsViewerOpen(false)}
-          documentUrl={selectedPDF.previewUrl || ''}
-          documentName={`${selectedPDF.name}_preview.pdf`}
+          documentUrl={selectedPDF.url}
+          documentName={selectedPDF.name}
           documentType="pdf"
         />
       )}
