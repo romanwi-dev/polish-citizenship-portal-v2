@@ -1,5 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Languages, 
@@ -19,13 +18,14 @@ import { DocumentRequirementsList } from "./DocumentRequirementsList";
 import { SwornTranslatorsList } from "./SwornTranslatorsList";
 import { TranslationAgenciesList } from "./TranslationAgenciesList";
 import { TranslationDashboardWorkflow } from "./TranslationDashboardWorkflow";
-import { useState } from "react";
 import { WorkflowNavigation } from "@/components/workflows/WorkflowNavigation";
 import { useTranslationNotifications } from "@/hooks/useTranslationNotifications";
 import { Badge } from "@/components/ui/badge";
+import { useTranslationCounts } from "@/hooks/useWorkflowCounts";
 
 export const TranslationDashboard = () => {
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
+  const { data: counts } = useTranslationCounts();
   const { pendingReviewCount } = useTranslationNotifications();
 
   const toggleFlip = (cardId: string) => {
@@ -34,15 +34,6 @@ export const TranslationDashboard = () => {
       [cardId]: !prev[cardId]
     }));
   };
-
-  const { data: counts } = useQuery({
-    queryKey: ["translation-workflow-counts"],
-    queryFn: async () => {
-      const { data, error } = await supabase.rpc("get_translation_workflow_counts" as any);
-      if (error) throw error;
-      return data[0] as any;
-    },
-  });
 
   return (
     <div className="space-y-4 sm:space-y-6 p-4 sm:p-6">
@@ -82,7 +73,8 @@ export const TranslationDashboard = () => {
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Prepared</p>
+                  <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.in_progress || 0}</p>
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">In Progress</p>
                 </div>
               </div>
             </div>
@@ -119,6 +111,7 @@ export const TranslationDashboard = () => {
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
+                  <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.pending || 0}</p>
                   <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Pending</p>
                 </div>
               </div>
@@ -156,7 +149,8 @@ export const TranslationDashboard = () => {
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Translator</p>
+                  <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.quality_check || 0}</p>
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Quality Check</p>
                 </div>
               </div>
             </div>
@@ -193,6 +187,7 @@ export const TranslationDashboard = () => {
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
+                  <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.completed || 0}</p>
                   <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Completed</p>
                 </div>
               </div>
@@ -209,23 +204,19 @@ export const TranslationDashboard = () => {
       </div>
 
       {/* Urgent Alert */}
-      {(counts && (counts.hac_review > 0 || counts.ready_for_submission > 0)) || pendingReviewCount > 0 ? (
+      {pendingReviewCount > 0 ? (
         <div className="glass-card p-4 sm:p-6 border-orange-500/50 bg-orange-500/5 rounded-lg hover-glow">
           <div className="flex items-start gap-2 sm:gap-3">
             <AlertCircle className="h-4 w-4 sm:h-5 sm:w-5 text-orange-600 shrink-0 mt-0.5 animate-pulse" />
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2 mb-1">
                 <p className="text-sm sm:text-base font-semibold">Action Required</p>
-                {pendingReviewCount > 0 && (
-                  <Badge variant="destructive" className="animate-pulse">
-                    {pendingReviewCount} new
-                  </Badge>
-                )}
+                <Badge variant="destructive" className="animate-pulse">
+                  {pendingReviewCount} new
+                </Badge>
               </div>
               <p className="text-xs sm:text-sm text-muted-foreground">
-                {counts?.hac_review > 0 && `${counts.hac_review} awaiting HAC review`}
-                {counts?.hac_review > 0 && counts.ready_for_submission > 0 && " • "}
-                {counts?.ready_for_submission > 0 && `${counts.ready_for_submission} ready for submission`}
+                {pendingReviewCount} translation{pendingReviewCount > 1 ? 's' : ''} awaiting review
               </p>
             </div>
           </div>

@@ -12,9 +12,11 @@ import {
   MapPin
 } from "lucide-react";
 import { WorkflowNavigation } from "@/components/workflows/WorkflowNavigation";
+import { usePassportCounts } from "@/hooks/useWorkflowCounts";
 
 export const PassportDashboard = () => {
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
+  const { data: counts } = usePassportCounts();
 
   const toggleFlip = (cardId: string) => {
     setFlippedCards(prev => ({
@@ -61,7 +63,8 @@ export const PassportDashboard = () => {
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Preparing</p>
+                  <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.preparing || 0}</p>
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Preparing Documents</p>
                 </div>
               </div>
             </div>
@@ -98,7 +101,8 @@ export const PassportDashboard = () => {
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Scheduled</p>
+                  <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.scheduled || 0}</p>
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Appointment Scheduled</p>
                 </div>
               </div>
             </div>
@@ -135,7 +139,8 @@ export const PassportDashboard = () => {
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Applied</p>
+                  <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.submitted || 0}</p>
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Application Submitted</p>
                 </div>
               </div>
             </div>
@@ -172,7 +177,8 @@ export const PassportDashboard = () => {
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Obtained</p>
+                  <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.issued || 0}</p>
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Passport Issued</p>
                 </div>
               </div>
             </div>
