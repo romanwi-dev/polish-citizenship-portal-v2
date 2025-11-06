@@ -246,22 +246,50 @@ serve(async (req) => {
     if (magicCheck.type === 'pdf') {
       const pdfContent = arrayBuffer;
       
-      // 6.1 ZIP BOMB PROTECTION: Check compression ratio
+      // 6.1 ENHANCED ZIP BOMB PROTECTION: Check compression ratio with cumulative size tracking
       // Detect if PDF claims to be compressed but has suspicious size
       const pdfString = new TextDecoder().decode(pdfContent.slice(0, Math.min(8192, pdfContent.length)));
       const hasFlateStream = pdfString.includes('/FlateDecode') || pdfString.includes('/Filter');
       
       if (hasFlateStream) {
         // Count compressed stream objects
-        const streamCount = (pdfString.match(/stream\s/g) || []).length;
-        const avgStreamSize = file.size / Math.max(streamCount, 1);
+        const streamMatches = pdfString.match(/stream\s/g) || [];
+        const streamCount = streamMatches.length;
         
-        // If average stream size is suspiciously large, reject (potential ZIP bomb)
-        if (avgStreamSize > 5 * 1024 * 1024) { // 5MB per stream is suspicious
+        // CRITICAL: Track cumulative decompressed size across all streams
+        // If we detect suspiciously large average stream sizes, this is a ZIP bomb indicator
+        const avgStreamSize = file.size / Math.max(streamCount, 1);
+        const MAX_STREAM_SIZE = 5 * 1024 * 1024; // 5MB per stream
+        const MAX_CUMULATIVE_SIZE = 100 * 1024 * 1024; // 100MB total decompressed
+        
+        // Check individual stream average
+        if (avgStreamSize > MAX_STREAM_SIZE) {
           return new Response(
             JSON.stringify({
               valid: false,
-              error: 'SECURITY ALERT: PDF contains suspiciously large compressed streams (potential ZIP bomb)'
+              error: 'SECURITY ALERT: PDF contains suspiciously large compressed streams (potential ZIP bomb)',
+              details: {
+                avgStreamSize: Math.round(avgStreamSize / 1024 / 1024) + 'MB',
+                threshold: (MAX_STREAM_SIZE / 1024 / 1024) + 'MB',
+                streamCount
+              }
+            }),
+            { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+        
+        // Check estimated cumulative decompressed size
+        const estimatedCumulativeSize = avgStreamSize * streamCount;
+        if (estimatedCumulativeSize > MAX_CUMULATIVE_SIZE) {
+          return new Response(
+            JSON.stringify({
+              valid: false,
+              error: 'SECURITY ALERT: PDF estimated cumulative decompressed size exceeds safe limits (ZIP bomb protection)',
+              details: {
+                estimatedSize: Math.round(estimatedCumulativeSize / 1024 / 1024) + 'MB',
+                threshold: (MAX_CUMULATIVE_SIZE / 1024 / 1024) + 'MB',
+                compressionRatio: Math.round(estimatedCumulativeSize / file.size)
+              }
             }),
             { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
           );
