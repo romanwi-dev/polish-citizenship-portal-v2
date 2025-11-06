@@ -288,12 +288,12 @@ export function DocumentViewer({
                 </Document>
               ) : isImage ? (
                 <img
-                src={documentUrl}
-                alt={documentName}
-                style={{ transform: `scale(${scale})`, transformOrigin: 'center top' }}
-                className="max-w-full h-auto rounded-lg shadow-lg"
-              />
-            ) : isText ? (
+                  src={documentUrl}
+                  alt={documentName}
+                  style={{ transform: `scale(${scale})`, transformOrigin: 'center top' }}
+                  className="max-w-full h-auto rounded-lg shadow-lg"
+                />
+              ) : isText ? (
               <div className="w-full max-w-4xl">
                 {isLoadingText ? (
                   <div className="flex items-center justify-center h-96">
