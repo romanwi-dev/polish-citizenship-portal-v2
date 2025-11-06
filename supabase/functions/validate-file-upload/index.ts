@@ -438,9 +438,9 @@ serve(async (req) => {
       }
 
       // 6.8 PDF structure integrity validation
-      const pdfString = new TextDecoder().decode(pdfContent);
-      const objectCount = (pdfString.match(/\d+ \d+ obj/g) || []).length;
-      const endObjCount = (pdfString.match(/endobj/g) || []).length;
+      const pdfStringFull = new TextDecoder().decode(pdfContent);
+      const objectCount = (pdfStringFull.match(/\d+ \d+ obj/g) || []).length;
+      const endObjCount = (pdfStringFull.match(/endobj/g) || []).length;
       
       if (objectCount > 0 && objectCount !== endObjCount) {
         return new Response(
