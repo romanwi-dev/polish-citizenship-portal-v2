@@ -215,7 +215,7 @@ export const CitizenshipDashboard = () => {
               Schemes
             </TabsTrigger>
             <TabsTrigger value="analytics" className="flex-1 h-11 md:h-12 lg:h-14 py-0 bg-red-500/20 border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-700/40 data-[state=active]:border-red-700/50 data-[state=active]:shadow-[0_0_40px_rgba(185,28,28,0.5)] text-white/100 data-[state=active]:text-white/50 font-bold text-lg">
-              Analytics
+              Decisions
             </TabsTrigger>
           </TabsList>
         </div>
