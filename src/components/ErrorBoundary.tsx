@@ -40,7 +40,7 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   public static getDerivedStateFromError(error: Error): State {
-    return { hasError: true, error, errorInfo: null };
+    return { hasError: true, error, errorInfo: null, recoveredState: null };
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {

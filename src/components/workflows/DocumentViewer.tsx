@@ -286,8 +286,8 @@ export function DocumentViewer({
                     }
                   />
                 </Document>
-            ) : isImage ? (
-              <img
+              ) : isImage ? (
+                <img
                 src={documentUrl}
                 alt={documentName}
                 style={{ transform: `scale(${scale})`, transformOrigin: 'center top' }}
@@ -340,7 +340,8 @@ export function DocumentViewer({
                 </Button>
               </div>
             )}
-          </div>
+            </div>
+          )}
         </div>
 
         {/* OCR Overlay */}
