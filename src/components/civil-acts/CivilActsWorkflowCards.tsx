@@ -104,7 +104,7 @@ export default function CivilActsWorkflowCards() {
             className="text-4xl md:text-7xl font-heading font-black mb-8 tracking-tight"
           >
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-primary animate-fade-in-up glow-text drop-shadow-2xl">
-              Civil Acts Workflow
+              Transcription Workflow
             </span>
           </motion.h2>
         </motion.div>
