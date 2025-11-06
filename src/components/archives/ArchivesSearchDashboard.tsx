@@ -201,7 +201,10 @@ export const ArchivesSearchDashboard = () => {
               Workflow
             </TabsTrigger>
             <TabsTrigger value="timeline" className="flex-1 h-11 md:h-12 lg:h-14 py-0 bg-red-500/20 border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-700/40 data-[state=active]:border-red-700/50 data-[state=active]:shadow-[0_0_40px_rgba(185,28,28,0.5)] text-white/100 data-[state=active]:text-white/50 font-bold text-lg">
-              Search Timeline
+              Search
+            </TabsTrigger>
+            <TabsTrigger value="deep-search" className="flex-1 h-11 md:h-12 lg:h-14 py-0 bg-red-500/20 border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-700/40 data-[state=active]:border-red-700/50 data-[state=active]:shadow-[0_0_40px_rgba(185,28,28,0.5)] text-white/100 data-[state=active]:text-white/50 font-bold text-lg">
+              Deep Search
             </TabsTrigger>
             <TabsTrigger value="supervisor" className="flex-1 h-11 md:h-12 lg:h-14 py-0 bg-red-500/20 border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-700/40 data-[state=active]:border-red-700/50 data-[state=active]:shadow-[0_0_40px_rgba(185,28,28,0.5)] text-white/100 data-[state=active]:text-white/50 font-bold text-lg">
               Supervisor
@@ -210,10 +213,7 @@ export const ArchivesSearchDashboard = () => {
               Partners
             </TabsTrigger>
             <TabsTrigger value="directory" className="flex-1 h-11 md:h-12 lg:h-14 py-0 bg-red-500/20 border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-700/40 data-[state=active]:border-red-700/50 data-[state=active]:shadow-[0_0_40px_rgba(185,28,28,0.5)] text-white/100 data-[state=active]:text-white/50 font-bold text-lg">
-              Archive Directory
-            </TabsTrigger>
-            <TabsTrigger value="templates" className="flex-1 h-11 md:h-12 lg:h-14 py-0 bg-red-500/20 border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-700/40 data-[state=active]:border-red-700/50 data-[state=active]:shadow-[0_0_40px_rgba(185,28,28,0.5)] text-white/100 data-[state=active]:text-white/50 font-bold text-lg">
-              Templates
+              Archives
             </TabsTrigger>
           </TabsList>
         </div>
@@ -229,6 +229,13 @@ export const ArchivesSearchDashboard = () => {
           <div className="text-center py-12">
             <Workflow className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">Search Timeline</h3>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="deep-search">
+          <div className="text-center py-12">
+            <FileSearch className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
+            <h3 className="text-xl font-semibold mb-2">Deep Search</h3>
           </div>
         </TabsContent>
 
@@ -253,12 +260,6 @@ export const ArchivesSearchDashboard = () => {
           </div>
         </TabsContent>
 
-        <TabsContent value="templates">
-          <div className="text-center py-12">
-            <ClipboardList className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">Request Templates</h3>
-          </div>
-        </TabsContent>
       </Tabs>
 
       {/* Professional Service Info */}
