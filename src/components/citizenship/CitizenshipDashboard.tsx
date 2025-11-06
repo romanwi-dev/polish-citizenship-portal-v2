@@ -220,45 +220,21 @@ export const CitizenshipDashboard = () => {
         </div>
 
         <TabsContent value="cards">
-          <div className="text-center py-12">
-            <Workflow className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">Workflow Cards</h3>
-          </div>
         </TabsContent>
 
         <TabsContent value="timeline">
-          <div className="text-center py-12">
-            <Workflow className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">13-Stage Timeline</h3>
-          </div>
         </TabsContent>
 
         <TabsContent value="supervisor">
-          <div className="text-center py-12">
-            <UserCog className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">Supervisor Dashboard</h3>
-          </div>
         </TabsContent>
 
         <TabsContent value="wsc">
-          <div className="text-center py-12">
-            <Mail className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">WSC Letter Management</h3>
-          </div>
         </TabsContent>
 
         <TabsContent value="push">
-          <div className="text-center py-12">
-            <Zap className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">Push Schemes</h3>
-          </div>
         </TabsContent>
 
         <TabsContent value="analytics">
-          <div className="text-center py-12">
-            <TrendingUp className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">Analytics</h3>
-          </div>
         </TabsContent>
       </Tabs>
     </div>

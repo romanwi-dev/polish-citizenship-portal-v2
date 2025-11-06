@@ -219,45 +219,21 @@ export const ArchivesSearchDashboard = () => {
         </div>
 
         <TabsContent value="cards">
-          <div className="text-center py-12">
-            <Workflow className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">Workflow Cards</h3>
-          </div>
         </TabsContent>
 
         <TabsContent value="timeline">
-          <div className="text-center py-12">
-            <Workflow className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">Search Timeline</h3>
-          </div>
         </TabsContent>
 
         <TabsContent value="deep-search">
-          <div className="text-center py-12">
-            <FileSearch className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">Deep Search</h3>
-          </div>
         </TabsContent>
 
         <TabsContent value="supervisor">
-          <div className="text-center py-12">
-            <UserCog className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">Supervisor Dashboard</h3>
-          </div>
         </TabsContent>
 
         <TabsContent value="partners">
-          <div className="text-center py-12">
-            <Users className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">Genealogy Partners</h3>
-          </div>
         </TabsContent>
 
         <TabsContent value="directory">
-          <div className="text-center py-12">
-            <Building2 className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">Archive Directory</h3>
-          </div>
         </TabsContent>
 
       </Tabs>

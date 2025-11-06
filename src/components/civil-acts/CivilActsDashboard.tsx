@@ -219,45 +219,21 @@ export const CivilActsDashboard = () => {
         </div>
 
         <TabsContent value="cards">
-          <div className="text-center py-12">
-            <Workflow className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">Workflow Cards</h3>
-          </div>
         </TabsContent>
 
         <TabsContent value="timeline">
-          <div className="text-center py-12">
-            <Workflow className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">8-Stage Timeline</h3>
-          </div>
         </TabsContent>
 
         <TabsContent value="supervisor">
-          <div className="text-center py-12">
-            <UserCog className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">Supervisor Dashboard</h3>
-          </div>
         </TabsContent>
 
         <TabsContent value="directory">
-          <div className="text-center py-12">
-            <Building2 className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">USC Directory</h3>
-          </div>
         </TabsContent>
 
         <TabsContent value="agent">
-          <div className="text-center py-12">
-            <Users className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">Civil Acts Agent</h3>
-          </div>
         </TabsContent>
 
         <TabsContent value="payment">
-          <div className="text-center py-12">
-            <CreditCard className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">Payment Tracker</h3>
-          </div>
         </TabsContent>
       </Tabs>
     </div>

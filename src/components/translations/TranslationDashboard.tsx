@@ -257,35 +257,21 @@ export const TranslationDashboard = () => {
         </div>
 
         <TabsContent value="cards" className="space-y-4">
-          <TranslationWorkflowCards />
         </TabsContent>
 
         <TabsContent value="workflow" className="space-y-4">
-          <div className="text-center py-12">
-            <Workflow className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">Translation Workflow Timeline</h3>
-          </div>
         </TabsContent>
 
         <TabsContent value="supervisor">
-          <div className="text-center py-12">
-            <UserCog className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">Supervisor Dashboard</h3>
-          </div>
         </TabsContent>
 
         <TabsContent value="requirements">
-          <div className="text-center py-12">
-            <h3 className="text-xl font-semibold mb-2">Translation Requirements</h3>
-          </div>
         </TabsContent>
 
         <TabsContent value="translators">
-          {/* Content removed temporarily */}
         </TabsContent>
 
         <TabsContent value="agencies">
-          {/* Content removed temporarily */}
         </TabsContent>
       </Tabs>
     </div>

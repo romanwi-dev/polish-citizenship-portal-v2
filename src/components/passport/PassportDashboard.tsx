@@ -219,45 +219,21 @@ export const PassportDashboard = () => {
         </div>
 
         <TabsContent value="cards">
-          <div className="text-center py-12">
-            <Workflow className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">Workflow Cards</h3>
-          </div>
         </TabsContent>
 
         <TabsContent value="timeline">
-          <div className="text-center py-12">
-            <Workflow className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">6-Stage Timeline</h3>
-          </div>
         </TabsContent>
 
         <TabsContent value="supervisor">
-          <div className="text-center py-12">
-            <UserCog className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">Supervisor Dashboard</h3>
-          </div>
         </TabsContent>
 
         <TabsContent value="consulates">
-          <div className="text-center py-12">
-            <Building2 className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">Polish Consulates</h3>
-          </div>
         </TabsContent>
 
         <TabsContent value="requirements">
-          <div className="text-center py-12">
-            <FileText className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">Application Requirements</h3>
-          </div>
         </TabsContent>
 
         <TabsContent value="checklist">
-          <div className="text-center py-12">
-            <ClipboardList className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold mb-2">Application Checklist</h3>
-          </div>
         </TabsContent>
       </Tabs>
     </div>
