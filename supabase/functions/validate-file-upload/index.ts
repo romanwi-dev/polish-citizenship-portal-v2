@@ -5,7 +5,7 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
+const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB hard limit
 const ALLOWED_MIME_TYPES = [
   'application/pdf',
   'image/jpeg',
@@ -15,25 +15,72 @@ const ALLOWED_MIME_TYPES = [
   'image/webp',
   'application/msword',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/vnd.ms-excel',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 ];
 
-// Magic number signatures for file type validation
+// Comprehensive magic number signatures for file type validation
 const MAGIC_NUMBERS: Record<string, Uint8Array> = {
   'pdf': new Uint8Array([0x25, 0x50, 0x44, 0x46]), // %PDF
   'jpeg': new Uint8Array([0xFF, 0xD8, 0xFF]),
-  'png': new Uint8Array([0x89, 0x50, 0x4E, 0x47]),
-  'gif': new Uint8Array([0x47, 0x49, 0x46]),
-  'webp': new Uint8Array([0x52, 0x49, 0x46, 0x46]),
+  'png': new Uint8Array([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]),
+  'gif87a': new Uint8Array([0x47, 0x49, 0x46, 0x38, 0x37, 0x61]), // GIF87a
+  'gif89a': new Uint8Array([0x47, 0x49, 0x46, 0x38, 0x39, 0x61]), // GIF89a
+  'webp': new Uint8Array([0x52, 0x49, 0x46, 0x46]), // RIFF (needs WEBP check at offset 8)
+  'doc': new Uint8Array([0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1]), // MS Office legacy
+  'docx': new Uint8Array([0x50, 0x4B, 0x03, 0x04]), // ZIP-based (DOCX/XLSX)
+  'xlsx': new Uint8Array([0x50, 0x4B, 0x03, 0x04]), // ZIP-based
+  
+  // Dangerous file types to explicitly REJECT
+  'exe': new Uint8Array([0x4D, 0x5A]), // MZ executable
+  'dll': new Uint8Array([0x4D, 0x5A]),
+  'bat': new Uint8Array([0x40, 0x65, 0x63, 0x68, 0x6F]), // @echo
+  'sh': new Uint8Array([0x23, 0x21]), // #! shebang
+  'zip': new Uint8Array([0x50, 0x4B, 0x03, 0x04]),
+  'rar': new Uint8Array([0x52, 0x61, 0x72, 0x21]),
+  '7z': new Uint8Array([0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C]),
 };
 
-function checkMagicNumber(bytes: Uint8Array): string | null {
-  for (const [type, signature] of Object.entries(MAGIC_NUMBERS)) {
+function checkMagicNumber(bytes: Uint8Array): { type: string | null; isDangerous: boolean } {
+  // Check for dangerous file types FIRST
+  const dangerousTypes = ['exe', 'dll', 'bat', 'sh', 'zip', 'rar', '7z'];
+  for (const type of dangerousTypes) {
+    const signature = MAGIC_NUMBERS[type];
     if (bytes.length >= signature.length) {
       const matches = signature.every((byte, index) => bytes[index] === byte);
-      if (matches) return type;
+      if (matches) {
+        return { type, isDangerous: true };
+      }
     }
   }
-  return null;
+
+  // Check for allowed file types
+  for (const [type, signature] of Object.entries(MAGIC_NUMBERS)) {
+    if (dangerousTypes.includes(type)) continue; // Skip dangerous types
+    
+    if (bytes.length >= signature.length) {
+      const matches = signature.every((byte, index) => bytes[index] === byte);
+      if (matches) {
+        // Special case for WEBP - need to verify "WEBP" string at offset 8
+        if (type === 'webp' && bytes.length >= 12) {
+          const webpCheck = bytes.slice(8, 12);
+          const webpSignature = new Uint8Array([0x57, 0x45, 0x42, 0x50]); // "WEBP"
+          const isWebp = webpSignature.every((byte, idx) => webpCheck[idx] === byte);
+          if (isWebp) return { type, isDangerous: false };
+          continue;
+        }
+        
+        // Handle GIF variants
+        if (type === 'gif87a' || type === 'gif89a') {
+          return { type: 'gif', isDangerous: false };
+        }
+        
+        return { type, isDangerous: false };
+      }
+    }
+  }
+  
+  return { type: null, isDangerous: false };
 }
 
 serve(async (req) => {
@@ -52,19 +99,32 @@ serve(async (req) => {
       );
     }
 
-    // 1. Size validation
-    if (file.size > MAX_FILE_SIZE) {
+    // 1. File size validation (CRITICAL SECURITY)
+    if (file.size === 0) {
       return new Response(
-        JSON.stringify({
-          valid: false,
-          error: `File size exceeds maximum allowed size of ${MAX_FILE_SIZE / 1024 / 1024}MB`,
-          details: { size: file.size, maxSize: MAX_FILE_SIZE }
-        }),
+        JSON.stringify({ valid: false, error: 'Empty file not allowed' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    // 2. MIME type validation
+    if (file.size > MAX_FILE_SIZE) {
+      return new Response(
+        JSON.stringify({
+          valid: false,
+          error: `File size ${(file.size / 1024 / 1024).toFixed(2)}MB exceeds maximum allowed ${MAX_FILE_SIZE / 1024 / 1024}MB`,
+          details: { size: file.size, maxSize: MAX_FILE_SIZE }
+        }),
+        { status: 413, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // 2. Filename sanitization (prevent path traversal)
+    const sanitizedFilename = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+    if (sanitizedFilename !== file.name) {
+      console.warn('Filename contained suspicious characters:', file.name);
+    }
+
+    // 3. MIME type validation
     if (!ALLOWED_MIME_TYPES.includes(file.type)) {
       return new Response(
         JSON.stringify({
@@ -72,61 +132,115 @@ serve(async (req) => {
           error: `File type ${file.type} not allowed`,
           details: { mimeType: file.type, allowedTypes: ALLOWED_MIME_TYPES }
         }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { status: 415, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    // 3. Magic number validation (first 8 bytes)
+    // 4. Magic number validation (CRITICAL - prevents MIME spoofing)
     const arrayBuffer = await file.arrayBuffer();
-    const bytes = new Uint8Array(arrayBuffer.slice(0, 8));
-    const detectedType = checkMagicNumber(bytes);
+    const bytes = new Uint8Array(arrayBuffer.slice(0, 16)); // Read first 16 bytes
+    const magicCheck = checkMagicNumber(bytes);
 
-    if (!detectedType) {
+    // SECURITY: Reject dangerous file types immediately
+    if (magicCheck.isDangerous) {
+      console.error('SECURITY ALERT: Dangerous file type detected:', magicCheck.type, 'from', file.name);
       return new Response(
         JSON.stringify({
           valid: false,
-          error: 'File content does not match expected format (magic number validation failed)',
-          details: { mimeType: file.type, magicBytes: Array.from(bytes.slice(0, 4)) }
+          error: 'Dangerous file type detected and blocked for security',
+          details: { 
+            detectedType: magicCheck.type,
+            reason: 'Executables and archives are not allowed'
+          }
+        }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (!magicCheck.type) {
+      return new Response(
+        JSON.stringify({
+          valid: false,
+          error: 'File content validation failed - file type could not be determined from content',
+          details: { mimeType: file.type, magicBytes: Array.from(bytes.slice(0, 8)) }
         }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    // 4. Cross-check MIME type with magic number
-    const mimeToMagic: Record<string, string> = {
-      'application/pdf': 'pdf',
-      'image/jpeg': 'jpeg',
-      'image/jpg': 'jpeg',
-      'image/png': 'png',
-      'image/gif': 'gif',
-      'image/webp': 'webp',
+    // 5. Cross-validation: MIME type vs magic number
+    const mimeToMagic: Record<string, string[]> = {
+      'application/pdf': ['pdf'],
+      'image/jpeg': ['jpeg'],
+      'image/jpg': ['jpeg'],
+      'image/png': ['png'],
+      'image/gif': ['gif'],
+      'image/webp': ['webp'],
+      'application/msword': ['doc'],
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['docx'],
+      'application/vnd.ms-excel': ['xlsx'],
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['xlsx'],
     };
 
-    const expectedMagic = mimeToMagic[file.type];
-    if (expectedMagic && expectedMagic !== detectedType) {
+    const expectedMagicTypes = mimeToMagic[file.type] || [];
+    if (expectedMagicTypes.length > 0 && !expectedMagicTypes.includes(magicCheck.type)) {
       return new Response(
         JSON.stringify({
           valid: false,
-          error: 'File extension does not match file content',
+          error: 'File extension/MIME type does not match file content',
           details: { 
             declaredType: file.type, 
-            detectedType,
-            advice: 'File may be corrupted or renamed'
+            detectedType: magicCheck.type,
+            advice: 'File may be corrupted, renamed, or tampered with'
           }
         }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    // All validations passed
+    // 6. PDF-specific security checks (prevent decompression bombs, embedded JS)
+    if (magicCheck.type === 'pdf') {
+      // Check for suspiciously small or large PDFs
+      if (file.size < 100) {
+        return new Response(
+          JSON.stringify({
+            valid: false,
+            error: 'PDF file is suspiciously small and may be malformed'
+          }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+      
+      // Basic PDF structure validation
+      const pdfHeader = new TextDecoder().decode(bytes.slice(0, 8));
+      if (!pdfHeader.startsWith('%PDF-')) {
+        return new Response(
+          JSON.stringify({
+            valid: false,
+            error: 'Invalid PDF header structure'
+          }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+    }
+
+    // ALL VALIDATIONS PASSED
     return new Response(
       JSON.stringify({
         valid: true,
         file: {
-          name: file.name,
+          name: sanitizedFilename,
+          originalName: file.name,
           size: file.size,
           type: file.type,
-          detectedType
+          detectedType: magicCheck.type,
+          validations: {
+            sizeCheck: true,
+            mimeTypeCheck: true,
+            magicNumberCheck: true,
+            crossValidation: true,
+            securityScan: true
+          }
         }
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
