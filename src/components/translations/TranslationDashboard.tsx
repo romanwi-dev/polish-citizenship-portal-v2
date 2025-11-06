@@ -22,6 +22,7 @@ import { WorkflowNavigation } from "@/components/workflows/WorkflowNavigation";
 import { useTranslationNotifications } from "@/hooks/useTranslationNotifications";
 import { Badge } from "@/components/ui/badge";
 import { useTranslationCounts } from "@/hooks/useWorkflowCounts";
+import { EditableCardBack } from "@/components/workflows/EditableCardBack";
 
 export const TranslationDashboard = () => {
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
@@ -80,10 +81,15 @@ export const TranslationDashboard = () => {
             </div>
             {/* Back */}
             <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
               style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
             >
-              <p className="text-sm text-muted-foreground text-center">Total documents prepared for translation workflow</p>
+              <EditableCardBack
+                workflowName="translations"
+                cardId="documents"
+                defaultDescription="Total documents prepared for translation workflow"
+                icon={Languages}
+              />
             </div>
           </div>
         </div>
@@ -118,10 +124,15 @@ export const TranslationDashboard = () => {
             </div>
             {/* Back */}
             <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
               style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
             >
-              <p className="text-sm text-muted-foreground text-center">Documents awaiting client upload to portal</p>
+              <EditableCardBack
+                workflowName="translations"
+                cardId="pending"
+                defaultDescription="Documents awaiting client upload to portal"
+                icon={Clock}
+              />
             </div>
           </div>
         </div>
@@ -156,10 +167,15 @@ export const TranslationDashboard = () => {
             </div>
             {/* Back */}
             <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
               style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
             >
-              <p className="text-sm text-muted-foreground text-center">Documents currently with sworn translator for certification</p>
+              <EditableCardBack
+                workflowName="translations"
+                cardId="check"
+                defaultDescription="Documents currently with sworn translator for certification"
+                icon={FileText}
+              />
             </div>
           </div>
         </div>
@@ -194,10 +210,15 @@ export const TranslationDashboard = () => {
             </div>
             {/* Back */}
             <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow flex items-center justify-center"
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow"
               style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
             >
-              <p className="text-sm text-muted-foreground text-center">Certified translations ready for submission to authorities</p>
+              <EditableCardBack
+                workflowName="translations"
+                cardId="completed"
+                defaultDescription="Certified translations ready for submission to authorities"
+                icon={CheckCircle}
+              />
             </div>
           </div>
         </div>

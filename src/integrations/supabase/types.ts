@@ -4765,6 +4765,33 @@ export type Database = {
           },
         ]
       }
+      workflow_card_descriptions: {
+        Row: {
+          card_id: string
+          created_at: string
+          description: string
+          id: string
+          updated_at: string
+          workflow_name: string
+        }
+        Insert: {
+          card_id: string
+          created_at?: string
+          description: string
+          id?: string
+          updated_at?: string
+          workflow_name: string
+        }
+        Update: {
+          card_id?: string
+          created_at?: string
+          description?: string
+          id?: string
+          updated_at?: string
+          workflow_name?: string
+        }
+        Relationships: []
+      }
       workflow_checkpoints: {
         Row: {
           case_id: string
