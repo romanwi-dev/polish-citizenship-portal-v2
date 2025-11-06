@@ -197,22 +197,22 @@ export const CivilActsDashboard = () => {
       <Tabs defaultValue="cards" className="space-y-4">
         <div className="w-full overflow-x-auto scrollbar-hide">
           <TabsList className="flex gap-1 w-full justify-between h-auto p-0 bg-transparent border-0">
-            <TabsTrigger value="cards" className="flex-1 h-14 bg-red-500/20 border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-950/80 data-[state=active]:border-red-900 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.5)] text-white/100 data-[state=active]:text-white/50 font-bold text-lg">
+            <TabsTrigger value="cards" className="flex-1 h-14 bg-red-500/20 border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:border-red-500 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.5)] text-white/100 data-[state=active]:text-white/50 font-bold text-lg">
               Workflow Cards
             </TabsTrigger>
-            <TabsTrigger value="timeline" className="flex-1 h-14 bg-red-500/20 border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-950/80 data-[state=active]:border-red-900 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.5)] text-white/100 data-[state=active]:text-white/50 font-bold text-lg">
+            <TabsTrigger value="timeline" className="flex-1 h-14 bg-red-500/20 border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:border-red-500 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.5)] text-white/100 data-[state=active]:text-white/50 font-bold text-lg">
               Timeline
             </TabsTrigger>
-            <TabsTrigger value="supervisor" className="flex-1 h-14 bg-red-500/20 border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-950/80 data-[state=active]:border-red-900 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.5)] text-white/100 data-[state=active]:text-white/50 font-bold text-lg">
+            <TabsTrigger value="supervisor" className="flex-1 h-14 bg-red-500/20 border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:border-red-500 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.5)] text-white/100 data-[state=active]:text-white/50 font-bold text-lg">
               Supervisor
             </TabsTrigger>
-            <TabsTrigger value="directory" className="flex-1 h-14 bg-red-500/20 border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-950/80 data-[state=active]:border-red-900 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.5)] text-white/100 data-[state=active]:text-white/50 font-bold text-lg">
+            <TabsTrigger value="directory" className="flex-1 h-14 bg-red-500/20 border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:border-red-500 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.5)] text-white/100 data-[state=active]:text-white/50 font-bold text-lg">
               USC Directory
             </TabsTrigger>
-            <TabsTrigger value="agent" className="flex-1 h-14 bg-red-500/20 border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-950/80 data-[state=active]:border-red-900 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.5)] text-white/100 data-[state=active]:text-white/50 font-bold text-lg">
+            <TabsTrigger value="agent" className="flex-1 h-14 bg-red-500/20 border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:border-red-500 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.5)] text-white/100 data-[state=active]:text-white/50 font-bold text-lg">
               Civil Acts Agent
             </TabsTrigger>
-            <TabsTrigger value="payment" className="flex-1 h-14 bg-red-500/20 border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-950/80 data-[state=active]:border-red-900 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.5)] text-white/100 data-[state=active]:text-white/50 font-bold text-lg">
+            <TabsTrigger value="payment" className="flex-1 h-14 bg-red-500/20 border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:border-red-500 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.5)] text-white/100 data-[state=active]:text-white/50 font-bold text-lg">
               Payment Tracker
             </TabsTrigger>
           </TabsList>
