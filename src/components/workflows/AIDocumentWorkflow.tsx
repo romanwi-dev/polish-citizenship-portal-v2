@@ -661,7 +661,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
 
   return (
     <ErrorBoundary>
-    <div className="w-full pb-40">
+    <div className="w-full pb-40 pt-12 md:pt-20">
       {/* Vertical Timeline - Matching Translations Workflow */}
       <div className="relative max-w-6xl mx-auto">
         {/* Center line - hidden on mobile, visible on desktop */}
@@ -731,7 +731,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                               <span className="text-xs text-primary/60">{step.agent === 'human' ? 'Manual' : step.agent === 'ai' ? 'Automated' : 'Hybrid'}</span>
                             </div>
                             
-                            <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground mb-1">
+                            <h3 className="text-2xl md:text-3xl font-heading font-bold tracking-tight mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-fade-in glow-text">
                               {step.title}
                             </h3>
 
@@ -841,7 +841,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                               <span className="text-xs text-primary/60">Details</span>
                             </div>
                             
-                            <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground mb-2">
+                            <h3 className="text-2xl md:text-3xl font-heading font-bold tracking-tight mb-2 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-fade-in glow-text">
                               {step.title}
                             </h3>
 
