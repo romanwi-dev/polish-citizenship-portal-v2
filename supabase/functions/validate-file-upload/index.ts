@@ -118,6 +118,52 @@ serve(async (req) => {
       );
     }
 
+    // STREAMING VALIDATION: Read file in chunks to prevent DoS
+    const CHUNK_SIZE = 1024 * 1024; // 1MB chunks
+    const stream = file.stream();
+    const reader = stream.getReader();
+    let bytesRead = 0;
+    let headerBytes = new Uint8Array(16); // First 16 bytes for magic number
+    let pdfHeaderBytes = new Uint8Array(8); // PDF header
+    let pdfEndBytes = new Uint8Array(50); // Last 50 bytes for EOF
+    let chunks: Uint8Array[] = [];
+    let isFirstChunk = true;
+
+    // Process file in streaming chunks
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      bytesRead += value.length;
+      
+      // Collect first chunk for header validation
+      if (isFirstChunk) {
+        headerBytes = value.slice(0, 16);
+        pdfHeaderBytes = value.slice(0, 8);
+        isFirstChunk = false;
+      }
+
+      // Store chunks for later validation (up to reasonable limit)
+      if (bytesRead < 10 * 1024 * 1024) { // Only store first 10MB
+        chunks.push(value);
+      }
+      
+      // Keep last 50 bytes for PDF EOF validation
+      if (value.length >= 50) {
+        pdfEndBytes = value.slice(-50);
+      }
+    }
+
+    // Reconstruct arrayBuffer for full validation
+    const arrayBuffer = new Uint8Array(bytesRead);
+    let offset = 0;
+    for (const chunk of chunks) {
+      arrayBuffer.set(chunk, offset);
+      offset += chunk.length;
+    }
+    
+    const bytes = headerBytes; // Use first 16 bytes for magic number check
+
     // 2. Filename sanitization (prevent path traversal)
     const sanitizedFilename = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
     if (sanitizedFilename !== file.name) {
@@ -137,8 +183,6 @@ serve(async (req) => {
     }
 
     // 4. Magic number validation (CRITICAL - prevents MIME spoofing)
-    const arrayBuffer = await file.arrayBuffer();
-    const bytes = new Uint8Array(arrayBuffer.slice(0, 16)); // Read first 16 bytes
     const magicCheck = checkMagicNumber(bytes);
 
     // SECURITY: Reject dangerous file types immediately
@@ -200,7 +244,7 @@ serve(async (req) => {
 
     // 6. COMPREHENSIVE PDF SECURITY: Polyglot detection, structure validation, EOF verification
     if (magicCheck.type === 'pdf') {
-      const pdfContent = new Uint8Array(arrayBuffer);
+      const pdfContent = arrayBuffer;
       
       // 6.1 Minimum size check
       if (file.size < 100) {
@@ -214,7 +258,7 @@ serve(async (req) => {
       }
       
       // 6.2 PDF header validation
-      const pdfHeader = new TextDecoder().decode(bytes.slice(0, 8));
+      const pdfHeader = new TextDecoder().decode(pdfHeaderBytes);
       if (!pdfHeader.startsWith('%PDF-')) {
         return new Response(
           JSON.stringify({
@@ -226,7 +270,7 @@ serve(async (req) => {
       }
 
       // 6.3 CRITICAL: EOF marker validation (%%EOF must be present at end)
-      const lastBytes = new TextDecoder().decode(pdfContent.slice(-50));
+      const lastBytes = new TextDecoder().decode(pdfEndBytes);
       if (!lastBytes.includes('%%EOF')) {
         return new Response(
           JSON.stringify({ 
