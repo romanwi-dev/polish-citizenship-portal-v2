@@ -57,7 +57,7 @@ export const WorkflowNavigation = () => {
               onClick={() => navigate(workflow.path)}
               className={`flex-1 h-14 font-bold text-lg border-2 transition-all ${
                 isActive 
-                  ? 'bg-green-500/40 text-white border-green-500 shadow-[0_0_40px_rgba(34,197,94,0.5)]' 
+                  ? 'bg-green-500/40 text-white/50 border-green-500 shadow-[0_0_40px_rgba(34,197,94,0.5)]' 
                   : 'bg-green-500/20 text-white border-green-500/30 hover:bg-green-500/30 hover:shadow-[0_0_30px_rgba(34,197,94,0.3)]'
               }`}
             >
