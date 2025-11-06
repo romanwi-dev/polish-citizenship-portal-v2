@@ -11,31 +11,31 @@ const WORKFLOWS = [
   },
   {
     id: 'archives',
-    label: 'Archives Search',
+    label: 'Research',
     icon: Archive,
     path: '/admin/archives-search'
   },
   {
     id: 'citizenship',
-    label: 'Polish Citizenship',
+    label: 'Citizenship',
     icon: Award,
     path: '/admin/citizenship'
   },
   {
     id: 'civil-acts',
-    label: 'Polish Civil Acts',
+    label: 'Transcription',
     icon: FileCheck,
     path: '/admin/civil-acts'
   },
   {
     id: 'passport',
-    label: 'Polish Passport',
+    label: 'Passport',
     icon: Plane,
     path: '/admin/passport'
   },
   {
     id: 'extended-services',
-    label: 'Extended Services',
+    label: 'Services',
     icon: Sparkles,
     path: '/admin/extended-services'
   }
