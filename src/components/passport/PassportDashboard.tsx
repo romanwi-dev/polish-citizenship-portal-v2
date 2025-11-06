@@ -65,7 +65,7 @@ export const PassportDashboard = () => {
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
                   <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.preparing || ''}</p>
-                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Preparing Documents</p>
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Documents</p>
                 </div>
               </div>
             </div>
@@ -103,7 +103,7 @@ export const PassportDashboard = () => {
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
                   <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.scheduled || ''}</p>
-                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Appointment Scheduled</p>
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Appointment</p>
                 </div>
               </div>
             </div>
@@ -141,7 +141,7 @@ export const PassportDashboard = () => {
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
                   <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.submitted || ''}</p>
-                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Application Submitted</p>
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Application</p>
                 </div>
               </div>
             </div>
@@ -179,7 +179,7 @@ export const PassportDashboard = () => {
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
                   <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">{counts?.issued || ''}</p>
-                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Passport Issued</p>
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Passport</p>
                 </div>
               </div>
             </div>
