@@ -724,24 +724,44 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                           }}
                         >
                           <div className="flex flex-col gap-3 h-full">
-                            <div className="flex items-center gap-2 mb-1">
+                            <motion.div 
+                              className="flex items-center gap-2 mb-1"
+                              initial={{ opacity: 0, y: -10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.4, delay: 0.1 }}
+                            >
                               <span className={`text-base md:text-xs font-bold px-3 py-1.5 md:px-2 md:py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
                                 {step.number}
                               </span>
                               <span className="text-xs text-primary/60">{step.agent === 'human' ? 'Manual' : step.agent === 'ai' ? 'Automated' : 'Hybrid'}</span>
-                            </div>
+                            </motion.div>
                             
-                            <h3 className="text-2xl md:text-3xl font-heading font-bold tracking-tight mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-fade-in glow-text">
+                            <motion.h3 
+                              className="text-2xl md:text-3xl font-heading font-bold tracking-tight mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text"
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.5, delay: 0.2 }}
+                            >
                               {step.title}
-                            </h3>
+                            </motion.h3>
 
-                            <p className="text-xs md:text-sm text-muted-foreground leading-relaxed flex-1 overflow-y-auto">
+                            <motion.p 
+                              className="text-xs md:text-sm text-muted-foreground leading-relaxed flex-1 overflow-y-auto"
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              transition={{ duration: 0.5, delay: 0.3 }}
+                            >
                               {step.description}
-                            </p>
+                            </motion.p>
 
                             {/* File Upload Section for First Card */}
                             {isFirstCard && !isLoadingDocuments && (
-                              <div className="mt-auto space-y-3">
+                              <motion.div 
+                                className="mt-auto space-y-3"
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: 0.5 }}
+                              >
                                 <input
                                   type="file"
                                   ref={fileInputRef}
@@ -765,20 +785,28 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                                     {selectedFiles.length} file(s) selected
                                   </Badge>
                                 )}
-                              </div>
+                              </motion.div>
                             )}
 
                             {/* Document Thumbnails */}
                             {stageDocuments.length > 0 && (
-                              <div className="mb-3">
+                              <motion.div 
+                                className="mb-3"
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: 0.4 }}
+                              >
                                 <div className="flex gap-2 overflow-x-auto pb-2">
-                                  {stageDocuments.slice(0, 4).map((doc) => {
+                                  {stageDocuments.slice(0, 4).map((doc, idx) => {
                                     const thumbnail = getDocumentThumbnail(doc);
                                     return (
-                                       <div
+                                       <motion.div
                                          key={doc.id}
                                          onClick={() => handleDocumentView(doc)}
                                          className="flex-shrink-0 w-16 h-16 rounded-lg border-2 border-primary/20 overflow-hidden bg-muted/50 flex items-center justify-center group hover:border-primary/60 transition-all cursor-pointer"
+                                         initial={{ opacity: 0, scale: 0.8 }}
+                                         animate={{ opacity: 1, scale: 1 }}
+                                         transition={{ duration: 0.3, delay: 0.5 + (idx * 0.1) }}
                                        >
                                          {thumbnail ? (
                                            <img
@@ -792,7 +820,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">
                                            <Eye className="h-4 w-4 text-white" />
                                          </div>
-                                       </div>
+                                       </motion.div>
                                     );
                                   })}
                                   {stageDocuments.length > 4 && (
@@ -801,11 +829,16 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                                     </div>
                                   )}
                                 </div>
-                              </div>
+                              </motion.div>
                             )}
 
                             {/* Document Count */}
-                            <div className="flex items-center justify-between">
+                            <motion.div 
+                              className="flex items-center justify-between"
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.5, delay: 0.6 }}
+                            >
                               <span className="text-xs px-2 py-1 md:px-3 md:py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
                                 {docCount} documents
                               </span>
@@ -820,7 +853,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                               >
                                 {isCompleted ? "✓ Done" : "Mark Done"}
                               </Button>
-                            </div>
+                            </motion.div>
                           </div>
                         </motion.div>
 
