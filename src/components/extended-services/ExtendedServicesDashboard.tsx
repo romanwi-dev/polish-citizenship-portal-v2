@@ -255,16 +255,6 @@ export const ExtendedServicesDashboard = () => {
           </div>
         </TabsContent>
       </Tabs>
-
-      {/* Professional Service Info */}
-      <div className="mt-12 text-center space-y-4 max-w-4xl mx-auto px-4">
-        <h3 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent">
-          Premium Extended Services
-        </h3>
-        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-          Our extended services provide comprehensive support beyond standard citizenship processing. From assisting multiple family members to conducting deep heritage research and coordinating with international authorities, we offer personalized solutions for complex cases requiring expert attention and specialized services.
-        </p>
-      </div>
     </div>
   );
 };

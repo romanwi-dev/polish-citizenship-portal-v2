@@ -261,16 +261,6 @@ export const CitizenshipDashboard = () => {
           </div>
         </TabsContent>
       </Tabs>
-
-      {/* Professional Service Info */}
-      <div className="mt-12 text-center space-y-4 max-w-4xl mx-auto px-4">
-        <h3 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent">
-          Professional Citizenship Application Service
-        </h3>
-        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-          Our expert team manages the entire citizenship confirmation process, from application drafting to WSC correspondence. With strategic push schemes and HAC supervision, we maximize your success rate and minimize waiting times.
-        </p>
-      </div>
     </div>
   );
 };

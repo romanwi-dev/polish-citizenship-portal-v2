@@ -261,16 +261,6 @@ export const ArchivesSearchDashboard = () => {
         </TabsContent>
 
       </Tabs>
-
-      {/* Professional Service Info */}
-      <div className="mt-12 text-center space-y-4 max-w-4xl mx-auto px-4">
-        <h3 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent">
-          Professional Archives Research Service
-        </h3>
-        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-          Our network of genealogy partners and direct archive contacts ensures comprehensive document recovery. We handle Polish and international archives with expert precision, providing authenticated historical documents for your citizenship case.
-        </p>
-      </div>
     </div>
   );
 };

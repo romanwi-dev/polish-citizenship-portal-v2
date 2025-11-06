@@ -260,16 +260,6 @@ export const CivilActsDashboard = () => {
           </div>
         </TabsContent>
       </Tabs>
-
-      {/* Professional Service Info */}
-      <div className="mt-12 text-center space-y-4 max-w-4xl mx-auto px-4">
-        <h3 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent">
-          Professional Civil Acts Service
-        </h3>
-        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-          Our dedicated Civil Acts Agent handles all Polish civil registry applications with precision. From preparing applications to tracking submissions and ensuring timely receipt, we manage every detail to provide you with certified Polish birth and marriage certificates for your citizenship case.
-        </p>
-      </div>
     </div>
   );
 };

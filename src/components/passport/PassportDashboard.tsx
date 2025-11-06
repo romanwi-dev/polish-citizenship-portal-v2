@@ -260,16 +260,6 @@ export const PassportDashboard = () => {
           </div>
         </TabsContent>
       </Tabs>
-
-      {/* Professional Service Info */}
-      <div className="mt-12 text-center space-y-4 max-w-4xl mx-auto px-4">
-        <h3 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent">
-          Professional Passport Application Service
-        </h3>
-        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-          We guide you through the entire Polish passport application process. From preparing your citizenship decision documents to scheduling your consulate appointment and ensuring you have all required paperwork, we make obtaining your Polish passport seamless and stress-free.
-        </p>
-      </div>
     </div>
   );
 };
