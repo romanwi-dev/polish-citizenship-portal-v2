@@ -46,11 +46,17 @@ serve(async (req) => {
 
     console.log(`Uploading to Dropbox: ${dropboxFilePath}`);
 
-    // Get Dropbox access token
-    const dropboxAccessToken = Deno.env.get('DROPBOX_ACCESS_TOKEN');
-    if (!dropboxAccessToken) {
-      throw new Error('Dropbox access token not configured');
+    // Generate fresh Dropbox access token from refresh token
+    const { generateAccessToken } = await import('../_shared/dropbox-auth.ts');
+    const appKey = Deno.env.get('DROPBOX_APP_KEY');
+    const appSecret = Deno.env.get('DROPBOX_APP_SECRET');
+    const refreshToken = Deno.env.get('DROPBOX_REFRESH_TOKEN');
+    
+    if (!appKey || !appSecret || !refreshToken) {
+      throw new Error('Dropbox credentials not configured');
     }
+    
+    const dropboxAccessToken = await generateAccessToken(appKey, appSecret, refreshToken);
 
     // Read file as ArrayBuffer
     const fileBuffer = await file.arrayBuffer();

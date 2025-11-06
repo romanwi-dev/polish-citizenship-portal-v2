@@ -198,22 +198,22 @@ export const CitizenshipDashboard = () => {
       <Tabs defaultValue="cards" className="space-y-4">
         <div className="w-full overflow-x-auto scrollbar-hide">
           <TabsList className="flex gap-1 w-full justify-between h-auto p-0 bg-transparent border-0">
-            <TabsTrigger value="cards" className="flex-1 h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:border-red-500 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.5)]">
+            <TabsTrigger value="cards" className="flex-1 h-14 bg-red-500/5 border-2 border-red-500/10 shadow-[0_0_20px_rgba(239,68,68,0.08)] hover:bg-red-500/10 hover:border-red-500/15 hover:shadow-[0_0_30px_rgba(239,68,68,0.12)] data-[state=active]:bg-red-500/15 data-[state=active]:border-red-500/20 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.15)] text-white font-bold text-lg transition-all">
               Workflow Cards
             </TabsTrigger>
-            <TabsTrigger value="timeline" className="flex-1 h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:border-red-500 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.5)]">
+            <TabsTrigger value="timeline" className="flex-1 h-14 bg-red-500/5 border-2 border-red-500/10 shadow-[0_0_20px_rgba(239,68,68,0.08)] hover:bg-red-500/10 hover:border-red-500/15 hover:shadow-[0_0_30px_rgba(239,68,68,0.12)] data-[state=active]:bg-red-500/15 data-[state=active]:border-red-500/20 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.15)] text-white font-bold text-lg transition-all">
               Timeline
             </TabsTrigger>
-            <TabsTrigger value="supervisor" className="flex-1 h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:border-red-500 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.5)]">
+            <TabsTrigger value="supervisor" className="flex-1 h-14 bg-red-500/5 border-2 border-red-500/10 shadow-[0_0_20px_rgba(239,68,68,0.08)] hover:bg-red-500/10 hover:border-red-500/15 hover:shadow-[0_0_30px_rgba(239,68,68,0.12)] data-[state=active]:bg-red-500/15 data-[state=active]:border-red-500/20 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.15)] text-white font-bold text-lg transition-all">
               Supervisor
             </TabsTrigger>
-            <TabsTrigger value="wsc" className="flex-1 h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:border-red-500 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.5)]">
+            <TabsTrigger value="wsc" className="flex-1 h-14 bg-red-500/5 border-2 border-red-500/10 shadow-[0_0_20px_rgba(239,68,68,0.08)] hover:bg-red-500/10 hover:border-red-500/15 hover:shadow-[0_0_30px_rgba(239,68,68,0.12)] data-[state=active]:bg-red-500/15 data-[state=active]:border-red-500/20 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.15)] text-white font-bold text-lg transition-all">
               WSC Letters
             </TabsTrigger>
-            <TabsTrigger value="push" className="flex-1 h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:border-red-500 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.5)]">
+            <TabsTrigger value="push" className="flex-1 h-14 bg-red-500/5 border-2 border-red-500/10 shadow-[0_0_20px_rgba(239,68,68,0.08)] hover:bg-red-500/10 hover:border-red-500/15 hover:shadow-[0_0_30px_rgba(239,68,68,0.12)] data-[state=active]:bg-red-500/15 data-[state=active]:border-red-500/20 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.15)] text-white font-bold text-lg transition-all">
               Push Schemes
             </TabsTrigger>
-            <TabsTrigger value="analytics" className="flex-1 h-14 bg-red-500/20 text-white font-bold text-lg border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-500/40 data-[state=active]:border-red-500 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.5)]">
+            <TabsTrigger value="analytics" className="flex-1 h-14 bg-red-500/5 border-2 border-red-500/10 shadow-[0_0_20px_rgba(239,68,68,0.08)] hover:bg-red-500/10 hover:border-red-500/15 hover:shadow-[0_0_30px_rgba(239,68,68,0.12)] data-[state=active]:bg-red-500/15 data-[state=active]:border-red-500/20 data-[state=active]:shadow-[0_0_40px_rgba(239,68,68,0.15)] text-white font-bold text-lg transition-all">
               Analytics
             </TabsTrigger>
           </TabsList>
