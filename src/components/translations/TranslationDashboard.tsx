@@ -82,7 +82,7 @@ export const TranslationDashboard = () => {
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <p className="text-base sm:text-sm font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Prepared</p>
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Prepared</p>
                 </div>
               </div>
             </div>
@@ -119,7 +119,7 @@ export const TranslationDashboard = () => {
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <p className="text-base sm:text-sm font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Pending</p>
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Pending</p>
                 </div>
               </div>
             </div>
@@ -156,7 +156,7 @@ export const TranslationDashboard = () => {
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <p className="text-base sm:text-sm font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Translator</p>
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Translator</p>
                 </div>
               </div>
             </div>
@@ -193,7 +193,7 @@ export const TranslationDashboard = () => {
             >
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <p className="text-base sm:text-sm font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Completed</p>
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Completed</p>
                 </div>
               </div>
             </div>

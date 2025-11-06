@@ -53,16 +53,15 @@ export const CivilActsDashboard = () => {
           >
             {/* Front */}
             <div 
-              className="absolute inset-0 p-4 sm:p-6 rounded-lg transition-all duration-300 border-2 border-primary/10 backdrop-blur-md opacity-50"
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300 border-2 border-primary/20 opacity-50"
               style={{ 
                 backfaceVisibility: 'hidden',
-                background: 'rgba(255, 255, 255, 0.05)',
                 boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
               }}
             >
-              <div className="flex items-center gap-3 sm:gap-4 justify-center">
-                <div className="min-w-0 text-center">
-                  <p className="text-base sm:text-sm font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Preparing</p>
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center">
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Preparing</p>
                 </div>
               </div>
             </div>
@@ -91,16 +90,15 @@ export const CivilActsDashboard = () => {
           >
             {/* Front */}
             <div 
-              className="absolute inset-0 p-4 sm:p-6 rounded-lg transition-all duration-300 border-2 border-primary/10 backdrop-blur-md opacity-50"
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300 border-2 border-primary/20 opacity-50"
               style={{ 
                 backfaceVisibility: 'hidden',
-                background: 'rgba(255, 255, 255, 0.05)',
                 boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
               }}
             >
-              <div className="flex items-center gap-3 sm:gap-4 justify-center">
-                <div className="min-w-0 text-center">
-                  <p className="text-base sm:text-sm font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Submitted</p>
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center">
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Submitted</p>
                 </div>
               </div>
             </div>
@@ -129,16 +127,15 @@ export const CivilActsDashboard = () => {
           >
             {/* Front */}
             <div 
-              className="absolute inset-0 p-4 sm:p-6 rounded-lg transition-all duration-300 border-2 border-primary/10 backdrop-blur-md opacity-50"
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300 border-2 border-primary/20 opacity-50"
               style={{ 
                 backfaceVisibility: 'hidden',
-                background: 'rgba(255, 255, 255, 0.05)',
                 boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
               }}
             >
-              <div className="flex items-center gap-3 sm:gap-4 justify-center">
-                <div className="min-w-0 text-center">
-                  <p className="text-base sm:text-sm font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Awaiting</p>
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center">
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Awaiting</p>
                 </div>
               </div>
             </div>
@@ -167,16 +164,15 @@ export const CivilActsDashboard = () => {
           >
             {/* Front */}
             <div 
-              className="absolute inset-0 p-4 sm:p-6 rounded-lg transition-all duration-300 border-2 border-primary/10 backdrop-blur-md opacity-50"
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300 border-2 border-primary/20 opacity-50"
               style={{ 
                 backfaceVisibility: 'hidden',
-                background: 'rgba(255, 255, 255, 0.05)',
                 boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
               }}
             >
-              <div className="flex items-center gap-3 sm:gap-4 justify-center">
-                <div className="min-w-0 text-center">
-                  <p className="text-base sm:text-sm font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Received</p>
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center">
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Received</p>
                 </div>
               </div>
             </div>

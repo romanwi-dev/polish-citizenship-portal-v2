@@ -54,12 +54,15 @@ export const ExtendedServicesDashboard = () => {
           >
             {/* Front */}
             <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow opacity-50"
-              style={{ backfaceVisibility: 'hidden' }}
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300 border-2 border-primary/20 opacity-50"
+              style={{ 
+                backfaceVisibility: 'hidden',
+                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
+              }}
             >
-              <div className="flex items-center gap-3 sm:gap-4 justify-center">
-                <div className="min-w-0 text-center">
-                  <p className="text-base font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Family Legal</p>
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center">
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Family Legal</p>
                 </div>
               </div>
             </div>
@@ -88,12 +91,15 @@ export const ExtendedServicesDashboard = () => {
           >
             {/* Front */}
             <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow opacity-50"
-              style={{ backfaceVisibility: 'hidden' }}
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300 border-2 border-primary/20 opacity-50"
+              style={{ 
+                backfaceVisibility: 'hidden',
+                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
+              }}
             >
-              <div className="flex items-center gap-3 sm:gap-4 justify-center">
-                <div className="min-w-0 text-center">
-                  <p className="text-base font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Documents</p>
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center">
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Documents</p>
                 </div>
               </div>
             </div>
@@ -122,12 +128,15 @@ export const ExtendedServicesDashboard = () => {
           >
             {/* Front */}
             <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow opacity-50"
-              style={{ backfaceVisibility: 'hidden' }}
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300 border-2 border-primary/20 opacity-50"
+              style={{ 
+                backfaceVisibility: 'hidden',
+                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
+              }}
             >
-              <div className="flex items-center gap-3 sm:gap-4 justify-center">
-                <div className="min-w-0 text-center">
-                  <p className="text-base font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">International</p>
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center">
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">International</p>
                 </div>
               </div>
             </div>
@@ -156,12 +165,15 @@ export const ExtendedServicesDashboard = () => {
           >
             {/* Front */}
             <div 
-              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow opacity-50"
-              style={{ backfaceVisibility: 'hidden' }}
+              className="absolute inset-0 glass-card p-4 sm:p-6 rounded-lg hover-glow transition-all duration-300 border-2 border-primary/20 opacity-50"
+              style={{ 
+                backfaceVisibility: 'hidden',
+                boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
+              }}
             >
-              <div className="flex items-center gap-3 sm:gap-4 justify-center">
-                <div className="min-w-0 text-center">
-                  <p className="text-base font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Heritage</p>
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center">
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Heritage</p>
                 </div>
               </div>
             </div>

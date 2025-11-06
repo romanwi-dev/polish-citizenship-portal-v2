@@ -60,9 +60,9 @@ export const CitizenshipDashboard = () => {
                 boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
               }}
             >
-              <div className="flex items-center gap-3 sm:gap-4 justify-center">
-                <div className="min-w-0 text-center">
-                  <p className="text-base sm:text-sm font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Preparing</p>
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center">
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Preparing</p>
                 </div>
               </div>
             </div>
@@ -97,9 +97,9 @@ export const CitizenshipDashboard = () => {
                 boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
               }}
             >
-              <div className="flex items-center gap-3 sm:gap-4 justify-center">
-                <div className="min-w-0 text-center">
-                  <p className="text-base sm:text-sm font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Submitted</p>
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center">
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Submitted</p>
                 </div>
               </div>
             </div>
@@ -134,9 +134,9 @@ export const CitizenshipDashboard = () => {
                 boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
               }}
             >
-              <div className="flex items-center gap-3 sm:gap-4 justify-center">
-                <div className="min-w-0 text-center">
-                  <p className="text-base sm:text-sm font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Schemes</p>
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center">
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Schemes</p>
                 </div>
               </div>
             </div>
@@ -171,9 +171,9 @@ export const CitizenshipDashboard = () => {
                 boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.5)'
               }}
             >
-              <div className="flex items-center gap-3 sm:gap-4 justify-center">
-                <div className="min-w-0 text-center">
-                  <p className="text-base sm:text-sm font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Decision</p>
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center">
+                  <p className="text-base sm:text-lg font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Decision</p>
                 </div>
               </div>
             </div>
