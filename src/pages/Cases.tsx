@@ -408,16 +408,37 @@ const Cases = () => {
               }
             />
           ) : (
-            <div className="grid md:grid-cols-2 gap-6">
-              {filteredCases.map((clientCase) => (
-                <CaseCard 
-                  key={clientCase.id}
-                  clientCase={clientCase}
-                  onEdit={handleEdit}
-                  onDelete={handleDeleteCase}
-                  onUpdateStatus={handleUpdateStatus}
-                />
-              ))}
+            <div className="relative max-w-6xl mx-auto">
+              {/* Center line for desktop */}
+              <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block" />
+              
+              {filteredCases.map((clientCase, index) => {
+                const isLeft = index % 2 === 0;
+                return (
+                  <div
+                    key={clientCase.id}
+                    className={`mb-12 md:flex ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-8`}
+                  >
+                    {/* Card */}
+                    <div className="md:w-5/12">
+                      <CaseCard 
+                        clientCase={clientCase}
+                        onEdit={handleEdit}
+                        onDelete={handleDeleteCase}
+                        onUpdateStatus={handleUpdateStatus}
+                      />
+                    </div>
+
+                    {/* Timeline Dot */}
+                    <div className="hidden md:block w-2/12 flex-shrink-0 relative">
+                      <div className="w-8 h-8 rounded-full bg-primary border-4 border-background mx-auto relative z-10" />
+                    </div>
+
+                    {/* Empty space on other side */}
+                    <div className="hidden md:block md:w-5/12" />
+                  </div>
+                );
+              })}
             </div>
           )}
           </div>

@@ -661,8 +661,8 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
   return (
     <ErrorBoundary>
     <div className="w-full pb-40">
-      {/* Vertical Timeline - Matching Homepage */}
-      <div className="relative max-w-7xl mx-auto">
+      {/* Vertical Timeline - Matching Translations Workflow */}
+      <div className="relative max-w-6xl mx-auto">
         {/* Center line - hidden on mobile, visible on desktop */}
         <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block" />
 
@@ -672,21 +672,27 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
           const isCompleted = completedStages[step.stage];
           const stageDocuments = getDocumentsForStage(step.stage);
           const isFirstCard = index === 0;
+          const isLeft = index % 2 === 0;
           
           return (
-            <div 
+            <motion.div 
               key={step.stage}
-              className="relative mb-16 md:mb-24 md:min-h-[450px] animate-fade-in"
-              style={{ animationDelay: `${index * 100}ms` }}
+              initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              className={`mb-12 md:flex ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-8`}
             >
-              {/* Content Card - Absolute positioned on desktop for perfect mirroring */}
-              <div className={`w-full ${index % 2 === 0 ? 'md:absolute md:right-[calc(50%+5rem)] md:w-[41.67%] md:max-w-[500px]' : 'md:absolute md:left-[calc(50%+5rem)] md:w-[41.67%] md:max-w-[500px]'}`}>
+              {/* Content Card - Left or Right */}
+              <div className={`md:w-5/12 ${isLeft ? 'md:text-right' : 'md:text-left'}`}>
                 <div
-                  className="relative h-[350px] md:h-[450px]"
+                  className="relative h-[400px]"
                   style={{ perspective: '1000px' }}
                 >
-                  <div
+                  <motion.div
                     onClick={() => toggleFlip(step.stage)}
+                    whileHover={{ scale: 1.03, y: -5 }}
+                    transition={{ duration: 0.3 }}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
@@ -695,7 +701,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                     }}
                     role="button"
                     tabIndex={0}
-                    aria-label={`${step.title} - ${isMobile ? 'Tap' : 'Click'} to view details`}
+                    aria-label={`${step.title} - Click to view details`}
                     className="absolute inset-0 cursor-pointer transition-transform duration-700 focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-lg"
                     style={{
                       transformStyle: 'preserve-3d',
@@ -703,12 +709,12 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                     }}
                   >
                       {/* Front Side */}
-                      <div 
+                      <motion.div 
                         className={cn(
-                          "absolute inset-0 glass-card p-6 rounded-lg group transition-transform duration-300",
+                          "absolute inset-0 glass-card p-6 rounded-lg group transition-transform duration-300 hover-glow",
                           isCompleted 
                             ? "ring-2 ring-green-500/50" 
-                            : "hover-glow hover:scale-[1.02]"
+                            : ""
                         )}
                         style={{
                           backfaceVisibility: 'hidden',
@@ -848,7 +854,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                             </Button>
                           </div>
                         </div>
-                      </div>
+                      </motion.div>
 
                       {/* Back Side */}
                       <div 
@@ -937,31 +943,31 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                           )}
                         </div>
                     </div>
-                  </div>
+                  </motion.div>
                 </div>
               </div>
 
-              {/* Center Circle Node - Only visible on desktop */}
-              <div className={cn(
-                "hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full bg-gradient-to-br shadow-xl items-center justify-center z-20 ring-4 ring-background transition-all duration-300",
-                docCount > 0 
-                  ? "from-primary/60 to-secondary/60 animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite] shadow-[0_0_20px_rgba(59,130,246,0.5)]" 
-                  : "from-primary/30 to-secondary/30"
-              )}>
-                <Icon className={cn(
-                  "h-6 w-6 transition-all duration-300",
-                  docCount > 0 ? "text-white/70" : "text-white/30"
+              {/* Timeline Dot - Matching Translations Workflow */}
+              <div className="hidden md:block w-2/12 flex-shrink-0 relative">
+                <div className={cn(
+                  "w-8 h-8 rounded-full border-4 border-background mx-auto relative z-20 transition-all duration-300",
+                  docCount > 0 
+                    ? "bg-primary animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite] shadow-[0_0_20px_rgba(59,130,246,0.5)]" 
+                    : "bg-primary"
                 )} />
               </div>
 
-              {/* Preview Card - Absolute positioned on desktop, mirrors first card */}
+              {/* Empty space on other side */}
+              <div className="hidden md:block md:w-5/12" />
+
+              {/* Preview Card - Only for first card */}
               {isFirstCard && selectedFiles.length > 0 && (
-                <motion.div 
-                  initial={{ opacity: 0, scale: 0.9, x: 50 }}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9, x: isLeft ? 50 : -50 }}
                   animate={{ opacity: 1, scale: 1, x: 0 }}
-                  exit={{ opacity: 0, scale: 0.9, x: 50 }}
+                  exit={{ opacity: 0, scale: 0.9, x: isLeft ? 50 : -50 }}
                   transition={{ duration: 0.4, ease: "easeOut" }}
-                  className="w-full md:absolute md:left-[calc(50%+3rem)] md:w-[41.67%] md:max-w-[500px] h-[350px] md:h-[450px] glass-card p-6 rounded-lg border-2 border-primary/20"
+                  className={`hidden md:block md:w-5/12 ${isLeft ? 'md:order-last' : 'md:order-first'} h-[400px] glass-card p-6 rounded-lg border-2 border-primary/20`}
                   style={{
                     boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.15)'
                   }}
@@ -1030,7 +1036,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                     </Button>
                 </motion.div>
               )}
-            </div>
+            </motion.div>
           );
         })}
       </div>
