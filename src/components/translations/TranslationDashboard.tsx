@@ -239,7 +239,7 @@ export const TranslationDashboard = () => {
               )}
             </TabsTrigger>
             <TabsTrigger value="workflow" className="flex-1 h-11 md:h-12 lg:h-14 py-0 bg-red-500/20 border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-700/40 data-[state=active]:border-red-700/50 data-[state=active]:shadow-[0_0_40px_rgba(185,28,28,0.5)] text-white/100 data-[state=active]:text-white/50 font-bold text-lg">
-              AI Translations
+              Translations
             </TabsTrigger>
             <TabsTrigger value="supervisor" className="flex-1 h-11 md:h-12 lg:h-14 py-0 bg-red-500/20 border-2 border-red-500/30 hover:bg-red-500/30 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition-all data-[state=active]:bg-red-700/40 data-[state=active]:border-red-700/50 data-[state=active]:shadow-[0_0_40px_rgba(185,28,28,0.5)] text-white/100 data-[state=active]:text-white/50 font-bold text-lg">
               Supervisor
@@ -264,7 +264,6 @@ export const TranslationDashboard = () => {
           <div className="text-center py-12">
             <Workflow className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">Translation Workflow Timeline</h3>
-            <p className="text-muted-foreground">Select a translation job from the Workflow Cards tab to view its detailed timeline</p>
           </div>
         </TabsContent>
 
@@ -272,14 +271,12 @@ export const TranslationDashboard = () => {
           <div className="text-center py-12">
             <UserCog className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">Supervisor Dashboard</h3>
-            <p className="text-muted-foreground">Supervisor features coming soon</p>
           </div>
         </TabsContent>
 
         <TabsContent value="requirements">
           <div className="text-center py-12">
             <h3 className="text-xl font-semibold mb-2">Translation Requirements</h3>
-            <p className="text-muted-foreground">Translation requirements and specifications coming soon</p>
           </div>
         </TabsContent>
 

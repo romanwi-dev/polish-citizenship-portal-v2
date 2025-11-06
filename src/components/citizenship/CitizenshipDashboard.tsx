@@ -223,7 +223,6 @@ export const CitizenshipDashboard = () => {
           <div className="text-center py-12">
             <Workflow className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">Workflow Cards</h3>
-            <p className="text-muted-foreground">Workflow features coming soon</p>
           </div>
         </TabsContent>
 
@@ -231,7 +230,6 @@ export const CitizenshipDashboard = () => {
           <div className="text-center py-12">
             <Workflow className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">13-Stage Timeline</h3>
-            <p className="text-muted-foreground">Timeline visualization coming soon</p>
           </div>
         </TabsContent>
 
@@ -239,7 +237,6 @@ export const CitizenshipDashboard = () => {
           <div className="text-center py-12">
             <UserCog className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">Supervisor Dashboard</h3>
-            <p className="text-muted-foreground">Supervisor features coming soon</p>
           </div>
         </TabsContent>
 
@@ -247,7 +244,6 @@ export const CitizenshipDashboard = () => {
           <div className="text-center py-12">
             <Mail className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">WSC Letter Management</h3>
-            <p className="text-muted-foreground">WSC letter tracking coming soon</p>
           </div>
         </TabsContent>
 
@@ -255,7 +251,6 @@ export const CitizenshipDashboard = () => {
           <div className="text-center py-12">
             <Zap className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">Push Schemes</h3>
-            <p className="text-muted-foreground">PUSH/NUDGE/SITDOWN strategies coming soon</p>
           </div>
         </TabsContent>
 
@@ -263,7 +258,6 @@ export const CitizenshipDashboard = () => {
           <div className="text-center py-12">
             <TrendingUp className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">Analytics</h3>
-            <p className="text-muted-foreground">Success rates and analytics coming soon</p>
           </div>
         </TabsContent>
       </Tabs>

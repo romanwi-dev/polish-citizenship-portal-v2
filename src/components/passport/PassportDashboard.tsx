@@ -222,7 +222,6 @@ export const PassportDashboard = () => {
           <div className="text-center py-12">
             <Workflow className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">Workflow Cards</h3>
-            <p className="text-muted-foreground">Workflow features coming soon</p>
           </div>
         </TabsContent>
 
@@ -230,7 +229,6 @@ export const PassportDashboard = () => {
           <div className="text-center py-12">
             <Workflow className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">6-Stage Timeline</h3>
-            <p className="text-muted-foreground">Timeline visualization coming soon</p>
           </div>
         </TabsContent>
 
@@ -238,7 +236,6 @@ export const PassportDashboard = () => {
           <div className="text-center py-12">
             <UserCog className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">Supervisor Dashboard</h3>
-            <p className="text-muted-foreground">Supervisor features coming soon</p>
           </div>
         </TabsContent>
 
@@ -246,7 +243,6 @@ export const PassportDashboard = () => {
           <div className="text-center py-12">
             <Building2 className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">Polish Consulates</h3>
-            <p className="text-muted-foreground">Consulate directory and appointment info coming soon</p>
           </div>
         </TabsContent>
 
@@ -254,7 +250,6 @@ export const PassportDashboard = () => {
           <div className="text-center py-12">
             <FileText className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">Application Requirements</h3>
-            <p className="text-muted-foreground">Document requirements and guidelines coming soon</p>
           </div>
         </TabsContent>
 
@@ -262,7 +257,6 @@ export const PassportDashboard = () => {
           <div className="text-center py-12">
             <ClipboardList className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">Application Checklist</h3>
-            <p className="text-muted-foreground">Step-by-step checklist coming soon</p>
           </div>
         </TabsContent>
       </Tabs>

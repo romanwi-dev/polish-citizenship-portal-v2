@@ -222,7 +222,6 @@ export const ArchivesSearchDashboard = () => {
           <div className="text-center py-12">
             <Workflow className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">Workflow Cards</h3>
-            <p className="text-muted-foreground">Workflow features coming soon</p>
           </div>
         </TabsContent>
 
@@ -230,7 +229,6 @@ export const ArchivesSearchDashboard = () => {
           <div className="text-center py-12">
             <Workflow className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">Search Timeline</h3>
-            <p className="text-muted-foreground">Timeline features coming soon</p>
           </div>
         </TabsContent>
 
@@ -238,7 +236,6 @@ export const ArchivesSearchDashboard = () => {
           <div className="text-center py-12">
             <UserCog className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">Supervisor Dashboard</h3>
-            <p className="text-muted-foreground">Supervisor features coming soon</p>
           </div>
         </TabsContent>
 
@@ -246,7 +243,6 @@ export const ArchivesSearchDashboard = () => {
           <div className="text-center py-12">
             <Users className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">Genealogy Partners</h3>
-            <p className="text-muted-foreground">Partner management coming soon</p>
           </div>
         </TabsContent>
 
@@ -254,7 +250,6 @@ export const ArchivesSearchDashboard = () => {
           <div className="text-center py-12">
             <Building2 className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">Archive Directory</h3>
-            <p className="text-muted-foreground">Archive database coming soon</p>
           </div>
         </TabsContent>
 
@@ -262,7 +257,6 @@ export const ArchivesSearchDashboard = () => {
           <div className="text-center py-12">
             <ClipboardList className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">Request Templates</h3>
-            <p className="text-muted-foreground">Archive request generator coming soon</p>
           </div>
         </TabsContent>
       </Tabs>

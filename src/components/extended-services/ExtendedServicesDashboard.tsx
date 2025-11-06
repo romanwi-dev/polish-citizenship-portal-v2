@@ -217,7 +217,6 @@ export const ExtendedServicesDashboard = () => {
           <div className="text-center py-12">
             <Sparkles className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">Service Overview</h3>
-            <p className="text-muted-foreground">Extended service features coming soon</p>
           </div>
         </TabsContent>
 
@@ -225,7 +224,6 @@ export const ExtendedServicesDashboard = () => {
           <div className="text-center py-12">
             <Users className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">Extended Family Legal Services</h3>
-            <p className="text-muted-foreground">Family legal assistance dashboard coming soon</p>
           </div>
         </TabsContent>
 
@@ -233,7 +231,6 @@ export const ExtendedServicesDashboard = () => {
           <div className="text-center py-12">
             <FileText className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">Document Procurement</h3>
-            <p className="text-muted-foreground">Special document procurement tracking coming soon</p>
           </div>
         </TabsContent>
 
@@ -241,7 +238,6 @@ export const ExtendedServicesDashboard = () => {
           <div className="text-center py-12">
             <Heart className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">Heritage Research</h3>
-            <p className="text-muted-foreground">Genealogical research dashboard coming soon</p>
           </div>
         </TabsContent>
 
@@ -249,7 +245,6 @@ export const ExtendedServicesDashboard = () => {
           <div className="text-center py-12">
             <Briefcase className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">Relocation Support</h3>
-            <p className="text-muted-foreground">Relocation assistance features coming soon</p>
           </div>
         </TabsContent>
 
@@ -257,7 +252,6 @@ export const ExtendedServicesDashboard = () => {
           <div className="text-center py-12">
             <TrendingUp className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">Service Analytics</h3>
-            <p className="text-muted-foreground">Extended service analytics coming soon</p>
           </div>
         </TabsContent>
       </Tabs>
