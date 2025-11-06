@@ -1197,9 +1197,11 @@ export type Database = {
           category: string | null
           created_at: string
           data_applied_to_forms: boolean | null
+          deleted_at: string | null
           detection_confidence: number | null
           document_tags: string[] | null
           document_type: string | null
+          document_version: number | null
           dropbox_file_id: string | null
           dropbox_path: string
           edit_count: number | null
@@ -1237,6 +1239,7 @@ export type Database = {
           pre_verification_result: Json | null
           pre_verification_score: number | null
           received_at: string | null
+          replaced_by: string | null
           sent_at: string | null
           signature_data: string | null
           signed_at: string | null
@@ -1271,9 +1274,11 @@ export type Database = {
           category?: string | null
           created_at?: string
           data_applied_to_forms?: boolean | null
+          deleted_at?: string | null
           detection_confidence?: number | null
           document_tags?: string[] | null
           document_type?: string | null
+          document_version?: number | null
           dropbox_file_id?: string | null
           dropbox_path: string
           edit_count?: number | null
@@ -1311,6 +1316,7 @@ export type Database = {
           pre_verification_result?: Json | null
           pre_verification_score?: number | null
           received_at?: string | null
+          replaced_by?: string | null
           sent_at?: string | null
           signature_data?: string | null
           signed_at?: string | null
@@ -1345,9 +1351,11 @@ export type Database = {
           category?: string | null
           created_at?: string
           data_applied_to_forms?: boolean | null
+          deleted_at?: string | null
           detection_confidence?: number | null
           document_tags?: string[] | null
           document_type?: string | null
+          document_version?: number | null
           dropbox_file_id?: string | null
           dropbox_path?: string
           edit_count?: number | null
@@ -1385,6 +1393,7 @@ export type Database = {
           pre_verification_result?: Json | null
           pre_verification_score?: number | null
           received_at?: string | null
+          replaced_by?: string | null
           sent_at?: string | null
           signature_data?: string | null
           signed_at?: string | null
@@ -1411,6 +1420,13 @@ export type Database = {
             columns: ["case_id"]
             isOneToOne: false
             referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "documents_replaced_by_fkey"
+            columns: ["replaced_by"]
+            isOneToOne: false
+            referencedRelation: "documents"
             referencedColumns: ["id"]
           },
         ]
@@ -5535,6 +5551,15 @@ export type Database = {
       release_document_lock_v7: {
         Args: { p_document_id: string }
         Returns: Json
+      }
+      safe_document_reupload: {
+        Args: {
+          p_case_id: string
+          p_document_name: string
+          p_file_extension: string
+          p_new_dropbox_path: string
+        }
+        Returns: string
       }
       send_workflow_notification: {
         Args: {

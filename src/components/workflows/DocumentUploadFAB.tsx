@@ -160,11 +160,14 @@ export function DocumentUploadFAB({ caseId, onUploadComplete }: DocumentUploadFA
 
   const uploadFile = async (uploadingFile: UploadingFile, retryCount = 0) => {
     const MAX_RETRIES = 3;
+    const BASE_DELAY_MS = 1000; // 1 second base delay
+    const MAX_TOTAL_RETRIES_TIME_MS = 30000; // 30 seconds max total retry time
+    const startTime = Date.now();
     
     try {
       const { file } = uploadingFile;
       
-      // Phase 1: Validate file
+      // Phase 1: Validate file with timeout
       updateFileProgress(uploadingFile.id, 20);
       
       const formData = new FormData();
