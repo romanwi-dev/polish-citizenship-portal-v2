@@ -1255,6 +1255,7 @@ export type Database = {
           verification_status: string | null
           verified_at: string | null
           verified_by: string | null
+          version: number | null
         }
         Insert: {
           ai_corrections?: Json | null
@@ -1328,6 +1329,7 @@ export type Database = {
           verification_status?: string | null
           verified_at?: string | null
           verified_by?: string | null
+          version?: number | null
         }
         Update: {
           ai_corrections?: Json | null
@@ -1401,6 +1403,7 @@ export type Database = {
           verification_status?: string | null
           verified_at?: string | null
           verified_by?: string | null
+          version?: number | null
         }
         Relationships: [
           {

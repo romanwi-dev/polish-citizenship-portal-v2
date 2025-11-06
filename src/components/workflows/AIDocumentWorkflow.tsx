@@ -23,6 +23,7 @@ import { motion } from "framer-motion";
 import { WorkflowStageCard } from "./WorkflowStageCard";
 import { WorkflowProgressBar } from "./WorkflowProgressBar";
 import { useDocumentWorkflowState } from "@/hooks/useDocumentWorkflowState";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import type { Document, UploadResult, UploadProgress } from "@/types/documentWorkflow";
 
 interface AIWorkflowStep {
@@ -317,7 +318,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
     return null;
   };
 
-  // ARCHITECTURAL FIX: Parallelized upload handler with comprehensive error tracking
+  // CRITICAL FIX: Server-side validation + optimistic locking + parallelized uploads
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!caseId) {
       toast({
@@ -341,9 +342,27 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
     });
 
     try {
-      // PARALLEL UPLOAD: Process all files simultaneously
+      // PARALLEL UPLOAD: Process all files simultaneously with server-side validation
       const uploadPromises = Array.from(files).map(async (file): Promise<UploadResult> => {
         try {
+          // SECURITY FIX: Server-side file validation BEFORE upload
+          const validationFormData = new FormData();
+          validationFormData.append('file', file);
+
+          const { data: validationData, error: validationError } = await supabase.functions.invoke(
+            'validate-file-upload',
+            { body: validationFormData }
+          );
+
+          if (validationError || !validationData?.valid) {
+            return {
+              documentId: 'validation-failed',
+              success: false,
+              error: validationData?.error || 'File validation failed',
+              phase: 'validation'
+            };
+          }
+
           // Phase 1: Upload to Dropbox
           const formData = new FormData();
           formData.append('file', file);
@@ -359,9 +378,26 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
           }
 
           const docId = uploadData.document.id;
+          const initialVersion = uploadData.document.version || 0;
 
-          // Phase 2: Create workflow instance
+          // Phase 2: Create workflow instance with optimistic locking
           try {
+            // RACE CONDITION FIX: Check version before inserting workflow
+            const { data: docCheck, error: checkError } = await supabase
+              .from('documents')
+              .select('version')
+              .eq('id', docId)
+              .single();
+
+            if (checkError || !docCheck || docCheck.version !== initialVersion) {
+              return {
+                documentId: docId,
+                success: false,
+                error: 'Document version conflict detected',
+                phase: 'workflow'
+              };
+            }
+
             const { error: workflowError } = await supabase
               .from('workflow_instances')
               .insert({
@@ -392,14 +428,22 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
             };
           }
 
-          // Phase 3: Trigger OCR
+          // Phase 3: Trigger OCR with version check
           try {
             const { error: ocrError } = await supabase.functions.invoke('ocr-document', {
-              body: { documentId: docId },
+              body: { documentId: docId, expectedVersion: initialVersion },
             });
 
             if (ocrError) {
               console.error('OCR trigger failed:', ocrError);
+              
+              // User-friendly error notification for OCR failures
+              toast({
+                title: `OCR failed for ${file.name}`,
+                description: "The document was uploaded but OCR processing failed. You can retry OCR from the document list.",
+                variant: "destructive",
+              });
+
               return {
                 documentId: docId,
                 success: false,
@@ -408,6 +452,12 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
               };
             }
           } catch (ocrError) {
+            toast({
+              title: `OCR error for ${file.name}`,
+              description: "OCR processing encountered an error. Please contact support if this persists.",
+              variant: "destructive",
+            });
+
             return {
               documentId: docId,
               success: false,
@@ -435,7 +485,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
       // Wait for all uploads to complete
       const results = await Promise.allSettled(uploadPromises);
       
-      // Process results
+      // Process results atomically (avoid race conditions in state updates)
       const successCount = results.filter(r => 
         r.status === 'fulfilled' && r.value.success
       ).length;
@@ -447,7 +497,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
         }))
         .filter(f => !f.result.success);
 
-      // Update progress state
+      // ATOMIC state update - single setState call to prevent race conditions
       setUploadProgress({
         total: files.length,
         completed: successCount,
@@ -473,7 +523,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
           variant: "destructive",
         });
         
-        // Show detailed error toast for failures
+        // Show detailed error toast for validation/security failures
         failures.forEach(({ file, result }) => {
           toast({
             title: `${file} failed`,
@@ -515,6 +565,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
   };
 
   return (
+    <ErrorBoundary>
     <div className="w-full pb-40">
       {/* Vertical Timeline - Matching Homepage */}
       <div className="relative max-w-7xl mx-auto">
@@ -882,5 +933,6 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
       {/* Bottom Padding */}
       <div className="h-32"></div>
     </div>
+    </ErrorBoundary>
   );
 }

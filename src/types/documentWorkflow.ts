@@ -40,7 +40,7 @@ export interface UploadResult {
   documentId: string;
   success: boolean;
   error?: string;
-  phase: 'upload' | 'workflow' | 'ocr';
+  phase: 'validation' | 'upload' | 'workflow' | 'ocr';
 }
 
 export interface UploadProgress {
