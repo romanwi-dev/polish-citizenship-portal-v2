@@ -31,6 +31,9 @@ import { CaseCardSkeletonGrid } from "@/components/CaseCardSkeleton";
 import { useAuth } from "@/hooks/useAuth";
 import { useCases, useUpdateCaseStatus, useDeleteCase } from "@/hooks/useCases";
 import { STATUS_COLORS } from "@/lib/constants";
+import { useToast } from "@/hooks/use-toast";
+import { celebrateStatusChange, celebrateCompletion } from "@/utils/confetti";
+import { ScrollToTop } from "@/components/ScrollToTop";
 
 interface FullscreenCase {
   id: string;
@@ -52,6 +55,7 @@ interface FullscreenCase {
 const Cases = () => {
   const [fullscreenCase, setFullscreenCase] = useState<FullscreenCase | null>(null);
   const [editCase, setEditCase] = useState<FullscreenCase | null>(null);
+  const { toast } = useToast();
   
   // Filter states
   const [searchTerm, setSearchTerm] = useState("");
@@ -87,8 +91,28 @@ const Cases = () => {
     return STATUS_COLORS[status as keyof typeof STATUS_COLORS] || STATUS_COLORS.other;
   };
 
-  const handleUpdateStatus = (caseId: string, status: string) => {
-    updateStatusMutation.mutate({ caseId, status });
+  const handleUpdateStatus = async (caseId: string, status: string) => {
+    try {
+      await updateStatusMutation.mutateAsync({ caseId, status });
+      
+      // Celebrate status change
+      if (status === 'completed' || status === 'finished') {
+        celebrateCompletion();
+      } else {
+        celebrateStatusChange(status);
+      }
+      
+      toast({
+        title: "Status updated",
+        description: `Case status changed to ${status}`,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update case status",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleDeleteCase = (caseId: string) => {
@@ -588,6 +612,8 @@ const Cases = () => {
           }}
         />
       )}
+      
+      <ScrollToTop />
     </div>
   );
 };

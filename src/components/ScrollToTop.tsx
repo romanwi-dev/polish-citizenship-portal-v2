@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
 import { ArrowUp } from "lucide-react";
+import { Button } from "./ui/button";
+import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
 
-const ScrollToTop = () => {
+function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -26,19 +28,35 @@ const ScrollToTop = () => {
   };
 
   return (
-    <>
+    <AnimatePresence>
       {isVisible && (
-        <Button
-          onClick={scrollToTop}
-          size="icon"
-          className="fixed bottom-8 right-8 z-50 h-12 w-12 rounded-full bg-primary/30 hover:bg-primary/40 shadow-glow backdrop-blur-sm border border-white/20 animate-fade-in"
-          aria-label="Scroll to top"
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.8, y: 20 }}
+          transition={{ duration: 0.3 }}
+          className="fixed bottom-8 right-8 z-50"
         >
-          <ArrowUp className="h-6 w-6" />
-        </Button>
+          <Button
+            onClick={scrollToTop}
+            size="icon"
+            className={cn(
+              "h-12 w-12 rounded-full shadow-lg",
+              "bg-gradient-to-r from-primary to-secondary",
+              "hover:shadow-xl hover:scale-110",
+              "transition-all duration-300"
+            )}
+            style={{
+              boxShadow: '0 0 30px hsla(221, 83%, 53%, 0.3)'
+            }}
+          >
+            <ArrowUp className="h-5 w-5" />
+          </Button>
+        </motion.div>
       )}
-    </>
+    </AnimatePresence>
   );
-};
+}
 
+export { ScrollToTop };
 export default ScrollToTop;

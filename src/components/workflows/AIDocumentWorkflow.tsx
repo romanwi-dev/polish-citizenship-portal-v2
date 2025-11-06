@@ -28,6 +28,7 @@ import { useSidebar } from "@/components/ui/sidebar";
 import type { Document, UploadResult, UploadProgress, AtomicWorkflowResponse } from "@/types/documentWorkflow";
 import { DocumentViewer } from "./DocumentViewer";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { ScrollToTop } from "@/components/ScrollToTop";
 
 interface AIWorkflowStep {
   number: string;
@@ -1053,6 +1054,8 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
           ocrText={viewerDoc.ocrText}
         />
       )}
+      
+      <ScrollToTop />
     </div>
     </ErrorBoundary>
   );
