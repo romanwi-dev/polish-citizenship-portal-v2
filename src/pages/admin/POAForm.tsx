@@ -259,32 +259,43 @@ export default function POAForm() {
       if (isMarried) poaTypes.push({ type: 'poa-spouses', label: 'Spouses POA' });
 
       // Call edge functions with childNum parameter
+      console.log('🚀 Calling fill-pdf for POA types:', poaTypes.map(p => p.label));
       const results = await Promise.allSettled(
-        poaTypes.map(({ type, childNum }) => 
-          supabase.functions.invoke('fill-pdf', {
+        poaTypes.map(({ type, childNum }) => {
+          console.log(`📤 Calling fill-pdf: type=${type}, caseId=${caseId}, childNum=${childNum}`);
+          return supabase.functions.invoke('fill-pdf', {
             body: { 
               caseId, 
               templateType: type,
               ...(childNum && { childNum })
             }
-          })
-        )
+          });
+        })
       );
+      console.log('✅ All fill-pdf calls completed:', results);
 
       // Extract PDF URLs and labels
       const pdfResults = results.map((result, idx) => {
+        console.log(`📋 Result ${idx} (${poaTypes[idx].label}):`, {
+          status: result.status,
+          data: result.status === 'fulfilled' ? result.value?.data : null,
+          error: result.status === 'fulfilled' ? result.value?.error : result.reason
+        });
+        
         if (result.status === 'fulfilled' && result.value?.data?.url) {
+          console.log(`✅ SUCCESS: ${poaTypes[idx].label} - URL: ${result.value.data.url}`);
           return {
             label: poaTypes[idx].label,
             url: result.value.data.url,
             success: true
           };
         }
+        
         // Log failure details for debugging
         if (result.status === 'rejected') {
-          console.error(`POA generation failed for ${poaTypes[idx].label}:`, result.reason);
+          console.error(`❌ REJECTED: ${poaTypes[idx].label}:`, result.reason);
         } else if (result.status === 'fulfilled') {
-          console.error(`POA generation succeeded but no URL returned for ${poaTypes[idx].label}:`, result.value);
+          console.error(`⚠️ FULFILLED BUT NO URL: ${poaTypes[idx].label}:`, result.value);
         }
         return {
           label: poaTypes[idx].label,
