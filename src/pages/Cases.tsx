@@ -436,85 +436,54 @@ const Cases = () => {
               }
             />
           ) : (
-            <div className="relative max-w-7xl mx-auto">
-              {/* Center line for desktop - vertical timeline */}
-              <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block z-0" />
+            <div className="relative max-w-6xl mx-auto">
+              {/* Central Line - Same as homepage */}
+              <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-primary via-secondary to-accent transform -translate-x-1/2" />
               
-              {filteredCases.map((clientCase, index) => {
-                const isLeft = index % 2 === 0;
-                console.log(`Card ${index}: ${clientCase.client_name}, isLeft: ${isLeft}`);
-                return (
-                  <motion.div
-                    key={clientCase.id}
-                    initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    className="mb-12"
-                  >
-                    {/* Mobile: Stack vertically, Desktop: Timeline layout with alternating cards */}
-                    <div className="flex flex-col md:flex-row items-center gap-8">
-                      {isLeft ? (
-                        <>
-                          {/* Left Card */}
-                          <div className="w-full md:w-5/12">
-                            <motion.div whileHover={{ scale: 1.02 }} transition={{ duration: 0.3 }}>
-                              <CaseCard 
-                                clientCase={clientCase}
-                                onEdit={handleEdit}
-                                onDelete={handleDeleteCase}
-                                onUpdateStatus={handleUpdateStatus}
-                              />
-                            </motion.div>
-                          </div>
+              {/* Timeline Steps - Same structure as homepage */}
+              <div className="space-y-12">
+                {filteredCases.map((clientCase, index) => {
+                  const isEven = index % 2 === 0;
+                  
+                  return (
+                    <div key={clientCase.id} className={`relative flex items-center ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+                      {/* Content Card */}
+                      <div className={`w-full md:w-5/12 ${isEven ? 'md:pr-12' : 'md:pl-12'}`}>
+                        <motion.div
+                          initial={{ opacity: 0, x: isEven ? -50 : 50 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.6, delay: index * 0.1 }}
+                          viewport={{ once: true, margin: "-50px" }}
+                          whileHover={{ scale: 1.02 }}
+                        >
+                          <CaseCard 
+                            clientCase={clientCase}
+                            onEdit={handleEdit}
+                            onDelete={handleDeleteCase}
+                            onUpdateStatus={handleUpdateStatus}
+                          />
+                        </motion.div>
+                      </div>
 
-                          {/* Center Dot */}
-                          <div className="hidden md:flex md:w-2/12 justify-center">
-                            <motion.div
-                              initial={{ scale: 0 }}
-                              whileInView={{ scale: 1 }}
-                              transition={{ duration: 0.4, delay: index * 0.1 + 0.2 }}
-                              viewport={{ once: true }}
-                              className="w-6 h-6 rounded-full bg-primary shadow-lg shadow-primary/50"
-                            />
-                          </div>
+                      {/* Center Node - Same as homepage */}
+                      <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-8 h-8 items-center justify-center">
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          whileInView={{ scale: 1 }}
+                          transition={{ duration: 0.4, delay: index * 0.1 + 0.2 }}
+                          viewport={{ once: true }}
+                          className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary shadow-glow flex items-center justify-center"
+                        >
+                          <div className="w-4 h-4 rounded-full bg-background" />
+                        </motion.div>
+                      </div>
 
-                          {/* Right Spacer */}
-                          <div className="hidden md:block md:w-5/12" />
-                        </>
-                      ) : (
-                        <>
-                          {/* Left Spacer */}
-                          <div className="hidden md:block md:w-5/12" />
-
-                          {/* Center Dot */}
-                          <div className="hidden md:flex md:w-2/12 justify-center">
-                            <motion.div
-                              initial={{ scale: 0 }}
-                              whileInView={{ scale: 1 }}
-                              transition={{ duration: 0.4, delay: index * 0.1 + 0.2 }}
-                              viewport={{ once: true }}
-                              className="w-6 h-6 rounded-full bg-primary shadow-lg shadow-primary/50"
-                            />
-                          </div>
-
-                          {/* Right Card */}
-                          <div className="w-full md:w-5/12">
-                            <motion.div whileHover={{ scale: 1.02 }} transition={{ duration: 0.3 }}>
-                              <CaseCard 
-                                clientCase={clientCase}
-                                onEdit={handleEdit}
-                                onDelete={handleDeleteCase}
-                                onUpdateStatus={handleUpdateStatus}
-                              />
-                            </motion.div>
-                          </div>
-                        </>
-                      )}
+                      {/* Spacer for alternating layout */}
+                      <div className="hidden md:block w-5/12" />
                     </div>
-                  </motion.div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           )}
           </div>
