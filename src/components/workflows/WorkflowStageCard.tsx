@@ -128,7 +128,7 @@ export function WorkflowStageCard({
 
             {/* Title */}
             <h3 className={cn(
-              "text-2xl md:text-3xl font-heading font-black tracking-tight bg-clip-text text-transparent drop-shadow-lg",
+              "text-xl md:text-2xl font-heading font-black tracking-tight bg-clip-text text-transparent drop-shadow-lg truncate",
               isCompleted 
                 ? "bg-gradient-to-r from-green-500 to-green-600" 
                 : "bg-gradient-to-r from-primary to-secondary"

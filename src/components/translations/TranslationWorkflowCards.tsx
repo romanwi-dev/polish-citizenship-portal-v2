@@ -208,7 +208,7 @@ export default function TranslationWorkflowCards({ caseId }: TranslationWorkflow
                         </div>
 
                         <div className="space-y-4">
-                          <h3 className="text-2xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                          <h3 className="text-xl md:text-2xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent truncate">
                             {step.title}
                           </h3>
                           <p className="text-muted-foreground leading-relaxed mb-4">
