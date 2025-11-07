@@ -412,8 +412,10 @@ export default function POAForm() {
           transition={{ duration: 0.8 }}
           className="mb-1 md:mb-6"
         >
-          <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text text-center leading-tight whitespace-nowrap">
-            Power of Attorney
+          <h2 className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight text-center">
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              Power of Attorney
+            </span>
           </h2>
           <div className="flex items-center justify-center gap-3 md:gap-6 mt-2 md:mt-4">
               <Button
