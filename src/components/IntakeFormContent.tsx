@@ -141,7 +141,7 @@ export const ApplicantSection = ({ formData, handleInputChange, clearField, isLa
     </div>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("applicant_first_name")}>
-        <Label className={isLargeFonts ? "text-2xl" : ""}>First name</Label>
+        <Label className={isLargeFonts ? "text-2xl" : ""}>Given names</Label>
         <FormInput
           value={formData?.applicant_first_name || ""}
           onChange={(e) => handleInputChange("applicant_first_name", e.target.value)}
@@ -151,7 +151,7 @@ export const ApplicantSection = ({ formData, handleInputChange, clearField, isLa
       </motion.div>
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("applicant_last_name")}>
-        <Label className={isLargeFonts ? "text-2xl" : ""}>Last name</Label>
+        <Label className={isLargeFonts ? "text-2xl" : ""}>Full last name</Label>
         <FormInput
           value={formData?.applicant_last_name || ""}
           onChange={(e) => handleInputChange("applicant_last_name", e.target.value)}
