@@ -1,5 +1,7 @@
-import { lazy, Suspense } from "react";
-import { GlobalBackground } from "@/components/GlobalBackground";
+import { lazy, Suspense, useState, useEffect } from "react";
+import { StaticHeritagePlaceholder } from "@/components/heroes/StaticHeritagePlaceholder";
+
+const StaticHeritage = lazy(() => import("@/components/heroes/StaticHeritage").then(m => ({ default: m.StaticHeritage })));
 
 // Eagerly load critical above-the-fold components for LCP
 import Navigation from "@/components/Navigation";
@@ -26,10 +28,78 @@ const SectionLoader = () => (
 );
 
 const Index = () => {
+  const [show3D, setShow3D] = useState(false);
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
+    if (typeof window !== "undefined") {
+      const isLight = document.documentElement.classList.contains("light");
+      return isLight ? "light" : "dark";
+    }
+    return "dark";
+  });
+
+  // Watch for theme changes
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      const root = document.documentElement;
+      const newTheme = root.classList.contains("light") ? "light" : "dark";
+      setTheme(newTheme);
+    });
+    
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"]
+    });
+    
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    // Don't load 3D in light theme
+    if (theme === "light") {
+      return;
+    }
+    
+    let timer: NodeJS.Timeout;
+    
+    const handleInteraction = () => {
+      setShow3D(true);
+      cleanup();
+    };
+    
+    const cleanup = () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', handleInteraction);
+      window.removeEventListener('click', handleInteraction);
+    };
+    
+    // Listen for user interaction
+    window.addEventListener('scroll', handleInteraction, { once: true });
+    window.addEventListener('click', handleInteraction, { once: true });
+    
+    // Fallback: load after 2 seconds anyway
+    timer = setTimeout(() => {
+      setShow3D(true);
+      cleanup();
+    }, 2000);
+    
+    return cleanup;
+  }, [theme]);
+
+  // Render all 12 sections (theme-agnostic)
   return (
     <div className="min-h-screen overflow-x-hidden relative">
-      {/* Global Background */}
-      <GlobalBackground />
+      {/* Global Background - Only in dark theme */}
+      {theme === "dark" && (
+        <div className="fixed inset-0 z-0">
+          {show3D ? (
+            <Suspense fallback={<StaticHeritagePlaceholder />}>
+              <StaticHeritage />
+            </Suspense>
+          ) : (
+            <StaticHeritagePlaceholder />
+          )}
+        </div>
+      )}
       
       <div className="relative z-10">
         <Navigation />

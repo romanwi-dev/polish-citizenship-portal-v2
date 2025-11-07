@@ -9,7 +9,7 @@ import { NavigationSearch } from "@/components/navigation/NavigationSearch";
 import { LastVisitedLinks } from "@/components/navigation/LastVisitedLinks";
 import { NavigationLinks } from "@/components/navigation/NavigationLinks";
 import { ScrollArea } from "@/components/ui/scroll-area";
-
+import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -154,8 +154,9 @@ const Navigation = () => {
                             className="h-11 w-11 rounded-full bg-background/20 border border-border/10 flex items-center justify-center hover:border-primary/30 transition-all"
                             aria-label="Share"
                           >
-                          <Share2 className="h-5 w-5 text-foreground/30" />
+                            <Share2 className="h-5 w-5 text-foreground/30" />
                           </button>
+                          <ThemeSwitcher />
                         </div>
 
                         {/* Search - Above the login button, same height */}

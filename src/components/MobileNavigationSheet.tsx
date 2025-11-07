@@ -8,7 +8,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { NavigationSearch } from './navigation/NavigationSearch';
 import { LastVisitedLinks } from './navigation/LastVisitedLinks';
 import { NavigationLinks } from './navigation/NavigationLinks';
-
+import { ThemeSwitcher } from './ThemeSwitcher';
 
 export const MobileNavigationSheet = () => {
   const [open, setOpen] = useState(false);
@@ -100,6 +100,7 @@ export const MobileNavigationSheet = () => {
                   >
                     <Share2 className="h-5 w-5 text-foreground/30" />
                   </button>
+                  <ThemeSwitcher />
                 </div>
 
                 {/* Login/Register Button */}
