@@ -673,8 +673,8 @@ export default function CasesManagement() {
         <Button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           size="icon"
-          className={`fixed bottom-6 right-6 w-12 h-12 rounded-full shadow-lg bg-primary hover:bg-primary/90 text-primary-foreground z-50 transition-opacity duration-300 ${
-            showScrollButtons ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          className={`fixed bottom-6 right-6 w-12 h-12 rounded-full shadow-lg bg-primary/60 hover:bg-primary/80 text-primary-foreground z-50 transition-opacity duration-300 ${
+            showScrollButtons ? 'opacity-70' : 'opacity-0 pointer-events-none'
           }`}
           aria-label="Scroll to top"
         >
@@ -685,8 +685,8 @@ export default function CasesManagement() {
         <Button
           onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}
           size="icon"
-          className={`fixed bottom-6 left-20 w-12 h-12 rounded-full shadow-lg bg-secondary hover:bg-secondary/90 text-secondary-foreground z-50 transition-opacity duration-300 ${
-            showScrollButtons ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          className={`fixed bottom-6 left-20 w-12 h-12 rounded-full shadow-lg bg-secondary/60 hover:bg-secondary/80 text-secondary-foreground z-50 transition-opacity duration-300 ${
+            showScrollButtons ? 'opacity-70' : 'opacity-0 pointer-events-none'
           }`}
           aria-label="Scroll to bottom"
         >
