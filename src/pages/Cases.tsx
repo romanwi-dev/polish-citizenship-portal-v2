@@ -434,7 +434,6 @@ const Cases = () => {
               }
             />
           ) : null}
-          </div>
         </div>
 
         {/* Timeline View - Full Width */}
