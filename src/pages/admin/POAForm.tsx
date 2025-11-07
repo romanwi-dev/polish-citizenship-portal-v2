@@ -273,12 +273,18 @@ export default function POAForm() {
 
       // Extract PDF URLs and labels
       const pdfResults = results.map((result, idx) => {
-        if (result.status === 'fulfilled' && result.value?.data?.pdfUrl) {
+        if (result.status === 'fulfilled' && result.value?.data?.url) {
           return {
             label: poaTypes[idx].label,
-            url: result.value.data.pdfUrl,
+            url: result.value.data.url,
             success: true
           };
+        }
+        // Log failure details for debugging
+        if (result.status === 'rejected') {
+          console.error(`POA generation failed for ${poaTypes[idx].label}:`, result.reason);
+        } else if (result.status === 'fulfilled') {
+          console.error(`POA generation succeeded but no URL returned for ${poaTypes[idx].label}:`, result.value);
         }
         return {
           label: poaTypes[idx].label,
