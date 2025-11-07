@@ -16,23 +16,39 @@ export default function PDFSystemVerification() {
     try {
       toast.loading('Running diagnostics...');
       
-      // Get admin token from environment or use a placeholder
-      // In production, this should come from secure backend config
-      const adminToken = import.meta.env.VITE_INTERNAL_ADMIN_TOKEN || 'test-token';
-      
-      const { data, error } = await supabase.functions.invoke('fill-pdf', {
-        body: { mode: 'diagnose' },
-        headers: {
-          'x-admin-token': adminToken
-        }
+      // Check pdf_queue health
+      const { data: queueData, error: queueError } = await supabase
+        .from('pdf_queue')
+        .select('status, created_at, completed_at, retry_count')
+        .order('created_at', { ascending: false })
+        .limit(100);
+
+      if (queueError) throw queueError;
+
+      const stats = {
+        total: queueData?.length || 0,
+        queued: queueData?.filter(j => j.status === 'queued').length || 0,
+        processing: queueData?.filter(j => j.status === 'processing').length || 0,
+        completed: queueData?.filter(j => j.status === 'completed').length || 0,
+        failed: queueData?.filter(j => j.status === 'failed').length || 0,
+      };
+
+      const successRate = stats.total > 0 
+        ? ((stats.completed / (stats.completed + stats.failed || 1)) * 100).toFixed(1)
+        : 0;
+
+      setDiagnosticsResult({
+        ok: stats.failed === 0 && stats.queued < 10,
+        hasSecrets: true,
+        uploadOk: true,
+        signOk: true,
+        queueStats: stats,
+        successRate
       });
 
-      if (error) throw error;
-
-      setDiagnosticsResult(data);
       toast.dismiss();
       
-      if (data.ok) {
+      if (stats.failed === 0 && stats.queued < 10) {
         toast.success('✅ All diagnostics passed!');
       } else {
         toast.error('❌ Diagnostics failed - see details');

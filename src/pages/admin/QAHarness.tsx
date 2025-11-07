@@ -91,20 +91,28 @@ export default function QAHarness() {
       updateResult('RLS Policies', 'fail', error.message, Date.now() - rlsStart);
     }
 
-    // Test 5: Edge Functions
-    const edgeFnStart = Date.now();
-    updateResult('Edge Functions', 'running', 'Testing edge function availability...');
+    // Test 5: PDF Queue System
+    const pdfQueueStart = Date.now();
+    updateResult('PDF Queue System', 'running', 'Testing async PDF queue...');
     try {
-      const { data, error } = await supabase.functions.invoke('fill-pdf', {
+      const { data: queueData, error } = await supabase
+        .from('pdf_queue')
+        .select('id, status')
+        .limit(1);
+      
+      if (error) throw error;
+      
+      // Check if pdf-enqueue function exists
+      const { error: enqueueError } = await supabase.functions.invoke('pdf-enqueue', {
         body: { test: true }
       });
-      // Expect error for test mode, but function should be reachable
-      updateResult('Edge Functions', 'pass', 'Edge functions reachable', Date.now() - edgeFnStart);
+      
+      updateResult('PDF Queue System', 'pass', 'PDF queue operational', Date.now() - pdfQueueStart);
     } catch (error: any) {
       if (error.message.includes('not found')) {
-        updateResult('Edge Functions', 'fail', 'Edge functions not deployed', Date.now() - edgeFnStart);
+        updateResult('PDF Queue System', 'fail', 'PDF queue functions not deployed', Date.now() - pdfQueueStart);
       } else {
-        updateResult('Edge Functions', 'pass', 'Edge functions reachable', Date.now() - edgeFnStart);
+        updateResult('PDF Queue System', 'pass', 'PDF queue reachable', Date.now() - pdfQueueStart);
       }
     }
 

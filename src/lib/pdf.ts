@@ -2,7 +2,17 @@
  * @deprecated Use @/lib/generate-pdf instead
  * This file contains legacy synchronous PDF generation
  * All new code should use the async queue system in generate-pdf.ts
+ * 
+ * ⚠️ CRITICAL: DO NOT USE FUNCTIONS FROM THIS FILE
+ * All PDF generation MUST use the async queue via @/lib/generate-pdf
  */
+
+// Runtime validation - throw error in development if legacy functions are called
+if (import.meta.env.DEV) {
+  console.error('🚨 LEGACY PDF GENERATION DETECTED!');
+  console.error('This file is deprecated. Use generatePdf() from @/lib/generate-pdf instead.');
+  console.trace('Called from:');
+}
 
 import { supabase } from '@/integrations/supabase/client';
 

@@ -273,10 +273,11 @@ export default function WorkflowDemo() {
                     )}
                     {currentStep === 4 && (
                       <>
-                        <p>• PDF Generation: pdf-generate-v2 function</p>
+                        <p>• PDF Generation: pdf-worker (async queue)</p>
+                        <p>• Jobs enqueued via pdf-enqueue, processed by pdf-worker cron</p>
                         <p>• PDF-LIB fills template PDFs with form data</p>
                         <p>• Stores completed PDFs in generated-pdfs bucket</p>
-                        <p>• Creates PDF preview thumbnails</p>
+                        <p>• Real-time notifications via Supabase Realtime</p>
                       </>
                     )}
                     {currentStep === 5 && (
@@ -344,7 +345,8 @@ export default function WorkflowDemo() {
                 <li>• <code>ocr-document</code> - Text extraction</li>
                 <li>• <code>ai-classify-document</code> - Document type detection</li>
                 <li>• <code>apply-ocr-to-forms</code> - Form population</li>
-                <li>• <code>pdf-generate-v2</code> - PDF creation</li>
+                <li>• <code>pdf-enqueue</code> - Enqueue PDF jobs</li>
+                <li>• <code>pdf-worker</code> - Process PDF queue (cron)</li>
               </ul>
             </div>
           </CardContent>
