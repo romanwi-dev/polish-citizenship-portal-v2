@@ -404,8 +404,6 @@ const Cases = () => {
             )}
           </div>
 
-          <div className="max-w-7xl mx-auto">
-
           {error ? (
             <ErrorState 
               message="Failed to load cases. Please try again."
@@ -485,7 +483,6 @@ const Cases = () => {
               </div>
             </div>
           )}
-          </div>
         </div>
       </section>
 
