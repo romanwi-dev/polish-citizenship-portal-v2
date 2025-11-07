@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useState, useEffect, useRef, Fragment, useLayoutEffect } from "react";
+import { useState, useEffect, useRef, Fragment, useLayoutEffect, lazy, Suspense } from "react";
 import { Loader2, Save, Download, Users, Sparkles, Type, User, ArrowLeft, TreePine, BookOpen, Baby, Heart, FileText, GitBranch, HelpCircle, Maximize2, Minimize2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
@@ -14,6 +14,9 @@ import { PDFPreviewDialog } from "@/components/PDFPreviewDialog";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { StaticHeritagePlaceholder } from "@/components/heroes/StaticHeritagePlaceholder";
+
+const StaticHeritage = lazy(() => import("@/components/heroes/StaticHeritage").then(m => ({ default: m.StaticHeritage })));
 import { supabase } from "@/integrations/supabase/client";
 import { DateField } from "@/components/DateField";
 import { useToast } from "@/hooks/use-toast";
@@ -420,7 +423,14 @@ export default function FamilyTreeForm() {
   }
   
   return (
-    <div className={cn("relative min-h-screen", isLargeFonts && "text-lg")}>
+    <div className={cn("relative min-h-screen overflow-x-hidden", isLargeFonts && "text-lg")}>
+      {/* Global Background */}
+      <div className="fixed inset-0 z-0">
+        <Suspense fallback={<StaticHeritagePlaceholder />}>
+          <StaticHeritage />
+        </Suspense>
+      </div>
+      
       <div className="relative z-10 pt-2 px-3 pb-3 md:p-6">
         {/* Header */}
         <motion.div 

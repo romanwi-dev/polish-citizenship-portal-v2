@@ -5,12 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { Loader2, Sparkles, Type, User, ArrowLeft, Maximize2, Minimize2, Download, HelpCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast} from "sonner";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { StaticHeritagePlaceholder } from "@/components/heroes/StaticHeritagePlaceholder";
+
+const StaticHeritage = lazy(() => import("@/components/heroes/StaticHeritage").then(m => ({ default: m.StaticHeritage })));
 import { DateField } from "@/components/DateField";
 import { FormInput } from "@/components/forms/FormInput";
 import { useLongPressWithFeedback } from "@/hooks/useLongPressWithFeedback";
@@ -228,7 +231,14 @@ export default function CitizenshipForm() {
   }
 
   return (
-    <div className={cn("relative min-h-screen", isLargeFonts && "text-lg")}>
+    <div className={cn("relative min-h-screen overflow-x-hidden", isLargeFonts && "text-lg")}>
+      {/* Global Background */}
+      <div className="fixed inset-0 z-0">
+        <Suspense fallback={<StaticHeritagePlaceholder />}>
+          <StaticHeritage />
+        </Suspense>
+      </div>
+      
       <div className="relative z-10 pt-2 px-3 pb-3 md:p-6">
         {/* Header */}
         <motion.div 
