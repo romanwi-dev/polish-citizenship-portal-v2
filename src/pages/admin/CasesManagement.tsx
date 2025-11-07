@@ -379,16 +379,16 @@ export default function CasesManagement() {
     <ErrorBoundary>
       <AdminLayout>
       <div className="p-4 sm:p-8 max-w-full overflow-x-hidden">
-        {/* Header - Mobile Optimized */}
-        <div className="mb-6 sm:mb-8">
-          <div className="mb-6">
-            <h1 className="text-4xl md:text-5xl font-heading font-black tracking-tight">
-              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Management
-              </span>
-            </h1>
-          </div>
+        {/* Header - Matching Workflows Page */}
+        <div className="mb-12 md:mb-16">
+          <h1 className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight text-center">
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              Cases Management
+            </span>
+          </h1>
+        </div>
 
+        <div className="mb-8">
           {/* Action Buttons Row - Mobile Optimized */}
           <div className="flex flex-col gap-3 mb-3">
             {/* Mobile layout - Horizontal Scroll */}
