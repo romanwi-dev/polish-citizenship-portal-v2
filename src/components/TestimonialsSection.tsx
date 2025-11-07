@@ -64,8 +64,10 @@ export default function TestimonialsSection() {
       <div className="container mx-auto max-w-7xl">
         {/* Header */}
         <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-            Success Stories
+          <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-4">
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              Success Stories
+            </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Real clients who reclaimed their Polish heritage and citizenship
