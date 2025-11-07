@@ -43,7 +43,7 @@ const CityDivider = ({ cityName, imagePath }: CityDividerProps) => {
           className="w-full max-w-[900px] h-auto object-contain transition-opacity duration-500"
           loading="lazy"
           style={{
-            opacity: theme === 'dark' ? '0.18' : '0.20',
+            opacity: theme === 'dark' ? '0.35' : '0.32',
             mixBlendMode: theme === 'dark' ? 'multiply' : 'screen',
             filter: theme === 'dark' ? 'invert(1)' : 'none'
           }}
