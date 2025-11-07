@@ -1,5 +1,17 @@
 project_id = "oogmuakyqadpynnrasnd"
 
+[functions.uiux-memory-agent]
+verify_jwt = false
+
+[functions.uiux-memory-agent.cron]
+schedule = "*/25 * * * *"
+
+[functions.dropbox-memory-agent]
+verify_jwt = false
+
+[functions.dropbox-memory-agent.cron]
+schedule = "*/20 * * * *"
+
 [functions.get-case-documents]
 verify_jwt = true
 
