@@ -807,14 +807,8 @@ export default function FamilyTreeForm() {
         }} className="space-y-10">
             <div className="border-b border-border/50 pb-6">
               <h2 className="text-4xl md:text-5xl font-heading font-bold text-cyan-600 dark:text-cyan-400">
-                Applicant's Minor Children
+                Applicant&apos;s Minor Children
               </h2>
-              <p className="text-base mt-2">
-                Enter details for <span className="font-semibold text-primary">{formData.minor_children_count || 0} minor {formData.minor_children_count === 1 ? 'child' : 'children'}</span> (under 18 years old).
-                <span className="block mt-1 text-muted-foreground">
-                  Note: Adult children should be processed as separate applicants.
-                </span>
-              </p>
             </div>
 
             {Array.from({ length: formData.minor_children_count || 0 }, (_, i) => i + 1).map(num => <Fragment key={num}>
@@ -1480,14 +1474,8 @@ export default function FamilyTreeForm() {
                   <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.1 }} className="space-y-10">
                     <div className="border-b border-border/50 pb-6">
                       <h2 className="text-4xl md:text-5xl font-heading font-bold text-cyan-600 dark:text-cyan-400">
-                        Applicant's Minor Children
+                        Applicant&apos;s Minor Children
                       </h2>
-                      <p className="text-base mt-2">
-                        Enter details for <span className="font-semibold text-primary">{formData.minor_children_count || 0} minor {formData.minor_children_count === 1 ? 'child' : 'children'}</span> (under 18 years old).
-                        <span className="block mt-1 text-muted-foreground">
-                          Note: Adult children should be processed as separate applicants.
-                        </span>
-                      </p>
                     </div>
 
                     {Array.from({ length: formData.minor_children_count || 0 }, (_, i) => i + 1).map(num => (
