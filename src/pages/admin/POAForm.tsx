@@ -232,7 +232,7 @@ export default function POAForm() {
     }
 
     try {
-      toast.loading("Generating all POAs...");
+      toast.loading("Generating POAs...");
 
       const isMarried = formData?.applicant_marital_status === 'married' || 
                         formData?.applicant_marital_status === 'Married';
@@ -240,26 +240,30 @@ export default function POAForm() {
                                formData?.applicant_has_minor_children === 'Yes' ||
                                (formData?.applicant_number_of_children && parseInt(formData.applicant_number_of_children) > 0);
 
-      const poaTypes: Array<'poa-adult' | 'poa-minor' | 'poa-spouses'> = ['poa-adult'];
-      if (hasMinorChildren) poaTypes.push('poa-minor');
-      if (isMarried) poaTypes.push('poa-spouses');
+      const poaTypes: Array<{ type: 'poa-adult' | 'poa-minor' | 'poa-spouses'; label: string }> = [
+        { type: 'poa-adult', label: 'Adult POA' }
+      ];
+      if (hasMinorChildren) poaTypes.push({ type: 'poa-minor', label: 'Minor POA' });
+      if (isMarried) poaTypes.push({ type: 'poa-spouses', label: 'Spouses POA' });
 
       const results = await Promise.allSettled(
-        poaTypes.map(type => 
+        poaTypes.map(({ type }) => 
           supabase.functions.invoke('fill-pdf', {
             body: { caseId, templateType: type }
           })
         )
       );
 
-      const successful = results.filter(r => r.status === 'fulfilled').length;
+      const successful = results
+        .map((result, idx) => result.status === 'fulfilled' ? poaTypes[idx].label : null)
+        .filter(Boolean);
       const failed = results.filter(r => r.status === 'rejected').length;
 
       toast.dismiss();
       if (failed === 0) {
-        toast.success(`Generated ${successful} POA${successful > 1 ? 's' : ''} successfully!`);
+        toast.success(`Generated: ${successful.join(', ')}`);
       } else {
-        toast.error(`Generated ${successful} POA(s), but ${failed} failed. Check logs.`);
+        toast.error(`Generated ${successful.length} POA(s), but ${failed} failed. Check logs.`);
       }
     } catch (error: any) {
       toast.dismiss();
