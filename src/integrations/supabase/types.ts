@@ -3758,6 +3758,30 @@ export type Database = {
           },
         ]
       }
+      pdf_rate_limits: {
+        Row: {
+          case_id: string
+          created_at: string | null
+          id: string
+          request_count: number | null
+          window_start: string
+        }
+        Insert: {
+          case_id: string
+          created_at?: string | null
+          id?: string
+          request_count?: number | null
+          window_start?: string
+        }
+        Update: {
+          case_id?: string
+          created_at?: string | null
+          id?: string
+          request_count?: number | null
+          window_start?: string
+        }
+        Relationships: []
+      }
       performance_logs: {
         Row: {
           connection_type: string | null
@@ -5667,6 +5691,7 @@ export type Database = {
       }
       cleanup_old_health_data: { Args: never; Returns: undefined }
       cleanup_old_pdf_queue_jobs: { Args: never; Returns: undefined }
+      cleanup_old_rate_limits: { Args: never; Returns: undefined }
       cleanup_rate_limit_logs: { Args: never; Returns: undefined }
       create_batch_upload: {
         Args: { p_batch_id: string; p_case_id: string; p_total_files: number }

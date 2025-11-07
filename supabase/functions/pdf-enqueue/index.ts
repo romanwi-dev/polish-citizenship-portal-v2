@@ -24,15 +24,72 @@ Deno.serve(async (req) => {
 
     const { caseId, templateType, filename } = await req.json();
 
+    // Validate required fields
     if (!caseId || !templateType) {
       return new Response(
         JSON.stringify({ 
           success: false, 
-          error: 'Missing caseId or templateType' 
+          error: 'MISSING_REQUIRED_FIELDS',
+          message: 'Missing caseId or templateType' 
         }),
         { 
           status: 400, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
+
+    // Validate template type
+    const validTemplates = [
+      'poa-adult', 'poa-minor', 'poa-spouses', 
+      'family-tree', 'citizenship', 
+      'transcription', 'registration'
+    ];
+    
+    if (!validTemplates.includes(templateType)) {
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          error: 'INVALID_TEMPLATE',
+          message: `Invalid template type. Must be one of: ${validTemplates.join(', ')}`,
+          validTemplates 
+        }),
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
+
+    // Rate limiting: max 10 PDFs per case per hour
+    const oneHourAgo = new Date(Date.now() - 3600000).toISOString();
+    
+    const { data: recentJobs, error: rateLimitError } = await supabase
+      .from('pdf_queue')
+      .select('id')
+      .eq('case_id', caseId)
+      .gte('created_at', oneHourAgo);
+
+    if (rateLimitError) {
+      console.error('Rate limit check failed:', rateLimitError);
+      // Continue anyway - don't block on rate limit check failure
+    } else if (recentJobs && recentJobs.length >= 10) {
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          error: 'RATE_LIMIT_EXCEEDED',
+          message: 'Too many PDF requests. Maximum 10 PDFs per hour per case.',
+          limit: 10,
+          current: recentJobs.length,
+          retryAfter: 3600
+        }),
+        { 
+          status: 429, 
+          headers: { 
+            ...corsHeaders, 
+            'Content-Type': 'application/json',
+            'Retry-After': '3600'
+          } 
         }
       );
     }
@@ -53,7 +110,8 @@ Deno.serve(async (req) => {
       return new Response(
         JSON.stringify({ 
           success: false, 
-          error: error.message 
+          error: 'ENQUEUE_FAILED',
+          message: error.message 
         }),
         { 
           status: 500, 
@@ -62,12 +120,15 @@ Deno.serve(async (req) => {
       );
     }
 
+    console.log(`✅ PDF job enqueued: ${job.id} (${templateType} for case ${caseId})`);
+
     return new Response(
       JSON.stringify({
         success: true,
         jobId: job.id,
         status: 'queued',
-        message: 'PDF generation job queued successfully'
+        message: 'PDF generation job queued successfully',
+        estimatedTime: '30-60 seconds'
       }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
@@ -79,7 +140,8 @@ Deno.serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         success: false, 
-        error: error.message 
+        error: 'INTERNAL_ERROR',
+        message: error.message 
       }),
       { 
         status: 500, 
