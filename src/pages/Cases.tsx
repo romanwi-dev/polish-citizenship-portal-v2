@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import { motion } from "framer-motion";
 import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Database, Search, SlidersHorizontal } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
@@ -442,39 +443,39 @@ const Cases = () => {
               {filteredCases.map((clientCase, index) => {
                 const isLeft = index % 2 === 0;
                 return (
-                  <div
+                  <motion.div
                     key={clientCase.id}
+                    initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    viewport={{ once: true, margin: "-50px" }}
                     className="mb-12 last:mb-0"
                   >
-                    {/* Desktop: Timeline layout with alternating cards */}
-                    <div className={`md:flex ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} gap-4 items-start mb-8 md:mb-16`}>
+                    {/* Mobile: Stack vertically, Desktop: Timeline layout with alternating cards */}
+                    <div className={`flex flex-col md:flex ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} gap-4 md:gap-8 items-center`}>
                       {/* Card - Left or Right */}
-                      <div 
-                        className="w-full md:w-5/12 animate-fade-in"
-                        style={{
-                          animationDelay: `${index * 0.1}s`,
-                          animationFillMode: 'backwards'
-                        }}
+                      <motion.div 
+                        className="w-full md:w-5/12"
+                        whileHover={{ scale: 1.02, y: -5 }}
+                        transition={{ duration: 0.3 }}
                       >
-                        <div className="hover:scale-[1.02] transition-transform duration-300">
-                          <CaseCard 
-                            clientCase={clientCase}
-                            onEdit={handleEdit}
-                            onDelete={handleDeleteCase}
-                            onUpdateStatus={handleUpdateStatus}
-                          />
-                        </div>
-                      </div>
+                        <CaseCard 
+                          clientCase={clientCase}
+                          onEdit={handleEdit}
+                          onDelete={handleDeleteCase}
+                          onUpdateStatus={handleUpdateStatus}
+                        />
+                      </motion.div>
 
-                      {/* Timeline Dot - Center */}
+                      {/* Timeline Dot - Center (hidden on mobile) */}
                       <div className="hidden md:flex w-2/12 flex-shrink-0 justify-center relative z-10">
                         <div className="w-8 h-8 rounded-full bg-primary border-4 border-background shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300" />
                       </div>
 
-                      {/* Empty space on opposite side */}
+                      {/* Empty space on opposite side (hidden on mobile) */}
                       <div className="hidden md:block w-5/12" />
                     </div>
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>
