@@ -48,8 +48,10 @@ const AIWorkflow = () => {
     <AdminLayout>
       <div className="space-y-8 p-4 md:p-8 min-h-screen">
         {/* Title */}
-        <h1 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-center mb-12 md:mb-20">
-          Documents Workflow
+        <h1 className="text-4xl md:text-5xl font-heading font-black mb-6 tracking-tight text-center">
+          <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            Documents Workflow
+          </span>
         </h1>
 
         {/* Search and Case Selection - Responsive Layout */}
