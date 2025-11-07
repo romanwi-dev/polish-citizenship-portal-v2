@@ -594,14 +594,14 @@ export default function CasesManagement() {
               return (
                 <motion.div 
                   key={caseItem.id} 
-                  className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-8 ${isEven ? 'md:flex-row-reverse' : ''}`}
-                  initial={{ opacity: 0, x: isEven ? 100 : -100 }}
+                  className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-8 ${!isEven ? 'md:flex-row-reverse' : ''}`}
+                  initial={{ opacity: 0, x: isEven ? -100 : 100 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-100px" }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
-                  {/* Content Card */}
-                  <div className="w-full md:w-5/12">
+                  {/* Content Card - Wider */}
+                  <div className="w-full md:w-[47%]">
                     <DraggableCaseCard 
                       clientCase={caseItem}
                       onEdit={handleEdit}
@@ -614,17 +614,17 @@ export default function CasesManagement() {
                     />
                   </div>
 
-                  {/* Center Circle with Number - same as homepage */}
+                  {/* Center Circle with Number - Smaller */}
                   <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:block">
                     <motion.div 
-                      className="relative w-24 h-24 rounded-full bg-gradient-to-br from-primary to-secondary p-1"
+                      className="relative w-16 h-16 rounded-full bg-gradient-to-br from-primary to-secondary p-1"
                       initial={{ scale: 0 }}
                       whileInView={{ scale: 1 }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.4, delay: index * 0.1 + 0.2 }}
                     >
                       <div className="w-full h-full rounded-full bg-card flex items-center justify-center">
-                        <span className="text-4xl font-heading font-black bg-gradient-to-br from-primary to-secondary bg-clip-text text-transparent">
+                        <span className="text-2xl font-heading font-black bg-gradient-to-br from-primary to-secondary bg-clip-text text-transparent">
                           {index + 1}
                         </span>
                       </div>
@@ -633,7 +633,7 @@ export default function CasesManagement() {
                   </div>
 
                   {/* Empty space for layout balance */}
-                  <div className="w-full md:w-5/12 hidden md:block" />
+                  <div className="w-full md:w-[47%] hidden md:block" />
                 </motion.div>
               );
             })}
