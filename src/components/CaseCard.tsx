@@ -201,7 +201,7 @@ export const CaseCard = memo(({
         style={{ transformStyle: 'preserve-3d', minHeight: '750px' }}
       >
           {/* Front of Card */}
-        <div className="absolute inset-0 w-full backface-hidden border-2 border-border/50 hover:border-primary/60 transition-all shadow-lg hover:shadow-xl p-5 sm:p-6 rounded-lg flex flex-col bg-card/95 backdrop-blur-sm" style={{ minHeight: '750px' }}>
+        <div className="absolute inset-0 backface-hidden border-2 border-border/50 hover:border-primary/60 transition-all shadow-lg hover:shadow-xl p-5 sm:p-6 rounded-lg flex flex-col bg-card/95 backdrop-blur-sm" style={{ minHeight: '750px' }}>
           <div className="flex items-start justify-between gap-2 mb-5">
             <div className="min-w-0 flex-1">
               <h3 className="font-heading font-bold text-2xl sm:text-3xl md:text-4xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent truncate">
@@ -541,7 +541,7 @@ export const CaseCard = memo(({
 
         {/* Back of Card */}
         <div
-          className="absolute inset-0 w-full backface-hidden rotate-y-180 border-2 border-primary/60 shadow-lg p-6 rounded-lg bg-card/95 backdrop-blur-sm"
+          className="absolute inset-0 backface-hidden rotate-y-180 border-2 border-primary/60 shadow-lg p-6 rounded-lg bg-card/95 backdrop-blur-sm"
           style={{ transform: 'rotateY(180deg)', minHeight: '750px' }}
         >
           <div className="h-full flex flex-col" style={{ minHeight: '580px' }}>

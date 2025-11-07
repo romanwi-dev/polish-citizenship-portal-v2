@@ -452,7 +452,10 @@ const Cases = () => {
                     className="mb-12"
                   >
                     {/* Mobile: Stack vertically, Desktop: Timeline layout with alternating cards */}
-                    <div className={`flex flex-col ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-8`}>
+                    <div className={isLeft 
+                      ? 'flex flex-col md:flex-row items-center gap-8'
+                      : 'flex flex-col md:flex-row-reverse items-center gap-8'
+                    }>
                       {/* Card - Left or Right */}
                       <div className="md:w-5/12">
                         <motion.div
