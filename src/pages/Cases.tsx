@@ -436,7 +436,7 @@ const Cases = () => {
               }
             />
           ) : (
-            <div className="relative max-w-6xl mx-auto">
+            <div className="relative max-w-7xl mx-auto">
               {/* Center line for desktop - vertical timeline */}
               <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block z-0" />
               
@@ -445,18 +445,18 @@ const Cases = () => {
                 return (
                   <motion.div
                     key={clientCase.id}
-                    initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    className="mb-12 last:mb-0"
+                    viewport={{ once: true, margin: "-100px" }}
+                    className="mb-16 last:mb-0"
                   >
                     {/* Mobile: Stack vertically, Desktop: Timeline layout with alternating cards */}
-                    <div className={`flex flex-col md:flex ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} gap-4 md:gap-8 items-center`}>
+                    <div className={`flex flex-col md:${isLeft ? 'flex-row' : 'flex-row-reverse'} gap-4 md:gap-12 items-stretch`}>
                       {/* Card - Left or Right */}
                       <motion.div 
-                        className="w-full md:w-5/12"
-                        whileHover={{ scale: 1.02, y: -5 }}
+                        className="w-full md:w-[42%]"
+                        whileHover={{ scale: 1.02 }}
                         transition={{ duration: 0.3 }}
                       >
                         <CaseCard 
@@ -468,12 +468,12 @@ const Cases = () => {
                       </motion.div>
 
                       {/* Timeline Dot - Center (hidden on mobile) */}
-                      <div className="hidden md:flex w-2/12 flex-shrink-0 justify-center relative z-10">
+                      <div className="hidden md:flex w-[16%] flex-shrink-0 justify-center relative z-10">
                         <div className="w-8 h-8 rounded-full bg-primary border-4 border-background shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300" />
                       </div>
 
                       {/* Empty space on opposite side (hidden on mobile) */}
-                      <div className="hidden md:block w-5/12" />
+                      <div className="hidden md:block md:w-[42%]" />
                     </div>
                   </motion.div>
                 );

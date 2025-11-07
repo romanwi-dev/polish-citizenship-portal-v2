@@ -45,7 +45,7 @@ export function WorkflowStageCard({
 
   return (
     <div 
-      className="relative h-[350px] md:h-[450px]"
+      className="relative h-[450px]"
       style={{ perspective: '1000px' }}
     >
       <div
@@ -128,7 +128,7 @@ export function WorkflowStageCard({
 
             {/* Title */}
             <h3 className={cn(
-              "text-xl md:text-2xl lg:text-3xl font-heading font-black tracking-tight bg-clip-text text-transparent drop-shadow-lg",
+              "text-2xl md:text-3xl font-heading font-black tracking-tight bg-clip-text text-transparent drop-shadow-lg",
               isCompleted 
                 ? "bg-gradient-to-r from-green-500 to-green-600" 
                 : "bg-gradient-to-r from-primary to-secondary"

@@ -131,7 +131,7 @@ export const TranslationWorkflowBoard = () => {
           const Icon = stage.icon;
 
           return (
-            <Card key={stage.id} className="hover:shadow-md transition-shadow">
+            <Card key={stage.id} className="hover:shadow-md transition-shadow h-[450px] flex flex-col">
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-2 flex-1 min-w-0">

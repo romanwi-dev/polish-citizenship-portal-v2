@@ -162,18 +162,19 @@ export default function TranslationWorkflowCards({ caseId }: TranslationWorkflow
             return (
               <motion.div
                 key={step.number}
-                initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true, margin: "-50px" }}
-                className={`mb-12 md:flex ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-8`}
+                viewport={{ once: true, margin: "-100px" }}
+                className="mb-16 last:mb-0"
               >
-                {/* Card */}
-                <div className={`md:w-5/12 ${isLeft ? 'md:text-right' : 'md:text-left'}`}>
-                  <div 
-                    className="relative h-[400px]"
-                    style={{ perspective: '1000px' }}
-                  >
+                <div className={`flex flex-col md:${isLeft ? 'flex-row' : 'flex-row-reverse'} gap-4 md:gap-12 items-stretch`}>
+                  {/* Card */}
+                  <div className="w-full md:w-[42%]">
+                    <div 
+                      className="relative h-[450px]"
+                      style={{ perspective: '1000px' }}
+                    >
                     <div
                       onClick={() => toggleFlip(step.number)}
                       className="absolute inset-0 cursor-pointer transition-transform duration-700"
@@ -266,16 +267,17 @@ export default function TranslationWorkflowCards({ caseId }: TranslationWorkflow
                         </div>
                       </div>
                     </div>
+                    </div>
                   </div>
-                </div>
 
-                {/* Timeline Dot */}
-                <div className="hidden md:block w-2/12 flex-shrink-0 relative">
-                  <div className="w-8 h-8 rounded-full bg-primary border-4 border-background mx-auto relative z-10" />
-                </div>
+                  {/* Timeline Dot */}
+                  <div className="hidden md:flex md:w-[16%] flex-shrink-0 justify-center relative z-10">
+                    <div className="w-8 h-8 rounded-full bg-primary border-4 border-background shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300" />
+                  </div>
 
-                {/* Empty space on other side */}
-                <div className="hidden md:block md:w-5/12" />
+                  {/* Empty space on other side */}
+                  <div className="hidden md:block md:w-[42%]" />
+                </div>
               </motion.div>
             );
           })}
