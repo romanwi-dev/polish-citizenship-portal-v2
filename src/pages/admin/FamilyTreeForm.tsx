@@ -615,31 +615,35 @@ export default function FamilyTreeForm() {
                     </motion.div>
                   </div>
 
-                  {/* Right column: Marital Status ONLY (removed manual children counters) */}
+                  {/* Right column: Children counts */}
                   <div className="space-y-6">
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="space-y-2" onDoubleClick={() => handleInputChange("applicant_is_married", null)}>
-                      <Label className={isLargeFonts ? "text-2xl" : ""}>Marital status</Label>
-                      <Select value={formData?.applicant_is_married === true ? "Married" : formData?.applicant_is_married === false ? "Single" : ""} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
-                        <SelectTrigger 
-                          className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs"
-                          style={{
-                            boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
-                          }}
-                        >
-                          <SelectValue placeholder="Select" className="text-xs" />
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="space-y-2" onDoubleClick={() => handleInputChange("children_count", null)}>
+                      <Label className={isLargeFonts ? "text-2xl" : ""}>Total children</Label>
+                      <Select value={formData?.children_count?.toString() || ""} onValueChange={(value) => handleInputChange("children_count", parseInt(value))}>
+                        <SelectTrigger className="h-16 border-2 hover-glow bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs">
+                          <SelectValue placeholder="Select" />
                         </SelectTrigger>
                         <SelectContent className="bg-background border-2 z-50">
-                          <SelectItem value="Married" className="text-xs cursor-pointer">Married</SelectItem>
-                          <SelectItem value="Single" className="text-xs cursor-pointer">Single</SelectItem>
+                          {[0,1,2,3,4,5,6,7,8,9,10].map(n => <SelectItem key={n} value={n.toString()}>{n}</SelectItem>)}
                         </SelectContent>
                       </Select>
                     </motion.div>
+
+                    {formData?.children_count > 0 && (
+                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-2" onDoubleClick={() => handleInputChange("minor_children_count", null)}>
+                        <Label className={isLargeFonts ? "text-2xl" : ""}>Minors</Label>
+                        <Select value={formData?.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
+                          <SelectTrigger className="h-16 border-2 hover-glow bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs">
+                            <SelectValue placeholder="Select" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-background border-2 z-50">
+                            {Array.from({length: formData.children_count + 1}, (_, i) => i).map(n => 
+                              <SelectItem key={n} value={n.toString()}>{n}</SelectItem>
+                            )}
+                          </SelectContent>
+                        </Select>
+                      </motion.div>
+                    )}
                   </div>
                 </div>
             </div>
