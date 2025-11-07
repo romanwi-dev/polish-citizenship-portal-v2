@@ -48,10 +48,10 @@ export const sanitizeMasterData = (formData: any): any => {
     // Children flags (derived from children_count) - NONE of these exist in DB
     'has_children',
     'has_minor_children',
-    'minor_children_count', // UI only - NOT in schema
     'applicant_has_children',
     'applicant_has_minor_children',
     'applicant_minor_children_count', // UI only - NOT in schema
+    // NOTE: minor_children_count IS a real DB field and should be saved!
     'has_child_1', 'has_child_2', 'has_child_3', 'has_child_4', 'has_child_5',
     'has_child_6', 'has_child_7', 'has_child_8', 'has_child_9', 'has_child_10',
   ];

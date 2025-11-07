@@ -538,7 +538,7 @@ export default function POAForm() {
             >
               <div className="border-b border-border/50 pb-6">
                 <h2 className="text-4xl md:text-5xl font-heading font-bold text-gray-600 dark:text-gray-400">
-                  {poaFormConfigs.minor.title} - Child {childNum} {minorChildrenCount > 1 ? `(${index + 1} of ${minorChildrenCount})` : ''}
+                  POA Minor {childNum}
                 </h2>
                 <p className="text-sm text-muted-foreground mt-2">
                   Minor child {childNum} (DOB: {formData[`child_${childNum}_dob`] || 'Not entered'})
