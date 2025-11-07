@@ -1,6 +1,6 @@
 import { useState, memo } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Edit, MoreVertical, Copy, Pause, Ban, Archive, Trash2, Eye, Radio, FileEdit, Award, Zap, Star, Edit2 } from "lucide-react";
+import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Edit, MoreVertical, Copy, Pause, Ban, Archive, Trash2, Eye, Radio, FileEdit, Award, Zap, Star, Edit2, FolderOpen } from "lucide-react";
 import { useUserRole } from "@/hooks/useUserRole";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -460,7 +460,7 @@ export const CaseCard = memo(({
                 </span>
               </Button>
 
-              {/* Action Buttons - 2 rows of 3 */}
+              {/* Action Buttons - 3 rows of 3 */}
               <div className="grid grid-cols-3 gap-2 pt-3 border-t border-border/30">
                 <Button
                   size="sm"
@@ -532,6 +532,23 @@ export const CaseCard = memo(({
                   >
                     <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-medium">
                       Stage
+                    </span>
+                  </Button>
+                  <Button
+                    size="sm"
+                    className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border-2 border-emerald-500/50 dark:border-emerald-400/30 min-h-[44px] flex items-center justify-center gap-1.5 px-3 whitespace-nowrap flex-shrink-0 bg-emerald-500/5 dark:bg-transparent col-span-3"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (clientCase.dropbox_path) {
+                        window.open(`https://www.dropbox.com/home${clientCase.dropbox_path}`, '_blank');
+                      } else {
+                        toast.error('No Dropbox path configured for this case');
+                      }
+                    }}
+                  >
+                    <FolderOpen className="h-3.5 w-3.5" />
+                    <span className="relative z-10 bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-500 dark:from-emerald-400 dark:via-emerald-300 dark:to-teal-300 bg-clip-text text-transparent flex items-center justify-center font-medium">
+                      Open Dropbox Folder
                     </span>
                   </Button>
                 </div>
