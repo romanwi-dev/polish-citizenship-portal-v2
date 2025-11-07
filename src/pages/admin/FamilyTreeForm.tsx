@@ -590,9 +590,9 @@ export default function FamilyTreeForm() {
                       </Select>
                     </motion.div>
 
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-2" onDoubleClick={() => handleInputChange("applicant_is_married", null)}>
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-2" onDoubleClick={() => handleInputChange("applicant_marital_status", null)}>
                       <Label className={isLargeFonts ? "text-2xl" : ""}>Marital status</Label>
-                      <Select value={formData?.applicant_is_married === true ? "Married" : formData?.applicant_is_married === false ? "Single" : ""} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
+                      <Select value={formData?.applicant_marital_status || ""} onValueChange={(value) => handleInputChange("applicant_marital_status", value)}>
                         <SelectTrigger 
                           className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs"
                           style={{
@@ -618,7 +618,7 @@ export default function FamilyTreeForm() {
                   {/* Right column: Children counts */}
                   <div className="space-y-6">
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="space-y-2" onDoubleClick={() => handleInputChange("children_count", null)}>
-                      <Label className={isLargeFonts ? "text-2xl" : ""}>Total children</Label>
+                      <Label className={isLargeFonts ? "text-2xl" : ""}>Children</Label>
                       <Select value={formData?.children_count?.toString() || ""} onValueChange={(value) => handleInputChange("children_count", parseInt(value))}>
                         <SelectTrigger className="h-16 border-2 hover-glow bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs">
                           <SelectValue placeholder="Select" />
