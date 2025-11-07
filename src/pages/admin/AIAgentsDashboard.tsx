@@ -8,9 +8,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Activity, TrendingUp, Clock, AlertCircle, CheckCircle2, XCircle, Search, Filter } from "lucide-react";
+import { Activity, TrendingUp, Clock, AlertCircle, CheckCircle2, XCircle, Search, Filter, Brain } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { useNavigate } from "react-router-dom";
+import { ProjectMemoryDashboard } from "@/components/admin/ProjectMemoryDashboard";
 
 export default function AIAgentsDashboard() {
   const navigate = useNavigate();
@@ -49,12 +50,26 @@ export default function AIAgentsDashboard() {
         <div>
           <h1 className="text-3xl font-bold">AI Agents Dashboard</h1>
           <p className="text-muted-foreground">
-            Monitor all AI agent activity, performance metrics, and usage analytics
+            Real-time monitoring and system-wide intelligence for all AI agents
           </p>
         </div>
 
-        {/* KPI Cards */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {/* Tabs */}
+        <Tabs defaultValue="activity" className="space-y-6">
+          <TabsList>
+            <TabsTrigger value="activity" className="gap-2">
+              <Activity className="h-4 w-4" />
+              <span>Activity Log</span>
+            </TabsTrigger>
+            <TabsTrigger value="intelligence" className="gap-2">
+              <Brain className="h-4 w-4" />
+              <span>System Intelligence</span>
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="activity" className="space-y-6">
+            {/* KPI Cards */}
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Requests</CardTitle>
@@ -205,6 +220,12 @@ export default function AIAgentsDashboard() {
             )}
           </CardContent>
         </Card>
+          </TabsContent>
+
+          <TabsContent value="intelligence">
+            <ProjectMemoryDashboard />
+          </TabsContent>
+        </Tabs>
       </div>
     </AdminLayout>
   );
