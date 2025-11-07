@@ -2,11 +2,14 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { Sparkles, Type, User, ArrowLeft, BookOpen, Maximize2, Minimize2 } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { StaticHeritagePlaceholder } from "@/components/heroes/StaticHeritagePlaceholder";
+
+const StaticHeritage = lazy(() => import("@/components/heroes/StaticHeritage").then(m => ({ default: m.StaticHeritage })));
 import { toast } from "sonner";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { useFormManager } from "@/hooks/useFormManager";
@@ -64,7 +67,14 @@ export default function FamilyHistoryForm() {
   }
 
   return (
-    <div className={cn("relative min-h-full", isLargeFonts && "text-lg")}>
+    <div className={cn("relative min-h-screen overflow-x-hidden", isLargeFonts && "text-lg")}>
+      {/* Global Background */}
+      <div className="fixed inset-0 z-0">
+        <Suspense fallback={<StaticHeritagePlaceholder />}>
+          <StaticHeritage />
+        </Suspense>
+      </div>
+      
       <div className="relative z-10 pt-2 px-3 pb-3 md:p-6">
         <div className="animate-fade-in-up mb-1 md:mb-6">
           <div className="flex flex-col gap-2 md:gap-4 pb-2 md:pb-6">

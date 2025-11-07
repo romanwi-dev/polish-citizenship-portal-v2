@@ -10,13 +10,16 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { Sparkles, Type, ArrowLeft, Maximize2, Minimize2, User, Download, HelpCircle } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { StaticHeritagePlaceholder } from "@/components/heroes/StaticHeritagePlaceholder";
+
+const StaticHeritage = lazy(() => import("@/components/heroes/StaticHeritage").then(m => ({ default: m.StaticHeritage })));
 import { DateField } from "@/components/DateField";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { Textarea } from "@/components/ui/textarea";
@@ -185,7 +188,14 @@ export default function CivilRegistryForm() {
         </motion.div>
       </div>;
   }
-  return <div className={cn("relative min-h-full", isLargeFonts && "text-lg")}>
+  return <div className={cn("relative min-h-screen overflow-x-hidden", isLargeFonts && "text-lg")}>
+      {/* Global Background */}
+      <div className="fixed inset-0 z-0">
+        <Suspense fallback={<StaticHeritagePlaceholder />}>
+          <StaticHeritage />
+        </Suspense>
+      </div>
+      
       <div className="relative z-10 pt-2 px-3 pb-3 md:p-6">
         {/* Header */}
         <motion.div 

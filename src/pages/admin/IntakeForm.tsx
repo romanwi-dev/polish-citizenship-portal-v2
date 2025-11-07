@@ -2,11 +2,14 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Save, Sparkles, Award, Building, FileCheck, BookOpen, GitBranch } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState, useRef, useEffect, useLayoutEffect } from "react";
+import { useState, useRef, useEffect, useLayoutEffect, lazy, Suspense } from "react";
 import { Loader2, Type, Maximize2, Minimize2, User, Phone, MapPin, Plane, Users, FolderOpen, MessageSquare, ArrowLeft, HelpCircle } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { StaticHeritagePlaceholder } from "@/components/heroes/StaticHeritagePlaceholder";
+
+const StaticHeritage = lazy(() => import("@/components/heroes/StaticHeritage").then(m => ({ default: m.StaticHeritage })));
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { validateEmail, validatePassport } from "@/utils/validators";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
@@ -104,7 +107,14 @@ export default function IntakeForm() {
   }
 
   return (
-    <div className={cn("relative min-h-full", isLargeFonts && "text-lg")}>
+    <div className={cn("relative min-h-screen overflow-x-hidden", isLargeFonts && "text-lg")}>
+      {/* Global Background */}
+      <div className="fixed inset-0 z-0">
+        <Suspense fallback={<StaticHeritagePlaceholder />}>
+          <StaticHeritage />
+        </Suspense>
+      </div>
+      
       <div className="relative z-10 pt-2 px-3 pb-3 md:p-6">
         {/* Header */}
         <motion.div 

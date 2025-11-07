@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,9 @@ import { Step4Family } from "@/components/intake-wizard/Step4Family";
 import { Step5PolishConnection } from "@/components/intake-wizard/Step5PolishConnection";
 import { Step6Additional } from "@/components/intake-wizard/Step6Additional";
 import { Step7Review } from "@/components/intake-wizard/Step7Review";
+import { StaticHeritagePlaceholder } from "@/components/heroes/StaticHeritagePlaceholder";
+
+const StaticHeritage = lazy(() => import("@/components/heroes/StaticHeritage").then(m => ({ default: m.StaticHeritage })));
 
 export default function ClientIntakeWizard() {
   const { token } = useParams();
@@ -273,8 +276,15 @@ export default function ClientIntakeWizard() {
   }
 
   return (
-    <div className="min-h-screen py-8">
-      <div className="container max-w-4xl mx-auto px-4">
+    <div className="min-h-screen overflow-x-hidden relative py-8">
+      {/* Global Background */}
+      <div className="fixed inset-0 z-0">
+        <Suspense fallback={<StaticHeritagePlaceholder />}>
+          <StaticHeritage />
+        </Suspense>
+      </div>
+      
+      <div className="container max-w-4xl mx-auto px-4 relative z-10">
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl md:text-3xl font-bold">
