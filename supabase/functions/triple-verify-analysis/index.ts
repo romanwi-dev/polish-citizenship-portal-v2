@@ -81,7 +81,6 @@ Provide your response in this JSON format:
           }
         ],
         response_format: { type: "json_object" },
-        temperature: 0.3,
       }),
     });
 
@@ -116,7 +115,6 @@ Provide your response in this JSON format:
           }
         ],
         response_format: { type: "json_object" },
-        temperature: 0.3,
       }),
     });
 
