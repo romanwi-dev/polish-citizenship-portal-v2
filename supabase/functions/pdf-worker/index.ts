@@ -143,9 +143,9 @@ Deno.serve(async () => {
 
   const sb = createClient(url, key);
 
-  // Pick one queued job
+  // Pick one queued job from pdf_queue
   const { data: jobs } = await sb
-    .from('pdf_jobs')
+    .from('pdf_queue')
     .select('*')
     .eq('status', 'queued')
     .order('created_at', { ascending: true })
@@ -159,26 +159,26 @@ Deno.serve(async () => {
 
   console.log(`[PDF-WORKER] Processing job ${job.id} for ${job.case_id}/${job.template_type}`);
 
-  // Mark as running
+  // Mark as processing
   await sb
-    .from('pdf_jobs')
-    .update({ status: 'running', updated_at: nowIso() })
+    .from('pdf_queue')
+    .update({ status: 'processing', updated_at: nowIso() })
     .eq('id', job.id);
 
   try {
     // Fetch case data
-    const { data: masterData } = await sb
+    const { data: masterData, error: caseError } = await sb
       .from('master_table')
       .select('*')
       .eq('case_id', job.case_id)
       .single();
 
-    if (!masterData) {
-      throw new Error('Case data not found');
+    if (caseError || !masterData) {
+      throw new Error(`Case data not found: ${caseError?.message}`);
     }
 
     // Get template
-    const templateName = `${job.template_type}.pdf`;
+    const templateName = `templates/${job.template_type}.pdf`;
     const { data: templateData, error: downloadError } = await sb.storage
       .from('pdf-templates')
       .download(templateName);
@@ -203,45 +203,52 @@ Deno.serve(async () => {
       throw new Error(`Upload failed: ${uploadError.message}`);
     }
 
-    const size_bytes = filledPdfBytes.byteLength ?? filledPdfBytes.length ?? 0;
+    // Get signed URL (valid for 1 hour)
+    const { data: urlData } = await sb.storage
+      .from('generated-pdfs')
+      .createSignedUrl(path, 3600);
 
-    // Create artifact
-    await sb.from('pdf_artifacts').insert({
-      artifact_key: job.artifact_key,
-      path,
-      size_bytes,
-    });
+    if (!urlData?.signedUrl) {
+      throw new Error('Failed to generate signed URL');
+    }
 
-    // Mark job as succeeded
+    // Mark job as completed
     await sb
-      .from('pdf_jobs')
-      .update({ status: 'succeeded', updated_at: nowIso() })
+      .from('pdf_queue')
+      .update({ 
+        status: 'completed', 
+        pdf_url: urlData.signedUrl,
+        completed_at: nowIso(),
+        updated_at: nowIso()
+      })
       .eq('id', job.id);
 
     console.log(`[PDF-WORKER] ✓ Job ${job.id} completed successfully`);
     return new Response('ok');
   } catch (e: unknown) {
     const error = e as Error;
-    const attempts = (job.attempts ?? 0) + 1;
-    const failed = attempts >= 5;
+    const retryCount = (job.retry_count ?? 0) + 1;
+    const maxRetries = 3;
     const errorMsg = String(error?.message ?? error);
 
-    console.error(`[PDF-WORKER] Job ${job.id} failed (attempt ${attempts}):`, errorMsg);
+    console.error(`[PDF-WORKER] Job ${job.id} failed (retry ${retryCount}/${maxRetries}):`, errorMsg);
 
-    await sb.from('pdf_jobs').update({
-      status: failed ? 'failed' : 'queued',
-      attempts,
-      last_error: errorMsg,
-      updated_at: nowIso(),
-    }).eq('id', job.id);
-
-    if (failed) {
-      await sb.from('pdf_dead_letters').insert({
-        job_id: job.id,
-        artifact_key: job.artifact_key,
-        last_error: errorMsg,
-        payload: job,
-      });
+    if (retryCount < maxRetries) {
+      // Requeue for retry
+      await sb.from('pdf_queue').update({
+        status: 'queued',
+        retry_count: retryCount,
+        error_message: errorMsg,
+        updated_at: nowIso(),
+      }).eq('id', job.id);
+    } else {
+      // Max retries exceeded
+      await sb.from('pdf_queue').update({
+        status: 'failed',
+        error_message: `Max retries exceeded: ${errorMsg}`,
+        completed_at: nowIso(),
+        updated_at: nowIso(),
+      }).eq('id', job.id);
     }
 
     return new Response('error', { status: 500 });

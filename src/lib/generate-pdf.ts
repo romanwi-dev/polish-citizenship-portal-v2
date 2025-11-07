@@ -73,62 +73,72 @@ export async function generatePdf({
 
   try {
     setIsGenerating(true);
-    toast.loading('Preparing your PDF…');
+    toast.loading('Starting PDF generation…');
 
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    const response = await fetch(`${supabaseUrl}/functions/v1/fill-pdf`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ caseId, templateType }),
+    // Step 1: Enqueue the PDF job (returns immediately)
+    const { data: enqueueData, error: enqueueError } = await supabase.functions.invoke('pdf-enqueue', {
+      body: { caseId, templateType, filename }
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(errorText);
+    if (enqueueError || !enqueueData?.success) {
+      throw new Error(enqueueData?.error || enqueueError?.message || 'Failed to queue PDF job');
     }
 
-    const data = await response.json();
+    const jobId = enqueueData.jobId;
+    console.log('PDF job queued:', jobId);
+    
+    toast.dismiss();
+    toast.loading('Generating PDF… this may take a moment');
 
-    if (data?.url) {
-      redirectTab(tab, data.url);
+    // Step 2: Poll for job completion (check every 2 seconds)
+    const maxAttempts = 60; // 2 minutes max
+    let attempts = 0;
+    
+    const checkJobStatus = async (): Promise<boolean> => {
+      attempts++;
+      
+      const { data: job, error: jobError } = await supabase
+        .from('pdf_queue')
+        .select('status, pdf_url, error_message')
+        .eq('id', jobId)
+        .single();
 
-      // HEAD ping — refresh on 401/403/0
-      try {
-        const head = await fetch(data.url, { method: 'HEAD' });
-        if (head.status === 401 || head.status === 403) {
-          const fresh = await refreshUrl(supabase, caseId, templateType);
-          redirectTab(tab, fresh);
-        }
-      } catch {
-        const fresh = await refreshUrl(supabase, caseId, templateType);
-        redirectTab(tab, fresh);
+      if (jobError) {
+        console.error('Error checking job status:', jobError);
+        return false;
       }
 
-      toast.dismiss();
-      toast.success('PDF ready');
-      return;
-    }
+      if (job.status === 'completed' && job.pdf_url) {
+        // Success - open PDF
+        redirectTab(tab, job.pdf_url);
+        toast.dismiss();
+        toast.success('PDF ready!');
+        setIsGenerating(false);
+        return true;
+      }
 
-    if (data?.pdf) {
-      const href = base64ToDataUrl(data.pdf);
-      redirectTab(tab, href);
-      toast.dismiss();
-      toast.success('PDF ready');
-      return;
-    }
+      if (job.status === 'failed') {
+        // Failed
+        throw new Error(job.error_message || 'PDF generation failed');
+      }
 
-    if (data?.code || data?.message) {
-      throw { message: data.message, code: data.code };
-    }
-    throw new Error('No URL or PDF returned');
+      // Still processing - continue polling
+      if (attempts >= maxAttempts) {
+        throw new Error('PDF generation timeout - please check queue status');
+      }
+
+      // Wait 2 seconds and check again
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      return checkJobStatus();
+    };
+
+    await checkJobStatus();
+
   } catch (e: any) {
     try { tab?.close(); } catch { }
     toast.dismiss();
     toast.error(userMessage(e?.code, e?.message ?? 'PDF generation failed'));
     console.error('PDF error', e);
-  } finally {
     setIsGenerating(false);
   }
 }

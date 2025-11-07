@@ -3708,6 +3708,56 @@ export type Database = {
         }
         Relationships: []
       }
+      pdf_queue: {
+        Row: {
+          case_id: string
+          completed_at: string | null
+          created_at: string
+          error_message: string | null
+          id: string
+          metadata: Json | null
+          pdf_url: string | null
+          retry_count: number | null
+          status: string
+          template_type: string
+          updated_at: string
+        }
+        Insert: {
+          case_id: string
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          metadata?: Json | null
+          pdf_url?: string | null
+          retry_count?: number | null
+          status?: string
+          template_type: string
+          updated_at?: string
+        }
+        Update: {
+          case_id?: string
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          metadata?: Json | null
+          pdf_url?: string | null
+          retry_count?: number | null
+          status?: string
+          template_type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pdf_queue_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       performance_logs: {
         Row: {
           connection_type: string | null
@@ -5616,6 +5666,7 @@ export type Database = {
         }[]
       }
       cleanup_old_health_data: { Args: never; Returns: undefined }
+      cleanup_old_pdf_queue_jobs: { Args: never; Returns: undefined }
       cleanup_rate_limit_logs: { Args: never; Returns: undefined }
       create_batch_upload: {
         Args: { p_batch_id: string; p_case_id: string; p_total_files: number }
@@ -5780,6 +5831,7 @@ export type Database = {
         Args: { p_document_id: string }
         Returns: Json
       }
+      reset_stuck_pdf_jobs: { Args: never; Returns: undefined }
       safe_document_reupload: {
         Args: {
           p_case_id: string
