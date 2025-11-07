@@ -452,12 +452,9 @@ const Cases = () => {
                     className="mb-12"
                   >
                     {/* Mobile: Stack vertically, Desktop: Timeline layout with alternating cards */}
-                    <div className={isLeft 
-                      ? 'flex flex-col md:flex-row items-center gap-8'
-                      : 'flex flex-col md:flex-row-reverse items-center gap-8'
-                    }>
+                    <div className="flex flex-col md:flex-row items-center gap-8">
                       {/* Card - Left or Right */}
-                      <div className="md:w-5/12">
+                      <div className={`md:w-5/12 ${isLeft ? 'md:order-1' : 'md:order-3'}`}>
                         <motion.div
                           whileHover={{ scale: 1.02 }}
                           transition={{ duration: 0.3 }}
@@ -472,7 +469,7 @@ const Cases = () => {
                       </div>
 
                       {/* Timeline Dot - Center (hidden on mobile) */}
-                      <div className="hidden md:flex md:w-2/12 justify-center">
+                      <div className="hidden md:flex md:w-2/12 md:order-2 justify-center">
                         <motion.div
                           initial={{ scale: 0 }}
                           whileInView={{ scale: 1 }}
@@ -483,7 +480,7 @@ const Cases = () => {
                       </div>
 
                       {/* Empty space on opposite side (hidden on mobile) */}
-                      <div className="hidden md:block md:w-5/12" />
+                      <div className={`hidden md:block md:w-5/12 ${isLeft ? 'md:order-3' : 'md:order-1'}`} />
                     </div>
                   </motion.div>
                 );
