@@ -437,58 +437,48 @@ const Cases = () => {
             />
           ) : (
             <div className="relative max-w-6xl mx-auto">
-              {/* Central Line - Same as homepage */}
+              {/* Central Line */}
               <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-primary via-secondary to-accent transform -translate-x-1/2" />
               
-              {/* Timeline Steps - Same structure as homepage */}
+              {/* Timeline Cards - ALL on LEFT side with space on RIGHT */}
               <div className="space-y-12">
-                {filteredCases.map((clientCase, index) => {
-                  const isEven = index % 2 === 0;
-                  
-                  return (
-                    <div key={clientCase.id} className={isEven 
-                      ? 'relative flex items-center md:flex-row'
-                      : 'relative flex items-center md:flex-row-reverse'
-                    }>
-                      {/* Content Card */}
-                      <div className={isEven 
-                        ? 'w-full md:w-5/12 md:pr-12'
-                        : 'w-full md:w-5/12 md:pl-12'
-                      }>
-                        <motion.div
-                          initial={{ opacity: 0, x: isEven ? -50 : 50 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.6, delay: index * 0.1 }}
-                          viewport={{ once: true, margin: "-50px" }}
-                          whileHover={{ scale: 1.02 }}
-                        >
-                          <CaseCard 
-                            clientCase={clientCase}
-                            onEdit={handleEdit}
-                            onDelete={handleDeleteCase}
-                            onUpdateStatus={handleUpdateStatus}
-                          />
-                        </motion.div>
-                      </div>
-
-                      {/* Center Node - Same as homepage */}
-                      <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-8 h-8 items-center justify-center">
-                        <motion.div
-                          initial={{ scale: 0 }}
-                          whileInView={{ scale: 1 }}
-                          transition={{ duration: 0.4, delay: index * 0.1 + 0.2 }}
-                          viewport={{ once: true }}
-                          className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary shadow-glow flex items-center justify-center"
-                        >
-                          <div className="w-4 h-4 rounded-full bg-background" />
-                        </motion.div>
-                      </div>
-
-                      {/* Spacer for alternating layout */}
-                      <div className="hidden md:block w-5/12" />
+                {filteredCases.map((clientCase, index) => (
+                  <div key={clientCase.id} className="relative flex items-center md:flex-row">
+                    {/* Content Card - Always on LEFT */}
+                    <div className="w-full md:w-5/12 md:pr-12">
+                      <motion.div
+                        initial={{ opacity: 0, x: -50 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.6, delay: index * 0.1 }}
+                        viewport={{ once: true, margin: "-50px" }}
+                        whileHover={{ scale: 1.02 }}
+                      >
+                        <CaseCard 
+                          clientCase={clientCase}
+                          onEdit={handleEdit}
+                          onDelete={handleDeleteCase}
+                          onUpdateStatus={handleUpdateStatus}
+                        />
+                      </motion.div>
                     </div>
-                  );
-                })}
+
+                    {/* Center Node */}
+                    <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-8 h-8 items-center justify-center">
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        whileInView={{ scale: 1 }}
+                        transition={{ duration: 0.4, delay: index * 0.1 + 0.2 }}
+                        viewport={{ once: true }}
+                        className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary shadow-glow flex items-center justify-center"
+                      >
+                        <div className="w-4 h-4 rounded-full bg-background" />
+                      </motion.div>
+                    </div>
+
+                    {/* Empty Space on RIGHT - for future implementations */}
+                    <div className="hidden md:block w-5/12" />
+                  </div>
+                ))}
               </div>
             </div>
           )}
