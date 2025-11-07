@@ -202,7 +202,7 @@ export default function IntakeForm() {
                     <span className="text-blue-600 dark:text-blue-400">Spouse</span>
                   </TabsTrigger>
                 )}
-                {(formData?.minor_children_count > 0) && (
+                {formData?.minor_children_count > 0 && (
                   <TabsTrigger value="children" className="flex-shrink-0 md:flex-1">
                     <span className="text-blue-600 dark:text-blue-400">Children</span>
                   </TabsTrigger>
@@ -236,7 +236,7 @@ export default function IntakeForm() {
                     <SpouseSection {...contentProps} />
                   </div>
                 )}
-                {(formData?.minor_children_count > 0) && (
+                {formData?.minor_children_count > 0 && (
                   <div ref={(el) => sectionRefs.current.children = el} className="border-b border-border/10">
                     <ChildrenSection {...contentProps} />
                   </div>
@@ -268,7 +268,7 @@ export default function IntakeForm() {
                     <SpouseSection {...contentProps} />
                   </TabsContent>
                 )}
-                {(formData?.minor_children_count > 0) && (
+                {formData?.minor_children_count > 0 && (
                   <TabsContent value="children" className="mt-0">
                     <ChildrenSection {...contentProps} />
                   </TabsContent>
