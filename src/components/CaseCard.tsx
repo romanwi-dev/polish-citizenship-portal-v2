@@ -541,7 +541,7 @@ export const CaseCard = memo(({
 
         {/* Back of Card */}
         <div
-          className="absolute inset-0 backface-hidden rotate-y-180 border-2 border-primary/60 shadow-lg p-6 rounded-lg bg-card/95 backdrop-blur-sm"
+          className="absolute inset-0 backface-hidden rotate-y-180 border-2 border-primary/60 shadow-lg p-6 rounded-lg glass-card"
           style={{ transform: 'rotateY(180deg)', minHeight: '750px' }}
         >
           <div className="h-full flex flex-col" style={{ minHeight: '580px' }}>
