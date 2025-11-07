@@ -434,22 +434,51 @@ const Cases = () => {
               }
             />
           ) : (
-            <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-6">
-              {filteredCases.map((clientCase, index) => (
-                <motion.div
-                  key={clientCase.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <CaseCard 
-                    clientCase={clientCase}
-                    onEdit={handleEdit}
-                    onDelete={handleDeleteCase}
-                    onUpdateStatus={handleUpdateStatus}
-                  />
-                </motion.div>
-              ))}
+            <div className="relative max-w-5xl mx-auto">
+              {/* Center line - same as homepage timeline */}
+              <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block" />
+
+              {filteredCases.map((clientCase, index) => {
+                const isEven = index % 2 === 0;
+                
+                return (
+                  <div 
+                    key={clientCase.id} 
+                    className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-8 ${isEven ? 'md:flex-row-reverse' : ''}`}
+                  >
+                    {/* Content Card */}
+                    <div className="w-full md:w-5/12">
+                      <motion.div
+                        initial={{ opacity: 0, x: isEven ? 100 : -100 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                      >
+                        <CaseCard 
+                          clientCase={clientCase}
+                          onEdit={handleEdit}
+                          onDelete={handleDeleteCase}
+                          onUpdateStatus={handleUpdateStatus}
+                        />
+                      </motion.div>
+                    </div>
+
+                    {/* Center Circle with Number - same as homepage */}
+                    <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:block">
+                      <div className="relative w-24 h-24 rounded-full bg-gradient-to-br from-primary to-secondary p-1">
+                        <div className="w-full h-full rounded-full bg-card flex items-center justify-center">
+                          <span className="text-4xl font-heading font-black bg-gradient-to-br from-primary to-secondary bg-clip-text text-transparent">
+                            {index + 1}
+                          </span>
+                        </div>
+                        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 blur-xl -z-10" />
+                      </div>
+                    </div>
+
+                    {/* Empty space for layout balance */}
+                    <div className="w-full md:w-5/12 hidden md:block" />
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
