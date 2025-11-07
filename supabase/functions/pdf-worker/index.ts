@@ -5,6 +5,12 @@
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { PDFDocument } from 'https://esm.sh/pdf-lib@1.17.1';
+import { POA_ADULT_PDF_MAP } from '../_shared/mappings/poa-adult.ts';
+import { POA_MINOR_PDF_MAP } from '../_shared/mappings/poa-minor.ts';
+import { POA_SPOUSES_PDF_MAP } from '../_shared/mappings/poa-spouses.ts';
+import { CITIZENSHIP_PDF_MAP } from '../_shared/mappings/citizenship.ts';
+import { FAMILY_TREE_PDF_MAP } from '../_shared/mappings/family-tree.ts';
+import { UZUPELNIENIE_PDF_MAP } from '../_shared/mappings/uzupelnienie.ts';
 
 // In-memory template cache (1 hour TTL)
 const templateCache = new Map<string, { buffer: Uint8Array; timestamp: number }>();
@@ -33,45 +39,20 @@ function formatDate(value: any): string {
   return `${dd}.${mm}.${yyyy}`;
 }
 
-const POA_ADULT_PDF_MAP: Record<string, string> = {
-  'applicant_given_names': 'applicant_first_name',
-  'applicant_surname': 'applicant_last_name',
-  'passport_number': 'applicant_passport_number',
-  'poa_date': 'poa_date_filed',
-};
-
-const POA_MINOR_PDF_MAP: Record<string, string> = {
-  'applicant_given_names': 'applicant_first_name',
-  'applicant_surname': 'applicant_last_name',
-  'passport_number': 'applicant_passport_number',
-  'minor_given_names': 'child_1_first_name',
-  'minor_surname': 'child_1_last_name',
-  'poa_date': 'poa_date_filed',
-};
-
-const POA_SPOUSES_PDF_MAP: Record<string, string> = {
-  'imie_nazwisko_wniosko': 'applicant_first_name|applicant_last_name',
-  'applicant_given_names': 'applicant_first_name',
-  'applicant_surname': 'applicant_last_name',
-  'passport_number': 'applicant_passport_number',
-  'nr_dok_tozsamosci': 'applicant_passport_number',
-  'spouse_given_names': 'spouse_first_name',
-  'spouse_surname': 'spouse_last_name',
-  'spouse_passport_number': 'spouse_passport_number',
-  'husband_surname': 'husband_last_name_after_marriage',
-  'wife_surname': 'wife_last_name_after_marriage',
-  'minor_surname': 'child_1_last_name',
-  'imie_nazwisko_dziecka': 'child_1_first_name|child_1_last_name',
-  'data_pelnomocnictwa': 'poa_date_filed',
-  'poa_date': 'poa_date_filed',
-};
-
 function getFieldMap(templateType: string): Record<string, string> {
   switch (templateType) {
     case 'poa-adult': return POA_ADULT_PDF_MAP;
     case 'poa-minor': return POA_MINOR_PDF_MAP;
     case 'poa-spouses': return POA_SPOUSES_PDF_MAP;
-    default: return {};
+    case 'citizenship': return CITIZENSHIP_PDF_MAP;
+    case 'family-tree': return FAMILY_TREE_PDF_MAP;
+    case 'uzupelnienie': return UZUPELNIENIE_PDF_MAP;
+    case 'registration': return UZUPELNIENIE_PDF_MAP;
+    case 'transcription': return UZUPELNIENIE_PDF_MAP;
+    case 'umiejscowienie': return UZUPELNIENIE_PDF_MAP;
+    default: 
+      console.warn(`⚠️ Unknown template: ${templateType}`);
+      return {};
   }
 }
 
