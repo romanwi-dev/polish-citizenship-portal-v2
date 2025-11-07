@@ -584,7 +584,7 @@ export default function CasesManagement() {
             }
           />
         ) : (
-          <div className="relative max-w-5xl mx-auto">
+          <div className="relative w-full">
             {/* Center line - same as homepage timeline */}
             <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block" />
 
