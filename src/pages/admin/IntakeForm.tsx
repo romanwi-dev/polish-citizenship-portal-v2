@@ -197,12 +197,16 @@ export default function IntakeForm() {
                 <TabsTrigger value="applicant" className="flex-shrink-0 md:flex-1">
                   <span className="text-blue-600 dark:text-blue-400">Applicant</span>
                 </TabsTrigger>
-                <TabsTrigger value="spouse" className="flex-shrink-0 md:flex-1">
-                  <span className="text-blue-600 dark:text-blue-400">Spouse</span>
-                </TabsTrigger>
-                <TabsTrigger value="children" className="flex-shrink-0 md:flex-1">
-                  <span className="text-blue-600 dark:text-blue-400">Children</span>
-                </TabsTrigger>
+                {formData?.applicant_marital_status === "Married" && (
+                  <TabsTrigger value="spouse" className="flex-shrink-0 md:flex-1">
+                    <span className="text-blue-600 dark:text-blue-400">Spouse</span>
+                  </TabsTrigger>
+                )}
+                {(formData?.minor_children_count > 0) && (
+                  <TabsTrigger value="children" className="flex-shrink-0 md:flex-1">
+                    <span className="text-blue-600 dark:text-blue-400">Children</span>
+                  </TabsTrigger>
+                )}
                 <TabsTrigger value="passport" className="flex-shrink-0 md:flex-1">
                   <span className="text-blue-600 dark:text-blue-400">Passport</span>
                 </TabsTrigger>
