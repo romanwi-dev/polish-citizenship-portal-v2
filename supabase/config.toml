@@ -216,4 +216,10 @@ verify_jwt = false
 [functions.pdf-generation-agent.cron]
 schedule = "*/30 * * * *"
 
+[functions.subagent-supervisor]
+verify_jwt = false
+
+[functions.subagent-supervisor.cron]
+schedule = "*/15 * * * *"
+
 
