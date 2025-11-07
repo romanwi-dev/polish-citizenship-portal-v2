@@ -189,3 +189,12 @@ verify_jwt = false
 [functions.lock-pdf]
 verify_jwt = true
 
+[functions.pdf-enqueue]
+verify_jwt = false
+
+[functions.pdf-worker]
+verify_jwt = false
+
+[functions.pdf-worker.cron]
+schedule = "*/30 * * * * *"
+
