@@ -723,7 +723,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                             WebkitBackfaceVisibility: 'hidden',
                           }}
                         >
-                          <div className="flex flex-col gap-3 h-full">
+                          <div className={`flex flex-col gap-3 h-full ${isLeft ? 'items-end text-right' : ''}`}>
                             <motion.div 
                               className="flex items-center gap-2 mb-1"
                               initial={{ opacity: 0, y: -10 }}

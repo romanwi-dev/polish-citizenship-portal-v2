@@ -207,7 +207,7 @@ export default function TranslationWorkflowCards({ caseId }: TranslationWorkflow
                           )}
                         </div>
 
-                        <div className="space-y-4">
+                        <div className={`space-y-4 ${isLeft ? 'text-right' : ''}`}>
                           <h3 className="text-xl md:text-2xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent truncate">
                             {step.title}
                           </h3>
