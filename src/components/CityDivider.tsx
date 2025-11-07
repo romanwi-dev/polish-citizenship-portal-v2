@@ -7,9 +7,27 @@ interface CityDividerProps {
 
 const CityDivider = ({ cityName, imagePath }: CityDividerProps) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [theme, setTheme] = useState<"light" | "dark">("dark");
 
   useEffect(() => {
     setIsVisible(true);
+    
+    // Detect theme
+    const updateTheme = () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      setTheme(isDark ? 'dark' : 'light');
+    };
+    
+    updateTheme();
+    
+    // Watch for theme changes
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+    
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -22,9 +40,13 @@ const CityDivider = ({ cityName, imagePath }: CityDividerProps) => {
         <img
           src={imagePath}
           alt={`${cityName} landmark`}
-          className="w-full max-w-[800px] h-auto object-contain opacity-20 hover:opacity-35 transition-opacity duration-500"
+          className="w-full max-w-[900px] h-auto object-contain transition-opacity duration-500"
           loading="lazy"
-          style={{ filter: 'brightness(1.8)' }}
+          style={{
+            opacity: theme === 'dark' ? '0.20' : '0.18',
+            mixBlendMode: theme === 'dark' ? 'screen' : 'multiply',
+            filter: theme === 'light' ? 'invert(1)' : 'none'
+          }}
         />
       </div>
     </div>
