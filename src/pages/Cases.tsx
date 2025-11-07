@@ -447,7 +447,7 @@ const Cases = () => {
                     className="mb-12 last:mb-0"
                   >
                     {/* Desktop: Timeline layout with alternating cards */}
-                    <div className={`flex flex-col md:flex-row ${!isLeft ? 'md:flex-row-reverse' : ''} items-stretch md:items-center gap-4 md:gap-8`}>
+                    <div className={`md:flex ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} gap-4 items-start mb-8 md:mb-16`}>
                       {/* Card - Left or Right */}
                       <div 
                         className="w-full md:w-5/12 animate-fade-in"
