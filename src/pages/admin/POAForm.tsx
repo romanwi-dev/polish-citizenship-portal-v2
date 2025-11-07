@@ -231,41 +231,40 @@ export default function POAForm() {
       return;
     }
 
-    setIsGenerating(true);
     try {
-      // Save form data first
-      await handlePOASave();
-      
-      // Determine which POA type to generate based on active tab
-      const templateType = `poa-${activePOAType}`;
-      
-      console.log(`[POA] Generating PDF for ${templateType}, caseId: ${caseId}`);
-      
-      const { data, error } = await supabase.functions.invoke('fill-pdf', {
-        body: { 
-          caseId, 
-          templateType 
-        }
-      });
+      toast.loading("Generating all POAs...");
 
-      if (error) {
-        console.error('[POA] Edge function error:', error);
-        throw error;
-      }
-      
-      if (data?.url) {
-        setPdfPreviewUrl(data.url);
-        setPreviewFormData(formData);
-        toast.success(`${activePOAType.toUpperCase()} POA generated! Stats: ${data.stats?.filled}/${data.stats?.total} fields filled`);
+      const isMarried = formData?.applicant_marital_status === 'married' || 
+                        formData?.applicant_marital_status === 'Married';
+      const hasMinorChildren = formData?.applicant_has_minor_children === 'yes' || 
+                               formData?.applicant_has_minor_children === 'Yes' ||
+                               (formData?.applicant_number_of_children && parseInt(formData.applicant_number_of_children) > 0);
+
+      const poaTypes: Array<'poa-adult' | 'poa-minor' | 'poa-spouses'> = ['poa-adult'];
+      if (hasMinorChildren) poaTypes.push('poa-minor');
+      if (isMarried) poaTypes.push('poa-spouses');
+
+      const results = await Promise.allSettled(
+        poaTypes.map(type => 
+          supabase.functions.invoke('fill-pdf', {
+            body: { caseId, templateType: type }
+          })
+        )
+      );
+
+      const successful = results.filter(r => r.status === 'fulfilled').length;
+      const failed = results.filter(r => r.status === 'rejected').length;
+
+      toast.dismiss();
+      if (failed === 0) {
+        toast.success(`Generated ${successful} POA${successful > 1 ? 's' : ''} successfully!`);
       } else {
-        throw new Error('No PDF URL returned from edge function');
+        toast.error(`Generated ${successful} POA(s), but ${failed} failed. Check logs.`);
       }
-
     } catch (error: any) {
-      console.error("[POA] PDF generation error:", error);
-      toast.error(`Failed to generate PDF: ${error.message || 'Edge function error'}`);
-    } finally {
-      setIsGenerating(false);
+      toast.dismiss();
+      console.error('Error generating POAs:', error);
+      toast.error(`Failed to generate POAs: ${error.message}`);
     }
   };
 
@@ -397,10 +396,8 @@ export default function POAForm() {
           onSave={handlePOASave}
           onClear={() => setShowClearAllDialog(true)}
           onGeneratePDF={handleGenerateAllPOAs}
-          onGeneratePOAAdult={() => handleGenerateSpecificPOA('adult')}
-          onGeneratePOAMinor={() => handleGenerateSpecificPOA('minor')}
-          onGeneratePOASpouses={() => handleGenerateSpecificPOA('spouses')}
           isSaving={isSaving || isGenerating}
+          formData={formData}
         />
 
         {/* POA Forms */}
