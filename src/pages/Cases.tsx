@@ -446,9 +446,15 @@ const Cases = () => {
                   const isEven = index % 2 === 0;
                   
                   return (
-                    <div key={clientCase.id} className={`relative flex items-center ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+                    <div key={clientCase.id} className={isEven 
+                      ? 'relative flex items-center md:flex-row' 
+                      : 'relative flex items-center md:flex-row-reverse'
+                    }>
                       {/* Content Card */}
-                      <div className={`w-full md:w-5/12 ${isEven ? 'md:pr-12' : 'md:pl-12'}`}>
+                      <div className={isEven 
+                        ? 'w-full md:w-5/12 md:pr-12' 
+                        : 'w-full md:w-5/12 md:pl-12'
+                      }>
                         <motion.div
                           initial={{ opacity: 0, x: isEven ? -50 : 50 }}
                           whileInView={{ opacity: 1, x: 0 }}
