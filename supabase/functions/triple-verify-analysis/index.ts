@@ -1,4 +1,9 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+/**
+ * Triple-Model Verification System for A→B→EX Protocol
+ * Uses GPT-5 and Gemini 2.5 Pro for verification
+ */
+
+import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -12,164 +17,74 @@ serve(async (req) => {
 
   try {
     const { analysis, context } = await req.json();
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY is not configured');
-    }
 
-    console.log('🔍 Starting Triple-Model Verification...');
+    console.log('[triple-verify] Starting triple-model verification...');
 
-    const verificationPrompt = `You are a senior software architect reviewing a technical analysis. 
+    const verificationPrompt = `You are a senior technical auditor. Review this Phase A analysis with extreme scrutiny.
 
-CONTEXT:
-${context}
-
-PHASE A ANALYSIS TO VERIFY:
+ANALYSIS TO VERIFY:
 ${analysis}
 
-YOUR TASK:
-1. Review the Phase A analysis for accuracy, completeness, and risk assessment
-2. Identify any incorrect assumptions, missed issues, or overstatements
-3. Verify each finding with evidence-based reasoning
-4. Rate the overall analysis quality on a scale of 0-100
+PROJECT CONTEXT:
+${context}
 
-CRITICAL EVALUATION CRITERIA:
-- Are the identified issues actually present in the codebase?
-- Is the severity assessment accurate?
-- Are there missed critical issues?
-- Is the proposed solution appropriate?
-- Are there any incorrect assumptions?
+Your task:
+1. Score the analysis quality (0-100)
+2. Identify verified findings vs incorrect assumptions
+3. List any missed critical issues
+4. Provide recommendation: approve/revise/reject
+5. Explain your reasoning
 
-Provide your response in this JSON format:
-{
-  "overall_score": <0-100>,
-  "confidence_level": "<high|medium|low>",
-  "verified_findings": [
-    {
-      "finding": "<finding name>",
-      "verified": <true|false>,
-      "severity_accurate": <true|false>,
-      "evidence": "<your evidence>",
-      "score": <0-100>
-    }
-  ],
-  "missed_issues": ["<any critical issues the analysis missed>"],
-  "incorrect_assumptions": ["<any wrong assumptions made>"],
-  "recommendation": "<approve|revise|reject>",
-  "reasoning": "<detailed explanation of your verdict>"
-}`;
+Be harsh and thorough. Only approve if the analysis is truly comprehensive and correct.`;
 
-    // Call GPT-5
-    console.log('📤 Calling GPT-5...');
-    const gpt5Response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'openai/gpt-5',
-        messages: [
-          {
-            role: 'system',
-            content: 'You are a senior software architect with expertise in React, TypeScript, and database systems. You provide rigorous, evidence-based code reviews.'
-          },
-          {
-            role: 'user',
-            content: verificationPrompt
-          }
-        ],
-        response_format: { type: "json_object" },
-        temperature: 0.3,
-      }),
-    });
-
-    if (!gpt5Response.ok) {
-      const error = await gpt5Response.text();
-      console.error('❌ GPT-5 error:', gpt5Response.status, error);
-      throw new Error(`GPT-5 API error: ${gpt5Response.status}`);
-    }
-
-    const gpt5Data = await gpt5Response.json();
-    const gpt5Result = JSON.parse(gpt5Data.choices[0].message.content);
-    console.log('✅ GPT-5 verification complete:', gpt5Result.overall_score);
-
-    // Call Gemini 2.5 Pro
-    console.log('📤 Calling Gemini 2.5 Pro...');
-    const geminiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-pro',
-        messages: [
-          {
-            role: 'system',
-            content: 'You are a senior software architect with expertise in React, TypeScript, and database systems. You provide rigorous, evidence-based code reviews.'
-          },
-          {
-            role: 'user',
-            content: verificationPrompt
-          }
-        ],
-        response_format: { type: "json_object" },
-        temperature: 0.3,
-      }),
-    });
-
-    if (!geminiResponse.ok) {
-      const error = await geminiResponse.text();
-      console.error('❌ Gemini error:', geminiResponse.status, error);
-      throw new Error(`Gemini API error: ${geminiResponse.status}`);
-    }
-
-    const geminiData = await geminiResponse.json();
-    const geminiResult = JSON.parse(geminiData.choices[0].message.content);
-    console.log('✅ Gemini verification complete:', geminiResult.overall_score);
+    // Run parallel verification across models
+    const [gpt5Result, geminiResult] = await Promise.all([
+      verifyWithGPT5(verificationPrompt),
+      verifyWithGemini(verificationPrompt),
+    ]);
 
     // Calculate consensus
-    const averageScore = (gpt5Result.overall_score + geminiResult.overall_score) / 2;
-    const scoreDifference = Math.abs(gpt5Result.overall_score - geminiResult.overall_score);
+    const avgScore = (gpt5Result.overall_score + geminiResult.overall_score) / 2;
+    const scoreDiff = Math.abs(gpt5Result.overall_score - geminiResult.overall_score);
     
-    const consensus = {
-      average_score: averageScore,
-      score_difference: scoreDifference,
-      agreement_level: scoreDifference < 10 ? 'high' : scoreDifference < 25 ? 'medium' : 'low',
-      unanimous_approval: gpt5Result.recommendation === 'approve' && geminiResult.recommendation === 'approve',
-      all_scores_above_80: gpt5Result.overall_score >= 80 && geminiResult.overall_score >= 80,
+    const unanimousApproval = 
+      gpt5Result.recommendation === 'approve' && 
+      geminiResult.recommendation === 'approve';
+    
+    const allScoresAbove80 = 
+      gpt5Result.overall_score >= 80 && 
+      geminiResult.overall_score >= 80;
+
+    const agreementLevel = scoreDiff <= 10 ? 'high' : scoreDiff <= 25 ? 'medium' : 'low';
+    
+    const verdict = (unanimousApproval && allScoresAbove80 && agreementLevel === 'high') 
+      ? 'PROCEED_TO_EX' 
+      : 'REVISE_ANALYSIS';
+
+    const response = {
+      success: true,
+      gpt5: gpt5Result,
+      gemini: geminiResult,
+      consensus: {
+        average_score: avgScore,
+        score_difference: scoreDiff,
+        agreement_level: agreementLevel,
+        unanimous_approval: unanimousApproval,
+        all_scores_above_80: allScoresAbove80,
+      },
+      verdict,
+      timestamp: new Date().toISOString(),
     };
 
-    console.log('📊 Verification Summary:');
-    console.log('  GPT-5 Score:', gpt5Result.overall_score, '- Recommendation:', gpt5Result.recommendation);
-    console.log('  Gemini Score:', geminiResult.overall_score, '- Recommendation:', geminiResult.recommendation);
-    console.log('  Consensus:', consensus);
+    console.log(`[triple-verify] Verdict: ${verdict} (avg score: ${avgScore})`);
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        gpt5: gpt5Result,
-        gemini: geminiResult,
-        consensus,
-        verdict: consensus.all_scores_above_80 && consensus.unanimous_approval 
-          ? 'PROCEED_TO_EX' 
-          : 'REVISE_ANALYSIS',
-        timestamp: new Date().toISOString(),
-      }),
-      {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      }
-    );
-
+    return new Response(JSON.stringify(response), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
   } catch (error) {
-    console.error('❌ Triple verification error:', error);
+    console.error('[triple-verify] Error:', error);
     return new Response(
-      JSON.stringify({ 
-        success: false, 
-        error: error.message 
-      }),
+      JSON.stringify({ success: false, error: String(error) }),
       {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -177,3 +92,80 @@ Provide your response in this JSON format:
     );
   }
 });
+
+async function verifyWithGPT5(prompt: string) {
+  const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${Deno.env.get('LOVABLE_API_KEY')}`,
+    },
+    body: JSON.stringify({
+      model: 'openai/gpt-5',
+      messages: [
+        {
+          role: 'system',
+          content: 'You are a senior technical auditor. Output valid JSON only with: overall_score (0-100), confidence_level (high/medium/low), verified_findings (array of {finding, verified, severity_accurate, evidence, score}), missed_issues (array of strings), incorrect_assumptions (array of strings), recommendation (approve/revise/reject), reasoning (string).',
+        },
+        { role: 'user', content: prompt },
+      ],
+      temperature: 0.3,
+    }),
+  });
+
+  const data = await response.json();
+  const content = data.choices[0].message.content;
+  
+  try {
+    return JSON.parse(content);
+  } catch {
+    // If not valid JSON, create structured response
+    return {
+      overall_score: 70,
+      confidence_level: 'medium',
+      verified_findings: [],
+      missed_issues: ['Model response was not valid JSON'],
+      incorrect_assumptions: [],
+      recommendation: 'revise',
+      reasoning: content,
+    };
+  }
+}
+
+async function verifyWithGemini(prompt: string) {
+  const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${Deno.env.get('LOVABLE_API_KEY')}`,
+    },
+    body: JSON.stringify({
+      model: 'google/gemini-2.5-pro',
+      messages: [
+        {
+          role: 'system',
+          content: 'You are a senior technical auditor. Output valid JSON only with: overall_score (0-100), confidence_level (high/medium/low), verified_findings (array of {finding, verified, severity_accurate, evidence, score}), missed_issues (array of strings), incorrect_assumptions (array of strings), recommendation (approve/revise/reject), reasoning (string).',
+        },
+        { role: 'user', content: prompt },
+      ],
+      temperature: 0.3,
+    }),
+  });
+
+  const data = await response.json();
+  const content = data.choices[0].message.content;
+  
+  try {
+    return JSON.parse(content);
+  } catch {
+    return {
+      overall_score: 70,
+      confidence_level: 'medium',
+      verified_findings: [],
+      missed_issues: ['Model response was not valid JSON'],
+      incorrect_assumptions: [],
+      recommendation: 'revise',
+      reasoning: content,
+    };
+  }
+}
