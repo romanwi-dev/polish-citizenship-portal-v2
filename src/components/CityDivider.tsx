@@ -9,13 +9,12 @@ export const CityDivider = ({ cityImage, alt }: CityDividerProps) => {
       <img 
         src={cityImage} 
         alt={alt}
-        className="w-auto opacity-25 hover:opacity-40 transition-opacity duration-300"
+        className="w-auto opacity-30 hover:opacity-50 transition-opacity duration-300"
         style={{ 
-          height: '200px',
+          height: '180px',
           maxWidth: '90vw',
           objectFit: 'contain',
-          filter: 'brightness(0) invert(1)',
-          backgroundColor: 'transparent'
+          mixBlendMode: 'screen'
         }}
         loading="lazy"
       />
