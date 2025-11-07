@@ -497,18 +497,6 @@ export default function POAForm() {
                     />
                   </motion.div>
                 </div>
-                <div className="mt-10 flex justify-end">
-                  <Button onClick={() => handleGenerateAndPreview('poa-adult')} disabled={isGenerating}
-                    className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg shadow-glow hover-glow border border-white/30">
-                    {isGenerating && activePOAType === 'adult' ? (
-                      <><Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
-                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generating...</span></>
-                    ) : (
-                      <><FileText className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generate POA</span></>
-                    )}
-                  </Button>
-                </div>
           </motion.div>
 
           {/* POA Minor - Only show if minor children count > 0 */}
@@ -520,18 +508,61 @@ export default function POAForm() {
               transition={{ duration: 0.5, delay: 0.1 + (index * 0.1) }}
               className="space-y-6"
             >
-...
-                <div className="mt-10 flex justify-end">
-                  <Button onClick={() => handleGenerateAndPreview('poa-minor')} disabled={isGenerating}
-                    className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg shadow-glow hover-glow border border-white/30">
-                    {isGenerating && activePOAType === 'minor' ? (
-                      <><Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
-                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generating...</span></>
-                    ) : (
-                      <><FileText className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generate POA</span></>
-                    )}
-                  </Button>
+              <div className="border-b border-border/50 pb-6">
+                <h2 className="text-4xl md:text-5xl font-heading font-bold text-gray-600 dark:text-gray-400">
+                  {poaFormConfigs.minor.title} {minorChildrenCount > 1 ? `- Child ${index + 1}` : ''}
+                </h2>
+              </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                  <POAFormField
+                    name="applicant_first_name"
+                    label="Parent given names"
+                    value={formData?.applicant_first_name || ""}
+                    onChange={(value) => handleInputChange("applicant_first_name", value)}
+                  />
+                  <POAFormField
+                    name="applicant_last_name"
+                    label="Parent full last name"
+                    value={formData?.applicant_last_name || ""}
+                    onChange={(value) => handleInputChange("applicant_last_name", value)}
+                  />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0, duration: 0.4 }}
+                    className="space-y-2"
+                  >
+                    <Label htmlFor="applicant_passport_number_minor" className={cn(
+                      "font-light text-foreground/90",
+                      isLargeFonts ? "text-2xl" : "text-xl"
+                    )}>
+                      Parent ID/ passport number
+                    </Label>
+                    <MaskedPassportInput
+                      id="applicant_passport_number_minor"
+                      value={formData?.applicant_passport_number || ""}
+                      onChange={(value) => handleInputChange("applicant_passport_number", value)}
+                      isLargeFonts={isLargeFonts}
+                      placeholder=""
+                      colorScheme="poa"
+                    />
+                  </motion.div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
+                  <POAFormField
+                    name={`child_${index + 1}_first_name`}
+                    label="Child given names"
+                    value={formData?.[`child_${index + 1}_first_name`] || ""}
+                    onChange={(value) => handleInputChange(`child_${index + 1}_first_name`, value)}
+                  />
+                  <POAFormField
+                    name={`child_${index + 1}_last_name`}
+                    label="Child full last name"
+                    value={formData?.[`child_${index + 1}_last_name`] || ""}
+                    onChange={(value) => handleInputChange(`child_${index + 1}_last_name`, value)}
+                  />
                 </div>
           </motion.div>
           ))}
@@ -539,7 +570,7 @@ export default function POAForm() {
           {/* POA Spouses - Only show if married */}
           {showSpousePOA && (
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.2 }} className="space-y-6">
-              <div className="cursor-pointer select-none hover:opacity-80 transition-opacity border-b border-border/50 pb-6">
+              <div className="border-b border-border/50 pb-6">
                 <h2 className="text-4xl md:text-5xl font-heading font-bold text-gray-600 dark:text-gray-400">
                   {poaFormConfigs.spouses.title}
                 </h2>
@@ -662,18 +693,6 @@ export default function POAForm() {
                     value={formData?.child_1_last_name || ""}
                     onChange={(value) => handleInputChange("child_1_last_name", value)}
                   />
-                </div>
-                <div className="mt-10 flex justify-end">
-                  <Button onClick={() => handleGenerateAndPreview('poa-spouses')} disabled={isGenerating}
-                    className="text-sm md:text-base lg:text-lg font-bold px-4 md:px-6 lg:px-8 h-10 md:h-12 lg:h-14 rounded-lg shadow-glow hover-glow border border-white/30">
-                    {isGenerating && activePOAType === 'spouses' ? (
-                      <><Loader2 className="h-4 md:h-5 w-4 md:w-5 animate-spin mr-2 opacity-50" />
-                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generating...</span></>
-                    ) : (
-                      <><FileText className="h-4 md:h-5 w-4 md:w-5 mr-2 opacity-50" />
-                        <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Generate POA</span></>
-                    )}
-                  </Button>
                 </div>
             </motion.div>
           )}
