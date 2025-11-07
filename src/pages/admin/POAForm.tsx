@@ -240,30 +240,83 @@ export default function POAForm() {
                                formData?.applicant_has_minor_children === 'Yes' ||
                                (formData?.applicant_number_of_children && parseInt(formData.applicant_number_of_children) > 0);
 
-      const poaTypes: Array<{ type: 'poa-adult' | 'poa-minor' | 'poa-spouses'; label: string }> = [
+      const poaTypes: Array<{ type: 'poa-adult' | 'poa-minor' | 'poa-spouses'; label: string; childNum?: number }> = [
         { type: 'poa-adult', label: 'Adult POA' }
       ];
-      if (hasMinorChildren) poaTypes.push({ type: 'poa-minor', label: 'Minor POA' });
+      
+      // Generate multiple minor POAs - one for each child
+      if (hasMinorChildren) {
+        const minorCount = parseInt(formData?.minor_children_count || formData?.applicant_number_of_children || '0');
+        for (let i = 1; i <= minorCount; i++) {
+          poaTypes.push({ 
+            type: 'poa-minor', 
+            label: `POA Minor ${i}`,
+            childNum: i
+          });
+        }
+      }
+      
       if (isMarried) poaTypes.push({ type: 'poa-spouses', label: 'Spouses POA' });
 
+      // Call edge functions with childNum parameter
       const results = await Promise.allSettled(
-        poaTypes.map(({ type }) => 
+        poaTypes.map(({ type, childNum }) => 
           supabase.functions.invoke('fill-pdf', {
-            body: { caseId, templateType: type }
+            body: { 
+              caseId, 
+              templateType: type,
+              ...(childNum && { childNum })
+            }
           })
         )
       );
 
-      const successful = results
-        .map((result, idx) => result.status === 'fulfilled' ? poaTypes[idx].label : null)
-        .filter(Boolean);
-      const failed = results.filter(r => r.status === 'rejected').length;
+      // Extract PDF URLs and labels
+      const pdfResults = results.map((result, idx) => {
+        if (result.status === 'fulfilled' && result.value?.data?.pdfUrl) {
+          return {
+            label: poaTypes[idx].label,
+            url: result.value.data.pdfUrl,
+            success: true
+          };
+        }
+        return {
+          label: poaTypes[idx].label,
+          url: null,
+          success: false
+        };
+      });
+
+      const successful = pdfResults.filter(r => r.success);
+      const failed = pdfResults.filter(r => !r.success);
 
       toast.dismiss();
-      if (failed === 0) {
-        toast.success(`Generated: ${successful.join(', ')}`);
-      } else {
-        toast.error(`Generated ${successful.length} POA(s), but ${failed} failed. Check logs.`);
+
+      if (successful.length > 0) {
+        // Create download message with clickable links
+        const poaLabels = successful.map(p => p.label).join(', ');
+        toast.success(`Generated: ${poaLabels}`, { 
+          description: 'Click to download each POA',
+          duration: 15000,
+          action: successful.length > 1 ? {
+            label: 'Download All',
+            onClick: () => {
+              successful.forEach(pdf => {
+                window.open(pdf.url!, '_blank');
+              });
+            }
+          } : undefined
+        });
+        
+        // Open preview for FIRST PDF
+        if (successful[0]?.url) {
+          setPdfPreviewUrl(successful[0].url);
+          setActivePOAType(poaTypes[0].type);
+        }
+      }
+
+      if (failed.length > 0) {
+        toast.error(`${failed.length} POA(s) failed: ${failed.map(p => p.label).join(', ')}`);
       }
     } catch (error: any) {
       toast.dismiss();

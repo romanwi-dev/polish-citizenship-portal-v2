@@ -280,7 +280,7 @@ Deno.serve(async (req) => {
 
   try {
     const body = await req.json().catch(() => ({}));
-    const { caseId: rawCaseId, templateType, flatten = false, mode } = body ?? {};
+    const { caseId: rawCaseId, templateType, flatten = false, mode, childNum } = body ?? {};
 
     // Secure diagnostics
     if (mode === 'diagnose') {
@@ -425,12 +425,26 @@ Deno.serve(async (req) => {
 
       // Template mapping - Using shared module
       const normalizedType = normalizeTemplateType(templateType);
-      const fieldMap = getFieldMapping(normalizedType);
+      let fieldMap = getFieldMapping(normalizedType);
       
       if (!fieldMap) {
         const error = createPDFError(PDFErrorCode.TEMPLATE_NOT_FOUND, 'Template configuration not found', { templateType });
         logPDFError(error);
         return j(req, { code: error.code, message: error.message }, 404);
+      }
+      
+      // Handle child-specific mapping for minor POAs
+      if (normalizedType === 'poa-minor' && childNum) {
+        log('mapping_minor_child', { childNum });
+        // Create child-specific data object
+        const childSpecificData = {
+          ...masterData,
+          minor_given_names: masterData[`child_${childNum}_first_name`],
+          minor_surname: masterData[`child_${childNum}_last_name`],
+          minor_dob: masterData[`child_${childNum}_dob`],
+        };
+        // Override masterData for this child
+        Object.assign(masterData, childSpecificData);
       }
       
       // Template path mapping (PDF filenames)
