@@ -832,9 +832,9 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                               </motion.div>
                             )}
 
-                            {/* Document Count */}
+                            {/* Document Count and Mark Done Button */}
                             <motion.div 
-                              className="flex items-center justify-between"
+                              className="flex items-center justify-between w-full"
                               initial={{ opacity: 0, y: 10 }}
                               animate={{ opacity: 1, y: 0 }}
                               transition={{ duration: 0.5, delay: 0.6 }}
