@@ -89,7 +89,6 @@ export default function ClientOnboardingSection() {
     }));
   };
 
-
   return (
     <section id="how-to-start" className="relative py-24 overflow-hidden overflow-x-hidden">
 

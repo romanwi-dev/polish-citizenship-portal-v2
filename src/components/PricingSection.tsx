@@ -126,7 +126,6 @@ const PricingSection = () => {
     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
   };
 
-
   return (
     <section id="pricing" className="relative py-32 overflow-hidden overflow-x-hidden">
       
