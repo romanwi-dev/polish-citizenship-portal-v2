@@ -453,34 +453,63 @@ const Cases = () => {
                   >
                     {/* Mobile: Stack vertically, Desktop: Timeline layout with alternating cards */}
                     <div className="flex flex-col md:flex-row items-center gap-8">
-                      {/* Card - Left or Right */}
-                      <div className={isLeft ? 'md:w-5/12 md:order-1' : 'md:w-5/12 md:order-3'}>
-                        <motion.div
-                          whileHover={{ scale: 1.02 }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          <CaseCard 
-                            clientCase={clientCase}
-                            onEdit={handleEdit}
-                            onDelete={handleDeleteCase}
-                            onUpdateStatus={handleUpdateStatus}
-                          />
-                        </motion.div>
-                      </div>
+                      {isLeft ? (
+                        <>
+                          {/* Left Card */}
+                          <div className="w-full md:w-5/12">
+                            <motion.div whileHover={{ scale: 1.02 }} transition={{ duration: 0.3 }}>
+                              <CaseCard 
+                                clientCase={clientCase}
+                                onEdit={handleEdit}
+                                onDelete={handleDeleteCase}
+                                onUpdateStatus={handleUpdateStatus}
+                              />
+                            </motion.div>
+                          </div>
 
-                      {/* Timeline Dot - Center (hidden on mobile) */}
-                      <div className="hidden md:flex md:w-2/12 md:order-2 justify-center">
-                        <motion.div
-                          initial={{ scale: 0 }}
-                          whileInView={{ scale: 1 }}
-                          transition={{ duration: 0.4, delay: index * 0.1 + 0.2 }}
-                          viewport={{ once: true }}
-                          className="w-6 h-6 rounded-full bg-primary shadow-lg shadow-primary/50"
-                        />
-                      </div>
+                          {/* Center Dot */}
+                          <div className="hidden md:flex md:w-2/12 justify-center">
+                            <motion.div
+                              initial={{ scale: 0 }}
+                              whileInView={{ scale: 1 }}
+                              transition={{ duration: 0.4, delay: index * 0.1 + 0.2 }}
+                              viewport={{ once: true }}
+                              className="w-6 h-6 rounded-full bg-primary shadow-lg shadow-primary/50"
+                            />
+                          </div>
 
-                      {/* Empty space on opposite side (hidden on mobile) */}
-                      <div className={isLeft ? 'hidden md:block md:w-5/12 md:order-3' : 'hidden md:block md:w-5/12 md:order-1'} />
+                          {/* Right Spacer */}
+                          <div className="hidden md:block md:w-5/12" />
+                        </>
+                      ) : (
+                        <>
+                          {/* Left Spacer */}
+                          <div className="hidden md:block md:w-5/12" />
+
+                          {/* Center Dot */}
+                          <div className="hidden md:flex md:w-2/12 justify-center">
+                            <motion.div
+                              initial={{ scale: 0 }}
+                              whileInView={{ scale: 1 }}
+                              transition={{ duration: 0.4, delay: index * 0.1 + 0.2 }}
+                              viewport={{ once: true }}
+                              className="w-6 h-6 rounded-full bg-primary shadow-lg shadow-primary/50"
+                            />
+                          </div>
+
+                          {/* Right Card */}
+                          <div className="w-full md:w-5/12">
+                            <motion.div whileHover={{ scale: 1.02 }} transition={{ duration: 0.3 }}>
+                              <CaseCard 
+                                clientCase={clientCase}
+                                onEdit={handleEdit}
+                                onDelete={handleDeleteCase}
+                                onUpdateStatus={handleUpdateStatus}
+                              />
+                            </motion.div>
+                          </div>
+                        </>
+                      )}
                     </div>
                   </motion.div>
                 );
