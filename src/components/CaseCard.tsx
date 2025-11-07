@@ -197,7 +197,7 @@ export const CaseCard = memo(({
       onDoubleClick={handleDoubleClick}
     >
       <div
-        className={`relative w-full transition-transform duration-700 preserve-3d ${isFlipped ? 'rotate-y-180' : ''}`}
+        className={`relative transition-transform duration-700 preserve-3d ${isFlipped ? 'rotate-y-180' : ''}`}
         style={{ transformStyle: 'preserve-3d', minHeight: '750px' }}
       >
           {/* Front of Card */}
