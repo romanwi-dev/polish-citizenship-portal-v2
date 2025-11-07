@@ -105,13 +105,12 @@ const Index = () => {
       <div className="relative z-10">
         <Navigation />
         <HeroWeb3 />
-        <AboutSection />
         
         <Suspense fallback={<SectionLoader />}>
           <CityDivider cityName="Warsaw" imagePath="/landmarks/warsaw.png" />
         </Suspense>
         
-        <AIAnalysisSection />
+        <AboutSection />
         
         <Suspense fallback={<SectionLoader />}>
           <ServicesWeb3 />
