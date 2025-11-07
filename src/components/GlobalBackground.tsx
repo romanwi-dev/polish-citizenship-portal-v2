@@ -44,17 +44,18 @@ export const GlobalBackground = () => {
     return cleanup;
   }, [theme]);
 
-  // Only show in dark theme
-  if (theme !== "dark") return null;
-
   return (
-    <div className="fixed inset-0 z-0">
-      {show3D ? (
-        <Suspense fallback={<StaticHeritagePlaceholder />}>
-          <StaticHeritage />
-        </Suspense>
-      ) : (
-        <StaticHeritagePlaceholder />
+    <div className="fixed inset-0 z-0 pointer-events-none">
+      {theme === "dark" && (
+        <>
+          {show3D ? (
+            <Suspense fallback={<StaticHeritagePlaceholder />}>
+              <StaticHeritage />
+            </Suspense>
+          ) : (
+            <StaticHeritagePlaceholder />
+          )}
+        </>
       )}
     </div>
   );
