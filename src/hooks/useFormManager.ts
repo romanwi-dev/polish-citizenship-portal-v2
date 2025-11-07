@@ -63,9 +63,36 @@ export const useFormManager = (
     enabled: !!caseId && hasUnsavedChanges,
   });
 
-  // Input change handler
+  // Input change handler with automatic field syncing
   const handleInputChange = (field: string, value: any) => {
-    setFormData((prev: any) => ({ ...prev, [field]: value }));
+    setFormData((prev: any) => {
+      const updates: any = { [field]: value };
+      
+      // AUTO-SYNC: Keep minor children fields in sync
+      if (field === 'minor_children_count') {
+        const count = parseInt(value) || 0;
+        updates.applicant_has_minor_children = count > 0 ? 'yes' : 'no';
+        updates.applicant_number_of_children = count.toString();
+      }
+      
+      // AUTO-SYNC: If applicant_number_of_children changes, update related fields
+      if (field === 'applicant_number_of_children') {
+        const count = parseInt(value) || 0;
+        updates.applicant_has_minor_children = count > 0 ? 'yes' : 'no';
+        // If minor_children_count is not set or is greater than total, adjust it
+        if (!prev.minor_children_count || parseInt(prev.minor_children_count) > count) {
+          updates.minor_children_count = count;
+        }
+      }
+      
+      // AUTO-SYNC: If applicant_has_minor_children changes to "no", clear counts
+      if (field === 'applicant_has_minor_children' && (value === 'no' || value === 'No')) {
+        updates.applicant_number_of_children = '0';
+        updates.minor_children_count = 0;
+      }
+      
+      return { ...prev, ...updates };
+    });
     setHasUnsavedChanges(true);
   };
 
