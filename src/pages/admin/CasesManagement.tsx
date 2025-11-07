@@ -624,10 +624,14 @@ export default function CasesManagement() {
                 <motion.div 
                   key={caseItem.id} 
                   className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-12 ${!isEven ? 'md:flex-row-reverse' : ''}`}
-                  initial={{ opacity: 0, x: isEven ? -100 : 100 }}
+                  initial={{ opacity: 0, x: isEven ? -50 : 50 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ 
+                    duration: 0.5,
+                    ease: [0.4, 0, 0.2, 1],
+                    delay: Math.min(index * 0.05, 0.3)
+                  }}
                 >
                   {/* Content Card - Wider with spacing from center */}
                   <div className="w-full md:w-[48%]">
@@ -647,10 +651,14 @@ export default function CasesManagement() {
                   <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:block">
                     <motion.div 
                       className="relative w-16 h-16 rounded-full bg-gradient-to-br from-primary/30 to-secondary/30 p-[1px]"
-                      initial={{ scale: 0 }}
-                      whileInView={{ scale: 1 }}
+                      initial={{ scale: 0, opacity: 0 }}
+                      whileInView={{ scale: 1, opacity: 1 }}
                       viewport={{ once: true }}
-                      transition={{ duration: 0.4, delay: index * 0.1 + 0.2 }}
+                      transition={{ 
+                        duration: 0.4,
+                        ease: [0.4, 0, 0.2, 1],
+                        delay: Math.min(index * 0.05, 0.3) + 0.1
+                      }}
                     >
                       <div className="w-full h-full rounded-full bg-card/80 backdrop-blur-sm flex items-center justify-center">
                         <span className="text-2xl font-heading font-black bg-gradient-to-br from-primary/50 to-secondary/50 bg-clip-text text-transparent">
