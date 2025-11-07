@@ -70,27 +70,47 @@ export default function POAForm() {
     masterData
   } = usePOAAutoGeneration(caseId);
 
-  // Calculate if there are minor children (under 18)
-  const hasMinorChildren = () => {
+  // AUTO-DETECT minor children from DOBs (children under 18)
+  const getMinorChildrenFromDOBs = (): number[] => {
+    const minorChildren: number[] = [];
     const today = new Date();
+    
     for (let i = 1; i <= 10; i++) {
       const childDob = formData[`child_${i}_dob`];
       if (childDob) {
-        const dob = new Date(childDob);
-        const age = today.getFullYear() - dob.getFullYear();
-        const monthDiff = today.getMonth() - dob.getMonth();
-        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
-          if (age - 1 < 18) return true;
-        } else if (age < 18) {
-          return true;
+        try {
+          let date: Date;
+          // Handle DD.MM.YYYY format
+          if (childDob.includes('.')) {
+            const [day, month, year] = childDob.split('.');
+            date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+          } else {
+            // Handle ISO format
+            date = new Date(childDob);
+          }
+          
+          if (!isNaN(date.getTime())) {
+            let age = today.getFullYear() - date.getFullYear();
+            const monthDiff = today.getMonth() - date.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < date.getDate())) {
+              age--;
+            }
+            
+            if (age >= 0 && age < 18) {
+              minorChildren.push(i);
+            }
+          }
+        } catch (error) {
+          console.error(`Error calculating age for child_${i}:`, error);
         }
       }
     }
-    return false;
+    return minorChildren;
   };
 
   const showSpousePOA = formData.applicant_is_married === true;
-  const minorChildrenCount = formData.minor_children_count || 0;
+  const minorChildrenArray = getMinorChildrenFromDOBs();
+  const minorChildrenCount = minorChildrenArray.length;
 
   // Custom save handler for POA (includes latest formData ref for PDF generation)
   const handlePOASave = async () => {
@@ -416,35 +436,30 @@ export default function POAForm() {
                   </motion.div>
                 </div>
 
-                {/* Right column: Children and Minor Children */}
+                {/* Right column: Marital Status ONLY (removed manual children selectors) */}
                 <div className="space-y-6">
-                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="space-y-2" onDoubleClick={() => handleInputChange("children_count", null)}>
-                    <Label className={isLargeFonts ? "text-2xl" : ""}>Children</Label>
-                    <Select value={formData?.children_count?.toString() || ""} onValueChange={(value) => handleInputChange("children_count", parseInt(value))}>
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-2" onDoubleClick={() => handleInputChange("applicant_is_married", null)}>
+                    <Label className={isLargeFonts ? "text-2xl" : ""}>Marital status</Label>
+                    <Select value={formData?.applicant_is_married === true ? "Married" : formData?.applicant_is_married === false ? "Single" : ""} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
                       <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs">
                         <SelectValue placeholder="Select" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-50">
-                        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-                          <SelectItem key={num} value={num.toString()} className="cursor-pointer">{num}</SelectItem>
-                        ))}
+                        <SelectItem value="Married" className="cursor-pointer">Married</SelectItem>
+                        <SelectItem value="Single" className="cursor-pointer">Single</SelectItem>
                       </SelectContent>
                     </Select>
                   </motion.div>
 
-                  {formData?.children_count > 0 && (
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.175 }} className="space-y-2" onDoubleClick={() => handleInputChange("minor_children_count", null)}>
-                      <Label className={isLargeFonts ? "text-2xl" : ""}>Minors</Label>
-                      <Select value={formData?.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
-                        <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs">
-                          <SelectValue placeholder="Select" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-background border-2 z-50">
-                          {Array.from({ length: (formData?.children_count || 0) + 1 }, (_, i) => i).map((num) => (
-                            <SelectItem key={num} value={num.toString()} className="cursor-pointer">{num}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                  {/* Auto-detected minor children count (display only) */}
+                  {minorChildrenCount > 0 && (
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="p-4 bg-cyan-50/50 dark:bg-cyan-950/30 rounded-lg border-2 border-cyan-300/30">
+                      <Label className="text-sm text-cyan-700 dark:text-cyan-300 font-semibold">
+                        Auto-detected: {minorChildrenCount} Minor Child{minorChildrenCount > 1 ? 'ren' : ''} (under 18)
+                      </Label>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Based on dates of birth in Family Tree form
+                      </p>
                     </motion.div>
                   )}
                 </div>
@@ -499,10 +514,10 @@ export default function POAForm() {
                 </div>
           </motion.div>
 
-          {/* POA Minor - Only show if minor children count > 0 */}
-          {minorChildrenCount > 0 && Array.from({ length: minorChildrenCount }, (_, index) => (
+          {/* POA Minor - Auto-generated for each minor child (under 18) based on DOB */}
+          {minorChildrenArray.map((childNum, index) => (
             <motion.div 
-              key={`minor-${index}`}
+              key={`minor-${childNum}`}
               initial={{ opacity: 0, scale: 0.95 }} 
               animate={{ opacity: 1, scale: 1 }} 
               transition={{ duration: 0.5, delay: 0.1 + (index * 0.1) }}
@@ -510,8 +525,11 @@ export default function POAForm() {
             >
               <div className="border-b border-border/50 pb-6">
                 <h2 className="text-4xl md:text-5xl font-heading font-bold text-gray-600 dark:text-gray-400">
-                  {poaFormConfigs.minor.title} {minorChildrenCount > 1 ? `- Child ${index + 1}` : ''}
+                  {poaFormConfigs.minor.title} - Child {childNum} {minorChildrenArray.length > 1 ? `(${index + 1} of ${minorChildrenArray.length})` : ''}
                 </h2>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Auto-detected as minor (under 18) from date of birth: {formData[`child_${childNum}_dob`] || 'N/A'}
+                </p>
               </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                   <POAFormField

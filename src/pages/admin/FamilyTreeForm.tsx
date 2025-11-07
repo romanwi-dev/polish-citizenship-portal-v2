@@ -608,13 +608,13 @@ export default function FamilyTreeForm() {
                     </motion.div>
                   </div>
 
-                  {/* Right column: Children and Minor Children */}
+                  {/* Right column: Marital Status ONLY (removed manual children counters) */}
                   <div className="space-y-6">
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="space-y-2" onDoubleClick={() => handleInputChange("children_count", null)}>
-                      <Label className={isLargeFonts ? "text-2xl" : ""}>Children</Label>
-                      <Select value={formData?.children_count?.toString() || ""} onValueChange={(value) => handleInputChange("children_count", parseInt(value))}>
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="space-y-2" onDoubleClick={() => handleInputChange("applicant_is_married", null)}>
+                      <Label className={isLargeFonts ? "text-2xl" : ""}>Marital status</Label>
+                      <Select value={formData?.applicant_is_married === true ? "Married" : formData?.applicant_is_married === false ? "Single" : ""} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
                         <SelectTrigger 
-                          className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur z-50 text-xs"
+                          className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs"
                           style={{
                             boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
                           }}
@@ -628,39 +628,11 @@ export default function FamilyTreeForm() {
                           <SelectValue placeholder="Select" className="text-xs" />
                         </SelectTrigger>
                         <SelectContent className="bg-background border-2 z-50">
-                          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-                            <SelectItem key={num} value={num.toString()} className="text-xs cursor-pointer">{num}</SelectItem>
-                          ))}
+                          <SelectItem value="Married" className="text-xs cursor-pointer">Married</SelectItem>
+                          <SelectItem value="Single" className="text-xs cursor-pointer">Single</SelectItem>
                         </SelectContent>
                       </Select>
                     </motion.div>
-
-                    {formData?.children_count > 0 && (
-                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.175 }} className="space-y-2" onDoubleClick={() => handleInputChange("minor_children_count", null)}>
-                        <Label className={isLargeFonts ? "text-2xl" : ""}>Minors</Label>
-                        <Select value={formData?.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
-                          <SelectTrigger 
-                            className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs"
-                            style={{
-                              boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
-                            }}
-                            onMouseEnter={(e) => {
-                              e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
-                            }}
-                            onMouseLeave={(e) => {
-                              e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
-                            }}
-                          >
-                            <SelectValue placeholder="Select" className="text-xs" />
-                          </SelectTrigger>
-                          <SelectContent className="bg-background border-2 z-50">
-                            {Array.from({ length: (formData?.children_count || 0) + 1 }, (_, i) => i).map((num) => (
-                              <SelectItem key={num} value={num.toString()} className="text-xs cursor-pointer">{num}</SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </motion.div>
-                    )}
                   </div>
                 </div>
             </div>
@@ -797,8 +769,8 @@ export default function FamilyTreeForm() {
         </TabsContent>
 
         <TabsContent value="children" className="mt-0 pb-32" {...(isFullView ? { forceMount: true } : {})}>
-          {/* Children Section - Only Minor Children */}
-          {(activeTab === 'children' || isFullView) && (formData.minor_children_count > 0) && (
+          {/* Children Section - ALWAYS SHOW ALL 10 CHILDREN FIELDS (no conditional rendering) */}
+          {(activeTab === 'children' || isFullView) && (
           <motion.div initial={{
           opacity: 0,
           scale: 0.95
@@ -811,11 +783,14 @@ export default function FamilyTreeForm() {
         }} className="space-y-10">
             <div className="border-b border-border/50 pb-6">
               <h2 className="text-4xl md:text-5xl font-heading font-bold text-cyan-600 dark:text-cyan-400">
-                Applicant&apos;s Minor Children
+                Children
               </h2>
+              <p className="text-sm text-muted-foreground mt-2">
+                All children fields (1-10) are always available. Fill in only those you need.
+              </p>
             </div>
 
-            {Array.from({ length: formData.minor_children_count || 0 }, (_, i) => i + 1).map(num => <Fragment key={num}>
+            {Array.from({ length: 10 }, (_, i) => i + 1).map(num => <Fragment key={num}>
                 <h3 className="text-2xl md:text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Minor Child {num}</h3>
                 {/* 1st row - Name fields */}
                 {renderFieldGroup([{
