@@ -583,32 +583,50 @@ export default function CasesManagement() {
             }
           />
         ) : (
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCenter}
-            onDragEnd={handleDragEnd}
-          >
-            <SortableContext
-              items={filteredCases.map(c => c.id)}
-              strategy={verticalListSortingStrategy}
-            >
-              <div className="grid md:grid-cols-2 gap-6">
-                {filteredCases.map((caseItem) => (
-                  <DraggableCaseCard 
-                    key={caseItem.id}
-                    clientCase={caseItem}
-                    onEdit={handleEdit}
-                    onDelete={handleDeleteCase}
-                    onUpdateStatus={handleUpdateStatus}
-                    isFavorite={isFavorite(caseItem.id)}
-                    onToggleFavorite={() => toggleFavorite(caseItem.id)}
-                    isSelected={isSelected(caseItem.id)}
-                    onToggleSelection={() => toggleSelection(caseItem.id)}
-                  />
-                ))}
-              </div>
-            </SortableContext>
-          </DndContext>
+          <div className="relative max-w-5xl mx-auto">
+            {/* Center line - same as homepage timeline */}
+            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block" />
+
+            {filteredCases.map((caseItem, index) => {
+              const isEven = index % 2 === 0;
+              
+              return (
+                <div 
+                  key={caseItem.id} 
+                  className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-8 ${isEven ? 'md:flex-row-reverse' : ''}`}
+                >
+                  {/* Content Card */}
+                  <div className="w-full md:w-5/12">
+                    <DraggableCaseCard 
+                      clientCase={caseItem}
+                      onEdit={handleEdit}
+                      onDelete={handleDeleteCase}
+                      onUpdateStatus={handleUpdateStatus}
+                      isFavorite={isFavorite(caseItem.id)}
+                      onToggleFavorite={() => toggleFavorite(caseItem.id)}
+                      isSelected={isSelected(caseItem.id)}
+                      onToggleSelection={() => toggleSelection(caseItem.id)}
+                    />
+                  </div>
+
+                  {/* Center Circle with Number - same as homepage */}
+                  <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:block">
+                    <div className="relative w-24 h-24 rounded-full bg-gradient-to-br from-primary to-secondary p-1">
+                      <div className="w-full h-full rounded-full bg-card flex items-center justify-center">
+                        <span className="text-4xl font-heading font-black bg-gradient-to-br from-primary to-secondary bg-clip-text text-transparent">
+                          {index + 1}
+                        </span>
+                      </div>
+                      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 blur-xl -z-10" />
+                    </div>
+                  </div>
+
+                  {/* Empty space for layout balance */}
+                  <div className="w-full md:w-5/12 hidden md:block" />
+                </div>
+              );
+            })}
+          </div>
         )}
       </div>
 
