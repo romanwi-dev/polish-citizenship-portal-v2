@@ -13,7 +13,7 @@ const CityDivider = ({ cityName, imagePath }: CityDividerProps) => {
   }, []);
 
   return (
-    <div className="w-full py-12 flex items-center justify-center overflow-hidden">
+    <div className="w-full py-16 flex items-center justify-center overflow-hidden">
       <div
         className={`transition-all duration-1000 ease-out ${
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
@@ -22,7 +22,7 @@ const CityDivider = ({ cityName, imagePath }: CityDividerProps) => {
         <img
           src={imagePath}
           alt={`${cityName} landmark`}
-          className="w-full max-w-[600px] h-auto object-contain md:max-w-[500px] opacity-70 hover:opacity-90 transition-opacity duration-300"
+          className="w-full max-w-[700px] h-auto object-contain md:max-w-[600px] opacity-30 hover:opacity-50 transition-opacity duration-500 mix-blend-lighten"
           loading="lazy"
         />
       </div>
