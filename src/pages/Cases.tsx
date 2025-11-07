@@ -219,13 +219,13 @@ const Cases = () => {
       <Navigation />
       
       <section className="relative py-16 overflow-hidden">
-        <div className="px-4 md:px-8 lg:px-12 mx-auto w-full">
-          <div className="text-center">
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text mb-12 md:mb-20">
-              Cases Management
-            </h1>
-          </div>
+        <div className="text-center px-4 md:px-8 lg:px-12">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text mb-12 md:mb-20">
+            Cases Management
+          </h1>
+        </div>
 
+        <div className="px-4 md:px-8 lg:px-12 mx-auto w-full">
           <div className="max-w-7xl mx-auto mb-8">
             <div className="flex gap-2 items-center">
               <div className="relative flex-1">
@@ -433,8 +433,14 @@ const Cases = () => {
                 }
               }
             />
-          ) : (
-            <div className="relative max-w-6xl mx-auto">
+          ) : null}
+          </div>
+        </div>
+
+        {/* Timeline View - Full Width */}
+        {!error && !loading && filteredCases.length > 0 && (
+          <div className="relative w-full">
+            <div className="relative max-w-6xl mx-auto px-4">
               <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-primary via-secondary to-accent transform -translate-x-1/2" />
               
               <div className="flex flex-col gap-12">
@@ -482,8 +488,8 @@ const Cases = () => {
                 })}
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </section>
 
       {fullscreenCase && (
