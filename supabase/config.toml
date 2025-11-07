@@ -204,3 +204,9 @@ verify_jwt = false
 [functions.edge-function-agent.cron]
 schedule = "*/5 * * * *"
 
+[functions.project-memory-agent]
+verify_jwt = false
+
+[functions.project-memory-agent.cron]
+schedule = "*/10 * * * *"
+
