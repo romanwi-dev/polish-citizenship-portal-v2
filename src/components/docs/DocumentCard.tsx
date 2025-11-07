@@ -1,6 +1,6 @@
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { FileText, Calendar, User, Download, CheckCircle2 } from 'lucide-react';
+import { FileText, Calendar, User, Download, CheckCircle2, FolderOpen } from 'lucide-react';
 import { format } from 'date-fns';
 import { DocumentTranslationStatus } from './DocumentTranslationStatus';
 import { Button } from '@/components/ui/button';
@@ -118,14 +118,29 @@ export function DocumentCard({ document }: DocumentCardProps) {
               </div>
             </div>
           </div>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={handleDownload}
-            disabled={isDownloading}
-          >
-            <Download className={`h-4 w-4 ${isDownloading ? 'animate-pulse' : ''}`} />
-          </Button>
+          <div className="flex gap-2">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={handleDownload}
+              disabled={isDownloading}
+            >
+              <Download className={`h-4 w-4 ${isDownloading ? 'animate-pulse' : ''}`} />
+            </Button>
+            {document.dropbox_path && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const folderPath = document.dropbox_path.substring(0, document.dropbox_path.lastIndexOf('/'));
+                  window.open(`https://www.dropbox.com/home${folderPath}`, '_blank');
+                }}
+              >
+                <FolderOpen className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
         </div>
 
         <DocumentTranslationStatus document={document} />

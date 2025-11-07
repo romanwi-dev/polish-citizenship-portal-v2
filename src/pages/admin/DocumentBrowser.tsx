@@ -6,14 +6,34 @@ import { ConflictResolutionModal } from "@/components/documents/ConflictResoluti
 import { BulkDropboxScanner } from "@/components/documents/BulkDropboxScanner";
 import { useOCRConflictDetection } from "@/hooks/useOCRConflictDetection";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertCircle, ScanLine } from "lucide-react";
+import { AlertCircle, ScanLine, FolderOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
 
 const DocumentBrowser = () => {
   const { id } = useParams();
   const [selectedConflict, setSelectedConflict] = useState<any>(null);
   const { conflicts, conflictCount, resolveConflict, isResolving } = useOCRConflictDetection(id);
+
+  // Fetch case details for Dropbox path
+  const { data: caseData } = useQuery({
+    queryKey: ['case-dropbox', id],
+    queryFn: async () => {
+      if (!id) return null;
+      const { data, error } = await supabase
+        .from('cases')
+        .select('dropbox_path')
+        .eq('id', id)
+        .single();
+      
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!id
+  });
 
   const handleResolve = (conflictId: string, resolution: 'ocr' | 'manual' | 'ignore', notes?: string) => {
     resolveConflict({ conflictId, resolution, notes });
@@ -24,6 +44,20 @@ const DocumentBrowser = () => {
       <div className="p-6 space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold">Document Browser & OCR Management</h1>
+          <Button
+            variant="outline"
+            className="gap-2"
+            onClick={() => {
+              if (caseData?.dropbox_path) {
+                window.open(`https://www.dropbox.com/home${caseData.dropbox_path}`, '_blank');
+              } else {
+                toast({ title: 'No Dropbox path configured', variant: 'destructive' });
+              }
+            }}
+          >
+            <FolderOpen className="h-4 w-4" />
+            Open Dropbox Folder
+          </Button>
         </div>
 
         {conflictCount > 0 && (
