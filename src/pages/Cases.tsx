@@ -442,6 +442,7 @@ const Cases = () => {
               
               {filteredCases.map((clientCase, index) => {
                 const isLeft = index % 2 === 0;
+                console.log(`Card ${index}: ${clientCase.client_name}, isLeft: ${isLeft}`);
                 return (
                   <motion.div
                     key={clientCase.id}
