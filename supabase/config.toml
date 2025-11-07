@@ -12,6 +12,9 @@ verify_jwt = true
 [functions.verify-workflow-multi-model]
 verify_jwt = false
 
+[functions.verify-analysis]
+verify_jwt = false
+
 [functions.github-webhook-verify]
 verify_jwt = false
 
