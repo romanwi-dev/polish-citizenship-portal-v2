@@ -436,7 +436,6 @@ const Cases = () => {
           ) : null}
         </div>
 
-        {/* Timeline View - Full Width */}
         {!error && !loading && filteredCases.length > 0 && (
           <div className="relative w-full">
             <div className="relative max-w-6xl mx-auto px-4">
