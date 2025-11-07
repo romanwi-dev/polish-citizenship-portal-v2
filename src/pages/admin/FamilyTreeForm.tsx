@@ -449,7 +449,7 @@ export default function FamilyTreeForm() {
           <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text text-center leading-tight whitespace-nowrap">
             Family Tree
           </h2>
-          <div className="flex items-center justify-center gap-1 md:gap-3 mt-2 md:mt-4">
+          <div className="flex items-center justify-center gap-3 md:gap-6 mt-2 md:mt-4">
               <Button
                 onClick={() => navigate('/admin/forms-demo')}
                 variant="ghost"
