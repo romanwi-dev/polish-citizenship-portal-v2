@@ -436,12 +436,12 @@ const Cases = () => {
               }
             />
           ) : (
-            <div className="relative max-w-6xl mx-auto border-8 border-purple-500">
+            <div className="relative max-w-6xl mx-auto bg-red-500 p-8">
               {/* Central Line */}
-              <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-primary via-secondary to-accent transform -translate-x-1/2" />
+              <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-8 bg-yellow-400 transform -translate-x-1/2 z-10" />
               
               {/* Timeline Cards - ALTERNATING left/right */}
-              <div className="space-y-12 border-4 border-yellow-500">
+              <div className="space-y-12 bg-green-500 p-4">
                 {filteredCases.map((clientCase, index) => {
                   const isEven = index % 2 === 0;
                   
