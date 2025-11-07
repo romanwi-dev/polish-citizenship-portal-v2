@@ -23,7 +23,11 @@ const WorkflowNotifications = () => {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold">Workflow Notifications</h1>
+            <h1 className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight text-center">
+              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                Workflow Notifications
+              </span>
+            </h1>
             <p className="text-muted-foreground mt-2">
               Monitor SLA violations, deadlines, and workflow updates
             </p>

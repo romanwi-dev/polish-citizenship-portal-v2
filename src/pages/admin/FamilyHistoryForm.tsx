@@ -78,8 +78,10 @@ export default function FamilyHistoryForm() {
       <div className="relative z-10 pt-2 px-3 pb-3 md:p-6">
         <div className="animate-fade-in-up mb-1 md:mb-6">
           <div className="flex flex-col gap-2 md:gap-4 pb-2 md:pb-6">
-            <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text text-center flex-1 leading-tight whitespace-nowrap">
-              Family History
+            <h2 className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight text-center">
+              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                Family History
+              </span>
             </h2>
             <div className="flex items-center justify-center gap-1 md:gap-3">
               <Button

@@ -11,7 +11,11 @@ const AllWorkflows = () => {
     <AdminLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold">All Workflows</h1>
+          <h1 className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight text-center">
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              All Workflows
+            </span>
+          </h1>
           <p className="text-muted-foreground mt-2">
             Unified view of all active workflows across the system
           </p>

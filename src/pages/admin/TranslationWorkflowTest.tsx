@@ -215,9 +215,11 @@ export default function TranslationWorkflowTest() {
       <div className="space-y-6 max-w-4xl mx-auto p-6">
         <div className="flex items-center justify-between">
           <div className="flex-1">
-            <h1 className="text-3xl font-bold flex items-center gap-3">
-              <TestTube className="h-8 w-8 text-primary" />
-              Translation Workflow Test
+            <h1 className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight text-center">
+              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center gap-3 justify-center">
+                <TestTube className="h-12 w-12 md:h-16 md:w-16 text-primary" />
+                Translation Workflow Test
+              </span>
             </h1>
             <p className="text-muted-foreground mt-2">
               Test the complete AI translation workflow with real-time notifications
