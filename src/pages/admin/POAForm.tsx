@@ -45,6 +45,13 @@ export default function POAForm() {
   const [previewFormData, setPreviewFormData] = useState<any>(null);
   const [isFullView, setIsFullView] = useState(true);
   
+  // ⚠️ LOCKED DESIGN - DO NOT MODIFY CONDITIONAL RENDERING LOGIC
+  // Conditional rendering controlled by 4 master fields:
+  // 1. applicant_sex (M/F)
+  // 2. applicant_is_married (boolean)
+  // 3. children_count (0-10) - selected manually in IntakeFormContent
+  // 4. minor_children_count (0 to children_count) - selected manually in IntakeFormContent
+  
   // Use universal form manager (auto-save + validation + unsaved changes)
   const {
     formData,
@@ -70,47 +77,8 @@ export default function POAForm() {
     masterData
   } = usePOAAutoGeneration(caseId);
 
-  // AUTO-DETECT minor children from DOBs (children under 18)
-  const getMinorChildrenFromDOBs = (): number[] => {
-    const minorChildren: number[] = [];
-    const today = new Date();
-    
-    for (let i = 1; i <= 10; i++) {
-      const childDob = formData[`child_${i}_dob`];
-      if (childDob) {
-        try {
-          let date: Date;
-          // Handle DD.MM.YYYY format
-          if (childDob.includes('.')) {
-            const [day, month, year] = childDob.split('.');
-            date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
-          } else {
-            // Handle ISO format
-            date = new Date(childDob);
-          }
-          
-          if (!isNaN(date.getTime())) {
-            let age = today.getFullYear() - date.getFullYear();
-            const monthDiff = today.getMonth() - date.getMonth();
-            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < date.getDate())) {
-              age--;
-            }
-            
-            if (age >= 0 && age < 18) {
-              minorChildren.push(i);
-            }
-          }
-        } catch (error) {
-          console.error(`Error calculating age for child_${i}:`, error);
-        }
-      }
-    }
-    return minorChildren;
-  };
-
   const showSpousePOA = formData.applicant_is_married === true;
-  const minorChildrenArray = getMinorChildrenFromDOBs();
-  const minorChildrenCount = minorChildrenArray.length;
+  const minorChildrenCount = formData.minor_children_count || 0;
 
   // Custom save handler for POA (includes latest formData ref for PDF generation)
   const handlePOASave = async () => {
@@ -514,8 +482,8 @@ export default function POAForm() {
                 </div>
           </motion.div>
 
-          {/* POA Minor - Auto-generated for each minor child (under 18) based on DOB */}
-          {minorChildrenArray.map((childNum, index) => (
+          {/* POA Minor - Shown for each minor child based on minor_children_count */}
+          {Array.from({ length: minorChildrenCount }, (_, index) => index + 1).map((childNum, index) => (
             <motion.div 
               key={`minor-${childNum}`}
               initial={{ opacity: 0, scale: 0.95 }} 
@@ -525,10 +493,10 @@ export default function POAForm() {
             >
               <div className="border-b border-border/50 pb-6">
                 <h2 className="text-4xl md:text-5xl font-heading font-bold text-gray-600 dark:text-gray-400">
-                  {poaFormConfigs.minor.title} - Child {childNum} {minorChildrenArray.length > 1 ? `(${index + 1} of ${minorChildrenArray.length})` : ''}
+                  {poaFormConfigs.minor.title} - Child {childNum} {minorChildrenCount > 1 ? `(${index + 1} of ${minorChildrenCount})` : ''}
                 </h2>
                 <p className="text-sm text-muted-foreground mt-2">
-                  Auto-detected as minor (under 18) from date of birth: {formData[`child_${childNum}_dob`] || 'N/A'}
+                  Minor child {childNum} (DOB: {formData[`child_${childNum}_dob`] || 'Not entered'})
                 </p>
               </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">

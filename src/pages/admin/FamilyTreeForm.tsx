@@ -33,6 +33,13 @@ import StickyActionBar from "@/components/StickyActionBar";
 
 type ColorScheme = 'children' | 'applicant' | 'spouse' | 'parents' | 'grandparents' | 'ggp' | 'poa' | 'citizenship' | 'civil-reg';
 
+// ⚠️ LOCKED DESIGN - DO NOT MODIFY CONDITIONAL RENDERING LOGIC
+// Conditional rendering controlled by 4 master fields:
+// 1. applicant_sex (M/F)
+// 2. applicant_marital_status (Married/Single)
+// 3. children_count (0-10) - selected manually in IntakeFormContent
+// 4. minor_children_count (0 to children_count) - selected manually in IntakeFormContent
+
 export default function FamilyTreeForm() {
   const { id: caseId } = useParams();
   const navigate = useNavigate();

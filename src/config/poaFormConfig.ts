@@ -37,7 +37,7 @@ export const poaFormConfigs: Record<string, POAFormConfig> = {
     pdfType: "poa-spouses",
     fields: [
       { name: "applicant_first_name", label: "Husband given names / Imię/imiona męża" },
-      { name: "father_last_name", label: "Husband full last name / Nazwisko męża" },
+      { name: "applicant_last_name", label: "Husband full last name / Nazwisko męża" },
       { name: "applicant_passport_number", label: "Husband ID/passport number / Nr dokumentu tożsamości męża" },
       { name: "spouse_first_name", label: "Wife given names / Imię/imiona żony" },
       { name: "spouse_last_name", label: "Wife full last name / Nazwisko żony" },
