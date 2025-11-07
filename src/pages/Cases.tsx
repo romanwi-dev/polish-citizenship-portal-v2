@@ -405,6 +405,13 @@ const Cases = () => {
           </div>
 
           <div className="max-w-7xl mx-auto">
+          
+          {/* DEBUG INFO */}
+          <div className="fixed top-20 right-4 bg-red-500 text-white p-4 z-50 text-xs">
+            <div>Error: {error ? 'YES' : 'NO'}</div>
+            <div>Loading: {loading ? 'YES' : 'NO'}</div>
+            <div>Cases: {filteredCases.length}</div>
+          </div>
 
           {error ? (
             <ErrorState 
