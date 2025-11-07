@@ -29,8 +29,8 @@ export const ExtendedServicesDashboard = () => {
   return (
     <div className="space-y-4 sm:space-y-6 p-4 sm:p-6">
       {/* Header */}
-      <div className="max-w-4xl mx-auto text-center mb-8">
-        <h1 className="text-4xl md:text-5xl font-heading font-black tracking-tight">
+      <div className="max-w-4xl mx-auto text-center">
+        <h1 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-12 md:mb-20">
           <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
             Extended Services
           </span>

@@ -219,8 +219,8 @@ const Cases = () => {
       
       <section className="relative py-16 overflow-hidden">
         <div className="px-4 md:px-8 lg:px-12 mx-auto w-full">
-          <div className="text-center mb-16">
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">
+          <div className="text-center">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text mb-12 md:mb-20">
               Cases Management
             </h1>
           </div>

@@ -142,8 +142,8 @@ export const OCRReviewDashboard = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">OCR Review Dashboard</h1>
-        <p className="text-muted-foreground mt-1">
+        <h1 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-center mb-12 md:mb-20">OCR Review Dashboard</h1>
+        <p className="text-muted-foreground mt-1 text-center">
           Review and approve OCR-processed documents
         </p>
       </div>
