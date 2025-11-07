@@ -514,12 +514,16 @@ export default function FamilyTreeForm() {
                   <TabsTrigger value="applicant" className="flex-shrink-0 md:flex-1">
                     <span className="text-blue-600 dark:text-blue-400">Applicant</span>
                   </TabsTrigger>
-                  <TabsTrigger value="spouse" className="flex-shrink-0 md:flex-1">
-                    <span className="text-blue-600 dark:text-blue-400">Spouse</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="children" className="flex-shrink-0 md:flex-1">
-                    <span className="text-cyan-600 dark:text-cyan-400">Children</span>
-                  </TabsTrigger>
+                  {formData?.applicant_marital_status === "Married" && (
+                    <TabsTrigger value="spouse" className="flex-shrink-0 md:flex-1">
+                      <span className="text-blue-600 dark:text-blue-400">Spouse</span>
+                    </TabsTrigger>
+                  )}
+                  {formData?.minor_children_count > 0 && (
+                    <TabsTrigger value="children" className="flex-shrink-0 md:flex-1">
+                      <span className="text-cyan-600 dark:text-cyan-400">Children</span>
+                    </TabsTrigger>
+                  )}
                   <TabsTrigger value="parents" className="flex-shrink-0 md:flex-1">
                     <span className="text-teal-600 dark:text-teal-400">Parents</span>
                   </TabsTrigger>
@@ -1286,12 +1290,16 @@ export default function FamilyTreeForm() {
                   <TabsTrigger value="applicant" className="flex-shrink-0 md:flex-1">
                     <span className="text-blue-600 dark:text-blue-400">Applicant</span>
                   </TabsTrigger>
-                  <TabsTrigger value="spouse" className="flex-shrink-0 md:flex-1">
-                    <span className="text-blue-600 dark:text-blue-400">Spouse</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="children" className="flex-shrink-0 md:flex-1">
-                    <span className="text-cyan-600 dark:text-cyan-400">Children</span>
-                  </TabsTrigger>
+                  {formData?.applicant_marital_status === "Married" && (
+                    <TabsTrigger value="spouse" className="flex-shrink-0 md:flex-1">
+                      <span className="text-blue-600 dark:text-blue-400">Spouse</span>
+                    </TabsTrigger>
+                  )}
+                  {formData?.minor_children_count > 0 && (
+                    <TabsTrigger value="children" className="flex-shrink-0 md:flex-1">
+                      <span className="text-cyan-600 dark:text-cyan-400">Children</span>
+                    </TabsTrigger>
+                  )}
                   <TabsTrigger value="parents" className="flex-shrink-0 md:flex-1">
                     <span className="text-teal-600 dark:text-teal-400">Parents</span>
                   </TabsTrigger>
@@ -1449,7 +1457,7 @@ export default function FamilyTreeForm() {
               </div>
 
               {/* Spouse Section */}
-              {formData.applicant_is_married && (
+              {formData?.applicant_marital_status === "Married" && (
                 <div ref={(el) => sectionRefs.current.spouse = el} className="border-b border-border/10">
                   <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="space-y-10">
                     <h2 className="text-4xl md:text-5xl font-heading font-bold text-blue-300 dark:text-blue-300 border-b border-border/50 pb-6">
@@ -1469,7 +1477,7 @@ export default function FamilyTreeForm() {
               )}
 
               {/* Children Section */}
-              {(formData.minor_children_count > 0) && (
+              {formData?.minor_children_count > 0 && (
                 <div ref={(el) => sectionRefs.current.children = el} className="border-b border-border/10">
                   <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.1 }} className="space-y-10">
                     <div className="border-b border-border/50 pb-6">
