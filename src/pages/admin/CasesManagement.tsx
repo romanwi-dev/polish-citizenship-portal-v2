@@ -10,12 +10,14 @@ import { CaseCardSkeletonGrid } from "@/components/CaseCardSkeleton";
 import { KeyboardShortcutsDialog } from "@/components/KeyboardShortcutsDialog";
 import { 
   Plus, 
-  Database,
-  ArrowUpDown,
-  Search,
-  SlidersHorizontal,
+  Search, 
+  Database, 
+  Pencil, 
   RotateCcw,
-  Pencil
+  ArrowUp,
+  ArrowDown,
+  ArrowUpDown,
+  SlidersHorizontal
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/useAuth";
@@ -639,6 +641,26 @@ export default function CasesManagement() {
             })}
           </div>
         )}
+
+        {/* Scroll to Top Button - Bottom Right */}
+        <Button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          size="icon"
+          className="fixed bottom-6 right-6 w-12 h-12 rounded-full shadow-lg bg-primary hover:bg-primary/90 text-primary-foreground z-50"
+          aria-label="Scroll to top"
+        >
+          <ArrowUp className="h-5 w-5" />
+        </Button>
+
+        {/* Scroll to Bottom Button - Bottom Left */}
+        <Button
+          onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}
+          size="icon"
+          className="fixed bottom-6 left-6 w-12 h-12 rounded-full shadow-lg bg-secondary hover:bg-secondary/90 text-secondary-foreground z-50"
+          aria-label="Scroll to bottom"
+        >
+          <ArrowDown className="h-5 w-5" />
+        </Button>
       </div>
 
       {editCase && (
