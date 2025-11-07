@@ -222,4 +222,10 @@ verify_jwt = false
 [functions.subagent-supervisor.cron]
 schedule = "*/15 * * * *"
 
+[functions.workflow-memory-agent]
+verify_jwt = false
+
+[functions.workflow-memory-agent.cron]
+schedule = "*/20 * * * *"
+
 
