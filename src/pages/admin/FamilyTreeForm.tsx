@@ -611,7 +611,7 @@ export default function FamilyTreeForm() {
                   {/* Right column: Children and Minor Children */}
                   <div className="space-y-6">
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="space-y-2" onDoubleClick={() => handleInputChange("children_count", null)}>
-                      <Label className={isLargeFonts ? "text-2xl" : ""}>Total children</Label>
+                      <Label className={isLargeFonts ? "text-2xl" : ""}>Children</Label>
                       <Select value={formData?.children_count?.toString() || ""} onValueChange={(value) => handleInputChange("children_count", parseInt(value))}>
                         <SelectTrigger 
                           className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur z-50 text-xs"
@@ -637,7 +637,7 @@ export default function FamilyTreeForm() {
 
                     {formData?.children_count > 0 && (
                       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.175 }} className="space-y-2" onDoubleClick={() => handleInputChange("minor_children_count", null)}>
-                        <Label className={isLargeFonts ? "text-2xl" : ""}>Minor children (under 18)</Label>
+                        <Label className={isLargeFonts ? "text-2xl" : ""}>Minors</Label>
                         <Select value={formData?.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
                           <SelectTrigger 
                             className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs"
@@ -1353,7 +1353,7 @@ export default function FamilyTreeForm() {
                   {/* Row 2: Children counts */}
                   <div className="grid grid-cols-2 gap-6">
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-2">
-                      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>Total children</Label>
+                      <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>Children</Label>
                       <Select value={formData.children_count?.toString() || ""} onValueChange={(value) => { const count = parseInt(value); handleInputChange("children_count", count); }}>
                         <SelectTrigger className="h-20 text-2xl border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur z-50">
                           <SelectValue placeholder="Select" />
@@ -1366,7 +1366,7 @@ export default function FamilyTreeForm() {
 
                     {formData.children_count > 0 && (
                       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="space-y-2">
-                        <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>Minor children (under 18)</Label>
+                        <Label className={cn("font-light text-foreground/90", isLargeFonts ? "text-xl" : "text-sm")}>Minors</Label>
                         <Select value={formData.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
                           <SelectTrigger className="h-20 text-2xl border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
                             <SelectValue placeholder="Select" />
