@@ -447,11 +447,15 @@ const Cases = () => {
                     <div key={clientCase.id} className={isEven ? 'relative flex items-center md:flex-row' : 'relative flex items-center md:flex-row-reverse'}>
                       <div className={isEven ? 'w-full md:w-5/12 md:pr-12' : 'w-full md:w-5/12 md:pl-12'}>
                         <motion.div
-                          initial={{ opacity: 0, x: isEven ? -50 : 50 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.6, delay: index * 0.1 }}
-                          viewport={{ once: true, margin: "-50px" }}
-                          whileHover={{ scale: 1.02 }}
+                          initial={{ opacity: 0, x: isEven ? -100 : 100, scale: 0.9 }}
+                          whileInView={{ opacity: 1, x: 0, scale: 1 }}
+                          transition={{ 
+                            duration: 0.8, 
+                            delay: index * 0.15,
+                            ease: [0.25, 0.46, 0.45, 0.94]
+                          }}
+                          viewport={{ once: true, margin: "-100px" }}
+                          whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
                         >
                           <CaseCard 
                             clientCase={clientCase}
