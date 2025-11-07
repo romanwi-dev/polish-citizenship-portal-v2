@@ -19,6 +19,7 @@ const FAQSection = lazy(() => import("@/components/FAQSection"));
 const ContactFormWeb3 = lazy(() => import("@/components/ContactFormWeb3"));
 const FooterWeb3 = lazy(() => import("@/components/FooterWeb3"));
 const ScrollToTop = lazy(() => import("@/components/ScrollToTop"));
+const CityDivider = lazy(() => import("@/components/CityDivider"));
 
 // Simple loading fallback
 const SectionLoader = () => (
@@ -105,6 +106,11 @@ const Index = () => {
         <Navigation />
         <HeroWeb3 />
         <AboutSection />
+        
+        <Suspense fallback={<SectionLoader />}>
+          <CityDivider cityName="Warsaw" imagePath="/landmarks/warsaw.png" />
+        </Suspense>
+        
         <AIAnalysisSection />
         
         <Suspense fallback={<SectionLoader />}>
@@ -112,7 +118,15 @@ const Index = () => {
         </Suspense>
         
         <Suspense fallback={<SectionLoader />}>
+          <CityDivider cityName="Prague" imagePath="/landmarks/prague.png" />
+        </Suspense>
+        
+        <Suspense fallback={<SectionLoader />}>
           <TimelineProcessEnhanced />
+        </Suspense>
+        
+        <Suspense fallback={<SectionLoader />}>
+          <CityDivider cityName="Budapest" imagePath="/landmarks/budapest.png" />
         </Suspense>
         
         <Suspense fallback={<SectionLoader />}>
@@ -120,7 +134,15 @@ const Index = () => {
         </Suspense>
         
         <Suspense fallback={<SectionLoader />}>
+          <CityDivider cityName="Berlin" imagePath="/landmarks/berlin.png" />
+        </Suspense>
+        
+        <Suspense fallback={<SectionLoader />}>
           <PricingSection />
+        </Suspense>
+        
+        <Suspense fallback={<SectionLoader />}>
+          <CityDivider cityName="Paris" imagePath="/landmarks/paris.png" />
         </Suspense>
         
         <Suspense fallback={<SectionLoader />}>
@@ -128,7 +150,15 @@ const Index = () => {
         </Suspense>
         
         <Suspense fallback={<SectionLoader />}>
+          <CityDivider cityName="Athens" imagePath="/landmarks/athens.png" />
+        </Suspense>
+        
+        <Suspense fallback={<SectionLoader />}>
           <FAQSection />
+        </Suspense>
+        
+        <Suspense fallback={<SectionLoader />}>
+          <CityDivider cityName="Rome" imagePath="/landmarks/rome.png" />
         </Suspense>
         
         <Suspense fallback={<SectionLoader />}>
