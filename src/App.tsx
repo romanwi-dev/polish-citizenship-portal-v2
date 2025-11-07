@@ -78,6 +78,7 @@ const AIAgentsDashboard = lazy(() => import("./pages/admin/AIAgentsDashboard"));
 const AgentApprovals = lazy(() => import("./pages/admin/AgentApprovals"));
 const VerifyChanges = lazy(() => import("./pages/VerifyChanges"));
 const VerificationResults = lazy(() => import("./pages/VerificationResults"));
+const VerificationB = lazy(() => import("./pages/VerificationB"));
 const PDFGenerationTest = lazy(() => import("./pages/admin/PDFGenerationTest"));
 const PDFDemo = lazy(() => import("./pages/PDFDemo"));
 const SelfTest = lazy(() => import("./pages/admin/SelfTest"));
@@ -658,6 +659,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <VerificationResults />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/verification-b" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <VerificationB />
               </Suspense>
             } 
           />
