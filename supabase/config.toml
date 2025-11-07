@@ -252,4 +252,10 @@ verify_jwt = false
 [functions.workflow-memory-agent.cron]
 schedule = "*/20 * * * *"
 
+[functions.agent-health-monitor]
+verify_jwt = false
+
+[functions.agent-health-monitor.cron]
+schedule = "*/10 * * * *"
+
 
