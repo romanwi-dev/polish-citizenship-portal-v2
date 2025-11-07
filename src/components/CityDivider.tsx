@@ -9,7 +9,11 @@ export const CityDivider = ({ cityImage, alt }: CityDividerProps) => {
       <img 
         src={cityImage} 
         alt={alt}
-        className="h-16 w-auto opacity-30 hover:opacity-50 transition-opacity duration-300"
+        className="h-16 w-auto opacity-20 hover:opacity-40 transition-opacity duration-300"
+        style={{ 
+          mixBlendMode: 'screen',
+          filter: 'brightness(1.2) contrast(1.1)'
+        }}
         loading="lazy"
       />
     </div>
