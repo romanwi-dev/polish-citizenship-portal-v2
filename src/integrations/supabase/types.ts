@@ -111,6 +111,53 @@ export type Database = {
           },
         ]
       }
+      agent_memory: {
+        Row: {
+          agent_type: string
+          case_id: string | null
+          context_window: Json | null
+          created_at: string | null
+          expires_at: string | null
+          id: string
+          memory_key: string
+          memory_value: Json
+          metadata: Json | null
+          updated_at: string | null
+        }
+        Insert: {
+          agent_type: string
+          case_id?: string | null
+          context_window?: Json | null
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          memory_key: string
+          memory_value: Json
+          metadata?: Json | null
+          updated_at?: string | null
+        }
+        Update: {
+          agent_type?: string
+          case_id?: string | null
+          context_window?: Json | null
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          memory_key?: string
+          memory_value?: Json
+          metadata?: Json | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agent_memory_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       agent_notifications: {
         Row: {
           conversation_id: string | null
@@ -3892,6 +3939,65 @@ export type Database = {
           },
         ]
       }
+      project_decisions: {
+        Row: {
+          alternatives_considered: Json | null
+          created_at: string | null
+          created_by: string | null
+          decision_type: string
+          description: string
+          id: string
+          implementation_details: Json | null
+          rationale: string
+          related_files: string[] | null
+          status: string | null
+          superseded_by: string | null
+          tags: string[] | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          alternatives_considered?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          decision_type: string
+          description: string
+          id?: string
+          implementation_details?: Json | null
+          rationale: string
+          related_files?: string[] | null
+          status?: string | null
+          superseded_by?: string | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          alternatives_considered?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          decision_type?: string
+          description?: string
+          id?: string
+          implementation_details?: Json | null
+          rationale?: string
+          related_files?: string[] | null
+          status?: string | null
+          superseded_by?: string | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_decisions_superseded_by_fkey"
+            columns: ["superseded_by"]
+            isOneToOne: false
+            referencedRelation: "project_decisions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       quality_metrics_history: {
         Row: {
           accuracy_score: number | null
@@ -5335,6 +5441,57 @@ export type Database = {
         }
         Relationships: []
       }
+      workflow_rules: {
+        Row: {
+          actions: Json
+          conditions: Json
+          created_at: string | null
+          failure_count: number | null
+          id: string
+          is_active: boolean | null
+          last_executed_at: string | null
+          metadata: Json | null
+          priority: number | null
+          rule_description: string
+          rule_name: string
+          success_count: number | null
+          updated_at: string | null
+          workflow_type: string
+        }
+        Insert: {
+          actions: Json
+          conditions: Json
+          created_at?: string | null
+          failure_count?: number | null
+          id?: string
+          is_active?: boolean | null
+          last_executed_at?: string | null
+          metadata?: Json | null
+          priority?: number | null
+          rule_description: string
+          rule_name: string
+          success_count?: number | null
+          updated_at?: string | null
+          workflow_type: string
+        }
+        Update: {
+          actions?: Json
+          conditions?: Json
+          created_at?: string | null
+          failure_count?: number | null
+          id?: string
+          is_active?: boolean | null
+          last_executed_at?: string | null
+          metadata?: Json | null
+          priority?: number | null
+          rule_description?: string
+          rule_name?: string
+          success_count?: number | null
+          updated_at?: string | null
+          workflow_type?: string
+        }
+        Relationships: []
+      }
       workflow_runs: {
         Row: {
           case_id: string
@@ -5687,6 +5844,7 @@ export type Database = {
           workflow_id: string
         }[]
       }
+      cleanup_expired_agent_memory: { Args: never; Returns: undefined }
       cleanup_expired_crash_states: { Args: never; Returns: undefined }
       cleanup_expired_locks_v7: {
         Args: { p_timeout_seconds?: number }
