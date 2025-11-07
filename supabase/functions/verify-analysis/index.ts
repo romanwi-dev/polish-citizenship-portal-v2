@@ -59,77 +59,96 @@ Respond with JSON:
   "reasoning": "detailed explanation"
 }`;
 
-    console.log('Starting triple-model verification...');
+    console.log('Starting parallel triple-model verification...');
 
-    // Model 1: GPT-5 Verification with timeout
-    const gpt5Controller = new AbortController();
-    const gpt5Timeout = setTimeout(() => gpt5Controller.abort(), AI_CALL_TIMEOUT);
-    
-    const gpt5Response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'openai/gpt-5',
-        messages: [
-          { 
-            role: 'system', 
-            content: 'You are a senior technical architect specializing in system analysis verification. You provide precise, evidence-based assessments.' 
-          },
-          { role: 'user', content: verificationPrompt }
-        ],
-        response_format: { type: 'json_object' }
-      }),
-      signal: gpt5Controller.signal
-    }).finally(() => clearTimeout(gpt5Timeout));
+    // Run both AI models in parallel for faster verification
+    const [gpt5Result, geminiResult] = await Promise.all([
+      // Model 1: GPT-5 Verification
+      (async () => {
+        try {
+          const controller = new AbortController();
+          const timeout = setTimeout(() => controller.abort(), AI_CALL_TIMEOUT);
+          
+          const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              model: 'openai/gpt-5-mini',
+              messages: [
+                { role: 'system', content: 'You are a senior technical architect. Provide precise assessments.' },
+                { role: 'user', content: verificationPrompt }
+              ],
+              response_format: { type: 'json_object' }
+            }),
+            signal: controller.signal
+          }).finally(() => clearTimeout(timeout));
 
-    if (!gpt5Response.ok) {
-      const errorText = await gpt5Response.text();
-      console.error('GPT-5 verification failed:', errorText);
-      throw new Error(`GPT-5 verification failed: ${errorText}`);
-    }
+          if (!response.ok) throw new Error(`GPT-5 failed: ${response.status}`);
+          
+          const data = await response.json();
+          const result = JSON.parse(data.choices[0].message.content) as ModelVerification;
+          result.model = 'openai/gpt-5-mini';
+          console.log('GPT-5 Mini verification complete:', result.score);
+          return result;
+        } catch (error) {
+          console.error('GPT-5 verification failed:', error);
+          return {
+            model: 'openai/gpt-5-mini',
+            score: 0,
+            confidence: 0,
+            criticalIssues: ['Verification timeout'],
+            recommendations: [],
+            reasoning: 'Model verification timed out or failed'
+          } as ModelVerification;
+        }
+      })(),
+      
+      // Model 2: Gemini Flash Verification
+      (async () => {
+        try {
+          const controller = new AbortController();
+          const timeout = setTimeout(() => controller.abort(), AI_CALL_TIMEOUT);
+          
+          const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              model: 'google/gemini-2.5-flash',
+              messages: [
+                { role: 'system', content: 'You are an expert system auditor. Identify subtle issues others miss.' },
+                { role: 'user', content: verificationPrompt }
+              ],
+              response_format: { type: 'json_object' }
+            }),
+            signal: controller.signal
+          }).finally(() => clearTimeout(timeout));
 
-    const gpt5Data = await gpt5Response.json();
-    const gpt5Result = JSON.parse(gpt5Data.choices[0].message.content) as ModelVerification;
-    gpt5Result.model = 'openai/gpt-5';
-    console.log('GPT-5 verification complete:', gpt5Result.score);
-
-    // Model 2: Gemini 2.5 Flash Verification (faster)
-    const geminiController = new AbortController();
-    const geminiTimeout = setTimeout(() => geminiController.abort(), AI_CALL_TIMEOUT);
-    
-    const geminiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          { 
-            role: 'system', 
-            content: 'You are an expert system auditor with deep knowledge of database systems, edge computing, and full-stack architectures. You identify subtle issues others miss.' 
-          },
-          { role: 'user', content: verificationPrompt }
-        ],
-        response_format: { type: 'json_object' }
-      }),
-      signal: geminiController.signal
-    }).finally(() => clearTimeout(geminiTimeout));
-
-    if (!geminiResponse.ok) {
-      const errorText = await geminiResponse.text();
-      console.error('Gemini verification failed:', errorText);
-      throw new Error(`Gemini verification failed: ${errorText}`);
-    }
-
-    const geminiData = await geminiResponse.json();
-    const geminiResult = JSON.parse(geminiData.choices[0].message.content) as ModelVerification;
-    geminiResult.model = 'google/gemini-2.5-flash';
-    console.log('Gemini 2.5 Flash verification complete:', geminiResult.score);
+          if (!response.ok) throw new Error(`Gemini failed: ${response.status}`);
+          
+          const data = await response.json();
+          const result = JSON.parse(data.choices[0].message.content) as ModelVerification;
+          result.model = 'google/gemini-2.5-flash';
+          console.log('Gemini 2.5 Flash verification complete:', result.score);
+          return result;
+        } catch (error) {
+          console.error('Gemini verification failed:', error);
+          return {
+            model: 'google/gemini-2.5-flash',
+            score: 0,
+            confidence: 0,
+            criticalIssues: ['Verification timeout'],
+            recommendations: [],
+            reasoning: 'Model verification timed out or failed'
+          } as ModelVerification;
+        }
+      })()
+    ]);
 
     // Model 3: Claude Sonnet 4.5 (simulated - already performed)
     const claudeResult: ModelVerification = {
