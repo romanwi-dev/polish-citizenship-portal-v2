@@ -155,16 +155,16 @@ export default function CivilActsWorkflowCards() {
                           </div>
                         </div>
 
-                        <div className="flex-1 flex flex-col justify-center space-y-5">
+                        <div className="flex-1 flex flex-col justify-center space-y-6">
                           <h3 className="text-2xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-center">
                             {step.title}
                           </h3>
-                          <p className="text-muted-foreground leading-relaxed text-center px-2">
+                          <p className="text-xs text-muted-foreground/70 leading-relaxed text-center px-4">
                             {step.description}
                           </p>
                         </div>
                         
-                        <div className="mt-6 space-y-3">
+                        <div className="mt-6">
                           <Button
                             variant="outline"
                             size="sm"
@@ -173,36 +173,34 @@ export default function CivilActsWorkflowCards() {
                           >
                             {step.cta}
                           </Button>
-                          <p className="text-xs text-muted-foreground/60 text-center">Tap card for details</p>
                         </div>
                       </motion.div>
 
                       <div 
-                        className="absolute inset-0 glass-card p-8 rounded-lg hover-glow"
+                        className="absolute inset-0 glass-card p-8 rounded-lg hover-glow flex flex-col items-center justify-center"
                         style={{
                           backfaceVisibility: 'hidden',
                           WebkitBackfaceVisibility: 'hidden',
                           transform: 'rotateY(180deg)',
                         }}
                       >
-                        <div className="flex flex-col gap-4 h-full">
-                          <div className="mb-4 relative">
-                            <div className="w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-secondary/5 to-accent/5 flex items-center justify-center">
-                              <step.icon className="w-16 h-16 text-secondary opacity-60" />
+                        <div className="flex flex-col items-center gap-6 h-full justify-center max-w-md">
+                          <div className="relative">
+                            <div className="w-24 h-24 rounded-lg overflow-hidden bg-gradient-to-br from-secondary/5 to-accent/5 flex items-center justify-center">
+                              <step.icon className="w-12 h-12 text-secondary opacity-60" />
                             </div>
                           </div>
                           
-                          <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground mb-2">
+                          <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground text-center">
                             Stage Details
                           </h3>
-                          <div className="flex-1 overflow-auto space-y-3">
-                            <div className="p-3 rounded-lg bg-muted/30">
+                          <div className="space-y-3 w-full">
+                            <div className="p-4 rounded-lg bg-muted/30 text-center">
                               <p className="text-sm text-muted-foreground">
                                 Polish civil registry certificate procurement stage
                               </p>
                             </div>
                           </div>
-                          <p className="text-xs text-muted-foreground/60 text-center">Tap to flip back</p>
                         </div>
                       </div>
                     </div>
