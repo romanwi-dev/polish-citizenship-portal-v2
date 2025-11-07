@@ -1,5 +1,6 @@
 import { useState, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { AdminLayout } from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { CaseFilters } from "@/components/CaseFilters";
@@ -591,9 +592,13 @@ export default function CasesManagement() {
               const isEven = index % 2 === 0;
               
               return (
-                <div 
+                <motion.div 
                   key={caseItem.id} 
                   className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-8 ${isEven ? 'md:flex-row-reverse' : ''}`}
+                  initial={{ opacity: 0, x: isEven ? 100 : -100 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
                   {/* Content Card */}
                   <div className="w-full md:w-5/12">
@@ -611,19 +616,25 @@ export default function CasesManagement() {
 
                   {/* Center Circle with Number - same as homepage */}
                   <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:block">
-                    <div className="relative w-24 h-24 rounded-full bg-gradient-to-br from-primary to-secondary p-1">
+                    <motion.div 
+                      className="relative w-24 h-24 rounded-full bg-gradient-to-br from-primary to-secondary p-1"
+                      initial={{ scale: 0 }}
+                      whileInView={{ scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.4, delay: index * 0.1 + 0.2 }}
+                    >
                       <div className="w-full h-full rounded-full bg-card flex items-center justify-center">
                         <span className="text-4xl font-heading font-black bg-gradient-to-br from-primary to-secondary bg-clip-text text-transparent">
                           {index + 1}
                         </span>
                       </div>
                       <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 blur-xl -z-10" />
-                    </div>
+                    </motion.div>
                   </div>
 
                   {/* Empty space for layout balance */}
                   <div className="w-full md:w-5/12 hidden md:block" />
-                </div>
+                </motion.div>
               );
             })}
           </div>
