@@ -439,13 +439,13 @@ const Cases = () => {
             <div className="relative max-w-6xl mx-auto">
               <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-primary via-secondary to-accent transform -translate-x-1/2" />
               
-              <div className="space-y-12">
+              <div className="flex flex-col gap-12">
                 {filteredCases.map((clientCase, index) => {
                   const isEven = index % 2 === 0;
                   
                   return (
-                    <div key={clientCase.id} className={isEven ? 'relative flex items-center md:flex-row' : 'relative flex items-center md:flex-row-reverse'}>
-                      <div className={isEven ? 'w-full md:w-5/12 md:pr-12' : 'w-full md:w-5/12 md:pl-12'}>
+                    <div key={clientCase.id} className={isEven ? 'flex flex-row items-center' : 'flex flex-row-reverse items-center'}>
+                      <div className={isEven ? 'w-5/12 pr-12' : 'w-5/12 pl-12'}>
                         <motion.div
                           initial={{ opacity: 0, x: isEven ? -100 : 100, scale: 0.9 }}
                           whileInView={{ opacity: 1, x: 0, scale: 1 }}
@@ -466,11 +466,11 @@ const Cases = () => {
                         </motion.div>
                       </div>
 
-                      <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-8 h-8 items-center justify-center">
+                      <div className="flex absolute left-1/2 transform -translate-x-1/2 w-8 h-8 items-center justify-center">
                         <motion.div
                           initial={{ scale: 0 }}
                           whileInView={{ scale: 1 }}
-                          transition={{ duration: 0.4, delay: index * 0.1 + 0.2 }}
+                          transition={{ duration: 0.4, delay: index * 0.15 + 0.2 }}
                           viewport={{ once: true }}
                           className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary shadow-glow flex items-center justify-center"
                         >
@@ -478,7 +478,7 @@ const Cases = () => {
                         </motion.div>
                       </div>
 
-                      <div className="hidden md:block w-5/12" />
+                      <div className="w-5/12" />
                     </div>
                   );
                 })}
