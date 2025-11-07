@@ -1,5 +1,7 @@
 import { Star, Quote } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import berlinIcon from "@/assets/cities/berlin.png";
+import { CityDivider } from "./CityDivider";
 
 const testimonials = [
   {
@@ -58,12 +60,14 @@ const testimonials = [
   }
 ];
 
+
 export default function TestimonialsSection() {
   return (
     <section id="testimonials" className="py-24 px-4 overflow-x-hidden">
       <div className="container mx-auto max-w-7xl">
         {/* Header */}
         <div className="text-center mb-16 animate-fade-in">
+          <CityDivider cityImage={berlinIcon} alt="Berlin landmark" />
           <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-4">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               Success Stories

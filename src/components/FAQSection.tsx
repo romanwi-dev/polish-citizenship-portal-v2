@@ -9,6 +9,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, Users, Clock, DollarSign, FileText, AlertCircle, HelpCircle } from "lucide-react";
+import madridIcon from "@/assets/cities/madrid.png";
+import { CityDivider } from "./CityDivider";
 
 const FAQSection = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -167,6 +169,7 @@ const FAQSection = () => {
         <div className="max-w-5xl mx-auto">
           {/* Header */}
           <div className="text-center mb-16">
+            <CityDivider cityImage={madridIcon} alt="Madrid landmark" />
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16">
               <HelpCircle className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium">FAQ</span>

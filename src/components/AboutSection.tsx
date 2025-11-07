@@ -69,12 +69,16 @@ const FlippableAboutCard = ({
   );
 };
 
+import warsawIcon from "@/assets/cities/warsaw.png";
+import { CityDivider } from "./CityDivider";
+
 const AboutSection = () => {
   return (
     <section className="relative py-32 overflow-hidden overflow-x-hidden">
       
       <div className="container relative z-10 px-4 mx-auto">
         <div className="max-w-4xl mx-auto text-center mb-16 animate-fade-in">
+          <CityDivider cityImage={warsawIcon} alt="Warsaw landmark" />
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16">
             <Shield className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium">Legal Expertise Since 2003</span>

@@ -106,12 +106,16 @@ const FlippableServiceCard = ({ service, index }: { service: typeof services[0];
   );
 };
 
+import budapestIcon from "@/assets/cities/budapest.png";
+import { CityDivider } from "./CityDivider";
+
 const ServicesWeb3 = () => {
   return (
     <section id="services" className="py-32 relative overflow-hidden overflow-x-hidden">
       
       <div className="container px-4 mx-auto relative z-10">
         <div className="text-center mb-16 animate-fade-in">
+          <CityDivider cityImage={budapestIcon} alt="Budapest landmark" />
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16">
             <Zap className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium">Next-Gen Services</span>

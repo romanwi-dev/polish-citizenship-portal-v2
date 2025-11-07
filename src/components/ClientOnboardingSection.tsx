@@ -3,6 +3,8 @@ import { UserCircle } from "lucide-react";
 import { MessageSquare, ClipboardCheck, FileSearch, Scale, Send, Brain, FileCheck2, Globe } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
+import pragueIcon from "@/assets/cities/prague.png";
+import { CityDivider } from "./CityDivider";
 
 const onboardingSteps = [
   {
@@ -89,12 +91,14 @@ export default function ClientOnboardingSection() {
     }));
   };
 
+
   return (
     <section id="how-to-start" className="relative py-24 overflow-hidden overflow-x-hidden">
 
       <div className="container relative z-10 mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-20 animate-fade-in">
+          <CityDivider cityImage={pragueIcon} alt="Prague landmark" />
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16">
             <UserCircle className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium">Client Journey</span>

@@ -69,6 +69,9 @@ const FlippableAICard = ({
   );
 };
 
+import brusselsIcon from "@/assets/cities/brussels.png";
+import { CityDivider } from "./CityDivider";
+
 const AIAnalysisSection = () => {
   return (
     <section className="relative py-32 overflow-hidden overflow-x-hidden">
@@ -76,6 +79,7 @@ const AIAnalysisSection = () => {
       <div className="container relative z-10 px-4 mx-auto">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
+            <CityDivider cityImage={brusselsIcon} alt="Brussels landmark" />
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16">
               <Brain className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium">AI-Powered Analysis</span>

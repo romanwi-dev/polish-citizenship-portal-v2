@@ -1,6 +1,8 @@
 import { Check, Train, Plane, Zap } from "lucide-react";
 import { Button } from "./ui/button";
 import { useState } from "react";
+import parisIcon from "@/assets/cities/paris.png";
+import { CityDivider } from "./CityDivider";
 
 const FlippablePricingCard = ({ 
   icon: Icon, 
@@ -126,12 +128,14 @@ const PricingSection = () => {
     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
   };
 
+
   return (
     <section id="pricing" className="relative py-32 overflow-hidden overflow-x-hidden">
       
       <div className="container relative z-10 px-4 mx-auto">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
+            <CityDivider cityImage={parisIcon} alt="Paris landmark" />
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16">
               <Zap className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium">Transparent Real Pricing</span>

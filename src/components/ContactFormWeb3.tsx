@@ -8,6 +8,9 @@ import { useToast } from "@/hooks/use-toast";
 import { Zap, CheckCircle2, Clock, Gift } from "lucide-react";
 import { z } from "zod";
 import { CelebrationBackground } from "./backgrounds/CelebrationBackground";
+import romeIcon from "@/assets/cities/rome.png";
+import europeIcon from "@/assets/cities/europe.png";
+import { CityDivider } from "./CityDivider";
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, { message: "Name is required" }).max(100),
@@ -76,6 +79,7 @@ const ContactFormWeb3 = () => {
       
       <div className="container px-4 mx-auto relative z-10">
         <div className="text-center mb-20">
+          <CityDivider cityImage={romeIcon} alt="Rome landmark" />
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16">
             <Mail className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium">Connect With Us</span>
@@ -209,6 +213,7 @@ const ContactFormWeb3 = () => {
               >
                 
                 <div className="relative z-10">
+                  <CityDivider cityImage={europeIcon} alt="Europe landmark" />
                   <h3 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                     Thank You!
                   </h3>
