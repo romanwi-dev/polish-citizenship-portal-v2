@@ -227,12 +227,16 @@ export default function IntakeForm() {
                 <div ref={(el) => sectionRefs.current.applicant = el} className="border-b border-border/10">
                   <ApplicantSection {...contentProps} />
                 </div>
-                <div ref={(el) => sectionRefs.current.spouse = el} className="border-b border-border/10">
-                  <SpouseSection {...contentProps} />
-                </div>
-                <div ref={(el) => sectionRefs.current.children = el} className="border-b border-border/10">
-                  <ChildrenSection {...contentProps} />
-                </div>
+                {formData?.applicant_marital_status === "Married" && (
+                  <div ref={(el) => sectionRefs.current.spouse = el} className="border-b border-border/10">
+                    <SpouseSection {...contentProps} />
+                  </div>
+                )}
+                {(formData?.minor_children_count > 0) && (
+                  <div ref={(el) => sectionRefs.current.children = el} className="border-b border-border/10">
+                    <ChildrenSection {...contentProps} />
+                  </div>
+                )}
                 <div ref={(el) => sectionRefs.current.passport = el} className="border-b border-border/10">
                   <PassportSection {...contentProps} />
                 </div>
@@ -255,12 +259,16 @@ export default function IntakeForm() {
                 <TabsContent value="applicant" className="mt-0">
                   <ApplicantSection {...contentProps} />
                 </TabsContent>
-                <TabsContent value="spouse" className="mt-0">
-                  <SpouseSection {...contentProps} />
-                </TabsContent>
-                <TabsContent value="children" className="mt-0">
-                  <ChildrenSection {...contentProps} />
-                </TabsContent>
+                {formData?.applicant_marital_status === "Married" && (
+                  <TabsContent value="spouse" className="mt-0">
+                    <SpouseSection {...contentProps} />
+                  </TabsContent>
+                )}
+                {(formData?.minor_children_count > 0) && (
+                  <TabsContent value="children" className="mt-0">
+                    <ChildrenSection {...contentProps} />
+                  </TabsContent>
+                )}
                 <TabsContent value="passport" className="mt-0">
                   <PassportSection {...contentProps} />
                 </TabsContent>
