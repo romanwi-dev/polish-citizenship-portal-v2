@@ -114,44 +114,21 @@ export const ConsulateKitGenerator = ({
   const handleGenerateKit = async () => {
     setGenerating(true);
     try {
-      // Generate PDF with checklist via direct fetch
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-      const response = await fetch(`${supabaseUrl}/functions/v1/fill-pdf`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      // Use async queue system
+      const { generatePdf } = await import('@/lib/generate-pdf');
+      await generatePdf({
+        supabase,
+        caseId,
+        templateType: 'consulate_kit',
+        toast: {
+          loading: (msg: string) => toast.loading(msg),
+          dismiss: () => toast.dismiss(),
+          success: (msg: string) => toast.success(msg),
+          error: (msg: string) => toast.error(msg),
         },
-        body: JSON.stringify({
-          templateType: 'consulate_kit',
-          caseId,
-          data: {
-            clientName,
-            checklist: PASSPORT_CHECKLIST,
-            checkedItems: Array.from(checkedItems),
-            generatedDate: new Date().toISOString(),
-          }
-        }),
+        setIsGenerating: setGenerating,
+        filename: `Consulate_Kit_${clientName.replace(/\s+/g, '_')}.pdf`
       });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText);
-      }
-
-      const data = await response.json();
-
-      // Create blob and download
-      const blob = new Blob([Uint8Array.from(atob(data.pdf), c => c.charCodeAt(0))], {
-        type: 'application/pdf'
-      });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `Consulate_Kit_${clientName.replace(/\s+/g, '_')}.pdf`;
-      link.click();
-      URL.revokeObjectURL(url);
-
-      toast.success('Consulate Kit downloaded successfully');
     } catch (error: any) {
       console.error('Kit generation error:', error);
       toast.error('Failed to generate kit: ' + error.message);

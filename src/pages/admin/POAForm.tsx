@@ -116,34 +116,21 @@ export default function POAForm() {
       await handlePOASave();
       toast.success('Saved! Generating PDF...');
       
-      // Generate PDF via direct fetch
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-      const response = await fetch(`${supabaseUrl}/functions/v1/fill-pdf`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      // Use async queue system
+      const { generatePdf } = await import('@/lib/generate-pdf');
+      await generatePdf({
+        supabase,
+        caseId,
+        templateType,
+        toast: {
+          loading: (msg: string) => toast.info(msg),
+          dismiss: () => {},
+          success: (msg: string) => toast.success(msg),
+          error: (msg: string) => toast.error(msg),
         },
-        body: JSON.stringify({ caseId, templateType }),
+        setIsGenerating,
+        filename: `${templateType}-${caseId}.pdf`
       });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`PDF generation failed: ${errorText}`);
-      }
-
-      const data = await response.json();
-
-      if (!data?.url) {
-        toast.error(`PDF generation failed: ${JSON.stringify(data)}`);
-        throw new Error('No URL returned from server');
-      }
-
-      // Use signed URL for preview
-      if (pdfPreviewUrl) URL.revokeObjectURL(pdfPreviewUrl);
-      setPdfPreviewUrl(data.url);
-      setPreviewFormData(formData);
-      
-      toast.success(`${templateType.toUpperCase()} ready to preview!`);
     } catch (error: any) {
       console.error("[POA] PDF generation error:", error);
       toast.error(`Failed to generate PDF: ${error.message}`);
@@ -162,28 +149,21 @@ export default function POAForm() {
       
       await supabase.from("master_table").update(sanitizedData).eq("case_id", caseId);
 
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-      const response = await fetch(`${supabaseUrl}/functions/v1/fill-pdf`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      // Use async queue system
+      const { generatePdf } = await import('@/lib/generate-pdf');
+      await generatePdf({
+        supabase,
+        caseId,
+        templateType: 'poa-adult',
+        toast: {
+          loading: (msg: string) => toast.info(msg),
+          dismiss: () => {},
+          success: (msg: string) => toast.success(msg),
+          error: (msg: string) => toast.error(msg),
         },
-        body: JSON.stringify({ caseId, templateType: 'poa-adult' }),
+        setIsGenerating,
+        filename: `poa-adult-${caseId}.pdf`
       });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText || 'PDF generation failed');
-      }
-
-      const data = await response.json();
-      if (!data?.url) throw new Error('No URL returned from server');
-
-      // Use signed URL for preview
-      setPdfPreviewUrl(data.url);
-      setPreviewFormData(updatedData);
-      
-      toast.success("PDF updated!");
     } catch (error: any) {
       console.error("Regeneration error:", error);
       toast.error(`Failed: ${error.message}`);

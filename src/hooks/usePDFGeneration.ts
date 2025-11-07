@@ -39,30 +39,60 @@ export function usePDFGeneration(caseId: string) {
         description: "This may take a minute...",
       });
 
-      const { data, error } = await supabase.functions.invoke("generate-document-pdfs", {
-        body: { caseId, draft },
-      });
-
-      if (error) throw error;
-
-      if (!data?.success) {
-        throw new Error(data?.error || "PDF generation failed");
+      // Use async queue system for each PDF template
+      const { generatePdf } = await import('@/lib/generate-pdf');
+      const templates = ['poa-adult', 'poa-minor', 'poa-spouses', 'citizenship', 'family-tree'];
+      const generatedResults: PDFResult[] = [];
+      
+      for (const templateType of templates) {
+        try {
+          await generatePdf({
+            supabase,
+            caseId,
+            templateType,
+            toast: {
+              loading: (msg: string) => {},
+              dismiss: () => {},
+              success: (msg: string) => {},
+              error: (msg: string) => {},
+            },
+            setIsGenerating: () => {},
+            filename: `${templateType}-${caseId}.pdf`
+          });
+          
+          generatedResults.push({
+            templateId: templateType,
+            name: templateType.toUpperCase(),
+            status: 'ready',
+            url: '', // URL will be available in pdf_queue table
+          });
+        } catch (error: any) {
+          generatedResults.push({
+            templateId: templateType,
+            name: templateType.toUpperCase(),
+            status: 'error',
+            error: error.message
+          });
+        }
+        
+        setProgress(Math.round((generatedResults.length / templates.length) * 100));
       }
 
-      setResults(data.results);
+      setResults(generatedResults);
       setProgress(100);
 
-      const { summary } = data;
+      const successful = generatedResults.filter(r => r.status === 'ready').length;
+      const failed = generatedResults.filter(r => r.status === 'error').length;
       
-      if (summary.successful === summary.total) {
+      if (successful === templates.length) {
         toast({
           title: "PDFs Generated Successfully",
-          description: `All ${summary.total} PDFs are ready for preview`,
+          description: `All ${templates.length} PDFs are ready`,
         });
-      } else if (summary.successful > 0) {
+      } else if (successful > 0) {
         toast({
           title: "Partial Success",
-          description: `${summary.successful}/${summary.total} PDFs generated. ${summary.failed} failed.`,
+          description: `${successful}/${templates.length} PDFs generated. ${failed} failed.`,
           variant: "default",
         });
       } else {
@@ -73,7 +103,11 @@ export function usePDFGeneration(caseId: string) {
         });
       }
 
-      return data;
+      return {
+        success: successful > 0,
+        results: generatedResults,
+        summary: { total: templates.length, successful, failed }
+      };
     } catch (error: any) {
       console.error("PDF generation error:", error);
       toast({

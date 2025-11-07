@@ -122,22 +122,21 @@ export default function FamilyTreeForm() {
     try {
       await formManagerSave();
       
-      const { data, error } = await supabase.functions.invoke('fill-pdf', {
-        body: { caseId, templateType: 'family-tree' }
+      // Use async queue system
+      const { generatePdf } = await import('@/lib/generate-pdf');
+      await generatePdf({
+        supabase,
+        caseId,
+        templateType: 'family-tree',
+        toast: {
+          loading: (msg: string) => toast({ title: "Loading", description: msg }),
+          dismiss: () => {},
+          success: (msg: string) => toast({ title: "Success", description: msg }),
+          error: (msg: string) => toast({ title: "Error", description: msg, variant: "destructive" }),
+        },
+        setIsGenerating,
+        filename: `family-tree-${caseId}.pdf`
       });
-
-      if (error) throw error;
-      
-      if (data?.url) {
-        setPdfPreviewUrl(data.url);
-        setPreviewFormData(formData);
-        toast({ 
-          title: "Success", 
-          description: `PDF generated! Stats: ${data.stats?.filled}/${data.stats?.total} fields filled` 
-        });
-      } else {
-        throw new Error('No PDF URL returned');
-      }
     } catch (error: any) {
       console.error('[FamilyTree] PDF generation error:', error);
       toast({ title: "Error", description: error.message || 'Failed to generate PDF', variant: "destructive" });

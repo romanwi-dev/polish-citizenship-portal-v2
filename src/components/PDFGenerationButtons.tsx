@@ -89,80 +89,23 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
         }
       }
 
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-      const response = await fetch(`${supabaseUrl}/functions/v1/fill-pdf`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      // Use async queue system
+      const { generatePdf } = await import('@/lib/generate-pdf');
+      await generatePdf({
+        supabase,
+        caseId,
+        templateType,
+        toast: {
+          loading: (msg: string) => toast.loading(msg),
+          dismiss: () => toast.dismiss(),
+          success: (msg: string) => toast.success(msg),
+          error: (msg: string) => toast.error(msg),
         },
-        body: JSON.stringify({ caseId, templateType, flatten }),
+        setIsGenerating,
+        filename: `${templateType}-${caseId}.pdf`
       });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Failed to generate PDF: ${errorText}`);
-      }
-
-      const data = await response.json();
+      return; // generatePdf handles everything
       
-      // Decode base64 to binary
-      const binaryString = atob(data.pdf);
-      const bytes = new Uint8Array(binaryString.length);
-      for (let i = 0; i < binaryString.length; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-      }
-      
-      const blob = new Blob([bytes], { type: 'application/pdf' });
-
-      toast.dismiss(loadingToast);
-
-      if (!flatten) {
-        // Check if mobile - auto-download instead of preview
-        const device = detectDevice();
-        
-        if (device.isMobile || device.isIOS || device.isAndroid) {
-          // MOBILE: Auto-download, skip preview (Safari can't display PDFs in iframe)
-          const url = window.URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = url;
-          link.download = `${templateType}-${caseId}.pdf`;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          window.URL.revokeObjectURL(url);
-          toast.success(`${label} downloaded! Open in your PDF viewer to see content.`, { duration: 5000 });
-        } else {
-          // DESKTOP: Show preview dialog
-          const url = window.URL.createObjectURL(blob);
-          setPreviewUrl(url);
-          setCurrentTemplate({ type: templateType, label });
-          setCurrentTemplateType(templateType);
-          setFormData(masterData);
-          setPreviewOpen(true);
-          toast.success(`${label} ready!`, { duration: 3000 });
-        }
-        
-        // Update status: generated
-        if (documentId) {
-          updateStatus({ status: 'generated' });
-        }
-      } else {
-        // For final locked download - direct download
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `${templateType}-${caseId}-final.pdf`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
-        toast.success(`${label} (final locked) downloaded!`);
-        
-        // Update status: printed
-        if (documentId) {
-          updateStatus({ status: 'printed' });
-        }
-      }
     } catch (error: any) {
       console.error('PDF generation error:', error);
       toast.dismiss();
@@ -372,34 +315,22 @@ export function PDFGenerationButtons({ caseId, documentId }: PDFGenerationButton
       setIsGenerating(true);
       const loadingToast = toast.loading(`Generating final ${currentTemplate.label}...`);
 
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-      const response = await fetch(`${supabaseUrl}/functions/v1/fill-pdf`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      // Use async queue system
+      const { generatePdf } = await import('@/lib/generate-pdf');
+      await generatePdf({
+        supabase,
+        caseId,
+        templateType: currentTemplate.type,
+        toast: {
+          loading: (msg: string) => toast.loading(msg),
+          dismiss: () => toast.dismiss(),
+          success: (msg: string) => toast.success(msg),
+          error: (msg: string) => toast.error(msg),
         },
-        body: JSON.stringify({ caseId, templateType: currentTemplate.type, flatten: true }),
+        setIsGenerating,
+        filename: `${currentTemplate.type}-${caseId}-final.pdf`
       });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Failed to generate PDF: ${errorText}`);
-      }
-
-      const data = await response.json();
-
-      // Decode base64 to binary
-      const binaryString = atob(data.pdf);
-      const bytes = new Uint8Array(binaryString.length);
-      for (let i = 0; i < binaryString.length; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-      }
       
-      const blob = new Blob([bytes], { type: 'application/pdf' });
-      
-      toast.dismiss(loadingToast);
-      
-      handlePlatformDownload(blob, `${currentTemplate.type}-${caseId}-final.pdf`, false);
       setPreviewOpen(false);
       cleanupPreviewUrl();
       

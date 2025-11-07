@@ -1,5 +1,7 @@
 /**
- * Shared PDF generation utilities for Polish Citizenship Portal
+ * @deprecated Use @/lib/generate-pdf instead
+ * This file contains legacy synchronous PDF generation
+ * All new code should use the async queue system in generate-pdf.ts
  */
 
 import { supabase } from '@/integrations/supabase/client';

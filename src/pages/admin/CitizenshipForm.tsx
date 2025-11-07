@@ -78,12 +78,17 @@ export default function CitizenshipForm() {
 
 
   const handleGeneratePDF = async () => {
-    const { generatePdfViaEdge } = await import('@/lib/pdf');
-    await generatePdfViaEdge({
+    const { generatePdf } = await import('@/lib/generate-pdf');
+    await generatePdf({
       supabase,
       caseId: caseId!,
       templateType: 'citizenship',
-      toast,
+      toast: {
+        loading: (msg: string) => toast.loading(msg),
+        dismiss: () => toast.dismiss(),
+        success: (msg: string) => toast.success(msg),
+        error: (msg: string) => toast.error(msg),
+      },
       setIsGenerating,
       filename: `citizenship-application-${caseId}.pdf`,
     });

@@ -90,7 +90,39 @@ export async function generatePdf({
     toast.dismiss();
     toast.loading('Generating PDF… this may take a moment');
 
-    // Step 2: Poll for job completion (check every 2 seconds)
+    // Step 2: Subscribe to real-time updates for instant completion notification
+    const channel = supabase
+      .channel(`pdf-queue:${jobId}`)
+      .on('postgres_changes', {
+        event: 'UPDATE',
+        schema: 'public',
+        table: 'pdf_queue',
+        filter: `id=eq.${jobId}`
+      }, (payload: any) => {
+        console.log('PDF queue update:', payload);
+        
+        if (payload.new.status === 'completed' && payload.new.pdf_url) {
+          // Success - open PDF
+          redirectTab(tab, payload.new.pdf_url);
+          toast.dismiss();
+          toast.success('PDF ready!');
+          setIsGenerating(false);
+          
+          // Cleanup
+          supabase.removeChannel(channel);
+        } else if (payload.new.status === 'failed') {
+          // Failed
+          toast.dismiss();
+          toast.error(payload.new.error_message || 'PDF generation failed');
+          setIsGenerating(false);
+          
+          // Cleanup
+          supabase.removeChannel(channel);
+        }
+      })
+      .subscribe();
+
+    // Fallback: Also poll as backup (in case realtime doesn't fire)
     const maxAttempts = 60; // 2 minutes max
     let attempts = 0;
     
@@ -109,21 +141,20 @@ export async function generatePdf({
       }
 
       if (job.status === 'completed' && job.pdf_url) {
-        // Success - open PDF
-        redirectTab(tab, job.pdf_url);
-        toast.dismiss();
-        toast.success('PDF ready!');
-        setIsGenerating(false);
+        // Already handled by realtime, just cleanup
+        supabase.removeChannel(channel);
         return true;
       }
 
       if (job.status === 'failed') {
-        // Failed
-        throw new Error(job.error_message || 'PDF generation failed');
+        // Already handled by realtime, just cleanup
+        supabase.removeChannel(channel);
+        return true;
       }
 
       // Still processing - continue polling
       if (attempts >= maxAttempts) {
+        supabase.removeChannel(channel);
         throw new Error('PDF generation timeout - please check queue status');
       }
 
