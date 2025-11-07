@@ -106,10 +106,6 @@ const Index = () => {
         <Navigation />
         <HeroWeb3 />
         
-        <Suspense fallback={<SectionLoader />}>
-          <CityDivider cityName="Warsaw" imagePath="/landmarks/warsaw.png" />
-        </Suspense>
-        
         <AboutSection />
         
         <Suspense fallback={<SectionLoader />}>
