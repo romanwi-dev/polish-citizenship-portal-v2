@@ -88,7 +88,7 @@ export default function CivilActsWorkflowCards() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-24"
         >
           <motion.h2
             initial={{ opacity: 0, scale: 0.9, y: 30 }}
@@ -126,7 +126,7 @@ export default function CivilActsWorkflowCards() {
               >
                 <div className={`md:w-5/12 ${isLeft ? 'md:text-right' : 'md:text-left'}`}>
                   <div 
-                    className="relative h-[400px]"
+                    className="relative h-[480px]"
                     style={{ perspective: '1000px' }}
                   >
                     <div
@@ -140,7 +140,7 @@ export default function CivilActsWorkflowCards() {
                       <motion.div
                         whileHover={{ scale: 1.03, y: -5 }}
                         transition={{ duration: 0.3 }}
-                        className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group"
+                        className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group flex flex-col"
                         style={{
                           backfaceVisibility: 'hidden',
                           WebkitBackfaceVisibility: 'hidden',
@@ -155,13 +155,16 @@ export default function CivilActsWorkflowCards() {
                           </div>
                         </div>
 
-                        <div className={`space-y-4 ${isLeft ? 'text-right' : ''}`}>
-                          <h3 className="text-xl md:text-2xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent truncate">
+                        <div className="flex-1 flex flex-col justify-center space-y-5">
+                          <h3 className="text-2xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-center">
                             {step.title}
                           </h3>
-                          <p className="text-muted-foreground leading-relaxed mb-4">
+                          <p className="text-muted-foreground leading-relaxed text-center px-2">
                             {step.description}
                           </p>
+                        </div>
+                        
+                        <div className="mt-6 space-y-3">
                           <Button
                             variant="outline"
                             size="sm"
@@ -170,7 +173,7 @@ export default function CivilActsWorkflowCards() {
                           >
                             {step.cta}
                           </Button>
-                          <p className="text-xs text-muted-foreground/60 text-center mt-2">Tap card for details</p>
+                          <p className="text-xs text-muted-foreground/60 text-center">Tap card for details</p>
                         </div>
                       </motion.div>
 
