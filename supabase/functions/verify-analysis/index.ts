@@ -6,6 +6,8 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+const AI_CALL_TIMEOUT = 45000; // 45 seconds per AI call
+
 interface VerificationRequest {
   analysis: string;
   domain: string;
@@ -59,7 +61,10 @@ Respond with JSON:
 
     console.log('Starting triple-model verification...');
 
-    // Model 1: GPT-5 Verification
+    // Model 1: GPT-5 Verification with timeout
+    const gpt5Controller = new AbortController();
+    const gpt5Timeout = setTimeout(() => gpt5Controller.abort(), AI_CALL_TIMEOUT);
+    
     const gpt5Response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -77,7 +82,8 @@ Respond with JSON:
         ],
         response_format: { type: 'json_object' }
       }),
-    });
+      signal: gpt5Controller.signal
+    }).finally(() => clearTimeout(gpt5Timeout));
 
     if (!gpt5Response.ok) {
       const errorText = await gpt5Response.text();
@@ -90,7 +96,10 @@ Respond with JSON:
     gpt5Result.model = 'openai/gpt-5';
     console.log('GPT-5 verification complete:', gpt5Result.score);
 
-    // Model 2: Gemini 2.5 Pro Verification
+    // Model 2: Gemini 2.5 Flash Verification (faster)
+    const geminiController = new AbortController();
+    const geminiTimeout = setTimeout(() => geminiController.abort(), AI_CALL_TIMEOUT);
+    
     const geminiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -98,7 +107,7 @@ Respond with JSON:
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-pro',
+        model: 'google/gemini-2.5-flash',
         messages: [
           { 
             role: 'system', 
@@ -108,7 +117,8 @@ Respond with JSON:
         ],
         response_format: { type: 'json_object' }
       }),
-    });
+      signal: geminiController.signal
+    }).finally(() => clearTimeout(geminiTimeout));
 
     if (!geminiResponse.ok) {
       const errorText = await geminiResponse.text();
@@ -118,8 +128,8 @@ Respond with JSON:
 
     const geminiData = await geminiResponse.json();
     const geminiResult = JSON.parse(geminiData.choices[0].message.content) as ModelVerification;
-    geminiResult.model = 'google/gemini-2.5-pro';
-    console.log('Gemini 2.5 Pro verification complete:', geminiResult.score);
+    geminiResult.model = 'google/gemini-2.5-flash';
+    console.log('Gemini 2.5 Flash verification complete:', geminiResult.score);
 
     // Model 3: Claude Sonnet 4.5 (simulated - already performed)
     const claudeResult: ModelVerification = {
