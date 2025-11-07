@@ -9,12 +9,26 @@ interface FormButtonsRowProps {
   onSave: () => void;
   onClear: () => void;
   onGeneratePDF: () => void;
-  onGeneratePOAAdult?: () => void;  // NEW: Separate POA buttons
+  onGeneratePOAAdult?: () => void;
   onGeneratePOAMinor?: () => void;
   onGeneratePOASpouses?: () => void;
   saveLabel?: string;
   isSaving?: boolean;
 }
+
+const shouldShowPOAButtons = (formData: any) => {
+  const isMarried = formData?.applicant_marital_status === 'married' || 
+                    formData?.applicant_marital_status === 'Married';
+  const hasMinorChildren = formData?.applicant_has_minor_children === 'yes' || 
+                           formData?.applicant_has_minor_children === 'Yes' ||
+                           (formData?.applicant_number_of_children && parseInt(formData.applicant_number_of_children) > 0);
+  
+  return {
+    showAdult: true, // Always show adult POA
+    showMinor: hasMinorChildren,
+    showSpouses: isMarried
+  };
+};
 
 const getNavigationButtons = (formData: any) => {
   const buttons = [
@@ -79,54 +93,52 @@ export function FormButtonsRow({
       {/* Sticky Action Buttons Row - FIXED AT BOTTOM */}
       <div className="fixed bottom-0 left-0 right-0 z-[100] backdrop-blur-md bg-background/95 border-t border-border shadow-lg">
         <div className="mx-auto max-w-7xl px-3 md:px-6 py-2 md:py-3">
-          {/* POA Form: Show all 4 buttons including 3 separate POA types */}
+          {/* POA Form: Show conditional POA buttons based on form data */}
           {currentForm === 'poa' && onGeneratePOAAdult && onGeneratePOAMinor && onGeneratePOASpouses ? (
-            <div className="flex flex-col gap-2">
-              {/* Top Row: Save and Clear */}
-              <div className="flex flex-row gap-0.5">
-                <Button
-                  onClick={onSave}
-                  disabled={isSaving}
-                  className="px-6 py-3 text-sm md:text-base font-bold flex-1 bg-green-500/20 hover:bg-green-500/30 border border-green-400/40 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]"
-                >
-                  <span className="text-green-100 font-bold whitespace-nowrap">{isSaving ? "Saving..." : saveLabel}</span>
-                </Button>
-                
-                <Button
-                  onClick={onClear}
-                  className="px-6 py-3 text-sm md:text-base font-bold flex-1 bg-red-500/20 hover:bg-red-500/30 border border-red-400/40 transition-all shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]"
-                >
-                  <span className="text-red-100 font-bold whitespace-nowrap">Clear Data</span>
-                </Button>
-              </div>
+            (() => {
+              const { showAdult, showMinor, showSpouses } = shouldShowPOAButtons(formData);
+              const poaButtons = [
+                showAdult && { onClick: onGeneratePOAAdult, label: 'Adult POA' },
+                showMinor && { onClick: onGeneratePOAMinor, label: 'Minor POA' },
+                showSpouses && { onClick: onGeneratePOASpouses, label: 'Spouses POA' }
+              ].filter(Boolean);
               
-              {/* Bottom Row: 3 POA Generation Buttons */}
-              <div className="flex flex-row gap-0.5">
-                <Button
-                  onClick={onGeneratePOAAdult}
-                  disabled={isSaving}
-                  className="px-4 py-3 text-sm md:text-base font-bold flex-1 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]"
-                >
-                  <span className="text-blue-100 font-bold whitespace-nowrap">Adult POA</span>
-                </Button>
-                
-                <Button
-                  onClick={onGeneratePOAMinor}
-                  disabled={isSaving}
-                  className="px-4 py-3 text-sm md:text-base font-bold flex-1 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]"
-                >
-                  <span className="text-blue-100 font-bold whitespace-nowrap">Minor POA</span>
-                </Button>
-                
-                <Button
-                  onClick={onGeneratePOASpouses}
-                  disabled={isSaving}
-                  className="px-4 py-3 text-sm md:text-base font-bold flex-1 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]"
-                >
-                  <span className="text-blue-100 font-bold whitespace-nowrap">Spouses POA</span>
-                </Button>
-              </div>
-            </div>
+              return (
+                <div className="flex flex-col gap-2">
+                  {/* Top Row: Save and Clear */}
+                  <div className="flex flex-row gap-0.5">
+                    <Button
+                      onClick={onSave}
+                      disabled={isSaving}
+                      className="px-6 py-3 text-sm md:text-base font-bold flex-1 bg-green-500/20 hover:bg-green-500/30 border border-green-400/40 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]"
+                    >
+                      <span className="text-green-100 font-bold whitespace-nowrap">{isSaving ? "Saving..." : saveLabel}</span>
+                    </Button>
+                    
+                    <Button
+                      onClick={onClear}
+                      className="px-6 py-3 text-sm md:text-base font-bold flex-1 bg-red-500/20 hover:bg-red-500/30 border border-red-400/40 transition-all shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]"
+                    >
+                      <span className="text-red-100 font-bold whitespace-nowrap">Clear Data</span>
+                    </Button>
+                  </div>
+                  
+                  {/* Bottom Row: Conditional POA Generation Buttons */}
+                  <div className="flex flex-row gap-0.5">
+                    {poaButtons.map((btn: any, idx) => (
+                      <Button
+                        key={idx}
+                        onClick={btn.onClick}
+                        disabled={isSaving}
+                        className="px-4 py-3 text-sm md:text-base font-bold flex-1 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]"
+                      >
+                        <span className="text-blue-100 font-bold whitespace-nowrap">{btn.label}</span>
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()
           ) : (
             /* Other Forms: Original 3-button layout */
             <div className="flex flex-row gap-0.5 justify-between">
