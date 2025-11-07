@@ -594,14 +594,14 @@ export default function CasesManagement() {
               return (
                 <motion.div 
                   key={caseItem.id} 
-                  className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-8 ${!isEven ? 'md:flex-row-reverse' : ''}`}
+                  className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-12 ${!isEven ? 'md:flex-row-reverse' : ''}`}
                   initial={{ opacity: 0, x: isEven ? -100 : 100 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-100px" }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
-                  {/* Content Card - Wider */}
-                  <div className="w-full md:w-[47%]">
+                  {/* Content Card - Wider with spacing from center */}
+                  <div className="w-full md:w-[48%]">
                     <DraggableCaseCard 
                       clientCase={caseItem}
                       onEdit={handleEdit}
@@ -633,7 +633,7 @@ export default function CasesManagement() {
                   </div>
 
                   {/* Empty space for layout balance */}
-                  <div className="w-full md:w-[47%] hidden md:block" />
+                  <div className="w-full md:w-[48%] hidden md:block" />
                 </motion.div>
               );
             })}
