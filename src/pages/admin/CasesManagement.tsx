@@ -656,7 +656,7 @@ export default function CasesManagement() {
         <Button
           onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}
           size="icon"
-          className="fixed bottom-6 left-6 w-12 h-12 rounded-full shadow-lg bg-secondary hover:bg-secondary/90 text-secondary-foreground z-50"
+          className="fixed bottom-6 left-24 w-12 h-12 rounded-full shadow-lg bg-secondary hover:bg-secondary/90 text-secondary-foreground z-50"
           aria-label="Scroll to bottom"
         >
           <ArrowDown className="h-5 w-5" />
