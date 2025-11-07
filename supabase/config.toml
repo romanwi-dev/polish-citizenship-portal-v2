@@ -1,5 +1,17 @@
 project_id = "oogmuakyqadpynnrasnd"
 
+[functions.forms-memory-agent]
+verify_jwt = false
+
+[functions.forms-memory-agent.cron]
+schedule = "*/30 * * * *"
+
+[functions.ai-documents-memory-agent]
+verify_jwt = false
+
+[functions.ai-documents-memory-agent.cron]
+schedule = "*/20 * * * *"
+
 [functions.uiux-memory-agent]
 verify_jwt = false
 
