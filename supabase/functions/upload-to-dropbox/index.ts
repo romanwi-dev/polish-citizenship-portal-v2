@@ -81,7 +81,7 @@ serve(async (req) => {
     if (caseError) throw caseError;
 
     const dropboxPath = caseData.dropbox_path || `/CASES/${caseId}`;
-    const dropboxFilePath = `${dropboxPath}/${file.name}`;
+    const dropboxFilePath = `${dropboxPath.replace(/\/+$/, '')}/${file.name}`;
 
     console.log(`Uploading to Dropbox: ${dropboxFilePath}`);
 
