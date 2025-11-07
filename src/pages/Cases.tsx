@@ -436,7 +436,7 @@ const Cases = () => {
               }
             />
           ) : (
-            <div className="relative max-w-6xl mx-auto border-4 border-purple-500">
+            <div className="relative max-w-6xl mx-auto border-8 border-purple-500">
               {/* Central Line */}
               <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-primary via-secondary to-accent transform -translate-x-1/2" />
               
