@@ -233,29 +233,87 @@ export default function POAForm() {
 
     setIsGenerating(true);
     try {
+      // Save form data first
       await handlePOASave();
       
+      // Determine which POA type to generate based on active tab
+      const templateType = `poa-${activePOAType}`;
+      
+      console.log(`[POA] Generating PDF for ${templateType}, caseId: ${caseId}`);
+      
       const { data, error } = await supabase.functions.invoke('fill-pdf', {
-        body: { caseId, templateType: `poa-${activePOAType}` }
+        body: { 
+          caseId, 
+          templateType 
+        }
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('[POA] Edge function error:', error);
+        throw error;
+      }
       
       if (data?.url) {
         setPdfPreviewUrl(data.url);
         setPreviewFormData(formData);
-        toast.success(`PDF generated! Stats: ${data.stats?.filled}/${data.stats?.total} fields filled`);
+        toast.success(`${activePOAType.toUpperCase()} POA generated! Stats: ${data.stats?.filled}/${data.stats?.total} fields filled`);
       } else {
-        throw new Error('No PDF URL returned');
+        throw new Error('No PDF URL returned from edge function');
       }
 
     } catch (error: any) {
       console.error("[POA] PDF generation error:", error);
-      toast.error(`Failed to generate PDFs: ${error.message}`);
+      toast.error(`Failed to generate PDF: ${error.message || 'Edge function error'}`);
     } finally {
       setIsGenerating(false);
     }
   };
+
+  // NEW: Generate specific POA type
+  const handleGenerateSpecificPOA = async (poaType: 'adult' | 'minor' | 'spouses') => {
+    if (!caseId || caseId === ':id' || caseId === 'demo-preview') {
+      toast.error('PDF generation not available in demo mode');
+      return;
+    }
+
+    setIsGenerating(true);
+    try {
+      // Save form data first
+      await handlePOASave();
+      
+      const templateType = `poa-${poaType}`;
+      
+      console.log(`[POA] Generating ${poaType} PDF, caseId: ${caseId}`);
+      toast.loading(`Generating ${poaType.toUpperCase()} POA...`);
+      
+      const { data, error } = await supabase.functions.invoke('fill-pdf', {
+        body: { 
+          caseId, 
+          templateType 
+        }
+      });
+
+      if (error) {
+        console.error(`[POA] ${poaType} edge function error:`, error);
+        throw error;
+      }
+      
+      if (data?.url) {
+        setPdfPreviewUrl(data.url);
+        setPreviewFormData(formData);
+        toast.success(`${poaType.toUpperCase()} POA generated! ${data.stats?.filled}/${data.stats?.total} fields filled`);
+      } else {
+        throw new Error('No PDF URL returned from edge function');
+      }
+
+    } catch (error: any) {
+      console.error(`[POA] ${poaType} PDF generation error:`, error);
+      toast.error(`Failed to generate ${poaType} POA: ${error.message || 'Unknown error'}`);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
 
 
   if (isLoading) {
@@ -333,12 +391,15 @@ export default function POAForm() {
             </div>
         </motion.div>
 
-        <FormButtonsRow
+        <FormButtonsRow 
           caseId={caseId!}
           currentForm="poa"
           onSave={handlePOASave}
           onClear={() => setShowClearAllDialog(true)}
           onGeneratePDF={handleGenerateAllPOAs}
+          onGeneratePOAAdult={() => handleGenerateSpecificPOA('adult')}
+          onGeneratePOAMinor={() => handleGenerateSpecificPOA('minor')}
+          onGeneratePOASpouses={() => handleGenerateSpecificPOA('spouses')}
           isSaving={isSaving || isGenerating}
         />
 
