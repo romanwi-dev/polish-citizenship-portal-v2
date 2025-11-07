@@ -210,3 +210,10 @@ verify_jwt = false
 [functions.project-memory-agent.cron]
 schedule = "*/10 * * * *"
 
+[functions.pdf-generation-agent]
+verify_jwt = false
+
+[functions.pdf-generation-agent.cron]
+schedule = "*/30 * * * *"
+
+
