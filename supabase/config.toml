@@ -258,4 +258,10 @@ verify_jwt = false
 [functions.agent-health-monitor.cron]
 schedule = "*/10 * * * *"
 
+[functions.agent-message-broker]
+verify_jwt = false
+
+[functions.agent-message-broker.cron]
+schedule = "*/2 * * * *"
+
 
