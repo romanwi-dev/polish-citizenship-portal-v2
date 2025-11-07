@@ -219,13 +219,13 @@ const Cases = () => {
       <Navigation />
       
       <section className="relative py-16 overflow-hidden">
-        <div className="text-center px-4 md:px-8 lg:px-12">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text mb-12 md:mb-20">
-            Cases Management
-          </h1>
-        </div>
-
         <div className="px-4 md:px-8 lg:px-12 mx-auto w-full">
+          <div className="text-center">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text mb-12 md:mb-20">
+              Cases Management
+            </h1>
+          </div>
+
           <div className="max-w-7xl mx-auto mb-8">
             <div className="flex gap-2 items-center">
               <div className="relative flex-1">
@@ -433,61 +433,26 @@ const Cases = () => {
                 }
               }
             />
-          ) : null}
-        </div>
-
-        {!error && !loading && filteredCases.length > 0 && (
-          <div className="relative w-full">
-            <div className="relative max-w-6xl mx-auto px-4">
-              <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-primary via-secondary to-accent transform -translate-x-1/2" />
-              
-              <div className="flex flex-col gap-12">
-                {filteredCases.map((clientCase, index) => {
-                  const isEven = index % 2 === 0;
-                  
-                  return (
-                    <div key={clientCase.id} className={isEven ? 'flex flex-row items-center' : 'flex flex-row-reverse items-center'}>
-                      <div className={isEven ? 'w-5/12 pr-12' : 'w-5/12 pl-12'}>
-                        <motion.div
-                          initial={{ opacity: 0, x: isEven ? -100 : 100, scale: 0.9 }}
-                          whileInView={{ opacity: 1, x: 0, scale: 1 }}
-                          transition={{ 
-                            duration: 0.8, 
-                            delay: index * 0.15,
-                            ease: [0.25, 0.46, 0.45, 0.94]
-                          }}
-                          viewport={{ once: true, margin: "-100px" }}
-                          whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
-                        >
-                          <CaseCard 
-                            clientCase={clientCase}
-                            onEdit={handleEdit}
-                            onDelete={handleDeleteCase}
-                            onUpdateStatus={handleUpdateStatus}
-                          />
-                        </motion.div>
-                      </div>
-
-                      <div className="flex absolute left-1/2 transform -translate-x-1/2 w-8 h-8 items-center justify-center">
-                        <motion.div
-                          initial={{ scale: 0 }}
-                          whileInView={{ scale: 1 }}
-                          transition={{ duration: 0.4, delay: index * 0.15 + 0.2 }}
-                          viewport={{ once: true }}
-                          className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary shadow-glow flex items-center justify-center"
-                        >
-                          <div className="w-4 h-4 rounded-full bg-background" />
-                        </motion.div>
-                      </div>
-
-                      <div className="w-5/12" />
-                    </div>
-                  );
-                })}
-              </div>
+          ) : (
+            <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-6">
+              {filteredCases.map((clientCase, index) => (
+                <motion.div
+                  key={clientCase.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <CaseCard 
+                    clientCase={clientCase}
+                    onEdit={handleEdit}
+                    onDelete={handleDeleteCase}
+                    onUpdateStatus={handleUpdateStatus}
+                  />
+                </motion.div>
+              ))}
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </section>
 
       {fullscreenCase && (
