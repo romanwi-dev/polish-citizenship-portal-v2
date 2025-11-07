@@ -614,21 +614,21 @@ export default function CasesManagement() {
                     />
                   </div>
 
-                  {/* Center Circle with Number - Smaller */}
+                  {/* Center Circle with Number - Thinner & More Transparent */}
                   <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:block">
                     <motion.div 
-                      className="relative w-16 h-16 rounded-full bg-gradient-to-br from-primary to-secondary p-1"
+                      className="relative w-16 h-16 rounded-full bg-gradient-to-br from-primary/30 to-secondary/30 p-[1px]"
                       initial={{ scale: 0 }}
                       whileInView={{ scale: 1 }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.4, delay: index * 0.1 + 0.2 }}
                     >
-                      <div className="w-full h-full rounded-full bg-card flex items-center justify-center">
-                        <span className="text-2xl font-heading font-black bg-gradient-to-br from-primary to-secondary bg-clip-text text-transparent">
+                      <div className="w-full h-full rounded-full bg-card/80 backdrop-blur-sm flex items-center justify-center">
+                        <span className="text-2xl font-heading font-black bg-gradient-to-br from-primary/50 to-secondary/50 bg-clip-text text-transparent">
                           {index + 1}
                         </span>
                       </div>
-                      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 blur-xl -z-10" />
+                      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/10 to-secondary/10 blur-xl -z-10" />
                     </motion.div>
                   </div>
 
