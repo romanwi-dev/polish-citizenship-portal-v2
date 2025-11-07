@@ -4,8 +4,6 @@ import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-import athensIcon from "@/assets/cities/athens.png";
-import { CityDivider } from "./CityDivider";
 
 // Using pure CSS animations for optimal performance
 
@@ -191,7 +189,6 @@ export default function TimelineProcessEnhanced() {
       
       <div className="container relative z-10 mx-auto px-4">
         <div className="text-center mb-16 animate-fade-in">
-          <CityDivider cityImage={athensIcon} alt="Athens landmark" />
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16">
             <Clock className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium">Process Timeline</span>
