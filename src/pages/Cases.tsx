@@ -436,25 +436,16 @@ const Cases = () => {
               }
             />
           ) : (
-            <div className="relative max-w-6xl mx-auto bg-red-500 p-8">
-              {/* Central Line */}
-              <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-8 bg-yellow-400 transform -translate-x-1/2 z-10" />
+            <div className="relative max-w-6xl mx-auto">
+              <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-primary via-secondary to-accent transform -translate-x-1/2" />
               
-              {/* Timeline Cards - ALTERNATING left/right */}
-              <div className="space-y-12 bg-green-500 p-4">
+              <div className="space-y-12">
                 {filteredCases.map((clientCase, index) => {
                   const isEven = index % 2 === 0;
                   
                   return (
-                    <div key={clientCase.id} className={isEven 
-                      ? 'relative flex items-center md:flex-row border-4 border-green-500' 
-                      : 'relative flex items-center md:flex-row-reverse border-4 border-blue-500'
-                    }>
-                      {/* Content Card */}
-                      <div className={isEven 
-                        ? 'w-full md:w-5/12 md:pr-12 border-4 border-red-500' 
-                        : 'w-full md:w-5/12 md:pl-12 border-4 border-orange-500'
-                      }>
+                    <div key={clientCase.id} className={isEven ? 'relative flex items-center md:flex-row' : 'relative flex items-center md:flex-row-reverse'}>
+                      <div className={isEven ? 'w-full md:w-5/12 md:pr-12' : 'w-full md:w-5/12 md:pl-12'}>
                         <motion.div
                           initial={{ opacity: 0, x: isEven ? -50 : 50 }}
                           whileInView={{ opacity: 1, x: 0 }}
@@ -471,7 +462,6 @@ const Cases = () => {
                         </motion.div>
                       </div>
 
-                      {/* Center Node */}
                       <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-8 h-8 items-center justify-center">
                         <motion.div
                           initial={{ scale: 0 }}
@@ -484,8 +474,7 @@ const Cases = () => {
                         </motion.div>
                       </div>
 
-                      {/* Spacer for alternating layout */}
-                      <div className="hidden md:block w-5/12 border-4 border-pink-500 min-h-[100px]" />
+                      <div className="hidden md:block w-5/12" />
                     </div>
                   );
                 })}
