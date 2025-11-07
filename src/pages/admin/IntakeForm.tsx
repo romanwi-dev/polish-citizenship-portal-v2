@@ -106,6 +106,9 @@ export default function IntakeForm() {
     );
   }
 
+  // Debug: Log children counts
+  console.log('IntakeForm - children_count:', formData?.children_count, 'minor_children_count:', formData?.minor_children_count);
+
   return (
     <div className={cn("relative min-h-screen overflow-x-hidden", isLargeFonts && "text-lg")}>
       {/* Global Background */}
