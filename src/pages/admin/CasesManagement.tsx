@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { AdminLayout } from "@/components/AdminLayout";
@@ -62,6 +62,8 @@ export default function CasesManagement() {
   const [scoreFilter, setScoreFilter] = useState<[number, number]>([0, 100]);
   const [ageFilter, setAgeFilter] = useState("all");
   const [progressFilter, setProgressFilter] = useState<[number, number]>([0, 100]);
+  const [showScrollButtons, setShowScrollButtons] = useState(false);
+  const [scrollTimeout, setScrollTimeout] = useState<NodeJS.Timeout | null>(null);
   const [editCase, setEditCase] = useState<any>(null);
   const [showShortcuts, setShowShortcuts] = useState(false);
   const [showGlobalSearch, setShowGlobalSearch] = useState(false);
@@ -94,6 +96,31 @@ export default function CasesManagement() {
   const { favorites, toggleFavorite, isFavorite } = useFavoriteCases(user?.id);
   const updateSortOrdersMutation = useUpdateCaseSortOrders();
   const resetSortOrdersMutation = useResetCaseSortOrders();
+  
+  // Auto-hide scroll buttons when not scrolling
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollButtons(true);
+      
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
+      
+      const timeout = setTimeout(() => {
+        setShowScrollButtons(false);
+      }, 2000);
+      
+      setScrollTimeout(timeout);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
+    };
+  }, [scrollTimeout]);
   
   // Drag and drop sensors
   const sensors = useSensors(
@@ -646,7 +673,9 @@ export default function CasesManagement() {
         <Button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           size="icon"
-          className="fixed bottom-6 right-6 w-12 h-12 rounded-full shadow-lg bg-primary hover:bg-primary/90 text-primary-foreground z-50"
+          className={`fixed bottom-6 right-6 w-12 h-12 rounded-full shadow-lg bg-primary hover:bg-primary/90 text-primary-foreground z-50 transition-opacity duration-300 ${
+            showScrollButtons ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          }`}
           aria-label="Scroll to top"
         >
           <ArrowUp className="h-5 w-5" />
@@ -656,7 +685,9 @@ export default function CasesManagement() {
         <Button
           onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}
           size="icon"
-          className="fixed bottom-6 left-24 w-12 h-12 rounded-full shadow-lg bg-secondary hover:bg-secondary/90 text-secondary-foreground z-50"
+          className={`fixed bottom-6 left-20 w-12 h-12 rounded-full shadow-lg bg-secondary hover:bg-secondary/90 text-secondary-foreground z-50 transition-opacity duration-300 ${
+            showScrollButtons ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          }`}
           aria-label="Scroll to bottom"
         >
           <ArrowDown className="h-5 w-5" />
