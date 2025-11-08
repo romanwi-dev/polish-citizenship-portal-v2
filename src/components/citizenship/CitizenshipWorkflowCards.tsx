@@ -102,7 +102,7 @@ export default function CitizenshipWorkflowCards() {
               damping: 15
             }}
             viewport={{ once: true }}
-            className="text-4xl md:text-7xl font-heading font-black mb-8 tracking-tight"
+            className="text-3xl md:text-5xl font-heading font-black mb-8 tracking-tight"
           >
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-primary animate-fade-in-up glow-text drop-shadow-2xl">
               Citizenship Workflow
