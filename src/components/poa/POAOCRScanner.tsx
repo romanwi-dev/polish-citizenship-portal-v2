@@ -1,5 +1,5 @@
-import { useState, useRef } from "react";
-import { Camera, Upload, FileText, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+import { useState, useRef, useCallback } from "react";
+import { Camera, Upload, FileText, CheckCircle, AlertCircle, Loader2, RotateCw, Crop, ZoomIn, ZoomOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -8,6 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import ReactCrop, { Crop as CropType, PixelCrop } from 'react-image-crop';
+import 'react-image-crop/dist/ReactCrop.css';
 
 interface POAOCRScannerProps {
   caseId: string;
@@ -30,6 +32,16 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
   const [step, setStep] = useState<'passport' | 'birthcert' | 'complete'>('passport');
   const passportInputRef = useRef<HTMLInputElement>(null);
   const birthCertInputRef = useRef<HTMLInputElement>(null);
+  
+  // Image preview & editing
+  const [passportPreview, setPassportPreview] = useState<string | null>(null);
+  const [birthCertPreview, setBirthCertPreview] = useState<string | null>(null);
+  const [editingImage, setEditingImage] = useState<'passport' | 'birthcert' | null>(null);
+  const [crop, setCrop] = useState<CropType>();
+  const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
+  const [rotation, setRotation] = useState(0);
+  const [scale, setScale] = useState(1);
+  const imgRef = useRef<HTMLImageElement>(null);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>, type: 'passport' | 'birthcert') => {
     if (e.target.files && e.target.files[0]) {
@@ -56,10 +68,151 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
 
       if (type === 'passport') {
         setPassportFile(file);
+        // Create preview for image files
+        if (file.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setPassportPreview(reader.result as string);
+            setEditingImage('passport');
+            setRotation(0);
+            setScale(1);
+            setCrop(undefined);
+          };
+          reader.readAsDataURL(file);
+        }
       } else {
         setBirthCertFile(file);
+        if (file.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setBirthCertPreview(reader.result as string);
+            setEditingImage('birthcert');
+            setRotation(0);
+            setScale(1);
+            setCrop(undefined);
+          };
+          reader.readAsDataURL(file);
+        }
       }
     }
+  };
+
+  const getCroppedImg = useCallback(async (
+    image: HTMLImageElement,
+    pixelCrop: PixelCrop,
+    rotation: number
+  ): Promise<Blob> => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    if (!ctx) {
+      throw new Error('No 2d context');
+    }
+
+    const scaleX = image.naturalWidth / image.width;
+    const scaleY = image.naturalHeight / image.height;
+
+    canvas.width = pixelCrop.width;
+    canvas.height = pixelCrop.height;
+
+    ctx.save();
+    
+    // Rotate if needed
+    if (rotation !== 0) {
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      ctx.translate(centerX, centerY);
+      ctx.rotate((rotation * Math.PI) / 180);
+      ctx.translate(-centerX, -centerY);
+    }
+
+    ctx.drawImage(
+      image,
+      pixelCrop.x * scaleX,
+      pixelCrop.y * scaleY,
+      pixelCrop.width * scaleX,
+      pixelCrop.height * scaleY,
+      0,
+      0,
+      pixelCrop.width,
+      pixelCrop.height
+    );
+
+    ctx.restore();
+
+    return new Promise((resolve) => {
+      canvas.toBlob((blob) => {
+        if (blob) resolve(blob);
+      }, 'image/jpeg', 0.95);
+    });
+  }, []);
+
+  const handleApplyEdits = useCallback(async () => {
+    if (!imgRef.current || !editingImage) return;
+
+    try {
+      let processedBlob: Blob;
+
+      if (completedCrop) {
+        processedBlob = await getCroppedImg(imgRef.current, completedCrop, rotation);
+      } else {
+        // Just apply rotation if no crop
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        if (!ctx) throw new Error('No 2d context');
+
+        const img = imgRef.current;
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+
+        ctx.save();
+        if (rotation !== 0) {
+          const centerX = canvas.width / 2;
+          const centerY = canvas.height / 2;
+          ctx.translate(centerX, centerY);
+          ctx.rotate((rotation * Math.PI) / 180);
+          ctx.translate(-centerX, -centerY);
+        }
+        ctx.drawImage(img, 0, 0);
+        ctx.restore();
+
+        processedBlob = await new Promise<Blob>((resolve) => {
+          canvas.toBlob((blob) => {
+            if (blob) resolve(blob);
+          }, 'image/jpeg', 0.95);
+        });
+      }
+
+      // Update file with processed image
+      const processedFile = new File([processedBlob], 
+        editingImage === 'passport' ? passportFile?.name || 'passport.jpg' : birthCertFile?.name || 'birth-cert.jpg',
+        { type: 'image/jpeg' }
+      );
+
+      if (editingImage === 'passport') {
+        setPassportFile(processedFile);
+      } else {
+        setBirthCertFile(processedFile);
+      }
+
+      setEditingImage(null);
+      toast.success("Image adjusted successfully!");
+    } catch (error) {
+      console.error('Error applying edits:', error);
+      toast.error("Failed to apply image edits");
+    }
+  }, [editingImage, completedCrop, rotation, passportFile, birthCertFile, getCroppedImg]);
+
+  const handleRotate = () => {
+    setRotation((prev) => (prev + 90) % 360);
+  };
+
+  const handleZoomIn = () => {
+    setScale((prev) => Math.min(prev + 0.1, 3));
+  };
+
+  const handleZoomOut = () => {
+    setScale((prev) => Math.max(prev - 0.1, 0.5));
   };
 
   const processOCR = async (file: File, documentType: 'passport' | 'birth_certificate') => {
@@ -199,8 +352,90 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
         </div>
       </div>
 
+      {/* Image Editor */}
+      {editingImage && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Crop className="w-5 h-5" />
+              Adjust Image - {editingImage === 'passport' ? 'Passport' : 'Birth Certificate'}
+            </CardTitle>
+            <CardDescription>
+              Crop, rotate, and zoom to improve scan quality
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex gap-2 mb-4">
+              <Button onClick={handleRotate} variant="outline" size="sm">
+                <RotateCw className="w-4 h-4 mr-2" />
+                Rotate 90°
+              </Button>
+              <Button onClick={handleZoomIn} variant="outline" size="sm">
+                <ZoomIn className="w-4 h-4 mr-2" />
+                Zoom In
+              </Button>
+              <Button onClick={handleZoomOut} variant="outline" size="sm">
+                <ZoomOut className="w-4 h-4 mr-2" />
+                Zoom Out
+              </Button>
+            </div>
+
+            <div className="border rounded-lg overflow-hidden bg-muted/50">
+              <ReactCrop
+                crop={crop}
+                onChange={(c) => setCrop(c)}
+                onComplete={(c) => setCompletedCrop(c)}
+                aspect={undefined}
+              >
+                <img
+                  ref={imgRef}
+                  src={editingImage === 'passport' ? passportPreview! : birthCertPreview!}
+                  alt="Preview"
+                  style={{
+                    transform: `rotate(${rotation}deg) scale(${scale})`,
+                    maxWidth: '100%',
+                    transformOrigin: 'center'
+                  }}
+                  onLoad={() => {
+                    if (imgRef.current) {
+                      const { width, height } = imgRef.current;
+                      setCrop({
+                        unit: '%',
+                        width: 90,
+                        height: 90,
+                        x: 5,
+                        y: 5
+                      });
+                    }
+                  }}
+                />
+              </ReactCrop>
+            </div>
+
+            <div className="flex gap-2">
+              <Button onClick={handleApplyEdits} className="flex-1">
+                <CheckCircle className="w-4 h-4 mr-2" />
+                Apply & Continue
+              </Button>
+              <Button 
+                variant="outline" 
+                onClick={() => {
+                  setEditingImage(null);
+                  setRotation(0);
+                  setScale(1);
+                  setCrop(undefined);
+                }}
+                className="flex-1"
+              >
+                Skip Editing
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Passport Scanner */}
-      {step === 'passport' && (
+      {step === 'passport' && !editingImage && (
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -251,7 +486,7 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
       )}
 
       {/* Birth Certificate Scanner */}
-      {step === 'birthcert' && (
+      {step === 'birthcert' && !editingImage && (
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
