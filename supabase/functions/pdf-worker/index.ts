@@ -10,7 +10,7 @@ import { POA_MINOR_PDF_MAP } from '../_shared/mappings/poa-minor.ts';
 import { POA_SPOUSES_PDF_MAP } from '../_shared/mappings/poa-spouses.ts';
 import { CITIZENSHIP_PDF_MAP } from '../_shared/mappings/citizenship.ts';
 import { FAMILY_TREE_PDF_MAP } from '../_shared/mappings/family-tree.ts';
-import { UZUPELNIENIE_PDF_MAP } from '../_shared/mappings/uzupelnienie.ts';
+import { transcriptionFieldMappings } from '../_shared/mappings/transcription.ts';
 
 // In-memory template cache (1 hour TTL)
 const templateCache = new Map<string, { buffer: Uint8Array; timestamp: number }>();
@@ -46,10 +46,10 @@ function getFieldMap(templateType: string): Record<string, string> {
     case 'poa-spouses': return POA_SPOUSES_PDF_MAP;
     case 'citizenship': return CITIZENSHIP_PDF_MAP;
     case 'family-tree': return FAMILY_TREE_PDF_MAP;
-    case 'uzupelnienie': return UZUPELNIENIE_PDF_MAP;
-    case 'registration': return UZUPELNIENIE_PDF_MAP;
-    case 'transcription': return UZUPELNIENIE_PDF_MAP;
-    case 'umiejscowienie': return UZUPELNIENIE_PDF_MAP;
+    case 'transcription': return transcriptionFieldMappings;
+    case 'registration': return transcriptionFieldMappings;
+    case 'uzupelnienie': return transcriptionFieldMappings;
+    case 'umiejscowienie': return transcriptionFieldMappings;
     default: 
       console.warn(`⚠️ Unknown template: ${templateType}`);
       return {};
@@ -72,7 +72,7 @@ async function getTemplateWithCache(
 
   // Cache MISS - fetch template
   console.log(`📥 Cache MISS: ${templateType} - fetching...`);
-  const templateName = `templates/${templateType}.pdf`;
+  const templateName = `${templateType}.pdf`;
   const { data: templateData, error } = await sb.storage
     .from('pdf-templates')
     .download(templateName);

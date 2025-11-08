@@ -6,7 +6,7 @@
 import { POA_ADULT_PDF_MAP, POA_ADULT_REQUIRED_FIELDS } from './poaAdult';
 import { POA_MINOR_PDF_MAP, POA_MINOR_REQUIRED_FIELDS } from './poaMinor';
 import { POA_SPOUSES_PDF_MAP, POA_SPOUSES_REQUIRED_FIELDS } from './poaSpouses';
-import { UZUPELNIENIE_PDF_MAP, UZUPELNIENIE_REQUIRED_FIELDS } from './uzupelnienie';
+import { transcriptionFieldMappings, TRANSCRIPTION_REQUIRED_FIELDS } from './transcription';
 import { CITIZENSHIP_PDF_MAP, CITIZENSHIP_REQUIRED_FIELDS } from './citizenship';
 import { FAMILY_TREE_PDF_MAP, FAMILY_TREE_REQUIRED_FIELDS } from './familyTree';
 
@@ -15,7 +15,7 @@ export {
   POA_ADULT_PDF_MAP, 
   POA_MINOR_PDF_MAP, 
   POA_SPOUSES_PDF_MAP, 
-  UZUPELNIENIE_PDF_MAP,
+  transcriptionFieldMappings,
   CITIZENSHIP_PDF_MAP,
   FAMILY_TREE_PDF_MAP
 };
@@ -25,7 +25,10 @@ export const PDF_MAPPINGS: Record<string, Record<string, string>> = {
   'poa-adult': POA_ADULT_PDF_MAP,
   'poa-minor': POA_MINOR_PDF_MAP,
   'poa-spouses': POA_SPOUSES_PDF_MAP,
-  'uzupelnienie': UZUPELNIENIE_PDF_MAP,
+  'transcription': transcriptionFieldMappings,
+  'uzupelnienie': transcriptionFieldMappings,
+  'registration': transcriptionFieldMappings,
+  'umiejscowienie': transcriptionFieldMappings,
   'citizenship': CITIZENSHIP_PDF_MAP,
   'family-tree': FAMILY_TREE_PDF_MAP,
 };
@@ -35,7 +38,10 @@ export const REQUIRED_FIELDS: Record<string, string[]> = {
   'poa-adult': POA_ADULT_REQUIRED_FIELDS,
   'poa-minor': POA_MINOR_REQUIRED_FIELDS,
   'poa-spouses': POA_SPOUSES_REQUIRED_FIELDS,
-  'uzupelnienie': UZUPELNIENIE_REQUIRED_FIELDS,
+  'transcription': TRANSCRIPTION_REQUIRED_FIELDS,
+  'uzupelnienie': TRANSCRIPTION_REQUIRED_FIELDS,
+  'registration': TRANSCRIPTION_REQUIRED_FIELDS,
+  'umiejscowienie': TRANSCRIPTION_REQUIRED_FIELDS,
   'citizenship': CITIZENSHIP_REQUIRED_FIELDS,
   'family-tree': FAMILY_TREE_REQUIRED_FIELDS,
 };

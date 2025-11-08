@@ -7,7 +7,7 @@
 import { POA_ADULT_PDF_MAP } from './mappings/poa-adult.ts';
 import { POA_MINOR_PDF_MAP } from './mappings/poa-minor.ts';
 import { POA_SPOUSES_PDF_MAP } from './mappings/poa-spouses.ts';
-import { UZUPELNIENIE_PDF_MAP } from './mappings/uzupelnienie.ts';
+import { transcriptionFieldMappings } from './mappings/transcription.ts';
 import { CITIZENSHIP_PDF_MAP } from './mappings/citizenship.ts';
 import { FAMILY_TREE_PDF_MAP } from './mappings/family-tree.ts';
 
@@ -19,13 +19,13 @@ export const PDF_FIELD_MAPS: Record<string, Record<string, string>> = {
   'poa-adult': POA_ADULT_PDF_MAP,
   'poa-minor': POA_MINOR_PDF_MAP,
   'poa-spouses': POA_SPOUSES_PDF_MAP,
-  'uzupelnienie': UZUPELNIENIE_PDF_MAP,
   'citizenship': CITIZENSHIP_PDF_MAP,
   'family-tree': FAMILY_TREE_PDF_MAP,
-  // Aliases for backward compatibility
-  'registration': UZUPELNIENIE_PDF_MAP,
-  'transcription': UZUPELNIENIE_PDF_MAP,
-  'umiejscowienie': UZUPELNIENIE_PDF_MAP,
+  'transcription': transcriptionFieldMappings,
+  // Aliases point to transcription (3-page combined form)
+  'registration': transcriptionFieldMappings,
+  'uzupelnienie': transcriptionFieldMappings,
+  'umiejscowienie': transcriptionFieldMappings,
 };
 
 /**
@@ -96,9 +96,9 @@ export function isValidTemplate(templateType: string): boolean {
  */
 export function normalizeTemplateType(templateType: string): string {
   const aliases: Record<string, string> = {
-    'registration': 'uzupelnienie',
-    'transcription': 'uzupelnienie',
-    'umiejscowienie': 'uzupelnienie',
+    'registration': 'transcription',
+    'uzupelnienie': 'transcription',
+    'umiejscowienie': 'transcription',
   };
   
   return aliases[templateType] || templateType;
