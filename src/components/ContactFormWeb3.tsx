@@ -119,6 +119,7 @@ const ContactFormWeb3 = () => {
                         onChange={handleChange}
                         placeholder=""
                         required
+                        noMobileCaps
                         className="h-16 border-2 border-blue-500/20 hover:border-blue-500/30 focus:border-blue-500/40 hover-glow focus:shadow-lg transition-all backdrop-blur"
                         style={{ 
                           fontSize: '1.125rem', 
@@ -144,6 +145,7 @@ const ContactFormWeb3 = () => {
                         onChange={handleChange}
                         placeholder=""
                         required
+                        noMobileCaps
                         className="h-16 border-2 border-blue-500/20 hover:border-blue-500/30 focus:border-blue-500/40 hover-glow focus:shadow-lg transition-all backdrop-blur"
                         style={{ 
                           fontSize: '1.125rem', 

@@ -267,7 +267,7 @@ Deno.serve(async (req) => {
         
         // Get database column name from mapping (PDF field → DB column)
         const dbColumnName = fieldMap[fieldName] || fieldName;
-        const value = dataToUse[dbColumnName];
+        const value = masterData?.[dbColumnName];
 
         if (value != null && value !== '') {
           const textField = form.getTextField(fieldName);
