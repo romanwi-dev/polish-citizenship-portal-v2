@@ -1,9 +1,56 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { getFieldMapping } from '../_shared/pdf-field-maps.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+/**
+ * Resolves a value from masterData using mapping rules
+ * Handles: concatenation (|), date splitting (.day/.month/.year), nested objects
+ */
+function resolveValue(mappingValue: string, masterData: any): string | null {
+  if (!mappingValue || !masterData) return null;
+
+  // Handle concatenation (e.g., "first_name|last_name")
+  if (mappingValue.includes('|')) {
+    const parts = mappingValue.split('|')
+      .map(key => masterData[key.trim()])
+      .filter(val => val != null && val !== '');
+    return parts.length > 0 ? parts.join(' ') : null;
+  }
+
+  // Handle date splitting (e.g., "applicant_dob.day")
+  if (mappingValue.includes('.')) {
+    const [field, subfield] = mappingValue.split('.');
+    const dateValue = masterData[field];
+    
+    if (!dateValue) return null;
+    
+    // Handle DD.MM.YYYY format
+    if (typeof dateValue === 'string' && dateValue.match(/^\d{2}\.\d{2}\.\d{4}$/)) {
+      const [day, month, year] = dateValue.split('.');
+      if (subfield === 'day') return day;
+      if (subfield === 'month') return month;
+      if (subfield === 'year') return year;
+    }
+    
+    // Handle YYYY-MM-DD format (ISO dates)
+    if (typeof dateValue === 'string' && dateValue.match(/^\d{4}-\d{2}-\d{2}/)) {
+      const [year, month, day] = dateValue.split('T')[0].split('-');
+      if (subfield === 'day') return day;
+      if (subfield === 'month') return month;
+      if (subfield === 'year') return year;
+    }
+    
+    return null;
+  }
+
+  // Direct field access
+  const value = masterData[mappingValue];
+  return value != null ? String(value) : null;
+}
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -90,25 +137,53 @@ Deno.serve(async (req) => {
       .eq('case_id', caseId)
       .single();
 
-    // Simple field filling (add more mappings as needed)
+    // Get mapping for this template type
+    const fieldMapping = getFieldMapping(templateType);
+    
+    if (!fieldMapping) {
+      console.warn(`[V2] No mapping found for template type: ${templateType}`);
+    }
+
+    // Fill PDF fields using mapping
     const fields = form.getFields();
     let filledCount = 0;
+    let mappedCount = 0;
+    const unmappedFields: string[] = [];
     
     for (const field of fields) {
       try {
         const fieldName = field.getName();
-        // Try to find matching data
-        if (masterData && masterData[fieldName]) {
-          const textField = form.getTextField(fieldName);
-          textField.setText(String(masterData[fieldName]));
-          filledCount++;
+        
+        if (fieldMapping && fieldMapping[fieldName]) {
+          // Use mapping to resolve value
+          const mappingValue = fieldMapping[fieldName];
+          const resolvedValue = resolveValue(mappingValue, masterData);
+          
+          if (resolvedValue) {
+            const textField = form.getTextField(fieldName);
+            textField.setText(resolvedValue);
+            filledCount++;
+          }
+          mappedCount++;
+        } else {
+          // Fallback: try direct field name match
+          if (masterData && masterData[fieldName]) {
+            const textField = form.getTextField(fieldName);
+            textField.setText(String(masterData[fieldName]));
+            filledCount++;
+          } else {
+            unmappedFields.push(fieldName);
+          }
         }
       } catch (e) {
-        // Skip fields that can't be filled
+        // Skip fields that can't be filled (checkboxes, etc.)
       }
     }
 
-    console.log(`[V2] Filled ${filledCount}/${fields.length} fields`);
+    console.log(`[V2] Filled ${filledCount}/${fields.length} fields (${mappedCount} via mapping)`);
+    if (unmappedFields.length > 0) {
+      console.log(`[V2] Unmapped fields:`, unmappedFields.slice(0, 10));
+    }
 
     // Save PDF
     const filledPdfBytes = await pdfDoc.save();
@@ -143,8 +218,13 @@ Deno.serve(async (req) => {
         success: true,
         url: signedUrl.signedUrl,
         filename: filename.split('/').pop(),
-        stats: { filled: filledCount, total: fields.length },
-        version: 'v2-fresh-deployment'
+        stats: { 
+          filled: filledCount, 
+          total: fields.length,
+          mapped: mappedCount,
+          fillRate: fields.length > 0 ? Math.round((filledCount / fields.length) * 100) : 0
+        },
+        version: 'v2-universal-mapping'
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
