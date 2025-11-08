@@ -395,72 +395,6 @@ export default function POAForm() {
           activePOAType={activePOAType}
         />
 
-        {/* POA Section Navigation Tabs - Dynamic based on form data */}
-        <div className="mb-4 md:mb-6 py-2 md:py-3 sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-border/50">
-          <div className="flex flex-row gap-1 overflow-x-auto scrollbar-hide px-2 md:px-6">
-            {/* Applicant Tab */}
-            <Button
-              onClick={() => {
-                setActivePOAType('adult');
-                document.getElementById('poa-adult-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }}
-              variant={activePOAType === 'adult' ? 'default' : 'outline'}
-              size="sm"
-              className={cn(
-                "flex-shrink-0 font-semibold transition-all",
-                activePOAType === 'adult' 
-                  ? "bg-primary/20 border-primary text-primary shadow-[0_0_15px_rgba(99,102,241,0.3)]" 
-                  : "opacity-60 hover:opacity-100"
-              )}
-            >
-              <User className="w-4 h-4 mr-1" />
-              Applicant
-            </Button>
-
-            {/* Spouse Tab - Only if married */}
-            {showSpousePOA && (
-              <Button
-                onClick={() => {
-                  setActivePOAType('spouses');
-                  document.getElementById('poa-spouses-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }}
-                variant={activePOAType === 'spouses' ? 'default' : 'outline'}
-                size="sm"
-                className={cn(
-                  "flex-shrink-0 font-semibold transition-all",
-                  activePOAType === 'spouses' 
-                    ? "bg-accent/20 border-accent text-accent shadow-[0_0_15px_rgba(236,72,153,0.3)]" 
-                    : "opacity-60 hover:opacity-100"
-                )}
-              >
-                <Heart className="w-4 h-4 mr-1" />
-                Spouse
-              </Button>
-            )}
-
-            {/* Child Tabs - Dynamic based on minor_children_count */}
-            {Array.from({ length: minorChildrenCount }, (_, index) => index + 1).map((childNum) => (
-              <Button
-                key={`child-tab-${childNum}`}
-                onClick={() => {
-                  setActivePOAType('minor');
-                  document.getElementById(`poa-minor-${childNum}-section`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }}
-                variant={activePOAType === 'minor' ? 'default' : 'outline'}
-                size="sm"
-                className={cn(
-                  "flex-shrink-0 font-semibold transition-all",
-                  activePOAType === 'minor' 
-                    ? "bg-secondary/20 border-secondary text-secondary shadow-[0_0_15px_rgba(236,72,153,0.3)]" 
-                    : "opacity-60 hover:opacity-100"
-                )}
-              >
-                <Baby className="w-4 h-4 mr-1" />
-                Child {childNum}
-              </Button>
-            ))}
-          </div>
-        </div>
 
         {/* POA Forms */}
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="space-y-6 md:space-y-12 pb-32">
@@ -537,7 +471,7 @@ export default function POAForm() {
               </div>
 
               {/* Scan Documents Button - Styled to match POA OCR Wizard */}
-              <div className="flex justify-center mt-8 mb-4">
+              <div className="flex justify-center mt-16 mb-16">
                 <Button
                   onClick={() => navigate(`/admin/cases/${caseId}/poa-ocr`)}
                   variant="outline"
@@ -840,7 +774,7 @@ export default function POAForm() {
                       onChange={(value) => handleInputChange("spouse_passport_number", value)}
                       isLargeFonts={isLargeFonts}
                       placeholder=""
-                      colorScheme="spouse"
+                      colorScheme="poa"
                     />
                   </motion.div>
                 </div>
