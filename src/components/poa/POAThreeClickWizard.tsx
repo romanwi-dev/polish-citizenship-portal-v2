@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { useMotion } from "@/hooks/useMotion";
+import { motion } from "framer-motion";
 import { POAOCRScanner } from "./POAOCRScanner";
 import { POABatchOCRScanner } from "./POABatchOCRScanner";
 import { POAGenerateButton } from "./POAGenerateButton";
@@ -17,7 +17,6 @@ interface POAThreeClickWizardProps {
 }
 
 export const POAThreeClickWizard = ({ caseId, useBatchMode = false }: POAThreeClickWizardProps) => {
-  const motion = useMotion();
   const [currentStep, setCurrentStep] = useState<1 | 2 | 3>(1);
   const [passportConfidence, setPassportConfidence] = useState<number>();
   const [birthCertConfidence, setBirthCertConfidence] = useState<number>();
