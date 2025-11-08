@@ -3918,6 +3918,164 @@ export type Database = {
         }
         Relationships: []
       }
+      phase_a_analyses: {
+        Row: {
+          agent_name: string
+          analysis_result: Json | null
+          context: Json | null
+          created_at: string | null
+          critical_issues: Json | null
+          dependencies: Json | null
+          domain: string
+          edge_cases: Json | null
+          id: string
+          proposed_changes: string
+          proposed_solution: string | null
+          rollback_plan: string | null
+          root_cause: string | null
+          total_issues: number | null
+          warnings: Json | null
+        }
+        Insert: {
+          agent_name: string
+          analysis_result?: Json | null
+          context?: Json | null
+          created_at?: string | null
+          critical_issues?: Json | null
+          dependencies?: Json | null
+          domain: string
+          edge_cases?: Json | null
+          id?: string
+          proposed_changes: string
+          proposed_solution?: string | null
+          rollback_plan?: string | null
+          root_cause?: string | null
+          total_issues?: number | null
+          warnings?: Json | null
+        }
+        Update: {
+          agent_name?: string
+          analysis_result?: Json | null
+          context?: Json | null
+          created_at?: string | null
+          critical_issues?: Json | null
+          dependencies?: Json | null
+          domain?: string
+          edge_cases?: Json | null
+          id?: string
+          proposed_changes?: string
+          proposed_solution?: string | null
+          rollback_plan?: string | null
+          root_cause?: string | null
+          total_issues?: number | null
+          warnings?: Json | null
+        }
+        Relationships: []
+      }
+      phase_b_verifications: {
+        Row: {
+          aggregated_findings: Json | null
+          confidence: number | null
+          consensus: string | null
+          created_at: string | null
+          id: string
+          models: Json | null
+          overall_score: number | null
+          passed: boolean | null
+          phase_a_id: string | null
+          recommendation: string | null
+          score_variance: number | null
+        }
+        Insert: {
+          aggregated_findings?: Json | null
+          confidence?: number | null
+          consensus?: string | null
+          created_at?: string | null
+          id?: string
+          models?: Json | null
+          overall_score?: number | null
+          passed?: boolean | null
+          phase_a_id?: string | null
+          recommendation?: string | null
+          score_variance?: number | null
+        }
+        Update: {
+          aggregated_findings?: Json | null
+          confidence?: number | null
+          consensus?: string | null
+          created_at?: string | null
+          id?: string
+          models?: Json | null
+          overall_score?: number | null
+          passed?: boolean | null
+          phase_a_id?: string | null
+          recommendation?: string | null
+          score_variance?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "phase_b_verifications_phase_a_id_fkey"
+            columns: ["phase_a_id"]
+            isOneToOne: false
+            referencedRelation: "phase_a_analyses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      phase_ex_executions: {
+        Row: {
+          changes_applied: Json | null
+          completed_at: string | null
+          created_at: string | null
+          errors: Json | null
+          executed_by: string | null
+          execution_duration_ms: number | null
+          id: string
+          phase_a_id: string | null
+          phase_b_id: string | null
+          success: boolean | null
+        }
+        Insert: {
+          changes_applied?: Json | null
+          completed_at?: string | null
+          created_at?: string | null
+          errors?: Json | null
+          executed_by?: string | null
+          execution_duration_ms?: number | null
+          id?: string
+          phase_a_id?: string | null
+          phase_b_id?: string | null
+          success?: boolean | null
+        }
+        Update: {
+          changes_applied?: Json | null
+          completed_at?: string | null
+          created_at?: string | null
+          errors?: Json | null
+          executed_by?: string | null
+          execution_duration_ms?: number | null
+          id?: string
+          phase_a_id?: string | null
+          phase_b_id?: string | null
+          success?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "phase_ex_executions_phase_a_id_fkey"
+            columns: ["phase_a_id"]
+            isOneToOne: false
+            referencedRelation: "phase_a_analyses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "phase_ex_executions_phase_b_id_fkey"
+            columns: ["phase_b_id"]
+            isOneToOne: false
+            referencedRelation: "phase_b_verifications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       poa: {
         Row: {
           case_id: string
