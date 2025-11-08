@@ -131,7 +131,7 @@ export const POAThreeClickWizard = ({ caseId, useBatchMode = false }: POAThreeCl
       {/* Progress Header */}
       <div className="mb-8 px-4 py-6 md:p-10">
         <div className="border-b border-border/50 pb-6 pt-6">
-          <h2 className="text-2xl md:text-3xl font-heading font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+          <h2 className="text-5xl md:text-8xl font-heading font-black mb-4 tracking-tight bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
             POA OCR Wizard
           </h2>
         </div>

@@ -20,7 +20,7 @@ export const PersonTypeSelector = ({ onSelect, selectedPerson, selectedDocType, 
   const isAdult = (type: PersonType) => type === 'AP' || type === 'SPOUSE';
   
   const personOptions: { type: PersonType; label: string; icon: typeof User }[] = [
-    { type: 'AP', label: 'Applicant (Me)', icon: User },
+    { type: 'AP', label: 'Applicant', icon: User },
     { type: 'SPOUSE', label: 'Spouse', icon: Users },
     ...Array.from({ length: childrenCount }, (_, i) => ({
       type: `CHILD_${i + 1}` as PersonType,
@@ -30,12 +30,9 @@ export const PersonTypeSelector = ({ onSelect, selectedPerson, selectedDocType, 
   ];
 
   return (
-    <Card className="glass-card">
-      <CardHeader>
-        <CardTitle>Select Person</CardTitle>
-        <CardDescription>Who is this document for?</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
+    <div className="space-y-4">
+      <h3 className="text-2xl md:text-3xl font-heading font-bold mb-6">Select Person</h3>
+      <div className="space-y-4">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
           {personOptions.map(({ type, label, icon: Icon }) => (
             <Button
@@ -93,7 +90,7 @@ export const PersonTypeSelector = ({ onSelect, selectedPerson, selectedDocType, 
             </p>
           </div>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
