@@ -538,9 +538,11 @@ export default function FamilyTreeForm() {
                   <TabsTrigger value="grandparents" className="flex-shrink-0 md:flex-1">
                     <span className="text-red-600 dark:text-red-400">Grandparents</span>
                   </TabsTrigger>
-                  <TabsTrigger value="great-grandparents" className="flex-shrink-0 md:flex-1">
-                    <span className="text-gray-600 dark:text-gray-400">Great Grandparents</span>
-                  </TabsTrigger>
+                  {(formData.pgf_is_polish || formData.mgf_is_polish) && (
+                    <TabsTrigger value="great-grandparents" className="flex-shrink-0 md:flex-1">
+                      <span className="text-gray-600 dark:text-gray-400">Great Grandparents</span>
+                    </TabsTrigger>
+                  )}
                 </TabsList>
               </div>
                   <TabsContent value="select" className="mt-0 pb-32" {...(isFullView ? { forceMount: true } : {})}>
@@ -802,7 +804,7 @@ export default function FamilyTreeForm() {
               </p>
             </div>
 
-            {Array.from({ length: 10 }, (_, i) => i + 1).map(num => <Fragment key={num}>
+            {Array.from({ length: formData.minor_children_count || 0 }, (_, i) => i + 1).map(num => <Fragment key={num}>
                 <h3 className="text-2xl md:text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Minor Child {num}</h3>
                 {/* 1st row - Name fields */}
                 {renderFieldGroup([{
@@ -1055,7 +1057,27 @@ export default function FamilyTreeForm() {
           delay: 0.4
         }} className="space-y-10">
 
-              {["pgf", "pgm", "mgf", "mgm"].map(prefix => {
+              {/* Determine which grandparents to show based on Polish bloodline */}
+              {(() => {
+                const grandparentsToShow: string[] = [];
+                
+                // If father is Polish, show paternal grandparents
+                if (formData.father_is_polish) {
+                  grandparentsToShow.push('pgf', 'pgm');
+                }
+                
+                // If mother is Polish, show maternal grandparents  
+                if (formData.mother_is_polish) {
+                  grandparentsToShow.push('mgf', 'mgm');
+                }
+                
+                // If neither parent is Polish, show all 4 (backward compatibility)
+                if (!formData.father_is_polish && !formData.mother_is_polish) {
+                  grandparentsToShow.push('pgf', 'pgm', 'mgf', 'mgm');
+                }
+                
+                return grandparentsToShow;
+              })().map(prefix => {
                 const labels = {
                   pgf: "Paternal Grandfather",
                   pgm: "Paternal Grandmother",
@@ -1170,12 +1192,29 @@ export default function FamilyTreeForm() {
           delay: 0.5
         }} className="space-y-10">
 
-              {["pggf", "mggf"].map(prefix => {
+              {/* Determine which great-grandparents to show based on Polish grandparent */}
+              {(() => {
+                const greatGrandparentsToShow: string[] = [];
+                
+                // If PGF is Polish, show paternal great-grandparents
+                if (formData.pgf_is_polish) {
+                  greatGrandparentsToShow.push('pggf', 'pggm');
+                }
+                
+                // If MGF is Polish, show maternal great-grandparents
+                if (formData.mgf_is_polish) {
+                  greatGrandparentsToShow.push('mggf', 'mggm');
+                }
+                
+                return greatGrandparentsToShow;
+              })().map(prefix => {
                 const labels = {
                   pggf: "Paternal Great-Grandfather (Father's Line)",
-                  mggf: "Maternal Great-Grandfather (Mother's Line)"
+                  pggm: "Paternal Great-Grandmother (Father's Line)",
+                  mggf: "Maternal Great-Grandfather (Mother's Line)",
+                  mggm: "Maternal Great-Grandmother (Mother's Line)"
                 };
-                const sex = 'M'; // Great-grandfathers are always male
+                const sex = prefix.endsWith('f') ? 'M' : 'F';
                 return <Fragment key={prefix}>
                   <div className="flex items-start gap-4 mb-6">
                     <h3 className={cn(
@@ -1202,7 +1241,11 @@ export default function FamilyTreeForm() {
                 name: `${prefix}_last_name`,
                 label: "Full last name",
                 isNameField: true
-              }], 'ggp')}
+              }, ...(prefix.endsWith('m') ? [{
+                name: `${prefix}_maiden_name`,
+                label: "Maiden name",
+                isNameField: true
+              }] : [])], 'ggp')}
 
                   {/* 2nd row - Places: Birth & Marriage */}
                   {renderFieldGroup([{
@@ -1293,9 +1336,11 @@ export default function FamilyTreeForm() {
                   <TabsTrigger value="grandparents" className="flex-shrink-0 md:flex-1">
                     <span className="text-red-600 dark:text-red-400">Grandparents</span>
                   </TabsTrigger>
-                  <TabsTrigger value="great-grandparents" className="flex-shrink-0 md:flex-1">
-                    <span className="text-gray-600 dark:text-gray-400">Great Grandparents</span>
-                  </TabsTrigger>
+                  {(formData.pgf_is_polish || formData.mgf_is_polish) && (
+                    <TabsTrigger value="great-grandparents" className="flex-shrink-0 md:flex-1">
+                      <span className="text-gray-600 dark:text-gray-400">Great Grandparents</span>
+                    </TabsTrigger>
+                  )}
                 </TabsList>
               </div>
 

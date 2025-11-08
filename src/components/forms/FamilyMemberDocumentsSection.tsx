@@ -45,6 +45,37 @@ export const FamilyMemberDocumentsSection = ({
     return true;
   };
 
+  const getChildDocuments = (): DocumentItem[] => [
+    {
+      id: `${prefix}_has_poa`,
+      label: 'Power of Attorney',
+      checked: formData?.[`${prefix}_has_poa`] || false,
+      importance: 'critical' as const,
+      difficulty: 'easy' as const,
+    },
+    {
+      id: `${prefix}_has_passport`,
+      label: 'Passport Copy',
+      checked: formData?.[`${prefix}_has_passport`] || false,
+      importance: 'critical' as const,
+      difficulty: 'easy' as const,
+    },
+    {
+      id: `${prefix}_has_birth_cert`,
+      label: 'Birth Certificate',
+      checked: formData?.[`${prefix}_has_birth_cert`] || false,
+      importance: 'critical' as const,
+      difficulty: 'medium' as const,
+    },
+    {
+      id: `${prefix}_has_additional_docs`,
+      label: 'Additional Documents',
+      checked: formData?.[`${prefix}_has_additional_docs`] || false,
+      importance: 'low' as const,
+      difficulty: 'easy' as const,
+    },
+  ];
+
   const getDocumentsForPersonType = (): DocumentItem[] => {
     // Universal document list - same for all family members
     const allDocuments: DocumentItem[] = [
@@ -113,7 +144,7 @@ export const FamilyMemberDocumentsSection = ({
     return allDocuments;
   };
 
-  const documents = getDocumentsForPersonType();
+  const documents = personType === 'child' ? getChildDocuments() : getDocumentsForPersonType();
 
   const handleDocumentsChange = (updatedDocuments: DocumentItem[]) => {
     updatedDocuments.forEach(doc => {
