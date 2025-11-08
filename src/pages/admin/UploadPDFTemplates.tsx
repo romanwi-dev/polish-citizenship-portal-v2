@@ -12,15 +12,17 @@ export default function UploadPDFTemplates() {
   const [status, setStatus] = useState<Record<string, 'pending' | 'success' | 'error'>>({});
 
   const templates = [
-    { filename: 'poa-adult.pdf', label: 'POA Adult', type: 'poa-adult' },
-    { filename: 'poa-minor.pdf', label: 'POA Minor', type: 'poa-minor' },
-    { filename: 'poa-spouses.pdf', label: 'POA Spouses', type: 'poa-spouses' },
-    { filename: 'poa-combined.pdf', label: 'POA Combined (3 pages)', type: 'poa-combined' },
-    { filename: 'family-tree.pdf', label: 'Family Tree', type: 'family-tree' },
-    { filename: 'citizenship.pdf', label: 'Citizenship Application', type: 'citizenship' },
-    { filename: 'transcription.pdf', label: 'Transcription', type: 'transcription' },
-    { filename: 'umiejscowienie.pdf', label: 'Umiejscowienie (OLD - Delete)', type: 'umiejscowienie' },
-    { filename: 'uzupelnienie.pdf', label: 'Uzupełnienie (OLD - Delete)', type: 'uzupelnienie' },
+    { filename: 'POA-COMBINED.pdf', label: 'POA Combined (3 pages)', type: 'poa-combined' },
+    { filename: 'CITIZENSHIP.pdf', label: 'Citizenship Application', type: 'citizenship' },
+    { filename: 'FAMILY-TREE.pdf', label: 'Family Tree', type: 'family-tree' },
+    { filename: 'TRANSCRIPTION.pdf', label: 'Transcription', type: 'transcription' },
+    // Old files to delete
+    { filename: 'poa-adult.pdf', label: '[OLD] POA Adult - DELETE', type: 'poa-adult' },
+    { filename: 'poa-minor.pdf', label: '[OLD] POA Minor - DELETE', type: 'poa-minor' },
+    { filename: 'poa-spouses.pdf', label: '[OLD] POA Spouses - DELETE', type: 'poa-spouses' },
+    { filename: 'citizenship.pdf', label: '[OLD] citizenship - DELETE', type: 'citizenship-old' },
+    { filename: 'family-tree.pdf', label: '[OLD] family-tree - DELETE', type: 'family-tree-old' },
+    { filename: 'transcription.pdf', label: '[OLD] transcription - DELETE', type: 'transcription-old' },
   ];
 
   const uploadTemplate = async (filename: string) => {

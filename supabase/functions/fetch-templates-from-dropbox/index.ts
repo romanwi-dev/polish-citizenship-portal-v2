@@ -32,20 +32,20 @@ Deno.serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    // Map template types to Dropbox paths (all templates now in /POA folder)
-    const dropboxPaths: Record<string, string> = {
-      'poa-adult': '/POA/new-POA-adult.pdf',
-      'poa-minor': '/POA/new-POA-minor.pdf',
-      'poa-spouses': '/POA/new-POA-spouses.pdf',
-      'family-tree': '/POA/new-FAMILY_TREE.pdf',
-      'citizenship': '/POA/new-CITIZENSHIP.pdf',
-      'transcription': '/POA/new-TRANSCRIPTION.pdf',
+    // Map template types to Dropbox paths AND new uppercase filenames
+    const templateConfig: Record<string, { dropboxPath: string; filename: string }> = {
+      'poa-combined': { dropboxPath: '/POA/POA-combined.pdf', filename: 'POA-COMBINED.pdf' },
+      'family-tree': { dropboxPath: '/POA/new-FAMILY_TREE.pdf', filename: 'FAMILY-TREE.pdf' },
+      'citizenship': { dropboxPath: '/POA/new-CITIZENSHIP.pdf', filename: 'CITIZENSHIP.pdf' },
+      'transcription': { dropboxPath: '/POA/new-TRANSCRIPTION.pdf', filename: 'TRANSCRIPTION.pdf' },
     };
 
-    const dropboxPath = dropboxPaths[templateType];
-    if (!dropboxPath) {
+    const config = templateConfig[templateType];
+    if (!config) {
       throw new Error(`Unknown template type: ${templateType}`);
     }
+
+    const { dropboxPath, filename } = config;
 
     console.log(`Fetching ${templateType} from Dropbox: ${dropboxPath}`);
 
@@ -89,8 +89,7 @@ Deno.serve(async (req) => {
     const fileBlob = await downloadResponse.blob();
     const arrayBuffer = await fileBlob.arrayBuffer();
 
-    // Upload to Supabase Storage
-    const filename = `${templateType}.pdf`;
+    // Upload to Supabase Storage with new uppercase filename
     const { error: uploadError } = await supabaseClient.storage
       .from('pdf-templates')
       .upload(filename, arrayBuffer, {

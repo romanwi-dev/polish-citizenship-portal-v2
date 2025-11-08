@@ -11,39 +11,37 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Template mappings
+// Template mappings - using new uppercase filenames
 const TEMPLATE_PATHS: Record<string, string> = {
-  'poa-adult': 'poa-adult.pdf',
-  'poa-minor': 'poa-minor.pdf',
-  'poa-spouses': 'poa-spouses.pdf',
-  'family-tree': 'family-tree.pdf',
-  'citizenship': 'citizenship.pdf',
-  'transcription': 'umiejscowienie.pdf',
-  'registration': 'uzupelnienie.pdf'
+  'poa-combined': 'POA-COMBINED.pdf',
+  'family-tree': 'FAMILY-TREE.pdf',
+  'citizenship': 'CITIZENSHIP.pdf',
+  'transcription': 'TRANSCRIPTION.pdf',
 };
 
 // Field mappings: PDF field name → database column name
 const FIELD_MAPS: Record<string, Record<string, string>> = {
-  'poa-adult': {
+  'poa-combined': {
+    // Page 1: Adult POA fields
     'applicant_given_names': 'applicant_first_name',
     'applicant_surname': 'applicant_last_name',
     'passport_number': 'applicant_passport_number',
     'poa_date': 'poa_date_filed',
-  },
-  'poa-minor': {
-    'applicant_given_names': 'applicant_first_name',
-    'applicant_surname': 'applicant_last_name',
-    'passport_number': 'applicant_passport_number',
+    
+    // Page 2: Minor POA fields
+    'minor_applicant_given_names': 'applicant_first_name',
+    'minor_applicant_surname': 'applicant_last_name',
+    'minor_passport_number': 'applicant_passport_number',
     'minor_given_names': 'child_1_first_name',
     'minor_surname': 'child_1_last_name',
-    'poa_date': 'poa_date_filed',
-  },
-  'poa-spouses': {
-    'applicant_given_names': 'applicant_first_name',
-    'applicant_surname': 'applicant_last_name',
+    'minor_poa_date': 'poa_date_filed',
+    
+    // Page 3: Spouses POA fields
+    'spouse_applicant_given_names': 'applicant_first_name',
+    'spouse_applicant_surname': 'applicant_last_name',
     'spouse_given_names': 'spouse_first_name',
     'spouse_surname': 'spouse_last_name',
-    'poa_date': 'poa_date_filed',
+    'spouse_poa_date': 'poa_date_filed',
   },
   'citizenship': {
     'imie': 'applicant_first_name',
