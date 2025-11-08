@@ -14,6 +14,9 @@ const corsHeaders = {
 // Template mappings - using new uppercase filenames
 const TEMPLATE_PATHS: Record<string, string> = {
   'poa-combined': 'POA-COMBINED.pdf',
+  'poa-adult': 'POA-ADULT.pdf',
+  'poa-minor': 'POA-MINOR.pdf',
+  'poa-spouses': 'POA-SPOUSES.pdf',
   'family-tree': 'FAMILY-TREE.pdf',
   'citizenship': 'CITIZENSHIP.pdf',
   'transcription': 'TRANSCRIPTION.pdf',
@@ -21,33 +24,95 @@ const TEMPLATE_PATHS: Record<string, string> = {
 
 // Field mappings: PDF field name → database column name
 const FIELD_MAPS: Record<string, Record<string, string>> = {
-  'poa-combined': {
-    // Page 1: Adult POA fields
+  'poa-adult': {
     'applicant_given_names': 'applicant_first_name',
     'applicant_surname': 'applicant_last_name',
     'passport_number': 'applicant_passport_number',
     'poa_date': 'poa_date_filed',
-    
-    // Page 2: Minor POA fields
-    'minor_applicant_given_names': 'applicant_first_name',
-    'minor_applicant_surname': 'applicant_last_name',
-    'minor_passport_number': 'applicant_passport_number',
-    'minor_given_names': 'child_1_first_name',
-    'minor_surname': 'child_1_last_name',
-    'minor_poa_date': 'poa_date_filed',
-    
-    // Page 3: Spouses POA fields
-    'spouse_applicant_given_names': 'applicant_first_name',
-    'spouse_applicant_surname': 'applicant_last_name',
+  },
+  'poa-minor': {
+    'applicant_given_names': 'applicant_first_name',
+    'applicant_surname': 'applicant_last_name',
+    'passport_number': 'applicant_passport_number',
+    'minor_given_names': '__CHILD_FIRST_NAME__',
+    'minor_surname': '__CHILD_LAST_NAME__',
+    'poa_date': 'poa_date_filed',
+  },
+  'poa-spouses': {
+    'applicant_given_names': 'applicant_first_name',
+    'applicant_surname': 'applicant_last_name',
+    'passport_number': 'applicant_passport_number',
     'spouse_given_names': 'spouse_first_name',
     'spouse_surname': 'spouse_last_name',
-    'spouse_poa_date': 'poa_date_filed',
+    'spouse_passport_number': 'spouse_passport_number',
+    'husband_surname': 'husband_last_name_after_marriage',
+    'wife_surname': 'wife_last_name_after_marriage',
+    'poa_date': 'poa_date_filed',
+  },
+  'poa-combined': {
+    // Legacy support - now uses dynamic assembly
   },
   'citizenship': {
     'imie': 'applicant_first_name',
     'nazwisko': 'applicant_last_name',
   }
 };
+
+// Helper: Count children in master data
+function countChildren(data: any): number {
+  let count = 0;
+  for (let i = 1; i <= 10; i++) {
+    if (data[`child_${i}_first_name`] || data[`child_${i}_last_name`]) {
+      count++;
+    }
+  }
+  return count;
+}
+
+// Helper: Fill PDF template with data
+async function fillTemplate(
+  templatePath: string,
+  fieldMap: Record<string, string>,
+  data: any,
+  supabase: any,
+  childIndex?: number
+): Promise<Uint8Array> {
+  const { data: templateBlob, error } = await supabase.storage
+    .from('pdf-templates')
+    .download(templatePath);
+  
+  if (error || !templateBlob) throw new Error(`Failed to load ${templatePath}`);
+  
+  const templateBytes = new Uint8Array(await templateBlob.arrayBuffer());
+  const pdfDoc = await PDFDocument.load(templateBytes);
+  const form = pdfDoc.getForm();
+  
+  for (const field of form.getFields()) {
+    try {
+      const fieldName = field.getName();
+      let dbColumnName = fieldMap[fieldName] || fieldName;
+      
+      // Handle child-specific fields
+      if (childIndex !== undefined) {
+        if (dbColumnName === '__CHILD_FIRST_NAME__') {
+          dbColumnName = `child_${childIndex}_first_name`;
+        } else if (dbColumnName === '__CHILD_LAST_NAME__') {
+          dbColumnName = `child_${childIndex}_last_name`;
+        }
+      }
+      
+      const value = data[dbColumnName];
+      if (value != null && value !== '') {
+        const textField = form.getTextField(fieldName);
+        textField.setText(String(value));
+      }
+    } catch (e) {
+      // Skip fields we can't fill
+    }
+  }
+  
+  return await pdfDoc.save();
+}
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -64,8 +129,110 @@ Deno.serve(async (req) => {
     if (!templateType) {
       throw new Error('Missing templateType');
     }
-    // caseId can be anything (including 'blank-template')
 
+    // Initialize Supabase
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL')!,
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+    );
+
+    // Get master data
+    console.log('[pdf-simple] Fetching master data...');
+    const { data: masterData } = await supabase
+      .from('master_table')
+      .select('*')
+      .eq('case_id', caseId)
+      .maybeSingle();
+
+    const dataToUse = masterData || {};
+    console.log('[pdf-simple] Data status:', 
+      masterData 
+        ? `Found data with ${Object.keys(masterData).filter(k => masterData[k] != null).length} filled fields` 
+        : 'No data - generating blank PDF'
+    );
+
+    // Handle POA-COMBINED special case: dynamic assembly
+    if (templateType === 'poa-combined') {
+      console.log('[pdf-simple] Dynamic assembly mode: POA-COMBINED');
+      
+      const childCount = countChildren(dataToUse);
+      console.log(`[pdf-simple] Found ${childCount} children`);
+      
+      // Create final PDF
+      const finalPdf = await PDFDocument.create();
+      let totalFilled = 0;
+      let totalFields = 0;
+      
+      // 1. Add Adult POA
+      const adultBytes = await fillTemplate('POA-ADULT.pdf', FIELD_MAPS['poa-adult'], dataToUse, supabase);
+      const adultPdf = await PDFDocument.load(adultBytes);
+      const adultPages = await finalPdf.copyPages(adultPdf, adultPdf.getPageIndices());
+      adultPages.forEach(page => finalPdf.addPage(page));
+      totalFields += adultPdf.getForm().getFields().length;
+      
+      // 2. Add Minor POA for each child
+      for (let i = 1; i <= childCount; i++) {
+        console.log(`[pdf-simple] Adding Minor POA for child ${i}`);
+        const minorBytes = await fillTemplate('POA-MINOR.pdf', FIELD_MAPS['poa-minor'], dataToUse, supabase, i);
+        const minorPdf = await PDFDocument.load(minorBytes);
+        const minorPages = await finalPdf.copyPages(minorPdf, minorPdf.getPageIndices());
+        minorPages.forEach(page => finalPdf.addPage(page));
+        totalFields += minorPdf.getForm().getFields().length;
+      }
+      
+      // 3. Add Spouses POA (if spouse data exists)
+      if (dataToUse.spouse_first_name || dataToUse.spouse_last_name) {
+        console.log('[pdf-simple] Adding Spouses POA');
+        const spousesBytes = await fillTemplate('POA-SPOUSES.pdf', FIELD_MAPS['poa-spouses'], dataToUse, supabase);
+        const spousesPdf = await PDFDocument.load(spousesBytes);
+        const spousesPages = await finalPdf.copyPages(spousesPdf, spousesPdf.getPageIndices());
+        spousesPages.forEach(page => finalPdf.addPage(page));
+        totalFields += spousesPdf.getForm().getFields().length;
+      }
+      
+      const pdfBytes = await finalPdf.save();
+      
+      // Upload
+      const filename = `poa-combined-${caseId}-${Date.now()}.pdf`;
+      const uploadPath = `generated/${filename}`;
+      
+      console.log('[pdf-simple] Uploading assembled PDF:', uploadPath);
+      const { error: uploadError } = await supabase.storage
+        .from('pdf-outputs')
+        .upload(uploadPath, pdfBytes, {
+          contentType: 'application/pdf',
+          upsert: true
+        });
+
+      if (uploadError) throw uploadError;
+
+      const { data: signedData, error: signError } = await supabase.storage
+        .from('pdf-outputs')
+        .createSignedUrl(uploadPath, 3600);
+
+      if (signError) throw signError;
+
+      const duration = Date.now() - startTime;
+      console.log(`[pdf-simple] SUCCESS in ${duration}ms: ${signedData.signedUrl}`);
+
+      return new Response(
+        JSON.stringify({
+          success: true,
+          url: signedData.signedUrl,
+          fieldsFilledCount: totalFilled,
+          totalFields: totalFields,
+          fillRate: totalFields > 0 ? Math.round((totalFilled / totalFields) * 100) : 0,
+          duration,
+          filename,
+          pages: 1 + childCount + (dataToUse.spouse_first_name ? 1 : 0)
+        }),
+        { 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
+
+    // Standard single-template generation
     const templatePath = TEMPLATE_PATHS[templateType];
     if (!templatePath) {
       throw new Error(`Unknown template type: ${templateType}`);
