@@ -15,6 +15,7 @@ export default function UploadPDFTemplates() {
     { filename: 'poa-adult.pdf', label: 'POA Adult', type: 'poa-adult' },
     { filename: 'poa-minor.pdf', label: 'POA Minor', type: 'poa-minor' },
     { filename: 'poa-spouses.pdf', label: 'POA Spouses', type: 'poa-spouses' },
+    { filename: 'poa-combined.pdf', label: 'POA Combined (3 pages)', type: 'poa-combined' },
     { filename: 'family-tree.pdf', label: 'Family Tree', type: 'family-tree' },
     { filename: 'citizenship.pdf', label: 'Citizenship Application', type: 'citizenship' },
     { filename: 'transcription.pdf', label: 'Transcription', type: 'transcription' },
