@@ -93,7 +93,7 @@ export default function POAForm() {
       
       handleInputChange('poa_date_filed', dateString);
     }
-  }, [formData.poa_date_filed]);
+  }, []);
 
 
   // Custom save handler for POA (includes latest formData ref for PDF generation)
