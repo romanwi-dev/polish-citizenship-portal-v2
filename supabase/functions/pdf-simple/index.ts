@@ -22,18 +22,32 @@ const TEMPLATE_PATHS: Record<string, string> = {
   'registration': 'uzupelnienie.pdf'
 };
 
-// Simple field mappings (expand as needed)
+// Field mappings: PDF field name → database column name
 const FIELD_MAPS: Record<string, Record<string, string>> = {
   'poa-adult': {
-    'applicant_first_name': 'applicant_given_names',
-    'applicant_last_name': 'applicant_last_name',
-    'applicant_birth_date': 'applicant_dob',
-    // Add more as needed
+    'applicant_given_names': 'applicant_first_name',
+    'applicant_surname': 'applicant_last_name',
+    'passport_number': 'applicant_passport_number',
+    'poa_date': 'poa_date_filed',
+  },
+  'poa-minor': {
+    'applicant_given_names': 'applicant_first_name',
+    'applicant_surname': 'applicant_last_name',
+    'passport_number': 'applicant_passport_number',
+    'minor_given_names': 'child_1_first_name',
+    'minor_surname': 'child_1_last_name',
+    'poa_date': 'poa_date_filed',
+  },
+  'poa-spouses': {
+    'applicant_given_names': 'applicant_first_name',
+    'applicant_surname': 'applicant_last_name',
+    'spouse_given_names': 'spouse_first_name',
+    'spouse_surname': 'spouse_last_name',
+    'poa_date': 'poa_date_filed',
   },
   'citizenship': {
-    'imie': 'applicant_given_names',
+    'imie': 'applicant_first_name',
     'nazwisko': 'applicant_last_name',
-    // Add more as needed
   }
 };
 
@@ -102,9 +116,9 @@ Deno.serve(async (req) => {
       try {
         const fieldName = field.getName();
         
-        // Try to get value from mapping or direct field name
-        const mappingKey = fieldMap[fieldName] || fieldName;
-        const value = masterData[mappingKey];
+        // Get database column name from mapping (PDF field → DB column)
+        const dbColumnName = fieldMap[fieldName] || fieldName;
+        const value = masterData[dbColumnName];
 
         if (value != null && value !== '') {
           const textField = form.getTextField(fieldName);
