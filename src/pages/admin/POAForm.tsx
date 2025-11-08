@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { useState, useRef, lazy, Suspense } from "react";
+import { useState, useRef, lazy, Suspense, useEffect } from "react";
 import { Loader2, Save, Download, FileText, Sparkles, Type, User, ArrowLeft, HelpCircle, Maximize2, Minimize2, Users, Baby, Heart } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -81,6 +81,20 @@ export default function POAForm() {
 
   const showSpousePOA = formData.applicant_marital_status === "Married";
   const minorChildrenCount = formData.minor_children_count || 0;
+
+  // Auto-populate POA date with current date in DD.MM.YYYY format
+  useEffect(() => {
+    if (!formData.poa_date_filed) {
+      const today = new Date();
+      const day = String(today.getDate()).padStart(2, '0');
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const year = today.getFullYear();
+      const dateString = `${day}.${month}.${year}`;
+      
+      handleInputChange('poa_date_filed', dateString);
+    }
+  }, [formData.poa_date_filed]);
+
 
   // Custom save handler for POA (includes latest formData ref for PDF generation)
   const handlePOASave = async () => {
