@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AlertTriangle, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
+import confetti from "canvas-confetti";
 import { POAOCRScanner } from "./POAOCRScanner";
 import { POABatchOCRScanner } from "./POABatchOCRScanner";
 import { POAGenerateButton } from "./POAGenerateButton";
@@ -24,6 +25,7 @@ export const POAThreeClickWizard = ({ caseId, useBatchMode = false }: POAThreeCl
   const [poaId, setPoaId] = useState<string>();
   const [staleSession, setStaleSession] = useState(false);
   const [loading, setLoading] = useState(true);
+  const confettiTriggered = useRef(false);
 
   // Load saved state on mount
   useEffect(() => {
@@ -86,6 +88,53 @@ export const POAThreeClickWizard = ({ caseId, useBatchMode = false }: POAThreeCl
 
     saveState();
   }, [currentStep, passportConfidence, birthCertConfidence, generatedPdfUrl, poaId, caseId, loading]);
+
+  // Confetti celebration when reaching final step
+  useEffect(() => {
+    if (currentStep === 3 && !confettiTriggered.current) {
+      confettiTriggered.current = true;
+      
+      // Fire confetti from multiple angles
+      const duration = 3000;
+      const animationEnd = Date.now() + duration;
+      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+      function randomInRange(min: number, max: number) {
+        return Math.random() * (max - min) + min;
+      }
+
+      const interval: any = setInterval(function() {
+        const timeLeft = animationEnd - Date.now();
+
+        if (timeLeft <= 0) {
+          return clearInterval(interval);
+        }
+
+        const particleCount = 50 * (timeLeft / duration);
+        
+        // Fire from left
+        confetti({
+          ...defaults,
+          particleCount,
+          origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+        });
+        
+        // Fire from right
+        confetti({
+          ...defaults,
+          particleCount,
+          origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+        });
+      }, 250);
+
+      // Big burst in the center
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    }
+  }, [currentStep]);
 
   const handleOCRComplete = () => {
     setCurrentStep(2);
