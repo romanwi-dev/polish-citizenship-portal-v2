@@ -273,8 +273,9 @@ Deno.serve(async (req) => {
     if (templateType === 'poa-combined') {
       console.log('[pdf-simple] Dynamic assembly mode: POA-COMBINED');
       
-      const childCount = countChildren(dataToUse);
-      console.log(`[pdf-simple] Found ${childCount} children`);
+      // Use actual minor_children_count from database instead of counting all children
+      const childCount = dataToUse.minor_children_count || 0;
+      console.log(`[pdf-simple] Minor children count: ${childCount}`);
       
       // Create final PDF
       const finalPdf = await PDFDocument.create();
