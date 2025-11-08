@@ -5,7 +5,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { useState, useRef, lazy, Suspense } from "react";
-import { Loader2, Save, Download, FileText, Sparkles, Type, User, ArrowLeft, HelpCircle, Maximize2, Minimize2 } from "lucide-react";
+import { Loader2, Save, Download, FileText, Sparkles, Type, User, ArrowLeft, HelpCircle, Maximize2, Minimize2, Users, Baby, Heart } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -432,7 +432,66 @@ export default function POAForm() {
             </div>
         </motion.div>
 
-        <FormButtonsRow 
+        {/* POA Type Selector - Visual Indicator */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mb-8"
+        >
+          <div className="flex flex-wrap gap-3 justify-center">
+            <Button
+              onClick={() => setActivePOAType('adult')}
+              variant={activePOAType === 'adult' ? 'default' : 'outline'}
+              className={cn(
+                "text-lg px-8 py-6 font-bold transition-all",
+                activePOAType === 'adult' 
+                  ? "bg-primary shadow-[0_0_30px_rgba(59,130,246,0.5)] scale-105" 
+                  : "hover:scale-102"
+              )}
+            >
+              <User className="w-5 h-5 mr-2" />
+              POA Adult
+              {activePOAType === 'adult' && <Check className="w-5 h-5 ml-2" />}
+            </Button>
+            
+            {minorChildrenCount > 0 && (
+              <Button
+                onClick={() => setActivePOAType('minor')}
+                variant={activePOAType === 'minor' ? 'default' : 'outline'}
+                className={cn(
+                  "text-lg px-8 py-6 font-bold transition-all",
+                  activePOAType === 'minor' 
+                    ? "bg-secondary shadow-[0_0_30px_rgba(236,72,153,0.5)] scale-105" 
+                    : "hover:scale-102"
+                )}
+              >
+                <Baby className="w-5 h-5 mr-2" />
+                POA Minor ({minorChildrenCount})
+                {activePOAType === 'minor' && <Check className="w-5 h-5 ml-2" />}
+              </Button>
+            )}
+            
+            {showSpousePOA && (
+              <Button
+                onClick={() => setActivePOAType('spouses')}
+                variant={activePOAType === 'spouses' ? 'default' : 'outline'}
+                className={cn(
+                  "text-lg px-8 py-6 font-bold transition-all",
+                  activePOAType === 'spouses' 
+                    ? "bg-accent shadow-[0_0_30px_rgba(168,85,247,0.5)] scale-105" 
+                    : "hover:scale-102"
+                )}
+              >
+                <Heart className="w-5 h-5 mr-2" />
+                POA Spouses
+                {activePOAType === 'spouses' && <Check className="w-5 h-5 ml-2" />}
+              </Button>
+            )}
+          </div>
+        </motion.div>
+
+        <FormButtonsRow
           caseId={caseId!}
           currentForm="poa"
           onSave={handlePOASave}
@@ -519,11 +578,35 @@ export default function POAForm() {
             </div>
 
           {/* POA Adult */}
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0 }} className="space-y-6">
-            <div className="cursor-pointer select-none hover:opacity-80 transition-opacity border-b border-border/50 pb-6">
-              <h2 className="text-4xl md:text-5xl font-heading font-bold text-gray-600 dark:text-gray-400">
-                {poaFormConfigs.adult.title}
-              </h2>
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }} 
+            animate={{ opacity: 1, scale: 1 }} 
+            transition={{ duration: 0.5, delay: 0 }} 
+            className="space-y-6"
+            onClick={() => setActivePOAType('adult')}
+          >
+            <div className={cn(
+              "cursor-pointer select-none transition-all border-b pb-6 px-6 py-4 rounded-lg",
+              activePOAType === 'adult' 
+                ? "border-primary bg-primary/10 shadow-[0_0_30px_rgba(59,130,246,0.3)]" 
+                : "border-border/50 hover:bg-muted/50"
+            )}>
+              <div className="flex items-center justify-between">
+                <h2 className={cn(
+                  "text-4xl md:text-5xl font-heading font-bold",
+                  activePOAType === 'adult'
+                    ? "bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent"
+                    : "text-gray-600 dark:text-gray-400"
+                )}>
+                  {poaFormConfigs.adult.title}
+                </h2>
+                {activePOAType === 'adult' && (
+                  <Badge className="bg-primary/20 text-primary border-primary text-lg px-4 py-2">
+                    <Check className="w-5 h-5 mr-2" />
+                    ACTIVE
+                  </Badge>
+                )}
+              </div>
             </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
@@ -574,14 +657,35 @@ export default function POAForm() {
               animate={{ opacity: 1, scale: 1 }} 
               transition={{ duration: 0.5, delay: 0.1 + (index * 0.1) }}
               className="space-y-6"
+              onClick={() => setActivePOAType('minor')}
             >
-              <div className="border-b border-border/50 pb-6">
-                <h2 className="text-4xl md:text-5xl font-heading font-bold text-gray-600 dark:text-gray-400">
-                  POA Minor {childNum}
-                </h2>
-                <p className="text-sm text-muted-foreground mt-2">
-                  Minor child {childNum} (DOB: {formData[`child_${childNum}_dob`] || 'Not entered'})
-                </p>
+              <div className={cn(
+                "cursor-pointer select-none transition-all border-b pb-6 px-6 py-4 rounded-lg",
+                activePOAType === 'minor' 
+                  ? "border-secondary bg-secondary/10 shadow-[0_0_30px_rgba(236,72,153,0.3)]" 
+                  : "border-border/50 hover:bg-muted/50"
+              )}>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className={cn(
+                      "text-4xl md:text-5xl font-heading font-bold",
+                      activePOAType === 'minor'
+                        ? "bg-gradient-to-r from-secondary via-accent to-primary bg-clip-text text-transparent"
+                        : "text-gray-600 dark:text-gray-400"
+                    )}>
+                      POA Minor {childNum}
+                    </h2>
+                    <p className="text-sm text-muted-foreground mt-2">
+                      Minor child {childNum} (DOB: {formData[`child_${childNum}_dob`] || 'Not entered'})
+                    </p>
+                  </div>
+                  {activePOAType === 'minor' && (
+                    <Badge className="bg-secondary/20 text-secondary border-secondary text-lg px-4 py-2">
+                      <Check className="w-5 h-5 mr-2" />
+                      ACTIVE
+                    </Badge>
+                  )}
+                </div>
               </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                   <POAFormField
@@ -639,11 +743,35 @@ export default function POAForm() {
 
           {/* POA Spouses - Only show if married */}
           {showSpousePOA && (
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.2 }} className="space-y-6">
-              <div className="border-b border-border/50 pb-6">
-                <h2 className="text-4xl md:text-5xl font-heading font-bold text-gray-600 dark:text-gray-400">
-                  {poaFormConfigs.spouses.title}
-                </h2>
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }} 
+              animate={{ opacity: 1, scale: 1 }} 
+              transition={{ duration: 0.5, delay: 0.2 }} 
+              className="space-y-6"
+              onClick={() => setActivePOAType('spouses')}
+            >
+              <div className={cn(
+                "cursor-pointer select-none transition-all border-b pb-6 px-6 py-4 rounded-lg",
+                activePOAType === 'spouses' 
+                  ? "border-accent bg-accent/10 shadow-[0_0_30px_rgba(168,85,247,0.3)]" 
+                  : "border-border/50 hover:bg-muted/50"
+              )}>
+                <div className="flex items-center justify-between">
+                  <h2 className={cn(
+                    "text-4xl md:text-5xl font-heading font-bold",
+                    activePOAType === 'spouses'
+                      ? "bg-gradient-to-r from-accent via-primary to-secondary bg-clip-text text-transparent"
+                      : "text-gray-600 dark:text-gray-400"
+                  )}>
+                    {poaFormConfigs.spouses.title}
+                  </h2>
+                  {activePOAType === 'spouses' && (
+                    <Badge className="bg-accent/20 text-accent border-accent text-lg px-4 py-2">
+                      <Check className="w-5 h-5 mr-2" />
+                      ACTIVE
+                    </Badge>
+                  )}
+                </div>
               </div>
                 {/* Primary Applicant Fields - labels based on master_table applicant_sex */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
