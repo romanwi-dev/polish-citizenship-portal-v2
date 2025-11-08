@@ -189,6 +189,11 @@ export default function POAForm() {
   };
 
   const handleGenerateAllPOAs = async () => {
+    if (!caseId) {
+      toast.error('No case ID available');
+      return;
+    }
+
     try {
       setIsGenerating(true);
       toast.loading("Generating all POAs...");
@@ -214,34 +219,32 @@ export default function POAForm() {
 
       console.log('[POA] Generating all POAs:', poaTypes.map(p => p.label));
 
-      // Generate all PDFs using pdf-simple
-      const { generateSimplePDF } = await import('@/lib/pdf-simple');
-      
-      const results = await Promise.allSettled(
-        poaTypes.map(async ({ type, label }) => {
-          const url = await generateSimplePDF({
-            caseId: caseId!,
-            templateType: type,
-            toast: {
-              loading: () => {},
-              dismiss: () => {},
-              success: () => {},
-              error: (msg: string) => console.error(`[${label}] Error:`, msg)
-            },
-            setIsGenerating: () => {}
-          });
-          
-          return { label, url, success: !!url };
-        })
-      );
+      // Generate all PDFs sequentially to avoid overwhelming the server
+      const successful: Array<{ label: string; url: string }> = [];
+      const failed: string[] = [];
 
-      const successful = results
-        .map((r, idx) => r.status === 'fulfilled' ? r.value : null)
-        .filter(r => r?.success);
-      
-      const failed = results
-        .map((r, idx) => r.status === 'rejected' || (r.status === 'fulfilled' && !r.value.success) ? poaTypes[idx].label : null)
-        .filter(Boolean);
+      for (const { type, label } of poaTypes) {
+        try {
+          console.log(`[POA] Generating ${label}...`);
+          
+          const { data, error } = await supabase.functions.invoke('pdf-simple', {
+            body: { caseId, templateType: type }
+          });
+
+          if (error || !data?.success) {
+            console.error(`[POA] ${label} failed:`, error || data);
+            failed.push(label);
+          } else if (data?.url) {
+            console.log(`[POA] ${label} success:`, data.url);
+            successful.push({ label, url: data.url });
+          } else {
+            failed.push(label);
+          }
+        } catch (err: any) {
+          console.error(`[POA] ${label} error:`, err);
+          failed.push(label);
+        }
+      }
 
       toast.dismiss();
 
@@ -262,7 +265,7 @@ export default function POAForm() {
         setTimeout(() => {
           successful.forEach(pdf => {
             const link = document.createElement('a');
-            link.href = pdf.url!;
+            link.href = pdf.url;
             link.download = `${pdf.label.replace(/\s+/g, '-')}-${caseId}.pdf`;
             link.click();
           });
@@ -272,7 +275,12 @@ export default function POAForm() {
       if (failed.length > 0) {
         toast.error(`❌ Failed to generate: ${failed.join(', ')}`);
       }
+
+      if (successful.length === 0 && failed.length === 0) {
+        toast.error('No POAs to generate');
+      }
     } catch (error: any) {
+      console.error('[POA] Generation error:', error);
       toast.dismiss();
       toast.error('Failed to generate POAs: ' + error.message);
     } finally {
