@@ -357,17 +357,6 @@ export default function POAForm() {
             </div>
         </motion.div>
 
-        <div className="flex justify-center mb-6">
-          <Button
-            onClick={() => navigate(`/admin/cases/${caseId}/poa-ocr`)}
-            className="bg-gradient-to-r from-primary via-secondary to-accent hover:opacity-90"
-            size="lg"
-          >
-            <Camera className="h-5 w-5 mr-2" />
-            Scan Documents with OCR
-          </Button>
-        </div>
-
         <FormButtonsRow 
           caseId={caseId!}
           currentForm="poa"
@@ -378,6 +367,17 @@ export default function POAForm() {
           formData={formData}
           activePOAType={activePOAType}
         />
+
+        <div className="flex justify-center mb-6 mt-6">
+          <Button
+            onClick={() => navigate(`/admin/cases/${caseId}/poa-ocr`)}
+            className="bg-gradient-to-r from-primary via-secondary to-accent hover:opacity-90"
+            size="lg"
+          >
+            <Camera className="h-5 w-5 mr-2" />
+            Scan Documents with OCR
+          </Button>
+        </div>
 
         {/* POA Forms */}
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="space-y-6 md:space-y-12 pb-32">

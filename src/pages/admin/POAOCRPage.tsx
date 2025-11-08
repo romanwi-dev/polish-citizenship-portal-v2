@@ -30,7 +30,7 @@ export default function POAOCRPage() {
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Case
           </Button>
-          <h1 className="text-3xl font-heading font-black">
+          <h1 className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight text-center">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               POA OCR Wizard
             </span>
