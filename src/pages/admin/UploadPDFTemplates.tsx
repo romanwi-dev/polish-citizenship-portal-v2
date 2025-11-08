@@ -19,6 +19,8 @@ export default function UploadPDFTemplates() {
     { filename: 'family-tree.pdf', label: 'Family Tree', type: 'family-tree' },
     { filename: 'citizenship.pdf', label: 'Citizenship Application', type: 'citizenship' },
     { filename: 'transcription.pdf', label: 'Transcription', type: 'transcription' },
+    { filename: 'umiejscowienie.pdf', label: 'Umiejscowienie (OLD - Delete)', type: 'umiejscowienie' },
+    { filename: 'uzupelnienie.pdf', label: 'Uzupełnienie (OLD - Delete)', type: 'uzupelnienie' },
   ];
 
   const uploadTemplate = async (filename: string) => {
