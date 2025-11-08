@@ -63,9 +63,10 @@ Deno.serve(async (req) => {
     console.log(`[pdf-simple] START: ${templateType} for case ${caseId}`);
 
     // Validate inputs
-    if (!caseId || !templateType) {
-      throw new Error('Missing caseId or templateType');
+    if (!templateType) {
+      throw new Error('Missing templateType');
     }
+    // caseId can be anything (including 'blank-template')
 
     const templatePath = TEMPLATE_PATHS[templateType];
     if (!templatePath) {
@@ -80,14 +81,19 @@ Deno.serve(async (req) => {
 
     // Step 1: Get master data
     console.log('[pdf-simple] Fetching master data...');
-    const { data: masterData, error: dataError } = await supabase
+    const { data: masterData } = await supabase
       .from('master_table')
       .select('*')
       .eq('case_id', caseId)
       .maybeSingle();
 
-    if (dataError) throw dataError;
-    if (!masterData) throw new Error('No data found for case');
+    // Use empty object if no data found - generates blank PDF
+    const dataToUse = masterData || {};
+    console.log('[pdf-simple] Data status:', 
+      masterData 
+        ? `Found data with ${Object.keys(masterData).filter(k => masterData[k] != null).length} filled fields` 
+        : 'No data - generating blank PDF'
+    );
 
     // Step 2: Download template
     console.log('[pdf-simple] Downloading template:', templatePath);
@@ -118,7 +124,7 @@ Deno.serve(async (req) => {
         
         // Get database column name from mapping (PDF field → DB column)
         const dbColumnName = fieldMap[fieldName] || fieldName;
-        const value = masterData[dbColumnName];
+        const value = dataToUse[dbColumnName];
 
         if (value != null && value !== '') {
           const textField = form.getTextField(fieldName);

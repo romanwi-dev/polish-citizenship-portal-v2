@@ -16,19 +16,19 @@ export async function generateSimplePDF({
   setIsGenerating: (val: boolean) => void;
 }): Promise<string | null> {
   
-  if (!caseId || caseId === ':id' || caseId === 'demo-preview') {
-    toast.error('PDF generation not available in demo mode');
-    return null;
-  }
+  // Allow PDF generation in any mode - use 'blank-template' for invalid caseIds
+  const effectiveCaseId = (caseId && caseId !== ':id' && caseId !== 'demo-preview') 
+    ? caseId 
+    : 'blank-template';
 
   try {
     setIsGenerating(true);
     toast.loading('Generating PDF...');
 
-    console.log('[pdf-simple] Calling edge function:', { caseId, templateType });
+    console.log('[pdf-simple] Calling edge function:', { caseId: effectiveCaseId, templateType });
 
     const { data, error } = await supabase.functions.invoke('pdf-simple', {
-      body: { caseId, templateType }
+      body: { caseId: effectiveCaseId, templateType }
     });
 
     if (error) {
@@ -42,7 +42,10 @@ export async function generateSimplePDF({
     }
 
     toast.dismiss();
-    toast.success(`PDF ready! Filled ${data.fieldsFilledCount}/${data.totalFields} fields (${data.fillRate}%)`);
+    const message = data.fieldsFilledCount === 0 
+      ? 'Blank PDF ready for manual completion'
+      : `PDF ready! Filled ${data.fieldsFilledCount}/${data.totalFields} fields (${data.fillRate}%)`;
+    toast.success(message);
     
     console.log('[pdf-simple] Success:', data);
     

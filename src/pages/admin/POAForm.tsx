@@ -181,11 +181,6 @@ export default function POAForm() {
   };
 
   const handleGenerateAllPOAs = async () => {
-    if (!caseId || caseId === ':id' || caseId === 'demo-preview') {
-      toast.error('PDF generation not available in demo mode');
-      return;
-    }
-
     try {
       toast.loading("Generating POAs...");
 
@@ -326,11 +321,6 @@ export default function POAForm() {
 
   // NEW: Generate specific POA type
   const handleGenerateSpecificPOA = async (poaType: 'adult' | 'minor' | 'spouses') => {
-    if (!caseId || caseId === ':id' || caseId === 'demo-preview') {
-      toast.error('PDF generation not available in demo mode');
-      return;
-    }
-
     setIsGenerating(true);
     try {
       // Save form data first

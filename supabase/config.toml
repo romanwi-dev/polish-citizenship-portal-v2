@@ -226,7 +226,7 @@ verify_jwt = false
 schedule = "*/30 * * * * *"
 
 [functions.pdf-simple]
-verify_jwt = true
+verify_jwt = false
 
 
 [functions.edge-function-agent]
