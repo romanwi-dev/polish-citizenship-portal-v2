@@ -371,11 +371,14 @@ export default function POAForm() {
         <div className="flex justify-center mb-6 mt-6">
           <Button
             onClick={() => navigate(`/admin/cases/${caseId}/poa-ocr`)}
-            className="bg-gradient-to-r from-primary via-secondary to-accent hover:opacity-90"
-            size="lg"
+            size="lg" 
+            className="text-lg md:text-2xl font-bold px-8 py-4 md:px-20 md:py-6 h-auto min-h-[48px] rounded-lg bg-red-700 dark:bg-red-900/60 hover:bg-red-800 dark:hover:bg-red-900/70 text-white shadow-[0_0_40px_rgba(185,28,28,0.6)] dark:shadow-[0_0_40px_rgba(127,29,29,0.6)] hover:shadow-[0_0_60px_rgba(185,28,28,0.8)] dark:hover:shadow-[0_0_60px_rgba(127,29,29,0.8)] group relative overflow-hidden backdrop-blur-md border-2 border-red-600 dark:border-red-800/40 hover:border-red-500 dark:hover:border-red-700/60 transition-all duration-300 hover:scale-105 animate-pulse"
           >
             <Camera className="h-5 w-5 mr-2" />
-            Scan Documents with OCR
+            <span className="relative z-10 font-bold drop-shadow-lg">
+              Scan Documents with OCR
+            </span>
+            <div className="absolute inset-0 bg-gradient-to-r from-red-800/30 to-red-950/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </Button>
         </div>
 

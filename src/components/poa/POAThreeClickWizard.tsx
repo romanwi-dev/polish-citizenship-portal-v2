@@ -129,7 +129,7 @@ export const POAThreeClickWizard = ({ caseId, useBatchMode = false }: POAThreeCl
       <POAConflictResolver caseId={caseId} />
 
       {/* Progress Header */}
-      <Card className="glass-card hover-glow">
+      <Card className="glass-card hover-glow opacity-50">
         <CardHeader>
           <CardTitle>POA Generation Wizard</CardTitle>
           <CardDescription>Complete in 3 simple steps</CardDescription>

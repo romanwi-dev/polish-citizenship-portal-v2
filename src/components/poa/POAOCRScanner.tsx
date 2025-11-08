@@ -370,7 +370,7 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
   };
 
   return (
-    <Card className="glass-card hover-glow">
+    <Card className="glass-card hover-glow opacity-50">
       <CardHeader>
         <CardTitle>Scan Documents</CardTitle>
         <CardDescription>Upload and OCR your passport and birth certificate</CardDescription>
@@ -437,10 +437,10 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
                     Upload passport (image, PDF, HEIC, or document)
                   </p>
                   <div className="flex justify-center">
-                    <Button type="button" variant="outline" size="sm" asChild>
+                    <Button type="button" variant="outline" size="sm" className="opacity-50" asChild>
                       <span>
                         <Upload className="w-4 h-4 mr-2" />
-                        Select Passport Image
+                        Select Document
                       </span>
                     </Button>
                   </div>
@@ -508,10 +508,10 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
                     Upload birth certificate (image, PDF, HEIC, or document)
                   </p>
                   <div className="flex justify-center">
-                    <Button type="button" variant="outline" size="sm" asChild>
+                    <Button type="button" variant="outline" size="sm" className="opacity-50" asChild>
                       <span>
                         <Upload className="w-4 h-4 mr-2" />
-                        Select Birth Certificate
+                        Select Document
                       </span>
                     </Button>
                   </div>
