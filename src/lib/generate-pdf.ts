@@ -102,11 +102,16 @@ export async function generatePdf({
         console.log('PDF queue update:', payload);
         
         if (payload.new.status === 'completed' && payload.new.pdf_url) {
-          // Success - open PDF
-          redirectTab(tab, payload.new.pdf_url);
+          // Success - return URL so caller can show preview dialog
           toast.dismiss();
           toast.success('PDF ready!');
           setIsGenerating(false);
+          
+          // Store URL for preview dialog
+          if (window) {
+            (window as any).__lastGeneratedPdfUrl = payload.new.pdf_url;
+            (window as any).__lastGeneratedPdfReady = true;
+          }
           
           // Cleanup
           supabase.removeChannel(channel);

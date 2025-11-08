@@ -133,6 +133,17 @@ export default function POAForm() {
         setIsGenerating,
         filename: `${templateType}-${caseId}.pdf`
       });
+      
+      // Wait for PDF URL to be ready and open preview dialog
+      if ((window as any).__lastGeneratedPdfReady) {
+        const pdfUrl = (window as any).__lastGeneratedPdfUrl;
+        (window as any).__lastGeneratedPdfReady = false;
+        
+        setPdfPreviewUrl(pdfUrl);
+        setPreviewTemplate(templateType);
+        setPreviewFormData(formData);
+        setPreviewOpen(true);
+      }
     } catch (error: any) {
       console.error("[POA] PDF generation error:", error);
       toast.error(`Failed to generate PDF: ${error.message}`);
