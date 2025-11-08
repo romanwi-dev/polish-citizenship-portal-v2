@@ -421,65 +421,6 @@ export default function POAForm() {
           </p>
         </motion.div>
 
-        {/* POA Type Selector - Visual Indicator */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mb-8"
-        >
-          <div className="flex flex-wrap gap-3 justify-center">
-            <Button
-              onClick={() => setActivePOAType('adult')}
-              variant={activePOAType === 'adult' ? 'default' : 'outline'}
-              className={cn(
-                "text-lg px-8 py-6 font-bold transition-all",
-                activePOAType === 'adult' 
-                  ? "bg-primary shadow-[0_0_30px_rgba(59,130,246,0.5)] scale-105" 
-                  : "hover:scale-102"
-              )}
-            >
-              <User className="w-5 h-5 mr-2" />
-              POA Adult
-              {activePOAType === 'adult' && <Check className="w-5 h-5 ml-2" />}
-            </Button>
-            
-            {minorChildrenCount > 0 && (
-              <Button
-                onClick={() => setActivePOAType('minor')}
-                variant={activePOAType === 'minor' ? 'default' : 'outline'}
-                className={cn(
-                  "text-lg px-8 py-6 font-bold transition-all",
-                  activePOAType === 'minor' 
-                    ? "bg-secondary shadow-[0_0_30px_rgba(236,72,153,0.5)] scale-105" 
-                    : "hover:scale-102"
-                )}
-              >
-                <Baby className="w-5 h-5 mr-2" />
-                POA Minor ({minorChildrenCount})
-                {activePOAType === 'minor' && <Check className="w-5 h-5 ml-2" />}
-              </Button>
-            )}
-            
-            {showSpousePOA && (
-              <Button
-                onClick={() => setActivePOAType('spouses')}
-                variant={activePOAType === 'spouses' ? 'default' : 'outline'}
-                className={cn(
-                  "text-lg px-8 py-6 font-bold transition-all",
-                  activePOAType === 'spouses' 
-                    ? "bg-accent shadow-[0_0_30px_rgba(168,85,247,0.5)] scale-105" 
-                    : "hover:scale-102"
-                )}
-              >
-                <Heart className="w-5 h-5 mr-2" />
-                POA Spouses
-                {activePOAType === 'spouses' && <Check className="w-5 h-5 ml-2" />}
-              </Button>
-            )}
-          </div>
-        </motion.div>
-
         <FormButtonsRow
           caseId={caseId!}
           currentForm="poa"
