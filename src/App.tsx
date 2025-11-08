@@ -80,6 +80,7 @@ const AgentApprovals = lazy(() => import("./pages/admin/AgentApprovals"));
 const VerifyChanges = lazy(() => import("./pages/VerifyChanges"));
 const VerificationResults = lazy(() => import("./pages/VerificationResults"));
 const VerificationB = lazy(() => import("./pages/VerificationB"));
+const ProvenPatterns = lazy(() => import("./pages/ProvenPatterns"));
 const PDFGenerationTest = lazy(() => import("./pages/admin/PDFGenerationTest"));
 const PDFDemo = lazy(() => import("./pages/PDFDemo"));
 const SelfTest = lazy(() => import("./pages/admin/SelfTest"));
@@ -701,6 +702,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <POADiagnostics />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/proven-patterns" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <ProvenPatterns />
               </Suspense>
             } 
           />
