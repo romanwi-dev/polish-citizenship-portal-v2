@@ -49,14 +49,19 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
       return;
     }
 
+    const fileExtension = file.name.split('.').pop()?.toLowerCase();
+    const isPDF = file.type === 'application/pdf' || fileExtension === 'pdf';
+    const isOfficeDoc = ['doc', 'docx', 'odt'].includes(fileExtension || '');
+    const isImage = file.type.startsWith('image/');
+
     if (docType === 'passport') {
       setPassportFile(file);
     } else {
       setBirthCertFile(file);
     }
 
-    // Show editor for images
-    if (file.type.startsWith('image/')) {
+    // Show editor only for images (not for PDFs/docs)
+    if (isImage) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result as string);
@@ -65,6 +70,18 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
         setCrop(undefined);
       };
       reader.readAsDataURL(file);
+    } else if (isPDF || isOfficeDoc) {
+      // For PDFs and Office docs, skip image editing
+      setEditingImage(false);
+      setImagePreview(null);
+      toast.info(`${isPDF ? 'PDF' : 'Office document'} uploaded. Ready to process.`);
+    } else {
+      toast.error("Unsupported file type. Please upload image, PDF, or Office document.");
+      if (docType === 'passport') {
+        setPassportFile(null);
+      } else {
+        setBirthCertFile(null);
+      }
     }
   };
 
@@ -134,11 +151,20 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
 
   const processOCR = async (file: File, documentType: 'passport' | 'birth_certificate') => {
     setProcessingStep('extracting');
+    
+    // Check file type to determine processing method
+    const fileExtension = file.name.split('.').pop()?.toLowerCase();
+    const isPDF = file.type === 'application/pdf' || fileExtension === 'pdf';
+    const isOfficeDoc = ['doc', 'docx', 'odt'].includes(fileExtension || '');
+    
     const formData = new FormData();
     formData.append('file', file);
     formData.append('documentType', documentType);
 
-    const functionName = documentType === 'passport' ? 'ocr-passport' : 'ocr-universal';
+    // Use document parser for PDFs and Office docs, regular OCR for images
+    const functionName = (isPDF || isOfficeDoc) 
+      ? 'parse-document-ocr'
+      : (documentType === 'passport' ? 'ocr-passport' : 'ocr-universal');
 
     const { data, error } = await supabase.functions.invoke(functionName, {
       body: formData,

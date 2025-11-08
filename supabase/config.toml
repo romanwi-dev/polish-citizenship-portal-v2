@@ -228,7 +228,6 @@ schedule = "*/30 * * * * *"
 [functions.pdf-simple]
 verify_jwt = false
 
-
 [functions.edge-function-agent]
 verify_jwt = false
 
@@ -272,8 +271,7 @@ verify_jwt = false
 verify_jwt = false
 
 [functions.pattern-learning-agent.cron]
-schedule = "0 */6 * * *"  # Every 6 hours
-
+schedule = "0 */6 * * *"
 
 [functions.triple-verify-analysis]
 verify_jwt = false
@@ -281,4 +279,5 @@ verify_jwt = false
 [functions.agent-message-broker.cron]
 schedule = "*/2 * * * *"
 
-
+[functions.parse-document-ocr]
+verify_jwt = true
