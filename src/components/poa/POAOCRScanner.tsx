@@ -54,6 +54,10 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
   const [rotation, setRotation] = useState(0);
   const imgRef = useRef<HTMLImageElement>(null);
 
+  // NEW: Persistent preview states
+  const [uploadedPreview, setUploadedPreview] = useState<string | null>(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
+
 
   const handlePersonSelect = (personType: PersonType, docType: DocumentType) => {
     setSelectedPerson(personType);
@@ -167,17 +171,38 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
 
   const uploadToDropbox = async (file: File, documentType: string) => {
     setProcessingStep('uploading');
+    setUploadProgress(0);
+    
     const formData = new FormData();
     formData.append('file', file);
     formData.append('caseId', caseId);
     formData.append('documentType', documentType);
 
-    const { data, error } = await supabase.functions.invoke('upload-to-dropbox', {
-      body: formData,
-    });
+    // Simulate upload progress
+    const progressInterval = setInterval(() => {
+      setUploadProgress(prev => Math.min(prev + 10, 90));
+    }, 200);
 
-    if (error) throw error;
-    return data;
+    try {
+      const { data, error } = await supabase.functions.invoke('upload-to-dropbox', {
+        body: formData,
+      });
+
+      clearInterval(progressInterval);
+      setUploadProgress(100);
+
+      if (error) throw error;
+      
+      // Show upload success
+      toast.success("✅ Document uploaded to cloud storage", {
+        description: `File: ${file.name} (${(file.size / 1024).toFixed(0)}KB)`
+      });
+      
+      return data;
+    } catch (error) {
+      clearInterval(progressInterval);
+      throw error;
+    }
   };
 
   const processOCR = async (file: File, documentType: 'passport' | 'birth_certificate', isRetry: boolean = false) => {
@@ -465,6 +490,27 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
     }
   };
 
+  // NEW: Retry functionality
+  const handleRetry = (docType: 'passport' | 'birthcert') => {
+    if (docType === 'passport') {
+      setPassportFile(null);
+      setPassportResult(null);
+      setImagePreview(null);
+      setUploadedPreview(null);
+      setEditingImage(false);
+      setOcrPreviewData(null);
+      toast.info("Ready to scan passport again");
+    } else {
+      setBirthCertFile(null);
+      setBirthCertResult(null);
+      setImagePreview(null);
+      setUploadedPreview(null);
+      setEditingImage(false);
+      setOcrPreviewData(null);
+      toast.info("Ready to scan birth certificate again");
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Processing Progress */}
@@ -473,19 +519,19 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
           <div className="flex items-center gap-2">
             <Loader2 className="w-4 h-4 animate-spin" />
             <span className="text-sm font-medium">
-              {processingStep === 'uploading' && 'Step 1/4: Uploading to cloud storage...'}
-              {processingStep === 'extracting' && 'Step 2/4: Extracting text from image...'}
-              {processingStep === 'analyzing' && 'Step 3/4: Analyzing document structure...'}
-              {processingStep === 'mapping' && 'Step 4/4: Mapping data to forms...'}
-              {processingStep === 'complete' && 'Complete!'}
+              {processingStep === 'uploading' && `Step 1/5: Uploading to cloud storage... ${uploadProgress}%`}
+              {processingStep === 'extracting' && 'Step 2/5: Extracting text from document...'}
+              {processingStep === 'analyzing' && 'Step 3/5: Analyzing document structure...'}
+              {processingStep === 'mapping' && 'Step 4/5: Mapping data to forms...'}
+              {processingStep === 'complete' && 'Step 5/5: Complete!'}
             </span>
           </div>
           <Progress 
             value={
-              processingStep === 'uploading' ? 25 :
-              processingStep === 'extracting' ? 50 :
-              processingStep === 'analyzing' ? 75 :
-              processingStep === 'mapping' ? 90 :
+              processingStep === 'uploading' ? uploadProgress / 5 :
+              processingStep === 'extracting' ? 40 :
+              processingStep === 'analyzing' ? 60 :
+              processingStep === 'mapping' ? 80 :
               100
             } 
           />
@@ -532,6 +578,41 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
         <div className="space-y-4">
           {!passportFile ? (
             <div className="border-2 border-dashed rounded-lg p-8 text-center">
+              <Camera className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+              <p className="text-sm text-muted-foreground mb-4">
+                Upload passport (image, PDF, HEIC, or document)
+              </p>
+              
+              {/* Mobile Camera & File Upload Buttons */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-md mx-auto">
+                <label htmlFor="passport-camera" className="cursor-pointer">
+                  <Button variant="outline" size="lg" className="w-full h-16" asChild>
+                    <span className="opacity-80">
+                      <Camera className="w-5 h-5 mr-2" />
+                      Take Photo
+                    </span>
+                  </Button>
+                </label>
+                
+                <label htmlFor="passport-upload" className="cursor-pointer">
+                  <Button variant="outline" size="lg" className="w-full h-16" asChild>
+                    <span className="opacity-80">
+                      <Upload className="w-5 h-5 mr-2" />
+                      Choose File
+                    </span>
+                  </Button>
+                </label>
+              </div>
+
+              {/* Hidden file inputs */}
+              <input
+                type="file"
+                accept="image/*"
+                capture="environment"
+                onChange={(e) => handleFileSelect(e, 'passport')}
+                className="hidden"
+                id="passport-camera"
+              />
               <input
                 type="file"
                 accept="image/*,.pdf,.doc,.docx,.heic"
@@ -539,20 +620,6 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
                 className="hidden"
                 id="passport-upload"
               />
-              <label htmlFor="passport-upload" className="cursor-pointer block">
-                <Camera className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                <p className="text-sm text-muted-foreground mb-2">
-                  Upload passport (image, PDF, HEIC, or document)
-                </p>
-                  <div className="flex justify-center">
-                    <Button type="button" variant="outline" size="lg" className="w-full max-w-md" asChild>
-                      <span className="opacity-80">
-                        <Upload className="w-4 h-4 mr-2" />
-                        Scan Document
-                      </span>
-                    </Button>
-                  </div>
-              </label>
             </div>
           ) : imagePreview && editingImage ? (
             <div className="space-y-4">
@@ -581,32 +648,102 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
             </div>
           ) : (
             <div className="space-y-4">
-              {/* Image Preview - Show uploaded file before processing */}
+              {/* Persistent Image/PDF Preview */}
               {imagePreview && (
                 <div className="border rounded-lg overflow-hidden bg-muted">
                   <img src={imagePreview} alt="Document preview" className="w-full h-auto" />
                 </div>
               )}
               
-              <div className="flex gap-2">
-                <Button onClick={handleProcessPassport} disabled={processing} className="flex-1">
-                  {processing ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Processing...
-                    </>
-                  ) : (
-                    <>
-                      <Check className="w-4 h-4 mr-2" />
-                      Process Passport
-                    </>
-                  )}
-                </Button>
-                <Button onClick={handleSkipPassport} disabled={processing} variant="outline">
-                  <SkipForward className="w-4 h-4 mr-2" />
-                  Skip & Enter Manually
-                </Button>
-              </div>
+              {passportFile && passportFile.type === 'application/pdf' && (
+                <div className="border rounded p-4 bg-muted">
+                  <p className="text-sm mb-2 font-medium">PDF uploaded: {passportFile.name}</p>
+                  <embed 
+                    src={URL.createObjectURL(passportFile)} 
+                    type="application/pdf" 
+                    className="w-full h-96 rounded"
+                  />
+                </div>
+              )}
+              
+              {!passportResult ? (
+                <div className="flex gap-2">
+                  <Button onClick={handleProcessPassport} disabled={processing} className="flex-1">
+                    {processing ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Processing...
+                      </>
+                    ) : (
+                      <>
+                        <Check className="w-4 h-4 mr-2" />
+                        Process Passport
+                      </>
+                    )}
+                  </Button>
+                  <Button onClick={handleSkipPassport} disabled={processing} variant="outline">
+                    <SkipForward className="w-4 h-4 mr-2" />
+                    Skip & Enter Manually
+                  </Button>
+                </div>
+              ) : (
+                /* Side-by-Side Preview After OCR */
+                <Card className="mt-4">
+                  <CardHeader>
+                    <CardTitle>Document Verification</CardTitle>
+                    <CardDescription>Review the uploaded document and extracted data</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {/* Document Image */}
+                      <div>
+                        <h4 className="text-sm font-semibold mb-2">Uploaded Document</h4>
+                        {imagePreview && (
+                          <img src={imagePreview} alt="Uploaded passport" className="w-full rounded border" />
+                        )}
+                        {passportFile && passportFile.type === 'application/pdf' && (
+                          <div className="border rounded p-2 bg-muted text-sm">
+                            PDF: {passportFile.name}
+                          </div>
+                        )}
+                      </div>
+                      
+                      {/* Extracted Data */}
+                      <div>
+                        <h4 className="text-sm font-semibold mb-2">Extracted Data</h4>
+                        <OCRDataPreview 
+                          data={passportResult.extracted_data}
+                          confidence={passportResult.confidence}
+                          warnings={ocrWarnings}
+                        />
+                      </div>
+                    </div>
+                    
+                    {/* Quality Warning */}
+                    {passportResult.confidence < 0.75 && (
+                      <Alert variant="destructive">
+                        <AlertCircle className="w-4 h-4" />
+                        <AlertDescription>
+                          Low quality scan detected ({(passportResult.confidence * 100).toFixed(0)}% confidence). 
+                          Consider re-scanning with better lighting or a clearer image.
+                        </AlertDescription>
+                      </Alert>
+                    )}
+                    
+                    {/* Action Buttons */}
+                    <div className="flex gap-2">
+                      <Button variant="outline" onClick={() => handleRetry('passport')} className="flex-1">
+                        <RefreshCw className="w-4 h-4 mr-2" />
+                        Re-scan Document
+                      </Button>
+                      <Button variant="default" onClick={() => setStep('birthcert')} className="flex-1">
+                        <Check className="w-4 h-4 mr-2" />
+                        Looks Good - Continue
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
             </div>
           )}
         </div>
@@ -617,6 +754,41 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
           <div className="space-y-4">
             {!birthCertFile ? (
               <div className="border-2 border-dashed rounded-lg p-8 text-center">
+                <Camera className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+                <p className="text-sm text-muted-foreground mb-4">
+                  Upload birth certificate (image, PDF, HEIC, or document)
+                </p>
+                
+                {/* Mobile Camera & File Upload Buttons */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-md mx-auto">
+                  <label htmlFor="birthcert-camera" className="cursor-pointer">
+                    <Button variant="outline" size="lg" className="w-full h-16" asChild>
+                      <span className="opacity-80">
+                        <Camera className="w-5 h-5 mr-2" />
+                        Take Photo
+                      </span>
+                    </Button>
+                  </label>
+                  
+                  <label htmlFor="birthcert-upload" className="cursor-pointer">
+                    <Button variant="outline" size="lg" className="w-full h-16" asChild>
+                      <span className="opacity-80">
+                        <Upload className="w-5 h-5 mr-2" />
+                        Choose File
+                      </span>
+                    </Button>
+                  </label>
+                </div>
+
+                {/* Hidden file inputs */}
+                <input
+                  type="file"
+                  accept="image/*"
+                  capture="environment"
+                  onChange={(e) => handleFileSelect(e, 'birthcert')}
+                  className="hidden"
+                  id="birthcert-camera"
+                />
                 <input
                   type="file"
                   accept="image/*,.pdf,.doc,.docx,.heic"
@@ -624,20 +796,6 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
                   className="hidden"
                   id="birthcert-upload"
                 />
-                <label htmlFor="birthcert-upload" className="cursor-pointer block">
-                  <Camera className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                  <p className="text-sm text-muted-foreground mb-2">
-                    Upload birth certificate (image, PDF, HEIC, or document)
-                  </p>
-                  <div className="flex justify-center">
-                    <Button type="button" variant="outline" size="lg" className="w-full max-w-md" asChild>
-                      <span className="opacity-80">
-                        <Upload className="w-4 h-4 mr-2" />
-                        Scan Document
-                      </span>
-                    </Button>
-                  </div>
-                </label>
               </div>
             ) : editingImage ? (
               <div className="space-y-4">
@@ -660,24 +818,103 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
                 </Button>
               </div>
             ) : (
-              <div className="flex gap-2">
-                <Button onClick={handleProcessBirthCert} disabled={processing} className="flex-1">
-                  {processing ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Processing...
-                    </>
-                  ) : (
-                    <>
-                      <Check className="w-4 h-4 mr-2" />
-                      Process Birth Certificate
-                    </>
-                  )}
-                </Button>
-                <Button onClick={handleSkipBirthCert} disabled={processing} variant="outline">
-                  <SkipForward className="w-4 h-4 mr-2" />
-                  Skip
-                </Button>
+              <div className="space-y-4">
+                {/* Persistent Image/PDF Preview */}
+                {imagePreview && (
+                  <div className="border rounded-lg overflow-hidden bg-muted">
+                    <img src={imagePreview} alt="Birth certificate preview" className="w-full h-auto" />
+                  </div>
+                )}
+                
+                {birthCertFile && birthCertFile.type === 'application/pdf' && (
+                  <div className="border rounded p-4 bg-muted">
+                    <p className="text-sm mb-2 font-medium">PDF uploaded: {birthCertFile.name}</p>
+                    <embed 
+                      src={URL.createObjectURL(birthCertFile)} 
+                      type="application/pdf" 
+                      className="w-full h-96 rounded"
+                    />
+                  </div>
+                )}
+                
+                {!birthCertResult ? (
+                  <div className="flex gap-2">
+                    <Button onClick={handleProcessBirthCert} disabled={processing} className="flex-1">
+                      {processing ? (
+                        <>
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          Processing...
+                        </>
+                      ) : (
+                        <>
+                          <Check className="w-4 h-4 mr-2" />
+                          Process Birth Certificate
+                        </>
+                      )}
+                    </Button>
+                    <Button onClick={handleSkipBirthCert} disabled={processing} variant="outline">
+                      <SkipForward className="w-4 h-4 mr-2" />
+                      Skip
+                    </Button>
+                  </div>
+                ) : (
+                  /* Side-by-Side Preview After OCR */
+                  <Card className="mt-4">
+                    <CardHeader>
+                      <CardTitle>Document Verification</CardTitle>
+                      <CardDescription>Review the uploaded document and extracted data</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {/* Document Image */}
+                        <div>
+                          <h4 className="text-sm font-semibold mb-2">Uploaded Document</h4>
+                          {imagePreview && (
+                            <img src={imagePreview} alt="Uploaded birth certificate" className="w-full rounded border" />
+                          )}
+                          {birthCertFile && birthCertFile.type === 'application/pdf' && (
+                            <div className="border rounded p-2 bg-muted text-sm">
+                              PDF: {birthCertFile.name}
+                            </div>
+                          )}
+                        </div>
+                        
+                        {/* Extracted Data */}
+                        <div>
+                          <h4 className="text-sm font-semibold mb-2">Extracted Data</h4>
+                          <OCRDataPreview 
+                            data={birthCertResult.extracted_data}
+                            confidence={birthCertResult.confidence}
+                            warnings={ocrWarnings}
+                          />
+                        </div>
+                      </div>
+                      
+                      {/* Quality Warning */}
+                      {birthCertResult.confidence < 0.75 && (
+                        <Alert variant="destructive">
+                          <AlertCircle className="w-4 h-4" />
+                          <AlertDescription>
+                            Low quality scan detected ({(birthCertResult.confidence * 100).toFixed(0)}% confidence). 
+                            Consider re-scanning with better lighting or a clearer image.
+                          </AlertDescription>
+                        </Alert>
+                      )}
+                      
+                      {/* Action Buttons */}
+                      <div className="flex gap-2">
+                        <Button variant="outline" onClick={() => handleRetry('birthcert')} className="flex-1">
+                          <RefreshCw className="w-4 h-4 mr-2" />
+                          Re-scan Document
+                        </Button>
+                        <Button variant="default" onClick={() => { setStep('complete'); if (onComplete) onComplete(); }} className="flex-1">
+                          <Check className="w-4 h-4 mr-2" />
+                          Looks Good - Complete
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
               </div>
             )}
           </div>
