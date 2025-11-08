@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Upload, Check, AlertCircle, Cloud } from "lucide-react";
+import { Upload, Check, AlertCircle, Cloud, Trash2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function UploadPDFTemplates() {
@@ -44,6 +44,25 @@ export default function UploadPDFTemplates() {
     } catch (error: any) {
       console.error(`Error uploading ${filename}:`, error);
       setStatus(prev => ({ ...prev, [filename]: 'error' }));
+      throw error;
+    }
+  };
+
+  const deleteTemplate = async (filename: string) => {
+    try {
+      const { error } = await supabase.storage
+        .from('pdf-templates')
+        .remove([filename]);
+
+      if (error) throw error;
+      
+      setStatus(prev => ({ ...prev, [filename]: 'success' }));
+      toast.success(`Deleted ${filename}`);
+      return true;
+    } catch (error: any) {
+      console.error(`Error deleting ${filename}:`, error);
+      setStatus(prev => ({ ...prev, [filename]: 'error' }));
+      toast.error(`Failed to delete ${filename}`);
       throw error;
     }
   };
@@ -152,17 +171,14 @@ export default function UploadPDFTemplates() {
                       <p className="text-sm text-muted-foreground">{template.filename}</p>
                     </div>
                   </div>
-                  <div className="text-sm">
-                    {status[template.filename] === 'success' && (
-                      <span className="text-green-500">Uploaded</span>
-                    )}
-                    {status[template.filename] === 'error' && (
-                      <span className="text-red-500">Failed</span>
-                    )}
-                    {!status[template.filename] && (
-                      <span className="text-muted-foreground">Ready</span>
-                    )}
-                  </div>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => deleteTemplate(template.filename)}
+                  >
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    Delete
+                  </Button>
                 </div>
               ))}
             </div>
