@@ -112,37 +112,11 @@ export default function FamilyTreeForm() {
       }
     }
   };
-  const handleGeneratePDF = async () => {
-    if (!caseId || caseId === ':id' || caseId === 'demo-preview') {
-      toast({ title: "Error", description: "Invalid case ID", variant: "destructive" });
-      return;
-    }
-
-    setIsGenerating(true);
-    try {
-      await formManagerSave();
-      
-      // Use async queue system
-      const { generatePdf } = await import('@/lib/generate-pdf');
-      await generatePdf({
-        supabase,
-        caseId,
-        templateType: 'family-tree',
-        toast: {
-          loading: (msg: string) => toast({ title: "Loading", description: msg }),
-          dismiss: () => {},
-          success: (msg: string) => toast({ title: "Success", description: msg }),
-          error: (msg: string) => toast({ title: "Error", description: msg, variant: "destructive" }),
-        },
-        setIsGenerating,
-        filename: `family-tree-${caseId}.pdf`
-      });
-    } catch (error: any) {
-      console.error('[FamilyTree] PDF generation error:', error);
-      toast({ title: "Error", description: error.message || 'Failed to generate PDF', variant: "destructive" });
-    } finally {
-      setIsGenerating(false);
-    }
+  const handleGeneratePDF = async (url: string) => {
+    // URL received from pdf-simple edge function
+    console.log('[FamilyTreeForm] PDF generated:', url);
+    setPdfPreviewUrl(url);
+    setPreviewFormData(formData);
   };
 
   const handleRegeneratePDF = async (updatedData: any) => {

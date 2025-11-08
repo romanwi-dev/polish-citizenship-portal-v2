@@ -78,21 +78,10 @@ export default function CitizenshipForm() {
   } = useOBYAutoPopulation(caseId || '');
 
 
-  const handleGeneratePDF = async () => {
-    const { generatePdf } = await import('@/lib/generate-pdf');
-    await generatePdf({
-      supabase,
-      caseId: caseId!,
-      templateType: 'citizenship',
-      toast: {
-        loading: (msg: string) => toast.loading(msg),
-        dismiss: () => toast.dismiss(),
-        success: (msg: string) => toast.success(msg),
-        error: (msg: string) => toast.error(msg),
-      },
-      setIsGenerating,
-      filename: `citizenship-application-${caseId}.pdf`,
-    });
+  const handleGeneratePDF = async (url: string) => {
+    // URL received from pdf-simple edge function
+    console.log('[CitizenshipForm] PDF generated:', url);
+    // Could open preview dialog here in future
   };
 
   const {

@@ -57,16 +57,10 @@ export default function CivilRegistryForm() {
     CIVIL_REGISTRY_DATE_FIELDS
   );
   
-  const handleGeneratePDF = async (templateType: 'registration' | 'transcription') => {
-    const { generatePdfViaEdge } = await import('@/lib/pdf');
-    await generatePdfViaEdge({
-      supabase,
-      caseId: caseId!,
-      templateType,
-      toast,
-      setIsGenerating,
-      filename: `civil-registry-${templateType}-${caseId}.pdf`,
-    });
+  const handleGeneratePDF = async (url: string) => {
+    // URL received from pdf-simple edge function
+    console.log('[CivilRegistryForm] PDF generated:', url);
+    // Could open preview dialog here in future
   };
 
   const handleClearData = async () => {
@@ -263,7 +257,7 @@ export default function CivilRegistryForm() {
           currentForm="civil-registry"
           onSave={handleSave}
           onClear={() => setShowClearDialog(true)}
-          onGeneratePDF={() => handleGeneratePDF('registration')}
+          onGeneratePDF={handleGeneratePDF}
           isSaving={isSaving}
         />
 
