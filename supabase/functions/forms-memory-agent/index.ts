@@ -64,6 +64,39 @@ serve(async (req) => {
         obyRules: OBY_CITIZENSHIP_FORM_RULES,
         documentRadarRules: DOCUMENT_RADAR_RULES,
         systemPrompt: SYSTEM_PROMPT_FORMS_ANALYSIS,
+        poaSpecificRules: {
+          fieldMappings: {
+            singleSourceOfTruth: 'supabase/functions/_shared/mappings/*.ts',
+            neverDuplicate: true,
+            frontendImportsFromBackend: true,
+            spouseFields: ['spouse_first_name', 'spouse_last_name', 'spouse_passport_number', 'husband_last_name_after_marriage', 'wife_last_name_after_marriage'],
+          },
+          pdfFormatting: {
+            font: 'Helvetica-Bold (for compatibility across all devices)',
+            fontSize: '0 (auto-size)',
+            textTransform: 'UPPERCASE for all non-date fields',
+            dateFieldsException: 'No bold, normal case, keep original format',
+            appearanceString: '/Helvetica-Bold 0 Tf 0 g',
+          },
+          mobileCompatibility: {
+            pdfFormat: 'AcroForm (NOT XFA) - set useObjectStreams: false',
+            editingApp: 'Adobe Acrobat Reader (free)',
+            previewLimitation: 'iframe cannot edit forms on mobile browsers',
+            downloadInstruction: 'Download PDF → Open in Adobe Reader → Edit → Save',
+          },
+          multiPOAPreview: {
+            stateTracking: 'generatedPOATypes: string[]',
+            urlTracking: 'pdfUrls: Record<string, string>',
+            tabSwitching: 'conditional on availablePOATypes.length > 1',
+            types: ['adult', 'minor', 'spouses'],
+          },
+          commonIssues: {
+            fieldClearing: 'Missing from SPOUSE_FIELDS array',
+            fontIssues: 'Using non-embedded font or wrong appearance syntax',
+            previewBugs: 'Incorrect state management for multi-POA',
+            mobileEditing: 'Browser limitation, provide Adobe Reader link',
+          },
+        },
       },
     };
 

@@ -46,6 +46,8 @@ export default function POAForm() {
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null);
   const [previewFormData, setPreviewFormData] = useState<any>(null);
   const [isFullView, setIsFullView] = useState(true);
+  const [generatedPOATypes, setGeneratedPOATypes] = useState<string[]>([]); // NEW: Track which POAs were generated
+  const [pdfUrls, setPdfUrls] = useState<Record<string, string>>({}); // NEW: URLs for each POA type
   
   // ⚠️ LOCKED DESIGN - DO NOT MODIFY CONDITIONAL RENDERING LOGIC
   // Conditional rendering controlled by 4 master fields:
@@ -230,8 +232,22 @@ export default function POAForm() {
         : `Combined POA ready! Filled ${data.fieldsFilledCount}/${data.totalFields} fields (${data.fillRate}%)`;
       toast.success(message);
 
-      // Open preview with the generated PDF - set as "combined" type to show all
-      setActivePOAType('adult'); // Show all POAs in preview
+      // Determine which POA types are included
+      const includedTypes: string[] = [];
+      if (formData.applicant_first_name) includedTypes.push('adult');
+      if (minorChildrenCount > 0) includedTypes.push('minor');
+      if (showSpousePOA) includedTypes.push('spouses');
+
+      // Set multi-POA preview state
+      setGeneratedPOATypes(includedTypes);
+      setActivePOAType(includedTypes[0] || 'adult');
+      
+      // Store URLs for each type (combined PDF can be shown for all)
+      const urls: Record<string, string> = {};
+      includedTypes.forEach(type => {
+        urls[type] = data.url; // For combined, all show same PDF
+      });
+      setPdfUrls(urls);
       setPdfPreviewUrl(data.url);
       setPreviewFormData(formData);
     } catch (error: any) {
@@ -268,7 +284,10 @@ export default function POAForm() {
       }
       
       if (data?.url) {
-        setActivePOAType(poaType); // Set active type for preview
+        // Set single POA preview state
+        setGeneratedPOATypes([poaType]);
+        setActivePOAType(poaType);
+        setPdfUrls({ [poaType]: data.url });
         setPdfPreviewUrl(data.url);
         setPreviewFormData(formData);
         toast.dismiss();

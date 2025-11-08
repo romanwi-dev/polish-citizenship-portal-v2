@@ -15,6 +15,8 @@ interface PDFPreviewDialogProps {
   caseId: string;
   templateType: string;
   onGenerate: () => void;
+  availablePOATypes?: string[]; // NEW: Multi-POA preview support
+  pdfUrls?: Record<string, string>; // NEW: URLs for each POA type
 }
 
 interface FieldPreview {
@@ -43,10 +45,20 @@ export function PDFPreviewDialog({
   caseId,
   templateType,
   onGenerate,
+  availablePOATypes,
+  pdfUrls,
 }: PDFPreviewDialogProps) {
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState<PreviewData | null>(null);
+  const [activePOAType, setActivePOAType] = useState<string>(availablePOATypes?.[0] || templateType);
+  const [isMobile, setIsMobile] = useState(false);
   const defaultCopies = getDefaultCopies(templateType);
+
+  // Detect mobile device
+  useState(() => {
+    const ua = navigator.userAgent;
+    setIsMobile(/iPhone|iPad|iPod|Android/i.test(ua));
+  });
 
   const loadPreview = async () => {
     console.log('[PDFPreviewDialog] loadPreview called:', { caseId, templateType });
@@ -179,6 +191,58 @@ export function PDFPreviewDialog({
                 </ScrollArea>
               </TabsContent>
             </Tabs>
+
+            {/* Multi-POA Tabs - Show if multiple POA types available */}
+            {availablePOATypes && availablePOATypes.length > 1 && (
+              <div className="pt-4 border-t">
+                <div className="text-sm font-medium mb-2">Preview POA Types:</div>
+                <Tabs value={activePOAType} onValueChange={setActivePOAType}>
+                  <TabsList className="grid w-full" style={{ gridTemplateColumns: `repeat(${availablePOATypes.length}, 1fr)` }}>
+                    {availablePOATypes.map((type) => (
+                      <TabsTrigger key={type} value={type}>
+                        {type.toUpperCase()}
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+                  {availablePOATypes.map((type) => (
+                    <TabsContent key={type} value={type} className="mt-4">
+                      {pdfUrls?.[type] && (
+                        <div className="border rounded-lg overflow-hidden">
+                          <iframe 
+                            src={pdfUrls[type]} 
+                            className="w-full h-[400px]"
+                            title={`${type.toUpperCase()} POA Preview`}
+                          />
+                        </div>
+                      )}
+                    </TabsContent>
+                  ))}
+                </Tabs>
+              </div>
+            )}
+
+            {/* Mobile Editing Instructions */}
+            {isMobile && (
+              <div className="mt-4 p-4 border rounded-lg bg-muted/50">
+                <h4 className="font-semibold flex items-center gap-2 mb-2">
+                  📱 Editing on Mobile
+                </h4>
+                <ol className="text-sm space-y-1 list-decimal list-inside text-muted-foreground">
+                  <li>Download "Editable PDF" below</li>
+                  <li>Open in <strong>Adobe Acrobat Reader</strong> (free app)</li>
+                  <li>Fill form fields in the app</li>
+                  <li>Save and upload back to your case</li>
+                </ol>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="mt-3 w-full"
+                  onClick={() => window.open('https://get.adobe.com/reader/', '_blank')}
+                >
+                  Download Adobe Reader (Free)
+                </Button>
+              </div>
+            )}
 
             {/* Actions */}
             <div className="flex items-center justify-between pt-4 border-t">

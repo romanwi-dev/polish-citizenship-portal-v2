@@ -630,7 +630,11 @@ Deno.serve(async (req) => {
         form.flatten();
         log('pdf_flattened', { caseId, templateType });
       }
-      const filledPdfBytes = await pdfDoc.save();
+      // CRITICAL: Save PDF with AcroForm format (mobile compatible)
+      log('pdf_save_start', { caseId, templateType, acroForm: true });
+      const filledPdfBytes = await pdfDoc.save({ 
+        useObjectStreams: false, // Ensures AcroForm compatibility
+      });
 
       // Upload with retry logic
       const filename = `${templateType}-${Date.now()}.pdf`;
