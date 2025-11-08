@@ -2328,6 +2328,7 @@ export type Database = {
           father_has_naturalization: boolean | null
           father_has_passport: boolean | null
           father_is_alive: boolean | null
+          father_is_polish: boolean | null
           father_last_name: string | null
           father_maiden_name: string | null
           father_marital_status: string | null
@@ -2410,6 +2411,7 @@ export type Database = {
           mother_has_naturalization: boolean | null
           mother_has_passport: boolean | null
           mother_is_alive: boolean | null
+          mother_is_polish: boolean | null
           mother_last_name: string | null
           mother_maiden_name: string | null
           mother_marital_status: string | null
@@ -2487,6 +2489,7 @@ export type Database = {
           place_of_marriage: string | null
           poa_date_filed: string | null
           polish_birth_act_number: string | null
+          polish_bloodline_side: string | null
           polish_citizenship_deprivation: boolean | null
           polish_preliminary_docs_info: string | null
           previous_decision_info: string | null
@@ -2652,6 +2655,7 @@ export type Database = {
           father_has_naturalization?: boolean | null
           father_has_passport?: boolean | null
           father_is_alive?: boolean | null
+          father_is_polish?: boolean | null
           father_last_name?: string | null
           father_maiden_name?: string | null
           father_marital_status?: string | null
@@ -2734,6 +2738,7 @@ export type Database = {
           mother_has_naturalization?: boolean | null
           mother_has_passport?: boolean | null
           mother_is_alive?: boolean | null
+          mother_is_polish?: boolean | null
           mother_last_name?: string | null
           mother_maiden_name?: string | null
           mother_marital_status?: string | null
@@ -2811,6 +2816,7 @@ export type Database = {
           place_of_marriage?: string | null
           poa_date_filed?: string | null
           polish_birth_act_number?: string | null
+          polish_bloodline_side?: string | null
           polish_citizenship_deprivation?: boolean | null
           polish_preliminary_docs_info?: string | null
           previous_decision_info?: string | null
@@ -2976,6 +2982,7 @@ export type Database = {
           father_has_naturalization?: boolean | null
           father_has_passport?: boolean | null
           father_is_alive?: boolean | null
+          father_is_polish?: boolean | null
           father_last_name?: string | null
           father_maiden_name?: string | null
           father_marital_status?: string | null
@@ -3058,6 +3065,7 @@ export type Database = {
           mother_has_naturalization?: boolean | null
           mother_has_passport?: boolean | null
           mother_is_alive?: boolean | null
+          mother_is_polish?: boolean | null
           mother_last_name?: string | null
           mother_maiden_name?: string | null
           mother_marital_status?: string | null
@@ -3135,6 +3143,7 @@ export type Database = {
           place_of_marriage?: string | null
           poa_date_filed?: string | null
           polish_birth_act_number?: string | null
+          polish_bloodline_side?: string | null
           polish_citizenship_deprivation?: boolean | null
           polish_preliminary_docs_info?: string | null
           previous_decision_info?: string | null
