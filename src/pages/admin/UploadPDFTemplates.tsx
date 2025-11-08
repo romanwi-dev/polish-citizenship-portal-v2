@@ -120,6 +120,21 @@ export default function UploadPDFTemplates() {
     }
   };
 
+  const cleanupDuplicates = async () => {
+    const loadingToast = toast.loading('Cleaning up duplicate HTML files...');
+    try {
+      const { data, error } = await supabase.functions.invoke('cleanup-pdf-duplicates');
+      if (error) throw error;
+      toast.dismiss(loadingToast);
+      toast.success('Duplicate files deleted successfully!');
+      console.log('Cleanup results:', data);
+    } catch (error: any) {
+      console.error('Cleanup error:', error);
+      toast.dismiss(loadingToast);
+      toast.error(`Failed to cleanup: ${error.message}`);
+    }
+  };
+
   const handleUploadAll = async () => {
     setUploading(true);
     const loadingToast = toast.loading('Uploading PDF templates to storage...');
@@ -260,6 +275,16 @@ export default function UploadPDFTemplates() {
                 >
                   <Cloud className="h-5 w-5 mr-2" />
                   {fetchingFromDropbox ? 'Syncing from Dropbox...' : 'Sync All from Dropbox'}
+                </Button>
+
+                <Button
+                  onClick={cleanupDuplicates}
+                  variant="destructive"
+                  size="lg"
+                  className="w-full"
+                >
+                  <Trash2 className="h-5 w-5 mr-2" />
+                  Clean Up Duplicate HTML Files
                 </Button>
 
                 <div className="mt-6 p-4 bg-green-500/10 border border-green-500/20 rounded-lg">
