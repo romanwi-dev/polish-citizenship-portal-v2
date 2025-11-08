@@ -9,7 +9,7 @@ interface FormButtonsRowProps {
   formData?: any;
   onSave: () => void;
   onClear: () => void;
-  onGeneratePDF: () => void;
+  onGeneratePDF: (url: string) => void;
   saveLabel?: string;
   isSaving?: boolean;
 }

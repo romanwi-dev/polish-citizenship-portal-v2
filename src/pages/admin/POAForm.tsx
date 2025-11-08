@@ -89,9 +89,10 @@ export default function POAForm() {
     return await handleSave();
   };
 
-  const handleGenerateAndPreview = async (templateType: 'poa-adult' | 'poa-minor' | 'poa-spouses') => {
-    // PDFGenerateButton component handles all PDF generation logic
-    // This function is just a placeholder for backwards compatibility
+  const handleGenerateAndPreview = (url: string) => {
+    // Set the URL and open preview dialog
+    setPdfPreviewUrl(url);
+    setPreviewFormData(formData);
   };
 
   const handleRegeneratePDF = async (updatedData: any) => {
@@ -127,23 +128,18 @@ export default function POAForm() {
     }
   };
 
-  const handleDownloadEditable = () => {
+  const handleDownloadEditable = async () => {
     if (!pdfPreviewUrl) {
       toast.error('No PDF available to download');
       return;
     }
+    
     const link = document.createElement("a");
     link.href = pdfPreviewUrl;
     link.download = `POA-${activePOAType.toUpperCase()}-EDITABLE-${caseId}.pdf`;
     link.click();
     
-    // Mobile-friendly instruction
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    if (isMobile) {
-      toast.success('PDF downloaded! Open it with Adobe Acrobat Reader or another PDF editor app to fill in the fields.', { duration: 6000 });
-    } else {
-      toast.success('Editable PDF downloaded - you can fill fields offline!');
-    }
+    toast.success('Editable PDF downloaded');
   };
 
   const handleDownloadFinal = async () => {
@@ -153,27 +149,25 @@ export default function POAForm() {
     }
     
     try {
-      toast.loading('Generating final locked PDF...');
+      toast.loading('Locking PDF for printing...');
       
-      // Call fill-pdf with flatten=true to create locked version
-      const { data, error } = await supabase.functions.invoke('fill-pdf', {
-        body: { 
-          caseId, 
-          templateType: `poa-${activePOAType}`,
-          flatten: true 
-        }
+      // Call lock-pdf edge function to flatten the PDF
+      const { data, error } = await supabase.functions.invoke('lock-pdf', {
+        body: { pdfUrl: pdfPreviewUrl }
       });
 
-      if (error) throw error;
-      
-      if (data?.url) {
-        const link = document.createElement("a");
-        link.href = data.url;
-        link.download = `POA-${activePOAType.toUpperCase()}-FINAL-${caseId}.pdf`;
-        link.click();
-        toast.dismiss();
-        toast.success('Final PDF downloaded - fields are locked!');
+      if (error || !data?.url) {
+        throw new Error('Failed to create final PDF');
       }
+      
+      // Download the locked PDF
+      const link = document.createElement("a");
+      link.href = data.url;
+      link.download = `POA-${activePOAType.toUpperCase()}-FINAL-${caseId}.pdf`;
+      link.click();
+      
+      toast.dismiss();
+      toast.success('Final PDF downloaded (locked for printing)');
     } catch (error: any) {
       toast.dismiss();
       toast.error('Failed to generate final PDF: ' + error.message);

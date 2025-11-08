@@ -6,7 +6,7 @@ import { toast } from "sonner";
 interface PDFGenerateButtonProps {
   caseId: string;
   templateType: string;
-  onGenerate: () => void;
+  onGenerate: (url: string) => void;
   disabled?: boolean;
   children: React.ReactNode;
 }
@@ -31,10 +31,8 @@ export function PDFGenerateButton({
     });
 
     if (url) {
-      // Open PDF in new tab
-      window.open(url, '_blank');
-      // Call the original onGenerate callback
-      onGenerate();
+      // Pass URL to parent component - do NOT open directly
+      onGenerate(url);
     }
   };
 
