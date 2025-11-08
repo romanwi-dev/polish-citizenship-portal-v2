@@ -1,5 +1,8 @@
 project_id = "oogmuakyqadpynnrasnd"
 
+[functions.inspect-family-tree]
+verify_jwt = false
+
 [functions.forms-memory-agent]
 verify_jwt = false
 

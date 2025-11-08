@@ -1,67 +1,69 @@
 /**
  * PDF Field Mappings for Family Tree Template
  * Maps database columns from master_table to PDF form field names
+ * 
+ * ACTUAL PDF FIELDS (38 total) - Updated based on real PDF inspection
  */
 
 export const FAMILY_TREE_PDF_MAP: Record<string, string> = {
-  // Applicant
+  // Applicant info
   'applicant_full_name': 'applicant_first_name|applicant_last_name',
-  'applicant_dob': 'applicant_dob',
-  'applicant_pob': 'applicant_pob',
+  'applicant_date_of_birth': 'applicant_dob',
+  'applicant_place_of_birth': 'applicant_pob',
+  'applicant_date_of_marriage': 'date_of_marriage',
+  'applicant_place_of_marriage': 'place_of_marriage',
   
-  // Spouse
-  'spouse_full_name': 'spouse_first_name|spouse_last_name',
-  'spouse_dob': 'spouse_dob',
-  'spouse_pob': 'spouse_pob',
+  // Applicant spouse details
+  'applicant_spouse_full_name_and_maiden_name': 'spouse_first_name|spouse_last_name',
   
-  // Parents
-  'father_full_name': 'father_first_name|father_last_name',
-  'father_dob': 'father_dob',
-  'father_pob': 'father_pob',
-  'mother_full_name': 'mother_first_name|mother_maiden_name',
-  'mother_dob': 'mother_dob',
-  'mother_pob': 'mother_pob',
+  // Polish parent info (father or mother, depending on who is Polish)
+  'polish_parent_full_name': 'father_first_name|father_last_name',
+  'polish_parent_spouse_full_name': 'mother_first_name|mother_maiden_name',
+  'polish_parent_date_of_birth': 'father_dob',
+  'polish_parent_place_of_birth': 'father_pob',
+  'polish_parent_date_of_marriage': 'father_mother_marriage_date',
+  'polish_parent_place_of_marriage': 'father_mother_marriage_place',
+  'polish_parent_date_of_emigration': 'father_date_of_emigration',
+  'polish_parent_date_of_naturalization': 'father_date_of_naturalization',
   
-  // Paternal Grandparents
-  'pgf_full_name': 'pgf_first_name|pgf_last_name',
-  'pgf_dob': 'pgf_dob',
-  'pgf_pob': 'pgf_pob',
-  'pgm_full_name': 'pgm_first_name|pgm_maiden_name',
-  'pgm_dob': 'pgm_dob',
-  'pgm_pob': 'pgm_pob',
+  // Polish grandparent info (PGF or MGF, depending on bloodline)
+  'polish_grandparent_full_name': 'pgf_first_name|pgf_last_name', 
+  'polish_grandparent_spouse_full_name': 'pgm_first_name|pgm_maiden_name',
+  'polish_grandparent_date_of_birth': 'pgf_dob',
+  'polish_grandparent_place_of_birth': 'pgf_pob',
+  'polish_grandparent_date_of_mariage': 'pgf_pgm_marriage_date', // Note: typo in PDF
+  'polish_grandparent_place_of_mariage': 'pgf_pgm_marriage_place', // Note: typo in PDF
+  'polish_grandparent_date_of_emigration': 'pgf_date_of_emigration',
+  'polish_grandparent_date_of_naturalization': 'pgf_date_of_naturalization',
   
-  // Maternal Grandparents
-  'mgf_full_name': 'mgf_first_name|mgf_last_name',
-  'mgf_dob': 'mgf_dob',
-  'mgf_pob': 'mgf_pob',
-  'mgm_full_name': 'mgm_first_name|mgm_maiden_name',
-  'mgm_dob': 'mgm_dob',
-  'mgm_pob': 'mgm_pob',
+  // Great-grandparents (PGGF & PGGM)
+  'great_grandfather_full_name': 'pggf_first_name|pggf_last_name',
+  'great_grandmother_full_name': 'pggm_first_name|pggm_maiden_name',
+  'great_grandfather_date_of_birth': 'pggf_dob',
+  'great_grandfather_place_of_birth': 'pggf_pob',
+  'great_grandfather_date_of_marriage': 'pggf_pggm_marriage_date',
+  'great_grandfather_place_of_marriage': 'pggf_pggm_marriage_place',
+  'great_grandfather_date_of_emigartion': 'pggf_date_of_emigration', // Note: typo in PDF
+  'great_grandfather_date_of_naturalization': 'pggf_date_of_naturalization',
   
-  // Paternal Great-Grandparents
-  'pggf_full_name': 'pggf_first_name|pggf_last_name',
-  'pggm_full_name': 'pggm_first_name|pggm_maiden_name',
-  
-  // Maternal Great-Grandparents
-  'mggf_full_name': 'mggf_first_name|mggf_last_name',
-  'mggm_full_name': 'mggm_first_name|mggm_maiden_name',
-  
-  // Minor children
-  'child_1_full_name': 'child_1_first_name|child_1_last_name',
-  'child_1_dob': 'child_1_dob',
-  'child_2_full_name': 'child_2_first_name|child_2_last_name',
-  'child_2_dob': 'child_2_dob',
-  'child_3_full_name': 'child_3_first_name|child_3_last_name',
-  'child_3_dob': 'child_3_dob',
+  // Minor children (1-3)
+  'minor_1_full_name': 'child_1_first_name|child_1_last_name',
+  'minor_1_date_of_birth': 'child_1_dob',
+  'minor_1_place_of_birth': 'child_1_pob',
+  'minor_2_full_name': 'child_2_first_name|child_2_last_name',
+  'minor_2_date_of_birth': 'child_2_dob',
+  'minor_2_place_of_birth': 'child_2_pob',
+  'minor_3_full_name': 'child_3_first_name|child_3_last_name',
+  'minor_3_date_of_birth': 'child_3_dob',
 };
 
 export const FAMILY_TREE_REQUIRED_FIELDS = [
   'applicant_full_name',
-  'applicant_dob',
-  'father_full_name',
-  'mother_full_name',
-  'pgf_full_name',
-  'pgm_full_name',
-  'mgf_full_name',
-  'mgm_full_name',
+  'applicant_date_of_birth',
+  'polish_parent_full_name',
+  'polish_parent_spouse_full_name',
+  'polish_grandparent_full_name',
+  'polish_grandparent_spouse_full_name',
+  'great_grandfather_full_name',
+  'great_grandmother_full_name',
 ];
