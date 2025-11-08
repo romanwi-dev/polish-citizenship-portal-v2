@@ -72,6 +72,7 @@ export const FATHER_FIELDS: FieldMapping[] = [
   { formField: 'father_last_name', dbColumn: 'father_last_name', forms: ['intake', 'master'], dbTable: 'master_table', fieldType: 'text' },
   { formField: 'father_pob', dbColumn: 'father_pob', forms: ['intake', 'master'], dbTable: 'master_table', fieldType: 'text' },
   { formField: 'father_dob', dbColumn: 'father_dob', forms: ['intake', 'master'], dbTable: 'master_table', fieldType: 'date' },
+  { formField: 'father_is_polish', dbColumn: 'father_is_polish', forms: ['master'], dbTable: 'master_table', fieldType: 'boolean' },
 ];
 
 // MOTHER FIELDS
@@ -81,6 +82,7 @@ export const MOTHER_FIELDS: FieldMapping[] = [
   { formField: 'mother_maiden_name', dbColumn: 'mother_maiden_name', forms: ['intake', 'master'], dbTable: 'master_table', fieldType: 'text' },
   { formField: 'mother_pob', dbColumn: 'mother_pob', forms: ['intake', 'master'], dbTable: 'master_table', fieldType: 'text' },
   { formField: 'mother_dob', dbColumn: 'mother_dob', forms: ['intake', 'master'], dbTable: 'master_table', fieldType: 'date' },
+  { formField: 'mother_is_polish', dbColumn: 'mother_is_polish', forms: ['master'], dbTable: 'master_table', fieldType: 'boolean' },
 ];
 
 // GRANDPARENT FIELDS (PGF, PGM, MGF, MGM)
@@ -130,6 +132,7 @@ export const META_FIELDS: FieldMapping[] = [
   { formField: 'language_preference', dbColumn: 'language_preference', forms: ['intake', 'master'], dbTable: 'master_table', fieldType: 'text' },
   { formField: 'ancestry_line', dbColumn: 'ancestry_line', forms: ['intake', 'master'], dbTable: 'master_table', fieldType: 'text' },
   { formField: 'completion_percentage', dbColumn: 'completion_percentage', forms: ['intake', 'master'], dbTable: 'master_table', fieldType: 'number' },
+  { formField: 'polish_bloodline_side', dbColumn: 'polish_bloodline_side', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
 ];
 
 // ALL FIELDS COMBINED
