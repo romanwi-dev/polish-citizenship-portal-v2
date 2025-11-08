@@ -101,7 +101,14 @@ async function fillTemplate(
         }
       }
       
-      const value = data[dbColumnName];
+      let value = data[dbColumnName];
+      
+      // Auto-fill POA date with current date if not set
+      if (fieldName === 'poa_date' && (value == null || value === '')) {
+        const today = new Date();
+        value = today.toLocaleDateString('en-GB'); // DD/MM/YYYY format
+      }
+      
       if (value != null && value !== '') {
         const textField = form.getTextField(fieldName);
         textField.setText(String(value));
@@ -267,7 +274,14 @@ Deno.serve(async (req) => {
         
         // Get database column name from mapping (PDF field → DB column)
         const dbColumnName = fieldMap[fieldName] || fieldName;
-        const value = masterData?.[dbColumnName];
+        let value = masterData?.[dbColumnName];
+
+        // Auto-fill POA date with current date if not set
+        if (fieldName === 'poa_date' && (value == null || value === '')) {
+          const today = new Date();
+          value = today.toLocaleDateString('en-GB'); // DD/MM/YYYY format
+          console.log(`[pdf-simple] Auto-filled poa_date with: ${value}`);
+        }
 
         if (value != null && value !== '') {
           const textField = form.getTextField(fieldName);
