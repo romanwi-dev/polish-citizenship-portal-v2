@@ -26,9 +26,9 @@ const DropboxWorkflow = () => {
     <AdminLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight text-center">
+          <h1 className="text-3xl md:text-5xl font-heading font-black mb-8 tracking-tight text-center">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center gap-2 justify-center">
-              <FolderSync className="h-12 w-12 md:h-16 md:w-16" />
+              <FolderSync className="h-8 w-8 md:h-12 md:w-12" />
               Dropbox Sync Workflow
             </span>
           </h1>

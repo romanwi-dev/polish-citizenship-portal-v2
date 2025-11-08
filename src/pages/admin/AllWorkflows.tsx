@@ -11,7 +11,7 @@ const AllWorkflows = () => {
     <AdminLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight text-center">
+          <h1 className="text-3xl md:text-5xl font-heading font-black mb-8 tracking-tight text-center">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               All Workflows
             </span>
