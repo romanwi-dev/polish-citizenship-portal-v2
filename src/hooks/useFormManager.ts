@@ -131,10 +131,21 @@ export const useFormManager = (
     setFormData((prev: any) => ({ ...prev, [field]: null }));
   };
 
-  // Clear all handler
+  // Clear all handler (preserves dates AND marriage name fields)
   const handleClearAll = async () => {
+    const fieldsToPreserve = [
+      ...dateFields,
+      'wife_last_name_after_marriage',
+      'husband_last_name_after_marriage',
+    ];
+    
     const clearedData = Object.keys(formData).reduce((acc, key) => {
-      acc[key] = null;
+      // Preserve date fields and marriage name fields
+      if (fieldsToPreserve.includes(key)) {
+        acc[key] = formData[key];
+      } else {
+        acc[key] = null;
+      }
       return acc;
     }, {} as any);
     
