@@ -15,6 +15,11 @@ const formCards = [
     route: `/admin/intake/${DEMO_CASE_ID}`,
   },
   {
+    id: 'bloodline',
+    title: 'Polish Bloodline Dashboard',
+    route: `/admin/bloodline-dashboard/${DEMO_CASE_ID}`,
+  },
+  {
     id: 'familyTree',
     title: 'Family Tree',
     route: `/admin/family-tree/${DEMO_CASE_ID}`,

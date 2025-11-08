@@ -89,6 +89,7 @@ const PDFVerificationTest = lazy(() => import("./pages/admin/PDFVerificationTest
 const CodeReview = lazy(() => import("./pages/admin/CodeReview"));
 const TestLockPdf = lazy(() => import("./pages/TestLockPdf"));
 const POADiagnostics = lazy(() => import("./pages/admin/POADiagnostics"));
+const BloodlineDashboardPage = lazy(() => import("./pages/admin/BloodlineDashboardPage"));
 
 
 const queryClient = new QueryClient({
@@ -605,6 +606,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <FamilyTreePage />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/bloodline-dashboard/:id" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <BloodlineDashboardPage />
               </Suspense>
             } 
           />
