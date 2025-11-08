@@ -536,16 +536,16 @@ export default function POAForm() {
                 </div>
               </div>
 
-              {/* Scan Documents Button - Moved after First Questions */}
-              <div className="flex justify-center mt-6 mb-2">
+              {/* Scan Documents Button - Styled to match POA OCR Wizard */}
+              <div className="flex justify-center mt-8 mb-4">
                 <Button
                   onClick={() => navigate(`/admin/cases/${caseId}/poa-ocr`)}
-                  variant="default"
+                  variant="outline"
                   size="lg"
-                  className="h-16 md:h-20 w-full md:w-2/3 max-w-xl text-lg md:text-xl font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-lg hover:shadow-xl transition-all"
+                  className="h-16 md:h-20 w-full max-w-md text-base md:text-lg font-medium hover:bg-primary hover:text-primary-foreground transition-all shadow-sm hover:shadow-md"
                 >
-                  <FileText className="w-6 h-6 mr-2" />
-                  Scan Documents
+                  <FileText className="w-5 h-5 mr-2" />
+                  <span className="opacity-80">Scan Documents</span>
                 </Button>
               </div>
             </div>

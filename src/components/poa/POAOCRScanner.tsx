@@ -554,27 +554,40 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
                   </div>
               </label>
             </div>
-            ) : editingImage ? (
-              <div className="space-y-4">
-                <div className="flex gap-2">
-                  <Button onClick={() => setRotation((r) => (r + 90) % 360)} variant="outline" size="sm">
-                    <RotateCw className="w-4 h-4 mr-2" />
-                    Rotate
-                  </Button>
-                </div>
-                <ReactCrop crop={crop} onChange={setCrop} onComplete={setCompletedCrop}>
-                  <img
-                    ref={imgRef}
-                    src={imagePreview!}
-                    alt="Passport"
-                    style={{ transform: `rotate(${rotation}deg)` }}
-                  />
-                </ReactCrop>
-                <Button onClick={() => { setEditingImage(false); handleProcessPassport(); }} className="w-full">
-                  Apply & Process
+          ) : imagePreview && editingImage ? (
+            <div className="space-y-4">
+              {/* Image Preview */}
+              <div className="border rounded-lg overflow-hidden bg-muted">
+                <img src={imagePreview} alt="Document preview" className="w-full h-auto" />
+              </div>
+              
+              <div className="flex gap-2">
+                <Button onClick={() => setRotation((r) => (r + 90) % 360)} variant="outline" size="sm">
+                  <RotateCw className="w-4 h-4 mr-2" />
+                  Rotate
                 </Button>
               </div>
-            ) : (
+              <ReactCrop crop={crop} onChange={setCrop} onComplete={setCompletedCrop}>
+                <img
+                  ref={imgRef}
+                  src={imagePreview!}
+                  alt="Passport"
+                  style={{ transform: `rotate(${rotation}deg)` }}
+                />
+              </ReactCrop>
+              <Button onClick={() => { setEditingImage(false); handleProcessPassport(); }} className="w-full">
+                Apply & Process
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {/* Image Preview - Show uploaded file before processing */}
+              {imagePreview && (
+                <div className="border rounded-lg overflow-hidden bg-muted">
+                  <img src={imagePreview} alt="Document preview" className="w-full h-auto" />
+                </div>
+              )}
+              
               <div className="flex gap-2">
                 <Button onClick={handleProcessPassport} disabled={processing} className="flex-1">
                   {processing ? (
@@ -594,9 +607,10 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
                   Skip & Enter Manually
                 </Button>
               </div>
-            )}
-          </div>
-        )}
+            </div>
+          )}
+        </div>
+      )}
 
         {/* Birth Certificate Step */}
         {step === 'birthcert' && (

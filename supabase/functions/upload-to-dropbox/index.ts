@@ -211,21 +211,49 @@ serve(async (req) => {
       // Continue anyway since Dropbox upload succeeded
     }
 
-    // Create document record
-    const { data: document, error: dbError } = await supabaseClient
+    // Create or update document record (handle duplicates)
+    const { data: existingDoc } = await supabaseClient
       .from('documents')
-      .insert({
-        case_id: caseId,
-        name: file.name,
-        dropbox_path: dropboxResult.path_display,
-        file_extension: fileExt,
-        file_size: file.size,
-        ocr_status: 'pending',
-      })
-      .select()
-      .single();
+      .select('id')
+      .eq('dropbox_path', dropboxResult.path_display)
+      .maybeSingle();
 
-    if (dbError) throw dbError;
+    let document;
+    if (existingDoc) {
+      // Update existing document
+      const { data: updatedDoc, error: updateError } = await supabaseClient
+        .from('documents')
+        .update({
+          file_size: file.size,
+          updated_at: new Date().toISOString(),
+          ocr_status: 'pending',
+        })
+        .eq('id', existingDoc.id)
+        .select()
+        .single();
+      
+      if (updateError) throw updateError;
+      document = updatedDoc;
+      console.log(`[upload-to-dropbox] ♻️ Updated existing document: ${existingDoc.id}`);
+    } else {
+      // Create new document record
+      const { data: newDoc, error: insertError } = await supabaseClient
+        .from('documents')
+        .insert({
+          case_id: caseId,
+          name: file.name,
+          dropbox_path: dropboxResult.path_display,
+          file_extension: fileExt,
+          file_size: file.size,
+          ocr_status: 'pending',
+        })
+        .select()
+        .single();
+
+      if (insertError) throw insertError;
+      document = newDoc;
+      console.log(`[upload-to-dropbox] ✨ Created new document: ${newDoc.id}`);
+    }
 
     // Log the upload action
     await supabaseClient
