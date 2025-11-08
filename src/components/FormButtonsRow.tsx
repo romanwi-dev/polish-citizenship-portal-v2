@@ -9,10 +9,10 @@ interface FormButtonsRowProps {
   formData?: any;
   onSave: () => void;
   onClear: () => void;
-  onGeneratePDF: (url: string) => void;
+  onGeneratePDF: ((url: string) => void) | (() => void); // Support both callback patterns
   saveLabel?: string;
   isSaving?: boolean;
-  activePOAType?: string; // 'adult' | 'minor' | 'spouses'
+  activePOAType?: string;
 }
 
 const getNavigationButtons = (formData: any) => {
@@ -88,22 +88,35 @@ export function FormButtonsRow({
             </Button>
             
             {currentForm !== 'intake' && (
-              <PDFGenerateButton
-                caseId={caseId}
-                templateType={
-                  currentForm === 'poa' ? `poa-${activePOAType}` : 
-                  currentForm === 'family-tree' ? 'family-tree' :
-                  currentForm === 'citizenship' ? 'citizenship' :
-                  currentForm === 'civil-registry' ? 'registration' :
-                  currentForm
-                }
-                onGenerate={onGeneratePDF}
-                disabled={isSaving}
-              >
-                <span className="text-blue-100 font-bold whitespace-nowrap">
-                  Generate
-                </span>
-              </PDFGenerateButton>
+              currentForm === 'poa' ? (
+                // POA: Direct button click (no URL callback)
+                <Button
+                  onClick={() => (onGeneratePDF as () => void)()}
+                  disabled={isSaving}
+                  className="px-6 py-6 md:py-2 text-sm md:text-base font-bold flex-1 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]"
+                >
+                  <span className="text-blue-100 font-bold whitespace-nowrap">
+                    Generate
+                  </span>
+                </Button>
+              ) : (
+                // Other forms: Use PDFGenerateButton with URL callback
+                <PDFGenerateButton
+                  caseId={caseId}
+                  templateType={
+                    currentForm === 'family-tree' ? 'family-tree' :
+                    currentForm === 'citizenship' ? 'citizenship' :
+                    currentForm === 'civil-registry' ? 'registration' :
+                    currentForm
+                  }
+                  onGenerate={onGeneratePDF as (url: string) => void}
+                  disabled={isSaving}
+                >
+                  <span className="text-blue-100 font-bold whitespace-nowrap">
+                    Generate
+                  </span>
+                </PDFGenerateButton>
+              )
             )}
             
             <Button

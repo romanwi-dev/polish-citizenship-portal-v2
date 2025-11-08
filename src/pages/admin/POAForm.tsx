@@ -399,34 +399,12 @@ export default function POAForm() {
             </div>
         </motion.div>
 
-        {/* Generate All POAs Button - Prominent CTA */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="mb-8"
-        >
-          <Button
-            onClick={handleGenerateAllPOAs}
-            disabled={isSaving || isGenerating}
-            size="lg"
-            className="w-full md:w-auto mx-auto flex items-center gap-3 text-xl px-12 py-8 font-bold bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 shadow-[0_0_40px_rgba(34,197,94,0.5)] hover:shadow-[0_0_60px_rgba(34,197,94,0.7)] transition-all"
-          >
-            <Download className="w-6 h-6" />
-            {isGenerating ? "Generating All POAs..." : "Generate All POAs at Once"}
-            <Sparkles className="w-6 h-6" />
-          </Button>
-          <p className="text-center text-sm text-muted-foreground mt-3">
-            Generates: Adult POA{minorChildrenCount > 0 ? ` + ${minorChildrenCount} Minor POA(s)` : ''}{showSpousePOA ? ' + Spouses POA' : ''}
-          </p>
-        </motion.div>
-
-        <FormButtonsRow
+        <FormButtonsRow 
           caseId={caseId!}
           currentForm="poa"
           onSave={handlePOASave}
           onClear={() => setShowClearAllDialog(true)}
-          onGeneratePDF={handleGenerateAndPreview}
+          onGeneratePDF={handleGenerateAllPOAs}
           isSaving={isSaving || isGenerating}
           formData={formData}
           activePOAType={activePOAType}
