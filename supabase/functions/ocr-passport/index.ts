@@ -46,11 +46,13 @@ serve(async (req) => {
       );
     }
 
-    const { imageBase64: img, caseId } = await req.json();
+    const { imageBase64: img, caseId, personType = 'AP', documentType = 'passport' } = await req.json();
     imageBase64 = img;
     
     // Input validation
     const { isValidUUID, MAX_FILE_SIZE } = await import('../_shared/validation.ts');
+    const { isPassportValid, isPassportExpiringSoon } = await import('../_shared/dateUtils.ts');
+    const { validateDocumentType, mustValidatePassportExpiry, VALIDATION_ERRORS } = await import('../_shared/validationRules.ts');
     
     if (!imageBase64 || typeof imageBase64 !== 'string') {
       return new Response(
@@ -180,6 +182,45 @@ Return JSON with these exact fields:
 
     const passportData: PassportData = JSON.parse(toolCall.function.arguments);
 
+    // Validate document type for person type
+    const docTypeValidation = validateDocumentType(personType as any, documentType as any);
+    if (!docTypeValidation.valid) {
+      return new Response(
+        JSON.stringify({ 
+          error: docTypeValidation.error,
+          errorType: 'INVALID_DOCUMENT_TYPE'
+        }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Validate passport expiry for adults
+    const warnings: string[] = [];
+    if (mustValidatePassportExpiry(personType as any, documentType as any)) {
+      const validation = isPassportValid(passportData.documentExpiryDate);
+      
+      if (!validation.valid) {
+        return new Response(
+          JSON.stringify({ 
+            error: VALIDATION_ERRORS.EXPIRED_PASSPORT(personType, passportData.documentExpiryDate),
+            errorType: 'EXPIRED_PASSPORT',
+            expiryDate: passportData.documentExpiryDate
+          }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+      
+      // Check if expiring soon (within 6 months)
+      if (validation.daysUntilExpiry !== undefined && validation.daysUntilExpiry <= 180) {
+        const warningMsg = VALIDATION_ERRORS.EXPIRES_SOON(
+          passportData.documentExpiryDate,
+          validation.daysUntilExpiry
+        );
+        warnings.push(warningMsg);
+        console.warn(warningMsg);
+      }
+    }
+
     // Update intake_data if caseId provided
     if (caseId) {
       const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
@@ -220,7 +261,16 @@ Return JSON with these exact fields:
         success: true,
         data: passportData,
         processingTime,
-        securityNote: 'Image data deleted after processing'
+        securityNote: 'Image data deleted after processing',
+        warnings,
+        validation: {
+          personType,
+          documentType,
+          isPassportValid: mustValidatePassportExpiry(personType as any, documentType as any) 
+            ? isPassportValid(passportData.documentExpiryDate).valid 
+            : true,
+          expiryDate: passportData.documentExpiryDate
+        }
       }),
       {
         status: 200,

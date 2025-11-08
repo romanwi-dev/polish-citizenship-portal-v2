@@ -69,8 +69,9 @@ serve(async (req) => {
 
     console.log('Extracted text length:', extractedText.length);
 
-    // Use AI to extract structured data based on document type
-    const structuredData = await extractStructuredData(extractedText, documentType);
+    // Parse extracted text with AI
+    const personType = formData.get('personType') as string || 'AP';
+    const structuredData = await extractStructuredData(extractedText, documentType, personType);
 
     console.log('Structured data extracted successfully');
 
@@ -109,12 +110,19 @@ serve(async (req) => {
   }
 });
 
-async function extractStructuredData(text: string, documentType: string): Promise<any> {
+async function extractStructuredData(
+  text: string, 
+  documentType: string,
+  personType: string = 'AP'
+): Promise<any> {
   const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
   
   if (!LOVABLE_API_KEY) {
     throw new Error('LOVABLE_API_KEY not configured');
   }
+  
+  const { isPassportValid } = await import('../_shared/dateUtils.ts');
+  const { validateDocumentType, mustValidatePassportExpiry, VALIDATION_ERRORS } = await import('../_shared/validationRules.ts');
 
   const systemPrompt = documentType === 'passport' 
     ? `You are a passport data extraction expert. Extract structured information from the provided passport document text.
@@ -190,6 +198,31 @@ Only include fields you can confidently extract. Use null for missing fields.`;
     .trim();
   
   const extractedData = JSON.parse(cleanContent);
+  
+  // Validate document type for person type (only for passports)
+  if (documentType === 'passport') {
+    const docTypeValidation = validateDocumentType(personType as any, 'passport');
+    if (!docTypeValidation.valid) {
+      throw new Error(docTypeValidation.error);
+    }
+
+    // Validate passport expiry for adults
+    if (mustValidatePassportExpiry(personType as any, 'passport') && extractedData.expiry_date) {
+      const validation = isPassportValid(extractedData.expiry_date);
+      
+      if (!validation.valid) {
+        throw new Error(VALIDATION_ERRORS.EXPIRED_PASSPORT(personType, extractedData.expiry_date));
+      }
+      
+      // Add warning if expiring soon
+      if (validation.daysUntilExpiry !== undefined && validation.daysUntilExpiry <= 180) {
+        extractedData.warning = VALIDATION_ERRORS.EXPIRES_SOON(
+          extractedData.expiry_date,
+          validation.daysUntilExpiry
+        );
+      }
+    }
+  }
   
   return extractedData;
 }

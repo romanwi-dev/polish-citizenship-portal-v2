@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { Camera, Upload, RotateCw, ZoomIn, Check, AlertCircle, SkipForward, Loader2 } from "lucide-react";
+import { Camera, Upload, RotateCw, Check, AlertCircle, SkipForward, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -8,6 +8,8 @@ import { supabase } from "@/integrations/supabase/client";
 import ReactCrop, { Crop, PixelCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import { useRef } from "react";
+import { PersonTypeSelector, PersonType, DocumentType } from "./PersonTypeSelector";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 type ProcessingStep = 'idle' | 'uploading' | 'extracting' | 'analyzing' | 'mapping' | 'complete';
 
@@ -28,9 +30,13 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
   const [birthCertFile, setBirthCertFile] = useState<File | null>(null);
   const [passportResult, setPassportResult] = useState<OCRResult | null>(null);
   const [birthCertResult, setBirthCertResult] = useState<OCRResult | null>(null);
-  const [step, setStep] = useState<'passport' | 'birthcert' | 'complete'>('passport');
+  const [step, setStep] = useState<'select_person' | 'passport' | 'birthcert' | 'complete'>('select_person');
   const [processing, setProcessing] = useState(false);
   const [processingStep, setProcessingStep] = useState<ProcessingStep>('idle');
+  
+  // Person type selection
+  const [selectedPerson, setSelectedPerson] = useState<PersonType>();
+  const [selectedDocType, setSelectedDocType] = useState<DocumentType>();
 
   // Image editing
   const [editingImage, setEditingImage] = useState(false);
@@ -39,6 +45,19 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
   const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
   const [rotation, setRotation] = useState(0);
   const imgRef = useRef<HTMLImageElement>(null);
+
+  const handlePersonSelect = (personType: PersonType, docType: DocumentType) => {
+    setSelectedPerson(personType);
+    setSelectedDocType(docType);
+  };
+
+  const confirmPersonSelection = () => {
+    if (!selectedPerson || !selectedDocType) {
+      toast.error("Please select person and document type");
+      return;
+    }
+    setStep(selectedDocType === 'passport' ? 'passport' : 'birthcert');
+  };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>, docType: 'passport' | 'birthcert') => {
     const file = e.target.files?.[0];
@@ -160,6 +179,7 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
     const formData = new FormData();
     formData.append('file', file);
     formData.append('documentType', documentType);
+    formData.append('personType', selectedPerson || 'AP');
 
     // Use document parser for PDFs and Office docs, regular OCR for images
     const functionName = (isPDF || isOfficeDoc) 
@@ -170,7 +190,30 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
       body: formData,
     });
 
-    if (error) throw error;
+    if (error) {
+      // Check for validation errors
+      if (error.message?.includes('expired') || error.message?.includes('EXPIRED_PASSPORT')) {
+        toast.error(error.message || "Passport has expired", {
+          description: "Please provide a valid, non-expired passport for adults."
+        });
+        throw new Error("Expired passport");
+      }
+      if (error.message?.includes('Birth certificates are not accepted')) {
+        toast.error(error.message);
+        throw new Error("Invalid document type");
+      }
+      throw error;
+    }
+    
+    // Show warnings if any
+    if (data.warnings && data.warnings.length > 0) {
+      data.warnings.forEach((warning: string) => {
+        toast.warning(warning, {
+          duration: 8000,
+        });
+      });
+    }
+    
     setProcessingStep('analyzing');
     return data;
   };
@@ -355,6 +398,24 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
                 100
               } 
             />
+          </div>
+        )}
+
+        {/* Person Selection Step */}
+        {step === 'select_person' && (
+          <div className="space-y-4">
+            <PersonTypeSelector
+              onSelect={handlePersonSelect}
+              selectedPerson={selectedPerson}
+              selectedDocType={selectedDocType}
+            />
+            <Button 
+              onClick={confirmPersonSelection}
+              disabled={!selectedPerson || !selectedDocType}
+              className="w-full"
+            >
+              Continue to Document Upload
+            </Button>
           </div>
         )}
 
