@@ -7,6 +7,7 @@
 import { POA_ADULT_PDF_MAP } from './mappings/poa-adult.ts';
 import { POA_MINOR_PDF_MAP } from './mappings/poa-minor.ts';
 import { POA_SPOUSES_PDF_MAP } from './mappings/poa-spouses.ts';
+import { POA_COMBINED_PDF_MAP } from './mappings/poa-combined.ts';
 import { transcriptionFieldMappings } from './mappings/transcription.ts';
 import { CITIZENSHIP_PDF_MAP } from './mappings/citizenship.ts';
 import { FAMILY_TREE_PDF_MAP } from './mappings/family-tree.ts';
@@ -16,6 +17,7 @@ import { FAMILY_TREE_PDF_MAP } from './mappings/family-tree.ts';
  * Maps template type to PDF field mapping object
  */
 export const PDF_FIELD_MAPS: Record<string, Record<string, string>> = {
+  'poa-combined': POA_COMBINED_PDF_MAP,
   'poa-adult': POA_ADULT_PDF_MAP,
   'poa-minor': POA_MINOR_PDF_MAP,
   'poa-spouses': POA_SPOUSES_PDF_MAP,
@@ -36,6 +38,7 @@ export const PDF_FIELD_MAPS: Record<string, Record<string, string>> = {
  * template-specific requirements based on document type.
  */
 export const PDF_REQUIRED_FIELDS: Record<string, string[]> = {
+  'poa-combined': ['applicant_first_name', 'applicant_last_name', 'applicant_passport_number'],
   'poa-adult': ['applicant_first_name', 'applicant_last_name', 'applicant_passport_number'],
   'poa-minor': ['applicant_first_name', 'applicant_last_name', 'child_1_first_name', 'child_1_last_name'],
   'poa-spouses': ['applicant_first_name', 'applicant_last_name', 'spouse_first_name', 'spouse_last_name'],
@@ -51,6 +54,7 @@ export const PDF_REQUIRED_FIELDS: Record<string, string[]> = {
  * Valid template types
  */
 export const VALID_TEMPLATES = new Set([
+  'poa-combined',
   'poa-adult',
   'poa-minor',
   'poa-spouses',

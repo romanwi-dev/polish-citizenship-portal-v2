@@ -188,7 +188,7 @@ export default function POAForm() {
     }
   };
 
-  const handleGenerateAllPOAs = async () => {
+  const handleGenerateCombinedPOA = async () => {
     if (!caseId) {
       toast.error('No case ID available');
       return;
@@ -196,89 +196,39 @@ export default function POAForm() {
 
     try {
       setIsGenerating(true);
-      toast.loading("Generating all POAs...");
+      toast.loading('Generating combined POA...');
 
-      const isMarried = formData?.applicant_marital_status === 'Married';
-      const minorCount = parseInt(formData?.minor_children_count || '0');
+      console.log('[POA] Generating combined POA for case:', caseId);
+      console.log('[POA] Form data:', formData);
 
-      const poaTypes: Array<{ type: string; label: string }> = [
-        { type: 'poa-adult', label: 'POA Adult' }
-      ];
-      
-      // Add minor POAs
-      for (let i = 1; i <= minorCount; i++) {
-        poaTypes.push({ 
-          type: 'poa-minor', 
-          label: `POA Minor ${i}`
-        });
-      }
-      
-      if (isMarried) {
-        poaTypes.push({ type: 'poa-spouses', label: 'POA Spouses' });
-      }
-
-      console.log('[POA] Generating all POAs:', poaTypes.map(p => p.label));
-
-      // Generate all PDFs sequentially to avoid overwhelming the server
-      const successful: Array<{ label: string; url: string }> = [];
-      const failed: string[] = [];
-
-      for (const { type, label } of poaTypes) {
-        try {
-          console.log(`[POA] Generating ${label}...`);
-          
-          const { data, error } = await supabase.functions.invoke('pdf-simple', {
-            body: { caseId, templateType: type }
-          });
-
-          if (error || !data?.success) {
-            console.error(`[POA] ${label} failed:`, error || data);
-            failed.push(label);
-          } else if (data?.url) {
-            console.log(`[POA] ${label} success:`, data.url);
-            successful.push({ label, url: data.url });
-          } else {
-            failed.push(label);
-          }
-        } catch (err: any) {
-          console.error(`[POA] ${label} error:`, err);
-          failed.push(label);
+      const { data, error } = await supabase.functions.invoke('pdf-simple', {
+        body: { 
+          caseId: caseId === ':id' ? 'blank-template' : caseId, 
+          templateType: 'poa-combined' 
         }
+      });
+
+      if (error) {
+        console.error('[POA] Edge function error:', error);
+        throw new Error(error.message);
       }
+
+      if (!data?.success) {
+        console.error('[POA] Generation failed:', data);
+        throw new Error(data?.error || 'PDF generation failed');
+      }
+
+      console.log('[POA] Combined POA generated successfully:', data);
 
       toast.dismiss();
+      const message = data.fieldsFilledCount === 0 
+        ? 'Blank combined POA ready for manual completion'
+        : `Combined POA ready! Filled ${data.fieldsFilledCount}/${data.totalFields} fields (${data.fillRate}%)`;
+      toast.success(message);
 
-      if (successful.length > 0) {
-        const labels = successful.map(p => p.label).join(', ');
-        toast.success(`✅ Generated ${successful.length} POA(s): ${labels}`, { 
-          description: 'Opening first PDF in preview...',
-          duration: 5000
-        });
-        
-        // Open first PDF in preview
-        if (successful[0]?.url) {
-          setPdfPreviewUrl(successful[0].url);
-          setPreviewFormData(formData);
-        }
-
-        // Auto-download all PDFs
-        setTimeout(() => {
-          successful.forEach(pdf => {
-            const link = document.createElement('a');
-            link.href = pdf.url;
-            link.download = `${pdf.label.replace(/\s+/g, '-')}-${caseId}.pdf`;
-            link.click();
-          });
-        }, 1000);
-      }
-
-      if (failed.length > 0) {
-        toast.error(`❌ Failed to generate: ${failed.join(', ')}`);
-      }
-
-      if (successful.length === 0 && failed.length === 0) {
-        toast.error('No POAs to generate');
-      }
+      // Open preview with the generated PDF
+      setPdfPreviewUrl(data.url);
+      setPreviewFormData(formData);
     } catch (error: any) {
       console.error('[POA] Generation error:', error);
       toast.dismiss();
@@ -412,7 +362,7 @@ export default function POAForm() {
           currentForm="poa"
           onSave={handlePOASave}
           onClear={() => setShowClearAllDialog(true)}
-          onGeneratePDF={handleGenerateAllPOAs}
+          onGeneratePDF={handleGenerateCombinedPOA}
           isSaving={isSaving || isGenerating}
           formData={formData}
           activePOAType={activePOAType}
