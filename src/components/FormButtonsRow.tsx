@@ -12,6 +12,7 @@ interface FormButtonsRowProps {
   onGeneratePDF: (url: string) => void;
   saveLabel?: string;
   isSaving?: boolean;
+  activePOAType?: string; // 'adult' | 'minor' | 'spouses'
 }
 
 const getNavigationButtons = (formData: any) => {
@@ -35,7 +36,8 @@ export function FormButtonsRow({
   onGeneratePDF,
   saveLabel = "Save Data",
   isSaving = false,
-  formData
+  formData,
+  activePOAType = 'adult'
 }: FormButtonsRowProps) {
   const navigate = useNavigate();
   const navigationButtons = getNavigationButtons(formData || {});
@@ -89,7 +91,7 @@ export function FormButtonsRow({
               <PDFGenerateButton
                 caseId={caseId}
                 templateType={
-                  currentForm === 'poa' ? 'poa-adult' : 
+                  currentForm === 'poa' ? `poa-${activePOAType}` : 
                   currentForm === 'family-tree' ? 'family-tree' :
                   currentForm === 'citizenship' ? 'citizenship' :
                   currentForm === 'civil-registry' ? 'registration' :

@@ -440,6 +440,7 @@ export default function POAForm() {
           onGeneratePDF={handleGenerateAndPreview}
           isSaving={isSaving || isGenerating}
           formData={formData}
+          activePOAType={activePOAType}
         />
 
         {/* POA Forms */}
