@@ -150,7 +150,7 @@ export const POAThreeClickWizard = ({ caseId, useBatchMode = false }: POAThreeCl
                       flex flex-col items-center justify-center gap-1
                       border-2 transition-all duration-300
                       ${isComplete 
-                        ? 'bg-green-500 border-green-500 text-white' 
+                        ? 'bg-green-500 border-green-500 text-white cursor-pointer hover:opacity-80' 
                         : isCurrent 
                           ? 'bg-primary border-primary text-primary-foreground' 
                           : 'bg-background border-border text-muted-foreground'
@@ -163,6 +163,11 @@ export const POAThreeClickWizard = ({ caseId, useBatchMode = false }: POAThreeCl
                       duration: 2,
                       repeat: isCurrent ? Infinity : 0,
                       ease: "easeInOut"
+                    }}
+                    onClick={() => {
+                      if (isComplete) {
+                        setCurrentStep(step.number as 1 | 2 | 3);
+                      }
                     }}
                   >
                     <span className="text-sm md:text-base font-bold">{step.label}</span>
