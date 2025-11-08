@@ -90,6 +90,7 @@ const CodeReview = lazy(() => import("./pages/admin/CodeReview"));
 const TestLockPdf = lazy(() => import("./pages/TestLockPdf"));
 const POADiagnostics = lazy(() => import("./pages/admin/POADiagnostics"));
 const BloodlineDashboardPage = lazy(() => import("./pages/admin/BloodlineDashboardPage"));
+const POAOCRPage = lazy(() => import("./pages/admin/POAOCRPage"));
 
 
 const queryClient = new QueryClient({
@@ -190,6 +191,14 @@ const App = () => (
             } 
           />
           <Route 
+            path="/admin/cases/:id/poa-ocr"
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <POAOCRPage />
+              </Suspense>
+            } 
+          />
+          <Route
             path="/admin/cases/:id/additional-data"
             element={
               <Suspense fallback={<AdminLoader />}>
