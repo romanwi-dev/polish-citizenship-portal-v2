@@ -274,31 +274,58 @@ export default function POAForm() {
       );
       console.log('✅ All fill-pdf calls completed:', results);
 
-      // Extract PDF URLs and labels
+      // Extract PDF URLs and labels with detailed debugging
       const pdfResults = results.map((result, idx) => {
-        console.log(`📋 Result ${idx} (${poaTypes[idx].label}):`, {
+        const poaLabel = poaTypes[idx].label;
+        
+        console.log(`📋 DETAILED Result ${idx} (${poaLabel}):`, {
           status: result.status,
+          fullValue: result.status === 'fulfilled' ? result.value : null,
           data: result.status === 'fulfilled' ? result.value?.data : null,
-          error: result.status === 'fulfilled' ? result.value?.error : result.reason
+          error: result.status === 'fulfilled' ? result.value?.error : result.reason,
+          hasUrl: result.status === 'fulfilled' ? !!result.value?.data?.url : false
         });
         
-        if (result.status === 'fulfilled' && result.value?.data?.url) {
-          console.log(`✅ SUCCESS: ${poaTypes[idx].label} - URL: ${result.value.data.url}`);
-          return {
-            label: poaTypes[idx].label,
-            url: result.value.data.url,
-            success: true
-          };
+        // Check for successful generation
+        if (result.status === 'fulfilled') {
+          const responseData = result.value?.data;
+          const responseError = result.value?.error;
+          
+          // If we have an error in the response
+          if (responseError) {
+            console.error(`❌ ERROR in response for ${poaLabel}:`, responseError);
+            toast.error(`${poaLabel} failed: ${responseError.message || JSON.stringify(responseError)}`);
+            return {
+              label: poaLabel,
+              url: null,
+              success: false,
+              error: responseError.message || 'Unknown error'
+            };
+          }
+          
+          // If we have a URL
+          if (responseData?.url) {
+            console.log(`✅ SUCCESS: ${poaLabel} - URL: ${responseData.url.substring(0, 50)}...`);
+            return {
+              label: poaLabel,
+              url: responseData.url,
+              success: true
+            };
+          }
+          
+          // Fulfilled but no URL and no error
+          console.error(`⚠️ FULFILLED BUT NO URL for ${poaLabel}:`, result.value);
+          toast.error(`${poaLabel}: No PDF URL returned (generation may have failed silently)`);
         }
         
-        // Log failure details for debugging
+        // Rejected promise
         if (result.status === 'rejected') {
-          console.error(`❌ REJECTED: ${poaTypes[idx].label}:`, result.reason);
-        } else if (result.status === 'fulfilled') {
-          console.error(`⚠️ FULFILLED BUT NO URL: ${poaTypes[idx].label}:`, result.value);
+          console.error(`❌ REJECTED: ${poaLabel}:`, result.reason);
+          toast.error(`${poaLabel} rejected: ${result.reason?.message || JSON.stringify(result.reason)}`);
         }
+        
         return {
-          label: poaTypes[idx].label,
+          label: poaLabel,
           url: null,
           success: false
         };
