@@ -31,9 +31,9 @@ export const ArchivesSearchDashboard = () => {
     <div className="space-y-4 sm:space-y-6 p-4 sm:p-6">
       {/* Header */}
       <div className="max-w-4xl mx-auto text-center">
-        <h1 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-12 md:mb-20">
+        <h1 className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight">
           <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-            Archives Search
+            Case Workflow
           </span>
         </h1>
       </div>

@@ -50,7 +50,7 @@ const AIWorkflow = () => {
         {/* Title */}
         <h1 className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight text-center">
           <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-            Documents Workflow
+            Case Workflow
           </span>
         </h1>
 
