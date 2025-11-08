@@ -269,6 +269,14 @@ Deno.serve(async (req) => {
         : 'No data - generating blank PDF'
     );
 
+    // AUTO-POPULATE: For male applicants, auto-fill husband_last_name_after_marriage
+    if (dataToUse.applicant_sex === 'Male' && dataToUse.applicant_last_name) {
+      if (!dataToUse.husband_last_name_after_marriage) {
+        dataToUse.husband_last_name_after_marriage = dataToUse.applicant_last_name;
+        console.log('[pdf-simple] Auto-populated husband_last_name_after_marriage:', dataToUse.applicant_last_name);
+      }
+    }
+
     // Handle POA-COMBINED special case: dynamic assembly
     if (templateType === 'poa-combined') {
       console.log('[pdf-simple] Dynamic assembly mode: POA-COMBINED');

@@ -5,8 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
-import { CheckCircle2, XCircle, FileText, Loader2 } from "lucide-react";
+import { CheckCircle2, XCircle, FileText, Loader2, Printer } from "lucide-react";
 import { toast } from "sonner";
+import { getDefaultCopies } from "@/lib/pdf-print-config";
 
 interface PDFPreviewDialogProps {
   open: boolean;
@@ -45,6 +46,7 @@ export function PDFPreviewDialog({
 }: PDFPreviewDialogProps) {
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState<PreviewData | null>(null);
+  const defaultCopies = getDefaultCopies(templateType);
 
   const loadPreview = async () => {
     console.log('[PDFPreviewDialog] loadPreview called:', { caseId, templateType });
@@ -189,6 +191,12 @@ export function PDFPreviewDialog({
                 )}
                 {preview.stats.fillRate >= 80 && (
                   <Badge variant="default">Good Fill Rate</Badge>
+                )}
+                {defaultCopies > 1 && (
+                  <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                    <Printer className="h-4 w-4" />
+                    <span>Default: {defaultCopies} copies</span>
+                  </div>
                 )}
               </div>
               <div className="flex gap-2">
