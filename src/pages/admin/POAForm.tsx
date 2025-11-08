@@ -395,15 +395,71 @@ export default function POAForm() {
           activePOAType={activePOAType}
         />
 
-        <div className="flex justify-center mb-1 mt-1 md:mb-4 md:mt-4">
-          <Button
-            onClick={() => navigate(`/admin/cases/${caseId}/poa-ocr`)}
-            variant="outline"
-            size="lg"
-            className="w-full max-w-md"
-          >
-            <span className="opacity-80">Scan Documents</span>
-          </Button>
+        {/* POA Section Navigation Tabs - Dynamic based on form data */}
+        <div className="mb-4 md:mb-6 py-2 md:py-3 sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-border/50">
+          <div className="flex flex-row gap-1 overflow-x-auto scrollbar-hide px-2 md:px-6">
+            {/* Applicant Tab */}
+            <Button
+              onClick={() => {
+                setActivePOAType('adult');
+                document.getElementById('poa-adult-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              variant={activePOAType === 'adult' ? 'default' : 'outline'}
+              size="sm"
+              className={cn(
+                "flex-shrink-0 font-semibold transition-all",
+                activePOAType === 'adult' 
+                  ? "bg-primary/20 border-primary text-primary shadow-[0_0_15px_rgba(99,102,241,0.3)]" 
+                  : "opacity-60 hover:opacity-100"
+              )}
+            >
+              <User className="w-4 h-4 mr-1" />
+              Applicant
+            </Button>
+
+            {/* Spouse Tab - Only if married */}
+            {showSpousePOA && (
+              <Button
+                onClick={() => {
+                  setActivePOAType('spouses');
+                  document.getElementById('poa-spouses-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
+                variant={activePOAType === 'spouses' ? 'default' : 'outline'}
+                size="sm"
+                className={cn(
+                  "flex-shrink-0 font-semibold transition-all",
+                  activePOAType === 'spouses' 
+                    ? "bg-accent/20 border-accent text-accent shadow-[0_0_15px_rgba(236,72,153,0.3)]" 
+                    : "opacity-60 hover:opacity-100"
+                )}
+              >
+                <Heart className="w-4 h-4 mr-1" />
+                Spouse
+              </Button>
+            )}
+
+            {/* Child Tabs - Dynamic based on minor_children_count */}
+            {Array.from({ length: minorChildrenCount }, (_, index) => index + 1).map((childNum) => (
+              <Button
+                key={`child-tab-${childNum}`}
+                onClick={() => {
+                  setActivePOAType('minor');
+                  document.getElementById(`poa-minor-${childNum}-section`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
+                variant={activePOAType === 'minor' ? 'default' : 'outline'}
+                size="sm"
+                className={cn(
+                  "flex-shrink-0 font-semibold transition-all",
+                  activePOAType === 'minor' 
+                    ? "bg-secondary/20 border-secondary text-secondary shadow-[0_0_15px_rgba(236,72,153,0.3)]" 
+                    : "opacity-60 hover:opacity-100"
+                )}
+              >
+                <Baby className="w-4 h-4 mr-1" />
+                Child {childNum}
+              </Button>
+            ))}
+          </div>
         </div>
 
         {/* POA Forms */}
@@ -479,10 +535,24 @@ export default function POAForm() {
                   )}
                 </div>
               </div>
+
+              {/* Scan Documents Button - Moved after First Questions */}
+              <div className="flex justify-center mt-6 mb-2">
+                <Button
+                  onClick={() => navigate(`/admin/cases/${caseId}/poa-ocr`)}
+                  variant="default"
+                  size="lg"
+                  className="h-16 md:h-20 w-full md:w-2/3 max-w-xl text-lg md:text-xl font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-lg hover:shadow-xl transition-all"
+                >
+                  <FileText className="w-6 h-6 mr-2" />
+                  Scan Documents
+                </Button>
+              </div>
             </div>
 
           {/* POA Adult */}
           <motion.div 
+            id="poa-adult-section"
             initial={{ opacity: 0, scale: 0.95 }} 
             animate={{ opacity: 1, scale: 1 }} 
             transition={{ duration: 0.5, delay: 0 }} 
@@ -557,6 +627,7 @@ export default function POAForm() {
           {Array.from({ length: minorChildrenCount }, (_, index) => index + 1).map((childNum, index) => (
             <motion.div 
               key={`minor-${childNum}`}
+              id={`poa-minor-${childNum}-section`}
               initial={{ opacity: 0, scale: 0.95 }} 
               animate={{ opacity: 1, scale: 1 }} 
               transition={{ duration: 0.5, delay: 0.1 + (index * 0.1) }}
@@ -648,6 +719,7 @@ export default function POAForm() {
           {/* POA Spouses - Only show if married */}
           {showSpousePOA && (
             <motion.div 
+              id="poa-spouses-section"
               initial={{ opacity: 0, scale: 0.95 }} 
               animate={{ opacity: 1, scale: 1 }} 
               transition={{ duration: 0.5, delay: 0.2 }} 
