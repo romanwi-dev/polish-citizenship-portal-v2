@@ -225,6 +225,10 @@ verify_jwt = false
 [functions.pdf-worker.cron]
 schedule = "*/30 * * * * *"
 
+[functions.pdf-simple]
+verify_jwt = true
+
+
 [functions.edge-function-agent]
 verify_jwt = false
 
