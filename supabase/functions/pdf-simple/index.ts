@@ -130,7 +130,7 @@ Deno.serve(async (req) => {
       throw new Error('Missing templateType');
     }
 
-    // Initialize Supabase
+    // Initialize Supabase (single initialization for entire function)
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL')!,
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
@@ -237,12 +237,6 @@ Deno.serve(async (req) => {
     if (!templatePath) {
       throw new Error(`Unknown template type: ${templateType}`);
     }
-
-    // Initialize Supabase
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL')!,
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-    );
 
     // Step 1: Get master data
     console.log('[pdf-simple] Fetching master data...');
