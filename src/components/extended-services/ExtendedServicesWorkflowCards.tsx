@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { Users, FileText, Heart, Globe, Briefcase, Award, Shield, Sparkles } from "lucide-react";
 import { Button } from "../ui/button";
+import { WORKFLOW_CARD_STANDARDS as STANDARDS } from "../workflows/workflow-card-standards";
 
 const extendedServicesSteps = [
   {
@@ -118,15 +119,15 @@ export default function ExtendedServicesWorkflowCards() {
             return (
               <motion.div
                 key={step.number}
-                initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true, margin: "-50px" }}
-                className={`mb-12 md:flex ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-8`}
+                viewport={{ once: true, margin: "-100px" }}
+                className={`mb-16 last:mb-0 flex flex-col md:${isLeft ? 'flex-row' : 'flex-row-reverse'} gap-4 md:gap-12 items-stretch`}
               >
-                <div className={`md:w-5/12 ${isLeft ? 'md:text-right' : 'md:text-left'}`}>
+                <div className="w-full md:w-[42%]">
                   <div 
-                    className="relative h-[480px]"
+                    className="relative h-[520px]"
                     style={{ perspective: '1000px' }}
                   >
                     <div
@@ -207,11 +208,11 @@ export default function ExtendedServicesWorkflowCards() {
                   </div>
                 </div>
 
-                <div className="hidden md:block w-2/12 flex-shrink-0 relative">
-                  <div className="w-8 h-8 rounded-full bg-primary border-4 border-background mx-auto relative z-10" />
+                <div className="hidden md:flex md:w-[16%] flex-shrink-0 justify-center relative z-10">
+                  <div className="w-8 h-8 rounded-full bg-primary border-4 border-background shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300" />
                 </div>
 
-                <div className="hidden md:block md:w-5/12" />
+                <div className="hidden md:block md:w-[42%]" />
               </motion.div>
             );
           })}

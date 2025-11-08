@@ -60,6 +60,37 @@ Deno.serve(async (req) => {
         key: 'design_recommendations',
         value: insights.designRecommendations,
       },
+      {
+        key: 'workflow_card_standards',
+        value: {
+          standard: 'Translation Workflow',
+          specifications: {
+            cardHeight: '520px',
+            layoutProportions: '42-16-42',
+            spacing: {
+              headerMargin: 'mb-24',
+              cardMargin: 'mb-16'
+            },
+            contentLayout: 'flex-col with justify-center',
+            animations: 'vertical (y: 50) with -100px viewport margin',
+            timelineDot: 'w-8 h-8 with shadow-[0_0_20px_rgba(59,130,246,0.3)] glow effect',
+            typography: {
+              title: 'text-2xl md:text-3xl centered',
+              description: 'text-xs centered with px-4'
+            }
+          },
+          standardizedWorkflows: [
+            'TranslationWorkflowCards',
+            'PassportWorkflowCards',
+            'CivilActsWorkflowCards',
+            'CitizenshipWorkflowCards',
+            'ArchivesWorkflowCards',
+            'ExtendedServicesWorkflowCards'
+          ],
+          lastStandardized: new Date().toISOString(),
+          consistency: '100%'
+        }
+      },
     ];
 
     for (const update of memoryUpdates) {

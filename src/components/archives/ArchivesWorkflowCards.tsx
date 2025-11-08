@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { Archive, FileSearch, Send, Award, CheckCircle, Clock, Users, Building2 } from "lucide-react";
 import { Button } from "../ui/button";
+import { WORKFLOW_CARD_STANDARDS as STANDARDS } from "../workflows/workflow-card-standards";
 
 const archivesSteps = [
   {
@@ -89,7 +90,7 @@ export default function ArchivesWorkflowCards() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-24"
         >
           <motion.h2
             initial={{ opacity: 0, scale: 0.9, y: 30 }}
@@ -121,16 +122,15 @@ export default function ArchivesWorkflowCards() {
             return (
               <motion.div
                 key={step.number}
-                initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true, margin: "-50px" }}
-                className={`mb-12 md:flex ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-8`}
+                viewport={{ once: true, margin: "-100px" }}
+                className={`mb-16 last:mb-0 flex flex-col md:${isLeft ? 'flex-row' : 'flex-row-reverse'} gap-4 md:gap-12 items-stretch`}
               >
-                {/* Card */}
-                <div className={`md:w-5/12 ${isLeft ? 'md:text-right' : 'md:text-left'}`}>
+                <div className="w-full md:w-[42%]">
                   <div 
-                    className="relative h-[400px]"
+                    className="relative h-[520px]"
                     style={{ perspective: '1000px' }}
                   >
                     <div
@@ -141,11 +141,10 @@ export default function ArchivesWorkflowCards() {
                         transform: flippedCards[step.number] ? 'rotateY(180deg)' : 'rotateY(0deg)',
                       }}
                     >
-                      {/* Front Side */}
                       <motion.div
                         whileHover={{ scale: 1.03, y: -5 }}
                         transition={{ duration: 0.3 }}
-                        className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group"
+                        className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group flex flex-col"
                         style={{
                           backfaceVisibility: 'hidden',
                           WebkitBackfaceVisibility: 'hidden',
@@ -160,13 +159,16 @@ export default function ArchivesWorkflowCards() {
                           </div>
                         </div>
 
-                        <div className={`space-y-4 ${isLeft ? 'text-right' : ''}`}>
-                          <h3 className="text-xl md:text-2xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent truncate">
+                        <div className="flex-1 flex flex-col justify-center space-y-6">
+                          <h3 className="text-2xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-center">
                             {step.title}
                           </h3>
-                          <p className="text-muted-foreground leading-relaxed mb-4">
+                          <p className="text-xs text-muted-foreground/70 leading-relaxed text-center px-4">
                             {step.description}
                           </p>
+                        </div>
+                        
+                        <div className="mt-6">
                           <Button
                             variant="outline"
                             size="sm"
@@ -175,7 +177,6 @@ export default function ArchivesWorkflowCards() {
                           >
                             {step.cta}
                           </Button>
-                          <p className="text-xs text-muted-foreground/60 text-center mt-2">Tap card for details</p>
                         </div>
                       </motion.div>
 
@@ -212,13 +213,11 @@ export default function ArchivesWorkflowCards() {
                   </div>
                 </div>
 
-                {/* Timeline Dot */}
-                <div className="hidden md:block w-2/12 flex-shrink-0 relative">
-                  <div className="w-8 h-8 rounded-full bg-primary border-4 border-background mx-auto relative z-10" />
+                <div className="hidden md:flex md:w-[16%] flex-shrink-0 justify-center relative z-10">
+                  <div className="w-8 h-8 rounded-full bg-primary border-4 border-background shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300" />
                 </div>
 
-                {/* Empty space on other side */}
-                <div className="hidden md:block md:w-5/12" />
+                <div className="hidden md:block md:w-[42%]" />
               </motion.div>
             );
           })}
