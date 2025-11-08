@@ -121,6 +121,55 @@ function countChildren(data: any): number {
   return count;
 }
 
+// Helper: Fill non-Polish family fields with "NIE DOTYCZY"
+function fillNonPolishFieldsWithNieDotczyca(form: any, masterData: any): void {
+  const NIE_DOTYCZY = 'NIE DOTYCZY';
+  const fatherIsPolish = masterData.father_is_polish === true;
+  const motherIsPolish = masterData.mother_is_polish === true;
+
+  console.log('[pdf-simple] NIE DOTYCZY mode:', { fatherIsPolish, motherIsPolish });
+
+  // If father is Polish → fill mother's side with NIE DOTYCZY
+  if (fatherIsPolish && !motherIsPolish) {
+    console.log('[pdf-simple] Father Polish → Filling maternal side with NIE DOTYCZY');
+    const maternalFields = [
+      'dzien_uro_matki', 'miesiac_uro_matki', 'rok_uro_matki', 'miejsce_uro_matki',
+      'pesel_matki', 'zyciorys_matki', 'uzywane_nazwiska_matki',
+      'dzien_uro_dziadka_m', 'miesiac_uro_dziadka_m', 'rok_uro_dziadka_m', 'miejsce_uro_dziadka_m',
+      'pesel_dziadka_m', 'zyciorys_dziadka_m', 'posiadane_obywatel_matki_uro_wniosko',
+      'dzien_uro_babki_m', 'miesiac_uro_babki_m', 'rok_uro_babki_m', 'miejsce_uro_babki_m',
+      'pesel_babki_m', 'zyciorys_babki_m',
+    ];
+    fillFieldsWithValue(form, maternalFields, NIE_DOTYCZY);
+  }
+
+  // If mother is Polish → fill father's side with NIE DOTYCZY
+  if (motherIsPolish && !fatherIsPolish) {
+    console.log('[pdf-simple] Mother Polish → Filling paternal side with NIE DOTYCZY');
+    const paternalFields = [
+      'dzien_uro_ojca', 'miesiac_uro_ojca', 'rok_uro_ojca', 'miejsce_uro_ojca',
+      'pesel_ojca', 'zyciorys_ojca', 'uzywane_nazwiska_ojca',
+      'dzien_uro_dziadka_o', 'miesiac_uro_dziadka_o', 'rok_uro_dziadka_o', 'miejsce_uro_dziadka_o',
+      'pesel_dziadka_o', 'zyciorys_dziadka_o', 'posiadane_obywatel_ojca_uro_wniosko',
+      'dzien_uro_babki_o', 'miesiac_uro_babki_o', 'rok_uro_babki_o', 'miejsce_uro_babki_o',
+      'pesel_babki_o', 'zyciorys_babki_o',
+    ];
+    fillFieldsWithValue(form, paternalFields, NIE_DOTYCZY);
+  }
+}
+
+// Helper: Fill multiple fields with the same value
+function fillFieldsWithValue(form: any, fieldNames: string[], value: string): void {
+  for (const fieldName of fieldNames) {
+    try {
+      const field = form.getTextField(fieldName);
+      field.setText(value);
+    } catch (e) {
+      // Field doesn't exist or can't be filled - skip
+    }
+  }
+}
+
 // Helper: Fill PDF template with data
 async function fillTemplate(
   templatePath: string,
@@ -173,23 +222,7 @@ async function fillTemplate(
       
         if (value != null && value !== '') {
           const textField = form.getTextField(fieldName);
-          const textValue = String(value);
-          
-          // Auto-size font for long text (Family Tree names can be long)
-          if (templatePath.includes('family-tree')) {
-            const fieldWidth = textField.acroField.getWidgets()[0]?.getRectangle()?.width || 200;
-            const textLength = textValue.length;
-            
-            // Dynamic font sizing: reduce size for longer text
-            let fontSize = 12; // default
-            if (textLength > 30) fontSize = 8;
-            else if (textLength > 20) fontSize = 9;
-            else if (textLength > 15) fontSize = 10;
-            
-            textField.setFontSize(fontSize);
-          }
-          
-          textField.setText(textValue);
+          textField.setText(String(value));
         }
       } catch (e) {
         // Skip fields we can't fill
@@ -345,6 +378,11 @@ Deno.serve(async (req) => {
     const fieldMap = FIELD_MAPS[templateType] || {};
     let filledCount = 0;
 
+    // Apply NIE DOTYCZY strategy for citizenship PDFs
+    if (templateType === 'citizenship' && masterData) {
+      fillNonPolishFieldsWithNieDotczyca(form, masterData);
+    }
+
     // Fill fields
     for (const field of fields) {
       try {
@@ -374,22 +412,7 @@ Deno.serve(async (req) => {
 
         if (value != null && value !== '') {
           const textField = form.getTextField(fieldName);
-          const textValue = String(value);
-          
-          // Auto-size font for long text (Family Tree names can be long)
-          if (templateType === 'family-tree') {
-            const textLength = textValue.length;
-            
-            // Dynamic font sizing: reduce size for longer text
-            let fontSize = 12; // default
-            if (textLength > 30) fontSize = 8;
-            else if (textLength > 20) fontSize = 9;
-            else if (textLength > 15) fontSize = 10;
-            
-            textField.setFontSize(fontSize);
-          }
-          
-          textField.setText(textValue);
+          textField.setText(String(value));
           filledCount++;
         }
       } catch (e) {

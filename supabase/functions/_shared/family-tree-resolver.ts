@@ -85,7 +85,7 @@ export function resolveFamilyTreeData(masterData: Record<string, any>): FamilyTr
     applicant_place_of_marriage: masterData.place_of_marriage || '',
     applicant_spouse_full_name_and_maiden_name: fullName(masterData.spouse_first_name, masterData.spouse_last_name),
     
-    // Polish parent - dynamically selected
+    // POLISH BLOODLINE ONLY: Polish parent gets all data, spouse gets name ONLY
     polish_parent_full_name: usePaternal 
       ? fullName(masterData.father_first_name, masterData.father_last_name)
       : fullName(masterData.mother_first_name, masterData.mother_maiden_name),
@@ -107,7 +107,7 @@ export function resolveFamilyTreeData(masterData: Record<string, any>): FamilyTr
       ? formatDate(masterData.father_date_of_naturalization) 
       : formatDate(masterData.mother_date_of_naturalization),
     
-    // Polish grandparent - dynamically selected (PGF or MGF)
+    // POLISH BLOODLINE ONLY: Polish grandparent gets all data, spouse gets name ONLY
     polish_grandparent_full_name: usePaternal 
       ? fullName(masterData.pgf_first_name, masterData.pgf_last_name)
       : fullName(masterData.mgf_first_name, masterData.mgf_last_name),
@@ -133,7 +133,7 @@ export function resolveFamilyTreeData(masterData: Record<string, any>): FamilyTr
       ? formatDate(masterData.pgf_date_of_naturalization) 
       : formatDate(masterData.mgf_date_of_naturalization),
     
-    // Great-grandparents - dynamically selected (PGGF/PGGM or MGGF/MGGM)
+    // POLISH BLOODLINE ONLY: Great-grandfather gets all data, great-grandmother gets name ONLY
     great_grandfather_full_name: usePaternal 
       ? fullName(masterData.pggf_first_name, masterData.pggf_last_name)
       : fullName(masterData.mggf_first_name, masterData.mggf_last_name),
