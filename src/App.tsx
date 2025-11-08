@@ -86,6 +86,7 @@ const SelfTest = lazy(() => import("./pages/admin/SelfTest"));
 const PDFVerificationTest = lazy(() => import("./pages/admin/PDFVerificationTest"));
 const CodeReview = lazy(() => import("./pages/admin/CodeReview"));
 const TestLockPdf = lazy(() => import("./pages/TestLockPdf"));
+const POADiagnostics = lazy(() => import("./pages/admin/POADiagnostics"));
 
 
 const queryClient = new QueryClient({
@@ -692,6 +693,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <TestLockPdf />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/poa-diagnostics" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <POADiagnostics />
               </Suspense>
             } 
           />
