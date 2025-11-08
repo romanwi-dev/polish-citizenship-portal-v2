@@ -107,9 +107,9 @@ export const POAThreeClickWizard = ({ caseId, useBatchMode = false }: POAThreeCl
   };
 
   const steps = [
-    { number: 1, label: 'PHOTO', description: 'Scan Documents' },
-    { number: 2, label: 'PRINT', description: 'Generate PDF' },
-    { number: 3, label: 'SIGN', description: 'Sign & Send' },
+    { number: 1, label: 'Scan' },
+    { number: 2, label: 'Print' },
+    { number: 3, label: 'Send' },
   ];
 
   if (loading) {
@@ -147,12 +147,12 @@ export const POAThreeClickWizard = ({ caseId, useBatchMode = false }: POAThreeCl
                   <motion.div
                     className={`
                       w-24 h-24 md:w-32 md:h-32 rounded-full 
-                      flex flex-col items-center justify-center gap-1
-                      border-2 transition-all duration-300
+                      flex items-center justify-center
+                      border-4 transition-all duration-300
                       ${isComplete 
                         ? 'bg-green-500 border-green-500 text-white cursor-pointer hover:opacity-80' 
                         : isCurrent 
-                          ? 'bg-primary border-primary text-primary-foreground' 
+                          ? 'bg-transparent border-primary text-primary' 
                           : 'bg-background border-border text-muted-foreground'
                       }
                     `}
@@ -170,8 +170,7 @@ export const POAThreeClickWizard = ({ caseId, useBatchMode = false }: POAThreeCl
                       }
                     }}
                   >
-                    <span className="text-sm md:text-base font-bold">{step.label}</span>
-                    <span className="text-xs md:text-sm opacity-80">{step.description}</span>
+                    <span className="text-lg md:text-2xl font-bold">{step.label}</span>
                   </motion.div>
                 </motion.div>
                 

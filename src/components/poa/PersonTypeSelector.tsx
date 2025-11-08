@@ -1,4 +1,4 @@
-import { Users, User, Baby } from "lucide-react";
+import { Users, User, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -22,7 +22,7 @@ export const PersonTypeSelector = ({ onSelect, selectedPerson, selectedDocType, 
   const personOptions: { type: PersonType; label: string; icon: typeof User }[] = [
     { type: 'AP', label: 'Applicant', icon: User },
     { type: 'SPOUSE', label: 'Spouse', icon: Users },
-    { type: 'CHILD_1', label: 'Child', icon: Baby },
+    { type: 'CHILD_1', label: 'Child', icon: UserRound },
   ];
 
   return (
