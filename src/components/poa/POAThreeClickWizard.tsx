@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useMotion } from "@/hooks/useMotion";
 import { POAOCRScanner } from "./POAOCRScanner";
 import { POABatchOCRScanner } from "./POABatchOCRScanner";
 import { POAGenerateButton } from "./POAGenerateButton";
@@ -16,6 +17,7 @@ interface POAThreeClickWizardProps {
 }
 
 export const POAThreeClickWizard = ({ caseId, useBatchMode = false }: POAThreeClickWizardProps) => {
+  const motion = useMotion();
   const [currentStep, setCurrentStep] = useState<1 | 2 | 3>(1);
   const [passportConfidence, setPassportConfidence] = useState<number>();
   const [birthCertConfidence, setBirthCertConfidence] = useState<number>();
@@ -142,28 +144,74 @@ export const POAThreeClickWizard = ({ caseId, useBatchMode = false }: POAThreeCl
             const isCurrent = currentStep === step.number;
             
             return (
-              <div key={step.number} className="flex items-center flex-1">
+              <motion.div 
+                key={step.number} 
+                className="flex items-center flex-1"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.1, duration: 0.3 }}
+              >
                 <div className="flex flex-col items-center flex-1">
-                  <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 transition-colors ${
-                    isComplete ? 'bg-green-500 text-white' :
-                    isCurrent ? 'bg-primary text-primary-foreground' :
-                    'bg-muted text-muted-foreground'
-                  }`}>
-                    <Icon className="w-6 h-6" />
-                  </div>
-                  <div className="text-center">
-                    <div className={`text-sm font-bold ${isCurrent ? 'text-primary' : 'text-muted-foreground'}`}>
+                  <motion.div 
+                    className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 ${
+                      isComplete ? 'bg-green-500 text-white' :
+                      isCurrent ? 'bg-primary text-primary-foreground' :
+                      'bg-muted text-muted-foreground'
+                    }`}
+                    animate={{
+                      scale: isCurrent ? [1, 1.1, 1] : 1,
+                    }}
+                    transition={{
+                      duration: 0.3,
+                      ease: "easeInOut"
+                    }}
+                  >
+                    <motion.div
+                      animate={{
+                        rotate: isComplete ? [0, 360] : 0,
+                      }}
+                      transition={{
+                        duration: 0.5,
+                        ease: "easeOut"
+                      }}
+                    >
+                      <Icon className="w-6 h-6" />
+                    </motion.div>
+                  </motion.div>
+                  <motion.div 
+                    className="text-center"
+                    animate={{
+                      y: isCurrent ? [0, -2, 0] : 0,
+                    }}
+                    transition={{
+                      duration: 0.5,
+                      repeat: isCurrent ? Infinity : 0,
+                      repeatDelay: 1
+                    }}
+                  >
+                    <div className={`text-sm font-bold transition-colors ${isCurrent ? 'text-primary' : 'text-muted-foreground'}`}>
                       {step.label}
                     </div>
                     <div className="text-xs text-muted-foreground">{step.description}</div>
-                  </div>
+                  </motion.div>
                 </div>
                 {idx < steps.length - 1 && (
-                  <div className={`h-0.5 flex-1 mx-4 ${
-                    isComplete ? 'bg-green-500' : 'bg-muted'
-                  }`} />
+                  <motion.div 
+                    className={`h-0.5 flex-1 mx-4 ${
+                      isComplete ? 'bg-green-500' : 'bg-muted'
+                    }`}
+                    initial={{ scaleX: 0 }}
+                    animate={{ 
+                      scaleX: isComplete ? 1 : 0.3,
+                    }}
+                    transition={{
+                      duration: 0.5,
+                      ease: "easeOut"
+                    }}
+                    style={{ originX: 0 }}
+                  />
                 )}
-              </div>
+              </motion.div>
             );
           })}
         </div>
