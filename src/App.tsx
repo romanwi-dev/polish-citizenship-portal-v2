@@ -81,6 +81,7 @@ const VerifyChanges = lazy(() => import("./pages/VerifyChanges"));
 const VerificationResults = lazy(() => import("./pages/VerificationResults"));
 const VerificationB = lazy(() => import("./pages/VerificationB"));
 const ProvenPatterns = lazy(() => import("./pages/ProvenPatterns"));
+const ABEXPDFMaster = lazy(() => import("./pages/ABEXPDFMaster"));
 const PDFGenerationTest = lazy(() => import("./pages/admin/PDFGenerationTest"));
 const PDFDemo = lazy(() => import("./pages/PDFDemo"));
 const SelfTest = lazy(() => import("./pages/admin/SelfTest"));
@@ -710,6 +711,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <ProvenPatterns />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/abex-pdf-master" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <ABEXPDFMaster />
               </Suspense>
             } 
           />
