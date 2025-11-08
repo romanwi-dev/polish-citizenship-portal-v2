@@ -1,6 +1,7 @@
 import { Save, Sparkles, Download, FileText, Database, GitBranch, BookOpen, FileCheck, Award, Building, FolderOpen, Users, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { PDFGenerateButton } from "@/components/pdf/PDFGenerateButton";
 
 interface FormButtonsRowProps {
   caseId: string;
@@ -85,14 +86,16 @@ export function FormButtonsRow({
             </Button>
             
             {currentForm !== 'intake' && (
-              <Button
-                onClick={onGeneratePDF}
-                className="px-6 py-6 md:py-2 text-sm md:text-base font-bold flex-1 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]"
+              <PDFGenerateButton
+                caseId={caseId}
+                templateType={currentForm}
+                onGenerate={onGeneratePDF}
+                disabled={isSaving}
               >
                 <span className="text-blue-100 font-bold whitespace-nowrap">
                   Generate
                 </span>
-              </Button>
+              </PDFGenerateButton>
             )}
             
             <Button

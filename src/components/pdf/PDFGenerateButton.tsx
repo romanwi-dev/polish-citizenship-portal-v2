@@ -22,20 +22,20 @@ export function PDFGenerateButton({
 
   return (
     <>
-      <div className="flex gap-2">
+      <div className="flex gap-2 w-full">
         <Button
           onClick={() => setPreviewOpen(true)}
           variant="outline"
           disabled={disabled}
-          className="flex-shrink-0"
+          className="flex-shrink-0 bg-purple-500/20 hover:bg-purple-500/30 border-purple-400/40"
         >
           <Eye className="h-4 w-4 mr-2" />
-          Preview
+          <span className="text-purple-100">Preview</span>
         </Button>
         <Button
           onClick={onGenerate}
           disabled={disabled}
-          className="flex-1"
+          className="flex-1 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]"
         >
           {children}
         </Button>
