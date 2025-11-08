@@ -3684,6 +3684,56 @@ export type Database = {
         }
         Relationships: []
       }
+      pdf_generation_queue: {
+        Row: {
+          case_id: string
+          created_at: string
+          error_message: string | null
+          id: string
+          pdf_url: string | null
+          processed_at: string | null
+          retry_count: number | null
+          status: string
+          template_type: string
+          updated_at: string
+          worker_id: string | null
+        }
+        Insert: {
+          case_id: string
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          pdf_url?: string | null
+          processed_at?: string | null
+          retry_count?: number | null
+          status?: string
+          template_type: string
+          updated_at?: string
+          worker_id?: string | null
+        }
+        Update: {
+          case_id?: string
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          pdf_url?: string | null
+          processed_at?: string | null
+          retry_count?: number | null
+          status?: string
+          template_type?: string
+          updated_at?: string
+          worker_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pdf_generation_queue_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "cases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       pdf_history: {
         Row: {
           action: string

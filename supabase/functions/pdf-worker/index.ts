@@ -155,7 +155,7 @@ async function processJob(sb: any, job: any): Promise<void> {
   const startTime = Date.now();
   
   try {
-    await sb.from('pdf_queue')
+    await sb.from('pdf_generation_queue')
       .update({ status: 'processing', updated_at: nowIso() })
       .eq('id', job.id);
 
@@ -194,10 +194,10 @@ async function processJob(sb: any, job: any): Promise<void> {
       throw new Error('Failed to generate signed URL');
     }
 
-    await sb.from('pdf_queue').update({ 
+    await sb.from('pdf_generation_queue').update({ 
       status: 'completed', 
       pdf_url: urlData.signedUrl,
-      completed_at: nowIso(),
+      processed_at: nowIso(),
       updated_at: nowIso()
     }).eq('id', job.id);
 
@@ -212,17 +212,17 @@ async function processJob(sb: any, job: any): Promise<void> {
     console.error(`❌ Job ${job.id} failed (retry ${retryCount}/${maxRetries}):`, errorMsg);
 
     if (retryCount < maxRetries) {
-      await sb.from('pdf_queue').update({
+      await sb.from('pdf_generation_queue').update({
         status: 'queued',
         retry_count: retryCount,
         error_message: errorMsg,
         updated_at: nowIso(),
       }).eq('id', job.id);
     } else {
-      await sb.from('pdf_queue').update({
+      await sb.from('pdf_generation_queue').update({
         status: 'failed',
         error_message: `Max retries: ${errorMsg}`,
-        completed_at: nowIso(),
+        processed_at: nowIso(),
         updated_at: nowIso(),
       }).eq('id', job.id);
     }
@@ -244,7 +244,7 @@ Deno.serve(async () => {
 
   // Fetch multiple jobs for parallel processing
   const { data: jobs } = await sb
-    .from('pdf_queue')
+    .from('pdf_generation_queue')
     .select('*')
     .eq('status', 'queued')
     .order('created_at', { ascending: true })
