@@ -11,15 +11,15 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Template mappings - using new uppercase filenames
+// Template mappings - lowercase filenames to match storage
 const TEMPLATE_PATHS: Record<string, string> = {
-  'poa-combined': 'POA-COMBINED.pdf',
-  'poa-adult': 'POA-ADULT.pdf',
-  'poa-minor': 'POA-MINOR.pdf',
-  'poa-spouses': 'POA-SPOUSES.pdf',
-  'family-tree': 'FAMILY-TREE.pdf',
-  'citizenship': 'CITIZENSHIP.pdf',
-  'transcription': 'TRANSCRIPTION.pdf',
+  'poa-combined': 'poa-combined.pdf',
+  'poa-adult': 'poa-adult.pdf',
+  'poa-minor': 'poa-minor.pdf',
+  'poa-spouses': 'poa-spouses.pdf',
+  'family-tree': 'FAMILY_TREE.pdf',
+  'citizenship': 'citizenship.pdf',
+  'transcription': 'transcription.pdf',
 };
 
 // Field mappings: PDF field name → database column name
@@ -55,6 +55,57 @@ const FIELD_MAPS: Record<string, Record<string, string>> = {
   'citizenship': {
     'imie': 'applicant_first_name',
     'nazwisko': 'applicant_last_name',
+  },
+  'family-tree': {
+    // Applicant info
+    'applicant_full_name': 'applicant_first_name|applicant_last_name',
+    'applicant_date_of_birth': 'applicant_dob',
+    'applicant_place_of_birth': 'applicant_pob',
+    'applicant_date_of_marriage': 'date_of_marriage',
+    'applicant_place_of_marriage': 'place_of_marriage',
+    
+    // Applicant spouse
+    'applicant_spouse_full_name_and_maiden_name': 'spouse_first_name|spouse_last_name',
+    
+    // Polish parent
+    'polish_parent_full_name': 'father_first_name|father_last_name',
+    'polish_parent_spouse_full_name': 'mother_first_name|mother_maiden_name',
+    'polish_parent_date_of_birth': 'father_dob',
+    'polish_parent_place_of_birth': 'father_pob',
+    'polish_parent_date_of_marriage': 'father_mother_marriage_date',
+    'polish_parent_place_of_marriage': 'father_mother_marriage_place',
+    'polish_parent_date_of_emigration': 'father_date_of_emigration',
+    'polish_parent_date_of_naturalization': 'father_date_of_naturalization',
+    
+    // Polish grandparent
+    'polish_grandparent_full_name': 'pgf_first_name|pgf_last_name',
+    'polish_grandparent_spouse_full_name': 'pgm_first_name|pgm_maiden_name',
+    'polish_grandparent_date_of_birth': 'pgf_dob',
+    'polish_grandparent_place_of_birth': 'pgf_pob',
+    'polish_grandparent_date_of_mariage': 'pgf_pgm_marriage_date',
+    'polish_grandparent_place_of_mariage': 'pgf_pgm_marriage_place',
+    'polish_grandparent_date_of_emigration': 'pgf_date_of_emigration',
+    'polish_grandparent_date_of_naturalization': 'pgf_date_of_naturalization',
+    
+    // Great-grandparents
+    'great_grandfather_full_name': 'pggf_first_name|pggf_last_name',
+    'great_grandmother_full_name': 'pggm_first_name|pggm_maiden_name',
+    'great_grandfather_date_of_birth': 'pggf_dob',
+    'great_grandfather_place_of_birth': 'pggf_pob',
+    'great_grandfather_date_of_marriage': 'pggf_pggm_marriage_date',
+    'great_grandfather_place_of_marriage': 'pggf_pggm_marriage_place',
+    'great_grandfather_date_of_emigartion': 'pggf_date_of_emigration',
+    'great_grandfather_date_of_naturalization': 'pggf_date_of_naturalization',
+    
+    // Minor children
+    'minor_1_full_name': 'child_1_first_name|child_1_last_name',
+    'minor_1_date_of_birth': 'child_1_dob',
+    'minor_1_place_of_birth': 'child_1_pob',
+    'minor_2_full_name': 'child_2_first_name|child_2_last_name',
+    'minor_2_date_of_birth': 'child_2_dob',
+    'minor_2_place_of_birth': 'child_2_pob',
+    'minor_3_full_name': 'child_3_first_name|child_3_last_name',
+    'minor_3_date_of_birth': 'child_3_dob',
   }
 };
 
@@ -87,36 +138,46 @@ async function fillTemplate(
   const pdfDoc = await PDFDocument.load(templateBytes);
   const form = pdfDoc.getForm();
   
-  for (const field of form.getFields()) {
-    try {
-      const fieldName = field.getName();
-      let dbColumnName = fieldMap[fieldName] || fieldName;
+    for (const field of form.getFields()) {
+      try {
+        const fieldName = field.getName();
+        let dbColumnName = fieldMap[fieldName] || fieldName;
       
-      // Handle child-specific fields
-      if (childIndex !== undefined) {
-        if (dbColumnName === '__CHILD_FIRST_NAME__') {
-          dbColumnName = `child_${childIndex}_first_name`;
-        } else if (dbColumnName === '__CHILD_LAST_NAME__') {
-          dbColumnName = `child_${childIndex}_last_name`;
+        // Handle child-specific fields
+        if (childIndex !== undefined) {
+          if (dbColumnName === '__CHILD_FIRST_NAME__') {
+            dbColumnName = `child_${childIndex}_first_name`;
+          } else if (dbColumnName === '__CHILD_LAST_NAME__') {
+            dbColumnName = `child_${childIndex}_last_name`;
+          }
         }
-      }
       
-      let value = data[dbColumnName];
+        // Handle pipe-separated field concatenation (e.g., "first_name|last_name")
+        let value;
+        if (dbColumnName.includes('|')) {
+          const parts = dbColumnName.split('|');
+          const values = parts
+            .map(part => data[part])
+            .filter(v => v != null && v !== '');
+          value = values.length > 0 ? values.join(' ') : null;
+        } else {
+          value = data[dbColumnName];
+        }
       
-      // Auto-fill POA date with current date if not set
-      if (fieldName === 'poa_date' && (value == null || value === '')) {
-        const today = new Date();
-        value = today.toLocaleDateString('en-GB'); // DD/MM/YYYY format
-      }
+        // Auto-fill POA date with current date if not set
+        if (fieldName === 'poa_date' && (value == null || value === '')) {
+          const today = new Date();
+          value = today.toLocaleDateString('en-GB'); // DD/MM/YYYY format
+        }
       
-      if (value != null && value !== '') {
-        const textField = form.getTextField(fieldName);
-        textField.setText(String(value));
+        if (value != null && value !== '') {
+          const textField = form.getTextField(fieldName);
+          textField.setText(String(value));
+        }
+      } catch (e) {
+        // Skip fields we can't fill
       }
-    } catch (e) {
-      // Skip fields we can't fill
     }
-  }
   
   return await pdfDoc.save();
 }
@@ -171,7 +232,7 @@ Deno.serve(async (req) => {
       let totalFields = 0;
       
       // 1. Add Adult POA
-      const adultBytes = await fillTemplate('POA-ADULT.pdf', FIELD_MAPS['poa-adult'], dataToUse, supabase);
+      const adultBytes = await fillTemplate('poa-adult.pdf', FIELD_MAPS['poa-adult'], dataToUse, supabase);
       const adultPdf = await PDFDocument.load(adultBytes);
       const adultPages = await finalPdf.copyPages(adultPdf, adultPdf.getPageIndices());
       adultPages.forEach(page => finalPdf.addPage(page));
@@ -180,7 +241,7 @@ Deno.serve(async (req) => {
       // 2. Add Minor POA for each child
       for (let i = 1; i <= childCount; i++) {
         console.log(`[pdf-simple] Adding Minor POA for child ${i}`);
-        const minorBytes = await fillTemplate('POA-MINOR.pdf', FIELD_MAPS['poa-minor'], dataToUse, supabase, i);
+        const minorBytes = await fillTemplate('poa-minor.pdf', FIELD_MAPS['poa-minor'], dataToUse, supabase, i);
         const minorPdf = await PDFDocument.load(minorBytes);
         const minorPages = await finalPdf.copyPages(minorPdf, minorPdf.getPageIndices());
         minorPages.forEach(page => finalPdf.addPage(page));
@@ -190,7 +251,7 @@ Deno.serve(async (req) => {
       // 3. Add Spouses POA (if spouse data exists)
       if (dataToUse.spouse_first_name || dataToUse.spouse_last_name) {
         console.log('[pdf-simple] Adding Spouses POA');
-        const spousesBytes = await fillTemplate('POA-SPOUSES.pdf', FIELD_MAPS['poa-spouses'], dataToUse, supabase);
+        const spousesBytes = await fillTemplate('poa-spouses.pdf', FIELD_MAPS['poa-spouses'], dataToUse, supabase);
         const spousesPdf = await PDFDocument.load(spousesBytes);
         const spousesPages = await finalPdf.copyPages(spousesPdf, spousesPdf.getPageIndices());
         spousesPages.forEach(page => finalPdf.addPage(page));
@@ -274,7 +335,18 @@ Deno.serve(async (req) => {
         
         // Get database column name from mapping (PDF field → DB column)
         const dbColumnName = fieldMap[fieldName] || fieldName;
-        let value = masterData?.[dbColumnName];
+        
+        // Handle pipe-separated field concatenation (e.g., "first_name|last_name")
+        let value;
+        if (dbColumnName.includes('|')) {
+          const parts = dbColumnName.split('|');
+          const values = parts
+            .map(part => masterData?.[part])
+            .filter(v => v != null && v !== '');
+          value = values.length > 0 ? values.join(' ') : null;
+        } else {
+          value = masterData?.[dbColumnName];
+        }
 
         // Auto-fill POA date with current date if not set
         if (fieldName === 'poa_date' && (value == null || value === '')) {
