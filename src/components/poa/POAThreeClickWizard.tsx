@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Camera, FileText, Send, AlertTriangle } from "lucide-react";
+import { AlertTriangle, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { supabase } from "@/integrations/supabase/client";
@@ -107,9 +107,9 @@ export const POAThreeClickWizard = ({ caseId, useBatchMode = false }: POAThreeCl
   };
 
   const steps = [
-    { number: 1, icon: Camera, label: 'PHOTO', description: 'Scan Documents' },
-    { number: 2, icon: FileText, label: 'PRINT', description: 'Generate PDF' },
-    { number: 3, icon: Send, label: 'SIGN', description: 'Sign & Send' },
+    { number: 1, label: 'PHOTO', description: 'Scan Documents' },
+    { number: 2, label: 'PRINT', description: 'Generate PDF' },
+    { number: 3, label: 'SIGN', description: 'Sign & Send' },
   ];
 
   if (loading) {
@@ -131,81 +131,60 @@ export const POAThreeClickWizard = ({ caseId, useBatchMode = false }: POAThreeCl
 
       {/* Progress Header */}
       <div className="mb-8 px-4 py-6 md:p-10">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-center gap-4 md:gap-8">
           {steps.map((step, idx) => {
-            const Icon = step.icon;
             const isComplete = currentStep > step.number;
             const isCurrent = currentStep === step.number;
             
             return (
-              <motion.div 
-                key={step.number} 
-                className="flex items-center flex-1"
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.1, duration: 0.3 }}
-              >
-                <div className="flex flex-col items-center flex-1">
-                  <motion.div 
-                    className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 ${
-                      isComplete ? 'bg-green-500 text-white' :
-                      isCurrent ? 'bg-primary text-primary-foreground' :
-                      'bg-muted text-muted-foreground'
-                    }`}
+              <div key={step.number} className="flex items-center gap-4 md:gap-8">
+                <motion.div
+                  className="flex flex-col items-center gap-2"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: idx * 0.1, duration: 0.3 }}
+                >
+                  <motion.div
+                    className={`
+                      w-24 h-24 md:w-32 md:h-32 rounded-full 
+                      flex flex-col items-center justify-center gap-1
+                      border-2 transition-all duration-300
+                      ${isComplete 
+                        ? 'bg-green-500 border-green-500 text-white' 
+                        : isCurrent 
+                          ? 'bg-primary border-primary text-primary-foreground' 
+                          : 'bg-background border-border text-muted-foreground'
+                      }
+                    `}
                     animate={{
-                      scale: isCurrent ? [1, 1.1, 1] : 1,
+                      scale: isCurrent ? [1, 1.05, 1] : 1,
                     }}
                     transition={{
-                      duration: 0.3,
+                      duration: 2,
+                      repeat: isCurrent ? Infinity : 0,
                       ease: "easeInOut"
                     }}
                   >
-                    <motion.div
-                      animate={{
-                        rotate: isComplete ? [0, 360] : 0,
-                      }}
-                      transition={{
-                        duration: 0.5,
-                        ease: "easeOut"
-                      }}
-                    >
-                      <Icon className="w-6 h-6" />
-                    </motion.div>
+                    <span className="text-sm md:text-base font-bold">{step.label}</span>
+                    <span className="text-xs md:text-sm opacity-80">{step.description}</span>
                   </motion.div>
-                  <motion.div 
-                    className="text-center"
-                    animate={{
-                      y: isCurrent ? [0, -2, 0] : 0,
-                    }}
-                    transition={{
-                      duration: 0.5,
-                      repeat: isCurrent ? Infinity : 0,
-                      repeatDelay: 1
-                    }}
-                  >
-                    <div className={`text-sm font-bold transition-colors ${isCurrent ? 'text-primary' : 'text-muted-foreground'}`}>
-                      {step.label}
-                    </div>
-                    <div className="text-xs text-muted-foreground">{step.description}</div>
-                  </motion.div>
-                </div>
+                </motion.div>
+                
                 {idx < steps.length - 1 && (
-                  <motion.div 
-                    className={`h-0.5 flex-1 mx-4 ${
-                      isComplete ? 'bg-green-500' : 'bg-muted'
-                    }`}
-                    initial={{ scaleX: 0 }}
-                    animate={{ 
-                      scaleX: isComplete ? 1 : 0.3,
-                    }}
-                    transition={{
-                      duration: 0.5,
-                      ease: "easeOut"
-                    }}
-                    style={{ originX: 0 }}
-                  />
+                  <motion.div
+                    className="flex items-center"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: idx * 0.1 + 0.2, duration: 0.3 }}
+                  >
+                    <ArrowRight 
+                      className={`w-6 h-6 md:w-8 md:h-8 ${
+                        isComplete ? 'text-green-500' : 'text-muted-foreground'
+                      }`}
+                    />
+                  </motion.div>
                 )}
-              </motion.div>
+              </div>
             );
           })}
         </div>
