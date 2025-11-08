@@ -94,78 +94,129 @@ Be harsh and thorough. Only approve if the analysis is truly comprehensive and c
 });
 
 async function verifyWithGPT5(prompt: string) {
-  const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${Deno.env.get('LOVABLE_API_KEY')}`,
-    },
-    body: JSON.stringify({
-      model: 'openai/gpt-5',
-      messages: [
-        {
-          role: 'system',
-          content: 'You are a senior technical auditor. Output valid JSON only with: overall_score (0-100), confidence_level (high/medium/low), verified_findings (array of {finding, verified, severity_accurate, evidence, score}), missed_issues (array of strings), incorrect_assumptions (array of strings), recommendation (approve/revise/reject), reasoning (string).',
-        },
-        { role: 'user', content: prompt },
-      ],
-      temperature: 0.3,
-    }),
-  });
-
-  const data = await response.json();
-  const content = data.choices[0].message.content;
-  
   try {
-    return JSON.parse(content);
-  } catch {
-    // If not valid JSON, create structured response
+    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${Deno.env.get('LOVABLE_API_KEY')}`,
+      },
+      body: JSON.stringify({
+        model: 'openai/gpt-5',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a senior technical auditor. Output valid JSON only with: overall_score (0-100), confidence_level (high/medium/low), verified_findings (array of {finding, verified, severity_accurate, evidence, score}), missed_issues (array of strings), incorrect_assumptions (array of strings), recommendation (approve/revise/reject), reasoning (string).',
+          },
+          { role: 'user', content: prompt },
+        ],
+      }),
+    });
+
+    if (!response.ok) {
+      console.error('[GPT-5] HTTP error:', response.status, response.statusText);
+      throw new Error(`GPT-5 API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('[GPT-5] Response structure:', JSON.stringify(data).substring(0, 200));
+    
+    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+      console.error('[GPT-5] Invalid response structure:', JSON.stringify(data));
+      throw new Error('Invalid GPT-5 response structure');
+    }
+
+    const content = data.choices[0].message.content;
+    
+    try {
+      return JSON.parse(content);
+    } catch (parseError) {
+      console.error('[GPT-5] JSON parse error:', parseError);
+      // If not valid JSON, create structured response
+      return {
+        overall_score: 70,
+        confidence_level: 'medium',
+        verified_findings: [],
+        missed_issues: ['Model response was not valid JSON'],
+        incorrect_assumptions: [],
+        recommendation: 'revise',
+        reasoning: content || 'No content returned',
+      };
+    }
+  } catch (error) {
+    console.error('[GPT-5] Verification error:', error);
     return {
-      overall_score: 70,
-      confidence_level: 'medium',
+      overall_score: 50,
+      confidence_level: 'low',
       verified_findings: [],
-      missed_issues: ['Model response was not valid JSON'],
+      missed_issues: [`GPT-5 verification failed: ${error instanceof Error ? error.message : 'Unknown error'}`],
       incorrect_assumptions: [],
       recommendation: 'revise',
-      reasoning: content,
+      reasoning: 'GPT-5 verification could not complete due to technical error',
     };
   }
 }
 
 async function verifyWithGemini(prompt: string) {
-  const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${Deno.env.get('LOVABLE_API_KEY')}`,
-    },
-    body: JSON.stringify({
-      model: 'google/gemini-2.5-pro',
-      messages: [
-        {
-          role: 'system',
-          content: 'You are a senior technical auditor. Output valid JSON only with: overall_score (0-100), confidence_level (high/medium/low), verified_findings (array of {finding, verified, severity_accurate, evidence, score}), missed_issues (array of strings), incorrect_assumptions (array of strings), recommendation (approve/revise/reject), reasoning (string).',
-        },
-        { role: 'user', content: prompt },
-      ],
-      temperature: 0.3,
-    }),
-  });
-
-  const data = await response.json();
-  const content = data.choices[0].message.content;
-  
   try {
-    return JSON.parse(content);
-  } catch {
+    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${Deno.env.get('LOVABLE_API_KEY')}`,
+      },
+      body: JSON.stringify({
+        model: 'google/gemini-2.5-pro',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a senior technical auditor. Output valid JSON only with: overall_score (0-100), confidence_level (high/medium/low), verified_findings (array of {finding, verified, severity_accurate, evidence, score}), missed_issues (array of strings), incorrect_assumptions (array of strings), recommendation (approve/revise/reject), reasoning (string).',
+          },
+          { role: 'user', content: prompt },
+        ],
+        temperature: 0.3,
+      }),
+    });
+
+    if (!response.ok) {
+      console.error('[Gemini] HTTP error:', response.status, response.statusText);
+      throw new Error(`Gemini API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('[Gemini] Response structure:', JSON.stringify(data).substring(0, 200));
+    
+    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+      console.error('[Gemini] Invalid response structure:', JSON.stringify(data));
+      throw new Error('Invalid Gemini response structure');
+    }
+
+    const content = data.choices[0].message.content;
+    
+    try {
+      return JSON.parse(content);
+    } catch (parseError) {
+      console.error('[Gemini] JSON parse error:', parseError);
+      return {
+        overall_score: 70,
+        confidence_level: 'medium',
+        verified_findings: [],
+        missed_issues: ['Model response was not valid JSON'],
+        incorrect_assumptions: [],
+        recommendation: 'revise',
+        reasoning: content || 'No content returned',
+      };
+    }
+  } catch (error) {
+    console.error('[Gemini] Verification error:', error);
     return {
-      overall_score: 70,
-      confidence_level: 'medium',
+      overall_score: 50,
+      confidence_level: 'low',
       verified_findings: [],
-      missed_issues: ['Model response was not valid JSON'],
+      missed_issues: [`Gemini verification failed: ${error instanceof Error ? error.message : 'Unknown error'}`],
       incorrect_assumptions: [],
       recommendation: 'revise',
-      reasoning: content,
+      reasoning: 'Gemini verification could not complete due to technical error',
     };
   }
 }
