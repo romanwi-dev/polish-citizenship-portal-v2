@@ -1,8 +1,11 @@
 /**
  * Date utility functions for POA OCR validation
- * Handles DD.MM.YYYY format (Polish standard)
+ * Handles both DD.MM.YYYY (Polish standard) and YYYY-MM-DD (ISO standard)
  */
 
+/**
+ * Parse DD.MM.YYYY format to Date
+ */
 export function parseDDMMYYYY(dateStr: string): Date | null {
   if (!dateStr || typeof dateStr !== 'string') return null;
   
@@ -28,8 +31,53 @@ export function parseDDMMYYYY(dateStr: string): Date | null {
   return date;
 }
 
+/**
+ * Parse YYYY-MM-DD format to Date
+ */
+export function parseYYYYMMDD(dateStr: string): Date | null {
+  if (!dateStr || typeof dateStr !== 'string') return null;
+  
+  const match = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!match) return null;
+  
+  const year = parseInt(match[1], 10);
+  const month = parseInt(match[2], 10) - 1; // JS months are 0-indexed
+  const day = parseInt(match[3], 10);
+  
+  // Validate ranges
+  if (day < 1 || day > 31 || month < 0 || month > 11 || year < 1900 || year > 2030) {
+    return null;
+  }
+  
+  const date = new Date(year, month, day);
+  
+  // Verify date is valid
+  if (date.getDate() !== day || date.getMonth() !== month || date.getFullYear() !== year) {
+    return null;
+  }
+  
+  return date;
+}
+
+/**
+ * Parse date in either DD.MM.YYYY or YYYY-MM-DD format
+ */
+export function parseDate(dateStr: string): Date | null {
+  if (!dateStr) return null;
+  
+  // Try DD.MM.YYYY format first
+  let date = parseDDMMYYYY(dateStr);
+  if (date) return date;
+  
+  // Try YYYY-MM-DD format
+  date = parseYYYYMMDD(dateStr);
+  if (date) return date;
+  
+  return null;
+}
+
 export function isPassportValid(expiryDateStr: string): { valid: boolean; expiryDate: Date | null; daysUntilExpiry?: number } {
-  const expiryDate = parseDDMMYYYY(expiryDateStr);
+  const expiryDate = parseDate(expiryDateStr);
   
   if (!expiryDate) {
     return { valid: false, expiryDate: null };
@@ -57,7 +105,7 @@ export function isPassportExpiringSoon(expiryDateStr: string, daysThreshold: num
 }
 
 export function formatDateValidation(dateStr: string): string {
-  const date = parseDDMMYYYY(dateStr);
+  const date = parseDate(dateStr);
   if (!date) return "Invalid date format";
   
   return dateStr;
