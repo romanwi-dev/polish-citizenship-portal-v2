@@ -238,22 +238,6 @@ Deno.serve(async (req) => {
       throw new Error(`Unknown template type: ${templateType}`);
     }
 
-    // Step 1: Get master data
-    console.log('[pdf-simple] Fetching master data...');
-    const { data: masterData } = await supabase
-      .from('master_table')
-      .select('*')
-      .eq('case_id', caseId)
-      .maybeSingle();
-
-    // Use empty object if no data found - generates blank PDF
-    const dataToUse = masterData || {};
-    console.log('[pdf-simple] Data status:', 
-      masterData 
-        ? `Found data with ${Object.keys(masterData).filter(k => masterData[k] != null).length} filled fields` 
-        : 'No data - generating blank PDF'
-    );
-
     // Step 2: Download template
     console.log('[pdf-simple] Downloading template:', templatePath);
     const { data: templateBlob, error: downloadError } = await supabase.storage
