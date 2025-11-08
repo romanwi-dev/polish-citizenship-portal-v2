@@ -339,7 +339,7 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
               <div className="border-2 border-dashed rounded-lg p-8 text-center">
                 <input
                   type="file"
-                  accept="image/*"
+                  accept="image/*,.pdf,.doc,.docx,.heic"
                   onChange={(e) => handleFileSelect(e, 'passport')}
                   className="hidden"
                   id="passport-upload"
@@ -347,7 +347,7 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
                 <label htmlFor="passport-upload" className="cursor-pointer block">
                   <Camera className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                   <p className="text-sm text-muted-foreground mb-2">
-                    Click to upload or take photo of passport
+                    Upload passport (image, PDF, HEIC, or document)
                   </p>
                   <div className="flex justify-center">
                     <Button type="button" variant="outline" size="sm" asChild>
@@ -410,7 +410,7 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
               <div className="border-2 border-dashed rounded-lg p-8 text-center">
                 <input
                   type="file"
-                  accept="image/*"
+                  accept="image/*,.pdf,.doc,.docx,.heic"
                   onChange={(e) => handleFileSelect(e, 'birthcert')}
                   className="hidden"
                   id="birthcert-upload"
@@ -418,7 +418,7 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
                 <label htmlFor="birthcert-upload" className="cursor-pointer block">
                   <Camera className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                   <p className="text-sm text-muted-foreground mb-2">
-                    Click to upload birth certificate (optional)
+                    Upload birth certificate (image, PDF, HEIC, or document)
                   </p>
                   <div className="flex justify-center">
                     <Button type="button" variant="outline" size="sm" asChild>

@@ -112,7 +112,7 @@ export const POAGenerateButton = ({
   };
 
   return (
-    <Card>
+    <Card className="glass-card hover-glow">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <FileText className="w-5 h-5" />

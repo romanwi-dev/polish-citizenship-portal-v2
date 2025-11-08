@@ -66,7 +66,7 @@ export const POASignSendDialog = ({
 
         <div className="space-y-6">
           {/* E-Signature Section */}
-          <Card>
+          <Card className="glass-card">
             <CardHeader>
               <CardTitle>Step 1: Sign Document</CardTitle>
               <CardDescription>
@@ -88,7 +88,7 @@ export const POASignSendDialog = ({
           </Card>
 
           {/* Download PDF Section */}
-          <Card>
+          <Card className="glass-card">
             <CardHeader>
               <CardTitle>Step 2: Download PDF</CardTitle>
               <CardDescription>
@@ -108,7 +108,7 @@ export const POASignSendDialog = ({
           </Card>
 
           {/* Shipping Placeholder Section */}
-          <Card className="border-2 border-dashed">
+          <Card className="glass-card border-2 border-dashed">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Package className="w-5 h-5" />
