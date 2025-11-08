@@ -90,54 +90,8 @@ export default function POAForm() {
   };
 
   const handleGenerateAndPreview = async (templateType: 'poa-adult' | 'poa-minor' | 'poa-spouses') => {
-    if (!caseId || caseId === ':id' || caseId === 'demo-preview') {
-      toast.error('PDF generation not available in demo mode');
-      return;
-    }
-
-    setIsGenerating(true);
-    setActivePOAType(templateType.replace('poa-', ''));
-    try {
-      // Auto-populate POA date if not set and save it
-      let dateToUse = formData.poa_date_filed;
-      if (!dateToUse) {
-        const today = new Date();
-        const formattedDate = `${String(today.getDate()).padStart(2, '0')}.${String(today.getMonth() + 1).padStart(2, '0')}.${today.getFullYear()}`;
-        dateToUse = formattedDate;
-        handleInputChange('poa_date_filed', formattedDate);
-        
-        // Save the date immediately to database
-        await supabase
-          .from('master_table')
-          .update({ poa_date_filed: formattedDate })
-          .eq('case_id', caseId);
-      }
-      
-      // Save and wait for full completion
-      toast.info('Saving changes...');
-      await handlePOASave();
-      toast.success('Saved! Generating PDF...');
-      
-      // Use simple PDF generation
-      const { generateSimplePDF } = await import('@/lib/pdf-simple');
-      const pdfUrl = await generateSimplePDF({
-        caseId,
-        templateType,
-        toast,
-        setIsGenerating
-      });
-      
-      if (pdfUrl) {
-        // Open PDF in new tab
-        window.open(pdfUrl, '_blank');
-        toast.success('PDF opened in new tab!');
-      }
-    } catch (error: any) {
-      console.error("[POA] PDF generation error:", error);
-      toast.error(`Failed to generate PDF: ${error.message}`);
-    } finally {
-      setIsGenerating(false);
-    }
+    // PDFGenerateButton component handles all PDF generation logic
+    // This function is just a placeholder for backwards compatibility
   };
 
   const handleRegeneratePDF = async (updatedData: any) => {
