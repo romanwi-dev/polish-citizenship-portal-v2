@@ -148,16 +148,20 @@ export const POAThreeClickWizard = ({ caseId, useBatchMode = false }: POAThreeCl
                     className={`
                       w-24 h-24 md:w-32 md:h-32 rounded-full 
                       flex items-center justify-center
-                      border-4 transition-all duration-300
+                      transition-all duration-500
                       ${isComplete 
-                        ? 'bg-green-500 border-green-500 text-white cursor-pointer hover:opacity-80' 
+                        ? 'bg-green-500 border-green-500 text-white cursor-pointer hover:opacity-80 hover:scale-105' 
                         : isCurrent 
-                          ? 'bg-transparent border-primary text-primary' 
+                          ? 'bg-transparent border-primary text-primary shadow-lg shadow-primary/50' 
                           : 'bg-background border-border text-muted-foreground'
                       }
                     `}
+                    style={{
+                      borderWidth: isCurrent ? '4px' : '3px',
+                    }}
                     animate={{
                       scale: isCurrent ? [1, 1.05, 1] : 1,
+                      borderWidth: isCurrent ? ['4px', '5px', '4px'] : '3px',
                     }}
                     transition={{
                       duration: 2,
@@ -169,23 +173,66 @@ export const POAThreeClickWizard = ({ caseId, useBatchMode = false }: POAThreeCl
                         setCurrentStep(step.number as 1 | 2 | 3);
                       }
                     }}
+                    whileHover={isComplete ? { scale: 1.1 } : {}}
+                    whileTap={isComplete ? { scale: 0.95 } : {}}
                   >
-                    <span className="text-lg md:text-2xl font-bold">{step.label}</span>
+                    <motion.span 
+                      className="text-lg md:text-2xl font-bold"
+                      animate={{
+                        opacity: isCurrent ? [1, 0.7, 1] : 1,
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: isCurrent ? Infinity : 0,
+                        ease: "easeInOut"
+                      }}
+                    >
+                      {step.label}
+                    </motion.span>
                   </motion.div>
                 </motion.div>
                 
                 {idx < steps.length - 1 && (
                   <motion.div
-                    className="flex items-center"
+                    className="flex items-center relative"
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: idx * 0.1 + 0.2, duration: 0.3 }}
                   >
-                    <ArrowRight 
-                      className={`w-6 h-6 md:w-8 md:h-8 ${
-                        isComplete ? 'text-green-500' : 'text-muted-foreground'
-                      }`}
-                    />
+                    <div className="relative">
+                      {/* Background arrow */}
+                      <ArrowRight 
+                        className={`w-6 h-6 md:w-8 md:h-8 transition-colors duration-500 ${
+                          isComplete ? 'text-green-500' : 'text-muted-foreground/30'
+                        }`}
+                      />
+                      {/* Animated progress overlay */}
+                      {isComplete && (
+                        <motion.div
+                          className="absolute inset-0"
+                          initial={{ scaleX: 0, originX: 0 }}
+                          animate={{ scaleX: 1 }}
+                          transition={{ duration: 0.5, ease: "easeOut" }}
+                        >
+                          <ArrowRight 
+                            className="w-6 h-6 md:w-8 md:h-8 text-green-500"
+                          />
+                        </motion.div>
+                      )}
+                      {/* Pulse effect for current step transition */}
+                      {currentStep === step.number + 1 && (
+                        <motion.div
+                          className="absolute inset-0"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: [0, 1, 0] }}
+                          transition={{ duration: 1, repeat: Infinity }}
+                        >
+                          <ArrowRight 
+                            className="w-6 h-6 md:w-8 md:h-8 text-primary"
+                          />
+                        </motion.div>
+                      )}
+                    </div>
                   </motion.div>
                 )}
               </div>
@@ -195,41 +242,49 @@ export const POAThreeClickWizard = ({ caseId, useBatchMode = false }: POAThreeCl
       </div>
 
       {/* Step Content */}
-      {currentStep === 1 && (
-        useBatchMode ? (
-          <POABatchOCRScanner
-            caseId={caseId}
-            onBatchComplete={(results) => {
-              setCurrentStep(2);
-            }}
-            maxFiles={10}
-          />
-        ) : (
-          <POAOCRScanner
-            caseId={caseId}
-            onDataExtracted={handleOCRData}
-            onComplete={handleOCRComplete}
-          />
-        )
-      )}
+      <motion.div
+        key={currentStep}
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: -20 }}
+        transition={{ duration: 0.4, ease: "easeInOut" }}
+      >
+        {currentStep === 1 && (
+          useBatchMode ? (
+            <POABatchOCRScanner
+              caseId={caseId}
+              onBatchComplete={(results) => {
+                setCurrentStep(2);
+              }}
+              maxFiles={10}
+            />
+          ) : (
+            <POAOCRScanner
+              caseId={caseId}
+              onDataExtracted={handleOCRData}
+              onComplete={handleOCRComplete}
+            />
+          )
+        )}
 
-      {currentStep === 2 && (
-        <POAGenerateButton
-          caseId={caseId}
-          passportConfidence={passportConfidence}
-          birthCertConfidence={birthCertConfidence}
-          onGenerated={handlePDFGenerated}
-        />
-      )}
+        {currentStep === 2 && (
+          <POAGenerateButton
+            caseId={caseId}
+            passportConfidence={passportConfidence}
+            birthCertConfidence={birthCertConfidence}
+            onGenerated={handlePDFGenerated}
+          />
+        )}
 
-      {currentStep === 3 && generatedPdfUrl && poaId && (
-        <POASignSendDialog
-          open={true}
-          onOpenChange={() => {}}
-          poaId={poaId}
-          pdfUrl={generatedPdfUrl}
-        />
-      )}
+        {currentStep === 3 && generatedPdfUrl && poaId && (
+          <POASignSendDialog
+            open={true}
+            onOpenChange={() => {}}
+            poaId={poaId}
+            pdfUrl={generatedPdfUrl}
+          />
+        )}
+      </motion.div>
     </div>
   );
 };
