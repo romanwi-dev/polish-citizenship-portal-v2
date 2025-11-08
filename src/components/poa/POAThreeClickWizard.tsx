@@ -129,46 +129,45 @@ export const POAThreeClickWizard = ({ caseId, useBatchMode = false }: POAThreeCl
       <POAConflictResolver caseId={caseId} />
 
       {/* Progress Header */}
-      <Card className="glass-card hover-glow opacity-50">
-        <CardHeader>
-          <CardTitle>POA Generation Wizard</CardTitle>
-          <CardDescription>Complete in 3 simple steps</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-between">
-            {steps.map((step, idx) => {
-              const Icon = step.icon;
-              const isComplete = currentStep > step.number;
-              const isCurrent = currentStep === step.number;
-              
-              return (
-                <div key={step.number} className="flex items-center flex-1">
-                  <div className="flex flex-col items-center flex-1">
-                    <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 transition-colors ${
-                      isComplete ? 'bg-green-500 text-white' :
-                      isCurrent ? 'bg-primary text-primary-foreground' :
-                      'bg-muted text-muted-foreground'
-                    }`}>
-                      <Icon className="w-6 h-6" />
-                    </div>
-                    <div className="text-center">
-                      <div className={`text-sm font-bold ${isCurrent ? 'text-primary' : 'text-muted-foreground'}`}>
-                        {step.label}
-                      </div>
-                      <div className="text-xs text-muted-foreground">{step.description}</div>
-                    </div>
+      <div className="mb-8 px-4 py-6 md:p-10">
+        <div className="border-b border-border/50 pb-6 pt-6">
+          <h2 className="text-2xl md:text-3xl font-heading font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            POA OCR Wizard
+          </h2>
+        </div>
+        <div className="flex items-center justify-between mt-6">
+          {steps.map((step, idx) => {
+            const Icon = step.icon;
+            const isComplete = currentStep > step.number;
+            const isCurrent = currentStep === step.number;
+            
+            return (
+              <div key={step.number} className="flex items-center flex-1">
+                <div className="flex flex-col items-center flex-1">
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 transition-colors ${
+                    isComplete ? 'bg-green-500 text-white' :
+                    isCurrent ? 'bg-primary text-primary-foreground' :
+                    'bg-muted text-muted-foreground'
+                  }`}>
+                    <Icon className="w-6 h-6" />
                   </div>
-                  {idx < steps.length - 1 && (
-                    <div className={`h-0.5 flex-1 mx-4 ${
-                      isComplete ? 'bg-green-500' : 'bg-muted'
-                    }`} />
-                  )}
+                  <div className="text-center">
+                    <div className={`text-sm font-bold ${isCurrent ? 'text-primary' : 'text-muted-foreground'}`}>
+                      {step.label}
+                    </div>
+                    <div className="text-xs text-muted-foreground">{step.description}</div>
+                  </div>
                 </div>
-              );
-            })}
-          </div>
-        </CardContent>
-      </Card>
+                {idx < steps.length - 1 && (
+                  <div className={`h-0.5 flex-1 mx-4 ${
+                    isComplete ? 'bg-green-500' : 'bg-muted'
+                  }`} />
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
 
       {/* Step Content */}
       {currentStep === 1 && (

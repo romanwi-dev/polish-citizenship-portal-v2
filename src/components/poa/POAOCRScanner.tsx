@@ -1,5 +1,5 @@
-import { useState, useCallback } from "react";
-import { Camera, Upload, RotateCw, Check, AlertCircle, SkipForward, Loader2 } from "lucide-react";
+import { useState, useCallback, useEffect } from "react";
+import { Camera, Upload, RotateCw, Check, AlertCircle, SkipForward, Loader2, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -10,6 +10,7 @@ import 'react-image-crop/dist/ReactCrop.css';
 import { useRef } from "react";
 import { PersonTypeSelector, PersonType, DocumentType } from "./PersonTypeSelector";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { OCRDataPreview } from "./OCRDataPreview";
 
 type ProcessingStep = 'idle' | 'uploading' | 'extracting' | 'analyzing' | 'mapping' | 'complete';
 
@@ -37,6 +38,13 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
   // Person type selection
   const [selectedPerson, setSelectedPerson] = useState<PersonType>();
   const [selectedDocType, setSelectedDocType] = useState<DocumentType>();
+  const [childrenCount, setChildrenCount] = useState(0);
+
+  // OCR Data Preview
+  const [ocrPreviewData, setOcrPreviewData] = useState<any>(null);
+  const [ocrConfidence, setOcrConfidence] = useState<number | undefined>();
+  const [ocrWarnings, setOcrWarnings] = useState<string[]>([]);
+  const [retryCount, setRetryCount] = useState(0);
 
   // Image editing
   const [editingImage, setEditingImage] = useState(false);
@@ -46,9 +54,31 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
   const [rotation, setRotation] = useState(0);
   const imgRef = useRef<HTMLImageElement>(null);
 
+  // Load children count from case data
+  useEffect(() => {
+    const loadChildrenCount = async () => {
+      if (!caseId) return;
+      
+      const { data, error } = await supabase
+        .from('master_table')
+        .select('children_count')
+        .eq('case_id', caseId)
+        .single();
+      
+      if (data && !error) {
+        setChildrenCount(data.children_count || 0);
+      }
+    };
+    
+    loadChildrenCount();
+  }, [caseId]);
+
   const handlePersonSelect = (personType: PersonType, docType: DocumentType) => {
     setSelectedPerson(personType);
     setSelectedDocType(docType);
+    setOcrPreviewData(null);
+    setOcrWarnings([]);
+    setRetryCount(0);
   };
 
   const confirmPersonSelection = () => {
@@ -168,7 +198,11 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
     return data;
   };
 
-  const processOCR = async (file: File, documentType: 'passport' | 'birth_certificate') => {
+  const processOCR = async (file: File, documentType: 'passport' | 'birth_certificate', isRetry: boolean = false) => {
+    if (isRetry) {
+      toast.info(`Retry attempt ${retryCount + 1}/3...`);
+    }
+    
     setProcessingStep('extracting');
     
     // Check file type to determine processing method
@@ -191,28 +225,55 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
     });
 
     if (error) {
-      // Check for validation errors
-      if (error.message?.includes('expired') || error.message?.includes('EXPIRED_PASSPORT')) {
-        toast.error(error.message || "Passport has expired", {
-          description: "Please provide a valid, non-expired passport for adults."
-        });
-        throw new Error("Expired passport");
+      // Enhanced error messages
+      let errorMsg = error.message || 'OCR processing failed';
+      
+      if (errorMsg.includes('expired') || errorMsg.includes('EXPIRED_PASSPORT')) {
+        errorMsg = `❌ Passport Expired: ${errorMsg}. Please use a valid passport or contact support.`;
+      } else if (errorMsg.includes('Birth certificates are not accepted')) {
+        errorMsg = `❌ Invalid Document: ${errorMsg}`;
+      } else if (errorMsg.includes('Invalid date format')) {
+        errorMsg = `❌ Date Format Error: Could not read dates from the document. Please ensure the document is clear and readable.`;
+      } else if (errorMsg.includes('confidence')) {
+        errorMsg = `⚠️ Low Quality Scan: ${errorMsg}. Try uploading a clearer image or PDF.`;
+      } else if (errorMsg.includes('network') || errorMsg.includes('fetch')) {
+        errorMsg = `🌐 Network Error: ${errorMsg}. Please check your connection and try again.`;
       }
-      if (error.message?.includes('Birth certificates are not accepted')) {
-        toast.error(error.message);
-        throw new Error("Invalid document type");
+      
+      toast.error(errorMsg, {
+        description: "Please provide a valid, non-expired passport for adults."
+      });
+      
+      // Auto-retry logic (max 3 attempts)
+      if (retryCount < 3 && !isRetry) {
+        setRetryCount(prev => prev + 1);
       }
-      throw error;
+      
+      throw new Error(errorMsg);
     }
     
-    // Show warnings if any
-    if (data.warnings && data.warnings.length > 0) {
-      data.warnings.forEach((warning: string) => {
-        toast.warning(warning, {
-          duration: 8000,
-        });
-      });
+    // Collect warnings
+    const warnings: string[] = [];
+    if (data.warnings && Array.isArray(data.warnings)) {
+      warnings.push(...data.warnings);
+    } else if (data.warning) {
+      warnings.push(data.warning);
     }
+    if (data.confidence && data.confidence < 0.7) {
+      warnings.push(`Low confidence score: ${(data.confidence * 100).toFixed(0)}%. Please verify the extracted data carefully.`);
+    }
+    
+    // Show warnings
+    warnings.forEach((warning: string) => {
+      toast.warning(warning, {
+        duration: 8000,
+      });
+    });
+    
+    setOcrWarnings(warnings);
+    setOcrConfidence(data.confidence);
+    setOcrPreviewData(data.extracted_data || data);
+    setRetryCount(0);
     
     setProcessingStep('analyzing');
     return data;
@@ -370,44 +431,46 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
   };
 
   return (
-    <Card className="glass-card hover-glow opacity-50">
-      <CardHeader>
-        <CardTitle>Scan Documents</CardTitle>
-        <CardDescription>Upload and OCR your passport and birth certificate</CardDescription>
-      </CardHeader>
-<CardContent className="space-y-6">
-        {/* Processing Progress */}
-        {processing && processingStep !== 'idle' && (
-          <div className="space-y-3 p-4 bg-muted rounded-lg">
-            <div className="flex items-center gap-2">
-              <Loader2 className="w-4 h-4 animate-spin" />
-              <span className="text-sm font-medium">
-                {processingStep === 'uploading' && 'Step 1/4: Uploading to cloud storage...'}
-                {processingStep === 'extracting' && 'Step 2/4: Extracting text from image...'}
-                {processingStep === 'analyzing' && 'Step 3/4: Analyzing document structure...'}
-                {processingStep === 'mapping' && 'Step 4/4: Mapping data to forms...'}
-                {processingStep === 'complete' && 'Complete!'}
-              </span>
-            </div>
-            <Progress 
-              value={
-                processingStep === 'uploading' ? 25 :
-                processingStep === 'extracting' ? 50 :
-                processingStep === 'analyzing' ? 75 :
-                processingStep === 'mapping' ? 90 :
-                100
-              } 
-            />
+    <div className="space-y-6">
+      {/* Processing Progress */}
+      {processing && processingStep !== 'idle' && (
+        <div className="space-y-3 p-4 bg-muted rounded-lg">
+          <div className="flex items-center gap-2">
+            <Loader2 className="w-4 h-4 animate-spin" />
+            <span className="text-sm font-medium">
+              {processingStep === 'uploading' && 'Step 1/4: Uploading to cloud storage...'}
+              {processingStep === 'extracting' && 'Step 2/4: Extracting text from image...'}
+              {processingStep === 'analyzing' && 'Step 3/4: Analyzing document structure...'}
+              {processingStep === 'mapping' && 'Step 4/4: Mapping data to forms...'}
+              {processingStep === 'complete' && 'Complete!'}
+            </span>
           </div>
-        )}
+          <Progress 
+            value={
+              processingStep === 'uploading' ? 25 :
+              processingStep === 'extracting' ? 50 :
+              processingStep === 'analyzing' ? 75 :
+              processingStep === 'mapping' ? 90 :
+              100
+            } 
+          />
+        </div>
+      )}
 
-        {/* Person Selection Step */}
-        {step === 'select_person' && (
+      {/* Person Selection Step */}
+      {step === 'select_person' && (
+        <div className="px-4 py-6 md:p-10">
+          <div className="border-b border-border/50 pb-6 pt-6 mb-6">
+            <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
+              Select Person & Document Type
+            </h3>
+          </div>
           <div className="space-y-4">
-            <PersonTypeSelector
+            <PersonTypeSelector 
               onSelect={handlePersonSelect}
               selectedPerson={selectedPerson}
               selectedDocType={selectedDocType}
+              childrenCount={childrenCount}
             />
             <Button 
               onClick={confirmPersonSelection}
@@ -417,35 +480,45 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
               Continue to Document Upload
             </Button>
           </div>
-        )}
+        </div>
+      )}
 
-        {/* Passport Step */}
-        {step === 'passport' && (
-          <div className="space-y-4">
-            {!passportFile ? (
-              <div className="border-2 border-dashed rounded-lg p-8 text-center">
-                <input
-                  type="file"
-                  accept="image/*,.pdf,.doc,.docx,.heic"
-                  onChange={(e) => handleFileSelect(e, 'passport')}
-                  className="hidden"
-                  id="passport-upload"
-                />
-                <label htmlFor="passport-upload" className="cursor-pointer block">
-                  <Camera className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                  <p className="text-sm text-muted-foreground mb-2">
-                    Upload passport (image, PDF, HEIC, or document)
-                  </p>
-                  <div className="flex justify-center">
-                    <Button type="button" variant="outline" size="sm" className="opacity-50" asChild>
-                      <span>
-                        <Upload className="w-4 h-4 mr-2" />
-                        Select Document
-                      </span>
-                    </Button>
-                  </div>
-                </label>
-              </div>
+      {/* OCR Data Preview */}
+      {ocrPreviewData && (
+        <OCRDataPreview 
+          data={ocrPreviewData} 
+          confidence={ocrConfidence}
+          warnings={ocrWarnings}
+        />
+      )}
+
+      {/* Passport Step */}
+      {step === 'passport' && (
+        <div className="space-y-4">
+          {!passportFile ? (
+            <div className="border-2 border-dashed rounded-lg p-8 text-center">
+              <input
+                type="file"
+                accept="image/*,.pdf,.doc,.docx,.heic"
+                onChange={(e) => handleFileSelect(e, 'passport')}
+                className="hidden"
+                id="passport-upload"
+              />
+              <label htmlFor="passport-upload" className="cursor-pointer block">
+                <Camera className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+                <p className="text-sm text-muted-foreground mb-2">
+                  Upload passport (image, PDF, HEIC, or document)
+                </p>
+                <div className="flex justify-center">
+                  <Button type="button" variant="outline" size="sm" className="opacity-50" asChild>
+                    <span>
+                      <Upload className="w-4 h-4 mr-2" />
+                      Select Document
+                    </span>
+                  </Button>
+                </div>
+              </label>
+            </div>
             ) : editingImage ? (
               <div className="space-y-4">
                 <div className="flex gap-2">
@@ -562,14 +635,13 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
         )}
 
         {/* Complete */}
-        {step === 'complete' && (
-          <div className="text-center p-8">
-            <Check className="w-16 h-16 mx-auto mb-4 text-green-500" />
-            <p className="text-lg font-medium">OCR Complete!</p>
-            <p className="text-sm text-muted-foreground">Data extracted and applied to forms</p>
-          </div>
-        )}
-      </CardContent>
-    </Card>
+      {step === 'complete' && (
+        <div className="text-center p-8">
+          <Check className="w-16 h-16 mx-auto mb-4 text-green-500" />
+          <p className="text-lg font-medium">OCR Complete!</p>
+          <p className="text-sm text-muted-foreground">Data extracted and applied to forms</p>
+        </div>
+      )}
+    </div>
   );
 };

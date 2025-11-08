@@ -13,15 +13,16 @@ interface PersonTypeSelectorProps {
   onSelect: (personType: PersonType, documentType: DocumentType) => void;
   selectedPerson?: PersonType;
   selectedDocType?: DocumentType;
+  childrenCount?: number;
 }
 
-export const PersonTypeSelector = ({ onSelect, selectedPerson, selectedDocType }: PersonTypeSelectorProps) => {
+export const PersonTypeSelector = ({ onSelect, selectedPerson, selectedDocType, childrenCount = 0 }: PersonTypeSelectorProps) => {
   const isAdult = (type: PersonType) => type === 'AP' || type === 'SPOUSE';
   
   const personOptions: { type: PersonType; label: string; icon: typeof User }[] = [
     { type: 'AP', label: 'Applicant (Me)', icon: User },
     { type: 'SPOUSE', label: 'Spouse', icon: Users },
-    ...Array.from({ length: 10 }, (_, i) => ({
+    ...Array.from({ length: childrenCount }, (_, i) => ({
       type: `CHILD_${i + 1}` as PersonType,
       label: `Child ${i + 1}`,
       icon: Baby
@@ -36,7 +37,7 @@ export const PersonTypeSelector = ({ onSelect, selectedPerson, selectedDocType }
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-          {personOptions.slice(0, 12).map(({ type, label, icon: Icon }) => (
+          {personOptions.map(({ type, label, icon: Icon }) => (
             <Button
               key={type}
               variant={selectedPerson === type ? "default" : "outline"}
