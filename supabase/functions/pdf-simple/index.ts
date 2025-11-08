@@ -11,13 +11,13 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Template mappings - lowercase filenames to match storage
+// Template mappings - exact filenames from storage
 const TEMPLATE_PATHS: Record<string, string> = {
   'poa-combined': 'poa-combined.pdf',
   'poa-adult': 'poa-adult.pdf',
   'poa-minor': 'poa-minor.pdf',
   'poa-spouses': 'poa-spouses.pdf',
-  'family-tree': 'FAMILY_TREE.pdf',
+  'family-tree': 'family-tree.pdf',
   'citizenship': 'citizenship.pdf',
   'transcription': 'transcription.pdf',
 };
