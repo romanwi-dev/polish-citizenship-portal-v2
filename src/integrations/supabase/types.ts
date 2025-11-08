@@ -3924,6 +3924,7 @@ export type Database = {
           analysis_result: Json | null
           context: Json | null
           created_at: string | null
+          created_by: string | null
           critical_issues: Json | null
           dependencies: Json | null
           domain: string
@@ -3941,6 +3942,7 @@ export type Database = {
           analysis_result?: Json | null
           context?: Json | null
           created_at?: string | null
+          created_by?: string | null
           critical_issues?: Json | null
           dependencies?: Json | null
           domain: string
@@ -3958,6 +3960,7 @@ export type Database = {
           analysis_result?: Json | null
           context?: Json | null
           created_at?: string | null
+          created_by?: string | null
           critical_issues?: Json | null
           dependencies?: Json | null
           domain?: string
@@ -3978,6 +3981,7 @@ export type Database = {
           confidence: number | null
           consensus: string | null
           created_at: string | null
+          created_by: string | null
           id: string
           models: Json | null
           overall_score: number | null
@@ -3991,6 +3995,7 @@ export type Database = {
           confidence?: number | null
           consensus?: string | null
           created_at?: string | null
+          created_by?: string | null
           id?: string
           models?: Json | null
           overall_score?: number | null
@@ -4004,6 +4009,7 @@ export type Database = {
           confidence?: number | null
           consensus?: string | null
           created_at?: string | null
+          created_by?: string | null
           id?: string
           models?: Json | null
           overall_score?: number | null
@@ -4033,6 +4039,7 @@ export type Database = {
           id: string
           phase_a_id: string | null
           phase_b_id: string | null
+          rollback_completed: boolean | null
           success: boolean | null
         }
         Insert: {
@@ -4045,6 +4052,7 @@ export type Database = {
           id?: string
           phase_a_id?: string | null
           phase_b_id?: string | null
+          rollback_completed?: boolean | null
           success?: boolean | null
         }
         Update: {
@@ -4057,6 +4065,7 @@ export type Database = {
           id?: string
           phase_a_id?: string | null
           phase_b_id?: string | null
+          rollback_completed?: boolean | null
           success?: boolean | null
         }
         Relationships: [
