@@ -398,10 +398,11 @@ export default function POAForm() {
         <div className="flex justify-center mb-1 mt-1 md:mb-4 md:mt-4">
           <Button
             onClick={() => navigate(`/admin/cases/${caseId}/poa-ocr`)}
-            size="lg" 
-            className="h-14 md:h-16 w-[85%] md:w-auto text-base md:text-xl font-semibold px-8 md:px-12 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 shadow-lg hover:shadow-xl transition-all duration-300 text-white dark:text-white"
+            variant="outline"
+            size="lg"
+            className="w-full max-w-md"
           >
-            Scan Documents
+            <span className="opacity-80">Scan Documents</span>
           </Button>
         </div>
 
