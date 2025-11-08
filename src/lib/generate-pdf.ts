@@ -90,10 +90,14 @@ export async function generatePdf({
     toast.dismiss();
     toast.loading('Generating PDF… this may take a moment');
 
-    // Step 1.5: Trigger the PDF worker to process the queue
-    supabase.functions.invoke('pdf-worker').catch((err: any) => {
-      console.warn('Worker trigger failed (non-critical):', err);
-    });
+    // Step 1.5: Trigger the PDF worker to process the queue (CRITICAL - don't suppress errors)
+    const workerTrigger = await supabase.functions.invoke('pdf-worker');
+    if (workerTrigger.error) {
+      console.error('❌ Worker trigger FAILED:', workerTrigger.error);
+      // Worker will retry via cron, but log the failure
+    } else {
+      console.log('✅ Worker triggered successfully:', workerTrigger.data);
+    }
 
     // Step 2: Subscribe to real-time updates for instant completion notification
     const channel = supabase
