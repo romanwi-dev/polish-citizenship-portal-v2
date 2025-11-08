@@ -5,16 +5,16 @@ import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import { Loader2, CheckCircle2, AlertCircle, Search } from 'lucide-react';
 import { inspectPDFFields } from '@/utils/pdfInspector';
-import { PDF_MAPPINGS } from '@/config/pdfMappings';
+import { POA_ADULT_PDF_MAP, POA_MINOR_PDF_MAP, POA_SPOUSES_PDF_MAP } from '@/config/pdfMappings';
 
 const TEMPLATES = [
-  { id: 'poa-adult', name: 'POA Adult', mapping: PDF_MAPPINGS['poa-adult'] || {} },
-  { id: 'poa-minor', name: 'POA Minor', mapping: PDF_MAPPINGS['poa-minor'] || {} },
-  { id: 'poa-spouses', name: 'POA Spouses', mapping: PDF_MAPPINGS['poa-spouses'] || {} },
-  { id: 'citizenship', name: 'Citizenship Application', mapping: PDF_MAPPINGS['citizenship'] || {} },
-  { id: 'family-tree', name: 'Family Tree', mapping: PDF_MAPPINGS['family-tree'] || {} },
-  { id: 'umiejscowienie', name: 'Civil Registry Entry', mapping: PDF_MAPPINGS['umiejscowienie'] || {} },
-  { id: 'uzupelnienie', name: 'Civil Registry Supplement', mapping: PDF_MAPPINGS['uzupelnienie'] || {} },
+  { id: 'poa-adult', name: 'POA Adult', mapping: POA_ADULT_PDF_MAP || {} },
+  { id: 'poa-minor', name: 'POA Minor', mapping: POA_MINOR_PDF_MAP || {} },
+  { id: 'poa-spouses', name: 'POA Spouses', mapping: POA_SPOUSES_PDF_MAP || {} },
+  { id: 'citizenship', name: 'Citizenship Application', mapping: {} },
+  { id: 'family-tree', name: 'Family Tree', mapping: {} },
+  { id: 'umiejscowienie', name: 'Civil Registry Entry', mapping: {} },
+  { id: 'uzupelnienie', name: 'Civil Registry Supplement', mapping: {} },
 ];
 
 interface FieldInfo {

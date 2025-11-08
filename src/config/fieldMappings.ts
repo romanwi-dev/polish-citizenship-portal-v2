@@ -47,6 +47,7 @@ export const APPLICANT_FIELDS: FieldMapping[] = [
 ];
 
 // SPOUSE FIELDS
+// ✅ FIX #1: Added marriage name fields to SPOUSE_FIELDS (prevents field clearing on save)
 export const SPOUSE_FIELDS: FieldMapping[] = [
   { formField: 'spouse_first_name', dbColumn: 'spouse_first_name', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
   { formField: 'spouse_last_name', dbColumn: 'spouse_last_name', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },

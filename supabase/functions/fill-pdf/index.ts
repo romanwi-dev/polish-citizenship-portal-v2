@@ -159,6 +159,14 @@ function fillPDFFields(form: any, data: any, fieldMap: Record<string, string>): 
   const allFields = form.getFields();
   const result: FillResult = { totalFields: allFields.length, filledCount: 0, emptyFields: [], errors: [] };
   
+  // ✅ FIX #4: Diagnostic logging for children last name population
+  console.log('[PDF Fill] === DIAGNOSTIC CHILDREN DATA ===');
+  console.log('[PDF Fill] child_1_first_name:', data.child_1_first_name);
+  console.log('[PDF Fill] child_1_last_name:', data.child_1_last_name);
+  console.log('[PDF Fill] Field mappings looking for children:', Object.entries(fieldMap).filter(([key]) => 
+    key.includes('child') || key.includes('minor') || key.includes('dziecka')
+  ));
+  
   // Log all available PDF field names for debugging
   const pdfFieldNames = allFields.map((f: any) => f.getName());
   log('available_pdf_fields', { fields: pdfFieldNames });
@@ -223,22 +231,18 @@ function fillPDFFields(form: any, data: any, fieldMap: Record<string, string>): 
           const uppercaseValue = formattedValue.toUpperCase();
           field.setText(uppercaseValue);
           
-          // Enable BOLD with Arial-Black for ALL fields EXCEPT dates
+          // ✅ FIX #3: Proper font formatting (BOLD Helvetica for all non-date fields)
           if (!isDateField) {
             try {
               const acroField = field.acroField;
-              // Set font to Arial-Black with bold and auto-size (0 means auto)
-              const boldAppearance = '/Arial-Black 0 Tf 0 g';
+              // Use Helvetica-Bold (guaranteed to work, unlike Arial-Black)
+              // Font size 0 = auto-size
+              const boldAppearance = '/Helvetica-Bold 0 Tf 0 g';
               acroField.setDefaultAppearance(boldAppearance);
-            } catch {
-              // If Arial-Black fails, try Helvetica-Bold
-              try {
-                const acroField = field.acroField;
-                const boldAppearance = '/Helvetica-Bold 0 Tf 0 g';
-                acroField.setDefaultAppearance(boldAppearance);
-              } catch {
-                // Bold formatting not supported, continue anyway
-              }
+              
+              console.log(`[PDF Fill] Applied BOLD to field: ${pdfFieldName}`);
+            } catch (error) {
+              console.warn(`[PDF Fill] Could not apply bold to ${pdfFieldName}:`, error);
             }
           }
           
@@ -279,17 +283,12 @@ function fillPDFFields(form: any, data: any, fieldMap: Record<string, string>): 
           if (!isDateField) {
             try {
               const acroField = field.acroField;
-              const boldAppearance = '/Arial-Black 0 Tf 0 g';
+              const boldAppearance = '/Helvetica-Bold 0 Tf 0 g';
               acroField.setDefaultAppearance(boldAppearance);
-            } catch {
-              // Try Helvetica-Bold as fallback
-              try {
-                const acroField = field.acroField;
-                const boldAppearance = '/Helvetica-Bold 0 Tf 0 g';
-                acroField.setDefaultAppearance(boldAppearance);
-              } catch {
-                // Bold not supported, continue anyway
-              }
+              
+              console.log(`[PDF Fill] Applied BOLD to fallback field: ${pdfFieldName}`);
+            } catch (error) {
+              console.warn(`[PDF Fill] Could not apply bold to fallback ${pdfFieldName}:`, error);
             }
           }
           

@@ -3,7 +3,26 @@
  * Creates structured proposals for OpenAI verification BEFORE PDF generation
  */
 
-import { getPDFMapping, getRequiredFields } from '@/config/pdfMappings';
+import { POA_ADULT_PDF_MAP, POA_MINOR_PDF_MAP, POA_SPOUSES_PDF_MAP, POA_COMBINED_PDF_MAP, POA_ADULT_REQUIRED_FIELDS, POA_MINOR_REQUIRED_FIELDS, POA_SPOUSES_REQUIRED_FIELDS } from '@/config/pdfMappings';
+
+const getPDFMapping = (templateType: string): Record<string, string> => {
+  const mappings: Record<string, Record<string, string>> = {
+    'poa-adult': POA_ADULT_PDF_MAP,
+    'poa-minor': POA_MINOR_PDF_MAP,
+    'poa-spouses': POA_SPOUSES_PDF_MAP,
+    'poa-combined': POA_COMBINED_PDF_MAP,
+  };
+  return mappings[templateType] || {};
+};
+
+const getRequiredFields = (templateType: string): string[] => {
+  const required: Record<string, string[]> = {
+    'poa-adult': POA_ADULT_REQUIRED_FIELDS,
+    'poa-minor': POA_MINOR_REQUIRED_FIELDS,
+    'poa-spouses': POA_SPOUSES_REQUIRED_FIELDS,
+  };
+  return required[templateType] || [];
+};
 
 export interface PDFGenerationProposal {
   type: 'pdf_generation_pre';

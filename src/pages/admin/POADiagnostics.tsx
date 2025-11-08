@@ -4,9 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Loader2, FileSearch, CheckCircle2, XCircle, AlertTriangle } from 'lucide-react';
 import { inspectAllPOATemplates, compareFieldMappings } from '@/utils/poaTemplateInspector';
-import { POA_ADULT_PDF_MAP } from '@/config/pdfMappings/poaAdult';
-import { POA_MINOR_PDF_MAP } from '@/config/pdfMappings/poaMinor';
-import { POA_SPOUSES_PDF_MAP } from '@/config/pdfMappings/poaSpouses';
+import { POA_ADULT_PDF_MAP, POA_MINOR_PDF_MAP, POA_SPOUSES_PDF_MAP } from '@/config/pdfMappings';
 
 export default function POADiagnostics() {
   const [isInspecting, setIsInspecting] = useState(false);

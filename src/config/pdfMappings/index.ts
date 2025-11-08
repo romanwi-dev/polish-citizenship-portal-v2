@@ -1,62 +1,14 @@
 /**
- * Centralized PDF Mappings and Validation
- * Exports all PDF mappings and required fields for verification
+ * PDF Mappings - Single Source of Truth
+ * 
+ * ✅ FIX #2: Unified field mappings
+ * - Frontend now imports from backend source of truth
+ * - No more duplicate files causing desync
+ * - Backend mappings in supabase/functions/_shared/mappings/*.ts
  */
 
-import { POA_ADULT_PDF_MAP, POA_ADULT_REQUIRED_FIELDS } from './poaAdult';
-import { POA_MINOR_PDF_MAP, POA_MINOR_REQUIRED_FIELDS } from './poaMinor';
-import { POA_SPOUSES_PDF_MAP, POA_SPOUSES_REQUIRED_FIELDS } from './poaSpouses';
-import { transcriptionFieldMappings, TRANSCRIPTION_REQUIRED_FIELDS } from './transcription';
-import { CITIZENSHIP_PDF_MAP, CITIZENSHIP_REQUIRED_FIELDS } from './citizenship';
-import { FAMILY_TREE_PDF_MAP, FAMILY_TREE_REQUIRED_FIELDS } from './familyTree';
-
-// Re-export individual maps for direct imports
-export { 
-  POA_ADULT_PDF_MAP, 
-  POA_MINOR_PDF_MAP, 
-  POA_SPOUSES_PDF_MAP, 
-  transcriptionFieldMappings,
-  CITIZENSHIP_PDF_MAP,
-  FAMILY_TREE_PDF_MAP
-};
-
-// Export all mappings
-export const PDF_MAPPINGS: Record<string, Record<string, string>> = {
-  'poa-adult': POA_ADULT_PDF_MAP,
-  'poa-minor': POA_MINOR_PDF_MAP,
-  'poa-spouses': POA_SPOUSES_PDF_MAP,
-  'transcription': transcriptionFieldMappings,
-  'uzupelnienie': transcriptionFieldMappings,
-  'registration': transcriptionFieldMappings,
-  'umiejscowienie': transcriptionFieldMappings,
-  'citizenship': CITIZENSHIP_PDF_MAP,
-  'family-tree': FAMILY_TREE_PDF_MAP,
-};
-
-// Export all required fields
-export const REQUIRED_FIELDS: Record<string, string[]> = {
-  'poa-adult': POA_ADULT_REQUIRED_FIELDS,
-  'poa-minor': POA_MINOR_REQUIRED_FIELDS,
-  'poa-spouses': POA_SPOUSES_REQUIRED_FIELDS,
-  'transcription': TRANSCRIPTION_REQUIRED_FIELDS,
-  'uzupelnienie': TRANSCRIPTION_REQUIRED_FIELDS,
-  'registration': TRANSCRIPTION_REQUIRED_FIELDS,
-  'umiejscowienie': TRANSCRIPTION_REQUIRED_FIELDS,
-  'citizenship': CITIZENSHIP_REQUIRED_FIELDS,
-  'family-tree': FAMILY_TREE_REQUIRED_FIELDS,
-};
-
-// Get mapping for a specific template
-export function getPDFMapping(templateType: string): Record<string, string> | null {
-  return PDF_MAPPINGS[templateType] || null;
-}
-
-// Get required fields for a specific template
-export function getRequiredFields(templateType: string): string[] {
-  return REQUIRED_FIELDS[templateType] || [];
-}
-
-// Validate if a template is supported
-export function isSupportedTemplate(templateType: string): boolean {
-  return templateType in PDF_MAPPINGS;
-}
+// Import from backend (single source of truth)
+export { POA_ADULT_PDF_MAP, POA_ADULT_REQUIRED_FIELDS } from '../../../supabase/functions/_shared/mappings/poa-adult';
+export { POA_MINOR_PDF_MAP, POA_MINOR_REQUIRED_FIELDS } from '../../../supabase/functions/_shared/mappings/poa-minor';
+export { POA_SPOUSES_PDF_MAP, POA_SPOUSES_REQUIRED_FIELDS } from '../../../supabase/functions/_shared/mappings/poa-spouses';
+export { POA_COMBINED_PDF_MAP, POA_COMBINED_REQUIRED_FIELDS } from '../../../supabase/functions/_shared/mappings/poa-combined';
