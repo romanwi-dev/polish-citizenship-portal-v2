@@ -118,31 +118,19 @@ export default function POAForm() {
       await handlePOASave();
       toast.success('Saved! Generating PDF...');
       
-      // Use async queue system
-      const { generatePdf } = await import('@/lib/generate-pdf');
-      await generatePdf({
-        supabase,
+      // Use simple PDF generation
+      const { generateSimplePDF } = await import('@/lib/pdf-simple');
+      const pdfUrl = await generateSimplePDF({
         caseId,
         templateType,
-        toast: {
-          loading: (msg: string) => toast.info(msg),
-          dismiss: () => {},
-          success: (msg: string) => toast.success(msg),
-          error: (msg: string) => toast.error(msg),
-        },
-        setIsGenerating,
-        filename: `${templateType}-${caseId}.pdf`
+        toast,
+        setIsGenerating
       });
       
-      // Wait for PDF URL to be ready and open preview dialog
-      if ((window as any).__lastGeneratedPdfReady) {
-        const pdfUrl = (window as any).__lastGeneratedPdfUrl;
-        (window as any).__lastGeneratedPdfReady = false;
-        
-        setPdfPreviewUrl(pdfUrl);
-        setPreviewTemplate(templateType);
-        setPreviewFormData(formData);
-        setPreviewOpen(true);
+      if (pdfUrl) {
+        // Open PDF in new tab
+        window.open(pdfUrl, '_blank');
+        toast.success('PDF opened in new tab!');
       }
     } catch (error: any) {
       console.error("[POA] PDF generation error:", error);
