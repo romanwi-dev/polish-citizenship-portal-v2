@@ -80,6 +80,47 @@ serve(async (req) => {
       });
     }
 
+    if (action === 'store_batch_patterns') {
+      const batchResults = patternData.batchResults || [];
+      
+      // Calculate aggregate metrics
+      const totalProcessed = batchResults.length;
+      const successfulScans = batchResults.filter((r: any) => r.success).length;
+      const avgConfidence = batchResults.reduce((sum: number, r: any) => 
+        sum + (r.confidence || 0), 0
+      ) / totalProcessed;
+
+      // Store batch learning
+      const batchKey = `poa_batch_${new Date().toISOString().split('T')[0]}`;
+      
+      const { error } = await supabase
+        .from('ocr_patterns_memory')
+        .upsert({
+          pattern_key: batchKey,
+          pattern_data: {
+            avgConfidence,
+            totalProcessed,
+            successRate: successfulScans / totalProcessed,
+            documentTypes: batchResults.map((r: any) => r.documentType),
+            timestamp: new Date().toISOString(),
+          },
+          success_count: successfulScans,
+        });
+
+      if (error) throw error;
+
+      return new Response(JSON.stringify({ 
+        success: true,
+        metrics: {
+          avgConfidence,
+          successRate: successfulScans / totalProcessed,
+          totalProcessed,
+        }
+      }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
     return new Response(JSON.stringify({ error: 'Invalid action' }), {
       status: 400,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },

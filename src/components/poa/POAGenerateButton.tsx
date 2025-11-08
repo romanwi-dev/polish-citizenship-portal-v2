@@ -10,7 +10,7 @@ interface POAGenerateButtonProps {
   caseId: string;
   passportConfidence?: number;
   birthCertConfidence?: number;
-  onGenerated?: (pdfUrl: string) => void;
+  onGenerated?: (pdfUrl: string, poaId: string) => void;
 }
 
 export const POAGenerateButton = ({
@@ -95,13 +95,13 @@ export const POAGenerateButton = ({
 
       if (error) throw error;
 
-      if (data?.success && data?.pdfUrl) {
+      if (data?.success && data?.pdfUrl && data?.poaId) {
         toast.success("POA generated successfully!");
         if (onGenerated) {
-          onGenerated(data.pdfUrl);
+          onGenerated(data.pdfUrl, data.poaId);
         }
       } else {
-        throw new Error('POA generation failed');
+        throw new Error('POA generation failed - missing PDF URL or POA ID');
       }
     } catch (error) {
       console.error('Generation error:', error);

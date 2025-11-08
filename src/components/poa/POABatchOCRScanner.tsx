@@ -1,5 +1,5 @@
-import { useState, useRef, useCallback } from "react";
-import { Upload, FileText, CheckCircle, AlertCircle, Loader2, X, FileStack } from "lucide-react";
+import { useState, useRef } from "react";
+import { Upload, CheckCircle, AlertCircle, Loader2, X, FileStack } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -15,28 +15,29 @@ interface POABatchOCRScannerProps {
   maxFiles?: number;
 }
 
-interface OCRResult {
-  confidence: number;
-  extracted_data: Record<string, any>;
-  document_type: string;
-}
-
 interface FileStatus {
   file: File;
   status: 'pending' | 'processing' | 'completed' | 'failed';
   progress: number;
-  result?: OCRResult;
+  result?: any;
   error?: string;
-  documentType: 'passport' | 'birth_certificate' | 'other';
+  documentType: 'other';
+  documentId?: string;
 }
 
 interface OCRBatchResult {
   fileName: string;
   success: boolean;
   documentType: string;
-  result?: OCRResult;
+  confidence?: number;
+  documentId?: string;
   error?: string;
 }
+
+const detectDocumentType = (fileName: string): 'other' => {
+  // Let AI (ocr-universal) detect document type automatically
+  return 'other';
+};
 
 export const POABatchOCRScanner = ({ 
   caseId, 
@@ -49,35 +50,22 @@ export const POABatchOCRScanner = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const validateFile = (file: File): { valid: boolean; error?: string } => {
-    // Validate file size (max 20MB)
     if (file.size > 20 * 1024 * 1024) {
-      return { valid: false, error: "File too large. Maximum size is 20MB." };
+      return { valid: false, error: "File too large (max 20MB)" };
     }
 
-    // Validate file type
     const validTypes = [
-      'image/jpeg', 'image/png', 'image/webp', 'image/heic',
+      'image/jpeg', 'image/png', 'image/webp',
       'application/pdf',
       'application/msword',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
     ];
     
     if (!validTypes.includes(file.type)) {
-      return { valid: false, error: "Invalid file type." };
+      return { valid: false, error: "Invalid file type" };
     }
 
     return { valid: true };
-  };
-
-  const detectDocumentType = (fileName: string): 'passport' | 'birth_certificate' | 'other' => {
-    const lower = fileName.toLowerCase();
-    if (lower.includes('passport') || lower.includes('pass')) {
-      return 'passport';
-    }
-    if (lower.includes('birth') || lower.includes('cert')) {
-      return 'birth_certificate';
-    }
-    return 'other';
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -119,47 +107,6 @@ export const POABatchOCRScanner = ({
     setFiles(newFiles);
   };
 
-  const processOCR = async (
-    file: File, 
-    documentType: 'passport' | 'birth_certificate' | 'other'
-  ): Promise<OCRResult> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      
-      reader.onloadend = async () => {
-        try {
-          const base64 = reader.result as string;
-          
-          // Use appropriate OCR function based on type
-          const functionName = documentType === 'passport' 
-            ? 'ocr-passport' 
-            : 'ocr-universal';
-          
-          const { data, error } = await supabase.functions.invoke(functionName, {
-            body: {
-              imageBase64: base64,
-              caseId,
-              expectedType: documentType,
-            },
-          });
-
-          if (error) throw error;
-
-          if (data?.success) {
-            resolve(data.data);
-          } else {
-            throw new Error('OCR processing failed');
-          }
-        } catch (err) {
-          reject(err);
-        }
-      };
-      
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  };
-
   const updateFileStatus = (fileId: string, updates: Partial<FileStatus>) => {
     setFiles(prev => {
       const newFiles = new Map(prev);
@@ -171,40 +118,90 @@ export const POABatchOCRScanner = ({
     });
   };
 
-  const processSingleFile = async (fileId: string, fileStatus: FileStatus): Promise<OCRBatchResult> => {
-    updateFileStatus(fileId, { status: 'processing', progress: 10 });
-
+  const processSingleFile = async (fileId: string, fileStatus: FileStatus) => {
     try {
-      updateFileStatus(fileId, { progress: 30 });
-      
-      const result = await processOCR(fileStatus.file, fileStatus.documentType);
-      
+      // 1. Upload to Dropbox
+      updateFileStatus(fileId, { progress: 25 });
+      const uploadFormData = new FormData();
+      uploadFormData.append('file', fileStatus.file);
+      uploadFormData.append('caseId', caseId);
+      uploadFormData.append('documentType', fileStatus.documentType);
+
+      const { data: uploadResult, error: uploadError } = await supabase.functions.invoke('upload-to-dropbox', {
+        body: uploadFormData,
+      });
+
+      if (uploadError) throw uploadError;
+
+      // 2. Process OCR
+      updateFileStatus(fileId, { progress: 50 });
+      const ocrFormData = new FormData();
+      ocrFormData.append('file', fileStatus.file);
+      ocrFormData.append('documentType', fileStatus.documentType);
+
+      const { data: ocrResult, error: ocrError } = await supabase.functions.invoke('ocr-universal', {
+        body: ocrFormData,
+      });
+
+      if (ocrError) throw ocrError;
+
+      // 3. Create document record
+      updateFileStatus(fileId, { progress: 75 });
+      const { data: doc, error: docError } = await supabase
+        .from('documents')
+        .insert({
+          case_id: caseId,
+          name: uploadResult.filename || fileStatus.file.name,
+          dropbox_path: uploadResult.dropboxPath,
+          file_extension: uploadResult.filename?.split('.').pop() || fileStatus.file.name.split('.').pop(),
+          document_type: ocrResult.extracted_data?.document_type || fileStatus.documentType,
+          person_type: ocrResult.extracted_data?.person_type || 'AP',
+          ocr_data: ocrResult.extracted_data || ocrResult,
+          ocr_confidence: ocrResult.confidence,
+          ocr_status: 'completed',
+        })
+        .select()
+        .single();
+
+      if (docError) throw docError;
+
+      // 4. Apply OCR data to master_table
+      updateFileStatus(fileId, { progress: 90 });
+      const { error: applyError } = await supabase.functions.invoke('apply-ocr-to-forms', {
+        body: {
+          documentId: doc.id,
+          caseId,
+          overwriteManual: false,
+        },
+      });
+
+      if (applyError) throw applyError;
+
       updateFileStatus(fileId, { 
         status: 'completed', 
         progress: 100,
-        result 
+        result: ocrResult,
+        documentId: doc.id
       });
 
       return {
-        fileName: fileStatus.file.name,
         success: true,
+        confidence: ocrResult.confidence || 0,
+        result: ocrResult,
         documentType: fileStatus.documentType,
-        result
+        documentId: doc.id,
       };
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'OCR processing failed';
-      
+      console.error(`Error processing ${fileStatus.file.name}:`, error);
       updateFileStatus(fileId, { 
         status: 'failed', 
         progress: 0,
-        error: errorMessage 
+        error: error instanceof Error ? error.message : 'Unknown error'
       });
-
       return {
-        fileName: fileStatus.file.name,
         success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
         documentType: fileStatus.documentType,
-        error: errorMessage
       };
     }
   };
@@ -232,7 +229,19 @@ export const POABatchOCRScanner = ({
         );
         
         const batchResults = await Promise.all(batchPromises);
-        results.push(...batchResults);
+        
+        // Map to OCRBatchResult
+        batch.forEach(([fileId, fileStatus], idx) => {
+          const result = batchResults[idx];
+          results.push({
+            fileName: fileStatus.file.name,
+            success: result.success,
+            documentType: result.documentType,
+            confidence: result.confidence,
+            documentId: result.documentId,
+            error: result.error,
+          });
+        });
         
         // Update overall progress
         const progress = Math.round(((i + batch.length) / fileEntries.length) * 100);
@@ -253,13 +262,18 @@ export const POABatchOCRScanner = ({
         onBatchComplete(results);
       }
 
-      // Store results in OCR memory agent
+      // Store batch patterns in OCR memory
       await supabase.functions.invoke('ocr-memory-agent', {
         body: {
           action: 'store_batch_patterns',
-          caseId,
-          batchResults: results
-        }
+          patternData: {
+            batchResults: results.map(r => ({
+              success: r.success,
+              confidence: r.confidence || 0,
+              documentType: r.documentType,
+            })),
+          },
+        },
       });
 
     } catch (error) {
@@ -271,191 +285,105 @@ export const POABatchOCRScanner = ({
     }
   };
 
-  const getStatusColor = (status: FileStatus['status']) => {
-    switch (status) {
-      case 'completed': return 'bg-green-500';
-      case 'processing': return 'bg-blue-500';
-      case 'failed': return 'bg-red-500';
-      default: return 'bg-muted';
-    }
-  };
-
-  const getStatusIcon = (status: FileStatus['status']) => {
-    switch (status) {
-      case 'completed': return <CheckCircle className="w-4 h-4 text-green-500" />;
-      case 'processing': return <Loader2 className="w-4 h-4 animate-spin text-blue-500" />;
-      case 'failed': return <AlertCircle className="w-4 h-4 text-red-500" />;
-      default: return <FileText className="w-4 h-4 text-muted-foreground" />;
-    }
-  };
-
   const pendingCount = Array.from(files.values()).filter(f => f.status === 'pending').length;
   const completedCount = Array.from(files.values()).filter(f => f.status === 'completed').length;
   const failedCount = Array.from(files.values()).filter(f => f.status === 'failed').length;
 
   return (
-    <div className="space-y-4">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <FileStack className="w-5 h-5" />
-            Batch OCR Scanner
-          </CardTitle>
-          <CardDescription>
-            Upload multiple documents (passports, birth certificates, etc.) and process them in parallel
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {/* File Upload */}
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <FileStack className="w-5 h-5" />
+          Batch OCR Scanner
+        </CardTitle>
+        <CardDescription>
+          Upload multiple documents and process them in parallel
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <Input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*,application/pdf,.doc,.docx"
+          onChange={handleFileSelect}
+          disabled={processing}
+          multiple
+        />
+        <p className="text-xs text-muted-foreground">
+          Max {maxFiles} files, 20MB each
+        </p>
+
+        {processing && (
           <div className="space-y-2">
-            <Input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*,application/pdf,.doc,.docx"
-              onChange={handleFileSelect}
-              disabled={processing}
-              multiple
-            />
-            <p className="text-xs text-muted-foreground">
-              Maximum {maxFiles} files, 20MB each. Supports images, PDFs, and documents.
-            </p>
+            <div className="flex justify-between text-sm">
+              <span>Overall Progress</span>
+              <span>{overallProgress}%</span>
+            </div>
+            <Progress value={overallProgress} />
           </div>
+        )}
 
-          {/* Progress Bar */}
-          {processing && (
+        {files.size > 0 && (
+          <div className="flex gap-4 text-sm">
+            <Badge variant="outline">Total: {files.size}</Badge>
+            {pendingCount > 0 && <Badge variant="secondary">Pending: {pendingCount}</Badge>}
+            {completedCount > 0 && <Badge className="bg-green-500">Completed: {completedCount}</Badge>}
+            {failedCount > 0 && <Badge variant="destructive">Failed: {failedCount}</Badge>}
+          </div>
+        )}
+
+        {files.size > 0 && (
+          <ScrollArea className="h-[300px] border rounded-lg p-4">
             <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span>Overall Progress</span>
-                <span>{overallProgress}%</span>
-              </div>
-              <Progress value={overallProgress} />
-            </div>
-          )}
-
-          {/* Summary Stats */}
-          {files.size > 0 && (
-            <div className="flex gap-4 text-sm">
-              <Badge variant="outline">
-                Total: {files.size}
-              </Badge>
-              {pendingCount > 0 && (
-                <Badge variant="secondary">
-                  Pending: {pendingCount}
-                </Badge>
-              )}
-              {completedCount > 0 && (
-                <Badge className="bg-green-500">
-                  Completed: {completedCount}
-                </Badge>
-              )}
-              {failedCount > 0 && (
-                <Badge variant="destructive">
-                  Failed: {failedCount}
-                </Badge>
-              )}
-            </div>
-          )}
-
-          {/* File List */}
-          {files.size > 0 && (
-            <ScrollArea className="h-[300px] border rounded-lg p-4">
-              <div className="space-y-2">
-                {Array.from(files.entries()).map(([fileId, fileStatus]) => (
-                  <div
-                    key={fileId}
-                    className="flex items-center gap-3 p-3 border rounded-lg bg-card hover:bg-accent/50 transition-colors"
-                  >
-                    {getStatusIcon(fileStatus.status)}
-                    
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <p className="text-sm font-medium truncate">
-                          {fileStatus.file.name}
-                        </p>
-                        <Badge variant="outline" className="text-xs">
-                          {fileStatus.documentType}
-                        </Badge>
-                      </div>
-                      <p className="text-xs text-muted-foreground">
-                        {(fileStatus.file.size / 1024 / 1024).toFixed(2)}MB
-                      </p>
-                      {fileStatus.status === 'processing' && (
-                        <Progress value={fileStatus.progress} className="h-1 mt-1" />
-                      )}
-                      {fileStatus.error && (
-                        <p className="text-xs text-red-500 mt-1">{fileStatus.error}</p>
-                      )}
-                      {fileStatus.result && (
-                        <p className="text-xs text-green-600 mt-1">
-                          {(fileStatus.result.confidence * 100).toFixed(0)}% confidence
-                        </p>
-                      )}
-                    </div>
-
-                    {!processing && fileStatus.status === 'pending' && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => removeFile(fileId)}
-                      >
-                        <X className="w-4 h-4" />
-                      </Button>
+              {Array.from(files.entries()).map(([fileId, fileStatus]) => (
+                <div key={fileId} className="flex items-center gap-3 p-3 border rounded-lg">
+                  {fileStatus.status === 'completed' && <CheckCircle className="w-4 h-4 text-green-500" />}
+                  {fileStatus.status === 'processing' && <Loader2 className="w-4 h-4 animate-spin text-blue-500" />}
+                  {fileStatus.status === 'failed' && <AlertCircle className="w-4 h-4 text-red-500" />}
+                  
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium truncate">{fileStatus.file.name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {(fileStatus.file.size / 1024 / 1024).toFixed(2)}MB
+                    </p>
+                    {fileStatus.status === 'processing' && (
+                      <Progress value={fileStatus.progress} className="h-1 mt-1" />
+                    )}
+                    {fileStatus.error && (
+                      <p className="text-xs text-red-500 mt-1">{fileStatus.error}</p>
                     )}
                   </div>
-                ))}
-              </div>
-            </ScrollArea>
-          )}
 
-          {/* Process Button */}
-          <Button
-            onClick={handleProcessBatch}
-            disabled={files.size === 0 || processing}
-            className="w-full"
-            size="lg"
-          >
-            {processing ? (
-              <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Processing {completedCount} of {files.size}...
-              </>
-            ) : (
-              <>
-                <Upload className="w-4 h-4 mr-2" />
-                Process {files.size} File{files.size !== 1 ? 's' : ''}
-              </>
-            )}
-          </Button>
-        </CardContent>
-      </Card>
-
-      {/* Results Summary */}
-      {completedCount > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Extraction Summary</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              {Array.from(files.values())
-                .filter(f => f.status === 'completed' && f.result)
-                .map((f, idx) => (
-                  <div key={idx} className="flex items-center justify-between p-2 border rounded">
-                    <span className="text-sm font-medium">{f.file.name}</span>
-                    <div className="flex items-center gap-2">
-                      <Badge className={f.result!.confidence >= 0.85 ? "bg-green-500" : "bg-yellow-500"}>
-                        {(f.result!.confidence * 100).toFixed(0)}%
-                      </Badge>
-                      <span className="text-xs text-muted-foreground">
-                        {Object.keys(f.result!.extracted_data).length} fields
-                      </span>
-                    </div>
-                  </div>
-                ))}
+                  {!processing && fileStatus.status === 'pending' && (
+                    <Button variant="ghost" size="sm" onClick={() => removeFile(fileId)}>
+                      <X className="w-4 h-4" />
+                    </Button>
+                  )}
+                </div>
+              ))}
             </div>
-          </CardContent>
-        </Card>
-      )}
-    </div>
+          </ScrollArea>
+        )}
+
+        <Button
+          onClick={handleProcessBatch}
+          disabled={files.size === 0 || processing}
+          className="w-full"
+          size="lg"
+        >
+          {processing ? (
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Processing {completedCount} of {files.size}...
+            </>
+          ) : (
+            <>
+              <Upload className="w-4 h-4 mr-2" />
+              Process {files.size} File{files.size !== 1 ? 's' : ''}
+            </>
+          )}
+        </Button>
+      </CardContent>
+    </Card>
   );
 };

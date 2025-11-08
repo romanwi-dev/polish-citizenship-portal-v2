@@ -31,8 +31,9 @@ export const POAThreeClickWizard = ({ caseId, useBatchMode = false }: POAThreeCl
     }
   };
 
-  const handlePDFGenerated = (pdfUrl: string) => {
+  const handlePDFGenerated = (pdfUrl: string, poaId: string) => {
     setGeneratedPdfUrl(pdfUrl);
+    setPoaId(poaId);
     setCurrentStep(3);
   };
 
