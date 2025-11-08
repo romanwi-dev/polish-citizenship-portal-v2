@@ -20,6 +20,8 @@ import { getPooledAdminClient } from '../_shared/connection-pool.ts';
 import { templateCache } from '../_shared/template-cache-v2.ts';
 import { fillFieldsInParallel } from '../_shared/parallel-field-filler.ts';
 import { performanceTracker } from '../_shared/performance-tracker.ts';
+import { validateFamilyTreeData } from '../_shared/family-tree-validator.ts';
+import { resolveFamilyTreeData } from '../_shared/family-tree-resolver.ts';
 
 // DEPLOYMENT VERSION: 2024-11-05-V4-MODULAR
 // Uses shared modules for field mappings, errors, and retry logic
@@ -433,6 +435,67 @@ Deno.serve(async (req) => {
         return j(req, { code: error.code, message: error.message }, 404);
       }
       
+      // FAMILY TREE: Validate and resolve dynamic bloodline data
+      let resolvedFamilyData: any = null;
+      if (normalizedType === 'family-tree') {
+        log('family_tree_validation_start', { caseId });
+        
+        // Validate family tree data completeness
+        const validation = validateFamilyTreeData(masterData);
+        
+        log('family_tree_validation_result', {
+          caseId,
+          isValid: validation.isValid,
+          bloodline: validation.bloodline,
+          completeness: validation.dataCompleteness,
+          errors: validation.errors,
+          warnings: validation.warnings,
+          missingFields: validation.missingRequired.length
+        });
+        
+        // Return validation errors if critical issues found
+        if (!validation.isValid) {
+          const error = createPDFError(
+            PDFErrorCode.VALIDATION_FAILED,
+            'Family Tree validation failed: ' + validation.errors.join(', '),
+            {
+              validation: validation.errors,
+              bloodline: validation.bloodline,
+              completeness: validation.dataCompleteness
+            }
+          );
+          logPDFError(error);
+          return j(req, {
+            code: error.code,
+            message: error.message,
+            validation: {
+              errors: validation.errors,
+              warnings: validation.warnings,
+              bloodline: validation.bloodline,
+              completeness: validation.dataCompleteness,
+              missingRequired: validation.missingRequired
+            }
+          }, 400);
+        }
+        
+        // Log warnings for user awareness
+        if (validation.warnings.length > 0) {
+          log('family_tree_warnings', {
+            caseId,
+            warnings: validation.warnings
+          });
+        }
+        
+        // Resolve dynamic bloodline data
+        resolvedFamilyData = resolveFamilyTreeData(masterData);
+        
+        log('family_tree_resolved', {
+          caseId,
+          bloodline: validation.bloodline,
+          resolvedFields: Object.keys(resolvedFamilyData).length
+        });
+      }
+      
       // Handle child-specific mapping for minor POAs
       if (normalizedType === 'poa-minor' && childNum) {
         log('mapping_minor_child', { childNum });
@@ -506,11 +569,16 @@ Deno.serve(async (req) => {
       const form = pdfDoc.getForm();
       log('pdf_loaded', { caseId, templateType });
 
+      // FAMILY TREE: Use resolved dynamic data instead of raw masterData
+      const dataToFill = normalizedType === 'family-tree' && resolvedFamilyData 
+        ? resolvedFamilyData 
+        : masterData;
+
       // PHASE B: Fill PDF using parallel field filler (batches of 20)
       const fillTimer = performanceTracker.start('field_filling', { fieldCount: Object.keys(fieldMap).length });
       const result = await fillFieldsInParallel(
         form,
-        masterData,
+        dataToFill,
         fieldMap,
         formatFieldValue,
         getNestedValue,
