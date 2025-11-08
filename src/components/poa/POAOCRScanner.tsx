@@ -301,12 +301,12 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
   };
 
   return (
-    <Card>
+    <Card className="glass-card hover-glow">
       <CardHeader>
         <CardTitle>Scan Documents</CardTitle>
         <CardDescription>Upload and OCR your passport and birth certificate</CardDescription>
       </CardHeader>
-      <CardContent className="space-y-6">
+<CardContent className="space-y-6">
         {/* Processing Progress */}
         {processing && processingStep !== 'idle' && (
           <div className="space-y-3 p-4 bg-muted rounded-lg">
@@ -344,15 +344,19 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
                   className="hidden"
                   id="passport-upload"
                 />
-                <label htmlFor="passport-upload" className="cursor-pointer">
+                <label htmlFor="passport-upload" className="cursor-pointer block">
                   <Camera className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                   <p className="text-sm text-muted-foreground mb-2">
                     Click to upload or take photo of passport
                   </p>
-                  <Button type="button" variant="outline" size="sm">
-                    <Upload className="w-4 h-4 mr-2" />
-                    Select Passport Image
-                  </Button>
+                  <div className="flex justify-center">
+                    <Button type="button" variant="outline" size="sm" asChild>
+                      <span>
+                        <Upload className="w-4 h-4 mr-2" />
+                        Select Passport Image
+                      </span>
+                    </Button>
+                  </div>
                 </label>
               </div>
             ) : editingImage ? (
@@ -411,15 +415,19 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
                   className="hidden"
                   id="birthcert-upload"
                 />
-                <label htmlFor="birthcert-upload" className="cursor-pointer">
+                <label htmlFor="birthcert-upload" className="cursor-pointer block">
                   <Camera className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                   <p className="text-sm text-muted-foreground mb-2">
                     Click to upload birth certificate (optional)
                   </p>
-                  <Button type="button" variant="outline" size="sm">
-                    <Upload className="w-4 h-4 mr-2" />
-                    Select Birth Certificate
-                  </Button>
+                  <div className="flex justify-center">
+                    <Button type="button" variant="outline" size="sm" asChild>
+                      <span>
+                        <Upload className="w-4 h-4 mr-2" />
+                        Select Birth Certificate
+                      </span>
+                    </Button>
+                  </div>
                 </label>
               </div>
             ) : editingImage ? (

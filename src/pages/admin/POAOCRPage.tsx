@@ -30,14 +30,11 @@ export default function POAOCRPage() {
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Case
           </Button>
-          <h1 className="text-4xl font-heading font-black mb-2">
+          <h1 className="text-3xl font-heading font-black">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               POA OCR Wizard
             </span>
           </h1>
-          <p className="text-muted-foreground">
-            Scan documents with OCR to auto-populate POA form
-          </p>
         </div>
 
         <POAThreeClickWizard caseId={id} useBatchMode={false} />
