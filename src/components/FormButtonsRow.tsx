@@ -74,7 +74,7 @@ export function FormButtonsRow({
       {/* Sticky Action Buttons Row - FIXED AT BOTTOM */}
       <div className="fixed bottom-0 left-0 right-0 z-[100] backdrop-blur-md bg-background/95 border-t border-border shadow-lg">
         <div className="mx-auto max-w-7xl px-3 md:px-6 py-2 md:py-3">
-          <div className="flex flex-row gap-0.5 justify-between">
+          <div className="flex flex-row gap-0.5">
             <Button
               onClick={onSave}
               disabled={isSaving}

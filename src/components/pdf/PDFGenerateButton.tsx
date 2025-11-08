@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Eye } from "lucide-react";
 import { PDFPreviewDialog } from "@/components/pdf/PDFPreviewDialog";
 
 interface PDFGenerateButtonProps {
@@ -22,24 +21,21 @@ export function PDFGenerateButton({
 
   return (
     <>
-      <div className="flex gap-2 w-full">
-        <Button
-          onClick={() => setPreviewOpen(true)}
-          variant="outline"
-          disabled={disabled}
-          className="flex-shrink-0 bg-purple-500/20 hover:bg-purple-500/30 border-purple-400/40"
-        >
-          <Eye className="h-4 w-4 mr-2" />
-          <span className="text-purple-100">Preview</span>
-        </Button>
-        <Button
-          onClick={onGenerate}
-          disabled={disabled}
-          className="flex-1 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]"
-        >
-          {children}
-        </Button>
-      </div>
+      <Button
+        onClick={() => setPreviewOpen(true)}
+        variant="outline"
+        disabled={disabled}
+        className="px-6 py-6 md:py-2 text-sm md:text-base font-bold flex-1 bg-purple-500/20 hover:bg-purple-500/30 border-purple-400/40"
+      >
+        <span className="text-purple-100 font-bold whitespace-nowrap">Preview</span>
+      </Button>
+      <Button
+        onClick={onGenerate}
+        disabled={disabled}
+        className="px-6 py-6 md:py-2 text-sm md:text-base font-bold flex-1 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]"
+      >
+        {children}
+      </Button>
 
       <PDFPreviewDialog
         open={previewOpen}
