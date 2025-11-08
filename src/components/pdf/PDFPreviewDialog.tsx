@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -54,11 +54,11 @@ export function PDFPreviewDialog({
   const [isMobile, setIsMobile] = useState(false);
   const defaultCopies = getDefaultCopies(templateType);
 
-  // Detect mobile device
-  useState(() => {
+  // Detect mobile device - FIXED: useEffect instead of useState
+  useEffect(() => {
     const ua = navigator.userAgent;
     setIsMobile(/iPhone|iPad|iPod|Android/i.test(ua));
-  });
+  }, []);
 
   const loadPreview = async () => {
     console.log('[PDFPreviewDialog] loadPreview called:', { caseId, templateType });

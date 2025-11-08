@@ -210,18 +210,71 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
     const isPDF = file.type === 'application/pdf' || fileExtension === 'pdf';
     const isOfficeDoc = ['doc', 'docx', 'odt'].includes(fileExtension || '');
     
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('documentType', documentType);
-    formData.append('personType', selectedPerson || 'AP');
-
-    // Use document parser for PDFs and Office docs, regular OCR for images
+    // FIXED OCR: Convert file to base64 for ocr-passport, FormData for others
     const functionName = (isPDF || isOfficeDoc) 
       ? 'parse-document-ocr'
       : (documentType === 'passport' ? 'ocr-passport' : 'ocr-universal');
 
+    console.log('[POAOCRScanner] processOCR:', { 
+      functionName, 
+      documentType, 
+      personType: selectedPerson,
+      fileName: file.name,
+      fileType: file.type,
+      fileSize: file.size
+    });
+
+    let requestBody: any;
+    
+    if (functionName === 'ocr-passport') {
+      // For passport OCR, convert to base64 as expected by the edge function
+      const reader = new FileReader();
+      const base64Promise = new Promise<string>((resolve, reject) => {
+        reader.onload = () => {
+          const base64 = reader.result as string;
+          const base64Data = base64.split(',')[1]; // Remove data:image/...;base64, prefix
+          resolve(base64Data);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+      
+      const imageBase64 = await base64Promise;
+      requestBody = {
+        imageBase64,
+        caseId,
+        personType: selectedPerson || 'AP',
+        documentType
+      };
+      
+      console.log('[POAOCRScanner] Sending base64 request to ocr-passport:', {
+        hasBase64: !!imageBase64,
+        base64Length: imageBase64.length,
+        caseId,
+        personType: selectedPerson,
+        documentType
+      });
+    } else {
+      // For other OCR functions, use FormData
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('documentType', documentType);
+      formData.append('personType', selectedPerson || 'AP');
+      requestBody = formData;
+      
+      console.log('[POAOCRScanner] Sending FormData request to', functionName);
+    }
+
     const { data, error } = await supabase.functions.invoke(functionName, {
-      body: formData,
+      body: requestBody,
+    });
+    
+    console.log('[POAOCRScanner] OCR Response:', { 
+      functionName, 
+      hasData: !!data, 
+      hasError: !!error,
+      error: error?.message,
+      data: data ? Object.keys(data) : null
     });
 
     if (error) {
