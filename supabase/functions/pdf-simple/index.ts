@@ -173,7 +173,23 @@ async function fillTemplate(
       
         if (value != null && value !== '') {
           const textField = form.getTextField(fieldName);
-          textField.setText(String(value));
+          const textValue = String(value);
+          
+          // Auto-size font for long text (Family Tree names can be long)
+          if (templatePath.includes('family-tree')) {
+            const fieldWidth = textField.acroField.getWidgets()[0]?.getRectangle()?.width || 200;
+            const textLength = textValue.length;
+            
+            // Dynamic font sizing: reduce size for longer text
+            let fontSize = 12; // default
+            if (textLength > 30) fontSize = 8;
+            else if (textLength > 20) fontSize = 9;
+            else if (textLength > 15) fontSize = 10;
+            
+            textField.setFontSize(fontSize);
+          }
+          
+          textField.setText(textValue);
         }
       } catch (e) {
         // Skip fields we can't fill
@@ -358,7 +374,22 @@ Deno.serve(async (req) => {
 
         if (value != null && value !== '') {
           const textField = form.getTextField(fieldName);
-          textField.setText(String(value));
+          const textValue = String(value);
+          
+          // Auto-size font for long text (Family Tree names can be long)
+          if (templateType === 'family-tree') {
+            const textLength = textValue.length;
+            
+            // Dynamic font sizing: reduce size for longer text
+            let fontSize = 12; // default
+            if (textLength > 30) fontSize = 8;
+            else if (textLength > 20) fontSize = 9;
+            else if (textLength > 15) fontSize = 10;
+            
+            textField.setFontSize(fontSize);
+          }
+          
+          textField.setText(textValue);
           filledCount++;
         }
       } catch (e) {
