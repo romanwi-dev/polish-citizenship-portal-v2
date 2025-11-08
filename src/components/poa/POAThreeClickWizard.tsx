@@ -1,10 +1,14 @@
-import { useState } from "react";
-import { Camera, FileText, Send } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Camera, FileText, Send, AlertTriangle } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import { POAOCRScanner } from "./POAOCRScanner";
 import { POABatchOCRScanner } from "./POABatchOCRScanner";
 import { POAGenerateButton } from "./POAGenerateButton";
 import { POASignSendDialog } from "./POASignSendDialog";
+import { POAConflictResolver } from "./POAConflictResolver";
 
 interface POAThreeClickWizardProps {
   caseId: string;
@@ -17,6 +21,70 @@ export const POAThreeClickWizard = ({ caseId, useBatchMode = false }: POAThreeCl
   const [birthCertConfidence, setBirthCertConfidence] = useState<number>();
   const [generatedPdfUrl, setGeneratedPdfUrl] = useState<string>();
   const [poaId, setPoaId] = useState<string>();
+  const [staleSession, setStaleSession] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  // Load saved state on mount
+  useEffect(() => {
+    const loadState = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('case_workflow_state')
+          .select('*')
+          .eq('case_id', caseId)
+          .eq('workflow_type', 'poa')
+          .single();
+
+        if (error && error.code !== 'PGRST116') throw error;
+
+        if (data) {
+          const ageHours = (Date.now() - new Date(data.created_at).getTime()) / (1000 * 60 * 60);
+          if (ageHours > 24) {
+            setStaleSession(true);
+          }
+          setCurrentStep(data.current_step as 1 | 2 | 3);
+          if (data.form_data && typeof data.form_data === 'object') {
+            const formData = data.form_data as any;
+            setPassportConfidence(formData.passportConfidence);
+            setBirthCertConfidence(formData.birthCertConfidence);
+            setGeneratedPdfUrl(formData.generatedPdfUrl);
+            setPoaId(formData.poaId);
+          }
+        }
+      } catch (err: any) {
+        console.error('Failed to load session:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadState();
+  }, [caseId]);
+
+  // Save state on changes
+  useEffect(() => {
+    if (loading) return;
+
+    const saveState = async () => {
+      try {
+        await supabase.from('case_workflow_state').upsert({
+          case_id: caseId,
+          workflow_type: 'poa',
+          current_step: currentStep,
+          form_data: {
+            passportConfidence,
+            birthCertConfidence,
+            generatedPdfUrl,
+            poaId,
+          },
+        });
+      } catch (err: any) {
+        console.error('Failed to save session:', err);
+      }
+    };
+
+    saveState();
+  }, [currentStep, passportConfidence, birthCertConfidence, generatedPdfUrl, poaId, caseId, loading]);
 
   const handleOCRComplete = () => {
     setCurrentStep(2);
@@ -43,8 +111,23 @@ export const POAThreeClickWizard = ({ caseId, useBatchMode = false }: POAThreeCl
     { number: 3, icon: Send, label: 'SIGN', description: 'Sign & Send' },
   ];
 
+  if (loading) {
+    return <div className="max-w-4xl mx-auto p-8 text-center">Loading...</div>;
+  }
+
   return (
     <div className="max-w-4xl mx-auto space-y-8">
+      {staleSession && (
+        <Alert variant="default">
+          <AlertTriangle className="h-4 w-4" />
+          <AlertDescription>
+            This session is over 24 hours old. Some data may be outdated.
+          </AlertDescription>
+        </Alert>
+      )}
+
+      <POAConflictResolver caseId={caseId} />
+
       {/* Progress Header */}
       <Card>
         <CardHeader>

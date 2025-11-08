@@ -944,6 +944,42 @@ export type Database = {
         }
         Relationships: []
       }
+      case_workflow_state: {
+        Row: {
+          case_id: string
+          created_at: string | null
+          current_step: number
+          expires_at: string | null
+          form_data: Json | null
+          id: string
+          metadata: Json | null
+          updated_at: string | null
+          workflow_type: string
+        }
+        Insert: {
+          case_id: string
+          created_at?: string | null
+          current_step?: number
+          expires_at?: string | null
+          form_data?: Json | null
+          id?: string
+          metadata?: Json | null
+          updated_at?: string | null
+          workflow_type: string
+        }
+        Update: {
+          case_id?: string
+          created_at?: string | null
+          current_step?: number
+          expires_at?: string | null
+          form_data?: Json | null
+          id?: string
+          metadata?: Json | null
+          updated_at?: string | null
+          workflow_type?: string
+        }
+        Relationships: []
+      }
       cases: {
         Row: {
           active_workflows: Json | null
