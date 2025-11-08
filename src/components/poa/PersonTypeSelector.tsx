@@ -22,11 +22,7 @@ export const PersonTypeSelector = ({ onSelect, selectedPerson, selectedDocType, 
   const personOptions: { type: PersonType; label: string; icon: typeof User }[] = [
     { type: 'AP', label: 'Applicant', icon: User },
     { type: 'SPOUSE', label: 'Spouse', icon: Users },
-    ...Array.from({ length: childrenCount }, (_, i) => ({
-      type: `CHILD_${i + 1}` as PersonType,
-      label: `Child ${i + 1}`,
-      icon: Baby
-    }))
+    { type: 'CHILD_1', label: 'Child', icon: Baby },
   ];
 
   return (

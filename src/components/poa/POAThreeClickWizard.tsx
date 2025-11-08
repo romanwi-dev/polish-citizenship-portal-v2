@@ -132,11 +132,6 @@ export const POAThreeClickWizard = ({ caseId, useBatchMode = false }: POAThreeCl
 
       {/* Progress Header */}
       <div className="mb-8 px-4 py-6 md:p-10">
-        <div className="pb-8 pt-6">
-          <h2 className="text-5xl md:text-8xl font-heading font-black mb-12 tracking-tight text-center bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-            POA OCR Wizard
-          </h2>
-        </div>
         <div className="flex items-center justify-between">
           {steps.map((step, idx) => {
             const Icon = step.icon;
