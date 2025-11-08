@@ -5,7 +5,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { useState, useRef, lazy, Suspense, useEffect } from "react";
-import { Loader2, Save, Download, FileText, Sparkles, Type, User, ArrowLeft, HelpCircle, Maximize2, Minimize2, Users, Baby, Heart, Camera } from "lucide-react";
+import { Loader2, Save, Download, FileText, Sparkles, Type, User, ArrowLeft, HelpCircle, Maximize2, Minimize2, Users, Baby, Heart } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -196,6 +196,10 @@ export default function POAForm() {
 
     try {
       setIsGenerating(true);
+      
+      // Save form data FIRST to ensure all fields are persisted
+      await handlePOASave();
+      
       toast.loading('Generating combined POA...');
 
       console.log('[POA] Generating combined POA for case:', caseId);
@@ -226,7 +230,8 @@ export default function POAForm() {
         : `Combined POA ready! Filled ${data.fieldsFilledCount}/${data.totalFields} fields (${data.fillRate}%)`;
       toast.success(message);
 
-      // Open preview with the generated PDF
+      // Open preview with the generated PDF - set as "combined" type to show all
+      setActivePOAType('adult'); // Show all POAs in preview
       setPdfPreviewUrl(data.url);
       setPreviewFormData(formData);
     } catch (error: any) {
@@ -242,7 +247,7 @@ export default function POAForm() {
   const handleGenerateSpecificPOA = async (poaType: 'adult' | 'minor' | 'spouses') => {
     setIsGenerating(true);
     try {
-      // Save form data first
+      // Save form data FIRST to ensure all fields are persisted
       await handlePOASave();
       
       const templateType = `poa-${poaType}`;
@@ -263,8 +268,10 @@ export default function POAForm() {
       }
       
       if (data?.url) {
+        setActivePOAType(poaType); // Set active type for preview
         setPdfPreviewUrl(data.url);
         setPreviewFormData(formData);
+        toast.dismiss();
         toast.success(`${poaType.toUpperCase()} POA generated! ${data.stats?.filled}/${data.stats?.total} fields filled`);
       } else {
         throw new Error('No PDF URL returned from edge function');
@@ -272,6 +279,7 @@ export default function POAForm() {
 
     } catch (error: any) {
       console.error(`[POA] ${poaType} PDF generation error:`, error);
+      toast.dismiss();
       toast.error(`Failed to generate ${poaType} POA: ${error.message || 'Unknown error'}`);
     } finally {
       setIsGenerating(false);
@@ -368,23 +376,22 @@ export default function POAForm() {
           activePOAType={activePOAType}
         />
 
-        <div className="flex justify-center mb-6 mt-6">
+        <div className="flex justify-center mb-2 mt-2 md:mb-6 md:mt-6">
           <Button
             onClick={() => navigate(`/admin/cases/${caseId}/poa-ocr`)}
             size="lg" 
-            className="h-16 text-lg md:text-xl font-semibold px-8 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 shadow-lg hover:shadow-xl transition-all duration-300"
+            className="h-14 md:h-16 text-base md:text-xl font-semibold px-6 md:px-8 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 shadow-lg hover:shadow-xl transition-all duration-300"
           >
-            <Camera className="h-5 w-5 mr-2" />
-            Scan Documents with OCR
+            Scan Documents
           </Button>
         </div>
 
         {/* POA Forms */}
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="space-y-6 md:space-y-12 pb-32">
           {/* Main Applicant - First Questions */}
-          <div className="px-4 py-6 md:p-10">
-            <div className="border-b border-border/50 pb-6 pt-6">
-              <h2 className="text-2xl md:text-3xl font-heading font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+          <div className="px-4 py-2 md:py-6 md:px-10">
+            <div className="border-b border-border/50 pb-2 md:pb-6">
+              <h2 className="text-2xl md:text-3xl font-heading font-bold mb-2 md:mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 Main Applicant
               </h2>
               <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
@@ -750,13 +757,13 @@ export default function POAForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
                   <POAFormField
                     name="wife_last_name_after_marriage"
-                    label="Wife's full last name after marriage / Nazwisko żony po zawarciu małżeństwa"
+                    label="Wife's full last name after marriage"
                     value={formData?.wife_last_name_after_marriage || ""}
                     onChange={(value) => handleInputChange("wife_last_name_after_marriage", value)}
                   />
                   <POAFormField
                     name="husband_last_name_after_marriage"
-                    label="Husband's full last name after marriage / Nazwisko męża po zawarciu małżeństwa"
+                    label="Husband's full last name after marriage"
                     value={formData?.husband_last_name_after_marriage || ""}
                     onChange={(value) => handleInputChange("husband_last_name_after_marriage", value)}
                   />

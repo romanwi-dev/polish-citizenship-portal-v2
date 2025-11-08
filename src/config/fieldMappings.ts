@@ -64,6 +64,8 @@ export const SPOUSE_FIELDS: FieldMapping[] = [
   { formField: 'applicant_has_minor_children', dbColumn: 'applicant_has_minor_children', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
   { formField: 'applicant_number_of_children', dbColumn: 'applicant_number_of_children', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
   { formField: 'spouse_passport_number', dbColumn: 'spouse_passport_number', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
+  { formField: 'wife_last_name_after_marriage', dbColumn: 'wife_last_name_after_marriage', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
+  { formField: 'husband_last_name_after_marriage', dbColumn: 'husband_last_name_after_marriage', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
 ];
 
 // FATHER FIELDS

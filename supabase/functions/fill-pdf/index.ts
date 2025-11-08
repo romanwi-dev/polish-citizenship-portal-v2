@@ -214,19 +214,32 @@ function fillPDFFields(form: any, data: any, fieldMap: Record<string, string>): 
       
       if (isTextField) {
         try {
+          // Check if this is a date field (skip BOLD for dates)
+          const isDateField = pdfFieldName.toLowerCase().includes('date') || 
+                              pdfFieldName.toLowerCase().includes('data') ||
+                              pdfFieldName.toLowerCase().includes('dob');
+          
           // Set text in UPPERCASE
           const uppercaseValue = formattedValue.toUpperCase();
           field.setText(uppercaseValue);
           
-          // Enable bold appearance if available
-          try {
-            field.enableBoldFont?.();
-          } catch {
-            // Bold not supported on this field, continue anyway
+          // Enable BOLD for ALL fields EXCEPT dates
+          if (!isDateField) {
+            try {
+              // Use pdf-lib's updateAppearances to make text bold
+              const acroField = field.acroField;
+              const defaultAppearance = acroField.getDefaultAppearance() ?? '';
+              
+              // Set font to bold (Helvetica-Bold or Arial-Black)
+              const boldAppearance = '/Arial-Black 0 Tf 0 g';
+              acroField.setDefaultAppearance(boldAppearance);
+            } catch {
+              // Bold formatting not supported, continue anyway
+            }
           }
           
           result.filledCount++;
-          log('text_field_filled', { field: pdfFieldName, value: uppercaseValue });
+          log('text_field_filled', { field: pdfFieldName, value: uppercaseValue, bold: !isDateField });
         } catch (e) {
           const errMsg = (e as Error)?.message || String(e);
           result.errors.push({ field: pdfFieldName, error: `Text field set failed: ${errMsg}` });
@@ -250,18 +263,27 @@ function fillPDFFields(form: any, data: any, fieldMap: Record<string, string>): 
       } else {
         // Try setText as fallback for unknown field types
         try {
+          // Check if this is a date field
+          const isDateField = pdfFieldName.toLowerCase().includes('date') || 
+                              pdfFieldName.toLowerCase().includes('data') ||
+                              pdfFieldName.toLowerCase().includes('dob');
+          
           const uppercaseValue = formattedValue.toUpperCase();
           field.setText(uppercaseValue);
           
-          // Try to enable bold if available
-          try {
-            field.enableBoldFont?.();
-          } catch {
-            // Bold not supported, continue anyway
+          // Try to enable BOLD (except for dates)
+          if (!isDateField) {
+            try {
+              const acroField = field.acroField;
+              const boldAppearance = '/Arial-Black 0 Tf 0 g';
+              acroField.setDefaultAppearance(boldAppearance);
+            } catch {
+              // Bold not supported, continue anyway
+            }
           }
           
           result.filledCount++;
-          log('fallback_text_success', { field: pdfFieldName, fieldType, acroFieldType });
+          log('fallback_text_success', { field: pdfFieldName, fieldType, acroFieldType, bold: !isDateField });
         } catch (e) {
           result.errors.push({ field: pdfFieldName, error: `Unsupported field type: ${fieldType} (acro: ${acroFieldType})` });
         }
