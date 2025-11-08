@@ -27,7 +27,6 @@ export const PersonTypeSelector = ({ onSelect, selectedPerson, selectedDocType, 
 
   return (
     <div className="space-y-4">
-      <h3 className="text-2xl md:text-3xl font-heading font-bold mb-6">Select Person</h3>
       <div className="space-y-4">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
           {personOptions.map(({ type, label, icon: Icon }) => (

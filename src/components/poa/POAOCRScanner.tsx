@@ -460,12 +460,12 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
       {/* Person Selection Step */}
       {step === 'select_person' && (
         <div className="px-4 py-2 md:py-4">
-          <div className="border-b border-border/50 pb-4 mb-4">
+          <div className="border-b border-border/50 pb-4 mb-2">
             <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
               Select Person & Document Type
             </h3>
           </div>
-          <div className="space-y-4">
+          <div className="space-y-3">
             <PersonTypeSelector 
               onSelect={handlePersonSelect}
               selectedPerson={selectedPerson}
@@ -509,14 +509,14 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
                 <p className="text-sm text-muted-foreground mb-2">
                   Upload passport (image, PDF, HEIC, or document)
                 </p>
-                <div className="flex justify-center">
-                  <Button type="button" variant="outline" size="sm" className="opacity-50" asChild>
-                    <span>
-                      <Upload className="w-4 h-4 mr-2" />
-                      Select Document
-                    </span>
-                  </Button>
-                </div>
+                  <div className="flex justify-center">
+                    <Button type="button" variant="outline" size="lg" className="w-full max-w-md" asChild>
+                      <span className="opacity-80">
+                        <Upload className="w-4 h-4 mr-2" />
+                        Scan Document
+                      </span>
+                    </Button>
+                  </div>
               </label>
             </div>
             ) : editingImage ? (
@@ -581,10 +581,10 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
                     Upload birth certificate (image, PDF, HEIC, or document)
                   </p>
                   <div className="flex justify-center">
-                    <Button type="button" variant="outline" size="sm" className="opacity-50" asChild>
-                      <span>
+                    <Button type="button" variant="outline" size="lg" className="w-full max-w-md" asChild>
+                      <span className="opacity-80">
                         <Upload className="w-4 h-4 mr-2" />
-                        Select Document
+                        Scan Document
                       </span>
                     </Button>
                   </div>
