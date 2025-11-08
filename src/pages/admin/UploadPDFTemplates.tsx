@@ -50,19 +50,26 @@ export default function UploadPDFTemplates() {
 
   const deleteTemplate = async (filename: string) => {
     try {
-      const { error } = await supabase.storage
+      console.log('[Delete] Attempting to delete:', filename);
+      
+      const { data, error } = await supabase.storage
         .from('pdf-templates')
         .remove([filename]);
 
-      if (error) throw error;
+      console.log('[Delete] Response:', { data, error });
+
+      if (error) {
+        console.error('[Delete] Error details:', error);
+        throw error;
+      }
       
       setStatus(prev => ({ ...prev, [filename]: 'success' }));
       toast.success(`Deleted ${filename}`);
       return true;
     } catch (error: any) {
-      console.error(`Error deleting ${filename}:`, error);
+      console.error(`[Delete] Failed to delete ${filename}:`, error);
       setStatus(prev => ({ ...prev, [filename]: 'error' }));
-      toast.error(`Failed to delete ${filename}`);
+      toast.error(`Failed to delete: ${error.message || 'Unknown error'}`);
       throw error;
     }
   };
