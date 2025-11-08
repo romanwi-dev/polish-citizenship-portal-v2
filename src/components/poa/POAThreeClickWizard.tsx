@@ -179,7 +179,7 @@ export const POAThreeClickWizard = ({ caseId, useBatchMode = false }: POAThreeCl
       <POAConflictResolver caseId={caseId} />
 
       {/* Progress Header */}
-      <div className="mb-8 px-4 py-6 md:p-10">
+      <div className="mb-4 px-4 py-4 md:py-6">
         <div className="flex items-center justify-center gap-4 md:gap-8">
           {steps.map((step, idx) => {
             const isComplete = currentStep > step.number;

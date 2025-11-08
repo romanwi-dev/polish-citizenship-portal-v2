@@ -459,8 +459,8 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
 
       {/* Person Selection Step */}
       {step === 'select_person' && (
-        <div className="px-4 py-6 md:p-10">
-          <div className="border-b border-border/50 pb-6 pt-6 mb-6">
+        <div className="px-4 py-2 md:py-4">
+          <div className="border-b border-border/50 pb-4 mb-4">
             <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
               Select Person & Document Type
             </h3>
