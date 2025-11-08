@@ -191,12 +191,18 @@ async function verifyWithGemini(prompt: string) {
       throw new Error('Invalid Gemini response structure');
     }
 
-    const content = data.choices[0].message.content;
+    let content = data.choices[0].message.content;
+    
+    // Strip markdown code blocks if present (Gemini often wraps JSON in ```json ... ```)
+    if (content.includes('```')) {
+      content = content.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
+    }
     
     try {
       return JSON.parse(content);
     } catch (parseError) {
       console.error('[Gemini] JSON parse error:', parseError);
+      console.error('[Gemini] Content that failed to parse:', content.substring(0, 500));
       return {
         overall_score: 70,
         confidence_level: 'medium',
