@@ -47,23 +47,29 @@ export function PDFPreviewDialog({
   const [preview, setPreview] = useState<PreviewData | null>(null);
 
   const loadPreview = async () => {
+    console.log('[PDFPreviewDialog] loadPreview called:', { caseId, templateType });
     setLoading(true);
     try {
+      console.log('[PDFPreviewDialog] Invoking pdf-preview...');
       const { data, error } = await supabase.functions.invoke('pdf-preview', {
         body: { caseId, templateType }
       });
 
+      console.log('[PDFPreviewDialog] Response:', { data, error });
+      
       if (error) throw error;
       setPreview(data);
+      console.log('[PDFPreviewDialog] Preview loaded successfully');
     } catch (error) {
-      console.error('Preview error:', error);
-      toast.error('Failed to load preview');
+      console.error('[PDFPreviewDialog] Preview error:', error);
+      toast.error('Failed to load preview: ' + (error as Error).message);
     } finally {
       setLoading(false);
     }
   };
 
   const handleOpenChange = (newOpen: boolean) => {
+    console.log('[PDFPreviewDialog] handleOpenChange:', { newOpen, hasPreview: !!preview });
     if (newOpen && !preview) {
       loadPreview();
     }

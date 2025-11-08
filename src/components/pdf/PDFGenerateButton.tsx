@@ -19,10 +19,15 @@ export function PDFGenerateButton({
 }: PDFGenerateButtonProps) {
   const [previewOpen, setPreviewOpen] = useState(false);
 
+  const handlePreviewClick = () => {
+    console.log('[PDFGenerateButton] Preview clicked:', { caseId, templateType, disabled });
+    setPreviewOpen(true);
+  };
+
   return (
     <>
       <Button
-        onClick={() => setPreviewOpen(true)}
+        onClick={handlePreviewClick}
         variant="outline"
         disabled={disabled}
         className="px-6 py-6 md:py-2 text-sm md:text-base font-bold flex-1 bg-purple-500/20 hover:bg-purple-500/30 border-purple-400/40"
