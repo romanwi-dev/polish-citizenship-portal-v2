@@ -167,13 +167,23 @@ export default function POAForm() {
     try {
       toast.loading('Locking PDF for printing...');
       
+      // Get current user for lock-pdf function
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        throw new Error('User not authenticated');
+      }
+      
       // Call lock-pdf edge function to flatten the PDF
       const { data, error } = await supabase.functions.invoke('lock-pdf', {
-        body: { pdfUrl: pdfPreviewUrl }
+        body: { 
+          pdfUrl: pdfPreviewUrl,
+          userId: user.id
+        }
       });
 
       if (error || !data?.url) {
-        throw new Error('Failed to create final PDF');
+        console.error('[POAForm] Lock PDF error:', error);
+        throw new Error(error?.message || 'Failed to create final PDF');
       }
       
       // Download the locked PDF
@@ -185,6 +195,7 @@ export default function POAForm() {
       toast.dismiss();
       toast.success('Final PDF downloaded (locked for printing)');
     } catch (error: any) {
+      console.error('[POAForm] Failed to lock PDF:', error);
       toast.dismiss();
       toast.error('Failed to generate final PDF: ' + error.message);
     }

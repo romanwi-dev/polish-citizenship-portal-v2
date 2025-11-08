@@ -100,6 +100,10 @@ export function POAFormField({ name, label, type = "text", value, onChange, plac
           isNameField={true}
           isLargeFonts={isLargeFonts}
           colorScheme="poa"
+          className={cn(
+            "text-2xl font-normal",
+            isLargeFonts && "text-3xl"
+          )}
         />
       )}
     </div>

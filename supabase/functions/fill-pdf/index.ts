@@ -231,44 +231,35 @@ function fillPDFFields(form: any, data: any, fieldMap: Record<string, string>): 
           const uppercaseValue = formattedValue.toUpperCase();
           field.setText(uppercaseValue);
           
-          // ✅ FIXED: Arial Black font + auto-sizing for all non-date fields
+          // ✅ CRITICAL FIX: Use Helvetica-Bold instead of Arial-Black for better compatibility
+          // Arial-Black is NOT embedded in PDF templates and causes font substitution issues
           if (!isDateField) {
             try {
               const acroField = field.acroField;
               
-              // Change font to Arial-Black (user requirement)
-              // Font size 12 as default with auto-sizing enabled
-              const boldAppearance = '/Arial-Black 12 Tf 0 g';
+              // Use Helvetica-Bold with font size 0 for auto-sizing (matches all other fields)
+              const boldAppearance = '/Helvetica-Bold 0 Tf 0 g';
               acroField.setDefaultAppearance(boldAppearance);
               
               // Enable auto-sizing so text shrinks to fit field
               field.enableAutoSize();
               
-              // Special handling for spouse name fields to ensure consistent sizing
+              // Special logging for spouse name fields to ensure consistent sizing
               if (pdfFieldName.toLowerCase().includes('spouse') && 
                   (pdfFieldName.toLowerCase().includes('name') || 
                    pdfFieldName.toLowerCase().includes('nazwisko') ||
                    pdfFieldName.toLowerCase().includes('imie'))) {
                 console.log(`[PDF Fill] SPOUSE NAME FIELD: ${pdfFieldName}`, {
                   value: uppercaseValue,
-                  fontSize: 12,
+                  font: 'Helvetica-Bold',
+                  fontSize: '0 (auto)',
                   autoSize: true
                 });
               }
               
-              console.log(`[PDF Fill] Applied Arial-Black + auto-size to: ${pdfFieldName}`);
+              console.log(`[PDF Fill] Applied Helvetica-Bold + auto-size to: ${pdfFieldName}`);
             } catch (error) {
-              console.warn(`[PDF Fill] Could not apply Arial-Black to ${pdfFieldName}, trying fallback:`, error);
-              // Fallback to Helvetica-Bold if Arial-Black fails
-              try {
-                const acroField = field.acroField;
-                const fallbackAppearance = '/Helvetica-Bold 12 Tf 0 g';
-                acroField.setDefaultAppearance(fallbackAppearance);
-                field.enableAutoSize();
-                console.log(`[PDF Fill] Fallback to Helvetica-Bold for: ${pdfFieldName}`);
-              } catch (fallbackError) {
-                console.error(`[PDF Fill] Both Arial-Black and Helvetica-Bold failed for ${pdfFieldName}:`, fallbackError);
-              }
+              console.error(`[PDF Fill] Could not apply Helvetica-Bold to ${pdfFieldName}:`, error);
             }
           }
           
@@ -305,16 +296,16 @@ function fillPDFFields(form: any, data: any, fieldMap: Record<string, string>): 
           const uppercaseValue = formattedValue.toUpperCase();
           field.setText(uppercaseValue);
           
-          // Apply Arial-Black + auto-sizing to non-date fields in fallback too
+          // Apply Helvetica-Bold + auto-sizing to non-date fields in fallback too
           if (!isDateField) {
             try {
               const acroField = field.acroField;
-              const boldAppearance = '/Arial-Black 12 Tf 0 g';
+              const boldAppearance = '/Helvetica-Bold 0 Tf 0 g';
               acroField.setDefaultAppearance(boldAppearance);
               field.enableAutoSize();
-              console.log(`[PDF Fill] Applied Arial-Black (fallback) to: ${pdfFieldName}`);
+              console.log(`[PDF Fill] Applied Helvetica-Bold (fallback) to: ${pdfFieldName}`);
             } catch (error) {
-              console.warn(`[PDF Fill] Could not apply Arial-Black (fallback) to ${pdfFieldName}:`, error);
+              console.warn(`[PDF Fill] Could not apply Helvetica-Bold (fallback) to ${pdfFieldName}:`, error);
             }
           }
           
