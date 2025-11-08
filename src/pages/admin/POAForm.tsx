@@ -190,140 +190,93 @@ export default function POAForm() {
 
   const handleGenerateAllPOAs = async () => {
     try {
-      toast.loading("Generating POAs...");
+      setIsGenerating(true);
+      toast.loading("Generating all POAs...");
 
-      const isMarried = formData?.applicant_marital_status === 'married' || 
-                        formData?.applicant_marital_status === 'Married';
-      const hasMinorChildren = formData?.applicant_has_minor_children === 'yes' || 
-                               formData?.applicant_has_minor_children === 'Yes' ||
-                               (formData?.applicant_number_of_children && parseInt(formData.applicant_number_of_children) > 0);
+      const isMarried = formData?.applicant_marital_status === 'Married';
+      const minorCount = parseInt(formData?.minor_children_count || '0');
 
-      const poaTypes: Array<{ type: 'poa-adult' | 'poa-minor' | 'poa-spouses'; label: string; childNum?: number }> = [
-        { type: 'poa-adult', label: 'Adult POA' }
+      const poaTypes: Array<{ type: string; label: string }> = [
+        { type: 'poa-adult', label: 'POA Adult' }
       ];
       
-      // Generate multiple minor POAs - one for each child
-      if (hasMinorChildren) {
-        const minorCount = parseInt(formData?.minor_children_count || formData?.applicant_number_of_children || '0');
-        for (let i = 1; i <= minorCount; i++) {
-          poaTypes.push({ 
-            type: 'poa-minor', 
-            label: `POA Minor ${i}`,
-            childNum: i
-          });
-        }
+      // Add minor POAs
+      for (let i = 1; i <= minorCount; i++) {
+        poaTypes.push({ 
+          type: 'poa-minor', 
+          label: `POA Minor ${i}`
+        });
       }
       
-      if (isMarried) poaTypes.push({ type: 'poa-spouses', label: 'Spouses POA' });
+      if (isMarried) {
+        poaTypes.push({ type: 'poa-spouses', label: 'POA Spouses' });
+      }
 
-      // Call edge functions with childNum parameter
-      console.log('🚀 Calling fill-pdf for POA types:', poaTypes.map(p => p.label));
+      console.log('[POA] Generating all POAs:', poaTypes.map(p => p.label));
+
+      // Generate all PDFs using pdf-simple
+      const { generateSimplePDF } = await import('@/lib/pdf-simple');
+      
       const results = await Promise.allSettled(
-        poaTypes.map(({ type, childNum }) => {
-          console.log(`📤 Calling fill-pdf: type=${type}, caseId=${caseId}, childNum=${childNum}`);
-          return supabase.functions.invoke('fill-pdf', {
-            body: { 
-              caseId, 
-              templateType: type,
-              ...(childNum && { childNum })
-            }
+        poaTypes.map(async ({ type, label }) => {
+          const url = await generateSimplePDF({
+            caseId: caseId!,
+            templateType: type,
+            toast: {
+              loading: () => {},
+              dismiss: () => {},
+              success: () => {},
+              error: (msg: string) => console.error(`[${label}] Error:`, msg)
+            },
+            setIsGenerating: () => {}
           });
+          
+          return { label, url, success: !!url };
         })
       );
-      console.log('✅ All fill-pdf calls completed:', results);
 
-      // Extract PDF URLs and labels with detailed debugging
-      const pdfResults = results.map((result, idx) => {
-        const poaLabel = poaTypes[idx].label;
-        
-        console.log(`📋 DETAILED Result ${idx} (${poaLabel}):`, {
-          status: result.status,
-          fullValue: result.status === 'fulfilled' ? result.value : null,
-          data: result.status === 'fulfilled' ? result.value?.data : null,
-          error: result.status === 'fulfilled' ? result.value?.error : result.reason,
-          hasUrl: result.status === 'fulfilled' ? !!result.value?.data?.url : false
-        });
-        
-        // Check for successful generation
-        if (result.status === 'fulfilled') {
-          const responseData = result.value?.data;
-          const responseError = result.value?.error;
-          
-          // If we have an error in the response
-          if (responseError) {
-            console.error(`❌ ERROR in response for ${poaLabel}:`, responseError);
-            toast.error(`${poaLabel} failed: ${responseError.message || JSON.stringify(responseError)}`);
-            return {
-              label: poaLabel,
-              url: null,
-              success: false,
-              error: responseError.message || 'Unknown error'
-            };
-          }
-          
-          // If we have a URL
-          if (responseData?.url) {
-            console.log(`✅ SUCCESS: ${poaLabel} - URL: ${responseData.url.substring(0, 50)}...`);
-            return {
-              label: poaLabel,
-              url: responseData.url,
-              success: true
-            };
-          }
-          
-          // Fulfilled but no URL and no error
-          console.error(`⚠️ FULFILLED BUT NO URL for ${poaLabel}:`, result.value);
-          toast.error(`${poaLabel}: No PDF URL returned (generation may have failed silently)`);
-        }
-        
-        // Rejected promise
-        if (result.status === 'rejected') {
-          console.error(`❌ REJECTED: ${poaLabel}:`, result.reason);
-          toast.error(`${poaLabel} rejected: ${result.reason?.message || JSON.stringify(result.reason)}`);
-        }
-        
-        return {
-          label: poaLabel,
-          url: null,
-          success: false
-        };
-      });
-
-      const successful = pdfResults.filter(r => r.success);
-      const failed = pdfResults.filter(r => !r.success);
+      const successful = results
+        .map((r, idx) => r.status === 'fulfilled' ? r.value : null)
+        .filter(r => r?.success);
+      
+      const failed = results
+        .map((r, idx) => r.status === 'rejected' || (r.status === 'fulfilled' && !r.value.success) ? poaTypes[idx].label : null)
+        .filter(Boolean);
 
       toast.dismiss();
 
       if (successful.length > 0) {
-        // Create download message with clickable links
-        const poaLabels = successful.map(p => p.label).join(', ');
-        toast.success(`Generated: ${poaLabels}`, { 
-          description: 'Click to download each POA',
-          duration: 15000,
-          action: successful.length > 1 ? {
-            label: 'Download All',
-            onClick: () => {
-              successful.forEach(pdf => {
-                window.open(pdf.url!, '_blank');
-              });
-            }
-          } : undefined
+        const labels = successful.map(p => p.label).join(', ');
+        toast.success(`✅ Generated ${successful.length} POA(s): ${labels}`, { 
+          description: 'Opening first PDF in preview...',
+          duration: 5000
         });
         
-        // Open preview for FIRST PDF
+        // Open first PDF in preview
         if (successful[0]?.url) {
           setPdfPreviewUrl(successful[0].url);
-          setActivePOAType(poaTypes[0].type);
+          setPreviewFormData(formData);
         }
+
+        // Auto-download all PDFs
+        setTimeout(() => {
+          successful.forEach(pdf => {
+            const link = document.createElement('a');
+            link.href = pdf.url!;
+            link.download = `${pdf.label.replace(/\s+/g, '-')}-${caseId}.pdf`;
+            link.click();
+          });
+        }, 1000);
       }
 
       if (failed.length > 0) {
-        toast.error(`${failed.length} POA(s) failed: ${failed.map(p => p.label).join(', ')}`);
+        toast.error(`❌ Failed to generate: ${failed.join(', ')}`);
       }
     } catch (error: any) {
       toast.dismiss();
-      console.error('Error generating POAs:', error);
-      toast.error(`Failed to generate POAs: ${error.message}`);
+      toast.error('Failed to generate POAs: ' + error.message);
+    } finally {
+      setIsGenerating(false);
     }
   };
 
@@ -444,6 +397,28 @@ export default function POAForm() {
                 <HelpCircle className="h-3.5 w-3.5 md:h-6 md:w-6" />
               </Button>
             </div>
+        </motion.div>
+
+        {/* Generate All POAs Button - Prominent CTA */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mb-8"
+        >
+          <Button
+            onClick={handleGenerateAllPOAs}
+            disabled={isSaving || isGenerating}
+            size="lg"
+            className="w-full md:w-auto mx-auto flex items-center gap-3 text-xl px-12 py-8 font-bold bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 shadow-[0_0_40px_rgba(34,197,94,0.5)] hover:shadow-[0_0_60px_rgba(34,197,94,0.7)] transition-all"
+          >
+            <Download className="w-6 h-6" />
+            {isGenerating ? "Generating All POAs..." : "Generate All POAs at Once"}
+            <Sparkles className="w-6 h-6" />
+          </Button>
+          <p className="text-center text-sm text-muted-foreground mt-3">
+            Generates: Adult POA{minorChildrenCount > 0 ? ` + ${minorChildrenCount} Minor POA(s)` : ''}{showSpousePOA ? ' + Spouses POA' : ''}
+          </p>
         </motion.div>
 
         {/* POA Type Selector - Visual Indicator */}
