@@ -223,18 +223,22 @@ function fillPDFFields(form: any, data: any, fieldMap: Record<string, string>): 
           const uppercaseValue = formattedValue.toUpperCase();
           field.setText(uppercaseValue);
           
-          // Enable BOLD for ALL fields EXCEPT dates
+          // Enable BOLD with Arial-Black for ALL fields EXCEPT dates
           if (!isDateField) {
             try {
-              // Use pdf-lib's updateAppearances to make text bold
               const acroField = field.acroField;
-              const defaultAppearance = acroField.getDefaultAppearance() ?? '';
-              
-              // Set font to bold (Helvetica-Bold or Arial-Black)
+              // Set font to Arial-Black with bold and auto-size (0 means auto)
               const boldAppearance = '/Arial-Black 0 Tf 0 g';
               acroField.setDefaultAppearance(boldAppearance);
             } catch {
-              // Bold formatting not supported, continue anyway
+              // If Arial-Black fails, try Helvetica-Bold
+              try {
+                const acroField = field.acroField;
+                const boldAppearance = '/Helvetica-Bold 0 Tf 0 g';
+                acroField.setDefaultAppearance(boldAppearance);
+              } catch {
+                // Bold formatting not supported, continue anyway
+              }
             }
           }
           
@@ -278,7 +282,14 @@ function fillPDFFields(form: any, data: any, fieldMap: Record<string, string>): 
               const boldAppearance = '/Arial-Black 0 Tf 0 g';
               acroField.setDefaultAppearance(boldAppearance);
             } catch {
-              // Bold not supported, continue anyway
+              // Try Helvetica-Bold as fallback
+              try {
+                const acroField = field.acroField;
+                const boldAppearance = '/Helvetica-Bold 0 Tf 0 g';
+                acroField.setDefaultAppearance(boldAppearance);
+              } catch {
+                // Bold not supported, continue anyway
+              }
             }
           }
           

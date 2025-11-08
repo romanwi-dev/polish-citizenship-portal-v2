@@ -376,11 +376,11 @@ export default function POAForm() {
           activePOAType={activePOAType}
         />
 
-        <div className="flex justify-center mb-2 mt-2 md:mb-6 md:mt-6">
+        <div className="flex justify-center mb-1 mt-1 md:mb-4 md:mt-4">
           <Button
             onClick={() => navigate(`/admin/cases/${caseId}/poa-ocr`)}
             size="lg" 
-            className="h-14 md:h-16 text-base md:text-xl font-semibold px-6 md:px-8 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 shadow-lg hover:shadow-xl transition-all duration-300"
+            className="h-14 md:h-16 w-[85%] md:w-auto text-base md:text-xl font-semibold px-8 md:px-12 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 shadow-lg hover:shadow-xl transition-all duration-300 text-white dark:text-white"
           >
             Scan Documents
           </Button>
@@ -389,9 +389,9 @@ export default function POAForm() {
         {/* POA Forms */}
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="space-y-6 md:space-y-12 pb-32">
           {/* Main Applicant - First Questions */}
-          <div className="px-4 py-2 md:py-6 md:px-10">
-            <div className="border-b border-border/50 pb-2 md:pb-6">
-              <h2 className="text-2xl md:text-3xl font-heading font-bold mb-2 md:mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+          <div className="px-4 py-1 md:py-4 md:px-10">
+            <div className="border-b border-border/50 pb-1 md:pb-4">
+              <h2 className="text-2xl md:text-3xl font-heading font-bold mb-1 md:mb-3 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 Main Applicant
               </h2>
               <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
