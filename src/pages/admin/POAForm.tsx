@@ -39,6 +39,8 @@ export default function POAForm() {
   const { isLargeFonts, toggleFontSize } = useAccessibility();
   const latestFormData = useRef<any>({});
   const [isGenerating, setIsGenerating] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewTemplate, setPreviewTemplate] = useState<string>("");
   const [showClearAllDialog, setShowClearAllDialog] = useState(false);
   const [activePOAType, setActivePOAType] = useState('adult');
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null);

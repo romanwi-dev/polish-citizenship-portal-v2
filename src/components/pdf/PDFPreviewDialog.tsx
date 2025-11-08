@@ -1,0 +1,202 @@
+import { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { supabase } from "@/integrations/supabase/client";
+import { CheckCircle2, XCircle, FileText, Loader2 } from "lucide-react";
+import { toast } from "sonner";
+
+interface PDFPreviewDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  caseId: string;
+  templateType: string;
+  onGenerate: () => void;
+}
+
+interface FieldPreview {
+  name: string;
+  value: string | null;
+  isFilled: boolean;
+  mappingSource?: string;
+}
+
+interface PreviewData {
+  stats: {
+    total: number;
+    filled: number;
+    unfilled: number;
+    fillRate: number;
+  };
+  fields: {
+    filled: FieldPreview[];
+    unfilled: FieldPreview[];
+  };
+}
+
+export function PDFPreviewDialog({
+  open,
+  onOpenChange,
+  caseId,
+  templateType,
+  onGenerate,
+}: PDFPreviewDialogProps) {
+  const [loading, setLoading] = useState(false);
+  const [preview, setPreview] = useState<PreviewData | null>(null);
+
+  const loadPreview = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('pdf-preview', {
+        body: { caseId, templateType }
+      });
+
+      if (error) throw error;
+      setPreview(data);
+    } catch (error) {
+      console.error('Preview error:', error);
+      toast.error('Failed to load preview');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleOpenChange = (newOpen: boolean) => {
+    if (newOpen && !preview) {
+      loadPreview();
+    }
+    onOpenChange(newOpen);
+  };
+
+  const handleGenerate = () => {
+    onOpenChange(false);
+    onGenerate();
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={handleOpenChange}>
+      <DialogContent className="max-w-4xl max-h-[80vh]">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <FileText className="h-5 w-5" />
+            PDF Preview: {templateType}
+          </DialogTitle>
+        </DialogHeader>
+
+        {loading && (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        )}
+
+        {!loading && preview && (
+          <div className="space-y-4">
+            {/* Stats Overview */}
+            <div className="grid grid-cols-4 gap-4">
+              <div className="rounded-lg border bg-card p-4">
+                <div className="text-2xl font-bold">{preview.stats.total}</div>
+                <div className="text-sm text-muted-foreground">Total Fields</div>
+              </div>
+              <div className="rounded-lg border bg-card p-4">
+                <div className="text-2xl font-bold text-green-600">{preview.stats.filled}</div>
+                <div className="text-sm text-muted-foreground">Filled</div>
+              </div>
+              <div className="rounded-lg border bg-card p-4">
+                <div className="text-2xl font-bold text-red-600">{preview.stats.unfilled}</div>
+                <div className="text-sm text-muted-foreground">Unfilled</div>
+              </div>
+              <div className="rounded-lg border bg-card p-4">
+                <div className="text-2xl font-bold">{preview.stats.fillRate}%</div>
+                <div className="text-sm text-muted-foreground">Fill Rate</div>
+              </div>
+            </div>
+
+            {/* Field Lists */}
+            <Tabs defaultValue="unfilled" className="w-full">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="unfilled">
+                  Unfilled Fields ({preview.stats.unfilled})
+                </TabsTrigger>
+                <TabsTrigger value="filled">
+                  Filled Fields ({preview.stats.filled})
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="unfilled">
+                <ScrollArea className="h-[300px] rounded-md border">
+                  <div className="p-4 space-y-2">
+                    {preview.fields.unfilled.length === 0 ? (
+                      <div className="text-center py-8 text-muted-foreground">
+                        All fields are filled! 🎉
+                      </div>
+                    ) : (
+                      preview.fields.unfilled.map((field, idx) => (
+                        <div key={idx} className="flex items-center gap-2 p-2 rounded-md bg-muted/50">
+                          <XCircle className="h-4 w-4 text-red-500 flex-shrink-0" />
+                          <div className="flex-1 min-w-0">
+                            <div className="font-mono text-sm truncate">{field.name}</div>
+                            {field.mappingSource && (
+                              <div className="text-xs text-muted-foreground">
+                                Maps to: {field.mappingSource}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </ScrollArea>
+              </TabsContent>
+
+              <TabsContent value="filled">
+                <ScrollArea className="h-[300px] rounded-md border">
+                  <div className="p-4 space-y-2">
+                    {preview.fields.filled.map((field, idx) => (
+                      <div key={idx} className="flex items-start gap-2 p-2 rounded-md bg-muted/50">
+                        <CheckCircle2 className="h-4 w-4 text-green-500 flex-shrink-0 mt-0.5" />
+                        <div className="flex-1 min-w-0">
+                          <div className="font-mono text-sm truncate">{field.name}</div>
+                          <div className="text-sm text-foreground truncate">{field.value}</div>
+                          {field.mappingSource && (
+                            <div className="text-xs text-muted-foreground">
+                              From: {field.mappingSource}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </ScrollArea>
+              </TabsContent>
+            </Tabs>
+
+            {/* Actions */}
+            <div className="flex items-center justify-between pt-4 border-t">
+              <div className="flex items-center gap-2">
+                {preview.stats.fillRate < 50 && (
+                  <Badge variant="destructive">Low Fill Rate</Badge>
+                )}
+                {preview.stats.fillRate >= 50 && preview.stats.fillRate < 80 && (
+                  <Badge variant="secondary">Moderate Fill Rate</Badge>
+                )}
+                {preview.stats.fillRate >= 80 && (
+                  <Badge variant="default">Good Fill Rate</Badge>
+                )}
+              </div>
+              <div className="flex gap-2">
+                <Button variant="outline" onClick={() => onOpenChange(false)}>
+                  Cancel
+                </Button>
+                <Button onClick={handleGenerate}>
+                  Generate PDF Anyway
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+}
