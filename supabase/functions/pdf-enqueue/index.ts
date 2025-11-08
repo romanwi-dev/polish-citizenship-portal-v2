@@ -65,7 +65,7 @@ Deno.serve(async (req) => {
     const oneHourAgo = new Date(Date.now() - 3600000).toISOString();
     
     const { data: recentJobs, error: rateLimitError } = await supabase
-      .from('pdf_queue')
+      .from('pdf_generation_queue')
       .select('id')
       .eq('case_id', caseId)
       .gte('created_at', oneHourAgo);
@@ -96,11 +96,10 @@ Deno.serve(async (req) => {
 
     // Insert job into queue (fast operation, returns immediately)
     const { data: job, error } = await supabase
-      .from('pdf_queue')
+      .from('pdf_generation_queue')
       .insert({
         case_id: caseId,
-        template_type: templateType,
-        metadata: { filename: filename || `${templateType}.pdf` }
+        template_type: templateType
       })
       .select()
       .single();
