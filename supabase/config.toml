@@ -217,7 +217,7 @@ verify_jwt = false
 verify_jwt = true
 
 [functions.pdf-enqueue]
-verify_jwt = false
+verify_jwt = true
 
 [functions.pdf-worker]
 verify_jwt = false
