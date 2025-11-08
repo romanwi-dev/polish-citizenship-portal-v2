@@ -106,6 +106,7 @@ const FIELD_MAPS: Record<string, Record<string, string>> = {
     'minor_2_place_of_birth': 'child_2_pob',
     'minor_3_full_name': 'child_3_first_name|child_3_last_name',
     'minor_3_date_of_birth': 'child_3_dob',
+    'minor_3_place_of_birth': 'child_3_pob',
   }
 };
 
