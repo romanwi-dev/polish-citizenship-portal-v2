@@ -90,13 +90,18 @@ export async function generatePdf({
     toast.dismiss();
     toast.loading('Generating PDF… this may take a moment');
 
+    // Step 1.5: Trigger the PDF worker to process the queue
+    supabase.functions.invoke('pdf-worker').catch((err: any) => {
+      console.warn('Worker trigger failed (non-critical):', err);
+    });
+
     // Step 2: Subscribe to real-time updates for instant completion notification
     const channel = supabase
-      .channel(`pdf-queue:${jobId}`)
+      .channel(`pdf-gen-queue:${jobId}`)
       .on('postgres_changes', {
         event: 'UPDATE',
         schema: 'public',
-        table: 'pdf_queue',
+        table: 'pdf_generation_queue',
         filter: `id=eq.${jobId}`
       }, (payload: any) => {
         console.log('PDF queue update:', payload);
@@ -135,7 +140,7 @@ export async function generatePdf({
       attempts++;
       
       const { data: job, error: jobError } = await supabase
-        .from('pdf_queue')
+        .from('pdf_generation_queue')
         .select('status, pdf_url, error_message')
         .eq('id', jobId)
         .single();
