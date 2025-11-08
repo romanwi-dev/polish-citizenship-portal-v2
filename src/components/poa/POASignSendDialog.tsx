@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
-import { SignatureField } from "@/components/SignatureField";
+import { SignatureField } from "@/components/forms/SignatureField";
 import { supabase } from "@/integrations/supabase/client";
 
 interface POASignSendDialogProps {
@@ -75,7 +75,6 @@ export const POASignSendDialog = ({
             </CardHeader>
             <CardContent>
               <SignatureField
-                value={signatureUrl || ''}
                 onSave={handleSignatureSave}
                 label=""
               />

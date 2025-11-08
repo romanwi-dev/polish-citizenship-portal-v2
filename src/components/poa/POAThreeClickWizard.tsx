@@ -2,14 +2,16 @@ import { useState } from "react";
 import { Camera, FileText, Send } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { POAOCRScanner } from "./POAOCRScanner";
+import { POABatchOCRScanner } from "./POABatchOCRScanner";
 import { POAGenerateButton } from "./POAGenerateButton";
 import { POASignSendDialog } from "./POASignSendDialog";
 
 interface POAThreeClickWizardProps {
   caseId: string;
+  useBatchMode?: boolean;
 }
 
-export const POAThreeClickWizard = ({ caseId }: POAThreeClickWizardProps) => {
+export const POAThreeClickWizard = ({ caseId, useBatchMode = false }: POAThreeClickWizardProps) => {
   const [currentStep, setCurrentStep] = useState<1 | 2 | 3>(1);
   const [passportConfidence, setPassportConfidence] = useState<number>();
   const [birthCertConfidence, setBirthCertConfidence] = useState<number>();
@@ -86,11 +88,21 @@ export const POAThreeClickWizard = ({ caseId }: POAThreeClickWizardProps) => {
 
       {/* Step Content */}
       {currentStep === 1 && (
-        <POAOCRScanner
-          caseId={caseId}
-          onDataExtracted={handleOCRData}
-          onComplete={handleOCRComplete}
-        />
+        useBatchMode ? (
+          <POABatchOCRScanner
+            caseId={caseId}
+            onBatchComplete={(results) => {
+              setCurrentStep(2);
+            }}
+            maxFiles={10}
+          />
+        ) : (
+          <POAOCRScanner
+            caseId={caseId}
+            onDataExtracted={handleOCRData}
+            onComplete={handleOCRComplete}
+          />
+        )
       )}
 
       {currentStep === 2 && (
