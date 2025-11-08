@@ -3429,6 +3429,33 @@ export type Database = {
           },
         ]
       }
+      ocr_patterns_memory: {
+        Row: {
+          created_at: string | null
+          id: string
+          last_updated: string | null
+          pattern_data: Json
+          pattern_key: string
+          success_count: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          last_updated?: string | null
+          pattern_data: Json
+          pattern_key: string
+          success_count?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          last_updated?: string | null
+          pattern_data?: Json
+          pattern_key?: string
+          success_count?: number | null
+        }
+        Relationships: []
+      }
       ocr_processing_logs: {
         Row: {
           case_id: string | null
@@ -4104,14 +4131,23 @@ export type Database = {
           client_signed_at: string | null
           created_at: string
           dropbox_path: string | null
+          estimated_delivery_date: string | null
+          fedex_label_url: string | null
+          fedex_tracking_number: string | null
           generated_at: string | null
           hac_approved: boolean | null
           hac_approved_at: string | null
           hac_approved_by: string | null
           hac_notes: string | null
           id: string
+          manual_review_required: boolean | null
+          ocr_birth_cert_confidence: number | null
+          ocr_extracted_at: string | null
+          ocr_passport_confidence: number | null
           pdf_url: string | null
           poa_type: string
+          shipped_at: string | null
+          shipping_status: string | null
           status: string | null
           updated_at: string
         }
@@ -4124,14 +4160,23 @@ export type Database = {
           client_signed_at?: string | null
           created_at?: string
           dropbox_path?: string | null
+          estimated_delivery_date?: string | null
+          fedex_label_url?: string | null
+          fedex_tracking_number?: string | null
           generated_at?: string | null
           hac_approved?: boolean | null
           hac_approved_at?: string | null
           hac_approved_by?: string | null
           hac_notes?: string | null
           id?: string
+          manual_review_required?: boolean | null
+          ocr_birth_cert_confidence?: number | null
+          ocr_extracted_at?: string | null
+          ocr_passport_confidence?: number | null
           pdf_url?: string | null
           poa_type: string
+          shipped_at?: string | null
+          shipping_status?: string | null
           status?: string | null
           updated_at?: string
         }
@@ -4144,14 +4189,23 @@ export type Database = {
           client_signed_at?: string | null
           created_at?: string
           dropbox_path?: string | null
+          estimated_delivery_date?: string | null
+          fedex_label_url?: string | null
+          fedex_tracking_number?: string | null
           generated_at?: string | null
           hac_approved?: boolean | null
           hac_approved_at?: string | null
           hac_approved_by?: string | null
           hac_notes?: string | null
           id?: string
+          manual_review_required?: boolean | null
+          ocr_birth_cert_confidence?: number | null
+          ocr_extracted_at?: string | null
+          ocr_passport_confidence?: number | null
           pdf_url?: string | null
           poa_type?: string
+          shipped_at?: string | null
+          shipping_status?: string | null
           status?: string | null
           updated_at?: string
         }
