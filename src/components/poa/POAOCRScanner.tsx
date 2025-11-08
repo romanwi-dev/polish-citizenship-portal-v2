@@ -18,6 +18,7 @@ interface POAOCRScannerProps {
   caseId: string;
   onDataExtracted?: (data: { passport?: any; birthCert?: any }) => void;
   onComplete?: () => void;
+  childrenCount?: number;
 }
 
 interface OCRResult {
@@ -26,7 +27,7 @@ interface OCRResult {
   document_type: string;
 }
 
-export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRScannerProps) => {
+export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCount = 0 }: POAOCRScannerProps) => {
   const [passportFile, setPassportFile] = useState<File | null>(null);
   const [birthCertFile, setBirthCertFile] = useState<File | null>(null);
   const [passportResult, setPassportResult] = useState<OCRResult | null>(null);
@@ -38,7 +39,6 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
   // Person type selection
   const [selectedPerson, setSelectedPerson] = useState<PersonType>();
   const [selectedDocType, setSelectedDocType] = useState<DocumentType>();
-  const [childrenCount, setChildrenCount] = useState(0);
 
   // OCR Data Preview
   const [ocrPreviewData, setOcrPreviewData] = useState<any>(null);
@@ -54,24 +54,6 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete }: POAOCRSca
   const [rotation, setRotation] = useState(0);
   const imgRef = useRef<HTMLImageElement>(null);
 
-  // Load children count from case data
-  useEffect(() => {
-    const loadChildrenCount = async () => {
-      if (!caseId) return;
-      
-      const { data, error } = await supabase
-        .from('master_table')
-        .select('children_count')
-        .eq('case_id', caseId)
-        .single();
-      
-      if (data && !error) {
-        setChildrenCount(data.children_count || 0);
-      }
-    };
-    
-    loadChildrenCount();
-  }, [caseId]);
 
   const handlePersonSelect = (personType: PersonType, docType: DocumentType) => {
     setSelectedPerson(personType);

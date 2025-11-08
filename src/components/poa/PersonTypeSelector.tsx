@@ -1,4 +1,4 @@
-import { Users, User, UserRound } from "lucide-react";
+import { Users, User, Baby } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -19,11 +19,20 @@ interface PersonTypeSelectorProps {
 export const PersonTypeSelector = ({ onSelect, selectedPerson, selectedDocType, childrenCount = 0 }: PersonTypeSelectorProps) => {
   const isAdult = (type: PersonType) => type === 'AP' || type === 'SPOUSE';
   
+  // Build dynamic person options based on childrenCount
   const personOptions: { type: PersonType; label: string; icon: typeof User }[] = [
     { type: 'AP', label: 'Applicant', icon: User },
     { type: 'SPOUSE', label: 'Spouse', icon: Users },
-    { type: 'CHILD_1', label: 'Child', icon: UserRound },
   ];
+
+  // Add dynamic child buttons based on childrenCount
+  for (let i = 1; i <= childrenCount; i++) {
+    personOptions.push({
+      type: `CHILD_${i}` as PersonType,
+      label: `Child ${i}`,
+      icon: Baby,
+    });
+  }
 
   return (
     <div className="space-y-4">

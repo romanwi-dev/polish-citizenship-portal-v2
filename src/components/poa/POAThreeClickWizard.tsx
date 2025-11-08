@@ -25,12 +25,14 @@ export const POAThreeClickWizard = ({ caseId, useBatchMode = false }: POAThreeCl
   const [poaId, setPoaId] = useState<string>();
   const [staleSession, setStaleSession] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [minorChildrenCount, setMinorChildrenCount] = useState(0);
   const confettiTriggered = useRef(false);
 
   // Load saved state on mount
   useEffect(() => {
     const loadState = async () => {
       try {
+        // Load workflow state
         const { data, error } = await supabase
           .from('case_workflow_state')
           .select('*')
@@ -53,6 +55,17 @@ export const POAThreeClickWizard = ({ caseId, useBatchMode = false }: POAThreeCl
             setGeneratedPdfUrl(formData.generatedPdfUrl);
             setPoaId(formData.poaId);
           }
+        }
+
+        // Load minor children count from master_table
+        const { data: masterData, error: masterError } = await supabase
+          .from('master_table')
+          .select('minor_children_count')
+          .eq('case_id', caseId)
+          .single();
+
+        if (!masterError && masterData) {
+          setMinorChildrenCount(parseInt(String(masterData.minor_children_count || 0)));
         }
       } catch (err: any) {
         console.error('Failed to load session:', err);
@@ -312,6 +325,7 @@ export const POAThreeClickWizard = ({ caseId, useBatchMode = false }: POAThreeCl
               caseId={caseId}
               onDataExtracted={handleOCRData}
               onComplete={handleOCRComplete}
+              childrenCount={minorChildrenCount}
             />
           )
         )}
