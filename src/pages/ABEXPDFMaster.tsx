@@ -1,5 +1,3 @@
-import { runPhaseA_PDFSystem } from "@/utils/runPhaseA_PDFSystem";
-import { runTripleVerification } from "@/utils/tripleVerification";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
@@ -7,32 +5,38 @@ import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, AlertTriangle, Loader2, Rocket } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 export default function ABEXPDFMasterControl() {
   const [phaseAResult, setPhaseAResult] = useState<any>(null);
   const [phaseBResult, setPhaseBResult] = useState<any>(null);
+  const [phaseEXResult, setPhaseEXResult] = useState<any>(null);
   const [isRunningA, setIsRunningA] = useState(false);
   const [isRunningB, setIsRunningB] = useState(false);
+  const [isRunningEX, setIsRunningEX] = useState(false);
   const { toast } = useToast();
 
   const handleRunPhaseA = async () => {
     setIsRunningA(true);
     try {
-      const result = await runPhaseA_PDFSystem();
-      setPhaseAResult(result);
+      const { data, error } = await supabase.functions.invoke('run-phase-a-pdf');
       
-      if (result.success) {
-        toast({
-          title: "Phase A Complete",
-          description: `Found ${result.summary.totalIssues} critical issues. Ready for Phase B verification.`,
-        });
-      }
+      if (error) throw error;
+      if (!data.success) throw new Error(data.error || 'Phase A failed');
+      
+      setPhaseAResult(data);
+      
+      toast({
+        title: "Phase A Complete",
+        description: `Found ${data.summary.totalIssues} critical issues. Ready for Phase B verification.`,
+      });
     } catch (error: any) {
       toast({
         title: "Phase A Failed",
         description: error.message,
         variant: "destructive",
       });
+      setPhaseAResult({ success: false, error: error.message });
     } finally {
       setIsRunningA(false);
     }
@@ -50,16 +54,21 @@ export default function ABEXPDFMasterControl() {
 
     setIsRunningB(true);
     try {
-      const result = await runTripleVerification(
-        JSON.stringify(phaseAResult.analysis.analysis_result, null, 2),
-        JSON.stringify(phaseAResult.analysis.context, null, 2)
-      );
+      const { data, error } = await supabase.functions.invoke('triple-verify-analysis', {
+        body: {
+          analysis: JSON.stringify(phaseAResult.summary, null, 2),
+          context: 'PDF Generation System for 8 templates'
+        }
+      });
       
-      setPhaseBResult(result);
+      if (error) throw error;
+      if (!data.success) throw new Error('Phase B verification failed');
+      
+      setPhaseBResult(data);
       
       toast({
-        title: result.verdict === 'PROCEED_TO_EX' ? "Phase B: APPROVED" : "Phase B: NEEDS REVISION",
-        description: `GPT-5: ${result.gpt5.overall_score}%, Gemini: ${result.gemini.overall_score}%. ${result.verdict}`,
+        title: data.verdict === 'PROCEED_TO_EX' ? "Phase B: APPROVED ✅" : "Phase B: NEEDS REVISION ⚠️",
+        description: `GPT-5: ${data.gpt5.overall_score}%, Gemini: ${data.gemini.overall_score}%`,
       });
     } catch (error: any) {
       toast({
@@ -69,6 +78,40 @@ export default function ABEXPDFMasterControl() {
       });
     } finally {
       setIsRunningB(false);
+    }
+  };
+
+  const handleRunPhaseEX = async () => {
+    if (phaseBResult?.verdict !== 'PROCEED_TO_EX') {
+      toast({
+        title: "Cannot Run Phase EX",
+        description: "Phase B must approve with PROCEED_TO_EX verdict",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsRunningEX(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('run-full-abex-pdf');
+      
+      if (error) throw error;
+      if (!data.success) throw new Error('Phase EX execution failed');
+      
+      setPhaseEXResult(data);
+      
+      toast({
+        title: "Phase EX: Complete! 🎉",
+        description: `Applied ${data.phases.ex.changes} changes in ${data.phases.ex.duration_ms}ms`,
+      });
+    } catch (error: any) {
+      toast({
+        title: "Phase EX Failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setIsRunningEX(false);
     }
   };
 
@@ -132,13 +175,23 @@ export default function ABEXPDFMasterControl() {
               </Button>
 
               <Button
-                disabled={phaseBResult?.verdict !== 'PROCEED_TO_EX'}
+                onClick={handleRunPhaseEX}
+                disabled={phaseBResult?.verdict !== 'PROCEED_TO_EX' || isRunningEX}
                 size="lg"
                 variant="default"
                 className="flex-1"
               >
-                <Rocket className="mr-2 h-4 w-4" />
-                Run Phase EX (Execute)
+                {isRunningEX ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Running Phase EX...
+                  </>
+                ) : (
+                  <>
+                    <Rocket className="mr-2 h-4 w-4" />
+                    Run Phase EX (Execute)
+                  </>
+                )}
               </Button>
             </div>
           </CardContent>
