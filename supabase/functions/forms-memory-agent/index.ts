@@ -1,5 +1,14 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
+import {
+  FAMILY_TREE_FORM_RULES,
+  FORM_VALIDATION_PATTERNS,
+  POA_FORM_RULES,
+  INTAKE_FORM_RULES,
+  OBY_CITIZENSHIP_FORM_RULES,
+  DOCUMENT_RADAR_RULES,
+  SYSTEM_PROMPT_FORMS_ANALYSIS,
+} from '../_shared/form-analysis-prompts.ts';
 
 const AGENT_NAME = 'forms_memory';
 
@@ -47,6 +56,15 @@ serve(async (req) => {
       validationPatterns: analyzeValidationPatterns(validationLogs || []),
       fieldPopulationRules: generateAutoFillRules(intakeData || [], poaForms || []),
       commonErrors: identifyCommonErrors(validationLogs || []),
+      knowledgeBase: {
+        familyTreeRules: FAMILY_TREE_FORM_RULES,
+        formValidationPatterns: FORM_VALIDATION_PATTERNS,
+        poaRules: POA_FORM_RULES,
+        intakeRules: INTAKE_FORM_RULES,
+        obyRules: OBY_CITIZENSHIP_FORM_RULES,
+        documentRadarRules: DOCUMENT_RADAR_RULES,
+        systemPrompt: SYSTEM_PROMPT_FORMS_ANALYSIS,
+      },
     };
 
     // Update agent memory
@@ -70,6 +88,10 @@ serve(async (req) => {
       {
         key: 'common_errors',
         value: insights.commonErrors,
+      },
+      {
+        key: 'knowledge_base',
+        value: insights.knowledgeBase,
       },
     ];
 
@@ -225,10 +247,35 @@ function generateAutoFillRules(intakes: any[], poas: any[]) {
     dateFormatRules: {
       pattern: 'DD.MM.YYYY',
       validation: 'DD<=31, MM<=12, YYYY<=2030',
+      excludedFromClear: true,
     },
     nameRules: {
       capitalizeFirstLetter: true,
       trimWhitespace: true,
+      uppercase: true,
+    },
+    childrenLogic: {
+      totalChildrenField: 'children_count',
+      minorChildrenField: 'minor_children_count',
+      rule: 'minor_children_count must be <= children_count',
+      childrenTabVisibility: 'Only show if minor_children_count > 0',
+      formsRendered: 'Exactly minor_children_count forms (NOT always 10)',
+    },
+    polishBloodlineLogic: {
+      grandparents: {
+        fatherPolish: 'Show PGF & PGM',
+        motherPolish: 'Show MGF & MGM',
+        neitherPolish: 'Show all 4 (fallback)',
+      },
+      greatGrandparents: {
+        pgfPolish: 'Show PGGF & PGGM',
+        mgfPolish: 'Show MGGF & MGGM',
+        neitherPolish: 'Hide great-grandparents tab',
+      },
+    },
+    childDocumentsRules: {
+      strictDocuments: ['POA', 'Passport Copy', 'Birth Certificate', 'Additional Documents'],
+      neverShow: ['Polish Documents', 'Marriage Certificate', 'Naturalization', 'Foreign Docs', 'Military Record'],
     },
     sexDependentRules: [] as any[],
     dependentFields: [] as any[],
@@ -241,13 +288,18 @@ function generateAutoFillRules(intakes: any[], poas: any[]) {
   if (maleCount > 0 || femaleCount > 0) {
     rules.sexDependentRules.push({
       condition: 'applicant_sex = Male',
-      action: 'Show father fields, hide spouse fields',
+      action: 'Show father fields, hide spouse fields unless married',
       occurrences: maleCount,
     });
     rules.sexDependentRules.push({
       condition: 'applicant_sex = Female',
       action: 'Show spouse fields for married women',
       occurrences: femaleCount,
+    });
+    rules.sexDependentRules.push({
+      condition: 'sex = Male',
+      action: 'Show Military Service Record in documents',
+      occurrences: maleCount,
     });
   }
 
@@ -257,8 +309,23 @@ function generateAutoFillRules(intakes: any[], poas: any[]) {
     childFields: ['child_1_last_name', 'child_2_last_name', 'child_3_last_name'],
     rule: 'Auto-populate children last names from father',
   });
+  rules.dependentFields.push({
+    parentField: 'children_count',
+    childField: 'minor_children_count',
+    rule: 'minor_children_count dropdown max = children_count value',
+  });
+  rules.dependentFields.push({
+    parentField: 'father_is_polish',
+    childFields: ['pgf', 'pgm'],
+    rule: 'Show paternal grandparents only if father is Polish',
+  });
+  rules.dependentFields.push({
+    parentField: 'mother_is_polish',
+    childFields: ['mgf', 'mgm'],
+    rule: 'Show maternal grandparents only if mother is Polish',
+  });
 
-  rules.totalRules = 2 + rules.sexDependentRules.length + rules.dependentFields.length;
+  rules.totalRules = 2 + rules.sexDependentRules.length + rules.dependentFields.length + 3; // +3 for new logic
 
   return rules;
 }
