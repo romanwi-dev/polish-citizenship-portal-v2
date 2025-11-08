@@ -437,7 +437,7 @@ export default function POAForm() {
           currentForm="poa"
           onSave={handlePOASave}
           onClear={() => setShowClearAllDialog(true)}
-          onGeneratePDF={handleGenerateAllPOAs}
+          onGeneratePDF={handleGenerateAndPreview}
           isSaving={isSaving || isGenerating}
           formData={formData}
         />
