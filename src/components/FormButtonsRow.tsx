@@ -88,7 +88,13 @@ export function FormButtonsRow({
             {currentForm !== 'intake' && (
               <PDFGenerateButton
                 caseId={caseId}
-                templateType={currentForm}
+                templateType={
+                  currentForm === 'poa' ? 'poa-adult' : 
+                  currentForm === 'family-tree' ? 'family-tree' :
+                  currentForm === 'citizenship' ? 'citizenship' :
+                  currentForm === 'civil-registry' ? 'registration' :
+                  currentForm
+                }
                 onGenerate={onGeneratePDF}
                 disabled={isSaving}
               >
