@@ -593,19 +593,9 @@ export default function POAForm() {
             className="space-y-6"
             onClick={() => setActivePOAType('adult')}
           >
-            <div className={cn(
-              "cursor-pointer select-none transition-all border-b pb-6 px-6 py-4 rounded-lg",
-              activePOAType === 'adult' 
-                ? "border-primary bg-primary/10 shadow-[0_0_30px_rgba(59,130,246,0.3)]" 
-                : "border-border/50 hover:bg-muted/50"
-            )}>
+            <div className="border-b pb-6 px-6 py-4">
               <div className="flex items-center justify-between">
-                <h2 className={cn(
-                  "text-4xl md:text-5xl font-heading font-bold",
-                  activePOAType === 'adult'
-                    ? "bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent"
-                    : "text-gray-600 dark:text-gray-400"
-                )}>
+                <h2 className="text-4xl md:text-5xl font-heading font-bold text-foreground">
                   {poaFormConfigs.adult.title}
                 </h2>
               </div>
