@@ -21,9 +21,6 @@ import { PDFPreviewDialog } from "@/components/PDFPreviewDialog";
 import { sanitizeMasterData } from "@/utils/masterDataSanitizer";
 import { cn } from "@/lib/utils";
 import { StaticHeritagePlaceholder } from "@/components/heroes/StaticHeritagePlaceholder";
-import { PassportUpload } from "@/components/poa/PassportUpload";
-import { ResponsiveTabs } from "@/components/forms/ResponsiveTabs";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 const StaticHeritage = lazy(() => import("@/components/heroes/StaticHeritage").then(m => ({ default: m.StaticHeritage })));
 import { FormButtonsRow } from "@/components/FormButtonsRow";
@@ -53,7 +50,6 @@ export default function POAForm() {
   const [isFullView, setIsFullView] = useState(true);
   const [generatedPOATypes, setGeneratedPOATypes] = useState<string[]>([]); 
   const [pdfUrls, setPdfUrls] = useState<Record<string, string>>({});
-  const isMobile = useIsMobile();
   
   // ⚠️ LOCKED DESIGN - DO NOT MODIFY CONDITIONAL RENDERING LOGIC
   // Conditional rendering controlled by 4 master fields:
@@ -244,19 +240,6 @@ export default function POAForm() {
     }
   };
 
-  // ✅ PHASE EX FIX #2: Handle OCR data extraction  
-  const handleOCRDataExtracted = (data: any) => {
-    console.log('[POAForm] OCR data extracted:', data);
-    
-    // Auto-fill fields from OCR
-    if (data.applicant_first_name) handleInputChange("applicant_first_name", data.applicant_first_name);
-    if (data.applicant_last_name) handleInputChange("applicant_last_name", data.applicant_last_name);
-    if (data.passport_number) handleInputChange("applicant_passport_number", data.passport_number);
-    if (data.applicant_dob) handleInputChange("applicant_dob", data.applicant_dob);
-    if (data.applicant_sex) handleInputChange("applicant_sex", data.applicant_sex);
-    
-    toast.success("Fields auto-filled from passport scan!");
-  };
 
   const handleGenerateCombinedPOA = async () => {
     if (!caseId) {
@@ -548,12 +531,17 @@ export default function POAForm() {
                 </div>
               </div>
 
-              {/* ✅ PHASE EX FIX #3: Integrated Passport OCR Scanner */}
+              {/* Link to POA OCR Wizard */}
               <div className="mt-8 mb-8">
-                <PassportUpload 
-                  caseId={caseId}
-                  onDataExtracted={handleOCRDataExtracted}
-                />
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={() => navigate(`/admin/cases/${caseId}/poa-ocr`)}
+                  className="w-full"
+                >
+                  <Sparkles className="h-5 w-5 mr-2" />
+                  Open POA OCR Wizard
+                </Button>
               </div>
             </div>
 
@@ -898,41 +886,39 @@ export default function POAForm() {
             </Button>
           </div>
           
-          {/* ✅ PHASE EX FIX #4: Mobile-Responsive POA Tabs */}
+          {/* Standard Tabs for POA types */}
           {generatedPOATypes.length > 1 && (
-            <ResponsiveTabs
-              value={activePOAType}
-              onValueChange={(value) => {
-                setActivePOAType(value);
-                setPdfPreviewUrl(pdfUrls[value]);
-              }}
-              tabs={generatedPOATypes.map(type => ({
-                value: type,
-                label: `${type.toUpperCase()} POA`,
-                content: null
-              }))}
-            />
+            <Tabs value={activePOAType} onValueChange={(value) => {
+              setActivePOAType(value);
+              setPdfPreviewUrl(pdfUrls[value]);
+            }}>
+              <TabsList className="w-full flex-wrap h-auto gap-1 bg-muted/30 p-1 mb-4">
+                {generatedPOATypes.map(type => (
+                  <TabsTrigger
+                    key={type}
+                    value={type}
+                    className="flex-1 min-w-[120px] data-[state=active]:bg-background"
+                  >
+                    {type.toUpperCase()} POA
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </Tabs>
           )}
 
-          {/* ✅ PHASE EX FIX #5: Mobile-Responsive PDF Preview */}
+          {/* PDF Preview */}
           {pdfPreviewUrl && (
             <div className="space-y-4">
               <div className="border rounded-lg overflow-hidden">
                 <iframe
                   src={pdfPreviewUrl}
-                  className={cn(
-                    "w-full",
-                    isMobile ? "h-[400px]" : "h-[600px]"
-                  )}
+                  className="w-full h-[600px]"
                   title={`${activePOAType} POA Preview`}
                 />
               </div>
 
-              {/* ✅ PHASE EX FIX #6: Mobile-Optimized Action Buttons */}
-              <div className={cn(
-                "flex gap-2",
-                isMobile ? "flex-col" : "justify-end"
-              )}>
+              {/* Action Buttons */}
+              <div className="flex justify-end gap-2">
                 <Button
                   variant="outline"
                   onClick={async () => {
@@ -942,7 +928,6 @@ export default function POAForm() {
                     link.click();
                     toast.success('PDF downloaded');
                   }}
-                  className={isMobile ? "w-full h-12" : ""}
                 >
                   <Download className="h-4 w-4 mr-2" />
                   Download Editable
@@ -950,20 +935,9 @@ export default function POAForm() {
                 <Button
                   variant="outline"
                   onClick={() => {
-                    // ✅ PHASE EX FIX #7: Mobile print handling
-                    if (isMobile) {
-                      const printWindow = window.open(pdfPreviewUrl, '_blank');
-                      if (printWindow) {
-                        printWindow.onload = () => {
-                          printWindow.print();
-                        };
-                      }
-                    } else {
-                      window.open(pdfPreviewUrl, '_blank');
-                    }
+                    window.open(pdfPreviewUrl, '_blank');
                     toast.success('Opening PDF for printing');
                   }}
-                  className={isMobile ? "w-full h-12" : ""}
                 >
                   <Printer className="h-4 w-4 mr-2" />
                   Print

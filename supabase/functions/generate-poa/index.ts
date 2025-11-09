@@ -11,7 +11,7 @@ const corsHeaders = {
 }
 
 // Security: Validation schemas
-const POATypeSchema = z.enum(['adult', 'minor', 'married'])
+const POATypeSchema = z.string() // Accept any POA type string (adult, minor, spouses, minor-1, minor-2, etc.)
 const SecureUUIDSchema = z.string().uuid()
 const POAGenerationRequestSchema = z.object({
   caseId: SecureUUIDSchema,
@@ -62,36 +62,7 @@ serve(async (req) => {
 
     const { caseId, poaType } = validationResult.data
 
-    // Security: Rate limiting check
-    const { data: rateLimitData, error: rateLimitError } = await supabase.rpc(
-      'check_poa_generation_limit',
-      {
-        p_case_id: caseId,
-        p_user_id: user.id,
-        p_operation: 'generate'
-      }
-    )
-
-    if (rateLimitError) {
-      console.error('Rate limit check error:', rateLimitError)
-      return new Response(
-        JSON.stringify({ error: 'Rate limit check failed' }),
-        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      )
-    }
-
-    if (!rateLimitData.allowed) {
-      console.warn('Rate limit exceeded:', rateLimitData)
-      return new Response(
-        JSON.stringify({ 
-          error: rateLimitData.message,
-          reset_at: rateLimitData.reset_at,
-          current_count: rateLimitData.current_count,
-          max_count: rateLimitData.max_count
-        }),
-        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      )
-    }
+    console.log(`[generate-poa] Generating ${poaType} POA for case: ${caseId}`);
 
     // Security: Verify case ownership
     const { data: caseData, error: caseError } = await supabase
