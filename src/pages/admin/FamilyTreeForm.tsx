@@ -34,11 +34,12 @@ import StickyActionBar from "@/components/StickyActionBar";
 type ColorScheme = 'children' | 'applicant' | 'spouse' | 'parents' | 'grandparents' | 'ggp' | 'poa' | 'citizenship' | 'civil-reg';
 
 // ⚠️ LOCKED DESIGN - DO NOT MODIFY CONDITIONAL RENDERING LOGIC
-// Conditional rendering controlled by 4 master fields:
-// 1. applicant_sex (M/F)
-// 2. applicant_marital_status (Married/Single)
-// 3. children_count (0-10) - selected manually in IntakeFormContent
-// 4. minor_children_count (0 to children_count) - selected manually in IntakeFormContent
+// Conditional rendering controlled by 4 master fields (READ-ONLY in this form):
+// 1. applicant_sex (M/F) - SET IN INTAKE WIZARD, DISPLAY ONLY HERE
+// 2. applicant_marital_status (Married/Single) - SET IN INTAKE WIZARD, DISPLAY ONLY HERE
+// 3. children_count (0-10) - SET IN INTAKE WIZARD, DISPLAY ONLY HERE
+// 4. minor_children_count (0 to children_count) - SET IN INTAKE WIZARD, DISPLAY ONLY HERE
+// ⚠️ THESE 4 FIELDS MUST BE LOCKED (DISABLED) IN FAMILY TREE FORM
 
 export default function FamilyTreeForm() {
   const { id: caseId } = useParams();
@@ -543,19 +544,13 @@ export default function FamilyTreeForm() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full">
                   {/* Left column: Gender and Marital Status */}
                   <div className="space-y-6">
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-2" onDoubleClick={() => handleInputChange("applicant_sex", null)}>
-                      <Label className={isLargeFonts ? "text-2xl" : ""}>Gender</Label>
-                      <Select value={formData?.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-2">
+                      <Label className={isLargeFonts ? "text-2xl" : ""}>Gender (Set in Intake)</Label>
+                      <Select value={formData?.applicant_sex || ""} disabled>
                         <SelectTrigger 
-                          className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs"
+                          className="h-16 border-2 bg-muted/50 cursor-not-allowed opacity-60 text-xs"
                           style={{
-                            boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+                            boxShadow: "none",
                           }}
                         >
                           <SelectValue placeholder="Select" className="text-xs" />
@@ -565,21 +560,16 @@ export default function FamilyTreeForm() {
                           <SelectItem value="F" className="text-xs cursor-pointer">Female</SelectItem>
                         </SelectContent>
                       </Select>
+                      <p className="text-xs text-muted-foreground italic">Locked: Change in Intake Wizard</p>
                     </motion.div>
 
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-2" onDoubleClick={() => handleInputChange("applicant_marital_status", null)}>
-                      <Label className={isLargeFonts ? "text-2xl" : ""}>Marital status</Label>
-                      <Select value={formData?.applicant_marital_status || ""} onValueChange={(value) => handleInputChange("applicant_marital_status", value)}>
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-2">
+                      <Label className={isLargeFonts ? "text-2xl" : ""}>Marital status (Set in Intake)</Label>
+                      <Select value={formData?.applicant_marital_status || ""} disabled>
                         <SelectTrigger 
-                          className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs"
+                          className="h-16 border-2 bg-muted/50 cursor-not-allowed opacity-60 text-xs"
                           style={{
-                            boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+                            boxShadow: "none",
                           }}
                         >
                           <SelectValue placeholder="Select" className="text-xs" />
@@ -589,28 +579,30 @@ export default function FamilyTreeForm() {
                           <SelectItem value="Single" className="text-xs cursor-pointer">Single</SelectItem>
                         </SelectContent>
                       </Select>
+                      <p className="text-xs text-muted-foreground italic">Locked: Change in Intake Wizard</p>
                     </motion.div>
                   </div>
 
                   {/* Right column: Children counts */}
                   <div className="space-y-6">
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="space-y-2" onDoubleClick={() => handleInputChange("children_count", null)}>
-                      <Label className={isLargeFonts ? "text-2xl" : ""}>Children</Label>
-                      <Select value={formData?.children_count?.toString() || ""} onValueChange={(value) => handleInputChange("children_count", parseInt(value))}>
-                        <SelectTrigger className="h-16 border-2 hover-glow bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs">
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="space-y-2">
+                      <Label className={isLargeFonts ? "text-2xl" : ""}>Children (Set in Intake)</Label>
+                      <Select value={formData?.children_count?.toString() || ""} disabled>
+                        <SelectTrigger className="h-16 border-2 bg-muted/50 cursor-not-allowed opacity-60 text-xs">
                           <SelectValue placeholder="Select" />
                         </SelectTrigger>
                         <SelectContent className="bg-background border-2 z-50">
                           {[0,1,2,3,4,5,6,7,8,9,10].map(n => <SelectItem key={n} value={n.toString()}>{n}</SelectItem>)}
                         </SelectContent>
                       </Select>
+                      <p className="text-xs text-muted-foreground italic">Locked: Change in Intake Wizard</p>
                     </motion.div>
 
                     {formData?.children_count > 0 && (
-                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-2" onDoubleClick={() => handleInputChange("minor_children_count", null)}>
-                        <Label className={isLargeFonts ? "text-2xl" : ""}>Minors</Label>
-                        <Select value={formData?.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
-                          <SelectTrigger className="h-16 border-2 hover-glow bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs">
+                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-2">
+                        <Label className={isLargeFonts ? "text-2xl" : ""}>Minors (Set in Intake)</Label>
+                        <Select value={formData?.minor_children_count?.toString() || ""} disabled>
+                          <SelectTrigger className="h-16 border-2 bg-muted/50 cursor-not-allowed opacity-60 text-xs">
                             <SelectValue placeholder="Select" />
                           </SelectTrigger>
                           <SelectContent className="bg-background border-2 z-50">
@@ -619,6 +611,7 @@ export default function FamilyTreeForm() {
                             )}
                           </SelectContent>
                         </Select>
+                        <p className="text-xs text-muted-foreground italic">Locked: Change in Intake Wizard</p>
                       </motion.div>
                     )}
                   </div>
