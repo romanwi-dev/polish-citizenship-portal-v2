@@ -203,7 +203,7 @@ export default function CivilRegistryForm() {
               Civil Registry
             </span>
           </h2>
-          <div className="flex items-center justify-center gap-1 md:gap-3 mt-2 md:mt-4">
+          <div className="flex items-center justify-center gap-3 md:gap-6 mt-2 md:mt-4">
               <Button
                 onClick={() => navigate('/admin/forms-demo')}
                 variant="ghost"
