@@ -544,8 +544,45 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
     }
   };
 
+  // NEW: Go back to person selection
+  const handleBackToPersonSelection = () => {
+    setStep('select_person');
+    setSelectedPerson(undefined);
+    setSelectedDocType(undefined);
+    setPassportFile(null);
+    setBirthCertFile(null);
+    setImagePreview(null);
+    setEditingImage(false);
+    setOcrPreviewData(null);
+    setPassportResult(null);
+    setBirthCertResult(null);
+    toast.info("Starting over - select person and document type");
+  };
+
+  // NEW: Close and reset everything
+  const handleClose = () => {
+    if (window.confirm("Are you sure you want to close? All progress will be lost.")) {
+      handleBackToPersonSelection();
+      if (onComplete) {
+        onComplete();
+      }
+    }
+  };
+
   return (
     <div className="space-y-6">
+      {/* Top Action Bar */}
+      {step !== 'select_person' && (
+        <div className="flex justify-between items-center p-4 bg-muted rounded-lg">
+          <Button variant="ghost" size="sm" onClick={handleBackToPersonSelection}>
+            ← Back to Person Selection
+          </Button>
+          <Button variant="ghost" size="sm" onClick={handleClose} className="text-destructive">
+            ✕ Close OCR
+          </Button>
+        </div>
+      )}
+
       {/* Processing Progress */}
       {processing && processingStep !== 'idle' && (
         <div className="space-y-3 p-4 bg-muted rounded-lg">
@@ -769,14 +806,18 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
                     )}
                     
                     {/* Action Buttons */}
-                    <div className="flex gap-2">
-                      <Button variant="outline" onClick={() => handleRetry('passport')} className="flex-1">
-                        <RefreshCw className="w-4 h-4 mr-2" />
-                        Re-scan Document
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                      <Button variant="outline" onClick={() => handleRetry('passport')}>
+                        <Upload className="w-4 h-4 mr-2" />
+                        Upload Different File
                       </Button>
-                      <Button variant="default" onClick={() => setStep('birthcert')} className="flex-1">
+                      <Button variant="outline" onClick={() => handleProcessPassport()}>
+                        <RotateCw className="w-4 h-4 mr-2" />
+                        Re-run OCR
+                      </Button>
+                      <Button variant="default" onClick={() => setStep('birthcert')}>
                         <Check className="w-4 h-4 mr-2" />
-                        Looks Good - Continue
+                        Continue
                       </Button>
                     </div>
                   </CardContent>
@@ -940,12 +981,16 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
                       )}
                       
                       {/* Action Buttons */}
-                      <div className="flex gap-2">
-                        <Button variant="outline" onClick={() => handleRetry('birthcert')} className="flex-1">
-                          <RefreshCw className="w-4 h-4 mr-2" />
-                          Re-scan Document
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                        <Button variant="outline" onClick={() => handleRetry('birthcert')}>
+                          <Upload className="w-4 h-4 mr-2" />
+                          Upload Different File
                         </Button>
-                        <Button variant="default" onClick={() => { setStep('complete'); if (onComplete) onComplete(); }} className="flex-1">
+                        <Button variant="outline" onClick={() => handleProcessBirthCert()}>
+                          <RotateCw className="w-4 h-4 mr-2" />
+                          Re-run OCR
+                        </Button>
+                        <Button variant="default" onClick={() => { setStep('complete'); if (onComplete) onComplete(); }}>
                           <Check className="w-4 h-4 mr-2" />
                           Looks Good - Complete
                         </Button>
