@@ -202,14 +202,13 @@ data / date: ${poaDate}    podpisy / signatures: __________________  ___________
 
     console.log("POA generated successfully:", poaRecord.id);
 
-    // ✅ PHASE EX FIX #1: Generate actual PDF using fill-pdf edge function
-    console.log('[generate-poa] Calling fill-pdf to generate PDF...');
+    // ✅ PHASE EX FIX #1: Generate actual PDF using pdf-simple edge function
+    console.log('[generate-poa] Calling pdf-simple to generate PDF...');
     
-    const { data: pdfData, error: pdfError } = await supabase.functions.invoke('fill-pdf', {
+    const { data: pdfData, error: pdfError } = await supabase.functions.invoke('pdf-simple', {
       body: {
         caseId,
-        templateType: `poa-${poaType}`,
-        flatten: false
+        templateType: `poa-${poaType}`.replace(/-(minor-\d+)/, '-minor') // Convert minor-1, minor-2 to poa-minor
       }
     });
 
