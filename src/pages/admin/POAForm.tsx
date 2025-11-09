@@ -28,8 +28,7 @@ import { BulkPDFGenerator } from "@/components/BulkPDFGenerator";
 import { useFormManager } from "@/hooks/useFormManager";
 import { usePOAAutoGeneration } from "@/hooks/usePOAAutoGeneration";
 import { MaskedPassportInput } from "@/components/forms/MaskedPassportInput";
-import { Check, Printer } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Printer } from "lucide-react";
 import StickyActionBar from "@/components/StickyActionBar";
 import {
   POA_FORM_REQUIRED_FIELDS,
@@ -609,12 +608,6 @@ export default function POAForm() {
                 )}>
                   {poaFormConfigs.adult.title}
                 </h2>
-                {activePOAType === 'adult' && (
-                  <Badge className="bg-primary/20 text-primary border-primary text-lg px-4 py-2">
-                    <Check className="w-5 h-5 mr-2" />
-                    ACTIVE
-                  </Badge>
-                )}
               </div>
             </div>
                 
@@ -689,12 +682,6 @@ export default function POAForm() {
                       Minor child {childNum} (DOB: {formData[`child_${childNum}_dob`] || 'Not entered'})
                     </p>
                   </div>
-                  {activePOAType === 'minor' && (
-                    <Badge className="bg-secondary/20 text-secondary border-secondary text-lg px-4 py-2">
-                      <Check className="w-5 h-5 mr-2" />
-                      ACTIVE
-                    </Badge>
-                  )}
                 </div>
               </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
@@ -776,12 +763,6 @@ export default function POAForm() {
                   )}>
                     {poaFormConfigs.spouses.title}
                   </h2>
-                  {activePOAType === 'spouses' && (
-                    <Badge className="bg-accent/20 text-accent border-accent text-lg px-4 py-2">
-                      <Check className="w-5 h-5 mr-2" />
-                      ACTIVE
-                    </Badge>
-                  )}
                 </div>
               </div>
                 {/* Primary Applicant Fields - labels based on master_table applicant_sex */}
