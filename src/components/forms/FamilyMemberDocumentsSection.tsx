@@ -7,6 +7,7 @@ interface DocumentItem {
   checked: boolean;
   importance?: 'critical' | 'high' | 'medium' | 'low';
   difficulty?: 'easy' | 'medium' | 'hard';
+  notes?: string;
 }
 
 interface FamilyMemberDocumentsSectionProps {
@@ -52,6 +53,7 @@ export const FamilyMemberDocumentsSection = ({
       checked: formData?.[`${prefix}_has_poa`] || false,
       importance: 'critical' as const,
       difficulty: 'easy' as const,
+      notes: formData?.[`${prefix}_poa_notes`] || '',
     },
     {
       id: `${prefix}_has_passport`,
@@ -59,6 +61,7 @@ export const FamilyMemberDocumentsSection = ({
       checked: formData?.[`${prefix}_has_passport`] || false,
       importance: 'critical' as const,
       difficulty: 'easy' as const,
+      notes: formData?.[`${prefix}_passport_notes`] || '',
     },
     {
       id: `${prefix}_has_birth_cert`,
@@ -66,6 +69,7 @@ export const FamilyMemberDocumentsSection = ({
       checked: formData?.[`${prefix}_has_birth_cert`] || false,
       importance: 'critical' as const,
       difficulty: 'medium' as const,
+      notes: formData?.[`${prefix}_birth_cert_notes`] || '',
     },
     {
       id: `${prefix}_has_additional_docs`,
@@ -73,6 +77,7 @@ export const FamilyMemberDocumentsSection = ({
       checked: formData?.[`${prefix}_has_additional_docs`] || false,
       importance: 'low' as const,
       difficulty: 'easy' as const,
+      notes: formData?.[`${prefix}_additional_docs_notes`] || '',
     },
   ];
 
@@ -85,6 +90,7 @@ export const FamilyMemberDocumentsSection = ({
         checked: formData?.[`${prefix}_has_polish_documents`] || false,
         importance: 'high' as const,
         difficulty: 'hard' as const,
+        notes: formData?.[`${prefix}_polish_documents_notes`] || '',
       },
       {
         id: `${prefix}_has_passport`,
@@ -92,6 +98,7 @@ export const FamilyMemberDocumentsSection = ({
         checked: formData?.[`${prefix}_has_passport`] || false,
         importance: 'critical' as const,
         difficulty: 'easy' as const,
+        notes: formData?.[`${prefix}_passport_notes`] || '',
       },
       {
         id: `${prefix}_has_birth_cert`,
@@ -99,6 +106,7 @@ export const FamilyMemberDocumentsSection = ({
         checked: formData?.[`${prefix}_has_birth_cert`] || false,
         importance: 'critical' as const,
         difficulty: 'medium' as const,
+        notes: formData?.[`${prefix}_birth_cert_notes`] || '',
       },
       {
         id: `${prefix}_has_marriage_cert`,
@@ -106,6 +114,7 @@ export const FamilyMemberDocumentsSection = ({
         checked: formData?.[`${prefix}_has_marriage_cert`] || false,
         importance: 'high' as const,
         difficulty: 'medium' as const,
+        notes: formData?.[`${prefix}_marriage_cert_notes`] || '',
       },
       {
         id: `${prefix}_has_naturalization`,
@@ -113,6 +122,7 @@ export const FamilyMemberDocumentsSection = ({
         checked: formData?.[`${prefix}_has_naturalization`] || false,
         importance: 'critical' as const,
         difficulty: 'hard' as const,
+        notes: formData?.[`${prefix}_naturalization_notes`] || '',
       },
       {
         id: `${prefix}_has_foreign_docs`,
@@ -120,6 +130,7 @@ export const FamilyMemberDocumentsSection = ({
         checked: formData?.[`${prefix}_has_foreign_docs`] || false,
         importance: 'medium' as const,
         difficulty: 'medium' as const,
+        notes: formData?.[`${prefix}_foreign_docs_notes`] || '',
       },
       {
         id: `${prefix}_has_additional_docs`,
@@ -127,6 +138,7 @@ export const FamilyMemberDocumentsSection = ({
         checked: formData?.[`${prefix}_has_additional_docs`] || false,
         importance: 'low' as const,
         difficulty: 'easy' as const,
+        notes: formData?.[`${prefix}_additional_docs_notes`] || '',
       },
     ];
 
@@ -138,6 +150,7 @@ export const FamilyMemberDocumentsSection = ({
         checked: formData?.[`${prefix}_has_military_record`] || false,
         importance: 'medium' as const,
         difficulty: 'hard' as const,
+        notes: formData?.[`${prefix}_military_record_notes`] || '',
       });
     }
 
@@ -152,6 +165,13 @@ export const FamilyMemberDocumentsSection = ({
     });
   };
 
+  const handleNotesChange = (docId: string, notes: string) => {
+    // Convert checkbox field name to notes field name
+    // e.g., "applicant_has_passport" -> "applicant_passport_notes"
+    const notesFieldName = docId.replace('_has_', '_').replace(/^(.+)_(.+)$/, '$1_$2_notes');
+    handleInputChange(notesFieldName, notes);
+  };
+
   return (
     <>
       <h3 className="text-2xl md:text-3xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mt-6 mb-4">
@@ -161,6 +181,7 @@ export const FamilyMemberDocumentsSection = ({
         title=""
         documents={documents}
         onChange={handleDocumentsChange}
+        onNotesChange={handleNotesChange}
         colorScheme={colorScheme}
       />
     </>

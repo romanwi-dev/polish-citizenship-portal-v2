@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 import { FolderOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -13,6 +14,7 @@ interface DocumentItem {
   importance?: 'critical' | 'high' | 'medium' | 'low';
   difficulty?: 'easy' | 'medium' | 'hard';
   description?: string;
+  notes?: string;
 }
 
 interface FlippableCardsDarkGlowProps {
@@ -20,6 +22,7 @@ interface FlippableCardsDarkGlowProps {
   documents: DocumentItem[];
   onChange?: (documents: DocumentItem[]) => void;
   onToggle?: (id: string) => void;
+  onNotesChange?: (id: string, notes: string) => void;
   colorScheme?: 'children' | 'applicant' | 'spouse' | 'parents' | 'grandparents' | 'ggp' | 'civil-reg';
 }
 
@@ -89,7 +92,7 @@ const colorSchemes = {
   },
 };
 
-export const FlippableCardsDarkGlow = ({ title, documents, onChange, onToggle, colorScheme = 'applicant' }: FlippableCardsDarkGlowProps) => {
+export const FlippableCardsDarkGlow = ({ title, documents, onChange, onToggle, onNotesChange, colorScheme = 'applicant' }: FlippableCardsDarkGlowProps) => {
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
   const scheme = colorSchemes[colorScheme];
 
@@ -229,15 +232,27 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange, onToggle, c
                 >
                   <div className="flex flex-col gap-3 h-full">
                     <h4 className="text-xl font-heading font-bold tracking-tight text-card-foreground mb-2">
-                      More Information
+                      Notes
                     </h4>
                     
                     <div className="flex-1 overflow-auto">
-                      <div className={`bg-background/5 rounded-lg p-4 border ${scheme.badge.split(' ').find(c => c.startsWith('border-'))} h-full`}>
-                        <p className="text-sm text-muted-foreground italic">
-                          [Admin: Add detailed information about this document here. This content will be customized for each document to provide additional context, requirements, or important notes for clients.]
-                        </p>
-                      </div>
+                      <Textarea
+                        value={doc.notes || ''}
+                        onChange={(e) => {
+                          e.stopPropagation();
+                          if (onNotesChange) {
+                            onNotesChange(doc.id, e.target.value.toUpperCase());
+                          }
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                        placeholder="Add notes about this document..."
+                        className={cn(
+                          "min-h-[200px] h-full resize-none uppercase",
+                          "border-2 backdrop-blur",
+                          scheme.cardBorder,
+                          "focus:ring-2 focus:ring-offset-2"
+                        )}
+                      />
                     </div>
 
                     <Button
