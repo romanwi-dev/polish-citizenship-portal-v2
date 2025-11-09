@@ -26,6 +26,7 @@ serve(async (req) => {
       'registration': 'registration.pdf',
       'uzupelnienie': 'uzupelnienie.pdf',
       'citizenship': 'citizenship.pdf',
+      'transcription': 'transcription.pdf',
     };
 
     const templateFileName = templateFileMap[templateType];

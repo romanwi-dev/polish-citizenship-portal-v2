@@ -54,55 +54,107 @@ const FIELD_MAPS: Record<string, Record<string, string>> = {
     // Legacy support - now uses dynamic assembly
   },
   'citizenship': {
-    // Applicant personal info
-    'imie': 'applicant_first_name',
-    'nazwisko': 'applicant_last_name',
-    'nazwisko_rodowe': 'applicant_maiden_name',
-    'data_urodzenia': 'applicant_dob',
-    'miejsce_urodzenia': 'applicant_pob',
+    // Applicant (using actual PDF field names from citizenship.pdf)
+    'imie_wniosko': 'applicant_first_name',
+    'nazwisko_wniosko': 'applicant_last_name',
+    'nazwisko_rodowe_wniosko': 'applicant_maiden_name',
+    'dzien_uro': 'applicant_dob.day',
+    'miesiac_uro': 'applicant_dob.month',
+    'rok_uro': 'applicant_dob.year',
+    'miejsce_uro': 'applicant_pob',
+    'plec': 'applicant_sex',
+    'obecne_obywatelstwo': 'applicant_current_citizenship',
+    'pesel_wniosko': 'applicant_pesel',
     
-    // Marriage info
-    'miejsce_malzenstwa': 'place_of_marriage',
-    'data_malzenstwa': 'date_of_marriage',
+    // Applicant marriage
+    'dzien_malz_wniosko': 'date_of_marriage.day',
+    'miesiac_malz_wniosko': 'date_of_marriage.month',
+    'rok_malz_wniosko': 'date_of_marriage.year',
+    'miejsce_malz_wniosko': 'place_of_marriage',
     
-    // Mother info
-    'matka_imie': 'mother_first_name',
-    'matka_nazwisko': 'mother_last_name',
-    'matka_nazwisko_rodowe': 'mother_maiden_name',
-    'matka_data_urodzenia': 'mother_dob',
-    'matka_miejsce_urodzenia': 'mother_pob',
+    // Mother
+    'imie_matki': 'mother_first_name',
+    'nazwisko_matki': 'mother_last_name',
+    'nazwisko_rodowe_matki': 'mother_maiden_name',
+    'dzien_uro_matki': 'mother_dob.day',
+    'miesiac_uro_matki': 'mother_dob.month',
+    'rok_uro_matki': 'mother_dob.year',
+    'miejsce_uro_matki': 'mother_pob',
+    'pesel_matki': 'mother_pesel',
+    'zyciorys_matki': 'mother_notes',
     
-    // Father info
-    'ojciec_imie': 'father_first_name',
-    'ojciec_nazwisko': 'father_last_name',
-    'ojciec_data_urodzenia': 'father_dob',
-    'ojciec_miejsce_urodzenia': 'father_pob',
-    'rodzice_data_malzenstwa': 'father_mother_marriage_date',
-    'rodzice_miejsce_malzenstwa': 'father_mother_marriage_place',
+    // Father
+    'imie_ojca': 'father_first_name',
+    'nazwisko_ojca': 'father_last_name',
+    'dzien_uro_ojca': 'father_dob.day',
+    'miesiac_uro_ojca': 'father_dob.month',
+    'rok_uro_ojca': 'father_dob.year',
+    'miejsce_uro_ojca': 'father_pob',
+    'pesel_ojca': 'father_pesel',
+    'zyciorys_ojca': 'father_notes',
     
-    // Maternal grandparents
-    'dziadek_mat_imie': 'mgf_first_name',
-    'dziadek_mat_nazwisko': 'mgf_last_name',
-    'dziadek_mat_data_urodzenia': 'mgf_dob',
-    'dziadek_mat_miejsce_urodzenia': 'mgf_pob',
+    // Parents marriage
+    'dzien_malz_rodzicow': 'father_mother_marriage_date.day',
+    'miesiac_malz_rodzicow': 'father_mother_marriage_date.month',
+    'rok_malz_rodzicow': 'father_mother_marriage_date.year',
+    'miejsce_malz_rodzicow': 'father_mother_marriage_place',
     
-    'babcia_mat_imie': 'mgm_first_name',
-    'babcia_mat_nazwisko': 'mgm_last_name',
-    'babcia_mat_nazwisko_rodowe': 'mgm_maiden_name',
-    'babcia_mat_data_urodzenia': 'mgm_dob',
-    'babcia_mat_miejsce_urodzenia': 'mgm_pob',
+    // Maternal Grandfather (MGF)
+    'imie_dziadka_m': 'mgf_first_name',
+    'nazwisko_dziadka_m': 'mgf_last_name',
+    'dzien_uro_dziadka_m': 'mgf_dob.day',
+    'miesiac_uro_dziadka_m': 'mgf_dob.month',
+    'rok_uro_dziadka_m': 'mgf_dob.year',
+    'miejsce_uro_dziadka_m': 'mgf_pob',
+    'pesel_dziadka_m': 'mgf_pesel',
+    'zyciorys_dziadka_m': 'mgf_notes',
     
-    // Paternal grandparents
-    'dziadek_ojc_imie': 'pgf_first_name',
-    'dziadek_ojc_nazwisko': 'pgf_last_name',
-    'dziadek_ojc_data_urodzenia': 'pgf_dob',
-    'dziadek_ojc_miejsce_urodzenia': 'pgf_pob',
+    // Maternal Grandmother (MGM)
+    'imie_babki_m': 'mgm_first_name',
+    'nazwisko_babki_m': 'mgm_last_name',
+    'nazwisko_rodowe_babki_m': 'mgm_maiden_name',
+    'dzien_uro_babki_m': 'mgm_dob.day',
+    'miesiac_uro_babki_m': 'mgm_dob.month',
+    'rok_uro_babki_m': 'mgm_dob.year',
+    'miejsce_uro_babki_m': 'mgm_pob',
+    'pesel_babki_m': 'mgm_pesel',
+    'zyciorys_babki_m': 'mgm_notes',
     
-    'babcia_ojc_imie': 'pgm_first_name',
-    'babcia_ojc_nazwisko': 'pgm_last_name',
-    'babcia_ojc_nazwisko_rodowe': 'pgm_maiden_name',
-    'babcia_ojc_data_urodzenia': 'pgm_dob',
-    'babcia_ojc_miejsce_urodzenia': 'pgm_pob',
+    // Maternal grandparents marriage
+    'dzien_malz_dziadkow_m': 'mgf_mgm_marriage_date.day',
+    'miesiac_malz_dziadkow_m': 'mgf_mgm_marriage_date.month',
+    'rok_malz_dziadkow_m': 'mgf_mgm_marriage_date.year',
+    'miejsce_malz_dziadkow_m': 'mgf_mgm_marriage_place',
+    
+    // Paternal Grandfather (PGF)
+    'imie_dziadka_o': 'pgf_first_name',
+    'nazwisko_dziadka_o': 'pgf_last_name',
+    'dzien_uro_dziadka_o': 'pgf_dob.day',
+    'miesiac_uro_dziadka_o': 'pgf_dob.month',
+    'rok_uro_dziadka_o': 'pgf_dob.year',
+    'miejsce_uro_dziadka_o': 'pgf_pob',
+    'pesel_dziadka_o': 'pgf_pesel',
+    'zyciorys_dziadka_o': 'pgf_notes',
+    
+    // Paternal Grandmother (PGM)
+    'imie_babki_o': 'pgm_first_name',
+    'nazwisko_babki_o': 'pgm_last_name',
+    'nazwisko_rodowe_babki_o': 'pgm_maiden_name',
+    'dzien_uro_babki_o': 'pgm_dob.day',
+    'miesiac_uro_babki_o': 'pgm_dob.month',
+    'rok_uro_babki_o': 'pgm_dob.year',
+    'miejsce_uro_babki_o': 'pgm_pob',
+    'pesel_babki_o': 'pgm_pesel',
+    'zyciorys_babki_o': 'pgm_notes',
+    
+    // Paternal grandparents marriage
+    'dzien_malz_dziadkow_o': 'pgf_pgm_marriage_date.day',
+    'miesiac_malz_dziadkow_o': 'pgf_pgm_marriage_date.month',
+    'rok_malz_dziadkow_o': 'pgf_pgm_marriage_date.year',
+    'miejsce_malz_dziadkow_o': 'pgf_pgm_marriage_place',
+    
+    // Applicant biographical notes
+    'zyciorys_wniosko': 'applicant_notes',
   },
   'registration': {
     'applicant_given_names': 'applicant_first_name',
@@ -119,20 +171,34 @@ const FIELD_MAPS: Record<string, Record<string, string>> = {
     'usc_office_address': 'usc_office_address',
   },
   'transcription': {
-    // Applicant info
-    'applicant_given_names': 'applicant_first_name',
-    'applicant_surname': 'applicant_last_name',
-    'applicant_maiden_name': 'applicant_maiden_name',
-    'applicant_date_of_birth': 'applicant_dob',
-    'applicant_place_of_birth': 'applicant_pob',
-    'applicant_email': 'applicant_email',
-    'applicant_phone': 'applicant_phone',
-    'applicant_passport_number': 'applicant_passport_number',
+    // Pages 1-2: Transcription request (ACTUAL PDF field names)
+    'foreign_act_place': 'foreign_country',
+    'name_on_act': 'applicant_first_name|applicant_last_name',
+    'event_place': 'birth_city|birth_country',
+    'event_date': 'birth_date',
     
-    // Document info
-    'document_type': 'document_type',
-    'document_issue_place': 'document_issue_place',
-    'document_registry_number': 'document_registry_number',
+    // Checkboxes for attachments
+    'original_with_translation': '__CHECKBOX_TRUE__',
+    'tax_payment_proof': '__CHECKBOX_TRUE__',
+    'power_of_attorney': '__CHECKBOX_POA__',
+    'passport_copy': '__CHECKBOX_PASSPORT__',
+    
+    // Delivery method
+    'send_to_attorney': '__CHECKBOX_TRUE__',
+    
+    // Signature
+    'applicant_signature': 'applicant_signature',
+    
+    // Pickup date
+    'pickup_date': 'document_pickup_date',
+    
+    // Page 3: Supplementation request
+    'birth_act_office': '__USC_DEFAULT__',
+    'birth_act_number': 'birth_certificate_number',
+    'birth_act_year': 'birth_year',
+    'father_maiden_name': 'father_last_name',
+    'mother_maiden_name': 'mother_maiden_name',
+    'supplementation_source_office': 'source_registry',
   },
   'family-tree': {
     // Applicant info
@@ -187,6 +253,65 @@ const FIELD_MAPS: Record<string, Record<string, string>> = {
     'minor_3_place_of_birth': 'child_3_pob',
   }
 };
+
+// Helper: Smart field value resolver
+function resolveFieldValue(dbColumnName: string, masterData: any): string | null {
+  // Special checkbox values
+  if (dbColumnName === '__CHECKBOX_TRUE__') return '✓';
+  if (dbColumnName === '__CHECKBOX_POA__') return masterData?.poa_signed_at ? '✓' : '';
+  if (dbColumnName === '__CHECKBOX_PASSPORT__') return masterData?.passport_number ? '✓' : '';
+  if (dbColumnName === '__USC_DEFAULT__') return 'Urząd Stanu Cywilnego m.st Warszawa';
+  
+  // Date splitting (e.g., "applicant_dob.day")
+  if (dbColumnName.includes('.') && ['day', 'month', 'year'].some(p => dbColumnName.endsWith('.' + p))) {
+    const [fieldName, datePart] = dbColumnName.split('.');
+    const dateValue = masterData?.[fieldName];
+    if (!dateValue) return null;
+    
+    try {
+      // Handle both ISO (YYYY-MM-DD) and DD.MM.YYYY formats
+      let date: Date;
+      if (dateValue.includes('.')) {
+        const [day, month, year] = dateValue.split('.');
+        date = new Date(`${year}-${month}-${day}`);
+      } else {
+        date = new Date(dateValue);
+      }
+      
+      if (isNaN(date.getTime())) return null;
+      
+      if (datePart === 'day') return String(date.getDate()).padStart(2, '0');
+      if (datePart === 'month') return String(date.getMonth() + 1).padStart(2, '0');
+      if (datePart === 'year') return String(date.getFullYear());
+    } catch {
+      return null;
+    }
+  }
+  
+  // Concatenation (e.g., "first_name|last_name")
+  if (dbColumnName.includes('|')) {
+    const parts = dbColumnName.split('|');
+    const values = parts
+      .map(part => masterData?.[part?.trim()])
+      .filter(v => v != null && v !== '');
+    return values.length > 0 ? values.join(' ') : null;
+  }
+  
+  // Nested objects (e.g., "applicant_address.city")
+  if (dbColumnName.includes('.') && !['day','month','year'].some(p => dbColumnName.endsWith('.' + p))) {
+    const parts = dbColumnName.split('.');
+    let value: any = masterData;
+    for (const part of parts) {
+      value = value?.[part];
+      if (value == null) return null;
+    }
+    return String(value);
+  }
+  
+  // Direct lookup
+  const value = masterData?.[dbColumnName];
+  return value != null && value !== '' ? String(value) : null;
+}
 
 // Helper: Count children in master data
 function countChildren(data: any): number {
@@ -480,7 +605,7 @@ Deno.serve(async (req) => {
       fillNonPolishFieldsWithNieDotczyca(form, masterData);
     }
 
-    // Fill fields
+    // Fill fields using smart resolver
     for (const field of fields) {
       try {
         const fieldName = field.getName();
@@ -488,17 +613,8 @@ Deno.serve(async (req) => {
         // Get database column name from mapping (PDF field → DB column)
         const dbColumnName = fieldMap[fieldName] || fieldName;
         
-        // Handle pipe-separated field concatenation (e.g., "first_name|last_name")
-        let value;
-        if (dbColumnName.includes('|')) {
-          const parts = dbColumnName.split('|');
-          const values = parts
-            .map(part => masterData?.[part])
-            .filter(v => v != null && v !== '');
-          value = values.length > 0 ? values.join(' ') : null;
-        } else {
-          value = masterData?.[dbColumnName];
-        }
+        // Use smart resolver for complex mappings
+        let value = resolveFieldValue(dbColumnName, masterData);
 
         // Auto-fill POA date with current date if not set
         if (fieldName === 'poa_date' && (value == null || value === '')) {
@@ -513,7 +629,7 @@ Deno.serve(async (req) => {
           filledCount++;
         }
       } catch (e) {
-        // Skip fields we can't fill
+        // Skip fields we can't fill (might be checkbox or other non-text field)
         console.log(`[pdf-simple] Skipped field: ${field.getName()}`);
       }
     }
