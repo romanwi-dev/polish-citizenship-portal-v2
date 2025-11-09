@@ -79,16 +79,25 @@ export function PDFPreviewDialog({
   const handlePrint = () => {
     const urlToUse = blobUrl || pdfUrl;
     setIsPrinting(true);
-    const printWindow = window.open(urlToUse, '_blank');
-    if (printWindow) {
-      printWindow.onload = () => {
-        printWindow.print();
-      };
-      toast.success("Print dialog opened");
+    
+    if (isMobile) {
+      // On mobile, open PDF in new tab for easier printing
+      window.open(urlToUse, '_blank');
+      toast.success("PDF opened in new tab. Use browser menu to print.");
+      setIsPrinting(false);
     } else {
-      toast.error("Unable to open print window. Please check popup blocker.");
+      // Desktop: open in new window and trigger print dialog
+      const printWindow = window.open(urlToUse, '_blank');
+      if (printWindow) {
+        printWindow.onload = () => {
+          printWindow.print();
+        };
+        toast.success("Print dialog opened");
+      } else {
+        toast.error("Unable to open print window. Please check popup blocker.");
+      }
+      setIsPrinting(false);
     }
-    setIsPrinting(false);
   };
 
   const handleOpenNewTab = () => {
@@ -192,6 +201,15 @@ export function PDFPreviewDialog({
         <DialogFooter className="flex flex-col md:flex-row gap-2">
           {isMobile ? (
             <>
+              <Button 
+                variant="secondary" 
+                onClick={handlePrint} 
+                disabled={isPrinting}
+                className="gap-2 w-full"
+              >
+                <Printer className="h-4 w-4" />
+                Print PDF
+              </Button>
               <Button 
                 variant="default" 
                 onClick={onDownloadEditable}
