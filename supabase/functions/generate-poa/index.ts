@@ -231,11 +231,40 @@ data / date: ${poaDate}    podpisy / signatures: __________________  ___________
 
     console.log("POA generated successfully:", poaRecord.id);
 
+    // ✅ PHASE EX FIX #1: Generate actual PDF using fill-pdf edge function
+    console.log('[generate-poa] Calling fill-pdf to generate PDF...');
+    
+    const { data: pdfData, error: pdfError } = await supabaseClient.functions.invoke('fill-pdf', {
+      body: {
+        caseId,
+        templateType: `poa-${poaType}`,
+        flatten: false
+      }
+    });
+
+    if (pdfError || !pdfData?.url) {
+      console.error('[generate-poa] PDF generation failed:', pdfError);
+      throw new Error(`PDF generation failed: ${pdfError?.message || 'Unknown error'}`);
+    }
+
+    console.log('[generate-poa] PDF generated successfully:', pdfData.url);
+
+    // ✅ Update POA record with PDF URL
+    await supabaseClient
+      .from('poa')
+      .update({ pdf_url: pdfData.url })
+      .eq('id', poaRecord.id);
+
+    console.log('[generate-poa] POA record updated with PDF URL');
+
+    // Return PDF URL instead of text
     return new Response(
       JSON.stringify({
         success: true,
         poaId: poaRecord.id,
-        poaText,
+        pdfUrl: pdfData.url,
+        poaType,
+        generatedAt: new Date().toISOString()
       }),
       {
         status: 200,

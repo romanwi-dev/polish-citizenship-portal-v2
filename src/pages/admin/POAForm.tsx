@@ -21,6 +21,9 @@ import { PDFPreviewDialog } from "@/components/PDFPreviewDialog";
 import { sanitizeMasterData } from "@/utils/masterDataSanitizer";
 import { cn } from "@/lib/utils";
 import { StaticHeritagePlaceholder } from "@/components/heroes/StaticHeritagePlaceholder";
+import { PassportUpload } from "@/components/poa/PassportUpload";
+import { ResponsiveTabs } from "@/components/forms/ResponsiveTabs";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const StaticHeritage = lazy(() => import("@/components/heroes/StaticHeritage").then(m => ({ default: m.StaticHeritage })));
 import { FormButtonsRow } from "@/components/FormButtonsRow";
@@ -50,6 +53,7 @@ export default function POAForm() {
   const [isFullView, setIsFullView] = useState(true);
   const [generatedPOATypes, setGeneratedPOATypes] = useState<string[]>([]); 
   const [pdfUrls, setPdfUrls] = useState<Record<string, string>>({});
+  const isMobile = useIsMobile();
   
   // ⚠️ LOCKED DESIGN - DO NOT MODIFY CONDITIONAL RENDERING LOGIC
   // Conditional rendering controlled by 4 master fields:
@@ -240,6 +244,20 @@ export default function POAForm() {
     }
   };
 
+  // ✅ PHASE EX FIX #2: Handle OCR data extraction  
+  const handleOCRDataExtracted = (data: any) => {
+    console.log('[POAForm] OCR data extracted:', data);
+    
+    // Auto-fill fields from OCR
+    if (data.applicant_first_name) handleInputChange("applicant_first_name", data.applicant_first_name);
+    if (data.applicant_last_name) handleInputChange("applicant_last_name", data.applicant_last_name);
+    if (data.passport_number) handleInputChange("applicant_passport_number", data.passport_number);
+    if (data.applicant_dob) handleInputChange("applicant_dob", data.applicant_dob);
+    if (data.applicant_sex) handleInputChange("applicant_sex", data.applicant_sex);
+    
+    toast.success("Fields auto-filled from passport scan!");
+  };
+
   const handleGenerateCombinedPOA = async () => {
     if (!caseId) {
       toast.error('No case ID available');
@@ -253,39 +271,63 @@ export default function POAForm() {
       await handlePOASave();
       
       // Determine which POAs to generate
-      const types: string[] = [];
-      if (formData.applicant_first_name) types.push('adult');
-      if (minorChildrenCount > 0) types.push('minor');
-      if (showSpousePOA) types.push('spouses');
-
-      if (types.length === 0) {
-        toast.error('Please fill in applicant information first');
-        return;
-      }
-
-      toast.loading(`Generating ${types.length} POA(s)...`);
-
-      // Generate each POA type
-      const urls: Record<string, string> = {};
-      for (const type of types) {
-        const { data, error } = await supabase.functions.invoke('fill-pdf', {
-          body: { caseId, templateType: `poa-${type}` }
-        });
-
-        if (error) throw error;
-        if (data?.url) {
-          urls[type] = data.url;
+      const poaTypes: string[] = [];
+      if (true) poaTypes.push('adult'); // Always generate adult POA
+      if (showSpousePOA) poaTypes.push('spouses');
+      if (minorChildrenCount > 0) {
+        for (let i = 1; i <= minorChildrenCount; i++) {
+          poaTypes.push(`minor-${i}`);
         }
       }
 
-      toast.dismiss();
-      toast.success(`${types.length} POA(s) generated successfully!`);
+      if (poaTypes.length === 0) {
+        toast.error('No POA types to generate');
+        setIsGenerating(false);
+        return;
+      }
 
-      setGeneratedPOATypes(types);
-      setActivePOAType(types[0]);
-      setPdfUrls(urls);
-      setPdfPreviewUrl(urls[types[0]]);
-      setPreviewFormData(formData);
+      const loadingToast = toast.loading(`Generating ${poaTypes.length} POA(s)...`);
+
+      // ✅ PHASE EX FIX #1: Generate PDFs with actual URLs
+      const results: Record<string, string> = {};
+      const generatedTypes: string[] = [];
+
+      for (const type of poaTypes) {
+        console.log(`[POAForm] Generating ${type} POA...`);
+        
+        const { data, error } = await supabase.functions.invoke('generate-poa', {
+          body: { caseId, poaType: type }
+        });
+
+        if (error || !data?.success) {
+          console.error(`[POAForm] Failed to generate ${type} POA:`, error);
+          toast.error(`Failed to generate ${type} POA: ${error?.message || 'Unknown error'}`);
+          continue;
+        }
+
+        // ✅ Store PDF URL from backend
+        if (data.pdfUrl) {
+          results[type] = data.pdfUrl;
+          generatedTypes.push(type);
+          console.log(`[POAForm] ${type} POA generated:`, data.pdfUrl);
+        }
+      }
+
+      if (generatedTypes.length === 0) {
+        toast.dismiss(loadingToast);
+        toast.error('Failed to generate any POAs');
+        setIsGenerating(false);
+        return;
+      }
+
+      // ✅ Update state with PDF URLs
+      setPdfUrls(results);
+      setGeneratedPOATypes(generatedTypes);
+      setPdfPreviewUrl(results[generatedTypes[0]]); // Show first POA
+      setActivePOAType(generatedTypes[0]);
+
+      toast.dismiss(loadingToast);
+      toast.success(`Generated ${generatedTypes.length} POA(s) successfully!`);
     } catch (error: any) {
       console.error('[POA] Generation error:', error);
       toast.dismiss();
@@ -506,17 +548,12 @@ export default function POAForm() {
                 </div>
               </div>
 
-              {/* Scan Documents Button - Styled to match POA OCR Wizard */}
-              <div className="flex justify-center mt-16 mb-16">
-                <Button
-                  onClick={() => navigate(`/admin/cases/${caseId}/poa-ocr`)}
-                  variant="outline"
-                  size="lg"
-                  className="h-16 md:h-20 w-full max-w-md text-base md:text-lg font-medium hover:bg-primary hover:text-primary-foreground transition-all shadow-sm hover:shadow-md"
-                >
-                  <FileText className="w-5 h-5 mr-2" />
-                  <span className="opacity-80">Scan Documents</span>
-                </Button>
+              {/* ✅ PHASE EX FIX #3: Integrated Passport OCR Scanner */}
+              <div className="mt-8 mb-8">
+                <PassportUpload 
+                  caseId={caseId}
+                  onDataExtracted={handleOCRDataExtracted}
+                />
               </div>
             </div>
 
@@ -861,32 +898,41 @@ export default function POAForm() {
             </Button>
           </div>
           
-          {/* POA Type Tabs */}
+          {/* ✅ PHASE EX FIX #4: Mobile-Responsive POA Tabs */}
           {generatedPOATypes.length > 1 && (
-            <Tabs value={activePOAType} onValueChange={setActivePOAType} className="mb-4">
-              <TabsList className="grid w-full" style={{ gridTemplateColumns: `repeat(${generatedPOATypes.length}, 1fr)` }}>
-                {generatedPOATypes.map(type => (
-                  <TabsTrigger key={type} value={type} onClick={() => setPdfPreviewUrl(pdfUrls[type])}>
-                    {type.toUpperCase()} POA
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-            </Tabs>
+            <ResponsiveTabs
+              value={activePOAType}
+              onValueChange={(value) => {
+                setActivePOAType(value);
+                setPdfPreviewUrl(pdfUrls[value]);
+              }}
+              tabs={generatedPOATypes.map(type => ({
+                value: type,
+                label: `${type.toUpperCase()} POA`,
+                content: null
+              }))}
+            />
           )}
 
-          {/* PDF Preview */}
+          {/* ✅ PHASE EX FIX #5: Mobile-Responsive PDF Preview */}
           {pdfPreviewUrl && (
             <div className="space-y-4">
               <div className="border rounded-lg overflow-hidden">
                 <iframe
                   src={pdfPreviewUrl}
-                  className="w-full h-[600px]"
+                  className={cn(
+                    "w-full",
+                    isMobile ? "h-[400px]" : "h-[600px]"
+                  )}
                   title={`${activePOAType} POA Preview`}
                 />
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex gap-2 justify-end">
+              {/* ✅ PHASE EX FIX #6: Mobile-Optimized Action Buttons */}
+              <div className={cn(
+                "flex gap-2",
+                isMobile ? "flex-col" : "justify-end"
+              )}>
                 <Button
                   variant="outline"
                   onClick={async () => {
@@ -896,6 +942,7 @@ export default function POAForm() {
                     link.click();
                     toast.success('PDF downloaded');
                   }}
+                  className={isMobile ? "w-full h-12" : ""}
                 >
                   <Download className="h-4 w-4 mr-2" />
                   Download Editable
@@ -903,14 +950,28 @@ export default function POAForm() {
                 <Button
                   variant="outline"
                   onClick={() => {
-                    window.open(pdfPreviewUrl, '_blank');
+                    // ✅ PHASE EX FIX #7: Mobile print handling
+                    if (isMobile) {
+                      const printWindow = window.open(pdfPreviewUrl, '_blank');
+                      if (printWindow) {
+                        printWindow.onload = () => {
+                          printWindow.print();
+                        };
+                      }
+                    } else {
+                      window.open(pdfPreviewUrl, '_blank');
+                    }
                     toast.success('Opening PDF for printing');
                   }}
+                  className={isMobile ? "w-full h-12" : ""}
                 >
                   <Printer className="h-4 w-4 mr-2" />
                   Print
                 </Button>
-                <Button onClick={handleDownloadFinal}>
+                <Button 
+                  onClick={handleDownloadFinal}
+                  className={isMobile ? "w-full h-12" : ""}
+                >
                   <Download className="h-4 w-4 mr-2" />
                   Download Final
                 </Button>

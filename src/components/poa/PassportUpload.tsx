@@ -29,6 +29,8 @@ export function PassportUpload({ caseId, onDataExtracted }: PassportUploadProps)
     }
 
     setIsProcessing(true);
+    const toastId = toast.loading("Scanning passport...");
+    
     try {
       // Convert file to base64
       const reader = new FileReader();
@@ -37,28 +39,69 @@ export function PassportUpload({ caseId, onDataExtracted }: PassportUploadProps)
       reader.onload = async () => {
         const base64 = reader.result as string;
         
-        // TODO: Call OCR edge function
-        // For now, simulate extraction
-        toast.loading("Scanning passport...");
+        // ✅ PHASE EX FIX #3: Call real OCR edge function
+        const { supabase } = await import("@/integrations/supabase/client");
         
-        setTimeout(() => {
-          const mockData = {
-            applicant_first_name: "John",
-            applicant_last_name: "Doe",
-            passport_number: "AB123456",
-            applicant_dob: "01.01.1990",
-            applicant_sex: "M"
-          };
+        // Create temporary document record if no documentId provided
+        let docId = caseId;
+        if (caseId) {
+          const { data: tempDoc } = await supabase
+            .from('documents')
+            .insert({
+              case_id: caseId,
+              name: 'temp-passport-scan',
+              file_extension: 'jpg',
+              ocr_status: 'pending'
+            } as any)
+            .select('id')
+            .single();
           
-          toast.dismiss();
-          toast.success("Passport data extracted!");
-          onDataExtracted?.(mockData);
-          setIsProcessing(false);
-        }, 2000);
+          docId = tempDoc?.id;
+        }
+        
+        const { data, error } = await supabase.functions.invoke('ocr-document', {
+          body: { 
+            imageBase64: base64,
+            documentId: docId || 'temp',
+            caseId,
+            expectedType: 'passport'
+          }
+        });
+
+        if (error) {
+          throw new Error(error.message || 'OCR failed');
+        }
+
+        // Extract passport fields from OCR data
+        const extracted = data?.extracted_data || {};
+        const mappedData: any = {};
+
+        // Map OCR fields to form fields
+        if (extracted.full_name || extracted.name) {
+          const fullName = extracted.full_name || extracted.name;
+          const parts = fullName.split(' ');
+          mappedData.applicant_first_name = parts.slice(0, -1).join(' ') || '';
+          mappedData.applicant_last_name = parts[parts.length - 1] || '';
+        }
+        if (extracted.given_name) mappedData.applicant_first_name = extracted.given_name;
+        if (extracted.surname || extracted.last_name) mappedData.applicant_last_name = extracted.surname || extracted.last_name;
+        if (extracted.passport_number || extracted.document_number) mappedData.passport_number = extracted.passport_number || extracted.document_number;
+        if (extracted.date_of_birth || extracted.dob) mappedData.applicant_dob = extracted.date_of_birth || extracted.dob;
+        if (extracted.sex || extracted.gender) mappedData.applicant_sex = (extracted.sex || extracted.gender).toUpperCase();
+        
+        toast.dismiss(toastId);
+        toast.success("Passport data extracted!");
+        onDataExtracted?.(mappedData);
+        setIsProcessing(false);
+      };
+      
+      reader.onerror = () => {
+        throw new Error('Failed to read image file');
       };
     } catch (error: any) {
       console.error("OCR error:", error);
-      toast.error("Failed to scan passport");
+      toast.dismiss(toastId);
+      toast.error("Failed to scan passport: " + error.message);
       setIsProcessing(false);
     }
   };
@@ -79,6 +122,7 @@ export function PassportUpload({ caseId, onDataExtracted }: PassportUploadProps)
             <input
               type="file"
               accept="image/*"
+              capture="environment"
               onChange={handleFileChange}
               className="hidden"
               id="passport-upload"
