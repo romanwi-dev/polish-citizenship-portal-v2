@@ -62,6 +62,23 @@ For \`personType === 'child'\`, show ONLY these 4 documents:
 - If minor_children_count = 0, no children forms appear
 - Polish bloodline checkboxes determine which ancestor forms appear
 - Forms follow Polish citizenship eligibility logic (Polish parent → grandparents → great-grandparents)
+
+### Text Transformation Rules (UPPERCASE ENFORCEMENT)
+- **All Family Tree form fields enforce CAPS** via \`enforceUppercase\` prop
+- **Implementation**: Applied at \`FormInput\` component level (lines 102-110 in FormInput.tsx)
+- **Automatic Transformation**: User input is converted to uppercase on change event
+- **Visual Indicator**: Fields show uppercase styling via CSS class
+
+#### Exclusions from Uppercase:
+- ❌ Additional notes fields (free-form text)
+- ❌ Document card back notes (editable text areas)
+- ✅ All data entry fields (names, places, addresses, etc.) → UPPERCASE enforced
+
+#### Technical Implementation:
+- \`FormFieldGroup\` component accepts \`enforceUppercase\` prop (lines 18, 33, 53)
+- \`FormInput\` component handles transformation in \`handleChange\` (line 102)
+- Applied to all \`renderFieldGroup\` calls in FamilyTreeForm.tsx (line 360)
+- CSS class applied: \`uppercase\` for visual consistency
 `;
 
 export const FORM_VALIDATION_PATTERNS = `
@@ -94,6 +111,12 @@ export const FORM_VALIDATION_PATTERNS = `
 - Percentage calculated based on filled required fields
 - Displayed in KPI badges on dashboard
 - Updated in real-time as user fills forms
+
+### Text Input Standards
+- **Uppercase Enforcement**: Data entry fields enforce CAPS (via \`enforceUppercase\` prop)
+- **Notes Fields**: Case-preserved, no uppercase enforcement
+- **Document Card Backs**: Free-form text, smaller font (text-sm)
+- **Visual Consistency**: Uppercase fields show CSS class for styling
 `;
 
 export const POA_FORM_RULES = `
