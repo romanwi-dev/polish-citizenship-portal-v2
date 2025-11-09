@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 import { Loader2, FileSearch } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
-type TemplateType = 'poa-adult' | 'poa-minor' | 'poa-spouses' | 'citizenship' | 'family-tree' | 'registration' | 'uzupelnienie';
+type TemplateType = 'poa-adult' | 'poa-minor' | 'poa-spouses' | 'citizenship' | 'family-tree' | 'uzupelnienie';
 
 interface FieldInfo {
   name: string;
@@ -32,7 +32,6 @@ export default function PDFInspector() {
     'poa-spouses': 'POA Spouses',
     'citizenship': 'Citizenship (OBY)',
     'family-tree': 'Family Tree',
-    'registration': 'Civil Registration',
     'uzupelnienie': 'Uzupełnienie',
   };
 

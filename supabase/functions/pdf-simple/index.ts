@@ -20,7 +20,7 @@ const TEMPLATE_PATHS: Record<string, string> = {
   'family-tree': 'family-tree.pdf',
   'citizenship': 'citizenship.pdf',
   'transcription': 'transcription.pdf',
-  'registration': 'registration.pdf',
+  // 'registration': 'registration.pdf', // Template not yet uploaded to storage
 };
 
 // Field mappings: PDF field name → database column name
@@ -156,20 +156,20 @@ const FIELD_MAPS: Record<string, Record<string, string>> = {
     // Applicant biographical notes
     'zyciorys_wniosko': 'applicant_notes',
   },
-  'registration': {
-    'applicant_given_names': 'applicant_first_name',
-    'applicant_surname': 'applicant_last_name',
-    'applicant_date_of_birth': 'applicant_dob',
-    'applicant_place_of_birth': 'applicant_pob',
-    'applicant_email': 'applicant_email',
-    'applicant_phone': 'applicant_phone',
-    'applicant_passport_number': 'applicant_passport_number',
-    'document_type': 'document_type',
-    'document_issue_place': 'document_issue_place',
-    'document_issue_date': 'document_issue_date',
-    'usc_office_name': 'usc_office_name',
-    'usc_office_address': 'usc_office_address',
-  },
+  // 'registration': { // Template not yet uploaded to storage
+  //   'applicant_given_names': 'applicant_first_name',
+  //   'applicant_surname': 'applicant_last_name',
+  //   'applicant_date_of_birth': 'applicant_dob',
+  //   'applicant_place_of_birth': 'applicant_pob',
+  //   'applicant_email': 'applicant_email',
+  //   'applicant_phone': 'applicant_phone',
+  //   'applicant_passport_number': 'applicant_passport_number',
+  //   'document_type': 'document_type',
+  //   'document_issue_place': 'document_issue_place',
+  //   'document_issue_date': 'document_issue_date',
+  //   'usc_office_name': 'usc_office_name',
+  //   'usc_office_address': 'usc_office_address',
+  // },
   'transcription': {
     // Pages 1-2: Transcription request (ACTUAL PDF field names)
     'foreign_act_place': 'foreign_country',
