@@ -254,14 +254,21 @@ export default function POAForm() {
       // Save form data FIRST
       await handlePOASave();
       
-      // Determine which POAs to generate
-      const poaTypes: string[] = [];
-      if (true) poaTypes.push('adult'); // Always generate adult POA
-      if (showSpousePOA) poaTypes.push('spouses');
+      // Build array of POA types to generate using pdf-simple templates
+      const poaTypes: Array<'adult' | 'minor' | 'spouses'> = [];
+      
+      // Always generate adult POA
+      poaTypes.push('adult');
+      
+      // Generate spouses POA if married
+      if (showSpousePOA) {
+        poaTypes.push('spouses');
+      }
+      
+      // Generate ONE minor POA if there are any minor children
+      // (the pdf-simple minor template is generic, not per-child)
       if (minorChildrenCount > 0) {
-        for (let i = 1; i <= minorChildrenCount; i++) {
-          poaTypes.push(`minor-${i}`);
-        }
+        poaTypes.push('minor');
       }
 
       if (poaTypes.length === 0) {
@@ -272,28 +279,31 @@ export default function POAForm() {
 
       const loadingToast = toast.loading(`Generating ${poaTypes.length} POA(s)...`);
 
-      // ✅ PHASE EX FIX #1: Generate PDFs with actual URLs
+      // Generate PDFs using pdf-simple
       const results: Record<string, string> = {};
       const generatedTypes: string[] = [];
 
       for (const type of poaTypes) {
-        console.log(`[POAForm] Generating ${type} POA...`);
+        console.log(`[POAForm] Generating ${type} POA with pdf-simple...`);
         
-        const { data, error } = await supabase.functions.invoke('generate-poa', {
-          body: { caseId, poaType: type }
+        const { data, error } = await supabase.functions.invoke('pdf-simple', {
+          body: { 
+            caseId, 
+            templateType: `poa-${type}` 
+          }
         });
 
         if (error || !data?.success) {
-          console.error(`[POAForm] Failed to generate ${type} POA:`, error);
-          toast.error(`Failed to generate ${type} POA: ${error?.message || 'Unknown error'}`);
+          console.error(`[POAForm] Failed to generate ${type} POA:`, error || data);
+          toast.error(`Failed to generate ${type} POA`);
           continue;
         }
 
-        // ✅ Store PDF URL from backend
-        if (data.pdfUrl) {
-          results[type] = data.pdfUrl;
+        // Store PDF URL
+        if (data.url) {
+          results[type] = data.url;
           generatedTypes.push(type);
-          console.log(`[POAForm] ${type} POA generated:`, data.pdfUrl);
+          console.log(`[POAForm] ${type} POA generated:`, data.url);
         }
       }
 
@@ -304,11 +314,12 @@ export default function POAForm() {
         return;
       }
 
-      // ✅ Update state with PDF URLs
+      // Update state with PDF URLs and open preview
       setPdfUrls(results);
       setGeneratedPOATypes(generatedTypes);
       setPdfPreviewUrl(results[generatedTypes[0]]); // Show first POA
       setActivePOAType(generatedTypes[0]);
+      setPreviewOpen(true);
 
       toast.dismiss(loadingToast);
       toast.success(`Generated ${generatedTypes.length} POA(s) successfully!`);
