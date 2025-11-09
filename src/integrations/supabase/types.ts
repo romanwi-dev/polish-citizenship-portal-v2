@@ -2390,6 +2390,7 @@ export type Database = {
           mgf_has_naturalization: boolean | null
           mgf_has_passport: boolean | null
           mgf_is_alive: boolean | null
+          mgf_is_polish: boolean | null
           mgf_last_name: string | null
           mgf_mgm_marriage_date: string | null
           mgf_mgm_marriage_place: string | null
@@ -2405,6 +2406,7 @@ export type Database = {
           mggf_has_naturalization: boolean | null
           mggf_has_passport: boolean | null
           mggf_is_alive: boolean | null
+          mggf_is_polish: boolean | null
           mggf_last_name: string | null
           mggf_mggm_marriage_date: string | null
           mggf_mggm_marriage_place: string | null
@@ -2419,6 +2421,7 @@ export type Database = {
           mggm_has_naturalization: boolean | null
           mggm_has_passport: boolean | null
           mggm_is_alive: boolean | null
+          mggm_is_polish: boolean | null
           mggm_last_name: string | null
           mggm_maiden_name: string | null
           mggm_notes: string | null
@@ -2432,6 +2435,7 @@ export type Database = {
           mgm_has_naturalization: boolean | null
           mgm_has_passport: boolean | null
           mgm_is_alive: boolean | null
+          mgm_is_polish: boolean | null
           mgm_last_name: string | null
           mgm_maiden_name: string | null
           mgm_notes: string | null
@@ -2476,6 +2480,7 @@ export type Database = {
           pgf_has_naturalization: boolean | null
           pgf_has_passport: boolean | null
           pgf_is_alive: boolean | null
+          pgf_is_polish: boolean | null
           pgf_last_name: string | null
           pgf_notes: string | null
           pgf_pesel: string | null
@@ -2491,6 +2496,7 @@ export type Database = {
           pggf_has_naturalization: boolean | null
           pggf_has_passport: boolean | null
           pggf_is_alive: boolean | null
+          pggf_is_polish: boolean | null
           pggf_last_name: string | null
           pggf_notes: string | null
           pggf_pggm_marriage_date: string | null
@@ -2505,6 +2511,7 @@ export type Database = {
           pggm_has_naturalization: boolean | null
           pggm_has_passport: boolean | null
           pggm_is_alive: boolean | null
+          pggm_is_polish: boolean | null
           pggm_last_name: string | null
           pggm_maiden_name: string | null
           pggm_notes: string | null
@@ -2518,6 +2525,7 @@ export type Database = {
           pgm_has_naturalization: boolean | null
           pgm_has_passport: boolean | null
           pgm_is_alive: boolean | null
+          pgm_is_polish: boolean | null
           pgm_last_name: string | null
           pgm_maiden_name: string | null
           pgm_notes: string | null
@@ -2717,6 +2725,7 @@ export type Database = {
           mgf_has_naturalization?: boolean | null
           mgf_has_passport?: boolean | null
           mgf_is_alive?: boolean | null
+          mgf_is_polish?: boolean | null
           mgf_last_name?: string | null
           mgf_mgm_marriage_date?: string | null
           mgf_mgm_marriage_place?: string | null
@@ -2732,6 +2741,7 @@ export type Database = {
           mggf_has_naturalization?: boolean | null
           mggf_has_passport?: boolean | null
           mggf_is_alive?: boolean | null
+          mggf_is_polish?: boolean | null
           mggf_last_name?: string | null
           mggf_mggm_marriage_date?: string | null
           mggf_mggm_marriage_place?: string | null
@@ -2746,6 +2756,7 @@ export type Database = {
           mggm_has_naturalization?: boolean | null
           mggm_has_passport?: boolean | null
           mggm_is_alive?: boolean | null
+          mggm_is_polish?: boolean | null
           mggm_last_name?: string | null
           mggm_maiden_name?: string | null
           mggm_notes?: string | null
@@ -2759,6 +2770,7 @@ export type Database = {
           mgm_has_naturalization?: boolean | null
           mgm_has_passport?: boolean | null
           mgm_is_alive?: boolean | null
+          mgm_is_polish?: boolean | null
           mgm_last_name?: string | null
           mgm_maiden_name?: string | null
           mgm_notes?: string | null
@@ -2803,6 +2815,7 @@ export type Database = {
           pgf_has_naturalization?: boolean | null
           pgf_has_passport?: boolean | null
           pgf_is_alive?: boolean | null
+          pgf_is_polish?: boolean | null
           pgf_last_name?: string | null
           pgf_notes?: string | null
           pgf_pesel?: string | null
@@ -2818,6 +2831,7 @@ export type Database = {
           pggf_has_naturalization?: boolean | null
           pggf_has_passport?: boolean | null
           pggf_is_alive?: boolean | null
+          pggf_is_polish?: boolean | null
           pggf_last_name?: string | null
           pggf_notes?: string | null
           pggf_pggm_marriage_date?: string | null
@@ -2832,6 +2846,7 @@ export type Database = {
           pggm_has_naturalization?: boolean | null
           pggm_has_passport?: boolean | null
           pggm_is_alive?: boolean | null
+          pggm_is_polish?: boolean | null
           pggm_last_name?: string | null
           pggm_maiden_name?: string | null
           pggm_notes?: string | null
@@ -2845,6 +2860,7 @@ export type Database = {
           pgm_has_naturalization?: boolean | null
           pgm_has_passport?: boolean | null
           pgm_is_alive?: boolean | null
+          pgm_is_polish?: boolean | null
           pgm_last_name?: string | null
           pgm_maiden_name?: string | null
           pgm_notes?: string | null
@@ -3044,6 +3060,7 @@ export type Database = {
           mgf_has_naturalization?: boolean | null
           mgf_has_passport?: boolean | null
           mgf_is_alive?: boolean | null
+          mgf_is_polish?: boolean | null
           mgf_last_name?: string | null
           mgf_mgm_marriage_date?: string | null
           mgf_mgm_marriage_place?: string | null
@@ -3059,6 +3076,7 @@ export type Database = {
           mggf_has_naturalization?: boolean | null
           mggf_has_passport?: boolean | null
           mggf_is_alive?: boolean | null
+          mggf_is_polish?: boolean | null
           mggf_last_name?: string | null
           mggf_mggm_marriage_date?: string | null
           mggf_mggm_marriage_place?: string | null
@@ -3073,6 +3091,7 @@ export type Database = {
           mggm_has_naturalization?: boolean | null
           mggm_has_passport?: boolean | null
           mggm_is_alive?: boolean | null
+          mggm_is_polish?: boolean | null
           mggm_last_name?: string | null
           mggm_maiden_name?: string | null
           mggm_notes?: string | null
@@ -3086,6 +3105,7 @@ export type Database = {
           mgm_has_naturalization?: boolean | null
           mgm_has_passport?: boolean | null
           mgm_is_alive?: boolean | null
+          mgm_is_polish?: boolean | null
           mgm_last_name?: string | null
           mgm_maiden_name?: string | null
           mgm_notes?: string | null
@@ -3130,6 +3150,7 @@ export type Database = {
           pgf_has_naturalization?: boolean | null
           pgf_has_passport?: boolean | null
           pgf_is_alive?: boolean | null
+          pgf_is_polish?: boolean | null
           pgf_last_name?: string | null
           pgf_notes?: string | null
           pgf_pesel?: string | null
@@ -3145,6 +3166,7 @@ export type Database = {
           pggf_has_naturalization?: boolean | null
           pggf_has_passport?: boolean | null
           pggf_is_alive?: boolean | null
+          pggf_is_polish?: boolean | null
           pggf_last_name?: string | null
           pggf_notes?: string | null
           pggf_pggm_marriage_date?: string | null
@@ -3159,6 +3181,7 @@ export type Database = {
           pggm_has_naturalization?: boolean | null
           pggm_has_passport?: boolean | null
           pggm_is_alive?: boolean | null
+          pggm_is_polish?: boolean | null
           pggm_last_name?: string | null
           pggm_maiden_name?: string | null
           pggm_notes?: string | null
@@ -3172,6 +3195,7 @@ export type Database = {
           pgm_has_naturalization?: boolean | null
           pgm_has_passport?: boolean | null
           pgm_is_alive?: boolean | null
+          pgm_is_polish?: boolean | null
           pgm_last_name?: string | null
           pgm_maiden_name?: string | null
           pgm_notes?: string | null
