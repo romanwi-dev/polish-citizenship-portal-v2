@@ -231,23 +231,19 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange, onToggle, o
                   }}
                 >
                   <div className="flex flex-col gap-3 h-full">
-                    <h4 className="text-xl font-heading font-bold tracking-tight text-card-foreground mb-2">
-                      Notes
-                    </h4>
-                    
                     <div className="flex-1 overflow-auto">
                       <Textarea
                         value={doc.notes || ''}
                         onChange={(e) => {
                           e.stopPropagation();
                           if (onNotesChange) {
-                            onNotesChange(doc.id, e.target.value.toUpperCase());
+                            onNotesChange(doc.id, e.target.value);
                           }
                         }}
                         onClick={(e) => e.stopPropagation()}
-                        placeholder="Add notes about this document..."
+                        placeholder=""
                         className={cn(
-                          "min-h-[200px] h-full resize-none uppercase",
+                          "min-h-full h-full resize-none text-sm",
                           "border-2 backdrop-blur",
                           scheme.cardBorder,
                           "focus:ring-2 focus:ring-offset-2"

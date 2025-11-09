@@ -752,13 +752,10 @@ export default function FamilyTreeForm() {
           duration: 0.5,
           delay: 0.1
         }} className="space-y-10">
-            <div className="border-b border-border/50 pb-6">
+            <div className="border-b border-border/50 pb-6 mt-8">
               <h2 className="text-4xl md:text-5xl font-heading font-bold text-cyan-600 dark:text-cyan-400">
                 Children
               </h2>
-              <p className="text-sm text-muted-foreground mt-2">
-                All children fields (1-10) are always available. Fill in only those you need.
-              </p>
             </div>
 
             {Array.from({ length: formData.minor_children_count || 0 }, (_, i) => i + 1).map(num => <Fragment key={num}>
