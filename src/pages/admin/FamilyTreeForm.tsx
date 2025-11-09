@@ -45,6 +45,7 @@ export default function FamilyTreeForm() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null);
   const [previewFormData, setPreviewFormData] = useState<any>(null);
+  const [dropboxPath, setDropboxPath] = useState<string>('');
   const { toast } = useToast();
 
   const {
@@ -78,6 +79,25 @@ export default function FamilyTreeForm() {
   });
 
   const tabsListRef = useRef<HTMLDivElement>(null);
+
+  // Fetch case dropbox_path
+  useEffect(() => {
+    const fetchCaseData = async () => {
+      if (!caseId) return;
+      
+      const { data, error } = await supabase
+        .from('cases')
+        .select('dropbox_path')
+        .eq('id', caseId)
+        .single();
+      
+      if (data && !error) {
+        setDropboxPath(data.dropbox_path || '');
+      }
+    };
+    
+    fetchCaseData();
+  }, [caseId]);
 
   // Force scroll to Select tab on mount
   useEffect(() => {
@@ -677,6 +697,7 @@ export default function FamilyTreeForm() {
                   handleInputChange={handleInputChange}
                   personType="applicant"
                   sex={formData.applicant_sex}
+                  dropboxPath={dropboxPath}
                   colorScheme="applicant"
                 />
 
@@ -768,6 +789,7 @@ export default function FamilyTreeForm() {
                   formData={formData}
                   handleInputChange={handleInputChange}
                   personType="child"
+                  dropboxPath={dropboxPath}
                   colorScheme="children"
                 />
 
@@ -868,6 +890,7 @@ export default function FamilyTreeForm() {
                   handleInputChange={handleInputChange}
                   personType="parent"
                   sex="M"
+                  dropboxPath={dropboxPath}
                   colorScheme="parents"
                 />
 
@@ -954,6 +977,7 @@ export default function FamilyTreeForm() {
                   handleInputChange={handleInputChange}
                   personType="parent"
                   sex="F"
+                  dropboxPath={dropboxPath}
                   colorScheme="parents"
                 />
 
@@ -1087,6 +1111,7 @@ export default function FamilyTreeForm() {
                     handleInputChange={handleInputChange}
                     personType="grandparent"
                     sex={sex}
+                    dropboxPath={dropboxPath}
                     colorScheme="grandparents"
                   />
 
@@ -1217,6 +1242,7 @@ export default function FamilyTreeForm() {
                     handleInputChange={handleInputChange}
                     personType="grandparent"
                     sex={sex}
+                    dropboxPath={dropboxPath}
                     colorScheme="ggp"
                   />
 
@@ -1398,6 +1424,7 @@ export default function FamilyTreeForm() {
                     handleInputChange={handleInputChange}
                     personType="applicant"
                     sex={formData.applicant_sex}
+                    dropboxPath={dropboxPath}
                     colorScheme="applicant"
                   />
 
@@ -1463,6 +1490,7 @@ export default function FamilyTreeForm() {
                           formData={formData}
                           handleInputChange={handleInputChange}
                           personType="child"
+                          dropboxPath={dropboxPath}
                           colorScheme="children"
                         />
                       </Fragment>
@@ -1505,6 +1533,7 @@ export default function FamilyTreeForm() {
                     handleInputChange={handleInputChange}
                     personType="parent"
                     sex="M"
+                    dropboxPath={dropboxPath}
                     colorScheme="parents"
                   />
 
@@ -1539,6 +1568,7 @@ export default function FamilyTreeForm() {
                     handleInputChange={handleInputChange}
                     personType="parent"
                     sex="F"
+                    dropboxPath={dropboxPath}
                     colorScheme="parents"
                   />
                 </motion.div>
@@ -1578,6 +1608,7 @@ export default function FamilyTreeForm() {
                     handleInputChange={handleInputChange}
                     personType="grandparent"
                     sex="M"
+                    dropboxPath={dropboxPath}
                     colorScheme="grandparents"
                   />
 
@@ -1612,6 +1643,7 @@ export default function FamilyTreeForm() {
                     handleInputChange={handleInputChange}
                     personType="grandparent"
                     sex="F"
+                    dropboxPath={dropboxPath}
                     colorScheme="grandparents"
                   />
 
@@ -1642,6 +1674,7 @@ export default function FamilyTreeForm() {
                     handleInputChange={handleInputChange}
                     personType="grandparent"
                     sex="M"
+                    dropboxPath={dropboxPath}
                     colorScheme="grandparents"
                   />
 
@@ -1676,6 +1709,7 @@ export default function FamilyTreeForm() {
                     handleInputChange={handleInputChange}
                     personType="grandparent"
                     sex="F"
+                    dropboxPath={dropboxPath}
                     colorScheme="grandparents"
                   />
                 </motion.div>
@@ -1715,6 +1749,7 @@ export default function FamilyTreeForm() {
                     handleInputChange={handleInputChange}
                     personType="grandparent"
                     sex="M"
+                    dropboxPath={dropboxPath}
                     colorScheme="ggp"
                   />
 
@@ -1748,6 +1783,7 @@ export default function FamilyTreeForm() {
                     handleInputChange={handleInputChange}
                     personType="grandparent"
                     sex="F"
+                    dropboxPath={dropboxPath}
                     colorScheme="ggp"
                   />
 
@@ -1778,6 +1814,7 @@ export default function FamilyTreeForm() {
                     handleInputChange={handleInputChange}
                     personType="grandparent"
                     sex="M"
+                    dropboxPath={dropboxPath}
                     colorScheme="ggp"
                   />
 
@@ -1811,6 +1848,7 @@ export default function FamilyTreeForm() {
                     handleInputChange={handleInputChange}
                     personType="grandparent"
                     sex="F"
+                    dropboxPath={dropboxPath}
                     colorScheme="ggp"
                   />
 
@@ -1841,6 +1879,7 @@ export default function FamilyTreeForm() {
                     handleInputChange={handleInputChange}
                     personType="grandparent"
                     sex="M"
+                    dropboxPath={dropboxPath}
                     colorScheme="ggp"
                   />
 
@@ -1874,6 +1913,7 @@ export default function FamilyTreeForm() {
                     handleInputChange={handleInputChange}
                     personType="grandparent"
                     sex="F"
+                    dropboxPath={dropboxPath}
                     colorScheme="ggp"
                   />
 
@@ -1904,6 +1944,7 @@ export default function FamilyTreeForm() {
                     handleInputChange={handleInputChange}
                     personType="grandparent"
                     sex="M"
+                    dropboxPath={dropboxPath}
                     colorScheme="ggp"
                   />
 
@@ -1937,6 +1978,7 @@ export default function FamilyTreeForm() {
                     handleInputChange={handleInputChange}
                     personType="grandparent"
                     sex="F"
+                    dropboxPath={dropboxPath}
                     colorScheme="ggp"
                   />
               </motion.div>

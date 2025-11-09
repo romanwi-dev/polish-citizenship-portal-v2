@@ -17,6 +17,7 @@ interface FamilyMemberDocumentsSectionProps {
   handleInputChange: (field: string, value: any) => void;
   personType: 'applicant' | 'spouse' | 'parent' | 'grandparent' | 'child';
   sex?: string;
+  dropboxPath?: string;
   colorScheme?: 'children' | 'applicant' | 'spouse' | 'parents' | 'grandparents' | 'ggp';
 }
 
@@ -27,6 +28,7 @@ export const FamilyMemberDocumentsSection = ({
   handleInputChange,
   personType,
   sex,
+  dropboxPath,
   colorScheme = 'applicant',
 }: FamilyMemberDocumentsSectionProps) => {
   
@@ -182,6 +184,7 @@ export const FamilyMemberDocumentsSection = ({
         documents={documents}
         onChange={handleDocumentsChange}
         onNotesChange={handleNotesChange}
+        dropboxPath={dropboxPath}
         colorScheme={colorScheme}
       />
     </>

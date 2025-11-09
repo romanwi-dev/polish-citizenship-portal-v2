@@ -2,10 +2,10 @@ import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-
 import { FolderOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import { useToast } from "@/hooks/use-toast";
 
 interface DocumentItem {
   id: string;
@@ -23,6 +23,7 @@ interface FlippableCardsDarkGlowProps {
   onChange?: (documents: DocumentItem[]) => void;
   onToggle?: (id: string) => void;
   onNotesChange?: (id: string, notes: string) => void;
+  dropboxPath?: string;
   colorScheme?: 'children' | 'applicant' | 'spouse' | 'parents' | 'grandparents' | 'ggp' | 'civil-reg';
 }
 
@@ -92,9 +93,10 @@ const colorSchemes = {
   },
 };
 
-export const FlippableCardsDarkGlow = ({ title, documents, onChange, onToggle, onNotesChange, colorScheme = 'applicant' }: FlippableCardsDarkGlowProps) => {
+export const FlippableCardsDarkGlow = ({ title, documents, onChange, onToggle, onNotesChange, dropboxPath, colorScheme = 'applicant' }: FlippableCardsDarkGlowProps) => {
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
   const scheme = colorSchemes[colorScheme];
+  const { toast } = useToast();
 
   const toggleFlip = (id: string) => {
     setFlippedCards(prev => ({ ...prev, [id]: !prev[id] }));
@@ -173,7 +175,7 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange, onToggle, o
                     scheme.cardBg,
                     scheme.cardBorder,
                     !doc.checked && "hover-glow",
-                    doc.checked && "border-green-500/40"
+                    doc.checked && "border-green-500/40 opacity-30"
                   )}
                   style={{ 
                     backfaceVisibility: 'hidden',
@@ -216,8 +218,6 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange, onToggle, o
                       {getImportanceBadge(doc.importance)}
                       {getDifficultyBadge(doc.difficulty)}
                     </div>
-                    
-                    <p className="text-xs text-muted-foreground/60 mt-2 text-center">Tap to see details</p>
                   </div>
                 </motion.div>
 
@@ -260,14 +260,20 @@ export const FlippableCardsDarkGlow = ({ title, documents, onChange, onToggle, o
                       className={`w-full ${scheme.button} mt-2`}
                       onClick={(e) => {
                         e.stopPropagation();
-                        // Access folder
+                        if (dropboxPath) {
+                          window.open(`https://www.dropbox.com/home${dropboxPath}`, '_blank');
+                        } else {
+                          toast({
+                            title: "Error",
+                            description: "No Dropbox path configured for this case",
+                            variant: "destructive"
+                          });
+                        }
                       }}
                     >
                       <FolderOpen className="w-4 h-4 mr-2" />
-                      Access Folder
+                      Dropbox Folder
                     </Button>
-                    
-                    <p className="text-xs text-muted-foreground/60 text-center">Tap to flip back</p>
                   </div>
                 </div>
               </div>
