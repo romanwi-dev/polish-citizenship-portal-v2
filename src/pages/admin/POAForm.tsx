@@ -652,8 +652,8 @@ export default function POAForm() {
               className="space-y-6"
               onClick={() => setActivePOAType('minor')}
             >
-              <div>
-                <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-secondary via-accent to-primary bg-clip-text text-transparent">
+              <div className="border-b pb-6 px-6 py-4">
+                <h2 className="text-4xl md:text-5xl font-heading font-bold text-foreground">
                   POA Minor {childNum}
                 </h2>
               </div>
@@ -721,8 +721,8 @@ export default function POAForm() {
               className="space-y-6"
               onClick={() => setActivePOAType('spouses')}
             >
-              <div>
-                <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-accent via-primary to-secondary bg-clip-text text-transparent">
+              <div className="border-b pb-6 px-6 py-4">
+                <h2 className="text-4xl md:text-5xl font-heading font-bold text-foreground">
                   {poaFormConfigs.spouses.title}
                 </h2>
               </div>
