@@ -52,6 +52,9 @@ Deno.serve(async (req) => {
 
     // Define all PDF templates to generate
     const templates = [
+      { type: 'poa-adult', name: 'POA Adult' },
+      { type: 'poa-minor', name: 'POA Minor' },
+      { type: 'poa-spouses', name: 'POA Spouses' },
       { type: 'family-tree', name: 'Family Tree' },
       { type: 'citizenship', name: 'Citizenship Application' },
       { type: 'registration', name: 'Civil Registry' },
