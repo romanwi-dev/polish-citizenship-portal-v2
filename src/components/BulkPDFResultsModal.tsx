@@ -156,7 +156,7 @@ export function BulkPDFResultsModal({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-hidden flex flex-col p-4 md:p-6">
+      <DialogContent className="w-full h-full md:max-w-5xl md:max-h-[85vh] md:h-auto overflow-hidden flex flex-col p-4 md:p-6">
         {/* Results List */}
         <div className="space-y-2 md:space-y-3 mt-2 md:mt-6 overflow-y-auto flex-1">
           {results.map((result, index) => (
@@ -185,7 +185,7 @@ export function BulkPDFResultsModal({
                         {result.fieldsFilledCount && result.totalFields && (
                           <span>
                             {result.fieldsFilledCount}/{result.totalFields} fields filled
-                            {result.fillRate && ` (${Math.round(result.fillRate * 100)}%)`}
+                            {result.fillRate && ` (${result.fillRate > 1 ? Math.round(result.fillRate) : Math.round(result.fillRate * 100)}%)`}
                           </span>
                         )}
                       </div>
