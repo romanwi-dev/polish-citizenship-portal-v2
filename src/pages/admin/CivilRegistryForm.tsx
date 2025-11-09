@@ -26,6 +26,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useRealtimeFormSync } from "@/hooks/useRealtimeFormSync";
 import { CountrySelect } from "@/components/CountrySelect";
 import { FormButtonsRow } from "@/components/FormButtonsRow";
+import { BulkPDFGenerator } from "@/components/BulkPDFGenerator";
 import { useFormManager } from "@/hooks/useFormManager";
 import { PDFGenerateButton } from "@/components/pdf/PDFGenerateButton";
 import { PDFPreviewDialog } from "@/components/PDFPreviewDialog";
@@ -217,7 +218,7 @@ export default function CivilRegistryForm() {
         >
           <h2 className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight text-center">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              Civil Registry
+              Transcription
             </span>
           </h2>
           <div className="flex items-center justify-center gap-3 md:gap-6 mt-2 md:mt-4">
@@ -277,6 +278,9 @@ export default function CivilRegistryForm() {
           onGeneratePDF={handleGeneratePDF}
           isSaving={isSaving}
         />
+
+        {/* Bulk PDF Generator - Centered between buttons and tabs */}
+        <BulkPDFGenerator caseId={caseId!} />
 
         {/* Form Sections */}
         <div className="space-y-8">

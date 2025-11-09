@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { useFormManager } from "@/hooks/useFormManager";
 import { FormButtonsRow } from "@/components/FormButtonsRow";
+import { BulkPDFGenerator } from "@/components/BulkPDFGenerator";
 import { FormHeader, FormLabel } from "@/components/forms";
 
 export default function FamilyHistoryForm() {
@@ -144,6 +145,9 @@ export default function FamilyHistoryForm() {
           onGeneratePDF={() => {}}
           isSaving={isSaving}
         />
+
+        {/* Bulk PDF Generator - Centered between buttons and tabs */}
+        <BulkPDFGenerator caseId={caseId!} />
 
         {/* Form Content */}
         <div className="px-4 py-6 md:p-10">
