@@ -14,20 +14,20 @@ export function BulkPDFGenerator({ caseId }: BulkPDFGeneratorProps) {
   };
 
   return (
-    <div className="flex justify-center items-center py-6">
+    <div className="flex justify-center items-center py-2">
       <Button
         onClick={handleGenerate}
         disabled={isGenerating}
         variant="outline"
-        className="h-40 px-24 flex items-center justify-center border-2 hover:bg-gradient-to-br hover:from-black hover:to-red-950 hover:text-white transition-all text-lg font-bold"
+        className="h-48 px-32 flex items-center justify-center border-2 border-red-500/40 hover:bg-gradient-to-br hover:from-black hover:to-red-950 hover:text-white transition-all shadow-[0_0_30px_rgba(239,68,68,0.4)] hover:shadow-[0_0_60px_rgba(239,68,68,0.8)] hover:border-red-500"
       >
         {isGenerating ? (
           <span className="flex items-center gap-3">
             <Loader2 className="h-6 w-6 animate-spin" />
-            <span className="text-xl font-bold">Generating...</span>
+            <span className="text-lg font-normal">Generating...</span>
           </span>
         ) : (
-          <span className="text-xl font-bold">Generate Documents</span>
+          <span className="text-lg font-normal">Generate Documents</span>
         )}
       </Button>
     </div>
