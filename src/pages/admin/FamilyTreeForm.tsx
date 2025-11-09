@@ -702,14 +702,14 @@ export default function FamilyTreeForm() {
 
                 <div className="space-y-2 mt-8">
                   <Label htmlFor="applicant_notes" className={isLargeFonts ? "text-2xl" : ""}>
-                    ADDITIONAL NOTES
+                    Additional notes
                   </Label>
                   <Textarea
                     id="applicant_notes"
                     value={formData.applicant_notes || ""}
                     onChange={e => handleInputChange("applicant_notes", e.target.value.toUpperCase())}
                     placeholder=""
-                    className={cn("min-h-[200px] border-2 border-blue-300/10 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                    className={cn("min-h-[200px] border-2 border-blue-300/10 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase text-2xl")}
                   />
                 </div>
           </motion.div>
@@ -791,7 +791,7 @@ export default function FamilyTreeForm() {
 
                 <div className="space-y-2 mt-8">
                   <Label htmlFor={`child_${num}_notes`} className={isLargeFonts ? "text-2xl" : ""}>
-                    ADDITIONAL NOTES
+                    Additional notes
                   </Label>
                   <Textarea
                     id={`child_${num}_notes`}
@@ -799,7 +799,7 @@ export default function FamilyTreeForm() {
                     onChange={e => handleInputChange(`child_${num}_notes`, e.target.value.toUpperCase())}
                     placeholder=""
                     colorScheme="children"
-                    className={cn("min-h-[200px] border-2 border-purple-300/10 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase")}
+                    className={cn("min-h-[200px] border-2 border-purple-300/10 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase text-2xl")}
                   />
                 </div>
               </Fragment>)}
@@ -892,7 +892,7 @@ export default function FamilyTreeForm() {
 
                 <div className="space-y-2 mt-8">
                   <Label htmlFor="father_notes" className={isLargeFonts ? "text-2xl" : ""}>
-                    ADDITIONAL NOTES
+                    Additional notes
                   </Label>
                   <Textarea
                     id="father_notes"
@@ -900,7 +900,7 @@ export default function FamilyTreeForm() {
                     onChange={e => handleInputChange("father_notes", e.target.value.toUpperCase())}
                     placeholder=""
                     colorScheme="parents"
-                    className={cn("min-h-[200px] border-2 border-teal-300/10 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase")}
+                    className={cn("min-h-[200px] border-2 border-teal-300/10 hover-glow focus:shadow-lg transition-all backdrop-blur uppercase text-2xl")}
                   />
                 </div>
               </div>
@@ -995,7 +995,7 @@ export default function FamilyTreeForm() {
 
                   <div className="space-y-2 mt-8">
                     <Label htmlFor="mother_notes" className={isLargeFonts ? "text-2xl" : ""}>
-                      ADDITIONAL NOTES
+                      Additional notes
                     </Label>
                     <Textarea
                       id="mother_notes"
@@ -1003,7 +1003,7 @@ export default function FamilyTreeForm() {
                       onChange={e => handleInputChange("mother_notes", e.target.value)}
                       placeholder=""
                       colorScheme="parents"
-                      className={cn("min-h-[200px] border-2 border-teal-300/10 hover-glow focus:shadow-lg transition-all backdrop-blur text-sm")}
+                      className={cn("min-h-[200px] border-2 border-teal-300/10 hover-glow focus:shadow-lg transition-all backdrop-blur text-2xl")}
                     />
                   </div>
                 </>
@@ -1146,7 +1146,7 @@ export default function FamilyTreeForm() {
 
                       <div className="space-y-2 mt-8">
                         <Label htmlFor={`${prefix}_notes`} className={isLargeFonts ? "text-2xl" : ""}>
-                          ADDITIONAL NOTES
+                          Additional notes
                         </Label>
                         <Textarea
                           id={`${prefix}_notes`}
@@ -1154,7 +1154,7 @@ export default function FamilyTreeForm() {
                           value={formData[`${prefix}_notes`] || ""}
                           onChange={e => handleInputChange(`${prefix}_notes`, e.target.value)}
                           placeholder=""
-                          className={cn("min-h-[200px] border-2 border-red-300/10 hover-glow focus:shadow-lg transition-all backdrop-blur text-sm")}
+                          className={cn("min-h-[200px] border-2 border-red-300/10 hover-glow focus:shadow-lg transition-all backdrop-blur text-2xl")}
                         />
                       </div>
                     </>
@@ -1296,7 +1296,7 @@ export default function FamilyTreeForm() {
 
                       <div className="space-y-2 mt-8">
                         <Label htmlFor={`${prefix}_notes`} className={isLargeFonts ? "text-2xl" : ""}>
-                          ADDITIONAL NOTES
+                          Additional notes
                         </Label>
                         <Textarea
                           id={`${prefix}_notes`}
@@ -1304,7 +1304,7 @@ export default function FamilyTreeForm() {
                           onChange={e => handleInputChange(`${prefix}_notes`, e.target.value)}
                           placeholder=""
                           colorScheme="ggp"
-                          className={cn("min-h-[200px] border-2 border-gray-300/10 hover-glow focus:shadow-lg transition-all backdrop-blur text-sm")}
+                          className={cn("min-h-[200px] border-2 border-gray-300/10 hover-glow focus:shadow-lg transition-all backdrop-blur text-2xl")}
                         />
                       </div>
                     </>
@@ -1479,13 +1479,13 @@ export default function FamilyTreeForm() {
                   />
 
                   <div className="space-y-2 mt-8">
-                    <Label htmlFor="applicant_notes" className={isLargeFonts ? "text-2xl" : ""}>ADDITIONAL NOTES</Label>
+                    <Label htmlFor="applicant_notes" className={isLargeFonts ? "text-2xl" : ""}>Additional notes</Label>
                     <Textarea
                       id="applicant_notes"
                       value={formData.applicant_notes || ""}
                       onChange={e => handleInputChange("applicant_notes", e.target.value.toUpperCase())}
                       placeholder=""
-                      className={cn("min-h-[200px] border-2 border-blue-300/10 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase")}
+                      className={cn("min-h-[200px] border-2 border-blue-300/10 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase text-2xl")}
                     />
                   </div>
                 </motion.div>
