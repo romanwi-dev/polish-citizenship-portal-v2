@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState, useRef, lazy, Suspense, useEffect } from "react";
 import { Loader2, Save, Download, FileText, Sparkles, Type, User, ArrowLeft, HelpCircle, Maximize2, Minimize2, Users, Baby, Heart } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -26,7 +27,7 @@ import { FormButtonsRow } from "@/components/FormButtonsRow";
 import { useFormManager } from "@/hooks/useFormManager";
 import { usePOAAutoGeneration } from "@/hooks/usePOAAutoGeneration";
 import { MaskedPassportInput } from "@/components/forms/MaskedPassportInput";
-import { Check } from "lucide-react";
+import { Check, Printer } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import StickyActionBar from "@/components/StickyActionBar";
 import {
@@ -47,8 +48,8 @@ export default function POAForm() {
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null);
   const [previewFormData, setPreviewFormData] = useState<any>(null);
   const [isFullView, setIsFullView] = useState(true);
-  const [generatedPOATypes, setGeneratedPOATypes] = useState<string[]>([]); // NEW: Track which POAs were generated
-  const [pdfUrls, setPdfUrls] = useState<Record<string, string>>({}); // NEW: URLs for each POA type
+  const [generatedPOATypes, setGeneratedPOATypes] = useState<string[]>([]); 
+  const [pdfUrls, setPdfUrls] = useState<Record<string, string>>({});
   
   // ⚠️ LOCKED DESIGN - DO NOT MODIFY CONDITIONAL RENDERING LOGIC
   // Conditional rendering controlled by 4 master fields:
@@ -248,56 +249,42 @@ export default function POAForm() {
     try {
       setIsGenerating(true);
       
-      // Save form data FIRST to ensure all fields are persisted
+      // Save form data FIRST
       await handlePOASave();
       
-      toast.loading('Generating combined POA...');
+      // Determine which POAs to generate
+      const types: string[] = [];
+      if (formData.applicant_first_name) types.push('adult');
+      if (minorChildrenCount > 0) types.push('minor');
+      if (showSpousePOA) types.push('spouses');
 
-      console.log('[POA] Generating combined POA for case:', caseId);
-      console.log('[POA] Form data:', formData);
+      if (types.length === 0) {
+        toast.error('Please fill in applicant information first');
+        return;
+      }
 
-      const { data, error } = await supabase.functions.invoke('pdf-simple', {
-        body: { 
-          caseId: caseId === ':id' ? 'blank-template' : caseId, 
-          templateType: 'poa-combined' 
+      toast.loading(`Generating ${types.length} POA(s)...`);
+
+      // Generate each POA type
+      const urls: Record<string, string> = {};
+      for (const type of types) {
+        const { data, error } = await supabase.functions.invoke('fill-pdf', {
+          body: { caseId, templateType: `poa-${type}` }
+        });
+
+        if (error) throw error;
+        if (data?.url) {
+          urls[type] = data.url;
         }
-      });
-
-      if (error) {
-        console.error('[POA] Edge function error:', error);
-        throw new Error(error.message);
       }
-
-      if (!data?.success) {
-        console.error('[POA] Generation failed:', data);
-        throw new Error(data?.error || 'PDF generation failed');
-      }
-
-      console.log('[POA] Combined POA generated successfully:', data);
 
       toast.dismiss();
-      const message = data.fieldsFilledCount === 0 
-        ? 'Blank combined POA ready for manual completion'
-        : `Combined POA ready! Filled ${data.fieldsFilledCount}/${data.totalFields} fields (${data.fillRate}%)`;
-      toast.success(message);
+      toast.success(`${types.length} POA(s) generated successfully!`);
 
-      // Determine which POA types are included
-      const includedTypes: string[] = [];
-      if (formData.applicant_first_name) includedTypes.push('adult');
-      if (minorChildrenCount > 0) includedTypes.push('minor');
-      if (showSpousePOA) includedTypes.push('spouses');
-
-      // Set multi-POA preview state
-      setGeneratedPOATypes(includedTypes);
-      setActivePOAType(includedTypes[0] || 'adult');
-      
-      // Store URLs for each type (combined PDF can be shown for all)
-      const urls: Record<string, string> = {};
-      includedTypes.forEach(type => {
-        urls[type] = data.url; // For combined, all show same PDF
-      });
+      setGeneratedPOATypes(types);
+      setActivePOAType(types[0]);
       setPdfUrls(urls);
-      setPdfPreviewUrl(data.url);
+      setPdfPreviewUrl(urls[types[0]]);
       setPreviewFormData(formData);
     } catch (error: any) {
       console.error('[POA] Generation error:', error);
@@ -856,6 +843,83 @@ export default function POAForm() {
         </motion.div>
       </div>
 
+      {/* Multi-POA Preview with Print */}
+      {pdfPreviewUrl && generatedPOATypes.length > 0 && (
+        <Card className="p-6 mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold">Generated POAs ({generatedPOATypes.length})</h3>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setPdfPreviewUrl(null);
+                setGeneratedPOATypes([]);
+                setPdfUrls({});
+              }}
+            >
+              Close Preview
+            </Button>
+          </div>
+          
+          {/* POA Type Tabs */}
+          {generatedPOATypes.length > 1 && (
+            <Tabs value={activePOAType} onValueChange={setActivePOAType} className="mb-4">
+              <TabsList className="grid w-full" style={{ gridTemplateColumns: `repeat(${generatedPOATypes.length}, 1fr)` }}>
+                {generatedPOATypes.map(type => (
+                  <TabsTrigger key={type} value={type} onClick={() => setPdfPreviewUrl(pdfUrls[type])}>
+                    {type.toUpperCase()} POA
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </Tabs>
+          )}
+
+          {/* PDF Preview */}
+          {pdfPreviewUrl && (
+            <div className="space-y-4">
+              <div className="border rounded-lg overflow-hidden">
+                <iframe
+                  src={pdfPreviewUrl}
+                  className="w-full h-[600px]"
+                  title={`${activePOAType} POA Preview`}
+                />
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-2 justify-end">
+                <Button
+                  variant="outline"
+                  onClick={async () => {
+                    const link = document.createElement("a");
+                    link.href = pdfPreviewUrl;
+                    link.download = `POA-${activePOAType.toUpperCase()}-${caseId}.pdf`;
+                    link.click();
+                    toast.success('PDF downloaded');
+                  }}
+                >
+                  <Download className="h-4 w-4 mr-2" />
+                  Download Editable
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    window.open(pdfPreviewUrl, '_blank');
+                    toast.success('Opening PDF for printing');
+                  }}
+                >
+                  <Printer className="h-4 w-4 mr-2" />
+                  Print
+                </Button>
+                <Button onClick={handleDownloadFinal}>
+                  <Download className="h-4 w-4 mr-2" />
+                  Download Final
+                </Button>
+              </div>
+            </div>
+          )}
+        </Card>
+      )}
+
       <AlertDialog open={showClearAllDialog} onOpenChange={setShowClearAllDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -872,7 +936,7 @@ export default function POAForm() {
       </AlertDialog>
 
       <PDFPreviewDialog
-        open={!!pdfPreviewUrl}
+        open={!!pdfPreviewUrl && generatedPOATypes.length === 0}
         onClose={() => setPdfPreviewUrl(null)}
         pdfUrl={pdfPreviewUrl || ""}
         formData={previewFormData}

@@ -8,8 +8,8 @@ import { z } from 'zod';
 /**
  * POA Type validation - only allow known types
  */
-export const POATypeSchema = z.enum(['adult', 'minor', 'married'], {
-  errorMap: () => ({ message: 'Invalid POA type. Must be adult, minor, or married.' }),
+export const POATypeSchema = z.enum(['adult', 'minor', 'spouses'], {
+  errorMap: () => ({ message: 'Invalid POA type. Must be adult, minor, or spouses.' }),
 });
 
 export type POAType = z.infer<typeof POATypeSchema>;
