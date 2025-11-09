@@ -11,6 +11,9 @@ import { useRef } from "react";
 import { PersonTypeSelector, PersonType, DocumentType } from "./PersonTypeSelector";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { OCRDataPreview } from "./OCRDataPreview";
+import { fixImageOrientation } from "@/utils/exifRotation";
+import { compressImage } from "@/utils/imageCompression";
+import { uploadFile, UploadProgress } from "@/utils/chunkedUpload";
 
 type ProcessingStep = 'idle' | 'uploading' | 'extracting' | 'analyzing' | 'mapping' | 'complete';
 
@@ -57,6 +60,8 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
   // NEW: Persistent preview states
   const [uploadedPreview, setUploadedPreview] = useState<string | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadSpeed, setUploadSpeed] = useState(0);
+  const [uploadETA, setUploadETA] = useState(0);
 
 
   const handlePersonSelect = (personType: PersonType, docType: DocumentType) => {
@@ -75,7 +80,7 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
     setStep(selectedDocType === 'passport' ? 'passport' : 'birthcert');
   };
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>, docType: 'passport' | 'birthcert') => {
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>, docType: 'passport' | 'birthcert') => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -89,10 +94,39 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
     const isOfficeDoc = ['doc', 'docx', 'odt'].includes(fileExtension || '');
     const isImage = file.type.startsWith('image/');
 
+    let processedFile = file;
+
+    // Apply EXIF orientation fix + compression for images
+    if (isImage) {
+      try {
+        toast.info("📸 Optimizing image...");
+        
+        // Step 1: Fix EXIF orientation (strips GPS/camera metadata for privacy)
+        const orientedFile = await fixImageOrientation(file);
+        
+        // Step 2: Compress image (PNG transparency preserved, WebP when supported)
+        const compressionResult = await compressImage(orientedFile, {
+          maxWidth: 1200,
+          maxHeight: 1600,
+          quality: 0.85,
+          preserveTransparency: true
+        });
+        
+        processedFile = compressionResult.file;
+        
+        toast.success(`✅ Image optimized: ${compressionResult.compressionRatio}% smaller`, {
+          description: `${(compressionResult.originalSize / 1024 / 1024).toFixed(2)}MB → ${(compressionResult.compressedSize / 1024 / 1024).toFixed(2)}MB`
+        });
+      } catch (error) {
+        console.warn('Image optimization failed, using original:', error);
+        toast.warning("Using original image (optimization failed)");
+      }
+    }
+
     if (docType === 'passport') {
-      setPassportFile(file);
+      setPassportFile(processedFile);
     } else {
-      setBirthCertFile(file);
+      setBirthCertFile(processedFile);
     }
 
     // Show editor only for images (not for PDFs/docs)
@@ -104,7 +138,7 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
         setRotation(0);
         setCrop(undefined);
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(processedFile);
     } else if (isPDF || isOfficeDoc) {
       // For PDFs and Office docs, skip image editing
       setEditingImage(false);
@@ -172,35 +206,34 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
   const uploadToDropbox = async (file: File, documentType: string) => {
     setProcessingStep('uploading');
     setUploadProgress(0);
-    
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('caseId', caseId);
-    formData.append('documentType', documentType);
-
-    // Simulate upload progress
-    const progressInterval = setInterval(() => {
-      setUploadProgress(prev => Math.min(prev + 10, 90));
-    }, 200);
+    setUploadSpeed(0);
+    setUploadETA(0);
 
     try {
-      const { data, error } = await supabase.functions.invoke('upload-to-dropbox', {
-        body: formData,
-      });
+      // Real chunked upload with progress tracking
+      const uploadUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/upload-to-dropbox`;
+      const authToken = (await supabase.auth.getSession()).data.session?.access_token || '';
 
-      clearInterval(progressInterval);
-      setUploadProgress(100);
+      const path = await uploadFile(
+        file,
+        uploadUrl,
+        authToken,
+        { caseId, documentType },
+        (progress: UploadProgress) => {
+          setUploadProgress(progress.percentage);
+          setUploadSpeed(progress.speed);
+          setUploadETA(progress.eta);
+        }
+      );
 
-      if (error) throw error;
-      
       // Show upload success
       toast.success("✅ Document uploaded to cloud storage", {
         description: `File: ${file.name} (${(file.size / 1024).toFixed(0)}KB)`
       });
       
-      return data;
+      return { dropboxPath: path, filename: file.name };
     } catch (error) {
-      clearInterval(progressInterval);
+      console.error('Upload failed:', error);
       throw error;
     }
   };
@@ -526,6 +559,11 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
               {processingStep === 'complete' && 'Step 5/5: Complete!'}
             </span>
           </div>
+          {processingStep === 'uploading' && uploadSpeed > 0 && (
+            <div className="text-xs text-muted-foreground">
+              {(uploadSpeed / 1024 / 1024).toFixed(2)} MB/s • ETA: {uploadETA}s
+            </div>
+          )}
           <Progress 
             value={
               processingStep === 'uploading' ? uploadProgress / 5 :
