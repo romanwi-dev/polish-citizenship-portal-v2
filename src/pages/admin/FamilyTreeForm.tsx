@@ -753,17 +753,14 @@ export default function FamilyTreeForm() {
               isNameField: true
             }], 'children')}
 
-                {/* 2nd row - Places */}
-                {renderFieldGroup([{
-              name: `child_${num}_pob`,
-              label: "Place of birth"
-            }], 'children')}
-
-                {/* 3rd row - Dates */}
+                {/* 2nd row - Date and Place of birth */}
                 {renderFieldGroup([{
               name: `child_${num}_dob`,
               label: "Date of birth",
               type: "date"
+            }, {
+              name: `child_${num}_pob`,
+              label: "Place of birth"
             }], 'children')}
                 <FamilyMemberDocumentsSection
                   prefix={`child_${num}`}
