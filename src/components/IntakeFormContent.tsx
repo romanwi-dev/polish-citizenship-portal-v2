@@ -104,7 +104,7 @@ export const QuestionsSection = ({ formData, handleInputChange, clearField, isLa
       </h3>
     </div>
 
-    <div className="space-y-4 mt-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
       {[
         { field: "idk_renounced", label: "I want to apply also for some other family members" },
         { field: "idk_ancestor_lost_citizenship", label: "My ancestors emigrated from POLAND before 1920" },
