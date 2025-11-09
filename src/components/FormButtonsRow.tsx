@@ -91,7 +91,7 @@ export function FormButtonsRow({
               </span>
             </Button>
             
-            {currentForm !== 'intake' && currentForm !== 'civil-registry' && (
+            {currentForm !== 'intake' && (
               currentForm === 'poa' ? (
                 // POA: Direct button click (no URL callback)
                 <Button
@@ -104,12 +104,13 @@ export function FormButtonsRow({
                   </span>
                 </Button>
               ) : (
-                // Other forms: Use PDFGenerateButton with URL callback
+                // All other forms: Use PDFGenerateButton with URL callback
                 <PDFGenerateButton
                   caseId={caseId}
                   templateType={
                     currentForm === 'family-tree' ? 'family-tree' :
                     currentForm === 'citizenship' ? 'citizenship' :
+                    currentForm === 'civil-registry' ? 'registration' :
                     currentForm
                   }
                   onGenerate={onGeneratePDF as (url: string) => void}

@@ -274,7 +274,7 @@ export default function CivilRegistryForm() {
           currentForm="civil-registry"
           onSave={handleSave}
           onClear={() => setShowClearDialog(true)}
-          onGeneratePDF={() => {}} // No PDF generation for Civil Registry
+          onGeneratePDF={handleGeneratePDF}
           isSaving={isSaving}
         />
 
@@ -465,18 +465,6 @@ export default function CivilRegistryForm() {
           </motion.div>
         </div>
 
-        {/* Generate PDF Button */}
-        <div className="mt-12 flex justify-center pb-8">
-          <PDFGenerateButton
-            caseId={caseId!}
-            templateType="registration"
-            onGenerate={handleGeneratePDF}
-          >
-            <span className="text-emerald-100 font-heading font-black text-2xl md:text-3xl px-12 py-4">
-              Generate PDF
-            </span>
-          </PDFGenerateButton>
-        </div>
       </div>
 
 

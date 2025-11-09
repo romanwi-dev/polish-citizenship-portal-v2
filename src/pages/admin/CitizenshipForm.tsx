@@ -511,19 +511,6 @@ export default function CitizenshipForm() {
           </motion.div>
         </div>
 
-        {/* Generate PDF Button at Bottom */}
-        <div className="mt-12 flex justify-center">
-          <PDFGenerateButton
-            caseId={caseId!}
-            templateType="citizenship"
-            onGenerate={handleGeneratePDF}
-            disabled={isGenerating}
-          >
-            <span className="text-blue-100 font-heading font-black text-2xl md:text-3xl px-12 py-4">
-              {isGenerating ? "Generating..." : "Generate PDF"}
-            </span>
-          </PDFGenerateButton>
-        </div>
 
         <AlertDialog open={showClearAllDialog} onOpenChange={setShowClearAllDialog}>
           <AlertDialogContent>
