@@ -36,7 +36,6 @@ export default function CivilRegistryForm() {
   const { id: caseId } = useParams();
   const navigate = useNavigate();
   const { isLargeFonts, toggleFontSize } = useAccessibility();
-  const [isGenerating, setIsGenerating] = useState(false);
   const [showClearDialog, setShowClearDialog] = useState(false);
   const [isFullView, setIsFullView] = useState(true);
   
@@ -56,28 +55,6 @@ export default function CivilRegistryForm() {
     CIVIL_REGISTRY_FORM_REQUIRED_FIELDS,
     CIVIL_REGISTRY_DATE_FIELDS
   );
-  
-  const handleGeneratePDF = async (templateType: string) => {
-    setIsGenerating(true);
-    try {
-      const { generateSimplePDF } = await import('@/lib/pdf-simple');
-      const url = await generateSimplePDF({
-        caseId: caseId!,
-        templateType,
-        toast,
-        setIsGenerating: () => {}
-      });
-      
-      if (url) {
-        console.log('[CivilRegistryForm] PDF generated:', url);
-        window.open(url, '_blank');
-      }
-    } catch (error) {
-      console.error('[CivilRegistryForm] PDF generation failed:', error);
-    } finally {
-      setIsGenerating(false);
-    }
-  };
 
   const handleClearData = async () => {
     await handleClearAll();
@@ -273,7 +250,7 @@ export default function CivilRegistryForm() {
           currentForm="civil-registry"
           onSave={handleSave}
           onClear={() => setShowClearDialog(true)}
-          onGeneratePDF={handleGeneratePDF}
+          onGeneratePDF={() => {}} // No PDF generation for Civil Registry
           isSaving={isSaving}
         />
 
