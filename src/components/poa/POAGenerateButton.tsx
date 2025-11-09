@@ -88,12 +88,41 @@ export const POAGenerateButton = ({
         return;
       }
 
-      // Generate POA
+      // Fetch master data to determine POA type
+      const { data: masterData, error: masterError } = await supabase
+        .from('master_table')
+        .select('applicant_marital_status, child_1_first_name, child_2_first_name, spouse_first_name')
+        .eq('case_id', caseId)
+        .single();
+
+      if (masterError) {
+        console.error('Failed to fetch master data:', masterError);
+        toast.error("Failed to determine POA type");
+        return;
+      }
+
+      // Determine POA type based on data
+      let poaType = 'adult';
+      const hasChildren = !!(masterData?.child_1_first_name || masterData?.child_2_first_name);
+      const isMarried = masterData?.applicant_marital_status === 'married' && !!masterData?.spouse_first_name;
+
+      if (hasChildren) {
+        poaType = 'minor';
+      } else if (isMarried) {
+        poaType = 'married';
+      }
+
+      console.log('[POAGenerateButton] Generating POA:', { caseId, poaType, hasChildren, isMarried });
+
+      // Generate POA with correct parameters
       const { data, error } = await supabase.functions.invoke('generate-poa', {
-        body: { caseId },
+        body: { caseId, poaType },
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('[POAGenerateButton] Generation error:', error);
+        throw error;
+      }
 
       if (data?.success && data?.pdfUrl && data?.poaId) {
         toast.success("POA generated successfully!");
@@ -101,11 +130,12 @@ export const POAGenerateButton = ({
           onGenerated(data.pdfUrl, data.poaId);
         }
       } else {
+        console.error('[POAGenerateButton] Invalid response:', data);
         throw new Error('POA generation failed - missing PDF URL or POA ID');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Generation error:', error);
-      toast.error("Failed to generate POA");
+      toast.error(error.message || "Failed to generate POA");
     } finally {
       setGenerating(false);
     }
