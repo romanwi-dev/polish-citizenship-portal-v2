@@ -31,6 +31,8 @@ export async function generateSimplePDF({
       body: { caseId: effectiveCaseId, templateType }
     });
 
+    console.log('[pdf-simple] Edge function response:', { data, error });
+
     if (error) {
       console.error('[pdf-simple] Error:', error);
       throw new Error(error.message);
@@ -47,7 +49,7 @@ export async function generateSimplePDF({
       : `PDF ready! Filled ${data.fieldsFilledCount}/${data.totalFields} fields (${data.fillRate}%)`;
     toast.success(message);
     
-    console.log('[pdf-simple] Success:', data);
+    console.log('[pdf-simple] Success - returning URL:', data.url);
     
     return data.url;
 

@@ -30,9 +30,14 @@ export function PDFGenerateButton({
       setIsGenerating
     });
 
+    console.log('[PDFGenerateButton] Got URL from generateSimplePDF:', url);
+
     if (url) {
+      console.log('[PDFGenerateButton] Calling onGenerate callback with URL:', url);
       // Pass URL to parent component - do NOT open directly
       onGenerate(url);
+    } else {
+      console.error('[PDFGenerateButton] No URL returned from generateSimplePDF');
     }
   };
 

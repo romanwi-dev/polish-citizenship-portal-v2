@@ -132,9 +132,11 @@ export default function FamilyTreeForm() {
   };
   const handleGeneratePDF = async (url: string) => {
     // URL received from pdf-simple edge function
-    console.log('[FamilyTreeForm] PDF generated:', url);
+    console.log('[FamilyTreeForm] PDF generated with URL:', url);
+    console.log('[FamilyTreeForm] Setting pdfPreviewUrl to:', url);
     setPdfPreviewUrl(url);
     setPreviewFormData(formData);
+    console.log('[FamilyTreeForm] Preview URL set, dialog should open now');
   };
 
   const handleRegeneratePDF = async (updatedData: any) => {

@@ -83,9 +83,11 @@ export default function CitizenshipForm() {
 
 
   const handleGeneratePDF = async (url: string) => {
-    console.log('[CitizenshipForm] PDF generated:', url);
+    console.log('[CitizenshipForm] PDF generated with URL:', url);
+    console.log('[CitizenshipForm] Setting pdfPreviewUrl to:', url);
     setPdfPreviewUrl(url);
     setPreviewFormData(formData);
+    console.log('[CitizenshipForm] Preview URL set, dialog should open now');
   };
 
   const handleRegeneratePDF = async () => {
