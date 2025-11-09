@@ -876,7 +876,25 @@ export default function POAForm() {
                     name="husband_last_name_after_marriage"
                     label="Husband's full last name after marriage"
                     value={formData?.husband_last_name_after_marriage || ""}
-                    onChange={(value) => handleInputChange("husband_last_name_after_marriage", value)}
+                    onChange={(value) => {
+                      handleInputChange("husband_last_name_after_marriage", value);
+                      
+                      // Polish grammar rule: convert -SKI to -SKA and -CKI to -CKA for wife's surname
+                      if (value) {
+                        const upperValue = value.toUpperCase();
+                        let wifeSurname = value;
+                        
+                        if (upperValue.endsWith('SKI')) {
+                          wifeSurname = value.slice(0, -1) + 'A'; // Remove 'I', add 'A'
+                        } else if (upperValue.endsWith('CKI')) {
+                          wifeSurname = value.slice(0, -1) + 'A'; // Remove 'I', add 'A'
+                        }
+                        
+                        if (wifeSurname !== value) {
+                          handleInputChange("wife_last_name_after_marriage", wifeSurname);
+                        }
+                      }
+                    }}
                   />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-4 md:mt-6">
