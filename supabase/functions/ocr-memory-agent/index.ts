@@ -53,14 +53,14 @@ serve(async (req) => {
         .single();
 
       if (existing) {
-      const { error: updateError } = await supabase
-        .from('ocr_patterns_memory')
-        .update({
-          pattern_data: patternData,
-          success_count: (existing.success_count || 0) + 1,
-          last_updated: new Date().toISOString(),
-        })
-        .eq('pattern_key', patternKey);
+        const { error: updateError } = await supabase
+          .from('ocr_patterns_memory')
+          .update({
+            pattern_data: patternData,
+            success_count: (existing.success_count || 0) + 1,
+            last_updated: new Date().toISOString(),
+          })
+          .eq('pattern_key', patternKey);
 
         if (updateError) throw updateError;
       } else {

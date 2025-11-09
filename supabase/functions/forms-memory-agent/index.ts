@@ -132,11 +132,11 @@ serve(async (req) => {
       await supabase
         .from('agent_memory')
         .upsert({
-          agent_name: AGENT_NAME,
+          agent_type: AGENT_NAME,
           memory_key: update.key,
           memory_value: update.value,
           updated_at: new Date().toISOString(),
-        }, { onConflict: 'agent_name,memory_key' });
+        }, { onConflict: 'agent_type,memory_key' });
     }
 
     // Log agent activity
