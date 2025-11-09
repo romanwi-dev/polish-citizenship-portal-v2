@@ -541,9 +541,6 @@ export default function POAForm() {
                   <Camera className="h-5 w-5 mr-2" />
                   Scan Documents with OCR
                 </Button>
-                <p className="text-sm text-muted-foreground mt-2">
-                  Use OCR to automatically extract data from passport and birth certificate
-                </p>
               </div>
             </div>
 

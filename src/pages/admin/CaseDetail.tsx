@@ -378,9 +378,6 @@ export default function CaseDetail() {
                     <Camera className="h-5 w-5 mr-2" />
                     Scan Documents with OCR
                   </Button>
-                  <p className="text-sm text-muted-foreground mt-2">
-                    Use OCR to automatically extract data from passport and birth certificate
-                  </p>
                 </div>
                 <Suspense fallback={<div className="flex items-center justify-center p-12"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
                   <POAFormContent />
