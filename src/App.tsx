@@ -80,6 +80,7 @@ const AgentApprovals = lazy(() => import("./pages/admin/AgentApprovals"));
 const VerifyChanges = lazy(() => import("./pages/VerifyChanges"));
 const VerificationResults = lazy(() => import("./pages/VerificationResults"));
 const VerificationB = lazy(() => import("./pages/VerificationB"));
+const MobileFirstGuardian = lazy(() => import("./pages/MobileFirstGuardian"));
 const ProvenPatterns = lazy(() => import("./pages/ProvenPatterns"));
 const ABEXPDFMaster = lazy(() => import("./pages/ABEXPDFMaster"));
 const PDFGenerationTest = lazy(() => import("./pages/admin/PDFGenerationTest"));
@@ -697,6 +698,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <VerificationB />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/mobile-guardian" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <MobileFirstGuardian />
               </Suspense>
             } 
           />
