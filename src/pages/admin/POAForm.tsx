@@ -24,6 +24,7 @@ import { StaticHeritagePlaceholder } from "@/components/heroes/StaticHeritagePla
 
 const StaticHeritage = lazy(() => import("@/components/heroes/StaticHeritage").then(m => ({ default: m.StaticHeritage })));
 import { FormButtonsRow } from "@/components/FormButtonsRow";
+import { BulkPDFGenerator } from "@/components/BulkPDFGenerator";
 import { useFormManager } from "@/hooks/useFormManager";
 import { usePOAAutoGeneration } from "@/hooks/usePOAAutoGeneration";
 import { MaskedPassportInput } from "@/components/forms/MaskedPassportInput";
@@ -455,6 +456,9 @@ export default function POAForm() {
           formData={formData}
           activePOAType={activePOAType}
         />
+
+        {/* Bulk PDF Generator - Centered between buttons and tabs */}
+        <BulkPDFGenerator caseId={caseId!} />
 
 
         {/* POA Forms */}

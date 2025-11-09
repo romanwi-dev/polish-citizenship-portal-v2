@@ -21,6 +21,7 @@ import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { PDFGenerateButton } from "@/components/pdf/PDFGenerateButton";
 import { PDFPreviewDialog } from "@/components/PDFPreviewDialog";
 import { FormButtonsRow } from "@/components/FormButtonsRow";
+import { BulkPDFGenerator } from "@/components/BulkPDFGenerator";
 import { useFormManager } from "@/hooks/useFormManager";
 import { useOBYAutoPopulation } from "@/hooks/useOBYAutoPopulation";
 import { MaskedPassportInput } from "@/components/forms/MaskedPassportInput";
@@ -322,6 +323,9 @@ export default function CitizenshipForm() {
           onGeneratePDF={handleGeneratePDF}
           isSaving={isSaving}
         />
+
+        {/* Bulk PDF Generator - Centered between buttons and tabs */}
+        <BulkPDFGenerator caseId={caseId!} />
 
         {/* Form Sections */}
         <div className="space-y-8">

@@ -22,6 +22,7 @@ import { DateField } from "@/components/DateField";
 import { useToast } from "@/hooks/use-toast";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { FormButtonsRow } from "@/components/FormButtonsRow";
+import { BulkPDFGenerator } from "@/components/BulkPDFGenerator";
 import { FamilyTreeInteractive } from "@/components/FamilyTreeInteractive";
 import { FamilyMemberDocumentsSection } from "@/components/forms/FamilyMemberDocumentsSection";
 import { FormInput } from "@/components/forms/FormInput";
@@ -497,6 +498,9 @@ export default function FamilyTreeForm() {
           onGeneratePDF={handleGeneratePDF}
           isSaving={isSaving}
         />
+
+        {/* Bulk PDF Generator - Centered between buttons and tabs */}
+        <BulkPDFGenerator caseId={caseId!} />
 
         {/* Form with Tabs or Full View */}
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="-mt-4">
