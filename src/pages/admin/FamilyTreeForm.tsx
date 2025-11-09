@@ -1493,11 +1493,8 @@ export default function FamilyTreeForm() {
                         ], 'children')}
 
                         {renderFieldGroup([
+                          { name: `child_${num}_dob`, label: "Date of birth", type: "date" },
                           { name: `child_${num}_pob`, label: "Place of birth" }
-                        ], 'children')}
-
-                        {renderFieldGroup([
-                          { name: `child_${num}_dob`, label: "Date of birth", type: "date" }
                         ], 'children')}
 
                         <FamilyMemberDocumentsSection
