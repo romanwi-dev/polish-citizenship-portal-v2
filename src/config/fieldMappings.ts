@@ -95,6 +95,7 @@ export const GRANDPARENT_FIELDS: FieldMapping[] = [
   { formField: 'pgf_last_name', dbColumn: 'pgf_last_name', forms: ['intake', 'master'], dbTable: 'master_table', fieldType: 'text' },
   { formField: 'pgf_pob', dbColumn: 'pgf_pob', forms: ['intake', 'master'], dbTable: 'master_table', fieldType: 'text' },
   { formField: 'pgf_dob', dbColumn: 'pgf_dob', forms: ['intake', 'master'], dbTable: 'master_table', fieldType: 'date' },
+  { formField: 'pgf_is_polish', dbColumn: 'pgf_is_polish', forms: ['master'], dbTable: 'master_table', fieldType: 'boolean' },
   
   // Paternal Grandmother
   { formField: 'pgm_first_name', dbColumn: 'pgm_first_name', forms: ['intake', 'master'], dbTable: 'master_table', fieldType: 'text' },
@@ -102,12 +103,14 @@ export const GRANDPARENT_FIELDS: FieldMapping[] = [
   { formField: 'pgm_maiden_name', dbColumn: 'pgm_maiden_name', forms: ['intake', 'master'], dbTable: 'master_table', fieldType: 'text' },
   { formField: 'pgm_pob', dbColumn: 'pgm_pob', forms: ['intake', 'master'], dbTable: 'master_table', fieldType: 'text' },
   { formField: 'pgm_dob', dbColumn: 'pgm_dob', forms: ['intake', 'master'], dbTable: 'master_table', fieldType: 'date' },
+  { formField: 'pgm_is_polish', dbColumn: 'pgm_is_polish', forms: ['master'], dbTable: 'master_table', fieldType: 'boolean' },
   
   // Maternal Grandfather
   { formField: 'mgf_first_name', dbColumn: 'mgf_first_name', forms: ['intake', 'master'], dbTable: 'master_table', fieldType: 'text' },
   { formField: 'mgf_last_name', dbColumn: 'mgf_last_name', forms: ['intake', 'master'], dbTable: 'master_table', fieldType: 'text' },
   { formField: 'mgf_pob', dbColumn: 'mgf_pob', forms: ['intake', 'master'], dbTable: 'master_table', fieldType: 'text' },
   { formField: 'mgf_dob', dbColumn: 'mgf_dob', forms: ['intake', 'master'], dbTable: 'master_table', fieldType: 'date' },
+  { formField: 'mgf_is_polish', dbColumn: 'mgf_is_polish', forms: ['master'], dbTable: 'master_table', fieldType: 'boolean' },
   
   // Maternal Grandmother
   { formField: 'mgm_first_name', dbColumn: 'mgm_first_name', forms: ['intake', 'master'], dbTable: 'master_table', fieldType: 'text' },
@@ -115,6 +118,7 @@ export const GRANDPARENT_FIELDS: FieldMapping[] = [
   { formField: 'mgm_maiden_name', dbColumn: 'mgm_maiden_name', forms: ['intake', 'master'], dbTable: 'master_table', fieldType: 'text' },
   { formField: 'mgm_pob', dbColumn: 'mgm_pob', forms: ['intake', 'master'], dbTable: 'master_table', fieldType: 'text' },
   { formField: 'mgm_dob', dbColumn: 'mgm_dob', forms: ['intake', 'master'], dbTable: 'master_table', fieldType: 'date' },
+  { formField: 'mgm_is_polish', dbColumn: 'mgm_is_polish', forms: ['master'], dbTable: 'master_table', fieldType: 'boolean' },
 ];
 
 // CHILDREN FIELDS (1-10)
@@ -138,17 +142,6 @@ export const META_FIELDS: FieldMapping[] = [
   { formField: 'polish_bloodline_side', dbColumn: 'polish_bloodline_side', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
 ];
 
-// ALL FIELDS COMBINED
-export const ALL_FIELD_MAPPINGS: FieldMapping[] = [
-  ...APPLICANT_FIELDS,
-  ...SPOUSE_FIELDS,
-  ...FATHER_FIELDS,
-  ...MOTHER_FIELDS,
-  ...GRANDPARENT_FIELDS,
-  ...CHILDREN_FIELDS,
-  ...META_FIELDS,
-];
-
 // GREAT-GRANDPARENTS FIELDS
 export const GREAT_GRANDPARENT_FIELDS: FieldMapping[] = [
   // Paternal Great-Grandfather
@@ -156,6 +149,7 @@ export const GREAT_GRANDPARENT_FIELDS: FieldMapping[] = [
   { formField: 'pggf_last_name', dbColumn: 'pggf_last_name', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
   { formField: 'pggf_pob', dbColumn: 'pggf_pob', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
   { formField: 'pggf_notes', dbColumn: 'pggf_notes', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
+  { formField: 'pggf_is_polish', dbColumn: 'pggf_is_polish', forms: ['master'], dbTable: 'master_table', fieldType: 'boolean' },
   
   // Paternal Great-Grandmother
   { formField: 'pggm_first_name', dbColumn: 'pggm_first_name', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
@@ -163,12 +157,14 @@ export const GREAT_GRANDPARENT_FIELDS: FieldMapping[] = [
   { formField: 'pggm_maiden_name', dbColumn: 'pggm_maiden_name', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
   { formField: 'pggm_pob', dbColumn: 'pggm_pob', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
   { formField: 'pggm_notes', dbColumn: 'pggm_notes', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
+  { formField: 'pggm_is_polish', dbColumn: 'pggm_is_polish', forms: ['master'], dbTable: 'master_table', fieldType: 'boolean' },
   
   // Maternal Great-Grandfather
   { formField: 'mggf_first_name', dbColumn: 'mggf_first_name', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
   { formField: 'mggf_last_name', dbColumn: 'mggf_last_name', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
   { formField: 'mggf_pob', dbColumn: 'mggf_pob', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
   { formField: 'mggf_notes', dbColumn: 'mggf_notes', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
+  { formField: 'mggf_is_polish', dbColumn: 'mggf_is_polish', forms: ['master'], dbTable: 'master_table', fieldType: 'boolean' },
   
   // Maternal Great-Grandmother
   { formField: 'mggm_first_name', dbColumn: 'mggm_first_name', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
@@ -176,6 +172,19 @@ export const GREAT_GRANDPARENT_FIELDS: FieldMapping[] = [
   { formField: 'mggm_maiden_name', dbColumn: 'mggm_maiden_name', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
   { formField: 'mggm_pob', dbColumn: 'mggm_pob', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
   { formField: 'mggm_notes', dbColumn: 'mggm_notes', forms: ['master'], dbTable: 'master_table', fieldType: 'text' },
+  { formField: 'mggm_is_polish', dbColumn: 'mggm_is_polish', forms: ['master'], dbTable: 'master_table', fieldType: 'boolean' },
+];
+
+// ALL FIELDS COMBINED
+export const ALL_FIELD_MAPPINGS: FieldMapping[] = [
+  ...APPLICANT_FIELDS,
+  ...SPOUSE_FIELDS,
+  ...FATHER_FIELDS,
+  ...MOTHER_FIELDS,
+  ...GRANDPARENT_FIELDS,
+  ...GREAT_GRANDPARENT_FIELDS,
+  ...CHILDREN_FIELDS,
+  ...META_FIELDS,
 ];
 
 // UTILITY FUNCTIONS
