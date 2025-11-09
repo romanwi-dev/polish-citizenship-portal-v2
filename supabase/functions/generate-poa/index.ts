@@ -234,7 +234,7 @@ data / date: ${poaDate}    podpisy / signatures: __________________  ___________
     // ✅ PHASE EX FIX #1: Generate actual PDF using fill-pdf edge function
     console.log('[generate-poa] Calling fill-pdf to generate PDF...');
     
-    const { data: pdfData, error: pdfError } = await supabaseClient.functions.invoke('fill-pdf', {
+    const { data: pdfData, error: pdfError } = await supabase.functions.invoke('fill-pdf', {
       body: {
         caseId,
         templateType: `poa-${poaType}`,
@@ -250,7 +250,7 @@ data / date: ${poaDate}    podpisy / signatures: __________________  ___________
     console.log('[generate-poa] PDF generated successfully:', pdfData.url);
 
     // ✅ Update POA record with PDF URL
-    await supabaseClient
+    await supabase
       .from('poa')
       .update({ pdf_url: pdfData.url })
       .eq('id', poaRecord.id);
