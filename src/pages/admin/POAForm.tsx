@@ -424,14 +424,14 @@ export default function POAForm() {
           initial={{ opacity: 0, y: -50 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ duration: 0.8 }}
-          className="mb-1 md:mb-6"
+          className="mb-0"
         >
-          <h2 className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight text-center">
+          <h2 className="text-5xl md:text-8xl font-heading font-black mb-2 md:mb-3 tracking-tight text-center">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               Power of Attorney
             </span>
           </h2>
-          <div className="flex items-center justify-center gap-3 md:gap-6 mt-2 md:mt-4">
+          <div className="flex items-center justify-center gap-3 md:gap-6 mt-2 md:mt-3 mb-1 md:mb-2">
               <Button
                 onClick={() => navigate('/admin/forms-demo')}
                 variant="ghost"

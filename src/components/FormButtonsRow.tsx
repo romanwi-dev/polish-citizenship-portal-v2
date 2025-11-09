@@ -45,7 +45,7 @@ export function FormButtonsRow({
   return (
     <>
       {/* Navigation Buttons Row - Static at top, no background */}
-      <div className="-mt-8 md:-mt-12 mb-3 md:mb-4">{/* Strong negative top margin pulls icons UP much closer to title */}
+      <div className="mt-0 mb-4 md:mb-6 pt-0">{/* Remove top spacing, keep bottom spacing for form content */}
         {/* Mobile: 2 rows of 3 buttons */}
         <div className="grid grid-cols-3 gap-1.5 md:hidden px-2">
           {navigationButtons.map((btn, index) => {
