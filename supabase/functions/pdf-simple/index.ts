@@ -20,6 +20,7 @@ const TEMPLATE_PATHS: Record<string, string> = {
   'family-tree': 'family-tree.pdf',
   'citizenship': 'citizenship.pdf',
   'transcription': 'transcription.pdf',
+  'registration': 'registration.pdf',
 };
 
 // Field mappings: PDF field name → database column name
@@ -55,6 +56,30 @@ const FIELD_MAPS: Record<string, Record<string, string>> = {
   'citizenship': {
     'imie': 'applicant_first_name',
     'nazwisko': 'applicant_last_name',
+  },
+  'registration': {
+    'applicant_given_names': 'applicant_first_name',
+    'applicant_surname': 'applicant_last_name',
+    'applicant_date_of_birth': 'applicant_dob',
+    'applicant_place_of_birth': 'applicant_pob',
+    'applicant_email': 'applicant_email',
+    'applicant_phone': 'applicant_phone',
+    'applicant_passport_number': 'applicant_passport_number',
+    'document_type': 'document_type',
+    'document_issue_place': 'document_issue_place',
+    'document_issue_date': 'document_issue_date',
+    'usc_office_name': 'usc_office_name',
+    'usc_office_address': 'usc_office_address',
+  },
+  'transcription': {
+    'applicant_given_names': 'applicant_first_name',
+    'applicant_surname': 'applicant_last_name',
+    'applicant_date_of_birth': 'applicant_dob',
+    'applicant_place_of_birth': 'applicant_pob',
+    'applicant_email': 'applicant_email',
+    'applicant_phone': 'applicant_phone',
+    'applicant_passport_number': 'applicant_passport_number',
+    'document_type': 'document_type',
   },
   'family-tree': {
     // Applicant info

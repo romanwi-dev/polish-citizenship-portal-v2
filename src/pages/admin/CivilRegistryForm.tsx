@@ -57,10 +57,26 @@ export default function CivilRegistryForm() {
     CIVIL_REGISTRY_DATE_FIELDS
   );
   
-  const handleGeneratePDF = async (url: string) => {
-    // URL received from pdf-simple edge function
-    console.log('[CivilRegistryForm] PDF generated:', url);
-    // Could open preview dialog here in future
+  const handleGeneratePDF = async (templateType: string) => {
+    setIsGenerating(true);
+    try {
+      const { generateSimplePDF } = await import('@/lib/pdf-simple');
+      const url = await generateSimplePDF({
+        caseId: caseId!,
+        templateType,
+        toast,
+        setIsGenerating: () => {}
+      });
+      
+      if (url) {
+        console.log('[CivilRegistryForm] PDF generated:', url);
+        window.open(url, '_blank');
+      }
+    } catch (error) {
+      console.error('[CivilRegistryForm] PDF generation failed:', error);
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const handleClearData = async () => {
