@@ -227,17 +227,22 @@ function fillPDFFields(form: any, data: any, fieldMap: Record<string, string>): 
                               pdfFieldName.toLowerCase().includes('data') ||
                               pdfFieldName.toLowerCase().includes('dob');
           
-          // Set text in UPPERCASE
-          const uppercaseValue = formattedValue.toUpperCase();
-          field.setText(uppercaseValue);
+          // Set text in UPPERCASE for non-date fields, normal case for dates
+          const finalValue = isDateField ? formattedValue : formattedValue.toUpperCase();
+          field.setText(finalValue);
           
           // ✅ CRITICAL FIX: Use Helvetica-Bold instead of Arial-Black for better compatibility
           // Arial-Black is NOT embedded in PDF templates and causes font substitution issues
-          if (!isDateField) {
-            try {
-              const acroField = field.acroField;
-              
-              // Use Helvetica-Bold with font size 0 for auto-sizing (matches all other fields)
+          try {
+            const acroField = field.acroField;
+            
+            if (isDateField) {
+              // Date fields: smaller font size (8pt instead of auto-size)
+              const regularAppearance = '/Helvetica 8 Tf 0 g';
+              acroField.setDefaultAppearance(regularAppearance);
+              console.log(`[PDF Fill] Applied smaller font (8pt) to date field: ${pdfFieldName}`);
+            } else {
+              // Non-date fields: Use Helvetica-Bold with font size 0 for auto-sizing
               const boldAppearance = '/Helvetica-Bold 0 Tf 0 g';
               acroField.setDefaultAppearance(boldAppearance);
               
@@ -250,7 +255,7 @@ function fillPDFFields(form: any, data: any, fieldMap: Record<string, string>): 
                    pdfFieldName.toLowerCase().includes('nazwisko') ||
                    pdfFieldName.toLowerCase().includes('imie'))) {
                 console.log(`[PDF Fill] SPOUSE NAME FIELD: ${pdfFieldName}`, {
-                  value: uppercaseValue,
+                  value: finalValue,
                   font: 'Helvetica-Bold',
                   fontSize: '0 (auto)',
                   autoSize: true
@@ -258,13 +263,13 @@ function fillPDFFields(form: any, data: any, fieldMap: Record<string, string>): 
               }
               
               console.log(`[PDF Fill] Applied Helvetica-Bold + auto-size to: ${pdfFieldName}`);
-            } catch (error) {
-              console.error(`[PDF Fill] Could not apply Helvetica-Bold to ${pdfFieldName}:`, error);
             }
+          } catch (error) {
+            console.error(`[PDF Fill] Could not apply font settings to ${pdfFieldName}:`, error);
           }
           
           result.filledCount++;
-          log('text_field_filled', { field: pdfFieldName, value: uppercaseValue, bold: !isDateField });
+          log('text_field_filled', { field: pdfFieldName, value: finalValue, bold: !isDateField, fontSize: isDateField ? '8pt' : 'auto' });
         } catch (e) {
           const errMsg = (e as Error)?.message || String(e);
           result.errors.push({ field: pdfFieldName, error: `Text field set failed: ${errMsg}` });
@@ -293,33 +298,27 @@ function fillPDFFields(form: any, data: any, fieldMap: Record<string, string>): 
                               pdfFieldName.toLowerCase().includes('data') ||
                               pdfFieldName.toLowerCase().includes('dob');
           
-          const uppercaseValue = formattedValue.toUpperCase();
-          field.setText(uppercaseValue);
+          const finalValue = isDateField ? formattedValue : formattedValue.toUpperCase();
+          field.setText(finalValue);
           
-          // Apply Helvetica-Bold + auto-sizing to non-date fields in fallback too
-          if (!isDateField) {
-            try {
-              const acroField = field.acroField;
+          // Apply font settings to non-date fields in fallback too
+          try {
+            const acroField = field.acroField;
+            
+            if (isDateField) {
+              // Date fields: smaller font size (8pt instead of auto-size)
+              const regularAppearance = '/Helvetica 8 Tf 0 g';
+              acroField.setDefaultAppearance(regularAppearance);
+              console.log(`[PDF Fill] Applied smaller font (8pt - fallback) to date field: ${pdfFieldName}`);
+            } else {
+              // Non-date fields: Helvetica-Bold + auto-sizing
               const boldAppearance = '/Helvetica-Bold 0 Tf 0 g';
               acroField.setDefaultAppearance(boldAppearance);
               field.enableAutoSize();
               console.log(`[PDF Fill] Applied Helvetica-Bold (fallback) to: ${pdfFieldName}`);
-            } catch (error) {
-              console.warn(`[PDF Fill] Could not apply Helvetica-Bold (fallback) to ${pdfFieldName}:`, error);
             }
-          }
-          
-          // Try to enable BOLD (except for dates)
-          if (!isDateField) {
-            try {
-              const acroField = field.acroField;
-              const boldAppearance = '/Helvetica-Bold 0 Tf 0 g';
-              acroField.setDefaultAppearance(boldAppearance);
-              
-              console.log(`[PDF Fill] Applied BOLD to fallback field: ${pdfFieldName}`);
-            } catch (error) {
-              console.warn(`[PDF Fill] Could not apply bold to fallback ${pdfFieldName}:`, error);
-            }
+          } catch (error) {
+            console.warn(`[PDF Fill] Could not apply font settings (fallback) to ${pdfFieldName}:`, error);
           }
           
           result.filledCount++;
