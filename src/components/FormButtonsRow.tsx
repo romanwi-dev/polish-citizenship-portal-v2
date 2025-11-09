@@ -45,7 +45,7 @@ export function FormButtonsRow({
   return (
     <>
       {/* Navigation Buttons Row - Static at top, no background */}
-      <div className="mb-2 md:mb-1 py-1 md:py-2">
+      <div className="mb-1 md:mb-0 py-0 md:py-1">
         {/* Mobile: 2 rows of 3 buttons */}
         <div className="grid grid-cols-3 gap-1.5 md:hidden px-2">
           {navigationButtons.map((btn, index) => {
