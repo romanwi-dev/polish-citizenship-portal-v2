@@ -552,8 +552,13 @@ All colors MUST be HSL.
   }
 
   .dark input,
-  .dark textarea,
-  .dark select {
+  .dark textarea {
+    background-color: hsl(215 28% 18%);
+    border-color: hsl(215 28% 25%);
+  }
+  
+  /* Native select elements only (not Radix Select components) */
+  .dark select:not([data-radix-select-trigger]) {
     background-color: hsl(215 28% 18%);
     border-color: hsl(215 28% 25%);
   }
