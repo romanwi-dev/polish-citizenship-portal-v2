@@ -595,7 +595,7 @@ export default function POAForm() {
           >
             <div className="border-b pb-6 px-6 py-4">
               <div className="flex items-center justify-between">
-                <h2 className="text-4xl md:text-5xl font-heading font-bold text-foreground">
+                <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   {poaFormConfigs.adult.title}
                 </h2>
               </div>
@@ -653,7 +653,7 @@ export default function POAForm() {
               onClick={() => setActivePOAType('minor')}
             >
               <div className="border-b pb-6 px-6 py-4">
-                <h2 className="text-4xl md:text-5xl font-heading font-bold text-foreground">
+                <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   POA Minor {childNum}
                 </h2>
               </div>
@@ -722,7 +722,7 @@ export default function POAForm() {
               onClick={() => setActivePOAType('spouses')}
             >
               <div className="border-b pb-6 px-6 py-4">
-                <h2 className="text-4xl md:text-5xl font-heading font-bold text-foreground">
+                <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   {poaFormConfigs.spouses.title}
                 </h2>
               </div>
