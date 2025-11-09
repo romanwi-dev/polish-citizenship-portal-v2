@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { PDFPreviewDialog } from "@/components/PDFPreviewDialog";
 
 interface POAGenerateButtonProps {
   caseId: string;
@@ -25,6 +26,10 @@ export const POAGenerateButton = ({
     dataComplete: number;
     warnings: string[];
   } | null>(null);
+  const [showPreview, setShowPreview] = useState(false);
+  const [generatedPdfUrl, setGeneratedPdfUrl] = useState<string>("");
+  const [generatedPoaId, setGeneratedPoaId] = useState<string>("");
+  const [poaType, setPoaType] = useState<string>("");
 
   const validateData = async () => {
     try {
@@ -126,9 +131,10 @@ export const POAGenerateButton = ({
 
       if (data?.success && data?.pdfUrl && data?.poaId) {
         toast.success("POA generated successfully!");
-        if (onGenerated) {
-          onGenerated(data.pdfUrl, data.poaId);
-        }
+        setGeneratedPdfUrl(data.pdfUrl);
+        setGeneratedPoaId(data.poaId);
+        setPoaType(poaType);
+        setShowPreview(true);
       } else {
         console.error('[POAGenerateButton] Invalid response:', data);
         throw new Error('POA generation failed - missing PDF URL or POA ID');
@@ -141,63 +147,120 @@ export const POAGenerateButton = ({
     }
   };
 
-  return (
-    <Card className="glass-card hover-glow">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <FileText className="w-5 h-5" />
-          Generate POA
-        </CardTitle>
-        <CardDescription>
-          Review data and generate your Power of Attorney document
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {validationStatus && (
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">Completion Rate</span>
-              <span className="text-sm font-bold">{validationStatus.dataComplete.toFixed(0)}%</span>
-            </div>
-            <Progress value={validationStatus.dataComplete} />
-            
-            <div className="space-y-2">
-              {validationStatus.passportScanned && (
-                <div className="flex items-center gap-2 text-sm text-green-600">
-                  <CheckCircle className="w-4 h-4" />
-                  Passport scanned ({passportConfidence ? `${(passportConfidence * 100).toFixed(0)}%` : 'N/A'} confidence)
-                </div>
-              )}
-              
-              {validationStatus.warnings.map((warning, idx) => (
-                <div key={idx} className="flex items-center gap-2 text-sm text-yellow-600">
-                  <AlertTriangle className="w-4 h-4" />
-                  {warning}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+  const handleDownloadEditable = () => {
+    if (generatedPdfUrl) {
+      const link = document.createElement('a');
+      link.href = generatedPdfUrl;
+      link.download = `POA-${poaType}-Editable.pdf`;
+      link.click();
+      toast.success("Download started");
+    }
+  };
 
-        <Button
-          onClick={handleGenerate}
-          disabled={generating}
-          className="w-full"
-          size="lg"
-        >
-          {generating ? (
-            <>
-              <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-              Generating POA...
-            </>
-          ) : (
-            <>
-              <FileText className="w-5 h-5 mr-2" />
-              Generate PDF (3 Copies)
-            </>
+  const handleDownloadFinal = async () => {
+    if (!generatedPoaId || !caseId || !generatedPdfUrl) return;
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('lock-pdf', {
+        body: {
+          documentId: generatedPoaId,
+          caseId: caseId,
+          pdfUrl: generatedPdfUrl
+        }
+      });
+
+      if (error) throw error;
+      
+      if (data?.success && data?.lockedUrl) {
+        const link = document.createElement('a');
+        link.href = data.lockedUrl;
+        link.download = `POA-${poaType}-Final.pdf`;
+        link.click();
+        toast.success("Final PDF downloaded");
+      }
+    } catch (error) {
+      console.error('Lock PDF error:', error);
+      toast.error("Failed to download final PDF");
+    }
+  };
+
+  const handlePreviewClose = () => {
+    setShowPreview(false);
+    if (onGenerated) {
+      onGenerated(generatedPdfUrl, generatedPoaId);
+    }
+  };
+
+  return (
+    <>
+      <Card className="glass-card hover-glow">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <FileText className="w-5 h-5" />
+            Generate POA
+          </CardTitle>
+          <CardDescription>
+            Review data and generate your Power of Attorney document
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {validationStatus && (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">Completion Rate</span>
+                <span className="text-sm font-bold">{validationStatus.dataComplete.toFixed(0)}%</span>
+              </div>
+              <Progress value={validationStatus.dataComplete} />
+              
+              <div className="space-y-2">
+                {validationStatus.passportScanned && (
+                  <div className="flex items-center gap-2 text-sm text-green-600">
+                    <CheckCircle className="w-4 h-4" />
+                    Passport scanned ({passportConfidence ? `${(passportConfidence * 100).toFixed(0)}%` : 'N/A'} confidence)
+                  </div>
+                )}
+                
+                {validationStatus.warnings.map((warning, idx) => (
+                  <div key={idx} className="flex items-center gap-2 text-sm text-yellow-600">
+                    <AlertTriangle className="w-4 h-4" />
+                    {warning}
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
-        </Button>
-      </CardContent>
-    </Card>
+
+          <Button
+            onClick={handleGenerate}
+            disabled={generating}
+            className="w-full"
+            size="lg"
+          >
+            {generating ? (
+              <>
+                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                Generating POA...
+              </>
+            ) : (
+              <>
+                <FileText className="w-5 h-5 mr-2" />
+                Generate PDF (3 Copies)
+              </>
+            )}
+          </Button>
+        </CardContent>
+      </Card>
+
+      <PDFPreviewDialog
+        open={showPreview}
+        onClose={handlePreviewClose}
+        pdfUrl={generatedPdfUrl}
+        onDownloadEditable={handleDownloadEditable}
+        onDownloadFinal={handleDownloadFinal}
+        documentTitle={`Power of Attorney - ${poaType}`}
+        documentId={generatedPoaId}
+        caseId={caseId}
+      />
+    </>
   );
 };

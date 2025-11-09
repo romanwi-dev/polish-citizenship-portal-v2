@@ -231,62 +231,59 @@ export function PDFPreviewDialog({
               </Button>
             </>
           ) : (
-            <>
-              {/* Action Buttons - Uniform Grid Layout */}
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-3 w-full">
-                <Button 
-                  variant="outline" 
-                  onClick={onClose}
-                  className="w-full"
-                >
-                  Close
-                </Button>
-                
-                <Button 
-                  variant="secondary" 
-                  onClick={handlePrint} 
-                  disabled={isPrinting}
-                  className="w-full"
-                >
-                  Print
-                </Button>
-                
-                <Button
-                  variant="secondary"
-                  onClick={handleOpenNewTab}
-                  className="w-full"
-                >
-                  Edit
-                </Button>
-                
-                <Button
-                  variant="secondary"
-                  className="w-full"
-                  disabled
-                  title="Coming soon - PDF optimization features"
-                >
-                  Optimize
-                </Button>
-                
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button className="w-full">
-                      Download
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-56">
-                    <DropdownMenuItem onClick={onDownloadEditable}>
-                      <Edit className="h-4 w-4 mr-2" />
-                      Editable (for offline editing)
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={onDownloadFinal}>
-                      <Lock className="h-4 w-4 mr-2" />
-                      Final (locked fields)
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </>
+            <div className="flex justify-center gap-3 w-full">
+              <Button 
+                variant="outline" 
+                onClick={onClose}
+                className="min-w-[140px]"
+              >
+                Close
+              </Button>
+              
+              <Button
+                variant="secondary"
+                className="min-w-[140px]"
+                disabled
+                title="Coming soon - PDF optimization features"
+              >
+                Optimize
+              </Button>
+              
+              <Button
+                variant="secondary"
+                onClick={handleOpenNewTab}
+                className="min-w-[140px]"
+              >
+                Edit
+              </Button>
+              
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button className="min-w-[140px]">
+                    Download
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuItem onClick={onDownloadEditable}>
+                    <Edit className="h-4 w-4 mr-2" />
+                    Editable (for offline editing)
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={onDownloadFinal}>
+                    <Lock className="h-4 w-4 mr-2" />
+                    Final (locked fields)
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              
+              <Button 
+                variant="secondary" 
+                onClick={handlePrint} 
+                disabled={isPrinting}
+                className="min-w-[140px]"
+              >
+                Print
+              </Button>
+            </div>
           )}
         </DialogFooter>
       </DialogContent>
