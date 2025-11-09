@@ -1,107 +1,45 @@
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Download, CheckCircle2, XCircle, Loader2, FileStack } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useBulkPDFGeneration } from '@/hooks/useBulkPDFGeneration';
-import { Badge } from '@/components/ui/badge';
+import { motion } from 'framer-motion';
 
 interface BulkPDFGeneratorProps {
   caseId: string;
 }
 
-const templateNames: Record<string, string> = {
-  'family-tree': 'Family Tree',
-  'citizenship': 'Citizenship Application',
-  'registration': 'Civil Registry',
-};
-
 export function BulkPDFGenerator({ caseId }: BulkPDFGeneratorProps) {
-  const { generateAllPDFs, downloadPDF, isGenerating, results } = useBulkPDFGeneration(caseId);
+  const { generateAllPDFs, isGenerating } = useBulkPDFGeneration(caseId);
 
   const handleGenerate = async () => {
     await generateAllPDFs();
   };
 
   return (
-    <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-secondary/5">
-      <CardHeader>
-        <div className="flex items-center gap-3">
-          <FileStack className="h-6 w-6 text-primary" />
-          <div>
-            <CardTitle className="text-2xl">Bulk PDF Generation</CardTitle>
-            <CardDescription>Generate all PDFs for this case at once</CardDescription>
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent className="space-y-4">
+    <div className="flex justify-center items-center py-8">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4 }}
+      >
         <Button
           onClick={handleGenerate}
           disabled={isGenerating}
           size="lg"
-          className="w-full bg-gradient-to-r from-primary via-secondary to-accent hover:opacity-90 text-white font-bold"
+          className="text-lg md:text-2xl font-bold px-8 py-4 md:px-20 md:py-6 h-auto min-h-[48px] rounded-lg bg-red-700 dark:bg-red-900/60 hover:bg-red-800 dark:hover:bg-red-900/70 text-white shadow-[0_0_40px_rgba(185,28,28,0.6)] dark:shadow-[0_0_40px_rgba(127,29,29,0.6)] hover:shadow-[0_0_60px_rgba(185,28,28,0.8)] dark:hover:shadow-[0_0_60px_rgba(127,29,29,0.8)] group relative overflow-hidden backdrop-blur-md border-2 border-red-600 dark:border-red-800/40 hover:border-red-500 dark:hover:border-red-700/60 transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isGenerating ? (
-            <>
-              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-              Generating PDFs...
-            </>
+            <span className="relative z-10 font-bold drop-shadow-lg flex items-center gap-2">
+              <Loader2 className="h-6 w-6 animate-spin" />
+              Generating All PDFs...
+            </span>
           ) : (
-            <>
-              <FileStack className="mr-2 h-5 w-5" />
+            <span className="relative z-10 font-bold drop-shadow-lg">
               Generate All PDFs
-            </>
+            </span>
           )}
+          <div className="absolute inset-0 bg-gradient-to-r from-red-800/30 to-red-950/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </Button>
-
-        {results.length > 0 && (
-          <div className="space-y-2 mt-4">
-            <h4 className="font-semibold text-sm text-muted-foreground">Generation Results:</h4>
-            {results.map((result) => (
-              <div
-                key={result.templateType}
-                className={`flex items-center justify-between p-3 rounded-lg border ${
-                  result.success
-                    ? 'border-green-500/20 bg-green-500/5'
-                    : 'border-red-500/20 bg-red-500/5'
-                }`}
-              >
-                <div className="flex items-center gap-3 flex-1">
-                  {result.success ? (
-                    <CheckCircle2 className="h-5 w-5 text-green-500" />
-                  ) : (
-                    <XCircle className="h-5 w-5 text-red-500" />
-                  )}
-                  <div className="flex-1">
-                    <p className="font-medium">{templateNames[result.templateType] || result.templateType}</p>
-                    {result.success && result.fieldsFilledCount !== undefined && (
-                      <p className="text-xs text-muted-foreground">
-                        {result.fieldsFilledCount}/{result.totalFields} fields ({result.fillRate}%)
-                      </p>
-                    )}
-                    {!result.success && result.error && (
-                      <p className="text-xs text-red-500">{result.error}</p>
-                    )}
-                  </div>
-                  {result.success && (
-                    <Badge variant="secondary" className="bg-green-500/20 text-green-700">
-                      {result.fillRate}% complete
-                    </Badge>
-                  )}
-                </div>
-                {result.success && result.url && (
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => downloadPDF(result.url!, result.templateType)}
-                    className="ml-2"
-                  >
-                    <Download className="h-4 w-4" />
-                  </Button>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-      </CardContent>
-    </Card>
+      </motion.div>
+    </div>
   );
 }

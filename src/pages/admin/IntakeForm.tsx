@@ -189,15 +189,8 @@ export default function IntakeForm() {
           isSaving={isSaving || isGenerating}
         />
 
-        {/* Bulk PDF Generator Card */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }} 
-          animate={{ opacity: 1, y: 0 }} 
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="mb-6"
-        >
-          <BulkPDFGenerator caseId={caseId!} />
-        </motion.div>
+        {/* Bulk PDF Generator - Centered between buttons and tabs */}
+        <BulkPDFGenerator caseId={caseId!} />
 
         {/* Form with Tabs or Full View */}
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="pb-32 -mt-4">
