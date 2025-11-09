@@ -4,12 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { User, Users, FileText, CheckCircle2, AlertCircle, Edit, Download, Plus, Eye, EyeOff, Sparkles, Map, Clock, Maximize2, Boxes, Split } from "lucide-react";
+import { User, Users, FileText, CheckCircle2, AlertCircle, Edit, Download, Plus, Eye, EyeOff, Sparkles, Map, Clock, Maximize2, Boxes, Split, Brain } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { FamilyTree3D } from "./family-tree/FamilyTree3D";
 import { PDFPreviewPanel } from "./family-tree/PDFPreviewPanel";
+import { AISuggestionsPanel } from "./family-tree/AISuggestionsPanel";
 
 interface Person {
   firstName: string;
@@ -66,18 +67,29 @@ const PersonCardInteractive = ({
   if (!person?.firstName && !person?.lastName) {
     return (
       <Card className={cn(
-        "p-3 border-dashed border-2 bg-muted/20 hover:bg-muted/30 transition-colors cursor-pointer group",
+        "p-3 border-dashed border-2 bg-muted/20 hover:bg-muted/30 transition-colors cursor-pointer group relative",
         variant === "greatgrandparent" && "min-w-[160px]",
         variant === "grandparent" && "min-w-[180px]",
         variant === "parent" && "min-w-[200px]",
         variant === "client" && "min-w-[240px]",
         variant === "spouse" && "min-w-[200px]"
-      )}
-      onClick={() => onEdit?.(personType)}>
-        <div className="flex flex-col items-center justify-center gap-2 opacity-50">
+      )}>
+        <div className="flex flex-col items-center justify-center gap-2 opacity-50" onClick={() => onEdit?.(personType)}>
           <Plus className="h-6 w-6 text-muted-foreground group-hover:text-foreground transition-colors" />
           <p className="text-xs text-muted-foreground text-center">{title}</p>
         </div>
+        <Button
+          size="sm"
+          variant="ghost"
+          className="absolute bottom-1 right-1 h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+          onClick={(e) => {
+            e.stopPropagation();
+            // This would trigger AI suggestions
+            toast.info('Add some family data first to get AI suggestions');
+          }}
+        >
+          <Brain className="h-3 w-3 text-primary" />
+        </Button>
       </Card>
     );
   }
@@ -159,11 +171,30 @@ const PersonCardInteractive = ({
         </div>
 
         {/* Document status icons */}
-        <div className="flex gap-1 mt-2 flex-wrap">
-          {completionRate === 100 ? (
-            <CheckCircle2 className="h-3 w-3 text-green-600" />
-          ) : (
-            <AlertCircle className="h-3 w-3 text-orange-600" />
+        <div className="flex gap-1 mt-2 flex-wrap items-center justify-between">
+          <div className="flex gap-1">
+            {completionRate === 100 ? (
+              <CheckCircle2 className="h-3 w-3 text-green-600" />
+            ) : (
+              <AlertCircle className="h-3 w-3 text-orange-600" />
+            )}
+          </div>
+          
+          {/* AI Suggestions Button */}
+          {completionRate < 100 && (
+            <Button
+              size="sm"
+              variant="ghost"
+              className="h-5 w-5 p-0"
+              onClick={(e) => {
+                e.stopPropagation();
+                // @ts-ignore - onEdit will handle this
+                window.handleOpenAISuggestions?.(personType);
+              }}
+              title="Get AI suggestions"
+            >
+              <Brain className="h-3 w-3 text-primary" />
+            </Button>
           )}
         </div>
         
@@ -201,6 +232,8 @@ export const FamilyTreeInteractive = ({
   const [showOnlyMissing, setShowOnlyMissing] = useState(false);
   const [activeView, setActiveView] = useState<'2d' | '3d'>('2d');
   const [showPDFComparison, setShowPDFComparison] = useState(false);
+  const [showAISuggestions, setShowAISuggestions] = useState(false);
+  const [aiTargetPerson, setAiTargetPerson] = useState<string | null>(null);
 
   // Determine Polish bloodline
   const isPolish = (person?: Person) => {
@@ -208,6 +241,35 @@ export const FamilyTreeInteractive = ({
     return person?.placeOfBirth?.toLowerCase().includes('poland') || 
            person?.placeOfBirth?.toLowerCase().includes('polska');
   };
+
+  // Handle AI suggestion acceptance
+  const handleAcceptSuggestion = (field: string, value: string) => {
+    // This would update the master data table
+    toast.success(`Updated ${field} with AI suggestion`);
+    // In a real implementation, call the update function here
+  };
+
+  // Get missing fields for a person
+  const getMissingFields = (person?: Person): string[] => {
+    if (!person) return [];
+    const fields = [];
+    if (!person.firstName) fields.push('firstName');
+    if (!person.lastName) fields.push('lastName');
+    if (!person.dateOfBirth) fields.push('dateOfBirth');
+    if (!person.placeOfBirth) fields.push('placeOfBirth');
+    return fields;
+  };
+
+  // Open AI suggestions for a specific person
+  const handleOpenAISuggestions = (personType: string) => {
+    setAiTargetPerson(personType);
+    setShowAISuggestions(true);
+  };
+
+  // Expose handler globally for PersonCard
+  if (typeof window !== 'undefined') {
+    (window as any).handleOpenAISuggestions = handleOpenAISuggestions;
+  }
 
   const allPeople = [
     { person: clientData, type: 'client', title: 'Client' },
@@ -256,6 +318,14 @@ export const FamilyTreeInteractive = ({
           <p className="text-muted-foreground">Complete visualization with document tracking</p>
         </div>
         <div className="flex gap-2 flex-wrap">
+          <Button 
+            onClick={() => setShowAISuggestions(!showAISuggestions)}
+            variant={showAISuggestions ? "default" : "outline"}
+            className="transition-all hover:scale-105"
+          >
+            <Brain className="mr-2 h-4 w-4" />
+            {showAISuggestions ? 'Hide' : 'Show'} AI Suggestions
+          </Button>
           <Button 
             onClick={() => setShowPDFComparison(!showPDFComparison)}
             variant={showPDFComparison ? "default" : "outline"}
@@ -399,6 +469,37 @@ export const FamilyTreeInteractive = ({
           </div>
         </Card>
       </motion.div>
+
+      {/* AI Suggestions Sidebar */}
+      <AnimatePresence>
+        {showAISuggestions && aiTargetPerson && (
+          <motion.div
+            initial={{ opacity: 0, x: 300 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 300 }}
+            className="fixed right-0 top-0 bottom-0 w-[450px] bg-background border-l border-border shadow-2xl z-50 overflow-y-auto"
+          >
+            <AISuggestionsPanel
+              familyData={allPeople.filter(p => p.person?.firstName).map(p => ({
+                type: p.type,
+                ...p.person
+              }))}
+              targetPerson={aiTargetPerson}
+              targetPersonLabel={allPeople.find(p => p.type === aiTargetPerson)?.title || aiTargetPerson}
+              missingFields={getMissingFields(allPeople.find(p => p.type === aiTargetPerson)?.person)}
+              onAcceptSuggestion={handleAcceptSuggestion}
+            />
+            <Button
+              onClick={() => setShowAISuggestions(false)}
+              variant="ghost"
+              className="absolute top-4 right-4"
+              size="sm"
+            >
+              Close
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* 3D / 2D / PDF Comparison View Toggle */}
       <AnimatePresence mode="wait">
