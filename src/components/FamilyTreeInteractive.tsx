@@ -3,10 +3,12 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { User, Users, FileText, CheckCircle2, AlertCircle, Edit, Download, Plus, Eye, EyeOff, Sparkles, Map, Clock, Maximize2 } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { User, Users, FileText, CheckCircle2, AlertCircle, Edit, Download, Plus, Eye, EyeOff, Sparkles, Map, Clock, Maximize2, Boxes } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
+import { FamilyTree3D } from "./family-tree/FamilyTree3D";
 
 interface Person {
   firstName: string;
@@ -196,6 +198,7 @@ export const FamilyTreeInteractive = ({
   const [viewMode, setViewMode] = useState<'compact' | 'standard' | 'full'>('standard');
   const [showBloodline, setShowBloodline] = useState(false);
   const [showOnlyMissing, setShowOnlyMissing] = useState(false);
+  const [activeView, setActiveView] = useState<'2d' | '3d'>('2d');
 
   // Determine Polish bloodline
   const isPolish = (person?: Person) => {
@@ -252,34 +255,46 @@ export const FamilyTreeInteractive = ({
         </div>
         <div className="flex gap-2 flex-wrap">
           <Button 
-            onClick={() => setShowBloodline(!showBloodline)}
-            variant={showBloodline ? "default" : "outline"}
+            onClick={() => setActiveView(activeView === '2d' ? '3d' : '2d')}
+            variant={activeView === '3d' ? "default" : "outline"}
             className="transition-all hover:scale-105"
           >
-            <Sparkles className="mr-2 h-4 w-4" />
-            Polish Bloodline
+            <Boxes className="mr-2 h-4 w-4" />
+            {activeView === '2d' ? 'Switch to 3D' : 'Switch to 2D'}
           </Button>
-          <Button 
-            onClick={() => setShowOnlyMissing(!showOnlyMissing)}
-            variant={showOnlyMissing ? "default" : "outline"}
-            className="transition-all hover:scale-105"
-          >
-            {showOnlyMissing ? <Eye className="mr-2 h-4 w-4" /> : <EyeOff className="mr-2 h-4 w-4" />}
-            Show Missing
-          </Button>
-          <Button 
-            onClick={() => {
-              const modes: Array<'compact' | 'standard' | 'full'> = ['compact', 'standard', 'full'];
-              const currentIndex = modes.indexOf(viewMode);
-              setViewMode(modes[(currentIndex + 1) % modes.length]);
-              toast.success(`View mode: ${modes[(currentIndex + 1) % modes.length]}`);
-            }}
-            variant="outline"
-            className="transition-all hover:scale-105"
-          >
-            <Maximize2 className="mr-2 h-4 w-4" />
-            {viewMode === 'compact' ? 'Compact' : viewMode === 'standard' ? 'Standard' : 'Full'}
-          </Button>
+          {activeView === '2d' && (
+            <>
+              <Button 
+                onClick={() => setShowBloodline(!showBloodline)}
+                variant={showBloodline ? "default" : "outline"}
+                className="transition-all hover:scale-105"
+              >
+                <Sparkles className="mr-2 h-4 w-4" />
+                Polish Bloodline
+              </Button>
+              <Button 
+                onClick={() => setShowOnlyMissing(!showOnlyMissing)}
+                variant={showOnlyMissing ? "default" : "outline"}
+                className="transition-all hover:scale-105"
+              >
+                {showOnlyMissing ? <Eye className="mr-2 h-4 w-4" /> : <EyeOff className="mr-2 h-4 w-4" />}
+                Show Missing
+              </Button>
+              <Button 
+                onClick={() => {
+                  const modes: Array<'compact' | 'standard' | 'full'> = ['compact', 'standard', 'full'];
+                  const currentIndex = modes.indexOf(viewMode);
+                  setViewMode(modes[(currentIndex + 1) % modes.length]);
+                  toast.success(`View mode: ${modes[(currentIndex + 1) % modes.length]}`);
+                }}
+                variant="outline"
+                className="transition-all hover:scale-105"
+              >
+                <Maximize2 className="mr-2 h-4 w-4" />
+                {viewMode === 'compact' ? 'Compact' : viewMode === 'standard' ? 'Standard' : 'Full'}
+              </Button>
+            </>
+          )}
           <Button 
             onClick={onOpenMasterTable}
             variant="outline"
@@ -374,13 +389,47 @@ export const FamilyTreeInteractive = ({
         </Card>
       </motion.div>
 
-      {/* Tree Visualization */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
-        className="relative space-y-8"
-      >
+      {/* 3D / 2D View Toggle */}
+      <AnimatePresence mode="wait">
+        {activeView === '3d' ? (
+          <motion.div
+            key="3d-view"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.3 }}
+          >
+            <FamilyTree3D
+              clientData={clientData}
+              spouse={spouse}
+              father={father}
+              mother={mother}
+              paternalGrandfather={paternalGrandfather}
+              paternalGrandmother={paternalGrandmother}
+              maternalGrandfather={maternalGrandfather}
+              maternalGrandmother={maternalGrandmother}
+              paternalGreatGrandfather={paternalGreatGrandfather}
+              paternalGreatGrandmother={paternalGreatGrandmother}
+              maternalGreatGrandfather={maternalGreatGrandfather}
+              maternalGreatGrandmother={maternalGreatGrandmother}
+              onNodeClick={onEdit}
+            />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="2d-view"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.3 }}
+          >
+            {/* Tree Visualization */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="relative space-y-8"
+            >
         {/* Polish Great Grandfathers Only */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -524,7 +573,7 @@ export const FamilyTreeInteractive = ({
           <FileText className="h-5 w-5" />
           Document Gap Analysis
         </h3>
-        <div className="w-full">
+        <div className="w-full overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
@@ -573,6 +622,9 @@ export const FamilyTreeInteractive = ({
           </Table>
         </div>
       </Card>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
