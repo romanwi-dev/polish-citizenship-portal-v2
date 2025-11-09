@@ -19,9 +19,9 @@ const getNavigationButtons = (formData: any) => {
   const buttons = [
     { id: 'intake', label: 'Intake', icon: FileText, path: '/admin/intake/:id', condition: true },
     { id: 'family-tree', label: 'Family Tree', icon: GitBranch, path: '/admin/family-tree/:id', condition: true },
+    { id: 'family-history', label: 'History', icon: BookOpen, path: '/admin/family-history/:id', condition: true },
     { id: 'poa', label: 'POA', icon: FileCheck, path: '/admin/poa/:id', condition: true },
     { id: 'citizenship', label: 'Citizenship', icon: Award, path: '/admin/citizenship/:id', condition: true },
-    { id: 'family-history', label: 'History', icon: BookOpen, path: '/admin/family-history/:id', condition: true },
     { id: 'civil-registry', label: 'Transcription', icon: Building, path: '/admin/civil-registry/:id', condition: true },
   ];
   
