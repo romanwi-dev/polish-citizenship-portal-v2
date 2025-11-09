@@ -47,26 +47,32 @@ export function FormButtonsRow({
       {/* Navigation Buttons Row - Static at top, no background */}
       <div className="mb-2 md:mb-8 py-2 md:py-3">
         <div className="flex flex-row gap-0.5 overflow-x-auto scrollbar-hide md:justify-between px-0 md:px-6 max-w-full">
-          {navigationButtons
-            .filter(btn => btn.id !== currentForm)
-            .map((btn) => {
+          {navigationButtons.map((btn) => {
               const isCurrent = btn.id === currentForm;
               const Icon = btn.icon;
               
               return (
                 <Button
                   key={btn.id}
-                  onClick={() => navigate(btn.path.replace(':id', caseId))}
+                  onClick={() => !isCurrent && navigate(btn.path.replace(':id', caseId))}
+                  disabled={isCurrent}
                   className={`
                     px-6 py-2 text-sm md:text-base font-bold
-                    flex-shrink-0 md:flex-1 border transition-colors
+                    flex-shrink-0 md:flex-1 border transition-all
                     ${isCurrent 
-                      ? 'bg-white/10 hover:bg-white/15 border-white/40 opacity-60' 
+                      ? 'bg-gradient-to-r from-primary/30 via-secondary/30 to-accent/30 hover:from-primary/40 hover:via-secondary/40 hover:to-accent/40 border-primary/60 shadow-[0_0_25px_rgba(99,102,241,0.4)] cursor-default' 
                       : 'bg-white/5 hover:bg-white/10 border-white/20 opacity-50'
                     }
                   `}
                 >
-                  <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent whitespace-nowrap">{btn.label}</span>
+                  <Icon className={`h-4 w-4 mr-2 ${isCurrent ? 'text-primary' : ''}`} />
+                  <span className={`whitespace-nowrap ${
+                    isCurrent 
+                      ? 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-extrabold' 
+                      : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'
+                  }`}>
+                    {btn.label}
+                  </span>
                 </Button>
               );
             })}
