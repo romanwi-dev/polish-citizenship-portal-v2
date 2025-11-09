@@ -194,7 +194,7 @@ export default function IntakeForm() {
         <BulkPDFGenerator caseId={caseId!} />
 
         {/* Form with Tabs or Full View */}
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="pb-32">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="pb-32 -mt-3 md:-mt-4">
           <Tabs defaultValue="select" value={activeTab} onValueChange={handleTabChange} className="w-full">
             <div className="sticky top-0 z-50 pb-2 -mx-4 md:-mx-6">
               <TabsList ref={tabsListRef} className="w-full inline-flex gap-0.5 overflow-x-auto scrollbar-hide bg-transparent p-0 px-0 md:px-6">
