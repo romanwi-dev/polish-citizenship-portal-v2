@@ -662,27 +662,10 @@ export default function POAForm() {
               className="space-y-6"
               onClick={() => setActivePOAType('minor')}
             >
-              <div className={cn(
-                "cursor-pointer select-none transition-all border-b pb-6 px-6 py-4 rounded-lg",
-                activePOAType === 'minor' 
-                  ? "border-secondary bg-secondary/10 shadow-[0_0_30px_rgba(236,72,153,0.3)]" 
-                  : "border-border/50 hover:bg-muted/50"
-              )}>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h2 className={cn(
-                      "text-4xl md:text-5xl font-heading font-bold",
-                      activePOAType === 'minor'
-                        ? "bg-gradient-to-r from-secondary via-accent to-primary bg-clip-text text-transparent"
-                        : "text-gray-600 dark:text-gray-400"
-                    )}>
-                      POA Minor {childNum}
-                    </h2>
-                    <p className="text-sm text-muted-foreground mt-2">
-                      Minor child {childNum} (DOB: {formData[`child_${childNum}_dob`] || 'Not entered'})
-                    </p>
-                  </div>
-                </div>
+              <div>
+                <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-secondary via-accent to-primary bg-clip-text text-transparent">
+                  POA Minor {childNum}
+                </h2>
               </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                   <POAFormField
@@ -748,22 +731,10 @@ export default function POAForm() {
               className="space-y-6"
               onClick={() => setActivePOAType('spouses')}
             >
-              <div className={cn(
-                "cursor-pointer select-none transition-all border-b pb-6 px-6 py-4 rounded-lg",
-                activePOAType === 'spouses' 
-                  ? "border-accent bg-accent/10 shadow-[0_0_30px_rgba(168,85,247,0.3)]" 
-                  : "border-border/50 hover:bg-muted/50"
-              )}>
-                <div className="flex items-center justify-between">
-                  <h2 className={cn(
-                    "text-4xl md:text-5xl font-heading font-bold",
-                    activePOAType === 'spouses'
-                      ? "bg-gradient-to-r from-accent via-primary to-secondary bg-clip-text text-transparent"
-                      : "text-gray-600 dark:text-gray-400"
-                  )}>
-                    {poaFormConfigs.spouses.title}
-                  </h2>
-                </div>
+              <div>
+                <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-accent via-primary to-secondary bg-clip-text text-transparent">
+                  {poaFormConfigs.spouses.title}
+                </h2>
               </div>
                 {/* Primary Applicant Fields - labels based on master_table applicant_sex */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
