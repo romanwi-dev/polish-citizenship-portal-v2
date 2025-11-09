@@ -571,7 +571,7 @@ export default function POAForm() {
               </div>
 
               {/* Link to POA OCR Wizard */}
-              <div className="flex justify-center items-center mt-8 mb-2 md:mt-10 md:mb-3">
+              <div className="flex justify-center items-center mt-8 mb-0 md:mt-10 md:mb-1">
                 <Button
                   onClick={() => navigate(`/admin/cases/${caseId}/poa-ocr`)}
                   size="lg"
