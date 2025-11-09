@@ -1,6 +1,6 @@
 import { useState, memo } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Edit, MoreVertical, Copy, Pause, Ban, Archive, Trash2, Eye, Radio, FileEdit, Award, Zap, Star, Edit2, FolderOpen } from "lucide-react";
+import { User, Calendar, FileText, CheckCircle2, MapPin, TrendingUp, X, Clock, Edit, MoreVertical, Copy, Pause, Ban, Archive, Trash2, Eye, Radio, FileEdit, Award, Zap, Star, Edit2, FolderOpen, GitBranch } from "lucide-react";
 import { useUserRole } from "@/hooks/useUserRole";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -408,6 +408,20 @@ export const CaseCard = memo(({
 
           {!isFlipped && (
             <div className="space-y-3 sm:space-y-4 mt-auto pt-5 sm:pt-5">
+              {/* Interactive Family Tree Button */}
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full py-7 border-2 border-cyan-500/30 hover:border-cyan-500/50 hover:bg-cyan-500/10 transition-all shadow-lg hover:shadow-cyan-500/20"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/admin/family-tree-view/${clientCase.id}`);
+                }}
+              >
+                <GitBranch className="h-5 w-5 mr-2 text-cyan-400" />
+                <span className="font-bold text-base">Interactive Tree</span>
+              </Button>
+
               {/* Control Room Button - Premium Feature */}
               <Button
                 size="lg"

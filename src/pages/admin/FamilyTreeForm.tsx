@@ -453,6 +453,18 @@ export default function FamilyTreeForm() {
               >
                 <ArrowLeft className="h-3.5 w-3.5 md:h-6 md:w-6" />
               </Button>
+              
+              {/* Interactive View Button */}
+              <Button
+                onClick={() => navigate(`/admin/family-tree-view/${caseId}`)}
+                variant="outline"
+                className="gap-2 border-2 border-cyan-500/30 hover:border-cyan-500/50 hover:bg-cyan-500/10 px-4 py-2"
+                title="View Interactive 3D/2D Tree"
+              >
+                <GitBranch className="h-4 w-4 text-cyan-400" />
+                <span className="hidden md:inline font-bold">Interactive View</span>
+              </Button>
+
               <Button
                 variant="ghost"
                 size="icon"
