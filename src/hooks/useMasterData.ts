@@ -121,7 +121,7 @@ export const useUpdateMasterData = () => {
       
       // Force refetch of data after save
       queryClient.invalidateQueries({ queryKey: ['masterData', variables.caseId] });
-      toast.success("Data saved successfully");
+      // Toast removed - handled by calling component (useFormManager/useIntakeData)
     },
     onError: (error: any) => {
       console.error('❌ SAVE FAILED:', error);
