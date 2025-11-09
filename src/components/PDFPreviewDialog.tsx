@@ -4,6 +4,7 @@ import { Download, X, Printer, Eye, Edit, Lock, Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { openPdfUrl } from "@/lib/selftest-utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -104,6 +105,25 @@ export function PDFPreviewDialog({
     const urlToUse = blobUrl || pdfUrl;
     window.open(urlToUse, '_blank');
     toast.info("PDF opened in new tab", { duration: 2000 });
+  };
+
+  const handleDownload = async () => {
+    try {
+      const urlToUse = blobUrl || pdfUrl;
+      const response = await fetch(urlToUse);
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${documentTitle}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      toast.success("Download started");
+    } catch (error) {
+      toast.error("Failed to download PDF");
+    }
   };
 
   const handleLockForPrint = async () => {
@@ -257,23 +277,12 @@ export function PDFPreviewDialog({
                 Edit
               </Button>
               
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button className="min-w-[140px]">
-                    Download
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
-                  <DropdownMenuItem onClick={onDownloadEditable}>
-                    <Edit className="h-4 w-4 mr-2" />
-                    Editable (for offline editing)
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={onDownloadFinal}>
-                    <Lock className="h-4 w-4 mr-2" />
-                    Final (locked fields)
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <Button
+                onClick={handleDownload}
+                className="min-w-[140px]"
+              >
+                Download
+              </Button>
               
               <Button 
                 variant="secondary" 
