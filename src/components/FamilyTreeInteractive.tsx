@@ -4,11 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { User, Users, FileText, CheckCircle2, AlertCircle, Edit, Download, Plus, Eye, EyeOff, Sparkles, Map, Clock, Maximize2, Boxes } from "lucide-react";
+import { User, Users, FileText, CheckCircle2, AlertCircle, Edit, Download, Plus, Eye, EyeOff, Sparkles, Map, Clock, Maximize2, Boxes, Split } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { FamilyTree3D } from "./family-tree/FamilyTree3D";
+import { PDFPreviewPanel } from "./family-tree/PDFPreviewPanel";
 
 interface Person {
   firstName: string;
@@ -199,6 +200,7 @@ export const FamilyTreeInteractive = ({
   const [showBloodline, setShowBloodline] = useState(false);
   const [showOnlyMissing, setShowOnlyMissing] = useState(false);
   const [activeView, setActiveView] = useState<'2d' | '3d'>('2d');
+  const [showPDFComparison, setShowPDFComparison] = useState(false);
 
   // Determine Polish bloodline
   const isPolish = (person?: Person) => {
@@ -255,14 +257,23 @@ export const FamilyTreeInteractive = ({
         </div>
         <div className="flex gap-2 flex-wrap">
           <Button 
+            onClick={() => setShowPDFComparison(!showPDFComparison)}
+            variant={showPDFComparison ? "default" : "outline"}
+            className="transition-all hover:scale-105"
+          >
+            <Split className="mr-2 h-4 w-4" />
+            {showPDFComparison ? 'Hide' : 'Show'} PDF Preview
+          </Button>
+          <Button 
             onClick={() => setActiveView(activeView === '2d' ? '3d' : '2d')}
             variant={activeView === '3d' ? "default" : "outline"}
             className="transition-all hover:scale-105"
+            disabled={showPDFComparison}
           >
             <Boxes className="mr-2 h-4 w-4" />
             {activeView === '2d' ? 'Switch to 3D' : 'Switch to 2D'}
           </Button>
-          {activeView === '2d' && (
+          {activeView === '2d' && !showPDFComparison && (
             <>
               <Button 
                 onClick={() => setShowBloodline(!showBloodline)}
@@ -389,9 +400,181 @@ export const FamilyTreeInteractive = ({
         </Card>
       </motion.div>
 
-      {/* 3D / 2D View Toggle */}
+      {/* 3D / 2D / PDF Comparison View Toggle */}
       <AnimatePresence mode="wait">
-        {activeView === '3d' ? (
+        {showPDFComparison ? (
+          <motion.div
+            key="pdf-comparison"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+          >
+            {/* Left: Interactive Tree */}
+            <div className="space-y-6">
+              <Card className="p-4 bg-gradient-to-br from-primary/5 to-secondary/5 border-2 border-primary/20">
+                <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
+                  <Users className="h-5 w-5" />
+                  Interactive Family Tree
+                </h3>
+                <p className="text-xs text-muted-foreground mb-4">
+                  Edit data on the left, see changes reflected in PDF on the right
+                </p>
+              </Card>
+              
+              {/* Tree Visualization */}
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="relative space-y-8"
+              >
+                {/* Polish Great Grandfathers Only */}
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-sm font-semibold flex items-center gap-2">
+                      <Users className="h-4 w-4" />
+                      <span className="bg-gradient-to-r from-accent to-accent/70 bg-clip-text text-transparent">
+                        Polish Great Grandfathers (4th Generation)
+                      </span>
+                    </h3>
+                    {showBloodline && (
+                      <Badge variant="outline" className="bg-red-950/30 border-red-900/50 text-red-400">
+                        🇵🇱 Polish Bloodline Origin
+                      </Badge>
+                    )}
+                  </div>
+                  <p className="text-xs text-muted-foreground mb-4">
+                    Only the 2 Polish great-grandfathers are relevant. Great-grandmothers excluded per process requirements.
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-3xl mx-auto">
+                    <PersonCardInteractive 
+                      person={paternalGreatGrandfather}
+                      title="Paternal Great Grandfather"
+                      personType="paternalGreatGrandfather"
+                      variant="greatgrandparent"
+                      onEdit={onEdit}
+                    />
+                    <PersonCardInteractive 
+                      person={maternalGreatGrandfather}
+                      title="Maternal Great Grandfather"
+                      personType="maternalGreatGrandfather"
+                      variant="greatgrandparent"
+                      onEdit={onEdit}
+                    />
+                  </div>
+                </motion.div>
+
+                {/* Grandparents Layer */}
+                <div>
+                  <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
+                    <Users className="h-4 w-4" />
+                    Grandparents (3rd Generation)
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                    <div>
+                      <p className="text-xs text-muted-foreground mb-3 font-medium">Paternal</p>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <PersonCardInteractive 
+                          person={paternalGrandfather}
+                          title="Paternal Grandfather"
+                          personType="paternalGrandfather"
+                          variant="grandparent"
+                          onEdit={onEdit}
+                        />
+                        <PersonCardInteractive 
+                          person={paternalGrandmother}
+                          title="Paternal Grandmother"
+                          personType="paternalGrandmother"
+                          variant="grandparent"
+                          onEdit={onEdit}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground mb-3 font-medium">Maternal</p>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <PersonCardInteractive 
+                          person={maternalGrandfather}
+                          title="Maternal Grandfather"
+                          personType="maternalGrandfather"
+                          variant="grandparent"
+                          onEdit={onEdit}
+                        />
+                        <PersonCardInteractive 
+                          person={maternalGrandmother}
+                          title="Maternal Grandmother"
+                          personType="maternalGrandmother"
+                          variant="grandparent"
+                          onEdit={onEdit}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Parents Layer */}
+                <div>
+                  <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
+                    <Users className="h-4 w-4" />
+                    Parents (2nd Generation)
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-3xl mx-auto">
+                    <PersonCardInteractive 
+                      person={father}
+                      title="Father"
+                      personType="father"
+                      variant="parent"
+                      onEdit={onEdit}
+                    />
+                    <PersonCardInteractive 
+                      person={mother}
+                      title="Mother"
+                      personType="mother"
+                      variant="parent"
+                      onEdit={onEdit}
+                    />
+                  </div>
+                </div>
+
+                {/* Client Layer */}
+                <div>
+                  <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
+                    <User className="h-4 w-4" />
+                    Applicant & Spouse (1st Generation)
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-3xl mx-auto">
+                    <PersonCardInteractive 
+                      person={clientData}
+                      title={clientData.sex === 'M' ? 'Male Applicant' : clientData.sex === 'F' ? 'Female Applicant' : 'Applicant'}
+                      personType="client"
+                      variant="client"
+                      onEdit={onEdit}
+                    />
+                    <PersonCardInteractive 
+                      person={spouse}
+                      title="Spouse"
+                      personType="spouse"
+                      variant="spouse"
+                      onEdit={onEdit}
+                    />
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Right: PDF Preview */}
+            <PDFPreviewPanel 
+              templateType="family-tree"
+              className="sticky top-4 h-[calc(100vh-8rem)]"
+            />
+          </motion.div>
+        ) : activeView === '3d' ? (
           <motion.div
             key="3d-view"
             initial={{ opacity: 0, scale: 0.95 }}
@@ -430,198 +613,198 @@ export const FamilyTreeInteractive = ({
               transition={{ delay: 0.2 }}
               className="relative space-y-8"
             >
-        {/* Polish Great Grandfathers Only */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.3 }}
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-semibold flex items-center gap-2">
-              <Users className="h-4 w-4" />
-              <span className="bg-gradient-to-r from-accent to-accent/70 bg-clip-text text-transparent">
-                Polish Great Grandfathers (4th Generation)
-              </span>
-            </h3>
-            {showBloodline && (
-              <Badge variant="outline" className="bg-red-950/30 border-red-900/50 text-red-400">
-                🇵🇱 Polish Bloodline Origin
-              </Badge>
-            )}
-          </div>
-          <p className="text-xs text-muted-foreground mb-4">
-            Only the 2 Polish great-grandfathers are relevant. Great-grandmothers excluded per process requirements.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-3xl mx-auto">
-            <PersonCardInteractive 
-              person={paternalGreatGrandfather}
-              title="Paternal Great Grandfather"
-              personType="paternalGreatGrandfather"
-              variant="greatgrandparent"
-              onEdit={onEdit}
-            />
-            <PersonCardInteractive 
-              person={maternalGreatGrandfather}
-              title="Maternal Great Grandfather"
-              personType="maternalGreatGrandfather"
-              variant="greatgrandparent"
-              onEdit={onEdit}
-            />
-          </div>
-        </motion.div>
+              {/* Polish Great Grandfathers Only */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-sm font-semibold flex items-center gap-2">
+                    <Users className="h-4 w-4" />
+                    <span className="bg-gradient-to-r from-accent to-accent/70 bg-clip-text text-transparent">
+                      Polish Great Grandfathers (4th Generation)
+                    </span>
+                  </h3>
+                  {showBloodline && (
+                    <Badge variant="outline" className="bg-red-950/30 border-red-900/50 text-red-400">
+                      🇵🇱 Polish Bloodline Origin
+                    </Badge>
+                  )}
+                </div>
+                <p className="text-xs text-muted-foreground mb-4">
+                  Only the 2 Polish great-grandfathers are relevant. Great-grandmothers excluded per process requirements.
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-3xl mx-auto">
+                  <PersonCardInteractive 
+                    person={paternalGreatGrandfather}
+                    title="Paternal Great Grandfather"
+                    personType="paternalGreatGrandfather"
+                    variant="greatgrandparent"
+                    onEdit={onEdit}
+                  />
+                  <PersonCardInteractive 
+                    person={maternalGreatGrandfather}
+                    title="Maternal Great Grandfather"
+                    personType="maternalGreatGrandfather"
+                    variant="greatgrandparent"
+                    onEdit={onEdit}
+                  />
+                </div>
+              </motion.div>
 
-        {/* Grandparents Layer */}
-        <div>
-          <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
-            <Users className="h-4 w-4" />
-            Grandparents (3rd Generation)
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-            <div>
-              <p className="text-xs text-muted-foreground mb-3 font-medium">Paternal</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <PersonCardInteractive 
-                  person={paternalGrandfather}
-                  title="Paternal Grandfather"
-                  personType="paternalGrandfather"
-                  variant="grandparent"
-                  onEdit={onEdit}
-                />
-                <PersonCardInteractive 
-                  person={paternalGrandmother}
-                  title="Paternal Grandmother"
-                  personType="paternalGrandmother"
-                  variant="grandparent"
-                  onEdit={onEdit}
-                />
+              {/* Grandparents Layer */}
+              <div>
+                <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
+                  <Users className="h-4 w-4" />
+                  Grandparents (3rd Generation)
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-3 font-medium">Paternal</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <PersonCardInteractive 
+                        person={paternalGrandfather}
+                        title="Paternal Grandfather"
+                        personType="paternalGrandfather"
+                        variant="grandparent"
+                        onEdit={onEdit}
+                      />
+                      <PersonCardInteractive 
+                        person={paternalGrandmother}
+                        title="Paternal Grandmother"
+                        personType="paternalGrandmother"
+                        variant="grandparent"
+                        onEdit={onEdit}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-3 font-medium">Maternal</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <PersonCardInteractive 
+                        person={maternalGrandfather}
+                        title="Maternal Grandfather"
+                        personType="maternalGrandfather"
+                        variant="grandparent"
+                        onEdit={onEdit}
+                      />
+                      <PersonCardInteractive 
+                        person={maternalGrandmother}
+                        title="Maternal Grandmother"
+                        personType="maternalGrandmother"
+                        variant="grandparent"
+                        onEdit={onEdit}
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div>
-              <p className="text-xs text-muted-foreground mb-3 font-medium">Maternal</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <PersonCardInteractive 
-                  person={maternalGrandfather}
-                  title="Maternal Grandfather"
-                  personType="maternalGrandfather"
-                  variant="grandparent"
-                  onEdit={onEdit}
-                />
-                <PersonCardInteractive 
-                  person={maternalGrandmother}
-                  title="Maternal Grandmother"
-                  personType="maternalGrandmother"
-                  variant="grandparent"
-                  onEdit={onEdit}
-                />
+
+              {/* Parents Layer */}
+              <div>
+                <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
+                  <Users className="h-4 w-4" />
+                  Parents (2nd Generation)
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-3xl mx-auto">
+                  <PersonCardInteractive 
+                    person={father}
+                    title="Father"
+                    personType="father"
+                    variant="parent"
+                    onEdit={onEdit}
+                  />
+                  <PersonCardInteractive 
+                    person={mother}
+                    title="Mother"
+                    personType="mother"
+                    variant="parent"
+                    onEdit={onEdit}
+                  />
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
 
-        {/* Parents Layer */}
-        <div>
-          <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
-            <Users className="h-4 w-4" />
-            Parents (2nd Generation)
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-3xl mx-auto">
-            <PersonCardInteractive 
-              person={father}
-              title="Father"
-              personType="father"
-              variant="parent"
-              onEdit={onEdit}
-            />
-            <PersonCardInteractive 
-              person={mother}
-              title="Mother"
-              personType="mother"
-              variant="parent"
-              onEdit={onEdit}
-            />
-          </div>
-        </div>
+              {/* Client Layer */}
+              <div>
+                <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
+                  <User className="h-4 w-4" />
+                  Applicant & Spouse (1st Generation)
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-3xl mx-auto">
+                  <PersonCardInteractive 
+                    person={clientData}
+                    title={clientData.sex === 'M' ? 'Male Applicant' : clientData.sex === 'F' ? 'Female Applicant' : 'Applicant'}
+                    personType="client"
+                    variant="client"
+                    onEdit={onEdit}
+                  />
+                  <PersonCardInteractive 
+                    person={spouse}
+                    title="Spouse"
+                    personType="spouse"
+                    variant="spouse"
+                    onEdit={onEdit}
+                  />
+                </div>
+              </div>
+            </motion.div>
 
-        {/* Client Layer */}
-        <div>
-          <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
-            <User className="h-4 w-4" />
-            Applicant & Spouse (1st Generation)
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-3xl mx-auto">
-            <PersonCardInteractive 
-              person={clientData}
-              title={clientData.sex === 'M' ? 'Male Applicant' : clientData.sex === 'F' ? 'Female Applicant' : 'Applicant'}
-              personType="client"
-              variant="client"
-              onEdit={onEdit}
-            />
-            <PersonCardInteractive 
-              person={spouse}
-              title="Spouse"
-              personType="spouse"
-              variant="spouse"
-              onEdit={onEdit}
-            />
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Document Gap Analysis */}
-      <Card className="p-6">
-        <h3 className="font-semibold mb-4 flex items-center gap-2">
-          <FileText className="h-5 w-5" />
-          Document Gap Analysis
-        </h3>
-        <div className="w-full overflow-x-auto">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Family Member</TableHead>
-                <TableHead className="text-center">Birth Cert</TableHead>
-                <TableHead className="text-center">Marriage Cert</TableHead>
-                <TableHead className="text-center">Passport</TableHead>
-                <TableHead className="text-center">Status</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {allPeople.filter(p => p.person?.firstName).map(({ person, title, type }) => {
-                const docs = person?.documents || {};
-                const completed = Object.values(docs).filter(Boolean).length;
-                const total = 3;
-                return (
-                  <TableRow key={type} className="cursor-pointer hover:bg-muted/50" onClick={() => onEdit?.(type)}>
-                    <TableCell className="font-medium">{title}</TableCell>
-                    <TableCell className="text-center">
-                      {docs.birthCertificate ? 
-                        <CheckCircle2 className="h-4 w-4 text-green-600 mx-auto" /> : 
-                        <AlertCircle className="h-4 w-4 text-red-600 mx-auto" />
-                      }
-                    </TableCell>
-                    <TableCell className="text-center">
-                      {docs.marriageCertificate ? 
-                        <CheckCircle2 className="h-4 w-4 text-green-600 mx-auto" /> : 
-                        <AlertCircle className="h-4 w-4 text-orange-600 mx-auto" />
-                      }
-                    </TableCell>
-                    <TableCell className="text-center">
-                      {docs.passport ? 
-                        <CheckCircle2 className="h-4 w-4 text-green-600 mx-auto" /> : 
-                        <AlertCircle className="h-4 w-4 text-red-600 mx-auto" />
-                      }
-                    </TableCell>
-                    <TableCell className="text-center">
-                      <Badge variant={completed === total ? "default" : "destructive"}>
-                        {completed}/{total}
-                      </Badge>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </div>
-      </Card>
+            {/* Document Gap Analysis */}
+            <Card className="p-6">
+              <h3 className="font-semibold mb-4 flex items-center gap-2">
+                <FileText className="h-5 w-5" />
+                Document Gap Analysis
+              </h3>
+              <div className="w-full overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Family Member</TableHead>
+                      <TableHead className="text-center">Birth Cert</TableHead>
+                      <TableHead className="text-center">Marriage Cert</TableHead>
+                      <TableHead className="text-center">Passport</TableHead>
+                      <TableHead className="text-center">Status</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {allPeople.filter(p => p.person?.firstName).map(({ person, title, type }) => {
+                      const docs = person?.documents || {};
+                      const completed = Object.values(docs).filter(Boolean).length;
+                      const total = 3;
+                      return (
+                        <TableRow key={type} className="cursor-pointer hover:bg-muted/50" onClick={() => onEdit?.(type)}>
+                          <TableCell className="font-medium">{title}</TableCell>
+                          <TableCell className="text-center">
+                            {docs.birthCertificate ? 
+                              <CheckCircle2 className="h-4 w-4 text-green-600 mx-auto" /> : 
+                              <AlertCircle className="h-4 w-4 text-red-600 mx-auto" />
+                            }
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {docs.marriageCertificate ? 
+                              <CheckCircle2 className="h-4 w-4 text-green-600 mx-auto" /> : 
+                              <AlertCircle className="h-4 w-4 text-orange-600 mx-auto" />
+                            }
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {docs.passport ? 
+                              <CheckCircle2 className="h-4 w-4 text-green-600 mx-auto" /> : 
+                              <AlertCircle className="h-4 w-4 text-red-600 mx-auto" />
+                            }
+                          </TableCell>
+                          <TableCell className="text-center">
+                            <Badge variant={completed === total ? "default" : "destructive"}>
+                              {completed}/{total}
+                            </Badge>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </div>
+            </Card>
           </motion.div>
         )}
       </AnimatePresence>
