@@ -1370,7 +1370,7 @@ export default function FamilyTreeForm() {
                   </h3>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full">
-                  {/* Left column: Gender and Marital Status */}
+                  {/* Left column: Gender and Status */}
                   <div className="space-y-6">
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="form-field-container space-y-2">
                       <Label className={isLargeFonts ? "text-2xl" : ""}>Gender</Label>
@@ -1386,7 +1386,7 @@ export default function FamilyTreeForm() {
                     </motion.div>
 
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="form-field-container space-y-2">
-                      <Label className={isLargeFonts ? "text-2xl" : ""}>Marital status</Label>
+                      <Label className={isLargeFonts ? "text-2xl" : ""}>Status</Label>
                       <Select value={formData.applicant_is_married === true ? "Married" : "Single"} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
                         <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs">
                           <SelectValue placeholder="Select" />
