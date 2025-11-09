@@ -15,6 +15,7 @@ interface FormFieldGroupProps {
   colorScheme?: ColorScheme;
   error?: string;
   required?: boolean;
+  enforceUppercase?: boolean;
 }
 
 export const FormFieldGroup = ({
@@ -29,6 +30,7 @@ export const FormFieldGroup = ({
   colorScheme = 'applicant',
   error,
   required = false,
+  enforceUppercase = false,
 }: FormFieldGroupProps) => {
   const errorId = error ? `${id}-error` : undefined;
 
@@ -48,6 +50,7 @@ export const FormFieldGroup = ({
         colorScheme={colorScheme}
         error={error}
         required={required}
+        enforceUppercase={enforceUppercase}
         aria-invalid={error ? "true" : undefined}
         aria-describedby={errorId}
       />

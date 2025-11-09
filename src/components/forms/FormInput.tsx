@@ -13,6 +13,7 @@ interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   colorScheme?: ColorScheme;
   error?: string;
   required?: boolean;
+  enforceUppercase?: boolean;
 }
 
 const colorSchemes = {
@@ -90,6 +91,7 @@ export const FormInput = ({
   colorScheme = 'applicant',
   error,
   required = false,
+  enforceUppercase = false,
   className,
   ...props 
 }: FormInputProps) => {
@@ -97,7 +99,7 @@ export const FormInput = ({
   const [fontSize, setFontSize] = useState<number>(isLargeFonts ? 30 : 24);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (isNameField) {
+    if (isNameField || enforceUppercase) {
       const uppercasedValue = e.target.value.toUpperCase();
       onChange({
         ...e,
@@ -129,7 +131,7 @@ export const FormInput = ({
           "h-16 md:h-20 border-2 hover:border-transparent focus:border-transparent transition-all duration-300 backdrop-blur font-normal font-input-work w-full",
           scheme.bg,
           scheme.border,
-          isNameField && "uppercase",
+          (isNameField || enforceUppercase) && "uppercase",
           isChecked && "opacity-60",
           error && "border-destructive focus:border-destructive",
           className

@@ -352,14 +352,13 @@ export default function FamilyTreeForm() {
                     type={field.type || "text"} 
                     value={formData[field.name] || ""} 
                     onChange={e => {
-                      // Only uppercase name fields, not phone/passport numbers
-                      const shouldUppercase = field.isNameField && field.type !== "email";
-                      handleInputChange(field.name, shouldUppercase ? e.target.value.toUpperCase() : e.target.value);
+                      handleInputChange(field.name, e.target.value);
                     }}
                     placeholder="" 
                     isNameField={field.isNameField}
                     isLargeFonts={isLargeFonts}
                     colorScheme={colorScheme}
+                    enforceUppercase={true}
                   />
                  )}
               </>}
