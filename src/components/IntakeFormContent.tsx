@@ -90,41 +90,49 @@ export const SelectSection = ({ formData, handleInputChange, clearField, isLarge
           )}
         </div>
       </div>
-      <div className="border-b border-border/50 pb-6 pt-6 mb-6">
-        <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
-          Mark if relevant
-        </h3>
-      </div>
+  </div>
+);
 
-      <div className="space-y-4">
-        {[
-          { field: "idk_renounced", label: "I want to apply also for some other family members" },
-          { field: "idk_ancestor_lost_citizenship", label: "My ancestors emigrated from POLAND before 1920" },
-          { field: "idk_ancestor_polish_passport", label: "I have some old original Polish documents of my family" },
-          { field: "idk_ancestor_applied_citizenship", label: "One of my relatives holds Polish citizenship confirmation" },
-        ].map((item, index) => (
-          <motion.div
-            key={item.field}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3 + index * 0.05 }}
-            className="flex items-center space-x-3 p-4 rounded-lg border border-border/50 hover:border-primary/30 transition-all"
+export const QuestionsSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
+  <div className="px-4 py-6 md:p-10">
+    <div className="border-b border-border/50 pb-6 pt-6">
+      <h2 className="text-2xl md:text-3xl font-heading font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+        Additional Questions
+      </h2>
+      <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
+        Mark if relevant
+      </h3>
+    </div>
+
+    <div className="space-y-4 mt-6">
+      {[
+        { field: "idk_renounced", label: "I want to apply also for some other family members" },
+        { field: "idk_ancestor_lost_citizenship", label: "My ancestors emigrated from POLAND before 1920" },
+        { field: "idk_ancestor_polish_passport", label: "I have some old original Polish documents of my family" },
+        { field: "idk_ancestor_applied_citizenship", label: "One of my relatives holds Polish citizenship confirmation" },
+      ].map((item, index) => (
+        <motion.div
+          key={item.field}
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.1 + index * 0.05 }}
+          className="flex items-center space-x-3 p-4 rounded-lg border border-border/50 hover:border-primary/30 transition-all"
+        >
+          <Checkbox
+            id={item.field}
+            checked={formData?.[item.field] || false}
+            onCheckedChange={(checked) => handleInputChange(item.field, checked)}
+            className="border-2"
+          />
+          <Label
+            htmlFor={item.field}
+            className={cn("cursor-pointer flex-1", isLargeFonts && "text-2xl")}
           >
-            <Checkbox
-              id={item.field}
-              checked={formData?.[item.field] || false}
-              onCheckedChange={(checked) => handleInputChange(item.field, checked)}
-              className="border-2"
-            />
-            <Label
-              htmlFor={item.field}
-              className={cn("cursor-pointer flex-1", isLargeFonts && "text-2xl")}
-            >
-              {item.label}
-            </Label>
-          </motion.div>
-        ))}
-      </div>
+            {item.label}
+          </Label>
+        </motion.div>
+      ))}
+    </div>
   </div>
 );
 

@@ -15,7 +15,7 @@ import { validateEmail, validatePassport } from "@/utils/validators";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FormButtonsRow } from "@/components/FormButtonsRow";
-import { SelectSection, ApplicantSection, SpouseSection, ChildrenSection, ContactSection, AddressSection, PassportSection, NotesSection } from "@/components/IntakeFormContent";
+import { SelectSection, QuestionsSection, ApplicantSection, SpouseSection, ChildrenSection, ContactSection, AddressSection, PassportSection, NotesSection } from "@/components/IntakeFormContent";
 import { useFormManager } from "@/hooks/useFormManager";
 import { INTAKE_FORM_REQUIRED_FIELDS, INTAKE_DATE_FIELDS } from "@/config/formRequiredFields";
 import { AutosaveIndicator } from "@/components/AutosaveIndicator";
@@ -52,6 +52,7 @@ export default function IntakeForm() {
 
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({
     select: null,
+    questions: null,
     applicant: null,
     spouse: null,
     children: null,
@@ -200,6 +201,9 @@ export default function IntakeForm() {
                 <TabsTrigger value="select" className="flex-shrink-0 md:flex-1 scroll-snap-align-start">
                   <span className="text-blue-600 dark:text-blue-400">Select</span>
                 </TabsTrigger>
+                <TabsTrigger value="questions" className="flex-shrink-0 md:flex-1">
+                  <span className="text-blue-600 dark:text-blue-400">Questions</span>
+                </TabsTrigger>
                 <TabsTrigger value="applicant" className="flex-shrink-0 md:flex-1">
                   <span className="text-blue-600 dark:text-blue-400">Applicant</span>
                 </TabsTrigger>
@@ -234,6 +238,9 @@ export default function IntakeForm() {
                 <div ref={(el) => sectionRefs.current.select = el} className="border-b border-border/10">
                   <SelectSection {...contentProps} />
                 </div>
+                <div ref={(el) => sectionRefs.current.questions = el} className="border-b border-border/10">
+                  <QuestionsSection {...contentProps} />
+                </div>
                 <div ref={(el) => sectionRefs.current.applicant = el} className="border-b border-border/10">
                   <ApplicantSection {...contentProps} />
                 </div>
@@ -265,6 +272,9 @@ export default function IntakeForm() {
               <>
                 <TabsContent value="select" className="mt-0">
                   <SelectSection {...contentProps} />
+                </TabsContent>
+                <TabsContent value="questions" className="mt-0">
+                  <QuestionsSection {...contentProps} />
                 </TabsContent>
                 <TabsContent value="applicant" className="mt-0">
                   <ApplicantSection {...contentProps} />
