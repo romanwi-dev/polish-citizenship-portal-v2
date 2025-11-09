@@ -26,17 +26,21 @@ export function BulkPDFGenerator({ caseId }: BulkPDFGeneratorProps) {
           onClick={handleGenerate}
           disabled={isGenerating}
           size="lg"
-          className="text-lg md:text-2xl font-bold px-8 py-4 md:px-20 md:py-6 h-auto min-h-[48px] rounded-lg bg-red-700 dark:bg-red-900/60 hover:bg-red-800 dark:hover:bg-red-900/70 text-white shadow-[0_0_40px_rgba(185,28,28,0.6)] dark:shadow-[0_0_40px_rgba(127,29,29,0.6)] hover:shadow-[0_0_60px_rgba(185,28,28,0.8)] dark:hover:shadow-[0_0_60px_rgba(127,29,29,0.8)] group relative overflow-hidden backdrop-blur-md border-2 border-red-600 dark:border-red-800/40 hover:border-red-500 dark:hover:border-red-700/60 transition-all duration-300 hover:scale-105"
+          className="text-3xl md:text-5xl font-heading font-black px-12 py-6 md:px-24 md:py-10 h-auto min-h-[60px] rounded-lg bg-blue-900/60 hover:bg-blue-900/80 text-white shadow-[0_0_40px_rgba(59,130,246,0.6)] hover:shadow-[0_0_60px_rgba(59,130,246,0.8)] group relative overflow-hidden backdrop-blur-md border-2 border-blue-600/40 hover:border-blue-500/60 transition-all duration-300 hover:scale-105"
         >
           {isGenerating ? (
             <>
-              <Loader2 className="h-6 w-6 animate-spin mr-3 relative z-10" />
-              <span className="relative z-10 font-bold drop-shadow-lg">Generating...</span>
+              <Loader2 className="h-8 w-8 md:h-10 md:w-10 animate-spin mr-4 relative z-10" />
+              <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent drop-shadow-lg">
+                Generating...
+              </span>
             </>
           ) : (
-            <span className="relative z-10 font-bold drop-shadow-lg">Generate Documents</span>
+            <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent drop-shadow-lg">
+              Generate Documents
+            </span>
           )}
-          <div className="absolute inset-0 bg-gradient-to-r from-red-800/30 to-red-950/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-800/30 to-blue-950/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </Button>
       </div>
 
