@@ -17,7 +17,7 @@ interface FormButtonsRowProps {
 
 const getNavigationButtons = (formData: any) => {
   const buttons = [
-    { id: 'intake', label: 'Client Intake', icon: FileText, path: '/admin/intake/:id', condition: true },
+    { id: 'intake', label: 'Intake', icon: FileText, path: '/admin/intake/:id', condition: true },
     { id: 'family-tree', label: 'History', icon: GitBranch, path: '/admin/family-tree/:id', condition: true },
     { id: 'poa', label: 'POA', icon: FileCheck, path: '/admin/poa/:id', condition: true },
     { id: 'citizenship', label: 'Citizenship', icon: Award, path: '/admin/citizenship/:id', condition: true },
