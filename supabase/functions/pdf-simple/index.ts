@@ -54,8 +54,55 @@ const FIELD_MAPS: Record<string, Record<string, string>> = {
     // Legacy support - now uses dynamic assembly
   },
   'citizenship': {
+    // Applicant personal info
     'imie': 'applicant_first_name',
     'nazwisko': 'applicant_last_name',
+    'nazwisko_rodowe': 'applicant_maiden_name',
+    'data_urodzenia': 'applicant_dob',
+    'miejsce_urodzenia': 'applicant_pob',
+    
+    // Marriage info
+    'miejsce_malzenstwa': 'place_of_marriage',
+    'data_malzenstwa': 'date_of_marriage',
+    
+    // Mother info
+    'matka_imie': 'mother_first_name',
+    'matka_nazwisko': 'mother_last_name',
+    'matka_nazwisko_rodowe': 'mother_maiden_name',
+    'matka_data_urodzenia': 'mother_dob',
+    'matka_miejsce_urodzenia': 'mother_pob',
+    
+    // Father info
+    'ojciec_imie': 'father_first_name',
+    'ojciec_nazwisko': 'father_last_name',
+    'ojciec_data_urodzenia': 'father_dob',
+    'ojciec_miejsce_urodzenia': 'father_pob',
+    'rodzice_data_malzenstwa': 'father_mother_marriage_date',
+    'rodzice_miejsce_malzenstwa': 'father_mother_marriage_place',
+    
+    // Maternal grandparents
+    'dziadek_mat_imie': 'mgf_first_name',
+    'dziadek_mat_nazwisko': 'mgf_last_name',
+    'dziadek_mat_data_urodzenia': 'mgf_dob',
+    'dziadek_mat_miejsce_urodzenia': 'mgf_pob',
+    
+    'babcia_mat_imie': 'mgm_first_name',
+    'babcia_mat_nazwisko': 'mgm_last_name',
+    'babcia_mat_nazwisko_rodowe': 'mgm_maiden_name',
+    'babcia_mat_data_urodzenia': 'mgm_dob',
+    'babcia_mat_miejsce_urodzenia': 'mgm_pob',
+    
+    // Paternal grandparents
+    'dziadek_ojc_imie': 'pgf_first_name',
+    'dziadek_ojc_nazwisko': 'pgf_last_name',
+    'dziadek_ojc_data_urodzenia': 'pgf_dob',
+    'dziadek_ojc_miejsce_urodzenia': 'pgf_pob',
+    
+    'babcia_ojc_imie': 'pgm_first_name',
+    'babcia_ojc_nazwisko': 'pgm_last_name',
+    'babcia_ojc_nazwisko_rodowe': 'pgm_maiden_name',
+    'babcia_ojc_data_urodzenia': 'pgm_dob',
+    'babcia_ojc_miejsce_urodzenia': 'pgm_pob',
   },
   'registration': {
     'applicant_given_names': 'applicant_first_name',
@@ -72,14 +119,20 @@ const FIELD_MAPS: Record<string, Record<string, string>> = {
     'usc_office_address': 'usc_office_address',
   },
   'transcription': {
+    // Applicant info
     'applicant_given_names': 'applicant_first_name',
     'applicant_surname': 'applicant_last_name',
+    'applicant_maiden_name': 'applicant_maiden_name',
     'applicant_date_of_birth': 'applicant_dob',
     'applicant_place_of_birth': 'applicant_pob',
     'applicant_email': 'applicant_email',
     'applicant_phone': 'applicant_phone',
     'applicant_passport_number': 'applicant_passport_number',
+    
+    // Document info
     'document_type': 'document_type',
+    'document_issue_place': 'document_issue_place',
+    'document_registry_number': 'document_registry_number',
   },
   'family-tree': {
     // Applicant info
