@@ -325,7 +325,7 @@ function countChildren(data: any): number {
 }
 
 // Helper: Fill non-Polish family fields with "NIE DOTYCZY"
-async function fillNonPolishFieldsWithNieDotczyca(form: any, masterData: any, pdfDoc: any): Promise<void> {
+function fillNonPolishFieldsWithNieDotczyca(form: any, masterData: any): void {
   const NIE_DOTYCZY = 'NIE DOTYCZY';
   const fatherIsPolish = masterData.father_is_polish === true;
   const motherIsPolish = masterData.mother_is_polish === true;
@@ -343,7 +343,7 @@ async function fillNonPolishFieldsWithNieDotczyca(form: any, masterData: any, pd
       'dzien_uro_babki_m', 'miesiac_uro_babki_m', 'rok_uro_babki_m', 'miejsce_uro_babki_m',
       'pesel_babki_m', 'zyciorys_babki_m',
     ];
-    await fillFieldsWithValue(form, maternalFields, NIE_DOTYCZY, pdfDoc);
+    fillFieldsWithValue(form, maternalFields, NIE_DOTYCZY);
   }
 
   // If mother is Polish → fill father's side with NIE DOTYCZY
@@ -357,24 +357,16 @@ async function fillNonPolishFieldsWithNieDotczyca(form: any, masterData: any, pd
       'dzien_uro_babki_o', 'miesiac_uro_babki_o', 'rok_uro_babki_o', 'miejsce_uro_babki_o',
       'pesel_babki_o', 'zyciorys_babki_o',
     ];
-    await fillFieldsWithValue(form, paternalFields, NIE_DOTYCZY, pdfDoc);
+    fillFieldsWithValue(form, paternalFields, NIE_DOTYCZY);
   }
 }
 
-// Helper: Fill multiple fields with the same value (with PDF FONT standard)
-async function fillFieldsWithValue(form: any, fieldNames: string[], value: string, pdfDoc: any): Promise<void> {
-  // PDF FONT STANDARD: Arial Black (Helvetica-Bold), Dark Blue, Auto-size
-  const font = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-  
+// Helper: Fill multiple fields with the same value
+function fillFieldsWithValue(form: any, fieldNames: string[], value: string): void {
   for (const fieldName of fieldNames) {
     try {
       const field = form.getTextField(fieldName);
       field.setText(value);
-      
-      // Apply PDF FONT standard
-      field.updateAppearances(font);
-      field.setFontSize(0); // 0 = auto-size
-      field.defaultUpdateAppearances(font);
     } catch (e) {
       // Field doesn't exist or can't be filled - skip
     }
@@ -399,9 +391,12 @@ async function fillTemplate(
   const pdfDoc = await PDFDocument.load(templateBytes);
   const form = pdfDoc.getForm();
   
-  // PDF FONT STANDARD: Arial Black (Helvetica-Bold), Dark Blue, Auto-size
-  const font = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-  const darkBlue = rgb(0, 0.2, 0.5);
+  // PDF FONT STANDARD: Only for POA templates (Arial Black via Helvetica-Bold, Dark Blue, Auto-size)
+  const isPOA = templatePath.includes('poa-');
+  let font;
+  if (isPOA) {
+    font = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+  }
   
     for (const field of form.getFields()) {
       try {
@@ -439,10 +434,12 @@ async function fillTemplate(
           const textField = form.getTextField(fieldName);
           textField.setText(String(value));
           
-          // Apply PDF FONT standard
-          textField.updateAppearances(font);
-          textField.setFontSize(0); // 0 = auto-size to fit field
-          textField.defaultUpdateAppearances(font);
+          // Apply PDF FONT standard ONLY for POA templates
+          if (isPOA && font) {
+            textField.updateAppearances(font);
+            textField.setFontSize(0); // 0 = auto-size to fit field
+            textField.defaultUpdateAppearances(font);
+          }
         }
       } catch (e) {
         // Skip fields we can't fill
@@ -619,12 +616,15 @@ Deno.serve(async (req) => {
 
     // Apply NIE DOTYCZY strategy for citizenship PDFs
     if (templateType === 'citizenship' && masterData) {
-      await fillNonPolishFieldsWithNieDotczyca(form, masterData, pdfDoc);
+      fillNonPolishFieldsWithNieDotczyca(form, masterData);
     }
 
-    // PDF FONT STANDARD: Arial Black (Helvetica-Bold), Dark Blue, Auto-size
-    const font = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-    const darkBlue = rgb(0, 0.2, 0.5); // Dark blue color
+    // PDF FONT STANDARD: Only for POA templates
+    const isPOA = templateType.startsWith('poa-');
+    let font;
+    if (isPOA) {
+      font = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+    }
 
     // Fill fields using smart resolver
     for (const field of fields) {
@@ -648,10 +648,12 @@ Deno.serve(async (req) => {
           const textField = form.getTextField(fieldName);
           textField.setText(String(value));
           
-          // Apply PDF FONT standard
-          textField.updateAppearances(font);
-          textField.setFontSize(0); // 0 = auto-size to fit field
-          textField.defaultUpdateAppearances(font);
+          // Apply PDF FONT standard ONLY for POA templates
+          if (isPOA && font) {
+            textField.updateAppearances(font);
+            textField.setFontSize(0); // 0 = auto-size to fit field
+            textField.defaultUpdateAppearances(font);
+          }
           
           filledCount++;
         }

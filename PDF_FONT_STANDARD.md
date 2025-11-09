@@ -1,13 +1,25 @@
-# PDF FONT STANDARD
+# PDF FONT STANDARD (POA Templates Only)
 
 ## 🎯 Core Configuration
 
-**All PDF generation across the system MUST use this standard font configuration:**
+**POA PDF generation uses this standard font configuration:**
 
 ### Font Specification
 - **Font Family**: Arial Black (Helvetica-Bold in pdf-lib)
 - **Color**: Dark Blue `rgb(0, 0.2, 0.5)` 
 - **Size**: Auto (size: 0 - auto-fits to PDF field dimensions)
+
+### ⚠️ Important Scope
+**This standard ONLY applies to POA templates:**
+- POA Adult
+- POA Minor
+- POA Spouses
+- POA Combined
+
+**NOT applied to:**
+- Citizenship Application (uses default fonts)
+- Civil Registry / Transcription (uses default fonts)
+- Family Tree (uses default fonts)
 
 ---
 
@@ -56,25 +68,30 @@ pdf-lib doesn't have Arial Black in its standard fonts. Helvetica-Bold is the cl
 
 ---
 
-## 📝 Applies to All PDF Types
+## 📝 Applies to POA PDFs Only
 
-This standard applies to **ALL** generated PDFs:
+This standard applies **ONLY** to POA generated PDFs:
 - ✅ POA Adult
 - ✅ POA Minor  
 - ✅ POA Spouses
-- ✅ Citizenship Application
-- ✅ Family Tree
-- ✅ Civil Registry (Transcription)
-- ✅ Any future PDF templates
+- ✅ POA Combined
+
+**Does NOT apply to:**
+- ❌ Citizenship Application
+- ❌ Family Tree
+- ❌ Civil Registry (Transcription)
+
+### Future: Font Editing Options
+A font editing interface is planned to allow customization of fonts for different PDF types.
 
 ---
 
 ## 🔒 Locked Configuration
 
-**This is a LOCKED configuration.** When anyone mentions "PDF FONT", they are referring to this exact specification:
+**This is a LOCKED configuration for POA templates.** When anyone mentions "PDF FONT", they are referring to this exact specification for POA documents:
 
 ```
-PDF FONT = {
+PDF FONT (POA only) = {
   family: "Arial Black" (Helvetica-Bold),
   color: "Dark Blue" rgb(0, 0.2, 0.5),
   size: "Auto" (0)
@@ -87,10 +104,10 @@ PDF FONT = {
 
 ### For All AI Agents
 When generating, reviewing, or modifying PDF code:
-1. **Always** use the PDF FONT standard
-2. **Never** change font family, color, or sizing approach
+1. **Always** use the PDF FONT standard for POA templates
+2. **Never** apply this font to non-POA templates (citizenship, family-tree, transcription)
 3. **Reference** this document when asked about PDF fonts
-4. **Maintain** consistency across all PDF generation functions
+4. **Maintain** consistency across POA generation functions
 
 ### For UI/UX Agent
 - PDF previews should reflect the dark blue color
@@ -98,21 +115,23 @@ When generating, reviewing, or modifying PDF code:
 - Any PDF-related UI should mention this configuration
 
 ### For Code Review Agent
-- Verify all PDF generation uses `StandardFonts.HelveticaBold`
-- Confirm `rgb(0, 0.2, 0.5)` for text color
-- Check `setFontSize(0)` for auto-sizing
-- Ensure `updateAppearances(font)` is called
+- Verify POA PDF generation uses `StandardFonts.HelveticaBold`
+- Confirm `rgb(0, 0.2, 0.5)` for text color in POA templates
+- Check `setFontSize(0)` for auto-sizing in POA templates
+- Ensure `updateAppearances(font)` is called for POA fields
+- Verify NON-POA templates (citizenship, family-tree, transcription) do NOT use custom fonts
 
 ---
 
 ## ✅ Verification Checklist
 
-Before deploying any PDF generation code:
-- [ ] Font: Helvetica-Bold embedded
-- [ ] Color: rgb(0, 0.2, 0.5) applied
-- [ ] Size: setFontSize(0) for auto-fit
-- [ ] updateAppearances() called with font
-- [ ] Works across all PDF templates
+Before deploying any POA PDF generation code:
+- [ ] Font: Helvetica-Bold embedded (POA templates only)
+- [ ] Color: rgb(0, 0.2, 0.5) applied (POA templates only)
+- [ ] Size: setFontSize(0) for auto-fit (POA templates only)
+- [ ] updateAppearances() called with font (POA templates only)
+- [ ] Non-POA templates use default fonts
+- [ ] Works across all POA PDF templates
 - [ ] Consistent appearance in preview
 
 ---
@@ -140,7 +159,9 @@ Before deploying any PDF generation code:
 ---
 
 ## 📌 Last Updated
-2025-11-09 - Initial PDF FONT standard established
+2025-11-09 - PDF FONT standard restricted to POA templates only
 
-**Revision**: 1.0  
-**Status**: ACTIVE & LOCKED
+**Revision**: 2.0  
+**Status**: ACTIVE & LOCKED (POA only)
+
+**Future Enhancement**: Font editing interface for all PDF types

@@ -232,66 +232,60 @@ export function PDFPreviewDialog({
             </>
           ) : (
             <>
-              <Button variant="outline" onClick={onClose}>
-                Close
-              </Button>
-              {documentId && caseId && onLockForPrint && (
+              {/* Action Buttons - Uniform Grid Layout */}
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-3 w-full">
                 <Button 
-                  variant="default"
-                  onClick={handleLockForPrint}
-                  disabled={isLocking}
-                  className="gap-2"
+                  variant="outline" 
+                  onClick={onClose}
+                  className="w-full"
                 >
-                  {isLocking ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                      Preparing...
-                    </>
-                  ) : (
-                    <>
-                      <Lock className="h-4 w-4" />
-                      Lock for Print
-                    </>
-                  )}
+                  Close
                 </Button>
-              )}
-              
-              <Button 
-                variant="secondary" 
-                onClick={handlePrint} 
-                disabled={isPrinting}
-                className="gap-2"
-              >
-                <Printer className="h-4 w-4" />
-                Print
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={handleOpenNewTab}
-                className="gap-2"
-              >
-                <Eye className="h-4 w-4" />
-                Open in New Tab
-              </Button>
-              
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button className="gap-2">
-                    <Download className="h-4 w-4" />
-                    Download
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={onDownloadEditable}>
-                    <Edit className="h-4 w-4 mr-2" />
-                    Editable (for offline editing)
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={onDownloadFinal}>
-                    <Lock className="h-4 w-4 mr-2" />
-                    Final (locked fields)
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                
+                <Button 
+                  variant="secondary" 
+                  onClick={handlePrint} 
+                  disabled={isPrinting}
+                  className="w-full"
+                >
+                  Print
+                </Button>
+                
+                <Button
+                  variant="secondary"
+                  onClick={handleOpenNewTab}
+                  className="w-full"
+                >
+                  Edit
+                </Button>
+                
+                <Button
+                  variant="secondary"
+                  className="w-full"
+                  disabled
+                  title="Coming soon - PDF optimization features"
+                >
+                  Optimize
+                </Button>
+                
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button className="w-full">
+                      Download
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    <DropdownMenuItem onClick={onDownloadEditable}>
+                      <Edit className="h-4 w-4 mr-2" />
+                      Editable (for offline editing)
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={onDownloadFinal}>
+                      <Lock className="h-4 w-4 mr-2" />
+                      Final (locked fields)
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </>
           )}
         </DialogFooter>
