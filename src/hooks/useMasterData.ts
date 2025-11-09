@@ -62,7 +62,11 @@ export const useUpdateMasterData = () => {
         throw new Error("You must be logged in to save data. Please log in and try again.");
       }
 
+      console.log('💾 [useMasterData] RAW updates received:', Object.keys(updates).length, 'fields');
+      
       const sanitizedUpdates = sanitizeMasterData(updates);
+      
+      console.log('💾 [useMasterData] After sanitization:', Object.keys(sanitizedUpdates).length, 'fields');
 
       const { data: existing, error: checkError } = await supabase
         .from("master_table")
@@ -76,6 +80,7 @@ export const useUpdateMasterData = () => {
       }
 
       if (existing) {
+        console.log('💾 [useMasterData] Updating existing record...');
         const { error } = await supabase
           .from("master_table")
           .update(sanitizedUpdates)
@@ -83,23 +88,28 @@ export const useUpdateMasterData = () => {
         
         if (error) {
           console.error('❌ UPDATE ERROR:', error);
+          console.error('❌ Failed fields:', sanitizedUpdates);
           if (error.code === '42501') {
             throw new Error("Permission denied. Please ensure you're logged in as an admin or assistant.");
           }
           throw new Error(`Update failed: ${error.message}`);
         }
+        console.log('✅ [useMasterData] Update successful');
       } else {
+        console.log('💾 [useMasterData] Inserting new record...');
         const { error } = await supabase
           .from("master_table")
           .insert({ case_id: caseId, ...sanitizedUpdates });
         
         if (error) {
           console.error('❌ INSERT ERROR:', error);
+          console.error('❌ Failed data:', { case_id: caseId, ...sanitizedUpdates });
           if (error.code === '42501') {
             throw new Error("Permission denied. Please ensure you're logged in as an admin or assistant.");
           }
           throw new Error(`Insert failed: ${error.message}`);
         }
+        console.log('✅ [useMasterData] Insert successful');
       }
     },
     onSuccess: (_, variables) => {

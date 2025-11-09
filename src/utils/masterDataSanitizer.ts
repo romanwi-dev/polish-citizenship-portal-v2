@@ -31,6 +31,8 @@ const convertDDMMYYYYToISO = (dateStr: string): string | null => {
 };
 
 export const sanitizeMasterData = (formData: any): any => {
+  console.log('🧹 [Sanitizer] Input fields:', Object.keys(formData).length);
+  
   const sanitized: any = {};
   
   // Get all expected master_table fields from centralized mappings
@@ -146,6 +148,14 @@ export const sanitizeMasterData = (formData: any): any => {
       country: formData.applicant_address_country || '',
     };
   }
+
+  console.log('🧹 [Sanitizer] Output fields:', Object.keys(sanitized).length);
+  console.log('🧹 [Sanitizer] Sample output:', {
+    applicant_first_name: sanitized.applicant_first_name,
+    applicant_last_name: sanitized.applicant_last_name,
+    father_first_name: sanitized.father_first_name,
+    pgf_is_polish: sanitized.pgf_is_polish,
+  });
 
   return sanitized;
 };

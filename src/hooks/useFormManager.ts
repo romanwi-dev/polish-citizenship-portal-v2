@@ -50,10 +50,19 @@ export const useFormManager = (
   // Auto-save (30 seconds after last change)
   const handleAutoSave = async () => {
     if (!caseId || !hasUnsavedChanges) return;
-    await updateMasterData.mutateAsync({
-      caseId,
-      updates: formData,
-    });
+    
+    console.log('🔄 [Auto-save] Starting...', { caseId, fieldCount: Object.keys(formData).length });
+    
+    try {
+      await updateMasterData.mutateAsync({
+        caseId,
+        updates: formData,
+      });
+      console.log('✅ [Auto-save] Success');
+    } catch (error: any) {
+      console.error('❌ [Auto-save] FAILED:', error);
+      toast.error(`Auto-save failed: ${error.message}`);
+    }
   };
 
   const autoSave = useAutoSave({
@@ -100,6 +109,16 @@ export const useFormManager = (
   const handleSave = async () => {
     if (!caseId) return false;
     
+    console.log('💾 [Manual Save] Starting...', { 
+      caseId, 
+      fieldCount: Object.keys(formData).length,
+      sampleFields: {
+        applicant_first_name: formData.applicant_first_name,
+        applicant_last_name: formData.applicant_last_name,
+        father_first_name: formData.father_first_name,
+      }
+    });
+    
     // Optional: Block save if critical fields missing (configurable)
     const criticalFieldsMissing = validation.errors.some(e => 
       e.message === 'This field is required' && 
@@ -117,10 +136,11 @@ export const useFormManager = (
         updates: formData,
       });
       setHasUnsavedChanges(false);
+      console.log('✅ [Manual Save] Success');
       toast.success('Data saved successfully');
       return true;
     } catch (error: any) {
-      console.error('❌ SAVE FAILED:', error);
+      console.error('❌ [Manual Save] FAILED:', error);
       toast.error(error?.message || 'Failed to save data. Please try again.');
       return false;
     }
