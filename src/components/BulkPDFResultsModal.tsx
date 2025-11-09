@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { CheckCircle2, XCircle, Download } from 'lucide-react';
+import { CheckCircle2, XCircle, Download, Eye } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { PDFPreviewDialog } from '@/components/PDFPreviewDialog';
 
 interface PDFResult {
   templateType: string;
@@ -35,8 +37,16 @@ export function BulkPDFResultsModal({
   results, 
   onDownload 
 }: BulkPDFResultsModalProps) {
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewTitle, setPreviewTitle] = useState<string>('');
+  
   const successCount = results.filter(r => r.success).length;
   const failedCount = results.filter(r => !r.success).length;
+
+  const handlePreview = (url: string, templateType: string) => {
+    setPreviewUrl(url);
+    setPreviewTitle(TEMPLATE_NAMES[templateType] || templateType);
+  };
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -101,14 +111,23 @@ export function BulkPDFResultsModal({
                   </div>
 
                   {result.success && result.url && (
-                    <Button
-                      onClick={() => onDownload(result.url!, result.templateType)}
-                      size="sm"
-                      className="flex-shrink-0"
-                    >
-                      <Download className="h-4 w-4 mr-2" />
-                      Download
-                    </Button>
+                    <div className="flex gap-2 flex-shrink-0">
+                      <Button
+                        onClick={() => handlePreview(result.url!, result.templateType)}
+                        size="sm"
+                        variant="outline"
+                      >
+                        <Eye className="h-4 w-4 mr-2" />
+                        Preview
+                      </Button>
+                      <Button
+                        onClick={() => onDownload(result.url!, result.templateType)}
+                        size="sm"
+                      >
+                        <Download className="h-4 w-4 mr-2" />
+                        Download
+                      </Button>
+                    </div>
                   )}
                 </div>
               </div>
@@ -122,6 +141,18 @@ export function BulkPDFResultsModal({
             </Button>
           </div>
         </div>
+
+        {/* PDF Preview Dialog */}
+        <PDFPreviewDialog
+          open={!!previewUrl}
+          onClose={() => setPreviewUrl(null)}
+          pdfUrl={previewUrl || ""}
+          formData={{}}
+          onRegeneratePDF={async () => {}}
+          onDownloadEditable={() => previewUrl && window.open(previewUrl, '_blank')}
+          onDownloadFinal={() => previewUrl && window.open(previewUrl, '_blank')}
+          documentTitle={previewTitle}
+        />
       </DialogContent>
     </Dialog>
   );
