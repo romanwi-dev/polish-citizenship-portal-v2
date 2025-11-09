@@ -4,7 +4,7 @@
  */
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { PDFDocument } from 'https://esm.sh/pdf-lib@1.17.1';
+import { PDFDocument, StandardFonts, rgb } from 'https://esm.sh/pdf-lib@1.17.1';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -325,7 +325,7 @@ function countChildren(data: any): number {
 }
 
 // Helper: Fill non-Polish family fields with "NIE DOTYCZY"
-function fillNonPolishFieldsWithNieDotczyca(form: any, masterData: any): void {
+async function fillNonPolishFieldsWithNieDotczyca(form: any, masterData: any, pdfDoc: any): Promise<void> {
   const NIE_DOTYCZY = 'NIE DOTYCZY';
   const fatherIsPolish = masterData.father_is_polish === true;
   const motherIsPolish = masterData.mother_is_polish === true;
@@ -343,7 +343,7 @@ function fillNonPolishFieldsWithNieDotczyca(form: any, masterData: any): void {
       'dzien_uro_babki_m', 'miesiac_uro_babki_m', 'rok_uro_babki_m', 'miejsce_uro_babki_m',
       'pesel_babki_m', 'zyciorys_babki_m',
     ];
-    fillFieldsWithValue(form, maternalFields, NIE_DOTYCZY);
+    await fillFieldsWithValue(form, maternalFields, NIE_DOTYCZY, pdfDoc);
   }
 
   // If mother is Polish → fill father's side with NIE DOTYCZY
@@ -357,16 +357,24 @@ function fillNonPolishFieldsWithNieDotczyca(form: any, masterData: any): void {
       'dzien_uro_babki_o', 'miesiac_uro_babki_o', 'rok_uro_babki_o', 'miejsce_uro_babki_o',
       'pesel_babki_o', 'zyciorys_babki_o',
     ];
-    fillFieldsWithValue(form, paternalFields, NIE_DOTYCZY);
+    await fillFieldsWithValue(form, paternalFields, NIE_DOTYCZY, pdfDoc);
   }
 }
 
-// Helper: Fill multiple fields with the same value
-function fillFieldsWithValue(form: any, fieldNames: string[], value: string): void {
+// Helper: Fill multiple fields with the same value (with PDF FONT standard)
+async function fillFieldsWithValue(form: any, fieldNames: string[], value: string, pdfDoc: any): Promise<void> {
+  // PDF FONT STANDARD: Arial Black (Helvetica-Bold), Dark Blue, Auto-size
+  const font = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+  
   for (const fieldName of fieldNames) {
     try {
       const field = form.getTextField(fieldName);
       field.setText(value);
+      
+      // Apply PDF FONT standard
+      field.updateAppearances(font);
+      field.setFontSize(0); // 0 = auto-size
+      field.defaultUpdateAppearances(font);
     } catch (e) {
       // Field doesn't exist or can't be filled - skip
     }
@@ -390,6 +398,10 @@ async function fillTemplate(
   const templateBytes = new Uint8Array(await templateBlob.arrayBuffer());
   const pdfDoc = await PDFDocument.load(templateBytes);
   const form = pdfDoc.getForm();
+  
+  // PDF FONT STANDARD: Arial Black (Helvetica-Bold), Dark Blue, Auto-size
+  const font = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+  const darkBlue = rgb(0, 0.2, 0.5);
   
     for (const field of form.getFields()) {
       try {
@@ -426,6 +438,11 @@ async function fillTemplate(
         if (value != null && value !== '') {
           const textField = form.getTextField(fieldName);
           textField.setText(String(value));
+          
+          // Apply PDF FONT standard
+          textField.updateAppearances(font);
+          textField.setFontSize(0); // 0 = auto-size to fit field
+          textField.defaultUpdateAppearances(font);
         }
       } catch (e) {
         // Skip fields we can't fill
@@ -602,8 +619,12 @@ Deno.serve(async (req) => {
 
     // Apply NIE DOTYCZY strategy for citizenship PDFs
     if (templateType === 'citizenship' && masterData) {
-      fillNonPolishFieldsWithNieDotczyca(form, masterData);
+      await fillNonPolishFieldsWithNieDotczyca(form, masterData, pdfDoc);
     }
+
+    // PDF FONT STANDARD: Arial Black (Helvetica-Bold), Dark Blue, Auto-size
+    const font = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+    const darkBlue = rgb(0, 0.2, 0.5); // Dark blue color
 
     // Fill fields using smart resolver
     for (const field of fields) {
@@ -626,6 +647,12 @@ Deno.serve(async (req) => {
         if (value != null && value !== '') {
           const textField = form.getTextField(fieldName);
           textField.setText(String(value));
+          
+          // Apply PDF FONT standard
+          textField.updateAppearances(font);
+          textField.setFontSize(0); // 0 = auto-size to fit field
+          textField.defaultUpdateAppearances(font);
+          
           filledCount++;
         }
       } catch (e) {
