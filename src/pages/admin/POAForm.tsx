@@ -321,8 +321,13 @@ export default function POAForm() {
     }
   };
 
-  // NEW: Generate specific POA type
+  // NEW: Generate specific POA type using pdf-simple
   const handleGenerateSpecificPOA = async (poaType: 'adult' | 'minor' | 'spouses') => {
+    if (!caseId) {
+      toast.error('No case ID available');
+      return;
+    }
+
     setIsGenerating(true);
     try {
       // Save form data FIRST to ensure all fields are persisted
@@ -330,10 +335,10 @@ export default function POAForm() {
       
       const templateType = `poa-${poaType}`;
       
-      console.log(`[POA] Generating ${poaType} PDF, caseId: ${caseId}`);
+      console.log(`[POA] Generating ${poaType} PDF using pdf-simple, caseId: ${caseId}`);
       toast.loading(`Generating ${poaType.toUpperCase()} POA...`);
       
-      const { data, error } = await supabase.functions.invoke('fill-pdf', {
+      const { data, error } = await supabase.functions.invoke('pdf-simple', {
         body: { 
           caseId, 
           templateType 
@@ -345,17 +350,22 @@ export default function POAForm() {
         throw error;
       }
       
-      if (data?.url) {
-        // Set single POA preview state
+      if (data?.success && data?.url) {
+        // Set single POA preview state and trigger preview dialog
         setGeneratedPOATypes([poaType]);
         setActivePOAType(poaType);
         setPdfUrls({ [poaType]: data.url });
         setPdfPreviewUrl(data.url);
         setPreviewFormData(formData);
+        setPreviewOpen(true); // Open the preview dialog
+        
         toast.dismiss();
-        toast.success(`${poaType.toUpperCase()} POA generated! ${data.stats?.filled}/${data.stats?.total} fields filled`);
+        const message = data.fieldsFilledCount === 0 
+          ? 'Blank PDF ready for manual completion'
+          : `PDF ready! Filled ${data.fieldsFilledCount}/${data.totalFields} fields (${data.fillRate}%)`;
+        toast.success(message);
       } else {
-        throw new Error('No PDF URL returned from edge function');
+        throw new Error(data?.error || 'No PDF URL returned from edge function');
       }
 
     } catch (error: any) {
