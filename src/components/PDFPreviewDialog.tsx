@@ -255,7 +255,7 @@ export function PDFPreviewDialog({
               <Button 
                 variant="outline" 
                 onClick={onClose}
-                className="min-w-[140px]"
+                className="min-w-[140px] border-red-500 hover:border-red-600"
               >
                 Close
               </Button>
@@ -288,7 +288,7 @@ export function PDFPreviewDialog({
                 variant="secondary" 
                 onClick={handlePrint} 
                 disabled={isPrinting}
-                className="min-w-[140px]"
+                className="min-w-[140px] border border-green-500 hover:border-green-600"
               >
                 Print
               </Button>
