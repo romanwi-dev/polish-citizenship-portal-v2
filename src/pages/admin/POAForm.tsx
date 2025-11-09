@@ -572,13 +572,12 @@ export default function POAForm() {
               </div>
 
               {/* Link to POA OCR Wizard */}
-              <div className="flex justify-center items-center -mt-14 mb-6 md:-mt-10 md:mb-8">
+              <div className="flex justify-center items-center mt-0 mb-6 md:mt-2 md:mb-8">
                 <Button
                   onClick={() => navigate(`/admin/cases/${caseId}/poa-ocr`)}
                   size="lg"
                   className="text-2xl md:text-3xl font-heading font-black tracking-wide px-8 py-4 md:px-16 md:py-6 h-auto min-h-[48px] rounded-lg bg-blue-900/60 hover:bg-blue-900/80 text-white backdrop-blur-md border-2 border-blue-600/40 hover:border-blue-500/60 transition-colors duration-300"
                 >
-                  <Camera className="h-6 w-6 md:h-8 md:w-8 mr-3" />
                   <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent drop-shadow-lg">
                     Scan Papers
                   </span>
