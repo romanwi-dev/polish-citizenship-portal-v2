@@ -1,49 +1,126 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "npm:@supabase/supabase-js@2";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3'
+import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts'
 
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-};
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY',
+}
+
+// Security: Validation schemas
+const POATypeSchema = z.enum(['adult', 'minor', 'married'])
+const SecureUUIDSchema = z.string().uuid()
+const POAGenerationRequestSchema = z.object({
+  caseId: SecureUUIDSchema,
+  poaType: POATypeSchema,
+})
 
 serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders })
   }
 
   try {
-    const { caseId, poaType } = await req.json();
+    // Security: JWT authentication required
+    const authHeader = req.headers.get('Authorization')
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return new Response(
+        JSON.stringify({ error: 'Authentication required' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
 
-    // Input validation
-    const { isValidUUID } = await import('../_shared/validation.ts');
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+    const supabase = createClient(supabaseUrl, supabaseServiceKey)
+
+    // Get authenticated user
+    const jwt = authHeader.replace('Bearer ', '')
+    const { data: { user }, error: authError } = await supabase.auth.getUser(jwt)
     
-    if (!isValidUUID(caseId)) {
+    if (authError || !user) {
       return new Response(
-        JSON.stringify({ error: 'Invalid case ID format' }),
-        { status: 400, headers: corsHeaders }
-      );
+        JSON.stringify({ error: 'Invalid authentication token' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
     }
 
-    const validPoaTypes = ['adult', 'minor', 'spouses'];
-    if (!validPoaTypes.includes(poaType)) {
-      return new Response(
-        JSON.stringify({ error: 'Invalid POA type' }),
-        { status: 400, headers: corsHeaders }
-      );
-    }
+    const requestBody = await req.json()
     
-    if (!caseId || !poaType) {
+    // Security: Input validation with Zod
+    const validationResult = POAGenerationRequestSchema.safeParse(requestBody)
+    if (!validationResult.success) {
+      console.error('Validation error:', validationResult.error)
       return new Response(
-        JSON.stringify({ error: "Case ID and POA type are required" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+        JSON.stringify({ error: 'Invalid request parameters', details: validationResult.error.issues }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
     }
 
-    console.log(`Generating ${poaType} POA for case:`, caseId);
+    const { caseId, poaType } = validationResult.data
 
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    // Security: Rate limiting check
+    const { data: rateLimitData, error: rateLimitError } = await supabase.rpc(
+      'check_poa_generation_limit',
+      {
+        p_case_id: caseId,
+        p_user_id: user.id,
+        p_operation: 'generate'
+      }
+    )
+
+    if (rateLimitError) {
+      console.error('Rate limit check error:', rateLimitError)
+      return new Response(
+        JSON.stringify({ error: 'Rate limit check failed' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    if (!rateLimitData.allowed) {
+      console.warn('Rate limit exceeded:', rateLimitData)
+      return new Response(
+        JSON.stringify({ 
+          error: rateLimitData.message,
+          reset_at: rateLimitData.reset_at,
+          current_count: rateLimitData.current_count,
+          max_count: rateLimitData.max_count
+        }),
+        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    // Security: Verify case ownership
+    const { data: caseData, error: caseError } = await supabase
+      .from('cases')
+      .select('user_id')
+      .eq('id', caseId)
+      .single()
+
+    if (caseError || !caseData) {
+      return new Response(
+        JSON.stringify({ error: 'Case not found' }),
+        { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    // Check if user owns case or is admin
+    const { data: isAdmin } = await supabase.rpc('has_role', {
+      _user_id: user.id,
+      _role: 'admin'
+    })
+
+    if (caseData.user_id !== user.id && !isAdmin) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized access to case' }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    console.log(`Generating ${poaType} POA for case:`, caseId)
 
     // Get master table data
     const { data: masterData, error: masterError } = await supabase
@@ -64,7 +141,6 @@ serve(async (req) => {
     let poaText = "";
     
     if (poaType === "adult") {
-      // POA Adult
       poaText = `Pełnomocnictwo (Power of Attorney)
 
 Ja, niżej podpisany/a:
@@ -83,7 +159,6 @@ Pełnomocnik może udzielić dalszego pełnomocnictwa.
 
 data / date: ${poaDate}    podpis / signature: __________________`;
     } else if (poaType === "minor") {
-      // POA Minor - includes children
       const childrenNames: string[] = [];
       for (let i = 1; i <= (masterData.children_count || 0); i++) {
         const firstName = masterData[`child_${i}_first_name`];
@@ -112,7 +187,6 @@ Pełnomocnik może udzielić dalszego pełnomocnictwa.
 
 data / date: ${poaDate}    podpis / signature: __________________`;
     } else if (poaType === "married") {
-      // POA Married - includes spouse
       const spouseName = `${masterData.spouse_first_name || ''} ${masterData.spouse_last_name || ''}`.trim();
       const spouseDocument = masterData.spouse_passport_number || "NOT PROVIDED";
       
