@@ -8,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { DateField } from "@/components/DateField";
 import { CountrySelect } from "@/components/CountrySelect";
 import { FlippableCardsDarkGlow } from "@/components/docs/FlippableCardsDarkGlow";
+import { PassportUpload } from "@/components/poa/PassportUpload";
 import { cn } from "@/lib/utils";
 
 interface IntakeFormContentProps {
@@ -422,33 +423,50 @@ export const AddressSection = ({ formData, handleInputChange, clearField, isLarg
   </div>
 );
 
-export const PassportSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
-  <div className="px-4 py-6 md:p-10">
-    <div className="border-b border-border/50 pb-6 pt-6">
-      <h2 className="text-2xl md:text-3xl font-heading font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-        Passport
-      </h2>
-    </div>
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("passport_number")}>
-        <Label className={isLargeFonts ? "text-2xl" : ""}>Passport number</Label>
-        <MaskedPassportInput
-          value={formData?.passport_number || ""}
-          onChange={(value) => handleInputChange("passport_number", value)}
-        />
-      </motion.div>
+export const PassportSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => {
+  const handleOCRDataExtracted = (data: any) => {
+    // Auto-fill fields from OCR
+    if (data.applicant_first_name) handleInputChange("applicant_first_name", data.applicant_first_name);
+    if (data.applicant_last_name) handleInputChange("applicant_last_name", data.applicant_last_name);
+    if (data.passport_number) handleInputChange("passport_number", data.passport_number);
+    if (data.applicant_dob) handleInputChange("applicant_dob", data.applicant_dob);
+    if (data.applicant_sex) handleInputChange("applicant_sex", data.applicant_sex);
+  };
 
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="form-field-container space-y-2">
-        <DateField
-          name="passport_expiry"
-          label="Passport expiry date"
-          value={formData?.passport_expiry || ""}
-          onChange={(value) => handleInputChange("passport_expiry", value)}
-        />
-      </motion.div>
+  return (
+    <div className="px-4 py-6 md:p-10">
+      <div className="border-b border-border/50 pb-6 pt-6">
+        <h2 className="text-2xl md:text-3xl font-heading font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+          Passport
+        </h2>
+      </div>
+
+      {/* OCR Scanner */}
+      <div className="mb-6">
+        <PassportUpload onDataExtracted={handleOCRDataExtracted} />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("passport_number")}>
+          <Label className={isLargeFonts ? "text-2xl" : ""}>Passport number</Label>
+          <MaskedPassportInput
+            value={formData?.passport_number || ""}
+            onChange={(value) => handleInputChange("passport_number", value)}
+          />
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="form-field-container space-y-2">
+          <DateField
+            name="passport_expiry"
+            label="Passport expiry date"
+            value={formData?.passport_expiry || ""}
+            onChange={(value) => handleInputChange("passport_expiry", value)}
+          />
+        </motion.div>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export const NotesSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
   <div className="px-4 py-6 md:p-10">
