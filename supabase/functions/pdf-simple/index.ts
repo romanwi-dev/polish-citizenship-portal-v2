@@ -391,11 +391,14 @@ async function fillTemplate(
   const pdfDoc = await PDFDocument.load(templateBytes);
   const form = pdfDoc.getForm();
   
-  // PDF FONT STANDARD: Only for POA templates (Arial Black via Helvetica-Bold, Dark Blue, Auto-size)
+  // PDF FONT STANDARD: Only for POA templates
   const isPOA = templatePath.includes('poa-');
-  let font;
+  let boldFont: any;
+  let regularFont: any;
+  
   if (isPOA) {
-    font = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+    boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+    regularFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
   }
   
     for (const field of form.getFields()) {
@@ -425,6 +428,8 @@ async function fillTemplate(
         }
       
         // Auto-fill POA date with current date if not set
+        const isDateField = fieldName === 'poa_date' || fieldName.includes('date');
+        
         if (fieldName === 'poa_date' && (value == null || value === '')) {
           const today = new Date();
           value = today.toLocaleDateString('en-GB'); // DD/MM/YYYY format
@@ -435,10 +440,18 @@ async function fillTemplate(
           textField.setText(String(value));
           
           // Apply PDF FONT standard ONLY for POA templates
-          if (isPOA && font) {
-            textField.updateAppearances(font);
-            textField.setFontSize(0); // 0 = auto-size to fit field
-            textField.defaultUpdateAppearances(font);
+          if (isPOA) {
+            if (isDateField && regularFont) {
+              // Date fields: regular (non-bold) font, smaller size
+              textField.updateAppearances(regularFont);
+              textField.setFontSize(10); // Fixed smaller size for dates
+              textField.defaultUpdateAppearances(regularFont);
+            } else if (boldFont) {
+              // Non-date fields: bold font, auto-size
+              textField.updateAppearances(boldFont);
+              textField.setFontSize(0); // 0 = auto-size to fit field
+              textField.defaultUpdateAppearances(boldFont);
+            }
           }
         }
       } catch (e) {
