@@ -45,8 +45,47 @@ export function FormButtonsRow({
   return (
     <>
       {/* Navigation Buttons Row - Static at top, no background */}
-      <div className="mb-2 md:mb-8 py-2 md:py-3">
-        <div className="flex flex-row gap-0.5 overflow-x-auto scrollbar-hide md:overflow-x-visible md:grid md:grid-cols-6 md:gap-2 px-0 md:px-6 max-w-full">
+      <div className="mb-3 md:mb-8 py-1 md:py-3">
+        {/* Mobile: 2 rows of 3 buttons */}
+        <div className="grid grid-cols-3 gap-1.5 md:hidden px-2">
+          {navigationButtons.map((btn, index) => {
+              const isCurrent = btn.id === currentForm;
+              // First 3 buttons (Intake, Family Tree, History) = dark blue
+              // Last 3 buttons (POA, Citizenship, Transcription) = dark green
+              const isBlueGroup = index < 3;
+              const borderColor = isBlueGroup 
+                ? 'border-blue-600 hover:border-blue-700' 
+                : 'border-green-600 hover:border-green-700';
+              
+              return (
+                <Button
+                  key={btn.id}
+                  onClick={() => !isCurrent && navigate(btn.path.replace(':id', caseId))}
+                  disabled={isCurrent}
+                  variant="outline"
+                  className={`
+                    px-2 py-2 text-xs font-bold
+                    transition-all w-full
+                    ${isCurrent 
+                      ? `bg-gradient-to-r from-primary/30 via-secondary/30 to-accent/30 hover:from-primary/40 hover:via-secondary/40 hover:to-accent/40 ${borderColor} shadow-[0_0_25px_rgba(99,102,241,0.4)] cursor-default` 
+                      : `bg-white/5 hover:bg-white/10 ${borderColor} opacity-50`
+                    }
+                  `}
+                >
+                  <span className={`whitespace-nowrap text-xs ${
+                    isCurrent 
+                      ? 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-extrabold' 
+                      : 'bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'
+                  }`}>
+                    {btn.label}
+                  </span>
+                </Button>
+              );
+            })}
+        </div>
+        
+        {/* Desktop: Single row */}
+        <div className="hidden md:grid md:grid-cols-6 md:gap-2 px-0 md:px-6 max-w-full">
           {navigationButtons.map((btn, index) => {
               const isCurrent = btn.id === currentForm;
               // First 3 buttons (Intake, Family Tree, History) = dark blue
@@ -64,7 +103,7 @@ export function FormButtonsRow({
                   variant="outline"
                   className={`
                     px-6 py-2 text-sm md:text-base font-bold
-                    flex-shrink-0 md:flex-shrink transition-all
+                    transition-all
                     ${isCurrent 
                       ? `bg-gradient-to-r from-primary/30 via-secondary/30 to-accent/30 hover:from-primary/40 hover:via-secondary/40 hover:to-accent/40 ${borderColor} shadow-[0_0_25px_rgba(99,102,241,0.4)] cursor-default` 
                       : `bg-white/5 hover:bg-white/10 ${borderColor} opacity-50`
