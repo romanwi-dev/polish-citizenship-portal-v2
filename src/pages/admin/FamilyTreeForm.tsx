@@ -656,22 +656,22 @@ export default function FamilyTreeForm() {
                   isNameField: true
                 }], 'applicant')}
 
-                {/* Row 3: Places - Birth & Marriage */}
-                {renderFieldGroup([{
-                  name: "applicant_pob",
-                  label: "Place of birth",
-                  isNameField: true
-                }, {
-                  name: "place_of_marriage",
-                  label: "Place of marriage",
-                  isNameField: true
-                }], 'applicant')}
-
-                {/* Row 4: Dates - Birth & Marriage */}
+                {/* Row 3: Dates & Places - Birth */}
                 {renderFieldGroup([{
                   name: "applicant_dob",
                   label: "Date of birth",
                   type: "date"
+                }, {
+                  name: "applicant_pob",
+                  label: "Place of birth",
+                  isNameField: true
+                }], 'applicant')}
+
+                {/* Row 4: Places & Dates - Marriage */}
+                {renderFieldGroup([{
+                  name: "place_of_marriage",
+                  label: "Place of marriage",
+                  isNameField: true
                 }, {
                   name: "date_of_marriage",
                   label: "Date of marriage",

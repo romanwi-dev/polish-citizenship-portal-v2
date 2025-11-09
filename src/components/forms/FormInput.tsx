@@ -110,9 +110,10 @@ export const FormInput = ({
     }
   };
 
-  // Set font size based on screen size only (prevent re-rendering on value change)
+  // Set font size consistently for all fields (date and text)
   useEffect(() => {
     const isMobile = window.innerWidth < 768;
+    // Use same font size for all fields (date and text)
     const baseSize = isMobile ? 24 : (isLargeFonts ? 30 : 24);
     setFontSize(baseSize);
   }, [isLargeFonts]);
