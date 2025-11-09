@@ -19,6 +19,7 @@ import { SelectSection, ApplicantSection, SpouseSection, ChildrenSection, Contac
 import { useFormManager } from "@/hooks/useFormManager";
 import { INTAKE_FORM_REQUIRED_FIELDS, INTAKE_DATE_FIELDS } from "@/config/formRequiredFields";
 import { AutosaveIndicator } from "@/components/AutosaveIndicator";
+import { BulkPDFGenerator } from "@/components/BulkPDFGenerator";
 
 export default function IntakeForm() {
   const navigate = useNavigate();
@@ -187,6 +188,16 @@ export default function IntakeForm() {
           saveLabel="Save data"
           isSaving={isSaving || isGenerating}
         />
+
+        {/* Bulk PDF Generator Card */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mb-6"
+        >
+          <BulkPDFGenerator caseId={caseId!} />
+        </motion.div>
 
         {/* Form with Tabs or Full View */}
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="pb-32 -mt-4">
