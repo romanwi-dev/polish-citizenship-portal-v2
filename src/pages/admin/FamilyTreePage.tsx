@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState, useEffect } from "react";
-import { Loader2, ArrowLeft, Type, User, Sparkles } from "lucide-react";
+import { Loader2, ArrowLeft, Type, User, Sparkles, Edit } from "lucide-react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
@@ -105,6 +105,16 @@ export default function FamilyTreePage() {
               </h1>
             </div>
             <div className="flex items-center gap-3">
+              <Button
+                onClick={() => navigate(`/admin/family-tree/${caseId}`)}
+                size="lg"
+                variant="outline"
+                className="h-16 gap-2 px-6 border-2 border-green-500/30 hover:border-green-500/50 hover:bg-green-500/10 transition-all"
+                title="Edit Family Tree Form"
+              >
+                <Edit className="h-5 w-5 text-green-400" />
+                <span className="hidden md:inline font-bold">Edit Form</span>
+              </Button>
               <Button
                 onClick={() => navigate('/admin/forms-demo')}
                 size="lg"
