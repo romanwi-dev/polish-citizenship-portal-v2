@@ -124,13 +124,13 @@ export function FormButtonsRow({
       </div>
 
       {/* Sticky Action Buttons Row - FIXED AT BOTTOM */}
-      <div className="fixed bottom-0 left-0 right-0 z-[100] backdrop-blur-md bg-background/95 border-t border-border shadow-lg">
+      <div className="fixed bottom-0 left-0 right-0 z-[100]">
         <div className="mx-auto max-w-7xl px-3 md:px-6 py-2 md:py-3">
           <div className="flex flex-row gap-0.5">
             <Button
               onClick={onSave}
               disabled={isSaving}
-              className="px-6 py-6 md:py-2 text-sm md:text-base font-bold flex-1 bg-green-500/20 hover:bg-green-500/30 border border-green-400/40 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]"
+              className="px-6 py-6 md:py-2 text-sm md:text-base font-bold flex-1 bg-green-500/20 hover:bg-green-500/30 border border-green-400/40 transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)] backdrop-blur-md"
             >
               <span className="text-green-100 font-bold whitespace-nowrap">
                 {isSaving ? "Saving..." : "Save"}
@@ -143,7 +143,7 @@ export function FormButtonsRow({
                 <Button
                   onClick={() => (onGeneratePDF as () => void)()}
                   disabled={isSaving}
-                  className="px-6 py-6 md:py-2 text-sm md:text-base font-bold flex-1 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]"
+                  className="px-6 py-6 md:py-2 text-sm md:text-base font-bold flex-1 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] backdrop-blur-md"
                 >
                   <span className="text-blue-100 font-bold whitespace-nowrap">
                     Generate
@@ -171,7 +171,7 @@ export function FormButtonsRow({
             
             <Button
               onClick={onClear}
-              className="px-6 py-6 md:py-2 text-sm md:text-base font-bold flex-1 bg-red-500/20 hover:bg-red-500/30 border border-red-400/40 transition-all shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]"
+              className="px-6 py-6 md:py-2 text-sm md:text-base font-bold flex-1 bg-red-500/20 hover:bg-red-500/30 border border-red-400/40 transition-all shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)] backdrop-blur-md"
             >
               <span className="text-red-100 font-bold whitespace-nowrap">
                 Clear
