@@ -994,14 +994,17 @@ export default function POAForm() {
       </AlertDialog>
 
       <PDFPreviewDialog
-        open={!!pdfPreviewUrl && generatedPOATypes.length === 0}
-        onClose={() => setPdfPreviewUrl(null)}
+        open={previewOpen}
+        onClose={() => {
+          setPreviewOpen(false);
+          setPdfPreviewUrl(null);
+        }}
         pdfUrl={pdfPreviewUrl || ""}
-        formData={previewFormData}
-        onRegeneratePDF={handleRegeneratePDF}
         onDownloadEditable={handleDownloadEditable}
         onDownloadFinal={handleDownloadFinal}
         documentTitle={`POA - ${activePOAType.toUpperCase()}`}
+        documentId={pdfUrls[activePOAType]}
+        caseId={caseId}
       />
     </div>
   );
