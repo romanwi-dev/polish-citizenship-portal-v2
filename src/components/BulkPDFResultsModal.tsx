@@ -211,6 +211,9 @@ export function BulkPDFResultsModal({
           onDownloadEditable={() => previewUrl && window.open(previewUrl, '_blank')}
           onDownloadFinal={() => previewUrl && window.open(previewUrl, '_blank')}
           documentTitle={`${previewTitle} (${currentPreviewIndex + 1}/${successfulResults.length})`}
+          showNavigation={successfulResults.length > 1}
+          onNext={currentPreviewIndex < successfulResults.length - 1 ? handleNextPreview : undefined}
+          onPrev={currentPreviewIndex > 0 ? handlePrevPreview : undefined}
         />
       </DialogContent>
     </Dialog>

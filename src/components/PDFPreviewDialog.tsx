@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Download, X, Printer, Eye, Edit, Lock, Loader2 } from "lucide-react";
+import { Download, X, Printer, Eye, Edit, Lock, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -24,6 +24,9 @@ interface PDFPreviewDialogProps {
   documentId?: string;
   caseId?: string;
   onLockForPrint?: (lockedUrl: string) => void;
+  showNavigation?: boolean;
+  onNext?: () => void;
+  onPrev?: () => void;
 }
 
 export function PDFPreviewDialog({
@@ -35,7 +38,10 @@ export function PDFPreviewDialog({
   documentTitle,
   documentId,
   caseId,
-  onLockForPrint
+  onLockForPrint,
+  showNavigation = false,
+  onNext,
+  onPrev
 }: PDFPreviewDialogProps) {
   const [isPrinting, setIsPrinting] = useState(false);
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
@@ -200,17 +206,44 @@ export function PDFPreviewDialog({
           </div>
         )}
 
-        <div className="flex-1 border rounded-lg overflow-hidden bg-muted/10">
+        {/* PDF Preview with Navigation */}
+        <div className="relative flex-1 border rounded-lg overflow-hidden bg-muted/10">
           {isLoading ? (
             <div className="flex items-center justify-center h-full">
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
           ) : blobUrl ? (
-            <iframe 
-              src={blobUrl} 
-              className="w-full h-full border-0"
-              title="PDF Preview"
-            />
+            <>
+              <iframe 
+                src={blobUrl} 
+                className="w-full h-full border-0"
+                title="PDF Preview"
+              />
+              
+              {/* Navigation Arrows */}
+              {showNavigation && (
+                <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 flex justify-between px-4 pointer-events-none">
+                  <Button
+                    onClick={onPrev}
+                    disabled={!onPrev}
+                    size="icon"
+                    variant="secondary"
+                    className="pointer-events-auto h-12 w-12 rounded-full shadow-lg bg-background/90 hover:bg-background disabled:opacity-30"
+                  >
+                    <ChevronLeft className="h-6 w-6" />
+                  </Button>
+                  <Button
+                    onClick={onNext}
+                    disabled={!onNext}
+                    size="icon"
+                    variant="secondary"
+                    className="pointer-events-auto h-12 w-12 rounded-full shadow-lg bg-background/90 hover:bg-background disabled:opacity-30"
+                  >
+                    <ChevronRight className="h-6 w-6" />
+                  </Button>
+                </div>
+              )}
+            </>
           ) : (
             <div className="flex items-center justify-center h-full">
               <p className="text-muted-foreground">Failed to load PDF preview</p>
