@@ -19,6 +19,7 @@ import { FormInput } from "@/components/forms/FormInput";
 import { useLongPressWithFeedback } from "@/hooks/useLongPressWithFeedback";
 import { useAccessibility } from "@/contexts/AccessibilityContext";
 import { PDFGenerateButton } from "@/components/pdf/PDFGenerateButton";
+import { PDFPreviewDialog } from "@/components/PDFPreviewDialog";
 import { FormButtonsRow } from "@/components/FormButtonsRow";
 import { useFormManager } from "@/hooks/useFormManager";
 import { useOBYAutoPopulation } from "@/hooks/useOBYAutoPopulation";
@@ -49,6 +50,8 @@ export default function CitizenshipForm() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [showClearAllDialog, setShowClearAllDialog] = useState(false);
   const [isFullView, setIsFullView] = useState(true);
+  const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null);
+  const [previewFormData, setPreviewFormData] = useState<any>({});
   
   // Use universal form manager (auto-save + validation + unsaved changes)
   const {
@@ -79,9 +82,23 @@ export default function CitizenshipForm() {
 
 
   const handleGeneratePDF = async (url: string) => {
-    // URL received from pdf-simple edge function
     console.log('[CitizenshipForm] PDF generated:', url);
-    // Could open preview dialog here in future
+    setPdfPreviewUrl(url);
+    setPreviewFormData(formData);
+  };
+
+  const handleRegeneratePDF = async () => {
+    setPdfPreviewUrl(null);
+  };
+
+  const handleDownloadEditable = async () => {
+    if (!pdfPreviewUrl) return;
+    window.open(pdfPreviewUrl, '_blank');
+  };
+
+  const handleDownloadFinal = async () => {
+    if (!pdfPreviewUrl) return;
+    window.open(pdfPreviewUrl, '_blank');
   };
 
   const {
@@ -524,6 +541,17 @@ export default function CitizenshipForm() {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
+
+        <PDFPreviewDialog
+          open={!!pdfPreviewUrl}
+          onClose={() => setPdfPreviewUrl(null)}
+          pdfUrl={pdfPreviewUrl || ""}
+          formData={previewFormData}
+          onRegeneratePDF={handleRegeneratePDF}
+          onDownloadEditable={handleDownloadEditable}
+          onDownloadFinal={handleDownloadFinal}
+          documentTitle="Citizenship Application"
+        />
       </div>
     </div>
   );

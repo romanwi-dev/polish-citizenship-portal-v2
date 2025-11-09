@@ -27,6 +27,8 @@ import { useRealtimeFormSync } from "@/hooks/useRealtimeFormSync";
 import { CountrySelect } from "@/components/CountrySelect";
 import { FormButtonsRow } from "@/components/FormButtonsRow";
 import { useFormManager } from "@/hooks/useFormManager";
+import { PDFGenerateButton } from "@/components/pdf/PDFGenerateButton";
+import { PDFPreviewDialog } from "@/components/PDFPreviewDialog";
 import { 
   CIVIL_REGISTRY_FORM_REQUIRED_FIELDS,
   CIVIL_REGISTRY_DATE_FIELDS 
@@ -38,6 +40,8 @@ export default function CivilRegistryForm() {
   const { isLargeFonts, toggleFontSize } = useAccessibility();
   const [showClearDialog, setShowClearDialog] = useState(false);
   const [isFullView, setIsFullView] = useState(true);
+  const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null);
+  const [previewFormData, setPreviewFormData] = useState<any>({});
   
   // Use universal form manager (auto-save + validation + unsaved changes)
   const {
@@ -60,6 +64,26 @@ export default function CivilRegistryForm() {
     await handleClearAll();
     setShowClearDialog(false);
     toast.success('All form data cleared');
+  };
+
+  const handleGeneratePDF = async (url: string) => {
+    console.log('[CivilRegistryForm] PDF generated:', url);
+    setPdfPreviewUrl(url);
+    setPreviewFormData(formData);
+  };
+
+  const handleRegeneratePDF = async () => {
+    setPdfPreviewUrl(null);
+  };
+
+  const handleDownloadEditable = async () => {
+    if (!pdfPreviewUrl) return;
+    window.open(pdfPreviewUrl, '_blank');
+  };
+
+  const handleDownloadFinal = async () => {
+    if (!pdfPreviewUrl) return;
+    window.open(pdfPreviewUrl, '_blank');
   };
   const renderDateField = (name: string, label: string, delay = 0) => {
     // Convert ISO format to DD.MM.YYYY for display
@@ -440,6 +464,19 @@ export default function CivilRegistryForm() {
             </div>
           </motion.div>
         </div>
+
+        {/* Generate PDF Button */}
+        <div className="mt-12 flex justify-center pb-8">
+          <PDFGenerateButton
+            caseId={caseId!}
+            templateType="registration"
+            onGenerate={handleGeneratePDF}
+          >
+            <span className="text-emerald-100 font-heading font-black text-2xl md:text-3xl px-12 py-4">
+              Generate PDF
+            </span>
+          </PDFGenerateButton>
+        </div>
       </div>
 
 
@@ -460,6 +497,17 @@ export default function CivilRegistryForm() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <PDFPreviewDialog
+        open={!!pdfPreviewUrl}
+        onClose={() => setPdfPreviewUrl(null)}
+        pdfUrl={pdfPreviewUrl || ""}
+        formData={previewFormData}
+        onRegeneratePDF={handleRegeneratePDF}
+        onDownloadEditable={handleDownloadEditable}
+        onDownloadFinal={handleDownloadFinal}
+        documentTitle="Civil Registry Application"
+      />
 
     </div>;
 }
