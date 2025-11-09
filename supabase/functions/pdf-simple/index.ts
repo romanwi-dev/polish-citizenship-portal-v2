@@ -396,8 +396,18 @@ Deno.serve(async (req) => {
       .from('pdf-templates')
       .download(templatePath);
 
-    if (downloadError) throw downloadError;
-    if (!templateBlob) throw new Error('Template not found');
+    if (downloadError) {
+      console.error('[pdf-simple] Template download failed:', {
+        templatePath,
+        error: downloadError,
+        message: downloadError.message,
+        statusCode: (downloadError as any).statusCode
+      });
+      throw new Error(`Template "${templatePath}" not found in storage. Please upload the template file.`);
+    }
+    if (!templateBlob) {
+      throw new Error(`Template "${templatePath}" not found in storage`);
+    }
 
     // Step 3: Load and fill PDF
     console.log('[pdf-simple] Loading PDF...');
