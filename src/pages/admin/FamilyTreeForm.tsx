@@ -436,13 +436,13 @@ export default function FamilyTreeForm() {
                 <ArrowLeft className="h-3.5 w-3.5 md:h-6 md:w-6" />
               </Button>
               <Button
-                onClick={() => setIsFullView(!isFullView)}
                 variant="ghost"
                 size="icon"
-                className="h-7 w-7 md:h-10 md:w-10"
-                title={isFullView ? "Collapse to Tabs" : "Expand All Sections"}
+                className="h-7 w-7 md:h-10 md:w-10 opacity-50 cursor-not-allowed"
+                title="Expand (Disabled)"
+                disabled
               >
-                {isFullView ? <Minimize2 className="h-3.5 w-3.5 md:h-6 md:w-6" /> : <Maximize2 className="h-3.5 w-3.5 md:h-6 md:w-6" />}
+                <Maximize2 className="h-3.5 w-3.5 md:h-6 md:w-6" />
               </Button>
               <Button
                 onClick={() => navigate('/login')}
@@ -802,7 +802,6 @@ export default function FamilyTreeForm() {
                   formData={formData}
                   handleInputChange={handleInputChange}
                   personType="child"
-                  sex={formData[`child_${num}_sex`]}
                   colorScheme="children"
                 />
 
@@ -1501,28 +1500,12 @@ export default function FamilyTreeForm() {
                           { name: `child_${num}_dob`, label: "Date of birth", type: "date" }
                         ], 'children')}
 
-                        <div className="grid grid-cols-1 gap-6">
-                          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="space-y-2">
-                            <Label className={isLargeFonts ? "text-2xl" : ""}>Sex</Label>
-                            <Select value={formData[`child_${num}_sex`] || ""} onValueChange={(value) => handleInputChange(`child_${num}_sex`, value)}>
-                              <SelectTrigger className="h-20 text-2xl border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
-                                <SelectValue placeholder="Select" />
-                              </SelectTrigger>
-                              <SelectContent className="bg-background border-2 z-50">
-                                <SelectItem value="M" className="text-base cursor-pointer">Male / Chłopiec</SelectItem>
-                                <SelectItem value="F" className="text-base cursor-pointer">Female / Dziewczynka</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </motion.div>
-                        </div>
-
                         <FamilyMemberDocumentsSection
                           prefix={`child_${num}`}
                           title={`Child ${num} Required Documents`}
                           formData={formData}
                           handleInputChange={handleInputChange}
                           personType="child"
-                          sex={formData[`child_${num}_sex`]}
                           colorScheme="children"
                         />
                       </Fragment>
