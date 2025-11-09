@@ -472,7 +472,7 @@ export const NotesSection = ({ formData, handleInputChange, clearField, isLargeF
         <Textarea
           value={formData?.notes || ""}
           onChange={(e) => handleInputChange("notes", e.target.value)}
-          placeholder="Add any additional notes or information..."
+          placeholder=""
           className={cn(
             "min-h-[200px] border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur font-normal",
             isLargeFonts ? "text-2xl" : "text-xl"

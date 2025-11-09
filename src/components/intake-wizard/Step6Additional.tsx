@@ -23,7 +23,7 @@ export const Step6Additional = ({ formData, onChange, dontKnowFields, onDontKnow
           id="notes"
           value={formData.client_notes || ''}
           onChange={(e) => onChange('client_notes', e.target.value)}
-          placeholder="Please share any additional information that might be helpful for your citizenship application..."
+          placeholder=""
           rows={6}
           disabled={dontKnowFields.has('client_notes')}
         />
