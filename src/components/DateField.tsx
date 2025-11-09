@@ -125,11 +125,27 @@ export function DateField({
     return formatted;
   };
 
+  // Convert database format (YYYY-MM-DD) to display format (DD.MM.YYYY)
+  const convertToDisplayFormat = (dateStr: string): string => {
+    if (!dateStr) return '';
+    
+    // Check if it's in YYYY-MM-DD format
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+      const [year, month, day] = dateStr.split('-');
+      return `${day}.${month}.${year}`;
+    }
+    
+    // Already in DD.MM.YYYY format or partial input
+    return dateStr;
+  };
+
+  const displayValue = convertToDisplayFormat(value);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
     
     // Allow backspace/delete by checking if input is shorter
-    if (input.length < value.length) {
+    if (input.length < displayValue.length) {
       onChange(input);
       setError("");
       return;
@@ -173,16 +189,16 @@ export function DateField({
           id={name}
           type="text"
           inputMode="numeric"
-          value={value || ""}
+          value={displayValue || ""}
           onChange={handleChange}
           placeholder="DD.MM.YYYY"
           maxLength={10}
           disabled={notApplicableValue}
           className={cn(
-            "h-16 md:h-20 text-base md:text-lg border-2 transition-all duration-300 backdrop-blur font-normal placeholder:opacity-40 font-input-work w-full",
+            "h-16 md:h-20 text-xl md:text-2xl border-2 transition-all duration-300 backdrop-blur font-normal placeholder:opacity-40 font-input-work w-full",
             scheme.bg,
             scheme.border,
-            isLargeFonts && "text-xl md:text-2xl",
+            isLargeFonts && "text-2xl md:text-3xl",
             error && "border-destructive",
             notApplicableValue && "bg-cyan-950/30 border-cyan-700 text-cyan-300 cursor-not-allowed"
           )}
