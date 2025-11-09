@@ -468,12 +468,15 @@ export const NotesSection = ({ formData, handleInputChange, clearField, isLargeF
     </div>
     <div className="space-y-6">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="form-field-container space-y-2" onDoubleClick={() => clearField("notes")}>
-        <Label className={isLargeFonts ? "text-2xl" : ""}>Additional information</Label>
+        <Label className={isLargeFonts ? "text-2xl" : "text-xl"}>Additional information</Label>
         <Textarea
           value={formData?.notes || ""}
           onChange={(e) => handleInputChange("notes", e.target.value)}
           placeholder="Add any additional notes or information..."
-          className="min-h-[200px] border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs"
+          className={cn(
+            "min-h-[200px] border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur font-normal",
+            isLargeFonts ? "text-2xl" : "text-xl"
+          )}
         />
       </motion.div>
     </div>

@@ -439,19 +439,17 @@ async function fillTemplate(
           const textField = form.getTextField(fieldName);
           textField.setText(String(value));
           
-          // Apply PDF FONT standard ONLY for POA templates
-          if (isPOA) {
-            if (isDateField && regularFont) {
-              // Date fields: regular (non-bold) font, smaller size
-              textField.updateAppearances(regularFont);
-              textField.setFontSize(10); // Fixed smaller size for dates
-              textField.defaultUpdateAppearances(regularFont);
-            } else if (boldFont) {
-              // Non-date fields: bold font, auto-size
-              textField.updateAppearances(boldFont);
-              textField.setFontSize(0); // 0 = auto-size to fit field
-              textField.defaultUpdateAppearances(boldFont);
-            }
+          // Apply PDF FONT standard for ALL templates (not just POA)
+          if (isDateField && regularFont) {
+            // Date fields: regular (non-bold) font, same size as other fields
+            textField.updateAppearances(regularFont);
+            textField.setFontSize(0); // Auto-size to fit field (same as other fields)
+            textField.defaultUpdateAppearances(regularFont);
+          } else if (boldFont && isPOA) {
+            // Non-date fields in POA: bold font, auto-size
+            textField.updateAppearances(boldFont);
+            textField.setFontSize(0); // 0 = auto-size to fit field
+            textField.defaultUpdateAppearances(boldFont);
           }
         }
       } catch (e) {
