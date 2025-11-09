@@ -472,7 +472,6 @@ export const CaseCard = memo(({
                     navigate(`/admin/family-tree/${clientCase.id}`);
                   }}
                 >
-                  <GitBranch className="h-3 w-3 text-purple-400" />
                   <span className="font-medium">Family Tree</span>
                 </Button>
                 
@@ -491,18 +490,6 @@ export const CaseCard = memo(({
                 <Button
                   size="sm"
                   className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 min-h-[44px] flex items-center justify-center bg-primary/5 dark:bg-transparent"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      window.open('/family-tree.pdf', '_blank');
-                    }}
-                  >
-                    <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-medium">
-                      Family Tree
-                    </span>
-                  </Button>
-                  <Button
-                    size="sm"
-                    className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 min-h-[44px] flex items-center justify-center px-3 whitespace-nowrap flex-shrink-0 bg-primary/5 dark:bg-transparent"
                     onClick={(e) => {
                       e.stopPropagation();
                       navigate(`/admin/cases/${clientCase.id}?tab=documents`);
@@ -558,7 +545,6 @@ export const CaseCard = memo(({
                       navigate(`/admin/family-tree-view/${clientCase.id}`);
                     }}
                   >
-                    <GitBranch className="h-5 w-5 mr-2 text-cyan-400" />
                     <span className="font-bold text-base">Interactive Tree</span>
                   </Button>
 
@@ -575,7 +561,6 @@ export const CaseCard = memo(({
                       }
                     }}
                   >
-                    <FolderOpen className="h-3.5 w-3.5" />
                     <span className="relative z-10 bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-500 dark:from-emerald-400 dark:via-emerald-300 dark:to-teal-300 bg-clip-text text-transparent flex items-center justify-center font-medium">
                       Open Dropbox Folder
                     </span>
