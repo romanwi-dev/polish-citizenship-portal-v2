@@ -21,7 +21,7 @@ export function BulkPDFGenerator({ caseId }: BulkPDFGeneratorProps) {
 
   return (
     <>
-      <div className="flex justify-center items-center py-2 md:py-3">
+      <div className="flex justify-center items-center py-0 mb-2 md:mb-4">
         <Button
           onClick={handleGenerate}
           disabled={isGenerating}
