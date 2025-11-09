@@ -297,10 +297,13 @@ export default function CivilRegistryForm() {
                 type: "date"
               }])}
               
-                {renderFieldGroup([{
+              {/* Maiden name - only for females */}
+              {formData.applicant_sex === 'F' && renderFieldGroup([{
                 name: "applicant_maiden_name",
                 label: "Maiden name / Nazwisko rodowe"
-              }, {
+              }])}
+              
+              {renderFieldGroup([{
                 name: "applicant_email",
                 label: "Email",
                 type: "email"

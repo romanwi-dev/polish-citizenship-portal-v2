@@ -340,8 +340,12 @@ export default function CitizenshipForm() {
                     ])}
                 </div>
                 
+                {/* Maiden name - only for females */}
+                {formData.applicant_sex === 'F' && renderFieldGroup([
+                  { name: "applicant_maiden_name", label: "Nazwisko rodowe / Maiden name" }
+                ])}
+                
                 {renderFieldGroup([
-                  { name: "applicant_maiden_name", label: "Nazwisko rodowe / Maiden name" },
                   { name: "father_first_name", label: "Imię i nazwisko ojca / Father's full name" }
                 ])}
                 

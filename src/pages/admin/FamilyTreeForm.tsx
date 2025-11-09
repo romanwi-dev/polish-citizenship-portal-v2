@@ -630,25 +630,27 @@ export default function FamilyTreeForm() {
                   isNameField: true
                 }], 'applicant')}
 
-                {/* Row 2: Maiden name */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}
-                    className="space-y-2"
-                  >
-                    <Label className={isLargeFonts ? "text-2xl" : ""}>
-                      Maiden name
-                    </Label>
-                    <Input
-                      value={formData.applicant_maiden_name || ""}
-                      onChange={(e) => handleInputChange("applicant_maiden_name", e.target.value.toUpperCase())}
-                      className="h-16 md:h-20 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
-                      style={{ fontSize: '1.125rem', fontWeight: '400' }}
-                    />
-                  </motion.div>
-                </div>
+                {/* Row 2: Maiden name (only for females) */}
+                {formData.applicant_sex === 'F' && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4 }}
+                      className="space-y-2"
+                    >
+                      <Label className={isLargeFonts ? "text-2xl" : ""}>
+                        Maiden name
+                      </Label>
+                      <Input
+                        value={formData.applicant_maiden_name || ""}
+                        onChange={(e) => handleInputChange("applicant_maiden_name", e.target.value.toUpperCase())}
+                        className="h-16 md:h-20 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                        style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                      />
+                    </motion.div>
+                  </div>
+                )}
 
                 {/* Row 3: Places - Birth & Marriage */}
                 {renderFieldGroup([{
@@ -1374,18 +1376,20 @@ export default function FamilyTreeForm() {
                     { name: "applicant_last_name", label: "Full last name", isNameField: true }
                   ], 'applicant')}
 
-                  {/* Row 2: Maiden name */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="space-y-2">
-                      <Label className={isLargeFonts ? "text-2xl" : ""}>Maiden name</Label>
-                      <Input
-                        value={formData.applicant_maiden_name || ""}
-                        onChange={(e) => handleInputChange("applicant_maiden_name", e.target.value.toUpperCase())}
-                        className="h-16 md:h-20 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
-                        style={{ fontSize: '1.125rem', fontWeight: '400' }}
-                      />
-                    </motion.div>
-                  </div>
+                  {/* Row 2: Maiden name (only for females) */}
+                  {formData.applicant_sex === 'F' && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="space-y-2">
+                        <Label className={isLargeFonts ? "text-2xl" : ""}>Maiden name</Label>
+                        <Input
+                          value={formData.applicant_maiden_name || ""}
+                          onChange={(e) => handleInputChange("applicant_maiden_name", e.target.value.toUpperCase())}
+                          className="h-16 md:h-20 border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur uppercase"
+                          style={{ fontSize: '1.125rem', fontWeight: '400' }}
+                        />
+                      </motion.div>
+                    </div>
+                  )}
 
                   {/* Row 3: Places - Birth & Marriage */}
                   {renderFieldGroup([
