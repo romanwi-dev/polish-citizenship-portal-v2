@@ -76,62 +76,65 @@ export default function FamilyHistoryForm() {
       </div>
       
       <div className="relative z-10 pt-2 px-3 pb-3 md:p-6">
-        <div className="animate-fade-in-up mb-1 md:mb-6">
-          <div className="flex flex-col gap-2 md:gap-4 pb-2 md:pb-6">
-            <h2 className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight text-center">
-              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Family History
-              </span>
-            </h2>
-            <div className="flex items-center justify-center gap-1 md:gap-3">
-              <Button
-                onClick={() => navigate('/admin/forms-demo')}
-                variant="ghost"
-                size="icon"
-                className="h-7 w-7 md:h-10 md:w-10"
-                title="Back to Control Room"
-              >
-                <ArrowLeft className="h-3.5 w-3.5 md:h-6 md:w-6" />
-              </Button>
-              <Button
-                onClick={() => setIsFullView(!isFullView)}
-                variant="ghost"
-                size="icon"
-                className="h-7 w-7 md:h-10 md:w-10"
-                title={isFullView ? "Collapse to Tabs" : "Expand All Sections"}
-              >
-                {isFullView ? <Minimize2 className="h-3.5 w-3.5 md:h-6 md:w-6" /> : <Maximize2 className="h-3.5 w-3.5 md:h-6 md:w-6" />}
-              </Button>
-              <Button
-                onClick={() => navigate('/login')}
-                variant="ghost"
-                size="icon"
-                className="h-7 w-7 md:h-10 md:w-10"
-                title="Login / Register"
-              >
-                <User className="h-3.5 w-3.5 md:h-6 md:w-6" />
-              </Button>
-              <Button
-                onClick={toggleFontSize}
-                variant="ghost"
-                size="icon"
-                className="h-7 w-7 md:h-10 md:w-10"
-                title="Toggle font size"
-              >
-                <Type className="h-3.5 w-3.5 md:h-6 md:w-6" />
-              </Button>
-              <Button
-                onClick={() => window.open('https://docs.lovable.dev', '_blank')}
-                variant="ghost"
-                size="icon"
-                className="h-7 w-7 md:h-10 md:w-10"
-                title="Help"
-              >
-                <BookOpen className="h-3.5 w-3.5 md:h-6 md:w-6" />
-              </Button>
-            </div>
+        <motion.div 
+          initial={{ opacity: 0, y: -50 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          transition={{ duration: 0.8 }}
+          className="mb-1 md:mb-6"
+        >
+          <h2 className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight text-center">
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              Family History
+            </span>
+          </h2>
+          <div className="flex items-center justify-center gap-3 md:gap-6 mt-2 md:mt-4">
+            <Button
+              onClick={() => navigate('/admin/forms-demo')}
+              variant="ghost"
+              size="icon"
+              className="h-7 w-7 md:h-10 md:w-10"
+              title="Back to Control Room"
+            >
+              <ArrowLeft className="h-3.5 w-3.5 md:h-6 md:w-6" />
+            </Button>
+            <Button
+              onClick={() => setIsFullView(!isFullView)}
+              variant="ghost"
+              size="icon"
+              className="h-7 w-7 md:h-10 md:w-10"
+              title={isFullView ? "Collapse to Tabs" : "Expand All Sections"}
+            >
+              {isFullView ? <Minimize2 className="h-3.5 w-3.5 md:h-6 md:w-6" /> : <Maximize2 className="h-3.5 w-3.5 md:h-6 md:w-6" />}
+            </Button>
+            <Button
+              onClick={() => navigate('/login')}
+              variant="ghost"
+              size="icon"
+              className="h-7 w-7 md:h-10 md:w-10"
+              title="Login / Register"
+            >
+              <User className="h-3.5 w-3.5 md:h-6 md:w-6" />
+            </Button>
+            <Button
+              onClick={toggleFontSize}
+              variant="ghost"
+              size="icon"
+              className="h-7 w-7 md:h-10 md:w-10"
+              title="Toggle font size"
+            >
+              <Type className="h-3.5 w-3.5 md:h-6 md:w-6" />
+            </Button>
+            <Button
+              onClick={() => window.open('https://docs.lovable.dev', '_blank')}
+              variant="ghost"
+              size="icon"
+              className="h-7 w-7 md:h-10 md:w-10"
+              title="Help"
+            >
+              <BookOpen className="h-3.5 w-3.5 md:h-6 md:w-6" />
+            </Button>
           </div>
-        </div>
+        </motion.div>
 
         <FormButtonsRow
           caseId={caseId!}
