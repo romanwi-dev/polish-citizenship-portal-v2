@@ -594,7 +594,7 @@ export const POAOCRScanner = ({ caseId, onDataExtracted, onComplete, childrenCou
             <Button 
               onClick={confirmPersonSelection}
               disabled={!selectedPerson || !selectedDocType}
-              className="w-full"
+              className="w-full h-16 mt-8 text-base"
             >
               Continue to Document Upload
             </Button>
