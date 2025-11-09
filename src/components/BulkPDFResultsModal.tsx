@@ -181,8 +181,7 @@ export function BulkPDFResultsModal({
         {/* Bottom Action Buttons */}
         <div className="flex justify-center gap-2 md:gap-4 pt-3 md:pt-4 flex-shrink-0">
           <Button onClick={onClose} variant="outline" size="sm" className="md:h-11 h-8 px-3 md:px-6">
-            <X className="h-3 w-3 md:h-4 md:w-4 md:mr-2" />
-            <span className="hidden md:inline">Close</span>
+            Close
           </Button>
           <Button 
             onClick={handlePreviewAll} 
@@ -191,9 +190,7 @@ export function BulkPDFResultsModal({
             className="md:h-11 h-8 px-3 md:px-6"
             disabled={successfulResults.length === 0}
           >
-            <Eye className="h-3 w-3 md:h-4 md:w-4 md:mr-2" />
-            <span className="hidden sm:inline">Preview All</span>
-            <span className="sm:hidden">All</span>
+            Preview
           </Button>
           <Button 
             onClick={handleDownloadAll}
@@ -201,9 +198,7 @@ export function BulkPDFResultsModal({
             className="md:h-11 h-8 px-3 md:px-6"
             disabled={successfulResults.length === 0}
           >
-            <Download className="h-3 w-3 md:h-4 md:w-4 md:mr-2" />
-            <span className="hidden sm:inline">Download All</span>
-            <span className="sm:hidden">All</span>
+            Download
           </Button>
         </div>
 
