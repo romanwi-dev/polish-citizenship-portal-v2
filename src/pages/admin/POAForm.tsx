@@ -261,15 +261,19 @@ export default function POAForm() {
       poaTypes.push('adult');
       
       // Generate spouses POA if married
+      console.log('[POAForm] Marriage check:', { showSpousePOA, maritalStatus: formData.applicant_marital_status });
       if (showSpousePOA) {
         poaTypes.push('spouses');
       }
       
       // Generate ONE minor POA if there are any minor children
       // (the pdf-simple minor template is generic, not per-child)
+      console.log('[POAForm] Minor check:', { minorChildrenCount });
       if (minorChildrenCount > 0) {
         poaTypes.push('minor');
       }
+
+      console.log('[POAForm] POA types to generate:', poaTypes);
 
       if (poaTypes.length === 0) {
         toast.error('No POA types to generate');
@@ -307,6 +311,8 @@ export default function POAForm() {
         }
       }
 
+      console.log('[POAForm] Generation complete:', { generatedTypes, resultsKeys: Object.keys(results) });
+
       if (generatedTypes.length === 0) {
         toast.dismiss(loadingToast);
         toast.error('Failed to generate any POAs');
@@ -315,6 +321,13 @@ export default function POAForm() {
       }
 
       // Update state with PDF URLs and open preview
+      console.log('[POAForm] Setting state:', { 
+        pdfUrls: results, 
+        generatedPOATypes: generatedTypes,
+        firstPdfUrl: results[generatedTypes[0]],
+        activePOAType: generatedTypes[0]
+      });
+      
       setPdfUrls(results);
       setGeneratedPOATypes(generatedTypes);
       setPdfPreviewUrl(results[generatedTypes[0]]); // Show first POA
