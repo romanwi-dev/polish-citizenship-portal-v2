@@ -631,7 +631,7 @@ export default function FamilyTreeForm() {
                 }], 'applicant')}
 
                 {/* Row 2: Maiden name (only for females) */}
-                {formData.applicant_sex === 'F' && renderFieldGroup([{
+                {formData?.applicant_sex === 'F' && renderFieldGroup([{
                   name: "applicant_maiden_name",
                   label: "Maiden name",
                   isNameField: true
@@ -1362,7 +1362,7 @@ export default function FamilyTreeForm() {
                   ], 'applicant')}
 
                   {/* Row 2: Maiden name (only for females) */}
-                  {formData.applicant_sex === 'F' && renderFieldGroup([{
+                  {formData?.applicant_sex === 'F' && renderFieldGroup([{
                     name: "applicant_maiden_name",
                     label: "Maiden name",
                     isNameField: true
