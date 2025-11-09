@@ -9,6 +9,7 @@ import { Loader2, Save, Download, FileText, Sparkles, Type, User, ArrowLeft, Hel
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
+import { detectDevice } from "@/utils/deviceDetection";
 import { POAFormField } from "@/components/POAFormField";
 import { poaFormConfigs } from "@/config/poaFormConfig";
 import { DateField } from "@/components/DateField";
@@ -165,7 +166,7 @@ export default function POAForm() {
     }
     
     try {
-      toast.loading('Locking PDF for printing...');
+      toast.loading('Preparing PDF...');
       
       // Get current user for lock-pdf function
       const { data: { user } } = await supabase.auth.getUser();
@@ -186,16 +187,53 @@ export default function POAForm() {
         throw new Error(error?.message || 'Failed to create final PDF');
       }
       
-      // Download the locked PDF
-      const link = document.createElement("a");
-      link.href = data.url;
-      link.download = `POA-${activePOAType.toUpperCase()}-FINAL-${caseId}.pdf`;
-      link.click();
-      
+      // Fetch PDF as Blob
+      const response = await fetch(data.url);
+      const blob = await response.blob();
+      const filename = `POA-${activePOAType.toUpperCase()}-FINAL-${caseId}.pdf`;
+
       toast.dismiss();
-      toast.success('Final PDF downloaded (locked for printing)');
+
+      // Mobile-first: Use native share if available
+      const device = detectDevice();
+      if ((device.isIOS || device.isAndroid) && navigator.share) {
+        try {
+          const file = new File([blob], filename, { type: 'application/pdf' });
+          
+          // Check if sharing is supported
+          if (navigator.canShare && !navigator.canShare({ files: [file] })) {
+            throw new Error('File sharing not supported');
+          }
+          
+          await navigator.share({
+            files: [file],
+            title: 'POA Final PDF',
+            text: `Power of Attorney - ${activePOAType.toUpperCase()}`
+          });
+          
+          toast.success("PDF shared successfully");
+          return;
+        } catch (shareError: any) {
+          // User cancelled or share failed - fall through to download
+          if (shareError.name !== 'AbortError') {
+            console.log("Share cancelled or not available:", shareError);
+          }
+        }
+      }
+
+      // Desktop fallback: Standard download
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      toast.success('PDF downloaded');
     } catch (error: any) {
-      console.error('[POAForm] Failed to lock PDF:', error);
+      console.error('[POAForm] Failed to prepare PDF:', error);
       toast.dismiss();
       toast.error('Failed to generate final PDF: ' + error.message);
     }
