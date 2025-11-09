@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, Clock, FileText, Mail, Award } from "lucide-react";
+import { CheckCircle2, Clock, FileText, Mail, Award, GitBranch } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 
@@ -100,6 +100,21 @@ export const KPIStrip = ({
           </Badge>
         );
       })}
+      
+      <Badge 
+        variant="secondary" 
+        className="min-w-[70px] justify-center cursor-pointer transition-all hover:scale-105 hover:border-cyan-500 hover:bg-cyan-500/20 gap-1"
+        onClick={(e) => {
+          e.stopPropagation();
+          if (caseId) {
+            navigate(`/admin/family-tree-view/${caseId}`);
+          }
+        }}
+        title="View Interactive Family Tree"
+      >
+        <GitBranch className="h-3 w-3" />
+        Tree
+      </Badge>
       
       <Badge 
         variant="secondary" 
