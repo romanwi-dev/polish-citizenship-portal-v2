@@ -26,7 +26,7 @@ export function BulkPDFGenerator({ caseId }: BulkPDFGeneratorProps) {
           onClick={handleGenerate}
           disabled={isGenerating}
           size="lg"
-          className="text-2xl md:text-3xl font-heading font-black tracking-wide px-8 py-4 md:px-16 md:py-6 h-auto min-h-[48px] rounded-lg bg-blue-900/60 hover:bg-blue-900/80 text-white backdrop-blur-md border-2 border-blue-600/40 hover:border-blue-500/60 transition-colors duration-300"
+          className="text-2xl md:text-3xl font-heading font-black tracking-wide px-8 py-4 md:px-16 md:py-6 h-auto min-h-[48px] w-[280px] md:w-[380px] rounded-lg bg-blue-900/60 hover:bg-blue-900/80 text-white backdrop-blur-md border-2 border-blue-600/40 hover:border-blue-500/60 transition-colors duration-300"
         >
           {isGenerating ? (
             <>
