@@ -3,9 +3,10 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { User, Users, FileText, CheckCircle2, AlertCircle, Edit, Download, Plus, Mic } from "lucide-react";
+import { User, Users, FileText, CheckCircle2, AlertCircle, Edit, Download, Plus, Eye, EyeOff, Sparkles, Map, Clock, Maximize2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Person {
   firstName: string;
@@ -90,15 +91,21 @@ const PersonCardInteractive = ({
     : fullName;
 
   return (
-    <Card className={cn(
-      "p-3 relative overflow-hidden group hover:shadow-lg transition-all border-border/50 cursor-pointer",
-      variant === "greatgrandparent" && "bg-accent/5 border-accent/20 min-w-[160px]",
-      variant === "grandparent" && "bg-accent/10 border-accent/30 min-w-[180px]",
-      variant === "parent" && "bg-secondary/10 border-secondary/30 min-w-[200px]",
-      variant === "spouse" && "bg-secondary/10 border-secondary/30 min-w-[200px]",
-      variant === "client" && "bg-primary/10 border-primary/50 min-w-[240px]"
-    )}
-    onClick={() => onEdit?.(personType)}>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ scale: 1.02, y: -4 }}
+      transition={{ type: "spring", stiffness: 300 }}
+    >
+      <Card className={cn(
+        "p-3 relative overflow-hidden group hover:shadow-2xl transition-all border-border/50 cursor-pointer",
+        variant === "greatgrandparent" && "bg-gradient-to-br from-accent/5 to-accent/10 border-accent/30 min-w-[160px]",
+        variant === "grandparent" && "bg-gradient-to-br from-accent/10 to-accent/15 border-accent/40 min-w-[180px]",
+        variant === "parent" && "bg-gradient-to-br from-secondary/10 to-secondary/15 border-secondary/40 min-w-[200px]",
+        variant === "spouse" && "bg-gradient-to-br from-secondary/10 to-secondary/15 border-secondary/40 min-w-[200px]",
+        variant === "client" && "bg-gradient-to-br from-primary/10 to-primary/15 border-primary/50 min-w-[240px]"
+      )}
+      onClick={() => onEdit?.(personType)}>
       {/* Status bar */}
       <div className={cn(
         "absolute top-0 left-0 right-0 h-1 bg-gradient-to-r",
@@ -165,6 +172,7 @@ const PersonCardInteractive = ({
         )}
       </div>
     </Card>
+    </motion.div>
   );
 };
 
@@ -185,6 +193,16 @@ export const FamilyTreeInteractive = ({
   onOpenMasterTable
 }: FamilyTreeInteractiveProps) => {
   const [selectedPerson, setSelectedPerson] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<'compact' | 'standard' | 'full'>('standard');
+  const [showBloodline, setShowBloodline] = useState(false);
+  const [showOnlyMissing, setShowOnlyMissing] = useState(false);
+
+  // Determine Polish bloodline
+  const isPolish = (person?: Person) => {
+    // You can enhance this by adding an isPolish flag to Person interface
+    return person?.placeOfBirth?.toLowerCase().includes('poland') || 
+           person?.placeOfBirth?.toLowerCase().includes('polska');
+  };
 
   const allPeople = [
     { person: clientData, type: 'client', title: 'Client' },
@@ -221,79 +239,167 @@ export const FamilyTreeInteractive = ({
   return (
     <div className="space-y-6">
       {/* Header with actions */}
-      <div className="flex items-start justify-between gap-4 flex-wrap">
+      <motion.div 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex items-start justify-between gap-4 flex-wrap"
+      >
         <div>
-          <h2 className="text-2xl font-bold mb-2">Interactive Family Tree</h2>
+          <h2 className="text-3xl font-bold mb-2 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            Interactive Family Tree
+          </h2>
           <p className="text-muted-foreground">Complete visualization with document tracking</p>
         </div>
         <div className="flex gap-2 flex-wrap">
           <Button 
-            onClick={onOpenMasterTable}
-            className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-light bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/30 opacity-50 transition-colors"
+            onClick={() => setShowBloodline(!showBloodline)}
+            variant={showBloodline ? "default" : "outline"}
+            className="transition-all hover:scale-105"
           >
-            <Edit className="mr-2 h-4 w-4 md:h-5 md:w-5 opacity-50" />
-            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-light">Master Data</span>
+            <Sparkles className="mr-2 h-4 w-4" />
+            Polish Bloodline
+          </Button>
+          <Button 
+            onClick={() => setShowOnlyMissing(!showOnlyMissing)}
+            variant={showOnlyMissing ? "default" : "outline"}
+            className="transition-all hover:scale-105"
+          >
+            {showOnlyMissing ? <Eye className="mr-2 h-4 w-4" /> : <EyeOff className="mr-2 h-4 w-4" />}
+            Show Missing
+          </Button>
+          <Button 
+            onClick={() => {
+              const modes: Array<'compact' | 'standard' | 'full'> = ['compact', 'standard', 'full'];
+              const currentIndex = modes.indexOf(viewMode);
+              setViewMode(modes[(currentIndex + 1) % modes.length]);
+              toast.success(`View mode: ${modes[(currentIndex + 1) % modes.length]}`);
+            }}
+            variant="outline"
+            className="transition-all hover:scale-105"
+          >
+            <Maximize2 className="mr-2 h-4 w-4" />
+            {viewMode === 'compact' ? 'Compact' : viewMode === 'standard' ? 'Standard' : 'Full'}
+          </Button>
+          <Button 
+            onClick={onOpenMasterTable}
+            variant="outline"
+            className="transition-all hover:scale-105"
+          >
+            <Edit className="mr-2 h-4 w-4" />
+            Master Data
           </Button>
           <Button 
             onClick={handlePrint}
-            className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-light bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/30 opacity-50 transition-colors"
+            variant="outline"
+            className="transition-all hover:scale-105"
           >
-            <Download className="mr-2 h-4 w-4 md:h-5 md:w-5 opacity-50" />
-            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-light">Print</span>
-          </Button>
-          <Button 
-            onClick={handleExport}
-            className="h-10 md:h-12 lg:h-14 px-4 md:px-6 lg:px-8 text-sm md:text-base lg:text-lg font-light bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/30 opacity-50 transition-colors"
-          >
-            <FileText className="mr-2 h-4 w-4 md:h-5 md:w-5 opacity-50" />
-            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-light">Export</span>
+            <Download className="mr-2 h-4 w-4" />
+            Print
           </Button>
         </div>
-      </div>
+      </motion.div>
 
       {/* Overall progress */}
-      <Card className="p-6 bg-gradient-to-br from-primary/5 to-secondary/5">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="font-semibold">Case Completion Status</h3>
-          <Badge variant={completionRate === 100 ? "default" : "secondary"} className="text-lg px-3 py-1">
-            {completionRate}%
-          </Badge>
-        </div>
-        <div className="w-full bg-muted rounded-full h-4 overflow-hidden">
-          <div 
-            className={cn(
-              "h-full transition-all duration-500 rounded-full",
-              completionRate === 100 ? "bg-green-600" :
-              completionRate >= 70 ? "bg-blue-600" :
-              completionRate >= 40 ? "bg-yellow-600" : "bg-red-600"
-            )}
-            style={{ width: `${completionRate}%` }}
-          />
-        </div>
-        <div className="grid grid-cols-3 gap-4 mt-4 text-center">
-          <div>
-            <div className="text-2xl font-bold text-primary">{totalPeople}</div>
-            <p className="text-xs text-muted-foreground">Family Members</p>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.1 }}
+      >
+        <Card className="p-6 bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10 border-2 border-primary/20 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -z-10" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl -z-10" />
+          
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-semibold text-lg">Case Completion Status</h3>
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", stiffness: 200 }}
+            >
+              <Badge 
+                variant={completionRate === 100 ? "default" : "secondary"} 
+                className={cn(
+                  "text-lg px-4 py-1.5 font-bold",
+                  completionRate === 100 && "bg-green-600 animate-pulse"
+                )}
+              >
+                {completionRate}%
+              </Badge>
+            </motion.div>
           </div>
-          <div>
-            <div className="text-2xl font-bold text-secondary">{completedDocs}/{totalDocs}</div>
-            <p className="text-xs text-muted-foreground">Documents</p>
+          
+          <div className="w-full bg-muted/50 rounded-full h-6 overflow-hidden border border-border/50 shadow-inner">
+            <motion.div 
+              initial={{ width: 0 }}
+              animate={{ width: `${completionRate}%` }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              className={cn(
+                "h-full transition-all duration-500 rounded-full relative overflow-hidden",
+                completionRate === 100 ? "bg-gradient-to-r from-green-500 to-green-600" :
+                completionRate >= 70 ? "bg-gradient-to-r from-blue-500 to-blue-600" :
+                completionRate >= 40 ? "bg-gradient-to-r from-yellow-500 to-orange-500" : 
+                "bg-gradient-to-r from-red-500 to-red-600"
+              )}
+            >
+              <div className="absolute inset-0 bg-white/20 animate-pulse" />
+            </motion.div>
           </div>
-          <div>
-            <div className="text-2xl font-bold text-accent">{12 - totalPeople}</div>
-            <p className="text-xs text-muted-foreground">Missing Profiles</p>
+          
+          <div className="grid grid-cols-3 gap-4 mt-6">
+            <motion.div 
+              className="text-center p-4 rounded-lg bg-primary/5 border border-primary/20"
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <div className="text-3xl font-bold text-primary mb-1">{totalPeople}</div>
+              <p className="text-xs text-muted-foreground">Family Members</p>
+            </motion.div>
+            <motion.div 
+              className="text-center p-4 rounded-lg bg-secondary/5 border border-secondary/20"
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <div className="text-3xl font-bold text-secondary mb-1">{completedDocs}/{totalDocs}</div>
+              <p className="text-xs text-muted-foreground">Documents</p>
+            </motion.div>
+            <motion.div 
+              className="text-center p-4 rounded-lg bg-accent/5 border border-accent/20"
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <div className="text-3xl font-bold text-accent mb-1">{12 - totalPeople}</div>
+              <p className="text-xs text-muted-foreground">Missing Profiles</p>
+            </motion.div>
           </div>
-        </div>
-      </Card>
+        </Card>
+      </motion.div>
 
       {/* Tree Visualization */}
-      <div className="relative space-y-8">
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+        className="relative space-y-8"
+      >
         {/* Polish Great Grandfathers Only */}
-        <div>
-          <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
-            <Users className="h-4 w-4" />
-            Polish Great Grandfathers (4th Generation)
-          </h3>
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-sm font-semibold flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              <span className="bg-gradient-to-r from-accent to-accent/70 bg-clip-text text-transparent">
+                Polish Great Grandfathers (4th Generation)
+              </span>
+            </h3>
+            {showBloodline && (
+              <Badge variant="outline" className="bg-red-950/30 border-red-900/50 text-red-400">
+                🇵🇱 Polish Bloodline Origin
+              </Badge>
+            )}
+          </div>
           <p className="text-xs text-muted-foreground mb-4">
             Only the 2 Polish great-grandfathers are relevant. Great-grandmothers excluded per process requirements.
           </p>
@@ -313,7 +419,7 @@ export const FamilyTreeInteractive = ({
               onEdit={onEdit}
             />
           </div>
-        </div>
+        </motion.div>
 
         {/* Grandparents Layer */}
         <div>
@@ -410,7 +516,7 @@ export const FamilyTreeInteractive = ({
             />
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Document Gap Analysis */}
       <Card className="p-6">
