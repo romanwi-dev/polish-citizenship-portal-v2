@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState, useRef, lazy, Suspense, useEffect } from "react";
-import { Loader2, Save, Download, FileText, Sparkles, Type, User, ArrowLeft, HelpCircle, Maximize2, Minimize2, Users, Baby, Heart } from "lucide-react";
+import { Loader2, Save, Download, FileText, Camera, Type, User, ArrowLeft, HelpCircle, Maximize2, Minimize2, Users, Baby, Heart } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -534,14 +534,16 @@ export default function POAForm() {
               {/* Link to POA OCR Wizard */}
               <div className="mt-8 mb-8">
                 <Button
-                  variant="outline"
-                  size="lg"
                   onClick={() => navigate(`/admin/cases/${caseId}/poa-ocr`)}
-                  className="w-full"
+                  className="w-full bg-gradient-to-r from-primary via-secondary to-accent hover:opacity-90"
+                  size="lg"
                 >
-                  <Sparkles className="h-5 w-5 mr-2" />
-                  Open POA OCR Wizard
+                  <Camera className="h-5 w-5 mr-2" />
+                  Scan Documents with OCR
                 </Button>
+                <p className="text-sm text-muted-foreground mt-2 text-center">
+                  Use OCR to automatically extract data from passport and birth certificate
+                </p>
               </div>
             </div>
 
@@ -944,7 +946,6 @@ export default function POAForm() {
                 </Button>
                 <Button 
                   onClick={handleDownloadFinal}
-                  className={isMobile ? "w-full h-12" : ""}
                 >
                   <Download className="h-4 w-4 mr-2" />
                   Download Final
