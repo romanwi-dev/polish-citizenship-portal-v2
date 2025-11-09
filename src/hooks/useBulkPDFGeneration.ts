@@ -90,10 +90,25 @@ export function useBulkPDFGeneration(caseId: string) {
     }
   };
 
-  const downloadPDF = (url: string, templateType: string) => {
+  const downloadPDF = async (url: string, templateType: string) => {
     if (!url) return;
-    window.open(url, '_blank');
-    toast.success(`Downloading ${templateType} PDF`);
+    
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = `${templateType}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(blobUrl);
+      document.body.removeChild(a);
+      toast.success(`Downloaded ${templateType} PDF`);
+    } catch (error) {
+      console.error('Download failed:', error);
+      toast.error(`Failed to download ${templateType} PDF`);
+    }
   };
 
   return {
