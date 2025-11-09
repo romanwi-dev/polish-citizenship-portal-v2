@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { CheckCircle2, XCircle, Download, Eye, X } from 'lucide-react';
+import { CheckCircle2, XCircle, Download, Eye, X, Sparkles, Printer } from 'lucide-react';
+import { getDefaultCopies } from '@/lib/pdf-print-config';
 import { PDFPreviewDialog } from '@/components/PDFPreviewDialog';
 import { toast } from 'sonner';
 
@@ -75,6 +76,11 @@ export function BulkPDFResultsModal({
     }
   };
 
+  const handleOptimize = (url: string, templateType: string) => {
+    toast.info('PDF optimization coming soon');
+    // TODO: Implement PDF optimization (compression, enhancement)
+  };
+
   const handleDownloadAll = async () => {
     if (successfulResults.length === 0) {
       toast.error('No successful PDFs to download');
@@ -107,6 +113,45 @@ export function BulkPDFResultsModal({
     
     toast.dismiss();
     toast.success(`Downloaded ${successfulResults.length} PDFs`);
+  };
+
+  const handlePrintAll = async () => {
+    if (successfulResults.length === 0) {
+      toast.error('No successful PDFs to print');
+      return;
+    }
+
+    // Calculate total copies needed
+    const totalCopies = successfulResults.reduce((sum, result) => {
+      return sum + getDefaultCopies(result.templateType);
+    }, 0);
+
+    toast.loading(`Preparing ${successfulResults.length} PDFs (${totalCopies} copies total) for printing...`);
+
+    try {
+      for (const result of successfulResults) {
+        if (result.url) {
+          const copies = getDefaultCopies(result.templateType);
+          // Open each PDF in a new window for printing
+          const printWindow = window.open(result.url, '_blank');
+          if (printWindow) {
+            printWindow.onload = () => {
+              setTimeout(() => {
+                printWindow.print();
+              }, 500);
+            };
+          }
+          // Small delay between opening print windows
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+      }
+      
+      toast.dismiss();
+      toast.success(`Opened ${successfulResults.length} PDFs for printing (${totalCopies} copies total)`);
+    } catch (error) {
+      console.error('Failed to print PDFs:', error);
+      toast.error('Failed to print PDFs');
+    }
   };
 
   return (
@@ -164,6 +209,16 @@ export function BulkPDFResultsModal({
                       <span className="hidden md:inline">Preview</span>
                     </Button>
                     <Button
+                      onClick={() => handleOptimize(result.url!, result.templateType)}
+                      size="sm"
+                      variant="secondary"
+                      className="h-7 md:h-9 px-2 md:px-3"
+                      disabled
+                    >
+                      <Sparkles className="h-3 w-3 md:h-4 md:w-4 md:mr-2" />
+                      <span className="hidden md:inline">Optimize</span>
+                    </Button>
+                    <Button
                       onClick={() => onDownload(result.url!, result.templateType)}
                       size="sm"
                       className="h-7 md:h-9 px-2 md:px-3"
@@ -199,6 +254,16 @@ export function BulkPDFResultsModal({
             disabled={successfulResults.length === 0}
           >
             Download
+          </Button>
+          <Button 
+            onClick={handlePrintAll}
+            size="sm"
+            variant="secondary"
+            className="md:h-11 h-8 px-6 md:px-12 flex-1 md:flex-initial md:w-[140px]"
+            disabled={successfulResults.length === 0}
+          >
+            <Printer className="h-4 w-4 mr-2" />
+            Print
           </Button>
         </div>
 
