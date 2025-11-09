@@ -408,20 +408,6 @@ export const CaseCard = memo(({
 
           {!isFlipped && (
             <div className="space-y-3 sm:space-y-4 mt-auto pt-5 sm:pt-5">
-              {/* Interactive Family Tree Button */}
-              <Button
-                size="lg"
-                variant="outline"
-                className="w-full py-7 border-2 border-cyan-500/30 hover:border-cyan-500/50 hover:bg-cyan-500/10 transition-all shadow-lg hover:shadow-cyan-500/20"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate(`/admin/family-tree-view/${clientCase.id}`);
-                }}
-              >
-                <GitBranch className="h-5 w-5 mr-2 text-cyan-400" />
-                <span className="font-bold text-base">Interactive Tree</span>
-              </Button>
-
               {/* Control Room Button - Premium Feature */}
               <Button
                 size="lg"
@@ -474,8 +460,22 @@ export const CaseCard = memo(({
                 </span>
               </Button>
 
-              {/* Action Buttons - 3 rows of 3 */}
+              {/* Action Buttons - 3 rows of 3 + Family Tree Form Link */}
               <div className="grid grid-cols-3 gap-2 pt-3 border-t border-border/30">
+                {/* Small Family Tree Form Button */}
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="h-10 border border-purple-500/30 hover:border-purple-500/50 hover:bg-purple-500/10 transition-all text-xs flex items-center justify-center gap-1"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/admin/family-tree/${clientCase.id}`);
+                  }}
+                >
+                  <GitBranch className="h-3 w-3 text-purple-400" />
+                  <span className="font-medium">Family Tree</span>
+                </Button>
+                
                 <Button
                   size="sm"
                   className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 min-h-[44px] flex items-center justify-center bg-primary/5 dark:bg-transparent"
@@ -548,6 +548,21 @@ export const CaseCard = memo(({
                       Stage
                     </span>
                   </Button>
+                  {/* Interactive Family Tree Button - Positioned Above Dropbox */}
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="w-full col-span-3 py-7 border-2 border-cyan-500/30 hover:border-cyan-500/50 hover:bg-cyan-500/10 transition-all shadow-lg hover:shadow-cyan-500/20"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/admin/family-tree-view/${clientCase.id}`);
+                    }}
+                  >
+                    <GitBranch className="h-5 w-5 mr-2 text-cyan-400" />
+                    <span className="font-bold text-base">Interactive Tree</span>
+                  </Button>
+
+                  {/* Dropbox Folder Button */}
                   <Button
                     size="sm"
                     className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border-2 border-emerald-500/50 dark:border-emerald-400/30 min-h-[44px] flex items-center justify-center gap-1.5 px-3 whitespace-nowrap flex-shrink-0 bg-emerald-500/5 dark:bg-transparent col-span-3"
