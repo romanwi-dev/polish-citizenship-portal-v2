@@ -34,12 +34,8 @@ import StickyActionBar from "@/components/StickyActionBar";
 type ColorScheme = 'children' | 'applicant' | 'spouse' | 'parents' | 'grandparents' | 'ggp' | 'poa' | 'citizenship' | 'civil-reg';
 
 // ⚠️ LOCKED DESIGN - DO NOT MODIFY CONDITIONAL RENDERING LOGIC
-// Conditional rendering controlled by 4 master fields (READ-ONLY in this form):
-// 1. applicant_sex (M/F) - SET IN INTAKE WIZARD, DISPLAY ONLY HERE
-// 2. applicant_marital_status (Married/Single) - SET IN INTAKE WIZARD, DISPLAY ONLY HERE
-// 3. children_count (0-10) - SET IN INTAKE WIZARD, DISPLAY ONLY HERE
-// 4. minor_children_count (0 to children_count) - SET IN INTAKE WIZARD, DISPLAY ONLY HERE
-// ⚠️ THESE 4 FIELDS MUST BE LOCKED (DISABLED) IN FAMILY TREE FORM
+// All fields are editable independently in this form
+// Family Tree can be filled at any time regardless of Intake Wizard data
 
 export default function FamilyTreeForm() {
   const { id: caseId } = useParams();
@@ -545,73 +541,59 @@ export default function FamilyTreeForm() {
                   {/* Left column: Gender and Marital Status */}
                   <div className="space-y-6">
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-2">
-                      <Label className={isLargeFonts ? "text-2xl" : ""}>Gender (Set in Intake)</Label>
-                      <Select value={formData?.applicant_sex || ""} disabled>
-                        <SelectTrigger 
-                          className="h-16 border-2 bg-muted/50 cursor-not-allowed opacity-60 text-xs"
-                          style={{
-                            boxShadow: "none",
-                          }}
-                        >
-                          <SelectValue placeholder="Select" className="text-xs" />
+                      <Label className={isLargeFonts ? "text-2xl" : ""}>Gender</Label>
+                      <Select value={formData?.applicant_sex || ""} onValueChange={(value) => handleInputChange('applicant_sex', value)}>
+                        <SelectTrigger className="h-20 text-2xl border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                          <SelectValue placeholder="Select" />
                         </SelectTrigger>
                         <SelectContent className="bg-background border-2 z-50">
-                          <SelectItem value="M" className="text-xs cursor-pointer">Male</SelectItem>
-                          <SelectItem value="F" className="text-xs cursor-pointer">Female</SelectItem>
+                          <SelectItem value="M" className="text-base cursor-pointer">Male</SelectItem>
+                          <SelectItem value="F" className="text-base cursor-pointer">Female</SelectItem>
                         </SelectContent>
                       </Select>
-                      <p className="text-xs text-muted-foreground italic">Locked: Change in Intake Wizard</p>
                     </motion.div>
 
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-2">
-                      <Label className={isLargeFonts ? "text-2xl" : ""}>Marital status (Set in Intake)</Label>
-                      <Select value={formData?.applicant_marital_status || ""} disabled>
-                        <SelectTrigger 
-                          className="h-16 border-2 bg-muted/50 cursor-not-allowed opacity-60 text-xs"
-                          style={{
-                            boxShadow: "none",
-                          }}
-                        >
-                          <SelectValue placeholder="Select" className="text-xs" />
+                      <Label className={isLargeFonts ? "text-2xl" : ""}>Marital status</Label>
+                      <Select value={formData?.applicant_marital_status || ""} onValueChange={(value) => handleInputChange('applicant_marital_status', value)}>
+                        <SelectTrigger className="h-20 text-2xl border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
+                          <SelectValue placeholder="Select" />
                         </SelectTrigger>
                         <SelectContent className="bg-background border-2 z-50">
-                          <SelectItem value="Married" className="text-xs cursor-pointer">Married</SelectItem>
-                          <SelectItem value="Single" className="text-xs cursor-pointer">Single</SelectItem>
+                          <SelectItem value="Married" className="text-base cursor-pointer">Married</SelectItem>
+                          <SelectItem value="Single" className="text-base cursor-pointer">Single</SelectItem>
                         </SelectContent>
                       </Select>
-                      <p className="text-xs text-muted-foreground italic">Locked: Change in Intake Wizard</p>
                     </motion.div>
                   </div>
 
                   {/* Right column: Children counts */}
                   <div className="space-y-6">
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="space-y-2">
-                      <Label className={isLargeFonts ? "text-2xl" : ""}>Children (Set in Intake)</Label>
-                      <Select value={formData?.children_count?.toString() || ""} disabled>
-                        <SelectTrigger className="h-16 border-2 bg-muted/50 cursor-not-allowed opacity-60 text-xs">
+                      <Label className={isLargeFonts ? "text-2xl" : ""}>Children</Label>
+                      <Select value={formData?.children_count?.toString() || ""} onValueChange={(value) => handleInputChange('children_count', parseInt(value))}>
+                        <SelectTrigger className="h-20 text-2xl border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
                           <SelectValue placeholder="Select" />
                         </SelectTrigger>
                         <SelectContent className="bg-background border-2 z-50">
-                          {[0,1,2,3,4,5,6,7,8,9,10].map(n => <SelectItem key={n} value={n.toString()}>{n}</SelectItem>)}
+                          {[0,1,2,3,4,5,6,7,8,9,10].map(n => <SelectItem key={n} value={n.toString()} className="text-base cursor-pointer">{n}</SelectItem>)}
                         </SelectContent>
                       </Select>
-                      <p className="text-xs text-muted-foreground italic">Locked: Change in Intake Wizard</p>
                     </motion.div>
 
                     {formData?.children_count > 0 && (
                       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-2">
-                        <Label className={isLargeFonts ? "text-2xl" : ""}>Minors (Set in Intake)</Label>
-                        <Select value={formData?.minor_children_count?.toString() || ""} disabled>
-                          <SelectTrigger className="h-16 border-2 bg-muted/50 cursor-not-allowed opacity-60 text-xs">
+                        <Label className={isLargeFonts ? "text-2xl" : ""}>Minors</Label>
+                        <Select value={formData?.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange('minor_children_count', parseInt(value))}>
+                          <SelectTrigger className="h-20 text-2xl border-2 hover-glow focus:shadow-lg transition-all bg-card/50 backdrop-blur">
                             <SelectValue placeholder="Select" />
                           </SelectTrigger>
                           <SelectContent className="bg-background border-2 z-50">
                             {Array.from({length: formData.children_count + 1}, (_, i) => i).map(n => 
-                              <SelectItem key={n} value={n.toString()}>{n}</SelectItem>
+                              <SelectItem key={n} value={n.toString()} className="text-base cursor-pointer">{n}</SelectItem>
                             )}
                           </SelectContent>
                         </Select>
-                        <p className="text-xs text-muted-foreground italic">Locked: Change in Intake Wizard</p>
                       </motion.div>
                     )}
                   </div>
