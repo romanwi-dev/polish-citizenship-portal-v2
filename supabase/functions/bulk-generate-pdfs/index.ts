@@ -57,7 +57,7 @@ Deno.serve(async (req) => {
       { type: 'poa-spouses', name: 'POA Spouses' },
       { type: 'family-tree', name: 'Family Tree' },
       { type: 'citizenship', name: 'Citizenship Application' },
-      { type: 'registration', name: 'Civil Registry' },
+      { type: 'transcription', name: 'Civil Registry' },
     ];
 
     const results: PDFResult[] = [];
