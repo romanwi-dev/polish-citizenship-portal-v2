@@ -1372,7 +1372,7 @@ export default function FamilyTreeForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 w-full">
                   {/* Left column: Gender and Status */}
                   <div className="space-y-6">
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="form-field-container space-y-2">
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="form-field-container space-y-2" onDoubleClick={() => handleInputChange("applicant_sex", null)}>
                       <Label className={isLargeFonts ? "text-2xl" : ""}>Gender</Label>
                       <Select value={formData.applicant_sex || ""} onValueChange={(value) => handleInputChange("applicant_sex", value)}>
                         <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs">
@@ -1385,9 +1385,9 @@ export default function FamilyTreeForm() {
                       </Select>
                     </motion.div>
 
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="form-field-container space-y-2">
-                      <Label className={isLargeFonts ? "text-2xl" : ""}>Status</Label>
-                      <Select value={formData.applicant_is_married === true ? "Married" : "Single"} onValueChange={(value) => handleInputChange("applicant_is_married", value === "Married")}>
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="form-field-container space-y-2" onDoubleClick={() => handleInputChange("applicant_marital_status", null)}>
+                      <Label className={isLargeFonts ? "text-2xl" : ""}>Marital status</Label>
+                      <Select value={formData.applicant_marital_status || ""} onValueChange={(value) => handleInputChange("applicant_marital_status", value)}>
                         <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs">
                           <SelectValue placeholder="Select" />
                         </SelectTrigger>
@@ -1401,7 +1401,7 @@ export default function FamilyTreeForm() {
 
                   {/* Right column: Children and Minor Children */}
                   <div className="space-y-6">
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="form-field-container space-y-2">
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="form-field-container space-y-2" onDoubleClick={() => handleInputChange("children_count", null)}>
                       <Label className={isLargeFonts ? "text-2xl" : ""}>Children</Label>
                       <Select value={formData.children_count?.toString() || ""} onValueChange={(value) => handleInputChange("children_count", parseInt(value))}>
                         <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs">
@@ -1416,7 +1416,7 @@ export default function FamilyTreeForm() {
                     </motion.div>
 
                     {formData.children_count > 0 && (
-                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.175 }} className="form-field-container space-y-2">
+                      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.175 }} className="form-field-container space-y-2" onDoubleClick={() => handleInputChange("minor_children_count", null)}>
                         <Label className={isLargeFonts ? "text-2xl" : ""}>Minors</Label>
                         <Select value={formData.minor_children_count?.toString() || ""} onValueChange={(value) => handleInputChange("minor_children_count", parseInt(value))}>
                           <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs">
