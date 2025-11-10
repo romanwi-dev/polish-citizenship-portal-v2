@@ -7,9 +7,14 @@ import { Loader2, CheckCircle2, XCircle, AlertTriangle, Sparkles } from "lucide-
 import { runTripleVerification, TripleVerificationResponse } from "@/utils/tripleVerification";
 import { useToast } from "@/hooks/use-toast";
 
-export function VerificationCommandB() {
-  const [analysis, setAnalysis] = useState("");
-  const [context, setContext] = useState("");
+interface VerificationCommandBProps {
+  defaultAnalysis?: string;
+  defaultContext?: string;
+}
+
+export function VerificationCommandB({ defaultAnalysis = "", defaultContext = "" }: VerificationCommandBProps) {
+  const [analysis, setAnalysis] = useState(defaultAnalysis);
+  const [context, setContext] = useState(defaultContext);
   const [result, setResult] = useState<TripleVerificationResponse | null>(null);
   const [isVerifying, setIsVerifying] = useState(false);
   const { toast } = useToast();
