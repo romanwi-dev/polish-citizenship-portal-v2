@@ -8,16 +8,29 @@ function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    let hideTimer: NodeJS.Timeout;
+
     const toggleVisibility = () => {
       if (window.scrollY > 300) {
         setIsVisible(true);
+        
+        // Clear existing timer
+        clearTimeout(hideTimer);
+        
+        // Hide button 2 seconds after scrolling stops
+        hideTimer = setTimeout(() => {
+          setIsVisible(false);
+        }, 2000);
       } else {
         setIsVisible(false);
       }
     };
 
     window.addEventListener("scroll", toggleVisibility);
-    return () => window.removeEventListener("scroll", toggleVisibility);
+    return () => {
+      window.removeEventListener("scroll", toggleVisibility);
+      clearTimeout(hideTimer);
+    };
   }, []);
 
   const scrollToTop = () => {
