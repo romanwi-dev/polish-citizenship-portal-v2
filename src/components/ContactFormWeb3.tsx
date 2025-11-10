@@ -229,25 +229,25 @@ const ContactFormWeb3 = () => {
                 icon: Zap, 
                 label: "AI Accurate Response", 
                 value: "< 5 mins",
-                details: "Our advanced AI analyzes your eligibility based on 25,000+ cases and Polish citizenship law. Get instant preliminary assessment with document checklist and potential obstacles identified automatically."
+                details: "Advanced AI analyzes your case instantly based on 25,000+ cases and Polish law. Get preliminary assessment with document checklist."
               },
               { 
                 icon: Mail, 
                 label: "Human Detailed Response", 
                 value: "< 1 hour",
-                details: "Expert legal team reviews your case personally. Receive comprehensive analysis covering your specific situation, timeline estimates, required documents, and strategic recommendations from experienced citizenship lawyers."
+                details: "Expert legal team reviews your case personally. Receive comprehensive analysis with timeline estimates and strategic recommendations."
               },
               { 
                 icon: Clock, 
                 label: "Consultation Availability", 
                 value: "24/7",
-                details: "Book consultations at your convenience across all time zones. Video calls, phone, or email - we're available when you need us. Global team ensures someone is always ready to help with urgent questions."
+                details: "Book consultations at your convenience across all time zones. Video calls, phone, or email - we're available when you need us."
               },
               { 
                 icon: Gift, 
                 label: "Initial Assessment", 
                 value: "Free",
-                details: "No obligation, no cost for initial eligibility review. We analyze your family history and determine your chances before any commitment. Only proceed if we're confident in your success - 100% success rate maintained."
+                details: "No obligation, no cost for initial eligibility review. We analyze your family history and determine your chances before any commitment."
               }
             ].map((stat, i) => (
               <div 
@@ -265,7 +265,7 @@ const ContactFormWeb3 = () => {
                 >
                   {/* Front Side */}
                   <div 
-                    className="glass-card p-6 rounded-lg hover-glow w-full"
+                    className="glass-card p-6 rounded-lg hover-glow w-full min-h-[180px] flex flex-col"
                     style={{ 
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden'
@@ -276,12 +276,12 @@ const ContactFormWeb3 = () => {
                       {stat.value}
                     </div>
                     <div className="text-sm text-muted-foreground">{stat.label}</div>
-                    <div className="text-xs text-primary/50 mt-2">Click for details</div>
+                    <div className="text-xs text-primary/50 mt-auto pt-2">Click for details</div>
                   </div>
 
                   {/* Back Side */}
                   <div 
-                    className="glass-card p-6 rounded-lg w-full absolute top-0 left-0 min-h-full flex flex-col justify-center"
+                    className="glass-card p-6 rounded-lg w-full absolute top-0 left-0 min-h-[180px] flex flex-col justify-center"
                     style={{ 
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
@@ -289,10 +289,10 @@ const ContactFormWeb3 = () => {
                     }}
                   >
                     <div className="text-xs text-primary/70 mb-2 font-semibold">{stat.label}</div>
-                    <p className="text-sm text-foreground/80 leading-relaxed">
+                    <p className="text-xs text-foreground/80 leading-relaxed">
                       {stat.details}
                     </p>
-                    <div className="text-xs text-primary/50 mt-3">Click to flip back</div>
+                    <div className="text-xs text-primary/50 mt-auto pt-2">Click to flip back</div>
                   </div>
                 </div>
               </div>
