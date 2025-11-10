@@ -1,18 +1,85 @@
 import { motion } from "framer-motion";
-import euFlag from "@/assets/flags/eu-flag.png";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { useRef, useMemo } from "react";
+import * as THREE from "three";
+import { useTexture } from "@react-three/drei";
+
+interface WavingFlagProps {
+  position: [number, number, number];
+  flagUrl: string;
+}
+
+function WavingFlag({ position, flagUrl }: WavingFlagProps) {
+  const meshRef = useRef<THREE.Mesh>(null);
+  const texture = useTexture(flagUrl);
+  
+  const geometry = useMemo(() => {
+    const geo = new THREE.PlaneGeometry(2, 1.5, 32, 32);
+    return geo;
+  }, []);
+
+  useFrame((state) => {
+    if (!meshRef.current) return;
+    
+    const positions = meshRef.current.geometry.attributes.position;
+    const time = state.clock.getElapsedTime();
+    
+    for (let i = 0; i < positions.count; i++) {
+      const x = positions.getX(i);
+      const y = positions.getY(i);
+      
+      const waveX = Math.sin(x * 2 + time * 2) * 0.1;
+      const waveY = Math.sin(y * 3 + time * 1.5) * 0.05;
+      
+      positions.setZ(i, waveX + waveY);
+    }
+    
+    positions.needsUpdate = true;
+    meshRef.current.geometry.computeVertexNormals();
+  });
+
+  return (
+    <mesh ref={meshRef} position={position} geometry={geometry}>
+      <meshStandardMaterial 
+        map={texture} 
+        side={THREE.DoubleSide}
+        roughness={0.8}
+        metalness={0.2}
+      />
+    </mesh>
+  );
+}
+
+function Scene() {
+  const flags = useMemo(() => [
+    { url: "https://flagcdn.com/w320/pl.png", position: [-6, 1, 0] as [number, number, number] },
+    { url: "https://flagcdn.com/w320/cz.png", position: [-3.5, 0.5, -1] as [number, number, number] },
+    { url: "https://flagcdn.com/w320/hu.png", position: [-1, 1.2, 0.5] as [number, number, number] },
+    { url: "https://flagcdn.com/w320/de.png", position: [1.5, 0.8, -0.5] as [number, number, number] },
+    { url: "https://flagcdn.com/w320/eu.png", position: [0, -0.5, 2] as [number, number, number], scale: 1.5 },
+    { url: "https://flagcdn.com/w320/fr.png", position: [4, 0.5, 0] as [number, number, number] },
+    { url: "https://flagcdn.com/w320/at.png", position: [-2, -1, 1] as [number, number, number] },
+    { url: "https://flagcdn.com/w320/it.png", position: [6, 1.2, -1] as [number, number, number] },
+  ], []);
+
+  return (
+    <>
+      <ambientLight intensity={0.6} />
+      <directionalLight position={[10, 10, 5]} intensity={1.5} />
+      <pointLight position={[-10, -10, -5]} intensity={0.5} />
+      
+      {flags.map((flag, index) => (
+        <WavingFlag 
+          key={index} 
+          position={flag.position} 
+          flagUrl={flag.url}
+        />
+      ))}
+    </>
+  );
+}
 
 const EuropeanFlags = () => {
-  const flagCountries = [
-    { code: "PL", name: "Poland" },
-    { code: "CZ", name: "Czech Republic" },
-    { code: "HU", name: "Hungary" },
-    { code: "DE", name: "Germany" },
-    { code: "FR", name: "France" },
-    { code: "AT", name: "Austria" },
-    { code: "IT", name: "Italy" },
-    { code: "BE", name: "Belgium" },
-  ];
-
   return (
     <section className="relative py-16 md:py-24 overflow-hidden">
       <div className="container mx-auto px-4">
@@ -21,7 +88,7 @@ const EuropeanFlags = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center mb-8 relative z-10"
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
             European Union Citizenship
@@ -31,71 +98,27 @@ const EuropeanFlags = () => {
           </p>
         </motion.div>
 
-        <div className="flex flex-wrap justify-center items-center gap-6 md:gap-8">
-          {flagCountries.map((country, index) => (
-            <motion.div
-              key={country.code}
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="relative group"
-            >
-              <div className="w-20 h-14 md:w-24 md:h-16 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
-                <motion.img
-                  src={`https://flagcdn.com/w320/${country.code.toLowerCase()}.png`}
-                  alt={`${country.name} flag`}
-                  className="w-full h-full object-cover"
-                  animate={{
-                    rotateY: [0, 5, -5, 0],
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    delay: index * 0.2,
-                    ease: "easeInOut",
-                  }}
-                />
-              </div>
-              <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-                <span className="text-xs text-muted-foreground">{country.name}</span>
-              </div>
-            </motion.div>
-          ))}
+        <div className="w-full h-[400px] md:h-[500px] rounded-xl overflow-hidden glass-card">
+          <Canvas
+            camera={{ position: [0, 0, 8], fov: 50 }}
+            style={{ background: 'transparent' }}
+          >
+            <Scene />
+          </Canvas>
         </div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
           viewport={{ once: true }}
-          className="mt-16 flex justify-center"
+          className="mt-8 text-center"
         >
-          <div className="glass-card p-8 rounded-xl max-w-md">
-            <div className="flex items-center justify-center mb-4">
-              <img 
-                src="https://flagcdn.com/w320/eu.png" 
-                alt="European Union flag" 
-                className="w-32 h-24 object-cover rounded-lg shadow-lg"
-              />
-            </div>
-            <p className="text-center text-sm text-muted-foreground">
-              Freedom of movement across the European Union
-            </p>
-          </div>
+          <p className="text-sm text-muted-foreground max-w-lg mx-auto">
+            Freedom of movement across the European Union - work, study, and reside in any EU member state
+          </p>
         </motion.div>
       </div>
-
-      <style>{`
-        @keyframes wave {
-          0%, 100% {
-            transform: rotateY(0deg);
-          }
-          50% {
-            transform: rotateY(10deg);
-          }
-        }
-      `}</style>
     </section>
   );
 };
