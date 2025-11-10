@@ -48,13 +48,13 @@ const HeroWeb3 = () => {
       </div>
 
       {/* Warsaw Skyline - Full Width Background */}
-      <div className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] mb-12 md:mb-20 flex items-center justify-center">
-        <img src={warsawLineart} alt="Warsaw skyline illustration" className="w-full max-w-3xl opacity-70 md:opacity-50" style={{
-          mixBlendMode: 'screen',
-          filter: 'invert(1) brightness(0.9)',
-          display: 'block',
-          margin: '0 auto'
-        }} />
+      <div className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] mb-12 md:mb-20">
+        <div className="flex items-center justify-center">
+          <img src={warsawLineart} alt="Warsaw skyline illustration" className="max-w-3xl w-full opacity-70 md:opacity-50 mx-auto block" style={{
+            mixBlendMode: 'screen',
+            filter: 'invert(1) brightness(0.9)'
+          }} />
+        </div>
       </div>
 
       {/* Stats Badges */}
@@ -76,7 +76,7 @@ const HeroWeb3 = () => {
                 {/* Front */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center" style={{ backfaceVisibility: 'hidden' }}>
                   <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">&gt;25</h3>
-                  <p className="text-sm md:text-base font-medium">Years of Experience</p>
+                  <p className="text-sm md:text-base font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Years of Experience</p>
                 </div>
                 {/* Back */}
                 <div className="absolute inset-0 flex items-center justify-center p-4" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
@@ -100,7 +100,7 @@ const HeroWeb3 = () => {
                 {/* Front */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center" style={{ backfaceVisibility: 'hidden' }}>
                   <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent mb-2">&gt;25'000</h3>
-                  <p className="text-sm md:text-base font-medium">Cases Processed</p>
+                  <p className="text-sm md:text-base font-medium bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent">Cases Processed</p>
                 </div>
                 {/* Back */}
                 <div className="absolute inset-0 flex items-center justify-center p-4" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
@@ -124,7 +124,7 @@ const HeroWeb3 = () => {
                 {/* Front */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center" style={{ backfaceVisibility: 'hidden' }}>
                   <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent mb-2">100%</h3>
-                  <p className="text-sm md:text-base font-medium">Unmatched Success Rate</p>
+                  <p className="text-sm md:text-base font-medium bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">Unmatched Success Rate</p>
                 </div>
                 {/* Back */}
                 <div className="absolute inset-0 flex items-center justify-center p-4" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
