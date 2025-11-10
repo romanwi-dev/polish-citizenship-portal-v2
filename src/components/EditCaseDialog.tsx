@@ -13,6 +13,7 @@ import { useUpdateCase } from "@/hooks/useCases";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { useFormAutoSave } from "@/hooks/useFormAutoSave";
 
 interface EditCaseDialogProps {
   caseData: {
@@ -171,6 +172,40 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
     setPhotoFile(null);
     setPhotoPreview(null);
   };
+
+  // Auto-save handler
+  const handleAutoSave = async (data: typeof formData) => {
+    const countryValue = showOtherCountry ? otherCountry : data.country;
+    
+    await updateCaseMutation.mutateAsync({
+      caseId: caseData.id,
+      updates: {
+        client_name: data.client_name,
+        client_code: data.client_code || null,
+        country: countryValue,
+        status: data.status as any,
+        processing_mode: data.processing_mode as any,
+        push_scheme: data.push_scheme === "NONE" ? null : data.push_scheme,
+        payment_status: data.payment_status as any,
+        is_vip: data.is_vip,
+        notes: data.notes,
+        progress: data.progress,
+        start_date: formatDateForDatabase(data.start_date),
+        kpi_docs_percentage: data.kpi_docs_percentage,
+        client_score: data.client_score,
+      },
+    });
+    onUpdate();
+  };
+
+  // Enable auto-save
+  useFormAutoSave({
+    formData,
+    onSave: handleAutoSave,
+    delay: 2000,
+    enabled: open,
+  });
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
