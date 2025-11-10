@@ -21,9 +21,9 @@ const SkylineDivider = ({ imageSrc = warsawSkyline, alt = "Warsaw skyline" }: Sk
         <img 
           src={imageSrc} 
           alt={alt} 
-          className="w-full h-full object-cover opacity-50"
+          className="w-full h-full object-cover opacity-60"
           style={{
-            filter: 'brightness(0.6)'
+            filter: 'brightness(0.7)'
           }} 
         />
       </div>

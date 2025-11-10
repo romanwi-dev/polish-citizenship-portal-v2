@@ -52,9 +52,9 @@ const HeroWeb3 = () => {
         <img 
           src={warsawHero} 
           alt="Warsaw cityscape with Palace of Culture and Science" 
-          className="w-full h-auto opacity-50" 
+          className="w-full h-auto opacity-60" 
           style={{
-            filter: 'brightness(0.6)'
+            filter: 'brightness(0.7)'
           }} 
         />
       </div>
