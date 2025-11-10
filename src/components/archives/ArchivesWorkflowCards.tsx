@@ -213,8 +213,8 @@ export default function ArchivesWorkflowCards() {
                 </div>
 
                   <div className="hidden md:flex md:w-[16%] flex-shrink-0 justify-center relative z-10 items-center">
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary border-2 border-primary shadow-[0_0_30px_rgba(59,130,246,0.5)] transition-all duration-300 flex items-center justify-center">
-                      <span className="text-white font-heading font-bold text-3xl">{step.number}</span>
+                    <div className="w-16 h-16 rounded-full glass-card border-2 border-white/20 shadow-[0_0_30px_rgba(0,0,0,0.3)] transition-all duration-300 flex items-center justify-center">
+                      <span className="text-muted-foreground/50 font-heading font-bold text-3xl">{step.number}</span>
                     </div>
                   </div>
 
