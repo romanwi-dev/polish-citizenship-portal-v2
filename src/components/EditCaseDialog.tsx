@@ -271,7 +271,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
           {/* Basic Information - Enhanced Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-3">
-              <Label htmlFor="client_name" className="text-base font-semibold text-foreground">Client Name</Label>
+              <Label htmlFor="client_name" className="text-base font-semibold text-foreground">Client</Label>
               <Input
                 id="client_name"
                 value={formData.client_name}
@@ -282,7 +282,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
               />
             </div>
             <div className="space-y-3">
-              <Label htmlFor="client_code" className="text-base font-semibold text-foreground">Client Code</Label>
+              <Label htmlFor="client_code" className="text-base font-semibold text-foreground">Code</Label>
               <Select value={formData.client_code} onValueChange={(value) => setFormData({ ...formData, client_code: value })}>
                 <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-background/50 text-base h-12">
                   <SelectValue placeholder="Select client code" />
@@ -370,7 +370,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
           {/* Additional Case Details */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-3">
-              <Label htmlFor="processing_mode" className="text-base font-semibold text-foreground">Processing Mode</Label>
+              <Label htmlFor="processing_mode" className="text-base font-semibold text-foreground">Mode</Label>
               <Select value={formData.processing_mode} onValueChange={(value) => setFormData({ ...formData, processing_mode: value })}>
                 <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-background/50 text-base h-12">
                   <SelectValue placeholder="Select processing mode" />
@@ -384,7 +384,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
               </Select>
             </div>
             <div className="space-y-3">
-              <Label htmlFor="push_scheme" className="text-base font-semibold text-foreground">Push Scheme</Label>
+              <Label htmlFor="push_scheme" className="text-base font-semibold text-foreground">Schemes</Label>
               <Select value={formData.push_scheme || "NONE"} onValueChange={(value) => setFormData({ ...formData, push_scheme: value === "NONE" ? null : value })}>
                 <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-background/50 text-base h-12">
                   <SelectValue placeholder="Select push scheme" />
@@ -403,7 +403,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-3">
-              <Label htmlFor="payment_status" className="text-base font-semibold text-foreground">Payment Status</Label>
+              <Label htmlFor="payment_status" className="text-base font-semibold text-foreground">Payment</Label>
               <Select value={formData.payment_status} onValueChange={(value) => setFormData({ ...formData, payment_status: value })}>
                 <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-12">
                   <SelectValue placeholder="Select payment status" />
@@ -415,7 +415,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
               </Select>
             </div>
             <div className="space-y-3">
-              <Label htmlFor="start_date" className="text-base font-semibold text-foreground">Case Start</Label>
+              <Label htmlFor="start_date" className="text-base font-semibold text-foreground">Start</Label>
               <Input
                 id="start_date"
                 type="text"
