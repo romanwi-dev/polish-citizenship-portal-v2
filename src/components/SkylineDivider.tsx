@@ -17,11 +17,11 @@ const SkylineDivider = ({ imageSrc = warsawSkyline, alt = "Warsaw skyline" }: Sk
       />
       
       {/* Full-width skyline silhouette */}
-      <div className="absolute inset-0 flex items-center justify-center">
+      <div className="absolute inset-0">
         <img 
           src={imageSrc} 
           alt={alt} 
-          className="w-full h-full object-contain opacity-90"
+          className="w-full h-full object-cover opacity-90"
           style={{
             filter: 'brightness(1.1)'
           }} 
