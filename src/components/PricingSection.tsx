@@ -35,7 +35,7 @@ const FlippablePricingCard = ({
 
   return (
     <div 
-      className="h-[600px] cursor-pointer"
+      className="h-[700px] cursor-pointer"
       style={{ 
         perspective: '1000px'
       }}
@@ -50,7 +50,7 @@ const FlippablePricingCard = ({
       >
         {/* Front */}
         <div 
-          className={`absolute inset-0 glass-card p-8 rounded-3xl hover-glow ${badge ? 'border-2 border-primary/50' : ''}`}
+          className={`absolute inset-0 glass-card p-8 rounded-3xl hover-glow flex flex-col ${badge ? 'border-2 border-primary/50' : ''}`}
           style={{ backfaceVisibility: 'hidden' }}
         >
           {badge && (
@@ -81,7 +81,7 @@ const FlippablePricingCard = ({
             <div className="text-lg font-semibold">{timeline}</div>
           </div>
 
-          <ul className="space-y-3 mb-8">
+          <ul className="space-y-3 mb-8 flex-1">
             {features.map((feature, idx) => (
               <li key={idx} className="flex items-start gap-2">
                 <Check className={`w-5 h-5 ${checkColor} mt-0.5 flex-shrink-0`} />
@@ -90,15 +90,17 @@ const FlippablePricingCard = ({
             ))}
           </ul>
 
-          <Button 
-            className="w-full bg-red-900/50 hover:bg-red-900/60 text-white border-2 border-red-800/30 hover:border-red-700/50 shadow-[0_0_20px_rgba(127,29,29,0.4)] hover:shadow-[0_0_30px_rgba(127,29,29,0.6)] transition-all duration-300 hover:scale-105" 
-            onClick={(e) => {
-              e.stopPropagation();
-              onClick();
-            }}
-          >
-            {buttonText}
-          </Button>
+          <div className="mt-auto pt-4">
+            <Button 
+              className="w-full bg-red-900/50 hover:bg-red-900/60 text-white border-2 border-red-800/30 hover:border-red-700/50 shadow-[0_0_20px_rgba(127,29,29,0.4)] hover:shadow-[0_0_30px_rgba(127,29,29,0.6)] transition-all duration-300 hover:scale-105" 
+              onClick={(e) => {
+                e.stopPropagation();
+                onClick();
+              }}
+            >
+              {buttonText}
+            </Button>
+          </div>
         </div>
 
         {/* Back */}
