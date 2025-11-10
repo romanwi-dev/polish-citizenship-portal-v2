@@ -284,3 +284,15 @@ schedule = "*/2 * * * *"
 
 [functions.parse-document-ocr]
 verify_jwt = true
+
+[functions.run-phase-a-ocr]
+verify_jwt = false
+
+[functions.run-full-abex-ocr]
+verify_jwt = false
+
+[functions.clear-document-queue]
+verify_jwt = true
+
+[functions.link-dropbox-documents]
+verify_jwt = true
