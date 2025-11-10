@@ -2,7 +2,15 @@ import { Button } from "@/components/ui/button";
 import Sparkles from "lucide-react/dist/esm/icons/sparkles";
 import { Shield, Users, Globe } from "lucide-react";
 import warsawLineart from "@/assets/warsaw-lineart.png";
+import { useState } from "react";
+
 const HeroWeb3 = () => {
+  const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
+
+  const toggleFlip = (id: string) => {
+    setFlippedCards(prev => ({ ...prev, [id]: !prev[id] }));
+  };
+
   const scrollToContact = () => {
     document.getElementById('contact')?.scrollIntoView({
       behavior: 'smooth'
@@ -41,8 +49,8 @@ const HeroWeb3 = () => {
       </div>
 
       {/* Warsaw Skyline - Full Width Background */}
-      <div className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] mb-12 md:mb-20 flex justify-center">
-        <img src={warsawLineart} alt="Warsaw skyline illustration" className="w-full max-w-5xl opacity-70 md:opacity-50 px-4" style={{
+      <div className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] mb-12 md:mb-20 flex justify-center overflow-hidden">
+        <img src={warsawLineart} alt="Warsaw skyline illustration" className="w-full max-w-5xl opacity-70 md:opacity-50 mx-auto" style={{
           mixBlendMode: 'screen',
           filter: 'invert(1) brightness(0.9)'
         }} />
@@ -52,28 +60,85 @@ const HeroWeb3 = () => {
       <div className="container relative z-10 px-4 mx-auto pb-20">
         <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in" style={{ animationDelay: '200ms' }}>
-            <div className="glass-card p-6 rounded-lg hover-glow text-center">
-              <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                <Shield className="w-6 h-6 text-primary" />
+            {/* Card 1 */}
+            <div 
+              className="glass-card p-6 rounded-lg hover-glow text-center cursor-pointer relative h-[140px] md:h-[160px]"
+              onClick={() => toggleFlip('card1')}
+              style={{ perspective: '1000px' }}
+            >
+              <div 
+                className="relative w-full h-full transition-transform duration-500"
+                style={{
+                  transformStyle: 'preserve-3d',
+                  transform: flippedCards['card1'] ? 'rotateY(180deg)' : 'rotateY(0deg)'
+                }}
+              >
+                {/* Front */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center" style={{ backfaceVisibility: 'hidden' }}>
+                  <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                    <Shield className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="text-lg font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">&gt;25 Years of Experience</h3>
+                </div>
+                {/* Back */}
+                <div className="absolute inset-0 flex items-center justify-center p-4" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
+                  <p className="text-sm text-muted-foreground">Serving clients worldwide since 2003</p>
+                </div>
               </div>
-              <h3 className="text-lg font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">25+ Years of Experience</h3>
-              <p className="text-sm text-muted-foreground">Serving clients worldwide since 2003</p>
             </div>
             
-            <div className="glass-card p-6 rounded-lg hover-glow text-center">
-              <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gradient-to-br from-secondary/20 to-accent/20 flex items-center justify-center">
-                <Users className="w-6 h-6 text-secondary" />
+            {/* Card 2 */}
+            <div 
+              className="glass-card p-6 rounded-lg hover-glow text-center cursor-pointer relative h-[140px] md:h-[160px]"
+              onClick={() => toggleFlip('card2')}
+              style={{ perspective: '1000px' }}
+            >
+              <div 
+                className="relative w-full h-full transition-transform duration-500"
+                style={{
+                  transformStyle: 'preserve-3d',
+                  transform: flippedCards['card2'] ? 'rotateY(180deg)' : 'rotateY(0deg)'
+                }}
+              >
+                {/* Front */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center" style={{ backfaceVisibility: 'hidden' }}>
+                  <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gradient-to-br from-secondary/20 to-accent/20 flex items-center justify-center">
+                    <Users className="w-6 h-6 text-secondary" />
+                  </div>
+                  <h3 className="text-lg font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent">&gt;25'000 Cases Processed</h3>
+                </div>
+                {/* Back */}
+                <div className="absolute inset-0 flex items-center justify-center p-4" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
+                  <p className="text-sm text-muted-foreground">Successfully handled applications</p>
+                </div>
               </div>
-              <h3 className="text-lg font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent mb-2">25'000+ Cases Processed</h3>
-              <p className="text-sm text-muted-foreground">Successfully handled applications</p>
             </div>
             
-            <div className="glass-card p-6 rounded-lg hover-glow text-center">
-              <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gradient-to-br from-accent/20 to-primary/20 flex items-center justify-center">
-                <Globe className="w-6 h-6 text-accent" />
+            {/* Card 3 */}
+            <div 
+              className="glass-card p-6 rounded-lg hover-glow text-center cursor-pointer relative h-[140px] md:h-[160px]"
+              onClick={() => toggleFlip('card3')}
+              style={{ perspective: '1000px' }}
+            >
+              <div 
+                className="relative w-full h-full transition-transform duration-500"
+                style={{
+                  transformStyle: 'preserve-3d',
+                  transform: flippedCards['card3'] ? 'rotateY(180deg)' : 'rotateY(0deg)'
+                }}
+              >
+                {/* Front */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center" style={{ backfaceVisibility: 'hidden' }}>
+                  <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gradient-to-br from-accent/20 to-primary/20 flex items-center justify-center">
+                    <Globe className="w-6 h-6 text-accent" />
+                  </div>
+                  <h3 className="text-lg font-bold bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">100% Unmatched Success Rate</h3>
+                </div>
+                {/* Back */}
+                <div className="absolute inset-0 flex items-center justify-center p-4" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
+                  <p className="text-sm text-muted-foreground">Proven track record of excellence</p>
+                </div>
               </div>
-              <h3 className="text-lg font-bold bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent mb-2">100% Unmatched Success Rate</h3>
-              <p className="text-sm text-muted-foreground">Proven track record of excellence</p>
             </div>
           </div>
         </div>
