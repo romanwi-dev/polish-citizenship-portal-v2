@@ -43,11 +43,11 @@ const HeroWeb3 = () => {
           </div>
 
           {/* Warsaw Skyline */}
-          <div className="mb-12 md:mb-20">
+          <div className="mb-12 md:mb-20 -mx-4 md:-mx-8 lg:-mx-16">
             <img 
               src={warsawLineart} 
               alt="Warsaw skyline illustration" 
-              className="w-full max-w-4xl mx-auto opacity-70 md:opacity-50"
+              className="w-full opacity-70 md:opacity-50"
               style={{ 
                 mixBlendMode: 'screen',
                 filter: 'invert(1) brightness(0.9)'
