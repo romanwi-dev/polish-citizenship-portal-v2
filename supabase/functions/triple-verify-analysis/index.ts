@@ -190,7 +190,19 @@ async function verifyWithGemini(prompt: string) {
       throw new Error(`Gemini API error: ${response.status}`);
     }
 
-    const data = await response.json();
+    // Read the full response text first
+    const responseText = await response.text();
+    console.log('[Gemini] Raw response length:', responseText.length);
+    
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch (e) {
+      console.error('[Gemini] Failed to parse response as JSON:', e);
+      console.error('[Gemini] Response text:', responseText.substring(0, 500));
+      throw new Error('Gemini returned invalid JSON response');
+    }
+    
     console.log('[Gemini] Response structure:', JSON.stringify(data).substring(0, 200));
     
     if (!data.choices || !data.choices[0] || !data.choices[0].message) {
