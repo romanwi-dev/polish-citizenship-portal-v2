@@ -471,33 +471,33 @@ export const CaseCard = memo(({
                     navigate(`/admin/cases/${clientCase.id}?tab=tasks`);
                   }}
                 >
-                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-medium">
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-medium">
                     Intake
                   </span>
                 </Button>
                 
                 <Button
                   size="sm"
-                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 h-11 flex items-center justify-center px-4 bg-primary/5 dark:bg-transparent transition-all duration-200 hover:border-primary/70 hover:bg-primary/10"
+                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 h-11 flex items-center justify-center px-4 whitespace-nowrap bg-primary/5 dark:bg-transparent transition-all duration-200 hover:border-primary/70 hover:bg-primary/10"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate(`/admin/family-tree/${clientCase.id}`);
                   }}
                 >
-                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-medium">
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-medium">
                     Family Tree
                   </span>
                 </Button>
                 
                 <Button
                   size="sm"
-                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 h-11 flex items-center justify-center px-4 bg-primary/5 dark:bg-transparent transition-all duration-200 hover:border-primary/70 hover:bg-primary/10"
+                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 h-11 flex items-center justify-center px-4 whitespace-nowrap bg-primary/5 dark:bg-transparent transition-all duration-200 hover:border-primary/70 hover:bg-primary/10"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate(`/admin/cases/${clientCase.id}?tab=ai-agent`);
                   }}
                 >
-                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-medium">
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-medium">
                     Ask AI
                   </span>
                 </Button>
@@ -511,20 +511,20 @@ export const CaseCard = memo(({
                     navigate(`/admin/cases/${clientCase.id}?tab=authority`);
                   }}
                 >
-                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-medium">
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-medium">
                     Upload
                   </span>
                 </Button>
                 
                 <Button
                   size="sm"
-                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 h-11 flex items-center justify-center px-4 bg-primary/5 dark:bg-transparent transition-all duration-200 hover:border-primary/70 hover:bg-primary/10"
+                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 h-11 flex items-center justify-center px-4 whitespace-nowrap bg-primary/5 dark:bg-transparent transition-all duration-200 hover:border-primary/70 hover:bg-primary/10"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate(`/admin/cases/${clientCase.id}?tab=documents`);
                   }}
                 >
-                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-medium">
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-medium">
                     Documents
                   </span>
                 </Button>
@@ -537,7 +537,7 @@ export const CaseCard = memo(({
                     navigate(`/admin/cases/${clientCase.id}?tab=stage`);
                   }}
                 >
-                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-medium">
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-medium">
                     Stage
                   </span>
                 </Button>
@@ -545,13 +545,13 @@ export const CaseCard = memo(({
                 {/* Interactive Family Tree Button */}
                 <Button
                   size="sm"
-                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 h-12 flex items-center justify-center px-4 whitespace-nowrap bg-primary/5 dark:bg-transparent col-span-3 mt-1 transition-all duration-200 hover:border-primary/70 hover:bg-primary/10"
+                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 h-11 flex items-center justify-center px-4 whitespace-nowrap bg-primary/5 dark:bg-transparent col-span-3 mt-1 transition-all duration-200 hover:border-primary/70 hover:bg-primary/10"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate(`/admin/family-tree-view/${clientCase.id}`);
                   }}
                 >
-                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center font-medium">
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-medium">
                     Interactive Tree
                   </span>
                 </Button>
@@ -559,7 +559,7 @@ export const CaseCard = memo(({
                 {/* Dropbox Folder Button */}
                 <Button
                   size="sm"
-                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 h-12 flex items-center justify-center px-4 whitespace-nowrap bg-primary/5 dark:bg-transparent col-span-3 transition-all duration-200 hover:border-primary/70 hover:bg-primary/10"
+                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 h-11 flex items-center justify-center px-4 whitespace-nowrap bg-primary/5 dark:bg-transparent col-span-3 transition-all duration-200 hover:border-primary/70 hover:bg-primary/10"
                   onClick={(e) => {
                     e.stopPropagation();
                     if (clientCase.dropbox_path) {
@@ -569,7 +569,7 @@ export const CaseCard = memo(({
                     }
                   }}
                 >
-                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center font-medium">
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-medium">
                     Open Dropbox Folder
                   </span>
                 </Button>
