@@ -63,7 +63,6 @@ export const CaseFilters = ({
       <Sheet>
           <SheetTrigger asChild>
             <Button variant="outline" size="lg" className={`relative h-12 w-full sm:w-auto ${className || ''}`}>
-              <SlidersHorizontal className="h-4 w-4 mr-2" />
               Filters
               {activeFiltersCount > 0 && (
                 <Badge className="ml-2 bg-primary text-primary-foreground">
