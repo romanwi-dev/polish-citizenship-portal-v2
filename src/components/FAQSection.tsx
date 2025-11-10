@@ -188,15 +188,15 @@ const FAQSection = () => {
                 placeholder="Type to filter questions (e.g., pre-1920, naturalization, translations)..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-12 h-14 text-sm font-normal glass-card border-primary/20 focus:border-primary/40 transition-opacity relative z-10 placeholder:text-xs placeholder:font-light placeholder:opacity-40 w-full"
+                className="pl-12 h-14 text-sm font-normal glass-card border-primary/20 focus:border-primary/40 transition-opacity relative z-10 placeholder:text-xs placeholder:font-light placeholder:opacity-40 w-full bg-[hsl(222,47%,11%)]"
               />
             </div>
           </div>
 
           {/* FAQ Tabs */}
           <Tabs defaultValue="eligibility" className="w-full">
-            <div className="mb-8 w-full">
-              <TabsList className="flex lg:grid w-full grid-cols-2 lg:grid-cols-5 gap-2 h-auto p-2 flex-wrap">
+            <div className="mb-8 w-full overflow-x-auto">
+              <TabsList className="flex lg:grid w-max lg:w-full grid-cols-5 gap-2 h-auto p-2">
                 {faqCategories.map((category) => {
                   const Icon = category.icon;
                   return (
