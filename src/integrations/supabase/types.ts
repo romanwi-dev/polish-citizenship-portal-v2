@@ -6200,6 +6200,7 @@ export type Database = {
       cleanup_old_pdf_queue_jobs: { Args: never; Returns: undefined }
       cleanup_old_rate_limits: { Args: never; Returns: undefined }
       cleanup_rate_limit_logs: { Args: never; Returns: undefined }
+      clear_pending_documents: { Args: { p_case_id: string }; Returns: Json }
       create_batch_upload: {
         Args: { p_batch_id: string; p_case_id: string; p_total_files: number }
         Returns: Json
@@ -6300,6 +6301,10 @@ export type Database = {
       }
       get_next_case_sequence: {
         Args: { sequence_name: string }
+        Returns: number
+      }
+      get_pending_document_count: {
+        Args: { p_case_id: string }
         Returns: number
       }
       get_project_memory: {

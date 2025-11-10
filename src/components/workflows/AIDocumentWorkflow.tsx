@@ -30,6 +30,7 @@ import type { Document, UploadResult, UploadProgress, AtomicWorkflowResponse } f
 import { DocumentViewer } from "./DocumentViewer";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { DropboxChooser } from "@/components/dropbox/DropboxChooser";
 
 interface AIWorkflowStep {
   number: string;
@@ -772,37 +773,23 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                               {step.description}
                             </motion.p>
 
-                            {/* File Upload Section for First Card */}
-                            {isFirstCard && !isLoadingDocuments && (
+                            {/* Dropbox File Selection for First Card */}
+                            {isFirstCard && !isLoadingDocuments && caseData?.dropbox_path && (
                               <motion.div 
                                 className="mt-auto space-y-3"
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5, delay: 0.5 }}
                               >
-                                <input
-                                  type="file"
-                                  ref={fileInputRef}
-                                  onChange={handleFileSelect}
-                                  multiple
-                                  accept="image/*,.pdf,.doc,.docx"
-                                  className="hidden"
-                                />
-                                <Button
-                                  onClick={() => fileInputRef.current?.click()}
-                                  variant="outline"
-                                  size="sm"
-                                  className="w-full"
+                                <DropboxChooser 
+                                  caseId={caseId || ''}
+                                  dropboxPath={caseData.dropbox_path}
+                                  onFilesLinked={() => {
+                                    refetchDocuments();
+                                    refetchWorkflows();
+                                  }}
                                   disabled={uploading}
-                                >
-                                  <Upload className="h-4 w-4 mr-2" />
-                                  {uploading ? 'Uploading...' : 'Select Files'}
-                                </Button>
-                                {selectedFiles.length > 0 && (
-                                  <Badge variant="secondary" className="w-full justify-center">
-                                    {selectedFiles.length} file(s) selected
-                                  </Badge>
-                                )}
+                                />
                               </motion.div>
                             )}
 

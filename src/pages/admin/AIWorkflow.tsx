@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Search, ArrowRight, ArrowDown } from "lucide-react";
+import { Helmet } from "react-helmet";
 
 const AIWorkflow = () => {
   const [searchParams] = useSearchParams();
@@ -46,6 +47,9 @@ const AIWorkflow = () => {
 
   return (
     <AdminLayout>
+      <Helmet>
+        <script src="https://www.dropbox.com/static/api/2/dropbox.js" id="dropboxjs" data-app-key={import.meta.env.VITE_DROPBOX_APP_KEY || 'dropbox-app-key'} />
+      </Helmet>
       <div className="space-y-8 p-4 md:p-8 min-h-screen">
         {/* Title */}
         <h1 className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight text-center">
