@@ -86,7 +86,7 @@ Deno.serve(async (req) => {
       const { error: resetError } = await supabase
         .from("documents")
         .update({ 
-          ocr_status: "queued",
+          ocr_status: "pending",
           ocr_error_message: "Reset from stuck processing state",
           updated_at: new Date().toISOString()
         })
@@ -95,16 +95,16 @@ Deno.serve(async (req) => {
       if (resetError) {
         console.error("❌ Error resetting stuck documents:", resetError);
       } else {
-        console.log(`✅ Reset ${stuckDocs.length} stuck documents to queued`);
+        console.log(`✅ Reset ${stuckDocs.length} stuck documents to pending`);
       }
     }
 
-    // STEP 2: Fetch queued documents (with service role = bypasses RLS)
-    console.log("📥 Fetching queued documents...");
+    // STEP 2: Fetch pending documents (with service role = bypasses RLS)
+    console.log("📥 Fetching pending documents...");
     const { data: queuedDocs, error: fetchError } = await supabase
       .from("documents")
       .select("id, case_id, dropbox_path, document_type, person_type, name, ocr_retry_count, file_extension")
-      .eq("ocr_status", "queued")
+      .eq("ocr_status", "pending")
       .lt("ocr_retry_count", MAX_RETRIES)
       .order("created_at", { ascending: true })
       .limit(MAX_CONCURRENT_OCR);
@@ -115,11 +115,11 @@ Deno.serve(async (req) => {
     }
 
     if (!queuedDocs || queuedDocs.length === 0) {
-      console.log("No queued documents found");
+      console.log("No pending documents found");
       return new Response(
         JSON.stringify({ 
           success: true, 
-          message: "No queued documents to process",
+          message: "No pending documents to process",
           processed: 0,
           results: []
         }),
@@ -303,8 +303,8 @@ Deno.serve(async (req) => {
           newStatus = 'failed';
           console.log(`❌ Marking as FAILED (${errorType} error or max retries reached)`);
         } else {
-          newStatus = 'queued';
-          console.log(`🔄 Marking as QUEUED for retry ${retryCount}/${MAX_RETRIES}`);
+          newStatus = 'pending';
+          console.log(`🔄 Marking as PENDING for retry ${retryCount}/${MAX_RETRIES}`);
         }
 
         // Update document status
