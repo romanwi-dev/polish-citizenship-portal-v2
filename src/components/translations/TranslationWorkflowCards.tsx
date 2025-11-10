@@ -273,11 +273,17 @@ export default function TranslationWorkflowCards({ caseId }: TranslationWorkflow
                   </div>
 
                   {/* Timeline Dot */}
-                  <div className="hidden md:flex md:w-[16%] flex-shrink-0 justify-center relative z-10 items-center">
+                  <motion.div 
+                    className="hidden md:flex md:w-[16%] flex-shrink-0 justify-center relative z-10 items-center"
+                    initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                  >
                     <div className="w-16 h-16 rounded-full glass-card border border-border/50 shadow-[0_0_30px_rgba(0,0,0,0.3)] transition-all duration-300 flex items-center justify-center">
                       <span className="text-muted-foreground/50 font-heading font-bold text-3xl">{step.number}</span>
                     </div>
-                  </div>
+                  </motion.div>
 
                   {/* Empty space on other side */}
                   <div className="hidden md:block md:w-[42%]" />
