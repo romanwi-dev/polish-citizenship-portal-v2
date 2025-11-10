@@ -162,7 +162,7 @@ export default function ClientOnboardingSection() {
                       <h3 className="text-2xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
                         {step.title}
                       </h3>
-                      <p className="text-xs text-muted-foreground leading-relaxed px-2">
+                      <p className="text-sm text-muted-foreground leading-relaxed px-2">
                         {step.description}
                       </p>
                     </div>
