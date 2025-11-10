@@ -16,31 +16,45 @@ export async function generateSimplePDF({
   setIsGenerating: (val: boolean) => void;
 }): Promise<string | null> {
   
-  // Allow PDF generation in any mode - use 'blank-template' for invalid caseIds
   const effectiveCaseId = (caseId && caseId !== ':id' && caseId !== 'demo-preview') 
     ? caseId 
     : 'blank-template';
+
+  const operationId = `pdf_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
   try {
     setIsGenerating(true);
     toast.loading('Generating PDF...');
 
-    console.log('[pdf-simple] Calling edge function:', { caseId: effectiveCaseId, templateType });
+    console.log('[pdf-simple] Starting transaction:', { operationId, caseId: effectiveCaseId, templateType });
 
     const { data, error } = await supabase.functions.invoke('pdf-simple', {
-      body: { caseId: effectiveCaseId, templateType }
+      body: { 
+        caseId: effectiveCaseId, 
+        templateType,
+        operationId 
+      }
     });
 
-    console.log('[pdf-simple] Edge function response:', { data, error });
+    console.log('[pdf-simple] Response:', { success: data?.success, error });
 
     if (error) {
-      console.error('[pdf-simple] Error:', error);
-      throw new Error(error.message);
+      console.error('[pdf-simple] Edge function error:', error);
+      throw new Error(`PDF generation failed: ${error.message}`);
     }
 
     if (!data?.success) {
       console.error('[pdf-simple] Generation failed:', data);
       throw new Error(data?.error || 'PDF generation failed');
+    }
+
+    // Validation: Ensure PDF was actually created
+    if (!data.url) {
+      throw new Error('PDF URL not returned - generation may have failed silently');
+    }
+
+    if (data.fieldsFilledCount === undefined || data.totalFields === undefined) {
+      console.warn('[pdf-simple] Missing field count metadata');
     }
 
     toast.dismiss();
@@ -49,14 +63,16 @@ export async function generateSimplePDF({
       : `PDF ready! Filled ${data.fieldsFilledCount}/${data.totalFields} fields (${data.fillRate}%)`;
     toast.success(message);
     
-    console.log('[pdf-simple] Success - returning URL:', data.url);
+    console.log('[pdf-simple] Transaction complete:', { operationId, url: data.url });
     
     return data.url;
 
   } catch (error: any) {
+    console.error('[pdf-simple] Transaction failed:', { operationId, error: error.message });
+    
     toast.dismiss();
-    toast.error('PDF generation failed: ' + error.message);
-    console.error('[pdf-simple] Failed:', error);
+    toast.error(error.message || 'PDF generation failed');
+    
     return null;
   } finally {
     setIsGenerating(false);
