@@ -70,7 +70,7 @@ const FlippablePricingCard = ({
           </div>
           
           <div className="mb-6">
-            <div className={`text-4xl font-bold bg-clip-text text-transparent mb-2 ${gradient.replace('bg-gradient-to-br', 'bg-gradient-to-r')}`}>
+            <div className={`text-3xl font-bold bg-clip-text text-transparent mb-2 ${gradient.replace('bg-gradient-to-br', 'bg-gradient-to-r')}`}>
               {price}
             </div>
             <div className="text-sm text-muted-foreground">{installment}</div>
