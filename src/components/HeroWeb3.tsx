@@ -40,8 +40,8 @@ const HeroWeb3 = () => {
         </div>
       </div>
 
-      {/* Warsaw Skyline - Full Width */}
-      <div className="w-full mb-12 md:mb-20 flex justify-center">
+      {/* Warsaw Skyline - Full Width Background */}
+      <div className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] mb-12 md:mb-20 flex justify-center">
         <img src={warsawLineart} alt="Warsaw skyline illustration" className="w-full max-w-5xl opacity-70 md:opacity-50 px-4" style={{
           mixBlendMode: 'screen',
           filter: 'invert(1) brightness(0.9)'
