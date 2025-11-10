@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Sparkles from "lucide-react/dist/esm/icons/sparkles";
-import warsawLineart from "@/assets/warsaw-lineart.png";
+import warsawLineart from "@/assets/warsaw-original.png";
 
 const HeroWeb3 = () => {
   const scrollToContact = () => {
@@ -48,6 +48,10 @@ const HeroWeb3 = () => {
               src={warsawLineart} 
               alt="Warsaw skyline illustration" 
               className="block mx-auto w-[90%] md:w-[70%] opacity-60 md:opacity-45 pointer-events-none"
+              style={{ 
+                mixBlendMode: 'screen',
+                filter: 'brightness(1.2) contrast(1.5)'
+              }}
             />
           </div>
 
