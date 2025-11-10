@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Sparkles from "lucide-react/dist/esm/icons/sparkles";
-import warsawLineart from "@/assets/warsaw-lineart.png";
+import warsawHero from "@/assets/warsaw-hero.png";
 import { useState } from "react";
 
 const HeroWeb3 = () => {
@@ -47,15 +47,14 @@ const HeroWeb3 = () => {
         </div>
       </div>
 
-      {/* Warsaw Skyline - Full Width Background */}
+      {/* Warsaw Hero Image - Full Width Background */}
       <div className="w-full mb-12 md:mb-20 flex justify-center items-center">
         <img 
-          src={warsawLineart} 
-          alt="Warsaw skyline illustration" 
-          className="max-w-3xl w-full opacity-70 md:opacity-50" 
+          src={warsawHero} 
+          alt="Warsaw cityscape" 
+          className="max-w-4xl w-full opacity-80" 
           style={{
-            mixBlendMode: 'screen',
-            filter: 'invert(1) brightness(0.9)'
+            filter: 'brightness(1.1)'
           }} 
         />
       </div>
