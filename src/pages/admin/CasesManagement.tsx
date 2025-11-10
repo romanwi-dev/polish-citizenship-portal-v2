@@ -407,7 +407,7 @@ export default function CasesManagement() {
   return (
     <ErrorBoundary>
       <AdminLayout>
-      <div className="p-4 sm:p-8 max-w-full overflow-x-hidden">
+      <div className="p-4 sm:p-8 max-w-full overflow-x-hidden scroll-smooth" style={{ scrollBehavior: 'smooth' }}>
         {/* Header - Matching Workflows Page */}
         <div className="mb-12 md:mb-16">
           <h1 className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight text-center">
