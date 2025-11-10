@@ -223,7 +223,7 @@ export default function TimelineProcessEnhanced() {
             >
               {/* Content Card */}
               <div className="w-full md:w-[42%]">
-                <div className="relative h-[240px]" style={{
+                <div className="relative h-[320px]" style={{
               perspective: '1000px'
             }}>
                   <div 
@@ -243,30 +243,30 @@ export default function TimelineProcessEnhanced() {
                 transform: flippedCards[step.number] ? 'rotateY(180deg)' : 'rotateY(0deg)'
               }}>
                     {/* Front Side */}
-                    <div className="absolute inset-0 glass-card p-4 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.02] flex flex-col justify-center items-center" style={{
+                    <div className="absolute inset-0 glass-card p-5 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.02] flex flex-col justify-center items-center" style={{
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden'
                 }}>
-                      <div className="flex-1 flex flex-col gap-2 justify-center items-center text-center w-full">
+                      <div className="flex-1 flex flex-col gap-3 justify-center items-center text-center w-full">
                         <div className="flex items-center justify-center gap-2 mb-1">
                           <span className="text-xs text-muted-foreground">{step.duration}</span>
                         </div>
-                        <h3 className={`text-base md:text-lg font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-lg whitespace-nowrap ${prefersReducedMotion ? '' : 'animate-fade-in'}`}>
+                        <h3 className={`text-lg md:text-xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-lg whitespace-nowrap ${prefersReducedMotion ? '' : 'animate-fade-in'}`}>
                           {step.title}
                         </h3>
-                        <p className="text-xs text-muted-foreground mb-2 flex-1 line-clamp-2 px-2">
+                        <p className="text-xs md:text-sm text-muted-foreground mb-3 flex-1 line-clamp-3 px-2">
                           {step.description}
                         </p>
-                        <div className="flex flex-wrap gap-1 justify-center">
-                          <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">
+                        <div className="flex flex-wrap gap-1.5 justify-center">
+                          <span className="text-xs px-2 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
                             {step.keyAction}
                           </span>
-                          <span className="text-xs px-2 py-0.5 rounded-full bg-secondary/10 text-secondary border border-secondary/20">
+                          <span className="text-xs px-2 py-1 rounded-full bg-secondary/10 text-secondary border border-secondary/20">
                             {step.priority}
                           </span>
                         </div>
                       </div>
-                      <p className="text-xs text-muted-foreground/60 mt-4 text-center">{isMobile ? 'Tap' : 'Click'} to see details</p>
+                      <p className="text-xs text-muted-foreground/60 mt-5 text-center">{isMobile ? 'Tap' : 'Click'} to see details</p>
                     </div>
 
                     {/* Back Side */}
