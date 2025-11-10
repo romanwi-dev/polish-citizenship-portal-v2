@@ -646,7 +646,7 @@ export default function CasesManagement() {
                       delay: index * 0.05 + 0.15
                     }}
                   >
-                    <div className="w-16 h-16 rounded-full glass-card border-2 border-white/20 shadow-[0_0_30px_rgba(0,0,0,0.3)] transition-all duration-300 flex items-center justify-center">
+                    <div className="w-16 h-16 rounded-full glass-card border border-border/50 shadow-[0_0_30px_rgba(0,0,0,0.3)] transition-all duration-300 flex items-center justify-center">
                       <span className="text-muted-foreground/50 text-3xl font-heading font-bold">{String(index + 1).padStart(2, '0')}</span>
                     </div>
                   </motion.div>
