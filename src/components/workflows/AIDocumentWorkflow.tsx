@@ -666,25 +666,6 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
     <div className="w-full pb-40 pt-12 md:pt-20">
       {/* Vertical Timeline - Matching Translations Workflow */}
       <div className="relative max-w-6xl mx-auto">
-        {/* Header with Dropbox button */}
-        {caseData?.dropbox_path && (
-          <div className="mb-6 flex justify-end">
-            <Button
-              variant="outline"
-              className="gap-2"
-              onClick={() => {
-                if (caseData?.dropbox_path) {
-                  window.open(`https://www.dropbox.com/home${caseData.dropbox_path}`, '_blank');
-                } else {
-                  toast({ title: 'No Dropbox path configured', variant: 'destructive' });
-                }
-              }}
-            >
-              <FolderOpen className="h-4 w-4" />
-              Open Dropbox Folder
-            </Button>
-          </div>
-        )}
 
         {/* Center line - hidden on mobile, visible on desktop */}
         <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block" />
@@ -781,6 +762,24 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5, delay: 0.5 }}
                               >
+                                <p className="text-xs text-muted-foreground mb-2">
+                                  Browse this client's Dropbox folder first, then select files to link:
+                                </p>
+                                <Button
+                                  variant="secondary"
+                                  size="sm"
+                                  className="w-full gap-2 mb-2"
+                                  onClick={() => {
+                                    if (caseData?.dropbox_path) {
+                                      window.open(`https://www.dropbox.com/home${caseData.dropbox_path}`, '_blank');
+                                    } else {
+                                      toast({ title: 'No Dropbox path configured', variant: 'destructive' });
+                                    }
+                                  }}
+                                >
+                                  <FolderOpen className="h-4 w-4" />
+                                  Open Client's Dropbox Folder
+                                </Button>
                                 <DropboxChooser 
                                   caseId={caseId || ''}
                                   dropboxPath={caseData.dropbox_path}
