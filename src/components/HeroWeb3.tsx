@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Sparkles from "lucide-react/dist/esm/icons/sparkles";
-import warsawLineart from "@/assets/warsaw-lineart-transparent.png";
+import warsawLineart from "@/assets/warsaw-lineart.png";
 
 const HeroWeb3 = () => {
   const scrollToContact = () => {
