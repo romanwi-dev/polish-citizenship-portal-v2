@@ -162,7 +162,7 @@ export default function ExtendedServicesWorkflowCards() {
                           </p>
                         </div>
                         
-                        <div className="mt-6">
+                        <div className="mt-6 space-y-2">
                           <Button
                             variant="outline"
                             size="sm"
@@ -171,6 +171,7 @@ export default function ExtendedServicesWorkflowCards() {
                           >
                             {step.cta}
                           </Button>
+                          <p className="text-xs text-muted-foreground/60 text-center">Tap to see details</p>
                         </div>
                       </motion.div>
 
@@ -182,23 +183,26 @@ export default function ExtendedServicesWorkflowCards() {
                           transform: 'rotateY(180deg)',
                         }}
                       >
-                        <div className="flex flex-col items-center gap-6 h-full justify-center max-w-md">
-                          <div className="relative">
-                            <div className="w-24 h-24 rounded-lg overflow-hidden bg-gradient-to-br from-secondary/5 to-accent/5 flex items-center justify-center">
+                        <div className="flex flex-col h-full w-full max-w-md">
+                          <div className="relative mb-6">
+                            <div className="w-24 h-24 rounded-lg overflow-hidden bg-gradient-to-br from-secondary/5 to-accent/5 flex items-center justify-center mx-auto">
                               <step.icon className="w-12 h-12 text-secondary opacity-60" />
                             </div>
                           </div>
                           
-                          <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground text-center">
+                          <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground text-center mb-4">
                             Service Details
                           </h3>
-                          <div className="space-y-3 w-full">
+                          
+                          <div className="flex-1 space-y-3 w-full overflow-auto">
                             <div className="p-4 rounded-lg bg-muted/30 text-center">
                               <p className="text-sm text-muted-foreground">
                                 Premium extended service for complex cases
                               </p>
                             </div>
                           </div>
+                          
+                          <p className="text-xs text-muted-foreground/60 text-center mt-4">Tap to flip back</p>
                         </div>
                       </div>
                     </div>

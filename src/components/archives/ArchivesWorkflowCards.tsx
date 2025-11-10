@@ -165,7 +165,7 @@ export default function ArchivesWorkflowCards() {
                           </p>
                         </div>
                         
-                        <div className="mt-6">
+                        <div className="mt-6 space-y-2">
                           <Button
                             variant="outline"
                             size="sm"
@@ -174,26 +174,27 @@ export default function ArchivesWorkflowCards() {
                           >
                             {step.cta}
                           </Button>
+                          <p className="text-xs text-muted-foreground/60 text-center">Tap to see details</p>
                         </div>
                       </motion.div>
 
                       {/* Back Side */}
                       <div 
-                        className="absolute inset-0 glass-card p-8 rounded-lg hover-glow"
+                        className="absolute inset-0 glass-card p-8 rounded-lg hover-glow flex flex-col"
                         style={{
                           backfaceVisibility: 'hidden',
                           WebkitBackfaceVisibility: 'hidden',
                           transform: 'rotateY(180deg)',
                         }}
                       >
-                        <div className="flex flex-col gap-4 h-full">
-                          <div className="mb-4 relative">
-                            <div className="w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-secondary/5 to-accent/5 flex items-center justify-center">
-                              <step.icon className="w-16 h-16 text-secondary opacity-60" />
-                            </div>
+                        <div className="mb-4 relative">
+                          <div className="w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-secondary/5 to-accent/5 flex items-center justify-center">
+                            <step.icon className="w-16 h-16 text-secondary opacity-60" />
                           </div>
-                          
-                          <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground mb-2">
+                        </div>
+                        
+                        <div className="flex-1 flex flex-col gap-4">
+                          <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground">
                             Stage Details
                           </h3>
                           <div className="flex-1 overflow-auto space-y-3">
@@ -203,8 +204,9 @@ export default function ArchivesWorkflowCards() {
                               </p>
                             </div>
                           </div>
-                          <p className="text-xs text-muted-foreground/60 text-center">Tap to flip back</p>
                         </div>
+                        
+                        <p className="text-xs text-muted-foreground/60 text-center mt-4">Tap to flip back</p>
                       </div>
                     </div>
                   </div>

@@ -243,11 +243,11 @@ export default function TimelineProcessEnhanced() {
                 transform: flippedCards[step.number] ? 'rotateY(180deg)' : 'rotateY(0deg)'
               }}>
                     {/* Front Side */}
-                    <div className="absolute inset-0 glass-card p-6 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.02]" style={{
+                    <div className="absolute inset-0 glass-card p-6 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.02] flex flex-col" style={{
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden'
                 }}>
-                      <div className="flex flex-col gap-3 h-full">
+                      <div className="flex-1 flex flex-col gap-3">
                         <div className="flex items-center gap-2 mb-1">
                           <span className="text-xs text-muted-foreground">{step.duration}</span>
                         </div>
@@ -265,17 +265,17 @@ export default function TimelineProcessEnhanced() {
                             {step.priority}
                           </span>
                         </div>
-                        <p className="text-xs text-muted-foreground/60 mt-2 text-center">{isMobile ? 'Tap' : 'Click'} to see details</p>
                       </div>
+                      <p className="text-xs text-muted-foreground/60 mt-4 text-center">{isMobile ? 'Tap' : 'Click'} to see details</p>
                     </div>
 
                     {/* Back Side */}
-                    <div className="absolute inset-0 glass-card p-6 rounded-lg hover-glow" style={{
+                    <div className="absolute inset-0 glass-card p-6 rounded-lg hover-glow flex flex-col" style={{
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden',
                   transform: 'rotateY(180deg)'
                 }}>
-                      <div className="flex flex-col gap-3 h-full">
+                      <div className="flex-1 flex flex-col gap-3">
                         <div className="flex items-center gap-2 mb-1">
                           <span className="text-xs text-primary/60">Details</span>
                         </div>
@@ -287,8 +287,8 @@ export default function TimelineProcessEnhanced() {
                             [Admin: Add detailed information about this step here. This content will be customized for each timeline step to provide additional context, requirements, or important notes for clients.]
                           </p>
                         </div>
-                        <p className="text-xs text-muted-foreground/60 text-center mt-2">Tap to flip back</p>
                       </div>
+                      <p className="text-xs text-muted-foreground/60 text-center mt-4">Tap to flip back</p>
                     </div>
                   </div>
                 </div>

@@ -143,7 +143,7 @@ export default function ClientOnboardingSection() {
                 >
                   {/* Front Side */}
                   <div
-                    className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.03] hover:-translate-y-1"
+                    className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.03] hover:-translate-y-1 flex flex-col"
                     style={{
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
@@ -157,13 +157,16 @@ export default function ClientOnboardingSection() {
                     </div>
 
                     {/* Content */}
-                    <div className="space-y-4">
+                    <div className="flex-1 space-y-4">
                       <h3 className="text-2xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
                         {step.title}
                       </h3>
-                      <p className="text-muted-foreground leading-relaxed mb-4">
+                      <p className="text-muted-foreground leading-relaxed">
                         {step.description}
                       </p>
+                    </div>
+                    
+                    <div className="mt-6 space-y-2">
                       <Button
                         variant="outline"
                         size="sm"
@@ -179,27 +182,27 @@ export default function ClientOnboardingSection() {
                       >
                         {step.cta} →
                       </Button>
-                      <p className="text-xs text-muted-foreground/60 text-center mt-2">Tap card for details</p>
+                      <p className="text-xs text-muted-foreground/60 text-center">Tap card for details</p>
                     </div>
                   </div>
 
                   {/* Back Side */}
                   <div 
-                    className="absolute inset-0 glass-card p-8 rounded-lg hover-glow"
+                    className="absolute inset-0 glass-card p-8 rounded-lg hover-glow flex flex-col"
                     style={{
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
                       transform: 'rotateY(180deg)',
                     }}
                   >
-                    <div className="flex flex-col gap-4 h-full">
-                      <div className="mb-4 relative">
-                        <div className="w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-secondary/5 to-accent/5 flex items-center justify-center">
-                          <step.icon className="w-16 h-16 text-secondary opacity-60" />
-                        </div>
+                    <div className="mb-4 relative">
+                      <div className="w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-secondary/5 to-accent/5 flex items-center justify-center">
+                        <step.icon className="w-16 h-16 text-secondary opacity-60" />
                       </div>
-                      
-                      <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground mb-2">
+                    </div>
+                    
+                    <div className="flex-1 flex flex-col gap-4">
+                      <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground">
                         Additional Information
                       </h3>
                       <div className="flex-1 overflow-auto">
@@ -207,8 +210,9 @@ export default function ClientOnboardingSection() {
                           [Admin: Add detailed information about {step.title} here. This section can include specific requirements, documents needed, timelines, tips, or important notes that clients should know about this step.]
                         </p>
                       </div>
-                      <p className="text-xs text-muted-foreground/60 text-center">Tap to flip back</p>
                     </div>
+                    
+                    <p className="text-xs text-muted-foreground/60 text-center mt-4">Tap to flip back</p>
                   </div>
                 </div>
                   </div>
