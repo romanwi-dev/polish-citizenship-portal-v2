@@ -45,7 +45,7 @@ export function FormButtonsRow({
   return (
     <>
       {/* Navigation Buttons Row - Static at top, no background */}
-      <div className="mt-4 md:mt-6 mb-4 md:mb-6 pt-0">{/* Add top spacing from icons/title */}
+      <div className="mt-24 md:mt-32 mb-4 md:mb-6 pt-0">{/* Add top spacing from icons/title */}
         {/* Mobile: 2 rows of 3 buttons */}
         <div className="grid grid-cols-3 gap-1.5 md:hidden px-2">
           {navigationButtons.map((btn, index) => {
