@@ -86,9 +86,6 @@ const Index = () => {
       <div className="relative z-10">
         <Navigation />
         <HeroWeb3 />
-        
-        <SkylineDivider imageSrc={pragueLineart} alt="Prague skyline" />
-        
         <AboutSection />
         
         <SkylineDivider imageSrc={budapestLineart} alt="Budapest skyline" />
