@@ -626,11 +626,10 @@ export default function CasesManagement() {
                     />
                   </div>
 
-                  {/* Center Circle with Number - same as homepage */}
                   <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:block">
-                    <div className="relative w-24 h-24 rounded-full bg-gradient-to-br from-primary to-secondary p-1">
+                    <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-primary to-secondary p-0.5">
                       <div className="w-full h-full rounded-full bg-card flex items-center justify-center">
-                        <span className="text-4xl font-heading font-black bg-gradient-to-br from-primary to-secondary bg-clip-text text-transparent">
+                        <span className="text-2xl font-heading font-black bg-gradient-to-br from-primary to-secondary bg-clip-text text-transparent">
                           {index + 1}
                         </span>
                       </div>
