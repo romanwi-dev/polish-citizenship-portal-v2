@@ -18,6 +18,9 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  optimizeDeps: {
+    exclude: ['@huggingface/transformers'],
+  },
   build: {
     cssCodeSplit: true,
     chunkSizeWarningLimit: 500,
