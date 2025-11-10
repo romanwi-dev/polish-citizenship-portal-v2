@@ -257,35 +257,11 @@ export default function FamilyTreeForm() {
     }
   };
   const renderDateField = (name: string, label: string, delay = 0, colorScheme: ColorScheme = 'applicant') => {
-    // Convert ISO format to DD.MM.YYYY for display
-    const isoValue = formData[name] || "";
-    let displayValue = "";
-    if (isoValue) {
-      try {
-        const date = new Date(isoValue);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        displayValue = `${day}.${month}.${year}`;
-      } catch (e) {
-        displayValue = isoValue;
-      }
-    }
-    
     return <DateField
       name={name}
       label={label}
-      value={displayValue}
-      onChange={(value) => {
-        // Convert DD.MM.YYYY to ISO format for storage
-        if (value && value.length === 10) {
-          const [day, month, year] = value.split('.');
-          const isoDate = `${year}-${month}-${day}`;
-          handleInputChange(name, isoDate);
-        } else {
-          handleInputChange(name, value);
-        }
-      }}
+      value={formData[name] || ""}
+      onChange={(value) => handleInputChange(name, value)}
       delay={delay}
       colorScheme={colorScheme}
     />;
