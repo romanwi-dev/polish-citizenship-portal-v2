@@ -288,8 +288,8 @@ const ContactFormWeb3 = () => {
                       transform: 'rotateY(180deg)'
                     }}
                   >
-                    <div className="text-sm md:text-xs text-white font-bold mb-3">{stat.label}</div>
-                    <p className="text-sm md:text-xs text-white/90 leading-relaxed font-medium">
+                    <div className="text-lg md:text-base text-primary font-bold mb-3">{stat.label}</div>
+                    <p className="text-sm md:text-xs text-muted-foreground/50 leading-relaxed font-normal">
                       {stat.details}
                     </p>
                     <div className="text-xs text-primary/50 mt-auto pt-2">Click to flip back</div>
