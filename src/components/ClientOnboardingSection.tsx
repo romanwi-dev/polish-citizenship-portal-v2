@@ -109,18 +109,26 @@ export default function ClientOnboardingSection() {
           </p>
         </div>
 
-        {/* Steps Grid */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-          {onboardingSteps.map((step, index) => (
+        {/* Steps - Left-Right Alternating Layout */}
+        <div className="relative max-w-6xl mx-auto">
+          {/* Center line for desktop */}
+          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block" />
+
+          {onboardingSteps.map((step, index) => {
+            const isLeft = index % 2 === 0;
+            
+            return (
             <div
               key={step.number}
-              className="animate-fade-in"
-              style={{ animationDelay: `${index * 150}ms` }}
+              className="mb-16 last:mb-0"
             >
-              <div 
-                className="relative h-[450px]"
-                style={{ perspective: '1000px' }}
-              >
+              <div className={`flex flex-col md:${isLeft ? 'flex-row' : 'flex-row-reverse'} gap-4 md:gap-12 items-stretch`}>
+                {/* Card */}
+                <div className="w-full md:w-[42%]">
+                  <div 
+                    className="relative h-[450px]"
+                    style={{ perspective: '1000px' }}
+                  >
                 <div
                   onClick={() => toggleFlip(step.number)}
                   className="absolute inset-0 cursor-pointer transition-transform duration-700"
@@ -205,9 +213,20 @@ export default function ClientOnboardingSection() {
                     </div>
                   </div>
                 </div>
+                  </div>
+                </div>
+
+                {/* Timeline Dot */}
+                <div className="hidden md:flex md:w-[16%] flex-shrink-0 justify-center relative z-10">
+                  <div className="w-8 h-8 rounded-full bg-primary border-4 border-background shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300" />
+                </div>
+
+                {/* Empty space on other side */}
+                <div className="hidden md:block md:w-[42%]" />
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* CTA */}

@@ -208,13 +208,17 @@ export default function TimelineProcessEnhanced() {
           {/* Center line */}
           <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block" />
 
-          {timelineSteps.map((step, index) => <div 
-            key={step.number} 
-            className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-8 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''} ${prefersReducedMotion ? '' : 'animate-fade-in'}`}
-            style={{ animationDelay: `${index * 100}ms` }}
-          >
+          {timelineSteps.map((step, index) => {
+            const isLeft = index % 2 === 0;
+            
+            return (
+            <div 
+              key={step.number} 
+              className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-8 ${!isLeft ? 'md:flex-row-reverse' : ''} ${prefersReducedMotion ? '' : 'animate-fade-in'}`}
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
               {/* Content Card */}
-              <div className="w-full md:w-5/12">
+              <div className="w-full md:w-[42%]">
                 <div className="relative h-[280px] md:h-[400px]" style={{
               perspective: '1000px'
             }}>
@@ -292,23 +296,16 @@ export default function TimelineProcessEnhanced() {
                 </div>
               </div>
 
-              {/* Center Circle with Number */}
-              <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:block">
-                <div className={`relative w-24 h-24 rounded-full bg-gradient-to-br from-primary to-secondary p-1 animate-float ${prefersReducedMotion ? '' : 'animate-scale-in'}`} style={{
-              animationDelay: `${index * 0.2}s`
-            }}>
-                  <div className="w-full h-full rounded-full bg-card flex items-center justify-center">
-                    <span className="text-4xl font-heading font-black bg-gradient-to-br from-primary to-secondary bg-clip-text text-transparent">
-                      {step.number}
-                    </span>
-                  </div>
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 blur-xl -z-10" />
-                </div>
+              {/* Timeline Dot */}
+              <div className="hidden md:flex md:w-[16%] flex-shrink-0 justify-center relative z-10">
+                <div className="w-8 h-8 rounded-full bg-primary border-4 border-background shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300" />
               </div>
 
               {/* Empty space for layout balance */}
-              <div className="w-full md:w-5/12 hidden md:block" />
-            </div>)}
+              <div className="w-full md:w-[42%] hidden md:block" />
+            </div>
+            );
+          })}
         </div>
 
 

@@ -496,7 +496,6 @@ export default function CasesManagement() {
                 size="lg"
                 variant="outline"
               >
-                <Pencil className="h-4 w-4 mr-2" />
                 Edit
               </Button>
 
@@ -535,7 +534,6 @@ export default function CasesManagement() {
                 className="h-12 whitespace-nowrap w-full"
                 size="lg"
               >
-                <Plus className="h-4 w-4 mr-2" />
                 New Case
               </Button>
               
@@ -545,7 +543,6 @@ export default function CasesManagement() {
                 className="h-12 whitespace-nowrap w-full"
                 size="lg"
               >
-                <Database className="h-4 w-4 mr-2" />
                 Resync & Clean
               </Button>
             </div>
@@ -556,7 +553,7 @@ export default function CasesManagement() {
             <div className="w-full pb-2">
               <div className="flex items-center justify-between gap-1 w-full">
                 {[
-                  { value: "default", label: "Default" },
+                 { value: "default", label: "Default" },
                   { value: "name", label: "Name" },
                   { value: "date", label: "Date" },
                   { value: "progress", label: "Progress" },
@@ -575,16 +572,6 @@ export default function CasesManagement() {
                     {option.label}
                   </Button>
                 ))}
-                <Button
-                  variant="outline"
-                  size="lg"
-                  onClick={() => resetSortOrdersMutation.mutate()}
-                  className="whitespace-nowrap flex-1 h-10 text-sm font-medium border-2 px-2"
-                  disabled={!cases.some(c => c.sort_order !== null)}
-                >
-                  <RotateCcw className="h-4 w-4 mr-2" />
-                  Reset Order
-                </Button>
               </div>
             </div>
           )}
@@ -624,17 +611,17 @@ export default function CasesManagement() {
                 <motion.div 
                   key={caseItem.id} 
                   className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-12 ${!isEven ? 'md:flex-row-reverse' : ''}`}
-                  initial={{ opacity: 0, x: isEven ? -50 : 50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
                   transition={{ 
-                    duration: 0.5,
+                    duration: 0.6,
                     ease: [0.4, 0, 0.2, 1],
-                    delay: Math.min(index * 0.05, 0.3)
+                    delay: index * 0.1
                   }}
                 >
                   {/* Content Card - Wider with spacing from center */}
-                  <div className="w-full md:w-[48%]">
+                  <div className="w-full md:w-[42%]">
                     <DraggableCaseCard 
                       clientCase={caseItem}
                       onEdit={handleEdit}
@@ -647,30 +634,13 @@ export default function CasesManagement() {
                     />
                   </div>
 
-                  {/* Center Circle with Number - Thinner & More Transparent */}
-                  <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:block">
-                    <motion.div 
-                      className="relative w-16 h-16 rounded-full bg-gradient-to-br from-primary/30 to-secondary/30 p-[1px]"
-                      initial={{ scale: 0, opacity: 0 }}
-                      whileInView={{ scale: 1, opacity: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ 
-                        duration: 0.4,
-                        ease: [0.4, 0, 0.2, 1],
-                        delay: Math.min(index * 0.05, 0.3) + 0.1
-                      }}
-                    >
-                      <div className="w-full h-full rounded-full bg-card/80 backdrop-blur-sm flex items-center justify-center">
-                        <span className="text-2xl font-heading font-black bg-gradient-to-br from-primary/50 to-secondary/50 bg-clip-text text-transparent">
-                          {index + 1}
-                        </span>
-                      </div>
-                      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/10 to-secondary/10 blur-xl -z-10" />
-                    </motion.div>
+                  {/* Timeline Dot */}
+                  <div className="hidden md:flex md:w-[16%] flex-shrink-0 justify-center relative z-10">
+                    <div className="w-8 h-8 rounded-full bg-primary border-4 border-background shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300" />
                   </div>
 
                   {/* Empty space for layout balance */}
-                  <div className="w-full md:w-[48%] hidden md:block" />
+                  <div className="w-full md:w-[42%] hidden md:block" />
                 </motion.div>
               );
             })}
