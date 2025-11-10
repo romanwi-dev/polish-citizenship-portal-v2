@@ -87,7 +87,7 @@ const AIAnalysisSection = () => {
               </span>
             </h2>
             
-            <div className="mb-16 max-w-6xl mx-auto">
+            <div className="mb-16 max-w-6xl mx-auto px-6 md:px-0">
               <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-6 text-justify">
                 We are now able to 'predict' the probability of success and the time of the procedure in advance in each case of Polish citizenship by descent with HIGH ACCURACY based on the cases we processed over the last twenty years, with AI analyzes and human-expert knowledge. This has revolutionized our approach, allowing us to offer personalized guidance and support to our clients right from the initial consultation. By leveraging this combination of AI and expert insights, we can identify potential challenges and opportunities unique to each case, ensuring a more streamlined and efficient application process.
               </p>
