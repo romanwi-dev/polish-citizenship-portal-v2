@@ -188,7 +188,8 @@ const FAQSection = () => {
                 placeholder="Type to filter questions (e.g., pre-1920, naturalization, translations)..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-12 h-14 text-sm font-normal glass-card border-primary/20 focus:border-primary/40 transition-opacity relative z-10 placeholder:text-xs placeholder:font-light placeholder:opacity-40 w-full bg-[hsl(222,47%,11%)]"
+                className="pl-12 h-14 text-sm font-normal glass-card border-primary/20 focus:border-primary/40 transition-opacity relative z-10 placeholder:text-xs placeholder:font-light placeholder:opacity-40 w-full"
+                style={{ backgroundColor: 'rgba(10, 20, 45, 0.6)' }}
               />
             </div>
           </div>

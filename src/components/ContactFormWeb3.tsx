@@ -120,7 +120,7 @@ const ContactFormWeb3 = () => {
                         placeholder=""
                         required
                         noMobileCaps
-                        className="h-16 border-2 border-blue-500/20 hover:border-blue-500/30 focus:border-blue-500/40 hover-glow focus:shadow-lg transition-all backdrop-blur"
+                        className="h-20 border-2 border-blue-500/20 hover:border-blue-500/30 focus:border-blue-500/40 hover-glow focus:shadow-lg transition-all backdrop-blur"
                         style={{ 
                           fontSize: '1.125rem', 
                           fontWeight: '400',
@@ -146,7 +146,7 @@ const ContactFormWeb3 = () => {
                         placeholder=""
                         required
                         noMobileCaps
-                        className="h-16 border-2 border-blue-500/20 hover:border-blue-500/30 focus:border-blue-500/40 hover-glow focus:shadow-lg transition-all backdrop-blur"
+                        className="h-20 border-2 border-blue-500/20 hover:border-blue-500/30 focus:border-blue-500/40 hover-glow focus:shadow-lg transition-all backdrop-blur"
                         style={{ 
                           fontSize: '1.125rem', 
                           fontWeight: '400',
