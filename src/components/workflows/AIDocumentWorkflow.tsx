@@ -852,7 +852,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
 
                             {/* Document Count and Mark Done Button */}
                             <motion.div 
-                              className="flex items-center justify-between w-full mt-auto"
+                              className="flex items-center justify-between w-full mt-auto mb-4"
                               initial={{ opacity: 0, y: 10 }}
                               animate={{ opacity: 1, y: 0 }}
                               transition={{ duration: 0.5, delay: 0.6 }}
@@ -872,7 +872,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                                 {isCompleted ? "✓ Done" : "Mark Done"}
                               </Button>
                             </motion.div>
-                            <p className="text-xs text-muted-foreground/60 text-center mt-2">Tap to see details</p>
+                            <p className="text-xs text-muted-foreground/60 text-center">Tap to see details</p>
                           </div>
                         </motion.div>
 
@@ -966,8 +966,8 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
 
                 {/* Timeline Dot - Center Aligned */}
                 <div className="hidden md:flex md:w-2/12 flex-shrink-0 justify-center relative z-10 items-center">
-                  <div className="w-16 h-16 rounded-full bg-primary/50 border-4 border-white shadow-[0_0_30px_rgba(0,0,0,0.3)] transition-all duration-300 flex items-center justify-center">
-                    <span className="text-white font-heading font-bold text-3xl">{step.number}</span>
+                  <div className="w-16 h-16 rounded-full bg-card/90 border-2 border-white shadow-[0_0_30px_rgba(0,0,0,0.3)] transition-all duration-300 flex items-center justify-center">
+                    <span className="text-white/60 font-heading font-bold text-3xl">{step.number}</span>
                   </div>
                 </div>
 

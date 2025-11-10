@@ -162,7 +162,7 @@ export default function CitizenshipWorkflowCards() {
                           </p>
                         </div>
                         
-                        <div className="mt-auto space-y-2">
+                        <div className="mt-auto mb-4 space-y-2">
                           <Button
                             variant="outline"
                             size="sm"
@@ -171,8 +171,8 @@ export default function CitizenshipWorkflowCards() {
                           >
                             {step.cta}
                           </Button>
-                          <p className="text-xs text-muted-foreground/60 text-center">Tap to see details</p>
                         </div>
+                        <p className="text-xs text-muted-foreground/60 text-center">Tap to see details</p>
                       </motion.div>
 
                       <div 
@@ -210,8 +210,8 @@ export default function CitizenshipWorkflowCards() {
                 </div>
 
                 <div className="hidden md:flex md:w-[16%] flex-shrink-0 justify-center relative z-10 items-center">
-                  <div className="w-16 h-16 rounded-full bg-primary/50 border-4 border-white shadow-[0_0_30px_rgba(0,0,0,0.3)] transition-all duration-300 flex items-center justify-center">
-                    <span className="text-white font-heading font-bold text-3xl">{step.number}</span>
+                  <div className="w-16 h-16 rounded-full bg-card/90 border-2 border-white shadow-[0_0_30px_rgba(0,0,0,0.3)] transition-all duration-300 flex items-center justify-center">
+                    <span className="text-white/60 font-heading font-bold text-3xl">{step.number}</span>
                   </div>
                 </div>
 

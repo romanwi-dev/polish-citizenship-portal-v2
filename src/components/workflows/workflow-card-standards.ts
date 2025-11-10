@@ -48,10 +48,10 @@ export const WORKFLOW_CARD_STANDARDS = {
   
   // Timeline dot styling (CIRCLED NUMBERS)
   timelineDot: {
-    container: 'w-16 h-16 rounded-full bg-primary/50 border-4 border-white',
+    container: 'w-16 h-16 rounded-full bg-card/90 border-2 border-white',
     shadow: 'shadow-[0_0_30px_rgba(0,0,0,0.3)]',
     layout: 'flex items-center justify-center',
-    numberStyle: 'text-white font-heading font-bold text-3xl',
+    numberStyle: 'text-white/60 font-heading font-bold text-3xl',
     transition: 'transition-all duration-300'
   },
   
