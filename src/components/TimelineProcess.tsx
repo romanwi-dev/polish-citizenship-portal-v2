@@ -186,12 +186,12 @@ const TimelineProcess = () => {
                 <div key={index} className={`relative flex items-center ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
                   {/* Content Card */}
                   <div className={`w-full md:w-5/12 ${isEven ? 'md:pr-12' : 'md:pl-12'}`}>
-                    <div className="glass-card p-6 rounded-lg hover-glow group cursor-pointer">
-                      <div className="flex items-start gap-4">
-                        <div className={`p-3 rounded-lg bg-gradient-to-br ${step.gradient} shrink-0`}>
+                    <div className="glass-card p-5 rounded-lg hover-glow group cursor-pointer h-[280px] flex flex-col justify-center">
+                      <div className="flex flex-col items-center text-center gap-3">
+                        <div className={`p-3 rounded-lg bg-gradient-to-br ${step.gradient}`}>
                           <Icon className="w-6 h-6 text-white" />
                         </div>
-                        <div className="flex-1">
+                        <div className="flex-1 flex flex-col items-center">
                           <div className="flex items-center gap-2 mb-2">
                             <span className={`text-xs font-bold px-2 py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
                               {step.number}
@@ -201,10 +201,10 @@ const TimelineProcess = () => {
                           <h3 className="text-lg font-bold mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                             {step.title}
                           </h3>
-                          <p className="text-sm text-muted-foreground mb-3">
+                          <p className="text-sm text-muted-foreground mb-3 px-2">
                             {step.description}
                           </p>
-                          <div className="flex flex-wrap gap-2">
+                          <div className="flex flex-wrap gap-2 justify-center mb-4">
                             <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary">
                               {step.keyAction}
                             </span>
@@ -212,6 +212,7 @@ const TimelineProcess = () => {
                               {step.priority}
                             </span>
                           </div>
+                          <p className="text-xs text-muted-foreground/60 mt-auto">Click to see details</p>
                         </div>
                       </div>
                     </div>
