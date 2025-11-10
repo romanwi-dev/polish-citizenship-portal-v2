@@ -32,7 +32,7 @@ export const ExtendedServicesDashboard = () => {
       <div className="max-w-4xl mx-auto text-center">
         <h1 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-12 md:mb-20">
           <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-            Extended Services
+            Case Workflow
           </span>
         </h1>
       </div>
