@@ -10,7 +10,15 @@ import AboutSection from "@/components/AboutSection";
 import AIAnalysisSection from "@/components/AIAnalysisSection";
 import SkylineDivider from "@/components/SkylineDivider";
 
-// Warsaw skyline is now default in SkylineDivider component
+// Import skyline images
+import warsawSkyline from "@/assets/warsaw-skyline-white.png";
+import pragueSkyline from "@/assets/prague-skyline-white.png";
+import budapestSkyline from "@/assets/budapest-skyline-white.png";
+import berlinSkyline from "@/assets/berlin-skyline-white.png";
+import parisSkyline from "@/assets/paris-skyline-white.png";
+import viennaSkyline from "@/assets/vienna-skyline-white.png";
+import krakowSkyline from "@/assets/krakow-skyline-white.png";
+import europeSkyline from "@/assets/europe-skyline-white.png";
 
 // Lazy load below-the-fold components for better code splitting
 const ServicesWeb3 = lazy(() => import("@/components/ServicesWeb3"));
@@ -79,47 +87,47 @@ const Index = () => {
         <HeroWeb3 />
         <AboutSection />
         
-        <SkylineDivider />
+        <SkylineDivider imageSrc={warsawSkyline} alt="Warsaw skyline" />
         
         <AIAnalysisSection />
         
-        <SkylineDivider />
+        <SkylineDivider imageSrc={pragueSkyline} alt="Prague skyline" />
         
         <Suspense fallback={<SectionLoader />}>
           <ServicesWeb3 />
         </Suspense>
         
-        <SkylineDivider />
+        <SkylineDivider imageSrc={budapestSkyline} alt="Budapest skyline" />
         
         <Suspense fallback={<SectionLoader />}>
           <TimelineProcessEnhanced />
         </Suspense>
         
-        <SkylineDivider />
+        <SkylineDivider imageSrc={berlinSkyline} alt="Berlin skyline" />
         
         <Suspense fallback={<SectionLoader />}>
           <ClientOnboardingSection />
         </Suspense>
         
-        <SkylineDivider />
+        <SkylineDivider imageSrc={parisSkyline} alt="Paris skyline" />
         
         <Suspense fallback={<SectionLoader />}>
           <PricingSection />
         </Suspense>
         
-        <SkylineDivider />
+        <SkylineDivider imageSrc={viennaSkyline} alt="Vienna skyline" />
         
         <Suspense fallback={<SectionLoader />}>
           <TestimonialsSection />
         </Suspense>
         
-        <SkylineDivider />
+        <SkylineDivider imageSrc={krakowSkyline} alt="Krakow skyline" />
         
         <Suspense fallback={<SectionLoader />}>
           <FAQSection />
         </Suspense>
         
-        <SkylineDivider />
+        <SkylineDivider imageSrc={europeSkyline} alt="European landmarks" />
         
         <Suspense fallback={<SectionLoader />}>
           <ContactFormWeb3 />

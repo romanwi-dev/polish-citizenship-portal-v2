@@ -1,4 +1,4 @@
-import warsawSkyline from "@/assets/warsaw-skyline-silhouette.png";
+import warsawSkyline from "@/assets/warsaw-skyline-white.png";
 
 interface SkylineDividerProps {
   imageSrc?: string;
