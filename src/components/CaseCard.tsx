@@ -460,22 +460,22 @@ export const CaseCard = memo(({
                 </span>
               </Button>
 
-              {/* Action Buttons - 3 rows of 3 */}
+              {/* Action Buttons - 2 rows of 3 */}
               <div className="grid grid-cols-3 gap-2 pt-3 border-t border-border/30">
+                {/* 1st Row: Intake - Family Tree - Ask AI */}
                 <Button
                   size="sm"
-                  className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 min-h-[44px] flex items-center justify-center bg-primary/5 dark:bg-transparent"
+                  className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 min-h-[44px] flex items-center justify-center px-3 whitespace-nowrap flex-shrink-0 bg-primary/5 dark:bg-transparent"
                   onClick={(e) => {
                     e.stopPropagation();
-                    navigate(`/admin/cases/${clientCase.id}?tab=ai-agent`);
+                    navigate(`/admin/cases/${clientCase.id}?tab=tasks`);
                   }}
                 >
                   <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-medium">
-                    Ask AI
+                    Intake
                   </span>
                 </Button>
                 
-                {/* Small Family Tree Form Button - Center Position */}
                 <Button
                   size="sm"
                   className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 min-h-[44px] flex items-center justify-center bg-primary/5 dark:bg-transparent"
@@ -494,25 +494,15 @@ export const CaseCard = memo(({
                   className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 min-h-[44px] flex items-center justify-center bg-primary/5 dark:bg-transparent"
                   onClick={(e) => {
                     e.stopPropagation();
-                    navigate(`/admin/cases/${clientCase.id}?tab=documents`);
+                    navigate(`/admin/cases/${clientCase.id}?tab=ai-agent`);
                   }}
                 >
                   <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-medium">
-                    Documents
+                    Ask AI
                   </span>
                 </Button>
-                <Button
-                  size="sm"
-                  className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 min-h-[44px] flex items-center justify-center px-3 whitespace-nowrap flex-shrink-0 bg-primary/5 dark:bg-transparent"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate(`/admin/cases/${clientCase.id}?tab=tasks`);
-                  }}
-                >
-                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-medium">
-                    Intake
-                  </span>
-                </Button>
+                
+                {/* 2nd Row: Upload - Documents - Stage */}
                 <Button
                   size="sm"
                   className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 min-h-[44px] flex items-center justify-center px-3 whitespace-nowrap flex-shrink-0 bg-primary/5 dark:bg-transparent"
@@ -525,6 +515,20 @@ export const CaseCard = memo(({
                     Upload
                   </span>
                 </Button>
+                
+                <Button
+                  size="sm"
+                  className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 min-h-[44px] flex items-center justify-center bg-primary/5 dark:bg-transparent"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/admin/cases/${clientCase.id}?tab=documents`);
+                  }}
+                >
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-medium">
+                    Documents
+                  </span>
+                </Button>
+                
                 <Button
                   size="sm"
                   className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 min-h-[44px] flex items-center justify-center px-3 whitespace-nowrap flex-shrink-0 bg-primary/5 dark:bg-transparent"
