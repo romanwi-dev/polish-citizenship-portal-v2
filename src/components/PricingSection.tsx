@@ -156,8 +156,8 @@ const PricingSection = () => {
               icon={Train}
               title="Standard"
               subtitle="Like traveling by train"
-              price="€1,500 - €3,500"
-              installment="375-583 EUR per installment • 4-6 installments"
+              price="€3,500"
+              installment="583 EUR per installment • 6 installments"
               timeline="36-48 months average"
               features={[
                 "Lower installment values",
@@ -177,8 +177,8 @@ const PricingSection = () => {
               icon={Plane}
               title="Expedited"
               subtitle="Like business class flight"
-              price="€3,500 - €8,000"
-              installment="500-889 EUR per installment • 7-9 installments"
+              price="€5,500 - €12,500"
+              installment="611-1,389 EUR per installment • 9 installments"
               timeline="18-36 months"
               features={[
                 "50% higher installment value",
@@ -200,7 +200,7 @@ const PricingSection = () => {
               icon={Zap}
               title="VIP"
               subtitle="Like flying private jet"
-              price="€12,500+"
+              price="€15,000+"
               installment="Flat fee per person"
               timeline="14-18 months"
               features={[
