@@ -212,7 +212,7 @@ serve(async (req) => {
     }
 
     // Use safe_document_reupload function to handle version conflicts
-    const { data: reuploadResult, error: reuploadError } = await supabaseClient
+    const { data: documentId, error: reuploadError } = await supabaseClient
       .rpc('safe_document_reupload', {
         p_case_id: caseId,
         p_document_name: file.name,
@@ -225,7 +225,10 @@ serve(async (req) => {
       throw reuploadError;
     }
 
-    const documentId = reuploadResult;
+    if (!documentId) {
+      throw new Error('safe_document_reupload returned null document ID');
+    }
+
     console.log(`[upload-to-dropbox] ✅ Document record created/updated: ${documentId}`);
 
     // Fetch the document details
