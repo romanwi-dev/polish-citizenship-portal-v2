@@ -282,139 +282,6 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
               />
             </div>
             <div className="space-y-3">
-              <Label htmlFor="client_code" className="text-base font-semibold text-foreground">Code</Label>
-              <Select value={formData.client_code} onValueChange={(value) => setFormData({ ...formData, client_code: value })}>
-                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-background/50 text-base h-12">
-                  <SelectValue placeholder="Select client code" />
-                </SelectTrigger>
-                <SelectContent className="bg-popover border-2 border-border z-50">
-                  <SelectItem value="Bad">Bad</SelectItem>
-                  <SelectItem value="Poor">Poor</SelectItem>
-                  <SelectItem value="Fair">Fair</SelectItem>
-                  <SelectItem value="Normal">Normal</SelectItem>
-                  <SelectItem value="Good">Good</SelectItem>
-                  <SelectItem value="Very Good">Very Good</SelectItem>
-                  <SelectItem value="Excellent">Excellent</SelectItem>
-                  <SelectItem value="Topp">Topp</SelectItem>
-                  <SelectItem value="ExTopFr">ExTopFr</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-3">
-              <Label htmlFor="country" className="text-base font-semibold text-foreground">Country</Label>
-              <Select 
-                value={showOtherCountry ? "Other" : formData.country} 
-                onValueChange={(value) => {
-                  if (value === "Other") {
-                    setShowOtherCountry(true);
-                    setFormData({ ...formData, country: "" });
-                  } else {
-                    setShowOtherCountry(false);
-                    setOtherCountry("");
-                    setFormData({ ...formData, country: value });
-                  }
-                }}
-              >
-                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-background/50 text-base h-12">
-                  <SelectValue placeholder="Select country" />
-                </SelectTrigger>
-                <SelectContent className="bg-popover border-2 border-border z-50">
-                  <SelectItem value="USA">USA</SelectItem>
-                  <SelectItem value="UK">UK</SelectItem>
-                  <SelectItem value="Canada">Canada</SelectItem>
-                  <SelectItem value="Australia">Australia</SelectItem>
-                  <SelectItem value="South Africa">South Africa</SelectItem>
-                  <SelectItem value="Brazil">Brazil</SelectItem>
-                  <SelectItem value="Argentina">Argentina</SelectItem>
-                  <SelectItem value="Mexico">Mexico</SelectItem>
-                  <SelectItem value="Venezuela">Venezuela</SelectItem>
-                  <SelectItem value="Israel">Israel</SelectItem>
-                  <SelectItem value="Germany">Germany</SelectItem>
-                  <SelectItem value="France">France</SelectItem>
-                  <SelectItem value="Other">Other</SelectItem>
-                </SelectContent>
-              </Select>
-              {showOtherCountry && (
-                <Input
-                  placeholder="Enter country name"
-                  value={otherCountry}
-                  onChange={(e) => setOtherCountry(e.target.value)}
-                  className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-background/50 text-base h-12"
-                />
-              )}
-            </div>
-            <div className="space-y-3">
-              <Label htmlFor="status" className="text-base font-semibold text-foreground">Status</Label>
-              <Select value={formData.status} onValueChange={(value) => setFormData({ ...formData, status: value })}>
-                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-background/50 text-base h-12">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="bg-popover border-2 border-border z-50">
-                  <SelectItem value="lead">Lead</SelectItem>
-                  <SelectItem value="active">Active</SelectItem>
-                  <SelectItem value="on_hold">On Hold</SelectItem>
-                  <SelectItem value="finished">Finished</SelectItem>
-                  <SelectItem value="failed">Failed</SelectItem>
-                  <SelectItem value="suspended">Suspended</SelectItem>
-                  <SelectItem value="bad">Bad</SelectItem>
-                  <SelectItem value="name_change">Name Change</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          {/* Additional Case Details */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-3">
-              <Label htmlFor="processing_mode" className="text-base font-semibold text-foreground">Mode</Label>
-              <Select value={formData.processing_mode} onValueChange={(value) => setFormData({ ...formData, processing_mode: value })}>
-                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-background/50 text-base h-12">
-                  <SelectValue placeholder="Select processing mode" />
-                </SelectTrigger>
-                <SelectContent className="bg-popover border-2 border-border z-50">
-                  <SelectItem value="standard">Standard</SelectItem>
-                  <SelectItem value="expedited">Expedited</SelectItem>
-                  <SelectItem value="vip">VIP</SelectItem>
-                  <SelectItem value="vip_plus">VIP+</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-3">
-              <Label htmlFor="push_scheme" className="text-base font-semibold text-foreground">Schemes</Label>
-              <Select value={formData.push_scheme || "NONE"} onValueChange={(value) => setFormData({ ...formData, push_scheme: value === "NONE" ? null : value })}>
-                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-background/50 text-base h-12">
-                  <SelectValue placeholder="Select push scheme" />
-                </SelectTrigger>
-                <SelectContent className="bg-popover border-2 border-border z-50">
-                  <SelectItem value="NONE">None</SelectItem>
-                  <SelectItem value="PUSH">PUSH - Aggressive follow-up</SelectItem>
-                  <SelectItem value="NUDGE">NUDGE - Regular reminders</SelectItem>
-                  <SelectItem value="SITDOWN">SITDOWN - Formal meeting</SelectItem>
-                  <SelectItem value="SLOW">SLOW - Standard pace</SelectItem>
-                  <SelectItem value="ALL SCHEMES">ALL SCHEMES - All strategies</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-3">
-              <Label htmlFor="payment_status" className="text-base font-semibold text-foreground">Payment</Label>
-              <Select value={formData.payment_status} onValueChange={(value) => setFormData({ ...formData, payment_status: value })}>
-                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-12">
-                  <SelectValue placeholder="Select payment status" />
-                </SelectTrigger>
-                <SelectContent className="bg-popover border-2 border-border z-50">
-                  <SelectItem value="pay">Pay</SelectItem>
-                  <SelectItem value="clear">Clear</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-3">
               <Label htmlFor="start_date" className="text-base font-semibold text-foreground">Start</Label>
               <Input
                 id="start_date"
@@ -450,6 +317,140 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
               />
             </div>
           </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-3">
+              <Label htmlFor="client_code" className="text-base font-semibold text-foreground">Code</Label>
+              <Select value={formData.client_code} onValueChange={(value) => setFormData({ ...formData, client_code: value })}>
+                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-12">
+                  <SelectValue placeholder="Select client code" />
+                </SelectTrigger>
+                <SelectContent className="bg-popover border-2 border-border z-50">
+                  <SelectItem value="Bad">Bad</SelectItem>
+                  <SelectItem value="Poor">Poor</SelectItem>
+                  <SelectItem value="Fair">Fair</SelectItem>
+                  <SelectItem value="Normal">Normal</SelectItem>
+                  <SelectItem value="Good">Good</SelectItem>
+                  <SelectItem value="Very Good">Very Good</SelectItem>
+                  <SelectItem value="Excellent">Excellent</SelectItem>
+                  <SelectItem value="Topp">Topp</SelectItem>
+                  <SelectItem value="ExTopFr">ExTopFr</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-3">
+              <Label htmlFor="payment_status" className="text-base font-semibold text-foreground">Payment</Label>
+              <Select value={formData.payment_status} onValueChange={(value) => setFormData({ ...formData, payment_status: value })}>
+                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-12">
+                  <SelectValue placeholder="Select payment status" />
+                </SelectTrigger>
+                <SelectContent className="bg-popover border-2 border-border z-50">
+                  <SelectItem value="pay">Pay</SelectItem>
+                  <SelectItem value="clear">Clear</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-3">
+              <Label htmlFor="country" className="text-base font-semibold text-foreground">Country</Label>
+              <Select 
+                value={showOtherCountry ? "Other" : formData.country} 
+                onValueChange={(value) => {
+                  if (value === "Other") {
+                    setShowOtherCountry(true);
+                    setFormData({ ...formData, country: "" });
+                  } else {
+                    setShowOtherCountry(false);
+                    setOtherCountry("");
+                    setFormData({ ...formData, country: value });
+                  }
+                }}
+              >
+                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-12">
+                  <SelectValue placeholder="Select country" />
+                </SelectTrigger>
+                <SelectContent className="bg-popover border-2 border-border z-50">
+                  <SelectItem value="USA">USA</SelectItem>
+                  <SelectItem value="UK">UK</SelectItem>
+                  <SelectItem value="Canada">Canada</SelectItem>
+                  <SelectItem value="Australia">Australia</SelectItem>
+                  <SelectItem value="South Africa">South Africa</SelectItem>
+                  <SelectItem value="Brazil">Brazil</SelectItem>
+                  <SelectItem value="Argentina">Argentina</SelectItem>
+                  <SelectItem value="Mexico">Mexico</SelectItem>
+                  <SelectItem value="Venezuela">Venezuela</SelectItem>
+                  <SelectItem value="Israel">Israel</SelectItem>
+                  <SelectItem value="Germany">Germany</SelectItem>
+                  <SelectItem value="France">France</SelectItem>
+                  <SelectItem value="Other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+              {showOtherCountry && (
+                <Input
+                  placeholder="Enter country name"
+                  value={otherCountry}
+                  onChange={(e) => setOtherCountry(e.target.value)}
+                  className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-blue-950/80 text-base h-12"
+                />
+              )}
+            </div>
+            <div className="space-y-3">
+              <Label htmlFor="status" className="text-base font-semibold text-foreground">Status</Label>
+              <Select value={formData.status} onValueChange={(value) => setFormData({ ...formData, status: value })}>
+                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-12">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="bg-popover border-2 border-border z-50">
+                  <SelectItem value="lead">Lead</SelectItem>
+                  <SelectItem value="active">Active</SelectItem>
+                  <SelectItem value="on_hold">On Hold</SelectItem>
+                  <SelectItem value="finished">Finished</SelectItem>
+                  <SelectItem value="failed">Failed</SelectItem>
+                  <SelectItem value="suspended">Suspended</SelectItem>
+                  <SelectItem value="bad">Bad</SelectItem>
+                  <SelectItem value="name_change">Name Change</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          {/* Additional Case Details */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-3">
+              <Label htmlFor="processing_mode" className="text-base font-semibold text-foreground">Mode</Label>
+              <Select value={formData.processing_mode} onValueChange={(value) => setFormData({ ...formData, processing_mode: value })}>
+                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-12">
+                  <SelectValue placeholder="Select processing mode" />
+                </SelectTrigger>
+                <SelectContent className="bg-popover border-2 border-border z-50">
+                  <SelectItem value="standard">Standard</SelectItem>
+                  <SelectItem value="expedited">Expedited</SelectItem>
+                  <SelectItem value="vip">VIP</SelectItem>
+                  <SelectItem value="vip_plus">VIP+</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-3">
+              <Label htmlFor="push_scheme" className="text-base font-semibold text-foreground">Schemes</Label>
+              <Select value={formData.push_scheme || "NONE"} onValueChange={(value) => setFormData({ ...formData, push_scheme: value === "NONE" ? null : value })}>
+                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-12">
+                  <SelectValue placeholder="Select push scheme" />
+                </SelectTrigger>
+                <SelectContent className="bg-popover border-2 border-border z-50">
+                  <SelectItem value="NONE">None</SelectItem>
+                  <SelectItem value="PUSH">PUSH - Aggressive follow-up</SelectItem>
+                  <SelectItem value="NUDGE">NUDGE - Regular reminders</SelectItem>
+                  <SelectItem value="SITDOWN">SITDOWN - Formal meeting</SelectItem>
+                  <SelectItem value="SLOW">SLOW - Standard pace</SelectItem>
+                  <SelectItem value="ALL SCHEMES">ALL SCHEMES - All strategies</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="space-y-3">
