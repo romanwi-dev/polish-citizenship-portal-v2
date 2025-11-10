@@ -129,7 +129,7 @@ const PricingSection = () => {
   };
 
   return (
-    <section id="pricing" className="relative py-32 overflow-hidden overflow-x-hidden">
+    <section id="pricing" className="relative py-24 overflow-hidden overflow-x-hidden">
       
       <div className="container relative z-10 px-4 mx-auto">
         <div className="max-w-6xl mx-auto">
