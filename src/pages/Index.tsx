@@ -28,6 +28,7 @@ const PricingSection = lazy(() => import("@/components/PricingSection"));
 const TestimonialsSection = lazy(() => import("@/components/TestimonialsSection"));
 const FAQSection = lazy(() => import("@/components/FAQSection"));
 const ContactFormWeb3 = lazy(() => import("@/components/ContactFormWeb3"));
+const EuropeanFlags = lazy(() => import("@/components/EuropeanFlags"));
 const FooterWeb3 = lazy(() => import("@/components/FooterWeb3"));
 const ScrollToTop = lazy(() => import("@/components/ScrollToTop"));
 
@@ -131,6 +132,10 @@ const Index = () => {
         
         <Suspense fallback={<SectionLoader />}>
           <ContactFormWeb3 />
+        </Suspense>
+        
+        <Suspense fallback={<SectionLoader />}>
+          <EuropeanFlags />
         </Suspense>
         
         <Suspense fallback={<SectionLoader />}>
