@@ -21,14 +21,14 @@ const FlippableAboutCard = ({
 
   return (
     <div 
-      className="h-[580px] cursor-pointer animate-fade-in"
+      className="h-[420px] md:h-[520px] cursor-pointer animate-fade-in"
       style={{ 
         animationDelay: `${(index + 1) * 100}ms`,
         perspective: '1000px'
       }}
       onClick={() => setIsFlipped(!isFlipped)}
     >
-      <div 
+      <div
         className="relative w-full h-full transition-transform duration-700"
         style={{
           transformStyle: 'preserve-3d',
