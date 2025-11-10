@@ -63,6 +63,7 @@ const NAVIGATION_SECTIONS: Array<{
   {
     title: 'Demos',
     links: [
+      { label: 'Warsaw Gallery', href: '/warsaw-demo', icon: Sun },
       { label: 'Forms Demo', href: '/admin/forms-demo', icon: Sparkles },
       { label: 'Editing Demos', href: '/admin/intake-demo', icon: ClipboardList },
       { label: 'Skyline Background Removal', href: '/admin/skyline-bg-removal', icon: PenTool },

@@ -94,6 +94,7 @@ const POADiagnostics = lazy(() => import("./pages/admin/POADiagnostics"));
 const BloodlineDashboardPage = lazy(() => import("./pages/admin/BloodlineDashboardPage"));
 const POAOCRPage = lazy(() => import("./pages/admin/POAOCRPage"));
 const SkylineBackgroundRemoval = lazy(() => import("./pages/admin/SkylineBackgroundRemoval"));
+const WarsawDemo = lazy(() => import("./pages/WarsawDemo"));
 
 
 const queryClient = new QueryClient({
@@ -124,6 +125,11 @@ const App = () => (
           <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/warsaw-demo" element={
+              <Suspense fallback={<AdminLoader />}>
+                <WarsawDemo />
+              </Suspense>
+            } />
             <Route path="/login" element={<Login />} />
             <Route path="/cases" element={<Cases />} />
             
