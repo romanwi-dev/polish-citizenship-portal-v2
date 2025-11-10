@@ -245,7 +245,7 @@ const ContactFormWeb3 = () => {
               },
               { 
                 icon: Gift, 
-                label: "Initial Assessment", 
+                label: "Assessment", 
                 value: "Free",
                 details: "No obligation, no cost for initial eligibility review. We analyze your family history and determine your chances before any commitment."
               }
