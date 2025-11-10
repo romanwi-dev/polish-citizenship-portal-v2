@@ -623,9 +623,33 @@ All colors MUST be HSL.
   }
 }
 
+
 /* Utility: page content spacer equal to fixed bar height + safe area */
 .sticky-actionbar-spacer {
   height: calc(var(--actionbar-h, 56px) + env(safe-area-inset-top));
+}
+
+/* Workflow card slide-in animations */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @supports not (backdrop-filter: blur(4px)) {

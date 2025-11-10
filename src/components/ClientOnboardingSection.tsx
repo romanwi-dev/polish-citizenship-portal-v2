@@ -121,6 +121,10 @@ export default function ClientOnboardingSection() {
             <div
               key={step.number}
               className="mb-16 last:mb-0"
+              style={{
+                opacity: 0,
+                animation: `slideIn${isLeft ? 'Left' : 'Right'} 0.6s ease-out ${index * 0.1}s forwards`
+              }}
             >
               <div className={`flex flex-col md:${isLeft ? 'flex-row' : 'flex-row-reverse'} gap-4 md:gap-12 items-stretch`}>
                 {/* Card */}
