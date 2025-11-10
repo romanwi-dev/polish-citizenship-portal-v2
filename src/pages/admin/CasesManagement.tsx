@@ -621,7 +621,7 @@ export default function CasesManagement() {
                   }}
                 >
                   {/* Content Card - Wider with spacing from center */}
-                  <div className="w-full md:w-[42%]">
+                  <div className="w-full md:w-1/2">
                     <DraggableCaseCard 
                       clientCase={caseItem}
                       onEdit={handleEdit}
@@ -636,7 +636,7 @@ export default function CasesManagement() {
 
                   {/* Timeline Dot */}
                   <motion.div 
-                    className="hidden md:flex md:w-[16%] flex-shrink-0 justify-center relative z-10 items-center"
+                    className="hidden md:flex md:w-0 flex-shrink-0 justify-center relative z-10 items-center"
                     initial={{ opacity: 0, x: isEven ? -50 : 50 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: "-50px" }}
@@ -652,7 +652,7 @@ export default function CasesManagement() {
                   </motion.div>
 
                   {/* Empty space for layout balance */}
-                  <div className="w-full md:w-[42%] hidden md:block" />
+                  <div className="w-full md:w-1/2 hidden md:block" />
                 </motion.div>
               );
             })}
