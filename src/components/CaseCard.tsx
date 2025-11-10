@@ -545,7 +545,7 @@ export const CaseCard = memo(({
                 {/* Interactive Family Tree Button */}
                 <Button
                   size="sm"
-                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-primary/20 h-11 flex items-center justify-center px-4 whitespace-nowrap bg-primary/10 dark:bg-primary/5 col-span-3 mt-1 transition-all duration-300 hover:scale-[1.02]"
+                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-emerald-500/50 dark:border-emerald-500/20 h-11 flex items-center justify-center px-4 whitespace-nowrap bg-emerald-500/10 dark:bg-emerald-500/5 col-span-3 mt-1 transition-all duration-300 hover:scale-[1.02]"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate(`/admin/family-tree-view/${clientCase.id}`);
@@ -559,7 +559,7 @@ export const CaseCard = memo(({
                 {/* Dropbox Folder Button */}
                 <Button
                   size="sm"
-                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-primary/20 h-11 flex items-center justify-center px-4 whitespace-nowrap bg-primary/10 dark:bg-primary/5 col-span-3 transition-all duration-300 hover:scale-[1.02]"
+                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-emerald-500/50 dark:border-emerald-500/20 h-11 flex items-center justify-center px-4 whitespace-nowrap bg-emerald-500/10 dark:bg-emerald-500/5 col-span-3 transition-all duration-300 hover:scale-[1.02]"
                   onClick={(e) => {
                     e.stopPropagation();
                     if (clientCase.dropbox_path) {
@@ -570,7 +570,7 @@ export const CaseCard = memo(({
                   }}
                 >
                   <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-medium">
-                    Open Dropbox Folder
+                    Dropbox Folder
                   </span>
                 </Button>
               </div>
