@@ -196,7 +196,7 @@ const FAQSection = () => {
 
           {/* FAQ Tabs */}
           <Tabs defaultValue="eligibility" className="w-full">
-            <div className="mb-8 w-full overflow-x-auto">
+            <div className="mb-8 w-full overflow-x-auto scrollbar-hide">
               <TabsList className="flex lg:grid w-max lg:w-full grid-cols-5 gap-2 h-auto p-2">
                 {faqCategories.map((category) => {
                   const Icon = category.icon;
