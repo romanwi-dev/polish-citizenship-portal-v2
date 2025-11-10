@@ -605,12 +605,12 @@ export default function CasesManagement() {
             <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block" />
 
             {filteredCases.map((caseItem, index) => {
-              const isEven = index % 2 === 0;
+              const isOdd = index % 2 === 1;
               
               return (
                 <div 
                   key={caseItem.id} 
-                  className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-8 ${isEven ? 'md:flex-row-reverse' : ''}`}
+                  className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-8 ${isOdd ? 'md:flex-row-reverse' : ''}`}
                 >
                   {/* Content Card */}
                   <div className="w-full md:w-1/2">
