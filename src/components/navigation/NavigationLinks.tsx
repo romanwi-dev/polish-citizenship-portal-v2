@@ -65,6 +65,7 @@ const NAVIGATION_SECTIONS: Array<{
     links: [
       { label: 'Forms Demo', href: '/admin/forms-demo', icon: Sparkles },
       { label: 'Editing Demos', href: '/admin/intake-demo', icon: ClipboardList },
+      { label: 'Skyline Background Removal', href: '/admin/skyline-bg-removal', icon: PenTool },
     ]
   }
 ];

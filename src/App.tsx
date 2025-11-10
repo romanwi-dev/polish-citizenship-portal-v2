@@ -93,6 +93,7 @@ const TestLockPdf = lazy(() => import("./pages/TestLockPdf"));
 const POADiagnostics = lazy(() => import("./pages/admin/POADiagnostics"));
 const BloodlineDashboardPage = lazy(() => import("./pages/admin/BloodlineDashboardPage"));
 const POAOCRPage = lazy(() => import("./pages/admin/POAOCRPage"));
+const SkylineBackgroundRemoval = lazy(() => import("./pages/admin/SkylineBackgroundRemoval"));
 
 
 const queryClient = new QueryClient({
@@ -657,6 +658,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <CivilRegistryForm />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/admin/skyline-bg-removal" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <SkylineBackgroundRemoval />
               </Suspense>
             } 
           />
