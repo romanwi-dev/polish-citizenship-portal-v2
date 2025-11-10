@@ -87,7 +87,7 @@ const ContactFormWeb3 = () => {
           </h2>
         </div>
 
-        <div className="max-w-5xl mx-auto px-2">
+        <div className="max-w-5xl mx-auto px-0 md:px-2">
           <div className="relative w-full" style={{ perspective: '1000px' }}>
             <div 
               className="relative w-full transition-transform duration-700"
@@ -120,7 +120,7 @@ const ContactFormWeb3 = () => {
                         placeholder=""
                         required
                         noMobileCaps
-                        className="h-20 border-2 border-blue-500/20 hover:border-blue-500/30 focus:border-blue-500/40 hover-glow focus:shadow-lg transition-all backdrop-blur"
+                        className="h-14 md:h-16 border-2 border-blue-500/20 hover:border-blue-500/30 focus:border-blue-500/40 hover-glow focus:shadow-lg transition-all backdrop-blur"
                         style={{ 
                           fontSize: '1.125rem', 
                           fontWeight: '400',
@@ -146,7 +146,7 @@ const ContactFormWeb3 = () => {
                         placeholder=""
                         required
                         noMobileCaps
-                        className="h-20 border-2 border-blue-500/20 hover:border-blue-500/30 focus:border-blue-500/40 hover-glow focus:shadow-lg transition-all backdrop-blur"
+                        className="h-14 md:h-16 border-2 border-blue-500/20 hover:border-blue-500/30 focus:border-blue-500/40 hover-glow focus:shadow-lg transition-all backdrop-blur"
                         style={{ 
                           fontSize: '1.125rem', 
                           fontWeight: '400',
@@ -288,8 +288,8 @@ const ContactFormWeb3 = () => {
                       transform: 'rotateY(180deg)'
                     }}
                   >
-                    <div className="text-xs text-primary/70 mb-2 font-semibold">{stat.label}</div>
-                    <p className="text-xs text-foreground/80 leading-relaxed">
+                    <div className="text-sm md:text-xs text-white font-bold mb-3">{stat.label}</div>
+                    <p className="text-sm md:text-xs text-white/90 leading-relaxed font-medium">
                       {stat.details}
                     </p>
                     <div className="text-xs text-primary/50 mt-auto pt-2">Click to flip back</div>
