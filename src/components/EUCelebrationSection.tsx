@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import celebrationImage from "@/assets/eu-celebration-fullscreen.png";
+import celebrationImage from "@/assets/eu-celebration-dark.png";
 
 const EUCelebrationSection = () => {
   return (
