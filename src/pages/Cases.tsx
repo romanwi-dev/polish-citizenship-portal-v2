@@ -447,7 +447,7 @@ const Cases = () => {
                     className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-8 ${isEven ? 'md:flex-row-reverse' : ''}`}
                   >
                     {/* Content Card */}
-                    <div className="w-full md:w-[45%] lg:w-[46%]">
+                    <div className="w-full md:w-[47%] lg:w-[48%]">
                       <motion.div
                         initial={{ opacity: 0, x: isEven ? 100 : -100 }}
                         animate={{ opacity: 1, x: 0 }}
