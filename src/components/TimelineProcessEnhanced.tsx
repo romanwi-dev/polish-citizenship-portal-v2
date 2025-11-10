@@ -251,7 +251,7 @@ export default function TimelineProcessEnhanced() {
                         <div className="flex items-center justify-center gap-2 mb-1">
                           <span className="text-xs text-muted-foreground">{step.duration}</span>
                         </div>
-                        <h3 className={`text-xl md:text-2xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-lg whitespace-nowrap ${prefersReducedMotion ? '' : 'animate-fade-in'}`}>
+                        <h3 className={`text-2xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-lg whitespace-nowrap ${prefersReducedMotion ? '' : 'animate-fade-in'}`}>
                           {step.title}
                         </h3>
                         <p className="text-xs md:text-sm text-muted-foreground mb-3 flex-1 line-clamp-3 px-2">
