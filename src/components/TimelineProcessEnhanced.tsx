@@ -176,7 +176,7 @@ const timelineSteps = [{
   image: timeline15
 }];
 export default function TimelineProcessEnhanced() {
-  const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
+  const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({ "1": true }); // First card auto-flipped
   const isMobile = useIsMobile();
   const prefersReducedMotion = useReducedMotion();
 
@@ -199,7 +199,7 @@ export default function TimelineProcessEnhanced() {
               Complete Legal Process Timeline
             </span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-16 animate-fade-in" style={{ animationDelay: '200ms' }}>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-32 animate-fade-in" style={{ animationDelay: '200ms' }}>
             Complex journey to Polish citizenship through our comprehensive 15-part process. Many stages are always processed simultaneously to save time.
           </p>
         </div>
@@ -275,20 +275,21 @@ export default function TimelineProcessEnhanced() {
                   WebkitBackfaceVisibility: 'hidden',
                   transform: 'rotateY(180deg)'
                 }}>
-                      <div className="flex-1 flex flex-col gap-3 justify-center">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="text-xs text-primary/60">Details</span>
-                        </div>
+                      <div className="flex-1 flex flex-col gap-3 justify-center items-center text-center">
+                        <Shield className="w-12 h-12 text-primary mb-3" />
                         <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground mb-2">
-                          More Information
+                          Detailed Information
                         </h3>
                         <div className="flex-1 overflow-auto">
-                          <p className="text-sm text-muted-foreground italic">
-                            [Admin: Add detailed information about this step here. This content will be customized for each timeline step to provide additional context, requirements, or important notes for clients.]
+                          <p className="text-sm text-muted-foreground">
+                            Full timeline content, detailed requirements, and process specifics are available to registered users in their portal account.
+                          </p>
+                          <p className="text-xs text-muted-foreground/70 mt-3 italic">
+                            Sign up to access comprehensive step-by-step guidance
                           </p>
                         </div>
                       </div>
-                      <p className="text-xs text-muted-foreground/60 text-center mt-4">Tap to flip back</p>
+                      <p className="text-xs text-muted-foreground/60 text-center mt-4">{isMobile ? 'Tap' : 'Click'} to flip back</p>
                     </div>
                   </div>
                 </div>
