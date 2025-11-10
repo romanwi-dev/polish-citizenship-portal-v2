@@ -1,20 +1,10 @@
 import { Button } from "@/components/ui/button";
 import Sparkles from "lucide-react/dist/esm/icons/sparkles";
 import warsawHero from "@/assets/warsaw-hero-new.png";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const HeroWeb3 = () => {
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
-  const [scrollY, setScrollY] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const toggleFlip = (id: string) => {
     setFlippedCards(prev => ({ ...prev, [id]: !prev[id] }));
@@ -58,14 +48,13 @@ const HeroWeb3 = () => {
       </div>
 
       {/* Warsaw Hero Image - Full Width Background */}
-      <div className="w-full mb-12 md:mb-20 overflow-hidden">
+      <div className="w-full mb-12 md:mb-20">
         <img 
           src={warsawHero} 
-          alt="Warsaw cityscape" 
-          className="w-full h-auto opacity-80 transition-transform duration-100 ease-out" 
+          alt="Warsaw cityscape with Palace of Culture and Science" 
+          className="w-full h-auto opacity-80" 
           style={{
-            filter: 'brightness(1.1)',
-            transform: `translateY(${scrollY * 0.3}px)`
+            filter: 'brightness(1.1)'
           }} 
         />
       </div>
