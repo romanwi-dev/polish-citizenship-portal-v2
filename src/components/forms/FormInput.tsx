@@ -91,7 +91,7 @@ export const FormInput = ({
   colorScheme = 'applicant',
   error,
   required = false,
-  enforceUppercase = false,
+  enforceUppercase = true, // Changed default to true
   className,
   ...props 
 }: FormInputProps) => {
