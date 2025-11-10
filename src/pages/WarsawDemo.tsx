@@ -9,19 +9,29 @@ import warsaw7 from "@/assets/warsaw-demos/warsaw-7.png";
 import warsaw8 from "@/assets/warsaw-demos/warsaw-8.png";
 import warsaw9 from "@/assets/warsaw-demos/warsaw-9.png";
 import warsaw10 from "@/assets/warsaw-demos/warsaw-10.png";
+import warsaw11 from "@/assets/warsaw-demos/warsaw-11.png";
+import warsaw12 from "@/assets/warsaw-demos/warsaw-12.png";
+import warsaw13 from "@/assets/warsaw-demos/warsaw-13.png";
+import warsaw14 from "@/assets/warsaw-demos/warsaw-14.png";
+import warsaw15 from "@/assets/warsaw-demos/warsaw-15.png";
 
 const WarsawDemo = () => {
   const images = [
-    { src: warsaw1, title: "Night Cityscape", description: "Dramatic Warsaw skyline with illuminated landmarks" },
-    { src: warsaw2, title: "Golden Hour", description: "Sunset view of modern Warsaw" },
-    { src: warsaw3, title: "Old Town Square", description: "Historic colorful townhouses" },
-    { src: warsaw4, title: "Aerial View", description: "Bird's eye perspective of the city" },
-    { src: warsaw5, title: "Royal Castle", description: "Magnificent baroque architecture" },
-    { src: warsaw6, title: "Winter Wonderland", description: "Festive Christmas atmosphere" },
-    { src: warsaw7, title: "Modern Architecture", description: "Futuristic glass skyscrapers" },
-    { src: warsaw8, title: "Vistula Boulevards", description: "Riverside promenade at sunset" },
-    { src: warsaw9, title: "Cultural Scene", description: "Grand theater illuminated at night" },
-    { src: warsaw10, title: "Lazienki Park", description: "Historic palace with blooming gardens" },
+    { src: warsaw1, title: "Futuristic Palace", description: "Palace of Culture with holographic displays and flying vehicles" },
+    { src: warsaw2, title: "Sustainable Skyline", description: "Green towers with solar panels at golden hour" },
+    { src: warsaw3, title: "Old Town Future", description: "Historic buildings with holographic facades" },
+    { src: warsaw4, title: "Geodesic Domes", description: "Massive domes and vertical farms aerial view" },
+    { src: warsaw5, title: "Royal Castle Tech", description: "Historic castle with energy shields and LED lighting" },
+    { src: warsaw6, title: "Winter Smart City", description: "Snow-covered city with heated streets and aurora lights" },
+    { src: warsaw7, title: "Crystalline Towers", description: "Bioluminescent skyscrapers with levitating pods" },
+    { src: warsaw8, title: "Vistula Future", description: "Transparent walkways and holographic art installations" },
+    { src: warsaw9, title: "Cultural Hub", description: "Theater with interactive light displays" },
+    { src: warsaw10, title: "Smart Gardens", description: "Palace with smart glass and bioluminescent flowers" },
+    { src: warsaw11, title: "Holographic Eagle", description: "Purple and blue neon with Polish eagle projection" },
+    { src: warsaw12, title: "Metro System", description: "Underground station with bioluminescent walls" },
+    { src: warsaw13, title: "Shopping District", description: "Holographic storefronts with transparent floors" },
+    { src: warsaw14, title: "Sports Stadium", description: "Dome with smart glass and holographic scoreboard" },
+    { src: warsaw15, title: "Eco Towers", description: "Vertical gardens and sustainable living pods" },
   ];
 
   return (

@@ -11,11 +11,17 @@ import celebration7 from "@/assets/eu-celebration/celebration-7.png";
 import celebration8 from "@/assets/eu-celebration/celebration-8.png";
 import celebration9 from "@/assets/eu-celebration/celebration-9.png";
 import celebration10 from "@/assets/eu-celebration/celebration-10.png";
+import celebration11 from "@/assets/eu-celebration/celebration-11.png";
+import celebration12 from "@/assets/eu-celebration/celebration-12.png";
+import celebration13 from "@/assets/eu-celebration/celebration-13.png";
+import celebration14 from "@/assets/eu-celebration/celebration-14.png";
+import celebration15 from "@/assets/eu-celebration/celebration-15.png";
 
 const EUCelebrationSection = () => {
   const images = [
     celebration1, celebration2, celebration3, celebration4, celebration5,
-    celebration6, celebration7, celebration8, celebration9, celebration10
+    celebration6, celebration7, celebration8, celebration9, celebration10,
+    celebration11, celebration12, celebration13, celebration14, celebration15
   ];
   
   const [currentIndex, setCurrentIndex] = useState(0);
