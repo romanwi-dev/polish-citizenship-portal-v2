@@ -198,33 +198,33 @@ const TimelineProcess = () => {
                 >
                   {/* Content Card */}
                   <div className={`w-full md:w-5/12 ${isEven ? 'md:pr-12' : 'md:pl-12'}`}>
-                    <div className="glass-card p-5 rounded-lg hover-glow group cursor-pointer h-[280px] flex flex-col justify-center items-center">
-                      <div className="flex flex-col items-center text-center gap-3 w-full">
-                        <div className={`p-3 rounded-lg bg-gradient-to-br ${step.gradient}`}>
-                          <Icon className="w-6 h-6 text-white" />
+                    <div className="glass-card p-4 rounded-lg hover-glow group cursor-pointer h-[220px] flex flex-col justify-center items-center">
+                      <div className="flex flex-col items-center text-center gap-2 w-full">
+                        <div className={`p-2 rounded-lg bg-gradient-to-br ${step.gradient}`}>
+                          <Icon className="w-5 h-5 text-white" />
                         </div>
                         <div className="flex-1 flex flex-col items-center w-full">
-                          <div className="flex items-center justify-center gap-2 mb-2">
+                          <div className="flex items-center justify-center gap-2 mb-1">
                             <span className={`text-xs font-bold px-2 py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
                               {step.number}
                             </span>
                             <span className="text-xs text-muted-foreground">{step.duration}</span>
                           </div>
-                          <h3 className="text-base md:text-lg font-bold mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent whitespace-nowrap">
+                          <h3 className="text-sm md:text-base font-bold mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent whitespace-nowrap">
                             {step.title}
                           </h3>
-                          <p className="text-sm text-muted-foreground mb-3 px-2 text-center">
+                          <p className="text-xs text-muted-foreground mb-2 px-2 text-center line-clamp-2">
                             {step.description}
                           </p>
-                          <div className="flex flex-wrap gap-2 justify-center">
-                            <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary">
+                          <div className="flex flex-wrap gap-1 justify-center mb-2">
+                            <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">
                               {step.keyAction}
                             </span>
-                            <span className="text-xs px-3 py-1 rounded-full bg-secondary/10 text-secondary">
+                            <span className="text-xs px-2 py-0.5 rounded-full bg-secondary/10 text-secondary">
                               {step.priority}
                             </span>
                           </div>
-                          <p className="text-xs text-muted-foreground/60 mt-6">Click to see details</p>
+                          <p className="text-xs text-muted-foreground/60">Click to see details</p>
                         </div>
                       </div>
                     </div>
