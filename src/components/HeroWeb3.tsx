@@ -17,8 +17,8 @@ const HeroWeb3 = () => {
   };
   return <section className="relative min-h-[60vh] md:min-h-screen flex flex-col items-center justify-center overflow-hidden">
       {/* Content */}
-      <div className="container relative z-10 px-4 pt-32 pb-12 mx-auto">
-        <div className="max-w-4xl mx-auto text-center mb-8 md:mb-12">
+      <div className="container relative z-10 px-4 pt-32 pb-20 mx-auto">
+        <div className="max-w-4xl mx-auto text-center mb-12 md:mb-20">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16 animate-fade-in w-fit max-w-[280px] mx-auto md:max-w-none">
             <Sparkles className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium">Web3 Legal Services</span>
@@ -48,18 +48,16 @@ const HeroWeb3 = () => {
       </div>
 
       {/* Warsaw Skyline - Full Width Background */}
-      <div className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] mb-12 md:mb-16">
-        <div className="w-full flex justify-center items-center">
-          <img 
-            src={warsawLineart} 
-            alt="Warsaw skyline illustration" 
-            className="max-w-3xl w-full opacity-70 md:opacity-50" 
-            style={{
-              mixBlendMode: 'screen',
-              filter: 'invert(1) brightness(0.9)'
-            }} 
-          />
-        </div>
+      <div className="container mx-auto mb-12 md:mb-20 flex justify-center items-center">
+        <img 
+          src={warsawLineart} 
+          alt="Warsaw skyline illustration" 
+          className="max-w-3xl w-full opacity-70 md:opacity-50" 
+          style={{
+            mixBlendMode: 'screen',
+            filter: 'invert(1) brightness(0.9)'
+          }} 
+        />
       </div>
 
       {/* Stats Badges */}
