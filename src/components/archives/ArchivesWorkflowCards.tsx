@@ -126,10 +126,10 @@ export default function ArchivesWorkflowCards() {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ 
                   duration: 0.8, 
-                  delay: index * 0.15, 
+                  delay: index * 0.05, 
                   ease: [0.25, 0.1, 0.25, 1]
                 }}
-                viewport={{ once: true, margin: "-50px" }}
+                viewport={{ once: true, margin: "-200px" }}
                 className={`mb-16 last:mb-0 flex flex-col md:${isLeft ? 'flex-row' : 'flex-row-reverse'} gap-4 md:gap-16 items-center`}
               >
                 <div className="w-full md:w-[42%]">

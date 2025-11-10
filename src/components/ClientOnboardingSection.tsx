@@ -123,8 +123,8 @@ export default function ClientOnboardingSection() {
               key={step.number}
               initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
               whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: index * 0.05 }}
+              viewport={{ once: true, margin: "-200px" }}
               className="mb-16 last:mb-0"
             >
               <div className={`flex flex-col md:${isLeft ? 'flex-row' : 'flex-row-reverse'} gap-4 md:gap-12 items-center`}>
