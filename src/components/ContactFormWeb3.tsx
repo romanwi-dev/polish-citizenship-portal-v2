@@ -233,7 +233,7 @@ const ContactFormWeb3 = () => {
               },
               { 
                 icon: Mail, 
-                label: "Human Detailed Response", 
+                label: "Human Response", 
                 value: "< 1 hour",
                 details: "Expert legal team reviews your case personally. Receive comprehensive analysis with timeline estimates and strategic recommendations."
               },
