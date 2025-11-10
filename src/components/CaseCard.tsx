@@ -407,7 +407,7 @@ export const CaseCard = memo(({
           )}
 
           {!isFlipped && (
-            <div className="space-y-3 sm:space-y-4 mt-auto pt-5 sm:pt-5">
+            <div className="space-y-1 mt-auto pt-5 sm:pt-5">
               {/* Control Room Button - Premium Feature */}
               <Button
                 size="lg"
@@ -461,7 +461,7 @@ export const CaseCard = memo(({
               </Button>
 
               {/* Action Buttons - 2 rows of 3 */}
-              <div className="grid grid-cols-3 gap-2.5">
+              <div className="grid grid-cols-3 gap-1">
                 {/* 1st Row: Intake - Family Tree - Ask AI */}
                 <Button
                   size="sm"
@@ -545,7 +545,7 @@ export const CaseCard = memo(({
                 {/* Interactive Family Tree Button */}
                 <Button
                   size="sm"
-                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-emerald-500/50 dark:border-emerald-500/20 h-11 flex items-center justify-center px-4 whitespace-nowrap bg-emerald-500/10 dark:bg-emerald-500/5 col-span-3 mt-1 transition-all duration-300 hover:scale-[1.02]"
+                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-emerald-500/50 dark:border-emerald-500/20 h-11 flex items-center justify-center px-4 whitespace-nowrap bg-emerald-500/10 dark:bg-emerald-500/5 col-span-3 transition-all duration-300 hover:scale-[1.02]"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate(`/admin/family-tree-view/${clientCase.id}`);
