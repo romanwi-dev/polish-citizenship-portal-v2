@@ -49,11 +49,18 @@ const HeroWeb3 = () => {
 
       {/* Warsaw Skyline - Full Width Background */}
       <div className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] mb-12 md:mb-20">
-        <div className="flex items-center justify-center">
-          <img src={warsawLineart} alt="Warsaw skyline illustration" className="max-w-3xl w-full opacity-70 md:opacity-50 mx-auto block" style={{
-            mixBlendMode: 'screen',
-            filter: 'invert(1) brightness(0.9)'
-          }} />
+        <div className="w-full flex justify-center items-center">
+          <img 
+            src={warsawLineart} 
+            alt="Warsaw skyline illustration" 
+            className="max-w-3xl w-full opacity-70 md:opacity-50 px-4" 
+            style={{
+              mixBlendMode: 'screen',
+              filter: 'invert(1) brightness(0.9)',
+              marginLeft: 'auto',
+              marginRight: 'auto'
+            }} 
+          />
         </div>
       </div>
 
