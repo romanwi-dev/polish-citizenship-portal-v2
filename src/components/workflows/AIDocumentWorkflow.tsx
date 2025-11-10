@@ -964,14 +964,11 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                   </div>
                 </div>
 
-                {/* Timeline Dot - Matching Translations Workflow */}
-                <div className="hidden md:block w-2/12 flex-shrink-0 relative">
-                  <div className={cn(
-                    "w-8 h-8 rounded-full border-4 border-background mx-auto relative z-20 transition-all duration-300",
-                    docCount > 0 
-                      ? "bg-primary animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite] shadow-[0_0_20px_rgba(59,130,246,0.5)]" 
-                      : "bg-primary"
-                  )} />
+                {/* Timeline Dot - Center Aligned */}
+                <div className="hidden md:flex md:w-2/12 flex-shrink-0 justify-center relative z-10 items-center">
+                  <div className="w-16 h-16 rounded-full bg-primary/50 border-4 border-white shadow-[0_0_30px_rgba(0,0,0,0.3)] transition-all duration-300 flex items-center justify-center">
+                    <span className="text-white font-heading font-bold text-3xl">{step.number}</span>
+                  </div>
                 </div>
 
                 {/* Preview Card OR Empty Space - Properly positioned */}

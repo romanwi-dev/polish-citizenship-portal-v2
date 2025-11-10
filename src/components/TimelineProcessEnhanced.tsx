@@ -294,10 +294,10 @@ export default function TimelineProcessEnhanced() {
                 </div>
               </div>
 
-              {/* Timeline Dot */}
-              <div className="hidden md:flex md:w-[16%] flex-shrink-0 justify-center relative z-10">
-                <div className="w-12 h-12 rounded-full bg-primary border-4 border-background shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300 flex items-center justify-center">
-                  <span className="text-white font-heading font-bold text-lg">{step.number}</span>
+              {/* Timeline Dot - Center Aligned */}
+              <div className="hidden md:flex md:w-[16%] flex-shrink-0 justify-center relative z-10 items-center">
+                <div className="w-16 h-16 rounded-full bg-primary/50 border-4 border-white shadow-[0_0_30px_rgba(0,0,0,0.3)] transition-all duration-300 flex items-center justify-center">
+                  <span className="text-white font-heading font-bold text-3xl">{step.number}</span>
                 </div>
               </div>
 
