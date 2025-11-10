@@ -151,9 +151,6 @@ export default function PassportWorkflowCards() {
                           <div className="w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/5 flex items-center justify-center">
                             <step.icon className="w-16 h-16 text-primary opacity-80 group-hover:opacity-100 transition-opacity duration-300" />
                           </div>
-                          <div className={`absolute top-4 left-4 text-5xl font-heading font-black bg-gradient-to-r ${step.gradient} bg-clip-text text-transparent opacity-20`}>
-                            {step.number}
-                          </div>
                         </div>
 
                         <div className="flex-1 flex flex-col justify-center space-y-6">
@@ -209,7 +206,9 @@ export default function PassportWorkflowCards() {
                 </div>
 
                 <div className="hidden md:flex md:w-[16%] flex-shrink-0 justify-center relative z-10">
-                  <div className="w-8 h-8 rounded-full bg-primary border-4 border-background shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300" />
+                  <div className="w-12 h-12 rounded-full bg-primary border-4 border-background shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300 flex items-center justify-center">
+                    <span className="text-base font-heading font-black text-background">{step.number}</span>
+                  </div>
                 </div>
 
                 <div className="hidden md:block md:w-[42%]" />
