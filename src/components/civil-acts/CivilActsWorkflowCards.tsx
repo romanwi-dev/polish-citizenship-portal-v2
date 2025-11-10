@@ -119,13 +119,9 @@ export default function CivilActsWorkflowCards() {
             return (
               <motion.div
                 key={step.number}
-                initial={{ opacity: 0, x: isLeft ? -200 : 200 }}
+                initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                transition={{ 
-                  duration: 0.8, 
-                  delay: index * 0.15,
-                  ease: [0.25, 0.1, 0.25, 1]
-                }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true, margin: "-50px" }}
                 className={`mb-16 last:mb-0 flex flex-col md:${isLeft ? 'flex-row' : 'flex-row-reverse'} gap-4 md:gap-12 items-stretch`}
               >
