@@ -45,7 +45,7 @@ export function WorkflowStageCard({
 
   return (
     <div 
-      className="relative h-[450px]"
+      className="relative h-[520px]"
       style={{ perspective: '1000px' }}
     >
       <div
@@ -68,7 +68,7 @@ export function WorkflowStageCard({
         {/* Front Side */}
         <div 
           className={cn(
-            "absolute inset-0 glass-card p-6 rounded-lg transition-all duration-300",
+            "absolute inset-0 glass-card p-6 rounded-lg transition-all duration-300 flex flex-col",
             isCompleted 
               ? "ring-2 ring-green-500/50" 
               : "hover-glow hover:scale-[1.02]"
@@ -82,50 +82,50 @@ export function WorkflowStageCard({
             pointerEvents: isCompleted ? 'none' : 'auto',
           }}
         >
-          <div className="flex flex-col gap-3 h-full">
-            {/* Header */}
-            <div className="flex items-center gap-2 mb-1">
-              <Badge variant={agent === 'ai' ? 'default' : agent === 'human' ? 'secondary' : 'outline'} className="text-xs">
-                {agent === 'ai' ? 'AI' : agent === 'human' ? 'HAC' : 'AI+HAC'}
-              </Badge>
-            </div>
+          {/* Header */}
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <Badge variant={agent === 'ai' ? 'default' : agent === 'human' ? 'secondary' : 'outline'} className="text-xs">
+              {agent === 'ai' ? 'AI' : agent === 'human' ? 'HAC' : 'AI+HAC'}
+            </Badge>
+          </div>
 
-            {/* Completed Badge */}
-            {isCompleted && (
-              <div className="absolute top-4 right-4">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-500 text-white shadow-lg">
-                  <motion.svg
-                    className="h-5 w-5"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <motion.path d="M5 13l4 4L19 7" />
-                  </motion.svg>
-                </div>
+          {/* Completed Badge */}
+          {isCompleted && (
+            <div className="absolute top-4 right-4">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-500 text-white shadow-lg">
+                <motion.svg
+                  className="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <motion.path d="M5 13l4 4L19 7" />
+                </motion.svg>
               </div>
-            )}
-
-            {/* Icon */}
-            <div className={cn(
-              "mb-3 flex h-16 md:h-20 items-center justify-center rounded-lg",
-              isCompleted 
-                ? "bg-green-500/10" 
-                : "bg-gradient-to-br from-primary/10 to-secondary/10"
-            )}>
-              <Icon className={cn(
-                "h-10 w-10 md:h-12 md:w-12",
-                isCompleted ? "text-green-500" : "text-primary"
-              )} />
             </div>
+          )}
 
-            {/* Title */}
+          {/* Icon */}
+          <div className={cn(
+            "mb-6 flex h-32 items-center justify-center rounded-lg w-full",
+            isCompleted 
+              ? "bg-green-500/10" 
+              : "bg-gradient-to-br from-primary/5 to-secondary/5"
+          )}>
+            <Icon className={cn(
+              "h-16 w-16",
+              isCompleted ? "text-green-500" : "text-primary opacity-80"
+            )} />
+          </div>
+
+          {/* Content - Centered */}
+          <div className="flex-1 flex flex-col justify-center space-y-4">
             <h3 className={cn(
-              "text-xl md:text-2xl font-heading font-black tracking-tight bg-clip-text text-transparent drop-shadow-lg truncate",
+              "text-2xl md:text-3xl font-heading font-black tracking-tight bg-clip-text text-transparent text-center",
               isCompleted 
                 ? "bg-gradient-to-r from-green-500 to-green-600" 
                 : "bg-gradient-to-r from-primary to-secondary"
@@ -133,65 +133,69 @@ export function WorkflowStageCard({
               {title}
             </h3>
 
-            {/* Description */}
-            <p className="text-xs md:text-sm text-muted-foreground mb-3 flex-1 line-clamp-3">
+            <p className="text-xs text-muted-foreground/70 leading-relaxed text-center px-4">
               {description}
             </p>
+          </div>
 
-            {/* Upload Section */}
-            {uploadSection}
+          {/* Upload Section */}
+          {uploadSection && (
+            <div className="mb-3">
+              {uploadSection}
+            </div>
+          )}
 
-            {/* Document Thumbnails */}
-            {stageDocuments.length > 0 && (
-              <div className="mb-3">
-                <div className="flex gap-2 overflow-x-auto pb-2">
-                  {stageDocuments.slice(0, 4).map((doc) => {
-                    const thumbnail = getDocumentThumbnail(doc);
-                    return (
-                      <div
-                        key={doc.id}
-                        className="flex-shrink-0 w-16 h-16 rounded-lg border-2 border-primary/20 overflow-hidden bg-muted/50 flex items-center justify-center group hover:border-primary/60 transition-all"
-                      >
-                        {thumbnail ? (
-                          <img
-                            src={thumbnail}
-                            alt={doc.name}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform"
-                          />
-                        ) : (
-                          <FileText className="h-6 w-6 text-primary/40" />
-                        )}
-                      </div>
-                    );
-                  })}
-                  {stageDocuments.length > 4 && (
-                    <div className="flex-shrink-0 w-16 h-16 rounded-lg border-2 border-dashed border-primary/20 bg-muted/30 flex items-center justify-center">
-                      <span className="text-xs font-semibold text-primary">+{stageDocuments.length - 4}</span>
+          {/* Document Thumbnails */}
+          {stageDocuments.length > 0 && (
+            <div className="mb-3">
+              <div className="flex gap-2 overflow-x-auto pb-2 justify-center">
+                {stageDocuments.slice(0, 4).map((doc) => {
+                  const thumbnail = getDocumentThumbnail(doc);
+                  return (
+                    <div
+                      key={doc.id}
+                      className="flex-shrink-0 w-16 h-16 rounded-lg border-2 border-primary/20 overflow-hidden bg-muted/50 flex items-center justify-center group hover:border-primary/60 transition-all"
+                    >
+                      {thumbnail ? (
+                        <img
+                          src={thumbnail}
+                          alt={doc.name}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                        />
+                      ) : (
+                        <FileText className="h-6 w-6 text-primary/40" />
+                      )}
                     </div>
-                  )}
-                </div>
+                  );
+                })}
+                {stageDocuments.length > 4 && (
+                  <div className="flex-shrink-0 w-16 h-16 rounded-lg border-2 border-dashed border-primary/20 bg-muted/30 flex items-center justify-center">
+                    <span className="text-xs font-semibold text-primary">+{stageDocuments.length - 4}</span>
+                  </div>
+                )}
               </div>
-            )}
+            </div>
+          )}
 
-            {/* Document Count & Actions */}
-            <div className="flex items-center justify-between">
-              <span className="text-xs px-2 py-1 md:px-3 md:py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
+          {/* Document Count & Actions */}
+          <div className="mt-4 space-y-2">
+            <div className="flex items-center justify-center gap-2">
+              <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
                 {docCount} documents
               </span>
-              <Button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onToggleComplete();
-                }}
-                variant={isCompleted ? "default" : "outline"}
-                size="sm"
-                className="text-xs"
-              >
-                {isCompleted ? "✓ Done" : "Mark Done"}
-              </Button>
             </div>
-
-            <p className="text-xs text-muted-foreground/60 mt-1 text-center">
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleComplete();
+              }}
+              variant={isCompleted ? "default" : "outline"}
+              size="sm"
+              className="w-full"
+            >
+              {isCompleted ? "✓ Done" : "Mark Done"}
+            </Button>
+            <p className="text-xs text-muted-foreground/60 text-center">
               {isMobile ? 'Tap' : 'Click'} to see details
             </p>
           </div>
@@ -199,30 +203,32 @@ export function WorkflowStageCard({
 
         {/* Back Side */}
         <div 
-          className="absolute inset-0 glass-card p-6 rounded-lg"
+          className="absolute inset-0 glass-card p-8 rounded-lg flex flex-col"
           style={{
             backfaceVisibility: 'hidden',
             WebkitBackfaceVisibility: 'hidden',
             transform: 'rotateY(180deg)',
           }}
         >
-          <div className="flex flex-col gap-3 h-full">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-xs text-primary/60">Details</span>
+          <div className="mb-6 relative">
+            <div className="w-24 h-24 rounded-lg overflow-hidden bg-gradient-to-br from-secondary/5 to-accent/5 flex items-center justify-center mx-auto">
+              <Icon className="w-12 h-12 text-secondary opacity-60" />
             </div>
-            
-            <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground mb-2">
-              {title}
-            </h3>
+          </div>
+          
+          <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground text-center mb-4">
+            {title} - Details
+          </h3>
 
-            <p className="text-xs md:text-sm text-muted-foreground leading-relaxed flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto">
+            <p className="text-sm text-muted-foreground leading-relaxed text-center">
               {backDetails}
             </p>
-
-            <p className="text-xs text-muted-foreground/60 mt-2 text-center">
-              {isMobile ? 'Tap' : 'Click'} to flip back
-            </p>
           </div>
+
+          <p className="text-xs text-muted-foreground/60 text-center mt-4">
+            {isMobile ? 'Tap' : 'Click'} to flip back
+          </p>
         </div>
       </div>
     </div>
