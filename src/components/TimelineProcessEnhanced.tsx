@@ -214,11 +214,10 @@ export default function TimelineProcessEnhanced() {
             return (
             <div 
               key={step.number} 
-              className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-8 ${!isLeft ? 'md:flex-row-reverse' : ''} ${prefersReducedMotion ? '' : 'animate-fade-in'}`}
+              className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-8 ${!isLeft ? 'md:flex-row-reverse' : ''}`}
               style={{ 
-                animationDelay: `${index * 100}ms`,
                 opacity: 0,
-                animation: prefersReducedMotion ? 'none' : `slideIn${isLeft ? 'Left' : 'Right'} 0.6s ease-out ${index * 0.1}s forwards`
+                animation: prefersReducedMotion ? 'none' : `slideIn${isLeft ? 'Left' : 'Right'} 0.8s ease-out ${index * 0.15}s forwards`
               }}
             >
               {/* Content Card */}
