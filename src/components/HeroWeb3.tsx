@@ -1,14 +1,12 @@
 import { Button } from "@/components/ui/button";
 import Sparkles from "lucide-react/dist/esm/icons/sparkles";
 import warsawLineart from "@/assets/warsaw-lineart.png";
-
 const HeroWeb3 = () => {
   const scrollToContact = () => {
     document.getElementById('contact')?.scrollIntoView({
       behavior: 'smooth'
     });
   };
-  
   return <section className="relative min-h-[60vh] md:min-h-screen flex items-center justify-center overflow-hidden overflow-x-hidden">
       {/* Content */}
       <div className="container relative z-10 px-4 pt-32 pb-20 mx-auto">
@@ -18,7 +16,9 @@ const HeroWeb3 = () => {
             <span className="text-sm font-medium">Web3 Legal Services</span>
           </div>
           
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-black mb-14 leading-tight animate-fade-in tracking-tight" style={{ contentVisibility: 'auto' }}>
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-black mb-14 leading-tight animate-fade-in tracking-tight" style={{
+          contentVisibility: 'auto'
+        }}>
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text">
               Polish Citizenship by Descent
             </span>
@@ -29,12 +29,7 @@ const HeroWeb3 = () => {
           </p>
           
           <div className="flex justify-center animate-fade-in mb-12 md:mb-20">
-            <Button 
-              size="lg" 
-              className="text-lg md:text-2xl font-bold px-8 py-4 md:px-20 md:py-6 h-auto min-h-[48px] rounded-lg bg-red-700 dark:bg-red-900/60 hover:bg-red-800 dark:hover:bg-red-900/70 text-white shadow-[0_0_40px_rgba(185,28,28,0.6)] dark:shadow-[0_0_40px_rgba(127,29,29,0.6)] hover:shadow-[0_0_60px_rgba(185,28,28,0.8)] dark:hover:shadow-[0_0_60px_rgba(127,29,29,0.8)] group relative overflow-hidden backdrop-blur-md border-2 border-red-600 dark:border-red-800/40 hover:border-red-500 dark:hover:border-red-700/60 transition-all duration-300 hover:scale-105 animate-pulse" 
-              onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
-              aria-label="Take the Polish Citizenship Test to check your eligibility"
-            >
+            <Button size="lg" className="text-lg md:text-2xl font-bold px-8 py-4 md:px-20 md:py-6 h-auto min-h-[48px] rounded-lg bg-red-700 dark:bg-red-900/60 hover:bg-red-800 dark:hover:bg-red-900/70 text-white shadow-[0_0_40px_rgba(185,28,28,0.6)] dark:shadow-[0_0_40px_rgba(127,29,29,0.6)] hover:shadow-[0_0_60px_rgba(185,28,28,0.8)] dark:hover:shadow-[0_0_60px_rgba(127,29,29,0.8)] group relative overflow-hidden backdrop-blur-md border-2 border-red-600 dark:border-red-800/40 hover:border-red-500 dark:hover:border-red-700/60 transition-all duration-300 hover:scale-105 animate-pulse" onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')} aria-label="Take the Polish Citizenship Test to check your eligibility">
               <span className="relative z-10 font-bold drop-shadow-lg">
                 Take Polish Citizenship Test
               </span>
@@ -45,22 +40,15 @@ const HeroWeb3 = () => {
 
         {/* Warsaw Skyline - Full Width */}
         <div className="mb-12 md:mb-20 -mx-4">
-          <img 
-            src={warsawLineart} 
-            alt="Warsaw skyline illustration" 
-            className="w-full opacity-70 md:opacity-50"
-            style={{ 
-              mixBlendMode: 'screen',
-              filter: 'invert(1) brightness(0.9)'
-            }}
-          />
+          <img src={warsawLineart} alt="Warsaw skyline illustration" className="w-full opacity-70 md:opacity-50" style={{
+          mixBlendMode: 'screen',
+          filter: 'invert(1) brightness(0.9)'
+        }} />
         </div>
 
         {/* Stats */}
         <div className="max-w-4xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-6xl mx-auto px-4">
-...
-          </div>
+          
         </div>
       </div>
     </section>;
