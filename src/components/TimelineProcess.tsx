@@ -1,4 +1,5 @@
 import { FileText, CheckCircle, CreditCard, FileCheck, Send, FolderSearch, Archive, Languages, Upload, Stamp, Clock, Zap, Award, Book, Users } from "lucide-react";
+import { motion } from "framer-motion";
 
 const timelineSteps = [
   {
@@ -183,7 +184,18 @@ const TimelineProcess = () => {
               const isEven = index % 2 === 0;
               
               return (
-                <div key={index} className={`relative flex items-center ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+                <motion.div 
+                  key={index} 
+                  className={`relative flex items-center ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}
+                  initial={{ opacity: 0, x: isEven ? -100 : 100 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ 
+                    duration: 0.8, 
+                    delay: index * 0.15, 
+                    ease: [0.25, 0.1, 0.25, 1]
+                  }}
+                  viewport={{ once: true, margin: "-50px" }}
+                >
                   {/* Content Card */}
                   <div className={`w-full md:w-5/12 ${isEven ? 'md:pr-12' : 'md:pl-12'}`}>
                     <div className="glass-card p-5 rounded-lg hover-glow group cursor-pointer h-[280px] flex flex-col justify-center">
@@ -204,7 +216,7 @@ const TimelineProcess = () => {
                           <p className="text-sm text-muted-foreground mb-3 px-2">
                             {step.description}
                           </p>
-                          <div className="flex flex-wrap gap-2 justify-center mb-4">
+                          <div className="flex flex-wrap gap-2 justify-center">
                             <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary">
                               {step.keyAction}
                             </span>
@@ -212,7 +224,7 @@ const TimelineProcess = () => {
                               {step.priority}
                             </span>
                           </div>
-                          <p className="text-xs text-muted-foreground/60 mt-auto">Click to see details</p>
+                          <p className="text-xs text-muted-foreground/60 mt-6">Click to see details</p>
                         </div>
                       </div>
                     </div>
@@ -227,7 +239,7 @@ const TimelineProcess = () => {
 
                   {/* Spacer for alternating layout */}
                   <div className="hidden md:block w-5/12" />
-                </div>
+                </motion.div>
               );
             })}
           </div>
