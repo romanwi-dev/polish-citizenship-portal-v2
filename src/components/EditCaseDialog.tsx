@@ -268,49 +268,6 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-5xl max-h-[92vh] overflow-y-auto scrollbar-hide bg-background/95 backdrop-blur-xl border-2 border-primary/20">
         <form onSubmit={handleSubmit} className="space-y-8 pt-6">
-          {/* Client Photo Upload - Premium Style */}
-          <div className="space-y-4 p-6 border-2 border-primary/20 rounded-xl bg-gradient-to-br from-primary/5 to-secondary/5 backdrop-blur-sm">
-            <Label className="text-lg font-semibold text-foreground">Client Photo</Label>
-            <div className="flex items-center gap-6">
-              <div className="relative group">
-                <Avatar className="h-28 w-28 border-4 border-primary/30 shadow-lg transition-all duration-300 group-hover:border-primary/50 group-hover:shadow-xl">
-                  <AvatarImage src={photoPreview || undefined} alt={formData.client_name} className="object-cover" />
-                  <AvatarFallback className="bg-gradient-to-br from-primary/70 to-accent/70 text-2xl">
-                    <Camera className="h-10 w-10 text-primary-foreground/80" />
-                  </AvatarFallback>
-                </Avatar>
-                <div className="absolute inset-0 rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <Upload className="h-8 w-8 text-white" />
-                </div>
-              </div>
-              <div className="flex-1 space-y-3">
-                <div className="relative">
-                  <Input
-                    type="file"
-                    accept="image/jpeg,image/jpg,image/png,image/webp"
-                    onChange={handlePhotoChange}
-                    className="cursor-pointer border-2 border-border/50 hover:border-primary/50 transition-colors bg-background/50 text-base h-12"
-                  />
-                </div>
-                <p className="text-sm text-muted-foreground font-medium">
-                  JPG, PNG or WEBP (max 2MB)
-                </p>
-              </div>
-              {photoPreview && (
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="lg"
-                  onClick={handleRemovePhoto}
-                  className="border-2 border-destructive/50 hover:bg-destructive/10 hover:border-destructive"
-                >
-                  <X className="h-5 w-5 mr-2" />
-                  Remove
-                </Button>
-              )}
-            </div>
-          </div>
-
           {/* Basic Information - Enhanced Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-3">
@@ -320,7 +277,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                 value={formData.client_name}
                 onChange={(e) => setFormData({ ...formData, client_name: e.target.value })}
                 required
-                className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-background/50 text-base h-12"
+                className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-blue-950/80 text-base h-12"
                 placeholder="Enter client name"
               />
             </div>
@@ -442,10 +399,13 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                 </SelectContent>
               </Select>
             </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-3">
               <Label htmlFor="payment_status" className="text-base font-semibold text-foreground">Payment Status</Label>
               <Select value={formData.payment_status} onValueChange={(value) => setFormData({ ...formData, payment_status: value })}>
-                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-background/50 text-base h-12">
+                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-12">
                   <SelectValue placeholder="Select payment status" />
                 </SelectTrigger>
                 <SelectContent className="bg-popover border-2 border-border z-50">
@@ -454,52 +414,8 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                 </SelectContent>
               </Select>
             </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="space-y-3">
-              <Label htmlFor="progress" className="text-base font-semibold text-foreground">Progress (%)</Label>
-              <Input
-                id="progress"
-                type="number"
-                min="0"
-                max="100"
-                value={formData.progress}
-                onChange={(e) => setFormData({ ...formData, progress: parseInt(e.target.value) || 0 })}
-                className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-background/50 text-base h-12"
-              />
-            </div>
-            
-            <div className="space-y-3">
-              <Label htmlFor="kpi_docs_percentage" className="text-base font-semibold text-foreground">Documents (%)</Label>
-              <Input
-                id="kpi_docs_percentage"
-                type="number"
-                min="0"
-                max="100"
-                value={formData.kpi_docs_percentage || 0}
-                onChange={(e) => setFormData({ ...formData, kpi_docs_percentage: parseInt(e.target.value) || 0 })}
-                className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-background/50 text-base h-12"
-              />
-            </div>
-
-            <div className="space-y-3">
-              <Label htmlFor="client_score" className="text-base font-semibold text-foreground">Client Score</Label>
-              <Input
-                id="client_score"
-                type="number"
-                min="0"
-                max="100"
-                value={formData.client_score || 0}
-                onChange={(e) => setFormData({ ...formData, client_score: parseInt(e.target.value) || 0 })}
-                className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-background/50 text-base h-12"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-3">
-              <Label htmlFor="start_date" className="text-base font-semibold text-foreground">Case Start Date</Label>
+              <Label htmlFor="start_date" className="text-base font-semibold text-foreground">Case Start</Label>
               <Input
                 id="start_date"
                 type="text"
@@ -507,7 +423,6 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                 value={formData.start_date}
                 onChange={(e) => {
                   const value = e.target.value;
-                  // Allow only digits and dots
                   const filtered = value.replace(/[^\d.]/g, '');
                   setFormData({ ...formData, start_date: filtered });
                 }}
@@ -515,7 +430,6 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                   const value = e.target.value;
                   if (!value) return;
                   
-                  // Validate DD.MM.YYYY format
                   const parts = value.split('.');
                   if (parts.length === 3) {
                     const [day, month, year] = parts;
@@ -532,7 +446,48 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                     setFormData({ ...formData, start_date: "" });
                   }
                 }}
-                className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-background/50 text-base h-12"
+                className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-blue-950/80 text-base h-12"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="space-y-3">
+              <Label htmlFor="progress" className="text-base font-semibold text-foreground">Progress</Label>
+              <Input
+                id="progress"
+                type="number"
+                min="0"
+                max="100"
+                value={formData.progress}
+                onChange={(e) => setFormData({ ...formData, progress: parseInt(e.target.value) || 0 })}
+                className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-green-950/80 text-base h-12"
+              />
+            </div>
+            
+            <div className="space-y-3">
+              <Label htmlFor="kpi_docs_percentage" className="text-base font-semibold text-foreground">Documents</Label>
+              <Input
+                id="kpi_docs_percentage"
+                type="number"
+                min="0"
+                max="100"
+                value={formData.kpi_docs_percentage || 0}
+                onChange={(e) => setFormData({ ...formData, kpi_docs_percentage: parseInt(e.target.value) || 0 })}
+                className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-green-950/80 text-base h-12"
+              />
+            </div>
+
+            <div className="space-y-3">
+              <Label htmlFor="client_score" className="text-base font-semibold text-foreground">Score</Label>
+              <Input
+                id="client_score"
+                type="number"
+                min="0"
+                max="100"
+                value={formData.client_score || 0}
+                onChange={(e) => setFormData({ ...formData, client_score: parseInt(e.target.value) || 0 })}
+                className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-green-950/80 text-base h-12"
               />
             </div>
           </div>
@@ -564,10 +519,11 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
             <Button 
               type="submit" 
               disabled={updateCaseMutation.isPending || isUploading}
+              variant="outline"
               size="lg"
-              className="px-8 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 shadow-lg hover:shadow-xl transition-all text-base h-12"
+              className="px-8 border-2 border-border/50 hover:border-primary/50 hover:bg-primary/10 text-base h-12"
             >
-              {isUploading ? "Uploading Photo..." : updateCaseMutation.isPending ? "Saving Changes..." : "Save Changes"}
+              {isUploading ? "Uploading..." : updateCaseMutation.isPending ? "Saving..." : "Save"}
             </Button>
           </div>
         </form>
