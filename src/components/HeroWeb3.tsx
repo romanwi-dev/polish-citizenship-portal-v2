@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Sparkles from "lucide-react/dist/esm/icons/sparkles";
+import warsawLineart from "@/assets/warsaw-lineart-transparent.png";
 
 const HeroWeb3 = () => {
   const scrollToContact = () => {
@@ -39,6 +40,15 @@ const HeroWeb3 = () => {
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-red-800/30 to-red-950/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </Button>
+          </div>
+
+          {/* Warsaw Line Art Divider - Sits on homepage background */}
+          <div className="relative w-full my-8 md:my-12">
+            <img 
+              src={warsawLineart} 
+              alt="Warsaw skyline illustration" 
+              className="block mx-auto w-[90%] md:w-[70%] opacity-60 md:opacity-45 pointer-events-none"
+            />
           </div>
 
           {/* Stats */}

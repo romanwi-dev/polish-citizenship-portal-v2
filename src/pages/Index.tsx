@@ -8,7 +8,6 @@ import Navigation from "@/components/Navigation";
 import HeroWeb3 from "@/components/HeroWeb3";
 import AboutSection from "@/components/AboutSection";
 import AIAnalysisSection from "@/components/AIAnalysisSection";
-import warsawLineart from "@/assets/warsaw-lineart.png";
 
 // Lazy load below-the-fold components for better code splitting
 const ServicesWeb3 = lazy(() => import("@/components/ServicesWeb3"));
@@ -70,19 +69,6 @@ const Index = () => {
         ) : (
           <StaticHeritagePlaceholder />
         )}
-        
-        {/* Warsaw Line Art - Sits directly on background */}
-        <div className="absolute top-[65vh] md:top-[75vh] left-1/2 -translate-x-1/2 w-[90%] md:w-[70%] pointer-events-none">
-          <img 
-            src={warsawLineart} 
-            alt="Warsaw skyline illustration" 
-            className="w-full opacity-60 md:opacity-45"
-            style={{ 
-              mixBlendMode: 'lighten',
-              filter: 'invert(1) brightness(0.9)'
-            }}
-          />
-        </div>
       </div>
       
       <div className="relative z-10">
