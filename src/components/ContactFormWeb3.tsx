@@ -239,7 +239,7 @@ const ContactFormWeb3 = () => {
               },
               { 
                 icon: Clock, 
-                label: "Consultation Availability", 
+                label: "Consultation", 
                 value: "24/7",
                 details: "Book consultations at your convenience across all time zones. Video calls, phone, or email - we're available when you need us."
               },
