@@ -59,14 +59,14 @@ export function PassportUpload({ caseId, onDataExtracted }: PassportUploadProps)
           docId = tempDoc?.id;
         }
         
-        const { data, error } = await supabase.functions.invoke('ocr-document', {
-          body: { 
-            imageBase64: base64,
-            documentId: docId || 'temp',
-            caseId,
-            expectedType: 'passport'
-          }
-        });
+      const { data, error } = await supabase.functions.invoke('ocr-universal', {
+        body: { 
+          imageBase64: base64,
+          documentId: docId || 'temp',
+          caseId,
+          expectedType: 'passport'
+        }
+      });
 
         if (error) {
           throw new Error(error.message || 'OCR failed');

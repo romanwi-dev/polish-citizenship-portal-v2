@@ -1,154 +1,143 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "npm:@supabase/supabase-js@2";
-import { getSecurityHeaders } from "../_shared/security-headers.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 
+// CORS headers
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Configuration
 const MAX_CONCURRENT_OCR = 5;
 const MAX_RETRIES = 3;
+const PROCESSING_TIMEOUT_MINUTES = 5;
 
-/**
- * Classify errors as permanent (no retry) vs transient (retry with backoff)
- * PHASE 1 FIX: Enhanced classification for Dropbox path errors
- */
+// Error classification for intelligent retry logic
 function classifyError(errorMessage: string): 'permanent' | 'transient' {
   const permanentPatterns = [
-    /file not found/i,
-    /invalid file format/i,
-    /unsupported document type/i,
-    /file path does not exist/i,
-    /malformed_path/i,
-    /path.*not found/i,
-    /path.*not_found/i, // Dropbox error format
-    /missing required fields/i,
-    /409/, // Dropbox conflict (usually path issues)
-    /all.*path variations failed/i, // Our new comprehensive path check
-    /dropbox download failed.*409/i,
+    /invalid.*image/i,
+    /unsupported.*format/i,
+    /image.*too.*large/i,
+    /no.*text.*found/i,
+    /pdf.*not.*supported/i,
   ];
-
+  
   const transientPatterns = [
-    /rate limit/i,
     /timeout/i,
     /network/i,
-    /temporarily unavailable/i,
-    /service unavailable/i,
-    /internal server error/i,
-    /502/,
-    /503/,
-    /504/,
+    /connection/i,
+    /rate.*limit/i,
+    /temporary/i,
   ];
-
-  for (const pattern of permanentPatterns) {
-    if (pattern.test(errorMessage)) {
-      console.log(`  🚫 Classified as PERMANENT error (pattern: ${pattern})`);
-      return 'permanent';
-    }
+  
+  if (permanentPatterns.some(pattern => pattern.test(errorMessage))) {
+    return 'permanent';
   }
-
-  for (const pattern of transientPatterns) {
-    if (pattern.test(errorMessage)) {
-      console.log(`  ⏳ Classified as TRANSIENT error (pattern: ${pattern})`);
-      return 'transient';
-    }
+  
+  if (transientPatterns.some(pattern => pattern.test(errorMessage))) {
+    return 'transient';
   }
-
-  // Default to transient for unknown errors (safer to retry)
-  console.log(`  ⚠️ Unknown error type - defaulting to TRANSIENT`);
+  
   return 'transient';
 }
 
-serve(async (req) => {
-  const origin = req.headers.get('Origin');
-  const secureHeaders = getSecurityHeaders(origin);
-  
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: secureHeaders });
+Deno.serve(async (req) => {
+  // Handle CORS preflight
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders });
   }
 
+  const supabase = createClient(
+    Deno.env.get("SUPABASE_URL") ?? "",
+    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
+    {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+      }
+    }
+  );
+
+  console.log("OCR Worker: Starting batch processing...");
+  
+  const results: Array<{
+    documentId: string;
+    name: string;
+    status: 'success' | 'failed' | 'skipped';
+    reason?: string;
+    extractedData?: any;
+  }> = [];
+
   try {
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    // STEP 1: Reset stuck documents (processing > 5 minutes)
+    console.log(`🔄 Checking for stuck documents (processing > ${PROCESSING_TIMEOUT_MINUTES} min)...`);
+    const timeoutThreshold = new Date(Date.now() - PROCESSING_TIMEOUT_MINUTES * 60 * 1000).toISOString();
+    
+    const { data: stuckDocs, error: stuckError } = await supabase
+      .from("documents")
+      .select("id, name, updated_at")
+      .eq("ocr_status", "processing")
+      .lt("updated_at", timeoutThreshold);
 
-    console.log("OCR Worker: Starting batch processing...");
+    if (stuckError) {
+      console.error("❌ Error checking stuck documents:", stuckError);
+    } else if (stuckDocs && stuckDocs.length > 0) {
+      console.log(`⚠️  Found ${stuckDocs.length} stuck documents, resetting to queued...`);
+      
+      const { error: resetError } = await supabase
+        .from("documents")
+        .update({ 
+          ocr_status: "queued",
+          ocr_error_message: "Reset from stuck processing state",
+          updated_at: new Date().toISOString()
+        })
+        .in("id", stuckDocs.map(d => d.id));
 
-    // Fetch queued documents (limit to MAX_CONCURRENT_OCR)
+      if (resetError) {
+        console.error("❌ Error resetting stuck documents:", resetError);
+      } else {
+        console.log(`✅ Reset ${stuckDocs.length} stuck documents to queued`);
+      }
+    }
+
+    // STEP 2: Fetch queued documents (with service role = bypasses RLS)
+    console.log("📥 Fetching queued documents...");
     const { data: queuedDocs, error: fetchError } = await supabase
       .from("documents")
-      .select("id, case_id, dropbox_path, document_type, person_type, name, ocr_retry_count")
+      .select("id, case_id, dropbox_path, document_type, person_type, name, ocr_retry_count, file_extension")
       .eq("ocr_status", "queued")
       .lt("ocr_retry_count", MAX_RETRIES)
       .order("created_at", { ascending: true })
       .limit(MAX_CONCURRENT_OCR);
 
     if (fetchError) {
-      console.error("Failed to fetch queued documents:", fetchError);
+      console.error("❌ Error fetching queued documents:", fetchError);
       throw fetchError;
     }
 
     if (!queuedDocs || queuedDocs.length === 0) {
       console.log("No queued documents found");
       return new Response(
-        JSON.stringify({ success: true, message: "No queued documents", processed: 0 }),
-        { headers: { ...secureHeaders, "Content-Type": "application/json" } }
+        JSON.stringify({ 
+          success: true, 
+          message: "No queued documents to process",
+          processed: 0,
+          results: []
+        }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    console.log(`Found ${queuedDocs.length} documents to process`);
+    console.log(`📋 Found ${queuedDocs.length} documents to process`);
 
-    let successCount = 0;
-    let failedCount = 0;
-    const results: Array<{
-      documentId?: string;
-      name?: string;
-      status: string;
-      confidence?: number;
-      error?: string;
-      errorType?: string;
-      retryCount?: number;
-      willRetry?: boolean;
-    }> = [];
-
-    // Process documents in parallel (concurrency already limited by fetch query)
-    const processPromises = queuedDocs.map(async (doc) => {
-      const startTime = Date.now();
-      let errorType: 'permanent' | 'transient' | null = null;
-      let resolvedPath: string | null = null;
+    // STEP 3: Process each document
+    for (const doc of queuedDocs) {
+      const logId = crypto.randomUUID();
+      const startTime = new Date();
       
       try {
-        console.log(`\n${'='.repeat(60)}`);
-        console.log(`📄 Processing: ${doc.name}`);
-        console.log(`   Document ID: ${doc.id}`);
-        console.log(`   Original Path: ${doc.dropbox_path}`);
-        console.log(`   Extension: ${doc.file_extension}`);
-        console.log(`   Retry Count: ${doc.ocr_retry_count || 0}/${MAX_RETRIES}`);
-        console.log(`${'='.repeat(60)}`);
-
-        // Skip PDFs - they cannot be OCR'd via image API
-        if (doc.file_extension === '.pdf' || doc.file_extension === 'pdf') {
-          console.log('⏭️  Skipping PDF - requires text extraction, not OCR');
-          await supabase
-            .from("documents")
-            .update({ 
-              ocr_status: "failed",
-              ocr_error_message: "PDFs cannot be OCR'd via image API. Download directly to view content.",
-              updated_at: new Date().toISOString()
-            })
-            .eq("id", doc.id);
-          
-          successfulDocs.push({
-            documentId: doc.id,
-            name: doc.name,
-            status: 'skipped',
-            reason: 'PDF format not supported for OCR'
-          });
-          return; // Exit early from this async function
-        }
-
-        // Update status to processing
+        console.log(`\n🔄 Processing document ${doc.id} (${doc.name})`);
+        
+        // Update to processing state
         await supabase
           .from("documents")
           .update({ 
@@ -157,198 +146,222 @@ serve(async (req) => {
           })
           .eq("id", doc.id);
 
-        // Download file from Dropbox using enhanced path resolution
-        const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-        const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+        // Log start
+        await supabase
+          .from("ocr_processing_logs")
+          .insert({
+            id: logId,
+            document_id: doc.id,
+            case_id: doc.case_id,
+            started_at: startTime.toISOString(),
+            status: 'processing'
+          });
 
-        console.log('📥 Calling dropbox-download with path validation...');
-        const downloadResponse = await fetch(
-          `${supabaseUrl}/functions/v1/dropbox-download`,
-          {
-            method: "POST",
-            headers: {
-              "Authorization": `Bearer ${serviceKey}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ dropboxPath: doc.dropbox_path }),
-          }
-        );
+        // HANDLE PDFs: Route to pdf-extract function
+        const isPDF = doc.file_extension === '.pdf' || 
+                      doc.file_extension === 'pdf' ||
+                      doc.name?.toLowerCase().endsWith('.pdf');
 
-        if (!downloadResponse.ok) {
-          const errorText = await downloadResponse.text();
-          console.error(`❌ Download failed: ${downloadResponse.status} ${downloadResponse.statusText}`);
-          console.error(`   Error details: ${errorText}`);
-          throw new Error(`Download failed: ${downloadResponse.status} ${downloadResponse.statusText} - ${errorText}`);
-        }
-
-        // Extract resolved path from response header (if available)
-        resolvedPath = downloadResponse.headers.get('X-Dropbox-Path-Resolved');
-        if (resolvedPath) {
-          console.log(`✓ Download successful!`);
-          console.log(`  Resolved Path: ${resolvedPath}`);
+        if (isPDF) {
+          console.log('📄 PDF detected - routing to pdf-extract function...');
           
-          // Update document with corrected path if different
-          if (resolvedPath !== doc.dropbox_path) {
-            console.log(`  → Updating database with corrected path`);
-            await supabase
-              .from("documents")
-              .update({ dropbox_path: resolvedPath })
-              .eq("id", doc.id);
+          const { data: pdfData, error: pdfError } = await supabase.functions.invoke('pdf-extract', {
+            body: { 
+              documentId: doc.id,
+              dropboxPath: doc.dropbox_path 
+            }
+          });
+
+          if (pdfError) {
+            throw new Error(`PDF extraction failed: ${pdfError.message}`);
           }
-        } else {
-          console.log(`✓ Download successful (no path resolution needed)`);
+
+          // Update document with PDF extraction results
+          await supabase
+            .from("documents")
+            .update({ 
+              ocr_status: "completed",
+              ocr_extracted_text: pdfData.extractedText,
+              ocr_confidence: 0.95, // PDFs have high confidence
+              ocr_completed_at: new Date().toISOString(),
+              updated_at: new Date().toISOString()
+            })
+            .eq("id", doc.id);
+
+          // Log completion
+          await supabase
+            .from("ocr_processing_logs")
+            .update({
+              status: 'completed',
+              completed_at: new Date().toISOString(),
+              duration_ms: Date.now() - startTime.getTime()
+            })
+            .eq("id", logId);
+
+          results.push({
+            documentId: doc.id,
+            name: doc.name,
+            status: 'success',
+            reason: 'PDF text extraction',
+            extractedData: pdfData
+          });
+
+          console.log(`✅ PDF extraction successful for ${doc.name}`);
+          continue;
         }
 
-        // Get file content as ArrayBuffer
-        const arrayBuffer = await downloadResponse.arrayBuffer();
-        console.log(`  File size: ${(arrayBuffer.byteLength / 1024).toFixed(1)} KB`);
-        
-        // Convert to base64
-        console.log('🔄 Converting to base64...');
-        const base64 = btoa(
-          new Uint8Array(arrayBuffer).reduce(
-            (data, byte) => data + String.fromCharCode(byte),
-            ""
-          )
+        // HANDLE IMAGES: Download from Dropbox
+        if (!doc.dropbox_path) {
+          throw new Error('No Dropbox path found for document');
+        }
+
+        console.log(`📥 Downloading from Dropbox: ${doc.dropbox_path}`);
+        const { data: downloadData, error: downloadError } = await supabase.functions.invoke(
+          "dropbox-download",
+          {
+            body: { filePath: doc.dropbox_path }
+          }
         );
 
-        // Call OCR function
-        console.log('🤖 Calling OCR universal...');
-        const { data: ocrResult, error: ocrError } = await supabase.functions.invoke(
+        if (downloadError) {
+          throw new Error(`Dropbox download failed: ${downloadError.message}`);
+        }
+
+        if (!downloadData?.arrayBuffer) {
+          throw new Error('No file data returned from Dropbox');
+        }
+
+        console.log(`✅ Downloaded ${downloadData.arrayBuffer.byteLength} bytes`);
+
+        // Convert to base64
+        const uint8Array = new Uint8Array(downloadData.arrayBuffer);
+        const base64 = btoa(String.fromCharCode(...uint8Array));
+        
+        console.log(`📊 Converted to base64 (${base64.length} chars)`);
+
+        // Call OCR Universal
+        console.log(`🤖 Calling ocr-universal for document type: ${doc.document_type || 'auto-detect'}`);
+        const { data: ocrData, error: ocrError } = await supabase.functions.invoke(
           "ocr-universal",
           {
             body: {
               imageBase64: base64,
               documentId: doc.id,
               caseId: doc.case_id,
-              documentType: doc.document_type,
-              personType: doc.person_type,
-            },
+              expectedType: doc.document_type || 'auto',
+              personType: doc.person_type
+            }
           }
         );
 
         if (ocrError) {
-          console.error(`❌ OCR failed: ${ocrError.message}`);
-          throw new Error(`OCR failed: ${ocrError.message}`);
+          throw new Error(`OCR processing failed: ${ocrError.message}`);
         }
 
-        const processingTime = Date.now() - startTime;
-        console.log(`✅ Successfully processed in ${(processingTime / 1000).toFixed(1)}s`);
-        console.log(`   Confidence: ${ocrResult?.confidence || 'N/A'}`);
-        console.log(`${'='.repeat(60)}\n`);
-        
-        return {
-          documentId: doc.id,
-          name: doc.name,
-          status: "success",
-          confidence: ocrResult?.confidence,
-          resolvedPath,
-        };
-
-      } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : "Unknown error";
-        const processingTime = Date.now() - startTime;
-        
-        console.error(`\n${'='.repeat(60)}`);
-        console.error(`❌ PROCESSING FAILED: ${doc.name}`);
-        console.error(`   Error: ${errorMessage}`);
-        console.error(`   Processing time: ${(processingTime / 1000).toFixed(1)}s`);
-        
-        // Classify error type
-        errorType = classifyError(errorMessage);
-        console.error(`   Error type: ${errorType.toUpperCase()}`);
-
-        // Increment retry count
-        const newRetryCount = (doc.ocr_retry_count || 0) + 1;
-        
-        // Permanent errors skip retry - mark as failed immediately
-        const newStatus = errorType === 'permanent' || newRetryCount >= MAX_RETRIES ? "failed" : "queued";
-        
-        if (errorType === 'permanent') {
-          console.error(`   → Marking as FAILED (permanent error - no retry)`);
-        } else if (newRetryCount >= MAX_RETRIES) {
-          console.error(`   → Marking as FAILED (max retries reached: ${MAX_RETRIES})`);
-        } else {
-          console.error(`   → Re-queuing for retry (attempt ${newRetryCount}/${MAX_RETRIES})`);
-        }
-        console.error(`${'='.repeat(60)}\n`);
-
+        // Update document with OCR results
         await supabase
           .from("documents")
-          .update({
-            ocr_status: newStatus,
-            ocr_retry_count: newRetryCount,
-            updated_at: new Date().toISOString(),
+          .update({ 
+            ocr_status: "completed",
+            ocr_extracted_data: ocrData.extractedData,
+            ocr_extracted_text: ocrData.extractedText,
+            ocr_confidence: ocrData.confidence,
+            ocr_completed_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
           })
           .eq("id", doc.id);
 
-        // Log to ocr_processing_logs
-        await supabase.from("ocr_processing_logs").insert({
-          document_id: doc.id,
-          case_id: doc.case_id,
-          status: "failed",
-          error_message: errorMessage,
-          ocr_retry_count: newRetryCount,
-          processing_duration_ms: processingTime,
-          started_at: new Date(startTime).toISOString(),
-          completed_at: new Date().toISOString(),
-        });
+        // Log successful completion
+        await supabase
+          .from("ocr_processing_logs")
+          .update({
+            status: 'completed',
+            completed_at: new Date().toISOString(),
+            duration_ms: Date.now() - startTime.getTime(),
+            confidence_score: ocrData.confidence
+          })
+          .eq("id", logId);
 
-        return {
+        results.push({
           documentId: doc.id,
           name: doc.name,
-          status: "failed",
-          error: errorMessage,
-          errorType,
-          retryCount: newRetryCount,
-          willRetry: newStatus === "queued",
-        };
-      }
-    });
+          status: 'success',
+          extractedData: ocrData.extractedData
+        });
 
-    // Wait for all documents to process in parallel
-    const processResults = await Promise.allSettled(processPromises);
-    
-    // Count successes and failures
-    processResults.forEach((result) => {
-      if (result.status === 'fulfilled') {
-        results.push(result.value);
-        if (result.value.status === 'success') {
-          successCount++;
+        console.log(`✅ Successfully processed ${doc.name}`);
+
+      } catch (error) {
+        console.error(`❌ Error processing document ${doc.id}:`, error);
+        
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        const errorType = classifyError(errorMessage);
+        const retryCount = (doc.ocr_retry_count || 0) + 1;
+        
+        let newStatus: string;
+        if (errorType === 'permanent' || retryCount >= MAX_RETRIES) {
+          newStatus = 'failed';
+          console.log(`❌ Marking as FAILED (${errorType} error or max retries reached)`);
         } else {
-          failedCount++;
+          newStatus = 'queued';
+          console.log(`🔄 Marking as QUEUED for retry ${retryCount}/${MAX_RETRIES}`);
         }
-      } else {
-        failedCount++;
+
+        // Update document status
+        await supabase
+          .from("documents")
+          .update({ 
+            ocr_status: newStatus,
+            ocr_retry_count: retryCount,
+            ocr_error_message: errorMessage,
+            updated_at: new Date().toISOString()
+          })
+          .eq("id", doc.id);
+
+        // Log failure
+        await supabase
+          .from("ocr_processing_logs")
+          .update({
+            status: 'failed',
+            completed_at: new Date().toISOString(),
+            duration_ms: Date.now() - startTime.getTime(),
+            error_message: errorMessage
+          })
+          .eq("id", logId);
+
         results.push({
+          documentId: doc.id,
+          name: doc.name,
           status: 'failed',
-          error: result.reason?.message || 'Unknown error'
+          reason: errorMessage
         });
       }
-    });
+    }
 
-    console.log(`OCR Worker complete: ${successCount} successful, ${failedCount} failed`);
+    console.log(`\n📊 Batch complete: ${results.filter(r => r.status === 'success').length}/${results.length} successful`);
 
     return new Response(
-      JSON.stringify({
-        success: true,
-        processed: queuedDocs.length,
-        successful: successCount,
-        failed: failedCount,
-        results,
+      JSON.stringify({ 
+        success: true, 
+        processed: results.length,
+        successful: results.filter(r => r.status === 'success').length,
+        failed: results.filter(r => r.status === 'failed').length,
+        results 
       }),
-      { headers: { ...secureHeaders, "Content-Type": "application/json" } }
+      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
 
   } catch (error) {
-    console.error("OCR Worker error:", error);
+    console.error("❌ Fatal error in OCR worker:", error);
     return new Response(
-      JSON.stringify({
-        error: error instanceof Error ? error.message : "Unknown error",
+      JSON.stringify({ 
+        success: false, 
+        error: error instanceof Error ? error.message : String(error),
+        results 
       }),
-      {
+      { 
         status: 500,
-        headers: { ...secureHeaders, "Content-Type": "application/json" },
+        headers: { ...corsHeaders, "Content-Type": "application/json" } 
       }
     );
   }

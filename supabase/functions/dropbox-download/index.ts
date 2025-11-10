@@ -11,6 +11,9 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  const requestId = crypto.randomUUID().substring(0, 8);
+  console.log(`[dropbox-download-${requestId}] Request received`);
+
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -46,15 +49,15 @@ Deno.serve(async (req) => {
 
     const body = await req.json();
     const filePath = body.file_path || body.dropboxPath; // Support both parameter names
+    console.log(`[dropbox-download-${requestId}] File path: ${filePath}`);
 
     if (!filePath) {
+      console.error(`[dropbox-download-${requestId}] ❌ No file path provided`);
       return new Response(
         JSON.stringify({ error: 'Missing file_path or dropboxPath parameter' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
-
-    console.log(`Downloading file from Dropbox: ${filePath}`);
 
     const dropboxAppKey = Deno.env.get('DROPBOX_APP_KEY');
     const dropboxAppSecret = Deno.env.get('DROPBOX_APP_SECRET');
@@ -65,9 +68,12 @@ Deno.serve(async (req) => {
     }
 
     // Generate fresh access token on-demand
+    console.log(`[dropbox-download-${requestId}] Generating Dropbox access token...`);
     const accessToken = await generateAccessToken(dropboxAppKey, dropboxAppSecret, dropboxRefreshToken);
+    console.log(`[dropbox-download-${requestId}] ✅ Access token generated`);
 
     // Download file from Dropbox (no retry needed - token is always valid)
+    console.log(`[dropbox-download-${requestId}] Downloading from Dropbox API...`);
     const downloadResponse = await fetch('https://content.dropboxapi.com/2/files/download', {
       method: 'POST',
       headers: {
@@ -78,7 +84,8 @@ Deno.serve(async (req) => {
 
     if (!downloadResponse.ok) {
       const errorText = await downloadResponse.text();
-      console.error(`Dropbox download failed: ${downloadResponse.status} ${errorText}`);
+      console.error(`[dropbox-download-${requestId}] ❌ Dropbox API error: ${downloadResponse.status}`);
+      console.error(`[dropbox-download-${requestId}] Error details: ${errorText}`);
       
       return new Response(
         JSON.stringify({
@@ -92,9 +99,12 @@ Deno.serve(async (req) => {
         }
       );
     }
+    
+    console.log(`[dropbox-download-${requestId}] ✅ File downloaded successfully`);
 
     // Get file data
     const fileData = await downloadResponse.arrayBuffer();
+    console.log(`[dropbox-download-${requestId}] File size: ${fileData.byteLength} bytes`);
     
     // Get metadata from response headers
     const dropboxMetadata = downloadResponse.headers.get('Dropbox-API-Result');
@@ -140,10 +150,16 @@ Deno.serve(async (req) => {
     });
 
   } catch (error) {
-    console.error('Error in dropbox-download function:', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+    console.error(`[dropbox-download-${requestId}] ❌ Fatal error:`, errorMessage);
+    console.error(`[dropbox-download-${requestId}] Stack:`, error instanceof Error ? error.stack : 'No stack');
+    
     return new Response(
-      JSON.stringify({ error: errorMessage }),
+      JSON.stringify({ 
+        error: errorMessage,
+        requestId,
+        timestamp: new Date().toISOString()
+      }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }

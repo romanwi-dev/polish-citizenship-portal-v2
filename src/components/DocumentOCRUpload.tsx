@@ -66,13 +66,13 @@ export const DocumentOCRUpload = ({
       reader.onloadend = async () => {
         const base64 = reader.result as string;
 
-        const { data, error } = await supabase.functions.invoke("ocr-document", {
-          body: {
-            imageBase64: base64,
-            documentId: docId,
-            expectedType,
-          },
-        });
+      const { data, error } = await supabase.functions.invoke("ocr-universal", {
+        body: {
+          imageBase64: base64,
+          documentId: docId,
+          expectedType,
+        },
+      });
 
         if (error) throw error;
 
