@@ -475,7 +475,7 @@ const Cases = () => {
                     </div>
 
                     {/* Empty space for layout balance */}
-                    <div className="w-full md:w-5/12 hidden md:block" />
+                    <div className="w-full md:w-1/2 hidden md:block" />
                   </div>
                 );
               })}
