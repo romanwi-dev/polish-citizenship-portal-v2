@@ -465,7 +465,7 @@ export const CaseCard = memo(({
                 {/* 1st Row: Intake - Family Tree - Ask AI */}
                 <Button
                   size="sm"
-                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 h-11 flex items-center justify-center px-4 whitespace-nowrap bg-primary/5 dark:bg-transparent"
+                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 h-11 flex items-center justify-center px-4 whitespace-nowrap bg-primary/5 dark:bg-transparent transition-all duration-200 hover:border-primary/70 hover:bg-primary/10"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate(`/admin/cases/${clientCase.id}?tab=tasks`);
@@ -478,7 +478,7 @@ export const CaseCard = memo(({
                 
                 <Button
                   size="sm"
-                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 h-11 flex items-center justify-center px-4 bg-primary/5 dark:bg-transparent"
+                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 h-11 flex items-center justify-center px-4 bg-primary/5 dark:bg-transparent transition-all duration-200 hover:border-primary/70 hover:bg-primary/10"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate(`/admin/family-tree/${clientCase.id}`);
@@ -491,7 +491,7 @@ export const CaseCard = memo(({
                 
                 <Button
                   size="sm"
-                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 h-11 flex items-center justify-center px-4 bg-primary/5 dark:bg-transparent"
+                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 h-11 flex items-center justify-center px-4 bg-primary/5 dark:bg-transparent transition-all duration-200 hover:border-primary/70 hover:bg-primary/10"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate(`/admin/cases/${clientCase.id}?tab=ai-agent`);
@@ -505,7 +505,7 @@ export const CaseCard = memo(({
                 {/* 2nd Row: Upload - Documents - Stage */}
                 <Button
                   size="sm"
-                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 h-11 flex items-center justify-center px-4 whitespace-nowrap bg-primary/5 dark:bg-transparent"
+                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 h-11 flex items-center justify-center px-4 whitespace-nowrap bg-primary/5 dark:bg-transparent transition-all duration-200 hover:border-primary/70 hover:bg-primary/10"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate(`/admin/cases/${clientCase.id}?tab=authority`);
@@ -518,7 +518,7 @@ export const CaseCard = memo(({
                 
                 <Button
                   size="sm"
-                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 h-11 flex items-center justify-center px-4 bg-primary/5 dark:bg-transparent"
+                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 h-11 flex items-center justify-center px-4 bg-primary/5 dark:bg-transparent transition-all duration-200 hover:border-primary/70 hover:bg-primary/10"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate(`/admin/cases/${clientCase.id}?tab=documents`);
@@ -531,7 +531,7 @@ export const CaseCard = memo(({
                 
                 <Button
                   size="sm"
-                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 h-11 flex items-center justify-center px-4 whitespace-nowrap bg-primary/5 dark:bg-transparent"
+                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 h-11 flex items-center justify-center px-4 whitespace-nowrap bg-primary/5 dark:bg-transparent transition-all duration-200 hover:border-primary/70 hover:bg-primary/10"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate(`/admin/cases/${clientCase.id}?tab=stage`);
@@ -545,7 +545,7 @@ export const CaseCard = memo(({
                 {/* Interactive Family Tree Button */}
                 <Button
                   size="sm"
-                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 h-12 flex items-center justify-center px-4 whitespace-nowrap bg-primary/5 dark:bg-transparent col-span-3 mt-1"
+                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 h-12 flex items-center justify-center px-4 whitespace-nowrap bg-primary/5 dark:bg-transparent col-span-3 mt-1 transition-all duration-200 hover:border-primary/70 hover:bg-primary/10"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate(`/admin/family-tree-view/${clientCase.id}`);
@@ -559,7 +559,7 @@ export const CaseCard = memo(({
                 {/* Dropbox Folder Button */}
                 <Button
                   size="sm"
-                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 h-12 flex items-center justify-center px-4 whitespace-nowrap bg-primary/5 dark:bg-transparent col-span-3"
+                  className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 h-12 flex items-center justify-center px-4 whitespace-nowrap bg-primary/5 dark:bg-transparent col-span-3 transition-all duration-200 hover:border-primary/70 hover:bg-primary/10"
                   onClick={(e) => {
                     e.stopPropagation();
                     if (clientCase.dropbox_path) {
