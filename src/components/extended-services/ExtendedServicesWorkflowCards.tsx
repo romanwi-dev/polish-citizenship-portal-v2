@@ -147,7 +147,7 @@ export default function ExtendedServicesWorkflowCards() {
                           WebkitBackfaceVisibility: 'hidden',
                         }}
                       >
-                        <div className="mb-6 relative">
+                        <div className="mb-6 relative flex items-center justify-center">
                           <div className="w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/5 flex items-center justify-center">
                             <step.icon className="w-16 h-16 text-primary opacity-80 group-hover:opacity-100 transition-opacity duration-300" />
                           </div>

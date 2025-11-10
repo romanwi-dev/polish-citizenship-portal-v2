@@ -635,8 +635,10 @@ export default function CasesManagement() {
                   </div>
 
                   {/* Timeline Dot */}
-                  <div className="hidden md:flex md:w-[16%] flex-shrink-0 justify-center relative z-10">
-                    <div className="w-8 h-8 rounded-full bg-primary border-4 border-background shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300" />
+                  <div className="hidden md:flex md:w-[16%] flex-shrink-0 justify-center relative z-10 items-center">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary border-2 border-primary shadow-[0_0_30px_rgba(0,0,0,0.3)] transition-all duration-300 flex items-center justify-center">
+                      <span className="text-white text-3xl font-heading font-bold">{String(index + 1).padStart(2, '0')}</span>
+                    </div>
                   </div>
 
                   {/* Empty space for layout balance */}
