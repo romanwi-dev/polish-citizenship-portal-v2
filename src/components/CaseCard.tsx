@@ -460,21 +460,8 @@ export const CaseCard = memo(({
                 </span>
               </Button>
 
-              {/* Action Buttons - 3 rows of 3 + Family Tree Form Link */}
+              {/* Action Buttons - 3 rows of 3 */}
               <div className="grid grid-cols-3 gap-2 pt-3 border-t border-border/30">
-                {/* Small Family Tree Form Button */}
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="h-10 border border-purple-500/30 hover:border-purple-500/50 hover:bg-purple-500/10 transition-all text-xs flex items-center justify-center gap-1"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate(`/admin/family-tree/${clientCase.id}`);
-                  }}
-                >
-                  <span className="font-medium">Family Tree</span>
-                </Button>
-                
                 <Button
                   size="sm"
                   className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 min-h-[44px] flex items-center justify-center bg-primary/5 dark:bg-transparent"
@@ -487,85 +474,102 @@ export const CaseCard = memo(({
                     Ask AI
                   </span>
                 </Button>
+                
+                {/* Small Family Tree Form Button - Center Position */}
                 <Button
                   size="sm"
                   className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 min-h-[44px] flex items-center justify-center bg-primary/5 dark:bg-transparent"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/admin/cases/${clientCase.id}?tab=documents`);
-                    }}
-                  >
-                    <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-medium">
-                      Documents
-                    </span>
-                  </Button>
-                  <Button
-                    size="sm"
-                    className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 min-h-[44px] flex items-center justify-center px-3 whitespace-nowrap flex-shrink-0 bg-primary/5 dark:bg-transparent"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/admin/cases/${clientCase.id}?tab=tasks`);
-                    }}
-                  >
-                    <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-medium">
-                      Intake
-                    </span>
-                  </Button>
-                  <Button
-                    size="sm"
-                    className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 min-h-[44px] flex items-center justify-center px-3 whitespace-nowrap flex-shrink-0 bg-primary/5 dark:bg-transparent"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/admin/cases/${clientCase.id}?tab=authority`);
-                    }}
-                  >
-                    <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-medium">
-                      Upload
-                    </span>
-                  </Button>
-                  <Button
-                    size="sm"
-                    className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 min-h-[44px] flex items-center justify-center px-3 whitespace-nowrap flex-shrink-0 bg-primary/5 dark:bg-transparent"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/admin/cases/${clientCase.id}?tab=stage`);
-                    }}
-                  >
-                    <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-medium">
-                      Stage
-                    </span>
-                  </Button>
-                  {/* Interactive Family Tree Button - Positioned Above Dropbox */}
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="w-full col-span-3 py-7 border-2 border-cyan-500/30 hover:border-cyan-500/50 hover:bg-cyan-500/10 transition-all shadow-lg hover:shadow-cyan-500/20"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/admin/family-tree-view/${clientCase.id}`);
-                    }}
-                  >
-                    <span className="font-bold text-base">Interactive Tree</span>
-                  </Button>
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/admin/family-tree/${clientCase.id}`);
+                  }}
+                >
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-medium">
+                    Family Tree
+                  </span>
+                </Button>
+                
+                <Button
+                  size="sm"
+                  className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 min-h-[44px] flex items-center justify-center bg-primary/5 dark:bg-transparent"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/admin/cases/${clientCase.id}?tab=documents`);
+                  }}
+                >
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-medium">
+                    Documents
+                  </span>
+                </Button>
+                <Button
+                  size="sm"
+                  className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 min-h-[44px] flex items-center justify-center px-3 whitespace-nowrap flex-shrink-0 bg-primary/5 dark:bg-transparent"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/admin/cases/${clientCase.id}?tab=tasks`);
+                  }}
+                >
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-medium">
+                    Intake
+                  </span>
+                </Button>
+                <Button
+                  size="sm"
+                  className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 min-h-[44px] flex items-center justify-center px-3 whitespace-nowrap flex-shrink-0 bg-primary/5 dark:bg-transparent"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/admin/cases/${clientCase.id}?tab=authority`);
+                  }}
+                >
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-medium">
+                    Upload
+                  </span>
+                </Button>
+                <Button
+                  size="sm"
+                  className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-white/30 min-h-[44px] flex items-center justify-center px-3 whitespace-nowrap flex-shrink-0 bg-primary/5 dark:bg-transparent"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/admin/cases/${clientCase.id}?tab=stage`);
+                  }}
+                >
+                  <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent flex items-center justify-center w-full font-medium">
+                    Stage
+                  </span>
+                </Button>
+                
+                {/* Interactive Family Tree Button - Same size as Dropbox */}
+                <Button
+                  size="sm"
+                  className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border-2 border-cyan-500/50 dark:border-cyan-400/30 min-h-[44px] flex items-center justify-center gap-1.5 px-3 whitespace-nowrap flex-shrink-0 bg-cyan-500/5 dark:bg-transparent col-span-3"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/admin/family-tree-view/${clientCase.id}`);
+                  }}
+                >
+                  <span className="relative z-10 bg-gradient-to-r from-cyan-600 via-cyan-500 to-blue-500 dark:from-cyan-400 dark:via-cyan-300 dark:to-blue-300 bg-clip-text text-transparent flex items-center justify-center font-medium">
+                    Interactive Tree
+                  </span>
+                </Button>
 
-                  {/* Dropbox Folder Button */}
-                  <Button
-                    size="sm"
-                    className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border-2 border-emerald-500/50 dark:border-emerald-400/30 min-h-[44px] flex items-center justify-center gap-1.5 px-3 whitespace-nowrap flex-shrink-0 bg-emerald-500/5 dark:bg-transparent col-span-3"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (clientCase.dropbox_path) {
-                        window.open(`https://www.dropbox.com/home${clientCase.dropbox_path}`, '_blank');
-                      } else {
-                        toast.error('No Dropbox path configured for this case');
-                      }
-                    }}
-                  >
-                    <span className="relative z-10 bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-500 dark:from-emerald-400 dark:via-emerald-300 dark:to-teal-300 bg-clip-text text-transparent flex items-center justify-center font-medium">
-                      Open Dropbox Folder
-                    </span>
-                  </Button>
-                </div>
+                {/* Dropbox Folder Button */}
+                <Button
+                  size="sm"
+                  className="text-xs font-light hover-glow group relative overflow-hidden backdrop-blur-md border-2 border-emerald-500/50 dark:border-emerald-400/30 min-h-[44px] flex items-center justify-center gap-1.5 px-3 whitespace-nowrap flex-shrink-0 bg-emerald-500/5 dark:bg-transparent col-span-3"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (clientCase.dropbox_path) {
+                      window.open(`https://www.dropbox.com/home${clientCase.dropbox_path}`, '_blank');
+                    } else {
+                      toast.error('No Dropbox path configured for this case');
+                    }
+                  }}
+                >
+                  <span className="relative z-10 bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-500 dark:from-emerald-400 dark:via-emerald-300 dark:to-teal-300 bg-clip-text text-transparent flex items-center justify-center font-medium">
+                    Open Dropbox Folder
+                  </span>
+                </Button>
+              </div>
             </div>
           )}
         </div>
