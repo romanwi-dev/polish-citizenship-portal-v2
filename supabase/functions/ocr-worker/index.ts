@@ -100,11 +100,14 @@ Deno.serve(async (req) => {
     }
 
     // STEP 2: Fetch pending documents (with service role = bypasses RLS)
-    console.log("📥 Fetching pending documents...");
+    console.log("📥 Fetching pending documents from valid /CASES paths...");
     const { data: queuedDocs, error: fetchError } = await supabase
       .from("documents")
       .select("id, case_id, dropbox_path, document_type, person_type, name, ocr_retry_count, file_extension")
       .eq("ocr_status", "pending")
+      .like("dropbox_path", "/CASES/%")           // Must be in /CASES
+      .not("dropbox_path", "like", "/CASES/###%") // NOT archived
+      .not("dropbox_path", "like", "/TEST/%")     // NOT test
       .lt("ocr_retry_count", MAX_RETRIES)
       .order("created_at", { ascending: true })
       .limit(MAX_CONCURRENT_OCR);
