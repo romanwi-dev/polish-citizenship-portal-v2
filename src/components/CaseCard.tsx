@@ -204,7 +204,7 @@ export const CaseCard = memo(({
         <div className="backface-hidden border-2 border-border/50 hover:border-primary/60 transition-all shadow-lg hover:shadow-xl p-5 sm:p-6 rounded-lg flex flex-col glass-card" style={{ minHeight: '750px' }}>
           <div className="flex items-start justify-between gap-2 mb-5">
             <div className="min-w-0 flex-1">
-              <h3 className="font-heading font-bold text-2xl sm:text-3xl md:text-4xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent truncate">
+              <h3 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent truncate">
                 {clientCase.client_name}
               </h3>
               {clientCase.client_code && (
