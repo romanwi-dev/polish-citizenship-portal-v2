@@ -48,11 +48,11 @@ const HeroWeb3 = () => {
       </div>
 
       {/* Warsaw Hero Image - Full Width Background */}
-      <div className="w-full mb-12 md:mb-20 flex justify-center items-center">
+      <div className="w-full mb-12 md:mb-20">
         <img 
           src={warsawHero} 
           alt="Warsaw cityscape" 
-          className="max-w-4xl w-full opacity-80" 
+          className="w-full h-auto opacity-80" 
           style={{
             filter: 'brightness(1.1)'
           }} 
