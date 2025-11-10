@@ -7,7 +7,7 @@ interface SkylineDividerProps {
 
 const SkylineDivider = ({ imageSrc = warsawSkyline, alt = "Warsaw skyline" }: SkylineDividerProps) => {
   return (
-    <div className="relative w-full my-8 md:my-12 overflow-hidden">
+    <div className="relative w-full my-8 md:my-12 overflow-hidden h-[300px] md:h-[400px]">
       {/* Background matching StaticHeritage */}
       <div 
         className="absolute inset-0 animate-color-wave bg-[length:200%_200%]"
@@ -16,18 +16,21 @@ const SkylineDivider = ({ imageSrc = warsawSkyline, alt = "Warsaw skyline" }: Sk
         }}
       />
       
-      {/* Full-width skyline image */}
-      <div className="relative flex justify-center items-center py-8">
+      {/* Full-width skyline image with better visibility */}
+      <div className="absolute inset-0">
         <img 
           src={imageSrc} 
           alt={alt} 
-          className="w-full h-auto object-cover opacity-60"
+          className="w-full h-full object-cover opacity-80"
           style={{
-            mixBlendMode: 'screen',
-            filter: 'brightness(0.9) contrast(1.1)'
+            mixBlendMode: 'lighten',
+            filter: 'brightness(1.1) contrast(1.2) saturate(0.8)'
           }} 
         />
       </div>
+      
+      {/* Gradient overlay for better blend */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-transparent to-background/20" />
       
       <style>{`
         @keyframes color-wave {
