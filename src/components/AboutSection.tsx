@@ -86,12 +86,12 @@ const AboutSection = () => {
             </span>
           </h2>
           
-          <div className="mb-16">
-            <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-6 text-left px-4 md:px-0">
+          <div className="mb-16 max-w-5xl mx-auto">
+            <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-6 text-justify">
               Since 2003, we have been advising people of Polish ancestry in confirming Polish citizenship by descent, obtaining a European Polish passport, and navigating all related matters. For almost 20 years, we have been working to help people of Polish descent from various countries in receiving Polish citizenship and a Polish European passport. Our excellent legal assistance is provided by independent experts in the field of Polish citizenship, lawyers of various specializations, experienced representatives, and documents researchers, as well as the use of advice and consultations provided by the staff of the relevant Polish government offices.
             </p>
             
-            <p className="text-base md:text-lg text-muted-foreground leading-relaxed text-left px-4 md:px-0">
+            <p className="text-base md:text-lg text-muted-foreground leading-relaxed text-justify">
               Embark on your journey to obtaining Polish citizenship and enjoy the benefits of a European Polish passport. Trust us to provide you with the guidance, expertise, and support you need to navigate the complexities of the application process. Start your application today and make your Polish heritage a permanent part of your identity.
             </p>
           </div>
