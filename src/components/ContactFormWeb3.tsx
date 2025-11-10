@@ -227,7 +227,7 @@ const ContactFormWeb3 = () => {
             {[
               { 
                 icon: Zap, 
-                label: "AI Accurate Response", 
+                label: "AI Response", 
                 value: "< 5 mins",
                 details: "Advanced AI analyzes your case instantly based on 25,000+ cases and Polish law. Get preliminary assessment with document checklist."
               },
