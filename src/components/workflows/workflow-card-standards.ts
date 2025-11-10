@@ -1,14 +1,16 @@
 /**
- * Workflow Card Standards
+ * WORKFLOW CARD STANDARDS - LOCKED CONFIGURATION
  * Defines the exact specifications for all workflow cards across the application
- * Standard: Translation Workflow Cards
+ * Reference Implementation: Documents Workflow (AI Workflow)
+ * 
+ * ⚠️ DO NOT MODIFY WITHOUT APPROVAL - See docs/WORKFLOW_STANDARDS_LOCKED.md
  */
 
 export const WORKFLOW_CARD_STANDARDS = {
   // Card dimensions
   cardHeight: '520px',
   
-  // Layout proportions (must match Translation Workflow)
+  // Layout proportions (MUST MATCH across all workflows)
   layout: {
     cardWidth: 'md:w-[42%]',      // Card container
     timelineWidth: 'md:w-[16%]',   // Timeline dot container
@@ -44,10 +46,19 @@ export const WORKFLOW_CARD_STANDARDS = {
     description: 'text-xs text-muted-foreground/70 leading-relaxed'
   },
   
-  // Timeline dot styling
+  // Timeline dot styling (CIRCLED NUMBERS)
   timelineDot: {
-    base: 'w-8 h-8 rounded-full bg-primary border-4 border-background',
+    container: 'w-12 h-12 rounded-full bg-primary border-4 border-background',
     shadow: 'shadow-[0_0_20px_rgba(59,130,246,0.3)]',
+    layout: 'flex items-center justify-center',
+    numberStyle: 'text-white font-heading font-bold text-lg',
     transition: 'transition-all duration-300'
+  },
+  
+  // Card number display rules
+  numberDisplay: {
+    showOnCard: false,           // NO number badges on cards
+    showOnTimeline: true,        // Numbers ONLY on timeline dots
+    format: 'circled'            // Circled format only
   }
 } as const;

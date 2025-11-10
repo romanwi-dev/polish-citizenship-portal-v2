@@ -219,7 +219,7 @@ export default function TimelineProcessEnhanced() {
             >
               {/* Content Card */}
               <div className="w-full md:w-[42%]">
-                <div className="relative h-[280px] md:h-[400px]" style={{
+                <div className="relative h-[520px]" style={{
               perspective: '1000px'
             }}>
                   <div 
@@ -245,9 +245,6 @@ export default function TimelineProcessEnhanced() {
                 }}>
                       <div className="flex flex-col gap-3 h-full">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className={`text-sm md:text-xs font-bold px-3 py-1.5 md:px-2 md:py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
-                            {step.number}
-                          </span>
                           <span className="text-xs text-muted-foreground">{step.duration}</span>
                         </div>
                         <h3 className={`text-xl md:text-2xl lg:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-lg ${prefersReducedMotion ? '' : 'animate-fade-in'}`}>
@@ -276,9 +273,6 @@ export default function TimelineProcessEnhanced() {
                 }}>
                       <div className="flex flex-col gap-3 h-full">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className={`text-base md:text-xs font-bold px-3 py-1.5 md:px-2 md:py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
-                            {step.number}
-                          </span>
                           <span className="text-xs text-primary/60">Details</span>
                         </div>
                         <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground mb-2">
@@ -298,7 +292,9 @@ export default function TimelineProcessEnhanced() {
 
               {/* Timeline Dot */}
               <div className="hidden md:flex md:w-[16%] flex-shrink-0 justify-center relative z-10">
-                <div className="w-8 h-8 rounded-full bg-primary border-4 border-background shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300" />
+                <div className="w-12 h-12 rounded-full bg-primary border-4 border-background shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300 flex items-center justify-center">
+                  <span className="text-white font-heading font-bold text-lg">{step.number}</span>
+                </div>
               </div>
 
               {/* Empty space for layout balance */}

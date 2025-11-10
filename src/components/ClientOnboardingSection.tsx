@@ -126,7 +126,7 @@ export default function ClientOnboardingSection() {
                 {/* Card */}
                 <div className="w-full md:w-[42%]">
                   <div 
-                    className="relative h-[450px]"
+                    className="relative h-[520px]"
                     style={{ perspective: '1000px' }}
                   >
                 <div
@@ -145,13 +145,10 @@ export default function ClientOnboardingSection() {
                       WebkitBackfaceVisibility: 'hidden',
                     }}
                   >
-                    {/* Icon and Number */}
+                    {/* Icon */}
                     <div className="mb-6 relative">
                       <div className="w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/5 flex items-center justify-center">
                         <step.icon className="w-16 h-16 text-primary opacity-80 group-hover:opacity-100 transition-opacity duration-300" />
-                      </div>
-                      <div className={`absolute top-4 left-4 text-5xl font-heading font-black bg-gradient-to-r ${step.gradient} bg-clip-text text-transparent opacity-20`}>
-                        {step.number}
                       </div>
                     </div>
 
@@ -196,9 +193,6 @@ export default function ClientOnboardingSection() {
                         <div className="w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-secondary/5 to-accent/5 flex items-center justify-center">
                           <step.icon className="w-16 h-16 text-secondary opacity-60" />
                         </div>
-                        <div className={`absolute top-4 left-4 text-5xl font-heading font-black bg-gradient-to-r ${step.gradient} bg-clip-text text-transparent opacity-20`}>
-                          {step.number}
-                        </div>
                       </div>
                       
                       <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground mb-2">
@@ -218,7 +212,9 @@ export default function ClientOnboardingSection() {
 
                 {/* Timeline Dot */}
                 <div className="hidden md:flex md:w-[16%] flex-shrink-0 justify-center relative z-10">
-                  <div className="w-8 h-8 rounded-full bg-primary border-4 border-background shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300" />
+                  <div className="w-12 h-12 rounded-full bg-primary border-4 border-background shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300 flex items-center justify-center">
+                    <span className="text-white font-heading font-bold text-lg">{step.number}</span>
+                  </div>
                 </div>
 
                 {/* Empty space on other side */}
