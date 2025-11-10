@@ -53,7 +53,7 @@ const HeroWeb3 = () => {
           <img 
             src={warsawLineart} 
             alt="Warsaw skyline illustration" 
-            className="max-w-3xl w-full opacity-70 md:opacity-50 px-4" 
+            className="max-w-3xl w-full opacity-70 md:opacity-50" 
             style={{
               mixBlendMode: 'screen',
               filter: 'invert(1) brightness(0.9)',
