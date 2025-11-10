@@ -38,40 +38,42 @@ const HeroWeb3 = () => {
             </Button>
           </div>
         </div>
+      </div>
 
-        {/* Warsaw Skyline - Full Width */}
-        <div className="mb-12 md:mb-20 -mx-4">
-          <img src={warsawLineart} alt="Warsaw skyline illustration" className="w-full opacity-70 md:opacity-50" style={{
+      {/* Warsaw Skyline - Full Width Desktop */}
+      <div className="mb-12 md:mb-20 w-full">
+        <img src={warsawLineart} alt="Warsaw skyline illustration" className="w-full opacity-70 md:opacity-50" style={{
           mixBlendMode: 'screen',
           filter: 'invert(1) brightness(0.9)'
         }} />
-        </div>
+      </div>
 
-        {/* Stats Badges */}
+      {/* Stats Badges */}
+      <div className="container relative z-10 px-4 mx-auto">
         <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in" style={{ animationDelay: '200ms' }}>
             <div className="glass-card p-6 rounded-lg hover-glow text-center">
               <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                <Users className="w-6 h-6 text-primary" />
+                <Shield className="w-6 h-6 text-primary" />
               </div>
-              <h3 className="text-lg font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">20M+ Descendants</h3>
-              <p className="text-sm text-muted-foreground">People of Polish descent worldwide</p>
+              <h3 className="text-lg font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">25+ Years of Experience</h3>
+              <p className="text-sm text-muted-foreground">Serving clients worldwide since 2003</p>
             </div>
             
             <div className="glass-card p-6 rounded-lg hover-glow text-center">
               <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gradient-to-br from-secondary/20 to-accent/20 flex items-center justify-center">
-                <Globe className="w-6 h-6 text-secondary" />
+                <Users className="w-6 h-6 text-secondary" />
               </div>
-              <h3 className="text-lg font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent mb-2">EU Member Since 2004</h3>
-              <p className="text-sm text-muted-foreground">Gateway to European citizenship</p>
+              <h3 className="text-lg font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent mb-2">25'000+ Cases Processed</h3>
+              <p className="text-sm text-muted-foreground">Successfully handled applications</p>
             </div>
             
             <div className="glass-card p-6 rounded-lg hover-glow text-center">
               <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gradient-to-br from-accent/20 to-primary/20 flex items-center justify-center">
-                <Shield className="w-6 h-6 text-accent" />
+                <Globe className="w-6 h-6 text-accent" />
               </div>
-              <h3 className="text-lg font-bold bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent mb-2">Since 2003</h3>
-              <p className="text-sm text-muted-foreground">Expert legal guidance & support</p>
+              <h3 className="text-lg font-bold bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent mb-2">100% Unmatched Success Rate</h3>
+              <p className="text-sm text-muted-foreground">Proven track record of excellence</p>
             </div>
           </div>
         </div>
