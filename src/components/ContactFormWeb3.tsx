@@ -120,18 +120,12 @@ const ContactFormWeb3 = () => {
                         placeholder=""
                         required
                         noMobileCaps
-                        className="h-14 md:h-16 border-2 border-blue-500/20 hover:border-blue-500/30 focus:border-blue-500/40 hover-glow focus:shadow-lg transition-all backdrop-blur"
+                        className="h-14 md:h-16 border-2 border-blue-500/20 hover:border-blue-500/30 focus:border-blue-500/40 transition-all backdrop-blur touch-manipulation"
                         style={{ 
                           fontSize: '1.125rem', 
                           fontWeight: '400',
                           backgroundColor: 'rgba(10, 20, 45, 0.6)',
-                          boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+                          touchAction: 'manipulation'
                         }}
                       />
                     </div>
@@ -146,18 +140,12 @@ const ContactFormWeb3 = () => {
                         placeholder=""
                         required
                         noMobileCaps
-                        className="h-14 md:h-16 border-2 border-blue-500/20 hover:border-blue-500/30 focus:border-blue-500/40 hover-glow focus:shadow-lg transition-all backdrop-blur"
+                        className="h-14 md:h-16 border-2 border-blue-500/20 hover:border-blue-500/30 focus:border-blue-500/40 transition-all backdrop-blur touch-manipulation"
                         style={{ 
                           fontSize: '1.125rem', 
                           fontWeight: '400',
                           backgroundColor: 'rgba(10, 20, 45, 0.6)',
-                          boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+                          touchAction: 'manipulation'
                         }}
                       />
                     </div>
@@ -171,18 +159,12 @@ const ContactFormWeb3 = () => {
                       value={formData.message}
                       onChange={handleChange}
                       placeholder=""
-                      className="min-h-[240px] border-2 border-blue-500/20 hover:border-blue-500/30 focus:border-blue-500/40 hover-glow focus:shadow-lg transition-all resize-none backdrop-blur"
+                      className="min-h-[240px] border-2 border-blue-500/20 hover:border-blue-500/30 focus:border-blue-500/40 transition-all resize-none backdrop-blur touch-manipulation"
                       style={{ 
                         fontSize: '1.125rem', 
                         fontWeight: '400',
                         backgroundColor: 'rgba(10, 20, 45, 0.6)',
-                        boxShadow: "0 0 30px hsla(221, 83%, 53%, 0.15)",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.boxShadow = "0 0 50px hsla(221, 83%, 53%, 0.3)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.boxShadow = "0 0 30px hsla(221, 83%, 53%, 0.15)";
+                        touchAction: 'manipulation'
                       }}
                     />
                   </div>
