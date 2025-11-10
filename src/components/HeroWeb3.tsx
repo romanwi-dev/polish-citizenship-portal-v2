@@ -48,7 +48,7 @@ const HeroWeb3 = () => {
       </div>
 
       {/* Warsaw Skyline - Full Width Background */}
-      <div className="container mx-auto mb-12 md:mb-20 flex justify-center items-center">
+      <div className="w-full mb-12 md:mb-20 flex justify-center items-center">
         <img 
           src={warsawLineart} 
           alt="Warsaw skyline illustration" 
