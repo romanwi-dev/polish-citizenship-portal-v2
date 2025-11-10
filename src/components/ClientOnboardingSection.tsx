@@ -144,25 +144,25 @@ export default function ClientOnboardingSection() {
                 >
                   {/* Front Side */}
                   <div
-                    className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.03] hover:-translate-y-1 flex flex-col justify-center"
+                    className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.03] hover:-translate-y-1 flex flex-col justify-center items-center"
                     style={{
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
                     }}
                   >
                     {/* Icon */}
-                    <div className="mb-6 relative">
+                    <div className="mb-6 relative flex items-center justify-center w-full">
                       <div className="w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/5 flex items-center justify-center">
                         <step.icon className="w-16 h-16 text-primary opacity-80 group-hover:opacity-100 transition-opacity duration-300" />
                       </div>
                     </div>
 
                     {/* Content */}
-                    <div className="flex-1 space-y-4">
+                    <div className="flex-1 space-y-4 text-center w-full">
                       <h3 className="text-2xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
                         {step.title}
                       </h3>
-                      <p className="text-muted-foreground leading-relaxed">
+                      <p className="text-muted-foreground leading-relaxed px-2">
                         {step.description}
                       </p>
                     </div>
