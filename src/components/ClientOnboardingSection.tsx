@@ -167,11 +167,11 @@ export default function ClientOnboardingSection() {
                       </p>
                     </div>
                     
-                    <div className="mt-auto mb-6">
+                    <div className="mt-auto mb-6 flex justify-center">
                       <Button
                         variant="outline"
                         size="sm"
-                        className="w-full"
+                        className="w-48"
                         onClick={(e) => {
                           e.stopPropagation();
                           if (step.link.startsWith('#')) {
