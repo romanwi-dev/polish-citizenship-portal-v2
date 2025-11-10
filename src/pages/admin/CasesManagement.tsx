@@ -600,27 +600,19 @@ export default function CasesManagement() {
             }
           />
         ) : (
-          <div className="relative w-full">
+          <div className="relative max-w-7xl mx-auto">
             {/* Center line - same as homepage timeline */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block -z-10" />
+            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block" />
 
             {filteredCases.map((caseItem, index) => {
               const isEven = index % 2 === 0;
               
               return (
-                <motion.div 
+                <div 
                   key={caseItem.id} 
-                  className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-16 ${!isEven ? 'md:flex-row-reverse' : ''}`}
-                  initial={{ opacity: 0, x: isEven ? -50 : 50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ 
-                    duration: 0.8,
-                    ease: [0.25, 0.1, 0.25, 1],
-                    delay: index * 0.05
-                  }}
+                  className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-8 ${isEven ? 'md:flex-row-reverse' : ''}`}
                 >
-                  {/* Content Card - Wider with spacing from center */}
+                  {/* Content Card */}
                   <div className="w-full md:w-1/2">
                     <DraggableCaseCard 
                       clientCase={caseItem}
@@ -634,26 +626,21 @@ export default function CasesManagement() {
                     />
                   </div>
 
-                  {/* Timeline Dot */}
-                  <motion.div 
-                    className="hidden md:flex md:w-0 flex-shrink-0 justify-center relative z-10 items-center"
-                    initial={{ opacity: 0, x: isEven ? -50 : 50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ 
-                      duration: 0.8,
-                      ease: [0.25, 0.1, 0.25, 1],
-                      delay: index * 0.05
-                    }}
-                  >
-                    <div className="w-16 h-16 rounded-full glass-card border border-border/50 shadow-[0_0_30px_rgba(0,0,0,0.3)] transition-all duration-300 flex items-center justify-center">
-                      <span className="text-muted-foreground/50 text-3xl font-heading font-bold">{String(index + 1).padStart(2, '0')}</span>
+                  {/* Center Circle with Number - same as homepage */}
+                  <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:block">
+                    <div className="relative w-24 h-24 rounded-full bg-gradient-to-br from-primary to-secondary p-1">
+                      <div className="w-full h-full rounded-full bg-card flex items-center justify-center">
+                        <span className="text-4xl font-heading font-black bg-gradient-to-br from-primary to-secondary bg-clip-text text-transparent">
+                          {index + 1}
+                        </span>
+                      </div>
+                      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 blur-xl -z-10" />
                     </div>
-                  </motion.div>
+                  </div>
 
                   {/* Empty space for layout balance */}
                   <div className="w-full md:w-1/2 hidden md:block" />
-                </motion.div>
+                </div>
               );
             })}
           </div>
