@@ -412,7 +412,7 @@ export const CaseCard = memo(({
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full border-2 border-primary/50 dark:border-primary/20 h-12 perspective-1000 group relative overflow-hidden preserve-3d transition-all duration-300 hover:scale-105 bg-primary/10 dark:bg-primary/5"
+                className="w-full border-2 border-primary/50 dark:border-primary/20 h-12 perspective-1000 group relative overflow-hidden preserve-3d transition-all duration-300 hover:scale-[1.02] bg-primary/10 dark:bg-primary/5"
                 onClick={(e) => {
                   e.stopPropagation();
                   navigate(`/admin/cases/${clientCase.id}`);
@@ -427,7 +427,7 @@ export const CaseCard = memo(({
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full border-2 border-primary/50 dark:border-primary/20 h-12 perspective-1000 group relative overflow-hidden preserve-3d transition-all duration-300 hover:scale-105 bg-primary/10 dark:bg-primary/5"
+                className="w-full border-2 border-primary/50 dark:border-primary/20 h-12 perspective-1000 group relative overflow-hidden preserve-3d transition-all duration-300 hover:scale-[1.02] bg-primary/10 dark:bg-primary/5"
                 onClick={(e) => {
                   e.stopPropagation();
                   navigate(`/admin/ai-workflow?caseId=${clientCase.id}`);
@@ -442,7 +442,7 @@ export const CaseCard = memo(({
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full border-2 border-secondary/50 dark:border-secondary/20 h-12 perspective-1000 group relative overflow-hidden preserve-3d transition-all duration-300 hover:scale-105 bg-secondary/10 dark:bg-secondary/5"
+                className="w-full border-2 border-secondary/50 dark:border-secondary/20 h-12 perspective-1000 group relative overflow-hidden preserve-3d transition-all duration-300 hover:scale-[1.02] bg-secondary/10 dark:bg-secondary/5"
                 onClick={(e) => {
                   e.stopPropagation();
                   const workflowType = getWorkflowForCase({
