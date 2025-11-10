@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { FileText, CheckCircle, CreditCard, FileCheck, Send, FolderSearch, Archive, Languages, Upload, Stamp, Clock, Zap, Award, Book, Users, Shield } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
@@ -185,8 +186,8 @@ export default function TimelineProcessEnhanced() {
       [stepNumber]: !prev[stepNumber]
     }));
   };
-  return <section id="timeline" className="relative py-24 overflow-hidden overflow-x-hidden">
-      
+  return (
+    <section id="timeline" className="relative py-24 overflow-hidden overflow-x-hidden">
       <div className="container relative z-10 mx-auto px-4">
         <div className="text-center mb-16 animate-fade-in">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16">
@@ -212,13 +213,13 @@ export default function TimelineProcessEnhanced() {
             const isLeft = index % 2 === 0;
             
             return (
-            <div 
+            <motion.div 
               key={step.number} 
+              initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              viewport={{ once: true, margin: "-50px" }}
               className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-8 ${!isLeft ? 'md:flex-row-reverse' : ''}`}
-              style={{ 
-                opacity: 0,
-                animation: prefersReducedMotion ? 'none' : `slideIn${isLeft ? 'Left' : 'Right'} 0.8s ease-out ${index * 0.15}s forwards`
-              }}
             >
               {/* Content Card */}
               <div className="w-full md:w-[42%]">
@@ -302,11 +303,10 @@ export default function TimelineProcessEnhanced() {
 
               {/* Empty space for layout balance */}
               <div className="w-full md:w-[42%] hidden md:block" />
-            </div>
+            </motion.div>
             );
           })}
         </div>
-
 
         {/* CTA */}
         <div className={`text-center mt-12 ${prefersReducedMotion ? '' : 'animate-fade-in animate-scale-in'}`}>
@@ -323,5 +323,6 @@ export default function TimelineProcessEnhanced() {
           </Button>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 }

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { UserCircle } from "lucide-react";
 import { MessageSquare, ClipboardCheck, FileSearch, Scale, Send, Brain, FileCheck2, Globe } from "lucide-react";
 import { Button } from "./ui/button";
@@ -118,13 +119,13 @@ export default function ClientOnboardingSection() {
             const isLeft = index % 2 === 0;
             
             return (
-            <div
+            <motion.div
               key={step.number}
+              initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              viewport={{ once: true, margin: "-50px" }}
               className="mb-16 last:mb-0"
-              style={{
-                opacity: 0,
-                animation: `slideIn${isLeft ? 'Left' : 'Right'} 0.8s ease-out ${index * 0.15}s forwards`
-              }}
             >
               <div className={`flex flex-col md:${isLeft ? 'flex-row' : 'flex-row-reverse'} gap-4 md:gap-12 items-stretch`}>
                 {/* Card */}
@@ -228,7 +229,7 @@ export default function ClientOnboardingSection() {
                 {/* Empty space on other side */}
                 <div className="hidden md:block md:w-[42%]" />
               </div>
-            </div>
+            </motion.div>
             );
           })}
         </div>
