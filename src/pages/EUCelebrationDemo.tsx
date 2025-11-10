@@ -14,6 +14,21 @@ import celebration12 from "@/assets/eu-celebration/celebration-12.png";
 import celebration13 from "@/assets/eu-celebration/celebration-13.png";
 import celebration14 from "@/assets/eu-celebration/celebration-14.png";
 import celebration15 from "@/assets/eu-celebration/celebration-15.png";
+import celebration16 from "@/assets/eu-celebration/celebration-16.png";
+import celebration17 from "@/assets/eu-celebration/celebration-17.png";
+import celebration18 from "@/assets/eu-celebration/celebration-18.png";
+import celebration19 from "@/assets/eu-celebration/celebration-19.png";
+import celebration20 from "@/assets/eu-celebration/celebration-20.png";
+import celebration21 from "@/assets/eu-celebration/celebration-21.png";
+import celebration22 from "@/assets/eu-celebration/celebration-22.png";
+import celebration23 from "@/assets/eu-celebration/celebration-23.png";
+import celebration24 from "@/assets/eu-celebration/celebration-24.png";
+import celebration25 from "@/assets/eu-celebration/celebration-25.png";
+import celebration26 from "@/assets/eu-celebration/celebration-26.png";
+import celebration27 from "@/assets/eu-celebration/celebration-27.png";
+import celebration28 from "@/assets/eu-celebration/celebration-28.png";
+import celebration29 from "@/assets/eu-celebration/celebration-29.png";
+import celebration30 from "@/assets/eu-celebration/celebration-30.png";
 
 const EUCelebrationDemo = () => {
   const images = [
@@ -32,6 +47,21 @@ const EUCelebrationDemo = () => {
     { src: celebration13, title: "Youth Festival", description: "Young people celebrating with colorful smoke" },
     { src: celebration14, title: "Sports Unity", description: "Olympic-style event with EU nations athletes" },
     { src: celebration15, title: "Food Festival", description: "Outdoor market with cuisine from all EU countries" },
+    { src: celebration16, title: "Music Festival Night", description: "Massive outdoor music festival with fireworks" },
+    { src: celebration17, title: "Brussels Unity", description: "City square celebration at golden hour" },
+    { src: celebration18, title: "Folk Dance Festival", description: "Traditional dancers in colorful national costumes" },
+    { src: celebration19, title: "Eiffel Tower Celebration", description: "Famous landmark illuminated with EU colors" },
+    { src: celebration20, title: "Food Market Celebration", description: "Diverse European cuisine festival atmosphere" },
+    { src: celebration21, title: "Youth Unity Park", description: "Young people celebrating with colorful smoke bombs" },
+    { src: celebration22, title: "Amsterdam Canals", description: "Waterfront celebration with decorated boats" },
+    { src: celebration23, title: "Athletes Together", description: "Diverse athletes celebrating EU sports unity" },
+    { src: celebration24, title: "Brandenburg Gate", description: "Historic monument illuminated with EU colors" },
+    { src: celebration25, title: "Carnival Parade", description: "Colorful street celebration with elaborate costumes" },
+    { src: celebration26, title: "Christmas Market", description: "Winter wonderland with festive European traditions" },
+    { src: celebration27, title: "Beach Bonfire", description: "Mediterranean coastline celebration at sunset" },
+    { src: celebration28, title: "Art Museum Celebration", description: "Cultural gathering in classical courtyard" },
+    { src: celebration29, title: "Technology Expo", description: "Futuristic celebration of European innovation" },
+    { src: celebration30, title: "Unity Star Formation", description: "Aerial view of crowd forming EU star symbol" },
   ];
 
   return (
