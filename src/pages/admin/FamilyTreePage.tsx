@@ -97,63 +97,63 @@ export default function FamilyTreePage() {
     <div className="overflow-x-hidden min-h-screen relative">
       <div className="container mx-auto py-12 px-4 md:px-6 max-w-7xl">
         {/* Header */}
-        <div className="animate-fade-in-up mb-6">
+        <div className="animate-fade-in-up mb-14">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6">
-            <div className="animate-fade-in">
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">
+            <div className="animate-fade-in text-center md:text-left w-full">
+              <h1 className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent glow-text cursor-text select-text">
                 Family Tree Visualization
               </h1>
             </div>
-            <div className="flex items-center gap-3">
-              <Button
-                onClick={() => navigate(`/admin/family-tree/${caseId}`)}
-                size="lg"
-                variant="outline"
-                className="h-16 gap-2 px-6 border-2 border-green-500/30 hover:border-green-500/50 hover:bg-green-500/10 transition-all"
-                title="Edit Family Tree Form"
-              >
-                <Edit className="h-5 w-5 text-green-400" />
-                <span className="hidden md:inline font-bold">Edit Form</span>
-              </Button>
-              <Button
-                onClick={() => navigate('/admin/forms-demo')}
-                size="lg"
-                variant="ghost"
-                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50 opacity-60"
-                title="Back to Case"
-              >
-                <ArrowLeft className="h-8 w-8" />
-              </Button>
-              <Button
-                onClick={() => navigate('/login')}
-                size="lg"
-                variant="ghost"
-                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50 opacity-60"
-                title="Login / Register"
-              >
-                <User className="h-8 w-8" />
-              </Button>
-              <Button
-                onClick={toggleFontSize}
-                size="lg"
-                variant="ghost"
-                className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 z-50 opacity-60 ${
-                  isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:text-primary'
-                }`}
-                title="Toggle font size"
-              >
-                <Type className="h-8 w-8" />
-              </Button>
-              <Button
-                onClick={() => window.open('https://docs.lovable.dev', '_blank')}
-                size="lg"
-                variant="ghost"
-                className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 text-2xl font-light opacity-60"
-                title="How to fill this form"
-              >
-                ?
-              </Button>
-            </div>
+          </div>
+          <div className="flex items-center justify-center gap-3">
+            <Button
+              onClick={() => navigate(`/admin/family-tree/${caseId}`)}
+              size="lg"
+              variant="outline"
+              className="h-16 gap-2 px-6 border-2 border-green-500/30 hover:border-green-500/50 hover:bg-green-500/10 transition-all"
+              title="Edit Family Tree Form"
+            >
+              <Edit className="h-5 w-5 text-green-400" />
+              <span className="hidden md:inline font-bold">Edit Form</span>
+            </Button>
+            <Button
+              onClick={() => navigate('/admin/forms-demo')}
+              size="lg"
+              variant="ghost"
+              className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50 opacity-60"
+              title="Back to Case"
+            >
+              <ArrowLeft className="h-8 w-8" />
+            </Button>
+            <Button
+              onClick={() => navigate('/login')}
+              size="lg"
+              variant="ghost"
+              className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 z-50 opacity-60"
+              title="Login / Register"
+            >
+              <User className="h-8 w-8" />
+            </Button>
+            <Button
+              onClick={toggleFontSize}
+              size="lg"
+              variant="ghost"
+              className={`h-16 w-16 rounded-full transition-all hover:bg-primary/10 z-50 opacity-60 ${
+                isLargeFonts ? 'bg-primary/20 text-primary' : 'text-muted-foreground hover:text-primary'
+              }`}
+              title="Toggle font size"
+            >
+              <Type className="h-8 w-8" />
+            </Button>
+            <Button
+              onClick={() => window.open('https://docs.lovable.dev', '_blank')}
+              size="lg"
+              variant="ghost"
+              className="h-16 w-16 rounded-full transition-all text-muted-foreground hover:text-primary hover:bg-primary/10 text-2xl font-light opacity-60"
+              title="How to fill this form"
+            >
+              ?
+            </Button>
           </div>
         </div>
 

@@ -309,90 +309,82 @@ export const FamilyTreeInteractive = ({
       <motion.div 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex items-start justify-between gap-4 flex-wrap"
+        className="flex gap-2 flex-wrap justify-center mb-8"
       >
-        <div>
-          <h2 className="text-3xl font-bold mb-2 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-            Interactive Family Tree
-          </h2>
-          <p className="text-muted-foreground">Complete visualization with document tracking</p>
-        </div>
-        <div className="flex gap-2 flex-wrap">
-          <Button 
-            onClick={() => setShowAISuggestions(!showAISuggestions)}
-            variant={showAISuggestions ? "default" : "outline"}
-            className="transition-all hover:scale-105"
-          >
-            <Brain className="mr-2 h-4 w-4" />
-            {showAISuggestions ? 'Hide' : 'Show'} AI Suggestions
-          </Button>
-          <Button 
-            onClick={() => setShowPDFComparison(!showPDFComparison)}
-            variant={showPDFComparison ? "default" : "outline"}
-            className="transition-all hover:scale-105"
-          >
-            <Split className="mr-2 h-4 w-4" />
-            {showPDFComparison ? 'Hide' : 'Show'} PDF Preview
-          </Button>
-          <Button 
-            onClick={() => setActiveView(activeView === '2d' ? '3d' : '2d')}
-            variant={activeView === '3d' ? "default" : "outline"}
-            className="transition-all hover:scale-105"
-            disabled={showPDFComparison}
-          >
-            <Boxes className="mr-2 h-4 w-4" />
-            {activeView === '2d' ? 'Switch to 3D' : 'Switch to 2D'}
-          </Button>
-          {activeView === '2d' && !showPDFComparison && (
-            <>
-              <Button 
-                onClick={() => setShowBloodline(!showBloodline)}
-                variant={showBloodline ? "default" : "outline"}
-                className="transition-all hover:scale-105"
-              >
-                <Sparkles className="mr-2 h-4 w-4" />
-                Polish Bloodline
-              </Button>
-              <Button 
-                onClick={() => setShowOnlyMissing(!showOnlyMissing)}
-                variant={showOnlyMissing ? "default" : "outline"}
-                className="transition-all hover:scale-105"
-              >
-                {showOnlyMissing ? <Eye className="mr-2 h-4 w-4" /> : <EyeOff className="mr-2 h-4 w-4" />}
-                Show Missing
-              </Button>
-              <Button 
-                onClick={() => {
-                  const modes: Array<'compact' | 'standard' | 'full'> = ['compact', 'standard', 'full'];
-                  const currentIndex = modes.indexOf(viewMode);
-                  setViewMode(modes[(currentIndex + 1) % modes.length]);
-                  toast.success(`View mode: ${modes[(currentIndex + 1) % modes.length]}`);
-                }}
-                variant="outline"
-                className="transition-all hover:scale-105"
-              >
-                <Maximize2 className="mr-2 h-4 w-4" />
-                {viewMode === 'compact' ? 'Compact' : viewMode === 'standard' ? 'Standard' : 'Full'}
-              </Button>
-            </>
-          )}
-          <Button 
-            onClick={onOpenMasterTable}
-            variant="outline"
-            className="transition-all hover:scale-105"
-          >
-            <Edit className="mr-2 h-4 w-4" />
-            Master Data
-          </Button>
-          <Button 
-            onClick={handlePrint}
-            variant="outline"
-            className="transition-all hover:scale-105"
-          >
-            <Download className="mr-2 h-4 w-4" />
-            Print
-          </Button>
-        </div>
+        <Button 
+          onClick={() => setShowAISuggestions(!showAISuggestions)}
+          variant={showAISuggestions ? "default" : "outline"}
+          className="transition-all hover:scale-105"
+        >
+          <Brain className="mr-2 h-4 w-4" />
+          {showAISuggestions ? 'Hide' : 'Show'} AI Suggestions
+        </Button>
+        <Button 
+          onClick={() => setShowPDFComparison(!showPDFComparison)}
+          variant={showPDFComparison ? "default" : "outline"}
+          className="transition-all hover:scale-105"
+        >
+          <Split className="mr-2 h-4 w-4" />
+          {showPDFComparison ? 'Hide' : 'Show'} PDF Preview
+        </Button>
+        <Button 
+          onClick={() => setActiveView(activeView === '2d' ? '3d' : '2d')}
+          variant={activeView === '3d' ? "default" : "outline"}
+          className="transition-all hover:scale-105"
+          disabled={showPDFComparison}
+        >
+          <Boxes className="mr-2 h-4 w-4" />
+          {activeView === '2d' ? 'Switch to 3D' : 'Switch to 2D'}
+        </Button>
+        {activeView === '2d' && !showPDFComparison && (
+          <>
+            <Button 
+              onClick={() => setShowBloodline(!showBloodline)}
+              variant={showBloodline ? "default" : "outline"}
+              className="transition-all hover:scale-105"
+            >
+              <Sparkles className="mr-2 h-4 w-4" />
+              Polish Bloodline
+            </Button>
+            <Button 
+              onClick={() => setShowOnlyMissing(!showOnlyMissing)}
+              variant={showOnlyMissing ? "default" : "outline"}
+              className="transition-all hover:scale-105"
+            >
+              {showOnlyMissing ? <Eye className="mr-2 h-4 w-4" /> : <EyeOff className="mr-2 h-4 w-4" />}
+              Show Missing
+            </Button>
+            <Button 
+              onClick={() => {
+                const modes: Array<'compact' | 'standard' | 'full'> = ['compact', 'standard', 'full'];
+                const currentIndex = modes.indexOf(viewMode);
+                setViewMode(modes[(currentIndex + 1) % modes.length]);
+                toast.success(`View mode: ${modes[(currentIndex + 1) % modes.length]}`);
+              }}
+              variant="outline"
+              className="transition-all hover:scale-105"
+            >
+              <Maximize2 className="mr-2 h-4 w-4" />
+              {viewMode === 'compact' ? 'Compact' : viewMode === 'standard' ? 'Standard' : 'Full'}
+            </Button>
+          </>
+        )}
+        <Button 
+          onClick={onOpenMasterTable}
+          variant="outline"
+          className="transition-all hover:scale-105"
+        >
+          <Edit className="mr-2 h-4 w-4" />
+          Master Data
+        </Button>
+        <Button 
+          onClick={handlePrint}
+          variant="outline"
+          className="transition-all hover:scale-105"
+        >
+          <Download className="mr-2 h-4 w-4" />
+          Print
+        </Button>
       </motion.div>
 
       {/* Overall progress */}

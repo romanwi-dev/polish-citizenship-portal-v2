@@ -434,7 +434,7 @@ const Cases = () => {
               }
             />
           ) : (
-            <div className="relative max-w-5xl mx-auto">
+            <div className="relative max-w-7xl mx-auto">
               {/* Center line - same as homepage timeline */}
               <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block" />
 
@@ -447,7 +447,7 @@ const Cases = () => {
                     className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-8 ${isEven ? 'md:flex-row-reverse' : ''}`}
                   >
                     {/* Content Card */}
-                    <div className="w-full md:w-5/12">
+                    <div className="w-full md:w-[48%]">
                       <motion.div
                         initial={{ opacity: 0, x: isEven ? 100 : -100 }}
                         animate={{ opacity: 1, x: 0 }}
