@@ -8,7 +8,7 @@ const HeroWeb3 = () => {
       behavior: 'smooth'
     });
   };
-  return <section className="relative min-h-[60vh] md:min-h-screen flex items-center justify-center overflow-hidden overflow-x-hidden">
+  return <section className="relative min-h-[60vh] md:min-h-screen flex flex-col items-center justify-center overflow-hidden">
       {/* Content */}
       <div className="container relative z-10 px-4 pt-32 pb-20 mx-auto">
         <div className="max-w-4xl mx-auto text-center mb-12 md:mb-20">
@@ -38,16 +38,18 @@ const HeroWeb3 = () => {
             </Button>
           </div>
         </div>
+      </div>
 
-        {/* Warsaw Skyline - Full Width */}
-        <div className="mb-12 md:mb-20 -mx-4 md:-mx-[50vw] md:ml-[50%] md:mr-[50%] md:w-screen">
-          <img src={warsawLineart} alt="Warsaw skyline illustration" className="w-full opacity-70 md:opacity-50" style={{
+      {/* Warsaw Skyline - Full Width */}
+      <div className="w-full mb-12 md:mb-20">
+        <img src={warsawLineart} alt="Warsaw skyline illustration" className="w-full opacity-70 md:opacity-50" style={{
           mixBlendMode: 'screen',
           filter: 'invert(1) brightness(0.9)'
         }} />
-        </div>
+      </div>
 
-        {/* Stats Badges */}
+      {/* Stats Badges */}
+      <div className="container relative z-10 px-4 mx-auto pb-20">
         <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in" style={{ animationDelay: '200ms' }}>
             <div className="glass-card p-6 rounded-lg hover-glow text-center">
