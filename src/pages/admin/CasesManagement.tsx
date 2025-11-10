@@ -602,7 +602,7 @@ export default function CasesManagement() {
         ) : (
           <div className="relative w-full">
             {/* Center line - same as homepage timeline */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block" />
+            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block -z-10" />
 
             {filteredCases.map((caseItem, index) => {
               const isEven = index % 2 === 0;
@@ -610,7 +610,7 @@ export default function CasesManagement() {
               return (
                 <motion.div 
                   key={caseItem.id} 
-                  className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-12 ${!isEven ? 'md:flex-row-reverse' : ''}`}
+                  className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-16 ${!isEven ? 'md:flex-row-reverse' : ''}`}
                   initial={{ opacity: 0, x: isEven ? -50 : 50 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-50px" }}

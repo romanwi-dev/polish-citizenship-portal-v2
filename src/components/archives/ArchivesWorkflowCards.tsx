@@ -114,7 +114,7 @@ export default function ArchivesWorkflowCards() {
         {/* Steps - Left-Right Alternating Layout */}
         <div className="relative max-w-6xl mx-auto">
           {/* Center line for desktop */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block" />
+          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block -z-10" />
 
           {archivesSteps.map((step, index) => {
             const isLeft = index % 2 === 0;
@@ -126,7 +126,7 @@ export default function ArchivesWorkflowCards() {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true, margin: "-50px" }}
-                className={`mb-16 last:mb-0 flex flex-col md:${isLeft ? 'flex-row' : 'flex-row-reverse'} gap-4 md:gap-12 items-center`}
+                className={`mb-16 last:mb-0 flex flex-col md:${isLeft ? 'flex-row' : 'flex-row-reverse'} gap-4 md:gap-16 items-center`}
               >
                 <div className="w-full md:w-[42%]">
                   <div 

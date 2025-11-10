@@ -153,7 +153,7 @@ export default function TranslationWorkflowCards({ caseId }: TranslationWorkflow
         {/* Steps - Left-Right Alternating Layout */}
         <div className="relative max-w-6xl mx-auto">
           {/* Center line for desktop */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block" />
+          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block -z-10" />
 
           {translationSteps.map((step, index) => {
             const isLeft = index % 2 === 0;
@@ -168,7 +168,7 @@ export default function TranslationWorkflowCards({ caseId }: TranslationWorkflow
                 viewport={{ once: true, margin: "-50px" }}
                 className="mb-16 last:mb-0"
               >
-                <div className={`flex flex-col md:${isLeft ? 'flex-row' : 'flex-row-reverse'} gap-4 md:gap-12 items-center`}>
+                <div className={`flex flex-col md:${isLeft ? 'flex-row' : 'flex-row-reverse'} gap-4 md:gap-16 items-center`}>
                   {/* Card */}
                   <div className="w-full md:w-[42%]">
                     <div 
