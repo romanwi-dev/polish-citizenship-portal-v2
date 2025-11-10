@@ -41,37 +41,25 @@ const HeroWeb3 = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-red-800/30 to-red-950/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </Button>
           </div>
+        </div>
 
-          {/* Warsaw Skyline */}
-          <div className="mb-12 md:mb-20 -mx-4 md:-mx-8 lg:-mx-16">
-            <img 
-              src={warsawLineart} 
-              alt="Warsaw skyline illustration" 
-              className="w-full opacity-70 md:opacity-50"
-              style={{ 
-                mixBlendMode: 'screen',
-                filter: 'invert(1) brightness(0.9)'
-              }}
-            />
-          </div>
+        {/* Warsaw Skyline - Full Width */}
+        <div className="mb-12 md:mb-20 -mx-4">
+          <img 
+            src={warsawLineart} 
+            alt="Warsaw skyline illustration" 
+            className="w-full opacity-70 md:opacity-50"
+            style={{ 
+              mixBlendMode: 'screen',
+              filter: 'invert(1) brightness(0.9)'
+            }}
+          />
+        </div>
 
-          {/* Stats */}
+        {/* Stats */}
+        <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-6xl mx-auto px-4">
-            {[{
-            value: "22+",
-            label: "Years of Experience"
-          }, {
-            value: "25,000+",
-            label: "Cases Processed"
-          }, {
-            value: "100%",
-            label: "Unmatched Success Rate"
-          }].map((stat, i) => <div key={i} className="glass-card p-4 md:p-6 rounded-lg hover-glow w-full bg-card/50">
-                <div className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
-                  {stat.value}
-                </div>
-                <div className="text-xs md:text-sm text-muted-foreground font-bold">{stat.label}</div>
-              </div>)}
+...
           </div>
         </div>
       </div>
