@@ -198,22 +198,22 @@ const TimelineProcess = () => {
                 >
                   {/* Content Card */}
                   <div className={`w-full md:w-5/12 ${isEven ? 'md:pr-12' : 'md:pl-12'}`}>
-                    <div className="glass-card p-5 rounded-lg hover-glow group cursor-pointer h-[280px] flex flex-col justify-center">
-                      <div className="flex flex-col items-center text-center gap-3">
+                    <div className="glass-card p-5 rounded-lg hover-glow group cursor-pointer h-[280px] flex flex-col justify-center items-center">
+                      <div className="flex flex-col items-center text-center gap-3 w-full">
                         <div className={`p-3 rounded-lg bg-gradient-to-br ${step.gradient}`}>
                           <Icon className="w-6 h-6 text-white" />
                         </div>
-                        <div className="flex-1 flex flex-col items-center">
-                          <div className="flex items-center gap-2 mb-2">
+                        <div className="flex-1 flex flex-col items-center w-full">
+                          <div className="flex items-center justify-center gap-2 mb-2">
                             <span className={`text-xs font-bold px-2 py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
                               {step.number}
                             </span>
                             <span className="text-xs text-muted-foreground">{step.duration}</span>
                           </div>
-                          <h3 className="text-lg font-bold mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                          <h3 className="text-base md:text-lg font-bold mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent whitespace-nowrap">
                             {step.title}
                           </h3>
-                          <p className="text-sm text-muted-foreground mb-3 px-2">
+                          <p className="text-sm text-muted-foreground mb-3 px-2 text-center">
                             {step.description}
                           </p>
                           <div className="flex flex-wrap gap-2 justify-center">
