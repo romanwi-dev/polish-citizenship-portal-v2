@@ -635,11 +635,21 @@ export default function CasesManagement() {
                   </div>
 
                   {/* Timeline Dot */}
-                  <div className="hidden md:flex md:w-[16%] flex-shrink-0 justify-center relative z-10 items-center">
+                  <motion.div 
+                    className="hidden md:flex md:w-[16%] flex-shrink-0 justify-center relative z-10 items-center"
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ 
+                      duration: 0.5,
+                      ease: [0.4, 0, 0.2, 1],
+                      delay: index * 0.1 + 0.2
+                    }}
+                  >
                     <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary border-2 border-primary shadow-[0_0_30px_rgba(0,0,0,0.3)] transition-all duration-300 flex items-center justify-center">
                       <span className="text-white text-3xl font-heading font-bold">{String(index + 1).padStart(2, '0')}</span>
                     </div>
-                  </div>
+                  </motion.div>
 
                   {/* Empty space for layout balance */}
                   <div className="w-full md:w-[42%] hidden md:block" />
