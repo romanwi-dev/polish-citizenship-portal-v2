@@ -135,10 +135,6 @@ const Index = () => {
         </Suspense>
         
         <Suspense fallback={<SectionLoader />}>
-          <EuropeanFlags />
-        </Suspense>
-        
-        <Suspense fallback={<SectionLoader />}>
           <FooterWeb3 />
         </Suspense>
         
