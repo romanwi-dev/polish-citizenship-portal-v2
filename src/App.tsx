@@ -83,6 +83,7 @@ const VerificationB = lazy(() => import("./pages/VerificationB"));
 const MobileFirstGuardian = lazy(() => import("./pages/MobileFirstGuardian"));
 const ProvenPatterns = lazy(() => import("./pages/ProvenPatterns"));
 const ABEXPDFMaster = lazy(() => import("./pages/ABEXPDFMaster"));
+const ABEXOCRMaster = lazy(() => import("./pages/ABEXOCRMaster"));
 const PDFGenerationTest = lazy(() => import("./pages/admin/PDFGenerationTest"));
 const PDFDemo = lazy(() => import("./pages/PDFDemo"));
 const SelfTest = lazy(() => import("./pages/admin/SelfTest"));
@@ -746,6 +747,14 @@ const App = () => (
             element={
               <Suspense fallback={<AdminLoader />}>
                 <ABEXPDFMaster />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/abex-ocr-master" 
+            element={
+              <Suspense fallback={<AdminLoader />}>
+                <ABEXOCRMaster />
               </Suspense>
             } 
           />
