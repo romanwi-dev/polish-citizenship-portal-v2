@@ -407,7 +407,7 @@ export const CaseCard = memo(({
           )}
 
           {!isFlipped && (
-            <div className="space-y-1 mt-auto pt-5 sm:pt-5">
+            <div className="space-y-2 mt-auto pt-5 sm:pt-5">
               {/* Control Room Button - Premium Feature */}
               <Button
                 size="lg"
@@ -442,7 +442,7 @@ export const CaseCard = memo(({
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full border-2 border-secondary/50 dark:border-secondary/20 h-12 perspective-1000 group relative overflow-hidden preserve-3d transition-all duration-300 hover:scale-[1.02] bg-secondary/20 dark:bg-secondary/10"
+                className="w-full border-2 border-primary/50 dark:border-primary/20 h-12 perspective-1000 group relative overflow-hidden preserve-3d transition-all duration-300 hover:scale-[1.02] bg-primary/20 dark:bg-primary/10"
                 onClick={(e) => {
                   e.stopPropagation();
                   const workflowType = getWorkflowForCase({
@@ -461,7 +461,7 @@ export const CaseCard = memo(({
               </Button>
 
               {/* Action Buttons - 2 rows of 3 */}
-              <div className="grid grid-cols-3 gap-1">
+              <div className="grid grid-cols-3 gap-2">
                 {/* 1st Row: Intake - Family Tree - Ask AI */}
                 <Button
                   size="sm"
