@@ -47,10 +47,10 @@ const HeroWeb3 = () => {
             <img 
               src={warsawLineart} 
               alt="Warsaw skyline illustration" 
-              className="block mx-auto w-[90%] md:w-[70%] opacity-60 md:opacity-45 pointer-events-none"
+              className="block mx-auto w-[90%] md:w-[70%] opacity-80 md:opacity-70 pointer-events-none"
               style={{ 
-                mixBlendMode: 'screen',
-                filter: 'brightness(1.2) contrast(1.5)'
+                mixBlendMode: 'multiply',
+                filter: 'invert(1) brightness(1.5)'
               }}
             />
           </div>
