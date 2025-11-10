@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Sparkles from "lucide-react/dist/esm/icons/sparkles";
+import { Shield, Users, Globe } from "lucide-react";
 import warsawLineart from "@/assets/warsaw-lineart.png";
 const HeroWeb3 = () => {
   const scrollToContact = () => {
@@ -46,9 +47,33 @@ const HeroWeb3 = () => {
         }} />
         </div>
 
-        {/* Stats */}
+        {/* Stats Badges */}
         <div className="max-w-4xl mx-auto">
-          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in" style={{ animationDelay: '200ms' }}>
+            <div className="glass-card p-6 rounded-lg hover-glow text-center">
+              <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                <Users className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="text-lg font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">20M+ Descendants</h3>
+              <p className="text-sm text-muted-foreground">People of Polish descent worldwide</p>
+            </div>
+            
+            <div className="glass-card p-6 rounded-lg hover-glow text-center">
+              <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gradient-to-br from-secondary/20 to-accent/20 flex items-center justify-center">
+                <Globe className="w-6 h-6 text-secondary" />
+              </div>
+              <h3 className="text-lg font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent mb-2">EU Member Since 2004</h3>
+              <p className="text-sm text-muted-foreground">Gateway to European citizenship</p>
+            </div>
+            
+            <div className="glass-card p-6 rounded-lg hover-glow text-center">
+              <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gradient-to-br from-accent/20 to-primary/20 flex items-center justify-center">
+                <Shield className="w-6 h-6 text-accent" />
+              </div>
+              <h3 className="text-lg font-bold bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent mb-2">Since 2003</h3>
+              <p className="text-sm text-muted-foreground">Expert legal guidance & support</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>;
