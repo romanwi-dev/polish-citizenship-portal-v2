@@ -613,11 +613,11 @@ export default function CasesManagement() {
                   className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-12 ${!isEven ? 'md:flex-row-reverse' : ''}`}
                   initial={{ opacity: 0, x: isEven ? -50 : 50 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
+                  viewport={{ once: true, margin: "-50px" }}
                   transition={{ 
-                    duration: 0.6,
-                    ease: [0.4, 0, 0.2, 1],
-                    delay: index * 0.1
+                    duration: 0.8,
+                    ease: [0.25, 0.1, 0.25, 1],
+                    delay: index * 0.05
                   }}
                 >
                   {/* Content Card - Wider with spacing from center */}
@@ -637,13 +637,13 @@ export default function CasesManagement() {
                   {/* Timeline Dot */}
                   <motion.div 
                     className="hidden md:flex md:w-[16%] flex-shrink-0 justify-center relative z-10 items-center"
-                    initial={{ opacity: 0, scale: 0.5 }}
+                    initial={{ opacity: 0, scale: 0.8 }}
                     whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true, margin: "-100px" }}
+                    viewport={{ once: true, margin: "-50px" }}
                     transition={{ 
-                      duration: 0.5,
-                      ease: [0.4, 0, 0.2, 1],
-                      delay: index * 0.1 + 0.2
+                      duration: 0.6,
+                      ease: [0.25, 0.1, 0.25, 1],
+                      delay: index * 0.05 + 0.15
                     }}
                   >
                     <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary border-2 border-primary shadow-[0_0_30px_rgba(0,0,0,0.3)] transition-all duration-300 flex items-center justify-center">
