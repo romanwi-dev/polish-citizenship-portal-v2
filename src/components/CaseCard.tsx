@@ -412,14 +412,14 @@ export const CaseCard = memo(({
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full border-2 border-primary/50 dark:border-primary/20 h-12 perspective-1000 group relative overflow-hidden preserve-3d transition-all duration-300 hover:scale-[1.02] bg-primary/10 dark:bg-primary/5"
+                className="w-full border-2 border-primary/50 dark:border-primary/20 h-12 perspective-1000 group relative overflow-hidden preserve-3d transition-all duration-300 hover:scale-[1.02] bg-primary/20 dark:bg-primary/10"
                 onClick={(e) => {
                   e.stopPropagation();
                   navigate(`/admin/cases/${clientCase.id}`);
                 }}
               >
                 <span className="text-sm font-medium text-foreground/70 dark:text-foreground/40 group-hover:text-foreground/90 dark:group-hover:text-foreground/60 transition-colors relative z-10">
-                  CONTROL ROOM
+                  Control Room
                 </span>
               </Button>
 
@@ -427,14 +427,14 @@ export const CaseCard = memo(({
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full border-2 border-primary/50 dark:border-primary/20 h-12 perspective-1000 group relative overflow-hidden preserve-3d transition-all duration-300 hover:scale-[1.02] bg-primary/10 dark:bg-primary/5"
+                className="w-full border-2 border-primary/50 dark:border-primary/20 h-12 perspective-1000 group relative overflow-hidden preserve-3d transition-all duration-300 hover:scale-[1.02] bg-primary/20 dark:bg-primary/10"
                 onClick={(e) => {
                   e.stopPropagation();
                   navigate(`/admin/ai-workflow?caseId=${clientCase.id}`);
                 }}
               >
                 <span className="text-sm font-medium text-foreground/70 dark:text-foreground/40 group-hover:text-foreground/90 dark:group-hover:text-foreground/60 transition-colors relative z-10">
-                  AI DOCUMENTS
+                  AI Documents
                 </span>
               </Button>
 
@@ -442,7 +442,7 @@ export const CaseCard = memo(({
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full border-2 border-secondary/50 dark:border-secondary/20 h-12 perspective-1000 group relative overflow-hidden preserve-3d transition-all duration-300 hover:scale-[1.02] bg-secondary/10 dark:bg-secondary/5"
+                className="w-full border-2 border-secondary/50 dark:border-secondary/20 h-12 perspective-1000 group relative overflow-hidden preserve-3d transition-all duration-300 hover:scale-[1.02] bg-secondary/20 dark:bg-secondary/10"
                 onClick={(e) => {
                   e.stopPropagation();
                   const workflowType = getWorkflowForCase({
@@ -456,7 +456,7 @@ export const CaseCard = memo(({
                 }}
               >
                 <span className="text-sm font-medium text-foreground/70 dark:text-foreground/40 group-hover:text-foreground/90 dark:group-hover:text-foreground/60 transition-colors relative z-10">
-                  CASE WORKFLOW
+                  Case Workflow
                 </span>
               </Button>
 
