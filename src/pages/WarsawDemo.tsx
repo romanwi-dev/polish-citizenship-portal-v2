@@ -14,6 +14,21 @@ import warsaw12 from "@/assets/warsaw-demos/warsaw-12.png";
 import warsaw13 from "@/assets/warsaw-demos/warsaw-13.png";
 import warsaw14 from "@/assets/warsaw-demos/warsaw-14.png";
 import warsaw15 from "@/assets/warsaw-demos/warsaw-15.png";
+import warsaw16 from "@/assets/warsaw-demos/warsaw-16.png";
+import warsaw17 from "@/assets/warsaw-demos/warsaw-17.png";
+import warsaw18 from "@/assets/warsaw-demos/warsaw-18.png";
+import warsaw19 from "@/assets/warsaw-demos/warsaw-19.png";
+import warsaw20 from "@/assets/warsaw-demos/warsaw-20.png";
+import warsaw21 from "@/assets/warsaw-demos/warsaw-21.png";
+import warsaw22 from "@/assets/warsaw-demos/warsaw-22.png";
+import warsaw23 from "@/assets/warsaw-demos/warsaw-23.png";
+import warsaw24 from "@/assets/warsaw-demos/warsaw-24.png";
+import warsaw25 from "@/assets/warsaw-demos/warsaw-25.png";
+import warsaw26 from "@/assets/warsaw-demos/warsaw-26.png";
+import warsaw27 from "@/assets/warsaw-demos/warsaw-27.png";
+import warsaw28 from "@/assets/warsaw-demos/warsaw-28.png";
+import warsaw29 from "@/assets/warsaw-demos/warsaw-29.png";
+import warsaw30 from "@/assets/warsaw-demos/warsaw-30.png";
 
 const WarsawDemo = () => {
   const images = [
@@ -32,6 +47,21 @@ const WarsawDemo = () => {
     { src: warsaw13, title: "Shopping District", description: "Holographic storefronts with transparent floors" },
     { src: warsaw14, title: "Sports Stadium", description: "Dome with smart glass and holographic scoreboard" },
     { src: warsaw15, title: "Eco Towers", description: "Vertical gardens and sustainable living pods" },
+    { src: warsaw16, title: "Modern Sunset", description: "Contemporary skyline at golden hour with Vistula River" },
+    { src: warsaw17, title: "Old Town Evening", description: "Market Square with outdoor cafes at dusk" },
+    { src: warsaw18, title: "Royal Castle Twilight", description: "Baroque architecture illuminated at night" },
+    { src: warsaw19, title: "Business District", description: "Varso Tower and modern office buildings at morning" },
+    { src: warsaw20, title: "Lazienki Autumn", description: "Chopin monument with fall colors reflected in water" },
+    { src: warsaw21, title: "Vistula Promenade", description: "Riverside boulevards at sunset with city skyline" },
+    { src: warsaw22, title: "Palace Night", description: "Illuminated Palace of Culture with traffic light trails" },
+    { src: warsaw23, title: "Christmas Market", description: "Snow-covered Old Town with festive market" },
+    { src: warsaw24, title: "Uprising Monument", description: "Dramatic bronze sculpture under cloudy sky" },
+    { src: warsaw25, title: "Library Garden", description: "University Library rooftop garden with city view" },
+    { src: warsaw26, title: "National Stadium", description: "Modern arena illuminated with Polish colors" },
+    { src: warsaw27, title: "Fountain Show", description: "Colorful multimedia fountain park evening spectacle" },
+    { src: warsaw28, title: "Wilanow Palace", description: "Baroque royal residence with blooming spring gardens" },
+    { src: warsaw29, title: "Nowy Swiat Street", description: "Elegant boulevard with cafes and historic buildings" },
+    { src: warsaw30, title: "Golden Hour Panorama", description: "Aerial view of Old Town and modern skyline at sunset" },
   ];
 
   return (
