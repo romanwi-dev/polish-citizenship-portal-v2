@@ -219,7 +219,7 @@ Deno.serve(async (req) => {
         const { data: downloadData, error: downloadError } = await supabase.functions.invoke(
           "dropbox-download",
           {
-            body: { filePath: doc.dropbox_path }
+            body: { file_path: doc.dropbox_path }
           }
         );
 
