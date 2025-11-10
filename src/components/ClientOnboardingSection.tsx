@@ -144,7 +144,7 @@ export default function ClientOnboardingSection() {
                 >
                   {/* Front Side */}
                   <div
-                    className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.03] hover:-translate-y-1 flex flex-col"
+                    className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.03] hover:-translate-y-1 flex flex-col justify-center"
                     style={{
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
@@ -212,10 +212,10 @@ export default function ClientOnboardingSection() {
                         </p>
                       </div>
                     </div>
-                    
-                    <p className="text-xs text-muted-foreground/60 text-center mt-4">Tap to flip back</p>
+                      
+                      <p className="text-xs text-muted-foreground/60 text-center mt-auto">Tap to flip back</p>
+                    </div>
                   </div>
-                </div>
                   </div>
                 </div>
 

@@ -162,7 +162,7 @@ export default function PassportWorkflowCards() {
                           </p>
                         </div>
                         
-                        <div className="mt-6 space-y-2">
+                        <div className="mt-auto space-y-2">
                           <Button
                             variant="outline"
                             size="sm"

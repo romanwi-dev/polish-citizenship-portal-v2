@@ -141,7 +141,7 @@ export default function CitizenshipWorkflowCards() {
                       <motion.div
                         whileHover={{ scale: 1.03, y: -5 }}
                         transition={{ duration: 0.3 }}
-                        className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group flex flex-col"
+                        className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group flex flex-col justify-center"
                         style={{
                           backfaceVisibility: 'hidden',
                           WebkitBackfaceVisibility: 'hidden',
@@ -162,7 +162,7 @@ export default function CitizenshipWorkflowCards() {
                           </p>
                         </div>
                         
-                        <div className="mt-6 space-y-2">
+                        <div className="mt-auto space-y-2">
                           <Button
                             variant="outline"
                             size="sm"
@@ -183,7 +183,7 @@ export default function CitizenshipWorkflowCards() {
                           transform: 'rotateY(180deg)',
                         }}
                       >
-                        <div className="flex flex-col h-full w-full max-w-md">
+                        <div className="flex flex-col h-full w-full max-w-md justify-center">
                           <div className="relative mb-6">
                             <div className="w-24 h-24 rounded-lg overflow-hidden bg-gradient-to-br from-secondary/5 to-accent/5 flex items-center justify-center mx-auto">
                               <step.icon className="w-12 h-12 text-secondary opacity-60" />
@@ -202,7 +202,7 @@ export default function CitizenshipWorkflowCards() {
                             </div>
                           </div>
                           
-                          <p className="text-xs text-muted-foreground/60 text-center mt-4">Tap to flip back</p>
+                          <p className="text-xs text-muted-foreground/60 text-center mt-auto">Tap to flip back</p>
                         </div>
                       </div>
                     </div>

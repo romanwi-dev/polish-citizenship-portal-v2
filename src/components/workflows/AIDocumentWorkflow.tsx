@@ -744,16 +744,13 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                             WebkitBackfaceVisibility: 'hidden',
                           }}
                         >
-                          <div className="flex flex-col gap-3 h-full items-center text-center">
+                          <div className="flex flex-col gap-3 h-full items-center text-center justify-center">
                             <motion.div 
                               className="flex items-center gap-2 mb-1"
                               initial={{ opacity: 0, y: -10 }}
                               animate={{ opacity: 1, y: 0 }}
                               transition={{ duration: 0.4, delay: 0.1 }}
                             >
-                              <span className={`text-base md:text-xs font-bold px-3 py-1.5 md:px-2 md:py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
-                                {step.number}
-                              </span>
                               <span className="text-xs text-primary/60">{step.agent === 'human' ? 'Manual' : step.agent === 'ai' ? 'Automated' : 'Hybrid'}</span>
                             </motion.div>
                             
@@ -855,7 +852,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
 
                             {/* Document Count and Mark Done Button */}
                             <motion.div 
-                              className="flex items-center justify-between w-full"
+                              className="flex items-center justify-between w-full mt-auto"
                               initial={{ opacity: 0, y: 10 }}
                               animate={{ opacity: 1, y: 0 }}
                               transition={{ duration: 0.5, delay: 0.6 }}
@@ -875,6 +872,7 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                                 {isCompleted ? "✓ Done" : "Mark Done"}
                               </Button>
                             </motion.div>
+                            <p className="text-xs text-muted-foreground/60 text-center mt-2">Tap to see details</p>
                           </div>
                         </motion.div>
 
@@ -887,11 +885,8 @@ export function AIDocumentWorkflow({ caseId = '' }: AIDocumentWorkflowProps) {
                             transform: 'rotateY(180deg)',
                           }}
                         >
-                          <div className="flex flex-col gap-3 h-full">
+                          <div className="flex flex-col gap-3 h-full justify-center">
                             <div className="flex items-center gap-2 mb-1">
-                              <span className={`text-base md:text-xs font-bold px-3 py-1.5 md:px-2 md:py-1 rounded-full bg-gradient-to-r ${step.gradient} text-white`}>
-                                {step.number}
-                              </span>
                               <span className="text-xs text-primary/60">Details</span>
                             </div>
                             
