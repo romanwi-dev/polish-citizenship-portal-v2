@@ -118,10 +118,12 @@ const ContactFormWeb3 = () => {
             >
               {/* Front Side - Form */}
               <div 
-                className="w-full"
+                className={`w-full absolute inset-0 ${isFlipped ? 'pointer-events-none' : 'pointer-events-auto'}`}
                 style={{ 
                   backfaceVisibility: 'hidden',
-                  WebkitBackfaceVisibility: 'hidden'
+                  WebkitBackfaceVisibility: 'hidden',
+                  opacity: isFlipped ? 0 : 1,
+                  transition: 'opacity 0s 0.35s'
                 }}
               >
                 <div className="glass-card p-6 md:p-12 rounded-2xl backdrop-blur-xl border-2 border-primary/20 shadow-2xl">
@@ -132,20 +134,21 @@ const ContactFormWeb3 = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2 animate-fade-in" onDoubleClick={() => setFormData({ ...formData, name: "" })}>
                         <Label htmlFor="name" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Name *</Label>
-                        <Input
+                        <input
                           id="name"
                           name="name"
+                          type="text"
                           value={formData.name}
                           onChange={handleChange}
                           placeholder=""
                           required
                           autoComplete="name"
-                          className="h-14 border-2 border-blue-900/30 hover-glow focus:shadow-lg bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-xl md:text-base w-full"
+                          className="h-14 border-2 border-blue-900/30 hover-glow focus:shadow-lg bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-xl md:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
                         />
                       </div>
                       <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.1s' }} onDoubleClick={() => setFormData({ ...formData, email: "" })}>
                         <Label htmlFor="email" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Email *</Label>
-                        <Input
+                        <input
                           id="email"
                           name="email"
                           type="email"
@@ -154,7 +157,7 @@ const ContactFormWeb3 = () => {
                           placeholder=""
                           required
                           autoComplete="email"
-                          className="h-14 border-2 border-blue-900/30 hover-glow focus:shadow-lg bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-xl md:text-base w-full"
+                          className="h-14 border-2 border-blue-900/30 hover-glow focus:shadow-lg bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-xl md:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
                         />
                       </div>
                     </div>
@@ -234,12 +237,13 @@ const ContactFormWeb3 = () => {
 
               {/* Back Side - Thank You Message */}
               <div 
-                className={`glass-card p-4 md:p-12 rounded-lg w-full flex-col items-center justify-center text-center ${isFlipped ? 'flex' : 'hidden'}`}
+                className={`glass-card p-4 md:p-12 rounded-lg w-full absolute inset-0 flex flex-col items-center justify-center text-center ${!isFlipped ? 'pointer-events-none' : 'pointer-events-auto'}`}
                 style={{ 
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden',
                   transform: 'rotateY(180deg)',
-                  minHeight: '600px'
+                  opacity: isFlipped ? 1 : 0,
+                  transition: 'opacity 0s 0.35s'
                 }}
               >
                 <div className="relative z-10 space-y-6">
