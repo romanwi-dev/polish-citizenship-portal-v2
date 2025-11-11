@@ -66,7 +66,15 @@ const ContactFormWeb3 = () => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value, selectionStart, selectionEnd } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // Restore cursor position after state update
+    requestAnimationFrame(() => {
+      if (e.target && selectionStart !== null) {
+        e.target.setSelectionRange(selectionStart, selectionEnd);
+      }
+    });
   };
 
   const handleSelectChange = (name: string, value: string) => {
@@ -139,10 +147,6 @@ const ContactFormWeb3 = () => {
                           type="text"
                           value={formData.name}
                           onChange={handleChange}
-                          onDoubleClick={(e) => {
-                            e.stopPropagation();
-                            setFormData({ ...formData, name: "" });
-                          }}
                           placeholder=""
                           required
                           autoComplete="name"
@@ -157,10 +161,6 @@ const ContactFormWeb3 = () => {
                           type="email"
                           value={formData.email}
                           onChange={handleChange}
-                          onDoubleClick={(e) => {
-                            e.stopPropagation();
-                            setFormData({ ...formData, email: "" });
-                          }}
                           placeholder=""
                           required
                           autoComplete="email"
@@ -169,7 +169,7 @@ const ContactFormWeb3 = () => {
                       </div>
                     </div>
                     
-                    <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+                    <div className="space-y-2">
                       <Label htmlFor="country" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Country</Label>
                       <Select
                         value={formData.country}
@@ -192,7 +192,7 @@ const ContactFormWeb3 = () => {
                       </Select>
                     </div>
 
-                    <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+                    <div className="space-y-2">
                       <Label htmlFor="polishAncestor" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Polish Ancestor</Label>
                       <Select
                         value={formData.polishAncestor}
@@ -212,7 +212,7 @@ const ContactFormWeb3 = () => {
                       </Select>
                     </div>
 
-                    <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+                    <div className="space-y-2">
                       <Label htmlFor="polishDocuments" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Polish Documents</Label>
                       <Select
                         value={formData.polishDocuments}
