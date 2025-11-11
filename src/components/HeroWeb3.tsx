@@ -62,10 +62,10 @@ const HeroWeb3 = () => {
       {/* Stats Badges */}
       <div className="container relative z-10 px-4 mx-auto pb-20">
         <div className="max-w-4xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in" style={{ animationDelay: '200ms' }}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in max-w-6xl mx-auto" style={{ animationDelay: '200ms' }}>
             {/* Card 1 */}
             <div 
-              className="glass-card p-6 rounded-lg hover-glow text-center cursor-pointer relative h-[140px] md:h-[160px] flex items-center justify-center"
+              className="glass-card p-6 rounded-lg hover-glow text-center cursor-pointer relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none"
               onClick={() => toggleFlip('card1')}
             >
               <div 
@@ -89,7 +89,7 @@ const HeroWeb3 = () => {
             
             {/* Card 2 */}
             <div 
-              className="glass-card p-6 rounded-lg hover-glow text-center cursor-pointer relative h-[140px] md:h-[160px] flex items-center justify-center"
+              className="glass-card p-6 rounded-lg hover-glow text-center cursor-pointer relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none"
               onClick={() => toggleFlip('card2')}
             >
               <div 
@@ -113,7 +113,7 @@ const HeroWeb3 = () => {
             
             {/* Card 3 */}
             <div 
-              className="glass-card p-6 rounded-lg hover-glow text-center cursor-pointer relative h-[140px] md:h-[160px] flex items-center justify-center"
+              className="glass-card p-6 rounded-lg hover-glow text-center cursor-pointer relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none"
               onClick={() => toggleFlip('card3')}
             >
               <div 
