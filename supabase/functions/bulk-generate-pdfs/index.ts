@@ -67,9 +67,9 @@ Deno.serve(async (req) => {
       { type: 'poa-adult', name: 'POA Adult' }, // Always generate
     ];
 
-    // Add POA Minor for each minor child
+    // Add POA Minor for each minor child (all use same template, child index is handled by pdf-simple)
     for (let i = 1; i <= minorChildrenCount; i++) {
-      templates.push({ type: `poa-minor-${i}`, name: `POA Minor ${i}` });
+      templates.push({ type: 'poa-minor', name: `POA Minor ${i}`, childIndex: i });
     }
 
     // Add POA Spouses only if married
