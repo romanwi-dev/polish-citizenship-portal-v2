@@ -88,7 +88,7 @@ const Index = () => {
         <HeroWeb3 />
         <AboutSection />
         
-        <SkylineDivider imageSrc={warsawSkyline} alt="Warsaw skyline" />
+        <SkylineDivider imageSrc={berlinSkyline} alt="Berlin skyline" />
         
         <AIAnalysisSection />
         
@@ -104,7 +104,7 @@ const Index = () => {
           <TimelineProcessEnhanced />
         </Suspense>
         
-        <SkylineDivider imageSrc={berlinSkyline} alt="Berlin skyline" />
+        <SkylineDivider imageSrc={warsawSkyline} alt="Warsaw skyline" />
         
         <Suspense fallback={<SectionLoader />}>
           <ClientOnboardingSection />
