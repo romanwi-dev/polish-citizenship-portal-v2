@@ -248,7 +248,7 @@ const ContactFormWeb3 = () => {
                       </div>
                       <div className="text-lg md:text-xl font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{stat.label}</div>
                     </div>
-                    <div className="text-xs text-primary/50 text-center mt-auto">Click for details</div>
+                    <div className="text-xs text-primary/50 text-center mt-8">Click for details</div>
                   </div>
 
                   {/* Back Side */}
