@@ -2,17 +2,30 @@ import { useState } from "react";
 import { Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Zap, CheckCircle2, Clock, Gift } from "lucide-react";
 import { z } from "zod";
 import { CelebrationBackground } from "./backgrounds/CelebrationBackground";
 
+const COUNTRIES = [
+  "USA", "UK", "Canada", "Australia", "South Africa", "Brazil", 
+  "Argentina", "Mexico", "Venezuela", "Israel", "Germany", "France", "Other"
+];
+
 const contactSchema = z.object({
   name: z.string().trim().min(1, { message: "Name is required" }).max(100),
   email: z.string().trim().email({ message: "Invalid email address" }).max(255),
-  message: z.string().trim().max(1000).optional(),
+  country: z.string().min(1, "Please select a country"),
+  polishAncestor: z.string().min(1, "Please select your Polish ancestor"),
+  polishDocuments: z.string().min(1, "Please select an option"),
 });
 
 const ContactFormWeb3 = () => {
@@ -22,7 +35,9 @@ const ContactFormWeb3 = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    message: "",
+    country: "",
+    polishAncestor: "",
+    polishDocuments: "",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -38,7 +53,7 @@ const ContactFormWeb3 = () => {
         description: "Our AI will analyze your case within 24 hours.",
       });
       
-      setFormData({ name: "", email: "", message: "" });
+      setFormData({ name: "", email: "", country: "", polishAncestor: "", polishDocuments: "" });
     } catch (error) {
       if (error instanceof z.ZodError) {
         toast({
@@ -50,8 +65,12 @@ const ContactFormWeb3 = () => {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSelectChange = (name: string, value: string) => {
+    setFormData({ ...formData, [name]: value });
   };
 
   const toggleCardFlip = (index: number) => {
@@ -139,16 +158,64 @@ const ContactFormWeb3 = () => {
                     </div>
                   </div>
                   
-                  <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.2s' }} onDoubleClick={() => setFormData({ ...formData, message: "" })}>
-                    <Label htmlFor="message">Message</Label>
-                    <Textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      placeholder=""
-                      className="min-h-[240px] !border-2 !border-blue-900/30 hover-glow focus:shadow-lg resize-none !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-2xl md:!text-lg touch-manipulation w-full !leading-tight !py-5"
-                    />
+                  <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+                    <Label htmlFor="country">Country</Label>
+                    <Select
+                      value={formData.country}
+                      onValueChange={(value) => handleSelectChange("country", value)}
+                    >
+                      <SelectTrigger className="!h-20 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-2xl md:!text-lg touch-manipulation w-full !leading-tight">
+                        <SelectValue placeholder="Select your country" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background border-2 z-[100]">
+                        {COUNTRIES.map((country) => (
+                          <SelectItem
+                            key={country}
+                            value={country}
+                            className="text-base cursor-pointer hover:bg-primary/10"
+                          >
+                            {country}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+                    <Label htmlFor="polishAncestor">Polish Ancestor</Label>
+                    <Select
+                      value={formData.polishAncestor}
+                      onValueChange={(value) => handleSelectChange("polishAncestor", value)}
+                    >
+                      <SelectTrigger className="!h-20 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-2xl md:!text-lg touch-manipulation w-full !leading-tight">
+                        <SelectValue placeholder="Select your Polish ancestor" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background border-2 z-[100]">
+                        <SelectItem value="mother" className="text-base cursor-pointer hover:bg-primary/10">Mother</SelectItem>
+                        <SelectItem value="father" className="text-base cursor-pointer hover:bg-primary/10">Father</SelectItem>
+                        <SelectItem value="grandmother" className="text-base cursor-pointer hover:bg-primary/10">Grandmother</SelectItem>
+                        <SelectItem value="grandfather" className="text-base cursor-pointer hover:bg-primary/10">Grandfather</SelectItem>
+                        <SelectItem value="great-grandmother" className="text-base cursor-pointer hover:bg-primary/10">Great-grandmother</SelectItem>
+                        <SelectItem value="great-grandfather" className="text-base cursor-pointer hover:bg-primary/10">Great-grandfather</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+                    <Label htmlFor="polishDocuments">Polish Documents</Label>
+                    <Select
+                      value={formData.polishDocuments}
+                      onValueChange={(value) => handleSelectChange("polishDocuments", value)}
+                    >
+                      <SelectTrigger className="!h-20 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-2xl md:!text-lg touch-manipulation w-full !leading-tight">
+                        <SelectValue placeholder="Select an option" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background border-2 z-[100]">
+                        <SelectItem value="have-documents" className="text-base cursor-pointer hover:bg-primary/10">I have some Polish documents of my family</SelectItem>
+                        <SelectItem value="no-documents" className="text-base cursor-pointer hover:bg-primary/10">I don't have any Polish documents</SelectItem>
+                        <SelectItem value="need-check" className="text-base cursor-pointer hover:bg-primary/10">I need to check</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
 
                   <Button 
@@ -179,7 +246,7 @@ const ContactFormWeb3 = () => {
                   <Button
                     onClick={() => {
                       setIsFlipped(false);
-                      setFormData({ name: "", email: "", message: "" });
+                      setFormData({ name: "", email: "", country: "", polishAncestor: "", polishDocuments: "" });
                     }}
                     variant="outline"
                     className="hover-glow"
