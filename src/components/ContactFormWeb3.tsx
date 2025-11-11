@@ -87,7 +87,7 @@ const ContactFormWeb3 = () => {
           </h2>
         </div>
 
-        <div className="max-w-5xl mx-auto px-0 md:px-2">
+        <div className="max-w-6xl mx-auto px-0 md:px-2">
           <div className="relative w-full" style={{ perspective: '1000px' }}>
             <div 
               className="relative w-full transition-transform duration-700"
@@ -109,9 +109,9 @@ const ContactFormWeb3 = () => {
                   onSubmit={handleSubmit} 
                   className="space-y-8 relative z-10"
                 >
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="space-y-3 animate-fade-in" onDoubleClick={() => setFormData({ ...formData, name: "" })}>
-                      <Label htmlFor="name" className="text-sm font-light text-foreground/90">Name *</Label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                    <div className="space-y-2 animate-fade-in" onDoubleClick={() => setFormData({ ...formData, name: "" })}>
+                      <Label htmlFor="name" className="text-sm font-medium">Name *</Label>
                       <Input
                         id="name"
                         name="name"
@@ -120,17 +120,11 @@ const ContactFormWeb3 = () => {
                         placeholder=""
                         required
                         noMobileCaps
-                        className="h-14 md:h-16 border-2 border-blue-500/20 hover:border-blue-500/30 focus:border-blue-500/40 transition-all backdrop-blur touch-manipulation"
-                        style={{ 
-                          fontSize: '1.125rem', 
-                          fontWeight: '400',
-                          backgroundColor: 'rgba(10, 20, 45, 0.6)',
-                          touchAction: 'manipulation'
-                        }}
+                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs touch-manipulation"
                       />
                     </div>
-                    <div className="space-y-3 animate-fade-in" style={{ animationDelay: '0.1s' }} onDoubleClick={() => setFormData({ ...formData, email: "" })}>
-                      <Label htmlFor="email" className="text-sm font-light text-foreground/90">Email *</Label>
+                    <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.1s' }} onDoubleClick={() => setFormData({ ...formData, email: "" })}>
+                      <Label htmlFor="email" className="text-sm font-medium">Email *</Label>
                       <Input
                         id="email"
                         name="email"
@@ -140,32 +134,20 @@ const ContactFormWeb3 = () => {
                         placeholder=""
                         required
                         noMobileCaps
-                        className="h-14 md:h-16 border-2 border-blue-500/20 hover:border-blue-500/30 focus:border-blue-500/40 transition-all backdrop-blur touch-manipulation"
-                        style={{ 
-                          fontSize: '1.125rem', 
-                          fontWeight: '400',
-                          backgroundColor: 'rgba(10, 20, 45, 0.6)',
-                          touchAction: 'manipulation'
-                        }}
+                        className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs touch-manipulation"
                       />
                     </div>
                   </div>
                   
-                  <div className="space-y-3 animate-fade-in" style={{ animationDelay: '0.2s' }} onDoubleClick={() => setFormData({ ...formData, message: "" })}>
-                    <Label htmlFor="message" className="text-sm font-light text-foreground/90">Message</Label>
+                  <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.2s' }} onDoubleClick={() => setFormData({ ...formData, message: "" })}>
+                    <Label htmlFor="message" className="text-sm font-medium">Message</Label>
                     <Textarea
                       id="message"
                       name="message"
                       value={formData.message}
                       onChange={handleChange}
                       placeholder=""
-                      className="min-h-[240px] border-2 border-blue-500/20 hover:border-blue-500/30 focus:border-blue-500/40 transition-all resize-none backdrop-blur touch-manipulation"
-                      style={{ 
-                        fontSize: '1.125rem', 
-                        fontWeight: '400',
-                        backgroundColor: 'rgba(10, 20, 45, 0.6)',
-                        touchAction: 'manipulation'
-                      }}
+                      className="min-h-[240px] border-2 hover-glow focus:shadow-lg transition-all resize-none bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs touch-manipulation"
                     />
                   </div>
 
