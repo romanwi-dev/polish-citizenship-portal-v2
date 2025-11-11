@@ -294,7 +294,7 @@ export default function CivilRegistryForm() {
         }} transition={{
           duration: 0.5
         }}>
-            <div className="px-4 py-6 md:p-10">
+            <div className="px-4 pt-2 pb-6 md:px-10 md:pt-4 md:pb-10">
               <div className="border-b border-emerald-200/20 pb-6">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-400 bg-clip-text text-transparent">
                   Applicant Information / Dane wnioskodawcy
