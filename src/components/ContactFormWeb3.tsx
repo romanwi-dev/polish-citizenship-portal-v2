@@ -222,7 +222,7 @@ const ContactFormWeb3 = () => {
             ].map((stat, i) => (
               <div 
                 key={i} 
-                className="w-full max-w-[280px] mx-auto md:max-w-none cursor-pointer min-h-[300px] md:min-h-[180px]"
+                className="w-full max-w-[280px] mx-auto md:max-w-none cursor-pointer"
                 style={{ perspective: '1000px' }}
                 onClick={() => toggleCardFlip(i)}
               >
@@ -235,7 +235,7 @@ const ContactFormWeb3 = () => {
                 >
                   {/* Front Side */}
                   <div 
-                    className="glass-card p-6 rounded-lg hover-glow w-full h-full min-h-[180px] flex flex-col absolute top-0 left-0"
+                    className="glass-card p-6 rounded-lg hover-glow w-full min-h-[180px] flex flex-col"
                     style={{ 
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden'
@@ -253,18 +253,17 @@ const ContactFormWeb3 = () => {
 
                   {/* Back Side */}
                   <div 
-                    className="glass-card p-6 rounded-lg w-full h-full absolute top-0 left-0 min-h-[180px] flex flex-col justify-center"
+                    className="glass-card p-6 rounded-lg w-full absolute top-0 left-0 min-h-[180px] flex flex-col justify-center"
                     style={{ 
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
                       transform: 'rotateY(180deg)'
                     }}
                   >
-                    <div className="text-lg md:text-base text-primary font-bold mb-3">{stat.label}</div>
-                    <p className="text-sm md:text-xs text-muted-foreground/50 leading-relaxed font-normal">
+                    <div className="text-base text-primary font-bold mb-2">{stat.label}</div>
+                    <p className="text-xs text-muted-foreground/70 leading-snug">
                       {stat.details}
                     </p>
-                    <div className="text-xs text-primary/50 mt-auto pt-2">Click to flip back</div>
                   </div>
                 </div>
               </div>
