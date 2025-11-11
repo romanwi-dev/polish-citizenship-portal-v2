@@ -86,7 +86,7 @@ const ContactFormWeb3 = () => {
   };
 
   return (
-    <section id="contact" className="py-24 relative overflow-hidden overflow-x-hidden">
+    <section id="contact" className="py-24 relative overflow-hidden overflow-x-hidden touch-none"  onTouchStart={(e) => { if (e.target === e.currentTarget) e.preventDefault(); }}>
       
       {/* Celebration Background - Stars, Sparkles & Fireworks */}
       <div className="absolute inset-0 z-0">
@@ -107,7 +107,7 @@ const ContactFormWeb3 = () => {
         </div>
 
         <div className="max-w-full md:max-w-[1400px] mx-auto px-0 md:px-2">
-          <div className="relative w-full min-h-[600px]" style={{ perspective: '1000px' }}>
+          <div className="relative w-full min-h-[600px] touch-auto" style={{ perspective: '1000px' }}>
             <div 
               className="relative w-full h-full transition-transform duration-700"
               style={{ 
@@ -126,9 +126,7 @@ const ContactFormWeb3 = () => {
                 <div className="glass-card p-6 md:p-12 rounded-2xl backdrop-blur-xl border-2 border-primary/20 shadow-2xl">
                   <form 
                     onSubmit={handleSubmit} 
-                    className="space-y-8"
-                    onTouchStart={(e) => e.stopPropagation()}
-                    onTouchMove={(e) => e.stopPropagation()}
+                    className="space-y-8 touch-auto"
                   >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2 animate-fade-in" onDoubleClick={() => setFormData({ ...formData, name: "" })}>
@@ -143,7 +141,7 @@ const ContactFormWeb3 = () => {
                           noMobileCaps
                           autoComplete="name"
                           inputMode="text"
-                          className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-xl md:!text-base touch-manipulation w-full !leading-tight !py-3"
+                          className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-xl md:!text-base w-full !leading-tight !py-3 !touch-auto [touch-action:manipulation]"
                         />
                       </div>
                       <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.1s' }} onDoubleClick={() => setFormData({ ...formData, email: "" })}>
@@ -159,7 +157,7 @@ const ContactFormWeb3 = () => {
                           noMobileCaps
                           autoComplete="email"
                           inputMode="email"
-                          className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-xl md:!text-base touch-manipulation w-full !leading-tight !py-3"
+                          className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-xl md:!text-base w-full !leading-tight !py-3 !touch-auto [touch-action:manipulation]"
                         />
                       </div>
                     </div>
@@ -178,7 +176,7 @@ const ContactFormWeb3 = () => {
                             <SelectItem
                               key={country}
                               value={country}
-                              className="text-base cursor-pointer hover:bg-primary/10"
+                              className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3"
                             >
                               {country}
                             </SelectItem>
@@ -197,12 +195,12 @@ const ContactFormWeb3 = () => {
                           <SelectValue placeholder="Select your Polish ancestor" className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                         </SelectTrigger>
                         <SelectContent className="bg-background border-2 z-[100]">
-                          <SelectItem value="mother" className="text-base cursor-pointer hover:bg-primary/10">Mother</SelectItem>
-                          <SelectItem value="father" className="text-base cursor-pointer hover:bg-primary/10">Father</SelectItem>
-                          <SelectItem value="grandmother" className="text-base cursor-pointer hover:bg-primary/10">Grandmother</SelectItem>
-                          <SelectItem value="grandfather" className="text-base cursor-pointer hover:bg-primary/10">Grandfather</SelectItem>
-                          <SelectItem value="great-grandmother" className="text-base cursor-pointer hover:bg-primary/10">Great-grandmother</SelectItem>
-                          <SelectItem value="great-grandfather" className="text-base cursor-pointer hover:bg-primary/10">Great-grandfather</SelectItem>
+                          <SelectItem value="mother" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">Mother</SelectItem>
+                          <SelectItem value="father" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">Father</SelectItem>
+                          <SelectItem value="grandmother" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">Grandmother</SelectItem>
+                          <SelectItem value="grandfather" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">Grandfather</SelectItem>
+                          <SelectItem value="great-grandmother" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">Great-grandmother</SelectItem>
+                          <SelectItem value="great-grandfather" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">Great-grandfather</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -217,9 +215,9 @@ const ContactFormWeb3 = () => {
                           <SelectValue placeholder="Select an option" className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                         </SelectTrigger>
                         <SelectContent className="bg-background border-2 z-[100]">
-                          <SelectItem value="have-documents" className="text-base cursor-pointer hover:bg-primary/10">I have some Polish documents of my family</SelectItem>
-                          <SelectItem value="no-documents" className="text-base cursor-pointer hover:bg-primary/10">I don't have any Polish documents</SelectItem>
-                          <SelectItem value="need-check" className="text-base cursor-pointer hover:bg-primary/10">I need to check</SelectItem>
+                          <SelectItem value="have-documents" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">I have some Polish documents of my family</SelectItem>
+                          <SelectItem value="no-documents" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">I don't have any Polish documents</SelectItem>
+                          <SelectItem value="need-check" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">I need to check</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
