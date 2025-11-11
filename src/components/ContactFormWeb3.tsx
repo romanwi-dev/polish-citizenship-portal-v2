@@ -235,20 +235,20 @@ const ContactFormWeb3 = () => {
                 >
                   {/* Front Side */}
                   <div 
-                    className="glass-card p-6 rounded-lg hover-glow w-full min-h-[180px] flex items-center justify-center"
+                    className="glass-card p-6 rounded-lg hover-glow w-full min-h-[180px] flex flex-col"
                     style={{ 
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden'
                     }}
                   >
-                    <div className="text-center">
-                      <stat.icon className="h-6 w-6 mb-3 opacity-50 text-primary mx-auto" />
+                    <div className="text-center flex-1 flex flex-col items-center justify-center">
+                      <stat.icon className="h-6 w-6 mb-3 opacity-50 text-primary" />
                       <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
                         {stat.value}
                       </div>
-                      <div className="text-sm md:text-base text-muted-foreground">{stat.label}</div>
-                      <div className="text-xs text-primary/50 mt-2">Click for details</div>
+                      <div className="text-sm md:text-base font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{stat.label}</div>
                     </div>
+                    <div className="text-xs text-primary/50 text-center mt-auto">Click for details</div>
                   </div>
 
                   {/* Back Side */}
