@@ -173,51 +173,20 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
     setPhotoPreview(null);
   };
 
-  // Auto-save handler - silent save without refetching or closing dialog
-  const handleAutoSave = async (data: typeof formData) => {
-    const countryValue = showOtherCountry ? otherCountry : data.country;
-    
-    try {
-      // Direct update without using the mutation hook to avoid invalidating queries
-      const { error } = await supabase
-        .from("cases")
-        .update({
-          client_name: data.client_name,
-          client_code: data.client_code || null,
-          country: countryValue,
-          status: data.status as any,
-          processing_mode: data.processing_mode as any,
-          push_scheme: data.push_scheme === "NONE" ? null : data.push_scheme,
-          payment_status: data.payment_status as any,
-          is_vip: data.is_vip,
-          notes: data.notes,
-          progress: data.progress,
-          start_date: formatDateForDatabase(data.start_date),
-          kpi_docs_percentage: data.kpi_docs_percentage,
-          client_score: data.client_score,
-        })
-        .eq("id", caseData.id);
-      
-      if (error) throw error;
-    } catch (err) {
-      console.error("Auto-save failed:", err);
-      // Silent failure - don't show error toast
-    }
-  };
-
-  // Enable auto-save with longer delay (10 seconds)
-  useFormAutoSave({
-    formData,
-    onSave: handleAutoSave,
-    delay: 10000, // 10 seconds - much longer delay
-    enabled: open,
-  });
+  // Auto-save disabled - was causing too many issues
+  // Users will use manual save instead
 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const countryValue = showOtherCountry ? otherCountry : formData.country;
+    
+    // Validate processing_mode - must not be empty
+    if (!formData.processing_mode || formData.processing_mode.trim() === '') {
+      toast.error("Processing mode cannot be empty");
+      return;
+    }
     
     let client_photo_url = caseData.client_photo_url;
 
