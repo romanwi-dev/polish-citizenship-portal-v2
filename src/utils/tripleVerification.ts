@@ -20,12 +20,15 @@ export interface TripleVerificationResponse {
   success: boolean;
   gpt5: VerificationResult;
   gemini: VerificationResult;
+  claude?: VerificationResult;
   consensus: {
     average_score: number;
     score_difference: number;
+    max_score_difference?: number;
     agreement_level: 'high' | 'medium' | 'low';
     unanimous_approval: boolean;
     all_scores_above_80: boolean;
+    all_scores_at_100?: boolean;
   };
   verdict: 'PROCEED_TO_EX' | 'REVISE_ANALYSIS';
   timestamp: string;
