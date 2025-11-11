@@ -432,11 +432,11 @@ export default function POAForm() {
           </h2>
           <div className="flex items-center justify-center gap-3 md:gap-6 mt-2 md:mt-3 mb-1 md:mb-2">
               <Button
-                onClick={() => navigate('/admin/forms-demo')}
+                onClick={() => navigate(`/admin/cases#case-${caseId}`)}
                 variant="ghost"
                 size="icon"
                 className="h-7 w-7 md:h-10 md:w-10"
-                title="Back to Case"
+                title="Back to Cases"
               >
                 <ArrowLeft className="h-3.5 w-3.5 md:h-6 md:w-6" />
               </Button>

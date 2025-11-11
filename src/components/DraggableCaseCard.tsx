@@ -35,7 +35,12 @@ export const DraggableCaseCard = ({
   };
   
   return (
-    <div ref={setNodeRef} style={style} className="relative group">
+    <div 
+      ref={setNodeRef} 
+      style={style} 
+      className="relative group transition-all duration-300"
+      id={`case-card-${clientCase.id}`}
+    >
       <div
         {...attributes}
         {...listeners}

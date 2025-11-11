@@ -121,6 +121,27 @@ export default function CasesManagement() {
       }
     };
   }, [scrollTimeout]);
+
+  // Scroll to case card if hash is present in URL
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash && hash.startsWith('#case-')) {
+      const caseId = hash.replace('#case-', '');
+      // Wait for cases to load and DOM to render
+      setTimeout(() => {
+        const element = document.getElementById(`case-card-${caseId}`);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          // Add temporary highlight effect
+          element.classList.add('ring-4', 'ring-primary', 'ring-opacity-50');
+          setTimeout(() => {
+            element.classList.remove('ring-4', 'ring-primary', 'ring-opacity-50');
+          }, 2000);
+        }
+      }, 500);
+    }
+  }, [cases]);
+
   
   // Drag and drop sensors
   const sensors = useSensors(
