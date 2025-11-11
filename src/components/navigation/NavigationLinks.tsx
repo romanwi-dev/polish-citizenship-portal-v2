@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Bot, GitBranch, ClipboardList, Users, Archive, Languages, Award, FileCheck, Plane, BookOpen, Shield, Search, PenTool, Sun, Sparkles, FileText, Brain, FileCode, RefreshCw, PartyPopper, MessageSquare } from 'lucide-react';
+import { Bot, GitBranch, ClipboardList, Users, Archive, Languages, Award, FileCheck, Plane, BookOpen, Shield, Search, PenTool, Sun, Sparkles, FileText, Brain, FileCode, RefreshCw, PartyPopper, MessageSquare, Palette, Layout, Globe } from 'lucide-react';
 
 interface NavigationLinksProps {
   onNavigate: () => void;
@@ -63,6 +63,9 @@ const NAVIGATION_SECTIONS: Array<{
   {
     title: 'Demos',
     links: [
+      { label: 'Demos Hub', href: '/demos', icon: Globe, featured: true },
+      { label: 'Multi-Step Form', href: '/multi-step-demo', icon: FileText },
+      { label: 'Design Showcase', href: '/design-showcase', icon: Palette },
       { label: 'Warsaw Gallery', href: '/warsaw-demo', icon: Sun },
       { label: 'EU Celebration', href: '/eu-celebration-demo', icon: PartyPopper },
       { label: 'Contact Forms', href: '/contact-forms-demo', icon: MessageSquare },

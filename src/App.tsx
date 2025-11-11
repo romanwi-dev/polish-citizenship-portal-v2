@@ -98,6 +98,9 @@ const POAOCRPage = lazy(() => import("./pages/admin/POAOCRPage"));
 const SkylineBackgroundRemoval = lazy(() => import("./pages/admin/SkylineBackgroundRemoval"));
 const WarsawDemo = lazy(() => import("./pages/WarsawDemo"));
 const EUCelebrationDemo = lazy(() => import("./pages/EUCelebrationDemo"));
+const DemosHub = lazy(() => import("./pages/DemosHub"));
+const MultiStepDemo = lazy(() => import("./pages/MultiStepDemo"));
+const DesignShowcase = lazy(() => import("./pages/DesignShowcase"));
 
 
 const queryClient = new QueryClient({
@@ -128,6 +131,21 @@ const App = () => (
           <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/demos" element={
+              <Suspense fallback={<AdminLoader />}>
+                <DemosHub />
+              </Suspense>
+            } />
+            <Route path="/multi-step-demo" element={
+              <Suspense fallback={<AdminLoader />}>
+                <MultiStepDemo />
+              </Suspense>
+            } />
+            <Route path="/design-showcase" element={
+              <Suspense fallback={<AdminLoader />}>
+                <DesignShowcase />
+              </Suspense>
+            } />
             <Route path="/warsaw-demo" element={
               <Suspense fallback={<AdminLoader />}>
                 <WarsawDemo />
