@@ -7,7 +7,7 @@ interface SkylineDividerProps {
 
 const SkylineDivider = ({ imageSrc = warsawSkyline, alt = "Warsaw skyline" }: SkylineDividerProps) => {
   return (
-    <div className="relative w-full my-8 md:my-12 overflow-hidden h-[200px] md:h-[300px]">
+    <div className="relative w-full my-8 md:my-12 overflow-hidden h-[200px] md:h-[400px]">
       {/* Background matching StaticHeritage */}
       <div 
         className="absolute inset-0 animate-color-wave bg-[length:200%_200%]"
