@@ -2,7 +2,7 @@ import landmarkUnity from "@/assets/eu-celebration/celebration-4.png";
 
 export const LandmarkUnity = () => {
   return (
-    <div className="relative w-full h-96 overflow-hidden">
+    <div className="relative w-full h-[500px] md:h-[700px] overflow-hidden">
       {/* Image background */}
       <img
         src={landmarkUnity}
