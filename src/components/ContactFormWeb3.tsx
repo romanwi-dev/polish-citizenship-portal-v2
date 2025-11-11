@@ -163,7 +163,7 @@ const ContactFormWeb3 = () => {
                   </div>
                   
                   <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-                    <Label htmlFor="country" className="text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent font-semibold">Country</Label>
+                    <Label htmlFor="country" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Country</Label>
                     <Select
                       value={formData.country}
                       onValueChange={(value) => handleSelectChange("country", value)}
@@ -186,7 +186,7 @@ const ContactFormWeb3 = () => {
                   </div>
 
                   <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.3s' }}>
-                    <Label htmlFor="polishAncestor" className="text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent font-semibold">Polish Ancestor</Label>
+                    <Label htmlFor="polishAncestor" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Polish Ancestor</Label>
                     <Select
                       value={formData.polishAncestor}
                       onValueChange={(value) => handleSelectChange("polishAncestor", value)}
@@ -206,7 +206,7 @@ const ContactFormWeb3 = () => {
                   </div>
 
                   <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-                    <Label htmlFor="polishDocuments" className="text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent font-semibold">Polish Documents</Label>
+                    <Label htmlFor="polishDocuments" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Polish Documents</Label>
                     <Select
                       value={formData.polishDocuments}
                       onValueChange={(value) => handleSelectChange("polishDocuments", value)}
