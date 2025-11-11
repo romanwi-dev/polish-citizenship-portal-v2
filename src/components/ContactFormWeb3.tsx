@@ -88,9 +88,9 @@ const ContactFormWeb3 = () => {
         </div>
 
         <div className="max-w-full md:max-w-[1400px] mx-auto px-0 md:px-2">
-          <div className="relative w-full" style={{ perspective: '1000px' }}>
+          <div className="relative w-full min-h-[600px]" style={{ perspective: '1000px' }}>
             <div 
-              className="relative w-full transition-transform duration-700"
+              className="relative w-full h-full transition-transform duration-700"
               style={{ 
                 transformStyle: 'preserve-3d',
                 transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
@@ -98,11 +98,10 @@ const ContactFormWeb3 = () => {
             >
               {/* Front Side - Form */}
               <div 
-                className={`p-4 md:p-12 rounded-lg w-full ${isFlipped ? 'invisible' : 'visible'}`}
+                className="p-4 md:p-12 rounded-lg w-full absolute inset-0"
                 style={{ 
                   backfaceVisibility: 'hidden',
-                  WebkitBackfaceVisibility: 'hidden',
-                  position: isFlipped ? 'absolute' : 'relative'
+                  WebkitBackfaceVisibility: 'hidden'
                 }}
               >
                 
@@ -166,7 +165,7 @@ const ContactFormWeb3 = () => {
 
               {/* Back Side - Thank You Message */}
               <div 
-                className={`glass-card p-4 md:p-12 rounded-lg w-full absolute top-0 left-0 flex flex-col items-center justify-center text-center min-h-[600px] ${isFlipped ? 'visible animate-fade-in' : 'invisible'}`}
+                className="glass-card p-4 md:p-12 rounded-lg w-full absolute inset-0 flex flex-col items-center justify-center text-center"
                 style={{ 
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden',
