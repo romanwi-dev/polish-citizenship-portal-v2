@@ -432,6 +432,20 @@ All colors MUST be HSL.
     box-shadow: 0 0 60px hsla(221, 83%, 53%, 0.4);
   }
 
+  /* Optimized form input glow - no cursor interference */
+  .form-input-glow {
+    will-change: border-color;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .form-input-glow:hover {
+    border-color: hsl(221 83% 53% / 0.5);
+  }
+
+  .form-input-glow:focus {
+    box-shadow: 0 0 20px hsla(221, 83%, 53%, 0.2);
+  }
+
   @keyframes float {
     0%, 100% { transform: translateY(0px); }
     50% { transform: translateY(-20px); }

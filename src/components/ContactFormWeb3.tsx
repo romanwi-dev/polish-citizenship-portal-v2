@@ -145,7 +145,7 @@ const ContactFormWeb3 = () => {
                           placeholder=""
                           required
                           autoComplete="name"
-                          className="h-14 border-2 border-blue-900/30 hover-glow focus:shadow-lg bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-xl md:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
+                          className="h-14 border-2 border-blue-900/30 form-input-glow bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-xl md:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
                         />
                       </div>
                       <div className="space-y-2">
@@ -159,7 +159,7 @@ const ContactFormWeb3 = () => {
                           placeholder=""
                           required
                           autoComplete="email"
-                          className="h-14 border-2 border-blue-900/30 hover-glow focus:shadow-lg bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-xl md:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
+                          className="h-14 border-2 border-blue-900/30 form-input-glow bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-xl md:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
                         />
                       </div>
                     </div>
