@@ -222,12 +222,12 @@ const ContactFormWeb3 = () => {
             ].map((stat, i) => (
               <div 
                 key={i} 
-                className="w-full max-w-[280px] mx-auto md:max-w-none cursor-pointer"
+                className="w-full max-w-[280px] mx-auto md:max-w-none cursor-pointer min-h-[300px] md:min-h-[180px]"
                 style={{ perspective: '1000px' }}
                 onClick={() => toggleCardFlip(i)}
               >
                 <div 
-                  className="relative w-full transition-transform duration-700"
+                  className="relative w-full h-full transition-transform duration-700"
                   style={{ 
                     transformStyle: 'preserve-3d',
                     transform: flippedCards.has(i) ? 'rotateY(180deg)' : 'rotateY(0deg)'
@@ -235,7 +235,7 @@ const ContactFormWeb3 = () => {
                 >
                   {/* Front Side */}
                   <div 
-                    className="glass-card p-6 rounded-lg hover-glow w-full min-h-[180px] flex flex-col"
+                    className="glass-card p-6 rounded-lg hover-glow w-full h-full min-h-[180px] flex flex-col absolute top-0 left-0"
                     style={{ 
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden'
@@ -253,7 +253,7 @@ const ContactFormWeb3 = () => {
 
                   {/* Back Side */}
                   <div 
-                    className="glass-card p-6 rounded-lg w-full absolute top-0 left-0 min-h-[180px] flex flex-col justify-center"
+                    className="glass-card p-6 rounded-lg w-full h-full absolute top-0 left-0 min-h-[180px] flex flex-col justify-center"
                     style={{ 
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
