@@ -36,7 +36,7 @@ Deno.serve(async (req) => {
     const SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const admin = createClient(URL, SERVICE_KEY);
 
-    // Get case data to determine which PDFs to generate
+    // Get case data and POA data to determine which PDFs to generate
     const { data: caseData } = await admin
       .from('cases')
       .select('*')
@@ -50,15 +50,39 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Define all PDF templates to generate
+    // Get POA data to check for minor children and marriage status
+    const { data: poaData } = await admin
+      .from('poa')
+      .select('minor_children_count, is_married')
+      .eq('case_id', caseId)
+      .maybeSingle();
+
+    const minorChildrenCount = poaData?.minor_children_count || 0;
+    const isMarried = poaData?.is_married || false;
+
+    console.log(`[bulk-generate-pdfs] POA config: minors=${minorChildrenCount}, married=${isMarried}`);
+
+    // Define PDF templates to generate based on case data
     const templates = [
-      { type: 'poa-adult', name: 'POA Adult' },
-      { type: 'poa-minor', name: 'POA Minor' },
-      { type: 'poa-spouses', name: 'POA Spouses' },
+      { type: 'poa-adult', name: 'POA Adult' }, // Always generate
+    ];
+
+    // Add POA Minor for each minor child
+    for (let i = 1; i <= minorChildrenCount; i++) {
+      templates.push({ type: `poa-minor-${i}`, name: `POA Minor ${i}` });
+    }
+
+    // Add POA Spouses only if married
+    if (isMarried) {
+      templates.push({ type: 'poa-spouses', name: 'POA Spouses' });
+    }
+
+    // Always add these forms
+    templates.push(
       { type: 'family-tree', name: 'Family Tree' },
       { type: 'citizenship', name: 'Citizenship Application' },
       { type: 'transcription', name: 'Civil Registry' },
-    ];
+    );
 
     const results: PDFResult[] = [];
 
