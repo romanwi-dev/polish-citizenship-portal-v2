@@ -12,13 +12,13 @@ import SkylineDivider from "@/components/SkylineDivider";
 
 // Import European city skyline silhouettes
 import warsawSkyline from "@/assets/warsaw-skyline-overlay.png";
-import pragueSkyline from "@/assets/skylines/prague.png";
+import pragueSkyline from "@/assets/skylines/prague-blue.png";
 import budapestSkyline from "@/assets/skylines/budapest.png";
-import berlinSkyline from "@/assets/skylines/berlin.png";
-import parisSkyline from "@/assets/skylines/paris.png";
-import viennaSkyline from "@/assets/skylines/vienna.png";
-import romeSkyline from "@/assets/skylines/rome.png";
-import brusselsSkyline from "@/assets/skylines/brussels.png";
+import berlinSkyline from "@/assets/skylines/berlin-blue.png";
+import parisSkyline from "@/assets/skylines/paris-blue.png";
+import viennaSkyline from "@/assets/skylines/vienna-blue.png";
+import romeSkyline from "@/assets/skylines/rome-blue.png";
+import brusselsSkyline from "@/assets/skylines/brussels-blue.png";
 
 // Lazy load below-the-fold components for better code splitting
 const ServicesWeb3 = lazy(() => import("@/components/ServicesWeb3"));
