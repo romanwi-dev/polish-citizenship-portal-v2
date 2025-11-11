@@ -28,7 +28,7 @@ const PricingSection = lazy(() => import("@/components/PricingSection"));
 const TestimonialsSection = lazy(() => import("@/components/TestimonialsSection"));
 const FAQSection = lazy(() => import("@/components/FAQSection"));
 const ContactFormWeb3 = lazy(() => import("@/components/ContactFormWeb3"));
-const EUCelebrationSection = lazy(() => import("@/components/EUCelebrationSection"));
+const LandmarkUnity = lazy(() => import("@/components/heroes/LandmarkUnity").then(m => ({ default: m.LandmarkUnity })));
 const FooterWeb3 = lazy(() => import("@/components/FooterWeb3"));
 const ScrollToTop = lazy(() => import("@/components/ScrollToTop"));
 
@@ -135,7 +135,7 @@ const Index = () => {
         </Suspense>
         
         <Suspense fallback={<SectionLoader />}>
-          <EUCelebrationSection />
+          <LandmarkUnity />
         </Suspense>
         
         <Suspense fallback={<SectionLoader />}>
