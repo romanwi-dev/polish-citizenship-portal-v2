@@ -131,7 +131,7 @@ const ContactFormWeb3 = () => {
                     className="space-y-8"
                   >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-2 animate-fade-in" onDoubleClick={() => setFormData({ ...formData, name: "" })}>
+                      <div className="space-y-2">
                         <Label htmlFor="name" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Name *</Label>
                         <input
                           id="name"
@@ -139,13 +139,17 @@ const ContactFormWeb3 = () => {
                           type="text"
                           value={formData.name}
                           onChange={handleChange}
+                          onDoubleClick={(e) => {
+                            e.stopPropagation();
+                            setFormData({ ...formData, name: "" });
+                          }}
                           placeholder=""
                           required
                           autoComplete="name"
                           className="h-14 border-2 border-blue-900/30 hover-glow focus:shadow-lg bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-xl md:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
                         />
                       </div>
-                      <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.1s' }} onDoubleClick={() => setFormData({ ...formData, email: "" })}>
+                      <div className="space-y-2">
                         <Label htmlFor="email" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Email *</Label>
                         <input
                           id="email"
@@ -153,6 +157,10 @@ const ContactFormWeb3 = () => {
                           type="email"
                           value={formData.email}
                           onChange={handleChange}
+                          onDoubleClick={(e) => {
+                            e.stopPropagation();
+                            setFormData({ ...formData, email: "" });
+                          }}
                           placeholder=""
                           required
                           autoComplete="email"
