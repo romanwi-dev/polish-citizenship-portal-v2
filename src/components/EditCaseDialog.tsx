@@ -267,6 +267,10 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
         onSuccess: () => {
           onUpdate();
           onOpenChange(false);
+          // Scroll to the edited card after save
+          setTimeout(() => {
+            window.location.hash = `#case-${caseData.id}`;
+          }, 100);
         },
       }
     );
@@ -471,10 +475,15 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
               <Label htmlFor="progress" className="text-base font-semibold text-foreground">Progress</Label>
               <Input
                 id="progress"
-                type="number"
-                min="0"
-                max="100"
-                value={formData.progress ?? ''}
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                value={formData.progress === 0 ? '' : formData.progress.toString()}
+                onFocus={(e) => {
+                  if (e.target.value === '0' || formData.progress === 0) {
+                    setFormData({ ...formData, progress: 0 });
+                  }
+                }}
                 onChange={(e) => {
                   const val = e.target.value;
                   if (val === '') {
@@ -486,6 +495,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                     }
                   }
                 }}
+                placeholder="0"
                 className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-green-950/80 text-base h-12"
               />
             </div>
@@ -494,10 +504,15 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
               <Label htmlFor="kpi_docs_percentage" className="text-base font-semibold text-foreground">Documents</Label>
               <Input
                 id="kpi_docs_percentage"
-                type="number"
-                min="0"
-                max="100"
-                value={formData.kpi_docs_percentage ?? ''}
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                value={formData.kpi_docs_percentage === 0 ? '' : formData.kpi_docs_percentage.toString()}
+                onFocus={(e) => {
+                  if (e.target.value === '0' || formData.kpi_docs_percentage === 0) {
+                    setFormData({ ...formData, kpi_docs_percentage: 0 });
+                  }
+                }}
                 onChange={(e) => {
                   const val = e.target.value;
                   if (val === '') {
@@ -509,6 +524,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                     }
                   }
                 }}
+                placeholder="0"
                 className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-green-950/80 text-base h-12"
               />
             </div>
@@ -517,10 +533,15 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
               <Label htmlFor="client_score" className="text-base font-semibold text-foreground">Score</Label>
               <Input
                 id="client_score"
-                type="number"
-                min="0"
-                max="100"
-                value={formData.client_score ?? ''}
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                value={formData.client_score === 0 ? '' : formData.client_score.toString()}
+                onFocus={(e) => {
+                  if (e.target.value === '0' || formData.client_score === 0) {
+                    setFormData({ ...formData, client_score: 0 });
+                  }
+                }}
                 onChange={(e) => {
                   const val = e.target.value;
                   if (val === '') {
@@ -532,6 +553,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                     }
                   }
                 }}
+                placeholder="0"
                 className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-green-950/80 text-base h-12"
               />
             </div>
