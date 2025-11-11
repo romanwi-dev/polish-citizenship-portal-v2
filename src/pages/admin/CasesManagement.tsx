@@ -715,6 +715,18 @@ export default function CasesManagement() {
           onUpdate={() => {
             refetch();
             setEditCase(null);
+            // Scroll back to the edited card
+            setTimeout(() => {
+              const cardElement = document.getElementById(`case-card-${editCase.id}`);
+              if (cardElement) {
+                cardElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Briefly highlight the card
+                cardElement.classList.add('ring-2', 'ring-primary', 'ring-offset-2');
+                setTimeout(() => {
+                  cardElement.classList.remove('ring-2', 'ring-primary', 'ring-offset-2');
+                }, 2000);
+              }
+            }, 100);
           }}
         />
       )}
