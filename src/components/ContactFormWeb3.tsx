@@ -87,7 +87,7 @@ const ContactFormWeb3 = () => {
           </h2>
         </div>
 
-        <div className="max-w-7xl mx-auto px-0 md:px-2">
+        <div className="max-w-full md:max-w-[1400px] mx-auto px-0 md:px-2">
           <div className="relative w-full" style={{ perspective: '1000px' }}>
             <div 
               className="relative w-full transition-transform duration-700"
@@ -155,7 +155,7 @@ const ContactFormWeb3 = () => {
                   <Button 
                     type="submit" 
                     size="lg"
-                    className="text-lg md:text-2xl font-bold px-8 py-4 md:px-20 md:py-6 h-auto min-h-[48px] rounded-lg bg-blue-50/30 dark:bg-blue-950/30 hover:bg-blue-50/40 dark:hover:bg-blue-950/40 border-2 border-blue-900/30 hover-glow focus:shadow-lg transition-all backdrop-blur w-full"
+                    className="text-lg md:text-2xl font-bold px-8 py-4 md:px-20 h-20 rounded-lg bg-blue-50/30 dark:bg-blue-950/30 hover:bg-blue-50/40 dark:hover:bg-blue-950/40 border-2 border-blue-900/30 hover-glow focus:shadow-lg transition-all backdrop-blur w-full"
                   >
                     <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-bold">
                       Send Your Info
