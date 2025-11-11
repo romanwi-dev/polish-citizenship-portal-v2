@@ -440,7 +440,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                 <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-12">
                   <SelectValue placeholder="Select processing mode" />
                 </SelectTrigger>
-                <SelectContent className="bg-popover border-2 border-border z-[100]" position="popper" sideOffset={5}>
+                <SelectContent className="bg-popover border-2 border-border z-[100] max-h-[200px]" position="popper" sideOffset={5}>
                   <SelectItem value="standard">Standard</SelectItem>
                   <SelectItem value="expedited">Expedited</SelectItem>
                   <SelectItem value="vip">VIP</SelectItem>
@@ -457,7 +457,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                 <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-12">
                   <SelectValue placeholder="Select push scheme" />
                 </SelectTrigger>
-                <SelectContent className="bg-popover border-2 border-border z-[100]" position="popper" sideOffset={5}>
+                <SelectContent className="bg-popover border-2 border-border z-[100] max-h-[280px] overflow-y-auto" position="popper" sideOffset={5} align="start" avoidCollisions={true} collisionPadding={10}>
                   <SelectItem value="NONE">None</SelectItem>
                   <SelectItem value="PUSH">PUSH - Aggressive follow-up</SelectItem>
                   <SelectItem value="NUDGE">NUDGE - Regular reminders</SelectItem>
