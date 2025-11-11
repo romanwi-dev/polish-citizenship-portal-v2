@@ -214,7 +214,7 @@ export default function CivilRegistryForm() {
           initial={{ opacity: 0, y: -50 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ duration: 0.8 }}
-          className="mb-[-8px]"
+          className="mb-[-16px]"
         >
           <h2 className="text-5xl md:text-8xl font-heading font-black mb-2 md:mb-3 tracking-tight text-center">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
