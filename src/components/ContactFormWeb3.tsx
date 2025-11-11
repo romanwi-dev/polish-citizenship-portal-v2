@@ -98,10 +98,11 @@ const ContactFormWeb3 = () => {
             >
               {/* Front Side - Form */}
               <div 
-                className="p-4 md:p-12 rounded-lg w-full"
+                className={`p-4 md:p-12 rounded-lg w-full ${isFlipped ? 'invisible' : 'visible'}`}
                 style={{ 
                   backfaceVisibility: 'hidden',
-                  WebkitBackfaceVisibility: 'hidden'
+                  WebkitBackfaceVisibility: 'hidden',
+                  position: isFlipped ? 'absolute' : 'relative'
                 }}
               >
                 
@@ -166,20 +167,16 @@ const ContactFormWeb3 = () => {
 
               {/* Back Side - Thank You Message */}
               <div 
-                className="glass-card p-4 md:p-12 rounded-lg w-full absolute top-0 left-0 flex flex-col items-center justify-center text-center min-h-[600px]"
+                className={`bg-[hsl(220,70%,20%)] p-4 md:p-12 rounded-lg w-full absolute top-0 left-0 flex flex-col items-center justify-center text-center min-h-[600px] ${isFlipped ? 'visible' : 'invisible'}`}
                 style={{ 
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden',
                   transform: 'rotateY(180deg)'
                 }}
               >
-                
                 <div className="relative z-10">
-                  <h3 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                    Thank You!
-                  </h3>
-                  <p className="text-xl text-muted-foreground mb-8">
-                    Message received. We will get in touch with you in less than one hour...
+                  <p className="text-white text-2xl md:text-3xl">
+                    Thank you. We will get back to you shortly...
                   </p>
                 </div>
               </div>
