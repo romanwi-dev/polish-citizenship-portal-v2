@@ -120,7 +120,7 @@ const ContactFormWeb3 = () => {
                         placeholder=""
                         required
                         noMobileCaps
-                        className="!h-20 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg transition-shadow !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-xl md:!text-lg touch-manipulation w-full !leading-normal"
+                        className="!h-20 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-2xl md:!text-lg touch-manipulation w-full !leading-tight !py-5"
                       />
                     </div>
                     <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.1s' }} onDoubleClick={() => setFormData({ ...formData, email: "" })}>
@@ -134,7 +134,7 @@ const ContactFormWeb3 = () => {
                         placeholder=""
                         required
                         noMobileCaps
-                        className="!h-20 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg transition-shadow !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-xl md:!text-lg touch-manipulation w-full !leading-normal"
+                        className="!h-20 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-2xl md:!text-lg touch-manipulation w-full !leading-tight !py-5"
                       />
                     </div>
                   </div>
@@ -147,7 +147,7 @@ const ContactFormWeb3 = () => {
                       value={formData.message}
                       onChange={handleChange}
                       placeholder=""
-                      className="min-h-[240px] !border-2 !border-blue-900/30 hover-glow focus:shadow-lg transition-shadow resize-none !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-xl md:!text-lg touch-manipulation w-full !leading-normal"
+                      className="min-h-[240px] !border-2 !border-blue-900/30 hover-glow focus:shadow-lg resize-none !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-2xl md:!text-lg touch-manipulation w-full !leading-tight !py-5"
                     />
                   </div>
 
@@ -192,7 +192,7 @@ const ContactFormWeb3 = () => {
           </div>
 
           {/* Trust Indicators */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mt-48 md:mt-24 lg:mt-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mt-56 md:mt-24 lg:mt-20">
             {[
               { 
                 icon: Zap, 
