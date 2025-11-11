@@ -19,6 +19,7 @@ import parisSkyline from "@/assets/skylines/paris.png";
 import viennaSkyline from "@/assets/skylines/vienna.png";
 import romeSkyline from "@/assets/skylines/rome.png";
 import brusselsSkyline from "@/assets/skylines/brussels.png";
+import londonSkyline from "@/assets/skylines/london.png";
 
 // Lazy load below-the-fold components for better code splitting
 const ServicesWeb3 = lazy(() => import("@/components/ServicesWeb3"));
@@ -87,6 +88,9 @@ const Index = () => {
         <Navigation />
         <HeroWeb3 />
         <AboutSection />
+        
+        <SkylineDivider imageSrc={londonSkyline} alt="London skyline" />
+        
         <AIAnalysisSection />
         
         <SkylineDivider imageSrc={pragueSkyline} alt="Prague skyline" />
