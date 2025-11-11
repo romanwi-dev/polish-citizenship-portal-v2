@@ -64,6 +64,15 @@ export default function IntakeForm() {
 
   const handleTabChange = (value: string) => {
     setActiveTab(value);
+    
+    // Scroll clicked tab to center on mobile
+    setTimeout(() => {
+      const clickedTab = document.querySelector(`[value="${value}"]`);
+      if (clickedTab && tabsListRef.current) {
+        clickedTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    }, 100);
+    
     if (isFullView && sectionRefs.current[value]) {
       const element = sectionRefs.current[value];
       if (element) {
