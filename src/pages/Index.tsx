@@ -11,7 +11,7 @@ import AIAnalysisSection from "@/components/AIAnalysisSection";
 import SkylineDivider from "@/components/SkylineDivider";
 
 // Import European city skyline silhouettes
-import warsawSkyline from "@/assets/skylines/warsaw.png";
+import warsawSkyline from "@/assets/warsaw-lineart.png";
 import pragueSkyline from "@/assets/skylines/prague.png";
 import budapestSkyline from "@/assets/skylines/budapest.png";
 import berlinSkyline from "@/assets/skylines/berlin.png";
@@ -88,7 +88,7 @@ const Index = () => {
         <HeroWeb3 />
         <AboutSection />
         
-        <SkylineDivider imageSrc={berlinSkyline} alt="Berlin skyline" />
+        <SkylineDivider imageSrc={warsawSkyline} alt="Warsaw skyline" />
         
         <AIAnalysisSection />
         
@@ -104,7 +104,7 @@ const Index = () => {
           <TimelineProcessEnhanced />
         </Suspense>
         
-        <SkylineDivider imageSrc={warsawSkyline} alt="Warsaw skyline" />
+        <SkylineDivider imageSrc={berlinSkyline} alt="Berlin skyline" />
         
         <Suspense fallback={<SectionLoader />}>
           <ClientOnboardingSection />
