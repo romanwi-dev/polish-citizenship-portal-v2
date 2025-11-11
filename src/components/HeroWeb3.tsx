@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Sparkles from "lucide-react/dist/esm/icons/sparkles";
-import warsawHero from "@/assets/warsaw-palace-culture-generated.jpg";
+import warsawHero from "@/assets/warsaw-palace-subtle.jpg";
 import { useState } from "react";
 
 const HeroWeb3 = () => {
