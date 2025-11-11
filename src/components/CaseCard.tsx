@@ -468,7 +468,7 @@ export const CaseCard = memo(({
                   className="text-xs font-light group relative overflow-hidden backdrop-blur-md border-2 border-primary/50 dark:border-primary/20 h-11 flex items-center justify-center px-4 whitespace-nowrap bg-primary/10 dark:bg-primary/5 transition-all duration-300 hover:scale-[1.02]"
                   onClick={(e) => {
                     e.stopPropagation();
-                    navigate(`/admin/cases/${clientCase.id}?tab=tasks`);
+                    navigate(`/admin/intake/${clientCase.id}`);
                   }}
                 >
                   <span className="relative z-10 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-medium">
