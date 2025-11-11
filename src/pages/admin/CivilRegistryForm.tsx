@@ -221,7 +221,7 @@ export default function CivilRegistryForm() {
               Transcription
             </span>
           </h2>
-          <div className="flex items-center justify-center gap-3 md:gap-6 mt-2 md:mt-3 mb-1 md:mb-2">
+          <div className="flex items-center justify-center gap-3 md:gap-6 mt-2 md:mt-3 mb-4 md:mb-6">
               <Button
                 onClick={() => navigate('/admin/forms-demo')}
                 variant="ghost"
