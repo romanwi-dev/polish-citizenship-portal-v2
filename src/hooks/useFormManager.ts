@@ -119,17 +119,6 @@ export const useFormManager = (
       }
     });
     
-    // Optional: Block save if critical fields missing (configurable)
-    const criticalFieldsMissing = validation.errors.some(e => 
-      e.message === 'This field is required' && 
-      ['applicant_first_name', 'applicant_last_name'].includes(e.field)
-    );
-    
-    if (criticalFieldsMissing && completion.completionPercentage < 10) {
-      toast.error('Please fill in at least the applicant name before saving');
-      return false;
-    }
-    
     try {
       await updateMasterData.mutateAsync({
         caseId,
