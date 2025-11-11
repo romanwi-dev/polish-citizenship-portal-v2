@@ -1,17 +1,14 @@
+import warsawCulturalHub from "@/assets/warsaw-demos/warsaw-9.png";
+
 export const RealisticWarsaw = () => {
   return (
     <div className="relative w-full h-full overflow-hidden">
-      {/* Video background */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="none"
+      {/* Image background */}
+      <img
+        src={warsawCulturalHub}
+        alt="Cultural Hub - Theater with interactive light displays"
         className="absolute inset-0 w-full h-full object-cover"
-      >
-        <source src="https://player.vimeo.com/external/396761224.sd.mp4?s=115f7783eb27c0e9fb79c6e09b812f67a0f1acae&profile_id=164&oauth2_token_id=57447761" type="video/mp4" />
-      </video>
+      />
       
       {/* Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/70" />
