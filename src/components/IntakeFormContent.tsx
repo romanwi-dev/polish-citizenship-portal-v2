@@ -250,10 +250,10 @@ export const ChildrenSection = ({ formData, handleInputChange, clearField, isLar
     <div className="px-4 py-6 md:p-10">
       <div className="border-b border-border/50 pb-6 pt-6">
         <h2 className="text-2xl md:text-3xl font-heading font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-          Minor Children POA Information
+          Minor Children
         </h2>
         <h3 className="text-lg md:text-xl font-heading font-bold opacity-30 text-blue-600 dark:text-blue-400">
-          Power of Attorney details for minor children only
+          Children details
         </h3>
       </div>
       
