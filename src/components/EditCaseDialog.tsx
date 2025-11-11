@@ -278,10 +278,14 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto scrollbar-hide bg-background/95 backdrop-blur-xl border-2 border-primary/20 sm:max-h-[92vh]">
-        <form onSubmit={handleSubmit} className="space-y-8 pt-6">
+      <DialogContent className="max-w-5xl min-h-[100dvh] sm:min-h-auto sm:max-h-[92vh] overflow-y-auto scrollbar-hide bg-background/95 backdrop-blur-xl border-2 border-primary/20 flex flex-col">
+        <DialogHeader>
+          <DialogTitle className="text-xl font-bold">Edit Case</DialogTitle>
+          <DialogDescription>Update case details and save changes</DialogDescription>
+        </DialogHeader>
+        <form onSubmit={handleSubmit} className="space-y-6 flex-1 overflow-y-auto pb-24 sm:pb-6">
           {/* Basic Information - Enhanced Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             <div className="space-y-3">
               <Label htmlFor="client_name" className="text-base font-semibold text-foreground">Client</Label>
               <Input
@@ -289,7 +293,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                 value={formData.client_name}
                 onChange={(e) => setFormData({ ...formData, client_name: e.target.value })}
                 required
-                className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-blue-950/80 text-base h-12"
+                className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-blue-950/80 text-base h-14 sm:h-12"
                 placeholder="Enter client name"
               />
             </div>
@@ -325,19 +329,19 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                     setFormData({ ...formData, start_date: "" });
                   }
                 }}
-                className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-blue-950/80 text-base h-12"
+                className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-blue-950/80 text-base h-14 sm:h-12"
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             <div className="space-y-3">
               <Label htmlFor="client_code" className="text-base font-semibold text-foreground">Code</Label>
               <Select value={formData.client_code} onValueChange={(value) => setFormData({ ...formData, client_code: value })}>
-                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-12">
+                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-14 sm:h-12">
                   <SelectValue placeholder="Select client code" />
                 </SelectTrigger>
-                <SelectContent className="bg-popover border-2 border-border z-[100]" position="popper" sideOffset={5}>
+                <SelectContent className="bg-popover border-2 border-border z-[200]" sideOffset={5}>
                   <SelectItem value="Bad">Bad</SelectItem>
                   <SelectItem value="Poor">Poor</SelectItem>
                   <SelectItem value="Fair">Fair</SelectItem>
@@ -353,10 +357,10 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
             <div className="space-y-3">
               <Label htmlFor="payment_status" className="text-base font-semibold text-foreground">Payment</Label>
               <Select value={formData.payment_status} onValueChange={(value) => setFormData({ ...formData, payment_status: value })}>
-                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-12">
+                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-14 sm:h-12">
                   <SelectValue placeholder="Select payment status" />
                 </SelectTrigger>
-                <SelectContent className="bg-popover border-2 border-border z-[100]" position="popper" sideOffset={5}>
+                <SelectContent className="bg-popover border-2 border-border z-[200]" sideOffset={5}>
                   <SelectItem value="pay">Pay</SelectItem>
                   <SelectItem value="clear">Clear</SelectItem>
                 </SelectContent>
@@ -364,7 +368,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             <div className="space-y-3">
               <Label htmlFor="country" className="text-base font-semibold text-foreground">Country</Label>
               <Select 
@@ -380,10 +384,10 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                   }
                 }}
               >
-                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-12">
+                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-14 sm:h-12">
                   <SelectValue placeholder="Select country" />
                 </SelectTrigger>
-                <SelectContent className="bg-popover border-2 border-border z-[100]" position="popper" sideOffset={5}>
+                <SelectContent className="bg-popover border-2 border-border z-[200]" sideOffset={5}>
                   <SelectItem value="USA">USA</SelectItem>
                   <SelectItem value="UK">UK</SelectItem>
                   <SelectItem value="Canada">Canada</SelectItem>
@@ -404,17 +408,17 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                   placeholder="Enter country name"
                   value={otherCountry}
                   onChange={(e) => setOtherCountry(e.target.value)}
-                  className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-blue-950/80 text-base h-12"
+                  className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-blue-950/80 text-base h-14 sm:h-12"
                 />
               )}
             </div>
             <div className="space-y-3">
               <Label htmlFor="status" className="text-base font-semibold text-foreground">Status</Label>
               <Select value={formData.status} onValueChange={(value) => setFormData({ ...formData, status: value })}>
-                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-12">
+                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-14 sm:h-12">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-popover border-2 border-border z-50">
+                <SelectContent className="bg-popover border-2 border-border z-[200]">
                   <SelectItem value="lead">Lead</SelectItem>
                   <SelectItem value="active">Active</SelectItem>
                   <SelectItem value="on_hold">On Hold</SelectItem>
@@ -430,17 +434,17 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
           </div>
 
           {/* Additional Case Details */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             <div className="space-y-3">
               <Label htmlFor="processing_mode" className="text-base font-semibold text-foreground">Mode</Label>
               <Select 
                 value={formData.processing_mode || "standard"} 
                 onValueChange={(value) => setFormData({ ...formData, processing_mode: value })}
               >
-                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-12">
+                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-14 sm:h-12">
                   <SelectValue placeholder="Select processing mode" />
                 </SelectTrigger>
-                <SelectContent className="bg-popover border-2 border-border z-[100] max-h-[200px]" position="popper" sideOffset={5}>
+                <SelectContent className="bg-popover border-2 border-border z-[200] max-h-[200px]" sideOffset={5}>
                   <SelectItem value="standard">Standard</SelectItem>
                   <SelectItem value="expedited">Expedited</SelectItem>
                   <SelectItem value="vip">VIP</SelectItem>
@@ -454,10 +458,10 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                 value={formData.push_scheme || "NONE"} 
                 onValueChange={(value) => setFormData({ ...formData, push_scheme: value })}
               >
-                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-12">
+                <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-14 sm:h-12">
                   <SelectValue placeholder="Select push scheme" />
                 </SelectTrigger>
-                <SelectContent className="bg-popover border-2 border-border z-[100] max-h-[280px] overflow-y-auto" position="popper" sideOffset={5} align="start" avoidCollisions={true} collisionPadding={10}>
+                <SelectContent className="bg-popover border-2 border-border z-[200] max-h-[280px] overflow-y-auto" sideOffset={5}>
                   <SelectItem value="NONE">None</SelectItem>
                   <SelectItem value="PUSH">PUSH - Aggressive follow-up</SelectItem>
                   <SelectItem value="NUDGE">NUDGE - Regular reminders</SelectItem>
@@ -470,7 +474,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
           </div>
 
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
             <div className="space-y-3">
               <Label htmlFor="progress" className="text-base font-semibold text-foreground">Progress</Label>
               <Input
@@ -496,7 +500,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                   }
                 }}
                 placeholder="0"
-                className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-green-950/80 text-base h-12"
+                className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-green-950/80 text-base h-14 sm:h-12"
               />
             </div>
             
@@ -525,7 +529,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                   }
                 }}
                 placeholder="0"
-                className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-green-950/80 text-base h-12"
+                className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-green-950/80 text-base h-14 sm:h-12"
               />
             </div>
 
@@ -554,7 +558,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                   }
                 }}
                 placeholder="0"
-                className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-green-950/80 text-base h-12"
+                className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-green-950/80 text-base h-14 sm:h-12"
               />
             </div>
           </div>
@@ -577,28 +581,50 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
             />
           </div>
 
-          {/* Action Buttons - Premium Design */}
-          <div className="flex justify-end gap-4 pt-6 border-t-2 border-border/30">
-            <Button 
-              type="button" 
-              variant="outline" 
-              onClick={() => onOpenChange(false)}
-              size="lg"
-              className="px-8 border-2 border-border/50 hover:border-destructive/50 hover:bg-destructive/10 text-base h-12"
-            >
-              Cancel
-            </Button>
-            <Button 
-              type="submit" 
-              disabled={updateCaseMutation.isPending || isUploading}
-              variant="outline"
-              size="lg"
-              className="px-8 border-2 border-border/50 hover:border-primary/50 hover:bg-primary/10 text-base h-12"
-            >
-              {isUploading ? "Uploading..." : updateCaseMutation.isPending ? "Saving..." : "Save"}
-            </Button>
-          </div>
         </form>
+        
+        {/* Sticky Action Buttons - Mobile First */}
+        <div className="sticky bottom-0 left-0 right-0 bg-background/95 backdrop-blur-xl border-t-2 border-primary/20 p-4 flex gap-3 sm:hidden z-50">
+          <Button 
+            type="button" 
+            variant="outline" 
+            onClick={() => onOpenChange(false)}
+            className="flex-1 border-2 border-border/50 hover:border-destructive/50 hover:bg-destructive/10 text-base h-14 font-semibold"
+          >
+            Cancel
+          </Button>
+          <Button 
+            type="submit" 
+            disabled={updateCaseMutation.isPending || isUploading}
+            variant="outline"
+            onClick={handleSubmit}
+            className="flex-1 border-2 border-border/50 hover:border-primary/50 hover:bg-primary/10 text-base h-14 font-semibold"
+          >
+            {isUploading ? "Uploading..." : updateCaseMutation.isPending ? "Saving..." : "Save"}
+          </Button>
+        </div>
+        
+        {/* Desktop Action Buttons */}
+        <div className="hidden sm:flex justify-end gap-4 pt-6 border-t-2 border-border/30">
+          <Button 
+            type="button" 
+            variant="outline" 
+            onClick={() => onOpenChange(false)}
+            size="lg"
+            className="px-8 border-2 border-border/50 hover:border-destructive/50 hover:bg-destructive/10 text-base h-12"
+          >
+            Cancel
+          </Button>
+          <Button 
+            type="submit" 
+            disabled={updateCaseMutation.isPending || isUploading}
+            variant="outline"
+            size="lg"
+            className="px-8 border-2 border-border/50 hover:border-primary/50 hover:bg-primary/10 text-base h-12"
+          >
+            {isUploading ? "Uploading..." : updateCaseMutation.isPending ? "Saving..." : "Save"}
+          </Button>
+        </div>
       </DialogContent>
     </Dialog>
   );
