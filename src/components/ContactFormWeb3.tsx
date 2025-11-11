@@ -109,9 +109,9 @@ const ContactFormWeb3 = () => {
                   onSubmit={handleSubmit} 
                   className="space-y-8 relative z-10"
                 >
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2 animate-fade-in" onDoubleClick={() => setFormData({ ...formData, name: "" })}>
-                      <Label htmlFor="name" className="text-sm font-medium">Name *</Label>
+                      <Label htmlFor="name">Name *</Label>
                       <Input
                         id="name"
                         name="name"
@@ -124,7 +124,7 @@ const ContactFormWeb3 = () => {
                       />
                     </div>
                     <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.1s' }} onDoubleClick={() => setFormData({ ...formData, email: "" })}>
-                      <Label htmlFor="email" className="text-sm font-medium">Email *</Label>
+                      <Label htmlFor="email">Email *</Label>
                       <Input
                         id="email"
                         name="email"
@@ -140,7 +140,7 @@ const ContactFormWeb3 = () => {
                   </div>
                   
                   <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.2s' }} onDoubleClick={() => setFormData({ ...formData, message: "" })}>
-                    <Label htmlFor="message" className="text-sm font-medium">Message</Label>
+                    <Label htmlFor="message">Message</Label>
                     <Textarea
                       id="message"
                       name="message"
