@@ -471,8 +471,18 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                 type="number"
                 min="0"
                 max="100"
-                value={formData.progress}
-                onChange={(e) => setFormData({ ...formData, progress: parseInt(e.target.value) || 0 })}
+                value={formData.progress ?? ''}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (val === '') {
+                    setFormData({ ...formData, progress: 0 });
+                  } else {
+                    const num = parseInt(val);
+                    if (!isNaN(num) && num >= 0 && num <= 100) {
+                      setFormData({ ...formData, progress: num });
+                    }
+                  }
+                }}
                 className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-green-950/80 text-base h-12"
               />
             </div>
@@ -484,8 +494,18 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                 type="number"
                 min="0"
                 max="100"
-                value={formData.kpi_docs_percentage || 0}
-                onChange={(e) => setFormData({ ...formData, kpi_docs_percentage: parseInt(e.target.value) || 0 })}
+                value={formData.kpi_docs_percentage ?? ''}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (val === '') {
+                    setFormData({ ...formData, kpi_docs_percentage: 0 });
+                  } else {
+                    const num = parseInt(val);
+                    if (!isNaN(num) && num >= 0 && num <= 100) {
+                      setFormData({ ...formData, kpi_docs_percentage: num });
+                    }
+                  }
+                }}
                 className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-green-950/80 text-base h-12"
               />
             </div>
@@ -497,8 +517,18 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                 type="number"
                 min="0"
                 max="100"
-                value={formData.client_score || 0}
-                onChange={(e) => setFormData({ ...formData, client_score: parseInt(e.target.value) || 0 })}
+                value={formData.client_score ?? ''}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (val === '') {
+                    setFormData({ ...formData, client_score: 0 });
+                  } else {
+                    const num = parseInt(val);
+                    if (!isNaN(num) && num >= 0 && num <= 100) {
+                      setFormData({ ...formData, client_score: num });
+                    }
+                  }
+                }}
                 className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-green-950/80 text-base h-12"
               />
             </div>
