@@ -82,7 +82,7 @@ const HeroWeb3 = () => {
                 </div>
                 {/* Back */}
                 <div className="absolute inset-0 flex items-center justify-center p-4" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
-                  <p className="text-sm text-muted-foreground">Serving clients worldwide since 2003</p>
+                  <p className="text-sm text-muted-foreground">Serving clients worldwide since 2000</p>
                 </div>
               </div>
             </div>
