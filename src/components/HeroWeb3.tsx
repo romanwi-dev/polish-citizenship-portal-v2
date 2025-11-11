@@ -48,7 +48,7 @@ const HeroWeb3 = () => {
       </div>
 
       {/* Warsaw Hero Image - Full Width Background */}
-      <div className="w-full mb-20 md:mb-20">
+      <div className="w-full mb-32 md:mb-20">
         <img 
           src={warsawHero} 
           alt="Cultural Hub - Theater with interactive light displays" 
