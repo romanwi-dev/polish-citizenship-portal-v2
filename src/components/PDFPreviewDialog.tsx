@@ -93,17 +93,36 @@ export function PDFPreviewDialog({
       toast.success("PDF opened in new tab. Use browser menu to print.");
       setIsPrinting(false);
     } else {
-      // Desktop: open in new window and trigger print dialog
-      const printWindow = window.open(urlToUse, '_blank');
-      if (printWindow) {
-        printWindow.onload = () => {
-          printWindow.print();
-        };
-        toast.success("Print dialog opened");
-      } else {
-        toast.error("Unable to open print window. Please check popup blocker.");
-      }
-      setIsPrinting(false);
+      // Desktop: Create hidden iframe and trigger print
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = urlToUse;
+      document.body.appendChild(iframe);
+      
+      iframe.onload = () => {
+        try {
+          iframe.contentWindow?.focus();
+          iframe.contentWindow?.print();
+          toast.success("Print dialog opened");
+          // Remove iframe after print dialog closes
+          setTimeout(() => {
+            document.body.removeChild(iframe);
+          }, 1000);
+        } catch (error) {
+          console.error('Print error:', error);
+          toast.error("Print failed. Opening in new tab...");
+          window.open(urlToUse, '_blank');
+          document.body.removeChild(iframe);
+        }
+        setIsPrinting(false);
+      };
+      
+      iframe.onerror = () => {
+        toast.error("Unable to load PDF for printing. Opening in new tab...");
+        window.open(urlToUse, '_blank');
+        document.body.removeChild(iframe);
+        setIsPrinting(false);
+      };
     }
   };
 

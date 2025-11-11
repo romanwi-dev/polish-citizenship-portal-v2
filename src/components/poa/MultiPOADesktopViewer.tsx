@@ -111,9 +111,39 @@ export function MultiPOADesktopViewer({
       return;
     }
 
-    // Open in new window for printing
-    window.open(url, '_blank');
-    toast.success('Opening PDF in new window for printing');
+    try {
+      // Create hidden iframe and trigger print
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = url;
+      document.body.appendChild(iframe);
+      
+      iframe.onload = () => {
+        try {
+          iframe.contentWindow?.focus();
+          iframe.contentWindow?.print();
+          toast.success("Print dialog opened");
+          // Remove iframe after print dialog closes
+          setTimeout(() => {
+            document.body.removeChild(iframe);
+          }, 1000);
+        } catch (error) {
+          console.error('Print error:', error);
+          toast.error("Print failed. Opening in new tab...");
+          window.open(url, '_blank');
+          document.body.removeChild(iframe);
+        }
+      };
+      
+      iframe.onerror = () => {
+        toast.error("Unable to load PDF for printing. Opening in new tab...");
+        window.open(url, '_blank');
+        document.body.removeChild(iframe);
+      };
+    } catch (error) {
+      console.error('Error printing PDF:', error);
+      toast.error('Failed to print PDF');
+    }
   };
 
   const handleDownload = async (doc: POADocument) => {

@@ -131,18 +131,32 @@ export function BulkPDFResultsModal({
     try {
       for (const result of successfulResults) {
         if (result.url) {
-          const copies = getDefaultCopies(result.templateType);
-          // Open each PDF in a new window for printing
-          const printWindow = window.open(result.url, '_blank');
-          if (printWindow) {
-            printWindow.onload = () => {
-              setTimeout(() => {
-                printWindow.print();
-              }, 500);
+          // Create hidden iframe and trigger print
+          const iframe = document.createElement('iframe');
+          iframe.style.display = 'none';
+          iframe.src = result.url;
+          document.body.appendChild(iframe);
+          
+          await new Promise((resolve) => {
+            iframe.onload = () => {
+              try {
+                iframe.contentWindow?.focus();
+                iframe.contentWindow?.print();
+                // Remove iframe after a delay
+                setTimeout(() => {
+                  document.body.removeChild(iframe);
+                  resolve(null);
+                }, 1000);
+              } catch (error) {
+                console.error('Print error:', error);
+                document.body.removeChild(iframe);
+                resolve(null);
+              }
             };
-          }
-          // Small delay between opening print windows
-          await new Promise(resolve => setTimeout(resolve, 1000));
+          });
+          
+          // Small delay between print jobs
+          await new Promise(resolve => setTimeout(resolve, 500));
         }
       }
       
