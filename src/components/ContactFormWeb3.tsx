@@ -129,7 +129,7 @@ const ContactFormWeb3 = () => {
                   className="space-y-8 relative z-10"
                 >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2 animate-fade-in" onDoubleClick={() => setFormData({ ...formData, name: "" })}>
+                    <div className="space-y-2 animate-fade-in" onDoubleClick={() => setFormData({ ...formData, name: "" })} onTouchStart={(e) => e.stopPropagation()}>
                       <Label htmlFor="name" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Name *</Label>
                       <Input
                         id="name"
@@ -139,10 +139,12 @@ const ContactFormWeb3 = () => {
                         placeholder=""
                         required
                         noMobileCaps
+                        readOnly={false}
+                        onTouchStart={(e) => e.stopPropagation()}
                         className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-xl md:!text-base touch-manipulation w-full !leading-tight !py-3"
                       />
                     </div>
-                    <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.1s' }} onDoubleClick={() => setFormData({ ...formData, email: "" })}>
+                    <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.1s' }} onDoubleClick={() => setFormData({ ...formData, email: "" })} onTouchStart={(e) => e.stopPropagation()}>
                       <Label htmlFor="email" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Email *</Label>
                       <Input
                         id="email"
@@ -153,6 +155,8 @@ const ContactFormWeb3 = () => {
                         placeholder=""
                         required
                         noMobileCaps
+                        readOnly={false}
+                        onTouchStart={(e) => e.stopPropagation()}
                         className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-xl md:!text-base touch-manipulation w-full !leading-tight !py-3"
                       />
                     </div>
