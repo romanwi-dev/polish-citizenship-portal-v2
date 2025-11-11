@@ -48,11 +48,6 @@ const ContactFormWeb3 = () => {
       
       setIsFlipped(true);
       
-      toast({
-        title: "Message Sent!",
-        description: "Our AI will analyze your case within 24 hours.",
-      });
-      
       setFormData({ name: "", email: "", country: "", polishAncestor: "", polishDocuments: "" });
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -115,7 +110,7 @@ const ContactFormWeb3 = () => {
         </div>
 
         <div className="max-w-full md:max-w-[1400px] mx-auto px-0 md:px-2">
-          <div className="relative w-full min-h-[900px] md:min-h-[750px]" style={{ perspective: '1000px' }}>
+          <div className="relative w-full h-[900px] md:h-[750px]" style={{ perspective: '1000px' }}>
             <div 
               className="relative w-full h-full transition-transform duration-700"
               style={{ 
@@ -253,9 +248,9 @@ const ContactFormWeb3 = () => {
                   transition: 'opacity 0s 0.35s'
                 }}
               >
-                <div className="glass-card p-6 md:p-12 rounded-2xl backdrop-blur-xl border-2 border-primary/20 shadow-2xl min-h-[600px] flex flex-col items-center justify-center">
-                  <div className="relative z-10 space-y-6 text-center">
-                    <p className="text-foreground text-2xl md:text-3xl font-semibold">
+                <div className="glass-card p-6 md:p-12 rounded-2xl backdrop-blur-xl border-2 border-primary/20 shadow-2xl h-full flex flex-col items-center justify-center">
+                  <div className="relative z-10 space-y-12 text-center">
+                    <p className="bg-gradient-to-r from-slate-400 to-slate-600 bg-clip-text text-transparent text-2xl md:text-3xl font-semibold">
                       Thank you. We will get back to you shortly...
                     </p>
                     <Button
