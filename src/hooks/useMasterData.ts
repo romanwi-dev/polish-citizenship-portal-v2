@@ -119,8 +119,11 @@ export const useUpdateMasterData = () => {
         return;
       }
       
-      // Force refetch of data after save
-      queryClient.invalidateQueries({ queryKey: ['masterData', variables.caseId] });
+      // DO NOT invalidate queries immediately after save
+      // This prevents the refetch from clearing local data
+      // The realtime subscription will handle updates if needed
+      // queryClient.invalidateQueries({ queryKey: ['masterData', variables.caseId] });
+      
       // Toast removed - handled by calling component (useFormManager/useIntakeData)
     },
     onError: (error: any) => {

@@ -38,7 +38,8 @@ export const useRealtimeFormSync = (
         (payload) => {
           const newData = payload.new;
           
-          // Smart merge: Only update fields that haven't been modified locally
+          // Smart merge: Only update fields that are null/undefined locally
+          // This prevents clearing actively edited or recently saved fields
           setFormData((prev: any) => {
             const merged = { ...prev };
             
@@ -48,13 +49,12 @@ export const useRealtimeFormSync = (
                 return;
               }
               
-              // If local value matches original (from masterData), accept remote update
-              // Otherwise, keep local changes (user is actively editing)
-              if (!masterData || prev[key] === masterData[key]) {
+              // Only accept remote updates for fields that are empty/undefined locally
+              // This prevents data from being cleared after save
+              if (prev[key] === null || prev[key] === undefined || prev[key] === '') {
                 merged[key] = value;
-              } else if (prev[key] !== value) {
-                // Conflict resolved: keeping local value
               }
+              // Otherwise keep local value to preserve user edits
             });
             
             return merged;
