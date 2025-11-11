@@ -94,7 +94,7 @@ const ContactFormWeb3 = () => {
   };
 
   return (
-    <section id="contact" className="pt-24 pb-32 relative overflow-hidden overflow-x-hidden">
+    <section id="contact" className="pt-24 pb-12 relative overflow-hidden overflow-x-hidden">
       
       {/* Celebration Background - Stars, Sparkles & Fireworks */}
       <div className="absolute inset-0 z-0">
@@ -275,7 +275,7 @@ const ContactFormWeb3 = () => {
           </div>
 
           {/* Trust Indicators */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mt-16 md:mt-16 lg:mt-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mt-12 md:mt-12 lg:mt-12">
             {[
               { 
                 icon: Zap, 
