@@ -74,7 +74,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
     client_score: caseData.client_score || 0,
   });
 
-  // Reset form data when caseData changes (when dialog reopens with different case)
+  // Reset form data ONLY when dialog opens (not on every caseData change)
   useEffect(() => {
     if (open) {
       setFormData({
@@ -93,7 +93,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
         client_score: caseData.client_score || 0,
       });
     }
-  }, [open, caseData]);
+  }, [open, caseData.id]); // Only reset when opening or switching to a different case
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(caseData.client_photo_url || null);
   const [isUploading, setIsUploading] = useState(false);
