@@ -20,16 +20,13 @@ export const GradientCardContactForm = () => {
     email: "",
     message: "",
   });
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     try {
       contactSchema.parse(formData);
-      toast({
-        title: "Message Sent",
-        description: "We'll get back to you soon.",
-      });
-      setFormData({ name: "", email: "", message: "" });
+      setIsSubmitted(true);
     } catch (error) {
       if (error instanceof z.ZodError) {
         toast({
@@ -48,10 +45,11 @@ export const GradientCardContactForm = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="relative bg-gradient-to-br from-primary via-secondary to-accent p-1 rounded-3xl shadow-2xl">
-        {/* Inner white card */}
-        <div className="bg-background rounded-3xl p-12">
+    <div className="max-w-4xl mx-auto perspective-1000">
+      <div className={`relative transition-all duration-700 transform-style-3d ${isSubmitted ? 'rotate-y-180' : ''}`}>
+        {/* Front - Form */}
+        <div className={`relative bg-gradient-to-br from-primary via-secondary to-accent p-1 rounded-3xl shadow-2xl backface-hidden ${isSubmitted ? 'invisible' : ''}`}>
+          <div className="bg-background rounded-3xl p-12">
           {/* Header */}
           <div className="text-center mb-10">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full mb-4">
@@ -123,6 +121,12 @@ export const GradientCardContactForm = () => {
           </form>
         </div>
       </div>
+      
+      {/* Back - Thank You */}
+      <div className={`absolute inset-0 bg-[hsl(220,70%,20%)] rounded-3xl p-12 flex items-center justify-center rotate-y-180 backface-hidden ${isSubmitted ? '' : 'invisible'}`}>
+        <p className="text-white text-xl text-center">Thank you. We will get back to you shortly...</p>
+      </div>
+    </div>
     </div>
   );
 };

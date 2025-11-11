@@ -20,16 +20,13 @@ export const GlassmorphicContactForm = () => {
     email: "",
     message: "",
   });
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     try {
       contactSchema.parse(formData);
-      toast({
-        title: "Message Sent",
-        description: "We'll get back to you soon.",
-      });
-      setFormData({ name: "", email: "", message: "" });
+      setIsSubmitted(true);
     } catch (error) {
       if (error instanceof z.ZodError) {
         toast({
@@ -48,13 +45,14 @@ export const GlassmorphicContactForm = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="relative bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20 rounded-3xl p-12 overflow-hidden">
-        {/* Glass effect background */}
-        <div className="absolute inset-0 bg-background/40 backdrop-blur-xl" />
-        
-        <div className="relative z-10">
-          <form onSubmit={handleSubmit} className="space-y-6">
+    <div className="max-w-2xl mx-auto perspective-1000">
+      <div className={`relative transition-all duration-700 transform-style-3d ${isSubmitted ? 'rotate-y-180' : ''}`}>
+        {/* Front - Form */}
+        <div className={`relative bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20 rounded-3xl p-12 overflow-hidden backface-hidden ${isSubmitted ? 'invisible' : ''}`}>
+          <div className="absolute inset-0 bg-background/40 backdrop-blur-xl" />
+          
+          <div className="relative z-10">
+            <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="glass-name" className="text-sm font-medium text-foreground">
                 Name
@@ -111,6 +109,12 @@ export const GlassmorphicContactForm = () => {
           </form>
         </div>
       </div>
+      
+      {/* Back - Thank You */}
+      <div className={`absolute inset-0 bg-[hsl(220,70%,20%)] rounded-3xl p-12 flex items-center justify-center rotate-y-180 backface-hidden ${isSubmitted ? '' : 'invisible'}`}>
+        <p className="text-white text-xl text-center">Thank you. We will get back to you shortly...</p>
+      </div>
+    </div>
     </div>
   );
 };

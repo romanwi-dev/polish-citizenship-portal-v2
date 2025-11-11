@@ -20,16 +20,13 @@ export const SplitLayoutContactForm = () => {
     email: "",
     message: "",
   });
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     try {
       contactSchema.parse(formData);
-      toast({
-        title: "Message Sent",
-        description: "We'll get back to you soon.",
-      });
-      setFormData({ name: "", email: "", message: "" });
+      setIsSubmitted(true);
     } catch (error) {
       if (error instanceof z.ZodError) {
         toast({
@@ -48,8 +45,11 @@ export const SplitLayoutContactForm = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto">
-      <div className="grid md:grid-cols-2 gap-0 bg-card border border-border rounded-3xl overflow-hidden shadow-lg">
+    <div className="max-w-5xl mx-auto perspective-1000">
+      <div className={`relative transition-all duration-700 transform-style-3d ${isSubmitted ? 'rotate-y-180' : ''}`}>
+        {/* Front - Form */}
+        <div className={`grid md:grid-cols-2 gap-0 bg-card border border-border rounded-3xl overflow-hidden shadow-lg backface-hidden ${isSubmitted ? 'invisible' : ''}`}>
+
         {/* Left Panel - Info */}
         <div className="bg-gradient-to-br from-primary to-secondary p-10 text-primary-foreground">
           <h3 className="text-3xl font-bold mb-6">Get in Touch</h3>
@@ -149,6 +149,12 @@ export const SplitLayoutContactForm = () => {
           </form>
         </div>
       </div>
+      
+      {/* Back - Thank You */}
+      <div className={`absolute inset-0 bg-[hsl(220,70%,20%)] rounded-3xl p-10 flex items-center justify-center rotate-y-180 backface-hidden ${isSubmitted ? '' : 'invisible'}`}>
+        <p className="text-white text-xl text-center">Thank you. We will get back to you shortly...</p>
+      </div>
+    </div>
     </div>
   );
 };

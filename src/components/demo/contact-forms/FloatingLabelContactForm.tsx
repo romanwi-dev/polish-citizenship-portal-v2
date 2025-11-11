@@ -17,16 +17,13 @@ export const FloatingLabelContactForm = () => {
     email: "",
     message: "",
   });
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     try {
       contactSchema.parse(formData);
-      toast({
-        title: "Message Sent",
-        description: "We'll get back to you soon.",
-      });
-      setFormData({ name: "", email: "", message: "" });
+      setIsSubmitted(true);
     } catch (error) {
       if (error instanceof z.ZodError) {
         toast({
@@ -45,9 +42,11 @@ export const FloatingLabelContactForm = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="bg-card border border-border rounded-3xl p-10 shadow-md">
-        <form onSubmit={handleSubmit} className="space-y-8">
+    <div className="max-w-2xl mx-auto perspective-1000">
+      <div className={`relative transition-all duration-700 transform-style-3d ${isSubmitted ? 'rotate-y-180' : ''}`}>
+        {/* Front - Form */}
+        <div className={`bg-card border border-border rounded-3xl p-10 shadow-md backface-hidden ${isSubmitted ? 'invisible' : ''}`}>
+          <form onSubmit={handleSubmit} className="space-y-8">
           {/* Floating Label Name Field */}
           <div className="relative">
             <input
@@ -116,6 +115,12 @@ export const FloatingLabelContactForm = () => {
           </Button>
         </form>
       </div>
+      
+      {/* Back - Thank You */}
+      <div className={`absolute inset-0 bg-[hsl(220,70%,20%)] rounded-3xl p-10 flex items-center justify-center rotate-y-180 backface-hidden ${isSubmitted ? '' : 'invisible'}`}>
+        <p className="text-white text-xl text-center">Thank you. We will get back to you shortly...</p>
+      </div>
+    </div>
     </div>
   );
 };
