@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { MainCTA } from "@/components/ui/main-cta";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -102,7 +103,7 @@ const ContactFormWeb3 = () => {
             <Mail className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium">Connect With Us</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-6">
+          <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-14">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               Check Your Eligibility and Chances
             </span>
@@ -346,6 +347,15 @@ const ContactFormWeb3 = () => {
               </div>
             ))}
           </div>
+
+          {/* Bottom CTA */}
+          <MainCTA
+            wrapperClassName="mt-40 mb-20"
+            onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
+            ariaLabel="Take the Polish Citizenship Test to check your eligibility"
+          >
+            Take Polish Citizenship Test
+          </MainCTA>
         </div>
       </div>
     </section>
