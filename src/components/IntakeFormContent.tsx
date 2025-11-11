@@ -267,7 +267,7 @@ export const ChildrenSection = ({ formData, handleInputChange, clearField, isLar
             const childNum = index + 1;
             return (
               <div key={childNum} className="border-t border-border/30 pt-6">
-                <h4 className="text-lg font-semibold mb-4 text-primary">Minor Child {childNum} - POA</h4>
+                <h4 className="text-lg font-semibold mb-4 text-primary">Minor {childNum}</h4>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <motion.div 
                     initial={{ opacity: 0, y: 20 }} 
