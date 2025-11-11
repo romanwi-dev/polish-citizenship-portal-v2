@@ -87,7 +87,7 @@ const ContactFormWeb3 = () => {
           </h2>
         </div>
 
-        <div className="max-w-6xl mx-auto px-0 md:px-2">
+        <div className="max-w-7xl mx-auto px-0 md:px-2">
           <div className="relative w-full" style={{ perspective: '1000px' }}>
             <div 
               className="relative w-full transition-transform duration-700"
