@@ -88,15 +88,15 @@ const AIAnalysisSection = () => {
             </h2>
             
             <div className="mb-16 max-w-6xl mx-auto px-2 md:px-0">
-              <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-6 text-justify">
+              <p className="text-lg md:text-lg text-muted-foreground leading-relaxed mb-6">
                 We are now able to 'predict' the probability of success and the time of the procedure in advance in each case of Polish citizenship by descent with HIGH ACCURACY based on the cases we processed over the last twenty years, with AI analyzes and human-expert knowledge. This has revolutionized our approach, allowing us to offer personalized guidance and support to our clients right from the initial consultation. By leveraging this combination of AI and expert insights, we can identify potential challenges and opportunities unique to each case, ensuring a more streamlined and efficient application process.
               </p>
               
-              <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-6 text-justify">
+              <p className="text-lg md:text-lg text-muted-foreground leading-relaxed mb-6">
                 Our clients benefit from reduced uncertainty and increased confidence, knowing that their application is backed by a robust predictive framework. Furthermore, our comprehensive database, enriched with years of historical data, serves as a powerful resource for refining our predictive models. This continuous learning process not only enhances the accuracy of our predictions but also enables us to adapt to changing legal landscapes and procedural requirements.
               </p>
               
-              <p className="text-base md:text-lg text-muted-foreground leading-relaxed text-justify">
+              <p className="text-lg md:text-lg text-muted-foreground leading-relaxed">
                 In essence, the integration of AI technology with our deep domain expertise, and professional honesty deeply implemented in our core politics as legal advisers, marks a significant leap forward in our ability to assist individuals in obtaining Polish citizenship by descent. Our commitment to innovation ensures that we remain at the forefront of our field, providing exceptional service and maximizing the likelihood of successful outcomes for our clients.
               </p>
             </div>
@@ -136,7 +136,7 @@ const AIAnalysisSection = () => {
           <div className="flex justify-center mt-40 mb-20 animate-fade-in" style={{ animationDelay: '300ms' }}>
             <Button 
               size="lg" 
-              className="text-xl md:text-2xl font-bold px-12 py-6 md:px-20 md:py-6 h-auto min-h-[64px] md:min-h-[72px] rounded-lg bg-red-700 dark:bg-red-900/60 hover:bg-red-800 dark:hover:bg-red-900/70 text-white shadow-[0_0_40px_rgba(185,28,28,0.6)] dark:shadow-[0_0_40px_rgba(127,29,29,0.6)] hover:shadow-[0_0_60px_rgba(185,28,28,0.8)] dark:hover:shadow-[0_0_60px_rgba(127,29,29,0.8)] group relative overflow-hidden backdrop-blur-md border-2 border-red-600 dark:border-red-800/40 hover:border-red-500 dark:hover:border-red-700/60 transition-all duration-300 hover:scale-105 animate-pulse" 
+              className="w-full max-w-[280px] md:max-w-none md:w-auto text-xl md:text-2xl font-bold px-12 py-6 md:px-20 md:py-6 h-auto min-h-[64px] md:min-h-[72px] rounded-lg bg-red-700 dark:bg-red-900/60 hover:bg-red-800 dark:hover:bg-red-900/70 text-white shadow-[0_0_40px_rgba(185,28,28,0.6)] dark:shadow-[0_0_40px_rgba(127,29,29,0.6)] hover:shadow-[0_0_60px_rgba(185,28,28,0.8)] dark:hover:shadow-[0_0_60px_rgba(127,29,29,0.8)] group relative overflow-hidden backdrop-blur-md border-2 border-red-600 dark:border-red-800/40 hover:border-red-500 dark:hover:border-red-700/60 transition-all duration-300 hover:scale-105 animate-pulse" 
               onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
               aria-label="Take the Polish Citizenship Test to check your eligibility"
             >
