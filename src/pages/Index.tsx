@@ -11,7 +11,7 @@ import AIAnalysisSection from "@/components/AIAnalysisSection";
 import SkylineDivider from "@/components/SkylineDivider";
 
 // Import European city skyline silhouettes
-import warsawSkyline from "@/assets/warsaw-skyline-blue.png";
+import warsawSkyline from "@/assets/warsaw-skyline-overlay.png";
 import pragueSkyline from "@/assets/skylines/prague.png";
 import budapestSkyline from "@/assets/skylines/budapest.png";
 import berlinSkyline from "@/assets/skylines/berlin.png";
