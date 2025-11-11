@@ -21,7 +21,7 @@ const FlippableAboutCard = ({
 
   return (
     <div 
-      className="h-[580px] cursor-pointer animate-fade-in"
+      className="h-[420px] md:h-[580px] cursor-pointer animate-fade-in"
       style={{ 
         animationDelay: `${(index + 1) * 100}ms`,
         perspective: '1000px'
