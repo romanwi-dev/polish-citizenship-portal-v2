@@ -130,7 +130,7 @@ const ContactFormWeb3 = () => {
                 >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2 animate-fade-in" onDoubleClick={() => setFormData({ ...formData, name: "" })}>
-                      <Label htmlFor="name">Name *</Label>
+                      <Label htmlFor="name" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Name *</Label>
                       <Input
                         id="name"
                         name="name"
@@ -143,7 +143,7 @@ const ContactFormWeb3 = () => {
                       />
                     </div>
                     <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.1s' }} onDoubleClick={() => setFormData({ ...formData, email: "" })}>
-                      <Label htmlFor="email">Email *</Label>
+                      <Label htmlFor="email" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Email *</Label>
                       <Input
                         id="email"
                         name="email"
@@ -159,7 +159,7 @@ const ContactFormWeb3 = () => {
                   </div>
                   
                   <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-                    <Label htmlFor="country">Country</Label>
+                    <Label htmlFor="country" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Country</Label>
                     <Select
                       value={formData.country}
                       onValueChange={(value) => handleSelectChange("country", value)}
@@ -182,7 +182,7 @@ const ContactFormWeb3 = () => {
                   </div>
 
                   <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.3s' }}>
-                    <Label htmlFor="polishAncestor">Polish Ancestor</Label>
+                    <Label htmlFor="polishAncestor" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Polish Ancestor</Label>
                     <Select
                       value={formData.polishAncestor}
                       onValueChange={(value) => handleSelectChange("polishAncestor", value)}
@@ -202,7 +202,7 @@ const ContactFormWeb3 = () => {
                   </div>
 
                   <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-                    <Label htmlFor="polishDocuments">Polish Documents</Label>
+                    <Label htmlFor="polishDocuments" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Polish Documents</Label>
                     <Select
                       value={formData.polishDocuments}
                       onValueChange={(value) => handleSelectChange("polishDocuments", value)}
