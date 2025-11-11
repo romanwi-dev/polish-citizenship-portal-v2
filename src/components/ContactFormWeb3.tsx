@@ -117,123 +117,124 @@ const ContactFormWeb3 = () => {
             >
               {/* Front Side - Form */}
               <div 
-                className="p-4 md:p-12 rounded-lg w-full absolute inset-0"
+                className="w-full absolute inset-0"
                 style={{ 
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden'
                 }}
               >
-                
-                <form 
-                  onSubmit={handleSubmit} 
-                  className="space-y-8 relative z-10"
-                  onTouchStart={(e) => e.stopPropagation()}
-                  onTouchMove={(e) => e.stopPropagation()}
-                >
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2 animate-fade-in" onDoubleClick={() => setFormData({ ...formData, name: "" })}>
-                      <Label htmlFor="name" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Name *</Label>
-                      <Input
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        placeholder=""
-                        required
-                        noMobileCaps
-                        autoComplete="name"
-                        inputMode="text"
-                        className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-xl md:!text-base touch-manipulation w-full !leading-tight !py-3"
-                      />
-                    </div>
-                    <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.1s' }} onDoubleClick={() => setFormData({ ...formData, email: "" })}>
-                      <Label htmlFor="email" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Email *</Label>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        placeholder=""
-                        required
-                        noMobileCaps
-                        autoComplete="email"
-                        inputMode="email"
-                        className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-xl md:!text-base touch-manipulation w-full !leading-tight !py-3"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-                    <Label htmlFor="country" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Country</Label>
-                    <Select
-                      value={formData.country}
-                      onValueChange={(value) => handleSelectChange("country", value)}
-                    >
-                      <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-sm [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
-                        <SelectValue placeholder="Select your country" className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-background border-2 z-[100]">
-                        {COUNTRIES.map((country) => (
-                          <SelectItem
-                            key={country}
-                            value={country}
-                            className="text-base cursor-pointer hover:bg-primary/10"
-                          >
-                            {country}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.3s' }}>
-                    <Label htmlFor="polishAncestor" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Polish Ancestor</Label>
-                    <Select
-                      value={formData.polishAncestor}
-                      onValueChange={(value) => handleSelectChange("polishAncestor", value)}
-                    >
-                      <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-sm [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
-                        <SelectValue placeholder="Select your Polish ancestor" className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-background border-2 z-[100]">
-                        <SelectItem value="mother" className="text-base cursor-pointer hover:bg-primary/10">Mother</SelectItem>
-                        <SelectItem value="father" className="text-base cursor-pointer hover:bg-primary/10">Father</SelectItem>
-                        <SelectItem value="grandmother" className="text-base cursor-pointer hover:bg-primary/10">Grandmother</SelectItem>
-                        <SelectItem value="grandfather" className="text-base cursor-pointer hover:bg-primary/10">Grandfather</SelectItem>
-                        <SelectItem value="great-grandmother" className="text-base cursor-pointer hover:bg-primary/10">Great-grandmother</SelectItem>
-                        <SelectItem value="great-grandfather" className="text-base cursor-pointer hover:bg-primary/10">Great-grandfather</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-                    <Label htmlFor="polishDocuments" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Polish Documents</Label>
-                    <Select
-                      value={formData.polishDocuments}
-                      onValueChange={(value) => handleSelectChange("polishDocuments", value)}
-                    >
-                      <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-sm [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
-                        <SelectValue placeholder="Select an option" className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-background border-2 z-[100]">
-                        <SelectItem value="have-documents" className="text-base cursor-pointer hover:bg-primary/10">I have some Polish documents of my family</SelectItem>
-                        <SelectItem value="no-documents" className="text-base cursor-pointer hover:bg-primary/10">I don't have any Polish documents</SelectItem>
-                        <SelectItem value="need-check" className="text-base cursor-pointer hover:bg-primary/10">I need to check</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <Button 
-                    type="submit" 
-                    size="lg"
-                    className="text-xl md:text-2xl font-bold px-12 py-6 md:px-20 h-24 md:h-20 rounded-lg !bg-blue-50/30 dark:!bg-blue-950/30 hover:!bg-blue-50/40 dark:hover:!bg-blue-950/40 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg transition-all backdrop-blur w-full"
+                <div className="glass-card p-6 md:p-12 rounded-2xl backdrop-blur-xl border-2 border-primary/20 shadow-2xl">
+                  <form 
+                    onSubmit={handleSubmit} 
+                    className="space-y-8"
+                    onTouchStart={(e) => e.stopPropagation()}
+                    onTouchMove={(e) => e.stopPropagation()}
                   >
-                    <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-bold">
-                      Send Your Info
-                    </span>
-                  </Button>
-                </form>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-2 animate-fade-in" onDoubleClick={() => setFormData({ ...formData, name: "" })}>
+                        <Label htmlFor="name" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Name *</Label>
+                        <Input
+                          id="name"
+                          name="name"
+                          value={formData.name}
+                          onChange={handleChange}
+                          placeholder=""
+                          required
+                          noMobileCaps
+                          autoComplete="name"
+                          inputMode="text"
+                          className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-xl md:!text-base touch-manipulation w-full !leading-tight !py-3"
+                        />
+                      </div>
+                      <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.1s' }} onDoubleClick={() => setFormData({ ...formData, email: "" })}>
+                        <Label htmlFor="email" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Email *</Label>
+                        <Input
+                          id="email"
+                          name="email"
+                          type="email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          placeholder=""
+                          required
+                          noMobileCaps
+                          autoComplete="email"
+                          inputMode="email"
+                          className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-xl md:!text-base touch-manipulation w-full !leading-tight !py-3"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+                      <Label htmlFor="country" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Country</Label>
+                      <Select
+                        value={formData.country}
+                        onValueChange={(value) => handleSelectChange("country", value)}
+                      >
+                        <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-sm [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
+                          <SelectValue placeholder="Select your country" className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-background border-2 z-[100]">
+                          {COUNTRIES.map((country) => (
+                            <SelectItem
+                              key={country}
+                              value={country}
+                              className="text-base cursor-pointer hover:bg-primary/10"
+                            >
+                              {country}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+                      <Label htmlFor="polishAncestor" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Polish Ancestor</Label>
+                      <Select
+                        value={formData.polishAncestor}
+                        onValueChange={(value) => handleSelectChange("polishAncestor", value)}
+                      >
+                        <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-sm [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
+                          <SelectValue placeholder="Select your Polish ancestor" className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-background border-2 z-[100]">
+                          <SelectItem value="mother" className="text-base cursor-pointer hover:bg-primary/10">Mother</SelectItem>
+                          <SelectItem value="father" className="text-base cursor-pointer hover:bg-primary/10">Father</SelectItem>
+                          <SelectItem value="grandmother" className="text-base cursor-pointer hover:bg-primary/10">Grandmother</SelectItem>
+                          <SelectItem value="grandfather" className="text-base cursor-pointer hover:bg-primary/10">Grandfather</SelectItem>
+                          <SelectItem value="great-grandmother" className="text-base cursor-pointer hover:bg-primary/10">Great-grandmother</SelectItem>
+                          <SelectItem value="great-grandfather" className="text-base cursor-pointer hover:bg-primary/10">Great-grandfather</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+                      <Label htmlFor="polishDocuments" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Polish Documents</Label>
+                      <Select
+                        value={formData.polishDocuments}
+                        onValueChange={(value) => handleSelectChange("polishDocuments", value)}
+                      >
+                        <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-sm [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
+                          <SelectValue placeholder="Select an option" className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-background border-2 z-[100]">
+                          <SelectItem value="have-documents" className="text-base cursor-pointer hover:bg-primary/10">I have some Polish documents of my family</SelectItem>
+                          <SelectItem value="no-documents" className="text-base cursor-pointer hover:bg-primary/10">I don't have any Polish documents</SelectItem>
+                          <SelectItem value="need-check" className="text-base cursor-pointer hover:bg-primary/10">I need to check</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <Button 
+                      type="submit" 
+                      size="lg"
+                      className="text-xl md:text-2xl font-bold px-12 py-6 md:px-20 h-24 md:h-20 rounded-lg !bg-blue-50/30 dark:!bg-blue-950/30 hover:!bg-blue-50/40 dark:hover:!bg-blue-950/40 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg transition-all backdrop-blur w-full"
+                    >
+                      <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-bold">
+                        Send Your Info
+                      </span>
+                    </Button>
+                  </form>
+                </div>
               </div>
 
               {/* Back Side - Thank You Message */}
