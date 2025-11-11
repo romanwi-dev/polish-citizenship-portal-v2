@@ -198,35 +198,35 @@ export default function IntakeForm() {
           <Tabs defaultValue="select" value={activeTab} onValueChange={handleTabChange} className="w-full">
             <div className="sticky top-0 z-50 pb-2 -mx-4 md:-mx-6">
               <TabsList ref={tabsListRef} className="w-full inline-flex gap-0.5 overflow-x-auto scrollbar-hide bg-transparent p-0 px-0 md:px-6">
-                <TabsTrigger value="select" className="flex-shrink-0 md:flex-1 scroll-snap-align-start h-12 md:h-12">
+                <TabsTrigger value="select" className="flex-shrink-0 w-[140px] scroll-snap-align-start h-12 md:h-12">
                   <span className="text-blue-600 dark:text-blue-400">Select</span>
                 </TabsTrigger>
-                <TabsTrigger value="questions" className="flex-shrink-0 md:flex-1 h-12 md:h-12">
+                <TabsTrigger value="questions" className="flex-shrink-0 w-[140px] h-12 md:h-12">
                   <span className="text-blue-600 dark:text-blue-400">Questions</span>
                 </TabsTrigger>
-                <TabsTrigger value="applicant" className="flex-shrink-0 md:flex-1 h-12 md:h-12">
+                <TabsTrigger value="applicant" className="flex-shrink-0 w-[140px] h-12 md:h-12">
                   <span className="text-blue-600 dark:text-blue-400">Applicant</span>
                 </TabsTrigger>
                 {formData?.applicant_marital_status === "Married" && (
-                  <TabsTrigger value="spouse" className="flex-shrink-0 md:flex-1 h-12 md:h-12">
+                  <TabsTrigger value="spouse" className="flex-shrink-0 w-[140px] h-12 md:h-12">
                     <span className="text-blue-600 dark:text-blue-400">Spouse</span>
                   </TabsTrigger>
                 )}
                 {formData?.minor_children_count > 0 && (
-                  <TabsTrigger value="children" className="flex-shrink-0 md:flex-1 h-12 md:h-12">
+                  <TabsTrigger value="children" className="flex-shrink-0 w-[140px] h-12 md:h-12">
                     <span className="text-blue-600 dark:text-blue-400">Children</span>
                   </TabsTrigger>
                 )}
-                <TabsTrigger value="passport" className="flex-shrink-0 md:flex-1 h-12 md:h-12">
+                <TabsTrigger value="passport" className="flex-shrink-0 w-[140px] h-12 md:h-12">
                   <span className="text-blue-600 dark:text-blue-400">Passport</span>
                 </TabsTrigger>
-                <TabsTrigger value="contact" className="flex-shrink-0 md:flex-1 h-12 md:h-12">
+                <TabsTrigger value="contact" className="flex-shrink-0 w-[140px] h-12 md:h-12">
                   <span className="text-blue-600 dark:text-blue-400">Contact</span>
                 </TabsTrigger>
-                <TabsTrigger value="address" className="flex-shrink-0 md:flex-1 h-12 md:h-12">
+                <TabsTrigger value="address" className="flex-shrink-0 w-[140px] h-12 md:h-12">
                   <span className="text-blue-600 dark:text-blue-400">Address</span>
                 </TabsTrigger>
-                <TabsTrigger value="notes" className="flex-shrink-0 md:flex-1 h-12 md:h-12">
+                <TabsTrigger value="notes" className="flex-shrink-0 w-[140px] h-12 md:h-12">
                   <span className="text-blue-600 dark:text-blue-400">Notes</span>
                 </TabsTrigger>
               </TabsList>
