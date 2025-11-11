@@ -147,7 +147,7 @@ const ContactFormWeb3 = () => {
                       value={formData.message}
                       onChange={handleChange}
                       placeholder=""
-                      className="min-h-[240px] border-2 hover-glow focus:shadow-lg transition-all resize-none bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs touch-manipulation"
+                      className="min-h-[240px] border-2 hover-glow focus:shadow-lg transition-all resize-none bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-base touch-manipulation"
                     />
                   </div>
 
