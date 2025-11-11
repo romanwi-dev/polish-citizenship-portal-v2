@@ -166,7 +166,7 @@ const ContactFormWeb3 = () => {
 
               {/* Back Side - Thank You Message */}
               <div 
-                className={`bg-[hsl(220,70%,20%)] p-4 md:p-12 rounded-lg w-full absolute top-0 left-0 flex flex-col items-center justify-center text-center min-h-[600px] ${isFlipped ? 'visible animate-fade-in' : 'invisible'}`}
+                className={`glass-card p-4 md:p-12 rounded-lg w-full absolute top-0 left-0 flex flex-col items-center justify-center text-center min-h-[600px] ${isFlipped ? 'visible animate-fade-in' : 'invisible'}`}
                 style={{ 
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden',
@@ -174,7 +174,7 @@ const ContactFormWeb3 = () => {
                 }}
               >
                 <div className="relative z-10 space-y-6">
-                  <p className="text-white text-2xl md:text-3xl">
+                  <p className="text-foreground text-2xl md:text-3xl font-semibold">
                     Thank you. We will get back to you shortly...
                   </p>
                   <Button
@@ -183,7 +183,7 @@ const ContactFormWeb3 = () => {
                       setFormData({ name: "", email: "", message: "" });
                     }}
                     variant="outline"
-                    className="bg-white/10 border-white/30 text-white hover:bg-white/20 hover:text-white"
+                    className="hover-glow"
                   >
                     Send Another Message
                   </Button>
