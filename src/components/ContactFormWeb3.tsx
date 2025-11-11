@@ -97,7 +97,7 @@ const ContactFormWeb3 = () => {
       </div>
       
       <div className="container px-4 mx-auto relative z-10">
-        <div className="text-center mb-20">
+        <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16">
             <Mail className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium">Connect With Us</span>
@@ -270,7 +270,7 @@ const ContactFormWeb3 = () => {
           </div>
 
           {/* Trust Indicators */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto mt-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto mt-4 mb-24">
             {[
               { 
                 icon: Zap, 
