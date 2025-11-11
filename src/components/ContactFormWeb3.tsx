@@ -120,7 +120,7 @@ const ContactFormWeb3 = () => {
                         placeholder=""
                         required
                         noMobileCaps
-                        className="!h-20 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg transition-all !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur text-xs touch-manipulation w-full"
+                        className="!h-20 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg transition-all !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-base md:!text-lg touch-manipulation w-full"
                       />
                     </div>
                     <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.1s' }} onDoubleClick={() => setFormData({ ...formData, email: "" })}>
@@ -134,7 +134,7 @@ const ContactFormWeb3 = () => {
                         placeholder=""
                         required
                         noMobileCaps
-                        className="!h-20 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg transition-all !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur text-xs touch-manipulation w-full"
+                        className="!h-20 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg transition-all !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-base md:!text-lg touch-manipulation w-full"
                       />
                     </div>
                   </div>
@@ -147,7 +147,7 @@ const ContactFormWeb3 = () => {
                       value={formData.message}
                       onChange={handleChange}
                       placeholder=""
-                      className="min-h-[240px] !border-2 !border-blue-900/30 hover-glow focus:shadow-lg transition-all resize-none !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur text-base touch-manipulation w-full"
+                      className="min-h-[240px] !border-2 !border-blue-900/30 hover-glow focus:shadow-lg transition-all resize-none !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-base md:!text-lg touch-manipulation w-full"
                     />
                   </div>
 
