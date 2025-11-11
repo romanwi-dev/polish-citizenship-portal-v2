@@ -236,7 +236,7 @@ const ContactFormWeb3 = () => {
 
               {/* Back Side - Thank You Message */}
               <div 
-                className={`glass-card p-4 md:p-12 rounded-lg w-full absolute inset-0 flex flex-col items-center justify-center text-center ${!isFlipped ? 'pointer-events-none' : 'pointer-events-auto'}`}
+                className={`w-full absolute inset-0 ${!isFlipped ? 'pointer-events-none' : 'pointer-events-auto'}`}
                 style={{ 
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden',
@@ -245,20 +245,22 @@ const ContactFormWeb3 = () => {
                   transition: 'opacity 0s 0.35s'
                 }}
               >
-                <div className="relative z-10 space-y-6">
-                  <p className="text-foreground text-2xl md:text-3xl font-semibold">
-                    Thank you. We will get back to you shortly...
-                  </p>
-                  <Button
-                    onClick={() => {
-                      setIsFlipped(false);
-                      setFormData({ name: "", email: "", country: "", polishAncestor: "", polishDocuments: "" });
-                    }}
-                    variant="outline"
-                    className="hover-glow"
-                  >
-                    Send Another Message
-                  </Button>
+                <div className="glass-card p-6 md:p-12 rounded-2xl backdrop-blur-xl border-2 border-primary/20 shadow-2xl min-h-[600px] flex flex-col items-center justify-center">
+                  <div className="relative z-10 space-y-6 text-center">
+                    <p className="text-foreground text-2xl md:text-3xl font-semibold">
+                      Thank you. We will get back to you shortly...
+                    </p>
+                    <Button
+                      onClick={() => {
+                        setIsFlipped(false);
+                        setFormData({ name: "", email: "", country: "", polishAncestor: "", polishDocuments: "" });
+                      }}
+                      variant="outline"
+                      className="hover-glow"
+                    >
+                      Send Another Message
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
