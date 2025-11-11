@@ -44,10 +44,33 @@ function ScrollToTop() {
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.8, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.8, y: 20 }}
-          transition={{ duration: 0.3 }}
+          initial={{ opacity: 0, scale: 0.5, y: 30, rotate: -180 }}
+          animate={{ 
+            opacity: 1, 
+            scale: 1, 
+            y: 0, 
+            rotate: 0,
+            transition: {
+              type: "spring",
+              stiffness: 260,
+              damping: 20
+            }
+          }}
+          exit={{ 
+            opacity: 0, 
+            scale: 0.5, 
+            y: 30, 
+            rotate: 180,
+            transition: {
+              duration: 0.2
+            }
+          }}
+          whileHover={{ 
+            scale: 1.15,
+            rotate: 5,
+            transition: { duration: 0.2 }
+          }}
+          whileTap={{ scale: 0.95 }}
           className="fixed bottom-8 right-8 z-50"
         >
           <Button
