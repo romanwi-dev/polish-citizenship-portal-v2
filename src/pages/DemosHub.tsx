@@ -34,6 +34,15 @@ const DemosHub = () => {
       features: ["Form Validation", "Multiple Layouts", "Responsive Design"]
     },
     {
+      id: "font-styles",
+      title: "Font & Content Styles",
+      description: "Compare different typography combinations and choose the perfect style for your content",
+      icon: FileText,
+      path: "/font-styles-demo",
+      gradient: "from-pink-500 to-rose-500",
+      features: ["Typography", "Font Pairing", "Readability"]
+    },
+    {
       id: "multi-step-wizard",
       title: "Multi-Step Form Wizard",
       description: "Interactive multi-step form with progress tracking and validation",

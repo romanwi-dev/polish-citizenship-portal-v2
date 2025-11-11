@@ -101,6 +101,7 @@ const EUCelebrationDemo = lazy(() => import("./pages/EUCelebrationDemo"));
 const DemosHub = lazy(() => import("./pages/DemosHub"));
 const MultiStepDemo = lazy(() => import("./pages/MultiStepDemo"));
 const DesignShowcase = lazy(() => import("./pages/DesignShowcase"));
+const FontStylesDemo = lazy(() => import("./pages/FontStylesDemo"));
 
 
 const queryClient = new QueryClient({
@@ -139,6 +140,11 @@ const App = () => (
             <Route path="/multi-step-demo" element={
               <Suspense fallback={<AdminLoader />}>
                 <MultiStepDemo />
+              </Suspense>
+            } />
+            <Route path="/font-styles-demo" element={
+              <Suspense fallback={<AdminLoader />}>
+                <FontStylesDemo />
               </Suspense>
             } />
             <Route path="/design-showcase" element={
