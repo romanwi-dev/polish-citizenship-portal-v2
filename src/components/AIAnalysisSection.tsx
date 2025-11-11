@@ -37,16 +37,18 @@ const FlippableAICard = ({
       >
         {/* Front */}
         <div 
-          className="absolute inset-0 glass-card p-8 rounded-lg hover-glow"
+          className="absolute inset-0 glass-card p-8 rounded-lg hover-glow flex items-center justify-center"
           style={{ backfaceVisibility: 'hidden' }}
         >
-          <div className={`w-14 h-14 mb-4 rounded-full bg-gradient-to-br ${gradient} flex items-center justify-center`}>
-            <Icon className={`w-7 h-7 ${textColor}`} />
+          <div className="text-center flex flex-col items-center justify-center">
+            <div className={`w-14 h-14 mb-4 rounded-full bg-gradient-to-br ${gradient} flex items-center justify-center`}>
+              <Icon className={`w-7 h-7 ${textColor}`} />
+            </div>
+            <h3 className="text-xl font-bold mb-3 font-heading">{title}</h3>
+            <p className="text-base text-muted-foreground leading-relaxed font-body font-light text-center">
+              {description}
+            </p>
           </div>
-          <h3 className="text-xl font-bold mb-3">{title}</h3>
-          <p className="text-muted-foreground">
-            {description}
-          </p>
         </div>
 
         {/* Back */}
@@ -83,21 +85,17 @@ const AIAnalysisSection = () => {
             
             <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-14">
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                AI Deep Case Analyzes
+                Deep Detailed Case Analysis
               </span>
             </h2>
             
             <div className="mb-16 max-w-6xl mx-auto px-2 md:px-0">
-              <p className="text-lg md:text-lg text-muted-foreground leading-relaxed mb-6">
-                We are now able to 'predict' the probability of success and the time of the procedure in advance in each case of Polish citizenship by descent with HIGH ACCURACY based on the cases we processed over the last twenty years, with AI analyzes and human-expert knowledge. This has revolutionized our approach, allowing us to offer personalized guidance and support to our clients right from the initial consultation. By leveraging this combination of AI and expert insights, we can identify potential challenges and opportunities unique to each case, ensuring a more streamlined and efficient application process.
+              <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-6 font-body font-light tracking-normal">
+                Using AI technology combined with 20+ years of case data, we predict your success probability and timeline with exceptional accuracy—before you even start. This means no surprises, realistic expectations, and a clear roadmap from day one.
               </p>
               
-              <p className="text-lg md:text-lg text-muted-foreground leading-relaxed mb-6">
-                Our clients benefit from reduced uncertainty and increased confidence, knowing that their application is backed by a robust predictive framework. Furthermore, our comprehensive database, enriched with years of historical data, serves as a powerful resource for refining our predictive models. This continuous learning process not only enhances the accuracy of our predictions but also enables us to adapt to changing legal landscapes and procedural requirements.
-              </p>
-              
-              <p className="text-lg md:text-lg text-muted-foreground leading-relaxed">
-                In essence, the integration of AI technology with our deep domain expertise, and professional honesty deeply implemented in our core politics as legal advisers, marks a significant leap forward in our ability to assist individuals in obtaining Polish citizenship by descent. Our commitment to innovation ensures that we remain at the forefront of our field, providing exceptional service and maximizing the likelihood of successful outcomes for our clients.
+              <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal">
+                Our advanced analysis identifies potential challenges early, giving you confidence and clarity throughout your citizenship journey. We're committed to honest, transparent guidance backed by data and decades of expertise.
               </p>
             </div>
           </div>
@@ -106,8 +104,8 @@ const AIAnalysisSection = () => {
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-16">
             <FlippableAICard 
               icon={TrendingUp}
-              title="Success Prediction"
-              description="Analyze case strength based on family history, documents, and legal precedents for accurate probability assessment."
+              title="Success Probability"
+              description="Know your chances upfront. Our AI analyzes your family history and documents to predict your case outcome with proven accuracy."
               gradient="from-primary/20 to-secondary/20"
               textColor="text-primary"
               index={0}
@@ -115,8 +113,8 @@ const AIAnalysisSection = () => {
 
             <FlippableAICard 
               icon={Clock}
-              title="Timeline & Cost Estimation"
-              description="Predict processing time and total costs based on complexity, document availability, and current processing speeds."
+              title="Timeline & Costs"
+              description="Get realistic timelines and transparent pricing from the start. No hidden fees, no surprises—just honest expectations based on your case."
               gradient="from-secondary/20 to-accent/20"
               textColor="text-secondary"
               index={1}
@@ -124,8 +122,8 @@ const AIAnalysisSection = () => {
 
             <FlippableAICard 
               icon={AlertTriangle}
-              title="Risk Assessment"
-              description="Identify potential obstacles, document gaps, and legal challenges before starting the process."
+              title="Early Risk Detection"
+              description="We spot potential problems before they delay your case—missing documents, legal complications, or gaps in your family tree."
               gradient="from-accent/20 to-primary/20"
               textColor="text-accent"
               index={2}

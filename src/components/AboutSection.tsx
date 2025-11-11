@@ -40,12 +40,12 @@ const FlippableAboutCard = ({
           className="absolute inset-0 glass-card p-8 rounded-lg hover-glow flex items-center justify-center"
           style={{ backfaceVisibility: 'hidden' }}
         >
-          <div className="text-center">
+          <div className="text-center flex flex-col items-center justify-center">
             <div className={`w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br ${gradient} flex items-center justify-center`}>
               <Icon className={`w-8 h-8 ${textColor}`} />
             </div>
-            <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-3">{title}</h3>
-            <p className="text-sm md:text-base text-muted-foreground">
+            <h3 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-4 font-heading">{title}</h3>
+            <p className="text-base md:text-lg text-muted-foreground leading-relaxed font-body font-light text-center">
               {description}
             </p>
           </div>
@@ -84,17 +84,17 @@ const AboutSection = () => {
           
           <h2 className="text-4xl md:text-5xl font-heading font-black mb-14 tracking-tight animate-scale-in">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              The Most Comprehensive Online Legal Service for Polish Citizenship and Polish European Passport
+              Your Gateway to Polish & EU Citizenship
             </span>
           </h2>
           
           <div className="mb-16 max-w-6xl mx-auto px-2 md:px-0">
-            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-6 text-left font-body font-light tracking-normal">
-              Since 2003, we have been advising people of Polish ancestry in confirming Polish citizenship by descent, obtaining a European Polish passport, and navigating all related matters. For almost 20 years, we have been working to help people of Polish descent from various countries in receiving Polish citizenship and a Polish European passport. Our excellent legal assistance is provided by independent experts in the field of Polish citizenship, lawyers of various specializations, experienced representatives, and documents researchers, as well as the use of advice and consultations provided by the staff of the relevant Polish government offices.
+            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-6 font-body font-light tracking-normal">
+              Since 2003, we've helped thousands of people with Polish ancestry reclaim their heritage and obtain Polish citizenship by descent. Our expert team combines legal expertise, document research, and government consultation to guide you through every step of your journey to becoming an EU citizen.
             </p>
             
-            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed text-left font-body font-light tracking-normal">
-              Embark on your journey to obtaining Polish citizenship and enjoy the benefits of a European Polish passport. Trust us to provide you with the guidance, expertise, and support you need to navigate the complexities of the application process. Start your application today and make your Polish heritage a permanent part of your identity.
+            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal">
+              Transform your Polish heritage into reality. Get expert guidance, transparent pricing, and proven results on your path to Polish citizenship and an EU passport.
             </p>
           </div>
         </div>
@@ -103,8 +103,8 @@ const AboutSection = () => {
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-16">
           <FlippableAboutCard 
             icon={Users}
-            title="Over 20 Million People of Polish Descent"
-            description="There are more than 20 million people of Polish descent that live outside of Poland today, which itself has a population of about 38.5 million. This means that more than 1/3 of Poles and people of Polish descent actually live outside of the country. For many generations of European unrest, people have been emigrating outside of Poland, especially in the 20th century."
+            title="20M+ Poles Worldwide"
+            description="Over 20 million people of Polish descent live outside Poland—that's more than half of Poland's population. Your Polish heritage could be your gateway to EU citizenship."
             gradient="from-primary/20 to-secondary/20"
             textColor="text-primary"
             index={0}
@@ -112,8 +112,8 @@ const AboutSection = () => {
 
           <FlippableAboutCard 
             icon={Globe}
-            title="Poland - EU Member Since 2004"
-            description="Since 1989, however, the quality of life has changed for the better in Poland. Poland has been an EU member since 2004 and is one of its biggest countries. We support the idea of a united Europe, and being a European citizen is a widely held dream. Many people of Polish origin can now legally confirm their Polish citizenship by descent and obtain the Polish European passport as a gateway to the EU."
+            title="Full EU Access"
+            description="Poland joined the EU in 2004. Polish citizenship means you can live, work, and study freely in all 27 EU countries—from Paris to Berlin to Rome."
             gradient="from-secondary/20 to-accent/20"
             textColor="text-secondary"
             index={1}
@@ -121,8 +121,8 @@ const AboutSection = () => {
 
           <FlippableAboutCard 
             icon={Shield}
-            title="The Benefits of Polish European Citizenship"
-            description="The education system in Europe is outstanding and offers the best elementary schools, top high schools, and some of the world's best universities. The latest medical technology and the best pharmaceutical developments ensure that your health is in good hands in Europe. With a Polish European passport you can freely move, travel, live, and work in any of the 28 member states of the EU."
+            title="Lifetime Benefits"
+            description="Access world-class European education, healthcare, and career opportunities. Your Polish passport opens doors across the entire European Union for you and your family."
             gradient="from-accent/20 to-primary/20"
             textColor="text-accent"
             index={2}
