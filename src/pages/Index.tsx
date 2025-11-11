@@ -87,9 +87,6 @@ const Index = () => {
         <Navigation />
         <HeroWeb3 />
         <AboutSection />
-        
-        <SkylineDivider imageSrc={warsawSkyline} alt="Warsaw skyline" />
-        
         <AIAnalysisSection />
         
         <SkylineDivider imageSrc={pragueSkyline} alt="Prague skyline" />
