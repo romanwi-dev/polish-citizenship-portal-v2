@@ -107,13 +107,12 @@ const ContactFormWeb3 = () => {
         </div>
 
         <div className="max-w-full md:max-w-[1400px] mx-auto px-0 md:px-2">
-          <div className="relative w-full" style={{ perspective: '1000px' }}>
+          <div className="relative w-full min-h-[600px]" style={{ perspective: '1000px' }}>
             <div 
-              className="relative w-full transition-transform duration-700"
+              className="relative w-full h-full transition-transform duration-700"
               style={{ 
                 transformStyle: 'preserve-3d',
-                transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
-                minHeight: '600px'
+                transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
               }}
             >
               {/* Front Side - Form */}
