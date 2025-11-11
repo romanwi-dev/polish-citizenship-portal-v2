@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Sparkles from "lucide-react/dist/esm/icons/sparkles";
-import warsawHero from "@/assets/warsaw-hero-updated.png";
+import warsawHero from "@/assets/warsaw-demos/warsaw-9.png";
 import { useState } from "react";
 
 const HeroWeb3 = () => {
@@ -51,7 +51,7 @@ const HeroWeb3 = () => {
       <div className="w-full mb-12 md:mb-20">
         <img 
           src={warsawHero} 
-          alt="Warsaw cityscape with Palace of Culture and Science" 
+          alt="Cultural Hub - Theater with interactive light displays" 
           className="w-full h-auto opacity-60" 
           style={{
             filter: 'brightness(0.7)'
