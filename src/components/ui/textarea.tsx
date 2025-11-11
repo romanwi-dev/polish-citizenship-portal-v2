@@ -92,10 +92,21 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({ classNa
         scheme.border,
         className,
       )}
-      style={glowStyle}
+      style={{
+        ...glowStyle,
+        touchAction: 'manipulation',
+        WebkitUserSelect: 'text',
+        userSelect: 'text',
+        WebkitTouchCallout: 'none',
+      }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onFocus={() => setIsFocused(true)}
+      onFocus={(e) => {
+        setIsFocused(true);
+        // Prevent scroll on mobile when focusing
+        e.preventDefault();
+        e.target.focus({ preventScroll: true });
+      }}
       onBlur={() => setIsFocused(false)}
       ref={ref}
       {...props}

@@ -568,7 +568,12 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
               rows={5}
               placeholder="Add any additional notes about this case..."
-              className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-background/50 text-base resize-none"
+              className="border-2 border-border/50 hover:border-primary/50 focus:border-primary transition-colors bg-background/50 text-base resize-none touch-auto"
+              style={{ touchAction: 'auto', WebkitUserSelect: 'text', userSelect: 'text' }}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="sentences"
+              spellCheck={true}
             />
           </div>
 
