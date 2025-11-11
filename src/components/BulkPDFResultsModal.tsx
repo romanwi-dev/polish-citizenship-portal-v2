@@ -158,30 +158,30 @@ export function BulkPDFResultsModal({
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="w-full h-full md:max-w-5xl md:max-h-[85vh] md:h-auto overflow-hidden flex flex-col p-4 md:p-6">
         {/* Results List */}
-        <div className="space-y-2 md:space-y-3 mt-2 md:mt-6 overflow-y-auto flex-1">
+        <div className="space-y-3 md:space-y-3 mt-2 md:mt-6 overflow-y-auto flex-1">
           {results.map((result, index) => (
             <div
               key={index}
-              className={`p-2 md:p-4 rounded-lg border-2 ${
+              className={`p-4 md:p-4 rounded-lg border-2 ${
                 result.success
                   ? 'bg-green-500/10 border-green-500/30'
                   : 'bg-red-500/10 border-red-500/30'
               }`}
             >
-              <div className="flex items-start justify-between gap-2 md:gap-4">
-                <div className="flex items-start gap-2 md:gap-3 flex-1 min-w-0">
+              <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3 md:gap-4">
+                <div className="flex items-start gap-3 md:gap-3 flex-1 min-w-0">
                   {result.success ? (
-                    <CheckCircle2 className="h-4 w-4 md:h-5 md:w-5 text-green-400 mt-0.5 flex-shrink-0" />
+                    <CheckCircle2 className="h-5 w-5 md:h-5 md:w-5 text-green-400 mt-0.5 flex-shrink-0" />
                   ) : (
-                    <XCircle className="h-4 w-4 md:h-5 md:w-5 text-red-400 mt-0.5 flex-shrink-0" />
+                    <XCircle className="h-5 w-5 md:h-5 md:w-5 text-red-400 mt-0.5 flex-shrink-0" />
                   )}
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-sm md:text-base truncate">
+                    <h3 className="font-semibold text-base md:text-base">
                       {TEMPLATE_NAMES[result.templateType] || result.templateType}
                     </h3>
                     
                     {result.success ? (
-                      <div className="text-xs md:text-sm text-muted-foreground mt-0.5 md:mt-1">
+                      <div className="text-sm md:text-sm text-muted-foreground mt-1 md:mt-1">
                         {result.fieldsFilledCount && result.totalFields && (
                           <span>
                             {result.fieldsFilledCount}/{result.totalFields} fields filled
@@ -190,7 +190,7 @@ export function BulkPDFResultsModal({
                         )}
                       </div>
                     ) : (
-                      <div className="text-xs md:text-sm text-red-300 mt-0.5 md:mt-1 truncate">
+                      <div className="text-sm md:text-sm text-red-300 mt-1 md:mt-1">
                         {result.error || 'Generation failed'}
                       </div>
                     )}
@@ -198,33 +198,33 @@ export function BulkPDFResultsModal({
                 </div>
 
                 {result.success && result.url && (
-                  <div className="flex gap-1 md:gap-2 flex-shrink-0">
+                  <div className="flex gap-2 md:gap-2 flex-shrink-0">
                     <Button
                       onClick={() => handlePreview(result.url!, result.templateType)}
                       size="sm"
                       variant="outline"
-                      className="h-7 md:h-9 px-2 md:px-3"
+                      className="h-10 md:h-9 px-4 md:px-3 flex-1 md:flex-initial"
                     >
-                      <Eye className="h-3 w-3 md:h-4 md:w-4 md:mr-2" />
-                      <span className="hidden md:inline">Preview</span>
+                      <Eye className="h-4 w-4 md:h-4 md:w-4 md:mr-2" />
+                      <span className="md:inline">View</span>
                     </Button>
                     <Button
                       onClick={() => handleOptimize(result.url!, result.templateType)}
                       size="sm"
                       variant="secondary"
-                      className="h-7 md:h-9 px-2 md:px-3"
+                      className="h-10 md:h-9 px-4 md:px-3 flex-1 md:flex-initial"
                       disabled
                     >
-                      <Sparkles className="h-3 w-3 md:h-4 md:w-4 md:mr-2" />
-                      <span className="hidden md:inline">Optimize</span>
+                      <Sparkles className="h-4 w-4 md:h-4 md:w-4 md:mr-2" />
+                      <span className="md:inline">Edit</span>
                     </Button>
                     <Button
                       onClick={() => onDownload(result.url!, result.templateType)}
                       size="sm"
-                      className="h-7 md:h-9 px-2 md:px-3"
+                      className="h-10 md:h-9 px-4 md:px-3 flex-1 md:flex-initial"
                     >
-                      <Download className="h-3 w-3 md:h-4 md:w-4 md:mr-2" />
-                      <span className="hidden md:inline">Download</span>
+                      <Download className="h-4 w-4 md:h-4 md:w-4 md:mr-2" />
+                      <span className="md:inline">Save</span>
                     </Button>
                   </div>
                 )}
@@ -234,15 +234,15 @@ export function BulkPDFResultsModal({
         </div>
 
         {/* Bottom Action Buttons */}
-        <div className="flex justify-center gap-2 md:gap-4 pt-3 md:pt-4 flex-shrink-0">
-          <Button onClick={onClose} variant="outline" size="sm" className="md:h-11 h-8 px-6 md:px-12 flex-1 md:flex-initial md:w-[140px]">
+        <div className="flex flex-col md:flex-row justify-center gap-2 md:gap-4 pt-4 md:pt-4 flex-shrink-0">
+          <Button onClick={onClose} variant="outline" size="sm" className="h-11 md:h-11 px-6 md:px-12 w-full md:w-[140px]">
             Close
           </Button>
           <Button 
             onClick={handlePreviewAll} 
             variant="outline" 
             size="sm"
-            className="md:h-11 h-8 px-6 md:px-12 flex-1 md:flex-initial md:w-[140px]"
+            className="h-11 md:h-11 px-6 md:px-12 w-full md:w-[140px]"
             disabled={successfulResults.length === 0}
           >
             Preview
@@ -250,7 +250,7 @@ export function BulkPDFResultsModal({
           <Button 
             onClick={handleDownloadAll}
             size="sm"
-            className="md:h-11 h-8 px-6 md:px-12 flex-1 md:flex-initial md:w-[140px]"
+            className="h-11 md:h-11 px-6 md:px-12 w-full md:w-[140px]"
             disabled={successfulResults.length === 0}
           >
             Download
@@ -259,7 +259,7 @@ export function BulkPDFResultsModal({
             onClick={handlePrintAll}
             size="sm"
             variant="secondary"
-            className="md:h-11 h-8 px-6 md:px-12 flex-1 md:flex-initial md:w-[140px]"
+            className="h-11 md:h-11 px-6 md:px-12 w-full md:w-[140px]"
             disabled={successfulResults.length === 0}
           >
             <Printer className="h-4 w-4 mr-2" />
