@@ -26,10 +26,10 @@ export function useFormAutoSave<T>({ formData, onSave, delay = 3000, enabled = t
     }
 
     // Set new timeout
-    timeoutRef.current = setTimeout(() => {
-      onSave(formData);
+    timeoutRef.current = setTimeout(async () => {
+      await onSave(formData);
       previousDataRef.current = formData;
-      toast.success("Auto-saved", { duration: 1500 });
+      // Removed toast notification to make it truly silent
     }, delay);
 
     // Cleanup
