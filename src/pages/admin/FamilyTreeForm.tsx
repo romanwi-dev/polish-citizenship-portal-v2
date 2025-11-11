@@ -533,7 +533,7 @@ export default function FamilyTreeForm() {
                   </TabsTrigger>
                   {(formData.pgf_is_polish || formData.mgf_is_polish) && (
                     <TabsTrigger value="great-grandparents" className="flex-shrink-0 w-44 h-12 md:h-12">
-                      <span className="text-gray-600 dark:text-gray-400 text-xs leading-tight text-center">Great Grandparents</span>
+                      <span className="text-gray-600 dark:text-gray-400 leading-tight text-center">Great Grandparents</span>
                     </TabsTrigger>
                   )}
                 </TabsList>
