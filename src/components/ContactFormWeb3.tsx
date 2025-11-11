@@ -168,7 +168,7 @@ const ContactFormWeb3 = () => {
                       value={formData.country}
                       onValueChange={(value) => handleSelectChange("country", value)}
                     >
-                      <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight">
+                      <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-sm [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
                         <SelectValue placeholder="Select your country" className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-[100]">
@@ -191,7 +191,7 @@ const ContactFormWeb3 = () => {
                       value={formData.polishAncestor}
                       onValueChange={(value) => handleSelectChange("polishAncestor", value)}
                     >
-                      <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight">
+                      <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-sm [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
                         <SelectValue placeholder="Select your Polish ancestor" className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-[100]">
@@ -211,7 +211,7 @@ const ContactFormWeb3 = () => {
                       value={formData.polishDocuments}
                       onValueChange={(value) => handleSelectChange("polishDocuments", value)}
                     >
-                      <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight">
+                      <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-sm [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
                         <SelectValue placeholder="Select an option" className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-[100]">
