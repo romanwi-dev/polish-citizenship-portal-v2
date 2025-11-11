@@ -246,7 +246,7 @@ const ContactFormWeb3 = () => {
                       <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
                         {stat.value}
                       </div>
-                      <div className="text-sm md:text-base font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{stat.label}</div>
+                      <div className="text-lg md:text-xl font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{stat.label}</div>
                     </div>
                     <div className="text-xs text-primary/50 text-center mt-auto">Click for details</div>
                   </div>
@@ -260,8 +260,8 @@ const ContactFormWeb3 = () => {
                       transform: 'rotateY(180deg)'
                     }}
                   >
-                    <div className="text-base text-primary font-bold mb-2">{stat.label}</div>
-                    <p className="text-xs text-muted-foreground/70 leading-snug">
+                    <div className="text-xl md:text-2xl text-primary font-bold mb-3">{stat.label}</div>
+                    <p className="text-base md:text-lg text-muted-foreground/70 leading-relaxed">
                       {stat.details}
                     </p>
                   </div>
