@@ -82,18 +82,18 @@ const AboutSection = () => {
             <span className="text-sm font-medium">Legal Expertise Since 2003</span>
           </div>
           
-          <h2 className="text-4xl md:text-5xl font-heading font-black mb-14 tracking-tight animate-scale-in">
+          <h2 className="text-4xl md:text-5xl font-body font-medium mb-14 tracking-wide animate-scale-in">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               The Most Comprehensive Online Legal Service for Polish Citizenship and Polish European Passport
             </span>
           </h2>
           
           <div className="mb-16 max-w-6xl mx-auto px-2 md:px-0">
-            <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-6 text-justify">
+            <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-6 text-left font-body font-normal tracking-normal">
               Since 2003, we have been advising people of Polish ancestry in confirming Polish citizenship by descent, obtaining a European Polish passport, and navigating all related matters. For almost 20 years, we have been working to help people of Polish descent from various countries in receiving Polish citizenship and a Polish European passport. Our excellent legal assistance is provided by independent experts in the field of Polish citizenship, lawyers of various specializations, experienced representatives, and documents researchers, as well as the use of advice and consultations provided by the staff of the relevant Polish government offices.
             </p>
             
-            <p className="text-base md:text-lg text-muted-foreground leading-relaxed text-justify">
+            <p className="text-base md:text-lg text-muted-foreground leading-relaxed text-left font-body font-normal tracking-normal">
               Embark on your journey to obtaining Polish citizenship and enjoy the benefits of a European Polish passport. Trust us to provide you with the guidance, expertise, and support you need to navigate the complexities of the application process. Start your application today and make your Polish heritage a permanent part of your identity.
             </p>
           </div>
