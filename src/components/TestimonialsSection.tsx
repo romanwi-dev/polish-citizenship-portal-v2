@@ -67,7 +67,7 @@ export default function TestimonialsSection() {
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-14">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              Success Stories
+              True Honest Testimonials From Our Real Clients
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
