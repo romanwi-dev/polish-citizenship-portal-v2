@@ -139,7 +139,7 @@ const ContactFormWeb3 = () => {
                         placeholder=""
                         required
                         noMobileCaps
-                        className="!h-20 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-2xl md:!text-lg touch-manipulation w-full !leading-tight !py-5"
+                        className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-xl md:!text-base touch-manipulation w-full !leading-tight !py-3"
                       />
                     </div>
                     <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.1s' }} onDoubleClick={() => setFormData({ ...formData, email: "" })}>
@@ -153,7 +153,7 @@ const ContactFormWeb3 = () => {
                         placeholder=""
                         required
                         noMobileCaps
-                        className="!h-20 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-2xl md:!text-lg touch-manipulation w-full !leading-tight !py-5"
+                        className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-xl md:!text-base touch-manipulation w-full !leading-tight !py-3"
                       />
                     </div>
                   </div>
@@ -164,8 +164,8 @@ const ContactFormWeb3 = () => {
                       value={formData.country}
                       onValueChange={(value) => handleSelectChange("country", value)}
                     >
-                      <SelectTrigger className="!h-20 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-2xl md:!text-lg touch-manipulation w-full !leading-tight">
-                        <SelectValue placeholder="Select your country" />
+                      <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight">
+                        <SelectValue placeholder="Select your country" className="!text-base bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-[100]">
                         {COUNTRIES.map((country) => (
@@ -187,8 +187,8 @@ const ContactFormWeb3 = () => {
                       value={formData.polishAncestor}
                       onValueChange={(value) => handleSelectChange("polishAncestor", value)}
                     >
-                      <SelectTrigger className="!h-20 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-2xl md:!text-lg touch-manipulation w-full !leading-tight">
-                        <SelectValue placeholder="Select your Polish ancestor" />
+                      <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight">
+                        <SelectValue placeholder="Select your Polish ancestor" className="!text-base bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-[100]">
                         <SelectItem value="mother" className="text-base cursor-pointer hover:bg-primary/10">Mother</SelectItem>
@@ -207,8 +207,8 @@ const ContactFormWeb3 = () => {
                       value={formData.polishDocuments}
                       onValueChange={(value) => handleSelectChange("polishDocuments", value)}
                     >
-                      <SelectTrigger className="!h-20 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-2xl md:!text-lg touch-manipulation w-full !leading-tight">
-                        <SelectValue placeholder="Select an option" />
+                      <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight">
+                        <SelectValue placeholder="Select an option" className="!text-base bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-[100]">
                         <SelectItem value="have-documents" className="text-base cursor-pointer hover:bg-primary/10">I have some Polish documents of my family</SelectItem>
@@ -259,7 +259,7 @@ const ContactFormWeb3 = () => {
           </div>
 
           {/* Trust Indicators */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mt-[500px] md:mt-32 lg:mt-24">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mt-16 md:mt-16 lg:mt-16">
             {[
               { 
                 icon: Zap, 
