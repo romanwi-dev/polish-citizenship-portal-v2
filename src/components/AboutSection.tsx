@@ -37,16 +37,18 @@ const FlippableAboutCard = ({
       >
         {/* Front */}
         <div 
-          className="absolute inset-0 glass-card p-8 rounded-lg hover-glow text-center"
+          className="absolute inset-0 glass-card p-8 rounded-lg hover-glow flex items-center justify-center"
           style={{ backfaceVisibility: 'hidden' }}
         >
-          <div className={`w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br ${gradient} flex items-center justify-center`}>
-            <Icon className={`w-8 h-8 ${textColor}`} />
+          <div className="text-center">
+            <div className={`w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br ${gradient} flex items-center justify-center`}>
+              <Icon className={`w-8 h-8 ${textColor}`} />
+            </div>
+            <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-3">{title}</h3>
+            <p className="text-sm md:text-base text-muted-foreground">
+              {description}
+            </p>
           </div>
-          <h3 className="text-xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-3">{title}</h3>
-          <p className="text-muted-foreground">
-            {description}
-          </p>
         </div>
 
         {/* Back */}
