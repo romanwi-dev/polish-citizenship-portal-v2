@@ -214,7 +214,7 @@ export default function CivilRegistryForm() {
           initial={{ opacity: 0, y: -50 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ duration: 0.8 }}
-          className="mb-0"
+          className="mb-[-8px]"
         >
           <h2 className="text-5xl md:text-8xl font-heading font-black mb-2 md:mb-3 tracking-tight text-center">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
@@ -296,7 +296,7 @@ export default function CivilRegistryForm() {
         }}>
             <div className="px-4 py-6 md:p-10">
               <div className="border-b border-emerald-200/20 pb-6">
-                <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-400 bg-clip-text text-transparent">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-400 bg-clip-text text-transparent">
                   Applicant Information / Dane wnioskodawcy
                 </h2>
               </div>
@@ -354,7 +354,7 @@ export default function CivilRegistryForm() {
         }}>
             <div className="px-4 py-6 md:p-10">
               <div className="border-b border-emerald-200/20 pb-6">
-                <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-400 bg-clip-text text-transparent">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-400 bg-clip-text text-transparent">
                   Document to Register / Dokument do rejestracji
                 </h2>
               </div>
@@ -443,7 +443,7 @@ export default function CivilRegistryForm() {
           delay: 0.2
         }} className="mt-10 pb-32 md:pb-8">
             <div className="border-b border-border/50 pb-6">
-              <h2 className="text-4xl md:text-5xl font-heading font-bold bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-400 bg-clip-text text-transparent">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-400 bg-clip-text text-transparent">
                 Additional notes / Dodatkowe informacje
               </h2>
             </div>
