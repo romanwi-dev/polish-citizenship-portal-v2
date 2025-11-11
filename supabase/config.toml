@@ -296,3 +296,6 @@ verify_jwt = true
 
 [functions.link-dropbox-documents]
 verify_jwt = true
+
+[functions.run-phase-a-editing-panel]
+verify_jwt = false
