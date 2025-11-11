@@ -169,7 +169,7 @@ const ContactFormWeb3 = () => {
                       onValueChange={(value) => handleSelectChange("country", value)}
                     >
                       <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight">
-                        <SelectValue placeholder="Select your country" className="!text-base bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
+                        <SelectValue placeholder="Select your country" className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-[100]">
                         {COUNTRIES.map((country) => (
@@ -192,7 +192,7 @@ const ContactFormWeb3 = () => {
                       onValueChange={(value) => handleSelectChange("polishAncestor", value)}
                     >
                       <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight">
-                        <SelectValue placeholder="Select your Polish ancestor" className="!text-base bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
+                        <SelectValue placeholder="Select your Polish ancestor" className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-[100]">
                         <SelectItem value="mother" className="text-base cursor-pointer hover:bg-primary/10">Mother</SelectItem>
@@ -212,7 +212,7 @@ const ContactFormWeb3 = () => {
                       onValueChange={(value) => handleSelectChange("polishDocuments", value)}
                     >
                       <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight">
-                        <SelectValue placeholder="Select an option" className="!text-base bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
+                        <SelectValue placeholder="Select an option" className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-2 z-[100]">
                         <SelectItem value="have-documents" className="text-base cursor-pointer hover:bg-primary/10">I have some Polish documents of my family</SelectItem>
