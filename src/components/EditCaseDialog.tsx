@@ -182,11 +182,8 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
 
     const countryValue = showOtherCountry ? otherCountry : formData.country;
     
-    // Validate processing_mode - must not be empty
-    if (!formData.processing_mode || formData.processing_mode.trim() === '') {
-      toast.error("Processing mode cannot be empty");
-      return;
-    }
+    // Validate processing_mode - ensure it has a valid value
+    const processingModeValue = formData.processing_mode || 'standard';
     
     let client_photo_url = caseData.client_photo_url;
 
@@ -254,8 +251,8 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
           client_code: formData.client_code || null,
           country: countryValue,
           status: formData.status as any,
-          processing_mode: formData.processing_mode as any,
-          push_scheme: formData.push_scheme === "NONE" ? null : formData.push_scheme,
+          processing_mode: processingModeValue as any,
+          push_scheme: (formData.push_scheme && formData.push_scheme !== "NONE") ? formData.push_scheme : null,
           payment_status: formData.payment_status as any,
           is_vip: formData.is_vip,
           notes: formData.notes,
@@ -432,7 +429,10 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-3">
               <Label htmlFor="processing_mode" className="text-base font-semibold text-foreground">Mode</Label>
-              <Select value={formData.processing_mode} onValueChange={(value) => setFormData({ ...formData, processing_mode: value })}>
+              <Select 
+                value={formData.processing_mode || "standard"} 
+                onValueChange={(value) => setFormData({ ...formData, processing_mode: value })}
+              >
                 <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-12">
                   <SelectValue placeholder="Select processing mode" />
                 </SelectTrigger>
@@ -446,7 +446,10 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
             </div>
             <div className="space-y-3">
               <Label htmlFor="push_scheme" className="text-base font-semibold text-foreground">Schemes</Label>
-              <Select value={formData.push_scheme || "NONE"} onValueChange={(value) => setFormData({ ...formData, push_scheme: value === "NONE" ? null : value })}>
+              <Select 
+                value={formData.push_scheme || "NONE"} 
+                onValueChange={(value) => setFormData({ ...formData, push_scheme: value })}
+              >
                 <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-12">
                   <SelectValue placeholder="Select push scheme" />
                 </SelectTrigger>
