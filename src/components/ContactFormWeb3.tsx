@@ -86,7 +86,7 @@ const ContactFormWeb3 = () => {
   };
 
   return (
-    <section id="contact" className="py-24 relative overflow-hidden overflow-x-hidden touch-none"  onTouchStart={(e) => { if (e.target === e.currentTarget) e.preventDefault(); }}>
+    <section id="contact" className="py-24 relative overflow-hidden overflow-x-hidden">
       
       {/* Celebration Background - Stars, Sparkles & Fireworks */}
       <div className="absolute inset-0 z-0">
@@ -107,7 +107,7 @@ const ContactFormWeb3 = () => {
         </div>
 
         <div className="max-w-full md:max-w-[1400px] mx-auto px-0 md:px-2">
-          <div className="relative w-full min-h-[600px] touch-auto" style={{ perspective: '1000px' }}>
+          <div className="relative w-full min-h-[600px]" style={{ perspective: '1000px' }}>
             <div 
               className="relative w-full h-full transition-transform duration-700"
               style={{ 
@@ -126,7 +126,7 @@ const ContactFormWeb3 = () => {
                 <div className="glass-card p-6 md:p-12 rounded-2xl backdrop-blur-xl border-2 border-primary/20 shadow-2xl">
                   <form 
                     onSubmit={handleSubmit} 
-                    className="space-y-8 touch-auto"
+                    className="space-y-8"
                   >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2 animate-fade-in" onDoubleClick={() => setFormData({ ...formData, name: "" })}>
@@ -138,10 +138,8 @@ const ContactFormWeb3 = () => {
                           onChange={handleChange}
                           placeholder=""
                           required
-                          noMobileCaps
                           autoComplete="name"
-                          inputMode="text"
-                          className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-xl md:!text-base w-full !leading-tight !py-3 !touch-auto [touch-action:manipulation]"
+                          className="h-14 border-2 border-blue-900/30 hover-glow focus:shadow-lg bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-xl md:text-base w-full"
                         />
                       </div>
                       <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.1s' }} onDoubleClick={() => setFormData({ ...formData, email: "" })}>
@@ -154,10 +152,8 @@ const ContactFormWeb3 = () => {
                           onChange={handleChange}
                           placeholder=""
                           required
-                          noMobileCaps
                           autoComplete="email"
-                          inputMode="email"
-                          className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur !text-xl md:!text-base w-full !leading-tight !py-3 !touch-auto [touch-action:manipulation]"
+                          className="h-14 border-2 border-blue-900/30 hover-glow focus:shadow-lg bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-xl md:text-base w-full"
                         />
                       </div>
                     </div>
