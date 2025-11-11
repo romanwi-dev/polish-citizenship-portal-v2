@@ -91,6 +91,7 @@ const LightThemeContact = () => {
                         value={formData.name}
                         onChange={handleChange}
                         placeholder="John Doe"
+                        noMobileCaps
                         className="h-14 text-lg bg-background border-2 border-border focus:border-primary focus:shadow-[0_0_0_4px_hsl(var(--primary)/0.1)] transition-all duration-200"
                         required
                       />
@@ -108,6 +109,7 @@ const LightThemeContact = () => {
                         value={formData.email}
                         onChange={handleChange}
                         placeholder="john@example.com"
+                        noMobileCaps
                         className="h-14 text-lg bg-background border-2 border-border focus:border-primary focus:shadow-[0_0_0_4px_hsl(var(--primary)/0.1)] transition-all duration-200"
                         required
                       />
