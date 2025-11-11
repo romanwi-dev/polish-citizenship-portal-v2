@@ -173,7 +173,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
     setPhotoPreview(null);
   };
 
-  // Auto-save handler
+  // Auto-save handler - doesn't close dialog or trigger navigation
   const handleAutoSave = async (data: typeof formData) => {
     const countryValue = showOtherCountry ? otherCountry : data.country;
     
@@ -195,7 +195,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
         client_score: data.client_score,
       },
     });
-    onUpdate();
+    // Don't call onUpdate() here - it causes the dialog to close
   };
 
   // Enable auto-save
