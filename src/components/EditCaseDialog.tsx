@@ -274,7 +274,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-5xl max-h-[92vh] overflow-y-auto scrollbar-hide bg-background/95 backdrop-blur-xl border-2 border-primary/20">
+      <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto scrollbar-hide bg-background/95 backdrop-blur-xl border-2 border-primary/20 sm:max-h-[92vh]">
         <form onSubmit={handleSubmit} className="space-y-8 pt-6">
           {/* Basic Information - Enhanced Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -333,7 +333,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                 <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-12">
                   <SelectValue placeholder="Select client code" />
                 </SelectTrigger>
-                <SelectContent className="bg-popover border-2 border-border z-50">
+                <SelectContent className="bg-popover border-2 border-border z-[100]" position="popper" sideOffset={5}>
                   <SelectItem value="Bad">Bad</SelectItem>
                   <SelectItem value="Poor">Poor</SelectItem>
                   <SelectItem value="Fair">Fair</SelectItem>
@@ -352,7 +352,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                 <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-12">
                   <SelectValue placeholder="Select payment status" />
                 </SelectTrigger>
-                <SelectContent className="bg-popover border-2 border-border z-50">
+                <SelectContent className="bg-popover border-2 border-border z-[100]" position="popper" sideOffset={5}>
                   <SelectItem value="pay">Pay</SelectItem>
                   <SelectItem value="clear">Clear</SelectItem>
                 </SelectContent>
@@ -379,7 +379,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                 <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-12">
                   <SelectValue placeholder="Select country" />
                 </SelectTrigger>
-                <SelectContent className="bg-popover border-2 border-border z-50">
+                <SelectContent className="bg-popover border-2 border-border z-[100]" position="popper" sideOffset={5}>
                   <SelectItem value="USA">USA</SelectItem>
                   <SelectItem value="UK">UK</SelectItem>
                   <SelectItem value="Canada">Canada</SelectItem>
@@ -436,7 +436,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                 <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-12">
                   <SelectValue placeholder="Select processing mode" />
                 </SelectTrigger>
-                <SelectContent className="bg-popover border-2 border-border z-50">
+                <SelectContent className="bg-popover border-2 border-border z-[100]" position="popper" sideOffset={5}>
                   <SelectItem value="standard">Standard</SelectItem>
                   <SelectItem value="expedited">Expedited</SelectItem>
                   <SelectItem value="vip">VIP</SelectItem>
@@ -453,7 +453,7 @@ export const EditCaseDialog = ({ caseData, open, onOpenChange, onUpdate }: EditC
                 <SelectTrigger className="border-2 border-border/50 hover:border-primary/50 bg-blue-950/80 text-base h-12">
                   <SelectValue placeholder="Select push scheme" />
                 </SelectTrigger>
-                <SelectContent className="bg-popover border-2 border-border z-50">
+                <SelectContent className="bg-popover border-2 border-border z-[100]" position="popper" sideOffset={5}>
                   <SelectItem value="NONE">None</SelectItem>
                   <SelectItem value="PUSH">PUSH - Aggressive follow-up</SelectItem>
                   <SelectItem value="NUDGE">NUDGE - Regular reminders</SelectItem>
