@@ -1,16 +1,29 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Shield, Send, MessageSquare } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 
+const COUNTRIES = [
+  "USA", "UK", "Canada", "Australia", "South Africa", "Brazil", 
+  "Argentina", "Mexico", "Venezuela", "Israel", "Germany", "France", "Other"
+];
+
 const contactSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
+  country: z.string().min(1, "Please select a country"),
+  polishAncestor: z.string().min(1, "Please select your Polish ancestor"),
+  polishDocuments: z.string().min(1, "Please select an option"),
 });
 
 const LightThemeContact = () => {
@@ -18,7 +31,9 @@ const LightThemeContact = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    message: "",
+    country: "",
+    polishAncestor: "",
+    polishDocuments: "",
   });
   const [isFlipped, setIsFlipped] = useState(false);
 
@@ -36,7 +51,13 @@ const LightThemeContact = () => {
 
       setTimeout(() => {
         setIsFlipped(false);
-        setFormData({ name: "", email: "", message: "" });
+        setFormData({ 
+          name: "", 
+          email: "", 
+          country: "", 
+          polishAncestor: "", 
+          polishDocuments: "" 
+        });
       }, 5000);
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -50,9 +71,13 @@ const LightThemeContact = () => {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement>
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSelectChange = (name: string, value: string) => {
+    setFormData({ ...formData, [name]: value });
   };
 
   return (
@@ -115,20 +140,73 @@ const LightThemeContact = () => {
                       />
                     </div>
 
-                    {/* Message Field */}
+                    {/* Country Field */}
                     <div className="space-y-3">
-                      <Label htmlFor="message" className="text-lg font-semibold text-foreground">
-                        Your Message
+                      <Label htmlFor="country" className="text-lg font-semibold text-foreground">
+                        Country
                       </Label>
-                      <Textarea
-                        id="message"
-                        name="message"
-                        value={formData.message}
-                        onChange={handleChange}
-                        placeholder="Tell us about your citizenship journey..."
-                        className="min-h-[180px] text-lg bg-background border-2 border-border focus:border-primary focus:shadow-[0_0_0_4px_hsl(var(--primary)/0.1)] transition-all duration-200 resize-none"
-                        required
-                      />
+                      <Select
+                        value={formData.country}
+                        onValueChange={(value) => handleSelectChange("country", value)}
+                      >
+                        <SelectTrigger className="h-14 text-lg bg-background border-2 border-border focus:border-primary focus:shadow-[0_0_0_4px_hsl(var(--primary)/0.1)] transition-all duration-200">
+                          <SelectValue placeholder="Select your country" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-background border-2 z-[100]">
+                          {COUNTRIES.map((country) => (
+                            <SelectItem
+                              key={country}
+                              value={country}
+                              className="text-base cursor-pointer hover:bg-primary/10"
+                            >
+                              {country}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* Polish Ancestor Field */}
+                    <div className="space-y-3">
+                      <Label htmlFor="polishAncestor" className="text-lg font-semibold text-foreground">
+                        Polish Ancestor
+                      </Label>
+                      <Select
+                        value={formData.polishAncestor}
+                        onValueChange={(value) => handleSelectChange("polishAncestor", value)}
+                      >
+                        <SelectTrigger className="h-14 text-lg bg-background border-2 border-border focus:border-primary focus:shadow-[0_0_0_4px_hsl(var(--primary)/0.1)] transition-all duration-200">
+                          <SelectValue placeholder="Select your Polish ancestor" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-background border-2 z-[100]">
+                          <SelectItem value="mother" className="text-base cursor-pointer hover:bg-primary/10">Mother</SelectItem>
+                          <SelectItem value="father" className="text-base cursor-pointer hover:bg-primary/10">Father</SelectItem>
+                          <SelectItem value="grandmother" className="text-base cursor-pointer hover:bg-primary/10">Grandmother</SelectItem>
+                          <SelectItem value="grandfather" className="text-base cursor-pointer hover:bg-primary/10">Grandfather</SelectItem>
+                          <SelectItem value="great-grandmother" className="text-base cursor-pointer hover:bg-primary/10">Great-grandmother</SelectItem>
+                          <SelectItem value="great-grandfather" className="text-base cursor-pointer hover:bg-primary/10">Great-grandfather</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* Polish Documents Field */}
+                    <div className="space-y-3">
+                      <Label htmlFor="polishDocuments" className="text-lg font-semibold text-foreground">
+                        Polish Documents
+                      </Label>
+                      <Select
+                        value={formData.polishDocuments}
+                        onValueChange={(value) => handleSelectChange("polishDocuments", value)}
+                      >
+                        <SelectTrigger className="h-14 text-lg bg-background border-2 border-border focus:border-primary focus:shadow-[0_0_0_4px_hsl(var(--primary)/0.1)] transition-all duration-200">
+                          <SelectValue placeholder="Select an option" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-background border-2 z-[100]">
+                          <SelectItem value="have-documents" className="text-base cursor-pointer hover:bg-primary/10">I have some Polish documents of my family</SelectItem>
+                          <SelectItem value="no-documents" className="text-base cursor-pointer hover:bg-primary/10">I don't have any Polish documents</SelectItem>
+                          <SelectItem value="need-check" className="text-base cursor-pointer hover:bg-primary/10">I need to check</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
 
                     {/* Submit Button */}
