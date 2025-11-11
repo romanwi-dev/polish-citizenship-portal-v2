@@ -121,7 +121,7 @@ const ContactFormWeb3 = () => {
                         placeholder=""
                         required
                         noMobileCaps
-                        className="h-16 border-2 border-blue-900/30 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs touch-manipulation"
+                        className="h-16 border-2 border-blue-900/30 hover-glow focus:shadow-lg transition-all bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-xs touch-manipulation"
                       />
                     </div>
                     <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.1s' }} onDoubleClick={() => setFormData({ ...formData, email: "" })}>
@@ -135,7 +135,7 @@ const ContactFormWeb3 = () => {
                         placeholder=""
                         required
                         noMobileCaps
-                        className="h-16 border-2 border-blue-900/30 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-xs touch-manipulation"
+                        className="h-16 border-2 border-blue-900/30 hover-glow focus:shadow-lg transition-all bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-xs touch-manipulation"
                       />
                     </div>
                   </div>
@@ -148,14 +148,14 @@ const ContactFormWeb3 = () => {
                       value={formData.message}
                       onChange={handleChange}
                       placeholder=""
-                      className="min-h-[240px] border-2 border-blue-900/30 hover-glow focus:shadow-lg transition-all resize-none bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur text-base touch-manipulation"
+                      className="min-h-[240px] border-2 border-blue-900/30 hover-glow focus:shadow-lg transition-all resize-none bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-base touch-manipulation"
                     />
                   </div>
 
                   <Button 
                     type="submit" 
                     size="lg"
-                    className="text-lg md:text-2xl font-bold px-8 py-4 md:px-20 md:py-6 h-auto min-h-[48px] rounded-lg bg-blue-50/45 dark:bg-blue-950/40 hover:bg-blue-50/60 dark:hover:bg-blue-950/60 border-2 border-blue-900/30 hover-glow focus:shadow-lg transition-all backdrop-blur w-full"
+                    className="text-lg md:text-2xl font-bold px-8 py-4 md:px-20 md:py-6 h-auto min-h-[48px] rounded-lg bg-blue-50/30 dark:bg-blue-950/30 hover:bg-blue-50/40 dark:hover:bg-blue-950/40 border-2 border-blue-900/30 hover-glow focus:shadow-lg transition-all backdrop-blur w-full"
                   >
                     <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-bold">
                       Send Your Info
