@@ -468,15 +468,16 @@ export const ModeSection = ({ formData, handleInputChange, clearField, isLargeFo
     </div>
     <div className="space-y-6">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="form-field-container space-y-2">
-        <Label className={isLargeFonts ? "text-2xl" : "text-xl"}>Application Mode</Label>
-        <Select value={formData?.application_mode || ""} onValueChange={(value) => handleInputChange("application_mode", value)}>
+        <Label className={isLargeFonts ? "text-2xl" : "text-xl"}>Processing mode</Label>
+        <Select value={formData?.processing_mode || ""} onValueChange={(value) => handleInputChange("processing_mode", value)}>
           <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur">
             <SelectValue placeholder="Select mode" />
           </SelectTrigger>
           <SelectContent className="bg-background border-2 z-50">
-            <SelectItem value="standard" className="cursor-pointer">Standard</SelectItem>
-            <SelectItem value="express" className="cursor-pointer">Express</SelectItem>
-            <SelectItem value="premium" className="cursor-pointer">Premium</SelectItem>
+            <SelectItem value="Standard" className="cursor-pointer">Standard</SelectItem>
+            <SelectItem value="Expedited" className="cursor-pointer">Expedited</SelectItem>
+            <SelectItem value="VIP" className="cursor-pointer">VIP</SelectItem>
+            <SelectItem value="VIP+" className="cursor-pointer">VIP+</SelectItem>
           </SelectContent>
         </Select>
       </motion.div>
