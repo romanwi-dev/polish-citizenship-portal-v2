@@ -54,7 +54,7 @@ export const ResponsiveTabs = ({
             <TabsTrigger
               key={tab.value}
               value={tab.value}
-              className="flex-1 min-w-[120px] data-[state=active]:bg-background"
+              className="w-[200px] data-[state=active]:bg-background"
             >
               {tab.label}
             </TabsTrigger>
