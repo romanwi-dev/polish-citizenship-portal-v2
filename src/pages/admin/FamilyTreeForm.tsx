@@ -507,35 +507,29 @@ export default function FamilyTreeForm() {
             // Tabbed View
             <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
               <div className="sticky top-0 z-50 pb-2 -mx-4 md:-mx-6 -mt-2">
-                <TabsList ref={tabsListRef} className="w-full inline-flex gap-0.5 overflow-x-auto scrollbar-hide bg-transparent p-0 px-0 md:px-6">
+                <TabsList ref={tabsListRef} className="w-full inline-flex gap-0.5 overflow-x-auto scrollbar-hide bg-transparent p-0 px-0 md:px-6 md:justify-center">
 
-                  <TabsTrigger value="select" className="flex-shrink-0 w-32 scroll-snap-align-start h-12 md:h-12">
+                  <TabsTrigger value="select" className="flex-shrink-0 w-32 md:flex-1 scroll-snap-align-start h-12 md:h-12">
                     <span className="text-blue-600 dark:text-blue-400">Select</span>
                   </TabsTrigger>
-                  <TabsTrigger value="applicant" className="flex-shrink-0 w-32 h-12 md:h-12">
+                  <TabsTrigger value="applicant" className="flex-shrink-0 w-32 md:flex-1 h-12 md:h-12">
                     <span className="text-blue-600 dark:text-blue-400">Applicant</span>
                   </TabsTrigger>
-                  {formData?.applicant_marital_status === "Married" && (
-                    <TabsTrigger value="spouse" className="flex-shrink-0 w-32 h-12 md:h-12">
-                      <span className="text-blue-600 dark:text-blue-400">Spouse</span>
-                    </TabsTrigger>
-                  )}
-                  {formData?.minor_children_count > 0 && (
-                    <TabsTrigger value="children" className="flex-shrink-0 w-32 h-12 md:h-12">
-                      <span className="text-cyan-600 dark:text-cyan-400">Children</span>
-                    </TabsTrigger>
-                  )}
-                  <TabsTrigger value="parents" className="flex-shrink-0 w-32 h-12 md:h-12">
+                  <TabsTrigger value="spouse" className="flex-shrink-0 w-32 md:flex-1 h-12 md:h-12">
+                    <span className="text-blue-600 dark:text-blue-400">Spouse</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="children" className="flex-shrink-0 w-32 md:flex-1 h-12 md:h-12">
+                    <span className="text-cyan-600 dark:text-cyan-400">Children</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="parents" className="flex-shrink-0 w-32 md:flex-1 h-12 md:h-12">
                     <span className="text-teal-600 dark:text-teal-400">Parents</span>
                   </TabsTrigger>
-                  <TabsTrigger value="grandparents" className="flex-shrink-0 w-44 h-12 md:h-12">
+                  <TabsTrigger value="grandparents" className="flex-shrink-0 w-44 md:flex-1 h-12 md:h-12">
                     <span className="text-red-600 dark:text-red-400">Grandparents</span>
                   </TabsTrigger>
-                  {(formData.pgf_is_polish || formData.mgf_is_polish) && (
-                    <TabsTrigger value="great-grandparents" className="flex-shrink-0 w-44 h-12 md:h-12">
-                      <span className="text-gray-600 dark:text-gray-400 leading-tight text-center">Great Grandparents</span>
-                    </TabsTrigger>
-                  )}
+                  <TabsTrigger value="great-grandparents" className="flex-shrink-0 w-44 md:flex-1 h-12 md:h-12">
+                    <span className="text-gray-600 dark:text-gray-400 leading-tight text-center">Great Grandparents</span>
+                  </TabsTrigger>
                 </TabsList>
               </div>
                   <TabsContent value="select" className="mt-0 pb-32" {...(isFullView ? { forceMount: true } : {})}>
