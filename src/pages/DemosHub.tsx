@@ -157,12 +157,12 @@ const DemosHub = () => {
           {/* Welcome Message with Polish Secretary - Flip Card */}
           <div className="mt-16">
             <div 
-              className="max-w-4xl mx-auto cursor-pointer"
+              className="max-w-4xl mx-auto cursor-pointer group"
               style={{ perspective: '1000px' }}
               onClick={() => setIsWelcomeFlipped(!isWelcomeFlipped)}
             >
               <div 
-                className="relative w-full transition-transform duration-700"
+                className="relative w-full transition-all duration-700 group-hover:scale-[1.02] group-hover:rotate-y-[5deg]"
                 style={{ 
                   transformStyle: 'preserve-3d',
                   transform: isWelcomeFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
@@ -170,7 +170,7 @@ const DemosHub = () => {
               >
                 {/* Front Side */}
                 <div 
-                  className="glass-card rounded-lg overflow-hidden"
+                  className="glass-card rounded-lg overflow-hidden shadow-lg group-hover:shadow-[0_0_40px_rgba(var(--primary-rgb),0.3)] transition-shadow duration-500"
                   style={{ 
                     backfaceVisibility: 'hidden',
                     WebkitBackfaceVisibility: 'hidden'
@@ -199,14 +199,14 @@ const DemosHub = () => {
                       <p className="text-sm text-muted-foreground/80 italic">
                         More demonstrations and interactive examples coming soon. Check back regularly for updates!
                       </p>
-                      <p className="text-xs text-primary/60 mt-6">Click to see more →</p>
+                      <p className="text-xs text-primary/60 group-hover:text-primary group-hover:font-semibold transition-all duration-300 mt-6">Click to see more →</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Back Side */}
                 <div 
-                  className="absolute inset-0 glass-card rounded-lg overflow-hidden"
+                  className="absolute inset-0 glass-card rounded-lg overflow-hidden shadow-lg group-hover:shadow-[0_0_40px_rgba(var(--secondary-rgb),0.3)] transition-shadow duration-500"
                   style={{ 
                     backfaceVisibility: 'hidden',
                     WebkitBackfaceVisibility: 'hidden',
@@ -257,7 +257,7 @@ const DemosHub = () => {
                         <p className="text-sm text-muted-foreground italic">
                           Have questions or suggestions? We'd love to hear from you!
                         </p>
-                        <p className="text-xs text-primary/60 mt-4">Click to flip back</p>
+                        <p className="text-xs text-primary/60 group-hover:text-primary group-hover:font-semibold transition-all duration-300 mt-4">Click to flip back</p>
                       </div>
                     </div>
                   </div>
