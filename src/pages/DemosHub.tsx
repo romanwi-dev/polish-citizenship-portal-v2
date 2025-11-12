@@ -8,6 +8,21 @@ import polishSecretaryDesk from "@/assets/demos/polish-secretary-desk.jpg";
 import polishSecretaryStanding from "@/assets/demos/polish-secretary-standing.jpg";
 import polishSecretaryReception from "@/assets/demos/polish-secretary-reception.jpg";
 import polishSecretaryDocuments from "@/assets/demos/polish-secretary-documents.jpg";
+import polishSecretary6 from "@/assets/demos/polish-secretary-6.jpg";
+import polishSecretary7 from "@/assets/demos/polish-secretary-7.jpg";
+import polishSecretary8 from "@/assets/demos/polish-secretary-8.jpg";
+import polishSecretary9 from "@/assets/demos/polish-secretary-9.jpg";
+import polishSecretary10 from "@/assets/demos/polish-secretary-10.jpg";
+import polishSecretary11 from "@/assets/demos/polish-secretary-11.jpg";
+import polishSecretary12 from "@/assets/demos/polish-secretary-12.jpg";
+import polishSecretary13 from "@/assets/demos/polish-secretary-13.jpg";
+import polishSecretary14 from "@/assets/demos/polish-secretary-14.jpg";
+import polishSecretary15 from "@/assets/demos/polish-secretary-15.jpg";
+import polishSecretary16 from "@/assets/demos/polish-secretary-16.jpg";
+import polishSecretary17 from "@/assets/demos/polish-secretary-17.jpg";
+import polishSecretary18 from "@/assets/demos/polish-secretary-18.jpg";
+import polishSecretary19 from "@/assets/demos/polish-secretary-19.jpg";
+import polishSecretary20 from "@/assets/demos/polish-secretary-20.jpg";
 
 const DemosHub = () => {
   const navigate = useNavigate();
@@ -19,6 +34,21 @@ const DemosHub = () => {
     polishSecretaryStanding,
     polishSecretaryReception,
     polishSecretaryDocuments,
+    polishSecretary6,
+    polishSecretary7,
+    polishSecretary8,
+    polishSecretary9,
+    polishSecretary10,
+    polishSecretary11,
+    polishSecretary12,
+    polishSecretary13,
+    polishSecretary14,
+    polishSecretary15,
+    polishSecretary16,
+    polishSecretary17,
+    polishSecretary18,
+    polishSecretary19,
+    polishSecretary20,
   ];
 
   const demos = [
