@@ -18,9 +18,9 @@ interface MainCTAProps {
   ariaLabel: string;
   
   /**
-   * Optional icon to display (defaults to ArrowRight)
+   * Optional icon to display (pass null or undefined to hide icon)
    */
-  icon?: LucideIcon;
+  icon?: LucideIcon | null;
   
   /**
    * Optional animation delay (e.g., '600ms')
@@ -54,7 +54,7 @@ export function MainCTA({
   children,
   onClick,
   ariaLabel,
-  icon: Icon = ArrowRight,
+  icon: Icon,
   animationDelay,
   wrapperClassName = "mt-40 mb-20"
 }: MainCTAProps) {
@@ -71,7 +71,7 @@ export function MainCTA({
       >
         <span className="relative z-10 flex items-center gap-3">
           {children}
-          <Icon className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+          {Icon && <Icon className="w-6 h-6 group-hover:translate-x-1 transition-transform" />}
         </span>
         <div className="absolute inset-0 bg-gradient-to-r from-red-600 to-red-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </Button>
