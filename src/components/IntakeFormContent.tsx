@@ -459,6 +459,31 @@ export const PassportSection = ({ formData, handleInputChange, clearField, isLar
   </div>
 );
 
+export const ModeSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
+  <div className="px-4 py-6 md:p-10">
+    <div className="border-b border-border/50 pb-6 pt-6">
+      <h2 className="text-2xl md:text-3xl font-heading font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+        Mode
+      </h2>
+    </div>
+    <div className="space-y-6">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="form-field-container space-y-2">
+        <Label className={isLargeFonts ? "text-2xl" : "text-xl"}>Application Mode</Label>
+        <Select value={formData?.application_mode || ""} onValueChange={(value) => handleInputChange("application_mode", value)}>
+          <SelectTrigger className="h-16 border-2 hover-glow focus:shadow-lg transition-all bg-blue-50/45 dark:bg-blue-950/40 backdrop-blur">
+            <SelectValue placeholder="Select mode" />
+          </SelectTrigger>
+          <SelectContent className="bg-background border-2 z-50">
+            <SelectItem value="standard" className="cursor-pointer">Standard</SelectItem>
+            <SelectItem value="express" className="cursor-pointer">Express</SelectItem>
+            <SelectItem value="premium" className="cursor-pointer">Premium</SelectItem>
+          </SelectContent>
+        </Select>
+      </motion.div>
+    </div>
+  </div>
+);
+
 export const NotesSection = ({ formData, handleInputChange, clearField, isLargeFonts }: IntakeFormContentProps) => (
   <div className="px-4 py-6 md:p-10">
     <div className="border-b border-border/50 pb-6 pt-6">

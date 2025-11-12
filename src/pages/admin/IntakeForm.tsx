@@ -15,7 +15,7 @@ import { validateEmail, validatePassport } from "@/utils/validators";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FormButtonsRow } from "@/components/FormButtonsRow";
-import { SelectSection, QuestionsSection, ApplicantSection, SpouseSection, ChildrenSection, ContactSection, AddressSection, PassportSection, NotesSection } from "@/components/IntakeFormContent";
+import { SelectSection, QuestionsSection, ApplicantSection, SpouseSection, ChildrenSection, ContactSection, AddressSection, PassportSection, ModeSection, NotesSection } from "@/components/IntakeFormContent";
 import { useFormManager } from "@/hooks/useFormManager";
 import { INTAKE_FORM_REQUIRED_FIELDS, INTAKE_DATE_FIELDS } from "@/config/formRequiredFields";
 import { AutosaveIndicator } from "@/components/AutosaveIndicator";
@@ -59,6 +59,7 @@ export default function IntakeForm() {
     contact: null,
     address: null,
     passport: null,
+    mode: null,
     notes: null
   });
 
@@ -206,36 +207,35 @@ export default function IntakeForm() {
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="pb-32">
           <Tabs defaultValue="select" value={activeTab} onValueChange={handleTabChange} className="w-full">
             <div className="sticky top-0 z-50 pb-2 -mx-4 md:-mx-6">
-              <TabsList ref={tabsListRef} className="w-full inline-flex gap-0.5 overflow-x-auto scrollbar-hide bg-transparent p-0 px-0 md:px-6">
-                <TabsTrigger value="select" className="flex-shrink-0 w-[140px] scroll-snap-align-start h-12 md:h-12">
+              <TabsList ref={tabsListRef} className="w-full inline-flex gap-0.5 overflow-x-auto scrollbar-hide bg-transparent p-0 px-0 md:px-6 md:justify-center">
+                <TabsTrigger value="select" className="flex-shrink-0 w-[140px] md:flex-1 scroll-snap-align-start h-12 md:h-12">
                   <span className="text-blue-600 dark:text-blue-400">Select</span>
                 </TabsTrigger>
-                <TabsTrigger value="questions" className="flex-shrink-0 w-[140px] h-12 md:h-12">
+                <TabsTrigger value="questions" className="flex-shrink-0 w-[140px] md:flex-1 h-12 md:h-12">
                   <span className="text-blue-600 dark:text-blue-400">Questions</span>
                 </TabsTrigger>
-                <TabsTrigger value="applicant" className="flex-shrink-0 w-[140px] h-12 md:h-12">
+                <TabsTrigger value="applicant" className="flex-shrink-0 w-[140px] md:flex-1 h-12 md:h-12">
                   <span className="text-blue-600 dark:text-blue-400">Applicant</span>
                 </TabsTrigger>
-                {formData?.applicant_marital_status === "Married" && (
-                  <TabsTrigger value="spouse" className="flex-shrink-0 w-[140px] h-12 md:h-12">
-                    <span className="text-blue-600 dark:text-blue-400">Spouse</span>
-                  </TabsTrigger>
-                )}
-                {formData?.minor_children_count > 0 && (
-                  <TabsTrigger value="children" className="flex-shrink-0 w-[140px] h-12 md:h-12">
-                    <span className="text-blue-600 dark:text-blue-400">Children</span>
-                  </TabsTrigger>
-                )}
-                <TabsTrigger value="passport" className="flex-shrink-0 w-[140px] h-12 md:h-12">
+                <TabsTrigger value="spouse" className="flex-shrink-0 w-[140px] md:flex-1 h-12 md:h-12">
+                  <span className="text-blue-600 dark:text-blue-400">Spouse</span>
+                </TabsTrigger>
+                <TabsTrigger value="children" className="flex-shrink-0 w-[140px] md:flex-1 h-12 md:h-12">
+                  <span className="text-blue-600 dark:text-blue-400">Children</span>
+                </TabsTrigger>
+                <TabsTrigger value="passport" className="flex-shrink-0 w-[140px] md:flex-1 h-12 md:h-12">
                   <span className="text-blue-600 dark:text-blue-400">Passport</span>
                 </TabsTrigger>
-                <TabsTrigger value="contact" className="flex-shrink-0 w-[140px] h-12 md:h-12">
+                <TabsTrigger value="contact" className="flex-shrink-0 w-[140px] md:flex-1 h-12 md:h-12">
                   <span className="text-blue-600 dark:text-blue-400">Contact</span>
                 </TabsTrigger>
-                <TabsTrigger value="address" className="flex-shrink-0 w-[140px] h-12 md:h-12">
+                <TabsTrigger value="address" className="flex-shrink-0 w-[140px] md:flex-1 h-12 md:h-12">
                   <span className="text-blue-600 dark:text-blue-400">Address</span>
                 </TabsTrigger>
-                <TabsTrigger value="notes" className="flex-shrink-0 w-[140px] h-12 md:h-12">
+                <TabsTrigger value="mode" className="flex-shrink-0 w-[140px] md:flex-1 h-12 md:h-12">
+                  <span className="text-blue-600 dark:text-blue-400">Mode</span>
+                </TabsTrigger>
+                <TabsTrigger value="notes" className="flex-shrink-0 w-[140px] md:flex-1 h-12 md:h-12">
                   <span className="text-blue-600 dark:text-blue-400">Notes</span>
                 </TabsTrigger>
               </TabsList>
@@ -272,6 +272,9 @@ export default function IntakeForm() {
                 <div ref={(el) => sectionRefs.current.address = el} className="border-b border-border/10">
                   <AddressSection {...contentProps} />
                 </div>
+                <div ref={(el) => sectionRefs.current.mode = el} className="border-b border-border/10">
+                  <ModeSection {...contentProps} />
+                </div>
                 <div ref={(el) => sectionRefs.current.notes = el}>
                   <NotesSection {...contentProps} />
                 </div>
@@ -306,6 +309,9 @@ export default function IntakeForm() {
                 </TabsContent>
                 <TabsContent value="address" className="mt-0">
                   <AddressSection {...contentProps} />
+                </TabsContent>
+                <TabsContent value="mode" className="mt-0">
+                  <ModeSection {...contentProps} />
                 </TabsContent>
                 <TabsContent value="notes" className="mt-0">
                   <NotesSection {...contentProps} />
