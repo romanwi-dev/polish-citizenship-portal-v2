@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FileText, CheckCircle, CreditCard, FileCheck, Send, FolderSearch, Archive, Languages, Upload, Stamp, Clock, Zap, Award, Book, Users, Shield } from "lucide-react";
 import { MainCTA } from "./ui/main-cta";
@@ -176,9 +176,26 @@ const timelineSteps = [{
   image: timeline15
 }];
 export default function TimelineProcessEnhanced() {
-  const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({}); // No initial flip
+  const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
+  const [firstCardAnimated, setFirstCardAnimated] = useState(false);
   const isMobile = useIsMobile();
   const prefersReducedMotion = useReducedMotion();
+
+  // Auto-flip animation for first card
+  useEffect(() => {
+    const timer1 = setTimeout(() => {
+      setFlippedCards(prev => ({ ...prev, "1": true }));
+      
+      const timer2 = setTimeout(() => {
+        setFlippedCards(prev => ({ ...prev, "1": false }));
+        setFirstCardAnimated(true);
+      }, 2000); // Wait 1 second + 1 second for slow flip back
+      
+      return () => clearTimeout(timer2);
+    }, 500); // Initial delay before first flip
+    
+    return () => clearTimeout(timer1);
+  }, []);
 
   const toggleFlip = (stepNumber: string) => {
     setFlippedCards(prev => ({
@@ -237,10 +254,11 @@ export default function TimelineProcessEnhanced() {
                     role="button"
                     tabIndex={0}
                     aria-label={`${step.title} - ${isMobile ? 'Tap' : 'Click'} to view details`}
-                    className={`absolute inset-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-lg ${step.number === "1" ? 'animate-[flip_4s_ease-in-out_1]' : 'transition-transform duration-700'}`}
+                    className="absolute inset-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-lg"
                     style={{
                 transformStyle: 'preserve-3d',
-                transform: step.number === "1" ? 'rotateY(0deg)' : (flippedCards[step.number] ? 'rotateY(180deg)' : 'rotateY(0deg)')
+                transform: flippedCards[step.number] ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                transition: step.number === "1" && flippedCards[step.number] && !firstCardAnimated ? 'transform 0.7s ease-in-out' : 'transform 1.5s ease-in-out'
               }}>
                     {/* Front Side */}
                     <div className="absolute inset-0 glass-card p-5 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.02] flex flex-col justify-center items-center" style={{
