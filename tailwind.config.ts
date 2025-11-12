@@ -99,6 +99,14 @@ export default {
             height: "0",
           },
         },
+        "flip": {
+          "0%, 100%": {
+            transform: "rotateY(0deg)",
+          },
+          "50%": {
+            transform: "rotateY(180deg)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
