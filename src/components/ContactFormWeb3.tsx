@@ -240,7 +240,7 @@ const ContactFormWeb3 = () => {
 
               {/* Back Side - Thank You Message */}
               <div 
-                className={`w-full absolute inset-0 ${!isFlipped ? 'pointer-events-none' : 'pointer-events-auto'}`}
+                className={`w-full h-[900px] md:h-[750px] absolute inset-0 ${!isFlipped ? 'pointer-events-none' : 'pointer-events-auto'}`}
                 style={{ 
                   backfaceVisibility: 'hidden',
                   WebkitBackfaceVisibility: 'hidden',

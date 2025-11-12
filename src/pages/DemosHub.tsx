@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Sparkles, Mail, Globe, Palette, FileText } from "lucide-react";
+import polishSecretaryWelcome from "@/assets/demos/polish-secretary-welcome.jpg";
 
 const DemosHub = () => {
   const navigate = useNavigate();
@@ -151,15 +152,34 @@ const DemosHub = () => {
             ))}
           </div>
 
-          {/* Coming Soon Section */}
-          <div className="mt-16 text-center">
-            <div className="glass-card p-8 rounded-lg max-w-2xl mx-auto">
-              <Sparkles className="h-12 w-12 text-primary mx-auto mb-4 opacity-50" />
-              <h3 className="text-2xl font-bold mb-2">More Coming Soon</h3>
-              <p className="text-muted-foreground">
-                We're constantly adding new demonstrations and interactive examples. 
-                Check back regularly for updates!
-              </p>
+          {/* Welcome Message with Polish Secretary */}
+          <div className="mt-16">
+            <div className="glass-card rounded-lg overflow-hidden max-w-4xl mx-auto">
+              <div className="grid md:grid-cols-2 gap-0">
+                {/* Image Side */}
+                <div className="h-64 md:h-auto">
+                  <img 
+                    src={polishSecretaryWelcome} 
+                    alt="Professional Polish legal secretary welcoming clients" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                
+                {/* Text Side */}
+                <div className="p-8 flex flex-col justify-center">
+                  <Sparkles className="h-12 w-12 text-primary mb-4" />
+                  <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                    Thank You for Exploring
+                  </h3>
+                  <p className="text-muted-foreground leading-relaxed mb-4">
+                    We appreciate your interest in our demonstrations. Our team is here to help you explore 
+                    these features and answer any questions you may have.
+                  </p>
+                  <p className="text-sm text-muted-foreground/80 italic">
+                    More demonstrations and interactive examples coming soon. Check back regularly for updates!
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
