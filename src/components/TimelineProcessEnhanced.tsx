@@ -176,7 +176,7 @@ const timelineSteps = [{
   image: timeline15
 }];
 export default function TimelineProcessEnhanced() {
-  const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({ "1": true }); // First card auto-flipped
+  const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({}); // No initial flip
   const isMobile = useIsMobile();
   const prefersReducedMotion = useReducedMotion();
 
@@ -237,10 +237,10 @@ export default function TimelineProcessEnhanced() {
                     role="button"
                     tabIndex={0}
                     aria-label={`${step.title} - ${isMobile ? 'Tap' : 'Click'} to view details`}
-                    className={`absolute inset-0 cursor-pointer transition-transform duration-700 focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-lg ${step.number === "1" ? 'animate-[flip_4s_ease-in-out_1]' : ''}`}
+                    className={`absolute inset-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-lg ${step.number === "1" ? 'animate-[flip_4s_ease-in-out_1]' : 'transition-transform duration-700'}`}
                     style={{
                 transformStyle: 'preserve-3d',
-                transform: flippedCards[step.number] ? 'rotateY(180deg)' : 'rotateY(0deg)'
+                transform: step.number === "1" ? 'rotateY(0deg)' : (flippedCards[step.number] ? 'rotateY(180deg)' : 'rotateY(0deg)')
               }}>
                     {/* Front Side */}
                     <div className="absolute inset-0 glass-card p-5 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.02] flex flex-col justify-center items-center" style={{
