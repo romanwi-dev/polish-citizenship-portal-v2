@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Sparkles, Mail, Globe, Palette, FileText } from "lucide-react";
@@ -5,6 +6,7 @@ import polishSecretaryWelcome from "@/assets/demos/polish-secretary-welcome.jpg"
 
 const DemosHub = () => {
   const navigate = useNavigate();
+  const [isWelcomeFlipped, setIsWelcomeFlipped] = useState(false);
 
   const demos = [
     {
@@ -152,32 +154,113 @@ const DemosHub = () => {
             ))}
           </div>
 
-          {/* Welcome Message with Polish Secretary */}
+          {/* Welcome Message with Polish Secretary - Flip Card */}
           <div className="mt-16">
-            <div className="glass-card rounded-lg overflow-hidden max-w-4xl mx-auto">
-              <div className="grid md:grid-cols-2 gap-0">
-                {/* Image Side */}
-                <div className="h-64 md:h-auto">
-                  <img 
-                    src={polishSecretaryWelcome} 
-                    alt="Professional Polish legal secretary welcoming clients" 
-                    className="w-full h-full object-cover"
-                  />
+            <div 
+              className="max-w-4xl mx-auto cursor-pointer"
+              style={{ perspective: '1000px' }}
+              onClick={() => setIsWelcomeFlipped(!isWelcomeFlipped)}
+            >
+              <div 
+                className="relative w-full transition-transform duration-700"
+                style={{ 
+                  transformStyle: 'preserve-3d',
+                  transform: isWelcomeFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
+                }}
+              >
+                {/* Front Side */}
+                <div 
+                  className="glass-card rounded-lg overflow-hidden"
+                  style={{ 
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden'
+                  }}
+                >
+                  <div className="grid md:grid-cols-2 gap-0">
+                    {/* Image Side */}
+                    <div className="h-64 md:h-auto">
+                      <img 
+                        src={polishSecretaryWelcome} 
+                        alt="Professional Polish legal secretary welcoming clients" 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    
+                    {/* Text Side */}
+                    <div className="p-8 flex flex-col justify-center">
+                      <Sparkles className="h-12 w-12 text-primary mb-4" />
+                      <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                        Thank You for Exploring
+                      </h3>
+                      <p className="text-muted-foreground leading-relaxed mb-4">
+                        We appreciate your interest in our demonstrations. Our team is here to help you explore 
+                        these features and answer any questions you may have.
+                      </p>
+                      <p className="text-sm text-muted-foreground/80 italic">
+                        More demonstrations and interactive examples coming soon. Check back regularly for updates!
+                      </p>
+                      <p className="text-xs text-primary/60 mt-6">Click to see more →</p>
+                    </div>
+                  </div>
                 </div>
-                
-                {/* Text Side */}
-                <div className="p-8 flex flex-col justify-center">
-                  <Sparkles className="h-12 w-12 text-primary mb-4" />
-                  <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                    Thank You for Exploring
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed mb-4">
-                    We appreciate your interest in our demonstrations. Our team is here to help you explore 
-                    these features and answer any questions you may have.
-                  </p>
-                  <p className="text-sm text-muted-foreground/80 italic">
-                    More demonstrations and interactive examples coming soon. Check back regularly for updates!
-                  </p>
+
+                {/* Back Side */}
+                <div 
+                  className="absolute inset-0 glass-card rounded-lg overflow-hidden"
+                  style={{ 
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                    transform: 'rotateY(180deg)'
+                  }}
+                >
+                  <div className="p-8 md:p-12 h-full flex flex-col justify-center">
+                    <div className="space-y-6">
+                      <div>
+                        <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                          What Makes Our Demos Special?
+                        </h3>
+                      </div>
+                      
+                      <div className="space-y-4">
+                        <div className="flex gap-3">
+                          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                            <span className="text-primary font-bold">1</span>
+                          </div>
+                          <div>
+                            <h4 className="font-semibold text-foreground mb-1">Interactive & Engaging</h4>
+                            <p className="text-sm text-muted-foreground">Each demo is fully functional and showcases real-world applications</p>
+                          </div>
+                        </div>
+
+                        <div className="flex gap-3">
+                          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center">
+                            <span className="text-secondary font-bold">2</span>
+                          </div>
+                          <div>
+                            <h4 className="font-semibold text-foreground mb-1">Production-Ready Code</h4>
+                            <p className="text-sm text-muted-foreground">All demonstrations use best practices and modern frameworks</p>
+                          </div>
+                        </div>
+
+                        <div className="flex gap-3">
+                          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center">
+                            <span className="text-accent font-bold">3</span>
+                          </div>
+                          <div>
+                            <h4 className="font-semibold text-foreground mb-1">Continuously Updated</h4>
+                            <p className="text-sm text-muted-foreground">We regularly add new features and improve existing demos</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="pt-6 border-t border-border/50">
+                        <p className="text-sm text-muted-foreground italic">
+                          Have questions or suggestions? We'd love to hear from you!
+                        </p>
+                        <p className="text-xs text-primary/60 mt-4">Click to flip back</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
