@@ -2,11 +2,24 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Sparkles, Mail, Globe, Palette, FileText } from "lucide-react";
+import { ImageCarousel } from "@/components/ui/image-carousel";
 import polishSecretaryWelcome from "@/assets/demos/polish-secretary-welcome.jpg";
+import polishSecretaryDesk from "@/assets/demos/polish-secretary-desk.jpg";
+import polishSecretaryStanding from "@/assets/demos/polish-secretary-standing.jpg";
+import polishSecretaryReception from "@/assets/demos/polish-secretary-reception.jpg";
+import polishSecretaryDocuments from "@/assets/demos/polish-secretary-documents.jpg";
 
 const DemosHub = () => {
   const navigate = useNavigate();
   const [isWelcomeFlipped, setIsWelcomeFlipped] = useState(false);
+
+  const secretaryImages = [
+    polishSecretaryWelcome,
+    polishSecretaryDesk,
+    polishSecretaryStanding,
+    polishSecretaryReception,
+    polishSecretaryDocuments,
+  ];
 
   const demos = [
     {
@@ -177,12 +190,16 @@ const DemosHub = () => {
                   }}
                 >
                   <div className="grid md:grid-cols-2 gap-0">
-                    {/* Image Side */}
-                    <div className="h-64 md:h-auto">
-                      <img 
-                        src={polishSecretaryWelcome} 
-                        alt="Professional Polish legal secretary welcoming clients" 
-                        className="w-full h-full object-cover"
+                    {/* Image Side - Carousel */}
+                    <div className="h-64 md:h-auto relative group">
+                      <ImageCarousel
+                        images={secretaryImages}
+                        alt="Professional Polish legal secretary"
+                        autoPlay={true}
+                        interval={4000}
+                        showControls={true}
+                        showIndicators={true}
+                        className="h-full"
                       />
                     </div>
                     
