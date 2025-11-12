@@ -237,7 +237,7 @@ export default function TimelineProcessEnhanced() {
                     role="button"
                     tabIndex={0}
                     aria-label={`${step.title} - ${isMobile ? 'Tap' : 'Click'} to view details`}
-                    className={`absolute inset-0 cursor-pointer transition-transform duration-700 focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-lg ${step.number === "1" ? 'animate-[flip_4s_ease-in-out_infinite]' : ''}`}
+                    className={`absolute inset-0 cursor-pointer transition-transform duration-700 focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-lg ${step.number === "1" ? 'animate-[flip_4s_ease-in-out_1]' : ''}`}
                     style={{
                 transformStyle: 'preserve-3d',
                 transform: flippedCards[step.number] ? 'rotateY(180deg)' : 'rotateY(0deg)'
