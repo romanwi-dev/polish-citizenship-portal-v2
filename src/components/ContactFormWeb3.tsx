@@ -17,6 +17,7 @@ import { Zap, CheckCircle2, Clock, Gift } from "lucide-react";
 import { z } from "zod";
 import { CelebrationBackground } from "./backgrounds/CelebrationBackground";
 import EUCelebrationSection from "./EUCelebrationSection";
+import secretary25 from "@/assets/secretaries/secretary-25.png";
 
 const COUNTRIES = [
   "USA", "UK", "Canada", "Australia", "South Africa", "Brazil", 
@@ -257,7 +258,17 @@ const ContactFormWeb3 = () => {
                   transition: 'opacity 0s 0.35s'
                 }}
               >
-                <div className="glass-card p-6 md:p-12 rounded-2xl backdrop-blur-xl border-2 border-primary/20 shadow-2xl h-full flex flex-col items-center justify-center">
+                <div className="glass-card p-6 md:p-12 rounded-2xl backdrop-blur-xl border-2 border-primary/20 shadow-2xl h-full flex flex-col items-center justify-center relative overflow-hidden">
+                  {/* Background Image */}
+                  <div className="absolute inset-0 z-0">
+                    <img 
+                      src={secretary25} 
+                      alt="Professional secretary" 
+                      className="w-full h-full object-cover opacity-30"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/60" />
+                  </div>
+                  
                   <div className="relative z-10 space-y-12 text-center">
                     <p className="bg-gradient-to-r from-slate-400 to-slate-600 bg-clip-text text-transparent text-2xl md:text-3xl font-semibold">
                       Thank you. We will get back to you shortly...
