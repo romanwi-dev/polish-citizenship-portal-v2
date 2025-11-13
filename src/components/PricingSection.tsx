@@ -142,7 +142,7 @@ const PricingSection = () => {
             
             <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-14">
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                True Transparent Pricing
+                Investment in Your Heritage
               </span>
             </h2>
             
