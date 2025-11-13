@@ -280,7 +280,7 @@ const ContactFormWeb3 = () => {
 
           {/* Five Sequential Arrows Animation */}
           <div 
-            className="flex justify-center -mt-24 md:-mt-8 mb-2 cursor-pointer hover:opacity-80 transition-opacity"
+            className="flex justify-center -mt-24 md:-mt-8 mb-0 cursor-pointer hover:opacity-80 transition-opacity"
             onClick={() => {
               const responseCard = document.getElementById('response-time-card');
               if (responseCard) {
@@ -303,7 +303,7 @@ const ContactFormWeb3 = () => {
           </div>
 
           {/* Trust Indicators */}
-          <div className="grid grid-cols-1 gap-6 md:gap-8 max-w-md mx-auto mt-2 mb-24">
+          <div className="grid grid-cols-1 gap-6 md:gap-8 max-w-md mx-auto mt-0 mb-24">
             {[
               { 
                 icon: Zap, 
