@@ -102,6 +102,7 @@ const DemosHub = lazy(() => import("./pages/DemosHub"));
 const MultiStepDemo = lazy(() => import("./pages/MultiStepDemo"));
 const DesignShowcase = lazy(() => import("./pages/DesignShowcase"));
 const FontStylesDemo = lazy(() => import("./pages/FontStylesDemo"));
+const MainCTAReference = lazy(() => import("./pages/demos/MainCTAReference"));
 
 
 const queryClient = new QueryClient({
@@ -135,6 +136,11 @@ const App = () => (
             <Route path="/demos" element={
               <Suspense fallback={<AdminLoader />}>
                 <DemosHub />
+              </Suspense>
+            } />
+            <Route path="/demos/main-cta-reference" element={
+              <Suspense fallback={<AdminLoader />}>
+                <MainCTAReference />
               </Suspense>
             } />
             <Route path="/multi-step-demo" element={

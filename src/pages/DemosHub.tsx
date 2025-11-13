@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Sparkles, Mail, Globe, Palette, FileText } from "lucide-react";
+import { ArrowLeft, Sparkles, Mail, Globe, Palette, FileText, Target } from "lucide-react";
 import { ImageCarousel } from "@/components/ui/image-carousel";
 import polishSecretaryWelcome from "@/assets/demos/polish-secretary-welcome.jpg";
 import polishSecretaryDesk from "@/assets/demos/polish-secretary-desk.jpg";
@@ -52,6 +52,15 @@ const DemosHub = () => {
   ];
 
   const demos = [
+    {
+      id: "main-cta-reference",
+      title: "Main CTA Reference ⭐",
+      description: "Golden standard for all main CTA buttons - size, animations, colors, and settings",
+      icon: Target,
+      path: "/demos/main-cta-reference",
+      gradient: "from-red-600 to-red-800",
+      features: ["Core Standard", "Golden Reference", "Design System"]
+    },
     {
       id: "warsaw",
       title: "Warsaw Future City",
