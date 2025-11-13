@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Mail } from "lucide-react";
+import { useInView } from "react-intersection-observer";
 import { Button } from "@/components/ui/button";
 import { MainCTA } from "@/components/ui/main-cta";
 import { Input } from "@/components/ui/input";
@@ -328,58 +329,71 @@ const ContactFormWeb3 = () => {
                 value: "Free",
                 details: "No obligation, no cost for initial eligibility review. We analyze your family history and determine your chances before any commitment."
               }
-            ].map((stat, i) => (
-              <div 
-                key={i} 
-                id={stat.id}
-                className="w-full max-w-[280px] mx-auto md:max-w-none cursor-pointer"
-                style={{ perspective: '1000px' }}
-                onClick={() => toggleCardFlip(i)}
-              >
-                <div 
-                  className="relative w-full h-full transition-transform duration-700"
-                  style={{ 
-                    transformStyle: 'preserve-3d',
-                    transform: flippedCards.has(i) ? 'rotateY(180deg)' : 'rotateY(0deg)'
-                  }}
-                >
-                  {/* Front Side */}
-                  <div 
-                    className={`glass-card p-6 rounded-lg hover-glow w-full min-h-[180px] flex flex-col ${
-                      stat.id === 'response-time-card' ? 'animate-[pulse_1.5s_ease-in-out_infinite] shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)]' : ''
-                    }`}
-                    style={{ 
-                      backfaceVisibility: 'hidden',
-                      WebkitBackfaceVisibility: 'hidden'
-                    }}
-                  >
-                    <div className="text-center flex-1 flex flex-col items-center justify-center">
-                      <stat.icon className="h-6 w-6 mb-3 opacity-50 text-primary" />
-                      <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
-                        {stat.value}
-                      </div>
-                      <div className="text-lg md:text-xl font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{stat.label}</div>
-                    </div>
-                    <div className="text-xs text-primary/50 text-center mt-8">Click for details</div>
-                  </div>
+            ].map((stat, i) => {
+              const { ref, inView } = useInView({
+                triggerOnce: true,
+                threshold: 0.1,
+              });
 
-                  {/* Back Side */}
+              return (
+                <div 
+                  ref={ref}
+                  key={i} 
+                  id={stat.id}
+                  className={`w-full max-w-[280px] mx-auto md:max-w-none cursor-pointer transition-all duration-700 ${
+                    inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                  }`}
+                  style={{ 
+                    perspective: '1000px',
+                    transitionDelay: `${i * 100}ms`
+                  }}
+                  onClick={() => toggleCardFlip(i)}
+                >
                   <div 
-                    className="glass-card p-6 rounded-lg w-full absolute top-0 left-0 min-h-[180px] flex flex-col justify-center"
+                    className="relative w-full h-full transition-transform duration-700"
                     style={{ 
-                      backfaceVisibility: 'hidden',
-                      WebkitBackfaceVisibility: 'hidden',
-                      transform: 'rotateY(180deg)'
+                      transformStyle: 'preserve-3d',
+                      transform: flippedCards.has(i) ? 'rotateY(180deg)' : 'rotateY(0deg)'
                     }}
                   >
-                    <div className="text-lg md:text-2xl text-primary font-bold mb-3">{stat.label}</div>
-                    <p className="text-sm md:text-lg text-muted-foreground/70 leading-relaxed">
-                      {stat.details}
-                    </p>
+                    {/* Front Side */}
+                    <div 
+                      className={`glass-card p-6 rounded-lg hover-glow w-full min-h-[180px] flex flex-col ${
+                        stat.id === 'response-time-card' ? 'animate-[pulse_1.5s_ease-in-out_infinite] shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)]' : ''
+                      }`}
+                      style={{ 
+                        backfaceVisibility: 'hidden',
+                        WebkitBackfaceVisibility: 'hidden'
+                      }}
+                    >
+                      <div className="text-center flex-1 flex flex-col items-center justify-center">
+                        <stat.icon className="h-6 w-6 mb-3 opacity-50 text-primary" />
+                        <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
+                          {stat.value}
+                        </div>
+                        <div className="text-lg md:text-xl font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{stat.label}</div>
+                      </div>
+                      <div className="text-xs text-primary/50 text-center mt-8">Click for details</div>
+                    </div>
+
+                    {/* Back Side */}
+                    <div 
+                      className="glass-card p-6 rounded-lg w-full absolute top-0 left-0 min-h-[180px] flex flex-col justify-center"
+                      style={{ 
+                        backfaceVisibility: 'hidden',
+                        WebkitBackfaceVisibility: 'hidden',
+                        transform: 'rotateY(180deg)'
+                      }}
+                    >
+                      <div className="text-lg md:text-2xl text-primary font-bold mb-3">{stat.label}</div>
+                      <p className="text-sm md:text-lg text-muted-foreground/70 leading-relaxed">
+                        {stat.details}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Bottom CTA */}
