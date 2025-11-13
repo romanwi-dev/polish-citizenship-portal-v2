@@ -14,7 +14,7 @@ const EUCelebrationSection = () => {
         <img 
           src={celebration1} 
           alt="European celebration"
-          className="w-full h-full object-cover block"
+          className="w-full h-full object-cover object-center block"
         />
       </div>
     </motion.section>
