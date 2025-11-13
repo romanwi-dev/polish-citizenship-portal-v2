@@ -280,7 +280,7 @@ const ContactFormWeb3 = () => {
 
           {/* Five Sequential Arrows Animation */}
           <div 
-            className="flex justify-center -mt-24 md:-mt-8 -mb-3.5 cursor-pointer hover:opacity-80 transition-opacity"
+            className="flex justify-center -mt-24 md:-mt-8 mb-2 cursor-pointer hover:opacity-80 transition-opacity"
             onClick={() => {
               const responseCard = document.getElementById('response-time-card');
               if (responseCard) {
@@ -397,7 +397,7 @@ const ContactFormWeb3 = () => {
 
                   {/* Three arrows between cards (not after last card) */}
                   {i < 3 && (
-                    <div className="flex justify-center my-1 cursor-pointer hover:opacity-80 transition-opacity">
+                    <div className="flex justify-center -my-3 cursor-pointer hover:opacity-80 transition-opacity">
                       <div className="flex flex-col items-center gap-1">
                         <div className="w-0 h-0 border-l-[6px] border-r-[6px] border-t-[10px] border-l-transparent border-r-transparent border-t-primary/40 animate-[bounce_1.5s_ease-in-out_infinite]" />
                         <div className="w-0 h-0 border-l-[6px] border-r-[6px] border-t-[10px] border-l-transparent border-r-transparent border-t-primary/70 animate-[bounce_1.5s_ease-in-out_infinite]" 
