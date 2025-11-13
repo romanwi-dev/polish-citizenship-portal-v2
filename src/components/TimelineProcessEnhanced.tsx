@@ -224,11 +224,11 @@ export default function TimelineProcessEnhanced() {
         {/* Timeline */}
         <div className="relative max-w-5xl mx-auto">
           {/* Desktop center line */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block" />
+          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/10 via-primary/30 to-primary/10 hidden md:block" />
           
           {/* Mobile center line */}
           <div className="md:hidden absolute left-1/2 top-0 bottom-0 -translate-x-1/2">
-            <div className="absolute inset-0 w-1 bg-gradient-to-b from-primary/30 via-secondary/30 to-accent/30" />
+            <div className="absolute inset-0 w-1 bg-gradient-to-b from-primary/15 via-secondary/15 to-accent/15" />
           </div>
 
           {timelineSteps.map((step, index) => {
