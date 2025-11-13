@@ -302,7 +302,7 @@ const ContactFormWeb3 = () => {
           </div>
 
           {/* Trust Indicators */}
-          <div className="grid grid-cols-1 gap-8 max-w-6xl mx-auto mt-2 mb-24">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto mt-2 mb-24">
             {[
               { 
                 icon: Zap, 
@@ -358,7 +358,7 @@ const ContactFormWeb3 = () => {
                   >
                     {/* Front Side */}
                     <div 
-                      className={`glass-card p-6 rounded-lg hover-glow w-full min-h-[180px] flex flex-col ${
+                      className={`glass-card p-6 rounded-lg hover-glow w-full h-[140px] md:h-[160px] flex flex-col ${
                         stat.id === 'response-time-card' ? 'animate-[pulse_1.5s_ease-in-out_infinite] shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)]' : ''
                       }`}
                       style={{ 
