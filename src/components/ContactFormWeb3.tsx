@@ -16,6 +16,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Zap, CheckCircle2, Clock, Gift } from "lucide-react";
 import { z } from "zod";
 import { CelebrationBackground } from "./backgrounds/CelebrationBackground";
+import EUCelebrationSection from "./EUCelebrationSection";
 
 const COUNTRIES = [
   "USA", "UK", "Canada", "Australia", "South Africa", "Brazil", 
@@ -336,62 +337,77 @@ const ContactFormWeb3 = () => {
               });
 
               return (
-                <div 
-                  ref={ref}
-                  key={i} 
-                  id={stat.id}
-                  className={`w-full max-w-[280px] mx-auto md:max-w-none cursor-pointer transition-all duration-700 ${
-                    inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                  }`}
-                  style={{ 
-                    perspective: '1000px',
-                    transitionDelay: `${i * 100}ms`
-                  }}
-                  onClick={() => toggleCardFlip(i)}
-                >
+                <>
                   <div 
-                    className="relative w-full h-full transition-transform duration-700"
-                    style={{ 
-                      transformStyle: 'preserve-3d',
-                      transform: flippedCards.has(i) ? 'rotateY(180deg)' : 'rotateY(0deg)'
-                    }}
-                  >
-                    {/* Front Side */}
-                  <div 
-                    className={`glass-card p-6 rounded-lg hover-glow w-full h-[200px] md:h-[240px] flex flex-col ${
-                      stat.id === 'response-time-card' ? 'animate-[pulse_1.5s_ease-in-out_infinite] shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)]' : ''
+                    ref={ref}
+                    key={i} 
+                    id={stat.id}
+                    className={`w-full max-w-[280px] mx-auto md:max-w-none cursor-pointer transition-all duration-700 ${
+                      inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                     }`}
-                      style={{ 
-                        backfaceVisibility: 'hidden',
-                        WebkitBackfaceVisibility: 'hidden'
-                      }}
-                    >
-                      <div className="text-center flex-1 flex flex-col items-center justify-center">
-                        <stat.icon className="h-6 w-6 mb-3 opacity-50 text-primary" />
-                        <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
-                          {stat.value}
-                        </div>
-                        <div className="text-lg md:text-xl font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{stat.label}</div>
-                      </div>
-                      <div className="text-xs text-primary/50 text-center mt-4">Click for details</div>
-                    </div>
-
-                    {/* Back Side */}
+                    style={{ 
+                      perspective: '1000px',
+                      transitionDelay: `${i * 100}ms`
+                    }}
+                    onClick={() => toggleCardFlip(i)}
+                  >
                     <div 
-                      className="glass-card p-6 rounded-lg w-full absolute top-0 left-0 h-[200px] md:h-[240px] flex flex-col justify-center"
+                      className="relative w-full h-full transition-transform duration-700"
                       style={{ 
-                        backfaceVisibility: 'hidden',
-                        WebkitBackfaceVisibility: 'hidden',
-                        transform: 'rotateY(180deg)'
+                        transformStyle: 'preserve-3d',
+                        transform: flippedCards.has(i) ? 'rotateY(180deg)' : 'rotateY(0deg)'
                       }}
                     >
-                      <div className="text-lg md:text-2xl text-primary font-bold mb-3">{stat.label}</div>
-                      <p className="text-sm md:text-lg text-muted-foreground/70 leading-relaxed text-justify">
-                        {stat.details}
-                      </p>
+                      {/* Front Side */}
+                      <div 
+                        className={`glass-card p-6 rounded-lg hover-glow w-full h-[200px] md:h-[240px] flex flex-col ${
+                          stat.id === 'response-time-card' ? 'animate-[pulse_1.5s_ease-in-out_infinite] shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)]' : ''
+                        }`}
+                        style={{ 
+                          backfaceVisibility: 'hidden',
+                          WebkitBackfaceVisibility: 'hidden'
+                        }}
+                      >
+                        <div className="text-center flex-1 flex flex-col items-center justify-center">
+                          <stat.icon className="h-6 w-6 mb-3 opacity-50 text-primary" />
+                          <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
+                            {stat.value}
+                          </div>
+                          <div className="text-lg md:text-xl font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{stat.label}</div>
+                        </div>
+                        <div className="text-xs text-primary/50 text-center mt-4">Click for details</div>
+                      </div>
+
+                      {/* Back Side */}
+                      <div 
+                        className="glass-card p-6 rounded-lg w-full absolute top-0 left-0 h-[200px] md:h-[240px] flex flex-col justify-center"
+                        style={{ 
+                          backfaceVisibility: 'hidden',
+                          WebkitBackfaceVisibility: 'hidden',
+                          transform: 'rotateY(180deg)'
+                        }}
+                      >
+                        <div className="text-lg md:text-2xl text-primary font-bold mb-3">{stat.label}</div>
+                        <p className="text-sm md:text-lg text-muted-foreground/70 leading-relaxed text-justify">
+                          {stat.details}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
+
+                  {/* Three arrows between cards (not after last card) */}
+                  {i < 3 && (
+                    <div className="flex justify-center my-4 cursor-pointer hover:opacity-80 transition-opacity">
+                      <div className="flex flex-col items-center gap-1">
+                        <div className="w-0 h-0 border-l-[6px] border-r-[6px] border-t-[10px] border-l-transparent border-r-transparent border-t-primary/40 animate-[bounce_1.5s_ease-in-out_infinite]" />
+                        <div className="w-0 h-0 border-l-[6px] border-r-[6px] border-t-[10px] border-l-transparent border-r-transparent border-t-primary/70 animate-[bounce_1.5s_ease-in-out_infinite]" 
+                          style={{ animationDelay: '0.2s' }} />
+                        <div className="w-0 h-0 border-l-[6px] border-r-[6px] border-t-[10px] border-l-transparent border-r-transparent border-t-primary animate-[bounce_1.5s_ease-in-out_infinite]" 
+                          style={{ animationDelay: '0.4s' }} />
+                      </div>
+                    </div>
+                  )}
+                </>
               );
             })}
           </div>
@@ -404,6 +420,11 @@ const ContactFormWeb3 = () => {
           >
             Take Polish Citizenship Test
           </MainCTA>
+
+          {/* EU Celebration Section */}
+          <div className="hidden md:block mt-20 mb-20">
+            <EUCelebrationSection />
+          </div>
         </div>
       </div>
     </section>
