@@ -277,14 +277,14 @@ const ContactFormWeb3 = () => {
           </div>
 
           {/* Vertical Arrow Animation */}
-          <div className="flex justify-center my-12">
-            <div className="relative h-32 w-2 flex items-center justify-center">
-              {/* Animated gradient line */}
-              <div className="absolute inset-0 bg-gradient-to-b from-primary/0 via-primary/60 to-primary/0 animate-pulse" />
+          <div className="flex justify-center my-6">
+            <div className="relative h-20 w-0.5 flex flex-col items-center justify-end">
+              {/* Vertical line */}
+              <div className="absolute top-0 w-full h-full bg-gradient-to-b from-primary/0 via-primary/50 to-primary animate-pulse" />
               
-              {/* Floating arrow with smooth animation */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 animate-[bounce_2s_ease-in-out_infinite]">
-                <div className="w-0 h-0 border-l-[10px] border-r-[10px] border-t-[16px] border-l-transparent border-r-transparent border-t-primary drop-shadow-[0_0_8px_rgba(var(--primary),0.6)]" />
+              {/* Arrow at bottom - connected to line */}
+              <div className="relative z-10 animate-[bounce_2s_ease-in-out_infinite]">
+                <div className="w-0 h-0 border-l-[8px] border-r-[8px] border-t-[14px] border-l-transparent border-r-transparent border-t-primary drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]" />
               </div>
             </div>
           </div>
