@@ -420,12 +420,12 @@ const ContactFormWeb3 = () => {
           >
             Take Polish Citizenship Test
           </MainCTA>
-
-          {/* EU Celebration Section */}
-          <div className="hidden md:block mt-20 mb-20 h-[900px] md:h-[750px] overflow-hidden">
-            <EUCelebrationSection />
-          </div>
         </div>
+      </div>
+
+      {/* EU Celebration Section - Full Width */}
+      <div className="hidden md:block mt-20 mb-20 h-[900px] md:h-[750px] overflow-hidden w-full">
+        <EUCelebrationSection />
       </div>
     </section>
   );
