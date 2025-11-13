@@ -103,6 +103,7 @@ const MultiStepDemo = lazy(() => import("./pages/MultiStepDemo"));
 const DesignShowcase = lazy(() => import("./pages/DesignShowcase"));
 const FontStylesDemo = lazy(() => import("./pages/FontStylesDemo"));
 const MainCTAReference = lazy(() => import("./pages/demos/MainCTAReference"));
+const ThankYouImagesDemo = lazy(() => import("./pages/ThankYouImagesDemo"));
 
 
 const queryClient = new QueryClient({
@@ -166,6 +167,11 @@ const App = () => (
             <Route path="/eu-celebration-demo" element={
               <Suspense fallback={<AdminLoader />}>
                 <EUCelebrationDemo />
+              </Suspense>
+            } />
+            <Route path="/thank-you-images-demo" element={
+              <Suspense fallback={<AdminLoader />}>
+                <ThankYouImagesDemo />
               </Suspense>
             } />
             <Route path="/contact-forms-demo" element={
