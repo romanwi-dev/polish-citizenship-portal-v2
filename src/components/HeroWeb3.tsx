@@ -62,75 +62,33 @@ const HeroWeb3 = () => {
       <div className="container relative z-10 px-4 mx-auto pb-20">
         <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in max-w-6xl mx-auto" style={{ animationDelay: '200ms' }}>
-            {/* Card 1 */}
+            {/* Card 1 - Not Flippable */}
             <div 
-              className="glass-card p-6 rounded-lg hover-glow text-center cursor-pointer relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none"
-              onClick={() => toggleFlip('card1')}
+              className="glass-card p-6 rounded-lg hover-glow text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none"
             >
-              <div 
-                className="relative w-full h-full flex items-center justify-center transition-all duration-500"
-                style={{
-                  transformStyle: 'preserve-3d',
-                  transform: flippedCards['card1'] ? 'rotateY(180deg)' : 'rotateY(0deg)'
-                }}
-              >
-                {/* Front */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center" style={{ backfaceVisibility: 'hidden' }}>
-                  <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">&gt;20</h3>
-                  <p className="text-sm md:text-base font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Years of Experience</p>
-                </div>
-                {/* Back */}
-                <div className="absolute inset-0 flex items-center justify-center p-4" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
-                  <p className="text-sm text-muted-foreground">Serving clients worldwide since 2000</p>
-                </div>
+              <div className="w-full h-full flex flex-col items-center justify-center">
+                <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">&gt;20</h3>
+                <p className="text-sm md:text-base font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Years of Experience</p>
               </div>
             </div>
-            
-            {/* Card 2 */}
+
+            {/* Card 2 - Not Flippable */}
             <div 
-              className="glass-card p-6 rounded-lg hover-glow text-center cursor-pointer relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none"
-              onClick={() => toggleFlip('card2')}
+              className="glass-card p-6 rounded-lg hover-glow text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none"
             >
-              <div 
-                className="relative w-full h-full flex items-center justify-center transition-all duration-500"
-                style={{
-                  transformStyle: 'preserve-3d',
-                  transform: flippedCards['card2'] ? 'rotateY(180deg)' : 'rotateY(0deg)'
-                }}
-              >
-                {/* Front */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center" style={{ backfaceVisibility: 'hidden' }}>
-                  <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent mb-2">&gt;20'000</h3>
-                  <p className="text-sm md:text-base font-medium bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent">Cases Processed</p>
-                </div>
-                {/* Back */}
-                <div className="absolute inset-0 flex items-center justify-center p-4" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
-                  <p className="text-sm text-muted-foreground">Successfully handled applications</p>
-                </div>
+              <div className="w-full h-full flex flex-col items-center justify-center">
+                <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent mb-2">25,000+</h3>
+                <p className="text-sm md:text-base font-medium bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent">Cases Processed</p>
               </div>
             </div>
-            
-            {/* Card 3 */}
+
+            {/* Card 3 - Not Flippable */}
             <div 
-              className="glass-card p-6 rounded-lg hover-glow text-center cursor-pointer relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none"
-              onClick={() => toggleFlip('card3')}
+              className="glass-card p-6 rounded-lg hover-glow text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none"
             >
-              <div 
-                className="relative w-full h-full flex items-center justify-center transition-all duration-500"
-                style={{
-                  transformStyle: 'preserve-3d',
-                  transform: flippedCards['card3'] ? 'rotateY(180deg)' : 'rotateY(0deg)'
-                }}
-              >
-                {/* Front */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center" style={{ backfaceVisibility: 'hidden' }}>
-                  <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent mb-2">&gt;100%</h3>
-                  <p className="text-sm md:text-base font-medium bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">Success Rate</p>
-                </div>
-                {/* Back */}
-                <div className="absolute inset-0 flex items-center justify-center p-4" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
-                  <p className="text-sm text-muted-foreground">Proven track record of excellence</p>
-                </div>
+              <div className="w-full h-full flex flex-col items-center justify-center">
+                <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent mb-2">99.6%</h3>
+                <p className="text-sm text-muted-foreground">Proven track record of excellence</p>
               </div>
             </div>
           </div>

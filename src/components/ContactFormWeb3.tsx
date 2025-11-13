@@ -276,30 +276,38 @@ const ContactFormWeb3 = () => {
             </div>
           </div>
 
+          {/* Vertical Arrow Animation */}
+          <div className="flex justify-center my-12">
+            <div className="relative h-24 w-1">
+              <div className="absolute inset-0 bg-gradient-to-b from-primary/0 via-primary to-primary/0 animate-pulse" />
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-r-[6px] border-t-[12px] border-l-transparent border-r-transparent border-t-primary animate-bounce" />
+            </div>
+          </div>
+
           {/* Trust Indicators */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto mt-4 mb-24">
             {[
               { 
                 icon: Zap, 
-                label: "AI Response", 
+                label: "Smart Response", 
                 value: "< 5 mins",
                 details: "Advanced AI analyzes your case instantly based on 25,000+ cases and Polish law. Get preliminary assessment with document checklist."
               },
               { 
                 icon: Mail, 
-                label: "Human Response", 
+                label: "Detailed Feedback", 
                 value: "< 1 hour",
                 details: "Expert legal team reviews your case personally. Receive comprehensive analysis with timeline estimates and strategic recommendations."
               },
               { 
                 icon: Clock, 
-                label: "Consultation", 
+                label: "Live Consultation", 
                 value: "24/7",
                 details: "Book consultations at your convenience across all time zones. Video calls, phone, or email - we're available when you need us."
               },
               { 
                 icon: Gift, 
-                label: "Assessment", 
+                label: "Case Assessment", 
                 value: "Free",
                 details: "No obligation, no cost for initial eligibility review. We analyze your family history and determine your chances before any commitment."
               }
