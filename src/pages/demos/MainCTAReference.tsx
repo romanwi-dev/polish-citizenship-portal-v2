@@ -47,9 +47,8 @@ export default function MainCTAReference() {
               onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
               aria-label="Take the Polish Citizenship Test to check your eligibility"
             >
-              <span className="relative z-10 flex items-center gap-3 font-bold drop-shadow-lg">
+              <span className="relative z-10 font-bold drop-shadow-lg">
                 Take Polish Citizenship Test
-                <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-red-800/30 to-red-950/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </Button>
