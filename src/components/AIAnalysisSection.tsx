@@ -23,8 +23,9 @@ const FlippableAICard = ({
 
   return (
     <div 
-      className="h-[280px] cursor-pointer"
+      className="h-[280px] cursor-pointer animate-fade-in"
       style={{ 
+        animationDelay: `${(index + 1) * 100}ms`,
         perspective: '1000px'
       }}
       onClick={() => setIsFlipped(!isFlipped)}

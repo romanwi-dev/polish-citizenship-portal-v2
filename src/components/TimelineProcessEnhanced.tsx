@@ -245,15 +245,16 @@ export default function TimelineProcessEnhanced() {
             >
               {/* Mobile timeline dot - positioned in center */}
               <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-20 top-0">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-primary to-secondary border-2 border-primary shadow-[0_0_20px_rgba(59,130,246,0.5)] flex items-center justify-center">
-                  <span className="text-white font-heading font-bold text-lg">{step.number}</span>
+                <div className={`w-14 h-14 rounded-full bg-gradient-to-r ${step.gradient} border-2 border-background/20 shadow-lg flex items-center justify-center backdrop-blur-sm`}>
+                  <span className="text-lg font-heading font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">{step.number}</span>
                 </div>
               </div>
               
               {/* Content Card - adjusted for mobile spacing */}
               <div className="w-full md:w-[42%] mt-8 md:mt-0">
-                <div className="relative h-[320px]" style={{
-              perspective: '1000px'
+                <div className="relative h-[320px] animate-fade-in" style={{
+              perspective: '1000px',
+              animationDelay: `${(index + 1) * 100}ms`
             }}>
                   <div 
                     onClick={() => toggleFlip(step.number)} 
@@ -266,11 +267,10 @@ export default function TimelineProcessEnhanced() {
                     role="button"
                     tabIndex={0}
                     aria-label={`${step.title} - ${isMobile ? 'Tap' : 'Click'} to view details`}
-                    className="absolute inset-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-lg"
+                    className="absolute inset-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50 rounded-lg transition-transform duration-700"
                     style={{
                 transformStyle: 'preserve-3d',
-                transform: flippedCards[step.number] ? 'rotateY(180deg)' : 'rotateY(0deg)',
-                transition: step.number === "1" && flippedCards[step.number] && !firstCardAnimated ? 'transform 0.7s ease-in-out' : 'transform 1.5s ease-in-out'
+                transform: flippedCards[step.number] ? 'rotateY(180deg)' : 'rotateY(0deg)'
               }}>
                     {/* Front Side */}
                     <div className="absolute inset-0 glass-card p-5 rounded-lg hover-glow group transition-transform duration-300 hover:scale-[1.02] flex flex-col justify-center items-center" style={{
@@ -333,8 +333,8 @@ export default function TimelineProcessEnhanced() {
                 viewport={{ once: true, margin: "-200px" }}
                 transition={{ duration: 0.8, delay: index * 0.05, ease: [0.25, 0.1, 0.25, 1] }}
               >
-                <div className="w-16 h-16 rounded-full glass-card border border-border/50 shadow-[0_0_30px_rgba(0,0,0,0.3)] transition-all duration-300 flex items-center justify-center">
-                  <span className="text-muted-foreground/50 font-heading font-bold text-3xl">{step.number}</span>
+                <div className={`w-16 h-16 rounded-full bg-gradient-to-br ${step.gradient} border-2 border-background/20 shadow-lg flex items-center justify-center backdrop-blur-sm`}>
+                  <span className="text-base font-heading font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">{step.number}</span>
                 </div>
               </motion.div>
 
