@@ -43,7 +43,7 @@ export default function MainCTAReference() {
           <div className="flex justify-center mt-12 mb-12 animate-fade-in">
             <Button 
               size="lg" 
-              className="text-xl md:text-2xl font-bold px-12 py-6 md:px-22 md:py-6 h-auto min-h-[64px] md:min-h-[72px] rounded-lg bg-red-700 dark:bg-red-900/60 hover:bg-red-800 dark:hover:bg-red-900/70 text-white shadow-[0_0_40px_rgba(185,28,28,0.6)] dark:shadow-[0_0_40px_rgba(127,29,29,0.6)] hover:shadow-[0_0_60px_rgba(185,28,28,0.8)] dark:hover:shadow-[0_0_60px_rgba(127,29,29,0.8)] group relative overflow-hidden backdrop-blur-md border-2 border-red-600 dark:border-red-800/40 hover:border-red-500 dark:hover:border-red-700/60 transition-all duration-300 hover:scale-105 animate-pulse"
+              className="text-xl md:text-2xl font-bold px-12 py-6 md:px-24 md:py-6 h-auto min-h-[64px] md:min-h-[72px] rounded-lg bg-red-700 dark:bg-red-900/60 hover:bg-red-800 dark:hover:bg-red-900/70 text-white shadow-[0_0_40px_rgba(185,28,28,0.6)] dark:shadow-[0_0_40px_rgba(127,29,29,0.6)] hover:shadow-[0_0_60px_rgba(185,28,28,0.8)] dark:hover:shadow-[0_0_60px_rgba(127,29,29,0.8)] group relative overflow-hidden backdrop-blur-md border-2 border-red-600 dark:border-red-800/40 hover:border-red-500 dark:hover:border-red-700/60 transition-all duration-300 hover:scale-105 animate-pulse"
               onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
               aria-label="Take the Polish Citizenship Test to check your eligibility"
             >
@@ -59,7 +59,7 @@ export default function MainCTAReference() {
               ✓ Fixed width controlled by padding only
             </p>
             <p className="text-muted-foreground mt-2">
-              Mobile: ~304px (px-12) | Desktop: ~528px (md:px-22)
+              Mobile: ~304px (px-12) | Desktop: ~576px (md:px-24)
             </p>
           </div>
         </section>
