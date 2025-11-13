@@ -51,16 +51,22 @@ export const FlippableCardsElegant = ({ title, documents, onChange }: FlippableC
         </div>
         
         <div className="grid grid-cols-2 gap-8">
-          {documents.map((doc) => (
+          {documents.map((doc, index) => (
             <div
               key={doc.id}
-              className="relative h-64"
+              className="relative h-64 animate-fade-in"
+              style={{ 
+                animationDelay: `${(index + 1) * 100}ms`,
+                perspective: '1000px'
+              }}
             >
               <div className={cn(
-                "relative w-full h-full transition-transform duration-700",
-                flippedCards[doc.id] ? "[transform:rotateY(180deg)]" : ""
+                "relative w-full h-full transition-transform duration-700"
               )}
-              style={{ transformStyle: "preserve-3d" }}
+              style={{ 
+                transformStyle: "preserve-3d",
+                transform: flippedCards[doc.id] ? 'rotateY(180deg)' : 'rotateY(0deg)'
+              }}
               >
                 {/* Front */}
                 <div 

@@ -111,7 +111,13 @@ const ContactFormWeb3 = () => {
         </div>
 
         <div className="max-w-full md:max-w-[1400px] mx-auto px-0 md:px-2">
-          <div className="relative w-full h-[900px] md:h-[750px]" style={{ perspective: '1000px' }}>
+          <div 
+            className="relative w-full h-[900px] md:h-[750px] animate-fade-in" 
+            style={{ 
+              perspective: '1000px',
+              animationDelay: '100ms'
+            }}
+          >
             <div 
               className="relative w-full h-full transition-transform duration-700"
               style={{ 

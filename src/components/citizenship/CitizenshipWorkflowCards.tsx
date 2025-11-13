@@ -111,120 +111,109 @@ export default function CitizenshipWorkflowCards() {
         </motion.div>
 
           <div className="relative max-w-6xl mx-auto">
-            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block -z-10" />
-
-          {citizenshipSteps.map((step, index) => {
-            const isLeft = index % 2 === 0;
+            {/* Timeline line */}
+            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-primary/20 via-primary/40 to-primary/20 hidden md:block" />
             
-            return (
-              <motion.div
-                key={step.number}
-                initial={{ opacity: 0, x: isLeft ? -100 : 100 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ 
-                  duration: 0.8, 
-                  delay: index * 0.05, 
-                  ease: [0.25, 0.1, 0.25, 1]
-                }}
-                viewport={{ once: true, margin: "-200px" }}
-                className={`mb-16 last:mb-0 flex flex-col md:${isLeft ? 'flex-row' : 'flex-row-reverse'} gap-4 md:gap-16 items-center`}
-              >
-                <div className="w-full md:w-[42%]">
-                  <div 
-                    className="relative h-[520px]"
-                    style={{ perspective: '1000px' }}
-                  >
-                    <div
-                      onClick={() => toggleFlip(step.number)}
-                      className="absolute inset-0 cursor-pointer transition-transform duration-700"
-                      style={{
-                        transformStyle: 'preserve-3d',
-                        transform: flippedCards[step.number] ? 'rotateY(180deg)' : 'rotateY(0deg)',
+            {citizenshipSteps.map((step, index) => {
+              const isLeft = index % 2 === 0;
+              
+              return (
+                <motion.div
+                  key={step.number}
+                  initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.05 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  className={`relative flex ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'} items-center mb-16 last:mb-0`}
+                >
+                  {/* Card */}
+                  <div className="w-full md:w-[45%]">
+                    <div 
+                      className="relative h-[400px] animate-fade-in"
+                      style={{ 
+                        animationDelay: `${(index + 1) * 100}ms`,
+                        perspective: '1000px'
                       }}
                     >
-                      <motion.div
-                        whileHover={{ scale: 1.02, y: -3 }}
-                        transition={{ duration: 0.2, ease: "easeOut" }}
-                        className="absolute inset-0 glass-card p-8 rounded-lg hover-glow group flex flex-col justify-center"
+                      <div
+                        onClick={() => toggleFlip(step.number)}
+                        className="relative w-full h-full cursor-pointer transition-transform duration-700"
                         style={{
-                          backfaceVisibility: 'hidden',
-                          WebkitBackfaceVisibility: 'hidden',
+                          transformStyle: 'preserve-3d',
+                          transform: flippedCards[step.number] ? 'rotateY(180deg)' : 'rotateY(0deg)',
                         }}
                       >
-                        <div className="mb-6 relative flex items-center justify-center">
-                          <div className="w-full h-32 rounded-lg overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/5 flex items-center justify-center">
-                            <step.icon className="w-16 h-16 text-primary opacity-80 group-hover:opacity-100 transition-opacity duration-300" />
+                        {/* Front Side */}
+                        <div
+                          className="absolute inset-0 glass-card p-8 rounded-xl hover-glow group transition-all duration-300 hover:scale-[1.02]"
+                          style={{
+                            backfaceVisibility: 'hidden',
+                            WebkitBackfaceVisibility: 'hidden',
+                          }}
+                        >
+                          {/* Icon */}
+                          <div className="mb-6 relative">
+                            <div className={`w-20 h-20 rounded-full bg-gradient-to-br ${step.gradient} opacity-20 absolute top-0 left-0 group-hover:opacity-30 transition-opacity duration-300`} />
+                            <step.icon className="w-12 h-12 text-primary relative z-10" />
+                          </div>
+
+                          {/* Content */}
+                          <div className="space-y-4">
+                            <h3 className="text-2xl font-heading font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                              {step.title}
+                            </h3>
+                            <p className="text-sm text-muted-foreground leading-relaxed">
+                              {step.description}
+                            </p>
+                          </div>
+
+                          {/* CTA Button */}
+                          <div className="mt-6">
+                            <Button
+                              variant="outline"
+                              className={`w-full border-2 bg-gradient-to-r ${step.gradient} bg-clip-text text-transparent hover:bg-primary/10 transition-all duration-300`}
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              {step.cta}
+                            </Button>
                           </div>
                         </div>
 
-                        <div className="flex-1 flex flex-col justify-center space-y-6">
-                          <h3 className="text-2xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-center">
-                            {step.title}
-                          </h3>
-                          <p className="text-xs text-muted-foreground/70 leading-relaxed text-center px-4">
-                            {step.description}
-                          </p>
-                        </div>
-                        
-                        <div className="mt-auto mb-6 space-y-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="w-full"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            {step.cta}
-                          </Button>
-                        </div>
-                        <p className="text-xs text-muted-foreground/60 text-center">Tap to see details</p>
-                      </motion.div>
-
-                      <div 
-                        className="absolute inset-0 glass-card p-8 rounded-lg hover-glow flex flex-col items-center justify-center"
-                        style={{
-                          backfaceVisibility: 'hidden',
-                          WebkitBackfaceVisibility: 'hidden',
-                          transform: 'rotateY(180deg)',
-                        }}
-                      >
-                        <div className="flex flex-col h-full w-full max-w-md justify-center">
-                          <div className="relative mb-6">
-                            <div className="w-24 h-24 rounded-lg overflow-hidden bg-gradient-to-br from-secondary/5 to-accent/5 flex items-center justify-center mx-auto">
-                              <step.icon className="w-12 h-12 text-secondary opacity-60" />
-                            </div>
+                        {/* Back Side */}
+                        <div
+                          className={`absolute inset-0 glass-card p-8 rounded-xl bg-gradient-to-br ${step.gradient} bg-opacity-10`}
+                          style={{
+                            backfaceVisibility: 'hidden',
+                            WebkitBackfaceVisibility: 'hidden',
+                            transform: 'rotateY(180deg)',
+                          }}
+                        >
+                          <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
+                            <step.icon className="w-16 h-16 text-primary opacity-60" />
+                            <h4 className="text-xl font-heading font-bold">Stage Details</h4>
+                            <p className="text-sm text-muted-foreground">
+                              Click to flip back
+                            </p>
                           </div>
-                          
-                          <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground text-center mb-4">
-                            Stage Details
-                          </h3>
-                          
-                          <div className="flex-1 space-y-3 w-full overflow-auto">
-                            <div className="p-4 rounded-lg bg-muted/30 text-center">
-                              <p className="text-sm text-muted-foreground">
-                                Critical citizenship application stage
-                              </p>
-                            </div>
-                          </div>
-                          
-                          <p className="text-xs text-muted-foreground/60 text-center mt-auto">Tap to flip back</p>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                  <div className="hidden md:flex md:w-[16%] flex-shrink-0 justify-center relative z-10 items-center">
-                    <div className="w-16 h-16 rounded-full glass-card bg-background/95 backdrop-blur-xl border border-border/50 shadow-[0_0_30px_rgba(0,0,0,0.3)] transition-all duration-300 flex items-center justify-center">
-                      <span className="text-muted-foreground/50 font-heading font-bold text-3xl">{step.number}</span>
+                  {/* Center timeline number - hidden on mobile, shown on desktop */}
+                  <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 z-10">
+                    <div className={`w-16 h-16 rounded-full bg-gradient-to-br ${step.gradient} border-2 border-background/20 shadow-lg flex items-center justify-center backdrop-blur-sm`}>
+                      <span className="text-base font-heading font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">{step.number}</span>
                     </div>
                   </div>
 
-                <div className="hidden md:block md:w-[42%]" />
-              </motion.div>
-            );
-          })}
+                  {/* Spacer for opposite side */}
+                  <div className="hidden md:block md:w-[45%]" />
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
-      </div>
-    </section>
-  );
-}
+      </section>
+    );
+  }
