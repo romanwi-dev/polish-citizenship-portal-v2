@@ -77,7 +77,7 @@ const HeroWeb3 = () => {
               className="glass-card p-6 rounded-lg hover-glow text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none"
             >
               <div className="w-full h-full flex flex-col items-center justify-center">
-                <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent mb-2">25,000+</h3>
+                <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent mb-2">&gt;20,000</h3>
                 <p className="text-sm md:text-base font-medium bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent">Cases Processed</p>
               </div>
             </div>
@@ -87,8 +87,8 @@ const HeroWeb3 = () => {
               className="glass-card p-6 rounded-lg hover-glow text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none"
             >
               <div className="w-full h-full flex flex-col items-center justify-center">
-                <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent mb-2">99.6%</h3>
-                <p className="text-sm text-muted-foreground">Proven track record of excellence</p>
+                <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent mb-2">100%</h3>
+                <p className="text-sm md:text-base font-medium bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">Success Rate</p>
               </div>
             </div>
           </div>
