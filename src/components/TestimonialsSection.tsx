@@ -1,6 +1,7 @@
 import { Star, Quote } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { MainCTA } from '@/components/ui/main-cta';
 
 const testimonials = [
   {
@@ -138,15 +139,13 @@ export default function TestimonialsSection() {
           ))}
         </div>
 
-        {/* CTA Button - Exact copy from hero section */}
-        <div className="flex justify-center animate-fade-in mt-16">
-          <Button size="lg" className="text-xl md:text-2xl font-bold px-12 py-6 md:px-24 md:py-6 h-auto min-h-[64px] md:min-h-[72px] rounded-lg bg-red-700 dark:bg-red-900/60 hover:bg-red-800 dark:hover:bg-red-900/70 text-white shadow-[0_0_40px_rgba(185,28,28,0.6)] dark:shadow-[0_0_40px_rgba(127,29,29,0.6)] hover:shadow-[0_0_60px_rgba(185,28,28,0.8)] dark:hover:shadow-[0_0_60px_rgba(127,29,29,0.8)] group relative overflow-hidden backdrop-blur-md border-2 border-red-600 dark:border-red-800/40 hover:border-red-500 dark:hover:border-red-700/60 transition-all duration-300 hover:scale-105 animate-pulse" onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')} aria-label="Take the Polish Citizenship Test to check your eligibility">
-            <span className="relative z-10 font-bold drop-shadow-lg">
-              Take Polish Citizenship Test
-            </span>
-            <div className="absolute inset-0 bg-gradient-to-r from-red-800/30 to-red-950/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          </Button>
-        </div>
+        <MainCTA
+          wrapperClassName="flex justify-center animate-fade-in mt-16"
+          onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
+          ariaLabel="Take the Polish Citizenship Test to check your eligibility"
+        >
+          Take Polish Citizenship Test
+        </MainCTA>
 
       </div>
     </section>
