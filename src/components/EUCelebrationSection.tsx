@@ -8,13 +8,13 @@ const EUCelebrationSection = () => {
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
       viewport={{ once: true }}
-      className="relative w-full"
+      className="relative w-full h-full"
     >
-      <div className="relative overflow-hidden">
+      <div className="relative w-full h-full overflow-hidden">
         <img 
           src={celebration1} 
           alt="European celebration"
-          className="w-full h-auto block"
+          className="w-full h-full object-cover block"
         />
       </div>
     </motion.section>
