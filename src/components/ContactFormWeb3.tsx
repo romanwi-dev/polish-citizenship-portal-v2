@@ -280,7 +280,7 @@ const ContactFormWeb3 = () => {
 
           {/* Five Sequential Arrows Animation */}
           <div 
-            className="flex justify-center -mt-24 md:-mt-8 mb-2 cursor-pointer hover:opacity-80 transition-opacity"
+            className="flex justify-center -mt-32 md:-mt-16 mb-2 cursor-pointer hover:opacity-80 transition-opacity"
             onClick={() => {
               const responseCard = document.getElementById('response-time-card');
               if (responseCard) {
