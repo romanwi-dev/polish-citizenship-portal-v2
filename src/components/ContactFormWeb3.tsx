@@ -422,7 +422,7 @@ const ContactFormWeb3 = () => {
           </MainCTA>
 
           {/* EU Celebration Section */}
-          <div className="hidden md:block mt-20 mb-20">
+          <div className="hidden md:block mt-20 mb-20 h-[900px] md:h-[750px] overflow-hidden">
             <EUCelebrationSection />
           </div>
         </div>
