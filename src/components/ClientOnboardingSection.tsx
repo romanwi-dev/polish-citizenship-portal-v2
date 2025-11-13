@@ -134,15 +134,15 @@ export default function ClientOnboardingSection() {
               className={`mb-16 last:mb-0 ${index === 0 ? 'mt-8 md:mt-16' : ''} relative`}
             >
               {/* Mobile timeline dot - positioned in center */}
-              <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-20 top-0">
-                <div className={`w-14 h-14 rounded-full bg-gradient-to-r ${step.gradient} border-2 border-background/20 shadow-lg flex items-center justify-center backdrop-blur-sm`}>
-                  <span className="text-lg font-heading font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">{step.number}</span>
+              <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-20 -top-2">
+                <div className="w-16 h-16 rounded-full bg-primary/20 border-2 border-background/20 shadow-lg flex items-center justify-center backdrop-blur-sm">
+                  <span className="text-2xl font-heading font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">{parseInt(step.number)}</span>
                 </div>
               </div>
               
               <div className={`flex flex-col md:${isLeft ? 'flex-row' : 'flex-row-reverse'} gap-4 md:gap-12 items-center`}>
                 {/* Card - adjusted for mobile spacing */}
-                <div className="w-full md:w-[42%] mt-8 md:mt-0">
+                <div className="w-full md:w-[42%] mt-20 md:mt-0">
                   <div 
                     className="relative h-[520px] animate-fade-in"
                     style={{ 
@@ -175,7 +175,7 @@ export default function ClientOnboardingSection() {
 
                     {/* Content */}
                     <div className="flex-1 space-y-4 text-center w-full">
-                      <h3 className="text-2xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
+                      <h3 className="text-3xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
                         {step.title}
                       </h3>
                       <p className="text-sm text-muted-foreground leading-relaxed px-2">
