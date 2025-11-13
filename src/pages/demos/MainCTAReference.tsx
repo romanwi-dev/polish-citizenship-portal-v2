@@ -59,7 +59,7 @@ export default function MainCTAReference() {
               ✓ Fixed width controlled by padding only
             </p>
             <p className="text-muted-foreground mt-2">
-              Mobile: ~304px (px-12) | Desktop: ~480px (md:px-20)
+              Mobile: ~304px (px-12) | Desktop: ~528px (md:px-22)
             </p>
           </div>
         </section>
