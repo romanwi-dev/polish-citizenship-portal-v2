@@ -113,8 +113,13 @@ export default function ClientOnboardingSection() {
 
         {/* Steps - Left-Right Alternating Layout */}
         <div className="relative max-w-6xl mx-auto">
-          {/* Center line for desktop */}
+          {/* Desktop center line */}
           <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block" />
+          
+          {/* Mobile center line */}
+          <div className="md:hidden absolute left-1/2 top-0 bottom-0 -translate-x-1/2">
+            <div className="absolute inset-0 w-1 bg-gradient-to-b from-primary/30 via-secondary/30 to-accent/30" />
+          </div>
 
           {onboardingSteps.map((step, index) => {
             const isLeft = index % 2 === 0;
@@ -126,11 +131,18 @@ export default function ClientOnboardingSection() {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: index * 0.05 }}
               viewport={{ once: true, margin: "-200px" }}
-              className={`mb-16 last:mb-0 ${index === 0 ? 'mt-8 md:mt-16' : ''}`}
+              className={`mb-16 last:mb-0 ${index === 0 ? 'mt-8 md:mt-16' : ''} relative`}
             >
+              {/* Mobile timeline dot - positioned in center */}
+              <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-20 top-0">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-primary to-secondary border-2 border-primary shadow-[0_0_20px_rgba(59,130,246,0.5)] flex items-center justify-center">
+                  <span className="text-white font-heading font-bold text-lg">{step.number}</span>
+                </div>
+              </div>
+              
               <div className={`flex flex-col md:${isLeft ? 'flex-row' : 'flex-row-reverse'} gap-4 md:gap-12 items-center`}>
-                {/* Card */}
-                <div className="w-full md:w-[42%]">
+                {/* Card - adjusted for mobile spacing */}
+                <div className="w-full md:w-[42%] mt-8 md:mt-0">
                   <div 
                     className="relative h-[520px]"
                     style={{ perspective: '1000px' }}

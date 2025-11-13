@@ -223,8 +223,13 @@ export default function TimelineProcessEnhanced() {
 
         {/* Timeline */}
         <div className="relative max-w-5xl mx-auto">
-          {/* Center line */}
+          {/* Desktop center line */}
           <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/20 via-primary/50 to-primary/20 hidden md:block" />
+          
+          {/* Mobile center line */}
+          <div className="md:hidden absolute left-1/2 top-0 bottom-0 -translate-x-1/2">
+            <div className="absolute inset-0 w-1 bg-gradient-to-b from-primary/30 via-secondary/30 to-accent/30" />
+          </div>
 
           {timelineSteps.map((step, index) => {
             const isLeft = index % 2 === 0;
@@ -238,8 +243,15 @@ export default function TimelineProcessEnhanced() {
               viewport={{ once: true, margin: "-200px" }}
               className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-8 ${!isLeft ? 'md:flex-row-reverse' : ''}`}
             >
-              {/* Content Card */}
-              <div className="w-full md:w-[42%]">
+              {/* Mobile timeline dot - positioned in center */}
+              <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-20 top-0">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-primary to-secondary border-2 border-primary shadow-[0_0_20px_rgba(59,130,246,0.5)] flex items-center justify-center">
+                  <span className="text-white font-heading font-bold text-lg">{step.number}</span>
+                </div>
+              </div>
+              
+              {/* Content Card - adjusted for mobile spacing */}
+              <div className="w-full md:w-[42%] mt-8 md:mt-0">
                 <div className="relative h-[320px]" style={{
               perspective: '1000px'
             }}>
