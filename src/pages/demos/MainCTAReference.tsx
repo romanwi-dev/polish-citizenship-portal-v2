@@ -64,6 +64,86 @@ export default function MainCTAReference() {
           </div>
         </section>
 
+        {/* Padding Comparison - Same Fixed Width */}
+        <section className="space-y-6">
+          <div className="text-center space-y-2">
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+              🔍 PADDING COMPARISON - SAME FIXED WIDTH
+            </h2>
+            <p className="text-muted-foreground">
+              Both buttons constrained to same width (576px on desktop) to show padding difference
+            </p>
+          </div>
+
+          {/* Button with md:px-20 */}
+          <div className="space-y-4">
+            <div className="flex justify-center">
+              <div className="w-full max-w-[576px]">
+                <div className="bg-blue-500/10 border-2 border-blue-500/50 rounded-lg p-4 text-center mb-2">
+                  <p className="text-blue-400 font-bold">md:px-20 padding (OLD)</p>
+                </div>
+                <div className="flex justify-center animate-fade-in">
+                  <Button 
+                    size="lg" 
+                    className="text-xl md:text-2xl font-bold px-12 py-6 md:px-20 md:py-6 h-auto min-h-[64px] md:min-h-[72px] rounded-lg bg-red-700 dark:bg-red-900/60 hover:bg-red-800 dark:hover:bg-red-900/70 text-white shadow-[0_0_40px_rgba(185,28,28,0.6)] dark:shadow-[0_0_40px_rgba(127,29,29,0.6)] hover:shadow-[0_0_60px_rgba(185,28,28,0.8)] dark:hover:shadow-[0_0_60px_rgba(127,29,29,0.8)] group relative overflow-hidden backdrop-blur-md border-2 border-red-600 dark:border-red-800/40 hover:border-red-500 dark:hover:border-red-700/60 transition-all duration-300 hover:scale-105 animate-pulse w-full"
+                    onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
+                    aria-label="Take the Polish Citizenship Test to check your eligibility"
+                  >
+                    <span className="relative z-10 font-bold drop-shadow-lg">
+                      Take Polish Citizenship Test
+                    </span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-red-800/30 to-red-950/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </Button>
+                </div>
+                <div className="bg-blue-500/10 border-2 border-blue-500/50 rounded-lg p-3 text-center mt-2">
+                  <p className="text-blue-400 text-sm">
+                    Desktop: 80px total horizontal padding (40px each side)
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Button with md:px-24 */}
+          <div className="space-y-4">
+            <div className="flex justify-center">
+              <div className="w-full max-w-[576px]">
+                <div className="bg-green-500/10 border-2 border-green-500/50 rounded-lg p-4 text-center mb-2">
+                  <p className="text-green-400 font-bold">md:px-24 padding (NEW STANDARD)</p>
+                </div>
+                <div className="flex justify-center animate-fade-in">
+                  <Button 
+                    size="lg" 
+                    className="text-xl md:text-2xl font-bold px-12 py-6 md:px-24 md:py-6 h-auto min-h-[64px] md:min-h-[72px] rounded-lg bg-red-700 dark:bg-red-900/60 hover:bg-red-800 dark:hover:bg-red-900/70 text-white shadow-[0_0_40px_rgba(185,28,28,0.6)] dark:shadow-[0_0_40px_rgba(127,29,29,0.6)] hover:shadow-[0_0_60px_rgba(185,28,28,0.8)] dark:hover:shadow-[0_0_60px_rgba(127,29,29,0.8)] group relative overflow-hidden backdrop-blur-md border-2 border-red-600 dark:border-red-800/40 hover:border-red-500 dark:hover:border-red-700/60 transition-all duration-300 hover:scale-105 animate-pulse w-full"
+                    onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
+                    aria-label="Take the Polish Citizenship Test to check your eligibility"
+                  >
+                    <span className="relative z-10 font-bold drop-shadow-lg">
+                      Take Polish Citizenship Test
+                    </span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-red-800/30 to-red-950/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </Button>
+                </div>
+                <div className="bg-green-500/10 border-2 border-green-500/50 rounded-lg p-3 text-center mt-2">
+                  <p className="text-green-400 text-sm">
+                    Desktop: 96px total horizontal padding (48px each side)
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-yellow-500/10 border-2 border-yellow-500/50 rounded-lg p-6 text-center">
+            <p className="text-yellow-400 font-bold text-lg mb-2">
+              ⚠️ Visual Difference
+            </p>
+            <p className="text-muted-foreground">
+              When constrained to the same width (576px), md:px-24 has 16px MORE padding per side than md:px-20,
+              <br />which means LESS space for text content but MORE visual breathing room.
+            </p>
+          </div>
+        </section>
+
         {/* Technical Specifications */}
         <section className="bg-card border border-border rounded-lg p-8 space-y-6">
           <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
