@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Sparkles, Mail, Globe, Palette, FileText, Target } from "lucide-react";
+import { ArrowLeft, Sparkles, Mail, Globe, Palette, FileText, Target, Image } from "lucide-react";
 import { ImageCarousel } from "@/components/ui/image-carousel";
 import secretary16 from "@/assets/secretaries/secretary-16.png";
 import secretary17 from "@/assets/secretaries/secretary-17.png";
@@ -134,6 +134,15 @@ const DemosHub = () => {
       path: "/design-showcase",
       gradient: "from-indigo-500 to-purple-500",
       features: ["Components", "Typography", "Color Palette"]
+    },
+    {
+      id: "thank-you-images",
+      title: "Thank You Images",
+      description: "Professional images perfect for thank you pages and confirmation screens",
+      icon: Image,
+      path: "/thank-you-images-demo",
+      gradient: "from-teal-500 to-cyan-500",
+      features: ["Professional Photos", "High Quality", "Multiple Options"]
     }
   ];
 
