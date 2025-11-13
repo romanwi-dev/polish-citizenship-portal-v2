@@ -77,7 +77,7 @@ const HeroWeb3 = () => {
               >
                 {/* Front */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center" style={{ backfaceVisibility: 'hidden' }}>
-                  <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">&gt;25</h3>
+                  <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">&gt;20</h3>
                   <p className="text-sm md:text-base font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Years of Experience</p>
                 </div>
                 {/* Back */}
@@ -101,7 +101,7 @@ const HeroWeb3 = () => {
               >
                 {/* Front */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center" style={{ backfaceVisibility: 'hidden' }}>
-                  <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent mb-2">&gt;25'000</h3>
+                  <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent mb-2">&gt;20'000</h3>
                   <p className="text-sm md:text-base font-medium bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent">Cases Processed</p>
                 </div>
                 {/* Back */}
@@ -125,8 +125,8 @@ const HeroWeb3 = () => {
               >
                 {/* Front */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center" style={{ backfaceVisibility: 'hidden' }}>
-                  <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent mb-2">100%</h3>
-                  <p className="text-sm md:text-base font-medium bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">Unmatched Success Rate</p>
+                  <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent mb-2">&gt;100%</h3>
+                  <p className="text-sm md:text-base font-medium bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">Success Rate</p>
                 </div>
                 {/* Back */}
                 <div className="absolute inset-0 flex items-center justify-center p-4" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
