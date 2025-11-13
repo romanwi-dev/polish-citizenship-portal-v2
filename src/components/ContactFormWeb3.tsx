@@ -277,7 +277,15 @@ const ContactFormWeb3 = () => {
           </div>
 
           {/* Five Sequential Arrows Animation */}
-          <div className="flex justify-center mb-2">
+          <div 
+            className="flex justify-center mb-2 cursor-pointer hover:opacity-80 transition-opacity"
+            onClick={() => {
+              const responseCard = document.getElementById('response-time-card');
+              if (responseCard) {
+                responseCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }
+            }}
+          >
             <div className="flex flex-col items-center gap-1.5">
               <div className="w-0 h-0 border-l-[8px] border-r-[8px] border-t-[14px] border-l-transparent border-r-transparent border-t-primary/20 animate-[bounce_1.5s_ease-in-out_infinite]" 
                 style={{ animationDelay: '0s' }} />
@@ -299,7 +307,8 @@ const ContactFormWeb3 = () => {
                 icon: Zap, 
                 label: "Smart Response", 
                 value: "< 5 mins",
-                details: "Advanced AI analyzes your case instantly based on 25,000+ cases and Polish law. Get preliminary assessment with document checklist."
+                details: "Advanced AI analyzes your case instantly based on 25,000+ cases and Polish law. Get preliminary assessment with document checklist.",
+                id: "response-time-card"
               },
               { 
                 icon: Mail, 
@@ -322,6 +331,7 @@ const ContactFormWeb3 = () => {
             ].map((stat, i) => (
               <div 
                 key={i} 
+                id={stat.id}
                 className="w-full max-w-[280px] mx-auto md:max-w-none cursor-pointer"
                 style={{ perspective: '1000px' }}
                 onClick={() => toggleCardFlip(i)}
@@ -335,7 +345,9 @@ const ContactFormWeb3 = () => {
                 >
                   {/* Front Side */}
                   <div 
-                    className="glass-card p-6 rounded-lg hover-glow w-full min-h-[180px] flex flex-col"
+                    className={`glass-card p-6 rounded-lg hover-glow w-full min-h-[180px] flex flex-col ${
+                      stat.id === 'response-time-card' ? 'animate-[pulse_1.5s_ease-in-out_infinite] shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)]' : ''
+                    }`}
                     style={{ 
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden'
