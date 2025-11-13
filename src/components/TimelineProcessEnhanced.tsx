@@ -244,14 +244,14 @@ export default function TimelineProcessEnhanced() {
               className={`relative mb-16 md:mb-24 flex flex-col md:flex-row items-center gap-8 ${!isLeft ? 'md:flex-row-reverse' : ''}`}
             >
               {/* Mobile timeline dot - positioned in center */}
-              <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-20 top-0">
-                <div className={`w-14 h-14 rounded-full bg-gradient-to-r ${step.gradient} border-2 border-background/20 shadow-lg flex items-center justify-center backdrop-blur-sm`}>
-                  <span className="text-lg font-heading font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">{step.number}</span>
+              <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-20 -top-2">
+                <div className="w-16 h-16 rounded-full bg-primary/20 border-2 border-background/20 shadow-lg flex items-center justify-center backdrop-blur-sm">
+                  <span className="text-2xl font-heading font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">{parseInt(step.number)}</span>
                 </div>
               </div>
               
               {/* Content Card - adjusted for mobile spacing */}
-              <div className="w-full md:w-[42%] mt-8 md:mt-0">
+              <div className="w-full md:w-[42%] mt-20 md:mt-0">
                 <div className="relative h-[320px] animate-fade-in" style={{
               perspective: '1000px',
               animationDelay: `${(index + 1) * 100}ms`
@@ -281,7 +281,7 @@ export default function TimelineProcessEnhanced() {
                         <div className="flex items-center justify-center gap-2 mb-1">
                           <span className="text-xs text-muted-foreground">{step.duration}</span>
                         </div>
-                        <h3 className={`text-2xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-lg whitespace-nowrap ${prefersReducedMotion ? '' : 'animate-fade-in'}`}>
+                        <h3 className={`text-3xl md:text-3xl font-heading font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent group-hover:scale-110 transition-all duration-300 drop-shadow-lg whitespace-nowrap ${prefersReducedMotion ? '' : 'animate-fade-in'}`}>
                           {step.title}
                         </h3>
                         <p className="text-xs md:text-sm text-muted-foreground mb-3 flex-1 line-clamp-3 px-2">
