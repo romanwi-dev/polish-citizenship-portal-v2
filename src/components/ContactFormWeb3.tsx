@@ -388,7 +388,7 @@ const ContactFormWeb3 = () => {
                         }}
                       >
                         <div className="text-lg md:text-2xl text-primary font-bold mb-3">{stat.label}</div>
-                        <p className="text-sm md:text-lg text-muted-foreground/70 leading-relaxed text-justify">
+                        <p className="text-sm md:text-lg text-muted-foreground/70 leading-relaxed">
                           {stat.details}
                         </p>
                       </div>
