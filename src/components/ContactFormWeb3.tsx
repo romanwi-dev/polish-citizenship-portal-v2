@@ -276,21 +276,20 @@ const ContactFormWeb3 = () => {
             </div>
           </div>
 
-          {/* Vertical Arrow Animation */}
-          <div className="flex justify-center my-6">
-            <div className="relative h-20 w-0.5 flex flex-col items-center justify-end">
-              {/* Vertical line */}
-              <div className="absolute top-0 w-full h-full bg-gradient-to-b from-primary/0 via-primary/50 to-primary animate-pulse" />
-              
-              {/* Arrow at bottom - connected to line */}
-              <div className="relative z-10 animate-[bounce_2s_ease-in-out_infinite]">
-                <div className="w-0 h-0 border-l-[8px] border-r-[8px] border-t-[14px] border-l-transparent border-r-transparent border-t-primary drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]" />
-              </div>
+          {/* Three Sequential Arrows Animation */}
+          <div className="flex justify-center my-4">
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-0 h-0 border-l-[8px] border-r-[8px] border-t-[14px] border-l-transparent border-r-transparent border-t-primary/80 animate-[bounce_1.5s_ease-in-out_infinite]" 
+                style={{ animationDelay: '0s' }} />
+              <div className="w-0 h-0 border-l-[8px] border-r-[8px] border-t-[14px] border-l-transparent border-r-transparent border-t-primary/60 animate-[bounce_1.5s_ease-in-out_infinite]" 
+                style={{ animationDelay: '0.2s' }} />
+              <div className="w-0 h-0 border-l-[8px] border-r-[8px] border-t-[14px] border-l-transparent border-r-transparent border-t-primary/40 animate-[bounce_1.5s_ease-in-out_infinite]" 
+                style={{ animationDelay: '0.4s' }} />
             </div>
           </div>
 
           {/* Trust Indicators */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto mt-4 mb-24">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto mt-2 mb-24">
             {[
               { 
                 icon: Zap, 
