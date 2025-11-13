@@ -90,7 +90,7 @@ const ContactFormWeb3 = () => {
   };
 
   return (
-    <section id="contact" className="pt-12 pb-12 relative overflow-hidden overflow-x-hidden">
+    <section id="contact" className="pt-32 pb-12 relative overflow-hidden overflow-x-hidden">
       
       {/* Celebration Background - Stars, Sparkles & Fireworks */}
       <div className="absolute inset-0 z-0">
@@ -99,7 +99,7 @@ const ContactFormWeb3 = () => {
       
       <div className="container px-4 mx-auto relative z-10">
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16 w-fit max-w-[280px] mx-auto md:max-w-none">
             <Mail className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium">Connect With Us</span>
           </div>
