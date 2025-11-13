@@ -302,7 +302,7 @@ const ContactFormWeb3 = () => {
           </div>
 
           {/* Trust Indicators */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto -mt-12 md:mt-2 mb-24">
+          <div className="grid grid-cols-1 gap-8 max-w-6xl mx-auto -mt-12 md:mt-2 mb-24">
             {[
               { 
                 icon: Zap, 
