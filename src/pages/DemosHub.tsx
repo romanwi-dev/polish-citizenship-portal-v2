@@ -3,6 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Sparkles, Mail, Globe, Palette, FileText, Target } from "lucide-react";
 import { ImageCarousel } from "@/components/ui/image-carousel";
+import secretary16 from "@/assets/secretaries/secretary-16.png";
+import secretary17 from "@/assets/secretaries/secretary-17.png";
+import secretary18 from "@/assets/secretaries/secretary-18.png";
+import secretary19 from "@/assets/secretaries/secretary-19.png";
+import secretary20 from "@/assets/secretaries/secretary-20.png";
+import secretary21 from "@/assets/secretaries/secretary-21.png";
+import secretary22 from "@/assets/secretaries/secretary-22.png";
+import secretary23 from "@/assets/secretaries/secretary-23.png";
+import secretary24 from "@/assets/secretaries/secretary-24.png";
+import secretary25 from "@/assets/secretaries/secretary-25.png";
 import polishSecretaryWelcome from "@/assets/demos/polish-secretary-welcome.jpg";
 import polishSecretaryDesk from "@/assets/demos/polish-secretary-desk.jpg";
 import polishSecretaryStanding from "@/assets/demos/polish-secretary-standing.jpg";
@@ -29,6 +39,16 @@ const DemosHub = () => {
   const [isWelcomeFlipped, setIsWelcomeFlipped] = useState(false);
 
   const secretaryImages = [
+    secretary16,
+    secretary17,
+    secretary18,
+    secretary19,
+    secretary20,
+    secretary21,
+    secretary22,
+    secretary23,
+    secretary24,
+    secretary25,
     polishSecretaryWelcome,
     polishSecretaryDesk,
     polishSecretaryStanding,
@@ -234,7 +254,7 @@ const DemosHub = () => {
                       <ImageCarousel
                         images={secretaryImages}
                         alt="Professional Polish legal secretary"
-                        autoPlay={true}
+                        autoPlay={false}
                         interval={4000}
                         showControls={true}
                         showIndicators={true}
