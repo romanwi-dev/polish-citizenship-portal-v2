@@ -302,7 +302,7 @@ const ContactFormWeb3 = () => {
           </div>
 
           {/* Trust Indicators */}
-          <div className="grid grid-cols-1 gap-6 md:gap-8 max-w-6xl mx-auto mt-2 mb-24">
+          <div className="grid grid-cols-1 gap-6 md:gap-8 max-w-md mx-auto mt-2 mb-24">
             {[
               { 
                 icon: Zap, 
@@ -357,10 +357,10 @@ const ContactFormWeb3 = () => {
                     }}
                   >
                     {/* Front Side */}
-                    <div 
-                      className={`glass-card p-6 rounded-lg hover-glow w-full h-[140px] md:h-[160px] flex flex-col ${
-                        stat.id === 'response-time-card' ? 'animate-[pulse_1.5s_ease-in-out_infinite] shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)]' : ''
-                      }`}
+                  <div 
+                    className={`glass-card p-6 rounded-lg hover-glow w-full h-[200px] md:h-[240px] flex flex-col ${
+                      stat.id === 'response-time-card' ? 'animate-[pulse_1.5s_ease-in-out_infinite] shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)]' : ''
+                    }`}
                       style={{ 
                         backfaceVisibility: 'hidden',
                         WebkitBackfaceVisibility: 'hidden'
@@ -373,12 +373,12 @@ const ContactFormWeb3 = () => {
                         </div>
                         <div className="text-lg md:text-xl font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{stat.label}</div>
                       </div>
-                      <div className="text-xs text-primary/50 text-center mt-8">Click for details</div>
+                      <div className="text-xs text-primary/50 text-center mt-4">Click for details</div>
                     </div>
 
                     {/* Back Side */}
                     <div 
-                      className="glass-card p-6 rounded-lg w-full absolute top-0 left-0 min-h-[180px] flex flex-col justify-center"
+                      className="glass-card p-6 rounded-lg w-full absolute top-0 left-0 h-[200px] md:h-[240px] flex flex-col justify-center"
                       style={{ 
                         backfaceVisibility: 'hidden',
                         WebkitBackfaceVisibility: 'hidden',
