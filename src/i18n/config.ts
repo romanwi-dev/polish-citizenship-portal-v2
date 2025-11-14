@@ -80,6 +80,19 @@ const resources = {
         navigation: 'Navigation'
       },
       
+      // Hero Section - Homepage
+      hero: {
+        badge: 'Web3 Legal Services',
+        title: 'Polish Citizenship by Descent',
+        description: 'Expert legal guidance for people of Polish and Polish-Jewish descent from around the world for obtaining Polish citizenship and EU passports through Polish ancestry - unmatched success rate, true realistic timeline, transparent pricing',
+        cta: 'Take Polish Citizenship Test',
+        stats: {
+          experience: 'Years of Experience',
+          cases: 'Cases Processed',
+          success: 'Success Rate'
+        }
+      },
+      
       // About Section - Demo
       about: {
         badge: 'Legal Expertise Since 2003',
@@ -141,6 +154,17 @@ const resources = {
         signOut: 'Cerrar Sesión',
         navigation: 'Navegación'
       },
+      hero: {
+        badge: 'Servicios Legales Web3',
+        title: 'Ciudadanía Polaca por Descendencia',
+        description: 'Orientación legal experta para personas de ascendencia polaca y judío-polaca de todo el mundo para obtener la ciudadanía polaca y pasaportes de la UE a través de ancestros polacos - tasa de éxito inigualable, cronograma realista verdadero, precios transparentes',
+        cta: 'Realizar Test de Ciudadanía Polaca',
+        stats: {
+          experience: 'Años de Experiencia',
+          cases: 'Casos Procesados',
+          success: 'Tasa de Éxito'
+        }
+      },
       about: {
         badge: 'Experiencia Legal Desde 2003',
         title: '¿Por Qué Elegirnos para Tu Proceso de Ciudadanía Polaca?',
@@ -196,6 +220,17 @@ const resources = {
         register: 'Registrar / Entrar',
         signOut: 'Sair',
         navigation: 'Navegação'
+      },
+      hero: {
+        badge: 'Serviços Jurídicos Web3',
+        title: 'Cidadania Polonesa por Descendência',
+        description: 'Orientação jurídica especializada para pessoas de ascendência polonesa e judaico-polonesa de todo o mundo para obter cidadania polonesa e passaportes da UE através de ancestrais poloneses - taxa de sucesso incomparável, cronograma realista verdadeiro, preços transparentes',
+        cta: 'Fazer Teste de Cidadania Polonesa',
+        stats: {
+          experience: 'Anos de Experiência',
+          cases: 'Casos Processados',
+          success: 'Taxa de Sucesso'
+        }
       },
       about: {
         badge: 'Experiência Jurídica Desde 2003',
@@ -253,6 +288,17 @@ const resources = {
         signOut: 'Abmelden',
         navigation: 'Navigation'
       },
+      hero: {
+        badge: 'Web3 Rechtsdienstleistungen',
+        title: 'Polnische Staatsbürgerschaft durch Abstammung',
+        description: 'Fachkundige rechtliche Beratung für Menschen polnischer und polnisch-jüdischer Abstammung aus der ganzen Welt zum Erhalt der polnischen Staatsbürgerschaft und EU-Pässe durch polnische Vorfahren - unübertroffene Erfolgsquote, echter realistischer Zeitplan, transparente Preise',
+        cta: 'Polnischen Staatsbürgerschaftstest Machen',
+        stats: {
+          experience: 'Jahre Erfahrung',
+          cases: 'Bearbeitete Fälle',
+          success: 'Erfolgsquote'
+        }
+      },
       about: {
         badge: 'Rechtliche Expertise Seit 2003',
         title: 'Warum Uns für Ihre Polnische Staatsbürgerschaft Wählen?',
@@ -308,6 +354,17 @@ const resources = {
         register: "S'inscrire / Se Connecter",
         signOut: 'Se Déconnecter',
         navigation: 'Navigation'
+      },
+      hero: {
+        badge: 'Services Juridiques Web3',
+        title: 'Citoyenneté Polonaise par Descendance',
+        description: "Conseils juridiques experts pour les personnes d'ascendance polonaise et judéo-polonaise du monde entier pour obtenir la citoyenneté polonaise et les passeports de l'UE par ascendance polonaise - taux de réussite inégalé, calendrier réaliste véritable, tarifs transparents",
+        cta: 'Passer le Test de Citoyenneté Polonaise',
+        stats: {
+          experience: "Années d'Expérience",
+          cases: 'Dossiers Traités',
+          success: 'Taux de Réussite'
+        }
       },
       about: {
         badge: 'Expertise Juridique Depuis 2003',
@@ -365,6 +422,17 @@ const resources = {
         signOut: 'התנתקות',
         navigation: 'ניווט'
       },
+      hero: {
+        badge: 'שירותים משפטיים Web3',
+        title: 'אזרחות פולנית לפי מוצא',
+        description: 'הדרכה משפטית מומחית לאנשים ממוצא פולני ויהודי-פולני מרחבי העולם להשגת אזרחות פולנית ודרכוני EU דרך מוצא פולני - שיעור הצלחה ללא תחרות, ציר זמן ריאלי אמיתי, תמחור שקוף',
+        cta: 'בצע מבחן אזרחות פולנית',
+        stats: {
+          experience: 'שנות ניסיון',
+          cases: 'תיקים שטופלו',
+          success: 'שיעור הצלחה'
+        }
+      },
       about: {
         badge: 'מומחיות משפטית מאז 2003',
         title: 'למה לבחור בנו למסע האזרחות הפולנית שלך?',
@@ -421,6 +489,17 @@ const resources = {
         signOut: 'Выйти',
         navigation: 'Навигация'
       },
+      hero: {
+        badge: 'Юридические Услуги Web3',
+        title: 'Польское Гражданство по Происхождению',
+        description: 'Экспертное юридическое руководство для людей польского и польско-еврейского происхождения со всего мира для получения польского гражданства и паспортов ЕС через польское происхождение - непревзойденный показатель успеха, реальный реалистичный график, прозрачные цены',
+        cta: 'Пройти Тест на Польское Гражданство',
+        stats: {
+          experience: 'Лет Опыта',
+          cases: 'Обработано Дел',
+          success: 'Показатель Успеха'
+        }
+      },
       about: {
         badge: 'Юридическая Экспертиза с 2003 года',
         title: 'Почему Выбрать Нас для Вашего Пути к Польскому Гражданству?',
@@ -476,6 +555,17 @@ const resources = {
         register: 'Реєстрація / Вхід',
         signOut: 'Вийти',
         navigation: 'Навігація'
+      },
+      hero: {
+        badge: 'Юридичні Послуги Web3',
+        title: 'Польське Громадянство за Походженням',
+        description: 'Експертне юридичне керівництво для людей польського та польсько-єврейського походження з усього світу для отримання польського громадянства та паспортів ЄС через польське походження - неперевершений показник успіху, справжній реалістичний графік, прозорі ціни',
+        cta: 'Пройти Тест на Польське Громадянство',
+        stats: {
+          experience: 'Років Досвіду',
+          cases: 'Оброблено Справ',
+          success: 'Показник Успіху'
+        }
       },
       about: {
         badge: 'Юридична Експертиза з 2003 року',
