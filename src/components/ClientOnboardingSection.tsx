@@ -5,6 +5,7 @@ import { MessageSquare, ClipboardCheck, FileSearch, Scale, Send, Brain, FileChec
 import { Button } from "./ui/button";
 import { MainCTA } from "./ui/main-cta";
 import { Card } from "./ui/card";
+import { useTranslation } from 'react-i18next';
 
 const onboardingSteps = [
   {
@@ -82,6 +83,7 @@ const onboardingSteps = [
 ];
 
 export default function ClientOnboardingSection() {
+  const { t } = useTranslation();
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
 
   const toggleFlip = (stepNumber: string) => {
@@ -90,6 +92,81 @@ export default function ClientOnboardingSection() {
       [stepNumber]: !prev[stepNumber]
     }));
   };
+
+  const onboardingSteps = [
+    {
+      number: t('onboarding.step1Number'),
+      title: t('onboarding.step1Title'),
+      description: t('onboarding.step1Desc'),
+      icon: MessageSquare,
+      gradient: "from-primary to-secondary",
+      cta: t('onboarding.step1Cta'),
+      link: "#contact"
+    },
+    {
+      number: t('onboarding.step2Number'),
+      title: t('onboarding.step2Title'),
+      description: t('onboarding.step2Desc'),
+      icon: ClipboardCheck,
+      gradient: "from-secondary to-accent",
+      cta: t('onboarding.step2Cta'),
+      link: "https://polishcitizenship.typeform.com/to/PS5ecU"
+    },
+    {
+      number: t('onboarding.step3Number'),
+      title: t('onboarding.step3Title'),
+      description: t('onboarding.step3Desc'),
+      icon: FileSearch,
+      gradient: "from-accent to-primary",
+      cta: t('onboarding.step3Cta'),
+      link: "#"
+    },
+    {
+      number: t('onboarding.step4Number'),
+      title: t('onboarding.step4Title'),
+      description: t('onboarding.step4Desc'),
+      icon: Scale,
+      gradient: "from-primary to-secondary",
+      cta: t('onboarding.step4Cta'),
+      link: "#contact"
+    },
+    {
+      number: t('onboarding.step5Number'),
+      title: t('onboarding.step5Title'),
+      description: t('onboarding.step5Desc'),
+      icon: Send,
+      gradient: "from-secondary to-accent",
+      cta: t('onboarding.step5Cta'),
+      link: "#"
+    },
+    {
+      number: t('onboarding.step6Number'),
+      title: t('onboarding.step6Title'),
+      description: t('onboarding.step6Desc'),
+      icon: Brain,
+      gradient: "from-accent to-primary",
+      cta: t('onboarding.step6Cta'),
+      link: "#"
+    },
+    {
+      number: t('onboarding.step7Number'),
+      title: t('onboarding.step7Title'),
+      description: t('onboarding.step7Desc'),
+      icon: FileCheck2,
+      gradient: "from-primary to-secondary",
+      cta: t('onboarding.step7Cta'),
+      link: "#"
+    },
+    {
+      number: t('onboarding.step8Number'),
+      title: t('onboarding.step8Title'),
+      description: t('onboarding.step8Desc'),
+      icon: Globe,
+      gradient: "from-secondary to-accent",
+      cta: t('onboarding.step8Cta'),
+      link: "#contact"
+    },
+  ];
 
   return (
     <section id="how-to-start" className="relative py-24 overflow-hidden overflow-x-hidden">
