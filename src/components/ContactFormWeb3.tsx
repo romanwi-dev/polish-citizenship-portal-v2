@@ -425,7 +425,7 @@ const ContactFormWeb3 = () => {
 
           {/* Bottom CTA */}
           <MainCTA
-            wrapperClassName="mt-40 mb-2"
+            wrapperClassName="mt-40 mb-0"
             onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
             ariaLabel="Take the Polish Citizenship Test to check your eligibility"
           >
@@ -435,7 +435,7 @@ const ContactFormWeb3 = () => {
       </div>
 
       {/* EU Celebration Section - Full Width */}
-      <div className="hidden md:block mt-20 mb-20 h-[900px] md:h-[750px] overflow-hidden w-full">
+      <div className="hidden md:block mt-0 mb-0 h-[900px] md:h-[750px] overflow-hidden w-full">
         <EUCelebrationSection />
       </div>
     </section>
