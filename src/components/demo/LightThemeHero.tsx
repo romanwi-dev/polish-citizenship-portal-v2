@@ -39,7 +39,7 @@ const LightThemeHero = () => {
           <div className="pt-4">
             <Button
               size="lg"
-              className="text-lg px-12 py-8 rounded-2xl bg-gradient-to-r from-primary to-secondary text-white border-2 border-primary/20 shadow-[var(--shadow-elevated-light)] hover:shadow-[var(--shadow-hover-light)] hover:-translate-y-1 transition-all duration-300 hover:scale-105"
+              className="text-lg px-12 py-8 rounded-2xl bg-gradient-to-r from-[hsl(var(--primary)/0.9)] to-[hsl(var(--secondary)/0.9)] text-primary-foreground border-2 border-primary/20 shadow-[var(--shadow-elevated-light)] hover:shadow-[var(--shadow-hover-light)] hover:-translate-y-1 transition-all duration-300 hover:scale-105 hover:from-[hsl(var(--primary)/0.2)] hover:to-[hsl(var(--secondary)/0.2)] hover:text-foreground"
               onClick={() => window.open('https://poland-citizenship-test.typeform.com/to/VWIaQFRG', '_blank')}
             >
               <span className="font-bold">Take Polish Citizenship Test</span>
