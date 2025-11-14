@@ -42,7 +42,7 @@ const HeroWeb3 = () => {
             </span>
           </h1>
           
-          <p className="text-lg md:text-xl lg:text-2xl font-light mb-12 md:mb-16 leading-relaxed max-w-full md:max-w-[95%] animate-fade-in mx-auto px-4 md:px-0 text-foreground/90">
+          <p className="text-lg md:text-xl lg:text-2xl font-light mb-12 md:mb-16 leading-relaxed max-w-full md:max-w-[95%] animate-fade-in mx-auto px-4 md:px-0 text-foreground/90 dark:text-foreground/80 light:text-foreground">
             Expert legal guidance for people of Polish and Polish-Jewish descent from around the world for obtaining Polish citizenship and EU passports through Polish ancestry - unmatched success rate, true realistic timeline, transparent pricing
           </p>
           
@@ -67,7 +67,7 @@ const HeroWeb3 = () => {
             >
               <div className="w-full h-full flex flex-col items-center justify-center">
                 <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-2 text-shadow-primary">&gt;20</h3>
-                <p className="text-base md:text-lg font-medium text-foreground/80">Years of Experience</p>
+                <p className="text-base md:text-lg font-medium text-foreground dark:text-foreground/80">Years of Experience</p>
               </div>
             </div>
 
@@ -77,7 +77,7 @@ const HeroWeb3 = () => {
             >
               <div className="w-full h-full flex flex-col items-center justify-center">
                 <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-2 text-shadow-primary">&gt;20,000</h3>
-                <p className="text-base md:text-lg font-medium text-foreground/80">Cases Processed</p>
+                <p className="text-base md:text-lg font-medium text-foreground dark:text-foreground/80">Cases Processed</p>
               </div>
             </div>
 
@@ -87,7 +87,7 @@ const HeroWeb3 = () => {
             >
               <div className="w-full h-full flex flex-col items-center justify-center">
                 <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-2 text-shadow-primary">100%</h3>
-                <p className="text-base md:text-lg font-medium text-foreground/80">Success Rate</p>
+                <p className="text-base md:text-lg font-medium text-foreground dark:text-foreground/80">Success Rate</p>
               </div>
             </div>
           </div>
