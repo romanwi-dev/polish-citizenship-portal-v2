@@ -37,7 +37,7 @@ const HeroWeb3 = () => {
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-black mb-14 leading-tight animate-fade-in tracking-tight" style={{
           contentVisibility: 'auto'
         }}>
-            <span className="bg-gradient-to-r from-[#7C1328] via-[#A01D3D] to-[#7C1328] bg-clip-text text-transparent" style={{
+            <span className="bg-gradient-to-r from-[#4A0C18] via-[#7C1328] to-[#D94565] bg-clip-text text-transparent" style={{
               textShadow: '0 0 40px rgba(124, 19, 40, 0.5), 0 0 80px rgba(124, 19, 40, 0.3)'
             }}>
               Polish Citizenship by Descent
