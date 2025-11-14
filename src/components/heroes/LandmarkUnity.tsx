@@ -2,8 +2,8 @@ import warsawCelebration from "@/assets/hero/warsaw-celebration.png";
 
 export const LandmarkUnity = () => {
   return (
-    <section className="pt-32 pb-12 relative overflow-hidden">
-    <div className="relative w-full h-[300px] md:h-[400px] overflow-hidden group">
+    <section className="relative min-h-[60vh] md:min-h-screen overflow-hidden">
+    <div className="relative w-full h-full min-h-[60vh] md:min-h-screen overflow-hidden group">
       {/* Background Image */}
       <img 
         src={warsawCelebration} 
