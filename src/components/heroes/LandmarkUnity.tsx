@@ -1,12 +1,12 @@
-import unityCelebration from "@/assets/unity-celebration.jpg";
+import brusselsUnity from "@/assets/eu-celebration/celebration-17.png";
 
 export const LandmarkUnity = () => {
   return (
     <div className="relative w-full h-[300px] md:h-auto overflow-hidden">
-      {/* Image background - cropped from top and darkened, same height as hero on desktop */}
+      {/* Image background - Brussels Unity at golden hour */}
       <img
-        src={unityCelebration}
-        alt="Unity Celebration - Massive crowd celebrating with EU flags and fireworks"
+        src={brusselsUnity}
+        alt="Brussels Unity - City square celebration at golden hour"
         className="absolute inset-0 w-full h-full md:h-auto object-cover object-bottom brightness-50"
       />
     </div>
