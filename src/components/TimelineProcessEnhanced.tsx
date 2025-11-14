@@ -312,14 +312,14 @@ export default function TimelineProcessEnhanced() {
                       <div className="flex-1 flex flex-col gap-3 justify-center items-center text-center">
                         <Shield className="w-12 h-12 text-primary mb-3" />
                         <h3 className="text-xl font-heading font-bold tracking-tight text-card-foreground mb-2">
-                          Detailed Information
+                          {t('timeline.detailedInfoTitle')}
                         </h3>
                         <div className="flex-1 overflow-auto">
                           <p className="text-sm text-muted-foreground">
-                            Full timeline content, detailed requirements, and process specifics are available to registered users in their portal account.
+                            {t('timeline.detailedInfoDesc')}
                           </p>
                           <p className="text-xs text-muted-foreground/70 mt-3 italic">
-                            Sign up to access comprehensive step-by-step guidance
+                            {t('timeline.detailedInfoSignup')}
                           </p>
                         </div>
                       </div>
