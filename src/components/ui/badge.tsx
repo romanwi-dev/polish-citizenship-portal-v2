@@ -13,9 +13,9 @@ const badgeVariants = cva(
         destructive: "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
         outline: "text-foreground",
         standard: "border-transparent bg-muted text-muted-foreground hover:bg-muted/80",
-        expedited: "border-transparent bg-secondary/20 text-secondary hover:bg-secondary/30",
-        vip: "border-transparent bg-accent/20 text-accent hover:bg-accent/30",
-        vipPlus: "border-transparent bg-primary/20 text-primary hover:bg-primary/30",
+        expedited: "border-transparent bg-secondary/30 text-secondary-foreground hover:bg-secondary/40",
+        vip: "border-transparent bg-accent/30 text-accent-foreground hover:bg-accent/40",
+        vipPlus: "border-transparent bg-primary/30 text-primary-foreground hover:bg-primary/40",
       },
     },
     defaultVariants: {
