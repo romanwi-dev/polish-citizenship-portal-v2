@@ -42,7 +42,7 @@ const HeroWeb3 = () => {
             </span>
           </h1>
           
-          <p className="text-lg md:text-xl lg:text-2xl font-light mb-12 md:mb-16 leading-relaxed max-w-full md:max-w-[95%] animate-fade-in mx-auto px-4 md:px-0 bg-gradient-to-r from-[#E05575] via-[#F06585] to-white bg-clip-text text-transparent">
+          <p className="text-lg md:text-xl lg:text-2xl font-light mb-12 md:mb-16 leading-relaxed max-w-full md:max-w-[95%] animate-fade-in mx-auto px-4 md:px-0 bg-gradient-to-r from-[#D94565] via-[#F06585] to-white bg-clip-text text-transparent">
             Expert legal guidance for people of Polish and Polish-Jewish descent from around the world for obtaining Polish citizenship and EU passports through Polish ancestry - unmatched success rate, true realistic timeline, transparent pricing
           </p>
           
@@ -66,8 +66,8 @@ const HeroWeb3 = () => {
               className="glass-card hover-glow p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none shadow-[0_0_20px_rgba(217,69,101,0.3)] opacity-80 backdrop-blur-md border border-primary/20"
             >
               <div className="w-full h-full flex flex-col items-center justify-center">
-                <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#7C1328] to-[#D94565] bg-clip-text text-transparent mb-2">&gt;20</h3>
-                <p className="text-base md:text-lg font-medium bg-gradient-to-r from-[#7C1328] to-[#D94565] bg-clip-text text-transparent">Years of Experience</p>
+                <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#D94565] via-[#F06585] to-white bg-clip-text text-transparent mb-2">&gt;20</h3>
+                <p className="text-base md:text-lg font-medium bg-gradient-to-r from-[#D94565] via-[#F06585] to-white bg-clip-text text-transparent">Years of Experience</p>
               </div>
             </div>
 
@@ -76,8 +76,8 @@ const HeroWeb3 = () => {
               className="glass-card hover-glow p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none shadow-[0_0_20px_rgba(217,69,101,0.3)] opacity-80 backdrop-blur-md border border-primary/20"
             >
               <div className="w-full h-full flex flex-col items-center justify-center">
-                <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#8B1D3D] to-[#E05575] bg-clip-text text-transparent mb-2">&gt;20,000</h3>
-                <p className="text-base md:text-lg font-medium bg-gradient-to-r from-[#8B1D3D] to-[#E05575] bg-clip-text text-transparent">Cases Processed</p>
+                <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#D94565] via-[#F06585] to-white bg-clip-text text-transparent mb-2">&gt;20,000</h3>
+                <p className="text-base md:text-lg font-medium bg-gradient-to-r from-[#D94565] via-[#F06585] to-white bg-clip-text text-transparent">Cases Processed</p>
               </div>
             </div>
 
@@ -86,8 +86,8 @@ const HeroWeb3 = () => {
               className="glass-card hover-glow p-6 rounded-lg text-center relative h-[140px] md:h-[160px] flex items-center justify-center w-full max-w-[280px] mx-auto md:max-w-none shadow-[0_0_20px_rgba(217,69,101,0.3)] opacity-80 backdrop-blur-md border border-primary/20"
             >
               <div className="w-full h-full flex flex-col items-center justify-center">
-                <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#A01D48] to-[#F06585] bg-clip-text text-transparent mb-2">100%</h3>
-                <p className="text-base md:text-lg font-medium bg-gradient-to-r from-[#A01D48] to-[#F06585] bg-clip-text text-transparent">Success Rate</p>
+                <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#D94565] via-[#F06585] to-white bg-clip-text text-transparent mb-2">100%</h3>
+                <p className="text-base md:text-lg font-medium bg-gradient-to-r from-[#D94565] via-[#F06585] to-white bg-clip-text text-transparent">Success Rate</p>
               </div>
             </div>
           </div>
