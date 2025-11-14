@@ -207,7 +207,57 @@ const resources = {
         title: 'True Honest Testimonials From Our Real Clients',
         subtitle: 'Real clients who reclaimed their Polish heritage and citizenship',
         rating: '5.0 average from 200+ clients',
-        cta: 'Take Polish Citizenship Test'
+        cta: 'Take Polish Citizenship Test',
+        reviews: [
+          {
+            name: "Michael K.",
+            location: "Chicago, USA",
+            heritage: "Kraków ancestry",
+            text: "After 18 months, I received my Polish citizenship confirmation. The team handled everything professionally - from archival research to the final decision. Worth every penny.",
+            timeline: "18 months",
+            year: "2024"
+          },
+          {
+            name: "Sarah M.",
+            location: "Toronto, Canada",
+            heritage: "Warsaw lineage",
+            text: "They found my great-grandfather's birth certificate in Polish archives that I couldn't locate myself. Their expertise in Polish law and archival research is unmatched.",
+            timeline: "14 months",
+            year: "2024"
+          },
+          {
+            name: "David L.",
+            location: "London, UK",
+            heritage: "Gdańsk roots",
+            text: "The entire process was transparent. Regular updates, clear explanations, and their PUSH strategy helped accelerate my case. Now holding my Polish passport!",
+            timeline: "16 months",
+            year: "2023"
+          },
+          {
+            name: "Jennifer R.",
+            location: "Sydney, Australia",
+            heritage: "Poznań heritage",
+            text: "From family tree verification to civil acts preparation, they guided me through every step. The translation service was impeccable - all documents certified perfectly.",
+            timeline: "20 months",
+            year: "2023"
+          },
+          {
+            name: "Robert P.",
+            location: "New York, USA",
+            heritage: "Lwów ancestry",
+            text: "Complex case with pre-WWII borders, but they navigated it flawlessly. Their knowledge of historical Polish territories and citizenship law is exceptional.",
+            timeline: "22 months",
+            year: "2024"
+          },
+          {
+            name: "Anna T.",
+            location: "Berlin, Germany",
+            heritage: "Wrocław lineage",
+            text: "Fast, efficient, and thoroughly professional. They handled all communications with Polish authorities in Warsaw, making the process stress-free for me.",
+            timeline: "12 months",
+            year: "2024"
+          }
+        ]
       },
 
       // Contact Form Section
@@ -658,7 +708,57 @@ const resources = {
         title: 'Testimonios Reales de Clientes',
         subtitle: 'Clientes que recuperaron su ciudadanía polaca',
         rating: '5.0 de 200+ clientes',
-        cta: 'Realizar Test'
+        cta: 'Realizar Test',
+        reviews: [
+          {
+            name: "Michael K.",
+            location: "Chicago, EE.UU.",
+            heritage: "Ascendencia de Cracovia",
+            text: "Después de 18 meses, recibí mi confirmación de ciudadanía polaca. El equipo manejó todo profesionalmente - desde la investigación de archivos hasta la decisión final. Vale cada centavo.",
+            timeline: "18 meses",
+            year: "2024"
+          },
+          {
+            name: "Sarah M.",
+            location: "Toronto, Canadá",
+            heritage: "Linaje de Varsovia",
+            text: "Encontraron el certificado de nacimiento de mi bisabuelo en archivos polacos que yo no podía localizar. Su experiencia en derecho polaco e investigación de archivos es inigualable.",
+            timeline: "14 meses",
+            year: "2024"
+          },
+          {
+            name: "David L.",
+            location: "Londres, Reino Unido",
+            heritage: "Raíces de Gdańsk",
+            text: "Todo el proceso fue transparente. Actualizaciones regulares, explicaciones claras, y su estrategia PUSH ayudó a acelerar mi caso. ¡Ahora tengo mi pasaporte polaco!",
+            timeline: "16 meses",
+            year: "2023"
+          },
+          {
+            name: "Jennifer R.",
+            location: "Sídney, Australia",
+            heritage: "Herencia de Poznań",
+            text: "Desde la verificación del árbol genealógico hasta la preparación de actas civiles, me guiaron en cada paso. El servicio de traducción fue impecable - todos los documentos certificados perfectamente.",
+            timeline: "20 meses",
+            year: "2023"
+          },
+          {
+            name: "Robert P.",
+            location: "Nueva York, EE.UU.",
+            heritage: "Ascendencia de Lwów",
+            text: "Caso complejo con fronteras pre-Segunda Guerra Mundial, pero lo navegaron perfectamente. Su conocimiento de territorios históricos polacos y ley de ciudadanía es excepcional.",
+            timeline: "22 meses",
+            year: "2024"
+          },
+          {
+            name: "Anna T.",
+            location: "Berlín, Alemania",
+            heritage: "Linaje de Wrocław",
+            text: "Rápido, eficiente y completamente profesional. Manejaron todas las comunicaciones con autoridades polacas en Varsovia, haciendo el proceso sin estrés para mí.",
+            timeline: "12 meses",
+            year: "2024"
+          }
+        ]
       },
       contact: {
         badge: 'Conéctate',
@@ -1149,7 +1249,57 @@ const resources = {
         title: 'Testemunhos Reais de Clientes',
         subtitle: 'Clientes que recuperaram cidadania polonesa',
         rating: '5.0 de 200+ clientes',
-        cta: 'Fazer Teste'
+        cta: 'Fazer Teste',
+        reviews: [
+          {
+            name: "Michael K.",
+            location: "Chicago, EUA",
+            heritage: "Ancestralidade de Cracóvia",
+            text: "Após 18 meses, recebi minha confirmação de cidadania polonesa. A equipe lidou com tudo profissionalmente - desde pesquisa de arquivos até a decisão final. Vale cada centavo.",
+            timeline: "18 meses",
+            year: "2024"
+          },
+          {
+            name: "Sarah M.",
+            location: "Toronto, Canadá",
+            heritage: "Linhagem de Varsóvia",
+            text: "Encontraram a certidão de nascimento do meu bisavô em arquivos poloneses que eu não conseguia localizar. Sua expertise em lei polonesa e pesquisa de arquivos é incomparável.",
+            timeline: "14 meses",
+            year: "2024"
+          },
+          {
+            name: "David L.",
+            location: "Londres, Reino Unido",
+            heritage: "Raízes de Gdańsk",
+            text: "Todo o processo foi transparente. Atualizações regulares, explicações claras, e sua estratégia PUSH ajudou a acelerar meu caso. Agora segurando meu passaporte polonês!",
+            timeline: "16 meses",
+            year: "2023"
+          },
+          {
+            name: "Jennifer R.",
+            location: "Sydney, Austrália",
+            heritage: "Herança de Poznań",
+            text: "Desde verificação da árvore genealógica até preparação de atos civis, me guiaram em cada passo. O serviço de tradução foi impecável - todos os documentos certificados perfeitamente.",
+            timeline: "20 meses",
+            year: "2023"
+          },
+          {
+            name: "Robert P.",
+            location: "Nova York, EUA",
+            heritage: "Ancestralidade de Lwów",
+            text: "Caso complexo com fronteiras pré-Segunda Guerra Mundial, mas navegaram perfeitamente. Seu conhecimento de territórios históricos poloneses e lei de cidadania é excepcional.",
+            timeline: "22 meses",
+            year: "2024"
+          },
+          {
+            name: "Anna T.",
+            location: "Berlim, Alemanha",
+            heritage: "Linhagem de Wrocław",
+            text: "Rápido, eficiente e completamente profissional. Lidaram com todas as comunicações com autoridades polonesas em Varsóvia, tornando o processo sem estresse para mim.",
+            timeline: "12 meses",
+            year: "2024"
+          }
+        ]
       },
       contact: {
         badge: 'Conecte-se',
@@ -1602,7 +1752,57 @@ const resources = {
         title: 'Echte Kunden-Testimonials',
         subtitle: 'Kunden die polnische Staatsbürgerschaft erhielten',
         rating: '5.0 von 200+ Kunden',
-        cta: 'Test Machen'
+        cta: 'Test Machen',
+        reviews: [
+          {
+            name: "Michael K.",
+            location: "Chicago, USA",
+            heritage: "Krakauer Abstammung",
+            text: "Nach 18 Monaten erhielt ich meine polnische Staatsbürgerschaftsbestätigung. Das Team hat alles professionell abgewickelt - von der Archivrecherche bis zur endgültigen Entscheidung. Jeden Cent wert.",
+            timeline: "18 Monate",
+            year: "2024"
+          },
+          {
+            name: "Sarah M.",
+            location: "Toronto, Kanada",
+            heritage: "Warschauer Linie",
+            text: "Sie fanden die Geburtsurkunde meines Urgroßvaters in polnischen Archiven, die ich selbst nicht finden konnte. Ihre Expertise im polnischen Recht und der Archivforschung ist unübertroffen.",
+            timeline: "14 Monate",
+            year: "2024"
+          },
+          {
+            name: "David L.",
+            location: "London, Großbritannien",
+            heritage: "Danziger Wurzeln",
+            text: "Der gesamte Prozess war transparent. Regelmäßige Updates, klare Erklärungen und ihre PUSH-Strategie half, meinen Fall zu beschleunigen. Jetzt halte ich meinen polnischen Pass!",
+            timeline: "16 Monate",
+            year: "2023"
+          },
+          {
+            name: "Jennifer R.",
+            location: "Sydney, Australien",
+            heritage: "Posener Erbe",
+            text: "Von der Stammbaumverifizierung bis zur Vorbereitung der Zivilakte führten sie mich durch jeden Schritt. Der Übersetzungsservice war tadellos - alle Dokumente perfekt zertifiziert.",
+            timeline: "20 Monate",
+            year: "2023"
+          },
+          {
+            name: "Robert P.",
+            location: "New York, USA",
+            heritage: "Lemberger Abstammung",
+            text: "Komplexer Fall mit Grenzen vor dem Zweiten Weltkrieg, aber sie meisterten ihn perfekt. Ihr Wissen über historische polnische Gebiete und Staatsbürgerschaftsrecht ist außergewöhnlich.",
+            timeline: "22 Monate",
+            year: "2024"
+          },
+          {
+            name: "Anna T.",
+            location: "Berlin, Deutschland",
+            heritage: "Breslauer Linie",
+            text: "Schnell, effizient und absolut professionell. Sie haben alle Kommunikationen mit polnischen Behörden in Warschau abgewickelt und den Prozess stressfrei für mich gemacht.",
+            timeline: "12 Monate",
+            year: "2024"
+          }
+        ]
       },
       contact: {
         badge: 'Kontaktieren Sie Uns',
@@ -1977,7 +2177,57 @@ const resources = {
         title: 'Témoignages Réels de Clients',
         subtitle: 'Clients qui ont récupéré leur citoyenneté polonaise',
         rating: '5.0 de 200+ clients',
-        cta: 'Passer le Test'
+        cta: 'Passer le Test',
+        reviews: [
+          {
+            name: "Michael K.",
+            location: "Chicago, États-Unis",
+            heritage: "Ascendance de Cracovie",
+            text: "Après 18 mois, j'ai reçu ma confirmation de citoyenneté polonaise. L'équipe a tout géré professionnellement - de la recherche d'archives à la décision finale. Chaque euro en vaut la peine.",
+            timeline: "18 mois",
+            year: "2024"
+          },
+          {
+            name: "Sarah M.",
+            location: "Toronto, Canada",
+            heritage: "Lignée de Varsovie",
+            text: "Ils ont trouvé l'acte de naissance de mon arrière-grand-père dans les archives polonaises que je ne pouvais pas localiser moi-même. Leur expertise en droit polonais et recherche d'archives est inégalée.",
+            timeline: "14 mois",
+            year: "2024"
+          },
+          {
+            name: "David L.",
+            location: "Londres, Royaume-Uni",
+            heritage: "Racines de Gdańsk",
+            text: "Tout le processus était transparent. Mises à jour régulières, explications claires, et leur stratégie PUSH a aidé à accélérer mon dossier. Maintenant je tiens mon passeport polonais!",
+            timeline: "16 mois",
+            year: "2023"
+          },
+          {
+            name: "Jennifer R.",
+            location: "Sydney, Australie",
+            heritage: "Héritage de Poznań",
+            text: "De la vérification de l'arbre généalogique à la préparation des actes civils, ils m'ont guidé à chaque étape. Le service de traduction était impeccable - tous les documents certifiés parfaitement.",
+            timeline: "20 mois",
+            year: "2023"
+          },
+          {
+            name: "Robert P.",
+            location: "New York, États-Unis",
+            heritage: "Ascendance de Lwów",
+            text: "Cas complexe avec des frontières d'avant la Seconde Guerre mondiale, mais ils l'ont géré parfaitement. Leur connaissance des territoires historiques polonais et du droit de la citoyenneté est exceptionnelle.",
+            timeline: "22 mois",
+            year: "2024"
+          },
+          {
+            name: "Anna T.",
+            location: "Berlin, Allemagne",
+            heritage: "Lignée de Wrocław",
+            text: "Rapide, efficace et complètement professionnel. Ils ont géré toutes les communications avec les autorités polonaises à Varsovie, rendant le processus sans stress pour moi.",
+            timeline: "12 mois",
+            year: "2024"
+          }
+        ]
       },
       contact: {
         badge: 'Contactez-Nous',
@@ -2352,7 +2602,57 @@ const resources = {
         title: 'המלצות אמיתיות מלקוחות',
         subtitle: 'לקוחות שהחזירו אזרחות פולנית',
         rating: '5.0 ממוצע מ-200+ לקוחות',
-        cta: 'עבור מבחן'
+        cta: 'עבור מבחן',
+        reviews: [
+          {
+            name: "מייקל ק.",
+            location: "שיקגו, ארה״ב",
+            heritage: "מוצא מקרקוב",
+            text: "אחרי 18 חודשים, קיבלתי את אישור האזרחות הפולנית שלי. הצוות טיפל בהכל באופן מקצועי - ממחקר ארכיוני ועד ההחלטה הסופית. שווה כל אגורה.",
+            timeline: "18 חודשים",
+            year: "2024"
+          },
+          {
+            name: "שרה מ.",
+            location: "טורונטו, קנדה",
+            heritage: "שושלת מוורשה",
+            text: "הם מצאו את תעודת הלידה של סבא רבא שלי בארכיונים פולניים שלא הצלחתי למצוא בעצמי. המומחיות שלהם בחוק פולני ומחקר ארכיוני היא ללא תחרות.",
+            timeline: "14 חודשים",
+            year: "2024"
+          },
+          {
+            name: "דייוויד ל.",
+            location: "לונדון, בריטניה",
+            heritage: "שורשים מגדנסק",
+            text: "כל התהליך היה שקוף. עדכונים קבועים, הסברים ברורים, ואסטרטגיית ה-PUSH שלהם עזרה להאיץ את התיק שלי. עכשיו מחזיק את הדרכון הפולני שלי!",
+            timeline: "16 חודשים",
+            year: "2023"
+          },
+          {
+            name: "ג'ניפר ר.",
+            location: "סידני, אוסטרליה",
+            heritage: "מורשת מפוזנן",
+            text: "מאימות עץ המשפחה ועד הכנת תעודות האזרחות, הם הדריכו אותי בכל שלב. שירות התרגום היה ללא דופי - כל המסמכים אושרו בצורה מושלמת.",
+            timeline: "20 חודשים",
+            year: "2023"
+          },
+          {
+            name: "רוברט פ.",
+            location: "ניו יורק, ארה״ב",
+            heritage: "מוצא מלבוב",
+            text: "מקרה מורכב עם גבולות קדם-מלחמת העולם השנייה, אבל הם ניווטו אותו בצורה מושלמת. הידע שלהם על שטחים היסטוריים פולניים וחוק האזרחות הוא יוצא דופן.",
+            timeline: "22 חודשים",
+            year: "2024"
+          },
+          {
+            name: "אנה ט.",
+            location: "ברלין, גרמניה",
+            heritage: "שושלת מוורוצלב",
+            text: "מהיר, יעיל ומקצועי לחלוטין. הם טיפלו בכל התקשורת עם הרשויות הפולניות בוורשה, והפכו את התהליך לנטול מתח עבורי.",
+            timeline: "12 חודשים",
+            year: "2024"
+          }
+        ]
       },
       contact: {
         badge: 'התחבר אלינו',
@@ -2727,7 +3027,57 @@ const resources = {
         title: 'Настоящие Отзывы Клиентов',
         subtitle: 'Клиенты, которые вернули польское гражданство',
         rating: '5.0 в среднем от 200+ клиентов',
-        cta: 'Пройти Тест'
+        cta: 'Пройти Тест',
+        reviews: [
+          {
+            name: "Майкл К.",
+            location: "Чикаго, США",
+            heritage: "Краковское происхождение",
+            text: "Через 18 месяцев я получил подтверждение польского гражданства. Команда справилась со всем профессионально - от архивных исследований до окончательного решения. Стоит каждого цента.",
+            timeline: "18 месяцев",
+            year: "2024"
+          },
+          {
+            name: "Сара М.",
+            location: "Торонто, Канада",
+            heritage: "Варшавская линия",
+            text: "Они нашли свидетельство о рождении моего прадеда в польских архивах, которое я не могла найти сама. Их экспертиза в польском праве и архивных исследованиях непревзойденна.",
+            timeline: "14 месяцев",
+            year: "2024"
+          },
+          {
+            name: "Дэвид Л.",
+            location: "Лондон, Великобритания",
+            heritage: "Гданьские корни",
+            text: "Весь процесс был прозрачным. Регулярные обновления, четкие объяснения, и их стратегия PUSH помогла ускорить мое дело. Теперь держу свой польский паспорт!",
+            timeline: "16 месяцев",
+            year: "2023"
+          },
+          {
+            name: "Дженнифер Р.",
+            location: "Сидней, Австралия",
+            heritage: "Познанское наследие",
+            text: "От проверки генеалогического древа до подготовки гражданских актов, они провели меня через каждый шаг. Услуга перевода была безупречной - все документы сертифицированы идеально.",
+            timeline: "20 месяцев",
+            year: "2023"
+          },
+          {
+            name: "Роберт П.",
+            location: "Нью-Йорк, США",
+            heritage: "Львовское происхождение",
+            text: "Сложный случай с границами до Второй мировой войны, но они справились безупречно. Их знание исторических польских территорий и закона о гражданстве исключительно.",
+            timeline: "22 месяца",
+            year: "2024"
+          },
+          {
+            name: "Анна Т.",
+            location: "Берлин, Германия",
+            heritage: "Вроцлавская линия",
+            text: "Быстро, эффективно и полностью профессионально. Они обработали все коммуникации с польскими властями в Варшаве, сделав процесс безстрессовым для меня.",
+            timeline: "12 месяцев",
+            year: "2024"
+          }
+        ]
       },
       contact: {
         badge: 'Свяжитесь с Нами',
@@ -3102,7 +3452,57 @@ const resources = {
         title: 'Справжні Відгуки Клієнтів',
         subtitle: 'Клієнти, які повернули польське громадянство',
         rating: '5.0 в середньому від 200+ клієнтів',
-        cta: 'Пройти Тест'
+        cta: 'Пройти Тест',
+        reviews: [
+          {
+            name: "Майкл К.",
+            location: "Чикаго, США",
+            heritage: "Краківське походження",
+            text: "Через 18 місяців я отримав підтвердження польського громадянства. Команда впоралася з усім професійно - від архівних досліджень до остаточного рішення. Варто кожного цента.",
+            timeline: "18 місяців",
+            year: "2024"
+          },
+          {
+            name: "Сара М.",
+            location: "Торонто, Канада",
+            heritage: "Варшавська лінія",
+            text: "Вони знайшли свідоцтво про народження мого прадіда в польських архівах, яке я не могла знайти сама. Їх експертиза в польському праві та архівних дослідженнях неперевершена.",
+            timeline: "14 місяців",
+            year: "2024"
+          },
+          {
+            name: "Девід Л.",
+            location: "Лондон, Велика Британія",
+            heritage: "Гданське коріння",
+            text: "Весь процес був прозорим. Регулярні оновлення, чіткі пояснення, і їх стратегія PUSH допомогла прискорити мою справу. Тепер тримаю свій польський паспорт!",
+            timeline: "16 місяців",
+            year: "2023"
+          },
+          {
+            name: "Дженніфер Р.",
+            location: "Сідней, Австралія",
+            heritage: "Познанська спадщина",
+            text: "Від перевірки генеалогічного дерева до підготовки громадянських актів, вони провели мене через кожен крок. Послуга перекладу була бездоганною - всі документи сертифіковані ідеально.",
+            timeline: "20 місяців",
+            year: "2023"
+          },
+          {
+            name: "Роберт П.",
+            location: "Нью-Йорк, США",
+            heritage: "Львівське походження",
+            text: "Складний випадок з кордонами до Другої світової війни, але вони впоралися бездоганно. Їх знання історичних польських територій та закону про громадянство виняткове.",
+            timeline: "22 місяці",
+            year: "2024"
+          },
+          {
+            name: "Анна Т.",
+            location: "Берлін, Німеччина",
+            heritage: "Вроцлавська лінія",
+            text: "Швидко, ефективно і повністю професійно. Вони обробили всі комунікації з польською владою у Варшаві, зробивши процес безстресовим для мене.",
+            timeline: "12 місяців",
+            year: "2024"
+          }
+        ]
       },
       contact: {
         badge: 'Зв\'яжіться з Нами',

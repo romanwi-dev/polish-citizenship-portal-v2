@@ -4,65 +4,16 @@ import { Button } from '@/components/ui/button';
 import { MainCTA } from '@/components/ui/main-cta';
 import { useTranslation } from 'react-i18next';
 
-const testimonials = [
-  {
-    name: "Michael K.",
-    location: "Chicago, USA",
-    heritage: "Kraków ancestry",
-    rating: 5,
-    text: "After 18 months, I received my Polish citizenship confirmation. The team handled everything professionally - from archival research to the final decision. Worth every penny.",
-    timeline: "18 months",
-    year: "2024"
-  },
-  {
-    name: "Sarah M.",
-    location: "Toronto, Canada",
-    heritage: "Warsaw lineage",
-    rating: 5,
-    text: "They found my great-grandfather's birth certificate in Polish archives that I couldn't locate myself. Their expertise in Polish law and archival research is unmatched.",
-    timeline: "14 months",
-    year: "2024"
-  },
-  {
-    name: "David L.",
-    location: "London, UK",
-    heritage: "Gdańsk roots",
-    rating: 5,
-    text: "The entire process was transparent. Regular updates, clear explanations, and their PUSH strategy helped accelerate my case. Now holding my Polish passport!",
-    timeline: "16 months",
-    year: "2023"
-  },
-  {
-    name: "Jennifer R.",
-    location: "Sydney, Australia",
-    heritage: "Poznań heritage",
-    rating: 5,
-    text: "From family tree verification to civil acts preparation, they guided me through every step. The translation service was impeccable - all documents certified perfectly.",
-    timeline: "20 months",
-    year: "2023"
-  },
-  {
-    name: "Robert P.",
-    location: "New York, USA",
-    heritage: "Lwów ancestry",
-    rating: 5,
-    text: "Complex case with pre-WWII borders, but they navigated it flawlessly. Their knowledge of historical Polish territories and citizenship law is exceptional.",
-    timeline: "22 months",
-    year: "2024"
-  },
-  {
-    name: "Anna T.",
-    location: "Berlin, Germany",
-    heritage: "Wrocław lineage",
-    rating: 5,
-    text: "Fast, efficient, and thoroughly professional. They handled all communications with Polish authorities in Warsaw, making the process stress-free for me.",
-    timeline: "12 months",
-    year: "2024"
-  }
-];
-
 export default function TestimonialsSection() {
   const { t } = useTranslation();
+  const testimonials = t('testimonials.reviews', { returnObjects: true }) as Array<{
+    name: string;
+    location: string;
+    heritage: string;
+    text: string;
+    timeline: string;
+    year: string;
+  }>;
   
   return (
     <section id="testimonials" className="py-24 px-4 overflow-x-hidden">
@@ -103,7 +54,7 @@ export default function TestimonialsSection() {
                 
                 {/* Rating */}
                 <div className="flex gap-1 mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
+                  {[...Array(5)].map((_, i) => (
                     <Star key={i} className="w-4 h-4 fill-primary text-primary" />
                   ))}
                 </div>
