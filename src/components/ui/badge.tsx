@@ -13,9 +13,9 @@ const badgeVariants = cva(
         destructive: "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
         outline: "text-foreground",
         standard: "border-transparent bg-muted text-muted-foreground hover:bg-muted/80",
-        expedited: "border-transparent bg-blue-500/20 text-blue-400 hover:bg-blue-500/30",
-        vip: "border-transparent bg-amber-500/20 text-amber-400 hover:bg-amber-500/30",
-        vipPlus: "border-transparent bg-purple-500/20 text-purple-400 hover:bg-purple-500/30",
+        expedited: "border-transparent bg-secondary/20 text-secondary hover:bg-secondary/30",
+        vip: "border-transparent bg-accent/20 text-accent hover:bg-accent/30",
+        vipPlus: "border-transparent bg-primary/20 text-primary hover:bg-primary/30",
       },
     },
     defaultVariants: {
@@ -30,7 +30,9 @@ function Badge({ className, variant, ...props }: BadgeProps) {
   const [isHovered, setIsHovered] = React.useState(false);
   
   const glowStyle = {
-    boxShadow: isHovered ? "0 0 25px hsla(221, 83%, 53%, 0.4)" : "0 0 15px hsla(221, 83%, 53%, 0.2)",
+    boxShadow: isHovered 
+      ? 'var(--shadow-glow)' 
+      : 'var(--shadow-glow-secondary)',
     transition: "all 0.3s ease"
   };
   
