@@ -3,10 +3,10 @@ import logo from "@/assets/logo.png";
 
 const FooterWeb3 = () => {
   return (
-    <footer className="relative py-20 overflow-hidden -mt-2 pt-0">
+    <footer className="relative py-20 -mt-2 pt-0">
       {/* Background Effects */}
-      <div className="absolute inset-0 -top-[60vh] md:-top-screen bg-gradient-to-t from-background via-primary/5 to-transparent" />
-      <div className="absolute inset-0 -top-[60vh] md:-top-screen bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
       
       <div className="container px-4 mx-auto relative z-10">
         <div className="grid md:grid-cols-4 gap-12 mb-16">
