@@ -17,7 +17,7 @@ import { Zap, CheckCircle2, Clock, Gift } from "lucide-react";
 import { z } from "zod";
 import { CelebrationBackground } from "./backgrounds/CelebrationBackground";
 import EUCelebrationSection from "./EUCelebrationSection";
-import secretary25 from "@/assets/secretaries/secretary-25.png";
+import thankYou1 from "@/assets/thank-you/thank-you-1.jpg";
 
 const COUNTRIES = [
   "USA", "UK", "Canada", "Australia", "South Africa", "Brazil", 
@@ -117,7 +117,7 @@ const ContactFormWeb3 = () => {
 
         <div className="max-w-full md:max-w-[1400px] mx-auto px-0 md:px-2">
           <div 
-            className="relative w-full h-[900px] md:h-[750px] animate-fade-in" 
+            className="relative w-full h-[900px] md:h-[750px] animate-fade-in z-20" 
             style={{ 
               perspective: '1000px',
               animationDelay: '100ms'
@@ -291,8 +291,8 @@ const ContactFormWeb3 = () => {
                   {/* Background Image */}
                   <div className="absolute inset-0 z-0">
                     <img 
-                      src={secretary25} 
-                      alt="Professional secretary" 
+                      src={thankYou1} 
+                      alt="Professional with passport" 
                       className="w-full h-full object-cover opacity-30"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/60" />
