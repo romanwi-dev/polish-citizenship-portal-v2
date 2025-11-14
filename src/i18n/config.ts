@@ -111,7 +111,7 @@ const resources = {
         service5Desc: 'Deep dive into Polish state archives, Jewish historical societies, and international databases for ancestral records.',
         service6Title: 'Passport Assistance',
         service6Desc: 'Complete support for obtaining your Polish passport and PESEL number after citizenship confirmation.',
-        cta: 'Start Your Journey'
+        cta: 'Take Polish Citizenship Test'
       },
       
       // Footer - Demo
