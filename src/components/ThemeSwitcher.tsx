@@ -5,14 +5,14 @@ type ThemeState = 'dark-red' | 'light-red' | 'dark-blue' | 'light-blue';
 
 export function ThemeSwitcher() {
   const [theme, setThemeState] = useState<ThemeState>(() => {
-    // Check localStorage first, fallback to dark-red
+    // Check localStorage first, fallback to dark-blue
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem("theme") as ThemeState;
       if (stored && ['dark-red', 'light-red', 'dark-blue', 'light-blue'].includes(stored)) {
         return stored;
       }
     }
-    return "dark-red";
+    return "dark-blue";
   });
 
   useEffect(() => {
@@ -31,10 +31,10 @@ export function ThemeSwitcher() {
 
   const cycleTheme = () => {
     const cycle: Record<ThemeState, ThemeState> = {
-      'dark-red': 'light-red',
-      'light-red': 'dark-blue',
-      'dark-blue': 'light-blue',
-      'light-blue': 'dark-red'
+      'dark-blue': 'dark-red',
+      'dark-red': 'light-blue',
+      'light-blue': 'light-red',
+      'light-red': 'dark-blue'
     };
     setThemeState(cycle[theme]);
   };
