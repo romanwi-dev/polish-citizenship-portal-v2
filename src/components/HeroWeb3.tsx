@@ -23,7 +23,7 @@ const HeroWeb3 = () => {
           alt="Premium holographic 3D Warsaw night skyline - Illuminated Palace of Culture with neon lights and Vistula River reflections" 
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/50 to-background/90" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/70 to-background/95" />
       </div>
 
       {/* Content */}
