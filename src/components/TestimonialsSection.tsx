@@ -2,6 +2,7 @@ import { Star, Quote } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { MainCTA } from '@/components/ui/main-cta';
+import { useTranslation } from 'react-i18next';
 
 const testimonials = [
   {
@@ -61,6 +62,8 @@ const testimonials = [
 ];
 
 export default function TestimonialsSection() {
+  const { t } = useTranslation();
+  
   return (
     <section id="testimonials" className="py-24 px-4 overflow-x-hidden">
       <div className="container mx-auto max-w-7xl">
@@ -68,11 +71,11 @@ export default function TestimonialsSection() {
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-14">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              True Honest Testimonials From Our Real Clients
+              {t('testimonials.title')}
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Real clients who reclaimed their Polish heritage and citizenship
+            {t('testimonials.subtitle')}
           </p>
           <div className="flex items-center justify-center gap-2 mt-4">
             <div className="flex">
@@ -81,7 +84,7 @@ export default function TestimonialsSection() {
               ))}
             </div>
             <span className="text-sm text-muted-foreground">
-              5.0 average from 200+ clients
+              {t('testimonials.rating')}
             </span>
           </div>
         </div>

@@ -18,6 +18,7 @@ import { z } from "zod";
 import { CelebrationBackground } from "./backgrounds/CelebrationBackground";
 import EUCelebrationSection from "./EUCelebrationSection";
 import thankYou1 from "@/assets/thank-you/thank-you-1.jpg";
+import { useTranslation } from "react-i18next";
 
 const COUNTRIES = [
   "USA", "UK", "Canada", "Australia", "South Africa", "Brazil", 
@@ -34,6 +35,7 @@ const contactSchema = z.object({
 });
 
 const ContactFormWeb3 = () => {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const [isFlipped, setIsFlipped] = useState(false);
   const [flippedCards, setFlippedCards] = useState<Set<number>>(new Set());
