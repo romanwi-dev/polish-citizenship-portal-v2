@@ -65,11 +65,11 @@ export function MainCTA({
     >
       <Button 
         size="lg" 
-        className="text-xl md:text-2xl font-bold px-12 py-6 md:px-24 md:py-6 h-auto min-h-[64px] md:min-h-[72px] rounded-lg glass-card hover-glow shadow-[0_0_20px_rgba(217,69,101,0.3)] group relative overflow-hidden backdrop-blur-md border border-primary/20 transition-all duration-300 hover:scale-105 bg-background/10"
+        className="text-xl md:text-2xl font-bold px-12 py-6 md:px-24 md:py-6 h-auto min-h-[64px] md:min-h-[72px] rounded-lg glass-card hover-glow shadow-[0_0_20px_rgba(217,69,101,0.3)] group relative overflow-hidden backdrop-blur-md border border-primary/20 transition-all duration-300 hover:scale-105 bg-[#7C1328]/50"
         onClick={onClick}
         aria-label={ariaLabel}
       >
-        <span className="relative z-10 font-bold drop-shadow-lg bg-gradient-to-r from-[#D94565] to-[#F06585] bg-clip-text text-transparent">
+        <span className="relative z-10 font-bold drop-shadow-lg text-white/50">
           {children}
         </span>
       </Button>
