@@ -117,9 +117,9 @@ const ProcessWeb3 = () => {
       
       <div className="container px-4 mx-auto relative z-10">
         <div className="text-center mb-20">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-6">
-            <Scale className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium">Complete Legal Process</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-6 border border-[#7C1328]/30">
+            <Scale className="w-4 h-4 text-[#D94565]" />
+            <span className="text-sm font-medium bg-gradient-to-r from-[#7C1328] to-[#D94565] bg-clip-text text-transparent">Complete Legal Process</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-heading font-black mb-6 tracking-tight">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
