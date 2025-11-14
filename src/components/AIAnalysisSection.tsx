@@ -76,6 +76,8 @@ const FlippableAICard = ({
 };
 
 const AIAnalysisSection = () => {
+  const { t } = useTranslation();
+  
   return (
     <section className="relative py-24 overflow-hidden overflow-x-hidden">
       
@@ -84,22 +86,22 @@ const AIAnalysisSection = () => {
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16 border border-primary/30">
               <Brain className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">AI-Powered Analysis</span>
+              <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('aiAnalysis.badge')}</span>
             </div>
             
             <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-14">
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Deep Detailed Case Analysis
+                {t('aiAnalysis.title')}
               </span>
             </h2>
             
             <div className="mb-16 max-w-6xl mx-auto px-2 md:px-0">
               <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-6 font-body font-light tracking-normal">
-                Using AI technology combined with 20+ years of case data, we predict your success probability and timeline with exceptional accuracy—before you even start. This means no surprises, realistic expectations, and a clear roadmap from day one.
+                {t('aiAnalysis.description1')}
               </p>
               
               <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-body font-light tracking-normal">
-                Our advanced analysis identifies potential challenges early, giving you confidence and clarity throughout your citizenship journey. We're committed to honest, transparent guidance backed by data and decades of expertise.
+                {t('aiAnalysis.description2')}
               </p>
             </div>
           </div>
@@ -108,8 +110,8 @@ const AIAnalysisSection = () => {
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-16">
             <FlippableAICard 
               icon={TrendingUp}
-              title="Success Probability"
-              description="Know your chances upfront. Our AI analyzes your family history and documents to predict your case outcome with proven accuracy."
+              title={t('aiAnalysis.card1Title')}
+              description={t('aiAnalysis.card1Desc')}
               gradient="from-primary/20 to-secondary/20"
               textColor="text-primary"
               index={0}
@@ -117,8 +119,8 @@ const AIAnalysisSection = () => {
 
             <FlippableAICard 
               icon={Clock}
-              title="Timeline & Costs"
-              description="Get realistic timelines and transparent pricing from the start. No hidden fees, no surprises—just honest expectations based on your case."
+              title={t('aiAnalysis.card2Title')}
+              description={t('aiAnalysis.card2Desc')}
               gradient="from-secondary/20 to-accent/20"
               textColor="text-secondary"
               index={1}
@@ -126,8 +128,8 @@ const AIAnalysisSection = () => {
 
             <FlippableAICard 
               icon={AlertTriangle}
-              title="Early Risk Detection"
-              description="We spot potential problems before they delay your case—missing documents, legal complications, or gaps in your family tree."
+              title={t('aiAnalysis.card3Title')}
+              description={t('aiAnalysis.card3Desc')}
               gradient="from-accent/20 to-primary/20"
               textColor="text-accent"
               index={2}
@@ -140,7 +142,7 @@ const AIAnalysisSection = () => {
             onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
             ariaLabel="Take the Polish Citizenship Test to check your eligibility"
           >
-            Take Polish Citizenship Test
+            {t('aiAnalysis.cta')}
           </MainCTA>
 
         </div>

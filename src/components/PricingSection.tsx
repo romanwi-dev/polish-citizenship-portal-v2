@@ -33,6 +33,7 @@ const FlippablePricingCard = ({
   badge?: { text: string; colors: string };
   onClick: () => void;
 }) => {
+  const { t } = useTranslation();
   const [isFlipped, setIsFlipped] = useState(false);
 
   return (
@@ -116,7 +117,7 @@ const FlippablePricingCard = ({
           <div className={`absolute inset-0 ${gradient} opacity-20 rounded-3xl`} />
           <div className="relative z-10 text-center">
             <p className="text-muted-foreground italic">
-              Click to flip back
+              {t('pricing.flipBack')}
             </p>
           </div>
         </div>
@@ -126,6 +127,8 @@ const FlippablePricingCard = ({
 };
 
 const PricingSection = () => {
+  const { t } = useTranslation();
+  
   const scrollToContact = () => {
     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -138,17 +141,17 @@ const PricingSection = () => {
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16 border border-primary/30">
               <Zap className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Transparent Real Pricing</span>
+              <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('pricing.badge')}</span>
             </div>
             
             <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-14">
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Investment in Your Heritage
+                {t('pricing.title')}
               </span>
             </h2>
             
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-16">
-              Professional Polish citizenship by descent application services. The process involves complex legal requirements and requires expert guidance.
+              {t('pricing.subtitle')}
             </p>
           </div>
 
