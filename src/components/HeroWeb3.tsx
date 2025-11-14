@@ -1,6 +1,6 @@
 import { MainCTA } from "@/components/ui/main-cta";
 import Sparkles from "lucide-react/dist/esm/icons/sparkles";
-import warsawHero from "@/assets/warsaw-modern-skyline.jpg";
+import oldTownFuture from "@/assets/eu-celebration/celebration-29.png";
 import { useState } from "react";
 
 const HeroWeb3 = () => {
@@ -46,11 +46,11 @@ const HeroWeb3 = () => {
         </div>
       </div>
 
-      {/* Warsaw Hero Image - Full Width Background */}
+      {/* Old Town Future Hero Image - Full Width Background */}
       <div className="w-full mb-32 md:mb-20">
         <img 
-          src={warsawHero} 
-          alt="Cultural Hub - Theater with interactive light displays" 
+          src={oldTownFuture} 
+          alt="Old Town Future - Historic buildings with holographic facades" 
           className="w-full h-auto opacity-60" 
           style={{
             filter: 'brightness(0.7)'
