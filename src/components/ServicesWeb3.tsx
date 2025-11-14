@@ -2,6 +2,7 @@ import { FileText, Users, CheckCircle, Globe, Cpu, Shield, Zap } from "lucide-re
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { MainCTA } from "./ui/main-cta";
+import { useTranslation } from 'react-i18next';
 
 const services = [
   {

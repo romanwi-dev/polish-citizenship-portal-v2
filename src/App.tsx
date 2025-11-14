@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 
 const ContactFormsDemo = lazy(() => import("./pages/ContactFormsDemo"));
+const TranslationDemo = lazy(() => import("./pages/TranslationDemo"));
 
 // Client portal pages
 const ClientLogin = lazy(() => import("./pages/ClientLogin"));
@@ -134,6 +135,11 @@ const App = () => (
           <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/translation-demo" element={
+              <Suspense fallback={<AdminLoader />}>
+                <TranslationDemo />
+              </Suspense>
+            } />
             <Route path="/demos" element={
               <Suspense fallback={<AdminLoader />}>
                 <DemosHub />
