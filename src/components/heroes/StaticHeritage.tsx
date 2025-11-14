@@ -1,27 +1,8 @@
-import { memo, useEffect, useState } from "react";
+import { memo } from "react";
 
 export const StaticHeritage = memo(() => {
-  const [isRedTheme, setIsRedTheme] = useState(false);
-
-  useEffect(() => {
-    const checkTheme = () => {
-      setIsRedTheme(document.documentElement.classList.contains('theme-red'));
-    };
-    
-    checkTheme();
-    
-    const observer = new MutationObserver(checkTheme);
-    observer.observe(document.documentElement, { 
-      attributes: true, 
-      attributeFilter: ['class'] 
-    });
-    
-    return () => observer.disconnect();
-  }, []);
-
-  const backgroundImage = isRedTheme
-    ? 'radial-gradient(circle at 20% 50%, hsl(343, 50%, 5%), transparent 50%), radial-gradient(circle at 80% 50%, hsl(0, 50%, 5%), transparent 50%), linear-gradient(135deg, hsl(343, 50%, 10%), hsl(0, 50%, 10%), hsl(343, 50%, 10%))'
-    : 'radial-gradient(circle at 20% 50%, hsl(0, 50%, 5%), transparent 50%), radial-gradient(circle at 80% 50%, hsl(240, 50%, 5%), transparent 50%), linear-gradient(135deg, hsl(0, 50%, 10%), hsl(240, 50%, 10%), hsl(0, 50%, 10%))';
+  // Same background for both dark themes
+  const backgroundImage = 'radial-gradient(circle at 20% 50%, hsl(0, 50%, 5%), transparent 50%), radial-gradient(circle at 80% 50%, hsl(240, 50%, 5%), transparent 50%), linear-gradient(135deg, hsl(0, 50%, 10%), hsl(240, 50%, 10%), hsl(0, 50%, 10%))';
 
   return (
     <div className="absolute inset-0 w-full h-full">
