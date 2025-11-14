@@ -117,10 +117,11 @@ const ContactFormWeb3 = () => {
 
         <div className="max-w-full md:max-w-[1400px] mx-auto px-0 md:px-2">
           <div 
-            className="relative w-full h-[900px] md:h-[750px] animate-fade-in z-20" 
+            className="relative w-full min-h-[900px] md:min-h-[750px] animate-fade-in z-20" 
             style={{ 
               perspective: '1000px',
-              animationDelay: '100ms'
+              animationDelay: '100ms',
+              height: '900px'
             }}
           >
             <div 
@@ -320,7 +321,7 @@ const ContactFormWeb3 = () => {
 
           {/* Five Sequential Arrows Animation */}
           <div 
-            className="flex justify-center -mt-48 md:-mt-24 mb-2 cursor-pointer hover:opacity-80 transition-opacity"
+            className="flex justify-center -mt-8 md:-mt-24 mb-2 cursor-pointer hover:opacity-80 transition-opacity relative z-10"
             onClick={() => {
               const responseCard = document.getElementById('response-time-card');
               if (responseCard) {
