@@ -10,7 +10,6 @@ import {
 
 const LANGUAGES = [
   { code: 'en', label: 'English', flag: '🇬🇧' },
-  { code: 'pl', label: 'Polski', flag: '🇵🇱' },
   { code: 'es', label: 'Español', flag: '🇪🇸' },
   { code: 'pt', label: 'Português', flag: '🇵🇹' },
   { code: 'de', label: 'Deutsch', flag: '🇩🇪' },
@@ -38,7 +37,7 @@ export function LanguageSelector() {
           className="h-8 w-8 md:h-11 md:w-11 rounded-full bg-background/50 border border-border/50 flex items-center justify-center hover:border-primary/50 transition-all"
           aria-label="Select language"
         >
-          <Globe className="h-4 w-4 md:h-5 md:w-5 text-foreground/70" />
+          <Globe className="h-4 w-4 md:h-5 md:w-5 text-primary dark:text-foreground/70" />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48 bg-background/95 backdrop-blur-xl border border-primary/20">
