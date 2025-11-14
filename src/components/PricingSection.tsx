@@ -80,7 +80,7 @@ const FlippablePricingCard = ({
           </div>
 
           <div className="mb-6">
-            <div className="text-sm text-muted-foreground mb-1">Timeline</div>
+            <div className="text-sm text-muted-foreground mb-1">{t('pricing.timelineLabel')}</div>
             <div className="text-lg font-semibold">{timeline}</div>
           </div>
 
@@ -159,19 +159,19 @@ const PricingSection = () => {
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             <FlippablePricingCard
               icon={Train}
-              title="Standard"
-              subtitle="Like traveling by train"
-              price="€3,500"
-              installment="583 EUR per installment • 6 installments"
-              timeline="36-48 months average"
+              title={t('pricing.standard')}
+              subtitle={t('pricing.standardSubtitle')}
+              price={t('pricing.standardPrice')}
+              installment={t('pricing.standardInstallment')}
+              timeline={t('pricing.standardTimeline')}
               features={[
-                "Lower installment values",
-                "Basic legal guidance",
-                "Standard document processing",
-                "Email support",
-                "Regular case updates"
+                t('pricing.standardFeature1'),
+                t('pricing.standardFeature2'),
+                t('pricing.standardFeature3'),
+                t('pricing.standardFeature4'),
+                t('pricing.standardFeature5')
               ]}
-              buttonText="Get Started"
+              buttonText={t('pricing.standardButton')}
               gradient="bg-gradient-to-br from-primary/20 to-secondary/20"
               iconColor="text-primary"
               checkColor="text-primary"
@@ -180,44 +180,41 @@ const PricingSection = () => {
 
             <FlippablePricingCard
               icon={Plane}
-              title="Expedited"
-              subtitle="Like business class flight"
-              price="€5,500 - €12,500"
-              installment="611-1,389 EUR per installment • 9 installments"
-              timeline="18-36 months"
+              title={t('pricing.expedited')}
+              subtitle={t('pricing.expeditedSubtitle')}
+              price={t('pricing.expeditedPrice')}
+              installment={t('pricing.expeditedInstallment')}
+              timeline={t('pricing.expeditedTimeline')}
               features={[
-                "50% higher installment value",
-                "Priority case handling",
-                "Expedited document processing",
-                "Phone & email support",
-                "Weekly progress updates",
-                "Dedicated case manager"
+                t('pricing.expeditedFeature1'),
+                t('pricing.expeditedFeature2'),
+                t('pricing.expeditedFeature3'),
+                t('pricing.expeditedFeature4'),
+                t('pricing.expeditedFeature5')
               ]}
-              buttonText="Get Started"
+              buttonText={t('pricing.expeditedButton')}
               gradient="bg-gradient-to-br from-secondary/20 to-accent/20"
               iconColor="text-secondary"
               checkColor="text-secondary"
-              badge={{ text: "Most Popular", colors: "bg-gradient-to-r from-primary to-secondary" }}
+              badge={{ text: t('pricing.expeditedBadge'), colors: "bg-gradient-to-r from-primary to-secondary" }}
               onClick={scrollToContact}
             />
 
             <FlippablePricingCard
               icon={Zap}
-              title="VIP"
-              subtitle="Like flying private jet"
-              price="€15,000+"
-              installment="Flat fee per person"
-              timeline="14-18 months"
+              title={t('pricing.vip')}
+              subtitle={t('pricing.vipSubtitle')}
+              price={t('pricing.vipPrice')}
+              installment={t('pricing.vipInstallment')}
+              timeline={t('pricing.vipTimeline')}
               features={[
-                "Fastest processing possible",
-                "White glove service",
-                "Direct government liaison",
-                "24/7 support access",
-                "Daily updates if needed",
-                "Personal legal team",
-                "All schemes included"
+                t('pricing.vipFeature1'),
+                t('pricing.vipFeature2'),
+                t('pricing.vipFeature3'),
+                t('pricing.vipFeature4'),
+                t('pricing.vipFeature5')
               ]}
-              buttonText="Join Waitlist"
+              buttonText={t('pricing.vipButton')}
               gradient="bg-gradient-to-br from-accent/20 to-primary/20"
               iconColor="text-accent"
               checkColor="text-accent"
