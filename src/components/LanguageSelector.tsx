@@ -11,12 +11,11 @@ import {
 const LANGUAGES = [
   { code: 'en', label: 'English', flag: '🇬🇧' },
   { code: 'es', label: 'Español', flag: '🇪🇸' },
-  { code: 'pt', label: 'Português', flag: '🇵🇹' },
   { code: 'de', label: 'Deutsch', flag: '🇩🇪' },
   { code: 'fr', label: 'Français', flag: '🇫🇷' },
   { code: 'he', label: 'עברית', flag: '🇮🇱' },
   { code: 'ru', label: 'Русский', flag: '🇷🇺' },
-  { code: 'ua', label: 'Українська', flag: '🇺🇦' },
+  { code: 'uk', label: 'Українська', flag: '🇺🇦' },
 ];
 
 export function LanguageSelector() {
