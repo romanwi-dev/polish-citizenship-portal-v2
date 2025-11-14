@@ -1,6 +1,5 @@
 import { MainCTA } from "@/components/ui/main-cta";
 import Sparkles from "lucide-react/dist/esm/icons/sparkles";
-import polishHeritage from "@/assets/hero/polish-heritage-3d.jpg";
 import { useState } from "react";
 
 const HeroWeb3 = () => {
@@ -46,15 +45,6 @@ const HeroWeb3 = () => {
         </div>
       </div>
 
-      {/* Polish Heritage 3D Image */}
-      <div className="w-full mb-32 md:mb-20 relative h-[400px] md:h-[500px] overflow-hidden">
-        <img 
-          src={polishHeritage} 
-          alt="Polish Heritage - Elegant Polish eagle with official documents symbolizing citizenship" 
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/30 to-background/90" />
-      </div>
 
       {/* Stats Badges */}
       <div className="container relative z-10 px-4 mx-auto pb-20">
