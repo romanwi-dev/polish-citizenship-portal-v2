@@ -450,7 +450,7 @@ All colors MUST be HSL.
   }
 
   .hover-glow {
-    box-shadow: 0 0 30px hsla(221, 83%, 53%, 0.15);
+    box-shadow: 0 0 30px hsla(348, 68%, 53%, 0.15);
     transition: all 0.3s ease;
   }
 
@@ -473,11 +473,11 @@ All colors MUST be HSL.
   }
 
   .hover-glow:hover {
-    box-shadow: 0 0 50px hsla(221, 83%, 53%, 0.3);
+    box-shadow: 0 0 50px hsla(348, 68%, 53%, 0.4);
   }
 
   .hover-glow:focus {
-    box-shadow: 0 0 60px hsla(221, 83%, 53%, 0.4);
+    box-shadow: 0 0 60px hsla(348, 68%, 53%, 0.5);
   }
 
   /* Optimized form input glow - no cursor interference */
