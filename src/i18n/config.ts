@@ -106,8 +106,8 @@ const resources = {
       about: {
         badge: 'Legal Expertise Since 2003',
         title: 'Why Choose Us for Your Polish Citizenship Journey?',
-        subtitle: 'We bring two decades of specialized experience in Polish citizenship law, combining traditional legal expertise with cutting-edge AI technology to streamline your path to obtaining Polish and EU citizenship through ancestry.',
         description: 'We bring two decades of specialized experience in Polish citizenship law, combining traditional legal expertise with cutting-edge AI technology to streamline your path to obtaining Polish and EU citizenship through ancestry.',
+        subtitle: 'Our proven track record speaks for itself: thousands of successful cases, personalized attention to every client, and a commitment to transparency throughout your entire citizenship journey.',
         card1Title: 'Expert Legal Guidance',
         card1Text: 'Our team specializes exclusively in Polish citizenship by descent cases, with an unmatched 100% success rate across 20,000+ cases. We know every detail of the process.',
         card2Title: 'AI-Powered Efficiency',
@@ -623,8 +623,8 @@ const resources = {
       about: {
         badge: 'Experiencia Legal Desde 2003',
         title: '¿Por Qué Elegirnos para Tu Proceso de Ciudadanía Polaca?',
-        subtitle: 'Aportamos dos décadas de experiencia especializada en derecho de ciudadanía polaca, combinando experiencia legal tradicional con tecnología de IA de vanguardia para agilizar tu camino hacia la obtención de ciudadanía polaca y de la UE por ascendencia.',
         description: 'Aportamos dos décadas de experiencia especializada en derecho de ciudadanía polaca, combinando experiencia legal tradicional con tecnología de IA de vanguardia para agilizar tu camino hacia la obtención de ciudadanía polaca y de la UE por ascendencia.',
+        subtitle: 'Nuestro historial comprobado habla por sí mismo: miles de casos exitosos, atención personalizada para cada cliente y un compromiso con la transparencia durante todo tu proceso de ciudadanía.',
         card1Title: 'Orientación Legal Experta',
         card1Text: 'Nuestro equipo se especializa exclusivamente en casos de ciudadanía polaca por descendencia, con una tasa de éxito incomparable del 100% en más de 20,000 casos. Conocemos cada detalle del proceso.',
         card2Title: 'Eficiencia Impulsada por IA',
@@ -1128,8 +1128,8 @@ const resources = {
       about: {
         badge: 'Experiência Jurídica Desde 2003',
         title: 'Por Que Nos Escolher para Sua Jornada de Cidadania Polonesa?',
-        subtitle: 'Trazemos duas décadas de experiência especializada em lei de cidadania polonesa, combinando expertise jurídica tradicional com tecnologia de IA de ponta para agilizar seu caminho para obter cidadania polonesa e da UE por ancestralidade.',
         description: 'Trazemos duas décadas de experiência especializada em lei de cidadania polonesa, combinando expertise jurídica tradicional com tecnologia de IA de ponta para agilizar seu caminho para obter cidadania polonesa e da UE por ancestralidade.',
+        subtitle: 'Nosso histórico comprovado fala por si: milhares de casos bem-sucedidos, atenção personalizada para cada cliente e compromisso com a transparência durante toda a sua jornada de cidadania.',
         card1Title: 'Orientação Jurídica Especializada',
         card1Text: 'Nossa equipe se especializa exclusivamente em casos de cidadania polonesa por descendência, com uma taxa de sucesso incomparável de 100% em mais de 20.000 casos. Conhecemos cada detalhe do processo.',
         card2Title: 'Eficiência Impulsionada por IA',
@@ -1639,8 +1639,8 @@ const resources = {
       about: {
         badge: 'Rechtliche Expertise Seit 2003',
         title: 'Warum Uns für Ihre Polnische Staatsbürgerschaft Wählen?',
-        subtitle: 'Wir bringen zwei Jahrzehnte spezialisierter Erfahrung im polnischen Staatsbürgerschaftsrecht mit und kombinieren traditionelle juristische Expertise mit modernster KI-Technologie, um Ihren Weg zur polnischen und EU-Staatsbürgerschaft durch Abstammung zu optimieren.',
         description: 'Wir bringen zwei Jahrzehnte spezialisierter Erfahrung im polnischen Staatsbürgerschaftsrecht mit und kombinieren traditionelle juristische Expertise mit modernster KI-Technologie, um Ihren Weg zur polnischen und EU-Staatsbürgerschaft durch Abstammung zu optimieren.',
+        subtitle: 'Unsere bewährte Erfolgsbilanz spricht für sich: Tausende erfolgreiche Fälle, persönliche Betreuung jedes Klienten und ein Engagement für Transparenz während Ihrer gesamten Staatsbürgerschaftsreise.',
         card1Title: 'Expertenberatung',
         card1Text: 'Unser Team spezialisiert sich ausschließlich auf Fälle polnischer Staatsbürgerschaft durch Abstammung, mit einer unübertroffenen Erfolgsquote von 100% bei über 20.000 Fällen. Wir kennen jedes Detail des Prozesses.',
         card2Title: 'KI-Gestützte Effizienz',
@@ -2151,8 +2151,8 @@ const resources = {
       about: {
         badge: 'Expertise Juridique Depuis 2003',
         title: 'Pourquoi Nous Choisir pour Votre Parcours de Citoyenneté Polonaise?',
-        subtitle: "Nous apportons deux décennies d'expérience spécialisée en droit de la citoyenneté polonaise, combinant une expertise juridique traditionnelle avec une technologie d'IA de pointe pour rationaliser votre parcours vers l'obtention de la citoyenneté polonaise et européenne par ascendance.",
         description: "Nous apportons deux décennies d'expérience spécialisée en droit de la citoyenneté polonaise, combinant une expertise juridique traditionnelle avec une technologie d'IA de pointe pour rationaliser votre parcours vers l'obtention de la citoyenneté polonaise et européenne par ascendance.",
+        subtitle: "Notre bilan éprouvé parle de lui-même : des milliers de cas réussis, une attention personnalisée pour chaque client et un engagement envers la transparence tout au long de votre parcours de citoyenneté.",
         card1Title: 'Conseils Juridiques Experts',
         card1Text: "Notre équipe se spécialise exclusivement dans les cas de citoyenneté polonaise par descendance, avec un taux de réussite inégalé de 100% sur plus de 20 000 cas. Nous connaissons chaque détail du processus.",
         card2Title: "Efficacité Propulsée par l'IA",
@@ -2664,8 +2664,8 @@ const resources = {
       about: {
         badge: 'מומחיות משפטית מאז 2003',
         title: 'למה לבחור בנו למסע האזרחות הפולנית שלך?',
-        subtitle: 'אנו מביאים שני עשורים של ניסיון מיוחד בחוק האזרחות הפולנית, משלבים מומחיות משפטית מסורתית עם טכנולוגיית AI מתקדמת כדי לייעל את הדרך שלך להשגת אזרחות פולנית ואירופאית דרך מוצא.',
         description: 'אנו מביאים שני עשורים של ניסיון מיוחד בחוק האזרחות הפולנית, משלבים מומחיות משפטית מסורתית עם טכנולוגיית AI מתקדמת כדי לייעל את הדרך שלך להשגת אזרחות פולנית ואירופאית דרך מוצא.',
+        subtitle: 'הרקורד המוכח שלנו מדבר בעד עצמו: אלפי מקרים מוצלחים, תשומת לב אישית לכל לקוח, ומחויבות לשקיפות לאורך כל מסע האזרחות שלך.',
         card1Title: 'ייעוץ משפטי מומחה',
         card1Text: 'הצוות שלנו מתמחה אך ורק במקרי אזרחות פולנית דרך מוצא, עם שיעור הצלחה ללא תחרות של 100% במעל 20,000 מקרים. אנו מכירים כל פרט בתהליך.',
         card2Title: 'יעילות מבוססת AI',
@@ -3177,8 +3177,8 @@ const resources = {
       about: {
         badge: 'Юридическая Экспертиза с 2003 года',
         title: 'Почему Выбрать Нас для Вашего Пути к Польскому Гражданству?',
-        subtitle: 'Мы привносим два десятилетия специализированного опыта в законе о польском гражданстве, сочетая традиционную юридическую экспертизу с передовой технологией ИИ для оптимизации вашего пути к получению польского и европейского гражданства по происхождению.',
         description: 'Мы привносим два десятилетия специализированного опыта в законе о польском гражданстве, сочетая традиционную юридическую экспертизу с передовой технологией ИИ для оптимизации вашего пути к получению польского и европейского гражданства по происхождению.',
+        subtitle: 'Наш проверенный послужной список говорит сам за себя: тысячи успешных дел, персональное внимание к каждому клиенту и приверженность прозрачности на протяжении всего вашего пути к гражданству.',
         card1Title: 'Экспертная Юридическая Консультация',
         card1Text: 'Наша команда специализируется исключительно на делах о польском гражданстве по происхождению, с непревзойденной 100% успешностью в более чем 20 000 делах. Мы знаем каждую деталь процесса.',
         card2Title: 'Эффективность на Основе ИИ',
@@ -3739,8 +3739,8 @@ const resources = {
       about: {
         badge: 'Юридична Експертиза з 2003 року',
         title: 'Чому Обрати Нас для Вашого Шляху до Польського Громадянства?',
-        subtitle: 'Ми привносимо два десятиліття спеціалізованого досвіду в законі про польське громадянство, поєднуючи традиційну юридичну експертизу з передовою технологією ШІ для оптимізації вашого шляху до отримання польського та європейського громадянства за походженням.',
         description: 'Ми привносимо два десятиліття спеціалізованого досвіду в законі про польське громадянство, поєднуючи традиційну юридичну експертизу з передовою технологією ШІ для оптимізації вашого шляху до отримання польського та європейського громадянства за походженням.',
+        subtitle: 'Наш перевірений послужний список говорить сам за себе: тисячі успішних справ, персональна увага до кожного клієнта та відданість прозорості протягом всього вашого шляху до громадянства.',
         card1Title: 'Експертна Юридична Консультація',
         card1Text: 'Наша команда спеціалізується виключно на справах про польське громадянство за походженням, з неперевершеною 100% успішністю в понад 20 000 справах. Ми знаємо кожну деталь процесу.',
         card2Title: 'Ефективність на Основі ШІ',
