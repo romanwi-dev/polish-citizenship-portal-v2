@@ -29,7 +29,7 @@ const contactSchema = z.object({
   email: z.string().trim().email({ message: "Invalid email address" }).max(255),
   country: z.string().min(1, "Please select a country"),
   polishAncestor: z.string().min(1, "Please select your Polish ancestor"),
-  yearOfEmigration: z.string().min(1, "Please enter the year of emigration").regex(/^\d{4}$/, "Year must be a 4-digit number"),
+  yearOfEmigration: z.string().optional(),
   polishDocuments: z.string().min(1, "Please select an option"),
 });
 
@@ -225,19 +225,24 @@ const ContactFormWeb3 = () => {
                     {/* Row 3: Year of Emigration + Polish Documents */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
-                        <Label htmlFor="yearOfEmigration" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Year of Emigration *</Label>
-                        <input
-                          id="yearOfEmigration"
-                          name="yearOfEmigration"
-                          type="text"
+                        <Label htmlFor="yearOfEmigration" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Year of Emigration</Label>
+                        <Select
                           value={formData.yearOfEmigration}
-                          onChange={handleChange}
-                          placeholder="e.g., 1920"
-                          required
-                          maxLength={4}
-                          pattern="\d{4}"
-                          className="h-14 border-2 border-blue-900/30 form-input-glow bg-blue-50/30 dark:bg-blue-950/30 backdrop-blur text-xl md:text-base w-full rounded-md px-3 outline-none focus:ring-2 focus:ring-primary"
-                        />
+                          onValueChange={(value) => handleSelectChange("yearOfEmigration", value)}
+                        >
+                          <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
+                            <SelectValue placeholder="Select year range" className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-background border-2 z-[100]">
+                            <SelectItem value="before-1920" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">before 1920</SelectItem>
+                            <SelectItem value="1920-1939" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">1920 - 1939</SelectItem>
+                            <SelectItem value="1939-1951" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">1939 - 1951</SelectItem>
+                            <SelectItem value="1951-1962" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">1951 - 1962</SelectItem>
+                            <SelectItem value="1962-1989" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">1962 - 1989</SelectItem>
+                            <SelectItem value="1989-2004" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">1989 - 2004</SelectItem>
+                            <SelectItem value="after-2004" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">after 2004</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
 
                       <div className="space-y-2">
