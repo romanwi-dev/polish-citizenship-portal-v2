@@ -422,22 +422,17 @@ const ContactFormWeb3 = () => {
               );
             })}
           </div>
-
-          {/* Bottom CTA */}
-          <MainCTA
-            wrapperClassName="mt-40 mb-0"
-            onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
-            ariaLabel="Take the Polish Citizenship Test to check your eligibility"
-          >
-            Take Polish Citizenship Test
-          </MainCTA>
         </div>
       </div>
 
-      {/* EU Celebration Section - Full Width */}
-      <div className="hidden md:block mt-0 mb-0 h-[900px] md:h-[750px] overflow-hidden w-full">
-        <EUCelebrationSection />
-      </div>
+      {/* Bottom CTA - Outside container for full width */}
+      <MainCTA
+        wrapperClassName="mt-40 mb-0"
+        onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
+        ariaLabel="Take the Polish Citizenship Test to check your eligibility"
+      >
+        Take Polish Citizenship Test
+      </MainCTA>
     </section>
   );
 };
