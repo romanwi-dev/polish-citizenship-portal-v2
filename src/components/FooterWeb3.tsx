@@ -3,7 +3,7 @@ import logo from "@/assets/logo.png";
 
 const FooterWeb3 = () => {
   return (
-    <footer className="relative py-20 -mt-2 pt-0 border-t-4 border-red-500">
+    <footer className="relative py-20 -mt-2 pt-12">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-t from-background via-primary/5 to-background" />
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
