@@ -47,7 +47,7 @@ const HeroWeb3 = () => {
           </p>
           
           <MainCTA
-            wrapperClassName="flex justify-center animate-fade-in opacity-80"
+            wrapperClassName="flex justify-center animate-fade-in"
             onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
             ariaLabel="Take the Polish Citizenship Test to check your eligibility"
           >
