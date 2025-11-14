@@ -108,11 +108,11 @@ const ContactFormWeb3 = () => {
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16 w-fit max-w-[280px] mx-auto md:max-w-none border border-primary/30">
             <Mail className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Connect With Us</span>
+            <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('contact.badge')}</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-14">
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              Check Your Eligibility and Chances
+              {t('contact.title')}
             </span>
           </h2>
         </div>
@@ -205,21 +205,21 @@ const ContactFormWeb3 = () => {
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="polishAncestor" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Polish Ancestor</Label>
+                        <Label htmlFor="polishAncestor" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">{t('contact.ancestorLabel')}</Label>
                         <Select
                           value={formData.polishAncestor}
                           onValueChange={(value) => handleSelectChange("polishAncestor", value)}
                         >
                           <SelectTrigger className="!h-14 !border-2 !border-blue-900/30 hover-glow focus:shadow-lg !bg-blue-50/30 dark:!bg-blue-950/30 backdrop-blur touch-manipulation w-full !leading-tight !text-lg [&>span]:bg-gradient-to-r [&>span]:from-slate-500 [&>span]:to-slate-700 [&>span]:bg-clip-text [&>span]:text-transparent">
-                            <SelectValue placeholder="Select your Polish ancestor" className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
+                            <SelectValue placeholder={t('contact.ancestorPlaceholder')} className="!text-sm bg-gradient-to-r from-slate-500 to-slate-700 bg-clip-text text-transparent" />
                           </SelectTrigger>
                           <SelectContent className="bg-background border-2 z-[100]">
-                            <SelectItem value="mother" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">Mother</SelectItem>
-                            <SelectItem value="father" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">Father</SelectItem>
-                            <SelectItem value="grandmother" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">Grandmother</SelectItem>
-                            <SelectItem value="grandfather" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">Grandfather</SelectItem>
-                            <SelectItem value="great-grandmother" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">Great-grandmother</SelectItem>
-                            <SelectItem value="great-grandfather" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">Great-grandfather</SelectItem>
+                            <SelectItem value="mother" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">{t('contact.ancestorParent')}</SelectItem>
+                            <SelectItem value="father" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">{t('contact.ancestorParent')}</SelectItem>
+                            <SelectItem value="grandmother" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">{t('contact.ancestorGrandparent')}</SelectItem>
+                            <SelectItem value="grandfather" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">{t('contact.ancestorGrandparent')}</SelectItem>
+                            <SelectItem value="great-grandmother" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">{t('contact.ancestorGreatGrandparent')}</SelectItem>
+                            <SelectItem value="great-grandfather" className="text-xl md:text-lg cursor-pointer hover:bg-primary/10 py-3">{t('contact.ancestorGreatGrandparent')}</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -228,7 +228,7 @@ const ContactFormWeb3 = () => {
                     {/* Row 3: Year of Emigration + Polish Documents */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
-                        <Label htmlFor="yearOfEmigration" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">Year of Emigration</Label>
+                        <Label htmlFor="yearOfEmigration" className="text-base bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent font-semibold">{t('contact.yearLabel')}</Label>
                         <Select
                           value={formData.yearOfEmigration}
                           onValueChange={(value) => handleSelectChange("yearOfEmigration", value)}

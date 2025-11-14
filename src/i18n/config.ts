@@ -209,7 +209,7 @@ const resources = {
       // Contact Form Section
       contact: {
         badge: 'Connect With Us',
-        title: 'Start Your Journey to Polish Citizenship',
+        title: 'Check Your Eligibility and Chances',
         subtitle: 'Fill out the form below and we will get back to you within 24 hours',
         nameLabel: 'Full Name',
         namePlaceholder: 'John Smith',
@@ -561,7 +561,7 @@ const resources = {
       },
       contact: {
         badge: 'Conéctate',
-        title: 'Comienza Tu Viaje',
+        title: 'Verifica Tu Elegibilidad y Posibilidades',
         subtitle: 'Te responderemos en 24 horas',
         nameLabel: 'Nombre Completo',
         namePlaceholder: 'Juan Pérez',
@@ -955,7 +955,7 @@ const resources = {
       },
       contact: {
         badge: 'Conecte-se',
-        title: 'Comece Sua Jornada',
+        title: 'Verifique Sua Elegibilidade e Chances',
         subtitle: 'Responderemos em 24 horas',
         nameLabel: 'Nome Completo',
         namePlaceholder: 'João Silva',
@@ -1176,7 +1176,7 @@ const resources = {
       },
       contact: {
         badge: 'Kontaktieren Sie Uns',
-        title: 'Beginnen Sie Ihre Reise',
+        title: 'Überprüfen Sie Ihre Berechtigung und Chancen',
         subtitle: 'Antwort in 24 Stunden',
         nameLabel: 'Vollständiger Name',
         namePlaceholder: 'Max Mustermann',
@@ -1397,7 +1397,7 @@ const resources = {
       },
       contact: {
         badge: 'Contactez-Nous',
-        title: 'Commencez Votre Voyage',
+        title: 'Vérifiez Votre Éligibilité et Vos Chances',
         subtitle: 'Réponse en 24 heures',
         nameLabel: 'Nom Complet',
         namePlaceholder: 'Jean Dupont',
@@ -1618,7 +1618,7 @@ const resources = {
       },
       contact: {
         badge: 'התחבר אלינו',
-        title: 'התחל את המסע שלך',
+        title: 'בדוק את הזכאות והסיכויים שלך',
         subtitle: 'מענה תוך 24 שעות',
         nameLabel: 'שם מלא',
         namePlaceholder: 'יוחנן כהן',
@@ -1839,7 +1839,7 @@ const resources = {
       },
       contact: {
         badge: 'Свяжитесь с Нами',
-        title: 'Начните Ваше Путешествие',
+        title: 'Проверьте Вашу Приемлемость и Шансы',
         subtitle: 'Ответ в течение 24 часов',
         nameLabel: 'Полное Имя',
         namePlaceholder: 'Иван Иванов',
@@ -2060,7 +2060,7 @@ const resources = {
       },
       contact: {
         badge: 'Зв\'яжіться з Нами',
-        title: 'Почніть Вашу Подорож',
+        title: 'Перевірте Вашу Прийнятність та Шанси',
         subtitle: 'Відповідь протягом 24 годин',
         nameLabel: 'Повне Ім\'я',
         namePlaceholder: 'Іван Іваненко',
