@@ -1,6 +1,6 @@
 import { MainCTA } from "@/components/ui/main-cta";
 import Sparkles from "lucide-react/dist/esm/icons/sparkles";
-import oldTownFuture from "@/assets/eu-celebration/celebration-29.png";
+import oldTownFuture from "@/assets/eu-celebration/celebration-24.png";
 import { useState } from "react";
 
 const HeroWeb3 = () => {
