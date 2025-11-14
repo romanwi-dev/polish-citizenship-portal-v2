@@ -5,6 +5,7 @@ import { MainCTA } from "./ui/main-cta";
 import { Card } from "./ui/card";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useTranslation } from 'react-i18next';
 
 // Using pure CSS animations for optimal performance
 
@@ -24,162 +25,165 @@ import timeline12 from "@/assets/timeline-12-push-schemes.webp";
 import timeline13 from "@/assets/timeline-13-citizenship.webp";
 import timeline14 from "@/assets/timeline-14-passport.webp";
 import timeline15 from "@/assets/timeline-15-extended.webp";
-const timelineSteps = [{
-  number: "1",
-  title: "FIRST STEPS",
-  description: "First contact, citizenship test, family tree, eligibility examination, and eligibility call",
-  duration: "Week 1",
-  keyAction: "Initial Setup & Payment",
-  priority: "Major Milestone",
-  icon: FileText,
-  gradient: "from-blue-500 to-cyan-500",
-  image: timeline01
-}, {
-  number: "2",
-  title: "TERMS & PRICING",
-  description: "Initial assessment, full process info with pricing, client confirmation, and document list",
-  duration: "Week 1-2",
-  keyAction: "Initial Setup & Payment",
-  priority: "Foundation Building",
-  icon: CreditCard,
-  gradient: "from-cyan-500 to-blue-500",
-  image: timeline02
-}, {
-  number: "3",
-  title: "ADVANCE & ACCOUNT",
-  description: "Advance payment processing and opening client portal account",
-  duration: "Week 2",
-  keyAction: "Initial Setup & Payment",
-  priority: "Major Milestone",
-  icon: CheckCircle,
-  gradient: "from-blue-500 to-indigo-500",
-  image: timeline03
-}, {
-  number: "4",
-  title: "DETAILS & POAs",
-  description: "Client provides basic details, POA preparation, and signed documents via FedEx",
-  duration: "Week 2-3",
-  keyAction: "Details & Application",
-  priority: "Foundation Building",
-  icon: FileCheck,
-  gradient: "from-indigo-500 to-purple-500",
-  image: timeline04
-}, {
-  number: "5",
-  title: "DATA & APPLICATION",
-  description: "Master form completion, AI paperwork generation, and official citizenship application submission",
-  duration: "Week 3-4",
-  keyAction: "Details & Application",
-  priority: "Major Milestone",
-  icon: Send,
-  gradient: "from-purple-500 to-pink-500",
-  image: timeline05
-}, {
-  number: "6",
-  title: "LOCAL DOCUMENTS",
-  description: "Document clarification, gathering local documents, and partner collaboration for collection",
-  duration: "Week 4-8",
-  keyAction: "Documentation & Translation",
-  priority: "Major Milestone",
-  icon: FolderSearch,
-  gradient: "from-pink-500 to-rose-500",
-  image: timeline06
-}, {
-  number: "7",
-  title: "POLISH DOCUMENTS",
-  description: "Polish archives search, international search, and partner processing for archival documents",
-  duration: "Week 4-12",
-  keyAction: "Documentation & Translation",
-  priority: "Major Milestone",
-  icon: Archive,
-  gradient: "from-rose-500 to-red-500",
-  image: timeline07
-}, {
-  number: "8",
-  title: "TRANSLATIONS",
-  description: "AI translation service, certified sworn translator certification, and translation agent supervision",
-  duration: "Week 8-16",
-  keyAction: "Documentation & Translation",
-  priority: "Major Milestone",
-  icon: Languages,
-  gradient: "from-red-500 to-orange-500",
-  image: timeline08
-}, {
-  number: "9",
-  title: "FILING DOCUMENTS",
-  description: "Submitting local documents and detailed family information before initial response",
-  duration: "Week 12-18",
-  keyAction: "Filing & Civil Acts",
-  priority: "Active Processing",
-  icon: Upload,
-  gradient: "from-orange-500 to-amber-500",
-  image: timeline09
-}, {
-  number: "10",
-  title: "CIVIL ACTS",
-  description: "Polish civil acts applications, payment processing, and dedicated civil acts agent supervision",
-  duration: "Week 16-20",
-  keyAction: "Filing & Civil Acts",
-  priority: "Major Milestone",
-  icon: Stamp,
-  gradient: "from-amber-500 to-yellow-500",
-  image: timeline10
-}, {
-  number: "11",
-  title: "INITIAL RESPONSE",
-  description: "Receiving initial response from Masovian Voivoda's office and extending procedure term if needed",
-  duration: "Month 10-18",
-  keyAction: "Government Processing",
-  priority: "Major Milestone",
-  icon: Clock,
-  gradient: "from-yellow-500 to-lime-500",
-  image: timeline11
-}, {
-  number: "12",
-  title: "PUSH SCHEMES",
-  description: "Offering push schemes (PUSH, NUDGE, SIT-DOWN, SLOW) and implementing strategies in practice",
-  duration: "Month 12-20",
-  keyAction: "Government Processing",
-  priority: "Major Milestone",
-  icon: Zap,
-  gradient: "from-lime-500 to-green-500",
-  image: timeline12
-}, {
-  number: "13",
-  title: "CITIZENSHIP DECISION",
-  description: "Polish citizenship confirmation decision received and added to client portal account",
-  duration: "Month 18-24",
-  keyAction: "Citizenship Confirmation",
-  priority: "Critical Milestone",
-  icon: Award,
-  gradient: "from-green-500 to-emerald-500",
-  image: timeline13
-}, {
-  number: "14",
-  title: "POLISH PASSPORT",
-  description: "Document preparation, final payment, FedEx delivery, consulate visit, and passport application",
-  duration: "Month 20-26",
-  keyAction: "Passport & Extended Services",
-  priority: "Major Milestone",
-  icon: Book,
-  gradient: "from-emerald-500 to-teal-500",
-  image: timeline14
-}, {
-  number: "15",
-  title: "EXTENDED SERVICES",
-  description: "Extended family legal services for comprehensive ongoing support",
-  duration: "Ongoing",
-  keyAction: "Passport & Extended Services",
-  priority: "Final Achievement",
-  icon: Users,
-  gradient: "from-teal-500 to-cyan-500",
-  image: timeline15
-}];
+
 export default function TimelineProcessEnhanced() {
+  const { t } = useTranslation();
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
   const [firstCardAnimated, setFirstCardAnimated] = useState(false);
   const isMobile = useIsMobile();
   const prefersReducedMotion = useReducedMotion();
+
+  const timelineSteps = [{
+    number: "1",
+    title: t('timeline.stage1'),
+    description: t('timeline.stage1Desc'),
+    duration: t('timeline.stage1Duration'),
+    keyAction: t('timeline.stage1Action'),
+    priority: t('timeline.majorMilestone'),
+    icon: FileText,
+    gradient: "from-blue-500 to-cyan-500",
+    image: timeline01
+  }, {
+    number: "2",
+    title: t('timeline.stage2'),
+    description: t('timeline.stage2Desc'),
+    duration: t('timeline.stage2Duration'),
+    keyAction: t('timeline.stage2Action'),
+    priority: t('timeline.foundationBuilding'),
+    icon: CreditCard,
+    gradient: "from-cyan-500 to-blue-500",
+    image: timeline02
+  }, {
+    number: "3",
+    title: t('timeline.stage3'),
+    description: t('timeline.stage3Desc'),
+    duration: t('timeline.stage3Duration'),
+    keyAction: t('timeline.stage3Action'),
+    priority: t('timeline.majorMilestone'),
+    icon: CheckCircle,
+    gradient: "from-blue-500 to-indigo-500",
+    image: timeline03
+  }, {
+    number: "4",
+    title: t('timeline.stage4'),
+    description: t('timeline.stage4Desc'),
+    duration: t('timeline.stage4Duration'),
+    keyAction: t('timeline.stage4Action'),
+    priority: t('timeline.foundationBuilding'),
+    icon: FileCheck,
+    gradient: "from-indigo-500 to-purple-500",
+    image: timeline04
+  }, {
+    number: "5",
+    title: t('timeline.stage5'),
+    description: t('timeline.stage5Desc'),
+    duration: t('timeline.stage5Duration'),
+    keyAction: t('timeline.stage5Action'),
+    priority: t('timeline.majorMilestone'),
+    icon: Send,
+    gradient: "from-purple-500 to-pink-500",
+    image: timeline05
+  }, {
+    number: "6",
+    title: t('timeline.stage6'),
+    description: t('timeline.stage6Desc'),
+    duration: t('timeline.stage6Duration'),
+    keyAction: t('timeline.stage6Action'),
+    priority: t('timeline.majorMilestone'),
+    icon: FolderSearch,
+    gradient: "from-pink-500 to-rose-500",
+    image: timeline06
+  }, {
+    number: "7",
+    title: t('timeline.stage7'),
+    description: t('timeline.stage7Desc'),
+    duration: t('timeline.stage7Duration'),
+    keyAction: t('timeline.stage7Action'),
+    priority: t('timeline.majorMilestone'),
+    icon: Archive,
+    gradient: "from-rose-500 to-red-500",
+    image: timeline07
+  }, {
+    number: "8",
+    title: t('timeline.stage8'),
+    description: t('timeline.stage8Desc'),
+    duration: t('timeline.stage8Duration'),
+    keyAction: t('timeline.stage8Action'),
+    priority: t('timeline.majorMilestone'),
+    icon: Languages,
+    gradient: "from-red-500 to-orange-500",
+    image: timeline08
+  }, {
+    number: "9",
+    title: t('timeline.stage9'),
+    description: t('timeline.stage9Desc'),
+    duration: t('timeline.stage9Duration'),
+    keyAction: t('timeline.stage9Action'),
+    priority: t('timeline.foundationBuilding'),
+    icon: Upload,
+    gradient: "from-orange-500 to-amber-500",
+    image: timeline09
+  }, {
+    number: "10",
+    title: t('timeline.stage10'),
+    description: t('timeline.stage10Desc'),
+    duration: t('timeline.stage10Duration'),
+    keyAction: t('timeline.stage10Action'),
+    priority: t('timeline.majorMilestone'),
+    icon: Stamp,
+    gradient: "from-amber-500 to-yellow-500",
+    image: timeline10
+  }, {
+    number: "11",
+    title: t('timeline.stage11'),
+    description: t('timeline.stage11Desc'),
+    duration: t('timeline.stage11Duration'),
+    keyAction: t('timeline.stage11Action'),
+    priority: t('timeline.majorMilestone'),
+    icon: Clock,
+    gradient: "from-yellow-500 to-lime-500",
+    image: timeline11
+  }, {
+    number: "12",
+    title: t('timeline.stage12'),
+    description: t('timeline.stage12Desc'),
+    duration: t('timeline.stage12Duration'),
+    keyAction: t('timeline.stage12Action'),
+    priority: t('timeline.foundationBuilding'),
+    icon: Zap,
+    gradient: "from-lime-500 to-green-500",
+    image: timeline12
+  }, {
+    number: "13",
+    title: t('timeline.stage13'),
+    description: t('timeline.stage13Desc'),
+    duration: t('timeline.stage13Duration'),
+    keyAction: t('timeline.stage13Action'),
+    priority: t('timeline.majorMilestone'),
+    icon: Award,
+    gradient: "from-green-500 to-emerald-500",
+    image: timeline13
+  }, {
+    number: "14",
+    title: t('timeline.stage14'),
+    description: t('timeline.stage14Desc'),
+    duration: t('timeline.stage14Duration'),
+    keyAction: t('timeline.stage14Action'),
+    priority: t('timeline.foundationBuilding'),
+    icon: Shield,
+    gradient: "from-emerald-500 to-teal-500",
+    image: timeline14
+  }, {
+    number: "15",
+    title: t('timeline.stage15'),
+    description: t('timeline.stage15Desc'),
+    duration: t('timeline.stage15Duration'),
+    keyAction: t('timeline.stage15Action'),
+    priority: t('timeline.foundationBuilding'),
+    icon: Users,
+    gradient: "from-teal-500 to-cyan-500",
+    image: timeline15
+  }];
 
   // Auto-flip animation for first card
   useEffect(() => {
@@ -189,10 +193,10 @@ export default function TimelineProcessEnhanced() {
       const timer2 = setTimeout(() => {
         setFlippedCards(prev => ({ ...prev, "1": false }));
         setFirstCardAnimated(true);
-      }, 2000); // Wait 1 second + 1 second for slow flip back
+      }, 2000);
       
       return () => clearTimeout(timer2);
-    }, 500); // Initial delay before first flip
+    }, 500);
     
     return () => clearTimeout(timer1);
   }, []);
@@ -209,15 +213,15 @@ export default function TimelineProcessEnhanced() {
         <div className="text-center mb-16 animate-fade-in">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16 border border-primary/30">
             <Clock className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Process Timeline</span>
+            <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('timeline.badge')}</span>
           </div>
           <h2 className="text-5xl md:text-8xl font-heading font-black mb-14 tracking-tight animate-scale-in" style={{ animationDelay: '150ms' }}>
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-primary animate-fade-in-up glow-text drop-shadow-2xl">
-              Complete Legal Process Timeline
+              {t('timeline.title')}
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-16 animate-fade-in" style={{ animationDelay: '200ms' }}>
-            Complex journey to Polish citizenship through our comprehensive 15-part process. Many stages are always processed simultaneously to save time.
+            {t('timeline.subtitle')}
           </p>
         </div>
 
@@ -351,7 +355,7 @@ export default function TimelineProcessEnhanced() {
           onClick={() => window.open('https://polishcitizenship.typeform.com/to/PS5ecU?typeform-source=polishcitizenship.pl', '_blank')}
           ariaLabel="Take the Polish Citizenship Test to check your eligibility"
         >
-          Take Polish Citizenship Test
+          {t('timeline.mainCta')}
         </MainCTA>
       </div>
     </section>

@@ -10,8 +10,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { MainCTA } from "@/components/ui/main-cta";
 import { Search, Users, Clock, DollarSign, FileText, AlertCircle, HelpCircle } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 
 const FAQSection = () => {
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
 
   const faqCategories = [
@@ -170,11 +172,11 @@ const FAQSection = () => {
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-16 border border-primary/30">
               <HelpCircle className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">FAQ</span>
+              <span className="text-sm font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('faq.badge')}</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tight mb-14">
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Find Answers Instantly
+                {t('faq.title')}
               </span>
             </h2>
             <div className="mb-16" />
@@ -186,7 +188,7 @@ const FAQSection = () => {
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground/50 pointer-events-none z-20" />
               <Input
                 type="text"
-                placeholder="Type to filter questions (e.g., pre-1920, naturalization, translations)..."
+                placeholder={t('faq.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-12 h-14 text-sm font-normal glass-card border-primary/20 focus:border-primary/40 transition-opacity relative z-10 placeholder:text-xs placeholder:font-light placeholder:opacity-40 w-full"

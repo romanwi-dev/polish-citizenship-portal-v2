@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Bot, GitBranch, ClipboardList, Users, Archive, Languages, Award, FileCheck, Plane, BookOpen, Shield, Search, PenTool, Sun, Sparkles, FileText, Brain, FileCode, RefreshCw, PartyPopper, MessageSquare, Palette, Layout, Globe, Type, Target } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface NavigationLinksProps {
   onNavigate: () => void;
@@ -13,30 +14,34 @@ type NavLink = {
   featured?: boolean;
 };
 
-const NAVIGATION_SECTIONS: Array<{
-  title: string;
-  links: NavLink[];
-}> = [
-  {
-    title: 'Main',
-    links: [
-      { label: 'FAQ', href: '#faq' },
-      { label: 'Pricing', href: '#pricing' },
-      { label: 'Contact', href: '#contact' },
-      { label: 'Timeline', href: '#timeline' },
-      { label: 'Services', href: '#services' },
-    ]
-  },
-  {
-    title: 'Resources',
-    links: [
-      { label: 'Law', href: '#faq' },
-      { label: 'Passport', href: '#services' },
-      { label: 'Process', href: '#timeline' },
-      { label: 'Documents', href: '#timeline' },
-      { label: 'Testimonials', href: '#testimonials' },
-    ]
-  },
+export const NavigationLinks = ({ onNavigate, searchQuery }: NavigationLinksProps) => {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  
+  const NAVIGATION_SECTIONS: Array<{
+    title: string;
+    links: NavLink[];
+  }> = [
+    {
+      title: 'Main',
+      links: [
+        { label: t('nav.faq'), href: '#faq' },
+        { label: t('nav.pricing'), href: '#pricing' },
+        { label: t('nav.contact'), href: '#contact' },
+        { label: t('nav.timeline'), href: '#timeline' },
+        { label: t('nav.services'), href: '#services' },
+      ]
+    },
+    {
+      title: 'Resources',
+      links: [
+        { label: 'Law', href: '#faq' },
+        { label: 'Passport', href: '#services' },
+        { label: 'Process', href: '#timeline' },
+        { label: 'Documents', href: '#timeline' },
+        { label: t('nav.testimonials'), href: '#testimonials' },
+      ]
+    },
   {
     title: 'Workflows',
     links: [
@@ -76,10 +81,7 @@ const NAVIGATION_SECTIONS: Array<{
       { label: 'Skyline Background Removal', href: '/admin/skyline-bg-removal', icon: PenTool },
     ]
   }
-];
-
-export const NavigationLinks = ({ onNavigate, searchQuery }: NavigationLinksProps) => {
-  const navigate = useNavigate();
+  ];
   
   const handleClick = (e: React.MouseEvent, href: string) => {
     if (href.startsWith('#')) {
