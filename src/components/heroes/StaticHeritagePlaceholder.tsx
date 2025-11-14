@@ -1,19 +1,51 @@
+import { useEffect, useState } from "react";
+
 export const StaticHeritagePlaceholder = () => {
+  const [isRedTheme, setIsRedTheme] = useState(false);
+
+  useEffect(() => {
+    // Detect red vs blue theme
+    const checkTheme = () => {
+      setIsRedTheme(document.documentElement.classList.contains('theme-red'));
+    };
+    
+    checkTheme();
+    
+    // Watch for theme changes
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { 
+      attributes: true, 
+      attributeFilter: ['class'] 
+    });
+    
+    return () => observer.disconnect();
+  }, []);
+
+  // Different gradients for red vs blue themes
+  const backgroundImage = isRedTheme
+    ? 'radial-gradient(circle at 20% 50%, hsl(343, 50%, 5%), transparent 50%), radial-gradient(circle at 80% 50%, hsl(0, 50%, 5%), transparent 50%), linear-gradient(135deg, hsl(343, 50%, 10%), hsl(0, 50%, 10%), hsl(343, 50%, 10%))'
+    : 'radial-gradient(circle at 20% 50%, hsl(0, 50%, 5%), transparent 50%), radial-gradient(circle at 80% 50%, hsl(240, 50%, 5%), transparent 50%), linear-gradient(135deg, hsl(0, 50%, 10%), hsl(240, 50%, 10%), hsl(0, 50%, 10%))';
+
   return (
-    <div 
-      className="absolute inset-0 w-full h-full animate-slow-wave"
-      style={{
-        backgroundImage: 'radial-gradient(circle at 20% 50%, hsl(0, 50%, 5%), transparent 50%), radial-gradient(circle at 80% 50%, hsl(240, 50%, 5%), transparent 50%), linear-gradient(135deg, hsl(0, 50%, 10%), hsl(240, 50%, 10%), hsl(0, 50%, 10%))'
-      }}
-    >
+    <div className="absolute inset-0 w-full h-full">
+      <div 
+        className="absolute inset-0 animate-color-wave bg-[length:200%_200%]"
+        style={{ backgroundImage }}
+      />
+      <div className="absolute inset-0 opacity-40 blur-sm pointer-events-none" />
+      
       <style>{`
-        @keyframes slow-wave {
-          0%, 100% { opacity: 0.95; }
-          50% { opacity: 1; }
+        @keyframes color-wave {
+          0%, 100% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
         }
         
-        .animate-slow-wave {
-          animation: slow-wave 15s ease-in-out infinite;
+        .animate-color-wave {
+          animation: color-wave 12s ease-in-out infinite;
         }
       `}</style>
     </div>

@@ -5,15 +5,45 @@ const StaticHeritage = lazy(() => import("@/components/heroes/StaticHeritage").t
 
 export const GlobalBackground = () => {
   const [show3D, setShow3D] = useState(false);
+  const [isDark, setIsDark] = useState(true);
 
-  // Delay 3D background loading to improve initial page load
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShow3D(true);
-    }, 2000);
+    // Check if dark or light mode
+    const checkTheme = () => {
+      setIsDark(document.documentElement.classList.contains('dark'));
+    };
     
-    return () => clearTimeout(timer);
+    checkTheme();
+    
+    // Watch for theme changes
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { 
+      attributes: true, 
+      attributeFilter: ['class'] 
+    });
+    
+    return () => observer.disconnect();
   }, []);
+
+  // Delay 3D background loading for dark themes only
+  useEffect(() => {
+    if (isDark) {
+      const timer = setTimeout(() => {
+        setShow3D(true);
+      }, 2000);
+      return () => clearTimeout(timer);
+    } else {
+      setShow3D(false); // No 3D in light mode
+    }
+  }, [isDark]);
+
+  // DARK themes: Show 3D heritage
+  // LIGHT themes: Show grey-white background
+  if (!isDark) {
+    return (
+      <div className="fixed inset-0 z-0 bg-background" />
+    );
+  }
 
   return (
     <div className="fixed inset-0 z-0">
