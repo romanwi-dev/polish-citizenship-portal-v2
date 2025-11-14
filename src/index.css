@@ -771,41 +771,9 @@ All colors MUST be HSL.
                  0 0 80px hsl(var(--primary) / 0.15);
   }
   
-  /* RTL-aware gradient utilities */
-  [dir="ltr"] .bg-gradient-to-r {
-    background-image: linear-gradient(to right, var(--tw-gradient-stops));
-  }
-  
+  /* RTL-aware gradient - reverses direction only, keeps color order */
   [dir="rtl"] .bg-gradient-to-r {
     background-image: linear-gradient(to left, var(--tw-gradient-stops));
-  }
-  
-  /* RTL-specific text gradient */
-  [dir="rtl"] .bg-clip-text {
-    -webkit-background-clip: text;
-    background-clip: text;
-  }
-  
-  /* Ensure gradient reverses for RTL in all gradient utilities */
-  [dir="rtl"] .from-primary {
-    --tw-gradient-from: hsl(var(--accent)) var(--tw-gradient-from-position);
-    --tw-gradient-to: hsl(var(--accent) / 0) var(--tw-gradient-to-position);
-    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-  }
-  
-  [dir="rtl"] .from-secondary {
-    --tw-gradient-from: hsl(var(--accent)) var(--tw-gradient-from-position);
-    --tw-gradient-to: hsl(var(--accent) / 0) var(--tw-gradient-to-position);
-    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-  }
-  
-  [dir="rtl"] .via-secondary {
-    --tw-gradient-to: hsl(var(--secondary) / 0) var(--tw-gradient-to-position);
-    --tw-gradient-stops: var(--tw-gradient-from), hsl(var(--secondary)) var(--tw-gradient-via-position), var(--tw-gradient-to);
-  }
-  
-  [dir="rtl"] .to-accent {
-    --tw-gradient-to: hsl(var(--primary)) var(--tw-gradient-to-position);
   }
 }
 
