@@ -27,8 +27,8 @@ const HeroWeb3 = () => {
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-black mb-14 leading-tight animate-fade-in tracking-tight" style={{
           contentVisibility: 'auto'
         }}>
-            <span className="text-[#D94565]" style={{
-              textShadow: '0 0 20px rgba(217, 69, 101, 0.8), 0 0 40px rgba(217, 69, 101, 0.6), 0 0 60px rgba(217, 69, 101, 0.4), 0 0 80px rgba(217, 69, 101, 0.2)'
+            <span className="bg-gradient-to-r from-[#7C1328] via-[#D94565] to-white bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(217,69,101,0.8)]" style={{
+              filter: 'drop-shadow(0 0 40px rgba(217, 69, 101, 0.6)) drop-shadow(0 0 60px rgba(217, 69, 101, 0.4))'
             }}>
               Polish Citizenship by Descent
             </span>
